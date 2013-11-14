@@ -18,6 +18,8 @@ ssh setup
 * upload the public key to your github account at https://github.wdf.sap.corp/settings/ssh
 
 clone and test locally
-* close repository via *git clone https://github.wdf.sap.corp/Tools/bridge.git* or via ssh with *git clone git@github.wdf.sap.corp:Tools/bridge.git*
-* to run a test instance locally, install node.js from http://nodejs.org/, fetch the package dependencies in /server via *npm install* and run "node server.js" in that directory. Then launch *https://localhost* in your browser.
-
+* close repository 
+* install node.js from http://nodejs.org/
+* fetch the package dependencies in /server via *npm install*
+* run "node server.js" in /server 
+* launch *https://localhost* in your browser
