@@ -7,11 +7,10 @@ git installation
 https setup
 * check if you can get https access to github via command *curl https://github.wdf.sap.corp*
 * in case of error *SSL certificate problem: unable to get local issuer certificate* do the following
-* download the SAPNetCA.crt file (via you browser or [here](certificates/SAPNetCA.crt))
+* download [SAPNetCA.crt](certificates/SAPNetCA.crt)
 * goto the git installation folder under (git-path)/bin
-* run command *cat SAPNetCA.crt curl-ca-bundle.crt > curl-ca-bundle2.crt*
-* replace *curl-ca-bundle.crt* with *curl-ca-bundle2.crt*
-* set bundle in git via *git config --global http.sslcainfo "(git-path)\bin\curl-ca-bundle.crt”*
+* append SAPNetCA via *cat SAPNetCA.crt >> curl-ca-bundle.crt*
+* configure git via *git config --global http.sslcainfo "(git-path)\bin\curl-ca-bundle.crt”*
 
 ssh setup
 * run *ssh-keygen -t rsa -C "your.name@sap.com"* to generate SSH keys
