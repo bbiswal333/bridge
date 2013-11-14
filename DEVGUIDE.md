@@ -17,7 +17,7 @@ ssh setup
 * upload the public key to your github account at https://github.wdf.sap.corp/settings/ssh
 
 clone and test locally
-* close repository 
+* clone repository
 * install node.js from http://nodejs.org/
 * fetch the package dependencies in /server via *npm install*
 * run "node server.js" in /server 
