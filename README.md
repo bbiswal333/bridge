@@ -3,4 +3,4 @@ Bridge
 
 Developer Guide
 ===============
-[Developer Guide](DEVGUIDE.md))
+[Developer Guide](DEVGUIDE.md)
