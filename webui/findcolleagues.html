@@ -1,0 +1,42 @@
+<html ng-app="userApp">
+  <head>
+    <script src="libs/angular.js"></script>
+    <script src="libs/angular-resource.js"></script>
+    <script src="findcolleagues.js"></script>
+
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap-theme.css">
+    
+
+  </head>
+  <body ng-controller="UserCtrl">
+  <div class="container">
+
+  <form>
+    <fieldset>
+      <legend>Find colleagues</legend>
+      
+      <input type="text" placeholder="Type something..." name="searchField" ng-model="search" ng-change="dosearch()" id="ng-change-search" required>
+      <span class="help-block">Search via name, user id, room and department</span>
+    </fieldset>
+  </form>
+  
+
+  <table class="table table-striped">
+    <tr>
+      <th>Name</th>
+      <th>User ID</th>
+      <th>Room</th>
+      <th>Department</th>
+    </tr>
+    <tr ng-repeat="user in users">
+      <td><a href="mailto:{{user.EMAIL}}">{{user.FIRSTNAME}} {{user.LASTNAME}}</a></td>
+      <td>{{user.USERID}}</td>
+      <td>{{user.BUILDING}} {{user.ROOM}}</td>
+      <td>{{user.DEPARTMENT}}</td>
+    </tr>
+  </table>
+
+  </div>
+  </body>
+</html>
