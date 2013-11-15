@@ -2,7 +2,7 @@
 
 /* Services */
 
-var atcServices = angular.module('atcServices', []);
+var atcServices = angular.module('atcServices', ['ngResource']);
 
 atcServices.factory('Config', [
   function(){
@@ -22,4 +22,9 @@ atcServices.factory('Config', [
 atcServices.factory('ATCDataProvider', ['$http',
    function($http){
      return new ATCDataProvider($http);
+   }]);
+
+atcServices.factory('FindEmployee', ['$resource',
+   function ($resource) {
+       return $resource('https://ifd.wdf.sap.corp/sap/bc/abapcq/user_data_json', {}, { query: { method: 'GET', cache: true, params: { search: "" }, isArray: false } });
    }]);

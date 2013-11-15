@@ -9,7 +9,8 @@ test( "test get ATC Data for Config", function() {
 				};
 			}
 	};
-	
+
+	var scope = {};
 	httpMock.defaults = {};
 	
 	var atcDataProvider = new ATCDataProvider(httpMock);
@@ -17,8 +18,10 @@ test( "test get ATC Data for Config", function() {
 	
 	var config = new Config();
 	
-	equal(atcDataProvider.getResultForConfig(config).prio1, 240, 'number of prio1 messages test');
-	equal(atcDataProvider.getResultForConfig(config).prio2, 5, 'number of prio2 messages test');
-	equal(atcDataProvider.getResultForConfig(config).prio3, 11343, 'number of prio3 messages test');
-	equal(atcDataProvider.getResultForConfig(config).prio4, 5446, 'number of prio4 messages test');
+	atcDataProvider.getResultForConfig(config, scope);
+
+	equal(scope.atcData.prio1, 240, 'number of prio1 messages test');
+	equal(scope.atcData.prio2, 5, 'number of prio2 messages test');
+	equal(scope.atcData.prio3, 11343, 'number of prio3 messages test');
+	equal(scope.atcData.prio4, 5446, 'number of prio4 messages test');
 });

@@ -23,3 +23,12 @@ test( "test dashboardBoxController", function() {
 	
 	equal(this.$scope.data.prio1, 644, 'Controller scope loaded');
 });
+
+//test("doSearch dashboardBoxController", function () {
+//    var $controller = injector.get('$controller');
+
+
+//    $controller('Controller', { $scope: this.$scope, ATCDataProvider: atcDataProviderMock, Config: new Config() });
+
+//    equal(this.$scope.data.prio1, 644, 'Controller scope loaded');
+//});
