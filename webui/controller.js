@@ -4,7 +4,9 @@
 
 var dashboardBox = angular.module('dashboardBox', ['atcServices', 'googlechart']);
 
-dashboardBox.controller('Controller', ['$scope', 'ATCDataProvider', 'Config', 'FindEmployee', function Controller($scope, ATCDataProvider, Config, FindEmployee) {
+dashboardBox.controller('Controller', ['$scope', '$http', 'ATCDataProvider', 'Config', 'FindEmployee', function Controller($scope, $http, ATCDataProvider, Config, FindEmployee) {
+    $http.defaults.headers.common['X-Requested-With'] = undefined;
+
     ATCDataProvider.getResultForConfig(Config, $scope);
     $scope.$watch('atcData', function () { updateATCChart($scope); });
 

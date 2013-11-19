@@ -20,8 +20,8 @@ atcServices.factory('Config', [
   }]);
 
 atcServices.factory('ATCDataProvider', ['$http',
-   function($http){
-     return new ATCDataProvider($http);
+   function ($http) {
+       return new ATCDataProvider($http);
    }]);
 
 atcServices.factory('FindEmployee', ['$resource',

@@ -4,7 +4,7 @@ test( "test get ATC Data for Config", function() {
 			get: function() {
 				return {
 					success: function(succFunc){
-						succFunc(testData);
+						succFunc(atcCountData);
 					}
 				};
 			}
@@ -20,8 +20,8 @@ test( "test get ATC Data for Config", function() {
 	
 	atcDataProvider.getResultForConfig(config, scope);
 
-	equal(scope.atcData.prio1, 240, 'number of prio1 messages test');
-	equal(scope.atcData.prio2, 5, 'number of prio2 messages test');
-	equal(scope.atcData.prio3, 11343, 'number of prio3 messages test');
-	equal(scope.atcData.prio4, 5446, 'number of prio4 messages test');
+	equal(scope.atcData.prio1, 985, 'number of prio1 messages test');
+	equal(scope.atcData.prio2, 438, 'number of prio2 messages test');
+	equal(scope.atcData.prio3, 11377, 'number of prio3 messages test');
+	equal(scope.atcData.prio4, 3766, 'number of prio4 messages test');
 });
