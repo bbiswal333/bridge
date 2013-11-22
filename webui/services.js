@@ -26,5 +26,5 @@ dashboardServices.factory('ATCDataProvider', ['$http',
 
 dashboardServices.factory('FindEmployee', ['$resource',
    function ($resource) {
-       //return $resource('https://ifd.wdf.sap.corp/sap/bc/abapcq/user_data_json', {}, { query: { method: 'GET', cache: true, params: { search: "" }, isArray: false } });
+       //return $resource('https://ifd.wdf.sap.corp/sap/bc/zxa/find_employee_json', {}, { query: { method: 'GET', cache: true, params: { query: "", maxrow: "25" }, isArray: false } });
    }]);

@@ -34,14 +34,10 @@
             <tr>
               <th>Name</th>
               <th>User ID</th>
-              <th>Room</th>
-              <th>Department</th>
             </tr>
             <tr ng-repeat="user in users">
-              <td><a href="mailto:{{user.EMAIL}}">{{user.FIRSTNAME}} {{user.LASTNAME}}</a></td>
-              <td>{{user.USERID}}</td>
-              <td>{{user.BUILDING}} {{user.ROOM}}</td>
-              <td>{{user.DEPARTMENT}}</td>
+              <td><a href="mailto:{{user.EMAIL}}">{{user.VORNA}} {{user.NACHN}}</a></td>
+              <td>{{user.BNAME}}</td>
             </tr>
           </table>
 
