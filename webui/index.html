@@ -14,6 +14,7 @@
   		<script src="services.js"></script>
 		<script src="controller.js"></script>
         <script src="Controls/EmployeeSearchDirective.js"></script>
+        <script src="EmployeeSearch.js"></script>
 
 		<title>Bridge - Personal Command Center</title>
 
@@ -35,12 +36,11 @@
               <th>Name</th>
               <th>User ID</th>
             </tr>
-            <tr ng-repeat="user in users">
-              <td><a href="mailto:{{user.EMAIL}}">{{user.VORNA}} {{user.NACHN}}</a></td>
-              <td>{{user.BNAME}}</td>
+            <tr ng-repeat="user in foundUser">
+              <td><a href="mailto:{{user.EMAIL}}">{{user.FIRSTNAME}} {{user.LASTNAME}}</a></td>
+              <td>{{user.USERID}}</td>
             </tr>
           </table>
-
 
 		<div google-chart chart="chart" style="{{chart.cssStyle}}" />
         <div><center><img src="screenshot.png" /></center></div>
