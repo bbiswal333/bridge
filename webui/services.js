@@ -2,9 +2,9 @@
 
 /* Services */
 
-var atcServices = angular.module('atcServices', ['ngResource']);
+var dashboardServices = angular.module('atcServices', ['ngResource']);
 
-atcServices.factory('Config', [
+dashboardServices.factory('Config', [
   function(){
 	  var configItem = new ConfigItem();
 	  configItem.srcSystem = "CI3";
@@ -19,12 +19,12 @@ atcServices.factory('Config', [
 	  return config;
   }]);
 
-atcServices.factory('ATCDataProvider', ['$http',
+dashboardServices.factory('ATCDataProvider', ['$http',
    function ($http) {
        return new ATCDataProvider($http);
    }]);
 
-atcServices.factory('FindEmployee', ['$resource',
+dashboardServices.factory('FindEmployee', ['$resource',
    function ($resource) {
-       return $resource('https://ifd.wdf.sap.corp/sap/bc/abapcq/user_data_json', {}, { query: { method: 'GET', cache: true, params: { search: "" }, isArray: false } });
+       //return $resource('https://ifd.wdf.sap.corp/sap/bc/abapcq/user_data_json', {}, { query: { method: 'GET', cache: true, params: { search: "" }, isArray: false } });
    }]);

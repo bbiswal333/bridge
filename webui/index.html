@@ -9,15 +9,17 @@
 		<script src="libs/ng-google-chart.js"></script>
   		<script src="libs/linq.min.js"></script>
   			
-  		<script src="Config.js"></script>
-  		<script src="ATCDataProvider.js"></script>
+  		<script src="Boxes/ATC/Config.js"></script>
+  		<script src="Boxes/ATC/ATCDataProvider.js"></script>
   		<script src="services.js"></script>
 		<script src="controller.js"></script>
+        <script src="Controls/EmployeeSearchDirective.js"></script>
 
 		<title>Bridge - Personal Command Center</title>
 
 	</head>
 	<body ng-controller="Controller">
+        <employee-search></employee-search>
         <form>
             <fieldset>
               <legend>Find colleagues</legend>

@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html >
-<head>
-  <meta charset="utf-8">
-  <title>Dashboard Box Tests</title>
-  <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css">
+    <head>
+        <meta charset="utf-8">
+        <title>Dashboard Box Tests</title>
+        <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css">
   
-  <script src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script src="../libs/ng-google-chart.js"></script>
-  <script src="../libs/linq.min.js"></script>
+        <script src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script src="../libs/ng-google-chart.js"></script>
+        <script src="../libs/linq.min.js"></script>
   
-  <script src='../Config.js'></script>
-  <script src='../ATCDataProvider.js'></script>
-  <script src='../services.js'></script>
-  <script src="../controller.js"></script>
-  <script src='configTest.js'></script>
-  <script src='controllerTest.js'></script>
-  <script src='atcDataProviderTest.js'></script>
-  <script src='Data/atcResults.json'></script>
-  <script src="Data/atcCountResults.json"></script>
+        <script src='../Boxes/ATC/Config.js'></script>
+        <script src='../Boxes/ATC/ATCDataProvider.js'></script>
+        <script src='../services.js'></script>
+        <script src="../controller.js"></script>
+        <script src="../EmployeeSearch.js"></script>
 
-</head>
+        <script src='Data/atcResults.json'></script>
+        <script src="Data/atcCountResults.json"></script>
+        <script src="Data/EmployeeSearchData.json"></script>
 
-<body ng-app="dashboardBox">
-  <div id="qunit"></div>
-  <div id="qunit-fixture"></div>
-  
-</body>
+        <script src='configTest.js'></script>
+        <script src='atcDataProviderTest.js'></script>
+        <script src='controllerTest.js'></script>
+        <script src="EmployeeSearchTest.js"></script>
+
+    </head>
+
+    <body ng-app="dashboardBox">
+      <div id="qunit"></div>
+      <div id="qunit-fixture"></div>
+    </body>
 </html>

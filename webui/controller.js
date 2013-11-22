@@ -10,19 +10,19 @@ dashboardBox.controller('Controller', ['$scope', '$http', 'ATCDataProvider', 'Co
     ATCDataProvider.getResultForConfig(Config, $scope);
     $scope.$watch('atcData', function () { updateATCChart($scope); });
 
-    $scope.users = [];
+    //$scope.users = [];
 
-    FindEmployee.query(function (response) {
-        $scope.users = response['DATA'];
-    });
+    //FindEmployee.query(function (response) {
+    //    $scope.users = response['DATA'];
+    //});
 
-    $scope.dosearch = function () {
-        if (!$scope.search) $scope.search = "";
-        FindEmployee.query({ search: $scope.search }, function (response) {
+    //$scope.dosearch = function () {
+    //    if (!$scope.search) $scope.search = "";
+    //    FindEmployee.query({ search: $scope.search }, function (response) {
 
-            $scope.users = response['DATA'];
-        });
-    };
+    //        $scope.users = response['DATA'];
+    //    });
+    //};
 }]);
 
 var updateATCChart = function ($scope) {
