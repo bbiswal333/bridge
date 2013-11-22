@@ -2,20 +2,13 @@
 
 /* Controllers */
 
-var dashboardBox = angular.module('dashboardBox', ['atcServices', 'googlechart']);
+var dashboardBox = angular.module('dashboardBox', ['atcServices', 'googlechart', 'ui.bootstrap']);
 
-dashboardBox.controller('Controller', ['$scope', '$http', 'ATCDataProvider', 'Config', 'EmployeeSearch', function Controller($scope, $http, ATCDataProvider, Config, EmployeeSearch) {
+dashboardBox.controller('Controller', ['$scope', '$http', 'ATCDataProvider', 'Config', function Controller($scope, $http, ATCDataProvider, Config) {
     $http.defaults.headers.common['X-Requested-With'] = undefined;
 
     ATCDataProvider.getResultForConfig(Config, $scope);
     $scope.$watch('atcData', function () { updateATCChart($scope); });
-
-    $scope.dosearch = function () {
-        if (!$scope.search)
-            $scope.search = "";
-
-        EmployeeSearch.findEmployee($scope.search, $scope);
-    };
 }]);
 
 var updateATCChart = function ($scope) {
