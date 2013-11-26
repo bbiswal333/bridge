@@ -1,1 +1,8 @@
-﻿<input type="text" ng-model="selectedUser" typeahead="employee.VORNA + ' ' + employee.NACHN + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)">
+﻿<!-- override the UI template for a found match -->
+<script id="template/typeahead/typeahead-match.html" type="text/ng-template">
+    <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+    <a bind-html-unsafe="match.model.BNAME"></a>
+    <a>{{match.model.BNAME}}</a>
+</script>
+
+<input type="text" ng-model="selectedUser" typeahead="employee.VORNA + ' ' + employee.NACHN for employee in doSearch($viewValue)">
