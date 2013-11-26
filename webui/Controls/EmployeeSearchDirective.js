@@ -14,7 +14,7 @@
         //};
         $scope.doSearch = function (username) {
             return EmployeeSearch.findEmployee(username);
-        }
+        };
     }];
 
     return {

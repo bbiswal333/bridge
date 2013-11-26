@@ -1,14 +1,1 @@
-﻿<!--<input type="text" placeholder="User Search..." name="searchField" ng-model="search" ng-change="dosearch()" id="ng-change-search" required>
-
-<table class="table table-striped">
-    <tr>
-        <th>Name</th>
-        <th>User ID</th>
-    </tr>
-    <tr ng-repeat="user in foundUser">
-        <td><a href="mailto:{{user.EMAIL}}">{{user.FIRSTNAME}} {{user.LASTNAME}}</a></td>
-        <td>{{user.USERID}}</td>
-    </tr>
-</table>-->
-
-<input type="text" ng-model="selectedUser" typeahead="state for state in doSearch($viewValue)">
+﻿<input type="text" ng-model="selectedUser" typeahead="employee.VORNA + ' ' + employee.NACHN + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)">
