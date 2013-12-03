@@ -9,7 +9,7 @@ var EmployeeSearch = function (http) {
 EmployeeSearch.prototype = Object.create(IEmployeeSearch);
 
 EmployeeSearch.prototype.findEmployee = function (username) {
-    return this.http.get('https://ifd.wdf.sap.corp/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=10&query=' + username).then(function (response) {
+    return this.http.get('http://localhost/api/employee?maxrow=10&query=' + username).then(function (response) {
         //var names = [];
 
         //for (var i = 0; i < response.data.DATA.length; i++) {

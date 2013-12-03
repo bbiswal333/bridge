@@ -1,0 +1,8 @@
+{
+  "main": "startup.html",
+  "name": "bridge",
+  "description": "bridge - your personal command center",
+  "version": "0.0.1",
+  "keywords": [ "bridge", "node-webkit" ],
+  "node-main": "server/server.js"
+}

@@ -63,7 +63,7 @@
                     window.google.load('visualization', apiConfig.version, settings);
                 };
             
-            loadScript('//www.google.com/jsapi', onLoad);
+            loadScript('https://www.google.com/jsapi', onLoad);
 
             return function (fn, context) {
                 var args = Array.prototype.slice.call(arguments, 2);

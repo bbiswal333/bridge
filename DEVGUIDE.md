@@ -22,3 +22,7 @@ clone and test locally
 * fetch the package dependencies in /server via *npm install*
 * run "node server.js" in /server 
 * launch *https://localhost* in your browser
+
+start local server
+* dowload node-webkit from https://github.com/rogerwang/node-webkit
+* launch nw with complete bridge directory "nw bridge"

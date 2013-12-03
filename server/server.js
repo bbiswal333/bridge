@@ -6,11 +6,11 @@ var	fs			= require('fs');
 var exec		= require('child_process').exec;
 
 //serve static files in webui folder as http server
-app.use('/', express.static('../webui'));
+app.use('/', express.static('webui'));
 
-//provide css api
-app.get('/api/css', function(request, response){
 
+//get certificate
+app.get('/api/certificate', function(request, response){
 
 	console.log('Running on: ' + process.platform);
 	
@@ -28,12 +28,18 @@ app.get('/api/css', function(request, response){
 	var execStatement = 'certutil -store -user -v my';
 	exec(execStatement, callback);	
 
+});
+
+
+//internal messages
+app.get('/api/css', function(request, response){
+
 	var options = {
 		hostname: 'cid.wdf.sap.corp',
 		port: 443,
 		path: '/sap/bc/devdb/MYINTERNALMESS?format=json',
 		method: 'GET',
-		pfx: fs.readFileSync('test.pfx'),
+		pfx: fs.readFileSync('server/test.pfx'),
 		//passphrase : password
 		rejectUnauthorized: false
 	};
@@ -45,8 +51,41 @@ app.get('/api/css', function(request, response){
 
 		res.on('data', function(d) {
 		//	response.send(d);
+			response.setHeader('Content-Length', d.length);
+			response.end(d);
+		});
+	});
+
+	req.end();
+
+	req.on('error', function(e) {
+		console.error(e);		
+		response.send(e);
+	});
+
+});
+
+//employees
+app.get('/api/employee', function(request, response){
 
 
+	var options = {
+		hostname: 'ifd.wdf.sap.corp',
+		port: 443,
+		path: '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + request.query.query,
+		method: 'GET',
+		pfx: fs.readFileSync('server/test.pfx'),
+		//passphrase : password
+		rejectUnauthorized: false
+	};
+
+
+	var req = https.request(options, function(res) {
+		//response.setHeader('Content-Type', 'test/html');
+			response.setHeader('Content-Type', 'text/plain');
+
+		res.on('data', function(d) {
+		//	response.send(d);
 			response.setHeader('Content-Length', d.length);
 			response.end(d);
 		});
@@ -62,4 +101,8 @@ app.get('/api/css', function(request, response){
 });
 
 
+//create local server
 http.createServer(app).listen(80);
+
+
+
