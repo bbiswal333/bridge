@@ -26,6 +26,9 @@ function callBackend(hostname, port, path, method, callback){
 	};
 
 	var data = "";
+	
+	//console.log('https://'+hostname+path);
+	
 	var req = https.request(options, function(res) {
 		res.on('data', function(chunk) { data += chunk; });
 		res.on('end', function(){ callback(data); });
@@ -57,6 +60,14 @@ app.get('/api/employee', function(request, response){
 //atc data
 app.get('/api/atc', function(request, response){
 	callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/devdb/STAT_CHK_RES_CN?query=' + request.query.query + '&count_prios=' + request.query.count_prios + '&format=json', 'GET', function(data){
+		response.setHeader('Content-Type', 'text/plain');	
+		response.send(data);
+	});
+});
+
+//jira
+app.get('/api/jira', function(request, response){
+	callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&expand=renderedFields', 'GET', function(data){
 		response.setHeader('Content-Type', 'text/plain');	
 		response.send(data);
 	});

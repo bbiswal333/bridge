@@ -1,0 +1,23 @@
+/* 2 by 2 task card layout
+  
+  ---------------
+  | Task | Task |
+  ---------------
+  | Task | Task |
+  ---------------
+
+*/
+
+
+.taskContainer {
+  width:     1000px;
+  height:    calc(1000px * 0.707);
+  font-size: 0.25em;
+}
+
+.task {
+  width:   calc(50% - 2px - 4em);
+  height:  calc(50% - 2px - 4em);
+  padding: 2em;
+  float:   left;
+}

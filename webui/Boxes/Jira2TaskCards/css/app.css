@@ -1,0 +1,151 @@
+/* app css stylesheet */
+
+html, body {
+  margin:  0;
+  padding: 0;
+  width:   100%;
+  height:  100%;
+}
+
+body {
+  font-size: 1em;
+}
+
+#settingsContainer {
+  display: inline-block;
+  margin:  1em;
+  padding: 1em;
+
+  border: 1px solid gray;
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius:    5px;
+  border-radius:         5px;
+}
+
+#settingsContainer h3 {
+  margin-top: 0;
+}
+
+#settingsContainer div.settingsField:not(:last-child) {
+  margin-bottom: 0.5em;
+}
+
+#settingsContainer div.settingsField * {
+  vertical-align: top;
+}
+
+#settingsContainer div.settingsField label {
+  display: inline-block;
+  width:   8em;
+}
+
+div#statusMessageContainer {
+  width:      50%;
+  float:      left;
+  text-align: left;
+}
+
+span#statusMessage {
+  color:       gray;
+  font-family: monospace;
+}
+
+div#buttonContainer {
+  width:      50%;
+  float:      right;
+  text-align: right;
+}
+
+input#printButton, input#fireButton {
+  width: 5em;
+}
+
+.taskContainer {
+  margin:  0 1em 0 1em;
+  padding: 0;
+  width:   1000px;
+  height:  calc(1000px * 0.707);
+}
+
+.task {
+  border:      1px dashed gray;
+  font-family: sans-serif;
+}
+
+.task:not(first-child) {
+}
+
+.task:not(last-child) {
+}
+
+.taskCanvas {
+  width:    calc(100% - 8em - 1em);
+  height:   calc(100% - 4em - 1em);
+  padding:  0.5em;
+  margin:   0px;
+  position: relative;
+
+  border:      2em solid;
+  border-left: 6em solid;
+
+  -webkit-border-top-right-radius:    2em;
+  -webkit-border-bottom-right-radius: 2em;
+  -moz-border-top-right-radius:       2em;
+  -moz-border-bottom-right-radius:    2em;
+  border-top-right-radius:            2em;
+  border-bottom-right-radius:         2em;
+}
+
+.taskColor_1 {
+  border-color: #62A3E0;
+}
+
+.taskColor_2 {
+  border-color: #A4C634;
+}
+
+.taskColor_3 {
+  border-color: #E33D63;
+}
+
+.taskColor_4 {
+  border-color: #F26A1E;
+}
+
+.taskColor_5 {
+  border-color: #F2BD0C;
+}
+
+.taskColor_6 {
+  border-color: #594667;
+}
+
+.taskColor_7 {
+  border-color: #014C8D;
+}
+
+.taskHeader {
+  font-size: 2em;
+}
+
+.taskTitle {
+  margin:        0.2em 0 0.2em 0;
+  padding:       0.25em 0 0.25em 0;
+  border-top:    2px solid gray;
+  border-bottom: 2px solid gray;
+  font-size:     4em;
+  font-weight:   bold;
+}
+
+.taskDescription {
+  font-size: 2em;
+}
+
+.taskEffort {
+  position:    absolute;
+  right:       0;
+  bottom:      0;
+  padding:     0 1em 1em 0;
+  font-weight: bold;
+}
