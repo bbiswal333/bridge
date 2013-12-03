@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<script>
+    		//launch localhost in browser when started via nw
+			var gui = require('nw.gui');
+			gui.Shell.openExternal('http://localhost:80');
+
+    		// Reference to window and tray
+    		var win = gui.Window.get();
+    		var tray;
+
+    		tray = new gui.Tray({ icon: 'icon.png' });
+    		tray.on('click', function() {
+      			win.show();
+        		this.remove();
+        		tray = null;
+      		});
+
+    		// Get the minimize event
+    		win.on('minimize', function() {
+      			this.hide();
+
+				tray = new gui.Tray({ icon: 'icon.png' });
+    			tray.on('click', function() {
+      				win.show();
+        			this.remove();
+        			tray = null;
+      			});     			       	
+    		});
+		</script>
+	</head>
+	<body>
+		..bridge server started
+
+	</body>
+</html>

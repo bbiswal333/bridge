@@ -6,7 +6,7 @@
 
 #Certificates
 *.pfx
-
+*.sso
 
 # Node 
 modules
