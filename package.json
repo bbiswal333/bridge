@@ -4,14 +4,10 @@
   "node-main": "server/server.js",
   "window": {
     "title": "Bridge Server",
-    "show": false,
+    "show": true,
     "toolbar": false,
     "width": 800,
     "height": 500,
-    "position": "center",
-    "min_width": 400,
-    "min_height": 200,
-    "max_width": 800,
-    "max_height": 600
+    "position": "center"
   }
 }

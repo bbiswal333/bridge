@@ -5,7 +5,9 @@ var app			= express();
 var	fs			= require('fs');
 var exec		= require('child_process').exec;
 
-var cert = require('./cert');
+//set user certificate and passphrase
+var certificate = fs.readFileSync('server/d050049.sso');
+var passphrase = '';
 
 //serve static files in webui folder as http server
 app.use('/', express.static('webui'));
@@ -14,8 +16,7 @@ app.use('/', express.static('webui'));
 //get certificate
 app.get('/api/certificate', function(request, response){
 
-	console.log('Running on: ' + process.platform);
-	
+	console.log('Running on: ' + process.platform);	
     //for windows use certutil to get client certificate
     //for mac os use ???
     //for linux use ???
@@ -36,16 +37,13 @@ app.get('/api/certificate', function(request, response){
 //internal messages
 app.get('/api/css', function(request, response){
 
-	console.log(cert.certificate);
-	console.log(cert.passphrase);
-
 	var options = {
 		hostname: 'cid.wdf.sap.corp',
 		port: 443,
 		path: '/sap/bc/devdb/MYINTERNALMESS?format=json',
 		method: 'GET',
-		pfx: cert.certificate,//fs.readFileSync('server/test.pfx'),
-		passphrase: cert.passphrase,//passphrase : password
+		pfx: certificate,
+		passphrase: passphrase,
 		rejectUnauthorized: false
 	};
 
@@ -79,18 +77,16 @@ app.get('/api/employee', function(request, response){
 		port: 443,
 		path: '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + request.query.query,
 		method: 'GET',
-		pfx: fs.readFileSync('server/test.pfx'),
-		//passphrase : password
+		pfx: certificate,
+		passphrase: passphrase,
 		rejectUnauthorized: false
 	};
 
 
 	var req = https.request(options, function(res) {
-		//response.setHeader('Content-Type', 'test/html');
 			response.setHeader('Content-Type', 'text/plain');
 
 		res.on('data', function(d) {
-		//	response.send(d);
 			response.setHeader('Content-Length', d.length);
 			response.end(d);
 		});
@@ -115,18 +111,16 @@ app.get('/api/atc', function(request, response){
 		port: 443,
 		path: '/sap/bc/devdb/STAT_CHK_RES_CN?query=' + request.query.query + '&count_prios=' + request.query.count_prios + '&format=json',
 		method: 'GET',
-		pfx: fs.readFileSync('server/test.pfx'),
-		//passphrase : password
+		pfx: certificate,
+		passphrase: passphrase,
 		rejectUnauthorized: false
 	};
 
 
 	var req = https.request(options, function(res) {
-		//response.setHeader('Content-Type', 'test/html');
-			response.setHeader('Content-Type', 'text/plain');
+		response.setHeader('Content-Type', 'text/plain');
 
 		res.on('data', function(d) {
-		//	response.send(d);
 			response.setHeader('Content-Length', d.length);
 			response.end(d);
 		});
