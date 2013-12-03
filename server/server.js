@@ -6,8 +6,9 @@ var	fs			= require('fs');
 var exec		= require('child_process').exec;
 
 //set user certificate and passphrase
-var certificate = fs.readFileSync('server/d050049.sso');
-var passphrase = '';
+var user_certificate = require( __dirname + '/user_certificate.json');
+var certificate = fs.readFileSync( __dirname + '/' + user_certificate.certificate_file);
+var passphrase = user_certificate.certificate_passphrase;
 
 //serve static files in webui folder as http server
 app.use('/', express.static('webui'));
