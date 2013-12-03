@@ -16,7 +16,7 @@ ATCDataProvider.prototype.getResultForConfig = function (config, scope) {
 		prio4: 0
 	};
 
-	this.http.get('http://localhost/api/atc?query=' + config.getQueryString() + '&count_prios=X&format=json').success(function(data) {
+	this.http.get('http://localhost:8000/api/atc?query=' + config.getQueryString() + '&count_prios=X&format=json').success(function(data) {
 
 		scope.atcData = {
 			prio1: data.PRIOS.PRIO1,
@@ -25,18 +25,5 @@ ATCDataProvider.prototype.getResultForConfig = function (config, scope) {
 			prio4: data.PRIOS.PRIO4
 		};
 
-		//var enumerable = Enumerable.From(data.DATA);
-		//var getNumberOfMessagesForPrio = function (prio) {
-		//    return enumerable.Where(function (item) {
-		//        return item.CHECK_MSG_PRIO == prio;
-		//    }).Count();
-		//};
-
-		//scope.atcData = {
-		//    prio1: getNumberOfMessagesForPrio(1),
-		//    prio2: getNumberOfMessagesForPrio(2),
-		//    prio3: getNumberOfMessagesForPrio(3),
-		//    prio4: getNumberOfMessagesForPrio(4)
-		//};
 	});
 };

@@ -9,14 +9,7 @@ var EmployeeSearch = function (http) {
 EmployeeSearch.prototype = Object.create(IEmployeeSearch);
 
 EmployeeSearch.prototype.findEmployee = function (username) {
-    return this.http.get('http://localhost/api/employee?maxrow=10&query=' + username).then(function (response) {
-        //var names = [];
-
-        //for (var i = 0; i < response.data.DATA.length; i++) {
-        //    names.push(response.data.DATA[i].VORNA + " " + response.data.DATA[i].NACHN);
-        //};
-        //return names;
-
+    return this.http.get('http://localhost:8000/api/employee?maxrow=10&query=' + username).then(function (response) {
         return response.data.DATA;
     });
 };

@@ -13,131 +13,57 @@ var passphrase = user_certificate.certificate_passphrase;
 //serve static files in webui folder as http server
 app.use('/', express.static('webui'));
 
-
-//get certificate
-app.get('/api/certificate', function(request, response){
-
-	console.log('Running on: ' + process.platform);	
-    //for windows use certutil to get client certificate
-    //for mac os use ???
-    //for linux use ???
-	var callback = function(err, stdout, stderr){
-		console.log(stdout);
-
-		//get serial number with issuer = CN=SSO_CA by parsing stdout
-		//create pfx file
-		//certutil -f -user -p password -exportPFX serial file.pfx
-	};
-				
-	var execStatement = 'certutil -store -user -v my';
-	exec(execStatement, callback);	
-
-});
-
-
-//internal messages
-app.get('/api/css', function(request, response){
-
+//call backends with client certificate
+function callBackend(hostname, port, path, method, callback){
 	var options = {
-		hostname: 'cid.wdf.sap.corp',
-		port: 443,
-		path: '/sap/bc/devdb/MYINTERNALMESS?format=json',
-		method: 'GET',
+		hostname: hostname,
+		port: port,
+		path: path,
+		method: method,
 		pfx: certificate,
 		passphrase: passphrase,
 		rejectUnauthorized: false
 	};
 
-
+	var data = "";
 	var req = https.request(options, function(res) {
-		//response.setHeader('Content-Type', 'test/html');
-			response.setHeader('Content-Type', 'text/plain');
-
-		res.on('data', function(d) {
-		//	response.send(d);
-			response.setHeader('Content-Length', d.length);
-			response.end(d);
-		});
+		res.on('data', function(chunk) { data += chunk; });
+		res.on('end', function(){ callback(data); });
 	});
 
 	req.end();
-
 	req.on('error', function(e) {
-		console.error(e);		
-		response.send(e);
+		console.error(e);
 	});
+}
 
+//internal messages
+app.get('/api/css', function(request, response){
+	callBackend('cid.wdf.sap.corp', 443, '/sap/bc/devdb/MYINTERNALMESS?format=json', 'GET', function(data){
+		response.setHeader('Content-Type', 'text/plain');	
+		response.send(data);
+	});
 });
 
 //employees
 app.get('/api/employee', function(request, response){
-
-
-	var options = {
-		hostname: 'ifd.wdf.sap.corp',
-		port: 443,
-		path: '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + request.query.query,
-		method: 'GET',
-		pfx: certificate,
-		passphrase: passphrase,
-		rejectUnauthorized: false
-	};
-
-
-	var req = https.request(options, function(res) {
-			response.setHeader('Content-Type', 'text/plain');
-
-		res.on('data', function(d) {
-			response.setHeader('Content-Length', d.length);
-			response.end(d);
-		});
+	callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + request.query.query, 'GET', function(data){
+		response.setHeader('Content-Type', 'text/plain');	
+		response.send(data);
 	});
-
-	req.end();
-
-	req.on('error', function(e) {
-		console.error(e);		
-		response.send(e);
-	});
-
 });
 
 
 //atc data
 app.get('/api/atc', function(request, response){
-
-
-	var options = {
-		hostname: 'ifd.wdf.sap.corp',
-		port: 443,
-		path: '/sap/bc/devdb/STAT_CHK_RES_CN?query=' + request.query.query + '&count_prios=' + request.query.count_prios + '&format=json',
-		method: 'GET',
-		pfx: certificate,
-		passphrase: passphrase,
-		rejectUnauthorized: false
-	};
-
-
-	var req = https.request(options, function(res) {
-		response.setHeader('Content-Type', 'text/plain');
-
-		res.on('data', function(d) {
-			response.setHeader('Content-Length', d.length);
-			response.end(d);
-		});
+	callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/devdb/STAT_CHK_RES_CN?query=' + request.query.query + '&count_prios=' + request.query.count_prios + '&format=json', 'GET', function(data){
+		response.setHeader('Content-Type', 'text/plain');	
+		response.send(data);
 	});
-
-	req.end();
-
-	req.on('error', function(e) {
-		console.error(e);		
-		response.send(e);
-	});
-
 });
 
 //create local server
-http.createServer(app).listen(80);
+http.createServer(app).listen(8000);
 
 
 
