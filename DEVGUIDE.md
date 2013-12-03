@@ -19,6 +19,8 @@ ssh setup
 clone repository
 * clone repository
 * install node.js from http://nodejs.org/
+* execute set http_proxy=http://proxy:8080 in cmd
+* execute set https_proxy=http://proxy:8080 in cmd
 * fetch the package dependencies in /server via *npm install*
 
 get certificate
