@@ -24,7 +24,7 @@ clone repository
 get certificate
 * export certificate via https://wiki.wdf.sap.corp/wiki/download/attachments/1065226200/SSOCertificateExportWizard.hta
 * download .sso file to server directory
-* edit cert.js and set filename and passphrase
+* edit server.js and set filename and passphrase
 
 start local server
 * dowload node-webkit from https://github.com/rogerwang/node-webkit
