@@ -32,7 +32,6 @@ get certificate
 }
 
 start local server
-* dowload node-webkit from https://github.com/rogerwang/node-webkit
 * launch nw with complete bridge directory "nw ../" from nw-os directory
 
 
