@@ -18,6 +18,7 @@ Developer Guide
 ## setup local environment
 * clone bridge repository via `git clone`
 * install `node.js` from [here](http://nodejs.org/)
+* install `node-webkit`from [here](https://github.com/rogerwang/node-webkit)
 * run `set http_proxy=http://proxy:8080` and `set https_proxy=http://proxy:8080` in command line
 * fetch the node.js package dependencies in `/server` via `npm install`
 * export certificate on a windows pc/ wts from [here](https://wiki.wdf.sap.corp/wiki/download/attachments/1065226200/SSOCertificateExportWizard.hta)
@@ -32,8 +33,6 @@ Developer Guide
 ```
 
 ## launch local bridge server
-* on windows goto `/nw-windows` and execute `nw ../`
-* on mac ??
-* on linux ??
+* execute `nw ./` for bridge directory
 
 
