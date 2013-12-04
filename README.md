@@ -15,17 +15,14 @@ Developer Guide
   * run `ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys
   * upload the public key to your github account [here](https://github.wdf.sap.corp/settings/ssh)
 
-clone repository
-* clone repository
-* install node.js from http://nodejs.org/
-* execute set http_proxy=http://proxy:8080 in cmd
-* execute set https_proxy=http://proxy:8080 in cmd
-* fetch the package dependencies in /server via *npm install*
-
-get certificate
-* export certificate via https://wiki.wdf.sap.corp/wiki/download/attachments/1065226200/SSOCertificateExportWizard.hta
-* download .sso file to server directory
-* create certificate.json in server directory and set filename and passphrase
+## setup local environment
+* clone bridge repository via `git clone`
+* install `node.js` from [here](http://nodejs.org/)
+* run `set http_proxy=http://proxy:8080` and `set https_proxy=http://proxy:8080` in command line
+* fetch the node.js package dependencies in `/server` via `npm install`
+* export certificate on a windows pc/ wts from [here](https://wiki.wdf.sap.corp/wiki/download/attachments/1065226200/SSOCertificateExportWizard.hta)
+* download .sso file to `/server` directory
+* create `certificate.json` in `/server` directory and set the .sso filename and passphrase entered when exporting the certificate
 
 ```json
 	{
@@ -34,7 +31,9 @@ get certificate
 	}
 ```
 
-start local server
-* launch nw with complete bridge directory "nw ../" from nw-os directory
+## launch local bridge server
+* on windows goto `/nw-windows` and execute "nw ../"
+* on mac ??
+* on linux ??
 
 
