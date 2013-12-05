@@ -3,27 +3,30 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />-->
         <link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link href="custom.css" rel="stylesheet" />
-  		  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+
+  		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
-  		  <script src="https://www.google.com/jsapi"></script>
-		    <script src="libs/ng-google-chart.js"></script>
-  		  <script src="libs/linq.min.js"></script>
+  		<script src="https://www.google.com/jsapi"></script>
+		<script src="libs/ng-google-chart.js"></script>
+  		<script src="libs/linq.min.js"></script>
         <script src="libs/uiBootstrap.js"></script>
   			
-  		  <script src="Boxes/ATC/Config.js"></script>
-  		  <script src="Boxes/ATC/ATCDataProvider.js"></script>
-  		  <script src="services.js"></script>
-		    <script src="controller.js"></script>
+  		<script src="Boxes/ATC/Config.js"></script>
+  		<script src="Boxes/ATC/ATCDataProvider.js"></script>
+  		<script src="services.js"></script>
+		<script src="controller.js"></script>
         <script src="Controls/EmployeeSearchDirective.js"></script>
         <script src="EmployeeSearch.js"></script>
+        <script src="Controls/BoxDirective.js"></script>
+        <script src="Boxes/TestBox/TestBoxDirective.js"></script>
         
 		<title>Bridge</title>
 
 	</head>
 	<body ng-controller="Controller">
+
     <div class="header">
       <div class="headertext">Bridge</div>
     </div>
@@ -31,6 +34,7 @@
       <div class="mainPageBackground">
         <div class="content">
           <employee-search></employee-search>
+          <box content="testBox"></box>
           <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
 		        <div google-chart chart="chart" style="{{chart.cssStyle}}"></div>
             <div><center><img src="screenshot.png" /></center></div>
@@ -38,6 +42,6 @@
         </div>
 
       </div>
-    </div>
+    </div>  
 	</body>
 </html>
