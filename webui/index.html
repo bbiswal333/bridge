@@ -21,27 +21,28 @@
         <script src="EmployeeSearch.js"></script>
         <script src="Controls/BoxDirective.js"></script>
         <script src="Boxes/TestBox/TestBoxDirective.js"></script>
+        <script src="Boxes/ATC/ATCDirective.js"></script>
         
 		<title>Bridge</title>
 
 	</head>
 	<body ng-controller="Controller">
 
-    <div class="header">
-      <div class="headertext">Bridge</div>
-    </div>
-    <div class="mainPageBackgroundGradient">
-      <div class="mainPageBackground">
-        <div class="content">
-          <employee-search></employee-search>
-          <box content="testBox"></box>
-          <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
-		        <div google-chart chart="chart" style="{{chart.cssStyle}}"></div>
-            <div><center><img src="screenshot.png" /></center></div>
-          <br />
+        <div class="header">
+          <div class="headertext">Bridge</div>
         </div>
-
-      </div>
-    </div>  
+        <div class="mainPageBackgroundGradient">
+          <div class="mainPageBackground">
+            <div class="content">
+                <employee-search></employee-search>
+                <box content="testBox"></box>
+                <box content="atcBox"></box>
+                <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
+		        
+                <div><center><img src="screenshot.png" /></center></div>
+                <br />
+            </div>
+          </div>
+        </div>  
 	</body>
 </html>
