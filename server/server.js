@@ -4,6 +4,7 @@ var http		= require('http');
 var app			= express();
 var	fs			= require('fs');
 var exec		= require('child_process').exec;
+var path		= require("path");
 
 //set user certificate and passphrase
 var user_certificate = require( __dirname + '/user_certificate.json');
@@ -11,7 +12,8 @@ var certificate = fs.readFileSync( __dirname + '/' + user_certificate.certificat
 var passphrase = user_certificate.certificate_passphrase;
 
 //serve static files in webui folder as http server
-app.use('/', express.static('webui'));
+var webui_path = path.join(__dirname, '../', '/webui');
+app.use('/', express.static(webui_path));
 
 //call backends with client certificate
 function callBackend(hostname, port, path, method, callback){
