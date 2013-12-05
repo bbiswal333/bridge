@@ -1,8 +1,30 @@
 ﻿dashboardBox.directive('atcbox', function () {
 
-    var directiveController = ['$scope', 'ATCDataProvider', 'Config', function ($scope, ATCDataProvider, Config) {
+    var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', function ($scope, $modal, ATCDataProvider, Config) {
         ATCDataProvider.getResultForConfig(Config, $scope);
         $scope.$watch('atcData', function () { updateATCChart($scope); });
+
+        $scope.items = ['item1', 'item2', 'item3'];
+
+        $scope.detailsClick = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'Boxes/ATC/ATCDetails.html',
+                controller: ModalInstanceCtrl,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                // ok pressed - modal.close()
+                $scope.selected = selectedItem;
+            }, function () {
+                // cancel pressed - modal.dismiss
+                var a = 1;
+            });
+        };
     }];
 
     return {
@@ -12,12 +34,28 @@
     };
 });
 
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+    $scope.items = items;
+    $scope.selected = {
+        item: $scope.items[0]
+    };
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.selected.item);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
 
 var updateATCChart = function ($scope) {
     var chart1 = {};
     chart1.type = "PieChart";
     chart1.displayed = true;
-    chart1.cssStyle = "height:300px; width:300px;";
+    chart1.cssStyle = "height:200px; width:300px;";
     chart1.data = {
         "cols": [
             { id: "month", label: "Month", type: "string" },
