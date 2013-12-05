@@ -3,25 +3,33 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
-        <link href="custom.css" rel="stylesheet" />
+        <link href="css/bootstrap.css" rel="stylesheet" />
+        <link href="css/custom.css" rel="stylesheet" />
 
+        <!-- bootstrapped sources -->
   		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
   		<script src="https://www.google.com/jsapi"></script>
-		<script src="libs/ng-google-chart.js"></script>
-  		<script src="libs/linq.min.js"></script>
-        <script src="libs/uiBootstrap.js"></script>
+		    
+        <!-- packed libs -->
+        <script src="lib/ng-google-chart.js"></script>
+  		  <script src="lib/linq.min.js"></script>
+        <script src="lib/uiBootstrap.js"></script>
   			
-  		<script src="Boxes/ATC/Config.js"></script>
-  		<script src="Boxes/ATC/ATCDataProvider.js"></script>
-  		<script src="services.js"></script>
-		<script src="controller.js"></script>
-        <script src="Controls/EmployeeSearchDirective.js"></script>
-        <script src="EmployeeSearch.js"></script>
-        <script src="Controls/BoxDirective.js"></script>
-        <script src="Boxes/TestBox/TestBoxDirective.js"></script>
-        <script src="Boxes/ATC/ATCDirective.js"></script>
+        <!-- own libs -->
+        <script src="js/services.js"></script>
+        <script src="js/controller.js"></script>
+        <script src="js/EmployeeSearch.js"></script>
+
+        <!-- controls -->
+        <script src="controls/EmployeeSearchDirective.js"></script>
+        <script src="controls/BoxDirective.js"></script>
+  			
+        <!-- boxes -->
+        <script src="boxes/ATC/Config.js"></script>
+  	   	<script src="boxes/ATC/ATCDataProvider.js"></script>
+        <script src="boxes/ATC/ATCDirective.js"></script>
+        <script src="boxes/TestBox/TestBoxDirective.js"></script>
         
 		<title>Bridge</title>
 
