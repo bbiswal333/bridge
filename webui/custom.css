@@ -1,4 +1,81 @@
-﻿.customactive {
+﻿html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 1em;
+    line-height: 1.4;
+	font-family: 'Open Sans', sans-serif;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.customactive {
         background-color: #428BCA;
         color: #ffffff;
+}
+
+.header {
+    color: #333333;
+    text-shadow: 0 1px #ffffff;
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    height: 35px;
+    line-height: 35px;
+    float: left;
+    background: rgba(242,242,242, 0.96);
+    font-size: 20px;
+    border-top: 5px solid #0078B9;
+    border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.headertext
+{
+	padding-left: 10px;
+}
+
+.mainPageBackgroundGradient {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	right:0;
+	background-color: white;
+    background-image: -moz-linear-gradient(top,rgba(255,255,255,0.3) 0,rgba(0,124,192,0.2) 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgb(255,255,255)),color-stop(100%,rgb(0,124,192)));
+    background-image: -webkit-linear-gradient(top,rgb(255,255,255) 0,rgb(0,124,192) 100%);
+    background-image: -ms-linear-gradient(top,rgba(255,255,255,0.3) 0,rgba(0,124,192,0.2) 100%);
+    background-image: linear-gradient(to bottom,rgba(255,255,255,0.3) 0,rgba(0,124,192,0.2) 100%);
+    background-image: -o-linear-gradient(top,rgba(255,255,255,0.3) 0,rgba(0,124,192,0.2) 100%);
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3;
+  	-moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+ 	 -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  	transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  	-webkit-tranform: translateZ(0);
+    z-index:5;
+}
+
+.mainPageBackground {
+    width: 100%;
+    height: 100%;
+    background-image: url('stripes.png');
+    background-position: center bottom;
+    background-attachment: fixed;
+    background-repeat: repeat;
+    z-index: 10;
+    position: absolute;
+    overflow-y: scroll;
+    overflow-x: hidden;    
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+    position: relative;
+    top: 120px;
 }
