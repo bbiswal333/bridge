@@ -1,4 +1,4 @@
-Developer Guide
+﻿Developer Guide
 ===============
 
 ## git installation
@@ -18,12 +18,14 @@ Developer Guide
 ## setup local environment
 * clone bridge repository via `git clone`
 * install `node.js` from [here](http://nodejs.org/)
-* install `node-webkit`from [here](https://github.com/rogerwang/node-webkit)
+* install `node-webkit`from [here](https://github.com/rogerwang/node-webkit) - take compiled binaries
+* Add the path to your web-kit folder to the system environment variable "Path" - make sure it's the System variable, not the user variable
+* Open the command line and navigate to the /server path of our repository
 * run `set http_proxy=http://proxy:8080` and `set https_proxy=http://proxy:8080` in command line
 * fetch the node.js package dependencies in `/server` via `npm install`
 * export certificate on a windows pc/ wts from [here](https://wiki.wdf.sap.corp/wiki/download/attachments/1065226200/SSOCertificateExportWizard.hta)
 * download .sso file to `/server` directory
-* create `certificate.json` in `/server` directory and set the .sso filename and passphrase
+* create `user_certificate.json` in `/server` directory and set the .sso filename and passphrase
 
 ```json
 	{
