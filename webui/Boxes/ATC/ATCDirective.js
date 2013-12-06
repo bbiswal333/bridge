@@ -55,7 +55,7 @@ var updateATCChart = function ($scope) {
     var chart1 = {};
     chart1.type = "PieChart";
     chart1.displayed = true;
-    chart1.cssStyle = "height:200px; width:300px;";
+    chart1.cssStyle = "height:150px; width:200px;";
     chart1.data = {
         "cols": [
             { id: "month", label: "Month", type: "string" },

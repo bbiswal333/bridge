@@ -10,12 +10,12 @@
 </script>
 
 <script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
-    <ul class="typeahead dropdown-menu" ng-style="{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}">
-	      <li ng-repeat="match in matches" ng-class="{customactive: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" style="line-height: 18px; margin-top: 4px; padding: 0px 3px 0px 3px">
-	          <typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></typeahead-match>
+    <ul class="typeahead dropdown-menu" style="position:absolute;z-index:101" ng-style="{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}">
+	      <li ng-repeat="match in matches" ng-class="{customactive: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" style="line-height: 18px; margin-top: 4px; padding: 0px 3px 0px 3px;z-index:101;border-color: white">
+	          <typeahead-match index="$index" match="match" query="query" template-url="templateUrl" style="z-index:101"></typeahead-match>
 	      </li>
 	  </ul>
 </script>
 
 
-<input type="text" ng-model="selectedUser" typeahead-template-url="itemTemplate.html" typeahead="employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />
+<input class="form-control" type="text" ng-model="selectedUser" typeahead-template-url="itemTemplate.html" typeahead="employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />

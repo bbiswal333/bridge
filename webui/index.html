@@ -3,8 +3,9 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <link href="css/bootstrap.css" rel="stylesheet" />
         <link href="css/custom.css" rel="stylesheet" />
+        <link href="css/bootstrap.css" rel="stylesheet" />
+
 
         <!-- bootstrapped sources -->
   		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
@@ -53,13 +54,38 @@
         <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">
             <div class="content">
-                <employee-search></employee-search>
-                <box content="atcBox"></box>
-                <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
-                <a href="#" onClick="httpGet('http://localhost:9000/api/system')">Open File</a>
-		        <box content="testBox"></box>
-                <div><center><img src="screenshot.png" /></center></div>
-                <br />
+
+
+                <div class="row">
+                  <div class="col-md-2 box"><img src="img/address_book.png" height="175px"></div>
+                  <div class="col-md-4 box"><img src="img/internal_messenges.png" height="175px"></div>
+                  <div class="col-md-2 box"><img src="img/notepad.png" height="175px"></div>
+                  <div class="col-md-2 box"><img src="img/portal.png" height="175px"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 box"><box content="atcBox"></box></div>
+                  <div class="col-md-4 box"><employee-search></employee-search></div>
+                  <div class="col-md-2 box">
+                    <a href="#" onClick="httpGet('http://localhost:9000/api/system')">Open File</a><br />
+                    <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-2 box"><img src="img/wiki.png" height="175px"></div>
+                  <div class="col-md-2 box"><img src="img/lunch_menu.png" height="175px"></div>
+                  <div class="col-md-4 box"><img src="img/cats.png" height="175px"></div>
+                  <div class="col-md-2 box"><img src="img/ozarcs.png" height="175px"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 box"><img src="img/test_runner.png" height="175px"></div>
+                  <div class="col-md-2 box"><img src="img/customer_messenges.png" height="175px"></div>
+                  <div class="col-md-2 box"><box content="testBox"></box></div>
+                  <div class="col-md-2 box"><img src="img/link_list.png" height="175px"></div>
+                </div>
+
             </div>
           </div>
         </div>  
