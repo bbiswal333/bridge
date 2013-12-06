@@ -34,6 +34,17 @@
 		<title>Bridge</title>
 
 	</head>
+  <script>
+    function httpGet(theUrl)
+    {
+      var xmlHttp = null;
+
+      xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "GET", theUrl, false );
+      xmlHttp.send( null );
+      return xmlHttp.responseText;
+    }
+  </script>
 	<body ng-controller="Controller">
 
         <div class="header">
@@ -45,6 +56,7 @@
                 <employee-search></employee-search>
                 <box content="atcBox"></box>
                 <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
+                <a href="#" onClick="httpGet('http://localhost:9000/api/system')">Open File</a>
 		        <box content="testBox"></box>
                 <div><center><img src="screenshot.png" /></center></div>
                 <br />
