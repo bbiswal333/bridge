@@ -17,7 +17,6 @@ body {
 .box {
     height:180px;
     position: absolute;
-    z-index: 10;
 }
 
 .customactive {
