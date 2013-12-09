@@ -14,9 +14,24 @@ body {
     margin-right: auto;
 }
 
+.row{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
 .box {
     height:180px;
-    position: absolute;
+}
+
+.innerbox {
+    margin: 5px;
+    height: 170px;
+    width: 100%;
+    border: 2px solid rgba(242,242,242, 0.96);
+    background-color: white;
+    z-index: 200;
 }
 
 .customactive {
@@ -82,5 +97,5 @@ body {
     margin-right: auto;
     max-width: 1200px;
     position: relative;
-    top: 50px;
+    top: 100px;
 }
