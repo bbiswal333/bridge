@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="dashboardBox">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <link href="../../lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
+        <link href="../../css/custom.css" rel="stylesheet" />
+
+
+        <!-- bootstrapped sources -->
+  		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
+  		<script src="https://www.google.com/jsapi"></script>
+		    
+        <!-- packed libs -->
+        <script src="../../lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
+  		<script src="../../lib/linq-2_2_0_2/linq.min.js"></script>
+        <script src="../../lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
+  			
+        <!-- own libs -->
+        <script src="../../js/services.js"></script>
+        <script src="../../js/controller.js"></script>
+        <script src="../../js/EmployeeSearch.js"></script>
+
+        <!-- controls -->
+        <script src="../../controls/EmployeeSearchDirective.js"></script>
+        <script src="../../controls/BoxDirective.js"></script>
+  			
+        <!-- boxes -->
+        <script src="JiraDataProvider.js"></script>
+        <script src="JiraBoxDirective.js"></script>
+        
+		<title>Bridge - Jira Details</title>
+
+	</head>
+  <script>
+    function httpGet(theUrl)
+    {
+      var xmlHttp = null;
+
+      xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "GET", theUrl, false );
+      xmlHttp.send( null );
+      return xmlHttp.responseText;
+    }
+  </script>
+	<body ng-controller="Controller">
+
+        <div class="header">
+          <div class="headertext">Bridge - Jira Details</div>
+        </div>
+        <div class="mainPageBackgroundGradient">
+          <div class="mainPageBackground">
+            <div class="content details">
+
+				<span>Jira Issues</span>
+
+				<table ng-table class="table">
+				    <tr ng-repeat="issue in jiraData">   
+				    	<td data-title="'Key'">{{issue.key}}"</td>    
+				        <td data-title="'Summary'">{{issue.summary}}</td>
+				        <td data-title="'Effort'">{{issue.effortEstimate}}</td>
+				        <td data-title="'Status'">{{issue.status}}</td>
+				    </tr>
+				</table>
+
+            </div>
+          </div>
+        </div>  
+	</body>
+</html>
