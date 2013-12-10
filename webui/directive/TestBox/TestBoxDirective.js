@@ -1,4 +1,4 @@
-﻿dashboardBox.directive('testbox', function () {
+﻿bridgeApp.directive('testbox', function () {
 
     var directiveController = ['$scope', function ($scope) {
 
@@ -6,7 +6,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'Boxes/TestBox/TestBoxDirective.html',
+        templateUrl: 'directive/TestBox/TestBoxDirective.html',
         controller: directiveController
     };
 });

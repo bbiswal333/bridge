@@ -1,14 +1,14 @@
-var IJiraDataProvider = {
+var IJiraBox = {
         getIssuesforQuery : function(query) { throw "Not Implemented"; },
 };
 
-var JiraDataProvider = function(http){
+var JiraBox = function(http){
     this.http = http;
 };
 
-JiraDataProvider.prototype = Object.create(IJiraDataProvider);
+JiraBox.prototype = Object.create(IJiraBox);
 
-JiraDataProvider.prototype.getIssuesforQuery = function (query, scope) {
+JiraBox.prototype.getIssuesforQuery = function (query, scope) {
     this.http.get('http://localhost:8000/api/jira?jql=' + encodeURI(query)).success(function(data, status, headers, config) {
         scope.jiraData = [];
 
@@ -63,3 +63,13 @@ JiraDataProvider.prototype.getIssuesforQuery = function (query, scope) {
         scope.jiraData = [];
         });
 };
+
+bridgeServices.factory('JiraBox', ['$http',
+   function ($http) {
+       return new JiraBox($http);
+   }]);
+
+bridgeServices.factory('JiraQuery', [
+    function (){
+        return 'id in projectRankedIssues(I2MASEDEV) AND fixVersion in (2013_S24) order by "Project Rank" ASC, Key ASC';
+    }]);
