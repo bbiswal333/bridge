@@ -5,21 +5,20 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
 	$location.path('/overview');
 }]);
 
-bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', function Controller($scope, $http, $route) {
-	$scope.overview = true;
+bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
+	this.$routeParams = $routeParams;
 }]);
 
-bridgeApp.controller('bridgeControllerDetail', ['$scope', '$http', '$route', function Controller($scope, $http, $route) {
-	$scope.back = function() {
-		$location.path('/overview');
-	};
+bridgeApp.controller('bridgeControllerDetail', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
+	//todo: pass parameters to detail screen
+	//todo: stay on page at refresh
 }]);
 
 
 bridgeApp.config(function($routeProvider) {
 
 	$routeProvider.when("/overview", {templateUrl:'view/overview.html', controller:'bridgeControllerOverview'});
-	$routeProvider.when("/detail", {templateUrl:'view/detail.html', controller:'bridgeControllerDetail'});
+	$routeProvider.when("/detail/:boxname", {templateUrl:'view/detail.html', controller:'bridgeControllerDetail', controllerAs:'boxname'});
 
 });
 
