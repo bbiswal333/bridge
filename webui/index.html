@@ -1,91 +1,50 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="dashboardBox">
+<html lang="en" ng-app="bridgeApp">
 	<head>
+    <!-- browser compatibility  -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <link href="css/custom.css" rel="stylesheet" />
-        <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
+    <!-- external css -->
+    <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
 
+    <!-- css -->
+    <link href="css/bridge.css" rel="stylesheet" />
 
-        <!-- bootstrapped sources -->
-  		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
-  		<script src="https://www.google.com/jsapi"></script>
-		    
-        <!-- packed libs -->
-        <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
-  		<script src="lib/linq-2_2_0_2/linq.min.js"></script>
-        <script src="lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
-  			
-        <!-- own libs -->
-        <script src="js/services.js"></script>
-        <script src="js/controller.js"></script>
-        <script src="js/EmployeeSearch.js"></script>
+    <!-- external bootstrapped libs -->
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-resource.js"></script>
+	  <script src="https://www.google.com/jsapi"></script>
+    
+    <!-- external packed libs -->
+    <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
+	  <script src="lib/linq-2_2_0_2/linq.min.js"></script>
+    <script src="lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
+		
+    <!-- controller -->
+    <script src="controller/bridgeController.js"></script>
 
-        <!-- controls -->
-        <script src="controls/EmployeeSearchDirective.js"></script>
-        <script src="controls/BoxDirective.js"></script>
-  			
-        <!-- boxes -->
-        <script src="boxes/ATC/Config.js"></script>
-  	   	<script src="boxes/ATC/ATCDataProvider.js"></script>
-        <script src="boxes/ATC/ATCDirective.js"></script>
-        <script src="boxes/TestBox/TestBoxDirective.js"></script>
-        
+    <!-- directives -->
+    <script src="directive/EmployeeSearch/EmployeeSearch.js"></script>
+    <script src="directive/EmployeeSearch/EmployeeSearchDirective.js"></script>
+    <script src="directive/Box/BoxDirective.js"></script>
+    <script src="directive/TestBox/TestBoxDirective.js"></script>
+   	<script src="directive/ATCBox/ATCBox.js"></script>
+    <script src="directive/ATCBox/ATCBoxDirective.js"></script>
+    <script src="directive/JiraBox/JiraBox.js"></script>
+    <script src="directive/JiraBox/JiraBoxDirective.js"></script>
+    
 		<title>Bridge</title>
 
 	</head>
-  <script>
-    function httpGet(theUrl)
-    {
-      var xmlHttp = null;
-
-      xmlHttp = new XMLHttpRequest();
-      xmlHttp.open( "GET", theUrl, false );
-      xmlHttp.send( null );
-      return xmlHttp.responseText;
-    }
-  </script>
-	<body ng-controller="Controller">
+	<body ng-controller="bridgeController">
 
         <div class="header">
           <div class="headertext">Bridge</div>
         </div>
         <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">
-            <div class="content">
-
-
-                <div class="row">
-                  <div class="col-md-2 box"><img src="img/address_book.png" height="175px"></div>
-                  <div class="col-md-4 box"><img src="img/internal_messenges.png" height="175px"></div>
-                  <div class="col-md-2 box"><img src="img/notepad.png" height="175px"></div>
-                  <div class="col-md-2 box"><img src="img/portal.png" height="175px"></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4 box"><box content="atcBox"></box></div>
-                  <div class="col-md-4 box"><employee-search></employee-search></div>
-                  <div class="col-md-2 box">
-                    <a href="#" onClick="httpGet('http://localhost:9000/api/system')">Open File</a><br />
-                    <a href="http://localhost:8000/Boxes/Jira2TaskCards/index.html">Jira 2 Task Cards</a>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-2 box"><img src="img/wiki.png" height="175px"></div>
-                  <div class="col-md-2 box"><img src="img/lunch_menu.png" height="175px"></div>
-                  <div class="col-md-4 box"><img src="img/cats.png" height="175px"></div>
-                  <div class="col-md-2 box"><img src="img/ozarcs.png" height="175px"></div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-4 box"><img src="img/test_runner.png" height="175px"></div>
-                  <div class="col-md-2 box"><img src="img/customer_messenges.png" height="175px"></div>
-                  <div class="col-md-2 box"><box content="testBox"></box></div>
-                  <div class="col-md-2 box"><img src="img/link_list.png" height="175px"></div>
-                </div>
-
+            <div ng-view class="content">
             </div>
           </div>
         </div>  

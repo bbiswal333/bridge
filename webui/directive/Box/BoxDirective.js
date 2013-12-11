@@ -1,12 +1,10 @@
-﻿dashboardBox.directive('box', function ($compile) {
+﻿bridgeApp.directive('box', function ($compile) {
 
-    var directiveController = ['$scope', function ($scope) {
-
-    }];
+    var directiveController = ['$scope', function ($scope) {}];
 
     return {
         restrict: 'E',
-        templateUrl: 'Controls/BoxDirective.html',
+        templateUrl: 'directive/Box/BoxDirective.html',
         controller: directiveController,
         link: function ($originalScope, $element, $attrs, $modelCtrl) {
             var newElement = $compile("<" + $attrs.content + "/>")($originalScope);

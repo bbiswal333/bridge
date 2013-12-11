@@ -1,0 +1,7 @@
+﻿<span>Jira Issues</span>
+<a href="#/detail/jira">Show Details</a>
+<table ng-table class="table">
+    <tr ng-repeat="issue in jiraData">       
+        <td data-title="'Description'"><a href="https://sapjira.wdf.sap.corp/browse/{{issue.key}}">{{issue.summary}} / {{issue.status}}</a></td>
+    </tr>
+</table>

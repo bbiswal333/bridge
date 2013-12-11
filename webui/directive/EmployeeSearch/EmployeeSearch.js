@@ -13,3 +13,8 @@ EmployeeSearch.prototype.findEmployee = function (username) {
         return response.data.DATA;
     });
 };
+
+bridgeServices.factory('EmployeeSearch', ['$http',
+   function ($http) {
+       return new EmployeeSearch($http);       
+   }]);

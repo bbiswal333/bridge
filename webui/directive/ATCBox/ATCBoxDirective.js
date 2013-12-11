@@ -1,4 +1,4 @@
-﻿dashboardBox.directive('atcbox', function () {
+﻿bridgeApp.directive('atcbox', function () {
 
     var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', function ($scope, $modal, ATCDataProvider, Config) {
         ATCDataProvider.getResultForConfig(Config, $scope);
@@ -8,7 +8,7 @@
 
         $scope.detailsClick = function () {
             var modalInstance = $modal.open({
-                templateUrl: 'Boxes/ATC/ATCDetails.html',
+                templateUrl: 'directive/ATCBox/ATCBoxDetails.html',
                 controller: ModalInstanceCtrl,
                 resolve: {
                     items: function () {
@@ -29,7 +29,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'Boxes/ATC/ATCDirective.html',
+        templateUrl: 'directive/ATCBox/ATCBoxDirective.html',
         controller: directiveController
     };
 });
