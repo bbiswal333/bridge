@@ -8,7 +8,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'directive/JiraBox/JiraBoxDirective.html',
+        templateUrl: 'app/jiraBox/JiraBoxDirective.html',
         controller: directiveController
     };
 });

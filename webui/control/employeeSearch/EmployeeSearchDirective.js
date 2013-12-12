@@ -10,7 +10,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'directive/EmployeeSearch/EmployeeSearchDirective.html',
+        templateUrl: 'control/employeeSearch/EmployeeSearchDirective.html',
         controller: directiveController
     };
 });

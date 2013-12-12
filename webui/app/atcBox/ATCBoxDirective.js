@@ -3,53 +3,14 @@
     var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', function ($scope, $modal, ATCDataProvider, Config) {
         ATCDataProvider.getResultForConfig(Config, $scope);
         $scope.$watch('atcData', function () { updateATCChart($scope); });
-
-        $scope.items = ['item1', 'item2', 'item3'];
-
-        $scope.detailsClick = function () {
-            var modalInstance = $modal.open({
-                templateUrl: 'directive/ATCBox/ATCBoxDetails.html',
-                controller: ModalInstanceCtrl,
-                resolve: {
-                    items: function () {
-                        return $scope.items;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (selectedItem) {
-                // ok pressed - modal.close()
-                $scope.selected = selectedItem;
-            }, function () {
-                // cancel pressed - modal.dismiss
-                var a = 1;
-            });
-        };
     }];
 
     return {
         restrict: 'E',
-        templateUrl: 'directive/ATCBox/ATCBoxDirective.html',
+        templateUrl: 'app/atcBox/ATCBoxDirective.html',
         controller: directiveController
     };
 });
-
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
-
-    $scope.items = items;
-    $scope.selected = {
-        item: $scope.items[0]
-    };
-
-    $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-};
-
 
 var updateATCChart = function ($scope) {
     var chart1 = {};

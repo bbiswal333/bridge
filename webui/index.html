@@ -1,46 +1,51 @@
 <!DOCTYPE HTML>
 <html lang="en" ng-app="bridgeApp">
 	<head>
-    <!-- browser compatibility  -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- browser compatibility  -->
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- external css -->
-    <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
+        <!-- external css -->
+        <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
 
-    <!-- css -->
-    <link href="css/bridge.css" rel="stylesheet" />
+        <!-- css -->
+        <link href="css/bridge.css" rel="stylesheet" />
 
-    <!-- external bootstrapped libs -->
-	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-resource.js"></script>
-	  <script src="https://www.google.com/jsapi"></script>
+        <!-- external bootstrapped libs -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-resource.js"></script>
+	    <script src="https://www.google.com/jsapi"></script>
     
-    <!-- external packed libs -->
-    <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
-	  <script src="lib/linq-2_2_0_2/linq.min.js"></script>
-    <script src="lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
+        <!-- external packed libs -->
+        <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
+	    <script src="lib/linq-2_2_0_2/linq.min.js"></script>
+        <script src="lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
 		
-    <!-- controller -->
-    <script src="controller/bridgeController.js"></script>
+        <!-- controller -->
+        <script src="controller/bridgeController.js"></script>
+        
+        <!-- control -->
+        <script src="control/box/BoxDirective.js"></script>
+        <script src="control/employeeSearch/EmployeeSearch.js"></script>
+        <script src="control/employeeSearch/EmployeeSearchDirective.js"></script>
 
-    <!-- directives -->
-    <script src="directive/EmployeeSearch/EmployeeSearch.js"></script>
-    <script src="directive/EmployeeSearch/EmployeeSearchDirective.js"></script>
-    <script src="directive/Box/BoxDirective.js"></script>
-    <script src="directive/TestBox/TestBoxDirective.js"></script>
-   	<script src="directive/ATCBox/ATCBox.js"></script>
-    <script src="directive/ATCBox/ATCBoxDirective.js"></script>
-    <script src="directive/JiraBox/JiraBox.js"></script>
-    <script src="directive/JiraBox/JiraBoxDirective.js"></script>
+        <!-- app -->
+        <script src="app/testBox/TestBoxDirective.js"></script>
+
+        <script src="app/atcBox/ATCBoxDetailsController.js"></script>
+   	    <script src="app/atcBox/ATCBox.js"></script>
+        <script src="app/atcBox/ATCBoxDirective.js"></script>
+
+        <script src="app/jiraBox/JiraBox.js"></script>
+        <script src="app/jiraBox/JiraBoxDirective.js"></script>
     
-		<title>Bridge</title>
+	    <title>Bridge</title>
 
 	</head>
 	<body ng-controller="bridgeController">
 
         <div class="header">
-          <div class="headertext">Bridge</div>
+          <div class="headertext">Bridge{{titleExtension}}</div>
         </div>
         <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">

@@ -4,7 +4,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'directive/Box/BoxDirective.html',
+        templateUrl: 'control/box/BoxDirective.html',
         controller: directiveController,
         link: function ($originalScope, $element, $attrs, $modelCtrl) {
             var newElement = $compile("<" + $attrs.content + "/>")($originalScope);

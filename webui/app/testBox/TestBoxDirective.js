@@ -6,7 +6,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'directive/TestBox/TestBoxDirective.html',
+        templateUrl: 'app/testBox/TestBoxDirective.html',
         controller: directiveController
     };
 });
