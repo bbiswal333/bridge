@@ -61,7 +61,6 @@ if(process.platform == "win32") {
 	});
 }
 
-
 //serve static files in webui folder as http server
 var webui_path = path.join(__dirname, '../', '/webui');
 app.use('/', express.static(webui_path));
