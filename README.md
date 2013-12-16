@@ -3,8 +3,7 @@
 
 ## git installation & ssh setup
 * download `git` from [git-scm](http://git-scm.com/downloads)
-* for pushing changes to `git`, the recommend way is to do the setup via `ssh` (`Git Read-Only` or `ZIP download` works without that)
-* `ssh` setup for `git`
+* for pushing changes to `git`, setup `ssh`
   * run `ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
   * upload the public key to your github account [here](https://github.wdf.sap.corp/settings/ssh)
 
