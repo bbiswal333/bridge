@@ -5,7 +5,7 @@ var app			= express();
 var	fs			= require('fs');
 var exec		= require('child_process').exec;
 var path        = require("path");
-var SSOCertificatePassphrase = Math.random().toString(36).substring(2);
+var SSOCertificatePassphrase = 'test';//Math.random().toString(36).substring(2);
 var SSOCertificate = null;
 
 function getSSOCertSerialNumber(error, stdout, stderr) {
@@ -39,26 +39,33 @@ function getSSOCertSerialNumber(error, stdout, stderr) {
     }
 };
 
-exec("certutil -store -user -v my", function (error, stdout, stderr) {
-    var serialNumber = getSSOCertSerialNumber(error, stdout, stderr);
-    var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
-    console.log("Serial Number: " + serialNumber);
-    console.log("Passphrase: " + SSOCertificatePassphrase);
-    console.log("Path :" + __dirname);
-    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {
-        SSOCertificate = fs.readFileSync(SSOCertificatePath);
-        var deleteCommand = 'del "' + SSOCertificatePath + '"';
-        exec(deleteCommand, function (error, stdout, stderr) {
-            console.log(deleteCommand);
-        });;
-    });
-});
+if(process.platform == "win32") {
+	exec("certutil -store -user -v my", function (error, stdout, stderr) {
+	    var serialNumber = getSSOCertSerialNumber(error, stdout, stderr);
+	    var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
+	    console.log("Serial Number: " + serialNumber);
+	    console.log("Passphrase: " + SSOCertificatePassphrase);
+	    console.log("Path :" + __dirname);
+	    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {
+	        SSOCertificate = fs.readFileSync(SSOCertificatePath);
+	        var deleteCommand = 'del "' + SSOCertificatePath + '"';
+	        exec(deleteCommand, function (error, stdout, stderr) {
+	            console.log(deleteCommand);
+	        });;
+	    });
+	});
+} else if(process.platform == "darwin") {
 
-
-
-
-
-
+	var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
+    exec("security export -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {
+	       	SSOCertificate = fs.readFileSync(SSOCertificatePath);
+	       	console.log(SSOCertificate);
+	        var deleteCommand = 'rm "' + SSOCertificatePath + '"';
+	        //exec(deleteCommand, function (error, stdout, stderr) {
+	        //    console.log(deleteCommand);
+	        //});;
+	});
+}
 
 
 //serve static files in webui folder as http server
@@ -67,6 +74,7 @@ app.use('/', express.static(webui_path));
 
 //call backends with client certificate
 function callBackend(hostname, port, path, method, callback){
+	console.log(SSOCertificate);
 	var options = {
 		hostname: hostname,
 		port: port,
@@ -79,7 +87,7 @@ function callBackend(hostname, port, path, method, callback){
 
 	var data = "";
 	
-	//console.log('https://'+hostname+path);
+	console.log(options);
 	
 	var req = https.request(options, function(res) {
 		res.on('data', function(chunk) { data += chunk; });
