@@ -1,5 +1,5 @@
 {
-  "main": "nw-startup.html",
+  "main": "webui/node-webkit.html",
   "name": "bridge",
   "node-main": "server/server.js",
   "window": {
