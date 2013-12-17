@@ -52,7 +52,7 @@ var updateATCChart = function ($scope) {
     chart1.options = {
         "title": "ATC Errors",
         "sliceVisibilityThreshold": 0,
-        "colors": ['red', 'orange', 'yellow', 'blue'],
+        "colors": ['#097AC5', '#5CCCFF', '#AFE5FF', '#E6F7FF'],
         "pieHole": 0.6,
         "fill": 20,
         "displayExactValues": true
