@@ -1,13 +1,13 @@
-var bridgeApp = angular.module('bridgeApp', ['bridgeServices', 'ngRoute', 'googlechart', 'ui.bootstrap']);
+var bridgeApp = angular.module('bridgeApp', ['bridgeServices', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable']);
 
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', function Controller($scope, $http, $route, $location) {
     $location.path('/overview');
-    $scope.titleExtension = "";
 }]);
 
 bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
-	this.$routeParams = $routeParams;
+    this.$routeParams = $routeParams;
+    $scope.$parent.titleExtension = "";
 }]);
 
 bridgeApp.controller('bridgeControllerDetail', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {

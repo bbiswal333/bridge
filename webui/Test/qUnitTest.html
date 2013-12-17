@@ -2,22 +2,24 @@
 <html >
     <head>
         <meta charset="utf-8">
-        <title>Dashboard Box Tests</title>
+        <title>Bridge Tests</title>
+
         <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css">
   
         <script src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
         <script src="../lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
         <script src="../lib/linq-2_2_0_2/linq.min.js"></script>
         <script src="../lib/ui-bootstrap-0_6_0/uiBootstrap.js"></script>
-  
-        <script src='../Boxes/ATC/Config.js'></script>
-        <script src='../Boxes/ATC/ATCDataProvider.js'></script>
-        <script src='../js/services.js'></script>
-        <script src="../js/controller.js"></script>
-        <script src="../js/EmployeeSearch.js"></script>
+        <script src="../lib/ng-table-0_3_1/ng-table.src.js"></script>
+        
+        <script src="../controller/bridgeController.js"></script>
+        <script src='../app/atcBox/ATCBox.js'></script>
+        <script src="../control/employeeSearch/EmployeeSearch.js"></script>
 
         <script src='Data/atcResults.json'></script>
         <script src="Data/atcCountResults.json"></script>
@@ -30,7 +32,7 @@
 
     </head>
 
-    <body ng-app="dashboardBox">
+    <body ng-app="bridgeApp">
       <div id="qunit"></div>
       <div id="qunit-fixture"></div>
     </body>

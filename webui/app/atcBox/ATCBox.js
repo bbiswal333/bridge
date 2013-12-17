@@ -1,5 +1,6 @@
 var IATCDataProvider = {
-		getResultForConfig : function(config, scope) { throw "Not Implemented"; },
+    getResultForConfig: function (config, scope) { throw "Not Implemented"; },
+    getDetailsForConfig: function (config, scope) { throw "Not Implemented"; }
 };
 
 var ATCDataProvider = function(http){
@@ -26,6 +27,13 @@ ATCDataProvider.prototype.getResultForConfig = function (config, scope) {
 		};
 
 	});
+};
+
+ATCDataProvider.prototype.getDetailsForConfig = function (config, scope) {
+    this.http.get('http://localhost:8000/api/atc?query=' + config.getQueryString() + '&count_prios=&format=json').success(function (data) {
+
+        scope.atcDetails = data.DATA;
+    });
 };
 
 bridgeServices.factory('ATCDataProvider', ['$http',
