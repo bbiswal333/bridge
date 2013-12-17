@@ -5,8 +5,10 @@
     ATCDataProvider.getDetailsForConfig(Config, $scope);
 
     $scope.$watch('atcDetails', function () {
-        if ($scope.atcDetails !== undefined)
+        if ($scope.atcDetails !== undefined) {
+            $scope.tableParams.total($scope.atcDetails.length);
             $scope.tableParams.reload();
+        }
     });
 
     $scope.tableParams = new ngTableParams({
@@ -24,8 +26,10 @@
 
             if (orderedData != undefined) {
                 orderedData = params.filter() ?
-                                $filter('filter')(orderedData, $scope.filterString) :
+                                $filter('filter')(orderedData, params.filter()) :
                                 orderedData;
+
+                params.total(orderedData.length);
 
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             }

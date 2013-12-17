@@ -1,42 +1,38 @@
-﻿<div id="centeredContent" style="width:90%; margin-left:auto; margin-right:auto; margin-top:15px">
-    <table ng-table="tableParams" class="table ng-table-responsive">
-        <thead>
-            <tr>
-                <th class="sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy('name', 'asc'),
-                    'sort-desc': tableParams.isSortBy('name', 'desc')
-                    }"
-                    ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
-                    <div>Prio</div>
-                </th>
-                <th class="sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy('type', 'asc'),
-                    'sort-desc': tableParams.isSortBy('type', 'desc')
-                    }"
-                    ng-click="tableParams.sorting({'type' : tableParams.isSortBy('type', 'asc') ? 'desc' : 'asc'})">
-                    <div>System</div>
-                </th>
-                <th class="sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy('BusinessOwner', 'asc'),
-                    'sort-desc': tableParams.isSortBy('BusinessOwner', 'desc')
-                    }"
-                    ng-click="tableParams.sorting({'BusinessOwner' : tableParams.isSortBy('BusinessOwner', 'asc') ? 'desc' : 'asc'})">
-                    <div>Check Description</div>
-                </th>                   
-            </tr>
-        </thead>
-        <tbody >
-            <tr ng-repeat="message in $data">
-                <td sortable="'CHECK_MSG_PRIO'">
-                    {{message.CHECK_MSG_PRIO}}
-                </td>
-                <td sortable="'CHECK_SYSTEM'">
-                    {{message.CHECK_SYSTEM}}
-                </td>
-                <td sortable="'CHECK_DESCRIPTION'">
-                    {{message.CHECK_DESCRIPTION}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+﻿<table ng-table="tableParams" show-filter="true" class="table" template-pagination="custom/pager">
+    <tr ng-repeat="message in $data">
+        <td data-title="'Prio'" sortable="'CHECK_MSG_PRIO'" filter="{ 'CHECK_MSG_PRIO': 'text' }">
+            {{message.CHECK_MSG_PRIO}}
+        </td>
+        <td data-title="'System'" sortable="'CHECK_SYSTEM'" filter="{ 'CHECK_SYSTEM': 'text' }">
+            {{message.CHECK_SYSTEM}}
+        </td>
+        <td data-title="'Description'" sortable="'CHECK_DESCRIPTION'" filter="{ 'CHECK_DESCRIPTION': 'text' }">
+            {{message.CHECK_DESCRIPTION}}
+        </td>
+        <td data-title="'Message'" sortable="'CHECK_MESSAGE'" filter="{ 'CHECK_MESSAGE': 'text' }">
+            {{message.CHECK_MESSAGE}}
+        </td>
+        <td data-title="'Object'" sortable="'OBJ_NAME'" filter="{ 'OBJ_NAME': 'text' }">
+            {{message.OBJ_NAME}}
+        </td>                
+    </tr>
+</table>
+<script type="text/ng-template" id="custom/pager">
+    <ul class="pager ng-cloak">
+        <li ng-repeat="page in pages"
+            ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+            ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+
+            <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+            <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+        </li>
+        <li> 
+            <div class="btn-group">
+                <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+                <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+                <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+                <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
+            </div>
+        </li>
+    </ul>
+</script>

@@ -1,15 +1,9 @@
-﻿html {
-    height: 100%;
-    width: 100%;
-}
-
-body {
+﻿body {
     height: 100%;
     width: 100%;
     font-size: 1em;
     line-height: 1.4;
 	font-family: 'Open Sans', sans-serif;
-    position: relative;
     margin-left: auto;
     margin-right: auto;
 }
@@ -44,7 +38,7 @@ body {
         color: #ffffff;
 }
 
-.header {
+.headerline {
     color: #333333;
     text-shadow: 0 1px #ffffff;
     width: 100%;
@@ -92,9 +86,9 @@ body {
     background-attachment: fixed;
     background-repeat: repeat;
     z-index: 10;
-    position: absolute;
+    position: absolute;  
     overflow-y: scroll;
-    overflow-x: hidden;    
+    overflow-x: hidden;
 }
 
 .content {

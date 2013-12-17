@@ -114,6 +114,12 @@ app.get('/api/atc', function(request, response){
 		response.send(data);
 	});
 });
+app.get('/api/atcdetails', function (request, response) {
+    callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/devdb/STAT_CHK_RESULT?query=' + request.query.query + '&format=json', 'GET', function (data) {
+        response.setHeader('Content-Type', 'text/plain');
+        response.send(data);
+    });
+});
 
 //jira
 app.get('/api/jira', function(request, response){

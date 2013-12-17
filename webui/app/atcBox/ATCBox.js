@@ -30,7 +30,7 @@ ATCDataProvider.prototype.getResultForConfig = function (config, scope) {
 };
 
 ATCDataProvider.prototype.getDetailsForConfig = function (config, scope) {
-    this.http.get('http://localhost:8000/api/atc?query=' + config.getQueryString() + '&count_prios=&format=json').success(function (data) {
+    this.http.get('http://localhost:8000/api/atcdetails?query=' + config.getQueryString()).success(function (data) {
 
         scope.atcDetails = data.DATA;
     });
@@ -106,8 +106,8 @@ bridgeServices.factory('Config', [
       configItem.srcSystem = "CI3";
       configItem.displayPrio1 = true;
       configItem.displayPrio2 = true;
-      configItem.displayPrio3 = true;
-      configItem.displayPrio4 = true;
+      configItem.displayPrio3 = false;
+      configItem.displayPrio4 = false;
       
       var config = new Config();
       config.addConfigItem(configItem);
