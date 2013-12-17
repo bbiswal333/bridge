@@ -1,5 +1,5 @@
 ﻿<div id="centeredContent" style="width:90%; margin-left:auto; margin-right:auto; margin-top:15px">
-    <table ng-table="tableParams" show-filter="true" class="table ng-table-responsive">
+    <table ng-table="tableParams" class="table ng-table-responsive">
         <thead>
             <tr>
                 <th class="sortable" ng-class="{
@@ -7,59 +7,34 @@
                     'sort-desc': tableParams.isSortBy('name', 'desc')
                     }"
                     ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
-                    <div>Name</div>
+                    <div>Prio</div>
                 </th>
                 <th class="sortable" ng-class="{
                     'sort-asc': tableParams.isSortBy('type', 'asc'),
                     'sort-desc': tableParams.isSortBy('type', 'desc')
                     }"
                     ng-click="tableParams.sorting({'type' : tableParams.isSortBy('type', 'asc') ? 'desc' : 'asc'})">
-                    <div>Type</div>
+                    <div>System</div>
                 </th>
                 <th class="sortable" ng-class="{
                     'sort-asc': tableParams.isSortBy('BusinessOwner', 'asc'),
                     'sort-desc': tableParams.isSortBy('BusinessOwner', 'desc')
                     }"
                     ng-click="tableParams.sorting({'BusinessOwner' : tableParams.isSortBy('BusinessOwner', 'asc') ? 'desc' : 'asc'})">
-                    <div>Business Owner</div>
-                </th>
-                <th class="sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy('DataOwner', 'asc'),
-                    'sort-desc': tableParams.isSortBy('DataOwner', 'desc')
-                    }"
-                    ng-click="tableParams.sorting({'DataOwner' : tableParams.isSortBy('DataOwner', 'asc') ? 'desc' : 'asc'})">
-                    <div>Data Owner</div>
-                </th>
-                <th class="sortable" ng-class="{
-                    'sort-asc': tableParams.isSortBy('category', 'asc'),
-                    'sort-desc': tableParams.isSortBy('category', 'desc')
-                    }"
-                    ng-click="tableParams.sorting({'category' : tableParams.isSortBy('category', 'asc') ? 'desc' : 'asc'})">
-                    <div>Category</div>
-                </th>
-                <th>
-                    <div>Functions</div>
-                </th>                    
+                    <div>Check Description</div>
+                </th>                   
             </tr>
         </thead>
-        <tbody ng-repeat="group in $groups">
-            <tr class="ng-table-group">
-                <td colspan="{{$columns.length}}">
-                    <a href="" ng-click="group.$hideRows = !group.$hideRows"> </a>
-                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
-                    <strong><a alt="Edit KPI" ng-click="edit_kpi(group.value)">{{ group.value }}</a></strong>
-                    </a>
+        <tbody >
+            <tr ng-repeat="message in $data">
+                <td sortable="'CHECK_MSG_PRIO'">
+                    {{message.CHECK_MSG_PRIO}}
                 </td>
-            </tr>
-            <tr ng-hide="group.$hideRows" ng-repeat="data in group.data">
-                <td data-title="'Name'" sortable="'name'"><a alt="Edit KPI" ng-click="edit_measure(data.id)">{{data.name}}</a></td>
-                <td data-title="'Type'" sortable="'type'">{{data.type}}</td>
-                <td data-title="'Business Owner'" sortable="'BusinessOwner'">{{data.BusinessOwner}}</td>
-                <td data-title="'Data Owner'" sortable="'DataOwner'">{{data.DataOwner}}</td>
-                <td data-title="'Category'" sortable="'category'">{{data.category}}</td>
-                <td data-title="'Functions'" >
-                    <img src="Images/page_white_edit.png" title="Edit Measure" alt="Edit Measure" ng-click="edit_measure(data.id)"/>
-                    <a alt="Edit Target" ng-click="edit_target(data.id)"> Edit Target </a>
+                <td sortable="'CHECK_SYSTEM'">
+                    {{message.CHECK_SYSTEM}}
+                </td>
+                <td sortable="'CHECK_DESCRIPTION'">
+                    {{message.CHECK_DESCRIPTION}}
                 </td>
             </tr>
         </tbody>
