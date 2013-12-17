@@ -1,25 +1,34 @@
-﻿bridgeApp.controller('atcDetailController', ['$scope', '$http', '$route', '$routeParams', 'ngTableParams', function Controller($scope, $http, $route, $routeParams, ngTableParams) {
+﻿bridgeApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'Config', 'ATCDataProvider', 
+                        function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, Config, ATCDataProvider) {
     $scope.$parent.titleExtension = " - ATC Details";
+
+    ATCDataProvider.getDetailsForConfig(Config, $scope);
+
+    $scope.$watch('atcDetails', function () {
+        if ($scope.atcDetails !== undefined)
+            $scope.tableParams.reload();
+    });
 
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10,          // count per page
         sorting: {
-            name: 'asc'     // initial sorting
+            CHECK_MSG_PRIO: 'asc'     // initial sorting
         },
     }, {
-        groupBy: 'kpi',
-        total: kpis.length, // length of data
+        total: $scope.atcDetails == undefined ? 0 : $scope.atcDetails.length, // length of data
         getData: function ($defer, params) {
             var orderedData = params.sorting() ?
-                                $filter('orderBy')(kpis, params.orderBy()) :
+                                $filter('orderBy')($scope.atcDetails, params.orderBy()) :
                                 kpis;
 
-            orderedData = params.filter() ?
-                            $filter('filter')(orderedData, $scope.filterString) :
-                            orderedData;
+            if (orderedData != undefined) {
+                orderedData = params.filter() ?
+                                $filter('filter')(orderedData, $scope.filterString) :
+                                orderedData;
 
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
         }
     });
 }]);
