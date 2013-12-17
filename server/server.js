@@ -127,4 +127,4 @@ app.get('/api/jira', function(request, response){
 http.createServer(app).listen(8000);
 
 
-
+exports.app = app;
