@@ -8,17 +8,6 @@
     margin-right: auto;
 }
 
-/*.row{
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-.box {
-    height:180px;
-}*/
-
 .details{
     background-color: white;
 }
@@ -27,7 +16,6 @@
     margin: 5px;
     height: 170px;
     width: 100%;
-    border: 2px solid rgba(242,242,242, 0.96);
     background-color: white;
     z-index: 200;
     overflow: hidden;

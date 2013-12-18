@@ -16,7 +16,7 @@ var updateATCChart = function ($scope) {
     var chart1 = {};
     chart1.type = "PieChart";
     chart1.displayed = true;
-    chart1.cssStyle = "height:150px; width:200px;";
+    chart1.cssStyle = "height:105px; width:100%;";
     chart1.data = {
         "cols": [
             { id: "month", label: "Month", type: "string" },
@@ -24,25 +24,25 @@ var updateATCChart = function ($scope) {
         ], "rows": [
             {
                 c: [
-                   { v: "Prio 1" },
+                   { v: "Prio 1 (" + $scope.atcData.prio1 + ")" },
                    { v: $scope.atcData.prio1, f: $scope.atcData.prio1 + " Prio 1 messages" }
                 ]
             },
             {
                 c: [
-                   { v: "Prio 2" },
+                   { v: "Prio 2 (" + $scope.atcData.prio2 + ")" },
                    { v: $scope.atcData.prio2, f: $scope.atcData.prio2 + " Prio 2 messages" }
                 ]
             },
             {
                 c: [
-                   { v: "Prio 3" },
+                   { v: "Prio 3 (" + $scope.atcData.prio3 + ")" },
                    { v: $scope.atcData.prio3 }
                 ]
             },
             {
                 c: [
-                   { v: "Prio 4" },
+                   { v: "Prio 4 (" + $scope.atcData.prio4 + ")" },
                    { v: $scope.atcData.prio4 }
                 ]
             }
@@ -50,12 +50,12 @@ var updateATCChart = function ($scope) {
     };
 
     chart1.options = {
-        "title": "ATC Errors",
+        "title": "",
         "sliceVisibilityThreshold": 0,
         "colors": ['#097AC5', '#5CCCFF', '#AFE5FF', '#E6F7FF'],
-        "pieHole": 0.6,
+        "pieHole": 0.75,
         "fill": 20,
-        "displayExactValues": true
+        "displayExactValues": false
     };
 
     chart1.formatters = {};
