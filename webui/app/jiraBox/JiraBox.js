@@ -71,5 +71,5 @@ bridgeServices.factory('JiraBox', ['$http',
 
 bridgeServices.factory('JiraQuery', [
     function (){
-        return 'id in projectRankedIssues(I2MASEDEV) AND fixVersion in (2013_S24) order by "Project Rank" ASC, Key ASC';
+        return 'id in projectRankedIssues(I2MASEDEV) order by "Project Rank" ASC, Key ASC';
     }]);

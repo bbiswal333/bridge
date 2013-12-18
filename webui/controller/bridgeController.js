@@ -20,7 +20,8 @@ bridgeApp.config(function($routeProvider) {
 
     $routeProvider.when("/overview", { templateUrl: 'view/overview.html', controller: 'bridgeControllerOverview' });
     $routeProvider.when("/detail/atc", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
-	$routeProvider.when("/detail/:boxname", { templateUrl: 'view/detail.html', controller: 'bridgeControllerDetail', controllerAs: 'boxname' });
+    $routeProvider.when("/detail/jira", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
+	//$routeProvider.when("/detail/:boxname", { templateUrl: 'view/detail.html', controller: 'bridgeControllerDetail', controllerAs: 'boxname' });
 });
 
 

@@ -1,0 +1,20 @@
+﻿<div class="panel panel-default">
+  <div class="panel-heading panel-title">Jira Details</div>
+  <div class="panel-body">
+    
+    <table ng-table class="table" ng-controller="jiraDetailController">
+        <tr ng-repeat="issue in jiraData">
+            <td data-title="'Issue'"><a href="https://sapjira.wdf.sap.corp/browse/{{issue.key}}">{{issue.summary}}</a></td>
+            <td data-title="'Description'">{{issue.description}}</td>        
+            <td data-title="'Status'">{{issue.status}}</td>
+        </tr>
+    </table>
+
+  </div>
+</div>
+
+
+
+
+
+
