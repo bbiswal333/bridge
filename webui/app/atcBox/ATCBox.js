@@ -11,7 +11,7 @@ ATCDataProvider.prototype = Object.create(IATCDataProvider);
 
 ATCDataProvider.prototype.getResultForConfig = function (config, scope) {
 	scope.atcData = {
-		prio1: 10,
+		prio1: 0,
 		prio2: 0,
 		prio3: 0,
 		prio4: 0
