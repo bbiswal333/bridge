@@ -46,18 +46,128 @@ if(process.platform == "win32") {
 	    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {
 	        SSOCertificate = fs.readFileSync(SSOCertificatePath);
 	        var deleteCommand = 'del "' + SSOCertificatePath + '"';
-	        exec(deleteCommand, function (error, stdout, stderr) {
-	        });;
+	        exec(deleteCommand, function (error, stdout, stderr) { });
 	    });
 	});
 } else if(process.platform == "darwin") {
 
 	var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
+	var SSOPemPath = path.join(__dirname, '/SSOCert.pem');
+	var SSOKeyPath = path.join(__dirname, '/SSOCert.key');
+	var SSOCertPath = path.join(__dirname, '/SSOCert.cert');
+	SSOCertificatePassphrase = 'test123';
+	
+	//export complete keychain because security command does not allow to export single identity
     exec("security export -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {
-	       	SSOCertificate = fs.readFileSync(SSOCertificatePath);
-	        var deleteCommand = 'rm "' + SSOCertificatePath + '"';
-	        exec(deleteCommand, function (error, stdout, stderr) {
-	        });;
+	       	
+    		//convert pfx to pem
+    		exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
+    			
+    			var pemBags = [];
+    			var bag = {};
+
+    			fs.readFileSync(SSOPemPath).toString().split('\n').forEach(function (pemLine) { 
+    				
+    				if (pemLine  === 'Bag Attributes')
+    				{
+    					bag = {};
+    					bag.data = "";
+    				}
+
+    				bag.data += pemLine;
+    				bag.data += '\n';
+
+    				if (pemLine.indexOf("friendlyName: ") != -1)
+    				{
+    					bag.friendlyName = pemLine.substring(pemLine.indexOf("friendlyName: ") + "friendlyName: ".length);
+    				}
+
+    				if (pemLine.indexOf("localKeyID: ") != -1)
+    				{
+    					bag.localKeyID = pemLine.substring(pemLine.indexOf("localKeyID: ") + "localKeyID: ".length);
+    				}
+
+    				if (pemLine.indexOf("subject=") != -1)
+    				{
+    					bag.subject = pemLine.substring(pemLine.indexOf("subject=") + "subject=".length);
+    				}
+
+    				if (pemLine.indexOf("issuer=") != -1)
+    				{
+    					bag.issuer = pemLine.substring(pemLine.indexOf("issuer=") + "issuer=".length);
+    				}
+
+    				if(pemLine.indexOf("-----BEGIN CERTIFICATE-----") != -1)
+    				{
+    					bag.type = "certificate";
+    				}
+
+    				if(pemLine.indexOf("-----BEGIN RSA PRIVATE KEY-----") != -1)
+    				{
+    					bag.type = "private key";
+    				}
+
+    				if(bag.type === "certificate" || bag.type === "private key")
+    				{
+
+    					if (pemLine.indexOf("-----END") != -1)
+    					{
+    						pemBags.push(bag);
+    					}
+    				}
+
+    			});
+
+				//console.log(pemBags);
+
+				var cert_bag = {};
+				var key_bag = {};
+
+    			for (var i = 0; i < pemBags.length; i++) {
+    				if( pemBags[i].type === "certificate" && pemBags[i].issuer.indexOf("SSO_CA") != -1 )
+    				{
+    					cert_bag = pemBags[i];
+    				}
+    			}
+
+    			//console.log(cert_bag);
+
+    			for (var i = 0; i < pemBags.length; i++) {
+    				if( pemBags[i].type === "private key"  && pemBags[i].localKeyID === cert_bag.localKeyID )
+    				{
+    					key_bag = pemBags[i];
+    				}
+    			}
+
+    			//console.log(key_bag);
+
+    			//write key and cert file for SSO_CA
+    			fs.writeFile(SSOCertPath, cert_bag.data, function(err) {
+    				if(err) { console.log(err); } 
+    			});
+
+    			fs.writeFile(SSOKeyPath, key_bag.data, function(err) {
+    				if(err) { console.log(err); } 
+    			});
+
+    			exec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath + 
+    		      "' -in '" + SSOCertPath+ "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
+
+					SSOCertificate = fs.readFileSync(SSOCertificatePath);
+	        		var deleteCommand = 'rm "' + SSOCertificatePath + '"';
+					exec(deleteCommand, function (error, stdout, stderr) { });	
+
+					var deleteCommand = 'rm "' + SSOPemPath + '"';
+					exec(deleteCommand, function (error, stdout, stderr) { }); 
+
+					var deleteCommand = 'rm "' + SSOKeyPath + '"';
+					exec(deleteCommand, function (error, stdout, stderr) { });	
+
+					var deleteCommand = 'rm "' + SSOCertPath + '"';
+					exec(deleteCommand, function (error, stdout, stderr) { });	   
+    		    });
+
+    		} );
 	});
 }
 
