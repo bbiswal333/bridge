@@ -118,19 +118,18 @@ if(process.platform == "win32") {
 
     			});
 
-				//console.log(pemBags);
-
 				var cert_bag = {};
 				var key_bag = {};
 
     			for (var i = 0; i < pemBags.length; i++) {
     				if( pemBags[i].type === "certificate" && pemBags[i].issuer.indexOf("SSO_CA") != -1 )
+
+
     				{
     					cert_bag = pemBags[i];
     				}
     			}
 
-    			//console.log(cert_bag);
 
     			for (var i = 0; i < pemBags.length; i++) {
     				if( pemBags[i].type === "private key"  && pemBags[i].localKeyID === cert_bag.localKeyID )
@@ -138,8 +137,6 @@ if(process.platform == "win32") {
     					key_bag = pemBags[i];
     				}
     			}
-
-    			//console.log(key_bag);
 
     			//write key and cert file for SSO_CA
     			fs.writeFile(SSOCertPath, cert_bag.data, function(err) {
