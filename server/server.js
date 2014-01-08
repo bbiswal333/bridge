@@ -58,7 +58,7 @@ if(process.platform == "win32") {
 	SSOCertificatePassphrase = 'test123';
 	
 	//export complete keychain because security command does not allow to export single identity
-    exec("security export -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {
+    exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {
 	       	
     		//convert pfx to pem
     		exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
