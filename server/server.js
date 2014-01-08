@@ -25,6 +25,9 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 		};
 
 		var data = "";
+
+		//for testing purposes
+		//console.log("https://" + hostname + ":" + port + path);
 		
 		var req = https.request(options, function(res) {
 			res.on('data', function(chunk) { data += chunk; });
@@ -47,7 +50,7 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 
 	//employees
 	app.get('/api/employee', function(request, response){
-		callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + request.query.query, 'GET', function(data){
+		callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + encodeURI(request.query.query), 'GET', function(data){
 			response.setHeader('Content-Type', 'text/plain');	
 			response.send(data);
 		});
