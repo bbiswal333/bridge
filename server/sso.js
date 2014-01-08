@@ -82,6 +82,27 @@ function getPemBags(fileContent){
     return pemBags;
 }
 
+function getIdentityFromPemBags(pemBags)
+{
+    var identity = {};
+
+    for (var i = 0; i < pemBags.length; i++) {
+        if( pemBags[i].type === "certificate" && pemBags[i].issuer.indexOf("SSO_CA") != -1 )
+        {
+            identity.certificate = pemBags[i];
+        }
+    }
+
+    for (var i = 0; i < pemBags.length; i++) {
+        if( pemBags[i].type === "private key"  && pemBags[i].localKeyID === identity.certificate.localKeyID )
+        {
+            identity.key = pemBags[i];
+        }
+    }
+
+    return identity;
+}
+
 function runWithPassphrase(SSOCertificatePassphrase, callback)
 {
     if(process.platform == "win32") {
@@ -97,59 +118,24 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     	});
     } else if(process.platform == "darwin") {
     	var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
-    	var SSOPemPath = path.join(__dirname, '/SSOCert.pem');
-    	var SSOKeyPath = path.join(__dirname, '/SSOCert.key');
-    	var SSOCertPath = path.join(__dirname, '/SSOCert.cert');
+    	var SSOPemPath         = path.join(__dirname, '/SSOCert.pem');
+    	var SSOKeyPath         = path.join(__dirname, '/SSOCert.key');
+    	var SSOCertPath        = path.join(__dirname, '/SSOCert.cert');
     	
-    	//export complete keychain because security command does not allow to export single identity
-        exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {
-    	       	
-        		//convert pfx to pem
+        exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {   	       	
         		exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
         			
-        			var pemBags = getPemBags(fs.readFileSync(SSOPemPath).toString());
-    				var cert_bag = {};
-    				var key_bag = {};
+        			var identity = getIdentityFromPemBags( getPemBags( fs.readFileSync(SSOPemPath).toString() ) );
 
-        			for (var i = 0; i < pemBags.length; i++) {
-        				if( pemBags[i].type === "certificate" && pemBags[i].issuer.indexOf("SSO_CA") != -1 )
-        				{
-        					cert_bag = pemBags[i];
-        				}
-        			}
-
-
-        			for (var i = 0; i < pemBags.length; i++) {
-        				if( pemBags[i].type === "private key"  && pemBags[i].localKeyID === cert_bag.localKeyID )
-        				{
-        					key_bag = pemBags[i];
-        				}
-        			}
-
-        			//write key and cert file for SSO_CA
-        			fs.writeFile(SSOCertPath, cert_bag.data, function(err) {
-        				if(err) { console.log(err); } 
-        			});
-
-        			fs.writeFile(SSOKeyPath, key_bag.data, function(err) {
-        				if(err) { console.log(err); } 
-        			});
+        			fs.writeFileSync(SSOCertPath, identity.certificate.data);
+        			fs.writeFileSync(SSOKeyPath, identity.key.data);
 
         			exec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath + 
         		      "' -in '" + SSOCertPath+ "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
 
     					var SSOCertificate = fs.readFileSync(SSOCertificatePath);
-    	        		var deleteCommand = 'rm "' + SSOCertificatePath + '"';
+    	        		var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
     					exec(deleteCommand, function (error, stdout, stderr) { });	
-
-    					var deleteCommand = 'rm "' + SSOPemPath + '"';
-    					exec(deleteCommand, function (error, stdout, stderr) { }); 
-
-    					var deleteCommand = 'rm "' + SSOKeyPath + '"';
-    					exec(deleteCommand, function (error, stdout, stderr) { });	
-
-    					var deleteCommand = 'rm "' + SSOCertPath + '"';
-    					exec(deleteCommand, function (error, stdout, stderr) { });
 
                         callback(SSOCertificatePassphrase, SSOCertificate);	   
         		    });
