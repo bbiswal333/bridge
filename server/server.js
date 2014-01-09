@@ -27,7 +27,7 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 		var data = "";
 
 		//for testing purposes
-		//console.log("https://" + hostname + ":" + port + path);
+		console.log("https://" + hostname + ":" + port + path);
 		
 		var req = https.request(options, function(res) {
 			res.on('data', function(chunk) { data += chunk; });
@@ -40,9 +40,41 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 		});
 	}
 
+	//messages subscriptions
+	app.get('/api/css/message_subscriptions', function(request, response){
+		callBackend('css.wdf.sap.corp', 443, '/sap/bc/devdb/MYMSGSUBSCR?format=json', 'GET', function(data){
+			response.setHeader('Content-Type', 'text/plain');	
+			response.send(data);
+		});
+	});
+
 	//internal messages
-	app.get('/api/css', function(request, response){
-		callBackend('cid.wdf.sap.corp', 443, '/sap/bc/devdb/MYINTERNALMESS?format=json', 'GET', function(data){
+	app.get('/api/css/internal_messages', function(request, response){
+		callBackend('css.wdf.sap.corp', 443, '/sap/bc/devdb/MYINTERNALMESS?format=json', 'GET', function(data){
+			response.setHeader('Content-Type', 'text/plain');	
+			response.send(data);
+		});
+	});
+
+	//it support messages
+	app.get('/api/css/it_support', function(request, response){
+		callBackend('css.wdf.sap.corp', 443, '/sap/bc/devdb/MYITSUPPORTMESS?format=json', 'GET', function(data){
+			response.setHeader('Content-Type', 'text/plain');	
+			response.send(data);
+		});
+	});
+
+	//customer messages
+	app.get('/api/css/customer_messages', function(request, response){
+		callBackend('css.wdf.sap.corp', 443, '/sap/bc/devdb/MYCUSTOMERMESS?format=json', 'GET', function(data){
+			response.setHeader('Content-Type', 'text/plain');	
+			response.send(data);
+		});
+	});
+
+	//messages details
+	app.get('/api/css/message_details', function(request, response){
+		callBackend('css.wdf.sap.corp', 443, '/sap/bc/devdb/CUSTMESSDETAILS?CSINSTA=' + request.query.installation + '&MNUMM=' + request.query.number + '&MYEAR=' + request.query.year , 'GET', function(data){
 			response.setHeader('Content-Type', 'text/plain');	
 			response.send(data);
 		});
@@ -50,7 +82,7 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 
 	//employees
 	app.get('/api/employee', function(request, response){
-		callBackend('ifd.wdf.sap.corp', 443, '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + encodeURI(request.query.query), 'GET', function(data){
+		callBackend('ifp.wdf.sap.corp', 443, '/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=' + request.query.maxrow + '&query=' + encodeURI(request.query.query), 'GET', function(data){
 			response.setHeader('Content-Type', 'text/plain');	
 			response.send(data);
 		});
