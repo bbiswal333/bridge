@@ -2,6 +2,7 @@ var express		= require('express');
 var https		= require('https');
 var http		= require('http');
 var path        = require('path');
+var url         = require('url');
 var sso 		= require('./sso.js');
 
 sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
@@ -39,6 +40,15 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 			console.error(e);
 		});
 	}
+
+	//geric api call
+	app.get('/api/get', function(request, response){
+		var service_url = url.parse(request.query.url);
+		callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function(data){
+			response.setHeader('Content-Type', 'text/plain');	
+			response.send(data);
+		});
+	});
 
 	//messages subscriptions
 	app.get('/api/css/message_subscriptions', function(request, response){
