@@ -27,7 +27,7 @@ sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
 		var data = "";
 
 		//for testing purposes
-		console.log("https://" + hostname + ":" + port + path);
+		//console.log("https://" + hostname + ":" + port + path);
 		
 		var req = https.request(options, function(res) {
 			res.on('data', function(chunk) { data += chunk; });
