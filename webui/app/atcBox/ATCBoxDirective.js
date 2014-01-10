@@ -7,7 +7,10 @@
             ATCDataProvider.getResultForConfig(Config, atcData);
         }
 
-        $scope.$watch('atcData.data', function () { $scope.updateATCChart($scope); });
+        $scope.$watch('atcData.data', function () { 
+            $scope.updateATCChart($scope);
+            $scope.initialized = true;
+        });
 
         $scope.updateATCChart = function ($scope) {
             var chart1 = {};

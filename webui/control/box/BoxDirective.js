@@ -9,9 +9,9 @@ var initializationInterval = setInterval(function () {
             numberOfBoxInstancesWhichDontNeedToBeInstantiated++;
             continue;
         }
-        if (boxInstances[box].scope.loadData) {
+        if (boxInstances[box].scope.loadData && boxInstances[box].dataLoadCalled != true) {
             boxInstances[box].scope.loadData();
-            boxInstances[box].initialized = true;
+            boxInstances[box].dataLoadCalled = true;
         } else {
             boxInstances[box].initializationTries++;
         }
@@ -20,8 +20,19 @@ var initializationInterval = setInterval(function () {
     if (numberOfBoxInstances == numberOfBoxInstancesWhichDontNeedToBeInstantiated && numberOfBoxInstances != 0) {
         clearInterval(initializationInterval);
         createRefreshInterval();
+        hideLoadingAnimation();
     }
 }, 100);
+
+function hideLoadingAnimation() {
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.9; }, 50);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.7; }, 100);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.5; }, 150);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.4; }, 200);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.3; }, 250);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.1; }, 300);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").parentNode.removeChild(document.getElementById("loadingAnimation")); }, 350);
+}
 
 function createRefreshInterval() {
     setInterval(function () {

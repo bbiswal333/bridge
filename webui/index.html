@@ -49,6 +49,8 @@
 
 	</head>
 	<body ng-controller="bridgeController">
+
+
         <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">
             <div class="headerline">
@@ -58,6 +60,14 @@
                 <div ng-view class="animation-content"></div>
             </div>
           </div>
-        </div>  
+        </div>
+
+        <div id="loadingAnimation">
+            <div class="spinner absoluteCenter">
+                <div class="cube1"></div>
+                <div class="cube2"></div>
+            </div>
+        </div>
+
 	</body>
 </html>
