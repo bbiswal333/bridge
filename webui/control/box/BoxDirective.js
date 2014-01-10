@@ -1,12 +1,48 @@
 ﻿var boxInstances = {};
 
-setInterval(function () {
+var initializationInterval = setInterval(function () {
+    var numberOfBoxInstances = 0;
+    var numberOfBoxInstancesWhichDontNeedToBeInstantiated = 0;
     for (var box in boxInstances) {
-        if (boxInstances[box].scope && boxInstances[box].scope.loadData) {
+        numberOfBoxInstances++;
+        if (boxInstances[box].initializationTries > 50 || boxInstances[box].initialized == true) {
+            numberOfBoxInstancesWhichDontNeedToBeInstantiated++;
+            continue;
+        }
+        if (boxInstances[box].scope.loadData && boxInstances[box].dataLoadCalled != true) {
             boxInstances[box].scope.loadData();
+            boxInstances[box].dataLoadCalled = true;
+        } else {
+            boxInstances[box].initializationTries++;
         }
     }
-}, 5000);
+
+    if (numberOfBoxInstances == numberOfBoxInstancesWhichDontNeedToBeInstantiated && numberOfBoxInstances != 0) {
+        clearInterval(initializationInterval);
+        createRefreshInterval();
+        hideLoadingAnimation();
+    }
+}, 100);
+
+function hideLoadingAnimation() {
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.9; }, 50);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.7; }, 100);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.5; }, 150);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.4; }, 200);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.3; }, 250);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.1; }, 300);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").parentNode.removeChild(document.getElementById("loadingAnimation")); }, 350);
+}
+
+function createRefreshInterval() {
+    setInterval(function () {
+        for (var box in boxInstances) {
+            if (boxInstances[box].scope && boxInstances[box].scope.loadData) {
+                boxInstances[box].scope.loadData();
+            }
+        }
+    }, 5000);
+}
 
 bridgeApp.directive('box', function ($compile) {
 
@@ -22,7 +58,8 @@ bridgeApp.directive('box', function ($compile) {
             if ($attrs.id) {
                 if (!boxInstances[$attrs.id]) {
                     boxInstances[$attrs.id] = {
-                        scope: $scope
+                        scope: $scope,
+                        initializationTries: 0,
                     };
                 }
             }
@@ -36,79 +73,6 @@ bridgeApp.directive('box', function ($compile) {
             if ($attrs.id) {
                 boxInstances[$attrs.id].element = newElement;
             }
-
-
-            //var elementScope = $scope;
-            //if ($attrs.id) {
-            //    if (!boxInstances[$attrs.id]) {
-            //        elementScope = $scope.$new();
-            //        boxInstances[$attrs.id] = {
-            //            scope: elementScope
-            //        };
-            //    }
-            //    else {
-            //        elementScope = boxInstances[$attrs.id].scope;
-            //    }
-            //}
-            //else {
-            //    console.error("Box has no id!");
-            //}
-
-            //var newElement = $compile("<" + $attrs.content + "/>")(elementScope);
-            //$element.children().append(newElement);
-
-            //if ($attrs.id) {
-            //    boxInstances[$attrs.id].element = newElement;
-            //}
-
-            /*
-            var elementScope = $scope;
-            if ($attrs.id) {
-                if (!boxInstances[$attrs.id]) {
-                    elementScope = $scope.$new();
-                    boxInstances[$attrs.id] = {
-                        scope: elementScope
-                    };
-                }
-                else {
-                    elementScope = boxInstances[$attrs.id].scope;
-                    elementScope.$$watchers = null;
-                }
-            }
-            else {
-                console.error("Box has no id!");
-            }
-
-            var newElement = $compile("<" + $attrs.content + "/>")(elementScope);
-            $element.children().append(newElement);
-
-            if ($attrs.id) {
-                boxInstances[$attrs.id].element = newElement;
-            }*/
-
-
-            //var elementScope = $scope;
-            //var element = null;
-
-            //if ($attrs.id) {
-            //    if (!boxInstances[$attrs.id]) {
-            //        elementScope = $scope.$new();
-            //        element = $compile("<" + $attrs.content + "/>")(elementScope);
-            //        boxInstances[$attrs.id] = {
-            //            element: element,
-            //            scope: elementScope
-            //        };
-            //    }
-            //    else {
-            //        elementScope = boxInstances[$attrs.id].scope;
-            //        element = boxInstances[$attrs.id].element;
-            //    }
-            //}
-            //else {
-            //    console.error("Box has no id!");
-            //}
-
-            //$element.children().append(element);
         }
     };
 });

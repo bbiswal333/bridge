@@ -3,7 +3,10 @@
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
 	
         JiraBox.getIssuesforQuery(JiraQuery, $scope);
-        $scope.$watch('jiraData', function () { updateJiraChart($scope); });
+        $scope.$watch('jiraData', function () {
+            updateJiraChart($scope);
+            $scope.initialized = true;
+        });
 
     }];
 

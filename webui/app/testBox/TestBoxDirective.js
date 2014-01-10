@@ -1,7 +1,7 @@
 ﻿bridgeApp.directive('testbox', function () {
 
     var directiveController = ['$scope', function ($scope) {
-
+		$scope.initilized = true;
     }];
 
     return {
