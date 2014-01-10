@@ -25,12 +25,17 @@ var initializationInterval = setInterval(function () {
 }, 100);
 
 function hideLoadingAnimation() {
-    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.9; }, 50);
+    window.setTimeout(function() { document.getElementById("spinner").parentNode.removeChild(document.getElementById("spinner")); }, 50);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.9; },  50);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.bottom = "10%"; }, 50);
     window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.7; }, 100);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.bottom = "30%"; },100);
     window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.5; }, 150);
-    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.4; }, 200);
-    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.3; }, 250);
-    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.1; }, 300);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.bottom = "50%"; },150);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.3; }, 200);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.bottom = "70%"; },200);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.opacity = 0.1; }, 250);
+    window.setTimeout(function() { document.getElementById("loadingAnimation").style.bottom = "90%"; },250);
     window.setTimeout(function() { document.getElementById("loadingAnimation").parentNode.removeChild(document.getElementById("loadingAnimation")); }, 350);
 }
 
