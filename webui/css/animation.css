@@ -48,14 +48,23 @@
 .spinner {
   width: 50px;
   height: 50px;
+  margin-left:auto;
+  margin-right:auto;
   z-index: 1000;
+}
+
+.spinnerTitle {
+    color: #FFFFFF;
+    height: 50px;
+    line-height: 50px;
+    font-size: 24pt;
+    text-align:center;
 }
 
 .cube1, .cube2 {
   background-color: #FFFFFF;
   width: 15px;
   height: 15px;
-  position: absolute;
   top: 0;
   left: 0;
   
