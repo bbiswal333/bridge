@@ -1,6 +1,8 @@
 ﻿bridgeApp.directive('atcbox', function () {
 
     var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', 'atcData', function ($scope, $modal, ATCDataProvider, Config, atcData) {
+        $scope.boxTitle = "ABAP Code Check Results";
+        $scope.boxIcon = '&#xe05e;';
         $scope.atcData = atcData;
 
         $scope.loadData = function () {
@@ -16,7 +18,7 @@
             var chart1 = {};
             chart1.type = "PieChart";
             chart1.displayed = true;
-            chart1.cssStyle = "height:105px; width:100%;";
+            chart1.cssStyle = "height:150px; width:100%;";
             chart1.data = {
                 "cols": [
                     { id: "month", label: "Month", type: "string" },

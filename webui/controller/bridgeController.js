@@ -26,3 +26,14 @@ bridgeApp.config(function($routeProvider, $locationProvider) {
 
 
 var bridgeServices = angular.module('bridgeServices', ['ngResource']);
+
+bridgeApp.filter("decodeIcon",function(){
+    return function (str) {
+        if (str == undefined)
+            return "";
+        var el = document.createElement("div");
+        el.innerHTML = str;
+        str = el.innerText || el.textContent;
+        return str;
+    }
+})

@@ -1,6 +1,7 @@
 ﻿bridgeApp.directive('testbox', function () {
 
     var directiveController = ['$scope', function ($scope) {
+        $scope.boxTitle = "Test Box";
 		$scope.initilized = true;
     }];
 

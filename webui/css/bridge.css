@@ -1,4 +1,19 @@
-﻿body {
+﻿@font-face { 
+font-family:SAP-Icons;
+src: url('https://ld8633.wdf.sap.corp:4308/sap/ui5/1/resources/sap/ui/core/themes/base/fonts/SAP-icons.eot');
+src:local('SAP-Icons'), 
+url('https://ld8633.wdf.sap.corp:4308/sap/ui5/1/resources/sap/ui/core/themes/base/fonts/SAP-icons.ttf') format(TrueType);
+}
+
+@font-face { 
+font-family:Open-Sans;
+src: url('../Libs/open-sans-font/OpenSans-Regular.ttf');
+src:local('Open-Sans'), 
+url('../Libs/open-sans-font/OpenSans-Regular.ttf') format(TrueType);
+}
+
+
+body {
     height: 100%;
     width: 100%;
     font-size: 1em;
@@ -88,7 +103,7 @@
 }
 
 #loadingAnimation {
-    background-color: #0078B9;
+    background-color: rgba(0, 120, 185, 1);
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -101,4 +116,41 @@
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.box-heading
+{
+    position:absolute;
+    left: 30px;
+    right: 25px;
+    top: 20px;
+    display: block;
+    font-family: BentonSans;
+    z-index: 100;
+    color: #707070;
+    border-bottom: 1px solid #CCCCCC;
+    height: 22px;
+}
+
+.box-title
+{
+    display: inline;
+    position: absolute;
+    left: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.box-icon
+{
+    display: inline;
+    font-family: 'SAP-Icons';
+    font-size: 20px;
+    color: #3393D3;
+    position: absolute;
+    right: 0px;
+    bottom: 3px;
 }

@@ -1,7 +1,8 @@
 ﻿bridgeApp.directive('jirabox', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
-	
+        $scope.boxTitle = "Jira";
+
         JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
             updateJiraChart($scope);

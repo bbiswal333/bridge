@@ -68,7 +68,8 @@ bridgeApp.directive('box', function ($compile) {
             }
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
-            $element.children().append(newElement);
+            //$element.children().append(newElement);
+            $element.children().children().children().append(newElement);
 
             if ($attrs.id) {
                 boxInstances[$attrs.id].element = newElement;
