@@ -17,3 +17,11 @@
 ## launch and execute application
 * run `node server/server.js`
 * open `http://localhost:8000`
+
+## debug node server
+* use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
+* install node inspector via `npm install -g node-inspector`
+* start the node server in debug mode `node --debug server/server.js`
+* start node inspector `node-inspector`
+* copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
+* for full documentation and more features (automatically break in first line, attach debugger to an already running server...) see https://github.com/node-inspector/node-inspector
