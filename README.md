@@ -21,3 +21,7 @@
 * start node inspector `node-inspector`
 * copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
 * for full documentation and more features (automatically break in first line, attach debugger to an already running server...) see https://github.com/node-inspector/node-inspector
+
+## auto-restarting node server
+* use nodemon to automatically restart the server whenever a server file was changed: https://github.com/remy/nodemon
+* install via `npm install -g nodemon` and run with `nodemon server/server.js`
