@@ -1,0 +1,6 @@
+{
+  "name": "bridge",
+  "description": "Bridge Application",
+  "version": "0.0.1",
+  "main": "server/server.js"
+}
