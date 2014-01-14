@@ -1,7 +1,7 @@
 {
-  "name": "findcolleagues",
-  "version": "0.0.1",
-  "description": "prototype to find colleagues",
+  "name": "bridge-server",
+  "version": "0.0.2",
+  "description": "brige server running on node.js",
   "dependencies": {
     "express": "express ~3.2.2"}
 }
