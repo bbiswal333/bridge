@@ -27,6 +27,10 @@
 		
         <!-- controller -->
         <script src="controller/bridgeController.js"></script>
+        <script src="controller/bridgeSettingsController.js"></script>
+
+        <!-- service -->
+        <script src="service/bridgeDataService.js"></script>
         
         <!-- control -->
         <script src="control/box/BoxDirective.js"></script>
@@ -54,7 +58,8 @@
         <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">
             <div class="headerline">
-                <div class="headertext">Bridge{{titleExtension}}</div>
+                <span class="headertext">Bridge{{titleExtension}}</span>
+                <span class="settingsIcon" ng-click="settings_click()">&#xe00c;</span>
             </div>
             <div class="animation-container">
                 <div ng-view class="animation-content"></div>
