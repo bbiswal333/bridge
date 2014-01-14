@@ -157,5 +157,8 @@ var launch = function()
 }
 
 //run and export module
-launch();
 exports.run = launch;
+if(require.main === module) { launch(); }
+
+
+
