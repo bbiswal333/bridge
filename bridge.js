@@ -1,5 +1,5 @@
 var bridge 	    = {};
-var bridge_repo = "git://github.wdf.sap.corp/Tools/bridge.git";
+var bridge_repo = 'https://github.wdf.sap.corp/_nodeload/Tools/bridge/tar.gz/master';
 var path 		= require('path');
 var exec        = require('child_process').exec;
 
@@ -7,8 +7,8 @@ var bridge_path = path.join(__dirname, '/');
 
 try{
 	bridge = require('bridge');
-	console.log("updating bridge..");
-	exec("cd " + bridge_path + " && npm update " + bridge_repo, function (error, stdout, stderr) {
+	console.log('updating bridge..');
+	exec('cd ' + bridge_path + ' && npm update ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null --tmp="' + bridge_path + '"', function (error, stdout, stderr) {
 		console.log("bridge updated..");
 		bridge.run();
 	});
@@ -16,7 +16,7 @@ try{
 catch(err){
 	console.log("installing bridge..");
 
-	exec("cd " + bridge_path + " && npm install " + bridge_repo, function (error, stdout, stderr) {
+	exec('cd ' + bridge_path + ' && npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null --tmp="' + bridge_path + '"', function (error, stdout, stderr) {
 		console.log("bridge installed..");
 		bridge = require('bridge');
 		bridge.run();
