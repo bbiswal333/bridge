@@ -1,2 +1,6 @@
-﻿<div>Settings Page</div>
+﻿<div ng-repeat="scope in settingScreens track by scope.settings.id" 
+    style="margin-top:10px; border-bottom-color: #0078B9; padding-bottom:10px; border-bottom-style:solid; border-bottom-width:3px;">
+    <h6 style="font-size: 14px; font-weight: bold;">{{scope.boxTitle}}</h6>
+    <ng-include src="'app/' + scope.settings.templatePath"/>
+</div>
 

@@ -2,7 +2,13 @@
 
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Test Box";
-		$scope.initilized = true;
+        $scope.initilized = true;
+
+        $scope.settings = {
+            templatePath: "testBox/TestBoxSettingsTemplate.html",
+            controller: {},
+            id: $scope.boxId,
+        };
     }];
 
     return {
