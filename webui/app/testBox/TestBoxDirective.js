@@ -1,4 +1,6 @@
-﻿bridgeApp.directive('testbox', function () {
+﻿var testBoxApp = angular.module('testBoxApp', []);
+
+testBoxApp.directive('testbox', function () {
 
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Test Box";

@@ -93,7 +93,7 @@ Config.prototype.getQueryString = function() {
 	return queryString;
 };
 
-bridgeServices.factory('Config', [
+atcApp.factory('Config', [
   function(){
       var configItem = new ConfigItem();
       configItem.srcSystem = "CI3";
