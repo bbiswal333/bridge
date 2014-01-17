@@ -36,11 +36,6 @@ body {
     overflow: hidden;
 }
 
-.customactive {
-        background-color: #428BCA;
-        color: #ffffff;
-}
-
 .headerline {
     color: #333333;
     text-shadow: 0 1px #ffffff;

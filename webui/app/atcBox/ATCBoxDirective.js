@@ -1,4 +1,6 @@
-﻿bridgeApp.directive('atcbox', function () {
+﻿var atcApp = angular.module('atcApp', []);
+
+atcApp.directive('atcbox', function () {
 
     var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', 'atcData', function ($scope, $modal, ATCDataProvider, Config, atcData) {
         $scope.boxTitle = "ABAP Code Check Results";

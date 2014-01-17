@@ -1,4 +1,4 @@
-﻿bridgeApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'Config', 'ATCDataProvider', 
+﻿atcApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'Config', 'ATCDataProvider',
                         function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, Config, ATCDataProvider) {
     $scope.$parent.titleExtension = " - ATC Details";
 
