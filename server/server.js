@@ -4,6 +4,7 @@ var path        = require('path');
 var url         = require('url');
 var exec        = require('child_process').exec;
 var sso 		= require('./sso.js');
+var fs 			= require("fs");
 var express 	= {};
 
 var launch = function()
@@ -149,6 +150,107 @@ var launch = function()
 					response.send(data);
 				});
 			});
+
+			//ms-exchange calendar data request
+			app.get("/api/calDataSSO", function (request, response) {
+				const SOAP_TEMPLATE_FILE = "ews/exchange_soap_template.txt";
+				const PARAM_NAME_FROM = "from";
+				const PARAM_NAME_TO = "to";
+				const PLACEHOLDER_FROM = "%DATEFROM%";
+				const PLACEHOLDER_TO = "%DATETO%";
+
+				var dateFrom = "";
+				var dateTo = "";
+
+				try {
+					dateFrom = request.query[PARAM_NAME_FROM];
+					dateTo = request.query[PARAM_NAME_TO];
+
+					if (dateFrom == "" || dateTo == "") {
+						throw "empty";
+					}
+				} catch (e) {
+					response.send("Parameters not (correctly) stated.");
+					return;
+				}
+
+				function readSoapTemplate(callback_fn) {
+					var readStream = fs.createReadStream(SOAP_TEMPLATE_FILE);
+					var data = "";
+
+					readStream.setEncoding('utf8');
+					readStream.on('data', function(chunk) {
+					  	data += chunk;
+					});
+					readStream.on("end", function() {
+						callback_fn(data);
+					});
+				}
+
+				function getDataFromExchange(soapString_s, callback_fn) {
+					//Create temporay file for soap-query
+					var filename = "soap_tmp/" + generateUniqueFileName();
+					fs.writeFile(filename, soapString_s, function (err) {
+						if (err) {
+							console.log(err);
+						}
+						else {
+							callExchange(filename);
+						}
+					});
+
+					function callExchange(soapFile_s) {
+						//Determine where to find curl
+						var curlPath = "";
+						if(process.platform == "win32") {
+							curlPath = "curl/curl.exe";
+						}
+						else {
+
+						}
+
+						var cmd = curlPath + ' -d @' + soapFile_s + ' --insecure -H "Content-Type: text/xml; charset=utf-8" --ntlm -u : https://mymailwdf.global.corp.sap/ews/exchange.asmx > ' + soapFile_s + "_answer";
+
+						exec(cmd, function (error, stdout, stderr) {
+							//Read output file of curl
+							var readStream = fs.createReadStream(soapFile_s + "_answer");
+							var data = "";
+
+							readStream.setEncoding('utf8');
+							readStream.on('data', function(chunk) {
+							  	data += chunk;
+							});
+							readStream.on("end", function() {
+								//Delete temporary file
+								fs.unlinkSync(soapFile_s);
+								fs.unlinkSync(soapFile_s + "_answer");
+
+								callback_fn(data);
+							});
+						});
+					}
+
+					function generateUniqueFileName() {
+						var name = "";
+
+						do {
+							name = new Date().getTime() + "_" + Math.round(Math.random() * 100);
+						} while (fs.existsSync("soap_tmp/" + name));
+
+						return name;
+					}
+				}
+
+				readSoapTemplate(function (data) {
+					data = data.replace(PLACEHOLDER_FROM, dateFrom);
+					data = data.replace(PLACEHOLDER_TO, dateTo);
+
+					getDataFromExchange(data, function (ews_xml) {
+						response.setHeader('Content-Type', 'text/plain');
+						response.send(ews_xml);
+					});
+				});
+			});			
 
 			//create local server
 			http.createServer(app).listen(8000);

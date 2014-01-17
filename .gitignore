@@ -173,3 +173,8 @@ $RECYCLE.BIN/
 .DS_Store
 
 bridge.sln
+
+# =========================
+# Ignore cURL
+# =========================
+server/curl/
