@@ -206,7 +206,7 @@ var launch = function()
 							curlPath = "curl/curl.exe";
 						}
 						else {
-
+							curlPath = "curl";
 						}
 
 						var cmd = curlPath + ' -d @' + soapFile_s + ' --insecure -H "Content-Type: text/xml; charset=utf-8" --ntlm -u : https://mymailwdf.global.corp.sap/ews/exchange.asmx > ' + soapFile_s + "_answer";
