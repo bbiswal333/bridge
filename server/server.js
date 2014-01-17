@@ -56,7 +56,7 @@ var launch = function()
 				var data = "";
 
 				//for testing purposes
-				//console.log("https://" + hostname + ":" + port + path);
+				console.log("https://" + hostname + ":" + port + path);
 				
 				var req = https.request(options, function(res) {
 					res.on('data', function(chunk) { data += chunk; });
@@ -143,7 +143,8 @@ var launch = function()
 
 			//jira
 			app.get('/api/jira', function(request, response){
-				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&expand=renderedFields', 'GET', function(data){
+				//callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&expand=renderedFields', 'GET', function(data){
+				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&fields=*none', 'GET', function(data){
 					response.setHeader('Content-Type', 'text/plain');	
 					response.send(data);
 				});
