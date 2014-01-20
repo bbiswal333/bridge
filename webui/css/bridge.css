@@ -33,7 +33,17 @@ body {
     width: 100%;
     background-color: white;
     z-index: 200;
-    overflow: hidden;
+}
+
+.boxLeft{
+ width: 25%;
+ float: left;
+}
+
+.boxRight{
+ width: 75%;
+ float: left;
+
 }
 
 .headerline {

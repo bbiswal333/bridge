@@ -1,0 +1,21 @@
+HTTP/1.1 401 Unauthorized
+Server: Microsoft-IIS/7.5
+Set-Cookie: exchangecookie=9df49eff697b4f6fb3d42f5eb91a12e2; expires=Sat, 17-Jan-2015 16:09:46 GMT; path=/; HttpOnly
+WWW-Authenticate: NTLM TlRMTVNTUAACAAAABgAGADgAAAAGgokCk38dJkOXF0QAAAAAAAAAALgAuAA+AAAABgGxHQAAAA9HTE9CQUwCAAwARwBMAE8AQgBBAEwAAQAWAEQARQBXAEQARgBFAEMAQQBTADEANwAEAB4AZwBsAG8AYgBhAGwALgBjAG8AcgBwAC4AcwBhAHAAAwA2AEQARQBXAEQARgBFAEMAQQBTADEANwAuAGcAbABvAGIAYQBsAC4AYwBvAHIAcAAuAHMAYQBwAAUAHgBnAGwAbwBiAGEAbAAuAGMAbwByAHAALgBzAGEAcAAHAAgA5ROnip4TzwEAAAAA
+WWW-Authenticate: Negotiate
+WWW-Authenticate: Basic realm="mymailwdf.global.corp.sap"
+X-Powered-By: ASP.NET
+Date: Fri, 17 Jan 2014 16:09:46 GMT
+Content-Length: 0
+Set-Cookie: OutlookSession=304616714.20480.0000; path=/
+
+HTTP/1.1 401 Unauthorized
+Server: Microsoft-IIS/7.5
+Set-Cookie: exchangecookie=20a5dbbbd2694d7e8cd97af569963fd1; expires=Sat, 17-Jan-2015 16:09:46 GMT; path=/; HttpOnly
+WWW-Authenticate: Negotiate
+WWW-Authenticate: NTLM
+WWW-Authenticate: Basic realm="mymailwdf.global.corp.sap"
+X-Powered-By: ASP.NET
+Date: Fri, 17 Jan 2014 16:09:46 GMT
+Content-Length: 0
+

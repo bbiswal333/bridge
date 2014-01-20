@@ -145,7 +145,7 @@ var launch = function()
 			//jira
 			app.get('/api/jira', function(request, response){
 				//callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&expand=renderedFields', 'GET', function(data){
-				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&fields=*none', 'GET', function(data){
+				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql), 'GET', function(data){
 					response.setHeader('Content-Type', 'text/plain');	
 					response.send(data);
 				});

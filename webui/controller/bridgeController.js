@@ -5,7 +5,8 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     // Apps
     'testBoxApp',
     'atcApp',
-    'jiraApp']);
+    'jiraApp',
+    'employeeBoxApp']);
 
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', 'bridgeDataService', function Controller($scope, $http, $route, $location, bridgeDataService) {
