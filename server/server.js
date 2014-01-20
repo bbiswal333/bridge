@@ -187,7 +187,7 @@ var launch = function()
 					});
 				}
 
-				function getDataFromExchange(soapString_s, callback_fn) {
+				function getDataFromExchange_Win(soapString_s, callback_fn) {
 					//Create temporay file for soap-query
 					var filename = "soap_tmp/" + generateUniqueFileName();
 					fs.writeFile(filename, soapString_s, function (err) {
@@ -200,21 +200,13 @@ var launch = function()
 					});
 
 					function callExchange(soapFile_s) {
-						//Determine where to find curl
-						var curlPath = "";
-						if(process.platform == "win32") {
-							curlPath = "curl/curl.exe";
-						}
-						else {
-
-						}
-
+						var data = "";
 						var cmd = curlPath + ' -d @' + soapFile_s + ' --insecure -H "Content-Type: text/xml; charset=utf-8" --ntlm -u : https://mymailwdf.global.corp.sap/ews/exchange.asmx > ' + soapFile_s + "_answer";
 
 						exec(cmd, function (error, stdout, stderr) {
 							//Read output file of curl
 							var readStream = fs.createReadStream(soapFile_s + "_answer");
-							var data = "";
+							
 
 							readStream.setEncoding('utf8');
 							readStream.on('data', function(chunk) {
@@ -227,7 +219,7 @@ var launch = function()
 
 								callback_fn(data);
 							});
-						});
+						});		
 					}
 
 					function generateUniqueFileName() {
@@ -241,14 +233,74 @@ var launch = function()
 					}
 				}
 
+				function getDataFromExchange_Mac(soapString_s, callback_fn) {
+					var auth; //For encoding to Base64 we could use the Google Crypto Lib (https://code.google.com/p/crypto-js/, see "Encoders" at the end of the page)
+								//base64(user:pass)
+
+					var ews_url = url.parse("https://mymailwdf.global.corp.sap/ews/exchange.asmx");
+
+					console.log(auth);
+
+					var options = {
+						hostname: ews_url.hostname,
+						port: ews_url.port,
+						path: ews_url.path,
+						method: "POST",
+						pfx: SSOCertificate,
+						passphrase: SSOCertificatePassphrase,
+						rejectUnauthorized: false,
+						headers: 	{
+							"Authorization" : "Basic " + auth,
+							'Content-Type': 'text/xml; charset=UTF-8',
+		    				'Content-Length': (soapString_s != undefined ? soapString_s.length : 0)
+						}
+					};			
+
+					var data = "";
+
+					var req = https.request(options, function(res) {
+						res.on('data', function(chunk) { 
+							data += chunk; 
+						});
+						res.on('end', function() {
+							if (data == "") {
+								console.log(res.headers);
+								callback_fn("Seems your credentials were wrong. Please try again!");
+							}
+							else {
+								callback_fn(data);
+							}
+						});
+					});
+
+					if (soapString_s != undefined) {
+						req.write(soapString_s);
+					}
+					req.end();
+					req.on('error', function(e) {
+						console.error(e);
+						callback_fn("An error occured during request to Exchange server.");
+					});							
+				}
+
+
 				readSoapTemplate(function (data) {
 					data = data.replace(PLACEHOLDER_FROM, dateFrom);
 					data = data.replace(PLACEHOLDER_TO, dateTo);
 
-					getDataFromExchange(data, function (ews_xml) {
-						response.setHeader('Content-Type', 'text/plain');
-						response.send(ews_xml);
-					});
+					if (process.platform == "win32") {
+						//Windows strategy: Writing SOAP in file, calling cURL with this file as parameter, let cURL write its output to temporary file, then read in this temporary file and send its content back to the user
+						getDataFromExchange_Win(data, function (ews_xml) {
+							response.setHeader('Content-Type', 'text/plain');
+							response.send(ews_xml);
+						});
+					}
+					else {
+						getDataFromExchange_Mac(data, function (ews_xml) {
+							response.setHeader('Content-Type', 'text/plain');
+							response.send(ews_xml);
+						});						
+					}
 				});
 			});			
 
