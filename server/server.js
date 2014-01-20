@@ -34,7 +34,7 @@ var launch = function()
 
 	//run server with sso handling
 	function run(){
-		sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
+		sso.execute( function(user)
 		{
 			var app = express();
 
@@ -49,8 +49,8 @@ var launch = function()
 					port: port,
 					path: path,
 					method: method,
-					pfx: SSOCertificate,
-					passphrase: SSOCertificatePassphrase,
+					pfx: user.SSOCertificate,
+					passphrase: user.SSOCertificatePassphrase,
 					rejectUnauthorized: false
 				};
 
@@ -166,7 +166,7 @@ var launch = function()
 					dateFrom = request.query[PARAM_NAME_FROM];
 					dateTo = request.query[PARAM_NAME_TO];
 
-					if (dateFrom == "" || dateTo == "") {
+					if (dateFrom == undefined || dateTo == undefined) {
 						throw "empty";
 					}
 				} catch (e) {
@@ -234,37 +234,40 @@ var launch = function()
 				}
 
 				function getDataFromExchange_Mac(soapString_s, callback_fn) {
-					var auth; //For encoding to Base64 we could use the Google Crypto Lib (https://code.google.com/p/crypto-js/, see "Encoders" at the end of the page)
-								//base64(user:pass)
+					var userd = user.id.toLowerCase();
+					console.log(userd);	
+					var auth = new Buffer(user.id.toLowerCase() + '@sap.corp:' + user.pass).toString('base64');
+					var ews_url = url.parse("https://mymailwdf.global.corp.sap:443/ews/exchange.asmx");
 
-					var ews_url = url.parse("https://mymailwdf.global.corp.sap/ews/exchange.asmx");
-
-					console.log(auth);
+					//console.log(auth);
 
 					var options = {
 						hostname: ews_url.hostname,
 						port: ews_url.port,
 						path: ews_url.path,
 						method: "POST",
-						pfx: SSOCertificate,
-						passphrase: SSOCertificatePassphrase,
+						pfx: user.SSOCertificate,
+						passphrase: user.SSOCertificatePassphrase,
 						rejectUnauthorized: false,
 						headers: 	{
 							"Authorization" : "Basic " + auth,
 							'Content-Type': 'text/xml; charset=UTF-8',
 		    				'Content-Length': (soapString_s != undefined ? soapString_s.length : 0)
 						}
-					};			
+					};	
+
+					console.log(options);		
 
 					var data = "";
 
 					var req = https.request(options, function(res) {
 						res.on('data', function(chunk) { 
-							data += chunk; 
+							data += chunk;
 						});
 						res.on('end', function() {
 							if (data == "") {
 								console.log(res.headers);
+								
 								callback_fn("Seems your credentials were wrong. Please try again!");
 							}
 							else {
