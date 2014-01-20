@@ -8,7 +8,7 @@ atcApp.directive('atcbox', function () {
 
         $scope.settings = {
             templatePath: "atcBox/ATCBoxSettingsTemplate.html",
-            controller: {},
+            controller: atcApp.settingsController,
             id: $scope.boxId,
         };
 
