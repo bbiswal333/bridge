@@ -17,5 +17,9 @@
 	  </ul>
 </script>
 
-
-<input class="form-control" type="text" ng-model="selectedUser" typeahead-template-url="itemTemplate.html" typeahead="employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />
+<!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
+<input ng-if="setRequired" required class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />
+    
+<input ng-if="!setRequired" class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />    

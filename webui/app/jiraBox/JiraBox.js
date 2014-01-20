@@ -64,12 +64,12 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
         });
 };
 
-bridgeServices.factory('JiraBox', ['$http',
+jiraApp.factory('JiraBox', ['$http',
    function ($http) {
        return new JiraBox($http);
    }]);
 
-bridgeServices.factory('JiraQuery', [
+jiraApp.factory('JiraQuery', [
     function (){
         return 'id in projectRankedIssues(I2MASEDEV) order by "Project Rank" ASC, Key ASC';
     }]);

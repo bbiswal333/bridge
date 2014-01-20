@@ -1,4 +1,11 @@
-var bridgeApp = angular.module('bridgeApp', ['bridgeServices', 'ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable']);
+var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable',
+    // Own modules
+    'bridgeServices',
+    'employeeSearch',
+    // Apps
+    'testBoxApp',
+    'atcApp',
+    'jiraApp']);
 
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', 'bridgeDataService', function Controller($scope, $http, $route, $location, bridgeDataService) {

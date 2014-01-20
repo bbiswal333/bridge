@@ -11,6 +11,7 @@
 
             if ($attrs.id) {
                 if (!bridgeDataService.boxInstances[$attrs.id]) {
+                    $scope.boxId = $attrs.id;
                     bridgeDataService.boxInstances[$attrs.id] = {
                         scope: $scope,
                         initializationTries: 0,

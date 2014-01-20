@@ -1,4 +1,6 @@
-﻿bridgeApp.directive('jirabox', function () {
+﻿var jiraApp = angular.module('jiraApp', []);
+
+jiraApp.directive('jirabox', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
         $scope.boxTitle = "Jira";

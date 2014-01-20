@@ -1,8 +1,17 @@
-﻿bridgeApp.directive('atcbox', function () {
+﻿var atcApp = angular.module('atcApp', []);
+
+atcApp.directive('atcbox', function () {
 
     var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', 'atcData', function ($scope, $modal, ATCDataProvider, Config, atcData) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
+
+        $scope.settings = {
+            templatePath: "atcBox/ATCBoxSettingsTemplate.html",
+            controller: {},
+            id: $scope.boxId,
+        };
+
         $scope.atcData = atcData;
 
         $scope.loadData = function () {
