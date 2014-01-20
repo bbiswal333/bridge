@@ -102,3 +102,41 @@
     -webkit-transform: rotate(-360deg);
   }
 }
+
+.loading-animation.ng-leave {
+  -webkit-animation: 0.25s move-out;
+  -moz-animation: 0.25s move-out;
+  -o-animation: 0.25s move-out;
+  animation: 0.25s move-out;
+}
+ 
+@keyframes move-out {
+  from { 
+      opacity: 1;
+      bottom: 10%;
+  }
+  to { 
+      opacity: 0;
+      bottom: 100%;
+  }
+}
+@-moz-keyframes move-out {
+  from { 
+      opacity: 1;
+      bottom: 10%;
+  }
+  to { 
+      opacity: 0;
+      bottom: 100%;
+  }
+}
+@-webkit-keyframes move-out {
+  from { 
+      opacity: 1;
+      bottom: 10%;
+  }
+  to { 
+      opacity: 0;
+      bottom: 100%;
+  }
+}

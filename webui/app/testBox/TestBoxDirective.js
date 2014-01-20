@@ -8,7 +8,7 @@ testBoxApp.directive('testbox', function () {
 
         $scope.settings = {
             templatePath: "testBox/TestBoxSettingsTemplate.html",
-            controller: {},
+            controller: undefined,
             id: $scope.boxId,
         };
     }];

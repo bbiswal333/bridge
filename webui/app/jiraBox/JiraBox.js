@@ -58,10 +58,11 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
           }
 
           task.colorClass = 'taskColor_' + colorIndex;
-        });        
+        });
+
     }).error(function(data, status, headers, config) {
         scope.jiraData = [];
-        });
+    });
 };
 
 jiraApp.factory('JiraBox', ['$http',
