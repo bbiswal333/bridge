@@ -44,13 +44,19 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 
 			if (process.platform == "win32") {
 				//Windows strategy: Writing SOAP in file, calling cURL with this file as parameter, let cURL write its output to temporary file, then read in this temporary file and send its content back to the user
+				var start = process.hrtime();
 				getDataFromExchange_Win(data, function (ews_xml) {
+					var diff = process.hrtime(start);		
+					console.log("WIN strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
 					callback_fn(ews_xml);
 				});
 			}
 			else if (process.platform == "darwin") { //Mac OS X
 				//Mac OS X strategy: Fetching data directly via https and Basic Authentification. Therefore SAP-User and password is retrived from keychain and encoded with Base64
-				getDataFromExchange_Mac(data, function (ews_xml) {		
+				var start = process.hrtime();
+				getDataFromExchange_Mac(data, function (ews_xml) {
+					var diff = process.hrtime(start);		
+					console.log("MAC strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
 					callback_fn(ews_xml);
 				});						
 			}
