@@ -9,7 +9,7 @@ var JiraBox = function(http){
 JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.getIssuesforQuery = function (query, scope) {
-    this.http.get('http://localhost:8000/api/jira?jql=' + encodeURI(query)).success(function(data, status, headers, config) {
+    this.http.get('http://localhost:8000/api/get?url=' + encodeURI('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + query)).success(function(data, status, headers, config) {
         scope.jiraData = [];
 
         angular.forEach(data.issues, function(issue) {

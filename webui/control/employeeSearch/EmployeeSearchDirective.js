@@ -8,7 +8,8 @@ employeeSearch.directive('employeeSearch', function () {
         }
 
         $scope.doSearch = function (username) {
-            return $http.get('http://localhost:8000/api/employee?maxrow=10&query=' + encodeURI(username)).then(function (response) {
+            return $http.get('http://localhost:8000/api/get?url='
+                + encodeURIComponent('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=20&query=' + username)).then(function (response) {
                 return response.data.DATA;
             });
         };
