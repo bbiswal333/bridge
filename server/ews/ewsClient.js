@@ -6,7 +6,7 @@ var exec        = require('child_process').exec;
 var fs 		= require("fs");
 
 exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) { 
-	const SOAP_TEMPLATE_FILE = "./ews/exchange_soap_template.xml";
+	const SOAP_TEMPLATE_FILE = path.join(__dirname, "\\") + "exchange_soap_template.xml";
 	const PARAM_NAME_FROM = "from";
 	const PARAM_NAME_TO = "to";
 	const PLACEHOLDER_FROM = "%DATEFROM%";
