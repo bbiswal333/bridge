@@ -17,11 +17,6 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
         $location.path('/settings');
     };
 
-    $scope.$on('$routeChangeSuccess', function (scope, next, current) {
-        if (next.loadedTemplateUrl != "view/overview.html")
-            $scope.showLoadingAnimation = false;
-    });
-
     var initializationInterval = setInterval(function () {
         var numberOfBoxInstances = 0;
         var numberOfBoxInstancesWhichDontNeedToBeInstantiated = 0;
