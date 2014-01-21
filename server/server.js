@@ -159,14 +159,6 @@ var launch = function()
 
 				try {
 					var ews = new EWSClient(request.query.from, request.query.to, EWS_URI); //Such horrible scope-mess only works in JavaScript!!!
-
-					dateFrom = request.query[PARAM_NAME_FROM];
-					dateTo = request.query[PARAM_NAME_TO];
-
-					if (dateFrom == undefined || dateTo == undefined) {
-						throw "empty";
-					}
-
 				} catch (e) {
 					var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
 					console.log(ans);
@@ -185,6 +177,7 @@ var launch = function()
 						response.send(res);
 					}
 				});
+			
 			});
 
 			//create local server
