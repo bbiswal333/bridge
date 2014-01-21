@@ -170,7 +170,7 @@ var launch = function()
 
 				ews.doRequest(function (res) {
 					if (res instanceof Error) {
-						var ans = "EWS-Request resulted in an error:\n" + res.toString();
+						var ans = "EWS-request resulted in an error:\n" + res.toString();
 						console.log(ans);
 						response.send(ans);
 					}
