@@ -9,7 +9,7 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeBoxApp']);
 
 
-bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', 'bridgeDataService', function Controller($scope, $http, $route, $location, bridgeDataService) {
+bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$interval', 'bridgeDataService', function Controller($scope, $http, $route, $location, $interval, bridgeDataService) {
     if ($location.path() == "" || $location.path() == "/")
         $scope.showLoadingAnimation = true;
 
@@ -17,7 +17,7 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
         $location.path('/settings');
     };
 
-    var initializationInterval = setInterval(function () {
+    var initializationInterval = $interval(function () {
         var numberOfBoxInstances = 0;
         var numberOfBoxInstancesWhichDontNeedToBeInstantiated = 0;
         for (var box in bridgeDataService.boxInstances) {
@@ -35,9 +35,10 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
         }
 
         if (numberOfBoxInstances == numberOfBoxInstancesWhichDontNeedToBeInstantiated && numberOfBoxInstances != 0) {
-            clearInterval(initializationInterval);
             createRefreshInterval();
             $scope.showLoadingAnimation = false;
+            $interval.cancel(initializationInterval);
+            initializationInterval = undefined;
         }
     }, 100);
 
