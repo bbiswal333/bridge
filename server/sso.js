@@ -155,8 +155,8 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     					exec(deleteCommand, function (error, stdout, stderr) { });	
 
                         exec("security find-generic-password -a " + identity.certificate.user.toLowerCase() + " -w", function(error, stdout, stderr) {
-
-                            user.pass = stdout;
+                            var lines = stdout.toString().split('\n');
+                            user.pass = lines[0];
                             callback(user);
                         });      
         		    });

@@ -236,10 +236,11 @@ var launch = function()
 				function getDataFromExchange_Mac(soapString_s, callback_fn) {
 					var userd = user.id.toLowerCase();
 					console.log(userd);	
-					var auth = new Buffer(user.id.toLowerCase() + '@sap.corp:' + user.pass).toString('base64');
+
+					var auth = new Buffer('SAP_ALL\\' + user.id + ':' + user.pass).toString('base64');
 					var ews_url = url.parse("https://mymailwdf.global.corp.sap:443/ews/exchange.asmx");
 
-					//console.log(auth);
+					console.log(auth);
 
 					var options = {
 						hostname: ews_url.hostname,
