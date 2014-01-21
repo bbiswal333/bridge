@@ -1,8 +1,18 @@
 ﻿<div>
-    <table ng-table class="table">
-        <tr ng-repeat="configItem in config">
+    <table ng-table="tableParams" class="table">
+        <tr ng-repeat="configItem in $data">
             <td data-title="'Source System'">{{configItem.srcSystem}}</td>
-            <td data-title="'Dev Class'">{{configItem.devClass}}</td>
+            <td data-title="'Package'">{{configItem.devClass}}</td>
+            <td data-title="'Object Responsible'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'Component'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'Display Suppressed'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'Ignore Completed'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'Priorities'">
+            	<span>
+            		<input type="checkbox" ng-model="">Prio1
+            		<input type="checkbox" ng-model="">Prio2
+   				</span>
+            </td>
         </tr>
     </table>
 </div>
