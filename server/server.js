@@ -36,7 +36,7 @@ var launch = function()
 
 	//run server with sso handling
 	function run(){
-		sso.execute( function(SSOCertificatePassphrase, SSOCertificate)
+		sso.execute( function(user)
 		{
 			var app = express();
 
@@ -51,8 +51,8 @@ var launch = function()
 					port: port,
 					path: path,
 					method: method,
-					pfx: SSOCertificate,
-					passphrase: SSOCertificatePassphrase,
+					pfx: user.SSOCertificate,
+					passphrase: user.SSOCertificatePassphrase,
 					rejectUnauthorized: false
 				};
 
@@ -147,7 +147,7 @@ var launch = function()
 			//jira
 			app.get('/api/jira', function(request, response){
 				//callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&expand=renderedFields', 'GET', function(data){
-				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql) + '&fields=*none', 'GET', function(data){
+				callBackend('sapjira.wdf.sap.corp', 443, '/rest/api/latest/search?jql=' + encodeURI(request.query.jql), 'GET', function(data){
 					response.setHeader('Content-Type', 'text/plain');	
 					response.send(data);
 				});
@@ -159,6 +159,14 @@ var launch = function()
 
 				try {
 					var ews = new EWSClient(request.query.from, request.query.to, EWS_URI); //Such horrible scope-mess only works in JavaScript!!!
+
+					dateFrom = request.query[PARAM_NAME_FROM];
+					dateTo = request.query[PARAM_NAME_TO];
+
+					if (dateFrom == undefined || dateTo == undefined) {
+						throw "empty";
+					}
+
 				} catch (e) {
 					var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
 					console.log(ans);

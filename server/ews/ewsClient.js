@@ -122,8 +122,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 	}
 
 	function getDataFromExchange_Mac(soapString_s, callback_fn) {
-		var auth; //For encoding to Base64 we could use the Google Crypto Lib (https://code.google.com/p/crypto-js/, see "Encoders" at the end of the page)
-					//base64(user:pass)
+		var auth = new Buffer('SAP_ALL\\' + user.id + ':' + user.pass).toString('base64');
 
 		var ews_url = url.parse(exchangeURI);
 

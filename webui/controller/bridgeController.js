@@ -5,10 +5,14 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     // Apps
     'testBoxApp',
     'atcApp',
-    'jiraApp']);
+    'jiraApp',
+    'employeeBoxApp']);
 
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', 'bridgeDataService', function Controller($scope, $http, $route, $location, bridgeDataService) {
+    if ($location.path() == "" || $location.path() == "/")
+        $scope.showLoadingAnimation = true;
+
     $scope.settings_click = function () {
         $location.path('/settings');
     };
@@ -33,24 +37,9 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
         if (numberOfBoxInstances == numberOfBoxInstancesWhichDontNeedToBeInstantiated && numberOfBoxInstances != 0) {
             clearInterval(initializationInterval);
             createRefreshInterval();
-            hideLoadingAnimation();
+            $scope.showLoadingAnimation = false;
         }
     }, 100);
-
-    var hideLoadingAnimation = function() {
-        window.setTimeout(function () { document.getElementById("spinner").parentNode.removeChild(document.getElementById("spinner")); }, 50);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.opacity = 0.9; }, 50);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.bottom = "10%"; }, 50);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.opacity = 0.7; }, 100);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.bottom = "30%"; }, 100);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.opacity = 0.5; }, 150);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.bottom = "50%"; }, 150);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.opacity = 0.3; }, 200);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.bottom = "70%"; }, 200);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.opacity = 0.1; }, 250);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").style.bottom = "90%"; }, 250);
-        window.setTimeout(function () { document.getElementById("loadingAnimation").parentNode.removeChild(document.getElementById("loadingAnimation")); }, 350);
-    }
 
     var createRefreshInterval = function() {
         setInterval(function () {
@@ -59,7 +48,7 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
                     bridgeDataService.boxInstances[box].scope.loadData();
                 }
             }
-        }, 5000);
+        }, 30000);
     }
 }]);
 
@@ -69,8 +58,11 @@ bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '
 }]);
 
 
-bridgeApp.config(function($routeProvider, $locationProvider) {
-	$routeProvider.when("/", { templateUrl: 'view/overview.html', controller: 'bridgeControllerOverview' });
+bridgeApp.config(function ($routeProvider, $locationProvider) {
+    $routeProvider.when("/", {
+        templateUrl: 'view/overview.html',
+        controller: 'bridgeControllerOverview',
+    });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
     $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });

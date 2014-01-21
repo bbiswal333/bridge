@@ -1,17 +1,9 @@
 ﻿@font-face { 
-font-family:SAP-Icons;
-src: url('https://ld8633.wdf.sap.corp:4308/sap/ui5/1/resources/sap/ui/core/themes/base/fonts/SAP-icons.eot');
-src:local('SAP-Icons'), 
-url('https://ld8633.wdf.sap.corp:4308/sap/ui5/1/resources/sap/ui/core/themes/base/fonts/SAP-icons.ttf') format(TrueType);
+    font-family:SAP-Icons;
+    src: url('../lib/ui5-fonts-140120/SAP-icons.eot');
+    src:local('SAP-Icons'), 
+    url('../lib/ui5-fonts-140120/SAP-icons.ttf') format(TrueType);
 }
-
-@font-face { 
-font-family:Open-Sans;
-src: url('../Libs/open-sans-font/OpenSans-Regular.ttf');
-src:local('Open-Sans'), 
-url('../Libs/open-sans-font/OpenSans-Regular.ttf') format(TrueType);
-}
-
 
 body {
     height: 100%;
@@ -33,7 +25,17 @@ body {
     width: 100%;
     background-color: white;
     z-index: 200;
-    overflow: hidden;
+}
+
+.boxLeft{
+ width: 25%;
+ float: left;
+}
+
+.boxRight{
+ width: 75%;
+ float: left;
+
 }
 
 .headerline {
