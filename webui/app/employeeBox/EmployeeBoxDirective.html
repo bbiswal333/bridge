@@ -1,9 +1,11 @@
 <div class="boxLeft">
-	<img ng-if="selectedEmployee != undefined" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>
+	<img ng-if="selectedEmployee == undefined || selectedEmployee.BNAME == undefined" ng-src="img/avatar_default.jpg"></img>
+	<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>
 </div>
 <div class="boxRight">
 	<employee-search selected-employee="selectedEmployee" placeholder="'Name...'" required="false"></employee-search>
-	{{selectedEmployee}}
+	Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
+	Cost Center: {{selectedEmployee.KOSTX}}
 <div>
 
   
