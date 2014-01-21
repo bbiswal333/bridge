@@ -19,6 +19,8 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 	var dateTo = dateTo_s;
 	var exchangeURI = exchangeURI_s; 
 
+	var soapTmpPath = path.join(__dirname, "\\") + "soap_tmp";
+
 	if (dateFrom == undefined || dateTo == undefined) {
 		throw new Error("dateFrom_s and dateTo_s must not be undefined.");
 	}
@@ -73,7 +75,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 
 	function getDataFromExchange_Win(soapString_s, callback_fn) {
 		//Create temporay file for soap-query
-		var filename = "soap_tmp/" + generateUniqueFileName();
+		var filename = soapTmpPath + generateUniqueFileName();
 		fs.writeFile(filename, soapString_s, function (err) {
 			if (err) {
 				console.log(err);
@@ -108,11 +110,12 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 		}
 
 		function generateUniqueFileName() {
+			
 			var name = "";
 
 			do {
 				name = new Date().getTime() + "_" + Math.round(Math.random() * 100);
-			} while (fs.existsSync("soap_tmp/" + name));
+			} while (fs.existsSync(soapTmpPath + name));
 
 			return name;
 		}
