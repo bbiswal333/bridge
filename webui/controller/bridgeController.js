@@ -48,7 +48,7 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
                     bridgeDataService.boxInstances[box].scope.loadData();
                 }
             }
-        }, 5000);
+        }, 30000);
     }
 }]);
 
