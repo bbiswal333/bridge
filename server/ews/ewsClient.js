@@ -5,8 +5,8 @@ var url         = require('url');
 var exec        = require('child_process').exec;
 var fs 		= require("fs");
 
-exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) { 
-	const SOAP_TEMPLATE_FILE = "./ews/exchange_soap_template.txt";
+exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) { 
+	const SOAP_TEMPLATE_FILE = "./ews/exchange_soap_template.xml";
 	const PARAM_NAME_FROM = "from";
 	const PARAM_NAME_TO = "to";
 	const PLACEHOLDER_FROM = "%DATEFROM%";
@@ -18,8 +18,9 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 	var dateFrom = dateFrom_s;
 	var dateTo = dateTo_s;
 	var exchangeURI = exchangeURI_s; 
+	var user = paramDefault(user_o, null);
 
-	var soapTmpPath = path.join(__dirname, "\\") + "soap_tmp";
+	var soapTmpPath = path.join(__dirname, "\\");
 
 	if (dateFrom == undefined || dateTo == undefined) {
 		throw new Error("dateFrom_s and dateTo_s must not be undefined.");
@@ -133,8 +134,8 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 			port: ews_url.port,
 			path: ews_url.path,
 			method: "POST",
-			pfx: SSOCertificate,
-			passphrase: SSOCertificatePassphrase,
+			pfx: user.SSOCertificate,
+			passphrase: user.SSOCertificatePassphrase,
 			rejectUnauthorized: false,
 			headers: 	{
 				"Authorization" : "Basic " + auth,
@@ -170,3 +171,11 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s) {
 		});							
 	}	
 };
+
+function paramDefault(thing_o, def_o) {
+	try {
+		return (thing_o != undefined ? thing_o : def_o);
+	} catch (e) {
+		return def_o;
+	}
+}

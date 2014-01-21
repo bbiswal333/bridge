@@ -157,8 +157,9 @@ var launch = function()
 			app.get("/api/calDataSSO", function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');
 
+				var ews = undefined;
 				try {
-					var ews = new EWSClient(request.query.from, request.query.to, EWS_URI); //Such horrible scope-mess only works in JavaScript!!!
+					ews = new EWSClient(request.query.from, request.query.to, EWS_URI, user);
 				} catch (e) {
 					var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
 					console.log(ans);
