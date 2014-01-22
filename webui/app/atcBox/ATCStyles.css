@@ -1,0 +1,16 @@
+﻿.atcConfigForm span {
+    float: left;
+    width: 150px;
+}
+
+.atcConfigForm input[type=text] {
+    width: 200px;
+}
+
+.atcFormMarginBottom {
+    margin-bottom: 5px;
+}
+
+.atcFormMarginRigth {
+    margin-bottom: 5px;
+}

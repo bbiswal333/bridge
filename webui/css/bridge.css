@@ -57,6 +57,13 @@ body {
 	padding-left: 10px;
 }
 
+.sapIcon{
+    font-family: SAP-Icons;
+    padding-right: 13px;
+    padding-left: 13px;
+    vertical-align: middle;
+}
+
 .settingsIcon 
 {
     font-family: 'SAP-Icons';

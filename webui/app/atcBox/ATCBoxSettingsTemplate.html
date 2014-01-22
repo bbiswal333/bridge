@@ -1,18 +1,71 @@
 ﻿<div>
-    <table ng-table="tableParams" class="table">
-        <tr ng-repeat="configItem in $data">
+    <table ng-table="tableParams" class="table" style="text-align: center;">
+        <tr ng-repeat="configItem in $data" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false"
+            style="height:50px">
             <td data-title="'Source System'">{{configItem.srcSystem}}</td>
             <td data-title="'Package'">{{configItem.devClass}}</td>
             <td data-title="'Object Responsible'">{{configItem.tadirResponsible}}</td>
-            <td data-title="'Component'">{{configItem.tadirResponsible}}</td>
-            <td data-title="'Display Suppressed'">{{configItem.tadirResponsible}}</td>
-            <td data-title="'Ignore Completed'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'AKH Component'">{{configItem.tadirResponsible}}</td>
+            <td data-title="'Display Suppressed'">
+                <span>
+            		<input type="checkbox" ng-model="configItem.showSuppressed" disabled>
+                </span>
+            </td>
+            <td data-title="'Ignore Completed'">
+                <span>
+            		<input type="checkbox" ng-model="configItem.onlyInProcess" disabled>
+                </span>
+            </td>
             <td data-title="'Priorities'">
             	<span>
-            		<input type="checkbox" ng-model="">Prio1
-            		<input type="checkbox" ng-model="">Prio2
+            		<input type="checkbox" ng-model="configItem.displayPrio1" disabled> Prio 1
+            		<input type="checkbox" ng-model="configItem.displayPrio2" disabled> Prio 2
+            		<input type="checkbox" ng-model="configItem.displayPrio3" disabled> Prio 3
+            		<input type="checkbox" ng-model="configItem.displayPrio4" disabled> Prio 4
    				</span>
+            </td>
+            <td data-title="'Functions'" style="width:150px">
+                <button style="width:60px; height:25px" ng-show="isMouseOverRow" ng-click="remove_click(configItem)">Remove</button>
             </td>
         </tr>
     </table>
+
+    <form name="newConfigItemForm">
+        <div style="font-weight:bold; margin-top: 10px; margin-bottom: 20px">
+            <span class="sapIcon">&#xe058;</span> 
+            <span>Add New Configuration</span>
+        </div>
+        <div class="atcConfigForm">
+            <div class="atcFormMarginBottom">
+                <span>Source System</span>
+                <input type="text" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
+            </div>
+            <div class="atcFormMarginBottom">
+                <span>Package</span>
+                <input type="text" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
+            </div>
+            <div class="atcFormMarginBottom">
+                <span>Object Responsible</span>
+                <input type="text" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/>
+            </div>
+            <div class="atcFormMarginBottom">
+                <span>AKH Component</span>
+                <input type="text" ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+            </div>
+            <div class="atcFormMarginBottom">
+                <input type="checkbox" ng-model="currentConfigValues.showSuppressed"> Display Suppressed
+            </div>
+            <div class="atcFormMarginBottom">
+                <input type="checkbox" ng-model="currentConfigValues.onlyInProcess"> Ignore Completed
+            </div>
+            <div class="atcFormMarginBottom">
+            	<input type="checkbox" ng-model="currentConfigValues.displayPrio1"> Prio 1
+            	<input type="checkbox" ng-model="currentConfigValues.displayPrio2"> Prio 2
+            	<input type="checkbox" ng-model="currentConfigValues.displayPrio3"> Prio 3
+            	<input type="checkbox" ng-model="currentConfigValues.displayPrio4"> Prio 4
+            </div>
+
+            <button style="width:50px; height: 30px; margin-top:15px; font-size: 1em;" type="button" class="btn btn-default" title="Add" ng-click="add_click()" >Add</button>
+        </div>
+    </form>
 </div>

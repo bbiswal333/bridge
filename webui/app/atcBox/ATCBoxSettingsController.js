@@ -1,6 +1,26 @@
 ﻿atcApp.settingsController = function ($scope, $filter, ngTableParams, Config) {
     $scope.config = Config;
 
+    $scope.currentConfigValues = new ConfigItem();
+
+    $scope.$watch('config', function () {
+        if ($scope.tableParams.data.length > 0)
+            $scope.tableParams.reload();
+    }, true);
+
+    $scope.add_click = function () {
+        var copiedConfigItem = angular.copy($scope.currentConfigValues);
+        
+        $scope.config.addConfigItem(copiedConfigItem);
+    };
+
+    $scope.remove_click = function (configItem) {
+        var index = $scope.config.configItems.indexOf(configItem);
+        if (index > -1) {
+            $scope.config.configItems.splice(index, 1);
+        }
+    };
+
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10           // count per page
