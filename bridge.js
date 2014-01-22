@@ -8,7 +8,7 @@ var bridge_path = path.join(__dirname, '/');
 try{
 	bridge = require('bridge');
 	console.log('updating bridge..');
-	exec('cd ' + bridge_path + ' && npm update ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+	exec('cd ' + bridge_path + ' && npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
 		console.log("bridge updated..");
 		bridge.run();
 	});
