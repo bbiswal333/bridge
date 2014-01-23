@@ -69,6 +69,7 @@ body {
     font-size: 14px;
     border-top: 1px solid #ffffff;
     background: rgba(255,255,255,0.9);
+    border-bottom: 1px solid rgb(231, 231, 231);
 }
 
 .viewswitch {
