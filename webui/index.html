@@ -66,6 +66,17 @@
                 <span class="headertext">Bridge{{titleExtension}}</span>
                 <span class="settingsIcon" ng-click="settings_click()">&#xe00c;</span>
             </div>
+
+            <div id="menu">
+                <div class="viewswitch">
+                    <ul class="mainNav">
+                        <li id="overview-button" ng-click="overview_click()">OVERVIEW</li>
+                        <li id="projects-button" ng-click="projects_click()">PROJECTS</li>
+                    </ul>
+                </div>
+            </div>
+
+
             <div class="animation-container">
                 <div ng-view class="animation-content"></div>
             </div>

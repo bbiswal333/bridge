@@ -57,6 +57,68 @@ body {
 	padding-left: 10px;
 }
 
+#menu{
+    font-family: 'Open Sans', sans-serif;
+    color: #333333;
+    width: 100%;
+    position: relative;
+    z-index: 101;
+    padding-left: 10px;
+    height: 40px;
+    float: left;
+    font-size: 14px;
+    border-top: 1px solid #ffffff;
+    background: rgba(255,255,255,0.9);
+}
+
+.viewswitch {
+    height: 0px;
+    width: 100%;
+    position: relative;
+    top: 1px;
+    left: -20px;
+    z-index: 102;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.mainNav {
+    position: relative;
+    z-index: 1001;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+}
+.mainNav > li {
+    display:inline;
+    color: #6b6b6b;
+    font-size: 14px;
+    font-family: 'Open Sans';
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.mainNav > li.selected{
+    height: 34px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333333;
+    background: url('../img/menuArrow2.png') no-repeat center bottom;
+    background-position-x: 50%;
+    background-position-y: 100%;
+    background-size: initial;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    }
+
 .sapIcon{
     font-family: SAP-Icons;
     padding-right: 13px;

@@ -4,8 +4,9 @@ jiraApp.directive('jirabox', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
         $scope.boxTitle = "Jira";
+        $scope.initialized = true;
 
-        JiraBox.getIssuesforQuery(JiraQuery, $scope);
+        //JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
             updateJiraChart($scope);
             $scope.initialized = true;
