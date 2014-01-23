@@ -56,7 +56,8 @@ var launch = function()
 			        next();
 			    });
 			});
-			app.use(express.bodyParser());
+			//app.use(express.json());
+			//app.use(express.urlencoded());
 
 			//call backends with client certificate
 			function callBackend(hostname, port, path, method, callback, postData){
