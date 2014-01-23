@@ -100,6 +100,12 @@ var launch = function()
 
 			//generic api call GET
 			app.get('/api/get', function(request, response){
+				if (typeof request.query.url == undefined || request.query.url == "") {
+					response.setHeader('Content-Type', 'text/plain');	
+					response.send("Paramter url needs to be set!");
+					return;
+				}
+
 				var service_url = url.parse(request.query.url);				
 				callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function(data){
 					response.setHeader('Content-Type', 'text/plain');	
@@ -109,6 +115,12 @@ var launch = function()
 
 			//generic api call POST
 			app.post("/api/post", function (request, response) {
+				if (typeof request.query.url == "undefined" || request.query.url == "") {
+					response.setHeader('Content-Type', 'text/plain');	
+					response.send("Paramter url needs to be set!");
+					return;
+				}
+
 				var service_url = url.parse(request.query.url);	
 				var postData = request.rawBody;
 
