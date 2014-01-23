@@ -44,8 +44,22 @@ var launch = function()
 			var webui_path = path.join(__dirname, '../', '/webui');
 			app.use('/', express.static(webui_path));
 
+			//For fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
+			app.use(function(req, res, next) {
+			    var data = '';
+			    req.setEncoding('utf8');
+			    req.on('data', function(chunk) { 
+			        data += chunk;
+			    });
+			    req.on('end', function() {
+			        req.rawBody = data;
+			        next();
+			    });
+			});
+			app.use(express.bodyParser());
+
 			//call backends with client certificate
-			function callBackend(hostname, port, path, method, callback){
+			function callBackend(hostname, port, path, method, callback, postData){
 				var options = {
 					hostname: hostname,
 					port: port,
@@ -56,15 +70,27 @@ var launch = function()
 					rejectUnauthorized: false
 				};
 
+				if (method.toLowerCase() == "post" && postData != undefined) {
+					options.headers = {
+						'Content-Type': 'text/xml; charset=UTF-8',
+						'Content-Length': (postData != undefined ? postData.length : 0)
+					};
+				}
+
 				var data = "";
 
 				//for testing purposes
-				console.log("https://" + hostname + ":" + port + path);
+				console.log(method.toUpperCase() + ": https://" + hostname + ":" + port + path);
 				
 				var req = https.request(options, function(res) {
 					res.on('data', function(chunk) { data += chunk; });
 					res.on('end', function(){ callback(data); });
 				});
+
+				if (method.toLowerCase() == "post" && postData != undefined) {
+					//console.log(postData);
+					req.write(postData);
+				}
 
 				req.end();
 				req.on('error', function(e) {
@@ -72,7 +98,7 @@ var launch = function()
 				});
 			}
 
-			//geric api call
+			//generic api call GET
 			app.get('/api/get', function(request, response){
 				var service_url = url.parse(request.query.url);				
 				callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function(data){
@@ -80,6 +106,18 @@ var launch = function()
 					response.send(data);
 				});
 			});
+
+			//generic api call POST
+			app.post("/api/post", function (request, response) {
+				var service_url = url.parse(request.query.url);	
+				var postData = request.rawBody;
+
+				callBackend(service_url.hostname, service_url.port, service_url.path, "POST", function(data) {
+					console.log("Daten: " + data);
+					response.setHeader('Content-Type', 'text/plain');	
+					response.send(data);
+				}, postData);				
+			}); 
 
 			//ms-exchange calendar data request
 			app.get("/api/calDataSSO", function (request, response) {
@@ -118,6 +156,3 @@ var launch = function()
 //run and export module
 exports.run = launch;
 if(require.main === module) { launch(); }
-
-
-

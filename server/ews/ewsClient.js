@@ -14,6 +14,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 	const ERR_MSG_PLATFORM_NOT_SUPPORTED = "Your platform doesn't support this feature - only Windows and Mac OS X are supported.";
 	const ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";
 	const ERR_MSG_WRONG_CREDENTIALS = "Seems your credentials were wrong. Please try again.";
+	const SAP_DOMAIN = "SAP_ALL\\";
 
 	var dateFrom = dateFrom_s;
 	var dateTo = dateTo_s;
@@ -35,8 +36,8 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 	}
 
 	/* callback_fn : Function to be called when data has been fetched from EWS (given parameter will be the fetched xml) 
-	   or if an error occured (given parameter will be an Error-object) 
-	   You have to set response header to plain text: >>response.setHeader('Content-Type', 'text/plain');<< when testing in browser */
+	   or if an error occured (given parameter will be an Error-object) .
+	   You have to set response header to plain text: >>response.setHeader('Content-Type', 'text/plain');<< when testing in browser - it might recommended to do this in general. */
 	this.doRequest = function (callback_fn) {
 		readSoapTemplate(function (data) {
 			data = data.replace(PLACEHOLDER_FROM, dateFrom);
@@ -129,7 +130,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 	}
 
 	function getDataFromExchange_Mac(soapString_s, callback_fn) {
-		var auth = new Buffer('SAP_ALL\\' + user.id + ':' + user.pass).toString('base64');
+		var auth = new Buffer(SAP_DOMAIN + user.id + ':' + user.pass).toString('base64');
 
 		var ews_url = url.parse(exchangeURI);
 
