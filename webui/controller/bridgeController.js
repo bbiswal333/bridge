@@ -9,7 +9,9 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeBoxApp']);
 
 
-bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$interval', 'bridgeDataService', function Controller($scope, $http, $route, $location, $interval, bridgeDataService) {
+bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$interval', 'bridgeDataService',
+    function Controller($scope, $http, $route, $location, $interval, bridgeDataService) {
+    
     if ($location.path() == "" || $location.path() == "/")
         $scope.showLoadingAnimation = true;
 
@@ -17,12 +19,25 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
         $location.path('/settings');
     };
 
+    $scope.overview_click = function () {
+        $location.path('/');
+        document.getElementById('overview-button').classList.add('selected');
+        document.getElementById('projects-button').classList.remove('selected');
+    };
+
+    $scope.projects_click = function () {
+        $location.path('/projects');
+        document.getElementById('overview-button').classList.remove('selected');
+        document.getElementById('projects-button').classList.add('selected');
+    };
+
+
     var initializationInterval = $interval(function () {
         var numberOfBoxInstances = 0;
         var numberOfBoxInstancesWhichDontNeedToBeInstantiated = 0;
         for (var box in bridgeDataService.boxInstances) {
             numberOfBoxInstances++;
-            if (bridgeDataService.boxInstances[box].initializationTries > 50 || bridgeDataService.boxInstances[box].initialized == true) {
+            if (bridgeDataService.boxInstances[box].initializationTries > 50 || bridgeDataService.boxInstances[box].scope.initialized == true) {
                 numberOfBoxInstancesWhichDontNeedToBeInstantiated++;
                 continue;
             }
