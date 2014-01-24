@@ -5,6 +5,7 @@ jiraApp.directive('jirabox', function () {
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
         $scope.boxTitle = "Jira";
         $scope.initialized = true;
+        $scope.boxIcon = '&#xe009';
 
 
         //JiraBox.getIssuesforQuery(JiraQuery, $scope);

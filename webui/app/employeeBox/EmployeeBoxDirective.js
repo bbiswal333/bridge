@@ -5,6 +5,7 @@ testBoxApp.directive('employeebox', function () {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Employee Search";
         $scope.initialized = true;
+        $scope.boxIcon = '&#xe036';
 
         $scope.settings = {
             templatePath: "employeeBox/employeeBoxSettingsTemplate.html",
