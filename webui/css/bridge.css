@@ -1,8 +1,16 @@
-﻿@font-face { 
-    font-family:SAP-Icons;
+﻿/*@font-face { 
+    font-family:'SAP-icons';
     src: url('../lib/ui5-fonts-140120/SAP-icons.eot');
     src:local('SAP-Icons'), 
     url('../lib/ui5-fonts-140120/SAP-icons.ttf') format(TrueType);
+}*/
+
+@font-face {
+    font-family: 'SAP-icons';
+    src: url('../lib/ui5-fonts-140120/SAP-icons.ttf'),
+    url('../lib/ui5-fonts-140120/SAP-iconsSAP-icons.eot'); /* IE9+ */
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
@@ -119,7 +127,7 @@ body {
     }
 
 .sapIcon{
-    font-family: SAP-Icons;
+    font-family: 'SAP-icons';
     padding-right: 13px;
     padding-left: 13px;
     vertical-align: middle;
@@ -127,7 +135,7 @@ body {
 
 .settingsIcon 
 {
-    font-family: 'SAP-Icons';
+    font-family: 'SAP-icons';
     font-size: 20px;
     position: absolute;
     right: 30px;
@@ -228,7 +236,7 @@ body {
 .box-icon
 {
     display: inline;
-    font-family: 'SAP-Icons';
+    font-family: 'SAP-icons';
     font-size: 20px;
     color: #3393D3;
     position: absolute;
