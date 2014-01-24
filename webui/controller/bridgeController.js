@@ -9,72 +9,94 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeBoxApp']);
 
 
-bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$interval', '$q', 'bridgeDataService', 'bridgeConfigService',
-    function Controller($scope, $http, $route, $location, $interval, $q, bridgeDataService, bridgeConfigService) {
+bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfigService',
+    function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfigService) {
 
-    if ($location.path() == "" || $location.path() == "/")
-        $scope.showLoadingAnimation = true;
+        if ($location.path() == "" || $location.path() == "/")
+            $scope.showLoadingAnimation = true;
 
-    $scope.settings_click = function () {
-        $location.path('/settings');
-    };
+        $scope.settings_click = function () {
+            $location.path('/settings');
+        };
 
-    $scope.overview_click = function () {
-        $location.path('/');
-        document.getElementById('overview-button').classList.add('selected');
-        document.getElementById('projects-button').classList.remove('selected');
-    };
+        $scope.overview_click = function () {
+            $location.path('/');
+            document.getElementById('overview-button').classList.add('selected');
+            document.getElementById('projects-button').classList.remove('selected');
+        };
 
-    $scope.projects_click = function () {
-        $location.path('/projects');
-        document.getElementById('overview-button').classList.remove('selected');
-        document.getElementById('projects-button').classList.add('selected');
-    };
+        $scope.projects_click = function () {
+            $location.path('/projects');
+            document.getElementById('overview-button').classList.remove('selected');
+            document.getElementById('projects-button').classList.add('selected');
+        };
+
+        var allAppsInitialized = function () {
+            var allInitialized = true;
+            for (var box in bridgeDataService.boxInstances) {
+                if (bridgeDataService.boxInstances[box].initialized == undefined || bridgeDataService.boxInstances[box].initialized == false) {
+                    allInitialized = false;
+                    break;
+                }
+            }
+            
+            return allInitialized;
+        };
+
+        var hideAnimationAndStartRefreshTimer = function () {
+            if ($scope.showLoadingAnimation == true) {
+                $scope.showLoadingAnimation = false;
+
+                var createRefreshInterval = function () {
+                    setInterval(function () {
+                        for (var box in bridgeDataService.boxInstances) {
+                            if (bridgeDataService.boxInstances[box].scope && bridgeDataService.boxInstances[box].scope.loadData) {
+                                bridgeDataService.boxInstances[box].scope.loadData();
+                            }
+                        }
+                    }, 60000);
+                };
+            }
+        }
+
+        $scope.$on('appInitializedReceived', function (event, args) {
+            for (var box in bridgeDataService.boxInstances) {
+                if (bridgeDataService.boxInstances[box].scope.boxId == args.id) {
+                    bridgeDataService.boxInstances[box].initialized = true;
+                    break;
+                }
+            }
+
+            if (allAppsInitialized())
+                hideAnimationAndStartRefreshTimer();
+        });
 
         var deferred = $q.defer();
         var promise = bridgeConfigService.loadFromBackend(deferred);
 
-        var initializationInterval;
         // start the data loading for each app only after the configuration has been loaded successfully
         promise.then(function (config) {
             bridgeConfigService.config = config;
             bridgeConfigService.applyConfigToApps(bridgeDataService.boxInstances, bridgeConfigService.config);
 
-            initializationInterval = $interval(function () {
-        var numberOfBoxInstances = 0;
-        var numberOfBoxInstancesWhichDontNeedToBeInstantiated = 0;
-        for (var box in bridgeDataService.boxInstances) {
-            numberOfBoxInstances++;
-            if (bridgeDataService.boxInstances[box].initializationTries > 50 || bridgeDataService.boxInstances[box].scope.initialized == true) {
-                numberOfBoxInstancesWhichDontNeedToBeInstantiated++;
-                continue;
-            }
-            if (bridgeDataService.boxInstances[box].scope.loadData && bridgeDataService.boxInstances[box].dataLoadCalled != true) {
-                bridgeDataService.boxInstances[box].scope.loadData();
-                bridgeDataService.boxInstances[box].dataLoadCalled = true;
-            } else {
-                bridgeDataService.boxInstances[box].initializationTries++;
-            }
-        }
-
-        if (numberOfBoxInstances == numberOfBoxInstancesWhichDontNeedToBeInstantiated && numberOfBoxInstances != 0) {
-            createRefreshInterval();
-            $scope.showLoadingAnimation = false;
-            $interval.cancel(initializationInterval);
-            initializationInterval = undefined;
-        }
-    }, 100);
-
-
-            var createRefreshInterval = function () {
-        setInterval(function () {
             for (var box in bridgeDataService.boxInstances) {
-                if (bridgeDataService.boxInstances[box].scope && bridgeDataService.boxInstances[box].scope.loadData) {
+                if (angular.isFunction(bridgeDataService.boxInstances[box].scope.loadData)) {
                     bridgeDataService.boxInstances[box].scope.loadData();
                 }
-            }
-        }, 30000);
-    }
+                else {
+                    // if the app has no loadData function, it is automatically initialized
+                    bridgeDataService.boxInstances[box].initialized = true;
+                }
+            };
+
+            if (allAppsInitialized())
+                hideAnimationAndStartRefreshTimer();
+
+            // hide loading screen after x seconds no matter if all apps are initialized or not
+            $timeout(function () {
+                hideAnimationAndStartRefreshTimer();
+            }, 5000);
+
         }, function () { // promise rejected = config load failed
             alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");
         });
@@ -96,10 +118,20 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
 });
 
+bridgeApp.run(function ($rootScope) {
+    /*
+        Receive emitted message and broadcast it.
+        Event names must be distinct or browser will blow up!
+    */
+    $rootScope.$on('appInitialized', function (event, args) {
+        $rootScope.$broadcast('appInitializedReceived', args);
+    });
+});
+
 
 var bridgeServices = angular.module('bridgeServices', ['ngResource']);
 
-bridgeApp.filter("decodeIcon",function(){
+bridgeApp.filter("decodeIcon", function () {
     return function (str) {
         if (str == undefined)
             return "";
@@ -108,4 +140,4 @@ bridgeApp.filter("decodeIcon",function(){
         str = el.innerText || el.textContent;
         return str;
     }
-})
+});

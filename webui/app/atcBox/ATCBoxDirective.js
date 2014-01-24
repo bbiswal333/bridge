@@ -42,12 +42,11 @@ atcApp.directive('atcbox', function () {
 
         $scope.loadData = function () {
             if (Config.configItems.length > 0)
-                ATCDataProvider.getResultForConfig(Config, atcData);
+                ATCDataProvider.getResultForConfig($scope, Config, atcData);
         }
 
         $scope.$watch('atcData.data', function () { 
             $scope.updateATCChart($scope);
-            $scope.initialized = true;
         });
 
         $scope.$watch('config.configItems', function () {
