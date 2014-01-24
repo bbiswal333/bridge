@@ -42,7 +42,7 @@ var IQueryString = {
 
 var IConfig = {
 		addConfigItem : function() { throw "Not Implemented"; },
-		getConfigItems : function() { throw "Not Implemented"; }
+		getConfigItems: function () { throw "Not Implemented"; }
 };
 IConfig.prototype = Object.create(IQueryString);
 
@@ -96,16 +96,8 @@ Config.prototype.getQueryString = function() {
 };
 
 atcApp.factory('Config', [
-  function(){
-      var configItem = new ConfigItem();
-      configItem.srcSystem = "CI3";
-      configItem.displayPrio1 = true;
-      configItem.displayPrio2 = true;
-      configItem.displayPrio3 = false;
-      configItem.displayPrio4 = false;
-      
+  function(){   
       var config = new Config();
-      config.addConfigItem(configItem);
       
       return config;
   }]);

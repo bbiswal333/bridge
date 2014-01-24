@@ -6,21 +6,52 @@ atcApp.directive('atcbox', function () {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
 
-        $scope.settings = {
+        $scope.settingScreenData = {
             templatePath: "atcBox/ATCBoxSettingsTemplate.html",
             controller: atcApp.settingsController,
             id: $scope.boxId,
         };
 
+        $scope.getConfig = function () {
+            return Config;
+        };
+
+        $scope.applyConfig = function (storedConfig) {
+            var currentConfigItem;
+
+            for (configItem in storedConfig.configItems) {
+                currentConfigItem = new ConfigItem();
+
+                currentConfigItem.component = storedConfig.configItems[configItem].component;
+                currentConfigItem.devClass = storedConfig.configItems[configItem].devClass;
+                currentConfigItem.displayPrio1 = storedConfig.configItems[configItem].displayPrio1;
+                currentConfigItem.displayPrio2 = storedConfig.configItems[configItem].displayPrio2;
+                currentConfigItem.displayPrio3 = storedConfig.configItems[configItem].displayPrio3;
+                currentConfigItem.displayPrio4 = storedConfig.configItems[configItem].displayPrio4;
+                currentConfigItem.onlyInProcess = storedConfig.configItems[configItem].onlyInProcess;
+                currentConfigItem.showSuppressed = storedConfig.configItems[configItem].showSuppressed;
+                currentConfigItem.srcSystem = storedConfig.configItems[configItem].srcSystem;
+                currentConfigItem.tadirResponsible = storedConfig.configItems[configItem].tadirResponsible;
+
+                Config.addConfigItem(currentConfigItem);
+            }
+        }
+
         $scope.atcData = atcData;
+        $scope.config = Config;
 
         $scope.loadData = function () {
-            ATCDataProvider.getResultForConfig(Config, atcData);
+            if (Config.configItems.length > 0)
+                ATCDataProvider.getResultForConfig(Config, atcData);
         }
 
         $scope.$watch('atcData.data', function () { 
             $scope.updateATCChart($scope);
             $scope.initialized = true;
+        });
+
+        $scope.$watch('config.configItems', function () {
+            $scope.loadData();
         });
 
         $scope.updateATCChart = function ($scope) {
