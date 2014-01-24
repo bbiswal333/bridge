@@ -4,8 +4,11 @@ jiraApp.directive('jirabox', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
         $scope.boxTitle = "Jira";
+        $scope.initialized = true;
+        $scope.boxIcon = '&#xe009';
 
-        JiraBox.getIssuesforQuery(JiraQuery, $scope);
+
+        //JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
             updateJiraChart($scope);
             $scope.initialized = true;
@@ -25,38 +28,32 @@ var updateJiraChart = function ($scope) {
     var chart1 = {};
     chart1.type = "PieChart";
     chart1.displayed = true;
-    chart1.cssStyle = "height:105px; width:100%;";
+    chart1.cssStyle = "height:150px; width:100%;";
     chart1.data = {
         "cols": [
             { id: "month", label: "Month", type: "string" },
             { id: "laptop-id", label: "Laptop", type: "number" },
         ], "rows": [
-            /*{
+            {
                 c: [
-                   { v: "Prio 1 (" + $scope.atcData.prio1 + ")" },
-                   { v: $scope.atcData.prio1, f: $scope.atcData.prio1 + " Prio 1 messages" }
+                   { v: "Open (5)" },
+                   { v: 5, f: "5 Issues Open" }
                 ]
             },
             {
                 c: [
-                   { v: "Prio 2 (" + $scope.atcData.prio2 + ")" },
-                   { v: $scope.atcData.prio2, f: $scope.atcData.prio2 + " Prio 2 messages" }
+                   { v: "In Prog.(4)" },
+                   { v: 4, f: "4 Issues In Progress" }
                 ]
             },
             {
                 c: [
-                   { v: "Prio 3 (" + $scope.atcData.prio3 + ")" },
-                   { v: $scope.atcData.prio3 }
+                   { v: "Compl. (2)" },
+                   { v: 2, f: "2 Issues Completed" }
                 ]
-            },
-            {
-                c: [
-                   { v: "Prio 4 (" + $scope.atcData.prio4 + ")" },
-                   { v: $scope.atcData.prio4 }
-                ]
-            }*/
-        ]
-    };
+            }
+    ]};
+    
 
     chart1.options = {
         "title": "",
