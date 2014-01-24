@@ -56,8 +56,6 @@ var launch = function()
 			        next();
 			    });
 			});
-			//app.use(express.json());
-			//app.use(express.urlencoded());
 
 			//call backends with client certificate
 			function callBackend(hostname, port, path, method, callback, postData){
@@ -160,7 +158,7 @@ var launch = function()
 			});
 
 			//create local server
-			http.createServer(app).listen(8000);
+			http.createServer(app).listen(8000, "127.0.0.1");
 			console.log("Bridge Server running at http://localhost:8000.")
 		});
 	}
