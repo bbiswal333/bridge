@@ -60,6 +60,5 @@
     this.config = {
             bridgeSettings: {},
             boxSettings: [],
-        },
     };
 });
