@@ -5,13 +5,11 @@ var exec         = require('child_process').exec;
 
 function getSSOCertSerialNumber(error, stdout, stderr) {
     var SSOCertificateFound = false;
-    //var SSOCertificateValid = false;
     var SSOArchived = false;
     var startCertificateSearchString = "================ Certificate";
     var certificateArchivedSearchString = "Archived!";
     var serialNumberSearchString = "Serial Number: ";
     var issuerSearchString = "CN=SSO_CA";
-    //var notAfterSearchString = "NotAfter: ";
     var serialNumber = "";
 
     var allLines = stdout.split("\n");
@@ -28,23 +26,10 @@ function getSSOCertSerialNumber(error, stdout, stderr) {
             }
             if (allLines[i].indexOf(serialNumberSearchString) != -1) {
                 serialNumber = allLines[i].substring(allLines[i].indexOf(serialNumberSearchString) + serialNumberSearchString.length);
-                //SSOCertificateFound = false;
-                //SSOCertificateValid = false;
             }
             if (allLines[i].indexOf(issuerSearchString) != -1) {
                 SSOCertificateFound = true;
             }
-            /*if (allLines[i].indexOf(notAfterSearchString) != -1) {
-                var indexOfSearchString = allLines[i].indexOf(notAfterSearchString);
-                var notAfterDate = new Date(parseInt(allLines[i].substring(indexOfSearchString + notAfterSearchString.length + 6, indexOfSearchString + notAfterSearchString.length + 6 + 4)), // Year
-                    parseInt(allLines[i].substring(indexOfSearchString + notAfterSearchString.length + 3, indexOfSearchString + notAfterSearchString.length + 3 + 2)) - 1, // Month, month is 0 based so: -1
-                    parseInt(allLines[i].substring(indexOfSearchString + notAfterSearchString.length, indexOfSearchString + notAfterSearchString.length + 2)), // Day
-                    parseInt(allLines[i].substring(indexOfSearchString + notAfterSearchString.length + 11, indexOfSearchString + notAfterSearchString.length + 11 + 2)), // Hours
-                    parseInt(allLines[i].substring(indexOfSearchString + notAfterSearchString.length + 14, indexOfSearchString + notAfterSearchString.length + 14 + 2)), // Minutes
-                    0); //Seconds
-                if (notAfterDate > new Date())
-                    SSOCertificateValid = true;
-            }*/
 
             if (SSOCertificateFound && !SSOArchived)
                 return serialNumber;
