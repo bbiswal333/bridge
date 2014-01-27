@@ -20,18 +20,17 @@ function getSSOCertSerialNumber(error, stdout, stderr) {
 
             if (allLines[i].indexOf(startCertificateSearchString) != -1){
                 SSOCertificateFound = false;
-                //SSOCertificateValid = false;
-                SSOArchived = false;                
+                SSOArchived = false;                     
             }
 
             if (allLines[i].indexOf(certificateArchivedSearchString) != -1){
                 SSOArchived = true;
             }
-            /*if (allLines[i].indexOf(serialNumberSearchString) != -1) {
+            if (allLines[i].indexOf(serialNumberSearchString) != -1) {
                 serialNumber = allLines[i].substring(allLines[i].indexOf(serialNumberSearchString) + serialNumberSearchString.length);
-                SSOCertificateFound = false;
-                SSOCertificateValid = false;
-            }*/
+                //SSOCertificateFound = false;
+                //SSOCertificateValid = false;
+            }
             if (allLines[i].indexOf(issuerSearchString) != -1) {
                 SSOCertificateFound = true;
             }
@@ -138,7 +137,14 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     	exec("certutil -store -user -v my", function (error, stdout, stderr) {
     	    var serialNumber = getSSOCertSerialNumber(error, stdout, stderr);
     	    var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
-    	    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {
+
+            if( serialNumber === "")
+            {
+                console.log("No certificate found !");
+                return;
+            }
+
+    	    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {            
     	        user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
     	        var deleteCommand = 'del "' + SSOCertificatePath + '"';
     	        exec(deleteCommand, function (error, stdout, stderr) { });
