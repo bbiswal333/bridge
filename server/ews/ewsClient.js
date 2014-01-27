@@ -1,3 +1,5 @@
+//List of available fields to request from EWS: http://msdn.microsoft.com/en-us/library/office/aa494315(v=exchg.150).aspx
+
 var https		= require('https');
 var http		= require('http');
 var path        = require('path');
