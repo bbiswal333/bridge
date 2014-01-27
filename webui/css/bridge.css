@@ -273,7 +273,8 @@ body {
     display: inline;
     font-family: 'SAP-icons';
     font-size: 20px;
-    color: #3393D3;
+    /*color: #3393D3;*/
+    color: #0078B9;
     position: absolute;
     right: 0px;
     bottom: 3px;
