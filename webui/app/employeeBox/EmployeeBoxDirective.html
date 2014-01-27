@@ -1,16 +1,17 @@
 <employee-search selected-employee="selectedEmployee" placeholder="'Name...'" required="false"></employee-search>
 <div style="height:5px;width:100%"></div>
 <div class="boxLeft">
-	<img ng-if="selectedEmployee == undefined || selectedEmployee.BNAME == undefined" ng-src="img/avatar_default.jpg"></img>
-	<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>
+	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">
+		<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>
+	</div>
 </div>
 <div class="boxRight">
 	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">
-	
-	User ID: {{selectedEmployee.BNAME}}<br />
-	Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
-	Cost Center: {{selectedEmployee.KOSTX}}
-</div>
+		User ID: {{selectedEmployee.BNAME}}<br />
+		Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
+		Cost Center: {{selectedEmployee.KOSTX}}<br />
+		<a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}">User Profile</a>
+	</div>
 <div>
 
   
