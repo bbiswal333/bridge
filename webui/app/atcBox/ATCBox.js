@@ -97,9 +97,8 @@ Config.prototype.getQueryString = function() {
 	return queryString;
 };
 
-atcApp.factory('Config', [
-  function(){   
+atcApp.factory('Config', function(){   
       var config = new Config();
       
       return config;
-  }]);
+});

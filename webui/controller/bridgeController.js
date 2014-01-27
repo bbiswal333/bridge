@@ -128,7 +128,9 @@ bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
     var promise = bridgeConfig.loadFromBackend(deferred);
 
     promise.then(function (config) {
-        bridgeConfig.config = config;
+        // if the config is not an object, then the user has no configuration stored in the backend
+        if (angular.isObject(config))
+            bridgeConfig.config = config;
         $rootScope.$emit('bridgeConfigLoaded', {});
     }, function () { // promise rejected = config load failed
         alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");

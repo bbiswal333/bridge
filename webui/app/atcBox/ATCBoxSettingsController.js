@@ -4,7 +4,7 @@
     $scope.currentConfigValues = new ConfigItem();
 
     $scope.$watch('config', function () {
-        if ($scope.tableParams.data.length > 0)
+        if ($scope.tableParams.settings().$scope != null)
             $scope.tableParams.reload();
     }, true);
 
