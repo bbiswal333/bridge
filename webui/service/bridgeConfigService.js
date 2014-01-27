@@ -1,6 +1,6 @@
-﻿bridgeApp.factory('bridgeConfigService', function ($http) {
-    return {
-        persistInBackend: function (boxInstances) {
+﻿bridgeApp.service('bridgeConfig', function ($http) {
+  
+    this.persistInBackend = function (boxInstances) {
             this.config.boxSettings.length = 0; // clears the array without creating a new one
 
             for (var property in boxInstances) {
@@ -24,9 +24,9 @@
                 console.log("Error when saving config!");
             });
 
-        },
+    };
 
-        loadFromBackend: function (deferred) {
+    this.loadFromBackend = function (deferred) {
             $http({
                 url: 'http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifd.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B'),
                 method: "GET",
@@ -39,9 +39,9 @@
             });
 
             return deferred.promise;
-        },
+    };
 
-        applyConfigToApps: function (boxInstances, config) {
+    this.applyConfigToApps = function (boxInstances, config) {
             for (var box in boxInstances) {
                 if (angular.isFunction(boxInstances[box].scope.applyConfig)) {
                     var correspondingConfig;
@@ -55,11 +55,10 @@
                     }
                 }
             }
-        },
+    };
 
-        config: {
+    this.config = {
             bridgeSettings: {},
             boxSettings: [],
-        },
     };
 });

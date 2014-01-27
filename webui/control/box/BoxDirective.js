@@ -1,7 +1,5 @@
 ﻿bridgeApp.directive('box', function ($compile, bridgeDataService) {
 
-    //var directiveController = ['$scope', 'bridgeDataService', function ($scope, bridgeDataService) { }];
-
     return {
         restrict: 'E',
         templateUrl: 'control/box/BoxDirective.html',
@@ -23,7 +21,6 @@
             }
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
-            //$element.children().append(newElement);
             $element.children().children().children().append(newElement);
 
             if ($attrs.id) {

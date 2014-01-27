@@ -1,8 +1,8 @@
-﻿bridgeApp.controller('bridgeSettingsController', ['$scope', '$http', 'bridgeDataService', 'bridgeConfigService', function Controller($scope, $http, bridgeDataService, bridgeConfigService) {
+﻿bridgeApp.controller('bridgeSettingsController', ['$scope', '$http', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, bridgeDataService, bridgeConfig) {
     $scope.$parent.titleExtension = " - Settings";
 
     $scope.$on("$destroy", function () {
-        bridgeConfigService.persistInBackend(bridgeDataService.boxInstances);
+        bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
     });
 
     $scope.settingScreens = [];

@@ -33,7 +33,7 @@ ATCDataProvider.prototype.getDetailsForConfig = function (config, scope) {
     });
 };
 
-bridgeServices.factory('ATCDataProvider', ['$http',
+atcApp.factory('ATCDataProvider', ['$http',
    function ($http) {
        return new ATCDataProvider($http);
    }]);

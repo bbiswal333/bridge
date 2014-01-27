@@ -18,6 +18,7 @@
           <t:FieldURI FieldURI="calendar:End"/>
           <t:FieldURI FieldURI="calendar:Organizer"/>
           <t:FieldURI FieldURI="calendar:UID"/>
+          <t:FieldURI FieldURI="item:Categories"/>
         </t:AdditionalProperties>
       </ItemShape>
       <CalendarView StartDate="%DATEFROM%" EndDate="%DATETO%"></CalendarView>
