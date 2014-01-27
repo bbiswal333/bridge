@@ -178,3 +178,8 @@ bridge.sln
 # Ignore cURL
 # =========================
 # server/curl/
+
+# =========================
+# Ignore XHR-Test
+# =========================
+webui/Test_Modules.html
