@@ -14,7 +14,7 @@
             }
 
             $http({
-                url: 'http://localhost:8000/api/post?url=' + encodeURIComponent('https://ifd.wdf.sap.corp/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment='),
+                url: 'http://localhost:8000/api/post?url=' + encodeURIComponent('https://ifd.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment='),
                 method: "POST",
                 data: angular.toJson(this.config),
                 headers: { 'Content-Type': 'text/plain' },
@@ -28,7 +28,7 @@
 
         loadFromBackend: function (deferred) {
             $http({
-                url: 'http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifd.wdf.sap.corp/sap/bc/devdb/GETUSRCONFIG?new_devdb=B'),
+                url: 'http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifd.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B'),
                 method: "GET",
             }).success(function (data, status, headers, config) {
                 console.log("Config loaded successfully");
