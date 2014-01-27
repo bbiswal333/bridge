@@ -158,12 +158,14 @@ body {
     font-family: 'SAP-icons';
     font-size: 20px;
     position: absolute;
-    right: 30px;
+    right: 20px;
+    top:6px;
+    color:black;
 }
 .settingsIcon:hover
 {
-    font-weight: bold;
-    background-color: #ebebeb;
+    /*font-weight: bold;*/
+    /*background-color: #ebebeb;*/
     cursor: pointer;
 }
 
