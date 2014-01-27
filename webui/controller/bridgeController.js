@@ -1,6 +1,5 @@
 var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable',
     // Own modules
-    'bridgeServices',
     'employeeSearch',
     // Apps
     'testBoxApp',
@@ -9,8 +8,8 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeBoxApp']);
 
 
-bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfigService',
-    function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfigService) {
+bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfig) {
 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
@@ -71,65 +70,73 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
                 hideAnimationAndStartRefreshTimer();
         });
 
-        var deferred = $q.defer();
-        var promise = bridgeConfigService.loadFromBackend(deferred);
+        $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
+            $scope.configLoadingFinished = true;
 
-        // start the data loading for each app only after the configuration has been loaded successfully
-        promise.then(function (config) {
-            bridgeConfigService.config = config;
-            bridgeConfigService.applyConfigToApps(bridgeDataService.boxInstances, bridgeConfigService.config);
-
-            for (var box in bridgeDataService.boxInstances) {
-                if (angular.isFunction(bridgeDataService.boxInstances[box].scope.loadData)) {
-                    bridgeDataService.boxInstances[box].scope.loadData();
-                }
-                else {
-                    // if the app has no loadData function, it is automatically initialized
-                    bridgeDataService.boxInstances[box].initialized = true;
-                }
-            };
-
-            if (allAppsInitialized())
-                hideAnimationAndStartRefreshTimer();
-
-            // hide loading screen after x seconds no matter if all apps are initialized or not
+            // give angular some time to render all apps + call their controller (-> be in the next $digest cycle)
             $timeout(function () {
-                hideAnimationAndStartRefreshTimer();
-            }, 5000);
+                bridgeConfig.applyConfigToApps(bridgeDataService.boxInstances, bridgeConfig.config);
 
-        }, function () { // promise rejected = config load failed
-            alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");
+                for (var box in bridgeDataService.boxInstances) {
+                    if (angular.isFunction(bridgeDataService.boxInstances[box].scope.loadData)) {
+                        bridgeDataService.boxInstances[box].scope.loadData();
+                    }
+                    else {
+                        // if the app has no loadData function, it is automatically initialized
+                        bridgeDataService.boxInstances[box].initialized = true;
+                    }
+                };
+
+                if (allAppsInitialized())
+                    hideAnimationAndStartRefreshTimer();
+
+                // hide loading screen after x seconds no matter if all apps are initialized or not
+                $timeout(function () {
+                    hideAnimationAndStartRefreshTimer();
+                }, 5000);
+            }, 500); 
         });
 }]);
 
-bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
-    this.$routeParams = $routeParams;
-    $scope.$parent.titleExtension = "";
-}]);
+//bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
+//    this.$routeParams = $routeParams;
+//    $scope.$parent.titleExtension = "";
+//}]);
 
 
 bridgeApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
-        controller: 'bridgeControllerOverview',
+        //controller: 'bridgeControllerOverview',
     });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
     $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
 });
 
-bridgeApp.run(function ($rootScope) {
-    /*
-        Receive emitted message and broadcast it.
-        Event names must be distinct or browser will blow up!
-    */
+bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
+    //Receive emitted message and broadcast it.
+    //Event names must be distinct or browser will blow up!
     $rootScope.$on('appInitialized', function (event, args) {
         $rootScope.$broadcast('appInitializedReceived', args);
+    });
+    $rootScope.$on('bridgeConfigLoaded', function (event, args) {
+        $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
+    });
+
+    var deferred = $q.defer();
+    var promise = bridgeConfig.loadFromBackend(deferred);
+
+    promise.then(function (config) {
+        bridgeConfig.config = config;
+        $rootScope.$emit('bridgeConfigLoaded', {});
+    }, function () { // promise rejected = config load failed
+        alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");
     });
 });
 
 
-var bridgeServices = angular.module('bridgeServices', ['ngResource']);
+//var bridgeServices = angular.module('bridgeServices', ['ngResource']);
 
 bridgeApp.filter("decodeIcon", function () {
     return function (str) {

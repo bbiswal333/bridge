@@ -19,3 +19,7 @@ testBoxApp.directive('testbox', function () {
         controller: directiveController
     };
 });
+
+testBoxApp.run(function ($rootScope) {
+    var i = 1;
+});

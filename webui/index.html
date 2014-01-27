@@ -58,10 +58,11 @@
 	    <title>Bridge</title>
 
 	</head>
+
 	<body ng-controller="bridgeController">
 
-
-        <div class="mainPageBackgroundGradient">
+        <!-- hiding the overview page until the config is loaded ensures that the app-config is available at the time each app is started -->
+        <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
           <div class="mainPageBackground">
             <div class="headerline">
                 <span class="headertext">Bridge{{titleExtension}}</span>
