@@ -5,6 +5,7 @@ testBoxApp.directive('testbox', function () {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Test Box";
         $scope.initialized = true;
+        $scope.boxIcon = '&#xe05c;';
 
         $scope.settings = {
             templatePath: "testBox/TestBoxSettingsTemplate.html",

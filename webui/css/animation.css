@@ -1,7 +1,11 @@
 ﻿.animation-container {
   position: relative;
 }
- 
+
+.animation-content{
+
+}
+
 .animation-content.ng-enter, .animation-content.ng-leave {
   position: absolute;
   top: 0;
