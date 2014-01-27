@@ -1,3 +1,5 @@
+//List of available fields to request from EWS: http://msdn.microsoft.com/en-us/library/office/aa494315(v=exchg.150).aspx
+
 var https		= require('https');
 var http		= require('http');
 var path        = require('path');
@@ -47,7 +49,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 				//Windows strategy: Writing SOAP in file, calling cURL with this file as parameter, let cURL write its output to temporary file, then read in this temporary file and send its content back to the user
 				// var start = process.hrtime();
 				getDataFromExchange_Win(data, function (ews_xml) {
-					var diff = process.hrtime(start);		
+					//var diff = process.hrtime(start);		
 					// console.log("WIN strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
 					callback_fn(ews_xml);
 				});
@@ -56,7 +58,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 				//Mac OS X strategy: Fetching data directly via https and Basic Authentification. Therefore SAP-User and password is retrived from keychain and encoded with Base64
 				// var start = process.hrtime();
 				getDataFromExchange_Mac(data, function (ews_xml) {
-					var diff = process.hrtime(start);		
+					//var diff = process.hrtime(start);		
 					// console.log("MAC strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
 					callback_fn(ews_xml);
 				});						
@@ -96,7 +98,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 		function callExchange(soapFile_s) {
 			var data = "";
 			var curlPath = path.join(__dirname, "\\") + "curl\\curl.exe";
-			var cmd = curlPath + ' -d @' + soapFile_s + ' --insecure -H "Content-Type: text/xml; charset=utf-8" --ntlm -u : ' + exchangeURI + ' > ' + soapFile_s + "_answer";
+			var cmd = curlPath + ' -d @' + soapFile_s + ' --insecure -H "Content-Type: text/xml; charset=utf-8" --ntlm -u : "' + exchangeURI + '" > "' + soapFile_s + "_answer\"";
 
 			exec(cmd, function (error, stdout, stderr) {
 				//Read output file of curl
