@@ -11,7 +11,7 @@ ATCDataProvider.prototype = Object.create(IATCDataProvider);
 
 ATCDataProvider.prototype.getResultForConfig = function (scope, config, dataService) {
 
-    this.http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifd.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
+    this.http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
         .success(function (data) {
 
             dataService.data = {
@@ -27,7 +27,7 @@ ATCDataProvider.prototype.getResultForConfig = function (scope, config, dataServ
 
 ATCDataProvider.prototype.getDetailsForConfig = function (config, scope) {
     this.http.get('http://localhost:8000/api/get?url=' +
-    	encodeURIComponent('https://ifd.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json')).success(function (data) {
+    	encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json')).success(function (data) {
 
         scope.atcDetails = data.DATA;
     });
