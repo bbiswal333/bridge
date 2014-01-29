@@ -118,6 +118,8 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
         templateUrl: 'view/overview.html',
         //controller: 'bridgeControllerOverview',
     });
+    $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
+
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
     $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
