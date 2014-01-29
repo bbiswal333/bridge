@@ -17,7 +17,7 @@ body {
     height: 100%;
     width: 100%;
     font-size: 1em;
-    line-height: 1.4;
+    /*line-height: 1.4;*/
 	font-family: 'Open Sans', sans-serif;
     margin-left: auto;
     margin-right: auto;
@@ -116,11 +116,12 @@ body {
 .mainNav {
     /*position: relative;
     z-index: 1001;
-    /*list-style-type:none;
+    /*list-style-type:none;*/
     margin:0;
     padding:0;
-    line-height: 1;*/
+    /*line-height: 1;*/
     width: 100%;
+    height: 40px;
 }
 .mainNav > li {
     display:inline;
@@ -134,7 +135,6 @@ body {
 }
 
 .mainNav > li.selected{
-    height: 34px;
     font-weight: bold;
     font-size: 17px;
     color: #666666;
