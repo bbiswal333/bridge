@@ -7,6 +7,15 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'jiraApp',
     'employeeBoxApp']);
 
+bridgeApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        element.attr('src', attrs.errSrc);
+      });
+    }
+  }
+});
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfig) {
