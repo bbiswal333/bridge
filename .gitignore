@@ -183,3 +183,8 @@ bridge.sln
 # Ignore XHR-Test
 # =========================
 webui/Test_Modules.html
+
+# =========================
+# Jasmine tests
+# =========================
+./spec
