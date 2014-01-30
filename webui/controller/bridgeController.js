@@ -39,17 +39,17 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
             document.getElementById('projects-button').classList.add('selected');
         };
 
-        var allAppsInitialized = function () {
-            var allInitialized = true;
-            for (var box in bridgeDataService.boxInstances) {
-                if (bridgeDataService.boxInstances[box].initialized == undefined || bridgeDataService.boxInstances[box].initialized == false) {
-                    allInitialized = false;
-                    break;
-                }
-            }
+        //var allAppsInitialized = function () {
+        //    var allInitialized = true;
+        //    for (var box in bridgeDataService.boxInstances) {
+        //        if (bridgeDataService.boxInstances[box].initialized == undefined || bridgeDataService.boxInstances[box].initialized == false) {
+        //            allInitialized = false;
+        //            break;
+        //        }
+        //    }
             
-            return allInitialized;
-        };
+        //    return allInitialized;
+        //};
 
         var hideAnimationAndStartRefreshTimer = function () {
             if ($scope.showLoadingAnimation == true) {
@@ -67,22 +67,22 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
             }
         }
 
-        $scope.$on('appInitializedReceived', function (event, args) {
-            for (var box in bridgeDataService.boxInstances) {
-                if (bridgeDataService.boxInstances[box].scope.boxId == args.id) {
-                    bridgeDataService.boxInstances[box].initialized = true;
-                    break;
-                }
-            }
+        //$scope.$on('appInitializedReceived', function (event, args) {
+        //    for (var box in bridgeDataService.boxInstances) {
+        //        if (bridgeDataService.boxInstances[box].scope.boxId == args.id) {
+        //            bridgeDataService.boxInstances[box].initialized = true;
+        //            break;
+        //        }
+        //    }
 
-            if (allAppsInitialized())
-                hideAnimationAndStartRefreshTimer();
-        });
+        //    if (allAppsInitialized())
+        //        hideAnimationAndStartRefreshTimer();
+        //});
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
             $scope.configLoadingFinished = true;
 
-            // give angular some time to render all apps + call their controller (-> be in the next $digest cycle)
+            // give angular some time to render all apps + call their controller
             $timeout(function () {
                 bridgeConfig.applyConfigToApps(bridgeDataService.boxInstances, bridgeConfig.config);
 
@@ -96,27 +96,21 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
                     }
                 };
 
-                if (allAppsInitialized())
-                    hideAnimationAndStartRefreshTimer();
+                //if (allAppsInitialized())
+                hideAnimationAndStartRefreshTimer();
 
                 // hide loading screen after x seconds no matter if all apps are initialized or not
-                $timeout(function () {
-                    hideAnimationAndStartRefreshTimer();
-                }, 5000);
+                //$timeout(function () {
+                //    hideAnimationAndStartRefreshTimer();
+                //}, 5000);
             }, 500); 
         });
 }]);
-
-//bridgeApp.controller('bridgeControllerOverview', ['$scope', '$http', '$route', '$routeParams', function Controller($scope, $http, $route, $routeParams) {
-//    this.$routeParams = $routeParams;
-//    $scope.$parent.titleExtension = "";
-//}]);
 
 
 bridgeApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
-        //controller: 'bridgeControllerOverview',
     });
     $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 
@@ -126,6 +120,9 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
 });
 
 bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
+
+    var loadingRequests = 0;
+
     //Receive emitted message and broadcast it.
     //Event names must be distinct or browser will blow up!
     $rootScope.$on('appInitialized', function (event, args) {
@@ -133,6 +130,15 @@ bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
     });
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
+    });
+    $rootScope.$on('changeLoadingStatusRequested', function (event, args) {
+        var oldLoadingRequests = loadingRequests;
+
+        args.showLoadingIndicator ? loadingRequests++ : loadingRequests--;
+        if (loadingRequests > 0 && oldLoadingRequests == 0)
+            $rootScope.showLoadingIndicator = true;
+        else if (loadingRequests == 0 && oldLoadingRequests > 0)
+            $rootScope.showLoadingIndicator = false;
     });
 
     var deferred = $q.defer();

@@ -9,8 +9,9 @@ var ATCDataProvider = function(http){
 
 ATCDataProvider.prototype = Object.create(IATCDataProvider);
 
-ATCDataProvider.prototype.getResultForConfig = function (scope, config, dataService) {
+ATCDataProvider.prototype.getResultForConfig = function ($scope, config, dataService) {
 
+    $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: true });
     this.http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
         .success(function (data) {
 
@@ -20,17 +21,19 @@ ATCDataProvider.prototype.getResultForConfig = function (scope, config, dataServ
                 prio3: data.PRIOS.PRIO3,
                 prio4: data.PRIOS.PRIO4,
             };
-
-            scope.$emit('appInitialized', { id: scope.boxId });
+            $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: false });
+            //scope.$emit('appInitialized', { id: scope.boxId });
     });
 };
 
-ATCDataProvider.prototype.getDetailsForConfig = function (config, scope) {
-    this.http.get('http://localhost:8000/api/get?url=' +
-    	encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json')).success(function (data) {
+ATCDataProvider.prototype.getDetailsForConfig = function (config, $scope) {
+    $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: true });
+    this.http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json'))
+        .success(function (data) {
 
-        scope.atcDetails = data.DATA;
-    });
+            $scope.atcDetails = data.DATA;
+            $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: false });
+    	});
 };
 
 atcApp.factory('ATCDataProvider', ['$http',
