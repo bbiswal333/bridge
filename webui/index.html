@@ -58,14 +58,14 @@
 
         <script src="app/employeeBox/EmployeeBoxDirective.js"></script>
     
-	    <title>Bridge Feature</title>
+	    <title>Bridge</title>
 
 	</head>
 
 	<body ng-controller="bridgeController">
 
         <!-- hiding the overview page until the config is loaded ensures that the app-config is available at the time each app is started -->
-        <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
+        <div class="mainPageBackgroundGradient">
           <div class="mainPageBackground">
             <div class="headerline">
                     <div ng-if="!showLoadingIndicator" class="blueTitleBar"></div>
