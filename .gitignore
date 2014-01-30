@@ -173,6 +173,7 @@ $RECYCLE.BIN/
 .DS_Store
 
 bridge.sln
+*.pem
 
 # =========================
 # Ignore cURL
@@ -188,3 +189,4 @@ webui/Test_Modules.html
 # Jasmine tests
 # =========================
 ./spec
+
