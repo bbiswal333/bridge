@@ -2,7 +2,11 @@
 <div style="height:5px;width:100%"></div>
 <div class="boxLeft">
 	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">
+		
+		<!--
 		<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>
+		-->
+		<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" ng-src="https://people.wdf.sap.corp/photos/{{selectedEmployee.BNAME}}.JPG" err-src="../img/user_default.jpg" style="height:100px"></img>
 	</div>
 </div>
 <div class="boxRight">
@@ -10,7 +14,7 @@
 		Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
 		Cost Center: {{selectedEmployee.KOSTX}}<br />
 		<a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}">User Profile</a>
-		<a href="tel:+496227768250">Call Mobile</a>
+		<!--<a href="tel:+496227768250">Call Mobile</a>-->
 	</div>
 <div>
 

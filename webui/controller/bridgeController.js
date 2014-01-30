@@ -7,6 +7,15 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'jiraApp',
     'employeeBoxApp']);
 
+bridgeApp.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        element.attr('src', attrs.errSrc);
+      });
+    }
+  }
+});
 
 bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfig) {
@@ -109,6 +118,8 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
         templateUrl: 'view/overview.html',
         //controller: 'bridgeControllerOverview',
     });
+    $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
+
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
     $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
