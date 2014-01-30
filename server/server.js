@@ -158,8 +158,8 @@ var launch = function()
 			});
 
 			//create local server
-			http.createServer(app).listen(8000, "127.0.0.1");
-			console.log("Bridge Server running at http://localhost:8000.")
+			http.createServer(app).listen(8000, "localhost");
+			console.log("..Bridge Server running at http://localhost:8000")
 		});
 	}
 }
