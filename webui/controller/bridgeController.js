@@ -5,7 +5,7 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'testBoxApp',
     'atcApp',
     'jiraApp',
-    'employeeBoxApp']);
+    'employeeBoxApp', "nextEventBoxApp"]);
 
 bridgeApp.directive('errSrc', function() {
   return {
