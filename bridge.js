@@ -22,5 +22,3 @@ catch(err){
 		bridge.run();
 	});
 }
-
-//"test"
