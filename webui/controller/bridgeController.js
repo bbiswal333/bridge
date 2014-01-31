@@ -69,11 +69,11 @@ bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
     $rootScope.$on('changeLoadingStatusRequested', function (event, args) {
         var oldLoadingRequests = loadingRequests;
 
-        args.showLoadingIndicator ? loadingRequests++ : loadingRequests--;
+        args.showLoadingBar ? loadingRequests++ : loadingRequests--;
         if (loadingRequests > 0 && oldLoadingRequests == 0)
-            $rootScope.showLoadingIndicator = true;
+            $rootScope.showLoadingBar = true;
         else if (loadingRequests == 0 && oldLoadingRequests > 0)
-            $rootScope.showLoadingIndicator = false;
+            $rootScope.showLoadingBar = false;
     });
 
     var deferred = $q.defer();
