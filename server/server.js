@@ -28,6 +28,7 @@ var launch = function(npm)
 			set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
 		}
 		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
+			console.log(stderr);
 			console.log("npm packages installed..");
 			express = require('express');
 			run();
