@@ -1,8 +1,8 @@
 ﻿var atcApp = angular.module('atcApp', []);
 
-atcApp.directive('atcbox', function () {
+atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, bridgeConfig) {
 
-    var directiveController = ['$scope', '$modal', 'ATCDataProvider', 'Config', 'atcData', function ($scope, $modal, ATCDataProvider, Config, atcData) {
+    var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
 
@@ -12,45 +12,31 @@ atcApp.directive('atcbox', function () {
             id: $scope.boxId,
         };
 
-        $scope.getConfig = function () {
-            return Config;
+        $scope.returnConfig = function () {
+            return atcConfig;
         };
 
-        $scope.applyConfig = function (storedConfig) {
-            var currentConfigItem;
-
-            for (configItem in storedConfig.configItems) {
-                currentConfigItem = new ConfigItem();
-
-                currentConfigItem.component = storedConfig.configItems[configItem].component;
-                currentConfigItem.devClass = storedConfig.configItems[configItem].devClass;
-                currentConfigItem.displayPrio1 = storedConfig.configItems[configItem].displayPrio1;
-                currentConfigItem.displayPrio2 = storedConfig.configItems[configItem].displayPrio2;
-                currentConfigItem.displayPrio3 = storedConfig.configItems[configItem].displayPrio3;
-                currentConfigItem.displayPrio4 = storedConfig.configItems[configItem].displayPrio4;
-                currentConfigItem.onlyInProcess = storedConfig.configItems[configItem].onlyInProcess;
-                currentConfigItem.showSuppressed = storedConfig.configItems[configItem].showSuppressed;
-                currentConfigItem.srcSystem = storedConfig.configItems[configItem].srcSystem;
-                currentConfigItem.tadirResponsible = storedConfig.configItems[configItem].tadirResponsible;
-
-                Config.addConfigItem(currentConfigItem);
-            }
-        }
-
         $scope.atcData = atcData;
-        $scope.config = Config;
+        $scope.config = atcConfig;
 
-        $scope.loadData = function () {
-            if (Config.configItems.length > 0)
-                ATCDataProvider.getResultForConfig($scope, Config, atcData);
+        var loadData = function () {
+            if (atcConfig.configItems.length > 0)
+                atcData.getResultForConfig($scope, atcConfig, atcData);
         }
+
+        var refreshInterval = $interval(loadData, 60000 * 5);
+        $scope.$on('$destroy', function () {
+            if (angular.isDefined(refreshInterval)) {
+                $interval.cancel(refreshInterval);
+                refreshInterval = undefined;
+            }
+        });
 
         $scope.$watch('atcData.data', function () { 
             $scope.updateATCChart($scope);
         });
-
         $scope.$watch('config.configItems', function () {
-            $scope.loadData();
+            loadData();
         });
 
         $scope.updateATCChart = function ($scope) {
@@ -108,7 +94,31 @@ atcApp.directive('atcbox', function () {
     return {
         restrict: 'E',
         templateUrl: 'app/atcBox/ATCBoxDirective.html',
-        controller: directiveController
+        controller: directiveController,
+        link: function ($scope, $element, $attrs, $modelCtrl) {
+            // apply persisted config to our app
+            var currentConfigItem;
+            var appConfig = bridgeConfig.getConfigForApp($scope.boxId);
+
+            if (appConfig != undefined) {
+                for (configItem in appConfig.configItems) {
+                    currentConfigItem = new ConfigItem();
+
+                    currentConfigItem.component = appConfig.configItems[configItem].component;
+                    currentConfigItem.devClass = appConfig.configItems[configItem].devClass;
+                    currentConfigItem.displayPrio1 = appConfig.configItems[configItem].displayPrio1;
+                    currentConfigItem.displayPrio2 = appConfig.configItems[configItem].displayPrio2;
+                    currentConfigItem.displayPrio3 = appConfig.configItems[configItem].displayPrio3;
+                    currentConfigItem.displayPrio4 = appConfig.configItems[configItem].displayPrio4;
+                    currentConfigItem.onlyInProcess = appConfig.configItems[configItem].onlyInProcess;
+                    currentConfigItem.showSuppressed = appConfig.configItems[configItem].showSuppressed;
+                    currentConfigItem.srcSystem = appConfig.configItems[configItem].srcSystem;
+                    currentConfigItem.tadirResponsible = appConfig.configItems[configItem].tadirResponsible;
+
+                    atcConfig.addConfigItem(currentConfigItem);
+                }
+            }
+        }
     };
 
 });

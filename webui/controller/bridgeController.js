@@ -39,71 +39,9 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
             document.getElementById('projects-button').classList.add('selected');
         };
 
-        //var allAppsInitialized = function () {
-        //    var allInitialized = true;
-        //    for (var box in bridgeDataService.boxInstances) {
-        //        if (bridgeDataService.boxInstances[box].initialized == undefined || bridgeDataService.boxInstances[box].initialized == false) {
-        //            allInitialized = false;
-        //            break;
-        //        }
-        //    }
-            
-        //    return allInitialized;
-        //};
-
-        var hideAnimationAndStartRefreshTimer = function () {
-            if ($scope.showLoadingAnimation == true) {
-                $scope.showLoadingAnimation = false;
-
-                var createRefreshInterval = function () {
-                    setInterval(function () {
-                        for (var box in bridgeDataService.boxInstances) {
-                            if (bridgeDataService.boxInstances[box].scope && bridgeDataService.boxInstances[box].scope.loadData) {
-                                bridgeDataService.boxInstances[box].scope.loadData();
-                            }
-                        }
-                    }, 60000);
-                };
-            }
-        }
-
-        //$scope.$on('appInitializedReceived', function (event, args) {
-        //    for (var box in bridgeDataService.boxInstances) {
-        //        if (bridgeDataService.boxInstances[box].scope.boxId == args.id) {
-        //            bridgeDataService.boxInstances[box].initialized = true;
-        //            break;
-        //        }
-        //    }
-
-        //    if (allAppsInitialized())
-        //        hideAnimationAndStartRefreshTimer();
-        //});
-
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
             $scope.configLoadingFinished = true;
-
-            // give angular some time to render all apps + call their controller
-            $timeout(function () {
-                bridgeConfig.applyConfigToApps(bridgeDataService.boxInstances, bridgeConfig.config);
-
-                for (var box in bridgeDataService.boxInstances) {
-                    if (angular.isFunction(bridgeDataService.boxInstances[box].scope.loadData)) {
-                        bridgeDataService.boxInstances[box].scope.loadData();
-                    }
-                    else {
-                        // if the app has no loadData function, it is automatically initialized
-                        bridgeDataService.boxInstances[box].initialized = true;
-                    }
-                };
-
-                //if (allAppsInitialized())
-                hideAnimationAndStartRefreshTimer();
-
-                // hide loading screen after x seconds no matter if all apps are initialized or not
-                //$timeout(function () {
-                //    hideAnimationAndStartRefreshTimer();
-                //}, 5000);
-            }, 500); 
+            $scope.showLoadingAnimation = false;
         });
 }]);
 
@@ -125,9 +63,6 @@ bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
 
     //Receive emitted message and broadcast it.
     //Event names must be distinct or browser will blow up!
-    $rootScope.$on('appInitialized', function (event, args) {
-        $rootScope.$broadcast('appInitializedReceived', args);
-    });
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
     });
@@ -154,8 +89,6 @@ bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
     });
 });
 
-
-//var bridgeServices = angular.module('bridgeServices', ['ngResource']);
 
 bridgeApp.filter("decodeIcon", function () {
     return function (str) {
