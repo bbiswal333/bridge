@@ -1,5 +1,28 @@
 ﻿bridgeApp.directive('box', function ($compile, bridgeDataService) {
 
+    function includeStylesheet (path_s) {
+        //Check if stylesheet is already loaded
+        if (document.querySelector("link[href=\"" + path_s + "\"]") == null) { 
+            var elem = document.createElement("link");
+
+            var attrHref = document.createAttribute("href");
+            attrHref.nodeValue = path_s;
+
+            var attrRel = document.createAttribute("rel");
+            attrRel.nodeValue = "stylesheet";
+
+            elem.setAttributeNode(attrHref);
+            elem.setAttributeNode(attrRel);
+
+            document.head.appendChild(elem);
+
+            console.log("Included stylesheet " + path_s + ".");
+        }
+        else {
+            console.log("Stylesheet " + path_s + " already loaded.")
+        }
+    } 
+
     return {
         restrict: 'E',
         templateUrl: 'control/box/BoxDirective.html',
@@ -21,6 +44,13 @@
             }
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
+            //Include custom stylesheet for directive
+            $scope.$watch("customCSSFile", function (val, oldVal, scope) {
+               if (typeof val != "undefined") {
+                    includeStylesheet($scope.customCSSFile);
+                }
+            });
+
             $element.children().children().children().append(newElement);
 
             if ($attrs.id) {
@@ -29,3 +59,4 @@
         }
     };
 });
+
