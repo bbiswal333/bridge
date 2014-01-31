@@ -1,0 +1,19 @@
+#btnPanel {
+	width: 100%;
+	margin-bottom: 5px;
+	clear: both;
+	height: 20px;
+}
+
+.neb-icon  {
+	font-family: 'SAP-icons';
+}
+
+button {
+	float: right;
+}
+
+.neb-clearer {
+	float: right;
+	clear: both;
+}

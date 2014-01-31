@@ -36,6 +36,7 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 
 	return {
 		buildEWSUrl: function(dateFrom_o, days_i) {
+			console.log(_buildEWSUrl(dateFrom_o, days_i));
 			return _buildEWSUrl(dateFrom_o, days_i);
 		}
 	};
@@ -43,12 +44,13 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 	var calData = {};
 	var events = {};
 
-	var linkFn = function ($scope, element, attrs) {
+	var linkFn = function ($scope) {
 		$scope.boxTitle = "Meetings";
-		$scope.boxIcon = '&#xe050;'
+		$scope.boxIcon = '&#xe050;';
+		$scope.customCSSFile = "app/nextEventBox/nextEventBoxDirective.css";
 		$scope.currentEvent = 0;
 		$scope.nextEvents = [];
-		$scope.dayCnt = (typeof attrs.days != "undefined") ? attrs.days : 3;
+		$scope.dayCnt = 3;
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
 			if (newValue != "" && newValue > 0) {
@@ -64,12 +66,14 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 				$scope.nextEvents = [];
-				for (var i = 0; i < events.length; i++) {
-					$scope.nextEvents[i] = {
-						subject: events[i]["t:Subject"][0],
-						start: events[i]["t:Start"][0],
-						end: events[i]["t:End"][0]
-					};
+				if (typeof events != "undefined") {
+					for (var i = 0; i < events.length; i++) {
+						$scope.nextEvents[i] = {
+							subject: events[i]["t:Subject"][0],
+							start: events[i]["t:Start"][0],
+							end: events[i]["t:End"][0]
+						};
+					}
 				}
 			});
 		};
@@ -98,6 +102,10 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 				return true;
 			}
 			return false;
+		};
+
+		$scope.hasEvents = function () {
+			return ($scope.nextEvents.length == 0) ? false : true;
 		};
 
 		$scope.loadFromExchange();
