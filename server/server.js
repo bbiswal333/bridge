@@ -6,14 +6,17 @@ var path        = require('path');
 var url         = require('url');
 var exec        = require('child_process').exec;
 var sso 		= require('./sso.js');
-var EWSClient 	= require("./ews/ewsClient.js").EWSClient;
+var EWSClient 	= {};
 var express 	= {};
+var xml2js = {};
 
 var launch = function(npm)
 {
 	//get express via npm install
 	try{
 		express = require('express');
+		xml2js = require('xml2js'); //Just needed for checking whether xml2js is installed+
+		EWSClient = require("./ews/ewsClient.js").EWSClient;
 		run();
 	}
 	catch(err){
@@ -31,6 +34,8 @@ var launch = function(npm)
 			console.log(stderr);
 			console.log("npm packages installed..");
 			express = require('express');
+			xml2js = require('xml2js');
+			EWSClient = require("./ews/ewsClient.js").EWSClient;			
 			run();
 		});
 	}
@@ -134,10 +139,15 @@ var launch = function(npm)
 			//ms-exchange calendar data request
 			app.get("/api/calDataSSO", function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');
+				var json = function () {
+					if (typeof request.query.format != "undefined") {
+						return (request.query.format.toLowerCase() == "json") ? true : false;
+					}
+				}();
 
 				var ews = undefined;
 				try {
-					ews = new EWSClient(request.query.from, request.query.to, EWS_URI, user);
+					ews = new EWSClient(request.query.from, request.query.to, EWS_URI, user, json);
 				} catch (e) {
 					var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
 					console.log(ans);

@@ -1,0 +1,12 @@
+<div>
+	<div style="margin-bottom: 20px;">
+		<b>Subject:</b><br>
+		{{getCurrentEvent().subject}}<br>
+		<b>Start:</b><br>
+		{{getCurrentEvent().start}}<br>
+		<b>End:</b><br>
+		{{getCurrentEvent().end}}
+	</div>
+	<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs">Previous</button>
+	<button ng-disabled="!hasNextEvent();" ng-click="showNextEvent();" class="btn btn-default btn-xs">Next</button>
+</div>

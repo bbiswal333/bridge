@@ -6,8 +6,9 @@ var path        = require('path');
 var url         = require('url');
 var exec        = require('child_process').exec;
 var fs 			= require("fs");
+var xml2js 		= require('xml2js').parseString;
 
-exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) { 
+exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b) { 
 	const SOAP_TEMPLATE_FILE = path.join(__dirname, "\\") + "exchange_soap_template.xml";
 	const PARAM_NAME_FROM = "from";
 	const PARAM_NAME_TO = "to";
@@ -22,6 +23,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 	var dateTo = dateTo_s;
 	var exchangeURI = exchangeURI_s; 
 	var user = paramDefault(user_o, null);
+	var json = json_b;
 
 	var soapTmpPath = path.join(__dirname, "\\");
 
@@ -36,7 +38,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 	if (dateFrom.length != 20 || dateTo.length != 20) {
 		throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");	
 	}
-
+2014-01-30T10:15:05Z
 	/* callback_fn : Function to be called when data has been fetched from EWS (given parameter will be the fetched xml) 
 	   or if an error occured (given parameter will be an Error-object) .
 	   You have to set response header to plain text: >>response.setHeader('Content-Type', 'text/plain');<< when testing in browser - it might recommended to do this in general. */
@@ -51,7 +53,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 				getDataFromExchange_Win(data, function (ews_xml) {
 					//var diff = process.hrtime(start);		
 					// console.log("WIN strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
-					callback_fn(ews_xml);
+					handleData(ews_xml);
 				});
 			}
 			else if (process.platform == "darwin") { //Mac OS X
@@ -60,12 +62,29 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o) {
 				getDataFromExchange_Mac(data, function (ews_xml) {
 					//var diff = process.hrtime(start);		
 					// console.log("MAC strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
-					callback_fn(ews_xml);
+					handleData(ews_xml);
 				});						
 			}
 			else {
 				console.log(ERR_MSG_PLATFORM_NOT_SUPPORTED);
 				callback_fn(new Error(ERR_MSG_PLATFORM_NOT_SUPPORTED));
+			}
+
+			function handleData(ews_xml) {
+				if (json) {
+					xml2js(ews_xml, function (err, result) {
+						console.log(err);
+						if (err == undefined) {
+							callback_fn(JSON.stringify(result));
+						}
+						else {
+							callback_fn("Error parsing JSON. Please try again requesting XML.");
+						}
+					});
+				}
+				else {
+					callback_fn(ews_xml);
+				}
 			}
 		});
 	};
