@@ -9,7 +9,7 @@ var sso 		= require('./sso.js');
 var EWSClient 	= require("./ews/ewsClient.js").EWSClient;
 var express 	= {};
 
-var launch = function()
+var launch = function(npm)
 {
 	//get express via npm install
 	try{
@@ -27,7 +27,7 @@ var launch = function()
 		else {
 			set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
 		}
-		exec(set_proxy + "cd " + server_path + ' && npm install', function (error, stdout, stderr) {
+		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
 			console.log("npm packages installed..");
 			express = require('express');
 			run();
@@ -166,4 +166,4 @@ var launch = function()
 
 //run and export module
 exports.run = launch;
-if(require.main === module) { launch(); }
+if(require.main === module) { launch('npm'); }

@@ -8,17 +8,19 @@ var bridge_path = path.join(__dirname, '/');
 try{
 	bridge = require('bridge');
 	console.log('updating bridge..');
-	exec('cd ' + bridge_path + ' && npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+	exec('cd ' + bridge_path + ' && ../node/bin/npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+		console.log(stderr);
 		console.log("bridge updated..");
-		bridge.run();
+		bridge.run('../node/bin/npm');
 	});
 }
 catch(err){
 	console.log("installing bridge..");
 
-	exec('cd ' + bridge_path + ' && npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+	exec('cd ' + bridge_path + ' && ../node/bin/npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+		console.log(stderr);
 		console.log("bridge installed..");
 		bridge = require('bridge');
-		bridge.run();
+		bridge.run('../node/bin/npm');
 	});
 }
