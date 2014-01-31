@@ -36,7 +36,6 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 
 	return {
 		buildEWSUrl: function(dateFrom_o, days_i) {
-			console.log(_buildEWSUrl(dateFrom_o, days_i));
 			return _buildEWSUrl(dateFrom_o, days_i);
 		}
 	};
@@ -51,6 +50,7 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 		$scope.currentEvent = 0;
 		$scope.nextEvents = [];
 		$scope.dayCnt = 3;
+		$scope.loading = false;
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
 			if (newValue != "" && newValue > 0) {
@@ -58,11 +58,10 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 			}	
 		});*/
 
-		$scope.loadFromExchange = function () {
+		function loadFromExchange () {
+			$scope.loading = true;
 			$http.get(ewsUrlBuilder.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
-				console.log(data);
 				calData = eval(data);
-				console.log(calData);
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 				$scope.nextEvents = [];
@@ -75,6 +74,9 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 						};
 					}
 				}
+
+				$scope.currentEvent = 0;
+				$scope.loading = false;
 			});
 		};
 
@@ -108,7 +110,17 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 			return ($scope.nextEvents.length == 0) ? false : true;
 		};
 
-		$scope.loadFromExchange();
+		$scope.isLoading = function () {
+			return $scope.loading;
+		};
+
+		$scope.reload = function () {
+			if (!$scope.isLoading()) {
+				loadFromExchange();
+			}
+		};
+
+		loadFromExchange();
 	};
 
 	return {

@@ -17,3 +17,7 @@ button {
 	float: right;
 	clear: both;
 }
+
+#neb-btnReload {
+	margin-right: 10px;
+}

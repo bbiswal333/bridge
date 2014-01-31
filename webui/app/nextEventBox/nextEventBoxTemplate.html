@@ -8,7 +8,8 @@
 		<div ng-switch-when="true">
 			<div id="btnPanel">
 				<button ng-disabled="!hasNextEvent();" ng-click="showNextEvent();" class="btn btn-default btn-xs neb-icon">&#xe14b;</button>
-				<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs neb-icon">&#xe14d;</button><span class="neb-clearer"></span>
+				<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs neb-icon">&#xe14d;</button>
+				<button ng-disabled="isLoading();" ng-click="reload();" class="btn btn-default btn-xs neb-icon" id="neb-btnReload">&#xe00a;</button>
 			</div>
 			<div style="margin-bottom: 20px;">
 				<b>Subject:</b><br>
