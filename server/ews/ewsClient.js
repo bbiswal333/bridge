@@ -38,7 +38,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 	if (dateFrom.length != 20 || dateTo.length != 20) {
 		throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");	
 	}
-2014-01-30T10:15:05Z
+
 	/* callback_fn : Function to be called when data has been fetched from EWS (given parameter will be the fetched xml) 
 	   or if an error occured (given parameter will be an Error-object) .
 	   You have to set response header to plain text: >>response.setHeader('Content-Type', 'text/plain');<< when testing in browser - it might recommended to do this in general. */
