@@ -1,5 +1,5 @@
-﻿atcApp.settingsController = function ($scope, $filter, ngTableParams, Config) {
-    $scope.config = Config;
+﻿atcApp.settingsController = function ($scope, $filter, ngTableParams, atcConfig) {
+    $scope.config = atcConfig;
 
     $scope.currentConfigValues = new ConfigItem();
 

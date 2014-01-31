@@ -4,10 +4,10 @@
             this.config.boxSettings.length = 0; // clears the array without creating a new one
 
             for (var property in boxInstances) {
-                if (angular.isFunction(boxInstances[property].scope.getConfig)) {
+                if (angular.isFunction(boxInstances[property].scope.returnConfig)) {
                     var boxSetting = {};
                     boxSetting.boxId = boxInstances[property].scope.boxId;
-                    boxSetting.setting = boxInstances[property].scope.getConfig();
+                    boxSetting.setting = boxInstances[property].scope.returnConfig();
 
                     this.config.boxSettings.push(boxSetting);
                 }
@@ -41,21 +41,29 @@
             return deferred.promise;
     };
 
-    this.applyConfigToApps = function (boxInstances, config) {
-            for (var box in boxInstances) {
-                if (angular.isFunction(boxInstances[box].scope.applyConfig)) {
-                    var correspondingConfig;
-
-                    for (var cfg in config.boxSettings) {
-                        if (boxInstances[box].scope.boxId == config.boxSettings[cfg].boxId) {
-                            correspondingConfig = config.boxSettings[cfg].setting;
-                            boxInstances[box].scope.applyConfig(correspondingConfig);
-                            break;
-                        }
-                    }
-                }
+    this.getConfigForApp = function (boxId) {
+        for (var cfg in this.config.boxSettings) {
+            if (boxId == this.config.boxSettings[cfg].boxId) {
+                return this.config.boxSettings[cfg].setting;
             }
+        }
     };
+
+    //this.applyConfigToApps = function (boxInstances, config) {
+    //        for (var box in boxInstances) {
+    //            if (angular.isFunction(boxInstances[box].scope.applyConfig)) {
+    //                var correspondingConfig;
+
+    //                for (var cfg in config.boxSettings) {
+    //                    if (boxInstances[box].scope.boxId == config.boxSettings[cfg].boxId) {
+    //                        correspondingConfig = config.boxSettings[cfg].setting;
+    //                        boxInstances[box].scope.applyConfig(correspondingConfig);
+    //                        break;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //};
 
     this.config = {
             bridgeSettings: {},

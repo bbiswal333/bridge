@@ -1,12 +1,13 @@
-﻿atcApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'Config', 'ATCDataProvider',
-                        function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, Config, ATCDataProvider) {
+﻿atcApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'atcConfig', 'atcData',
+                        function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, atcConfig, atcData) {
     $scope.$parent.titleExtension = " - ATC Details";
 
-    ATCDataProvider.getDetailsForConfig(Config, $scope);
+    $scope.atcData = atcData;
+    atcData.getDetailsForConfig(atcConfig, $scope);
 
-    $scope.$watch('atcDetails', function () {
-        if ($scope.atcDetails !== undefined) {
-            $scope.tableParams.total($scope.atcDetails.length);
+    $scope.$watch('atcData.detailsData', function () {
+        if ($scope.atcData !== undefined && $scope.atcData.detailsData.length > 0 && $scope.tableParams.settings().$scope != null) {
+            $scope.tableParams.total($scope.atcData.detailsData.length);
             $scope.tableParams.reload();
         }
     });
@@ -21,8 +22,8 @@
         total: $scope.atcDetails == undefined ? 0 : $scope.atcDetails.length, // length of data
         getData: function ($defer, params) {
             var orderedData = params.sorting() ?
-                                $filter('orderBy')($scope.atcDetails, params.orderBy()) :
-                                kpis;
+                                $filter('orderBy')($scope.atcData.detailsData, params.orderBy()) :
+                                $scope.atcData.detailsData;
 
             if (orderedData != undefined) {
                 orderedData = params.filter() ?
