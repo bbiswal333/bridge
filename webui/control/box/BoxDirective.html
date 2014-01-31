@@ -1,10 +1,13 @@
-﻿<div class="innerbox">
-    <div class="panel panel-default" style="height:200px">
+﻿<div class="innerbox" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+<!--    <div class="panel panel-default" style="height:200px">-->
         <div class="box-heading">
-            <h6 class="box-title">{{boxTitle}}</h6>
-            <div class="box-icon" ng-bind="boxIcon|decodeIcon"></div>
+            <div class="box-heading-content">
+                <h6 class="box-title">{{boxTitle}}</h6>
+                <span class="box-icon" ng-bind="boxIcon|decodeIcon"></span>
+                <span ng-show="hover" class="settingsIcon" ng-click="settings_click(boxId)">&#xe00c;</span>
+            </div>
         </div>
-        <div class="box-content">
+        <div id="boxContent" class="box-content">
         </div>
-    </div>
+<!--    </div>-->
 </div>

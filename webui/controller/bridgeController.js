@@ -17,14 +17,29 @@ bridgeApp.directive('errSrc', function() {
   }
 });
 
-bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', 'bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, $route, $location, $timeout, $q, bridgeDataService, bridgeConfig) {
+bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 
-        $scope.settings_click = function () {
-            $location.path('/settings');
+        $scope.settings_click = function (boxId) {
+            //$location.path('/settings');
+            //var modalInstance = $modal.open({
+            //    templateUrl: 'myModalContent.html',
+            //    controller: ModalInstanceCtrl,
+            //    resolve: {
+            //        items: function () {
+            //            return $scope.items;
+            //        }
+            //    }
+            //});
+
+            //modalInstance.result.then(function (selectedItem) {
+            //    $scope.selected = selectedItem;
+            //}, function () {
+            //    $log.info('Modal dismissed at: ' + new Date());
+            //});
         };
 
         $scope.overview_click = function () {

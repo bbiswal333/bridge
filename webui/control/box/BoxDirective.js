@@ -21,7 +21,7 @@
             }
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
-            $element.children().children().children().append(newElement);
+            $element.children().children().next().append(newElement);
 
             if ($attrs.id) {
                 bridgeDataService.boxInstances[$attrs.id].element = newElement;

@@ -31,7 +31,7 @@ body {
     height: 100%;
     width: 100%;
     background-color: white;
-    z-index: 200;
+    padding: 5px;
 }
 
 .boxLeft{
@@ -125,22 +125,6 @@ body {
     vertical-align: middle;
 }
 
-.settingsIcon 
-{
-    font-family: 'SAP-icons';
-    font-size: 20px;
-    position: absolute;
-    right: 20px;
-    top:6px;
-    color:#707070;
-}
-.settingsIcon:hover
-{
-    /*font-weight: bold;*/
-    /*background-color: #ebebeb;*/
-    cursor: pointer;
-}
-
 .mainPageBackgroundGradient {
 	position: absolute;
 	height: 100%;
@@ -206,50 +190,53 @@ body {
 
 .box-heading
 {
-    position:absolute;
-    left: 15px;
-    right: 15px;
-    top: 15px;
-    display: block;
     font-family: 'Open Sans', sans-serif;
-    z-index: 100;
     color: #707070;
     border-bottom: 1px solid #CCCCCC;
-    height: 22px;
+    height: 18%;
+}
+
+.box-heading-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
 }
 
 .box-content{
-    padding-top:5px;
-    position: absolute;
+    width: 100%;
+    height: 82%;
     font-family: 'Open Sans', sans-serif;
     color: #707070;
-    left: 15px;
-    right: 15px;
-    top: 38px;
-    bottom: 15px;
+    margin-top: 5px;
 }
 
 .box-title
 {
     display: inline;
-    position: absolute;
-    left: 0px;
     font-size: 14px;
     font-weight: 300;
     font-family: 'Open Sans', sans-serif;
-    top: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
 }
 
 .box-icon
 {
-    display: inline;
     font-family: 'SAP-icons';
     font-size: 20px;
-    /*color: #3393D3;*/
     color: #0078B9;
-    position: absolute;
-    right: 0px;
-    bottom: 3px;
+    margin-right: 2px;
+    float: right;
+}
+
+.settingsIcon 
+{
+    font-family: 'SAP-icons';
+    font-size: 20px;
+    color:#0078B9;
+    margin-right: 10px;
+    float: right;
+}
+.settingsIcon:hover
+{
+    cursor: pointer;
 }
