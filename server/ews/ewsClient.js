@@ -9,7 +9,7 @@ var fs 			= require("fs");
 var xml2js 		= require('xml2js').parseString;
 
 exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b) { 
-	const SOAP_TEMPLATE_FILE = path.join(__dirname, "\\") + "exchange_soap_template.xml";
+	const SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";
 	const PARAM_NAME_FROM = "from";
 	const PARAM_NAME_TO = "to";
 	const PLACEHOLDER_FROM = "%DATEFROM%";
@@ -25,7 +25,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 	var user = paramDefault(user_o, null);
 	var json = json_b;
 
-	var soapTmpPath = path.join(__dirname, "\\");
+	var soapTmpPath = path.join(__dirname, "/");
 
 	if (dateFrom == undefined || dateTo == undefined) {
 		throw new Error("dateFrom_s and dateTo_s must not be undefined.");
