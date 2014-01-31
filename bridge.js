@@ -11,7 +11,7 @@ try{
 	exec('cd ' + bridge_path + ' && ../node/bin/npm install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
 		console.log(stderr);
 		console.log("bridge updated..");
-		bridge.run('../node/bin/npm');
+		bridge.run('../../../../node/bin/npm');
 	});
 }
 catch(err){
@@ -21,6 +21,6 @@ catch(err){
 		console.log(stderr);
 		console.log("bridge installed..");
 		bridge = require('bridge');
-		bridge.run('../node/bin/npm');
+		bridge.run('../../../../node/bin/npm');
 	});
 }
