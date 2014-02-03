@@ -4,24 +4,31 @@
 			font-family: Arial;
 		}
 	</style>
-	<div ng-switch on="hasEvents();">
-		<div ng-switch-when="true">
-			<div id="btnPanel">
-				<button ng-disabled="!hasNextEvent();" ng-click="showNextEvent();" class="btn btn-default btn-xs neb-icon">&#xe14b;</button>
-				<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs neb-icon">&#xe14d;</button>
-				<button ng-disabled="isLoading();" ng-click="reload();" class="btn btn-default btn-xs neb-icon" id="neb-btnReload">&#xe00a;</button>
+	<div ng-switch on="isLoading();">
+	<div ng-switch-when="true">
+		<div>Loading...</div>
+	</div>
+	<div ng-switch-when="false">
+		<div ng-switch on="hasEvents();">
+			<div ng-switch-when="true">
+				<div id="btnPanel">
+					<button ng-disabled="!hasNextEvent();" ng-click="showNextEvent();" class="btn btn-default btn-xs neb-icon">&#xe14b;</button>
+					<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs neb-icon">&#xe14d;</button>
+					<button ng-disabled="isLoading();" ng-click="reload();" class="btn btn-default btn-xs neb-icon" id="neb-btnReload">&#xe00a;</button>
+				</div>
+				<div style="margin-bottom: 20px;">
+					<b>Subject:</b><br>
+					{{getCurrentEvent().subject}}<br>
+					<b>Start:</b><br>
+					{{getCurrentEvent().start}}<br>
+					<b>End:</b><br>
+					{{getCurrentEvent().end}}
+				</div>
 			</div>
-			<div style="margin-bottom: 20px;">
-				<b>Subject:</b><br>
-				{{getCurrentEvent().subject}}<br>
-				<b>Start:</b><br>
-				{{getCurrentEvent().start}}<br>
-				<b>End:</b><br>
-				{{getCurrentEvent().end}}
+			<div ng-switch-when="false">
+				Hooray! You got no meetings in the next {{dayCnt}} days!
 			</div>
-		</div>
-		<div ng-switch-when="false">
-			Hooray! You got no meetings in the next {{dayCnt}} days!
 		</div>
 	</div>
+	
 </div>

@@ -172,12 +172,16 @@ angular.module("nextEventBoxApp", []).factory("ewsUrlBuilder", function () {
 		$scope.getCurrentEvent = function () {
 			var evt = $scope.getCurrentEventAbsolute();
 			if ((evt.start.getTime() - new Date()) >= (2 * 24 * 3600000)) {
+				//Return date in absolute format
+				function format(val) {
+					return ewsUrlBuilder.useNDigits(val, 2);
+				}
+
 				var ret = {};
 				ret.subject = evt.subject;
 
-				//n digits
-				ret.start = evt.start.getHours() + ":" + evt.start.getMinutes() + ", " + evt.start.getDay() + "." + (evt.start.getMonth() + 1);
-				ret.end = evt.end.getHours() + ":" + evt.end.getMinutes() + ", " + evt.end.getDay() + "." + (evt.end.getMonth() + 1);
+				ret.start = format(evt.start.getHours()) + ":" + format(evt.start.getMinutes()) + ", " + format(evt.start.getDay()) + "." + format(evt.start.getMonth() + 1) + "." + evt.start.getFullYear();
+				ret.end = format(evt.end.getHours()) + ":" + format(evt.end.getMinutes()) + ", " + format(evt.end.getDay()) + "." + format(evt.end.getMonth() + 1) + "." + evt.end.getFullYear();
 				return ret;
 			}
 			else {
