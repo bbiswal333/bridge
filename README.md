@@ -1,5 +1,9 @@
 ﻿Developer Guide
 ===============
+## supported operating systems
+* mac
+* windows
+
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
