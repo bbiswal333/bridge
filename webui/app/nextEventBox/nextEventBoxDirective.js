@@ -3,12 +3,18 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 	var events = {};
 
 	var linkFn = function ($scope) {
+		/* ====================================== */
+		/* CONFIGURATION */
+		$scope.dayCnt = 3;
+		$scope.daysInRelativeFormat = 1;
+		$scope.hideAllDayEvents = true;
+		/* ====================================== */
+
 		$scope.boxTitle = "Meetings";
 		$scope.boxIcon = '&#xe050;';
 		$scope.customCSSFile = "app/nextEventBox/nextEventBoxDirective.css";
 		$scope.currentEvent = 0;
 		$scope.nextEvents = [];
-		$scope.dayCnt = 3;
 		$scope.loading = true;
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
@@ -29,7 +35,6 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 				calData = eval(data);
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-				console.log(events);
 				$scope.nextEvents = [];
 				if (typeof events != "undefined") {
 					var j = 0;
@@ -39,9 +44,14 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 							continue;
 						}
 
-						console.log(events[i]["t:End"][0]);
-						console.log("to");
-						console.log(dateFn(events[i]["t:End"][0]));
+						//ignore allday events
+						if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] != "false") {
+							continue;
+						}
+
+						//console.log(events[i]["t:End"][0]);
+						//console.log("to");
+						//console.log(dateFn(events[i]["t:End"][0]));
 
 						$scope.nextEvents[j] = {
 							subject: events[i]["t:Subject"][0],
@@ -75,7 +85,7 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 
 		$scope.getCurrentEvent = function () {
 			var evt = $scope.getCurrentEventAbsolute();
-			if ((evt.start.getTime() - new Date()) >= (2 * 24 * 3600000)) {
+			if ((evt.start.getTime() - new Date()) >= ($scope.daysInRelativeFormat * 24 * 3600000)) {
 				//Return date in absolute format
 				function format(val) {
 					return ewsHelperUtils.useNDigits(val, 2);

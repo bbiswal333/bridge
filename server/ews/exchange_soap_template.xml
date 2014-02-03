@@ -20,6 +20,7 @@
           <t:FieldURI FieldURI="calendar:Organizer"/>
           <t:FieldURI FieldURI="calendar:UID"/>
           <t:FieldURI FieldURI="item:Categories"/>
+          <t:FieldURI FieldURI="calendar:IsAllDayEvent"/>
         </t:AdditionalProperties>
       </ItemShape>
       <CalendarView StartDate="%DATEFROM%" EndDate="%DATETO%"></CalendarView>
