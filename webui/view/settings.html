@@ -1,20 +1,2 @@
-﻿<div class="centeredContent"><div class="innerbox">
-	<div class="panel panel-default" style="height:100%;width:100%">
-        <div class="box-heading">
-            <h6 class="box-title">Settings</h6>
-            <div class="box-icon">&#xe00c;</div>
-        </div>
-        <div class="box-content">
-
-			<div ng-repeat="scope in settingScreens track by scope.settingScreenData.id" 
-			    style="margin-top:10px; border-bottom-color: #0078B9; border-bottom-style:solid; border-bottom-width:3px; font-size: 1.2em;  padding:10px;">
-
-			    <h6 style="font-size: 1.4em; font-weight: bold";>{{scope.boxTitle}}</h6>
-			    <ng-include src="'app/' + scope.settingScreenData.templatePath" ng-controller="scope.settingScreenData.controller"/>
-			</div>
-
-
-        </div>
-    </div>
-</div></div>
+﻿<ng-include src="'app/' + templateString"></ng-include>
 

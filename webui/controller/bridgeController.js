@@ -24,22 +24,34 @@ bridgeApp.controller('bridgeController', ['$scope', '$http', '$route', '$locatio
             $scope.showLoadingAnimation = true;
 
         $scope.settings_click = function (boxId) {
-            //$location.path('/settings');
-            //var modalInstance = $modal.open({
-            //    templateUrl: 'myModalContent.html',
-            //    controller: ModalInstanceCtrl,
-            //    resolve: {
-            //        items: function () {
-            //            return $scope.items;
-            //        }
-            //    }
-            //});
+            var templateString;
+            var templateController;
 
-            //modalInstance.result.then(function (selectedItem) {
-            //    $scope.selected = selectedItem;
-            //}, function () {
-            //    $log.info('Modal dismissed at: ' + new Date());
-            //});
+            for (var boxProperty in bridgeDataService.boxInstances) {
+                if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
+                    templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
+                    templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
+                }
+            }
+
+            var modalInstance = $modal.open({
+                templateUrl: 'view/settings.html',
+                controller: bridgeApp.settingsController,
+                resolve: {
+                    templateString: function () {
+                        return templateString;
+                    },
+                    templateController: function () {
+                        return templateController;
+                    },
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                var a = 1;
+            }, function () {
+                var b = 1;
+            });
         };
 
         $scope.overview_click = function () {
@@ -69,7 +81,7 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
 
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
-    $routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
+    //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
 });
 
 bridgeApp.run(function ($rootScope, $q, bridgeConfig) {
