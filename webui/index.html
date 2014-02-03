@@ -68,15 +68,14 @@
 	<body ng-controller="bridgeController">
 
         <!-- hiding the overview page until the config is loaded ensures that the app-config is available at the time each app is started -->
-        <div class="mainPageBackgroundGradient">
+        <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
           <div class="mainPageBackground">
             <div class="headerline">
-                    <div ng-if="!showLoadingIndicator" class="blueTitleBar"></div>
-        		    <div ng-if="showLoadingIndicator" class="loadingBar">
+                    <div ng-if="!showLoadingBar" class="blueTitleBar"></div>
+        		    <div ng-if="showLoadingBar" class="loadingBar">
         		        <div class="moveBox"></div>
         		    </div>
                 <span class="headertext"><img src="img/bridge-logo-text-grey.png" style="margin-top:10px"></img></span>
-                <span class="settingsIcon" ng-click="settings_click()">&#xe00c;</span>
             </div>
 
             <div id="menu">

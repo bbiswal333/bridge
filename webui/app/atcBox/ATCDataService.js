@@ -10,7 +10,7 @@
         detailsData: [],
 
         getResultForConfig: function ($scope, config, dataService) {
-            $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: true });
+            $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
             $http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
@@ -22,12 +22,12 @@
                     prio3: data.PRIOS.PRIO3,
                     prio4: data.PRIOS.PRIO4,
                 };
-                $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: false });
+                $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
             });
         },
 
         getDetailsForConfig: function (config, $scope) {
-            $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: true });
+            $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
             $http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json'))
@@ -38,7 +38,7 @@
                 //for (var i=0; i < data.DATA.length
                 that.detailsData = data.DATA;
 
-                $scope.$emit('changeLoadingStatusRequested', { showLoadingIndicator: false });
+                $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
             });
         },
     };

@@ -46,11 +46,10 @@
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
             //Include custom stylesheet for directive
             $scope.$watch("customCSSFile", function (val, oldVal, scope) {
-               if (typeof val != "undefined") {
+                if (typeof val != "undefined") {
                     includeStylesheet($scope.customCSSFile);
                 }
             });
-
             $element.children().children().children().append(newElement);
 
             if ($attrs.id) {
