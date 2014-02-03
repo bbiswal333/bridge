@@ -32,6 +32,8 @@ body {
     width: 100%;
     background-color: white;
     padding: 5px;
+    border: 1px solid transparent;
+    border-color: #dddddd
 }
 
 .boxLeft{
