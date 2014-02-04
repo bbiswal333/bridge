@@ -9,6 +9,7 @@
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
   * you may want to add Git Bash to your Desktop or Taskbar
 * for pushing changes to github
+  * create user in GitHub and using the SAP user name
   * `$ ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
   * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
 
@@ -26,6 +27,7 @@
 * install node inspector globally via `$ npm install -g node-inspector`
 * start the node server in debug mode `node --debug server/server.js`
 * start node inspector `node-inspector` in a second command line
+* install the web browser [Chrome](https://www.google.com/intl/de/chrome/)
 * copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
 * for full documentation and more features (automatically break in first line, attach debugger to an already running server...) see https://github.com/node-inspector/node-inspector
 
