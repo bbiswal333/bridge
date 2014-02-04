@@ -24,6 +24,8 @@
 
 ## debug node server
 * use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
+* use `set http_proxy=http://proxy:8080` and `set https_proxy=http://proxy:8080` under win to set sap proxy
+* use `export http_proxy=http://proxy:8080` and `export https_proxy=http://proxy:8080` under mac to set sap proxy 
 * install node inspector globally via `$ npm install -g node-inspector`
 * start the node server in debug mode `node --debug server/server.js`
 * start node inspector `node-inspector` in a second command line
