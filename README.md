@@ -13,10 +13,12 @@
   * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
 
 ## setup local environment
+* in the Git Bash navigate to the bridge directory using the `cd c:/...` command
 * clone bridge repository via `git clone git@github.wdf.sap.corp:Tools/bridge.git`
 * download and install `node.js` from [here](http://nodejs.org/)
 
 ## launch and execute application
+* in the command line navigate to the bridge directory using the `cd` command
 * run `node server/server.js` and open `http://localhost:8000`
 
 ## debug node server
