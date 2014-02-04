@@ -7,10 +7,10 @@
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
-  * in the 'Adjusting your PATH environment' use the 'Run Git from the Windows Command Prompt'
+  * you may want to add Git Bash to your Desktop or Taskbar
 * for pushing changes to github
-  * run `ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
-  * copy and paste the public key to your github account [here](https://github.wdf.sap.corp/settings/ssh)
+  * in the Git Bash run `ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
+  * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
 
 ## setup local environment
 * clone bridge repository via `git clone git@github.wdf.sap.corp:Tools/bridge.git`
