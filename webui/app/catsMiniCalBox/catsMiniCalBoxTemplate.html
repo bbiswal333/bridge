@@ -34,6 +34,26 @@
 		input.ng-invalid {
 			background: red;
 		}
+
+		.stateR { /* Not maintained */
+			background: #FF886E;
+		}
+
+		.stateY { /* partially maintained */
+			background: #FFF196;
+		}
+
+		.stateG { /* maintained */
+			background: #CBFF96;
+		}
+
+		.stateN { /* no need for maintainance */
+			background: #FFFFFF;
+		}
+
+		.notInMonth {
+			background: #EDEDED;
+		}
 	</style>
 	<div>
 		Year: <input type="text" ng-model="year" ng-pattern="/^[0-9]{4}$/" required><br>
@@ -43,9 +63,8 @@
 		<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
 	</div>
 	<div class="week" ng-repeat="week in calArray">
-		<div class="day" ng-repeat="day in week">
-			<span ng-if="day.valid" ng-class="{stateBusy: (day.data.state == 'busy'), stateFree: (day.data.state == 'free')}">{{day.dayNr}}</span>
-			<span ng-if="!day.valid">/</span>
+		<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.valid}" ng-repeat="day in week">
+			<span>{{day.dayNr}}</span>
 		</div>
 	</div>
 </div>
