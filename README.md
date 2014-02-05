@@ -1,9 +1,14 @@
-﻿Developer Guide
+﻿Client Installation
 ===============
-## supported operating systems
-* mac
-* windows
+In order to run bridge, you need to install a local client on your windows or mac machine. Other operating systems are currently not yet supported. Please contact us, if you would like to change that. Main challenges include certificate and password access and packaging of an application with installer package.
+* Latest Windows Client: https://github.wdf.sap.corp/Tools/bridge-win/blob/master/setup.zip?raw=true
+* Latest Mac Client: https://github.wdf.sap.corp/Tools/bridge-mac/blob/master/Bridge.app.zip?raw=true
 
+More information about bridge are available on our [landing page](https://go.sap.corp/bridge).
+
+Developer Guide
+===============
+Bridge is an internal open source project. One main goal of this is contribution and collaboration. Therefore everything which is needed to run this application is included in this project. If you want to learn more about this project and the motivation, check out this [presentation](https://github.wdf.sap.corp/pages/Tools/bridge/presentation/).
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
@@ -14,13 +19,13 @@
   * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
 
 ## setup local environment
-* navigate to the bridge directory using the `$ cd c:/..` command
+* navigate to the bridge directory using the `$ cd c:/..` command in your terminal or git bash
 * clone bridge repository via `$ git clone git@github.wdf.sap.corp:Tools/bridge.git`
 * download and install `node.js` from [here](http://nodejs.org/)
-* download and install Karma with `$ npm install -g karma`
+* download and install Karma with `$ npm install -g karma` if you want to execute our test suite
 
 ## launch and execute application
-* in the command line navigate to the bridge directory using the `cd` command
+* in the terminal or command prompt navigate to the bridge directory using the `cd` command
 * run `node server/server.js` and open `http://localhost:8000` in a browser
 
 ## debug node server
