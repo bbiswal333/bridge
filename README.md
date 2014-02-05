@@ -17,6 +17,7 @@
 * navigate to the bridge directory using the `$ cd c:/..` command
 * clone bridge repository via `$ git clone git@github.wdf.sap.corp:Tools/bridge.git`
 * download and install `node.js` from [here](http://nodejs.org/)
+* download and install Karma with `$ npm install -g karma`
 
 ## launch and execute application
 * in the command line navigate to the bridge directory using the `cd` command
