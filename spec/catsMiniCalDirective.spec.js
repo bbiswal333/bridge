@@ -54,15 +54,20 @@ describe("The mini calendar shall display information about the current CATS com
 
 	it("should be possible to bind additional data to dates", function () {
 		var data = {};
-		data[new Date(2014, 1, 4).getTime()] = {id: 1, state: "free"};
-		data[new Date(2014, 1, 5).getTime()] = {id: 2, state: "busy"};
+		data[new Date(2014, 1, 4).getTime()] = {state: "free"};
+		data[new Date(2014, 1, 5).getTime()] = {state: "busy"};
+		data[new Date(2014, 1, 28).getTime()] = {location: "Walldorf"};
 
 		calUtils.addAdditionalData(data);
 
-		var ar = calUtils._buildCalendarArray(2014, 1);
+		var ar = calUtils.buildCalendarArray(2014, 1);
+
+		expect(ar[1][1].data.state).toEqual("free");
+		expect(ar[1][2].data.state).toEqual("busy");
+		expect(ar[4][4].data.location).toEqual("Walldorf");
 	});
 });
 
 function NaturalDate(year, month, day) {
-	this.prototype new Date(year, month);
+	this.prototype = new Date(year, month);
 }

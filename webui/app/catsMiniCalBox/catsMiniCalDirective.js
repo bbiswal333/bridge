@@ -148,4 +148,6 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			return _weekdays;
 		}
 	};
+}).factory("catsDataHelper", function () {
+
 });
