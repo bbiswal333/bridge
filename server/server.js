@@ -15,7 +15,7 @@ var launch = function(npm)
 	//get express via npm install
 	try{
 		express = require('express');
-		xml2js = require('xml2js'); //Just needed for checking whether xml2js is installed+
+		xml2js = require('xml2js').parseString; //Just needed for checking whether xml2js is installed+
 		EWSClient = require("./ews/ewsClient.js").EWSClient;
 		run();
 	}
@@ -34,7 +34,7 @@ var launch = function(npm)
 			console.log(stderr);
 			console.log("npm packages installed..");
 			express = require('express');
-			xml2js = require('xml2js');
+			xml2js = require('xml2js').parseString;
 			EWSClient = require("./ews/ewsClient.js").EWSClient;			
 			run();
 		});
@@ -104,17 +104,35 @@ var launch = function(npm)
 			}
 
 			//generic api call GET
-			app.get('/api/get', function(request, response){
-				if (typeof request.query.url == undefined || request.query.url == "") {
+			app.get('/api/get', function(request, response) {
+				var json = false;
+
+				if (typeof request.query.url == "undefined" || request.query.url == "") {
 					response.setHeader('Content-Type', 'text/plain');	
 					response.send("Paramter url needs to be set!");
 					return;
 				}
 
+				if (typeof request.query.json != "undefined" && request.query.json == "true") {
+					json = true;
+				}
+
 				var service_url = url.parse(request.query.url);				
-				callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function(data){
+				callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function (data) {
 					response.setHeader('Content-Type', 'text/plain');	
-					response.send(data);
+					if (json) {
+						xml2js(data, function (err, result) {
+							if (err == undefined) {
+								response.send(JSON.stringify(result));
+							}
+							else {
+								response.send("Could not convert XML to JSON.");
+							}
+						});
+					}
+					else {
+						response.send(data);
+					}
 				});
 			});
 

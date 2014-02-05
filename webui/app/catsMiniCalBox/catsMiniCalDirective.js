@@ -1,11 +1,15 @@
-angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (calUtils) {
+angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (calUtils, catsDataRequest) {
 	var linkFn = function ($scope) {
-		var data = {};
-		data[new Date(2014, 1, 4).getTime()] = {state: "free"};
-		data[new Date(2014, 1, 5).getTime()] = {state: "busy"};
-		data[new Date(2018, 6, 5).getTime()] = {state: "busy"};
+		var data = catsDataRequest.getData();
 
-		calUtils.addAdditionalData(data);
+		$scope.state = "";
+		if (data != null) {
+			calUtils.addAdditionalData(processCatsData(data));
+			$scope.state = "CATS-Data loaded";
+		}
+		else {
+			$scope.state = "CATS-Data could no be retrieved from system";
+		}
 
 		$scope.weekdays = calUtils.getWeekdays();
 		$scope.year = 2014;
@@ -24,6 +28,10 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			return calArray;
 		};	
 	};
+
+	function processCatsData (cats_o) {
+
+	}
 
 	return {
 		restrict: "E",
