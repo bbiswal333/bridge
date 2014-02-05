@@ -62,7 +62,3 @@ describe("The mini calendar shall display information about the current CATS com
 		var ar = calUtils._buildCalendarArray(2014, 1);
 	});
 });
-
-function NaturalDate(year, month, day) {
-	this.prototype new Date(year, month);
-}
