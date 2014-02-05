@@ -66,7 +66,7 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			}
 
 			var year = date_s.substr(0, 4);
-			var month = date_s.substr(5, 2);
+			var month = date_s.substr(5, 2) - 1;
 			var day = date_s.substr(8, 2);
 
 			return new Date(year, month, day).getTime();
