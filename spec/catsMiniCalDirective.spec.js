@@ -67,7 +67,3 @@ describe("The mini calendar shall display information about the current CATS com
 		expect(ar[4][4].data.location).toEqual("Walldorf");
 	});
 });
-
-function NaturalDate(year, month, day) {
-	this.prototype = new Date(year, month);
-}

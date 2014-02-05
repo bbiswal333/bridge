@@ -148,6 +148,10 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			return _weekdays;
 		}
 	};
-}).factory("catsDataHelper", function () {
+}).factory("catsDataHelper", function ($http) {
+	//function _requestCatsData
+
+	//$http.get(ewsHelperUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
+
 
 });
