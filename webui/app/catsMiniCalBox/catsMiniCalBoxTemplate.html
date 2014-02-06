@@ -52,12 +52,13 @@
 		}
 
 		.notInMonth {
-			background: #EDEDED;
+			color: #888;
 		}
 	</style>
 	<div>
 		Year: <input type="text" ng-model="year" ng-pattern="/^[0-9]{4}$/" required><br>
 		Month: <input type="text" ng-model="month" ng-pattern="/^[0-9]{1,2}$/" required><br>
+		<button ng-click="reloadCalendar()">Load</button>
 	</div>
 	<div class="week">
 		<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>

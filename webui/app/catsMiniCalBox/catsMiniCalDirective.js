@@ -1,6 +1,6 @@
 angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (calUtils, catsDataRequest) {
 	var linkFn = function ($scope) {
-		$scope.weekdays = calUtils.getWeekdays();
+		$scope.daysInLastMonths = calUtils.getdaysInLastMonths();
 		$scope.year = 2014;
 		$scope.month = 1;
 		$scope.calArray;
@@ -13,7 +13,7 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 				var additionalData = processCatsData(data);
 				if (additionalData != null) {
 					calUtils.addAdditionalData(additionalData);
-					$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
+					reload();
 					$scope.state = "CATS-Data received and processed";
 				}
 				else {
@@ -25,17 +25,13 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			}			
 		} 
 
-		//$scope.$watch("year", function () {
-		//	$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-		//});
-		
-		$scope.$watch("month", function () {
-			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-		});		
-
-		$scope.getCalArray = function () {
-			return calArray;
+		$scope.reloadCalendar = function () {
+			reload();
 		};	
+
+		function reload () {
+			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
+		}
 	};
 
 	function processCatsData (cats_o) {
@@ -81,11 +77,11 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		link: linkFn
 	};
 }).factory("calUtils", function () {
-	const MILLISECS_DAY = 24 * 3600000;
+	const MILLISECS_DAY = 24 * 3600 * 1000;
 
 	var _additionalData= {};
 
-	var _weekdays = [
+	var _daysInLastMonths = [
 		{short: "Mo", long: "Monday"},
 		{short: "Tu", long: "Tuesday"},
 		{short: "We", long: "Wednesday"},
@@ -126,22 +122,21 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
  
 	function _buildCalendarArray (year_i, month_i) {
 		var cal = new Array();
-		var monthLength = _getLengthOfMonth(year_i, month_i);
 		var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
 		var firstDateOfGrid;
-		var weekday = 0;
+		var daysInLastMonth = 0;
 		
 
 		cal[0] = new Array();
 		if (firstDayInMonth != 0) {
-			weekday = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+			daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
 		}
 		else {
-			weekday = 6
+			daysInLastMonth = 6;
 		}
 
-		firstDateOfGrid = new Date(year_i, month_i, 1).getTime() - weekday * MILLISECS_DAY;
-		firstDateOfGridAsDays = Math.floor(firstDateOfGrid / MILLISECS_DAY);
+		firstDateOfGrid = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
+		var firstDateOfGridAsDays = Math.floor(firstDateOfGrid / MILLISECS_DAY);
 
 		console.log(new Date(firstDateOfGrid));
 
@@ -160,7 +155,7 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			};
 
 			if ((i + 1) % 7 == 0) {
-				if (new Date(firstDateOfGrid + i * MILLISECS_DAY).getMonth() > month_i) {
+				if (new Date(firstDateOfGrid + i * MILLISECS_DAY).getMonth() != month_i) {
 					stop = true;
 				}
 				else {
@@ -193,8 +188,8 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		getLengthOfMonth: function (year_i, month_i) {
 			return _getLengthOfMonth(year_i, month_i);
 		},
-		getWeekdays: function () {
-			return _weekdays;
+		getdaysInLastMonths: function () {
+			return _daysInLastMonths;
 		},
 		getMillisecsDay: function () {
 			return MILLISECS_DAY;
