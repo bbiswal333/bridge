@@ -1,70 +1,4 @@
 <div>
-	<style>
-		.week {
-			height: 20px;
-			width: 175px;
-		}
-
-		.week:first-of-type {
-			border-top: solid 1px #888;
-		}
-
-		.week {
-			border-left: solid 1px #888;
-			border-right: solid 1px #888;
-		} 
-
-		.week:last-of-type {
-			border-bottom: solid 1px #888;
-		}
-
-		.day {
-			width: 25px;
-			height: 20px;
-			float: left;
-			background: #FFE796;
-		}
-
-		.stateBusy {
-			background: red;
-		}
-
-		.stateFree {
-			background: lime;
-		}
-
-		input.ng-invalid {
-			background: red;
-		}
-
-		.stateR { /* Not maintained */
-			background: #FF886E;
-		}
-
-		.stateY { /* partially maintained */
-			background: #FFF196;
-		}
-
-		.stateG { /* maintained */
-			background: #CBFF96;
-		}
-
-		.stateN { /* no need for maintainance */
-			background: #FFFFFF;
-		}
-
-		.notInMonth {
-			color: #888;
-		}
-
-		.cmc-icon {
-			font-family: 'SAP-icons';
-		}
-
-		.inFuture {
-			background: #FFFFFF;
-		}
-	</style>
 	<div ng-if="!loading">
 		<button ng-click="prevMonth();" class="btn btn-default btn-xs cmc-icon">&#xe14d;</button>
 		<button ng-click="nextMonth();" class="btn btn-default btn-xs cmc-icon">&#xe14b;</button>	
@@ -73,7 +7,7 @@
 			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
 		</div>
 		<div class="week" ng-repeat="week in calArray">
-			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" ng-repeat="day in week">
+			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" ng-repeat="day in week" title="{{getDescForState(day.data.state)}}">
 				<span>{{day.dayNr}}</span>
 			</div>
 		</div>

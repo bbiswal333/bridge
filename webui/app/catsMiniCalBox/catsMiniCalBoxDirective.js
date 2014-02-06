@@ -1,13 +1,18 @@
-angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox", function (calUtils, catsDataRequest) {
+angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox", function (calUtils, catsUtils) {
 	var linkFn = function ($scope) {
+		$scope.customCSSFile = "app/catsMiniCalBox/catsMiniCalBoxTemplate.css";
+
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();
 		$scope.calArray;
 		$scope.state = "";		
 		$scope.loading = true;
 		$scope.weekdays = calUtils.getWeekdays();
+		$scope.getDescForState = function (state_s) {
+			return catsUtils.getDescForState(state_s);
+		};
 
-		var data = catsDataRequest.getData(handleCatsData);
+		var data = catsUtils.getData(handleCatsData);
 
 		function handleCatsData (data) {
 			if (data != null) {
@@ -100,7 +105,7 @@ angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox
 	return {
 		restrict: "E",
 		scope: false,
-		templateUrl: "catsMiniCalBoxTemplate.html",
+		templateUrl: "app/catsMiniCalBox/catsMiniCalBoxTemplate.html",
 		replace: true,
 		link: linkFn
 	};
