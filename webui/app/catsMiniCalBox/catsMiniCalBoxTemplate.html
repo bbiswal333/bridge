@@ -2,22 +2,24 @@
 	<style>
 		.week {
 			height: 20px;
-			background: #EDEDED;
-			width: 350px;
-			padding-right: 5px;
-			padding-left: 5px;
+			width: 175px;
 		}
 
 		.week:first-of-type {
-			padding-top: 5px;
+			border-top: solid 1px #888;
+		}
+
+		.week {
+			border-left: solid 1px #888;
+			border-right: solid 1px #888;
 		} 
 
 		.week:last-of-type {
-			padding-bottom: 5px;
+			border-bottom: solid 1px #888;
 		}
 
 		.day {
-			width: 50px;
+			width: 25px;
 			height: 20px;
 			float: left;
 			background: #FFE796;
@@ -60,12 +62,14 @@
 		Month: <input type="text" ng-model="month" ng-pattern="/^[0-9]{1,2}$/" required><br>
 		<button ng-click="reloadCalendar()">Load</button>
 	</div>
-	<div class="week">
-		<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
-	</div>
-	<div class="week" ng-repeat="week in calArray">
-		<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.valid}" ng-repeat="day in week">
-			<span>{{day.dayNr}}</span>
+	<div ng-show="!loading">
+		<div class="week">
+			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
+		</div>
+		<div class="week" ng-repeat="week in calArray">
+			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.valid}" ng-repeat="day in week">
+				<span>{{day.dayNr}}</span>
+			</div>
 		</div>
 	</div>
 </div>

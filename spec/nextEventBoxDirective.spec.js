@@ -3,7 +3,7 @@
 describe("nextEventBoxDirective ewsHelperUtils test", function () {
 	var ewsHelperUtils;
 
-	beforeEach(module("nextEventBoxApp"));
+	beforeEach(module("ewsHelperModule"));
 	beforeEach(inject(function (_ewsHelperUtils_) {
 		ewsHelperUtils = _ewsHelperUtils_;
 	}));

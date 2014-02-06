@@ -66,4 +66,15 @@ describe("The mini calendar shall display information about the current CATS com
 		expect(ar[1][2].data.state).toEqual("busy");
 		expect(ar[4][4].data.location).toEqual("Walldorf");
 	});
+
+	it("the calendar array should start with the correct day", function () {
+		var mo = calUtils.buildCalendarArray(2014, 8);
+		var tu = calUtils.buildCalendarArray(2013, 9);
+		var we = calUtils.buildCalendarArray(2014, 0);
+		var th = calUtils.buildCalendarArray(2014, 4);
+		var fr = calUtils.buildCalendarArray(2013, 10);
+		var sa = calUtils.buildCalendarArray(2013, 5);
+		var su = calUtils.buildCalendarArray(2013, 8);
+		 
+	});
 });

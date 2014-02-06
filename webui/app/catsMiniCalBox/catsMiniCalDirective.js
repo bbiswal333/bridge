@@ -1,10 +1,11 @@
 angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (calUtils, catsDataRequest) {
 	var linkFn = function ($scope) {
-		$scope.daysInLastMonths = calUtils.getdaysInLastMonths();
 		$scope.year = 2014;
 		$scope.month = 1;
 		$scope.calArray;
 		$scope.state = "";		
+		$scope.loading = true;
+		$scope.weekdays = calUtils.getWeekdays();
 
 		var data = catsDataRequest.getData(handleCatsData);
 
@@ -30,7 +31,9 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		};	
 
 		function reload () {
+			$scope.loading = true;
 			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
+			$scope.loading = false;
 		}
 	};
 
@@ -81,7 +84,7 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 
 	var _additionalData= {};
 
-	var _daysInLastMonths = [
+	var _weekdays = [
 		{short: "Mo", long: "Monday"},
 		{short: "Tu", long: "Tuesday"},
 		{short: "We", long: "Wednesday"},
@@ -188,8 +191,8 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		getLengthOfMonth: function (year_i, month_i) {
 			return _getLengthOfMonth(year_i, month_i);
 		},
-		getdaysInLastMonths: function () {
-			return _daysInLastMonths;
+		getWeekdays: function () {
+			return _weekdays;
 		},
 		getMillisecsDay: function () {
 			return MILLISECS_DAY;
