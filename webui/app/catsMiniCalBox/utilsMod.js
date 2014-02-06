@@ -53,17 +53,13 @@ angular.module("utils", []).factory("calUtils", function () {
 		return null;
 	}
 
-	/*  function _hash (date_o, earliest) {
-		var days = date_o.getTime() / 24 * 3600000;
-	} */
- 
 	function _buildCalendarArray (year_i, month_i) {
 		var cal = new Array();
 		var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
 		var firstDateOfGrid;
 		var daysInLastMonth = 0;
-		var todayInMs = Math.floor(new Date().getTime() / MILLISECS_DAY) * MILLISECS_DAY; //The begin of today (00:00) in milliseconds-format (needed for comparisons)
-		
+		var today = new Date(); //Needed as a workaround for strange behaviour of javascript
+		var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
 
 		cal[0] = new Array();
 		if (firstDayInMonth != 0) {
@@ -89,7 +85,7 @@ angular.module("utils", []).factory("calUtils", function () {
 			cal[Math.floor(i / 7)][i % 7] = {
 				dayNr: thisDay.getDate(), 
 				inMonth: (thisDay.getMonth() == month_i), 
-				inFuture: (thisDay.getTime() > todayInMs),
+				inFuture: (thisDay.getTime() >= todayInMs),
 				data: additionalDataForThisDay
 			};
 

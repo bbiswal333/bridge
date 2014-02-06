@@ -60,6 +60,10 @@
 		.cmc-icon {
 			font-family: 'SAP-icons';
 		}
+
+		.inFuture {
+			background: #FFFFFF;
+		}
 	</style>
 	<div ng-if="!loading">
 		<button ng-click="prevMonth();" class="btn btn-default btn-xs cmc-icon">&#xe14d;</button>
@@ -69,7 +73,7 @@
 			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
 		</div>
 		<div class="week" ng-repeat="week in calArray">
-			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth}" ng-repeat="day in week">
+			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" ng-repeat="day in week">
 				<span>{{day.dayNr}}</span>
 			</div>
 		</div>
