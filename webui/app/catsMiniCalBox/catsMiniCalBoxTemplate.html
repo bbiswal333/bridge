@@ -56,20 +56,25 @@
 		.notInMonth {
 			color: #888;
 		}
+
+		.cmc-icon {
+			font-family: 'SAP-icons';
+		}
 	</style>
-	<div>
-		Year: <input type="text" ng-model="year" ng-pattern="/^[0-9]{4}$/" required><br>
-		Month: <input type="text" ng-model="month" ng-pattern="/^[0-9]{1,2}$/" required><br>
-		<button ng-click="reloadCalendar()">Load</button>
-	</div>
-	<div ng-show="!loading">
+	<div ng-if="!loading">
+		<button ng-click="prevMonth();" class="btn btn-default btn-xs cmc-icon">&#xe14d;</button>
+		<button ng-click="nextMonth();" class="btn btn-default btn-xs cmc-icon">&#xe14b;</button>	
+		<div>{{currentMonth}}</div>
 		<div class="week">
 			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
 		</div>
 		<div class="week" ng-repeat="week in calArray">
-			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.valid}" ng-repeat="day in week">
+			<div class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth}" ng-repeat="day in week">
 				<span>{{day.dayNr}}</span>
 			</div>
 		</div>
+	</div>
+	<div ng-if="loading">
+		Loading...
 	</div>
 </div>

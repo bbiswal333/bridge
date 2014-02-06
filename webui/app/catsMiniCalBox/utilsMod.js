@@ -1,85 +1,4 @@
-angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (calUtils, catsDataRequest) {
-	var linkFn = function ($scope) {
-		$scope.year = 2014;
-		$scope.month = 1;
-		$scope.calArray;
-		$scope.state = "";		
-		$scope.loading = true;
-		$scope.weekdays = calUtils.getWeekdays();
-
-		var data = catsDataRequest.getData(handleCatsData);
-
-		function handleCatsData (data) {
-			if (data != null) {
-				var additionalData = processCatsData(data);
-				if (additionalData != null) {
-					calUtils.addAdditionalData(additionalData);
-					reload();
-					$scope.state = "CATS-Data received and processed";
-				}
-				else {
-					$scope.state = "CATS-Data received but during processing an error occurred";
-				}
-			}
-			else {
-				$scope.state = "CATS-Data could no be retrieved from system";
-			}			
-		} 
-
-		$scope.reloadCalendar = function () {
-			reload();
-		};	
-
-		function reload () {
-			$scope.loading = true;
-			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-			$scope.loading = false;
-		}
-	};
-
-	function processCatsData (cats_o) {
-		try {
-			var processed = {};
-			var days = cats_o["asx:abap"]["asx:values"][0].CATSCHK[0].ZCATSCHK_STR;
-
-			for (var i = 0; i < days.length; i++) {
-				var dateStr = days[i].DATEFROM[0];
-				var statusStr = days[i].STATUS[0];
-				
-				var time = parseDateToTime(dateStr);
-				if (time != null) {
-					processed[time] = {state: statusStr};
-				}
-			}
-
-			console.log(processed);
-
-			return processed;
-		} catch (error) {
-			return null;
-		}
-
-		function parseDateToTime (date_s) {
-			if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) == -1) { //Checks for pattern: YYYY-MM-DD
-				return null;
-			}
-
-			var year = date_s.substr(0, 4);
-			var month = date_s.substr(5, 2) - 1;
-			var day = date_s.substr(8, 2);
-
-			return new Date(year, month, day).getTime();
-		}
-	}
-
-	return {
-		restrict: "E",
-		scope: false,
-		templateUrl: "catsMiniCalBoxTemplate.html",
-		replace: true,
-		link: linkFn
-	};
-}).factory("calUtils", function () {
+angular.module("utils", []).factory("calUtils", function () {
 	const MILLISECS_DAY = 24 * 3600 * 1000;
 
 	var _additionalData= {};
@@ -92,6 +11,21 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		{short: "Fr", long: "Friday"},
 		{short: "Sa", long: "Saturday"},
 		{short: "Su", long: "Sunday"}
+	];
+
+	var _months = [
+		{short: "Jan", long: "January"},
+		{short: "Feb", long: "February"},
+		{short: "Mar", long: "March"},
+		{short: "Apr", long: "April"},
+		{short: "May", long: "May"},
+		{short: "Jun", long: "June"},
+		{short: "Jul", long: "July"},
+		{short: "Aug", long: "August"},
+		{short: "Sep", long: "September"},
+		{short: "Oct", long: "October"},
+		{short: "Nov", long: "November"},
+		{short: "Dec", long: "December"}
 	];
 
 	function _addAdditionalData (data_o) {
@@ -128,6 +62,7 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
 		var firstDateOfGrid;
 		var daysInLastMonth = 0;
+		var todayInMs = Math.floor(new Date().getTime() / MILLISECS_DAY) * MILLISECS_DAY; //The begin of today (00:00) in milliseconds-format (needed for comparisons)
 		
 
 		cal[0] = new Array();
@@ -153,7 +88,8 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 			var thisDay = new Date(firstDateOfGrid + i * MILLISECS_DAY);
 			cal[Math.floor(i / 7)][i % 7] = {
 				dayNr: thisDay.getDate(), 
-				valid: (thisDay.getMonth() == month_i), 
+				inMonth: (thisDay.getMonth() == month_i), 
+				inFuture: (thisDay.getTime() > todayInMs),
 				data: additionalDataForThisDay
 			};
 
@@ -194,37 +130,19 @@ angular.module("catsMiniCalBoxApp", []).directive("catsminicalbox", function (ca
 		getWeekdays: function () {
 			return _weekdays;
 		},
+		getMonths: function () {
+			return _months;
+		},
+		getMonthName: function (i) {
+			if (i >= 0 && i <= 11) {
+				return _months[i];	
+			}
+			else {
+				return "";
+			}
+		},
 		getMillisecsDay: function () {
 			return MILLISECS_DAY;
-		}
-	};
-}).factory("catsDataRequest", function ($http, encodeForUrl) {
-	const NODE_GET_API = "http://localhost:8000/api/get?url=";
-	const CATS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA";
-	var url = NODE_GET_API + encodeForUrl.encode(CATS_WEBSERVICE) + "&json=true";
-
-	function _requestCatsData (callback_fn) {
-		$http.get(url).success(function (data, status) {
-			if (between(status, 200, 299)) {
-				console.log("Data:");
-				console.log(eval(data));
-				callback_fn(eval(data));
-			}
-
-			console.log(status);
-		}).error(function (data, status, header, config) {
-			console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
-			callback_fn(null);
-		});
-
-		function between (val_i, min_i, max_i) {
-			return (val_i >= min_i && val_i <= max_i);
-		}
-	}
-
-	return {
-		getData: function (callback_fn) {		//Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
-			return _requestCatsData(callback_fn);
 		}
 	};
 }).factory("encodeForUrl", function () {

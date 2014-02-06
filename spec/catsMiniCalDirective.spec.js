@@ -1,7 +1,7 @@
 describe("The mini calendar shall display information about the current CATS compliance", function () {
 	var calUtils;
 
-	beforeEach(module("catsMiniCalBoxApp"));
+	beforeEach(module("utils"));
 	beforeEach(inject(function (_calUtils_) {
 		calUtils = _calUtils_;
 	}));
@@ -75,6 +75,13 @@ describe("The mini calendar shall display information about the current CATS com
 		var fr = calUtils.buildCalendarArray(2013, 10);
 		var sa = calUtils.buildCalendarArray(2013, 5);
 		var su = calUtils.buildCalendarArray(2013, 8);
-		 
+
+		expect(mo[0][0].dayNr).toBe(1); 
+		expect(tu[0][0].dayNr).toBe(30);
+		expect(we[0][0].dayNr).toBe(30);
+		expect(th[0][0].dayNr).toBe(28);
+		expect(fr[0][0].dayNr).toBe(28);
+		expect(sa[0][0].dayNr).toBe(27);
+		expect(su[0][0].dayNr).toBe(26);
 	});
 });
