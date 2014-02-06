@@ -16,9 +16,9 @@ module.exports = function(config) {
     files: [
       './spec/ng/angular.js',
       './spec/ng/angular-mocks.js',
-      './spec/*.spec.js',
-      './webui/app/nextEventBox/*.js',
-      './webui/app/catsMiniCalBox/*.js',
+      '**/*.spec.js'
+      //'./webui/app/nextEventBox/*.js',
+      //'./webui/app/catsMiniCalBox/*.js',
     ],
 
 
