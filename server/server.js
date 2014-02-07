@@ -10,13 +10,15 @@ var sso 		= require('./sso.js');
 var EWSClient 	= {};
 var express 	= {};
 var xml2js = {};
+var iconv = {};
 
 var launch = function(npm)
 {
 	//get express via npm install
 	try{
 		express = require('express');
-		xml2js = require('xml2js').parseString; //Just needed for checking whether xml2js is installed+
+		xml2js = require('xml2js').parseString;
+		iconv = require('iconv-lite');
 		EWSClient = require("./ews/ewsClient.js").EWSClient;
 		run();
 	}
@@ -65,7 +67,7 @@ var launch = function(npm)
 			});
 
 			//call backends with client certificate
-			function callBackend(protocol, hostname, port, path, method, callback, postData){
+			function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
 				var options = {
 					hostname: hostname,
 					port: port,
@@ -93,8 +95,20 @@ var launch = function(npm)
 				if( protocol == "http:")
 				{
 					req = http_req.request(options, function(res) {
+						if (decode != "none")
+						{ 
+							res.setEncoding('binary');
+						}
 						res.on('data', function(chunk) { data += chunk; });
-						res.on('end', function(){ callback(data.toString("utf8")); });
+						res.on('end', function(){
+							if (decode == "none"){
+								callback( data );
+							}
+							else
+							{
+								callback( iconv.decode(data, decode).toString('utf-8') );
+							}
+						});
 					});
 				}
 				else
@@ -130,9 +144,19 @@ var launch = function(npm)
 					json = true;
 				}
 
-				var service_url = url.parse(request.query.url);						
-				callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', function (data) {
-					response.setHeader('Content-Type', 'text/plain');	
+				var service_url = url.parse(request.query.url);	
+				
+				var decode = "none";
+				if(typeof request.query.decode != "undefined")
+				{				
+					decode = request.query.decode;
+				}
+
+							
+				callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
+					//console.log(data);
+					response.setHeader('Content-Type', 'text/plain');
+	  				response.charset = 'UTF-8';
 					if (json) {
 						xml2js(data, function (err, result) {
 							if (err == undefined) {
@@ -160,7 +184,7 @@ var launch = function(npm)
 				var service_url = url.parse(request.query.url);	
 				var postData = request.rawBody;
 
-				callBackend(service_url.hostname, service_url.port, service_url.path, "POST", function(data) {
+				callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
 					console.log("Daten: " + data);
 					response.setHeader('Content-Type', 'text/plain');	
 					response.send(data);
