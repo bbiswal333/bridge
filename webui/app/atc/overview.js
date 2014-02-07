@@ -1,4 +1,6 @@
-﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appAtc', function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
+﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appatc', 
+    function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
+    
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
