@@ -4,6 +4,7 @@
   "description": "brige server running on node.js",
   "dependencies": {
     "express": "express ~3.2.2",
-	"xml2js": "0.4.1"}
+	"xml2js": "0.4.1",
+	"iconv-lite": "0.2.11"}
 }
 
