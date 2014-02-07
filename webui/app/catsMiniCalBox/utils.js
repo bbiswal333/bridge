@@ -113,6 +113,47 @@ angular.module("utils", []).factory("calUtils", function () {
 		}
 	}
 
+	function _relativeTimeTo(dateFrom_o, dateTo_o, short) {
+	    var diffMin = dateTo_o.getTime() - dateFrom_o.getTime();
+	    diffMin = Math.floor(diffMin / 60000);
+
+	    var days = Math.floor(diffMin / (24 * 60));
+	    diffMin = diffMin - days * 24 * 60;
+
+	    var hours = Math.floor(diffMin / 60);
+	    diffMin = diffMin - hours * 60;
+
+	    var res = "";
+	    if (days > 0) {
+	        if(short)
+	            res += days + "d ";
+            else
+	            res += days + ((days == 1) ? " day, " : " days, ");
+	    }
+	    if (hours > 0) {
+	        if(short)
+	            res += hours + "h ";
+            else
+	            res += hours + ((hours == 1) ? " hour, " : " hours, ");
+	    }
+	    if(short)
+	        res += diffMin + "m";
+        else
+	        res += diffMin + ((diffMin == 1) ? " minute" : " minutes");
+
+	    return res;
+	}
+
+	function _useNDigits (val_i, n_i) {
+	    var str = new String(val_i);
+
+	    for (var i = str.length; i < n_i; i++) {
+	        str = "0" + str;
+	    }
+
+	    return str;
+	}
+
 	return {
 		addAdditionalData: function (data_o) { //data_o should be an object with the days (new Date(year, month, day).getTime()) as keys for arbitrary values (currently not applicable: order has to be chronological - oldest first)
 			_addAdditionalData(data_o);
@@ -139,6 +180,12 @@ angular.module("utils", []).factory("calUtils", function () {
 		},
 		getMillisecsDay: function () {
 			return MILLISECS_DAY;
+		},
+		relativeTimeTo: function (dateFrom_o, dateTo_o, short) {
+		    return _relativeTimeTo(dateFrom_o, dateTo_o, short);
+		},
+		useNDigits: function (val_i, n_i) {
+		    return _useNDigits (val_i, n_i);
 		}
 	};
 }).factory("encodeForUrl", function () {
