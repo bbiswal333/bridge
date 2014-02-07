@@ -12,11 +12,12 @@ module.exports = function(config) {
     frameworks: ['jasmine', "ng-scenario"],
 
 
-    // list of files / patterns to load in the browser
+    // list of files / patterns to load in the browser (*.spec.js is redundant)
     files: [
       './spec/ng/angular.js',
       './spec/ng/angular-mocks.js',
-      '**/*.spec.js'
+      '**/*.spec.js',
+      './webui/**/*Mod.js'
       //'./webui/app/nextEventBox/*.js',
       //'./webui/app/catsMiniCalBox/*.js',
     ],
