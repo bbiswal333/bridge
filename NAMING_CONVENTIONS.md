@@ -6,12 +6,14 @@ All services, factories and providers (actually all injectable stuff in AngularJ
 ## Schema for namming modules
 We try to name our modules in a "Java-package-like" way:
 ``` app.catsMiniCal
+
 In case expression would normally include a blank, a dot or a minus they are replaced by camelCase.
 
 ## Schema for naming services, factories, providers and anything else that can be injected
 Because dots and minus' cannot be used for injected objects we just rely on camelCase here. 
 For the reason of having unique names everywhere each injectable object should include the name of the module it is bound to.
 ``` angular.module("app.lunch", []).factory("appLunchWalldorf", function () {...});
+
 In case a module only contains one injectable object this object might have the same name as the object (obviously written differently). You might also consider writting names of directives completely in lowercase.
 
 ## Schema for test files
