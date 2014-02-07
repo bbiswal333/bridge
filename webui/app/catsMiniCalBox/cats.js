@@ -6,12 +6,8 @@ angular.module("cats", []).factory("catsUtils", function ($http, encodeForUrl) {
 	function _requestCatsData (callback_fn) {
 		$http.get(url).success(function (data, status) {
 			if (between(status, 200, 299)) {
-				console.log("Data:");
-				console.log(eval(data));
 				callback_fn(eval(data));
 			}
-
-			console.log(status);
 		}).error(function (data, status, header, config) {
 			console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
 			callback_fn(null);

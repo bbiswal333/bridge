@@ -72,15 +72,11 @@ angular.module("utils", []).factory("calUtils", function () {
 		firstDateOfGrid = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
 		var firstDateOfGridAsDays = Math.floor(firstDateOfGrid / MILLISECS_DAY);
 
-		console.log(new Date(firstDateOfGrid));
-
 		var i;
 		var week = 0;
 		var stop = false;
 		for (i = 0; !stop; i++) {
 			var additionalDataForThisDay = _lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-			console.log(new Date((firstDateOfGridAsDays + i) * MILLISECS_DAY));
-			console.log(additionalDataForThisDay);
 			var thisDay = new Date(firstDateOfGrid + i * MILLISECS_DAY);
 			cal[Math.floor(i / 7)][i % 7] = {
 				dayNr: thisDay.getDate(), 
