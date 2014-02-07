@@ -12,5 +12,5 @@ navigator.sayswho = function(){
 
 if( navigator.sayswho()[0] != "Chrome" && navigator.sayswho()[0] != "Firefox" && navigator.sayswho()[0] != "Safari")
 {
-	location.href="http://localhost:8000/browser_not_supported.html"
+	//location.href="http://localhost:8000/browser_not_supported.html"
 };

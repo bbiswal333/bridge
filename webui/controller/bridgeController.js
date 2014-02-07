@@ -3,7 +3,7 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeSearch',
     // Apps
     'testBoxApp',
-    'atcApp',
+    'app.atc',
     'jiraApp',
     'employeeBoxApp', "nextEventBoxApp", "catsMiniCalBoxApp"]);
 

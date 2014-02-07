@@ -1,14 +1,11 @@
-﻿var atcApp = angular.module('atcApp', []);
-
-atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, bridgeConfig) {
-
+﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settingsController"]).directive('appAtcBox', function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettingsController, bridgeConfig) {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
 
         $scope.settingScreenData = {
             templatePath: "atcBox/ATCBoxSettingsTemplate.html",
-            controller: atcApp.settingsController,
+            controller: appAtcSettingsController,
             id: $scope.boxId,
         };
 
@@ -102,7 +99,7 @@ atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, brid
 
             if (appConfig != undefined) {
                 for (configItem in appConfig.configItems) {
-                    currentConfigItem = new ConfigItem();
+                    currentConfigItem = new atcConfig.ConfigItem();
 
                     currentConfigItem.component = appConfig.configItems[configItem].component;
                     currentConfigItem.devClass = appConfig.configItems[configItem].devClass;

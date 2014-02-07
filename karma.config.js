@@ -17,7 +17,7 @@ module.exports = function(config) {
       './spec/ng/angular.js',
       './spec/ng/angular-mocks.js',
       '**/*.spec.js',
-      './webui/**/*Mod.js'
+      './webui/**/*.js'
       //'./webui/app/nextEventBox/*.js',
       //'./webui/app/catsMiniCalBox/*.js',
     ],
@@ -25,7 +25,8 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      
+      "./webui/Test/**/*",
+      "./server/**/*"
     ],
 
 

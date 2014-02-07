@@ -1,4 +1,4 @@
-﻿atcApp.settingsController = function ($scope, $filter, ngTableParams, atcConfig) {
+﻿angular.module("app.atc.settingsController", []).factory("appAtcSettingsController", function ($scope, $filter, ngTableParams, atcConfig) {
     $scope.config = atcConfig;
 
     $scope.currentConfigValues = new ConfigItem();
@@ -34,4 +34,4 @@
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
-};
+});

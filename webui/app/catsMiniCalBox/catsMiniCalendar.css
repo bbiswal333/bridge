@@ -1,0 +1,64 @@
+.week {
+	height: 20px;
+	width: 177px;
+}
+
+/* .week:first-of-type {
+	border-top: solid 1px #888;
+}
+
+.week {
+	border-left: solid 1px #888;
+	border-right: solid 1px #888;
+} 
+
+.week:last-of-type {
+	border-bottom: solid 1px #888;
+} */
+
+.day {
+	width: 25px;
+	height: 20px;
+	float: left;
+	background: #FFE796;
+}
+
+.stateBusy {
+	background: red;
+}
+
+.stateFree {
+	background: lime;
+}
+
+input.ng-invalid {
+	background: red;
+}
+
+.stateR { /* Not maintained */
+	background: #FF886E;
+}
+
+.stateY { /* partially maintained */
+	background: #FFF196;
+}
+
+.stateG { /* maintained */
+	background: #CBFF96;
+}
+
+.stateN { /* no need for maintainance */
+	background: #FFFFFF;
+}
+
+.notInMonth {
+	color: #888;
+}
+
+.cmc-icon {
+	font-family: 'SAP-icons';
+}
+
+.inFuture {
+	background: #FFFFFF;
+}
