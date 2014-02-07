@@ -1,4 +1,4 @@
-angular.module("nextEventBoxApp", ["ewsHelperModule", "utils"]).directive("nexteventbox", function ($http, ewsHelperUtils, calUtils) {
+angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", function ($http, ewsUtils, calUtils) {
 	var calData = {};
 	var events = {};
 
@@ -34,13 +34,13 @@ angular.module("nextEventBoxApp", ["ewsHelperModule", "utils"]).directive("nexte
 
 		function loadFromExchange () {
 			$scope.loading = true;
-			var dateFn = ewsHelperUtils.parseEWSDateStringAutoTimeZone;
+			var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
 			var today = new Date();
 			today.setHours(0);
 			today.setMinutes(0);
 			today.setSeconds(0);
 
-			$http.get(ewsHelperUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
+			$http.get(ewsUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
 				calData = eval(data);
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];

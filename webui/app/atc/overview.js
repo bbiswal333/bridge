@@ -1,20 +1,21 @@
-﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settingsController"]).directive('appAtcBox', function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettingsController, bridgeConfig) {
+﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appAtc', function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
+        $scope.customCSSFile = "app/atc/style.css";
 
         $scope.settingScreenData = {
-            templatePath: "atcBox/ATCBoxSettingsTemplate.html",
-            controller: appAtcSettingsController,
+            templatePath: "atc/settings.html",
+            controller: appAtcSettings,
             id: $scope.boxId,
         };
 
         $scope.returnConfig = function () {
-            return atcConfig;
+            return appAtcConfig;
         };
 
-        $scope.atcData = atcData;
-        $scope.config = atcConfig;
+        $scope.atcData = appAtcData;
+        $scope.config = appAtcConfig;
 
         var loadData = function () {
             if (atcConfig.configItems.length > 0)
@@ -90,7 +91,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'app/atcBox/ATCBoxDirective.html',
+        templateUrl: 'app/atc/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
             // apply persisted config to our app

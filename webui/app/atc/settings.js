@@ -1,5 +1,5 @@
-﻿angular.module("app.atc.settingsController", []).factory("appAtcSettingsController", function ($scope, $filter, ngTableParams, atcConfig) {
-    $scope.config = atcConfig;
+﻿angular.module("app.atc.settings", []).factory("appAtcSettings", function ($scope, $filter, ngTableParams, appAtcConfig) {
+    $scope.config = appAtcConfig;
 
     $scope.currentConfigValues = new ConfigItem();
 
