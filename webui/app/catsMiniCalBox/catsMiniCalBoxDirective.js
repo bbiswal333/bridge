@@ -82,8 +82,6 @@ angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox
 				}
 			}
 
-			console.log(processed);
-
 			return processed;
 		} catch (error) {
 			return null;
