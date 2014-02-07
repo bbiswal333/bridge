@@ -18,6 +18,7 @@
           <t:FieldURI FieldURI="calendar:Start"/>
           <t:FieldURI FieldURI="calendar:End"/>
           <t:FieldURI FieldURI="calendar:Organizer"/>
+          <t:FieldURI FieldURI="calendar:Location"/>
           <t:FieldURI FieldURI="calendar:UID"/>
           <t:FieldURI FieldURI="item:Categories"/>
           <t:FieldURI FieldURI="calendar:IsAllDayEvent"/>
