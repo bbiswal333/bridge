@@ -1,6 +1,7 @@
 const EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
 
-var https		= require('https');
+var https_req	= require('https');
+var http_req	= require('http');
 var http		= require('http');
 var path        = require('path');
 var url         = require('url');
@@ -64,7 +65,7 @@ var launch = function(npm)
 			});
 
 			//call backends with client certificate
-			function callBackend(hostname, port, path, method, callback, postData){
+			function callBackend(protocol, hostname, port, path, method, callback, postData){
 				var options = {
 					hostname: hostname,
 					port: port,
@@ -85,12 +86,24 @@ var launch = function(npm)
 				var data = "";
 
 				//for testing purposes
-				console.log(method.toUpperCase() + ": https://" + hostname + ":" + port + path);
+				console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
+
+				var req = {};
 				
-				var req = https.request(options, function(res) {
-					res.on('data', function(chunk) { data += chunk; });
-					res.on('end', function(){ callback(data); });
-				});
+				if( protocol == "http:")
+				{
+					req = http_req.request(options, function(res) {
+						res.on('data', function(chunk) { data += chunk; });
+						res.on('end', function(){ callback(data.toString("utf8")); });
+					});
+				}
+				else
+				{
+					req = https_req.request(options, function(res) {
+						res.on('data', function(chunk) { data += chunk; });
+						res.on('end', function(){ callback(data); });
+					});
+				}
 
 				if (method.toLowerCase() == "post" && postData != undefined) {
 					//console.log(postData);
@@ -117,8 +130,8 @@ var launch = function(npm)
 					json = true;
 				}
 
-				var service_url = url.parse(request.query.url);				
-				callBackend(service_url.hostname, service_url.port, service_url.path, 'GET', function (data) {
+				var service_url = url.parse(request.query.url);						
+				callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', function (data) {
 					response.setHeader('Content-Type', 'text/plain');	
 					if (json) {
 						xml2js(data, function (err, result) {
