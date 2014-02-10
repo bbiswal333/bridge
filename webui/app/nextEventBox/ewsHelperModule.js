@@ -1,4 +1,4 @@
-angular.module("ewsHelperModule", []).factory("ewsHelperUtils", function () {
+angular.module("ews", []).factory("ewsUtils", function () {
 	var EWS_BASE_URL = "/api/CalDataSSO";
 
 	function _buildEWSUrl (dateFrom_o, days_i) {
@@ -23,7 +23,7 @@ angular.module("ewsHelperModule", []).factory("ewsHelperUtils", function () {
 		}
 	}
 
-		//Testes by a separate test
+	//Tested by a separate test
 	function _useNDigits (val_i, n_i) {
 		var str = new String(val_i);
 

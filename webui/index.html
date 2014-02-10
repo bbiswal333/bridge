@@ -4,6 +4,9 @@
         <!-- browser compatibility  -->
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+        <!-- browser test -->
+        <script src="browsertest.js"></script>
+
         <!-- external css -->
         <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
         <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
@@ -46,16 +49,18 @@
         <!-- app -->
         <script src="app/testBox/TestBoxDirective.js"></script>
 
+
         <script src="app/imBox/imBoxDirective.js"></script>
         <script src="app/imBox/imBox.js"></script>
         <script src="app/imBox/imBoxDetailsController.js"></script>
+
+        <script src="app/lunchBox/LunchBoxDirective.js"></script>
         
-        <script src="app/atcBox/ATCBoxDirective.js"></script>
-        <script src="app/atcBox/ATCDataService.js"></script>
-        <script src="app/atcBox/ATCBoxDetailsController.js"></script>
-   	    <script src="app/atcBox/ATCBox.js"></script>
-        <script src="app/atcBox/ATCBoxSettingsController.js"></script>
-        <link href="app/atcBox/ATCStyles.css" rel="stylesheet" />
+        <script src="app/atc/config.js"></script>
+        <script src="app/atc/data.js"></script>
+        <script src="app/atc/detail.js"></script>
+   	    <script src="app/atc/overview.js"></script>
+        <script src="app/atc/settings.js"></script>        
         
         <script src="app/jiraBox/JiraBoxDirective.js"></script>
         <script src="app/jiraBox/JiraBox.js"></script>
@@ -63,9 +68,15 @@
 
         <script src="app/employeeBox/EmployeeBoxDirective.js"></script>
 
+        <!-- Includes for nextEventBox -->
         <script src="app/nextEventBox/ewsHelperModule.js"></script>
         <script src="app/nextEventBox/nextEventBoxDirective.js"></script>
     
+        <!-- Includes for catsMiniCalBox -->
+        <script type="text/javascript" src="app/catsMiniCalBox/cats.js"></script>
+        <script type="text/javascript" src="app/catsMiniCalBox/utils.js"></script>
+        <script type="text/javascript" src="app/catsMiniCalBox/catsMiniCalBoxDirective.js"></script>
+
 	    <title>Bridge</title>
 
 	</head>

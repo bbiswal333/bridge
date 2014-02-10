@@ -1,4 +1,4 @@
-angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox", function ($http, ewsHelperUtils) {
+angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", function ($http, ewsUtils, calUtils) {
 	var calData = {};
 	var events = {};
 
@@ -14,7 +14,7 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 		$scope.boxIcon = '&#xe050;';
 		$scope.customCSSFile = "app/nextEventBox/nextEventBoxDirective.css";
 		$scope.currentEvent = 0;
-		$scope.nextEvents = [];
+		$scope.events = [];
 		$scope.loading = true;
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
@@ -23,19 +23,28 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 			}	
 		});*/
 
+		function sortByStartTime(a, b) {
+		    if (a.start > b.start)
+		        return 1;
+		    else if (a.start < b.start)
+		        return -1;
+		    else
+		        return 0;
+		};
+
 		function loadFromExchange () {
 			$scope.loading = true;
-			var dateFn = ewsHelperUtils.parseEWSDateStringAutoTimeZone;
+			var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
 			var today = new Date();
 			today.setHours(0);
 			today.setMinutes(0);
 			today.setSeconds(0);
 
-			$http.get(ewsHelperUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
+			$http.get(ewsUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
 				calData = eval(data);
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-				$scope.nextEvents = [];
+				$scope.events = [];
 				if (typeof events != "undefined") {
 					var j = 0;
 					for (var i = 0; i < events.length; i++) {
@@ -53,81 +62,55 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 						//console.log("to");
 						//console.log(dateFn(events[i]["t:End"][0]));
 
-						$scope.nextEvents[j] = {
+						var start = dateFn(events[i]["t:Start"][0]);
+						var end = dateFn(events[i]["t:End"][0]);
+
+						$scope.events[j] = {
 							subject: events[i]["t:Subject"][0],
-							start: dateFn(events[i]["t:Start"][0]),
-							end: dateFn(events[i]["t:End"][0]),
-							timeZone: events[i]["t:TimeZone"][0]
+							start: start,
+							startRel: calUtils.relativeTimeTo(new Date(), start, true),
+							startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
+							end: end,
+							endRel: calUtils.relativeTimeTo(new Date(), end, true),
+							endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
+							timeZone: events[i]["t:TimeZone"][0],
+							location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
+							getEventTime: function () {
+							    if ($scope.events.indexOf(this) == 0)
+							        return "<b>" + this.startRel + "</b>";
+							    else
+							        return this.startTime + "<br />" + this.endTime;
+							},
 						};
 
 						j++;
 					}
 				}
 
+				$scope.events = $scope.events.sort(sortByStartTime);
+
 				$scope.currentEvent = 0;
 				$scope.loading = false;
 			});
 		};
 
-		$scope.getCurrentEventAbsolute = function () {
-			return $scope.nextEvents[$scope.currentEvent];
-		};
-
-		$scope.getCurrentEventRelative = function () {
-			var evt = $scope.getCurrentEventAbsolute();
-			var ret = {};
-			ret.subject = evt.subject;
-			ret.start = ewsHelperUtils.relativeTimeTo(new Date(), evt.start);
-			ret.end = ewsHelperUtils.relativeTimeTo(new Date(), evt.end);
-
-			return ret;
-		};
-
-		$scope.getCurrentEvent = function () {
-			var evt = $scope.getCurrentEventAbsolute();
-			if ((evt.start.getTime() - new Date()) >= ($scope.daysInRelativeFormat * 24 * 3600000)) {
-				//Return date in absolute format
-				function format(val) {
-					return ewsHelperUtils.useNDigits(val, 2);
-				}
-
-				var ret = {};
-				ret.subject = evt.subject;
-
-				ret.start = format(evt.start.getHours()) + ":" + format(evt.start.getMinutes()) + ", " + format(evt.start.getDay()) + "." + format(evt.start.getMonth() + 1) + "." + evt.start.getFullYear();
-				ret.end = format(evt.end.getHours()) + ":" + format(evt.end.getMinutes()) + ", " + format(evt.end.getDay()) + "." + format(evt.end.getMonth() + 1) + "." + evt.end.getFullYear();
-				return ret;
-			}
-			else {
-				return $scope.getCurrentEventRelative();
-			}
-		};
-
-		$scope.showNextEvent = function () {
-			$scope.currentEvent++;
-		};
-
-		$scope.showPreviousEvent = function () {
-			$scope.currentEvent--;
-		};
-
-		$scope.hasPreviousEvent = function () {
-			if ($scope.currentEvent > 0) {
-				return true;
-			}
-			return false;
-		};
-
-		$scope.hasNextEvent = function () {
-			if ($scope.currentEvent < events.length - 1) {
-				return true;
-			}
-			return false;
+		$scope.upComingEvents = function () {
+		    var upComingEvents = [];
+		    var now = new Date();
+		    for (var i = 0; i < $scope.events.length; i++) {
+		        if ($scope.events[i].start > now && $scope.events[i].start.getYear() == now.getYear() && $scope.events[i].start.getMonth() == now.getMonth() && $scope.events[i].start.getDate() == now.getDate())
+		            upComingEvents.push($scope.events[i]);
+		    }
+		    return upComingEvents;
 		};
 
 		$scope.hasEvents = function () {
-			return ($scope.nextEvents.length == 0) ? false : true;
+		    return ($scope.events.length == 0) ? false : true;
 		};
+
+		$scope.getNumberOfEvents = function () {
+		    return $scope.upComingEvents().length;
+		}
 
 		$scope.isLoading = function () {
 			return $scope.loading;
@@ -138,6 +121,11 @@ angular.module("nextEventBoxApp", ["ewsHelperModule"]).directive("nexteventbox",
 				loadFromExchange();
 			}
 		};
+
+		$scope.getCurrentDate = function () {
+		    var date = new Date();
+		    return calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
+		}
 
 		loadFromExchange();
 	};

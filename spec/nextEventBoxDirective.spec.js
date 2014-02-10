@@ -3,9 +3,9 @@
 describe("nextEventBoxDirective ewsHelperUtils test", function () {
 	var ewsHelperUtils;
 
-	beforeEach(module("nextEventBoxApp"));
-	beforeEach(inject(function (_ewsHelperUtils_) {
-		ewsHelperUtils = _ewsHelperUtils_;
+	beforeEach(module("ews"));
+	beforeEach(inject(function (_ewsUtils_) {
+		ewsHelperUtils = _ewsUtils_;
 	}));
 
 	it("should contain a method 'buildEWSUrl'", function () {

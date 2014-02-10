@@ -1,23 +1,23 @@
-﻿var atcApp = angular.module('atcApp', []);
-
-atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, bridgeConfig) {
-
+﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appatc', 
+    function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
+    
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
         $scope.boxIcon = '&#xe05e;';
+        $scope.customCSSFile = "app/atc/style.css";
 
         $scope.settingScreenData = {
-            templatePath: "atcBox/ATCBoxSettingsTemplate.html",
-            controller: atcApp.settingsController,
+            templatePath: "atc/settings.html",
+            controller: appAtcSettings,
             id: $scope.boxId,
         };
 
         $scope.returnConfig = function () {
-            return atcConfig;
+            return appAtcConfig;
         };
 
-        $scope.atcData = atcData;
-        $scope.config = atcConfig;
+        $scope.atcData = appAtcData;
+        $scope.config = appAtcConfig;
 
         var loadData = function () {
             if (atcConfig.configItems.length > 0)
@@ -93,7 +93,7 @@ atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, brid
 
     return {
         restrict: 'E',
-        templateUrl: 'app/atcBox/ATCBoxDirective.html',
+        templateUrl: 'app/atc/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
             // apply persisted config to our app
@@ -102,7 +102,7 @@ atcApp.directive('atcbox', function ($modal, $interval, atcConfig, atcData, brid
 
             if (appConfig != undefined) {
                 for (configItem in appConfig.configItems) {
-                    currentConfigItem = new ConfigItem();
+                    currentConfigItem = new atcConfig.ConfigItem();
 
                     currentConfigItem.component = appConfig.configItems[configItem].component;
                     currentConfigItem.devClass = appConfig.configItems[configItem].devClass;

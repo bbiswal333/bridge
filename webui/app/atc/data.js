@@ -1,4 +1,4 @@
-﻿atcApp.factory('atcData', function ($http) {
+﻿angular.module("app.atc.data", []).factory('appAtcData', function ($http) {
     return {
         data: {
             prio1: 0,

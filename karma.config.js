@@ -12,19 +12,21 @@ module.exports = function(config) {
     frameworks: ['jasmine', "ng-scenario"],
 
 
-    // list of files / patterns to load in the browser
+    // list of files / patterns to load in the browser (*.spec.js is redundant)
     files: [
       './spec/ng/angular.js',
       './spec/ng/angular-mocks.js',
-      './spec/*.spec.js',
-      '../Learning AngularJS/*.js',
-      './webui/app/nextEventBox/*.js'
+      '**/*.spec.js',
+      './webui/**/*.js'
+      //'./webui/app/nextEventBox/*.js',
+      //'./webui/app/catsMiniCalBox/*.js',
     ],
 
 
     // list of files to exclude
     exclude: [
-      
+      "./webui/Test/**/*",
+      "./server/**/*"
     ],
 
 
@@ -47,7 +49,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:
@@ -63,7 +65,6 @@ module.exports = function(config) {
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
-
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit

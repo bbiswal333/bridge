@@ -1,8 +1,10 @@
-﻿atcApp.controller('atcDetailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'atcConfig', 'atcData',
-                        function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, atcConfig, atcData) {
+﻿angular.module("app.atc.detail", []).controller('appAtcDetail', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'appAtcConfig', 'appAtcData'], 
+    function ($scope, $http, $filter, $route, $routeParams, ngTableParams, appAtcConfig, appAtcData) {
+    
+    var atcConfig = appAtcConfig;
     $scope.$parent.titleExtension = " - ATC Details";
 
-    $scope.atcData = atcData;
+    $scope.atcData = appAtcData;
     atcData.getDetailsForConfig(atcConfig, $scope);
 
     $scope.$watch('atcData.detailsData', function () {
@@ -36,4 +38,4 @@
             }
         }
     });
-}]);
+});
