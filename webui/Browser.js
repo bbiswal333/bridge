@@ -10,7 +10,7 @@ navigator.sayswho = function(){
     return M;
 };
 
-if( navigator.sayswho()[0] != "Chrome" && navigator.sayswho()[0] != "Firefox" && navigator.sayswho()[0] != "Safari")
+if (navigator.sayswho()[0] != "Chrome" && navigator.sayswho()[0] != "Firefox" && navigator.sayswho()[0] != "Safari" && navigator.sayswho()[0] == "MSIE" && parseFloat(navigator.sayswho()[1]) < 10)
 {
-	//location.href="http://localhost:8000/browser_not_supported.html"
+	location.href="http://localhost:8000/browser_not_supported.html"
 };

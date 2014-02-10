@@ -40,7 +40,7 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 			today.setMinutes(0);
 			today.setSeconds(0);
 
-			$http.get(ewsUtils.buildEWSUrl(new Date(), $scope.dayCnt)).success(function (data, status) {
+			$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
 				calData = eval(data);
 
 				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
@@ -98,8 +98,14 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 		    var upComingEvents = [];
 		    var now = new Date();
 		    for (var i = 0; i < $scope.events.length; i++) {
-		        if ($scope.events[i].start > now && $scope.events[i].start.getYear() == now.getYear() && $scope.events[i].start.getMonth() == now.getMonth() && $scope.events[i].start.getDate() == now.getDate())
-		            upComingEvents.push($scope.events[i]);
+		        if($scope.events[i].start.getYear() == now.getYear() && $scope.events[i].start.getMonth() == now.getMonth() && $scope.events[i].start.getDate() == now.getDate()) {
+		            if ($scope.events[i].start > now)
+		                upComingEvents.push($scope.events[i]);
+		            if ($scope.events[i].start < now && $scope.events[i].end > now) {
+		                $scope.events[i].isCurrent = true;
+		                upComingEvents.push($scope.events[i]);
+		            }
+		        }
 		    }
 		    return upComingEvents;
 		};

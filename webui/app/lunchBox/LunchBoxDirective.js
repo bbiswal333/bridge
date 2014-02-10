@@ -1,7 +1,6 @@
 ﻿var testBoxApp = angular.module('lunchBoxApp', []);
 
 testBoxApp.directive('lunchbox', function () {
-
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         $scope.boxTitle = "Lunch Walldorf/ Rot";
         $scope.initialized = true;
@@ -19,16 +18,25 @@ testBoxApp.directive('lunchbox', function () {
             
             var weekday = new Date().getDay() - 1;
             var lunchstring = data.split('************')[weekday];
-            $scope.lunch = lunchstring;        
 
-            /*NSRange soupRange = [text rangeOfString:de?@"Suppe:":@"Soup:"];
-            NSRange main1Range = [text rangeOfString:de?@"Hauptgericht:":@"Main course:"];
-            NSRange main2Range = [text rangeOfString:de?@"Oder:":@"Or:"];
-            NSRange sideDishesRange = [text rangeOfString:de?@"Beilagen:":@"Side dishes:"];
-            NSRange dessertRange = [text rangeOfString:de?@"Dessert:":@"Dessert:"];
-            NSRange header = [text rangeOfString:de?@"Speiseplan Walldorf":@"Weekly Menu Walldorf"];
-            NSRange resultRange;*/
+            var lunchLines = lunchstring.split("\n");
+            var lunchMenu = {};
+            for(var i = 0; i < lunchLines.length; i++) {
+                if (lunchLines[i].indexOf("Suppe:") != -1)
+                    lunchMenu.soup = lunchLines[i].substring(lunchLines[i].indexOf("Suppe:") + "Suppe:".length).replace(/^\s+|\s+$/g, '');
+                if (lunchLines[i].indexOf("Hauptgericht:") != -1) {
+                    lunchMenu.mainCourse = [];
+                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf("Hauptgericht:") + "Hauptgericht:".length).replace(/^\s+|\s+$/g, ''));
+                }
+                if (lunchLines[i].indexOf("Oder:") != -1)
+                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf("Oder:") + "Oder:".length).replace(/^\s+|\s+$/g, ''));
+                if (lunchLines[i].indexOf("Beilagen:") != -1)
+                    lunchMenu.sideDishes = lunchLines[i].substring(lunchLines[i].indexOf("Beilagen:") + "Beilagen:".length).replace(/^\s+|\s+$/g, '');
+                if (lunchLines[i].indexOf("Dessert:") != -1)
+                    lunchMenu.dessert = lunchLines[i].substring(lunchLines[i].indexOf("Dessert:") + "Dessert:".length).replace(/^\s+|\s+$/g, '');
+            }
 
+            $scope.lunch = lunchMenu;
         }).error(function(data, status, headers, config) {
             console.log(data);
         });
