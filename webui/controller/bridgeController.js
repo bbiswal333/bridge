@@ -1,4 +1,4 @@
-var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable',
+var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable', 'ng-scrollbar',
     // Own modules
     'employeeSearch',
     // Apps

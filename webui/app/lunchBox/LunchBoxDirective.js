@@ -37,6 +37,7 @@ testBoxApp.directive('lunchbox', function () {
             }
 
             $scope.lunch = lunchMenu;
+            $scope.$broadcast('recalculateScrollbars');
         }).error(function(data, status, headers, config) {
             console.log(data);
         });

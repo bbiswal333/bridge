@@ -1,33 +1,14 @@
-<div>
-	<style>
-		button {
-			font-family: Arial;
-		}
-
-		.fadeAnim.ng-enter {
-			transition: 0.5s linear;
-  			opacity: 0;
-		}
-
-		.fadeAnim.ng-enter.ng-enter-active {
-			opacity: 1;
-		}
-	</style>
+<div >
 	<div ng-if="isLoading()" class="fadeAnim">
 		<div>Loading...</div>
 	</div>
 	<div ng-if="!isLoading()" class="fadeAnim" style="padding-left: 6px; padding-left: 6px">
 		<div ng-if="hasEvents()">
-			<!--<div id="btnPanel">
-				<button ng-disabled="!hasNextEvent();" ng-click="showNextEvent();" class="btn btn-default btn-xs neb-icon">&#xe14b;</button>
-				<button ng-disabled="!hasPreviousEvent();" ng-click="showPreviousEvent();" class="btn btn-default btn-xs neb-icon">&#xe14d;</button>
-				<button ng-disabled="isLoading();" ng-click="reload();" class="btn btn-default btn-xs neb-icon" id="neb-btnReload">&#xe00a;</button>
-			</div>-->
             <div>
                 <b>{{getCurrentDate()}}</b><br />
                 {{getNumberOfEvents()}} Meetings scheduled for today.
             </div>
-            <div style="margin-top: 10px; height: 110px; overflow: auto;">
+            <div style="margin-top: 10px; height: 110px; overflow: hidden;" ng-scrollbar>
                 <table cellpadding="2">
                     <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5">
                         <td style="border-right: 1px solid #f0ab00; width: 40px; padding-right: 10px" id="eventId{{($index+1)}}">
@@ -38,14 +19,13 @@
                                 {{event.startTime}}
                                 {{event.endTime}}
                             </span>
-                            <div ng-if="event.isCurrent" style="position: absolute; left: 5px; margin-top: 5px">&#9658;</div>
                             <span ng-if="event.isCurrent">
                                 now
                                 {{event.endTime}}
                             </span>
                         </td>
                         <td style="vertical-align: top; padding-left: 10px">
-                            <div ng-if="event.isCurrent" style="position: absolute; right: 5px; margin-top: 5px">&#9668;</div>
+                            <div ng-if="event.isCurrent" style="position: absolute; right: 5px; margin-top: 5px;">&#9668;</div>
                             <div style="color: #333333; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 115px">
                                 <span ng-if="$first">
                                     <b>{{event.subject}}</b>

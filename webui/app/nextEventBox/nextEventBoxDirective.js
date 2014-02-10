@@ -107,6 +107,7 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 		            }
 		        }
 		    }
+		    $scope.$broadcast('recalculateScrollbars');
 		    return upComingEvents;
 		};
 
