@@ -38,6 +38,7 @@ var launch = function(npm)
 			console.log("npm packages installed..");
 			express = require('express');
 			xml2js = require('xml2js').parseString;
+			iconv = require('iconv-lite');
 			EWSClient = require("./ews/ewsClient.js").EWSClient;			
 			run();
 		});

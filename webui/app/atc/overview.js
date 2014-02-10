@@ -1,4 +1,5 @@
-﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appatc', 
+﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appatc',
+    ["$modal", "$interval", "app.atc.config", "app.atc.data", "app.atc.settings", "bridgeConfig", 
     function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
     
     var directiveController = ['$scope', function ($scope) {
@@ -121,4 +122,4 @@
         }
     };
 
-});
+}]);
