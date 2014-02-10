@@ -3,6 +3,7 @@ var bridgeApp = angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechar
     'employeeSearch',
     // Apps
     'testBoxApp',
+    'imBoxApp',
     'atcApp',
     'jiraApp',
     'employeeBoxApp', "nextEventBoxApp"]);
@@ -81,6 +82,7 @@ bridgeApp.config(function ($routeProvider, $locationProvider) {
 
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
+    $routeProvider.when("/detail/im/", { templateUrl: 'app/imBox/imBoxDetails.html', controller: 'imDetailController' });
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
 });
 

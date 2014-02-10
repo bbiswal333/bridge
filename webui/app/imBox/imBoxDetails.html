@@ -1,0 +1,16 @@
+<div class="centeredContent">
+    <div class="panel panel-default">
+      <div class="panel-heading panel-title">Internal Messages Details</div>
+      <div class="panel-body">
+
+        <table ng-table class="table" ng-controller="imDetailController">
+            <tr ng-repeat="nachricht in testmessage">
+                <td data-title="'Number'" align="center">{{nachricht.num}}</td>
+                <td data-title="'Status'" align="center">{{nachricht.stat}}</td>        
+                <td data-title="'Processor'" align="center">{{nachricht.proces}}</td>
+            </tr>
+        </table>
+
+      </div>
+    </div>
+</div>
