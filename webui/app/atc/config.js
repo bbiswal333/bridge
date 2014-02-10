@@ -1,13 +1,5 @@
-angular.module("app.atc.config", []).factory("appAtcConfig", function () {
-	var IQueryString = {
-		getQueryString : function() { throw "Not Implemented"; }
-	};
+angular.module('app.atc').factory("app.atc.configservice", function () {
 
-	var IConfig = {
-			addConfigItem : function() { throw "Not Implemented"; },
-			getConfigItems: function () { throw "Not Implemented"; }
-	};
-	IConfig.prototype = Object.create(IQueryString);
 
 	var ConfigItem = function() {
 		this.srcSystem = "";
@@ -20,7 +12,19 @@ angular.module("app.atc.config", []).factory("appAtcConfig", function () {
 		this.displayPrio3 = false;
 		this.displayPrio4 = false;
 		this.onlyInProcess = false;
+	}
+
+
+	var IQueryString = {
+		getQueryString : function() { throw "Not Implemented"; }
 	};
+
+	var IConfig = {
+		newItem : function() { throw "Not Implemented"; },
+		addConfigItem : function() { throw "Not Implemented"; },
+		getConfigItems: function () { throw "Not Implemented"; }
+	};
+	IConfig.prototype = Object.create(IQueryString);
 
 	ConfigItem.prototype = Object.create(IQueryString);
 	ConfigItem.prototype.getQueryString = function() {
@@ -41,6 +45,11 @@ angular.module("app.atc.config", []).factory("appAtcConfig", function () {
 	};
 
 	Config.prototype = Object.create(IConfig);
+	Config.prototype.newItem = function()
+	{
+		return new ConfigItem();
+	}
+
 	Config.prototype.addConfigItem = function(item){
 		this.configItems.push(item);
 	};

@@ -1,4 +1,4 @@
-﻿angular.module("app.atc.data", []).factory('appAtcData', function ($http) {
+﻿angular.module('app.atc').factory('app.atc.dataservice', ["$http", function ($http) {
     return {
         data: {
             prio1: 0,
@@ -42,4 +42,4 @@
             });
         },
     };
-});
+}]);
