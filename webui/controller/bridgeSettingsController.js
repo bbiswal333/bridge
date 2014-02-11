@@ -1,5 +1,6 @@
 ﻿//bridgeApp.controller('bridgeSettingsController', ['$scope', '$http', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, bridgeDataService, bridgeConfig, templateString, templateController) {
-bridgeApp.settingsController = function ($scope, $modalInstance, templateString, templateController) {
+
+angular.module('bridgeApp').settingsController = function ($scope, $modalInstance, templateString, templateController) {
     //$scope.$parent.titleExtension = " - Settings";
 
     //$scope.$on("$destroy", function () {

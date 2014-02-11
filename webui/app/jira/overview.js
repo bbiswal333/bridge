@@ -1,12 +1,11 @@
-﻿var jiraApp = angular.module('jiraApp', []);
+﻿angular.module('app.jira', []);
 
-jiraApp.directive('jirabox', function () {
+angular.module('app.jira').directive('app.jira', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', function ($scope, JiraBox, JiraQuery) {
         $scope.boxTitle = "Jira";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe009';
-
 
         //JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
@@ -18,7 +17,7 @@ jiraApp.directive('jirabox', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'app/jiraBox/JiraBoxDirective.html',
+        templateUrl: 'app/jira/overview.html',
         controller: directiveController
     };
 });

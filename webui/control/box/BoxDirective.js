@@ -1,4 +1,4 @@
-﻿bridgeApp.directive('box', function ($compile, bridgeDataService) {
+﻿angular.module('bridgeApp').directive('box', function ($compile, bridgeDataService) {
 
     function includeStylesheet (path_s) {
         //Check if stylesheet is already loaded
