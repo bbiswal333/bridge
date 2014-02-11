@@ -1,4 +1,4 @@
-angular.module('app.employeeSearch', ['employeeSearch']);
+angular.module('app.employeeSearch', ['bridge.employeeSearch']);
 
 angular.module('app.employeeSearch').directive('app.employeeSearch', function () {
 

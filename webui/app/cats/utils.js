@@ -1,4 +1,4 @@
-angular.module("utils", []).factory("calUtils", function () {
+angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
 	const MILLISECS_DAY = 24 * 3600 * 1000;
 
 	var _additionalData= {};
@@ -184,7 +184,7 @@ angular.module("utils", []).factory("calUtils", function () {
 		    return _useNDigits (val_i, n_i);
 		}
 	};
-}).factory("encodeForUrl", function () {
+}).factory("app.cats.encodeForUrl", function () {
 	return {
 		encode: function (url_s) {
 			return encodeURIComponent(url_s).replace(/'/g,"%27").replace(/"/g,"%22");

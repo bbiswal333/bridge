@@ -1,4 +1,6 @@
-﻿angular.module('bridgeApp').directive('box', function ($compile, bridgeDataService) {
+﻿angular.module('bridge.box', []);
+
+angular.module('bridge.box').directive('bridge.box', function ($compile, bridgeDataService) {
 
     function includeStylesheet (path_s) {
         //Check if stylesheet is already loaded
@@ -25,7 +27,7 @@
 
     return {
         restrict: 'E',
-        templateUrl: 'control/box/BoxDirective.html',
+        templateUrl: 'bridge/box/BoxDirective.html',
         //controller: directiveController,
         scope: true,
         link: function ($scope, $element, $attrs, $modelCtrl) {

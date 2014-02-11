@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="bridgeApp">
+<html lang="en" ng-app="bridge.app">
 	<head>
         <!-- browser compatibility  -->
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,44 +34,33 @@
         <script src="lib/underscore-1_5_2/underscore.js"></script>
         <script src="lib/ng-scrollbar/ng-scrollbar.js"></script>
 		
-        <!-- controller -->
-        <script src="controller/bridgeController.js"></script>
-        <script src="controller/bridgeSettingsController.js"></script>
-
-        <!-- service -->
-        <script src="service/bridgeDataService.js"></script>
-        <script src="service/bridgeConfigService.js"></script>
-        
-        <!-- control -->
-        <link href="control/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
-        <script src="control/box/BoxDirective.js"></script>
-        <script src="control/employeeSearch/EmployeeSearchDirective.js"></script>
+        <!-- bridge -->
+        <script src="bridge/bridgeController.js"></script>
+        <script src="bridge/bridgeSettingsController.js"></script>
+        <script src="bridge/bridgeDataService.js"></script>
+        <script src="bridge/bridgeConfigService.js"></script>
+        <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
+        <script src="bridge/box/BoxDirective.js"></script>
+        <script src="bridge/employeeSearch/EmployeeSearchDirective.js"></script>
 
         <!-- app -->
         <script src="app/test/overview.js"></script>
-        <script src="app/lunchWalldorf/overview.js"></script>
-                
+        <script src="app/lunchWalldorf/overview.js"></script>            
         <script src="app/atc/module.js"></script>
         <script src="app/atc/config.js"></script>
         <script src="app/atc/data.js"></script>        
         <script src="app/atc/detail.js"></script>   	    
         <script src="app/atc/settings.js"></script>        
         <script src="app/atc/overview.js"></script>
-
         <script src="app/jira/overview.js"></script>
         <script src="app/jira/JiraBox.js"></script>
         <script src="app/jira/detail.js"></script>
-
-        <script src="app/employeeSearch/overview.js"></script>
-
-        <!-- Includes for nextEventBox -->
-        <script src="app/nextEventBox/ewsHelperModule.js"></script>
-        <script src="app/nextEventBox/nextEventBoxDirective.js"></script>
-    
-        <!-- Includes for catsMiniCalBox -->
-        <script type="text/javascript" src="app/catsMiniCalBox/cats.js"></script>
-        <script type="text/javascript" src="app/catsMiniCalBox/utils.js"></script>
-        <script type="text/javascript" src="app/catsMiniCalBox/catsMiniCalBoxDirective.js"></script>
+        <script src="app/employeeSearch/overview.js"></script>        
+        <script src="app/meetings/ews.js"></script>
+        <script src="app/meetings/overview.js"></script>
+        <script src="app/cats/cats.js"></script>
+        <script src="app/cats/utils.js"></script>
+        <script src="app/cats/overview.js"></script>
 
 	    <title>Bridge</title>
 

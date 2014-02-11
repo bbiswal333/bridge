@@ -1,4 +1,4 @@
-angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", function ($http, ewsUtils, calUtils) {
+angular.module("app.meetings", ["app.meetings.ews", "app.cats.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "app.cats.calUtils", function ($http, ewsUtils, calUtils) {
 	var linkFn = function ($scope) {
 		/* ====================================== */
 		/* CONFIGURATION */
@@ -8,7 +8,7 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 
 		$scope.boxTitle = "Meetings";
 		$scope.boxIcon = '&#xe050;';
-		$scope.customCSSFile = "app/nextEventBox/nextEventBoxDirective.css";
+		$scope.customCSSFile = "app/meetings/style.css";
 		$scope.currentEvent = 0;
 		$scope.events = [];
 		$scope.loading = true;
@@ -127,8 +127,8 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 	return {
 		restrict: "E",
 		scope: false,
-		templateUrl: "app/nextEventBox/nextEventBoxTemplate.html",
+		templateUrl: "app/meetings/overview.html",
 		replace: true,
 		link: linkFn
 	};
-});
+}]);

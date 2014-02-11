@@ -1,6 +1,6 @@
-angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox", function (calUtils, catsUtils) {
+angular.module("app.cats", ["app.cats.utils", "app.cats.data"]).directive("app.cats", ["app.cats.calUtils", "app.cats.catsUtils", function (calUtils, catsUtils) {
 	var linkFn = function ($scope) {
-		$scope.customCSSFile = "app/catsMiniCalBox/catsMiniCalBoxTemplate.css";
+		$scope.customCSSFile = "app/cats/style.css";
 
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();
@@ -103,8 +103,8 @@ angular.module("catsMiniCalBoxApp", ["utils", "cats"]).directive("catsminicalbox
 	return {
 		restrict: "E",
 		scope: false,
-		templateUrl: "app/catsMiniCalBox/catsMiniCalBoxTemplate.html",
+		templateUrl: "app/cats/overview.html",
 		replace: true,
 		link: linkFn
 	};
-});
+}]);

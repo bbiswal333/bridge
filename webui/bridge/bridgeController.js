@@ -1,16 +1,24 @@
-angular.module('bridgeApp', ['ngAnimate', 'ngRoute', 'googlechart', 'ui.bootstrap', 'ngTable', 'ng-scrollbar',
-    // modules
-    'employeeSearch',
-    // apps
+angular.module('bridge.app', [
+    //external stuff
+    'ngAnimate',
+    'ngRoute',
+    'googlechart',
+    'ui.bootstrap',
+    'ngTable',
+    'ng-scrollbar',
+    // bridge modules
+    'bridge.employeeSearch',
+    'bridge.box',
+    // bridge apps
     'app.test',
     'app.atc',
     'app.jira',
     'app.employeeSearch', 
-    'nextEventBoxApp',
-    'catsMiniCalBoxApp',
+    'app.meetings',
+    'app.cats',
     'app.lunchWalldorf']);
 
-angular.module('bridgeApp').directive('errSrc', function() {
+angular.module('bridge.app').directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
       element.bind('error', function() {
@@ -20,7 +28,7 @@ angular.module('bridgeApp').directive('errSrc', function() {
   }
 });
 
-angular.module('bridgeApp').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
 
         if ($location.path() == "" || $location.path() == "/")
@@ -39,7 +47,7 @@ angular.module('bridgeApp').controller('bridgeController', ['$scope', '$http', '
 
             var modalInstance = $modal.open({
                 templateUrl: 'view/settings.html',
-                controller: bridgeApp.settingsController,
+                controller: angular.module('bridge.app').settingsController,
                 resolve: {
                     templateString: function () {
                         return templateString;
@@ -76,7 +84,7 @@ angular.module('bridgeApp').controller('bridgeController', ['$scope', '$http', '
 }]);
 
 
-angular.module('bridgeApp').config(function ($routeProvider, $locationProvider) {
+angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
@@ -86,7 +94,7 @@ angular.module('bridgeApp').config(function ($routeProvider, $locationProvider) 
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });    
 });
 
-angular.module('bridgeApp').run(function ($rootScope, $q, bridgeConfig) {
+angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {
 
     var loadingRequests = 0;
 
@@ -119,7 +127,7 @@ angular.module('bridgeApp').run(function ($rootScope, $q, bridgeConfig) {
 });
 
 
-angular.module('bridgeApp').filter("decodeIcon", function () {
+angular.module('bridge.app').filter("decodeIcon", function () {
     return function (str) {
         if (str == undefined)
             return "";

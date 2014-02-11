@@ -1,6 +1,6 @@
-﻿var employeeSearch = angular.module('employeeSearch', []);
+﻿angular.module('bridge.employeeSearch', []);
 
-employeeSearch.directive('employeeSearch', function () {
+angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', function () {
 
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         if ($scope.setRequired === undefined) {
@@ -17,7 +17,7 @@ employeeSearch.directive('employeeSearch', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'control/employeeSearch/EmployeeSearchDirective.html',
+        templateUrl: 'bridge/employeeSearch/EmployeeSearchDirective.html',
         controller: directiveController,
         scope: {
             selectedEmployee: '=selectedEmployee',
