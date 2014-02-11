@@ -1,5 +1,7 @@
 angular.module("app.cats", ["app.cats.utils", "app.cats.data"]).directive("app.cats", ["app.cats.calUtils", "app.cats.catsUtils", function (calUtils, catsUtils) {
 	var linkFn = function ($scope) {
+		var monthRelative = 0;
+
 		$scope.customCSSFile = "app/cats/style.css";
 
 		$scope.year = new Date().getFullYear();
@@ -31,7 +33,20 @@ angular.module("app.cats", ["app.cats.utils", "app.cats.data"]).directive("app.c
 			}			
 		} 
 
+		$scope.canGoBackward = function () {
+			if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)
+				return false;
+			}
+
+			return true;
+		};
+
 		$scope.prevMonth = function () {
+			if (!$scope.canGoBackward) {
+				return;
+			}
+			monthRelative--;
+
 			if ($scope.month == 0) {
 				$scope.month = 11;
 				$scope.year--;
@@ -43,7 +58,21 @@ angular.module("app.cats", ["app.cats.utils", "app.cats.data"]).directive("app.c
 			reload();
 		};
 
+		$scope.canGoForward = function () {
+			if (monthRelative + 1 > 0) { //Go back a maximum of four month
+				return false;
+			}
+
+			return true;
+		};
+
+
 		$scope.nextMonth = function () {
+			if (!$scope.canGoForward()) {
+				return;
+			}
+			monthRelative++;
+
 			if ($scope.month == 11) {
 				$scope.month = 0;
 				$scope.year++;

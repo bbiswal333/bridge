@@ -18,7 +18,11 @@ angular.module("app.cats.data", ["app.cats.utils"]).factory("app.cats.catsUtils"
 		}
 	}
 
-	function _getDescForState (state_s) {
+	function _getDescForState (state_s) {	
+		if (typeof state_s == "undefined") {
+			return "";
+		}
+
 		state_s = state_s.toLowerCase();
 		if (state_s == "r") {
 			return "Not maintained";

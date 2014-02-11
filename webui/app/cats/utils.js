@@ -56,7 +56,6 @@ angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
 	function _buildCalendarArray (year_i, month_i) {
 		var cal = new Array();
 		var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
-		var firstDateOfGrid;
 		var daysInLastMonth = 0;
 		var today = new Date(); //Needed as a workaround for strange behaviour of javascript
 		var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
@@ -69,15 +68,15 @@ angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
 			daysInLastMonth = 6;
 		}
 
-		firstDateOfGrid = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
-		var firstDateOfGridAsDays = Math.floor(firstDateOfGrid / MILLISECS_DAY);
+		var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
+		var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
 
 		var i;
 		var week = 0;
 		var stop = false;
 		for (i = 0; !stop; i++) {
 			var additionalDataForThisDay = _lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-			var thisDay = new Date(firstDateOfGrid + i * MILLISECS_DAY);
+			var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
 			cal[Math.floor(i / 7)][i % 7] = {
 				dayNr: thisDay.getDate(), 
 				inMonth: (thisDay.getMonth() == month_i), 
@@ -86,7 +85,7 @@ angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
 			};
 
 			if ((i + 1) % 7 == 0) {
-				if (new Date(firstDateOfGrid + i * MILLISECS_DAY).getMonth() != month_i) {
+				if (new Date(firstDateOfGridInMs + i * MILLISECS_DAY).getMonth() != month_i) {
 					stop = true;
 				}
 				else {

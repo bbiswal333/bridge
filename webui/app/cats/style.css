@@ -62,3 +62,7 @@ input.ng-invalid {
 .inFuture {
 	background: #FFFFFF;
 }
+
+.noDataInCats {
+	background: #555;
+}
