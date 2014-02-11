@@ -1,4 +1,4 @@
-angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
+angular.module("lib.utils", []).factory("lib.utils.calUtils", function () {
 	const MILLISECS_DAY = 24 * 3600 * 1000;
 
 	var _additionalData= {};
@@ -183,10 +183,30 @@ angular.module("app.cats.utils", []).factory("app.cats.calUtils", function () {
 		    return _useNDigits (val_i, n_i);
 		}
 	};
-}).factory("app.cats.encodeForUrl", function () {
+}).factory("lib.utils.encodeForUrl", function () {
 	return {
 		encode: function (url_s) {
 			return encodeURIComponent(url_s).replace(/'/g,"%27").replace(/"/g,"%22");
+		}
+	};
+}).factory("lib.utils.stringUtils", function () {
+	function _startsWith (string_s, toStartWith_s) {
+		if (typeof string_s == "undefined" || typeof toStartWith_s == "undefined" || toStartWith_s.length > string_s.length) {
+			return false;
+		}
+
+		for (var i = 0; i < toStartWith_s.length; i++) {
+			if (string_s.charAt(i) !== toStartWith_s.charAt(i)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return {
+		startsWith: function (string_s, toStartWith_s) {
+			_startsWith(string_s, toStartWith_s);
 		}
 	};
 });

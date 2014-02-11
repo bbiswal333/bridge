@@ -1,4 +1,4 @@
-angular.module("app.cats", ["app.cats.utils", "app.cats.data"]).directive("app.cats", ["app.cats.calUtils", "app.cats.catsUtils", function (calUtils, catsUtils) {
+angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", function (calUtils, catsUtils) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
 

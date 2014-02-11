@@ -1,4 +1,4 @@
-angular.module("app.meetings", ["app.meetings.ews", "app.cats.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "app.cats.calUtils", function ($http, ewsUtils, calUtils) {
+angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "lib.utils.calUtils", function ($http, ewsUtils, calUtils) {
 	var linkFn = function ($scope) {
 		/* ====================================== */
 		/* CONFIGURATION */
