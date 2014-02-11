@@ -239,7 +239,8 @@ var launch = function(npm)
 			  	var s = new String(error.stack);
 			   	if (s.search(/EADDRINUSE/) > -1) {
 			   		//Error due to already used address
-			   		console.log("It seems like the Bridge server is already running. Please check this or run bridge using a different port.");
+			   		console.log("It seems like the Bridge server is already running (or some other programm is running on bridge's default port. Please check this or run bridge using a different port.");
+			   		console.log("Changing the port is done by simply giving server.js the wished port as first commandline-argument.");
 			   	}
 			   	else {
 			   		console.log(error.stack);
