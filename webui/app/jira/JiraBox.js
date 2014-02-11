@@ -70,12 +70,12 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
         });
 };
 
-jiraApp.factory('JiraBox', ['$http',
+angular.module('app.jira').factory('JiraBox', ['$http',
    function ($http) {
        return new JiraBox($http);
    }]);
 
-jiraApp.factory('JiraQuery', [
+angular.module('app.jira').factory('JiraQuery', [
     function (){
         return 'id in projectRankedIssues(I2MASEDEV) order by "Project Rank" ASC, Key ASC';
     }]);

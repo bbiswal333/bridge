@@ -1,18 +1,12 @@
-﻿var testBoxApp = angular.module('lunchBoxApp', []);
+﻿angular.module('app.lunchWalldorf', []);
 
-testBoxApp.directive('lunchbox', function () {
+angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function () {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
+        
         $scope.boxTitle = "Lunch Walldorf/ Rot";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
-
-        $scope.settings = {
-            templatePath: "lunchBox/LunchBoxSettingsTemplate.html",
-            controller: undefined,
-            id: $scope.boxId
-        };
-
-        
+    
         $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
             
@@ -46,7 +40,7 @@ testBoxApp.directive('lunchbox', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'app/lunchBox/LunchBoxDirective.html',
+        templateUrl: 'app/lunchWalldorf/overview.html',
         controller: directiveController
         };
     

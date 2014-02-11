@@ -1,4 +1,4 @@
-﻿bridgeApp.service('bridgeConfig', function ($http) {
+﻿angular.module('bridgeApp').service('bridgeConfig', function ($http) {
   
     this.persistInBackend = function (boxInstances) {
             this.config.boxSettings.length = 0; // clears the array without creating a new one
