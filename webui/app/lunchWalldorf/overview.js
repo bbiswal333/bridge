@@ -7,7 +7,7 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function () {
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
     
-        $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
+        $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
             
             var weekday = new Date().getDay() - 1;

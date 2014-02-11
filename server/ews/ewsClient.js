@@ -9,15 +9,15 @@ var fs 			= require("fs");
 var xml2js 		= require('xml2js').parseString;
 
 exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b) { 
-	const SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";
-	const PARAM_NAME_FROM = "from";
-	const PARAM_NAME_TO = "to";
-	const PLACEHOLDER_FROM = "%DATEFROM%";
-	const PLACEHOLDER_TO = "%DATETO%";
-	const ERR_MSG_PLATFORM_NOT_SUPPORTED = "Your platform doesn't support this feature - only Windows and Mac OS X are supported.";
-	const ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";
-	const ERR_MSG_WRONG_CREDENTIALS = "Seems your credentials were wrong. Please try again.";
-	const SAP_DOMAIN = "SAP_ALL\\";
+	var SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";
+	var PARAM_NAME_FROM = "from";
+	var PARAM_NAME_TO = "to";
+	var PLACEHOLDER_FROM = "%DATEFROM%";
+	var PLACEHOLDER_TO = "%DATETO%";
+	var ERR_MSG_PLATFORM_NOT_SUPPORTED = "Your platform doesn't support this feature - only Windows and Mac OS X are supported.";
+	var ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";
+	var ERR_MSG_WRONG_CREDENTIALS = "Seems your credentials were wrong. Please try again.";
+	var SAP_DOMAIN = "SAP_ALL\\";
 
 	var dateFrom = dateFrom_s;
 	var dateTo = dateTo_s;

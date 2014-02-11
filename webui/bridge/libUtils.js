@@ -1,5 +1,5 @@
 angular.module("lib.utils", []).factory("lib.utils.calUtils", function () {
-	const MILLISECS_DAY = 24 * 3600 * 1000;
+	var MILLISECS_DAY = 24 * 3600 * 1000;
 
 	var _additionalData= {};
 

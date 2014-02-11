@@ -8,7 +8,7 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
         }
 
         $scope.doSearch = function (username) {
-            return $http.get('http://localhost:8000/api/get?url='
+            return $http.get('/api/get?url='
                 + encodeURIComponent('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=20&query=' + username)).then(function (response) {
                 return response.data.DATA;
             });

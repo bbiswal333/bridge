@@ -35,7 +35,7 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
   $scope.fireButtonClicked = function() {
     $scope.statusMessage = 'Accessing JIRA...';
 
-    $http.get('http://localhost:8000/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data, status, headers, config) {
+    $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data, status, headers, config) {
         $scope.tasks = [];
         
         angular.forEach(data.issues, function(issue) {

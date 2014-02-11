@@ -1,4 +1,4 @@
-const EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
+var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
 
 var https_req	= require('https');
 var http_req	= require('http');
@@ -225,8 +225,26 @@ var launch = function(npm)
 			});
 
 			//create local server
-			http.createServer(app).listen(8000, "localhost");
-			console.log("..Bridge Server running at http://localhost:8000")
+			var port = 8000;
+			if (process.argv.length > 2) {
+				if (!isNaN(process.argv[2])) {
+					port = process.argv[2];
+				}
+			}
+
+			http.createServer(app).listen(port, "localhost");
+			console.log("Bridge Server running at http://localhost:" + port);
+
+			process.on('uncaughtException', function (error) {
+			  	var s = new String(error.stack);
+			   	if (s.search(/EADDRINUSE/) > -1) {
+			   		//Error due to already used address
+			   		console.log("It seems like the Bridge server is already running. Please check this or run bridge using a different port.");
+			   	}
+			   	else {
+			   		console.log(error.stack);
+			   	}
+			});
 		});
 	}
 }
