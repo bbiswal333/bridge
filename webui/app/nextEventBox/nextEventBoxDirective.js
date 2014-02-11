@@ -1,12 +1,8 @@
 angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", function ($http, ewsUtils, calUtils) {
-	var calData = {};
-	var events = {};
-
 	var linkFn = function ($scope) {
 		/* ====================================== */
 		/* CONFIGURATION */
-		$scope.dayCnt = 3;
-		$scope.daysInRelativeFormat = 1;
+		$scope.dayCnt = 1;
 		$scope.hideAllDayEvents = true;
 		/* ====================================== */
 
@@ -41,9 +37,8 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 			today.setSeconds(0);
 
 			$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
-				calData = eval(data);
-
-				events = calData["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
+				var events = {};
+				events = eval(data)["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 				$scope.events = [];
 				if (typeof events != "undefined") {
 					var j = 0;
@@ -57,10 +52,6 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 						if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] != "false") {
 							continue;
 						}
-
-						//console.log(events[i]["t:End"][0]);
-						//console.log("to");
-						//console.log(dateFn(events[i]["t:End"][0]));
 
 						var start = dateFn(events[i]["t:Start"][0]);
 						var end = dateFn(events[i]["t:End"][0]);
@@ -81,6 +72,7 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 							    else
 							        return this.startTime + "<br />" + this.endTime;
 							},
+							isCurrent: (start.getTime() < new Date().getTime())
 						};
 
 						j++;
@@ -95,28 +87,23 @@ angular.module("nextEventBoxApp", ["ews", "utils"]).directive("nexteventbox", fu
 		};
 
 		$scope.upComingEvents = function () {
-		    var upComingEvents = [];
-		    var now = new Date();
-		    for (var i = 0; i < $scope.events.length; i++) {
-		        if($scope.events[i].start.getYear() == now.getYear() && $scope.events[i].start.getMonth() == now.getMonth() && $scope.events[i].start.getDate() == now.getDate()) {
-		            if ($scope.events[i].start > now)
-		                upComingEvents.push($scope.events[i]);
-		            if ($scope.events[i].start < now && $scope.events[i].end > now) {
-		                $scope.events[i].isCurrent = true;
-		                upComingEvents.push($scope.events[i]);
-		            }
-		        }
-		    }
 		    $scope.$broadcast('recalculateScrollbars');
-		    return upComingEvents;
+		    return $scope.events;
 		};
 
 		$scope.hasEvents = function () {
-		    return ($scope.events.length == 0) ? false : true;
+		    return ($scope.events.length != 0);
 		};
 
-		$scope.getNumberOfEvents = function () {
-		    return $scope.upComingEvents().length;
+		$scope.getMeetingsLeftText = function () {
+			var cnt = 0;
+			for (var i = 0; i < $scope.events.length; i++) {
+				if ($scope.events[i].end.getTime() > new Date().getTime()) {
+					cnt++;
+				}
+			}
+
+		    return cnt + " meeting" + (cnt == 1 ? "" : "s") + " left for today.";
 		}
 
 		$scope.isLoading = function () {
