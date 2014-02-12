@@ -12,7 +12,7 @@ angular.module('bridge.app', [
     // bridge apps
     'app.test',
     'app.atc',
-    'imBoxApp',
+    'app.im',
     'app.jira',
     'app.employeeSearch', 
     'app.meetings',
@@ -91,15 +91,10 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
     });
     $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 
-<<<<<<< HEAD:webui/controller/bridgeController.js
-    $routeProvider.when("/detail/atc/", { templateUrl: 'app/atcBox/AtcBoxDetails.html', controller: 'atcDetailController' });
-    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jiraBox/JiraBoxDetails.html', controller: 'jiraDetailController' });
-    $routeProvider.when("/detail/im/", { templateUrl: 'app/imBox/imBoxDetails.html', controller: 'imDetailController' });
+    $routeProvider.when("/detail/im/", { templateUrl: 'app/im/detail.html', controller: 'app.im.detailController' });
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
-=======
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });    
->>>>>>> d47ec5bedbafe8599e08b597fb1ffb861a3e6124:webui/bridge/bridgeController.js
 });
 
 angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {

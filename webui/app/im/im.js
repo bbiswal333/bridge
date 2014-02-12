@@ -1,13 +1,16 @@
-var IimBox = {getMessageforQuery : function(query) { throw "Not Implemented" }
+/*************************************************************************
+Bisher lediglich Vorarbeit zum Auslagern der GetHTTP Methode*************/
+
+var Iim = {getMessageforQuery : function(query) { throw "Not Implemented" }
 };
-var imBox = function(http){
+var im = function(http){
     this.http = http;
 };
 
-imBox.prototype = Object.create(IimBox);
+im.prototype = Object.create(Iim);
 
 
-imBox.prototype.getMessageforQuery = function (query, scope) {
+im.prototype.getMessageforQuery = function (query, scope) {
     scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
     this.http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp/sap/bc/devdb/MYINTERNALMESS?format=json' + query)
         ).success(function(data) {
@@ -21,7 +24,7 @@ imBox.prototype.getMessageforQuery = function (query, scope) {
         });
 };
 
-        imBoxApp.factory('imBox', ['$http',
+        angular.module('app.im').factory('im', ['$http',
    function ($http) {
-       return new imBox($http);
+       return new im($http);
    }]);

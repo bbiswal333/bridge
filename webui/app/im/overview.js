@@ -1,6 +1,6 @@
-var imBoxApp = angular.module('imBoxApp', []);
+angular.module('app.im', []);
 
-imBoxApp.directive('imbox', function () {
+angular.module('app.im').directive('app.im', function () {
 
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Internal Messages";
@@ -9,7 +9,7 @@ imBoxApp.directive('imbox', function () {
 
 
         $scope.settings = {
-            templatePath: "app/imBox/imBoxSettingsTemplate.html",
+            templatePath: "app/im/imBoxSettingsTemplate.html",
             controller: undefined,
             id: $scope.boxId,
 
@@ -19,17 +19,17 @@ imBoxApp.directive('imbox', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'app/imBox/imBoxDirective.html',
+        templateUrl: 'app/im/overview.html',
         controller: directiveController
     };
 });
 
-    imBoxApp.run(function ($rootScope) {
+    angular.module('app.im').run(function ($rootScope) {
     var i = 1;
 });
 
 
-imBoxApp.controller('imDirectiveController', ['$scope', '$http',
+angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http',
     function Controller($scope, $http) {
 
       
@@ -40,7 +40,6 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
         $scope.lastElement = ""; 
         $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
         $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
-       //   $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?format=json')
             ).success(function(data) {
                 
                 $scope.imData = data["asx:abap"];
@@ -60,7 +59,9 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
                         + parseInt($scope.imData.INTCOMPCOLLEAGUES_SHORT[0].PRIO2) 
                         + parseInt($scope.imData.INTCOMPCOLLEAGUES_SHORT[0].PRIO3) 
                         + parseInt($scope.imData.INTCOMPCOLLEAGUES_SHORT[0].PRIO4);
-                */
+
+                * Priorität aller selected Component Messages wird ermittelt und gezählt (für Chart)
+                    */
                 $scope.groesse[2] = parseInt($scope.imData.INTCOMP_SHORT[0].PRIO1)          //Selected Comp
                         + parseInt($scope.imData.INTCOMP_SHORT[0].PRIO2) 
                         + parseInt($scope.imData.INTCOMP_SHORT[0].PRIO3) 
@@ -81,49 +82,7 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
                 var forlast = $scope.groesse[5];
                 
 
-                //Testing
-               //console.log($scope.imData.INTAUTHACTION_LONG.length);
-               //console.log($scope.imData.INTAUTHACTION_LONG[0].length);
-               //console.log($scope.imData);
-               //console.log($scope.imData.INTCOMPCOLLEAGUES_LONG[0].DEVDB_INTMESSAGE_OUT[0]);
-                //console.log($scope.groesse[5]);
-
-
-                /*********************************************************
-               Ansatz**************************************************************
-               if ( $scope.imData.INTAUTHACTION_LONG[0] !== "") {
-                    
-                   while ( i < $scope.imData.INTAUTHACTION_LONG[0].DEVDB_INTMESSAGE_OUT.length ) {
-                        tempobject = ($scope.imData.INTAUTHACTION_LONG[0].DEVDB_INTMESSAGE_OUT[i]);
-                        i++;
-                   }
-
-               }
-
-               i = 0;
-               if ( $scope.imData.INTCOMPCOLLEAGUES_LONG[0] !== "") {
-                    
-                   while ( i < $scope.imData.INTCOMPCOLLEAGUES_LONG[0].DEVDB_INTMESSAGE_OUT.length ) {
-                        tempobject.push($scope.imData.INTCOMPCOLLEAGUES_LONG[0].DEVDB_INTMESSAGE_OUT[i]);
-                        i++;
-                   }
-
-               }*********************************************************************/
-               /***************************************************************
-               Alle Meldungen in 1 Objekt packen *****************************/
-
-               
-    
-              /* if ($scope.imData.INTAUTHACTION_LONG[0] !== "") {
-                    
-    
-                        tempobject = ($scope.imData.INTAUTHACTION_LONG[0].DEVDB_INTMESSAGE_OUT);
-                        i++;
-                   
-
-               }*/
-
-             $scope.tempobject = [];
+                 $scope.tempobject = [];
                if ($scope.imData.INTCOMP_LONG[0] !== "") {
                         var i = 0;
                                 while (i<$scope.imData.INTCOMP_LONG[0].DEVDB_MESSAGE_OUT.length) {
@@ -135,7 +94,7 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
 
                 
                }
-            /*
+                /* Falls man alle Nachrichten in dem Chart nach Prio Sortiert angezeigt haben möchte --> einkommentieren
                if ($scope.imData.INTCOMPCOLLEAGUES_LONG[0] !== "") {
                         var i = 0;
 
@@ -166,30 +125,19 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
                             i++;
                         }
                }
+                
+
+               
                 */
-
-               //console.log($scope.tempobject);
-
                 /*******************************************************************************************************************
                 "View 1 Setter******************************************************************************************************/
 
-                if(forlast == 0 ) {
-
-                    //$scope.lastElement = "You have no internal messages to display!";
+            
+                if ( ($scope.prioone + $scope.priotwo + $scope.priothree + $scope.priofour) == 0) {
+                     $scope.lastElement="You have no internal messages to display!";
                                         
                 }
                 else {
-                    /******************* Für die Textausgabe der Directive (momentan Auskommentiert)********************************/
-                    /* 
-                    $scope.lastElement = "You have internal messages (" + forlast + ")!"; 
-                    $scope.ezero       = "All Messages (" + forlast + ").";         
-                    $scope.eone        = "Selected Components (" + $scope.groesse[2] + ").";       
-                    $scope.etwo        = "Assigned To Colleagues (" + $scope.groesse[1] + ")."; 
-                    $scope.ethree      = "Assigned To Me (" + $scope.groesse[4] + ").";         
-                    $scope.efour       = "Created By Me (" + $scope.groesse[3] + ")."; 
-
-                    */         
-                
 
                 /**********************************************************************************************************************
                 *GoogleChart Setter***************************************************************************************************/
@@ -206,13 +154,13 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
                             $scope.prioone = $scope.prioone+1;
                         }
                         if ($scope.tempobject[i].PRIO[0] == 2) {
-                            $scope.priotwo= $scope.priotwo+1;
+                            $scope.priotwo = $scope.priotwo+1;
                         }
                         if ($scope.tempobject[i].PRIO[0] == 3) {
-                            $scope.priothree= $scope.priothree+1;
+                            $scope.priothree = $scope.priothree+1;
                         }
                         if ($scope.tempobject[i].PRIO[0] == 4) {
-                            $scope.priofour= $scope.priofour+1;
+                            $scope.priofour = $scope.priofour+1;
                         }
                         i++;
                     }
@@ -279,10 +227,8 @@ imBoxApp.controller('imDirectiveController', ['$scope', '$http',
 
     $scope.imChart = chart1;
 
-    // Falls keine Daten übergeben werden/keine Nachrichten verfügbar sind
-    if ( ($scope.prioone + $scope.priotwo + $scope.priothree + $scope.priofour) == 0)
-        $scope.lastElement="You have no internal messages to display!";
-    
+  
+  
   
 }
 
