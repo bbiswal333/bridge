@@ -1,6 +1,8 @@
-﻿angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "app.atc.settingsservice", "bridgeConfig", 
-    function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
+﻿angular.module('app.atc', []);
+
+angular.module('app.atc').directive('app.atc',
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeConfig", 
+    function ($modal, $interval, appAtcConfig, appAtcData, bridgeConfig) {
     
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
@@ -9,7 +11,7 @@
 
         $scope.settingScreenData = {
             templatePath: "atc/settings.html",
-            controller: appAtcSettings,
+            controller: angular.module('app.atc').appAtcSettings,
             id: $scope.boxId,
         };
 
@@ -19,7 +21,6 @@
 
         $scope.atcData = appAtcData;
         $scope.config = appAtcConfig;
-        appAtcSettings.setup($scope);
 
         var loadData = function () {
             if ($scope.config.configItems.length > 0)
