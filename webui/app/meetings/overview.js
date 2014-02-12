@@ -11,6 +11,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 		$scope.customCSSFile = "app/meetings/style.css";
 		$scope.currentEvent = 0;
 		$scope.events = [];
+		$scope.eventsRaw = {};
 		$scope.loading = true;
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {

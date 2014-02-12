@@ -4,13 +4,13 @@ angular.module("lib.utils", []).factory("lib.utils.calUtils", function () {
 	var _additionalData= {};
 
 	var _weekdays = [
-		{short: "Mo", long: "Monday"},
-		{short: "Tu", long: "Tuesday"},
-		{short: "We", long: "Wednesday"},
-		{short: "Th", long: "Thursday"},
-		{short: "Fr", long: "Friday"},
-		{short: "Sa", long: "Saturday"},
-		{short: "Su", long: "Sunday"}
+		{short: "Mo", medium: "Mon", long: "Monday"},
+		{short: "Tu", medium: "Tue", long: "Tuesday"},
+		{short: "We", medium: "Wed", long: "Wednesday"},
+		{short: "Th", medium: "Thu", long: "Thursday"},
+		{short: "Fr", medium: "Fri", long: "Friday"},
+		{short: "Sa", medium: "Sat", long: "Saturday"},
+		{short: "Su", medium: "Sun", long: "Sunday"}
 	];
 
 	var _months = [

@@ -1,21 +1,22 @@
-<div>
-	<div ng-if="!loading">
-		<button ng-click="nextMonth();" ng-disabled="!canGoForward();" class="btn btn-default btn-xs cmc-icon">&#xe14b;</button>	
-		<button ng-click="prevMonth();" ng-disabled="!canGoBackward();" class="btn btn-default btn-xs cmc-icon">&#xe14d;</button>
-		<div>{{currentMonth}}</div>
-		<div class="week">
-			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
+<div class="app-cats-body">
+	<div ng-if="!loading" class="app-cats-fadeAnim">
+		<div class="app-cats-navigation">
+			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();">&#xe1ee;</span>	
+			<span class="app-cats-current-month">{{currentMonth}}</span> 
+			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();">&#xe1ed;</span>	
 		</div>
-		<div class="week" ng-repeat="week in calArray">
-			<div ng-repeat="day in week" ng-if="day.data != null" class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" title="{{getDescForState(day.data.state)}}">
-				<span>{{day.dayNr}}</span>
+		<div class="app-cats-calendar">
+			<div class="app-cats-week-labels">
+				<div class="app-cats-day" ng-repeat="weekday in weekdays">{{weekday.medium | uppercase}}</div>
 			</div>
-			<div ng-repeat="day in week" ng-if="day.data == null" class="day noDataInCats" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" title="No data available in CATS for this date.">
-				<span>{{day.dayNr}}</span>
+			<div class="app-cats-week" ng-repeat="week in calArray">
+				<div ng-repeat="day in week" ng-if="day.data != null" class="app-cats-day app-cats-state{{day.data.state}}" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="{{getDescForState(day.data.state)}}">
+					<span>{{day.dayNr}}</span>
+				</div>
+				<div ng-repeat="day in week" ng-if="day.data == null" class="app-cats-day app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
+					<span>{{day.dayNr}}</span>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div ng-if="loading">
-		Loading...
 	</div>
 </div>

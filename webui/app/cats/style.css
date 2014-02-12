@@ -1,68 +1,120 @@
-.week {
-	height: 20px;
-	width: 177px;
+.app-cats-body {
+	font-family: "Open Sans";
+	font-weight: bold;
 }
 
-/* .week:first-of-type {
-	border-top: solid 1px #888;
+.app-cats-navigation {
+	margin-top: 5px;
+	margin-bottom: 10px;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	font-weight: lighter;
+	color: #333333;	
 }
 
-.week {
-	border-left: solid 1px #888;
-	border-right: solid 1px #888;
-} 
+	.app-cats-navigation span {
+		display: inline;
+	}
 
-.week:last-of-type {
-	border-bottom: solid 1px #888;
-} */
+.app-cats-text-button {
+	cursor: pointer;
+}
 
-.day {
-	width: 25px;
-	height: 20px;
+	.app-cats-text-button-disabled {
+		color: #aaaaaa;
+		cursor: not-allowed;
+	}
+
+.app-cats-current-month {
+	margin-left: 14px;
+	margin-right: 14px;
+}
+
+.app-cats-calendar {
+	width: 285px;
+	margin: 0px auto;
+}
+
+.app-cats-week-labels {
+	font-size: 7px;
+	color: #333333;
+}
+
+	.app-cats-week-labels .app-cats-day {
+		color: black;
+	}
+
+.app-cats-week {
+	height: 15px;
+	width: 285px;
+	margin-top: 2px;
+}
+
+	 .app-cats-week:first-of-type {
+		margin-top: 3px;
+	}
+
+.app-cats-day {
+	width: 39px;
+	height: 15px;
 	float: left;
-	background: #FFE796;
+	margin-bottom: 2px;
+	font-size: 10px;
+	text-align: center;
 }
 
-.stateBusy {
-	background: red;
+	.app-cats-week .app-cats-day {
+		color: white;
+	}
+
+	.app-cats-week:last-of-type .app-cats-day {
+		margin-bottom: 0px;
+	}
+
+	.app-cats-day + .app-cats-day {
+		margin-left: 2px;
+	}
+
+.app-cats-stateR { /* Not maintained */
+	background: #f0ab00;
 }
 
-.stateFree {
-	background: lime;
+.app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
+	background: #f0ab00;
 }
 
-input.ng-invalid {
-	background: red;
+.app-cats-stateG { /* maintained */
+	background: #fadd99;
 }
 
-.stateR { /* Not maintained */
-	background: #FF886E;
+.app-cats-stateN { /* no need for maintainance */
+	background: #acacac;
 }
 
-.stateY { /* partially maintained */
-	background: #FFF196;
+.app-cats-notInMonth {
+	color: #;
 }
 
-.stateG { /* maintained */
-	background: #CBFF96;
-}
-
-.stateN { /* no need for maintainance */
-	background: #FFFFFF;
-}
-
-.notInMonth {
-	color: #888;
-}
-
-.cmc-icon {
+.app-cats-icon {
 	font-family: 'SAP-icons';
 }
 
-.inFuture {
+.app-cats-inFuture {
 	background: #FFFFFF;
 }
 
-.noDataInCats {
+.app-cats-noDataInapp-cats {
 	background: #555;
+}
+
+
+/* stuff for fancy animations */
+.app-cats-fadeAnim.ng-enter {
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.app-cats-fadeAnim.ng-enter-active {
+	opacity: 1;
 }
