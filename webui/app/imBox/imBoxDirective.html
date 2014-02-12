@@ -1,13 +1,29 @@
 <!--<a class="btn btn-default btn-sm" href="#/detail/im">Details</a> -->
-<div ng-controller="imDetailController">
-	<br>
-	<br><br><ul>{{lastElement}}
-	<br><br>
+<!--<div ng-controller="imDetailController">
+							<br>
+							<br>
+							<br>
+	<ul>
+				{{lastElement}}
+							<br>
+				{{ezero}}
+							<br>
+				{{eone}}
+							<br>
+				{{etwo}}
+							<br>
+				{{ethree}}
+							<br>
+				{{efour}}
+							<br>					
+							<br>
 
 
 	</ul>
-</div>
-
+</div>-->
+<div ng-controller="imDirectiveController">
+{{lastElement}}
+<div google-chart chart="imChart" style="{{imChart.cssStyle}}"></div>
 <div style="float:right;width:10%;position:absolute;top:75%;right:10%">
     <a class="btn btn-default btn-sm" href="#/detail/im">Details</a>
-</div>
+</div><div>

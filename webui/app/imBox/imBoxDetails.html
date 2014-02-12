@@ -4,10 +4,13 @@
       <div class="panel-body">
 
         <table ng-table class="table" ng-controller="imDetailController">
-            <tr ng-repeat="nachricht in testmessage">
-                <td data-title="'Number'" align="center">{{nachricht.num}}</td>
-                <td data-title="'Status'" align="center">{{nachricht.stat}}</td>        
-                <td data-title="'Processor'" align="center">{{nachricht.proces}}</td>
+            <tr ng-repeat="nachricht in tempobject">
+                <td data-title="'Prio'" align="center">{{nachricht.PRIOSTXT[0]}}</td>
+                <td data-title="'Component'" align="center">{{nachricht.THEMKEXT[0]}}</td>        
+                <td data-title="'Status'" align="center">{{nachricht.STATUSSTXT[0]}}</td>
+                <td data-title="'Processor'" align="center"><a href="https://people.wdf.sap.corp/profiles/{{nachricht.SUSID[0]}}" target="_blank">
+                {{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}</a></td>
+                <td data-title="'Description'" align="center"><a href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{nachricht.CSINSTA[0]}}&mnumm={{nachricht.MNUMM[0]}}&myear={{nachricht.MYEAR[0]}}&sap-language=en#" target="_blank">{{nachricht.KTEXT[0]}}</a></td>
             </tr>
         </table>
 
