@@ -81,6 +81,7 @@ angular.module("lib.utils", []).factory("lib.utils.calUtils", function () {
 				dayNr: thisDay.getDate(), 
 				inMonth: (thisDay.getMonth() == month_i), 
 				inFuture: (thisDay.getTime() >= todayInMs),
+				today: (thisDay.getFullYear() == today.getFullYear() && thisDay.getMonth() == today.getMonth() && thisDay.getDate() == today.getDate()),
 				data: additionalDataForThisDay
 			};
 
