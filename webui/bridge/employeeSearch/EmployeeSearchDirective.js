@@ -13,6 +13,13 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
                 return response.data.DATA;
             });
         };
+
+        $scope.onSelect = function ($item, $model, $label) {
+            var info = $http.get('/api/get?url='
+                + encodeURIComponent('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + $item.BNAME)).then(function (response) {
+                    $scope.selectedEmployee = response.data.DATA;
+                });
+        };
     }];
 
     return {

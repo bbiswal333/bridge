@@ -9,6 +9,11 @@
 	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">		
 		Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
 		Cost Center: {{selectedEmployee.KOSTX}}<br />
+        <br />
+        <div style="border-bottom: 1px solid #e6e6e6"><b></b>Contact</div>
+        Email: <a href="mailto:{{selectedEmployee.SMTP_MAIL}}">{{selectedEmployee.SMTP_MAIL}}</a><br />
+        Phone: {{selectedEmployee.TELNR_DEF}}<br />
+        <br />
 		<a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}">User Profile</a>		
 	</div>
 <div>
