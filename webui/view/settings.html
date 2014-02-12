@@ -1,2 +1,12 @@
-﻿<ng-include src="'app/' + templateString"></ng-include>
+﻿
+<div class="div-background-gradient">
+    <div class="div-background">
+    </div>
+</div>
 
+<div style="position: relative">
+    <span style="font-size: 18px; font-weight: bold">ABAP Code Check Results</span><br />
+    <span style="font-size: 18px; font-weight: lighter">Configure Source Systems and Packages</span>
+    <div style="height: 1px; width: 100%; background-color: #bbbbbb"></div>
+    <ng-include src="'app/' + templateString"></ng-include>
+</div>
