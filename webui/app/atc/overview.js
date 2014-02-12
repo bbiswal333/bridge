@@ -1,4 +1,5 @@
-﻿angular.module('app.atc', ["app.atc.config", "app.atc.data", "app.atc.settings"]).directive('appatc', 
+﻿angular.module('app.atc').directive('app.atc',
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "app.atc.settingsservice", "bridgeConfig", 
     function ($modal, $interval, appAtcConfig, appAtcData, appAtcSettings, bridgeConfig) {
     
     var directiveController = ['$scope', function ($scope) {
@@ -18,10 +19,11 @@
 
         $scope.atcData = appAtcData;
         $scope.config = appAtcConfig;
+        appAtcSettings.setup($scope);
 
         var loadData = function () {
-            if (atcConfig.configItems.length > 0)
-                atcData.getResultForConfig($scope, atcConfig, atcData);
+            if ($scope.config.configItems.length > 0)
+                $scope.atcData.getResultForConfig($scope, atcConfig, atcData);
         }
 
         var refreshInterval = $interval(loadData, 60000 * 5);
@@ -121,4 +123,4 @@
         }
     };
 
-});
+}]);

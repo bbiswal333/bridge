@@ -1,11 +1,11 @@
-﻿angular.module("app.atc.detail", []).controller('appAtcDetail', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'appAtcConfig', 'appAtcData'], 
+﻿angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'app.atc.configservice', 'app.atc.dataservice', 
     function ($scope, $http, $filter, $route, $routeParams, ngTableParams, appAtcConfig, appAtcData) {
     
     var atcConfig = appAtcConfig;
     $scope.$parent.titleExtension = " - ATC Details";
 
-    $scope.atcData = appAtcData;
-    atcData.getDetailsForConfig(atcConfig, $scope);
+    $scope.atcData = appAtcData;    
+    $scope.atcData.getDetailsForConfig(atcConfig, $scope);
 
     $scope.$watch('atcData.detailsData', function () {
         if ($scope.atcData !== undefined && $scope.atcData.detailsData.length > 0 && $scope.tableParams.settings().$scope != null) {
@@ -38,4 +38,4 @@
             }
         }
     });
-});
+}]);

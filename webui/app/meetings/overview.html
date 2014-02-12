@@ -1,0 +1,49 @@
+<div >
+	<div ng-if="isLoading()" class="fadeAnim">
+		<div>Loading...</div>
+	</div>
+	<div ng-if="!isLoading()" class="fadeAnim" style="padding-left: 6px; padding-left: 6px">
+		<div ng-if="hasEvents()">
+            <div>
+                <b>{{getCurrentDate()}}</b><br />
+                {{getMeetingsLeftText()}}
+            </div>
+            <div style="margin-top: 5px; height: 110px; overflow: hidden;" ng-scrollbar rebuild-on="recalculateScrollbars">
+                <div style="min-height: 110px;">
+                    <table cellpadding="2">
+                        <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
+                            <td style="border-right: 1px solid #f0ab00; width: 40px; padding-right: 10px" id="eventId{{($index+1)}}">
+                                <span ng-if="$first && !event.isCurrent" style="color: #333333">
+                                    <b>{{event.startRel}}</b>
+                                </span>
+                                <span ng-if="!$first && !event.isCurrent">
+                                    {{event.startTime}}
+                                    {{event.endTime}}
+                                </span>
+                                <span ng-if="event.isCurrent">
+                                    now
+                                    {{event.endTime}}
+                                </span>
+                            </td>
+                            <td style="vertical-align: top; padding-left: 10px">
+                                <!--<div ng-if="event.isCurrent" style="position: absolute; right: 5px; margin-top: 5px;">&#9668;</div>-->
+                                <div style="color: #333333; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 115px">
+                                    <span ng-if="$first">
+                                        <b>{{event.subject}}</b>
+                                    </span>
+                                    <span ng-if="!$first">
+                                        {{event.subject}}
+                                    </span>
+                                </div>
+                                <div style="color: #999999; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 115px">{{event.location}}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+		</div>
+		<div ng-if="!hasEvents()">
+			Hooray! You got no more meetings today!
+		</div>
+	</div>	
+</div>

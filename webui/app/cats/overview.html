@@ -1,0 +1,21 @@
+<div>
+	<div ng-if="!loading">
+		<button ng-click="nextMonth();" ng-disabled="!canGoForward();" class="btn btn-default btn-xs cmc-icon">&#xe14b;</button>	
+		<button ng-click="prevMonth();" ng-disabled="!canGoBackward();" class="btn btn-default btn-xs cmc-icon">&#xe14d;</button>
+		<div>{{currentMonth}}</div>
+		<div class="week">
+			<div class="day" ng-repeat="weekday in weekdays">{{weekday.short}}</div>
+		</div>
+		<div class="week" ng-repeat="week in calArray">
+			<div ng-repeat="day in week" ng-if="day.data != null" class="day state{{day.data.state}}" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" title="{{getDescForState(day.data.state)}}">
+				<span>{{day.dayNr}}</span>
+			</div>
+			<div ng-repeat="day in week" ng-if="day.data == null" class="day noDataInCats" ng-class="{notInMonth: !day.inMonth, inFuture: day.inFuture}" title="No data available in CATS for this date.">
+				<span>{{day.dayNr}}</span>
+			</div>
+		</div>
+	</div>
+	<div ng-if="loading">
+		Loading...
+	</div>
+</div>

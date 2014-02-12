@@ -1,4 +1,4 @@
-﻿angular.module("app.atc.data", []).factory('appAtcData', function ($http) {
+﻿angular.module('app.atc').factory('app.atc.dataservice', ["$http", function ($http) {
     return {
         data: {
             prio1: 0,
@@ -13,7 +13,7 @@
             $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
-            $http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
+            $http.get('/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json'))
             .success(function (data) {
 
                 that.data = {
@@ -30,7 +30,7 @@
             $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
-            $http.get('http://localhost:8000/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json'))
+            $http.get('/api/get?url=' + encodeURIComponent('https://ifdmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json'))
             .success(function (data) {
 
                 //$scope.atcDetails = data.DATA;
@@ -42,4 +42,4 @@
             });
         },
     };
-});
+}]);
