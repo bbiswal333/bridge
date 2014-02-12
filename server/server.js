@@ -233,31 +233,19 @@ var launch = function(npm)
 			}
 
 			http.createServer(app).listen(port, "localhost");
+			console.log("Bridge Server running at http://localhost:" + port);
 
-			//most valuable feature of this server
-			console.log(' ____         _      _              ');
- 			console.log('|  _ \\       (_)    | |            ');
- 			console.log('| |_) | _ __  _   __| |  __ _   ___ ');
- 			console.log('|  _ < | \'__|| | / _` | / _` | / _ \\');
- 			console.log('| |_) || |   | || (_| || (_| ||  __/');
- 			console.log('|____/ |_|   |_| \\__,_| \\__, | \\___|');
-            console.log('	                 __/ |      ');
-			console.log('                        |___/       ');	
-			console.log('Starting Server at http://localhost:' + port);
-
-			process.on('uncaughtException', function (error) {				
+			process.on('uncaughtException', function (error) {
 			  	var s = new String(error.stack);
 			   	if (s.search(/EADDRINUSE/) > -1) {
 			   		//Error due to already used address
-			   		//console.log("Server cannot be started at http://localhost:" + port);
-			   		console.log("ERROR: Port " + port + " is already used.");
-			   		console.log("ERROR: You can pass the port as a commandline argument to server.js");			   		
+			   		console.log("It seems like the Bridge server is already running (or some other programm is running on bridge's default port. Please check this or run bridge using a different port.");
+			   		console.log("Changing the port is done by simply giving server.js the wished port as first commandline-argument.");
 			   	}
 			   	else {
-			   		console.log("ERROR: " + error.stack );
+			   		console.log(error.stack);
 			   	}
-			   	process.exit(1);
-			});		
+			});
 		});
 	}
 }
