@@ -12,17 +12,12 @@ angular.module('bridge.app', [
     // bridge apps
     'app.test',
     'app.atc',
-<<<<<<< HEAD:webui/controller/bridgeController.js
     'imBoxApp',
-    'jiraApp',
-    'employeeBoxApp', "nextEventBoxApp", "catsMiniCalBoxApp","lunchBoxApp"]);
-=======
     'app.jira',
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
     'app.lunchWalldorf']);
->>>>>>> d47ec5bedbafe8599e08b597fb1ffb861a3e6124:webui/bridge/bridgeController.js
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
