@@ -12,7 +12,7 @@
         <br />
         <div style="border-bottom: 1px solid #e6e6e6"><b></b>Contact</div>
         Email: <a href="mailto:{{selectedEmployee.SMTP_MAIL}}">{{selectedEmployee.SMTP_MAIL}}</a><br />
-        Phone: {{selectedEmployee.TELNR_DEF}}<br />
+        Phone: <a href="tel:{{selectedEmployee.TELNR}}">{{selectedEmployee.TELNR_DEF}}</a><br />
         <br />
 		<a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}">User Profile</a>		
 	</div>
