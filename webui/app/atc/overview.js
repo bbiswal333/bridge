@@ -6,6 +6,7 @@ angular.module('app.atc').directive('app.atc',
     
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ABAP Code Check Results";
+        $scope.settingsTitle = "Configure Source Systems and Packages";
         $scope.boxIcon = '&#xe05e;';
         $scope.customCSSFile = "app/atc/style.css";
 
@@ -24,7 +25,7 @@ angular.module('app.atc').directive('app.atc',
 
         var loadData = function () {
             if ($scope.config.configItems.length > 0)
-                $scope.atcData.getResultForConfig($scope, atcConfig, atcData);
+                $scope.atcData.getResultForConfig($scope, appAtcConfig, appAtcData);
         }
 
         var refreshInterval = $interval(loadData, 60000 * 5);
@@ -38,9 +39,9 @@ angular.module('app.atc').directive('app.atc',
         $scope.$watch('atcData.data', function () { 
             $scope.updateATCChart($scope);
         });
-        $scope.$watch('config.configItems', function () {
+        $scope.$watch('config', function () {
             loadData();
-        });
+        }, true);
 
         $scope.updateATCChart = function ($scope) {
             var chart1 = {};

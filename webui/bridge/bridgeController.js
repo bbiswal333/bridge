@@ -38,11 +38,15 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
         $scope.settings_click = function (boxId) {
             var templateString;
             var templateController;
+            var boxController;
+            var boxScope;
 
             for (var boxProperty in bridgeDataService.boxInstances) {
                 if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
                     templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
                     templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
+                    boxController = bridgeDataService.boxInstances[boxProperty];
+                    boxScope = bridgeDataService.boxInstances[boxProperty].scope;
                 }
             }
 
@@ -55,6 +59,12 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                     },
                     templateController: function () {
                         return templateController;
+                    },
+                    boxController: function () {
+                        return boxController;
+                    },
+                    boxScope: function () {
+                        return boxScope;
                     },
                 }
             });

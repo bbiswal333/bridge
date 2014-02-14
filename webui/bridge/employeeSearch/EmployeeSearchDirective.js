@@ -18,6 +18,7 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
             var info = $http.get('/api/get?url='
                 + encodeURIComponent('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + $item.BNAME)).then(function (response) {
                     $scope.selectedEmployee = response.data.DATA;
+                    $scope.selectedEmployee.TELNR = $scope.selectedEmployee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
                 });
         };
     }];

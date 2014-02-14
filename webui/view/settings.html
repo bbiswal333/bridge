@@ -5,8 +5,8 @@
 </div>
 
 <div style="position: relative">
-    <span style="font-size: 18px; font-weight: bold">ABAP Code Check Results</span><br />
-    <span style="font-size: 18px; font-weight: lighter">Configure Source Systems and Packages</span>
+    <span style="font-size: 18px; font-weight: bold">{{boxScope.boxTitle}}</span><br />
+    <span style="font-size: 18px; font-weight: lighter">{{boxScope.settingsTitle}}</span>
     <div style="height: 1px; width: 100%; background-color: #bbbbbb"></div>
-    <ng-include src="'app/' + templateString"></ng-include>
+    <ng-include src="'app/' + templateString" ng-controller="templateController"></ng-include>
 </div>

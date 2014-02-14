@@ -17,12 +17,14 @@ Bridge is an internal open source project. One main goal of this is contribution
   * create user in GitHub and using the SAP user name
   * `$ ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
   * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
+  * For Mac: copy the file content to clipboard `pbcopy < id_rsa.pub`
 
 ## setup local environment
 * navigate to the bridge directory using the `$ cd c:/..` command in your terminal or git bash
 * clone bridge repository via `$ git clone git@github.wdf.sap.corp:Tools/bridge.git`
 * download and install `node.js` from [here](http://nodejs.org/)
 * download and install Karma with `$ npm install -g karma` if you want to execute our test suite
+* For Mac: Use command [sudo](http://xkcd.com/149/) to gain sufficient access rights in the command line
 
 ## launch and execute application
 * in the terminal or command prompt navigate to the bridge directory using the `cd` command
