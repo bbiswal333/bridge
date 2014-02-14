@@ -24,6 +24,7 @@ Bridge is an internal open source project. One main goal of this is contribution
 * clone bridge repository via `$ git clone git@github.wdf.sap.corp:Tools/bridge.git`
 * download and install `node.js` from [here](http://nodejs.org/)
 * download and install Karma with `$ npm install -g karma` if you want to execute our test suite
+* For Mac: Use command [sudo](http://xkcd.com/149/) to gain sufficient access rights in the command line
 
 ## launch and execute application
 * in the terminal or command prompt navigate to the bridge directory using the `cd` command
