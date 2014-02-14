@@ -17,6 +17,7 @@ Bridge is an internal open source project. One main goal of this is contribution
   * create user in GitHub and using the SAP user name
   * `$ ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
   * copy and paste the complete content of the public key file to your github account [here](https://github.wdf.sap.corp/settings/ssh), the key title is not important
+  * For Mac: copy the file content to clipboard `pbcopy < id_rsa.pub`
 
 ## setup local environment
 * navigate to the bridge directory using the `$ cd c:/..` command in your terminal or git bash
