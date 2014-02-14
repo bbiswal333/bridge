@@ -33,11 +33,11 @@ angular.module('bridge.box').directive('bridge.box', function ($compile, bridgeD
         link: function ($scope, $element, $attrs, $modelCtrl) {
 
             if ($attrs.id) {
+                $scope.boxId = $attrs.id;
+
                 if (!bridgeDataService.boxInstances[$attrs.id]) {
-                    $scope.boxId = $attrs.id;
                     bridgeDataService.boxInstances[$attrs.id] = {
                         scope: $scope,
-                        initializationTries: 0,
                     };
                 }
             }

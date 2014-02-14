@@ -1,6 +1,4 @@
-﻿angular.module('app.atc').appAtcSettings = function ($filter, ngTableParams, appAtcConfig, $scope) {
-    $scope.title = "ABAP Code Check Results";
-
+﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', function ($filter, ngTableParams, appAtcConfig, $scope) {
     $scope.config = appAtcConfig;
     $scope.currentConfigValues = appAtcConfig.newItem();
 
@@ -35,4 +33,4 @@
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });
-}
+}];
