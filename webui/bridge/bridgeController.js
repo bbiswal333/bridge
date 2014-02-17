@@ -2,8 +2,10 @@ angular.module('bridge.app', [
     //external stuff
     'ngAnimate',
     'ngRoute',
+    'ngSanitize',
     'googlechart',
     'ui.bootstrap',
+    'mgcrea.ngStrap',
     'ngTable',
     'ng-scrollbar',
     // bridge modules

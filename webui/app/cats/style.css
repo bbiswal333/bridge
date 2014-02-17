@@ -1,7 +1,31 @@
 .app-cats-body {
 	font-family: "Open Sans";
-	font-weight: bold;
 }
+
+.app-cats-legend {
+	position: absolute;
+	right: 10px;
+	bottom: 7px;
+	font-size: 16px;
+	color: #e1e1e1;
+}
+
+	.app-cats-legend-popover ul {
+		list-style: none;
+	}
+
+	.app-cats-legend-colorbox {
+		width: 10px;
+		height: 10px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		margin-right: 5px;
+		float: left;
+	}
+
+	.app-cats-legend-closeBtn {
+		float: right;
+	}
 
 .app-cats-navigation {
 	margin-bottom: 4px;
@@ -60,6 +84,7 @@
 	margin-bottom: 2px;
 	font-size: 10px;
 	text-align: center;
+	font-weight: bold;	
 }
 
 	.app-cats-week .app-cats-day {
@@ -96,13 +121,14 @@
 
 .app-cats-notInMonth {
 	background: #e1e1e1;
+	opacity: 0;
 }
 
 .app-cats-icon {
 	font-family: 'SAP-icons';
 }
 
-.app-cats-noDataInapp-cats {
+.app-cats-noDataInCats {
 	background: #555;
 }
 
@@ -110,13 +136,21 @@
 	background: rgb(0, 157, 224);
 }
 
-
 /* stuff for fancy animations */
 .app-cats-fadeAnim.ng-enter {
 	opacity: 0;
-	transition: opacity 0.5s;
+	transition: opacity 0.3s ease-in-out;
 }
 
 .app-cats-fadeAnim.ng-enter-active {
 	opacity: 1;
+}
+
+.app-cats-fadeAnim.ng-leave {
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.app-cats-fadeAnim.ng-leave-active {
+	opacity: 0;
 }

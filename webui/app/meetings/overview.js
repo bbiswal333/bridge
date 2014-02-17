@@ -130,11 +130,19 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 		    return calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
 		};
 
+		var refreshInterval = null;
+
+		$scope.$on("$destroy", function(){
+			if (refreshInterval != null) {
+				$interval.cancel(refreshInterval);
+			}
+		});
+
 		(function springGun() {
 			var i = 1;
-
+			console.log("Gun triggered");
 			//Full reload every 300 seconds, refresh of UI all 30 seconds
-			$interval(function () {
+			refreshInterval = $interval(function () {
 				if (i % 10 == 0) {
 					reload();
 					i = 1;
@@ -143,6 +151,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 					parseExchangeData(eventsRaw);
 					i++;
 				}
+				console.log("Interval function");
 			}, 30000);
 		})();
 
