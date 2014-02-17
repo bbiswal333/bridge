@@ -1,31 +1,44 @@
- Release Backlog for [Bridge](https://go.sap.corp/bridge)
+ Release Backlog
 ===============
 
-## Top X Widgets for Bridge
+## High Level Plan
 
-It shall be possible to have multi-instance widgets
+* deadline end of CW26
+* end user feedback as soon as possible
+* show and tell sessions every 2 weeks
+* internal pilot after "browser only" variant is ready
 
-* Timesheet (CATS)
-* Links
-* SAP Connect
-* Tickets
+## Top X Apps
+
+* Timesheet Information (CAT2) incl. maintenance
+* Links (SAPGui & URL)
+* Employee Search incl. SAP Connect
+* Internal Messages
+* Customer Messages
+* IT Tickets
 * Jira
 * ATC
 * Jenkins
+* Github
+* Lunch Menu
+* Meetings
 
-## Bridge light...
+## Browser Only
 
-... offers all widgets of Bridge but with less functionality
+* running version available without client on monsoon
+* additional functionality with client installer
 
 ## Framework
 
-* Settings
-* Projects + Team View
-* Drag + Drop
-* Browser/ Mobile
-* RFC-Calls
+* general settings
+* projects & team views
+* customizing of app order
+* browser compatability incl. mobile support
+* rfc calls for direct system access
+* multi instance apps
 
-## Inner Source plattform
+## Inner Source
 
-* Create Info on how to jump start Bridge widget development
+* sample apps & docu to jump start app development
+
 
