@@ -51,7 +51,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 			today.setHours(0);
 			today.setMinutes(0);
 			today.setSeconds(0);
-			$scope.events = [];
 
 			if (typeof events == "undefined") {
 				return;

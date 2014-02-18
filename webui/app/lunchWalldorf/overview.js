@@ -36,7 +36,7 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($ti
 
             $timeout(function () {
                 $scope.$broadcast('recalculateScrollbars');
-            }, 100);
+            }, 300);
         }).error(function(data, status, headers, config) {
             console.log(data);
         });
