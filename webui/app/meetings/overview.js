@@ -53,6 +53,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 			today.setSeconds(0);
 			$scope.events = [];
 
+			if (typeof events == "undefined") {
+				return;
+			}
+
 			var j = 0;
 			for (var i = 0; i < events.length; i++) {
 				//ignore events, which are over already
