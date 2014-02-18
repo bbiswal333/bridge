@@ -47,3 +47,8 @@ Bridge is an internal open source project. One main goal of this is contribution
 * install via `$ npm install -g nodemon`
 * navigate to the bridge directory using the `cd` command
 * run with `nodemon --debug server/server.js`
+
+Building Apps
+===============
+If you want to learn how to build own apps, please read [here](BUILDING_APPS.md).
+
