@@ -139,20 +139,4 @@
 }
 
 /* stuff for fancy animations */
-.app-cats-fadeAnim.ng-enter {
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-}
-
-.app-cats-fadeAnim.ng-enter-active {
-	opacity: 1;
-}
-
-.app-cats-fadeAnim.ng-leave {
-	opacity: 1;
-	transition: opacity 0.3s ease-in-out;
-}
-
-.app-cats-fadeAnim.ng-leave-active {
-	opacity: 0;
-}
+/* Moved to global animations stylesheet /*

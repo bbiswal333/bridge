@@ -1,11 +1,12 @@
 ﻿angular.module('app.lunchWalldorf', []);
 
-angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function () {
+angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($timeout) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
+        $scope.loading = true;
     
         $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
@@ -31,7 +32,11 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function () {
             }
 
             $scope.lunch = lunchMenu;
-            $scope.$broadcast('recalculateScrollbars');
+            $scope.loading = false;
+
+            $timeout(function () {
+                $scope.$broadcast('recalculateScrollbars');
+            }, 100);
         }).error(function(data, status, headers, config) {
             console.log(data);
         });

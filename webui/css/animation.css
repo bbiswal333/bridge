@@ -184,3 +184,21 @@
     from { margin-left: 0; }
     to { margin-left: 100%; }
 }
+
+.bridge-fade-anim.ng-enter {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.bridge-fade-anim.ng-enter-active {
+  opacity: 1;
+}
+
+.bridge-fade-anim.ng-leave {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.bridge-fade-anim.ng-leave-active {
+  opacity: 0;
+}
