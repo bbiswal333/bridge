@@ -2,11 +2,14 @@ Building Apps
 ======================================
 
 ## application structure
-* the app must be an angluar-directive inside it's own module
-* the directive must not have an isolated scope
-* the app files and folders must be kept inside it's own sub-folder of 'app'
+* apps are contained in their own sub-folder `webui/app/appname`
+* apps must be an angluar-directive named `app.appname` inside it's own module named `app.appname`
+* the app directive must not have an isolated scope
+* apps contain at least the files `overview.js` and `overview.html` for rendering a box on the overview page
+* `$scope.boxId` is inherited from the `bridge.box` directive
+* apps can optionally define settings in a separate directive
 
-## $scope properties
+## overview.js
 ```javascript
 
 angular.module('app.test', []);
@@ -15,7 +18,14 @@ angular.module('app.test').directive('app.test', function () {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Test App";
         $scope.initialized = true;
-        $scope.boxIcon = '&#xe05c;';    
+        $scope.boxIcon = '&#xe05c;'; 
+        
+        //optional settings screen
+        $scope.settingScreenData = {
+        	templatePath: "test/settings.html",
+            	controller: angular.module('app.test').appTestSettings,
+            	id: $scope.boxId,
+        };
     }];
 
     return {
@@ -26,8 +36,21 @@ angular.module('app.test').directive('app.test', function () {
 });
 
 ```
-* boxTitle: Title of the App
-* boxIcon: UI5 Icon
+
+## overview.html
+```html
+This is just an app with no real content. The app id is {{boxId}}.
+```
+## settings.js
+```javascript
+
+angular.module('app.test').appTestSettings = ['app.test.configservice', '$scope', function (appTestConfig, $scope) {
+ //...
+}]);
+```
+## settings.html
+
+## settings screen
 * settingScreenData = {
     templatePath: "{path to your settings template beginning with your app-folder}", // Example: testBox/TestBoxSettingsTemplate.html
     controller: {controllerObject},
@@ -40,9 +63,9 @@ angular.module('app.test').directive('app.test', function () {
 	$scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false }); when the operation is finished, otherwise the user will see the loading bar forever
 
 
-## Naming convention
+## services, factories, providers and more
+All services, factories and providers (actually all injectable stuff in AngularJS) share one common namespace.
 
-All services, factories and providers (actually all injectable stuff in AngularJS) share one common namespace. Furthermore we want to have (at least) one module per file, so loading order of files doesn't matter - this is important for automatic testing with Karma. Furthermore this improves reusability. Modules themself do not adress the problem of namespace-collisions, therefore we have to follow a schema when naming services etc..
 
 ## Schema for namming modules
 We try to name our modules in a "Java-package-like" way:
@@ -59,5 +82,5 @@ For the reason of having unique names everywhere each injectable object should i
 
 In case a module only contains one injectable object this object might have the same name as the object (obviously written differently). You might also consider writting names of directives completely in lowercase.
 
-## Schema for test files
+## tests
 Test files should end up with .spec.js and should be placed close by the code they are testing.
