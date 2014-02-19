@@ -72,15 +72,21 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 
 			function handleData(ews_xml) {
 				if (json) {
-					xml2js(ews_xml, function (err, result) {
-						console.log(err);
-						if (err == undefined) {
-							callback_fn(JSON.stringify(result));
-						}
-						else {
-							callback_fn("Error parsing JSON. Please try again requesting XML.");
-						}
-					});
+					try{
+						xml2js(ews_xml, function (err, result) {
+							console.log(err);
+							if (err == undefined) {
+								callback_fn(JSON.stringify(result));
+							}
+							else {
+								callback_fn("Error parsing JSON. Please try again requesting XML.");
+							}
+						});
+					}catch(err){
+						var text = "Error parsing JSON. Please try again requesting XML."
+						callback_fn(text);
+						console.log(text);
+					}
 				}
 				else {
 					callback_fn(ews_xml);

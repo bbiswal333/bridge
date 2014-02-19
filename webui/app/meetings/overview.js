@@ -1,4 +1,4 @@
-angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "lib.utils.calUtils", function ($http, ewsUtils, calUtils) {
+angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "lib.utils.calUtils", "$interval", function ($http, ewsUtils, calUtils, $interval) {
 	var linkFn = function ($scope) {
 		/* ====================================== */
 		/* CONFIGURATION */
@@ -11,7 +11,9 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 		$scope.customCSSFile = "app/meetings/style.css";
 		$scope.currentEvent = 0;
 		$scope.events = [];
+		$scope.eventsRaw = {};
 		$scope.loading = true;
+		var eventsRaw = {};		
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
 			if (newValue != "" && newValue > 0) {
@@ -30,63 +32,73 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 
 		function loadFromExchange () {
 			$scope.loading = true;
-			var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
-			var today = new Date();
-			today.setHours(0);
-			today.setMinutes(0);
-			today.setSeconds(0);
 
 			$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
-				var events = {};
-				events = eval(data)["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-				$scope.events = [];
-				if (typeof events != "undefined") {
-					var j = 0;
-					for (var i = 0; i < events.length; i++) {
-						//ignore events, which are over already
-						if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
-							continue;
-						}
-
-						//ignore allday events
-						if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] != "false") {
-							continue;
-						}
-
-						var start = dateFn(events[i]["t:Start"][0]);
-						var end = dateFn(events[i]["t:End"][0]);
-
-						$scope.events[j] = {
-							subject: events[i]["t:Subject"][0],
-							start: start,
-							startRel: calUtils.relativeTimeTo(new Date(), start, true),
-							startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
-							end: end,
-							endRel: calUtils.relativeTimeTo(new Date(), end, true),
-							endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
-							timeZone: events[i]["t:TimeZone"][0],
-							location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
-							getEventTime: function () {
-							    if ($scope.events.indexOf(this) == 0)
-							        return "<b>" + this.startRel + "</b>";
-							    else
-							        return this.startTime + "<br />" + this.endTime;
-							},
-							isCurrent: (start.getTime() < new Date().getTime())
-						};
-
-						j++;
-					}
+				eventsRaw = {};
+				eventsRaw = eval(data)["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
+				if (typeof eventsRaw != "undefined") {
+					parseExchangeData(eventsRaw);
 				}
-
-				$scope.events = $scope.events.sort(sortByStartTime);
 
 				$scope.currentEvent = 0;
 				$scope.loading = false;
 			});
 		};
 
+		function parseExchangeData(events) {
+			var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
+			var today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+
+			if (typeof events == "undefined") {
+				return;
+			}
+
+			var j = 0;
+			for (var i = 0; i < events.length; i++) {
+				//ignore events, which are over already
+				if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
+					continue;
+				}
+
+				//ignore allday events
+				if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] != "false") {
+					continue;
+				}
+
+				var start = dateFn(events[i]["t:Start"][0]);
+				var end = dateFn(events[i]["t:End"][0]);
+
+				$scope.events[j] = {
+					subject: events[i]["t:Subject"][0],
+					start: start,
+					startRel: calUtils.relativeTimeTo(new Date(), start, true),
+					startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
+					end: end,
+					endRel: calUtils.relativeTimeTo(new Date(), end, true),
+					endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
+					timeZone: events[i]["t:TimeZone"][0],
+					location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
+					getEventTime: function () {
+					    if ($scope.events.indexOf(this) == 0)
+					        return "<b>" + this.startRel + "</b>";
+					    else
+					        return this.startTime + "<br />" + this.endTime;
+					},
+					isCurrent: (start.getTime() < new Date().getTime())
+				};
+
+				j++;
+			}
+
+			$scope.events = $scope.events.sort(sortByStartTime);
+		}
+
 		$scope.upComingEvents = function () {
+
+
 		    $scope.$broadcast('recalculateScrollbars');
 		    return $scope.events;
 		};
@@ -110,7 +122,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 			return $scope.loading;
 		};
 
-		$scope.reload = function () {
+		function reload() {
 			if (!$scope.isLoading()) {
 				loadFromExchange();
 			}
@@ -119,7 +131,32 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 		$scope.getCurrentDate = function () {
 		    var date = new Date();
 		    return calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
-		}
+		};
+
+		var refreshInterval = null;
+
+		$scope.$on("$destroy", function(){
+			if (refreshInterval != null) {
+				$interval.cancel(refreshInterval);
+			}
+		});
+
+		(function springGun() {
+			var i = 1;
+			console.log("Gun triggered");
+			//Full reload every 300 seconds, refresh of UI all 30 seconds
+			refreshInterval = $interval(function () {
+				if (i % 10 == 0) {
+					reload();
+					i = 1;
+				}
+				else {
+					parseExchangeData(eventsRaw);
+					i++;
+				}
+				console.log("Interval function");
+			}, 30000);
+		})();
 
 		loadFromExchange();
 	};
