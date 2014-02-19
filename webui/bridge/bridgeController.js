@@ -34,6 +34,12 @@ angular.module('bridge.app').directive('errSrc', function() {
 angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
 
+        $http.get('http://localhost:8000/client').success(function (data, status) {            
+        }).error(function (data, status, header, config) {            
+            alert('light mode detected');
+        });
+
+
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 
