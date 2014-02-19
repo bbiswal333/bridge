@@ -131,6 +131,11 @@ var launch = function(npm)
 				});
 			}
 
+			app.get('/client', function (request, response) {
+				response.setHeader('Content-Type', 'text/plain');	
+				response.send('{"client":"true"}');
+			});
+
 			//generic api call GET
 			app.get('/api/get', function(request, response) {
 				var json = false;
