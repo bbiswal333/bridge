@@ -1,5 +1,5 @@
 <div class="app-cats-body">
-	<div ng-if="!loading" class="app-cats-fadeAnim">
+	<div ng-if="!loading" class="bridge-fade-anim">
 		<div class="app-cats-navigation">
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"> &#xe1ee; </span>	
 			<span class="app-cats-current-month">{{currentMonth}}</span> 
@@ -15,8 +15,9 @@
 				</div>
 				<div ng-repeat="day in week" ng-if="day.data == null" class="app-cats-day app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
 					<span>{{day.dayNr}}</span>
-				</div>
+				</div>				
 			</div>
 		</div>
+		<div class="app-cats-legend app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tpl.html" data-html="true" data-trigger="click" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
 	</div>
 </div>

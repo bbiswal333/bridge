@@ -1,4 +1,4 @@
-angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$timeout", function (calUtils, catsUtils, $timeout) {
+angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$interval", function (calUtils, catsUtils, $interval) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
 
@@ -34,6 +34,8 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 			else {
 				$scope.state = "CATS-Data could no be retrieved from system";
 			}			
+
+			console.log($scope.state);
 		} 
 
 		$scope.canGoBackward = function () {
@@ -97,11 +99,26 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
 			$scope.currentMonth = calUtils.getMonthName($scope.month).long;
 
-			//$timeout(function () {
-			//	$scope.loading = false;
-			//}, 1);
 			$scope.loading = false;
 		}
+
+		var refreshInterval = null;
+
+		$scope.$on("$destroy", function(){
+			if (refreshInterval != null) {
+				$interval.cancel(refreshInterval);
+			}
+		});
+
+		(function springGun () {
+			var dateLastRun = new Date().getDate();
+
+			refreshInterval = $interval(function () {
+				if (dateLastRun != new Date().getDate()) {
+					catsUtils.getData(handleCatsData);
+				}
+			}, 3 * 3600000);
+		})();
 	};
 
 	function processCatsData (cats_o) {

@@ -131,6 +131,11 @@ var launch = function(npm)
 				});
 			}
 
+			app.get('/client', function (request, response) {
+				response.setHeader('Content-Type', 'text/plain');	
+				response.send('{"client":"true"}');
+			});
+
 			//generic api call GET
 			app.get('/api/get', function(request, response) {
 				var json = false;
@@ -159,14 +164,19 @@ var launch = function(npm)
 					response.setHeader('Content-Type', 'text/plain');
 	  				response.charset = 'UTF-8';
 					if (json) {
-						xml2js(data, function (err, result) {
-							if (err == undefined) {
-								response.send(JSON.stringify(result));
-							}
-							else {
-								response.send("Could not convert XML to JSON.");
-							}
-						});
+						try {
+							xml2js(data, function (err, result) {
+								if (err == undefined) {
+									response.send(JSON.stringify(result));
+								}
+								else {
+									response.send("Could not convert XML to JSON.");
+								}
+							});
+						}
+						catch(err) {
+							response.send("Could not convert XML to JSON.");
+						}
 					}
 					else {
 						response.send(data);
