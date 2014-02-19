@@ -36,7 +36,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
 
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
-            alert('light mode detected');
+            //alert('light mode detected');
         });
 
 
