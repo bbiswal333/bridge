@@ -17,7 +17,8 @@ angular.module('bridge.app', [
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
-    'app.lunchWalldorf']);
+    'app.lunchWalldorf',
+    'app.githubMilestone']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -104,7 +105,10 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
     $routeProvider.when("/detail/im/", { templateUrl: 'app/im/detail.html', controller: 'app.im.detailController' });
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
-    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });    
+    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
+
+
+
 });
 
 angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {
