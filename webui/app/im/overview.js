@@ -27,6 +27,8 @@ angular.module('app.im').directive('app.im', function () {
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http',
     function Controller($scope, $http) {
 
+        Piwik.getAsyncTracker().trackPageView();
+
         $scope.prioarr = [0,0,0,0];
         $scope.prionr = [1,2,3,4]; 
 
