@@ -46,6 +46,6 @@ This is just an app with no real content. The app id is {{boxId}}.
 
 angular.module('app.test').appTestSettings = ['app.test.configservice', '$scope', function (appTestConfig, $scope) {
  //...
-}]);
+}];
 ```
 ## settings.html
