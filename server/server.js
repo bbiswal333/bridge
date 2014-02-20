@@ -14,6 +14,27 @@ var iconv = {};
 
 var launch = function(npm)
 {
+	//fetch parameters
+	var port = 8000;
+	var proxy = true;
+	for (var i = 0; i < process.argv.length; i++) {
+		if( i % 2 == 0)
+		{
+			if( process.argv[i] == '-port' && !isNaN(process.argv[i+1]) )
+			{
+				port = process.argv[i+1];
+			};
+
+			if( process.argv[i] == '-proxy')
+			{
+				proxy = process.argv[i+1];
+			};
+		};
+	};
+
+	console.log("PORT: " + port);
+	console.log("PROXY: " + proxy);
+
 	//get express via npm install
 	try{
 		express = require('express');
@@ -27,11 +48,14 @@ var launch = function(npm)
 		console.log("downloading npm package dependencies..")
 
 		var set_proxy = "";
-		if(process.platform == "win32") {
-			set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
-		}
-		else {
-			set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
+		if( proxy )
+		{
+			if(process.platform == "win32") {
+				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
+			}
+			else {
+				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
+			}
 		}
 		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
 			console.log(stderr);
@@ -234,14 +258,6 @@ var launch = function(npm)
 
 			});
 
-			//create local server
-			var port = 8000;
-			if (process.argv.length > 2) {
-				if (!isNaN(process.argv[2])) {
-					port = process.argv[2];
-				}
-			}
-
 			http.createServer(app).listen(port, "localhost");
 
 			//most valuable feature of this server
@@ -261,7 +277,7 @@ var launch = function(npm)
 			   		//Error due to already used address
 			   		//console.log("Server cannot be started at http://localhost:" + port);
 			   		console.log("ERROR: Port " + port + " is already used.");
-			   		console.log("ERROR: You can pass the port as a commandline argument to server.js");			   		
+			   		console.log("ERROR: You can pass the port as a commandline argument to server.js via -port");			   		
 			   	}
 			   	else {
 			   		console.log("ERROR: " + error.stack );
