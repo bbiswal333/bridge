@@ -32,8 +32,10 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig',
+    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig) {
+        console.log($modal);
+        console.log($log);
 
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
@@ -59,6 +61,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                 }
             }
 
+            console.log($modal);
             var modalInstance = $modal.open({
                 templateUrl: 'view/settings.html',
                 controller: angular.module('bridge.app').settingsController,

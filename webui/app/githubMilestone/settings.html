@@ -1,24 +1,21 @@
 <div style="width: 100%">
-
 <p>
 <form name="ConfigItemForm">
- 
-<div class="row">
-	<div class="col-xs-2">Repository</div>
- 	<div class="col-xs-4">
- 		<input type="text" class="form-control" ng-model="currentConfigValues.repo" placeholder="Repository" autofocus/>
+	<div class="row">
+		<div class="col-xs-2">Repository</div>
+ 		<div class="col-xs-4">
+ 			<input type="text" class="form-control" ng-model="currentConfigValues.repo" placeholder="Repository" autofocus/>
+		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div class="col-xs-2">Milestone Duration</div>
- 	<div class="col-xs-4">
- 		<input type="number" min="1" step="1" class="form-control" ng-model="currentConfigValues.milestoneDuration" placeholder="Milestone Duration" autofocus/>
+	<div class="row">
+		<div class="col-xs-2">Milestone Duration</div>
+ 		<div class="col-xs-4">
+ 			<input type="number" min="1" step="1" class="form-control" ng-model="currentConfigValues.milestoneDuration" placeholder="Milestone Duration" autofocus/>
+		</div>
 	</div>
-</div>
 
-<button class="btn btn-default" ng-click="save_click()">Save</button>
+	<button class="btn btn-default" ng-click="save_click()">Save</button>
 </form>
-
-</div>
 </p>
+</div>

@@ -1,36 +1,25 @@
 <div style="margin-top: 5px; height: 80x; overflow: hidden" >
 
+	<div class="alert alert-warning" style="display: {{error.display}}">{{error.msg}}</div>
 
-<div class="alert alert-warning" style="display: {{error.display}}">{{error.msg}}</div>
-
-
-
-
-
-    <div ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:countMilestones " class="row">
+    <div ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:config.countMilestones " class="row">
         <div class="col-xs-4">
-            <a href="{{urlGithub}}{{config.repo}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
+            <a href="{{config.urlGithub}}{{config.repo}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
             <br />Due on: {{milestone.due_on | date:'dd.MM.yy'}}
             <br />
-        </div>
+    	</div>
 
         <div class=" col-xs-7">
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
-
-
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.poc}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca; width: {{milestone.poc}}%;">
                     {{milestone.poc}}%
                 </div>
             </div>
-
-
             {{ milestone.milestoneDuration - milestone.due_in}} days past - {{milestone.due_in}} days remaining
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.pot}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca; width: {{milestone.pot}}%;">{{milestone.pot}}%</div>
             </div>
-
         </div>
-
     </div>
 </div>
