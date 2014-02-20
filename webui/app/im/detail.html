@@ -5,7 +5,7 @@
       <div class="panel-body">
 
         <table ng-table class="table" ng-controller="app.im.detailController">
-            <tr ng-repeat="nachricht in tempobject | filter : search | orderBy : 'STATUSSTXT[0]'" >
+            <tr ng-repeat="nachricht in tempobject | filter : search | orderBy : ['-AEDATUM[0]','-AEZEIT[0]']" >
                 <td data-title="'Prio'" align="center">{{nachricht.PRIOSTXT[0]}}</td>
                 <td data-title="'Component'" align="center">{{nachricht.THEMKEXT[0]}}</td>        
                 <td data-title="'Status'" align="center">{{nachricht.STATUSSTXT[0]}}</td>
