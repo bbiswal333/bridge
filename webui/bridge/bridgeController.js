@@ -42,8 +42,6 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             //alert('light mode detected');
         });
 
-        Piwik.getAsyncTracker().trackPageView();
-
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 
