@@ -2,8 +2,10 @@ angular.module('bridge.app', [
     //external stuff
     'ngAnimate',
     'ngRoute',
+    'ngSanitize',
     'googlechart',
     'ui.bootstrap',
+    'mgcrea.ngStrap',
     'ngTable',
     'ng-scrollbar',
     // bridge modules
@@ -17,7 +19,8 @@ angular.module('bridge.app', [
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
-    'app.lunchWalldorf']);
+    'app.lunchWalldorf',
+    'app.githubMilestone']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -32,17 +35,27 @@ angular.module('bridge.app').directive('errSrc', function() {
 angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
 
+        $http.get('http://localhost:8000/client').success(function (data, status) {            
+        }).error(function (data, status, header, config) {            
+            //alert('light mode detected');
+        });
+
+
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 
         $scope.settings_click = function (boxId) {
             var templateString;
             var templateController;
+            var boxController;
+            var boxScope;
 
             for (var boxProperty in bridgeDataService.boxInstances) {
                 if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
                     templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
                     templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
+                    boxController = bridgeDataService.boxInstances[boxProperty];
+                    boxScope = bridgeDataService.boxInstances[boxProperty].scope;
                 }
             }
 
@@ -55,6 +68,12 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                     },
                     templateController: function () {
                         return templateController;
+                    },
+                    boxController: function () {
+                        return boxController;
+                    },
+                    boxScope: function () {
+                        return boxScope;
                     },
                 }
             });
@@ -94,7 +113,10 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
     $routeProvider.when("/detail/im/", { templateUrl: 'app/im/detail.html', controller: 'app.im.detailController' });
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
-    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });    
+    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
+
+
+
 });
 
 angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {

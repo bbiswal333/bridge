@@ -25,7 +25,7 @@ var launch = function(npm)
 	catch(err){
 		var server_path = path.join(__dirname, '/');
 		console.log("downloading npm package dependencies..")
-		
+
 		var set_proxy = "";
 		if(process.platform == "win32") {
 			set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
@@ -92,7 +92,7 @@ var launch = function(npm)
 				console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
 
 				var req = {};
-				
+
 				if( protocol == "http:")
 				{
 					req = http_req.request(options, function(res) {
@@ -131,6 +131,11 @@ var launch = function(npm)
 				});
 			}
 
+			app.get('/client', function (request, response) {
+				response.setHeader('Content-Type', 'text/plain');	
+				response.send('{"client":"true"}');
+			});
+
 			//generic api call GET
 			app.get('/api/get', function(request, response) {
 				var json = false;
@@ -146,27 +151,32 @@ var launch = function(npm)
 				}
 
 				var service_url = url.parse(request.query.url);	
-				
+
 				var decode = "none";
 				if(typeof request.query.decode != "undefined")
 				{				
 					decode = request.query.decode;
 				}
 
-							
+
 				callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
 					//console.log(data);
 					response.setHeader('Content-Type', 'text/plain');
 	  				response.charset = 'UTF-8';
 					if (json) {
-						xml2js(data, function (err, result) {
-							if (err == undefined) {
-								response.send(JSON.stringify(result));
-							}
-							else {
-								response.send("Could not convert XML to JSON.");
-							}
-						});
+						try {
+							xml2js(data, function (err, result) {
+								if (err == undefined) {
+									response.send(JSON.stringify(result));
+								}
+								else {
+									response.send("Could not convert XML to JSON.");
+								}
+							});
+						}
+						catch(err) {
+							response.send("Could not convert XML to JSON.");
+						}
 					}
 					else {
 						response.send(data);
@@ -221,7 +231,7 @@ var launch = function(npm)
 						response.send(res);
 					}
 				});
-			
+
 			});
 
 			//create local server
@@ -233,19 +243,31 @@ var launch = function(npm)
 			}
 
 			http.createServer(app).listen(port, "localhost");
-			console.log("Bridge Server running at http://localhost:" + port);
 
-			process.on('uncaughtException', function (error) {
+			//most valuable feature of this server
+			console.log(' ____         _      _              ');
+ 			console.log('|  _ \\       (_)    | |            ');
+ 			console.log('| |_) | _ __  _   __| |  __ _   ___ ');
+ 			console.log('|  _ < | \'__|| | / _` | / _` | / _ \\');
+ 			console.log('| |_) || |   | || (_| || (_| ||  __/');
+ 			console.log('|____/ |_|   |_| \\__,_| \\__, | \\___|');
+            console.log('	                 __/ |      ');
+			console.log('                        |___/       ');	
+			console.log('Starting Server at http://localhost:' + port);
+
+			process.on('uncaughtException', function (error) {				
 			  	var s = new String(error.stack);
 			   	if (s.search(/EADDRINUSE/) > -1) {
 			   		//Error due to already used address
-			   		console.log("It seems like the Bridge server is already running (or some other programm is running on bridge's default port. Please check this or run bridge using a different port.");
-			   		console.log("Changing the port is done by simply giving server.js the wished port as first commandline-argument.");
+			   		//console.log("Server cannot be started at http://localhost:" + port);
+			   		console.log("ERROR: Port " + port + " is already used.");
+			   		console.log("ERROR: You can pass the port as a commandline argument to server.js");			   		
 			   	}
 			   	else {
-			   		console.log(error.stack);
+			   		console.log("ERROR: " + error.stack );
 			   	}
-			});
+			   	process.exit(1);
+			});		
 		});
 	}
 }

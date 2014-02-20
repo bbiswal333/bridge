@@ -1,68 +1,142 @@
-.week {
-	height: 20px;
-	width: 177px;
+.app-cats-body {
+	font-family: "Open Sans";
 }
 
-/* .week:first-of-type {
-	border-top: solid 1px #888;
+.app-cats-legend {
+	position: absolute;
+	right: 10px;
+	bottom: 7px;
+	font-size: 16px;
+	color: #e1e1e1;
+	cursor: pointer;
 }
 
-.week {
-	border-left: solid 1px #888;
-	border-right: solid 1px #888;
-} 
+	.app-cats-legend-popover ul {
+		list-style: none;
+	}
 
-.week:last-of-type {
-	border-bottom: solid 1px #888;
-} */
+	.app-cats-legend-colorbox {
+		width: 10px;
+		height: 10px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		margin-right: 5px;
+		float: left;
+	}
 
-.day {
-	width: 25px;
-	height: 20px;
+	.app-cats-legend-closeBtn {
+		cursor: pointer;
+		float: right;
+	}
+
+.app-cats-navigation {
+	margin-bottom: 4px;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+	font-weight: lighter;
+	color: #333333;	
+}
+
+	.app-cats-navigation span {
+		display: inline;
+	}
+
+.app-cats-text-button {
+	cursor: pointer;
+	padding: 6px;
+}
+
+	.app-cats-text-button-disabled {
+		color: #aaaaaa;
+		cursor: not-allowed;
+	}
+
+.app-cats-current-month {
+	margin-left: 8px;
+	margin-right: 8px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.app-cats-calendar {
+	width: 285px;
+	margin: 0px auto;
+}
+
+.app-cats-week-labels {
+	font-size: 7px;
+	color: #333333;
+}
+
+.app-cats-week {
+	height: 15px;
+	width: 285px;
+	margin-top: 2px;
+}
+
+	 .app-cats-week:first-of-type {
+		margin-top: 3px;
+	}
+
+.app-cats-day {
+	width: 39px;
+	height: 15px;
 	float: left;
-	background: #FFE796;
+	margin-bottom: 2px;
+	font-size: 10px;
+	text-align: center;
+	font-weight: bold;	
 }
 
-.stateBusy {
-	background: red;
+	.app-cats-week .app-cats-day {
+		color: white;
+	}
+
+	.app-cats-week:last-of-type .app-cats-day {
+		margin-bottom: 0px;
+	}
+
+	.app-cats-day + .app-cats-day {
+		margin-left: 2px;
+	}
+
+.app-cats-stateR { /* Not maintained */
+	background: #f0ab00;
 }
 
-.stateFree {
-	background: lime;
+.app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
+	background: #f0ab00;
 }
 
-input.ng-invalid {
-	background: red;
+.app-cats-stateG { /* maintained */
+	background: #fadd99;
 }
 
-.stateR { /* Not maintained */
-	background: #FF886E;
+.app-cats-inFuture {
+	background: #e1e1e1; /* currently the same as app-cats-inFuture */
 }
 
-.stateY { /* partially maintained */
-	background: #FFF196;
+.app-cats-stateN { /* no need for maintainance */
+	background: #acacac;
 }
 
-.stateG { /* maintained */
-	background: #CBFF96;
+.app-cats-notInMonth {
+	background: #e1e1e1;
+	opacity: 0;
 }
 
-.stateN { /* no need for maintainance */
-	background: #FFFFFF;
-}
-
-.notInMonth {
-	color: #888;
-}
-
-.cmc-icon {
+.app-cats-icon {
 	font-family: 'SAP-icons';
 }
 
-.inFuture {
-	background: #FFFFFF;
-}
-
-.noDataInCats {
+.app-cats-noDataInCats {
 	background: #555;
 }
+
+.app-cats-today {
+	background: rgb(0, 157, 224);
+}
+
+/* stuff for fancy animations */
+/* Moved to global animations stylesheet /*

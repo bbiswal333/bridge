@@ -1,14 +1,8 @@
-﻿<!--Klare Brühe mit Leberspätzle (L)<br />
-Buntbarsch gebraten an kräftiger Kräutersoße mit Speck-Zwiebeltopping (1,3)<br />
-Mienudelpfanne mit frischem asiatischem Gemüse und Mangowürfeln (1,2,8,K,L,V,+)<br />
-Wochenspezial <br />
-Wochenspezial, Dillkartoffeln (L,V,+), Brötchen (L,V,+), Buntes Gemüse (L,V,+)<br />
-Frisches Obst (L,V,+)<br />-->
- <div style="margin-top: 10px; height: 145px; overflow: hidden" ng-scrollbar>
-     <table>
+﻿ <div class="bridge-fade-anim" style="margin-top: 10px; height: 145px; overflow: hidden;" ng-if="!loading" ng-scrollbar>
+     <table style="margin-right: 10px;">
          <tr>
              <td style="text-align: center; width: 40px">
-                 <span style="font-family: SAP-icons; font-size: 20px">&#xe008;</span>
+                <img src="img/starters.png" />                
              </td>
              <td>
                  {{lunch.soup}}
@@ -16,7 +10,7 @@ Frisches Obst (L,V,+)<br />-->
          </tr>
          <tr style="border-top: 1px solid #e5e5e5">
              <td style="text-align: center; width: 40px" rowspan="3">
-                 <span style="font-family: SAP-icons; font-size: 20px">&#xe0d5;</span>
+                 <img src="img/main_course.png" />
              </td>
              <td>
                  {{lunch.mainCourse[0]}}
@@ -34,7 +28,7 @@ Frisches Obst (L,V,+)<br />-->
          </tr>
          <tr style="border-top: 1px solid #e5e5e5">
              <td style="text-align: center; width: 40px">
-                 <span style="font-family: SAP-icons; font-size: 20px">&#xe102;</span>
+                 <img src="img/sidedish.png" />
              </td>
              <td>
                  {{lunch.sideDishes}}
@@ -42,7 +36,7 @@ Frisches Obst (L,V,+)<br />-->
          </tr>
          <tr style="border-top: 1px solid #e5e5e5">
              <td style="text-align: center; width: 40px">
-                 <span style="font-family: SAP-icons; font-size: 20px">&#xe105;</span>
+                 <img src="img/dessert.png" />
              </td>
              <td>
                  {{lunch.dessert}}

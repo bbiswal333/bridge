@@ -1,11 +1,13 @@
 ﻿<!-- override the UI template for a found match -->
 <script id="itemTemplate.html" type="text/ng-template">
-    <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
-    <span style="font-size: 13px">
-        <i>
-            {{match.model.KOSTX}}<br />            
-        </i>
-    </span>
+    <div style="padding-left: 10px; padding-right: 10px">
+        <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
+        <span style="font-size: 13px">
+            <i>
+                {{match.model.KOSTX}}<br />            
+            </i>
+        </span>
+    </div>
 </script>
 
 <script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
@@ -18,7 +20,7 @@
 
 <!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
 <input ng-if="setRequired" required class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)"/>
     
 <input ng-if="!setRequired" class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" />    
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" />    

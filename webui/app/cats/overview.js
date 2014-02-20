@@ -1,11 +1,14 @@
-angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", function (calUtils, catsUtils) {
+angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$interval", function (calUtils, catsUtils, $interval) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
 
+		$scope.boxTitle = "CATS Compliance";
+		$scope.boxIcon = '&#xe0a3;';
 		$scope.customCSSFile = "app/cats/style.css";
 
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();
+		$scope.currentMonth = "";
 		$scope.calArray;
 		$scope.state = "";		
 		$scope.loading = true;
@@ -31,6 +34,8 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 			else {
 				$scope.state = "CATS-Data could no be retrieved from system";
 			}			
+
+			console.log($scope.state);
 		} 
 
 		$scope.canGoBackward = function () {
@@ -42,7 +47,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 		};
 
 		$scope.prevMonth = function () {
-			if (!$scope.canGoBackward) {
+			if (!$scope.canGoBackward()) {
 				return;
 			}
 			monthRelative--;
@@ -90,10 +95,30 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 
 		function reload () {
 			$scope.loading = true;
+
 			$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-			$scope.currentMonth = calUtils.getMonthName($scope.month).long + " " + $scope.year;
+			$scope.currentMonth = calUtils.getMonthName($scope.month).long;
+
 			$scope.loading = false;
 		}
+
+		var refreshInterval = null;
+
+		$scope.$on("$destroy", function(){
+			if (refreshInterval != null) {
+				$interval.cancel(refreshInterval);
+			}
+		});
+
+		(function springGun () {
+			var dateLastRun = new Date().getDate();
+
+			refreshInterval = $interval(function () {
+				if (dateLastRun != new Date().getDate()) {
+					catsUtils.getData(handleCatsData);
+				}
+			}, 3 * 3600000);
+		})();
 	};
 
 	function processCatsData (cats_o) {
