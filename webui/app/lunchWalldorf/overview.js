@@ -12,6 +12,13 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($ti
         ).success(function(data, status, headers, config) {            
             
             var weekday = new Date().getDay() - 1;
+            var hour = new Date().getHours();
+
+            // Is the time correctly calculated???
+            if (weekday >= 0 && weekday <= 3 && hour > 13 ){
+                weekday+=1;
+            }
+
             var lunchstring = data.split('************')[weekday];
 
             var lunchLines = lunchstring.split("\n");
@@ -64,6 +71,7 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($ti
             $timeout(function () {
                 $scope.$broadcast('recalculateScrollbars');
             }, 300);
+
         }).error(function(data, status, headers, config) {
             console.log(data);
         });
