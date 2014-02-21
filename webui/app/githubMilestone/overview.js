@@ -22,10 +22,9 @@ angular.module('app.githubMilestone').directive('app.githubMilestone', function(
             function getData() { 
             $scope.config = appGithubMilestoneConfig;
 
-            //$scope.boxTitle = "Github Milestone - "+$scope.config.repo;
                 $http({
                     method: 'GET',
-                    url: $scope.config.urlApi+'repos/' + $scope.config.repo + '/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc'
+                    url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc'
 
                 }).success(function(data, status, headers, config) {
                     $scope.milestones = data;
