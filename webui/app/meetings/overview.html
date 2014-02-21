@@ -1,5 +1,11 @@
 <div >
 	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
+
+        <b>{{getCurrentDate()}}</b><br />
+        <div ng-if="errMsg != null">
+          {{errMsg}}
+        </div>
+
 		<div ng-if="hasEvents()">
             <div>
                 <b>{{getCurrentDate()}}</b><br />
@@ -39,7 +45,7 @@
                 </div>
             </div>
 		</div>
-		<div ng-if="!hasEvents()">
+		<div ng-if="!hasEvents() && errMsg == null">
 			Hooray! You got no more meetings today!
 		</div>
 	</div>	

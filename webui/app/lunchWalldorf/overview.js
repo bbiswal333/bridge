@@ -1,6 +1,4 @@
-﻿angular.module('app.lunchWalldorf', []);
-
-angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($timeout) {
+﻿angular.module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", function ($timeout, calUtils) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
@@ -10,16 +8,18 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($ti
     
         $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
-            
-            var weekday = new Date().getDay() - 1;
-            var hour = new Date().getHours();
 
-            // Is the time correctly calculated???
+            var date = new Date();
+            var weekday = date.getDay() - 1;
+            var hour = date.getHours();
+
             if (weekday >= 0 && weekday <= 3 && hour > 13 ){
-                weekday+=1;
+                date.setDate( date.getDate() + 1 )
+                weekday = date.getDay() - 1;
             }
 
             var lunchstring = data.split('************')[weekday];
+            $scope.date = calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
 
             var lunchLines = lunchstring.split("\n");
             var lunchMenu = {};
@@ -84,4 +84,4 @@ angular.module('app.lunchWalldorf').directive('app.lunchWalldorf', function ($ti
         controller: directiveController
         };
     
-});
+}]);
