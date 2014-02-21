@@ -1,0 +1,18 @@
+#app-lunchWalldorf-container {
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;	
+}
+
+	#app-lunchWalldorf-container table {
+		margin-right: 10px;
+	}
+
+	#app-lunchWalldorf-container tr:not(:first-of-type) {
+		border-top: 1px solid #e5e5e5;
+	}
+
+	.app-lunchWalldorf-icon {
+		text-align: center; 
+		width: 40px;
+	}

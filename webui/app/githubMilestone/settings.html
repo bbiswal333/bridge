@@ -1,24 +1,38 @@
 <div style="width: 100%">
-
 <p>
 <form name="ConfigItemForm">
- 
-<div class="row">
-	<div class="col-xs-2">Repository</div>
- 	<div class="col-xs-4">
- 		<input type="text" class="form-control" ng-model="currentConfigValues.repo" placeholder="Repository" autofocus/>
-	</div>
-</div>
 
-<div class="row">
-	<div class="col-xs-2">Milestone Duration</div>
- 	<div class="col-xs-4">
- 		<input type="number" min="1" step="1" class="form-control" ng-model="currentConfigValues.milestoneDuration" placeholder="Milestone Duration" autofocus/>
-	</div>
-</div>
 
-<button class="btn btn-default" ng-click="save_click()">Save</button>
+	<div class="row">
+		<div class="col-xs-1"><b>Repository URL</b></div>
+ 		<div class="col-xs-4 has-feedback {{error.inputUrl}}">
+ 			<input type="text" class="form-control" ng-change="show_details()" ng-model="currentConfigValues.repo.html_url" placeholder="Repository URL" autofocus
+ 			 typeahead="searchResult.html_url for searchResult in searchResults| limitTo:10 "/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-offset-1 col-xs-4">
+			<div class="alert alert-danger" style="display: {{error.display}}">{{error.msg}}</div>
+		</div>
+	</div>
+	<p></p>
+
+	</div>
+	<p></p>
+
+	<div class="row">
+		<div class="col-xs-1"><b>Milestone Duration</b></div>
+ 			<form>
+   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="7"> 1 Week
+   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="14"> 2 Weeks 
+   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="21"> 3 Weeks 
+   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="28"> 4 Weeks <br/>
+  			</form>	
+  		</div>
+
+	<button class="btn btn-default" ng-click="save_click()">Save</button>
 </form>
+</p>
 
 </div>
-</p>
+

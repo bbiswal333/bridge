@@ -32,14 +32,12 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$modal', '$log', 'bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, $route, $location, $timeout, $q, $modal, $log, bridgeDataService, bridgeConfig) {
-
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig',
+    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig) {
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
             //alert('light mode detected');
         });
-
 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
@@ -106,7 +104,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
 
 angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
-        templateUrl: 'view/overview.html',
+        templateUrl: 'view/demo.html',
     });
     $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 
