@@ -5,8 +5,25 @@
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
         $scope.loading = true;
+
+        var lang = "de";
+        var soup_text = "Suppe:";
+        var main_text = "Hauptgericht:";
+        var alt_text = "Oder:";
+        var side_text = "Beilagen:";
+        var dessert_text = "Dessert:";
+
+        if( lang == "en" )
+        {
+            soup_text = "Soup:";   
+            main_text = "Main course:";
+            alt_text = "Or:";
+            side_text = "Side dishes:";
+            dessert_text = "Dessert:";
+        };
+        
     
-        $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_de.txt') + '&decode=win1252'
+        $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
 
             var date = new Date();
@@ -25,25 +42,25 @@
             var lunchMenu = {};
             var previousLineCategory;
             for(var i = 0; i < lunchLines.length; i++) {
-                if (lunchLines[i].indexOf("Suppe:") != -1) {
-                    lunchMenu.soup = lunchLines[i].substring(lunchLines[i].indexOf("Suppe:") + "Suppe:".length).replace(/^\s+|\s+$/g, '');
+                if (lunchLines[i].indexOf(soup_text) != -1) {
+                    lunchMenu.soup = lunchLines[i].substring(lunchLines[i].indexOf(soup_text) + soup_text.length).replace(/^\s+|\s+$/g, '');
                     previousLineCategory = "soup";
                 }
-                else if (lunchLines[i].indexOf("Hauptgericht:") != -1) {
+                else if (lunchLines[i].indexOf(main_text) != -1) {
                     lunchMenu.mainCourse = [];
-                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf("Hauptgericht:") + "Hauptgericht:".length).replace(/^\s+|\s+$/g, ''));
+                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf(main_text) + main_text.length).replace(/^\s+|\s+$/g, ''));
                     previousLineCategory = "mainCourse";
                 }
-                else if (lunchLines[i].indexOf("Oder:") != -1) {
-                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf("Oder:") + "Oder:".length).replace(/^\s+|\s+$/g, ''));
+                else if (lunchLines[i].indexOf(alt_text) != -1) {
+                    lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf(alt_text) + alt_text.length).replace(/^\s+|\s+$/g, ''));
                     previousLineCategory = "mainCourse";
                 }
-                else if (lunchLines[i].indexOf("Beilagen:") != -1) {
-                    lunchMenu.sideDishes = lunchLines[i].substring(lunchLines[i].indexOf("Beilagen:") + "Beilagen:".length).replace(/^\s+|\s+$/g, '');
+                else if (lunchLines[i].indexOf(side_text) != -1) {
+                    lunchMenu.sideDishes = lunchLines[i].substring(lunchLines[i].indexOf(side_text) + side_text.length).replace(/^\s+|\s+$/g, '');
                     previousLineCategory = "sideDish";
                 }
-                else if (lunchLines[i].indexOf("Dessert:") != -1) {
-                    lunchMenu.dessert = lunchLines[i].substring(lunchLines[i].indexOf("Dessert:") + "Dessert:".length).replace(/^\s+|\s+$/g, '');
+                else if (lunchLines[i].indexOf(dessert_text) != -1) {
+                    lunchMenu.dessert = lunchLines[i].substring(lunchLines[i].indexOf(dessert_text) + dessert_text.length).replace(/^\s+|\s+$/g, '');
                     previousLineCategory = "dessert";
                 }
                 else {
