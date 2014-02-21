@@ -4,7 +4,7 @@
 
     <div ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:config.countMilestones " class="row">
         <div class="col-xs-4">
-            <a href="{{config.urlGithub}}{{config.repo}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
+            <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
             <br />Due on: {{milestone.due_on | date:'dd.MM.yy'}}
             <br />
     	</div>
@@ -12,7 +12,7 @@
         <div class=" col-xs-7">
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.poc}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca; width: {{milestone.poc}}%;">
+                <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.poc}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca; width: {{milestone.poc}}%;">
                     {{milestone.poc}}%
                 </div>
             </div>
