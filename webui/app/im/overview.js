@@ -5,10 +5,11 @@ angular.module('app.im').directive('app.im', function () {
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "Internal Messages";
         $scope.initialized = true;
+        $scope.settingsTitle = "Settings";
         $scope.boxIcon = '&#xe0d3;';
 
         $scope.settings = {
-            templatePath: "app/im/imBoxSettingsTemplate.html",
+            templatePath: "im/settings.html",
             controller: undefined,
             id: $scope.boxId,      
         };
