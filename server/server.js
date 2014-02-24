@@ -157,6 +157,11 @@ var launch = function(npm)
 
 			app.get('/client', function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');	
+				response.setHeader('Content-Type', 'text/plain');
+				response.setHeader('Access-Control-Allow-Origin', 'http://mo-4a73692b1.mo.sap.corp:3000' );
+				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+    			response.setHeader('Access-Control-Allow-Credentials', 'true' );
+    			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
 				response.send('{"client":"true"}');
 			});
 
@@ -215,7 +220,12 @@ var launch = function(npm)
 			//generic api call POST
 			app.post("/api/post", function (request, response) {
 				if (typeof request.query.url == "undefined" || request.query.url == "") {
-					response.setHeader('Content-Type', 'text/plain');	
+					response.setHeader('Content-Type', 'text/plain');
+					response.setHeader('Content-Type', 'text/plain');
+					response.setHeader('Access-Control-Allow-Origin', 'http://mo-4a73692b1.mo.sap.corp:3000' );
+					response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+    				response.setHeader('Access-Control-Allow-Credentials', 'true' );
+    				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );	
 					response.send("Paramter url needs to be set!");
 					return;
 				}
@@ -233,6 +243,11 @@ var launch = function(npm)
 			//ms-exchange calendar data request
 			app.get("/api/calDataSSO", function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');
+				response.setHeader('Content-Type', 'text/plain');
+				response.setHeader('Access-Control-Allow-Origin', 'http://mo-4a73692b1.mo.sap.corp:3000' );
+				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+    			response.setHeader('Access-Control-Allow-Credentials', 'true' );
+    			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
 				var json = function () {
 					if (typeof request.query.format != "undefined") {
 						return (request.query.format.toLowerCase() == "json") ? true : false;
