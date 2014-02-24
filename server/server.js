@@ -158,7 +158,7 @@ var launch = function(npm)
 			app.get('/client', function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');	
 				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Access-Control-Allow-Origin', 'http://mo-4a73692b1.mo.sap.corp:3000' );
+				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
 				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
     			response.setHeader('Access-Control-Allow-Credentials', 'true' );
     			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
