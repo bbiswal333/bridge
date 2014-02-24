@@ -22,6 +22,15 @@ angular.module('app.atc').directive('app.atc',
 
         $scope.atcData = appAtcData;
         $scope.config = appAtcConfig;
+        
+        //add dummy item to config
+        var configItem = appAtcConfig.newItem();
+        configItem.srcSystem = 'CI3';
+        configItem.displayPrio1 = 'X';        
+        configItem.displayPrio2 = 'X';           
+        $scope.config.addConfigItem(configItem);
+        console.log($scope.cofig);
+        
 
         var loadData = function () {
             if ($scope.config.configItems.length > 0)
