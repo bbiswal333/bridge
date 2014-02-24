@@ -258,7 +258,7 @@ var launch = function(npm)
 
 			});
 
-			http.createServer(app).listen(port, "localhost");
+			http.createServer(app).listen(port);
 
 			//most valuable feature of this server
 			console.log(' ____         _      _              ');
