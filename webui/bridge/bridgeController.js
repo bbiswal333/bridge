@@ -108,7 +108,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
 
 angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
     $routeProvider.when("/", {
-        templateUrl: 'view/demo.html',
+        templateUrl: 'view/overview.html',
     });
     $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 

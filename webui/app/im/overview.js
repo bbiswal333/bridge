@@ -28,7 +28,8 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
     function Controller($scope, $http) {
 
         $scope.prioarr = [0,0,0,0];
-        $scope.prionr = [1,2,3,4]; 
+        $scope.prionr = [1,2,3,4];
+        $scope.disableChart = 0; 
 
         $scope.$parent.titleExtension = " - Internal Messages";
         $scope.lastElement = ""; 
@@ -52,10 +53,12 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                                     $scope.prioarr[i-1] ++;
                             });
                     });
-
+                   
                     if ( ($scope.prioarr[0] + $scope.prioarr[1] + $scope.prioarr[2] + $scope.prioarr[3]) == 0) {
-                        $scope.lastElement="You have no internal messages to display!";                           
+                        $scope.lastElement="You have no internal messages to display!"; 
+                        $scope.disableChart = 1;
                     }
+
 
                 $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
 
@@ -63,13 +66,16 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                 $scope.imData = [];
                 $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
             });
-
+   
             var updateimChart = function ($scope) {
             var chart1 = {};
                  
-    chart1.type = "PieChart";
-    chart1.displayed = true;
-    chart1.cssStyle = "height:150px; width:100%;";
+        chart1.type = "PieChart";
+        chart1.cssStyle = "height:150px; width:100%;";
+        chart1.displayed = true;
+    
+
+    
     chart1.data = {
         "cols": [
             { id: "prio", label: "Priority", type: "string" },
@@ -100,7 +106,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                 ]
             }
     ]};
-    
+
     chart1.options = {
         "title": "",
         "sliceVisibilityThreshold": 0,
@@ -110,14 +116,17 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         "displayExactValues": false,
     };
 
-    chart1.formatters = {};
 
+    chart1.formatters = {};
     $scope.imChart = chart1;
- 
+
 }
+            
+
             $scope.$watch('imData', function () {
             updateimChart($scope);
             $scope.initialized = true;
         });          
         
         } ] ) ;
+    
