@@ -1,25 +1,20 @@
 <div class="centeredContent">
     <div class="panel panel-default">
       <div class="panel-heading panel-title">Internal Messages Details<span style="float: right;" ><input type="text" style="height: 22px;" class="form-control" ng-model="search" placeholder="Search..." ></span></div>
-
       <div class="panel-body">
-
         <table ng-table class="table" ng-controller="app.im.detailController">
             <tr ng-repeat="nachricht in tempobject | filter : search | orderBy : ['-AEDATUM[0]','-AEZEIT[0]']" >
                 <td data-title="'Prio'" align="center">{{nachricht.PRIOSTXT[0]}}</td>
                 <td data-title="'Component'" align="center">{{nachricht.THEMKEXT[0]}}</td>        
                 <td data-title="'Status'" align="center">{{nachricht.STATUSSTXT[0]}}</td>
                 <td data-title="'Processor'" align="center" >
-                <a href="" delay="100" data-placement="right" data-title="{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}" data-trigger="click" 
+                <a href="" data-placement="right" data-title="{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}" data-trigger="click" 
                 data-template="app/im/detail_popover.tpl.html" data-html="true" bs-popover>{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}</a></td>
                 <td data-title="'Description'" align="center">
                 <a href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{nachricht.CSINSTA[0]}}&mnumm={{nachricht.MNUMM[0]}}&myear={{nachricht.MYEAR[0]}}&sap-language=en#" target="_blank">{{nachricht.KTEXT[0]}}</a></td>
             </tr>
         </table>
-
       </div>
     </div>
 </div>
-
-<!-- data-container="#tmp{{$index}}" id="tmp{{$index}}" Copy into first Link in Tbl + set trigger=hover -->
 
