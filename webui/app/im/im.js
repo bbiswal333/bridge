@@ -11,7 +11,7 @@ im.prototype = Object.create(Iim);
 
 im.prototype.getMessageforQuery = function (query, scope) {
     scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
-    this.http.get('/api/get?url=' + encodeURI('https://css.wdf.sap.corp/sap/bc/devdb/MYINTERNALMESS' )
+    this.http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp/sap/bc/devdb/MYINTERNALMESS' )
         ).success(function(data) {
             scope.imData = data;
 

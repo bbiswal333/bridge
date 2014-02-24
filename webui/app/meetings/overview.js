@@ -162,7 +162,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 					parseExchangeData(eventsRaw);
 					i++;
 				}
-				console.log("Interval function");
 			}, 30000);
 		})();
 

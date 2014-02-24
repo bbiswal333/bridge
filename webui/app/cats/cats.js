@@ -1,5 +1,5 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$http", "lib.utils.encodeForUrl", function ($http, encodeForUrl) {
-	var NODE_GET_API = "/api/get?url=";
+	var NODE_GET_API = "http://localhost:8000/api/get?url=";
 	var CATS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA";
 	var url = NODE_GET_API + encodeForUrl.encode(CATS_WEBSERVICE) + "&json=true";
 

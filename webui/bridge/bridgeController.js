@@ -34,9 +34,6 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig',
     function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig) {
-        console.log($modal);
-        console.log($log);
-
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
             //alert('light mode detected');
@@ -60,7 +57,6 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
                 }
             }
 
-            console.log($modal);
             var modalInstance = $modal.open({
                 templateUrl: 'view/settings.html',
                 controller: angular.module('bridge.app').settingsController,
