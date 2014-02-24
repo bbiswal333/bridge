@@ -10,7 +10,7 @@ JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.getIssuesforQuery = function (query, scope) {
     scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
-    this.http.get('/api/get?url=' + encodeURI('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + query)
+    this.http.get('http://localhost:8000/api/get?url=' + encodeURI('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + query)
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
 
