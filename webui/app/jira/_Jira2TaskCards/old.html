@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" ng-app="myApp" ng-controller="MyCtrl1">
+<head>
+  <meta charset="utf-8">
+  <title>Jira 2 Task Cards</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="css/{{layoutStylesheet}}"/>
+  <link rel="stylesheet" href="css/print.css"/>
+  <script src="js/controllers.js"></script>
+</head>
+<body>
+  <div id="settingsContainer">
+    <h3>Settings</h3>
+    <form name="settings">
+      <div class="settingsField">
+        <label for="layoutOption">Layout</label>
+        <select id="layoutOption" ng-model="layout" ng-options="layout.name for layout in layouts" ng-change="layoutSelectionChanged()"></select>
+      </div>
+      <div class="settingsField">
+        <label for="searchStringOption">Search String</label>
+        <textarea id="searchStringOption" rows="5" cols="60" ng-model="searchString"></textarea>
+      </div>
+      <div class="settingsField">
+        <label for="descriptionFlag">Include Description</label>
+        <input id="descriptionFlag" type="checkbox" ng-model="descriptionFlag" ng-change="descriptionFlagChanged()">
+      </div>
+      <div id="settingsFooter">
+        <div id="statusMessageContainer">
+          <span id="statusMessage">Status: {{statusMessage}}</span>
+        </div>
+        <div id="buttonContainer">
+          <input id="printButton" type="submit" value="Print" ng-click="printButtonClicked()">
+          <input id="fireButton" type="submit" value="Fire!" ng-click="fireButtonClicked()">
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="taskContainer">
+    <div class="task" ng-repeat="task in tasks">
+      <div class="taskCanvas {{task.colorClass}}">
+        <div class="taskHeader">
+          {{task.parentKey}} {{task.parentSummary}}
+        </div>
+        <div class="taskTitle">
+          {{task.key}} {{task.summary}}
+        </div>
+        <div class="taskDescription">
+          {{task.description}}
+          <div class="taskEffort">{{task.effortEstimate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

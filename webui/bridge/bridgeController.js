@@ -39,7 +39,6 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             //alert('light mode detected');
         });
 
-
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 

@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+		<script type="text/javascript" src="AllocationBarDirective.js"></script>
+	</head>
+
+	<body ng-app="app.cats.allocationbar">
+		<div ng-controller="myController">
+			<span>Value: {{value}}</span>
+			<app.cats.allocationbar onvalchanged="myCallback(val)"></app.cats.allocationbar>
+		</div>
+	</body>
+</html>

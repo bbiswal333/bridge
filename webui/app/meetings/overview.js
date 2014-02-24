@@ -13,6 +13,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 		$scope.events = [];
 		$scope.eventsRaw = {};
 		$scope.loading = true;
+		$scope.errMsg = null;
 		var eventsRaw = {};		
 
 		/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
@@ -32,16 +33,24 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 
 		function loadFromExchange () {
 			$scope.loading = true;
-
+          
 			$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
-				eventsRaw = {};
-				eventsRaw = eval(data)["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-				if (typeof eventsRaw != "undefined") {
-					parseExchangeData(eventsRaw);
-				}
+				try{
+					eventsRaw = {};
+					eventsRaw = eval(data)["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
+					if (typeof eventsRaw != "undefined") {
+						parseExchangeData(eventsRaw);
+					}
 
-				$scope.currentEvent = 0;
-				$scope.loading = false;
+					$scope.currentEvent = 0;
+					$scope.loading = false;
+
+					$scope.errMsg = null;
+				}catch(error){
+					$scope.errMsg = "Unable to connect to Exchange Server";
+					$scope.loading = false;
+					console.log(error);
+				}
 			});
 		};
 
@@ -143,7 +152,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 
 		(function springGun() {
 			var i = 1;
-			console.log("Gun triggered");
 			//Full reload every 300 seconds, refresh of UI all 30 seconds
 			refreshInterval = $interval(function () {
 				if (i % 10 == 0) {
@@ -154,7 +162,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 					parseExchangeData(eventsRaw);
 					i++;
 				}
-				console.log("Interval function");
 			}, 30000);
 		})();
 
