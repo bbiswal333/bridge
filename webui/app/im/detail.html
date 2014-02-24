@@ -10,8 +10,8 @@
                 <td data-title="'Component'" align="center">{{nachricht.THEMKEXT[0]}}</td>        
                 <td data-title="'Status'" align="center">{{nachricht.STATUSSTXT[0]}}</td>
                 <td data-title="'Processor'" align="center" >
-                <a href="" id="tmp{{$index}}" delay="100" data-placement="right" data-title="{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}" data-trigger="hover" 
-                data-template="app/im/detail_popover.tpl.html" data-container="#tmp{{$index}}" data-html="true" bs-popover>{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}</a></td>
+                <a href="" delay="100" data-placement="right" data-title="{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}" data-trigger="click" 
+                data-template="app/im/detail_popover.tpl.html" data-html="true" bs-popover>{{nachricht.VORNA[0]}} {{nachricht.NACHN[0]}}</a></td>
                 <td data-title="'Description'" align="center">
                 <a href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{nachricht.CSINSTA[0]}}&mnumm={{nachricht.MNUMM[0]}}&myear={{nachricht.MYEAR[0]}}&sap-language=en#" target="_blank">{{nachricht.KTEXT[0]}}</a></td>
             </tr>
@@ -20,4 +20,6 @@
       </div>
     </div>
 </div>
+
+<!-- data-container="#tmp{{$index}}" id="tmp{{$index}}" Copy into first Link in Tbl + set trigger=hover -->
 
