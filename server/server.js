@@ -258,7 +258,7 @@ var launch = function(npm)
 
 			});
 
-			http.createServer(app).listen(port);
+			http.createServer(app).listen(port, ["localhost","mo-4a73692b1.mo.sap.corp"]);
 
 			//most valuable feature of this server
 			console.log(' ____         _      _              ');
