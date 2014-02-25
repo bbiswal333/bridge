@@ -1,4 +1,4 @@
-﻿angular.module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", function ($timeout, calUtils) {
+﻿angular.module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.getDateToDisplay", function ($timeout, calUtils, getDateToDisplay) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
@@ -26,16 +26,8 @@
         $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
 
-            var date = new Date();
-            var weekday = date.getDay() - 1;
-            var hour = date.getHours();
-
-            if (weekday >= 0 && weekday <= 3 && hour > 13 ){
-                date.setDate( date.getDate() + 1 )
-                weekday = date.getDay() - 1;
-            }
-
-            var lunchstring = data.split('************')[weekday];
+            var date = getDateToDisplay();
+            var lunchstring = data.split('************')[date.getDay() - 1];
             $scope.date = calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
 
             var lunchLines = lunchstring.split("\n");
@@ -100,10 +92,25 @@
         controller: directiveController
         };
     
-}]).factory('app.lunchWalldorf.getDateToDisplay', function(){
+}]);
+
+// Test for Unit testing, not yet working...
+angular.module("app.lunchWalldorf").factory('app.lunchWalldorf.getDateToDisplay', function(){
     return function () {
-        return {
-            date: new Date()
+        var date = new Date();
+        var Monday = 1;
+        var Friday = 5;
+        var TimeAfterWhichToDisplayNextDay = 14;
+
+        if (date.getDay()   >= Monday &&
+            date.getDay()   <  Friday &&
+            date.getHours() >= TimeAfterWhichToDisplayNextDay ){
+            date.setDate( date.getDate() + 1 )
         };
+        if (date.getDay()   == Friday &&
+            date.getHours() >= TimeAfterWhichToDisplayNextDay ){
+            date.setDate( date.getDate() + 3 )
+        };
+        return date;
     };
 });
