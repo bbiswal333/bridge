@@ -5,6 +5,7 @@
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
         $scope.loading = true;
+        $scope.customCSSFile = "app/lunchWalldorf/style.css";
 
         var lang = "de";
         var soup_text = "Suppe:";
