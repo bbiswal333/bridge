@@ -3,10 +3,10 @@
 describe("nextEventBoxDirective ewsHelperUtils test", function () {
 	var ewsHelperUtils;
 
-	beforeEach(module("ews"));
-	beforeEach(inject(function (_ewsUtils_) {
+	beforeEach(module("app.meetings.ews"));
+	beforeEach(inject(["app.meetings.ewsUtils", function (_ewsUtils_) {
 		ewsHelperUtils = _ewsUtils_;
-	}));
+	}]));
 
 	it("should contain a method 'buildEWSUrl'", function () {
 		expect(ewsHelperUtils.buildEWSUrl).toBeDefined();

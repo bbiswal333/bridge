@@ -16,10 +16,11 @@ module.exports = function(config) {
     files: [
       './spec/ng/angular.js',
       './spec/ng/angular-mocks.js',
-      '**/*.spec.js',
-      './webui/**/*.js'
-      //'./webui/app/nextEventBox/*.js',
-      //'./webui/app/catsMiniCalBox/*.js',
+      //'./**/*.js'
+      './webui/app/meetings/*.js',
+      './webui/app/lunchWalldorf/overview.js',
+      './webui/bridge/libUtils.js',
+      '**/*.spec.js'
     ],
 
 
@@ -60,8 +61,8 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox'],
-    //browsers: ['Chrome'],
+    //browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,

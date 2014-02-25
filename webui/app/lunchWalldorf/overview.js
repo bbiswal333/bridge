@@ -100,12 +100,10 @@
         controller: directiveController
         };
     
-}]);
-
-angular.module("app.lunchWalldorf").factory('app.lunchWalldorf.getDateToDisplay', ['', function(){
+}]).factory('app.lunchWalldorf.getDateToDisplay', function(){
     return function () {
         return {
             date: new Date()
         };
     };
-}]);
+});

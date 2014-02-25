@@ -1,10 +1,10 @@
 describe("The mini calendar shall display information about the current CATS compliance", function () {
 	var calUtils;
 
-	beforeEach(module("utils"));
-	beforeEach(inject(function (_calUtils_) {
+	beforeEach(module("lib.utils"));
+	beforeEach(inject(["lib.utils.calUtils", function (_calUtils_) {
 		calUtils = _calUtils_;
-	}));
+	}]));
 
 	it("should be possible to get the name of a weekday according to his date", function () {
 		var month = 3; //April
