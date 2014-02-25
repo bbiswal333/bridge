@@ -2,16 +2,17 @@ angular.module('app.im', []);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope', function ($scope) {
+    var directiveController = ['$scope' ,'app.im.configservice' , function ($scope, appimconfigservice) {
         $scope.boxTitle = "Internal Messages";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d3;';
+        $scope.settingsTitle = "Settings";
 
-        $scope.settings = {
-            templatePath: "app/im/imBoxSettingsTemplate.html",
-            controller: undefined,
-            id: $scope.boxId,      
-        };
+        $scope.settingScreenData = {
+            templatePath: "im/settings.html",
+                controller: angular.module('app.im').appImSettings,
+                id: $scope.boxId,
+            };
     }];
 
     return {
@@ -28,8 +29,8 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
     function Controller($scope, $http) {
 
         $scope.prioarr = [0,0,0,0];
-        $scope.prionr = [1,2,3,4]; 
-
+        $scope.prionr = [1,2,3,4];
+        $scope.displayChart = true;
         $scope.$parent.titleExtension = " - Internal Messages";
         $scope.lastElement = ""; 
         $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
@@ -52,24 +53,24 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                                     $scope.prioarr[i-1] ++;
                             });
                     });
-
                     if ( ($scope.prioarr[0] + $scope.prioarr[1] + $scope.prioarr[2] + $scope.prioarr[3]) == 0) {
-                        $scope.lastElement="You have no internal messages to display!";                           
+                        $scope.lastElement="You have no internal messages to display!";
+                        $scope.displayChart = false;                        
                     }
-
                 $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
 
             }).error(function(data) {
                 $scope.imData = [];
                 $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
             });
-
+   
             var updateimChart = function ($scope) {
             var chart1 = {};
                  
-    chart1.type = "PieChart";
-    chart1.displayed = true;
-    chart1.cssStyle = "height:150px; width:100%;";
+        chart1.type = "PieChart";
+        chart1.cssStyle = "height:150px; width:100%;";
+        chart1.displayed = true;
+    
     chart1.data = {
         "cols": [
             { id: "prio", label: "Priority", type: "string" },
@@ -100,7 +101,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                 ]
             }
     ]};
-    
+
     chart1.options = {
         "title": "",
         "sliceVisibilityThreshold": 0,
@@ -110,14 +111,16 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         "displayExactValues": false,
     };
 
-    chart1.formatters = {};
 
+    chart1.formatters = {};
     $scope.imChart = chart1;
- 
+
 }
+            
             $scope.$watch('imData', function () {
             updateimChart($scope);
             $scope.initialized = true;
         });          
         
         } ] ) ;
+    
