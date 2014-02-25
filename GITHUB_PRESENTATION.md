@@ -13,6 +13,6 @@ Actually, Lydia is just back from her vacation and would like to see what is goi
 - start ozarcs and launch bridge application
 - make change via fileshare
 - commit change and resolve issue via "solves #issue" (#thisIsAwesome - Ben)
-- show PSC compliance tool and see psc issue resolved
+- mention that the PSC will show the transparency based on the issue status (current Dev status is not ready to show this step - David broke it recently)
 
 As you can see by utilizing GitHub and our connected tools we can reduce the distance to code, embrance the industry standard for develpers and focus on building great products.
