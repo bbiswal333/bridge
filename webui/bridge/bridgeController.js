@@ -57,7 +57,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
                 }
             }
 
-            var modalInstance = $modal.open({
+            window.modalInstance = $modal.open({
                 templateUrl: 'view/settings.html',
                 controller: angular.module('bridge.app').settingsController,
                 resolve: {
@@ -75,6 +75,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
                     },
                 }
             });
+
 
             modalInstance.result.then(function (selectedItem) {
                 var a = 1;
