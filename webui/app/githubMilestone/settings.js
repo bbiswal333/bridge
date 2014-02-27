@@ -4,13 +4,9 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 	 $scope.error = {inputUrl:"has-success", display: "none", msg: "" };
 	 $scope.searchResults = new Array;
 	 
-
 	 $scope.save_click = function () {  
+
 	 	var copiedConfigItem = angular.copy($scope.currentConfigValues);        			//Copy the Current input values
-
-//TODO: check internal github
-
-	 	/*Only works with internal github!!!*/
         var api = "api/v3/";
         var html_url = copiedConfigItem.repo.html_url.slice(0,28);
         var full_name = copiedConfigItem.repo.html_url.slice(28,copiedConfigItem.repo.html_url.length);
@@ -22,151 +18,114 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         appGithubMilestoneConfig.repo.html_url = copiedConfigItem.repo.html_url;
         appGithubMilestoneConfig.milestoneDuration = copiedConfigItem.milestoneDuration;
 
+        window.modalInstance.close();
     };//$scope.save_click
 
+    $scope.getTypeaheadData =_.throttle(function() {
+        var copiedConfigItem = angular.copy($scope.currentConfigValues); 
+        //$scope.searchResults = [];
+        if(copiedConfigItem.repo.html_url != undefined && copiedConfigItem.repo.html_url != null && copiedConfigItem.repo.html_url != '')
+        {
+             //console.log(copiedConfigItem.repo.html_url);
+        return parseInput(copiedConfigItem.repo.html_url);
+      
+        }
+    },250) //$scope.getTypeaheadData
 
-    $scope.show_details = _.debounce(function(){
-    	
-    	var copiedConfigItem = angular.copy($scope.currentConfigValues); 
-    	$scope.searchResults = [];
-    	parseInput(copiedConfigItem.repo.html_url);
-		
-    	/*
-    	
-    	console.log(checkURL(copiedConfigItem.repo.html_url));
-    if( checkURL(copiedConfigItem.repo.html_url) ) 
-    {
-    	var api = "api/v3/";
-        var html_url = copiedConfigItem.repo.html_url.slice(0,28);
-        var full_name = copiedConfigItem.repo.html_url.slice(28,copiedConfigItem.repo.html_url.length);
 
-    $http({
-                    method: 'GET',
-                    url: html_url+api+'repos/'+full_name 
-                    //https://github.wdf.sap.corp/api/v3/search/repositories?q=bridge&per_page=5
-
-        }).success(function(data, status, headers, config) {
-        	$scope.repoDetails = data;
-        	console.log(data);
-        	$scope.error = {inputUrl:"has-success",display: "none", msg: "" };
-        }).error(function(data, status, headers, config) {
-        	switch (status) 
-                    { 
-                        case 404:                          
-                            $scope.error = {inputUrl:"has-error", display: "block", msg: "Repository doesn't exist" };
-                            break;
-                    }
-        }) */
-    },50)//show_details
 
 	function parseInput(input)
 	{
-
-		if(input != undefined || input != null || input != '') 
+		if(input != undefined && input != null && input != '') 
 		{
-
 			if(input.indexOf("github.wdf.sap.corp") == 0)
 			{
-				input = 'https://'+input 
-			
+				input = 'https://'+input;
 			}
-
 			else if( input.search(/^http[^s].*/) > -1) 
 			{
 				input = [input.slice(0, 4), 's', input.slice(4)].join('');
-		
 			}
-
-
 			if (input.indexOf("https://github.wdf.sap.corp/") == 0)
 			{
 				var html_url = input.slice(0,28);
 	        	var full_name = input.slice(28,input.length);
-
-	        	if(full_name.indexOf("/") > 0 && full_name.indexOf("/") != full_name.length)
+	        	if(full_name.indexOf("/") > 0)
 	        	{
 	        		var parts =full_name.split("/");
-		
 	        		if (parts.length > 1)
-	        		{
-	        			search_repo(parts[0],parts[1],true);
+	        		{    
+	        			return search_repo(12,parts[0],parts[1]);
 	        		}
-
 	        	}
 	        	else if(full_name.length > 0)
 	        	{
-	        		search_repo('*',full_name,true );
-	        		search_repo(full_name,'',true);  
-	        	}
-	  			
-			}
-
+	        		return search_repo(12,full_name);  
+	        	}	
+		    }
 			else if( input.indexOf("https://") == -1 || input.indexOf("http://") == -1)
 			{
-				if(input.indexOf("/") > 0 && input.indexOf("/") != input.length)
+				if(input.indexOf("/") > 0)
 				{
 					var parts =input.split("/");
-		
 	        		if (parts.length > 1)
 	        		{
-	        			search_repo(parts[0],parts[1],true);
-	        		}
+	        			return search_repo(12,parts[0],parts[1]);
+	        		}    
 				}
-				else if(input.length > 0)
+				else if(input.length > 0 )
 	        	{
-	        		search_repo('*',input,true );
-	        		search_repo(input,'',true);  
+	        		return search_repo(12,input); 
 	        	} 
-
 			}
 		}
-		
-	}
-
-    function checkURL(url)
-    {
-
-    	if(url == undefined || url == null || url == '') 
-    		{
-    			$scope.error = {inputUrl:"has-error",display: "block", msg: "Please enter a valid" };
-    			return false;
-    		}
-    	else if( url.indexOf("https://github.wdf.sap.corp/") != 0 && url.indexOf("https://github.com") != 0 )
-    		{
-    			$scope.error = {inputUrl:"has-error", display: "block", msg: "No valid Github url" };
-    			return false;
-    		}
-    	else if( url.indexOf("https://github.com") == 0)
-    		{
-    			$scope.error = {inputUrl:"has-error", display: "block", msg: "Please choose a internal Github project" };
-    			return false;
-    		}
-
-    	else
-    	{
-    		return true;
-    	}
-    };//checkURL
-
-
+	};//parseInput
 
     
-
-    
-   function search_repo(user, repo, fork) {
-
-   	//https://github.wdf.sap.corp/api/v3/search/repositories?q=+fork:true+user:Tools&per_page=8
-   	var result = '';
-    	$http({
+   function search_repo(limit) {
+   switch (arguments.length){
+        case  2:
+            repo = arguments[1];
+                    return $http({
                     method: 'GET',
-                    url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'+user:'+user+'+fork:'+fork+'+in:name&per_page=5'
+                    url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit
                     //https://github.wdf.sap.corp/api/v3/search/repositories?q=bridge&per_page=5
-        }).success(function(data, status, headers, config) { 
-        	$scope.searchResults = _.union($scope.searchResults,data.items)
-			//$scope.searchResults.push(data.items);
-        }).error(function(data, status, headers, config) {});
+                        }).then(function(res){
+                             var results = [];
+                                angular.forEach(res.data.items, function(item){
+                                        results.push(item.html_url);
+                                });
+
+                        return results;
+                        });
+            break;
+
+        case 3:
+            var user = arguments[1];
+            var repo = arguments[2];
+
+            return $http({
+                            method: 'GET',
+                            url: 'https://github.wdf.sap.corp/api/v3/users/'+user
+                        }).then(function(res) { 
+                                if(res.status == 200)
+                                {
+                                    return $http({
+                                                method: 'GET',
+                                                url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'+user:'+user+'+fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit
+                                                }).then(function(res){
+                                                                        var results = [];
+                                                                        angular.forEach(res.data.items, function(item){
+                                                                        results.push(item.html_url);
+                                                                                                                    });
+                                                        return results;
+                                                    });
+                                }
+                                                })
+            break;
+            }
+   
     };//$scope.search_repo 
     
     
-    $scope.show_details();
 }];

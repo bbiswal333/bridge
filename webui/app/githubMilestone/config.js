@@ -12,7 +12,8 @@ angular.module('app.githubMilestone').factory("app.githubMilestone.configservice
 		countMilestones : 1, 	//How many milestones will be display
         stateProp : 'open',
         html_url: "https://github.wdf.sap.corp/",
-		api_url: "https://github.wdf.sap.corp/api/v3/"
+		api_url: "https://github.wdf.sap.corp/api/v3/",
+		fork: 'false'
 	};
 	
 	return configItem; 

@@ -13,13 +13,14 @@
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
             <div class="progress">
                 <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.poc}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca; width: {{milestone.poc}}%;">
-                    {{milestone.poc}}%
+           
                 </div>
             </div>
-            {{ milestone.milestoneDuration - milestone.due_in}} days past - {{milestone.due_in}} days remaining
+            {{ milestone.pastDays}} days past - {{milestone.remainingDays}} days remaining
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.pot}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca; width: {{milestone.pot}}%;">{{milestone.pot}}%</div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.pot}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca; width: {{milestone.pot}}%;"></div>
             </div>
         </div>
     </div>
 </div>
+
