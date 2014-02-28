@@ -1,4 +1,6 @@
-﻿angular.module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.getDateToDisplay", function ($timeout, calUtils, getDateToDisplay) {
+﻿angular.
+  module('app.lunchWalldorf', ["lib.utils"]).
+  directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.getDateToDisplay", function ($timeout, calUtils, getDateToDisplay) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
@@ -14,6 +16,7 @@
         var side_text = "Beilagen:";
         var dessert_text = "Dessert:";
 
+        // Prepared for settings...
         if( lang == "en" )
         {
             soup_text = "Soup:";   
@@ -23,7 +26,6 @@
             dessert_text = "Dessert:";
         };
         
-    
         $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
         ).success(function(data, status, headers, config) {            
 
@@ -34,6 +36,7 @@
             var lunchLines = lunchstring.split("\n");
             var lunchMenu = {};
             var previousLineCategory;
+    
             for(var i = 0; i < lunchLines.length; i++) {
                 if (lunchLines[i].indexOf(soup_text) != -1) {
                     lunchMenu.soup = lunchLines[i].substring(lunchLines[i].indexOf(soup_text) + soup_text.length).replace(/^\s+|\s+$/g, '');
@@ -95,8 +98,9 @@
     
 }]);
 
-// Test for Unit testing, not yet working...
-angular.module("app.lunchWalldorf").factory('app.lunchWalldorf.getDateToDisplay', function(){
+angular.
+  module("app.lunchWalldorf").
+  factory('app.lunchWalldorf.getDateToDisplay', function(){
     return function (date) {
         var Monday = 1;
         var Friday = 5;
