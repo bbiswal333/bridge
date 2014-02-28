@@ -16,6 +16,7 @@
         var side_text = "Beilagen:";
         var dessert_text = "Dessert:";
 
+        // Prepared for settings...
         if( lang == "en" )
         {
             soup_text = "Soup:";   
