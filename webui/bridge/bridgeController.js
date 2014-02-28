@@ -118,8 +118,7 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
 
 });
 
-angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {
-
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
     var loadingRequests = 0;
 
     //Receive emitted message and broadcast it.
