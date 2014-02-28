@@ -25,7 +25,7 @@ Bridge is an internal open source project. One main goal of this is contribution
   * if you need to clone via https instead and have certificate issues (error message: SSL certificate problem: unable to get local issuer certificate), please see: http://stackoverflow.com/questions/3777075/ssl-certificate-rejected-trying-to-access-github-over-https-behind-firewall
 * download and install `node.js` from [here](http://nodejs.org/)
 * download and install Karma with `$ npm install -g karma` if you want to execute our test suite
-  * if you have issues with installing npm packages, you probably need to set the SAP Proxy for npm: 'npm config set proxy http://proxy:8080' and 'npm config set https-proxy http://proxy:8080'
+  * if you have issues with installing npm packages, you probably need to set the SAP Proxy for npm: `npm config set proxy http://proxy:8080` and `npm config set https-proxy http://proxy:8080`
 * For Mac: Use command [sudo](http://xkcd.com/149/) to gain sufficient access rights in the command line
 
 ## launch and execute application
