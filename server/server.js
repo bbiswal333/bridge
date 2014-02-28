@@ -5,6 +5,7 @@ var http_req	= require('http');
 var http		= require('http');
 var path        = require('path');
 var url         = require('url');
+var fs          = require('fs');
 var exec        = require('child_process').exec;
 var sso 		= require('./sso.js');
 var EWSClient 	= {};
@@ -57,6 +58,10 @@ var launch = function(npm)
 				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
 			}
 		}
+
+		var server_modules = path.join(server_path, '/node_modules');
+		fs.mkdirSync(server_modules);
+		
 		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
 			console.log(stderr);
 			console.log("npm packages installed..");

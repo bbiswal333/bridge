@@ -57,7 +57,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
                 }
             }
 
-            var modalInstance = $modal.open({
+            window.modalInstance = $modal.open({
                 templateUrl: 'view/settings.html',
                 controller: angular.module('bridge.app').settingsController,
                 resolve: {
@@ -76,10 +76,11 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
                 }
             });
 
+            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
             modalInstance.result.then(function (selectedItem) {
-                var a = 1;
+                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
             }, function () {
-                var b = 1;
+                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
             });
         };
 
@@ -117,8 +118,7 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
 
 });
 
-angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {
-
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
     var loadingRequests = 0;
 
     //Receive emitted message and broadcast it.

@@ -1,44 +1,45 @@
-﻿ <div class="bridge-fade-anim" style="margin-top: 10px; height: 145px; overflow: hidden;" ng-if="!loading" ng-scrollbar>
-         <table style="margin-right: 10px;">
+﻿ <div class="app-lunchWalldorf-container">
+ <div class="bridge-fade-anim" ng-if="!loading" ng-scrollbar>
+         <table>
          <tr>
              <b>{{date}}</b>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
-             <td style="text-align: center; width: 40px">
+         <tr>
+             <td class="app-lunchWalldorf-icon">
                 <img src="img/soup2.png" />                
              </td>
              <td>
                  {{lunch.soup}}
              </td>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
-             <td style="text-align: center; width: 40px" rowspan="3">
+         <tr>
+             <td class="app-lunchWalldorf-icon" rowspan="3">
                  <img src="img/main_course.png" />
              </td>
              <td>
                  {{lunch.mainCourse[0]}}
              </td>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
+         <tr>
              <td>
                  {{lunch.mainCourse[1]}}
              </td>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
+         <tr>
              <td>
                  {{lunch.mainCourse[2]}}
              </td>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
-             <td style="text-align: center; width: 40px">
+         <tr>
+             <td class="app-lunchWalldorf-icon">
                  <img src="img/sidedish.png" />
              </td>
              <td>
                  {{lunch.sideDishes}}
              </td>
          </tr>
-         <tr style="border-top: 1px solid #e5e5e5">
-             <td style="text-align: center; width: 40px">
+         <tr>
+             <td class="app-lunchWalldorf-icon">
                  <img src="img/dessert.png" />
              </td>
              <td>
@@ -46,4 +47,5 @@
              </td>
          </tr>
      </table>
+</div>
 </div>

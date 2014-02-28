@@ -22,8 +22,9 @@
 
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
-        count: 10           // count per page
+        count: 100,           // count per page
     }, {
+        counts: [], // hide page counts control
         total: $scope.config.configItems.length,
         getData: function($defer, params) {
             var orderedData = params.sorting() ?

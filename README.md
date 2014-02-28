@@ -22,21 +22,23 @@ Bridge is an internal open source project. One main goal of this is contribution
 ## setup local environment
 * navigate to the bridge directory using the `$ cd c:/..` command in your terminal or git bash
 * clone bridge repository via `$ git clone git@github.wdf.sap.corp:Tools/bridge.git`
+  * if you need to clone via https instead and have certificate issues (error message: SSL certificate problem: unable to get local issuer certificate), please see: http://stackoverflow.com/questions/3777075/ssl-certificate-rejected-trying-to-access-github-over-https-behind-firewall
 * download and install `node.js` from [here](http://nodejs.org/)
 * download and install Karma with `$ npm install -g karma` if you want to execute our test suite
+  * if you have issues with installing npm packages, you probably need to set the SAP Proxy for npm: `$ npm config set proxy http://proxy:8080` and `$ npm config set https-proxy http://proxy:8080`
 * For Mac: Use command [sudo](http://xkcd.com/149/) to gain sufficient access rights in the command line
 
 ## launch and execute application
 * in the terminal or command prompt navigate to the bridge directory using the `cd` command
-* run `node server/server.js` and open `http://localhost:8000` in a browser
+* run `$ node server/server.js` and open `http://localhost:8000` in a browser
 
 ## debug node server
 * use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
-* use `set http_proxy=http://proxy:8080` and `set https_proxy=http://proxy:8080` under win to set sap proxy
-* use `export http_proxy=http://proxy:8080` and `export https_proxy=http://proxy:8080` under mac to set sap proxy 
+* use `$ set http_proxy=http://proxy:8080` and `$ set https_proxy=http://proxy:8080` under win to set sap proxy
+* use `$ export http_proxy=http://proxy:8080` and `$ export https_proxy=http://proxy:8080` under mac to set sap proxy 
 * install node inspector globally via `$ npm install -g node-inspector`
-* start the node server in debug mode `node --debug server/server.js`
-* start node inspector `node-inspector` in a second command line
+* start the node server in debug mode `$ node --debug server/server.js`
+* start node inspector `$ node-inspector` in a second command line
 * install the web browser [Chrome](https://www.google.com/intl/de/chrome/)
 * it is recommended to also install 'AngularJS Batarang' for Chrome
 * copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
@@ -45,8 +47,8 @@ Bridge is an internal open source project. One main goal of this is contribution
 ## auto-restarting node server
 * use nodemon to automatically restart the server whenever a server file was changed: https://github.com/remy/nodemon
 * install via `$ npm install -g nodemon`
-* navigate to the bridge directory using the `cd` command
-* run with `nodemon --debug server/server.js`
+* navigate to the bridge directory using the `$ cd` command
+* run with `$ nodemon --debug server/server.js`
 
 Building Apps
 ===============
