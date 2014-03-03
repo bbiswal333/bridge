@@ -8,244 +8,209 @@ var url         = require('url');
 var fs          = require('fs');
 var exec        = require('child_process').exec;
 var sso 		= require('./sso.js');
-var EWSClient 	= {};
-var express 	= {};
-var xml2js = {};
-var iconv = {};
+var param 		= require('./params.js');
+var npm_load	= require('./npm_load.js');
 
 var launch = function(npm)
-{
-	//fetch parameters
-	var port = 8000;
-	var proxy = true;
-	for (var i = 0; i < process.argv.length; i++) {
-		if( i % 2 == 0)
-		{
-			if( process.argv[i] == '-port' && !isNaN(process.argv[i+1]) )
-			{
-				port = process.argv[i+1];
-			};
+{	
+	//get parameters
+	var port   = param.get("port", 8000);
+	var proxy  = param.get("proxy", true);
+	var server = param.get("server", false);	
 
-			if( process.argv[i] == '-proxy')
-			{
-				proxy = process.argv[i+1];
-			};
-		};
-	};
+	//get modules
+	var express   = npm_load.get("express", proxy);
+	var xml2js 	  = npm_load.get("xml2js", proxy).parseString;
+	var iconv 	  = npm_load.get("iconv-lite", proxy);
+	var EWSClient = npm_load.get("./ews/ewsClient.js", proxy).EWSClient;
+	
+	var start_server = function(user)
+	{
+		var app = express();
 
-	console.log("PORT: " + port);
-	console.log("PROXY: " + proxy);
+		//serve static files in webui folder as http server
+		var webui_path = path.join(__dirname, '../', '/webui');
+		app.use('/', express.static(webui_path));
 
-	//get express via npm install
-	try{
-		express = require('express');
-		xml2js = require('xml2js').parseString;
-		iconv = require('iconv-lite');
-		EWSClient = require("./ews/ewsClient.js").EWSClient;
-		run();
-	}
-	catch(err){
-		var server_path = path.join(__dirname, '/');
-		console.log("downloading npm package dependencies..")
-
-		var set_proxy = "";
-		if( proxy )
-		{
-			if(process.platform == "win32") {
-				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
-			}
-			else {
-				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
-			}
-		}
-
-		var server_modules = path.join(server_path, '/node_modules');
-		fs.mkdirSync(server_modules);
-		
-		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
-			console.log(stderr);
-			console.log("npm packages installed..");
-			express = require('express');
-			xml2js = require('xml2js').parseString;
-			iconv = require('iconv-lite');
-			EWSClient = require("./ews/ewsClient.js").EWSClient;			
-			run();
+		//For fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
+		app.use(function(req, res, next) {
+		    var data = '';
+		    req.setEncoding('utf8');
+		    req.on('data', function(chunk) { 
+		        data += chunk;
+		    });
+		    req.on('end', function() {
+		        req.rawBody = data;
+		        next();
+		    });
 		});
-	}
 
-	//run server with sso handling
-	function run(){
-		sso.execute( function(user)
-		{
-			var app = express();
+		//call backends with client certificate
+		function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
 
-			//serve static files in webui folder as http server
-			var webui_path = path.join(__dirname, '../', '/webui');
-			app.use('/', express.static(webui_path));
+			var options = {
+				hostname: hostname,
+				port: port,
+				path: path,
+				method: method,
+				rejectUnauthorized: false
+			};
 
-			//For fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
-			app.use(function(req, res, next) {
-			    var data = '';
-			    req.setEncoding('utf8');
-			    req.on('data', function(chunk) { 
-			        data += chunk;
-			    });
-			    req.on('end', function() {
-			        req.rawBody = data;
-			        next();
-			    });
-			});
+			if (!server)
+			{
+				options.pfx = user.SSOCertificate;
+				options.passphrase = user.SSOCertificatePassphrase;
+			};
 
-			//call backends with client certificate
-			function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
-				var options = {
-					hostname: hostname,
-					port: port,
-					path: path,
-					method: method,
-					pfx: user.SSOCertificate,
-					passphrase: user.SSOCertificatePassphrase,
-					rejectUnauthorized: false
+			if (method.toLowerCase() == "post" && postData != undefined) {
+				options.headers = {
+					'Content-Type': 'text/xml; charset=UTF-8',
+					'Content-Length': (postData != undefined ? postData.length : 0)
 				};
+			}
 
-				if (method.toLowerCase() == "post" && postData != undefined) {
-					options.headers = {
-						'Content-Type': 'text/xml; charset=UTF-8',
-						'Content-Length': (postData != undefined ? postData.length : 0)
-					};
-				}
+			var data = "";
 
-				var data = "";
+			//for testing purposes
+			console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
 
-				//for testing purposes
-				console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
+			var req = {};
 
-				var req = {};
-
-				if( protocol == "http:")
-				{
-					req = http_req.request(options, function(res) {
-						if (decode != "none")
-						{ 
-							res.setEncoding('binary');
+			if( protocol == "http:")
+			{
+				req = http_req.request(options, function(res) {
+					if (decode != "none")
+					{ 
+						res.setEncoding('binary');
+					}
+					res.on('data', function(chunk) { data += chunk; });
+					res.on('end', function(){
+						if (decode == "none"){
+							callback( data );
 						}
-						res.on('data', function(chunk) { data += chunk; });
-						res.on('end', function(){
-							if (decode == "none"){
-								callback( data );
-							}
-							else
-							{
-								callback( iconv.decode(data, decode).toString('utf-8') );
-							}
-						});
+						else
+						{
+							callback( iconv.decode(data, decode).toString('utf-8') );
+						}
 					});
-				}
-				else
+				});
+			}
+			else
+			{
+				if (!server)
 				{
 					req = https_req.request(options, function(res) {
 						res.on('data', function(chunk) { data += chunk; });
 						res.on('end', function(){ callback(data); });
 					});
 				}
-
-				if (method.toLowerCase() == "post" && postData != undefined) {
-					//console.log(postData);
-					req.write(postData);
+				else
+				{
+					callback({});
 				}
+			}
+			
 
-				req.end();
-				req.on('error', function(e) {
-					console.error(e);
-				});
+			if (method.toLowerCase() == "post" && postData != undefined) {
+				//console.log(postData);
+				req.write(postData);
 			}
 
-			app.get('/client', function (request, response) {
+			req.end();
+			req.on('error', function(e) {
+				console.error(e);
+			});
+
+		};
+
+		app.get('/client', function (request, response) {
+			response.setHeader('Content-Type', 'text/plain');	
+			response.setHeader('Content-Type', 'text/plain');
+			response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
+			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+			response.setHeader('Access-Control-Allow-Credentials', 'true' );
+			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
+			response.send('{"client":"true"}');
+		});
+
+		//generic api call GET
+		app.get('/api/get', function(request, response) {
+			var json = false;
+
+			if (typeof request.query.url == "undefined" || request.query.url == "") {
 				response.setHeader('Content-Type', 'text/plain');	
+				response.send("Paramter url needs to be set!");
+				return;
+			}
+
+			if (typeof request.query.json != "undefined" && request.query.json == "true") {
+				json = true;
+			}
+
+			var service_url = url.parse(request.query.url);	
+
+			var decode = "none";
+			if(typeof request.query.decode != "undefined")
+			{				
+				decode = request.query.decode;
+			}
+
+
+			callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
+				//console.log(data);
 				response.setHeader('Content-Type', 'text/plain');
 				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
 				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-    			response.setHeader('Access-Control-Allow-Credentials', 'true' );
-    			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-				response.send('{"client":"true"}');
-			});
-
-			//generic api call GET
-			app.get('/api/get', function(request, response) {
-				var json = false;
-
-				if (typeof request.query.url == "undefined" || request.query.url == "") {
-					response.setHeader('Content-Type', 'text/plain');	
-					response.send("Paramter url needs to be set!");
-					return;
-				}
-
-				if (typeof request.query.json != "undefined" && request.query.json == "true") {
-					json = true;
-				}
-
-				var service_url = url.parse(request.query.url);	
-
-				var decode = "none";
-				if(typeof request.query.decode != "undefined")
-				{				
-					decode = request.query.decode;
-				}
-
-
-				callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
-					//console.log(data);
-					response.setHeader('Content-Type', 'text/plain');
-					response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-					response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-    				response.setHeader('Access-Control-Allow-Credentials', 'true' );
-    				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-	  				response.charset = 'UTF-8';
-					if (json) {
-						try {
-							xml2js(data, function (err, result) {
-								if (err == undefined) {
-									response.send(JSON.stringify(result));
-								}
-								else {
-									response.send("Could not convert XML to JSON.");
-								}
-							});
-						}
-						catch(err) {
-							response.send("Could not convert XML to JSON.");
-						}
+				response.setHeader('Access-Control-Allow-Credentials', 'true' );
+				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
+  				response.charset = 'UTF-8';
+				if (json) {
+					try {
+						xml2js(data, function (err, result) {
+							if (err == undefined) {
+								response.send(JSON.stringify(result));
+							}
+							else {
+								response.send("Could not convert XML to JSON.");
+							}
+						});
 					}
-					else {
-						response.send(data);
+					catch(err) {
+						response.send("Could not convert XML to JSON.");
 					}
-				});
-			});
-
-			//generic api call POST
-			app.post("/api/post", function (request, response) {
-				if (typeof request.query.url == "undefined" || request.query.url == "") {
-					response.setHeader('Content-Type', 'text/plain');
-					response.setHeader('Content-Type', 'text/plain');
-					response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-					response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-    				response.setHeader('Access-Control-Allow-Credentials', 'true' );
-    				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );	
-					response.send("Paramter url needs to be set!");
-					return;
 				}
-
-				var service_url = url.parse(request.query.url);	
-				var postData = request.rawBody;
-
-				callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
-					console.log("Daten: " + data);
-					response.setHeader('Content-Type', 'text/plain');	
+				else {
 					response.send(data);
-				}, postData);				
-			}); 
+				}
+			});
+		});
 
-			//ms-exchange calendar data request
+		//generic api call POST
+		app.post("/api/post", function (request, response) {
+			if (typeof request.query.url == "undefined" || request.query.url == "") {
+				response.setHeader('Content-Type', 'text/plain');
+				response.setHeader('Content-Type', 'text/plain');
+				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
+				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+				response.setHeader('Access-Control-Allow-Credentials', 'true' );
+				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );	
+				response.send("Paramter url needs to be set!");
+				return;
+			}
+
+			var service_url = url.parse(request.query.url);	
+			var postData = request.rawBody;
+
+			callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
+				console.log("Daten: " + data);
+				response.setHeader('Content-Type', 'text/plain');	
+				response.send(data);
+			}, postData);				
+		}); 
+
+		//ms-exchange calendar data request
+		if( !server )
+		{
 			app.get("/api/calDataSSO", function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');
 				response.setHeader('Content-Type', 'text/plain');
@@ -281,35 +246,54 @@ var launch = function(npm)
 				});
 
 			});
+		}
 
+		if(server)
+		{
+			http.createServer(app).listen(port);
+		}
+		else
+		{
 			http.createServer(app).listen(port, "localhost");
+		}
 
-			//most valuable feature of this server
-			console.log(' ____         _      _              ');
- 			console.log('|  _ \\       (_)    | |            ');
- 			console.log('| |_) | _ __  _   __| |  __ _   ___ ');
- 			console.log('|  _ < | \'__|| | / _` | / _` | / _ \\');
- 			console.log('| |_) || |   | || (_| || (_| ||  __/');
- 			console.log('|____/ |_|   |_| \\__,_| \\__, | \\___|');
-            console.log('	                 __/ |      ');
-			console.log('                        |___/       ');	
-			console.log('Starting Server at http://localhost:' + port);
+		//most valuable feature of this server
+		console.log(' ____         _      _              ');
+		console.log('|  _ \\       (_)    | |            ');
+		console.log('| |_) | _ __  _   __| |  __ _   ___ ');
+		console.log('|  _ < | \'__|| | / _` | / _` | / _ \\');
+		console.log('| |_) || |   | || (_| || (_| ||  __/');
+		console.log('|____/ |_|   |_| \\__,_| \\__, | \\___|');
+        console.log('	                 __/ |      ');
+		console.log('                        |___/       ');	
+		console.log('Starting Server at http://localhost:' + port);
 
-			process.on('uncaughtException', function (error) {				
-			  	var s = new String(error.stack);
-			   	if (s.search(/EADDRINUSE/) > -1) {
-			   		//Error due to already used address
-			   		//console.log("Server cannot be started at http://localhost:" + port);
-			   		console.log("ERROR: Port " + port + " is already used.");
-			   		console.log("ERROR: You can pass the port as a commandline argument to server.js via -port");			   		
-			   	}
-			   	else {
-			   		console.log("ERROR: " + error.stack );
-			   	}
-			   	process.exit(1);
-			});		
-		});
+		process.on('uncaughtException', function (error) {				
+		  	var s = new String(error.stack);
+		   	if (s.search(/EADDRINUSE/) > -1) {
+		   		//Error due to already used address
+		   		//console.log("Server cannot be started at http://localhost:" + port);
+		   		console.log("ERROR: Port " + port + " is already used.");
+		   		console.log("ERROR: You can pass the port as a commandline argument to server.js via -port");			   		
+		   	}
+		   	else {
+		   		console.log("ERROR: " + error.stack );
+		   	}
+		   	process.exit(1);
+		});		
+	
 	}
+
+	//run either as server or client solution with or without user context
+	if (server)
+	{
+		start_server();
+	}
+	else 
+	{
+		sso.execute( start_server );
+	}
+
 }
 
 //run and export module
