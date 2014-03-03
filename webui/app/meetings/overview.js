@@ -60,12 +60,12 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 			today.setHours(0);
 			today.setMinutes(0);
 			today.setSeconds(0);
+			$scope.events = [];
 
 			if (typeof events == "undefined") {
 				return;
 			}
 
-			var j = 0;
 			for (var i = 0; i < events.length; i++) {
 				//ignore events, which are over already
 				if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
@@ -80,7 +80,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 				var start = dateFn(events[i]["t:Start"][0]);
 				var end = dateFn(events[i]["t:End"][0]);
 
-				$scope.events[j] = {
+				$scope.events.push({
 					subject: events[i]["t:Subject"][0],
 					start: start,
 					startRel: calUtils.relativeTimeTo(new Date(), start, true),
@@ -97,17 +97,13 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 					        return this.startTime + "<br />" + this.endTime;
 					},
 					isCurrent: (start.getTime() < new Date().getTime())
-				};
-
-				j++;
+				});
 			}
 
 			$scope.events = $scope.events.sort(sortByStartTime);
 		}
 
 		$scope.upComingEvents = function () {
-
-
 		    $scope.$broadcast('recalculateScrollbars');
 		    return $scope.events;
 		};
