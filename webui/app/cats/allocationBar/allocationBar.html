@@ -10,7 +10,8 @@
 	<body ng-app="app.cats.allocationbar">
 		<div ng-controller="myController">
 			{{blockdata}}
-			<app.cats.allocationbar data-width="800" data-blocks="blockdata" onvalchanged="myCallback(val)"></app.cats.allocationbar>
+			<app.cats.allocationbar data-width="810" data-height="90" data-blocks="blockdata" onvalchanged="myCallback(val)"></app.cats.allocationbar>
+			{{value}}
 			<button ng-click="addBlock()">Add Block</button>
 		</div>
 	</body>

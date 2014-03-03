@@ -20,6 +20,11 @@ module.exports = function(config) {
       './webui/app/meetings/*.js',
       './webui/app/lunchWalldorf/overview.js',
       './webui/bridge/libUtils.js',
+
+      './webui/app/githubMilestone/overview.js',
+      './webui/app/githubMilestone/config.js',
+      './webui/app/githubMilestone/settings.js',
+
       '**/*.spec.js'
     ],
 

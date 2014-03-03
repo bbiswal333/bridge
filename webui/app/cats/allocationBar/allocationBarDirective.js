@@ -1,15 +1,19 @@
 angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar", function () {
+    var count = 0;
 
 	var linkFn = function ($scope, elem) {
-		$scope.fireValChanged = function (val) {
-			$scope.onValChanged({val: val});
-		}
-		
 		$scope.$watch("blocks", function () {
 			$scope.stackedBarInput.construct($scope.blocks);
 		}, true);
 
-		$scope.stackedBarInput = new StackedBarInput(SVG(elem[0]).size($scope.width, 500), 0, 0, $scope.width - 10, 80, "#DDDDDD", 20);
+		$scope.stackedBarInput = new StackedBarInput(SVG(elem[0]).size($scope.width, $scope.height), 0, 0, $scope.width, $scope.height, "#DDDDDD", 20, function (blocks) {
+            $scope.$apply(function () {
+                $scope.blocks = blocks;
+                if (typeof $scope.onValChanged == "function") {
+                    $scope.onValChanged({val: blocks});
+                }
+            });
+        });
 	};
 
 	return {
@@ -17,6 +21,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
 		scope: {
 			onValChanged: "&onvalchanged",
 			width: "@width",
+            height: "@height",
 			blocks: "=blocks"
 		},
 		replace: true,
@@ -24,7 +29,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
 		templateUrl: "allocationBarDirective.tmpl.html"
 	};
 	
-	// blocks_ar: [{name: "Project A", value: 50}, {name: "Project B", value: 25}, {name: "Project X", value: 25}]
+	// blocks_ar: [{desc: "Project A", value: 50}, {desc: "Project B", value: 25}, {desc: "Project X", value: 25}]
     function StackedBarInput (svg_o, x_i, y_i, width_i, height_i, background_s, snapRange_i, callbackOnChange_fn) {
         var self = this;
         var colorOffset = "#aaaaaa";
@@ -33,7 +38,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
         var x = x_i;
         var y = y_i + PADDING;
         var width = width_i;
-        var height = height_i;
+        var height = height_i - 10; //Because of expanding dragger on hovering
         var background = background_s;
 
         this.blocks = [];
@@ -46,6 +51,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
         };
         this.PADDING = PADDING;
         this.snapRange = snapRange_i;
+        this.minWidth = 2 * snapRange_i; 
 
         s.rect(width, height).move(x, y).fill(background);
 
@@ -55,8 +61,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
         		this.blocks[0].remove();
         	}
 
-            console.log(this.blocks);
-            console.log(this.blocks.length);
+            count = 0;
 
             for (var i = 0; i < blocks_ar.length; i++) {
                 this.addBlock(blocks_ar[i]);
@@ -76,7 +81,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
                 offset = this.blocks.last().getCoords().x2;
             }
 
-            this.blocks.push(new BarBlock(s, self, block_o.value, block_width, (height - 2 * PADDING), offset, y + PADDING, generateColor(2, "#666666")));
+            this.blocks.push(new BarBlock(s, self, block_o.desc, block_width, (height - 2 * PADDING), offset, y + PADDING, generateColor(1, 0)));
             
             offset += block_width;
 
@@ -146,16 +151,30 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
         }
 
         this.fireAllocChanged = function () {
-            callbackOnChange_fn();
+            //Build array to return in style of the input array
+            var res = [];
+
+            for (var i = 0; i < this.blocks.length; i++) {
+                var block = this.blocks[i];
+                var newBlock = {
+                    desc: block.desc,
+                    value: (block.getWidth() / (width - 2 * PADDING)) * 100,
+                    width: block.getWidth()
+                };
+
+                res.push(newBlock);
+            }
+
+            callbackOnChange_fn(res);
         };
     }
 
-    function BarBlock (svg_o, stackedBarInput_o, value_i, width_i, height_i, x, y, color_s) {
+    function BarBlock (svg_o, stackedBarInput_o, desc_s, width_i, height_i, x, y, color_s) {
         var self = this;
         this.p = stackedBarInput_o;
         this.block = null;
         this.dragger = null;
-        this.val = value_i;
+        this.desc = desc_s;
         var inDragMode = false;
         var hoverReseted = false;
 
@@ -234,10 +253,10 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
             }
 
             //Do some snapping  
-            x = x - ((x + self.p.PADDING) % self.p.snapRange);
+            x = x - ((self.block.width() + x - elem.x()) % self.p.snapRange);
 
             //No moving that would reduce width below 10 (width of drager)
-            if (x < self.block.x() + self.p.snapRange) {
+            if (x + 5 < self.block.x() + self.p.minWidth) {
                 return false;
             }
 
@@ -246,7 +265,6 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
             //No moving outside the box
             if (self.p.isInBounds(x, x + elem.width()) && (self.p.blocks.last() == self || self.p.isInBounds(self.p.blocks.last().getCoords().x + diff, self.p.blocks.last().getCoords().x2 + diff))) { 
                 ret.x = x;
-                console.log(x);
             }
             else {
 /*                //If only little space is left, propose using this
@@ -257,9 +275,8 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
                 else {
                     return false;                      
                 }*/
-                console.log("ELSE");
                 if (self.p.isInBounds(elem.x(), elem.x() + elem.width()) && (self.p.blocks.last() == self || self.p.isInBounds(self.p.blocks.last().getCoords().x, self.p.blocks.last().getCoords().x2))) {
-                        ret.x = elem.x() + self.p.getMaximumX() - self.p.blocks.last().getCoords().x2;
+                    ret.x = elem.x() + self.p.getMaximumX() - self.p.blocks.last().getCoords().x2;
                 }
                 else {
                     return false;                    
@@ -275,7 +292,6 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
 
         function _dragHandler (delta) {
             self.block.width(5 + delta.coord.x - self.block.x()); //5 is length of dragger because the left egde of the dragger is taken into calculation
-            //console.log(delta.coord);
             self.p.glueBlocks();
         }
 
@@ -284,7 +300,6 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
 
      // offset should be hexadecimal color, e.g.: #ff99ff
     // Idea of lgorithm adapted from: http://devmag.org.za/2012/07/29/how-to-choose-colours-procedurally-algorithms/, visited on 25.02.2014
-    var count = 0;
     function generateColor (strategy, offset) {
         if (strategy == 1) {
             var color = new SVG.Color('#0511B2').morph('#FFDB53');
@@ -362,7 +377,7 @@ angular.module("app.cats.allocationbar", []).directive("app.cats.allocationbar",
         return res;
     }
 }).controller("myController", function ($scope) {
-	$scope.blockdata = [{name: "Project A", value: 10}, {name: "Project B", value: 20}, {name: "Project X", value: 30}];
+	$scope.blockdata = [{desc: "Project A", value: 50}, {desc: "Project B", value: 25}, {desc: "Project X", value: 25}];
 
 	$scope.addBlock = function () {
 		$scope.blockdata.push({name: "Project Blah!", value: 10});
