@@ -18,6 +18,7 @@ var launch = function(npm)
 	//fetch parameters
 	var port = 8000;
 	var proxy = true;
+	var server = false;
 	for (var i = 0; i < process.argv.length; i++) {
 		if( i % 2 == 0)
 		{
@@ -30,11 +31,17 @@ var launch = function(npm)
 			{
 				proxy = process.argv[i+1];
 			};
+
+			if( process.argv[i] == '-server')
+			{
+				server = process.argv[i+1];
+			}
 		};
 	};
 
 	console.log("PORT: " + port);
 	console.log("PROXY: " + proxy);
+	console.log("SERVER: " + server);
 
 	//get express via npm install
 	try{
@@ -60,7 +67,10 @@ var launch = function(npm)
 		}
 
 		var server_modules = path.join(server_path, '/node_modules');
-		fs.mkdirSync(server_modules);
+		if(!path.existsSync(server_modules))
+		{
+			fs.mkdirSync(server_modules);
+		}
 		
 		exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
 			console.log(stderr);
@@ -72,10 +82,10 @@ var launch = function(npm)
 			run();
 		});
 	}
-
-	//run server with sso handling
+	
 	function run(){
-		sso.execute( function(user)
+
+		var start_server = function(user)
 		{
 			var app = express();
 
@@ -98,14 +108,19 @@ var launch = function(npm)
 
 			//call backends with client certificate
 			function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
+
 				var options = {
 					hostname: hostname,
 					port: port,
 					path: path,
 					method: method,
-					pfx: user.SSOCertificate,
-					passphrase: user.SSOCertificatePassphrase,
 					rejectUnauthorized: false
+				};
+
+				if (!server)
+				{
+					options.pfx = user.SSOCertificate;
+					options.passphrase = user.SSOCertificatePassphrase;
 				};
 
 				if (method.toLowerCase() == "post" && postData != undefined) {
@@ -158,7 +173,7 @@ var launch = function(npm)
 				req.on('error', function(e) {
 					console.error(e);
 				});
-			}
+			};
 
 			app.get('/client', function (request, response) {
 				response.setHeader('Content-Type', 'text/plain');	
@@ -308,9 +323,21 @@ var launch = function(npm)
 			   	}
 			   	process.exit(1);
 			});		
-		});
-	}
-}
+		
+		};
+
+		//run either as server or client solution with or without user context
+		if (server)
+		{
+			start_server();
+		}
+		else 
+		{
+			sso.execute( start_server );
+		};
+
+	};
+};
 
 //run and export module
 exports.run = launch;
