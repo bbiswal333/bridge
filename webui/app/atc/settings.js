@@ -1,6 +1,7 @@
 ﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', function ($filter, ngTableParams, appAtcConfig, $scope) {
     $scope.config = appAtcConfig;
     $scope.currentConfigValues = appAtcConfig.newItem();
+    $scope.currentConfigValues.onlyInProcess = true;
 
     $scope.$watch('config', function () {
         if ($scope.tableParams.settings().$scope != null)
