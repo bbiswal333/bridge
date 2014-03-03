@@ -20,6 +20,11 @@ module.exports = function(config) {
       './webui/app/meetings/*.js',
       './webui/app/lunchWalldorf/overview.js',
       './webui/bridge/libUtils.js',
+
+      './webui/app/githubMilestone/overview.js',
+      './webui/app/githubMilestone/config.js',
+      './webui/app/githubMilestone/settings.js',
+
       '**/*.spec.js'
     ],
 
@@ -61,7 +66,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
     //browsers: ['Chrome'],
 
     // If browser does not capture in given timeout [ms], kill it

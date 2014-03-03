@@ -37,7 +37,7 @@ describe("This suite tests various date operations", function () {
 	it ("Friday after 2pm returns next Monday's date object", function () {
 		expect(
 			lunchWalldorf(new Date(2014,02,28,14)).getDay()).toBe(
-			new Date(2014,02,31,14).getDay());
+			new Date(2014,02,31,15).getDay());
 	});
 
 });
