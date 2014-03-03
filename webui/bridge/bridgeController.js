@@ -20,7 +20,8 @@ angular.module('bridge.app', [
     'app.meetings',
     'app.cats',
     'app.lunchWalldorf',
-    'app.githubMilestone']);
+    'app.githubMilestone',
+    'ui.sortable']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -42,7 +43,92 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
 
-        $scope.settings_click = function (boxId) {
+
+/*---- SORT START ----*/
+    //ONLY FOR TESTING PURPOSE - WAIT UNTIL THE CONFIG IS COMPLETELY LOADED
+    window.setTimeout(function(){
+
+        if (bridgeConfig.config.bridgeSettings != {})
+        { 
+            $scope.list = bridgeConfig.config.bridgeSettings; 
+        }
+        else 
+        {
+            $scope.list = [                                        
+            {content: "app.cats", id: 1, size:"box-2"},
+            {content: "app.lunch-walldorf", id: 2, size:"box-1"},
+            {content: "app.jira", id: 3, size:"box-2"},
+
+            {content: "app.atc", id:4,  size:"box-2"},
+            {content: "app.employee-search", id: 5, size:"box-2"},
+            {content: "app.meetings", id: 6, size:"box-1"},
+
+            {content: "app.github-milestone", id: 7, size:"box-2"},
+            {content: "app.im", id: 8, size:"box-2"},
+            {content: "app.test", id: 9, size:"box-1"}
+                            ]; 
+        }
+
+
+    },50);
+                                                        
+          $scope.sortableOptions = {
+            //placeholder: "sortable-placeholder",
+            //forceHelperSize: true,
+            //forcePlaceholderSize: true,
+            //helper: "clone",
+            delay: 50,
+            scroll: false,
+            tolerance: "pointer",
+            disabled: true,
+
+            update: function(e, ui) {
+               bridgeConfig.config.bridgeSettings = $scope.list; 
+               console.log( bridgeConfig.config.bridgeSettings);
+               
+            },
+
+            stop: function(e, ui) {
+             
+            }
+          };
+
+          $scope.toggleDragging = function(){
+            if( !$scope.sortableOptions.disabled )
+            {
+              bridgeConfig.persistInBackend();  
+            }
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
+          }
+          //ONLY FOR TESTING PURPOSE
+          window.resetSort = function(){
+            $scope.list = [                                        
+            {content: "app.cats", id: 1, size:"box-2"},
+            {content: "app.lunch-walldorf", id: 2, size:"box-1"},
+            {content: "app.jira", id: 3, size:"box-2"},
+
+            {content: "app.atc", id:4,  size:"box-2"},
+            {content: "app.employee-search", id: 5, size:"box-2"},
+            {content: "app.meetings", id: 6, size:"box-1"},
+
+            {content: "app.github-milestone", id: 7, size:"box-2"},
+            {content: "app.im", id: 8, size:"box-2"},
+            {content: "app.test", id: 9, size:"box-1"}
+                            ]; 
+            bridgeConfig.config.bridgeSettings = $scope.list; 
+            bridgeConfig.persistInBackend();
+          }
+
+          window.addApp = function(content, id, size){
+            var newApp =  {content: content, id: id, size:size};
+            $scope.list.push(newApp);
+            bridgeConfig.config.bridgeSettings = $scope.list; 
+            bridgeConfig.persistInBackend();
+          }
+
+/*---- SORT END----*/
+
+          $scope.settings_click = function (boxId) {
             var templateString;
             var templateController;
             var boxController;
