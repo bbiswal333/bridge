@@ -129,3 +129,8 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
     
     
 }];
+
+// /* Workaround */
+// angular.module('app.githubMilestone').factory("testGithubSettings", function () {
+//     return angular.module('app.githubMilestone').appGithubMilestoneSettings;
+// });
