@@ -248,7 +248,14 @@ var launch = function(npm)
 			});
 		}
 
-		http.createServer(app).listen(port, "localhost");
+		if(server)
+		{
+			http.createServer(app).listen(port);
+		}
+		else
+		{
+			http.createServer(app).listen(port, "localhost");
+		}
 
 		//most valuable feature of this server
 		console.log(' ____         _      _              ');
