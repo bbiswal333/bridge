@@ -24,12 +24,12 @@ angular.module('app.atc').directive('app.atc',
         $scope.config = appAtcConfig;
         
         //add dummy item to config
-        var configItem = appAtcConfig.newItem();
+        /*var configItem = appAtcConfig.newItem();
         configItem.srcSystem = 'CI3';
         configItem.displayPrio1 = 'X';        
         configItem.displayPrio2 = 'X';           
         $scope.config.addConfigItem(configItem);
-        console.log($scope.cofig);
+        console.log($scope.cofig);*/
         
 
         var loadData = function () {
@@ -109,13 +109,14 @@ angular.module('app.atc').directive('app.atc',
         templateUrl: 'app/atc/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            // apply persisted config to our app
             var currentConfigItem;
-            var appConfig = bridgeConfig.getConfigForApp($scope.boxId);
+            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
 
             if (appConfig != undefined) {
+                appAtcConfig.clear();
+
                 for (configItem in appConfig.configItems) {
-                    currentConfigItem = new atcConfig.ConfigItem();
+                    currentConfigItem = new appAtcConfig.newItem();
 
                     currentConfigItem.component = appConfig.configItems[configItem].component;
                     currentConfigItem.devClass = appConfig.configItems[configItem].devClass;
@@ -128,7 +129,8 @@ angular.module('app.atc').directive('app.atc',
                     currentConfigItem.srcSystem = appConfig.configItems[configItem].srcSystem;
                     currentConfigItem.tadirResponsible = appConfig.configItems[configItem].tadirResponsible;
 
-                    atcConfig.addConfigItem(currentConfigItem);
+                    appAtcConfig.addConfigItem(currentConfigItem);
+                    //atcConfig.addConfigItem(currentConfigItem);
                 }
             }
         }

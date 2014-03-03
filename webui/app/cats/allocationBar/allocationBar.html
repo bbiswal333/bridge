@@ -2,12 +2,16 @@
 	<head>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
 		<script type="text/javascript" src="AllocationBarDirective.js"></script>
+	    <script type="text/javascript" src="svg.min.js"></script>
+	    <script type="text/javascript" src="svg.easing.min.js"></script>
+	    <script type="text/javascript" src="svg.draggable.js"></script>		
 	</head>
 
 	<body ng-app="app.cats.allocationbar">
 		<div ng-controller="myController">
-			<span>Value: {{value}}</span>
-			<app.cats.allocationbar onvalchanged="myCallback(val)"></app.cats.allocationbar>
+			{{blockdata}}
+			<app.cats.allocationbar data-width="800" data-blocks="blockdata" onvalchanged="myCallback(val)"></app.cats.allocationbar>
+			<button ng-click="addBlock()">Add Block</button>
 		</div>
 	</body>
 </html>
