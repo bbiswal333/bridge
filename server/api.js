@@ -12,10 +12,13 @@ exports.register = function(app, user, local, proxy, npm)
 	var iconv 	  = require("iconv-lite");
 	var EWSClient = require("./ews/ewsClient.js").EWSClient;
 
-	function setHeader(response)
+	function setHeader(response, origin)
 	{	
 		response.setHeader('Content-Type', 'text/plain');
-		response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
+		if( origin != undefined )
+		{
+			response.setHeader('Access-Control-Allow-Origin', origin);
+		}
 		response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
 		response.setHeader('Access-Control-Allow-Credentials', 'true' );
 		response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
@@ -72,17 +75,11 @@ exports.register = function(app, user, local, proxy, npm)
 		}
 		else
 		{
-			if (local)
-			{
-				req = https_req.request(options, function(res) {
-					res.on('data', function(chunk) { data += chunk; });
-					res.on('end', function(){ callback(data); });
-				});
-			}
-			else
-			{
-				callback({});
-			}
+
+			req = https_req.request(options, function(res) {
+				res.on('data', function(chunk) { data += chunk; });
+				res.on('end', function(){ callback(data); });
+			});
 		}
 		
 
@@ -100,7 +97,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
-		response = setHeader( response );			
+		response = setHeader( response, request.query.origin );			
 		response.send('{"client":"true"}');
 	});
 
@@ -110,7 +107,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
-			response.setHeader('Content-Type', 'text/plain');	
+			response = setHeader( response, request.query.origin );	
 			response.send("Paramter url needs to be set!");
 			return;
 		}
@@ -130,7 +127,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
-			response = setHeader( response );	
+			response = setHeader( response, request.query.origin );	
 			response.charset = 'UTF-8';
 			if (json) {
 				try {
@@ -179,17 +176,16 @@ exports.register = function(app, user, local, proxy, npm)
 		var postData = request.rawBody;
 
 		callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
-			console.log("Daten: " + data);
-			response.setHeader('Content-Type', 'text/plain');	
+			response = setHeader( response, request.query.origin );		
 			response.send(data);
 		}, postData);				
 	}); 
 
 	//ms-exchange calendar data request
-	if( local)
+	if( local )
 	{
 		app.get("/api/calDataSSO", function (request, response) {
-			response = setHeader( response );
+			response = setHeader( response, request.query.origin );	
 			var json = function () {
 				if (typeof request.query.format != "undefined") {
 					return (request.query.format.toLowerCase() == "json") ? true : false;

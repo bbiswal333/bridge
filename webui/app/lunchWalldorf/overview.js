@@ -26,7 +26,7 @@
             dessert_text = "Dessert:";
         };
         
-        $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
+        $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252&origin=' + location.origin
         ).success(function(data, status, headers, config) {            
 
             var date = getDateToDisplay(new Date());
