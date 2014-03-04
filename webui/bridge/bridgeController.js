@@ -44,34 +44,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             $scope.showLoadingAnimation = true;
 
 
-/*---- SORT START ----*/
-    //ONLY FOR TESTING PURPOSE - WAIT UNTIL THE CONFIG IS COMPLETELY LOADED
-    window.setTimeout(function(){
-
-        if (bridgeConfig.config.bridgeSettings != {})
-        { 
-            $scope.list = bridgeConfig.config.bridgeSettings; 
-        }
-        else 
-        {
-            $scope.list = [                                        
-            {content: "app.cats", id: 1, size:"box-2"},
-            {content: "app.lunch-walldorf", id: 2, size:"box-1"},
-            {content: "app.jira", id: 3, size:"box-2"},
-
-            {content: "app.atc", id:4,  size:"box-2"},
-            {content: "app.employee-search", id: 5, size:"box-2"},
-            {content: "app.meetings", id: 6, size:"box-1"},
-
-            {content: "app.github-milestone", id: 7, size:"box-2"},
-            {content: "app.im", id: 8, size:"box-2"},
-            {content: "app.test", id: 9, size:"box-1"}
-                            ]; 
-        }
-
-
-    },50);
-                                                        
+        /*---- SORT START ----*/                                             
           $scope.sortableOptions = {
             //placeholder: "sortable-placeholder",
             //forceHelperSize: true,
@@ -83,13 +56,10 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             disabled: true,
 
             update: function(e, ui) {
-               bridgeConfig.config.bridgeSettings = $scope.list; 
-               console.log( bridgeConfig.config.bridgeSettings);
-               
+               bridgeConfig.config.bridgeSettings = $scope.list;  
             },
 
             stop: function(e, ui) {
-             
             }
           };
 
@@ -118,7 +88,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             bridgeConfig.config.bridgeSettings = $scope.list; 
             bridgeConfig.persistInBackend();
           }
-
+          //ONLY FOR TESTING PURPOSE
           window.addApp = function(content, id, size){
             var newApp =  {content: content, id: id, size:size};
             $scope.list.push(newApp);
@@ -126,7 +96,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             bridgeConfig.persistInBackend();
           }
 
-/*---- SORT END----*/
+        /*---- SORT END----*/
 
           $scope.settings_click = function (boxId) {
             var templateString;
@@ -182,11 +152,34 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             document.getElementById('projects-button').classList.add('selected');
         };
 
+       /* Load the config for App order */
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-            $scope.configLoadingFinished = true;
-            $scope.showLoadingAnimation = false;
-        });
-}]);
+                if (bridgeConfig.config.bridgeSettings != {})
+                { 
+                    $scope.list = bridgeConfig.config.bridgeSettings; 
+                }
+                else 
+                {
+                    $scope.list = [                                        
+                    {content: "app.cats", id: 1, size:"box-2"},
+                    {content: "app.lunch-walldorf", id: 2, size:"box-1"},
+                    {content: "app.jira", id: 3, size:"box-2"},
+
+                    {content: "app.atc", id:4,  size:"box-2"},
+                    {content: "app.employee-search", id: 5, size:"box-2"},
+                    {content: "app.meetings", id: 6, size:"box-1"},
+
+                    {content: "app.github-milestone", id: 7, size:"box-2"},
+                    {content: "app.im", id: 8, size:"box-2"},
+                    {content: "app.test", id: 9, size:"box-1"}
+                                    ]; 
+                }
+
+
+                    $scope.configLoadingFinished = true;
+                    $scope.showLoadingAnimation = false;   
+                });
+        }]);
 
 
 angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
