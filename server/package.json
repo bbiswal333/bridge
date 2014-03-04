@@ -2,6 +2,11 @@
   "name": "bridge-server",
   "version": "0.0.2",
   "description": "brige server running on node.js",
+  "repository" :
+  { 
+  	"type" : "git",
+  	"url" : "https://github.wdf.sap.corp/Tools/bridge"
+  },
   "dependencies": {
     "express": "express ~3.2.2",
 	"xml2js": "0.4.1",

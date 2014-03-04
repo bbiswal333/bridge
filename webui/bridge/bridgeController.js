@@ -182,7 +182,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
         }]);
 
 
-angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
+angular.module('bridge.app').config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
@@ -193,7 +193,8 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
 
-
+    // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
+    $httpProvider.defaults.withCredentials = true;
 
 });
 

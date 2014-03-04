@@ -10,7 +10,9 @@ exports.get = function(parameter_name, parameter_default)
 			if( process.argv[i] == parameter_identifier )
 			{
 				parameter_value = process.argv[i+1];
-			}		
+				if(parameter_value == "true") parameter_value = true;
+				if(parameter_value == "false") parameter_value = false;
+ 			}		
 		}
 	}
 	console.log(parameter_name + ': ' + parameter_value);

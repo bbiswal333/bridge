@@ -30,8 +30,8 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.boxTitle = "Github Milestone - "+$scope.config.repo.full_name;
                 $http({
                     method: 'GET',
-                    url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc'
-
+                    url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
+                    withCredentials: false,
                 }).success(function(data, status, headers, config) {
                     $scope.milestones = data;
                     var currentDate = new Date();
