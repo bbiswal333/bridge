@@ -37,7 +37,7 @@
         $scope.dateHasLunchMenu = dateHandling.getValidDateFlag(date);
 
         if ($scope.dateHasLunchMenu && true){
-            $http.get('http://localhost:8000/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
+            $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
             ).success(function(data, status, headers, config) {            
 
                 var lunchMenu = {};
