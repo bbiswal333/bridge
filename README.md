@@ -6,7 +6,7 @@ In order to run bridge, you need to install a local client on your windows or ma
 
 Developer Guide
 ===============
-Bridge is an internal open source project. One main goal of this is contribution and collaboration. Therefore everything which is needed to run this application is included in this project. If you want to learn more about this project and the motivation, check out this [presentation](https://github.wdf.sap.corp/pages/Tools/bridge/presentation/).
+Bridge is an internal open source project. One main goal of this is contribution and collaboration. Therefore everything which is needed to run this application is included in this project. If you want to learn more about this project and the motivation, check out this [presentation](https://github.wdf.sap.corp/pages/Bridge/bridge/presentation/).
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
