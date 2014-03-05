@@ -5,14 +5,14 @@ var http_req	= require('http');
 var url 		= require('url');
 var npm_load	= require('./npm_load.js');
 
-exports.register = function(app, user, local, proxy, npm)
+exports.register = function(app, user, local, proxy, npm, origin)
 {
 	//get api modules	
 	var xml2js 	  = require("xml2js").parseString;
 	var iconv 	  = require("iconv-lite");
 	var EWSClient = require("./ews/ewsClient.js").EWSClient;
 
-	function setHeader(response, origin)
+	function setHeader(response)
 	{	
 		response.setHeader('Content-Type', 'text/plain');
 		if( origin != undefined )
@@ -97,7 +97,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
-		response = setHeader( response, request.query.origin );			
+		response = setHeader( response );			
 		response.send('{"client":"true"}');
 	});
 
@@ -107,7 +107,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
-			response = setHeader( response, request.query.origin );	
+			response = setHeader( response );	
 			response.send("Paramter url needs to be set!");
 			return;
 		}
@@ -127,7 +127,7 @@ exports.register = function(app, user, local, proxy, npm)
 
 
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
-			response = setHeader( response, request.query.origin );	
+			response = setHeader( response );	
 			response.charset = 'UTF-8';
 			if (json) {
 				try {
@@ -176,7 +176,7 @@ exports.register = function(app, user, local, proxy, npm)
 		var postData = request.rawBody;
 
 		callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
-			response = setHeader( response, request.query.origin );		
+			response = setHeader( response );		
 			response.send(data);
 		}, postData);				
 	}); 
@@ -185,7 +185,7 @@ exports.register = function(app, user, local, proxy, npm)
 	if( local )
 	{
 		app.get("/api/calDataSSO", function (request, response) {
-			response = setHeader( response, request.query.origin );	
+			response = setHeader( response );	
 			var json = function () {
 				if (typeof request.query.format != "undefined") {
 					return (request.query.format.toLowerCase() == "json") ? true : false;
