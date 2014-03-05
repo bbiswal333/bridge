@@ -1,255 +1,27 @@
-var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
-
-var https_req	= require('https');
-var http_req	= require('http');
 var http		= require('http');
 var path        = require('path');
-var url         = require('url');
-var fs          = require('fs');
-var exec        = require('child_process').exec;
 var sso 		= require('./sso.js');
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
+var api			= require('./api.js');
+var helper		= require('./helper.js');
 
-var launch = function(npm)
+exports.run = function(npm)
 {	
-	//get parameters
-	var port   = param.get("port", 8000);
-	var proxy  = param.get("proxy", true);
-	var server = param.get("server", false);	
-
-	//get modules
-	var express   = npm_load.get("express", proxy);
-	var xml2js 	  = npm_load.get("xml2js", proxy).parseString;
-	var iconv 	  = npm_load.get("iconv-lite", proxy);
-	var EWSClient = npm_load.get("./ews/ewsClient.js", proxy).EWSClient;
+	var port  = param.get("port", 8000);
+	var proxy = param.get("proxy", true);
+	var local = param.get("local", true);	
 	
-	var start_server = function(user)
+	function start_server(user)
 	{
-		var app = express();
-
-		//serve static files in webui folder as http server
-		var webui_path = path.join(__dirname, '../', '/webui');
-		app.use('/', express.static(webui_path));
-
-		//For fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
-		app.use(function(req, res, next) {
-		    var data = '';
-		    req.setEncoding('utf8');
-		    req.on('data', function(chunk) { 
-		        data += chunk;
-		    });
-		    req.on('end', function() {
-		        req.rawBody = data;
-		        next();
-		    });
-		});
-
-		//call backends with client certificate
-		function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
-
-			var options = {
-				hostname: hostname,
-				port: port,
-				path: path,
-				method: method,
-				rejectUnauthorized: false
-			};
-
-			if (!server)
-			{
-				options.pfx = user.SSOCertificate;
-				options.passphrase = user.SSOCertificatePassphrase;
-			};
-
-			if (method.toLowerCase() == "post" && postData != undefined) {
-				options.headers = {
-					'Content-Type': 'text/xml; charset=UTF-8',
-					'Content-Length': (postData != undefined ? postData.length : 0)
-				};
-			}
-
-			var data = "";
-
-			//for testing purposes
-			console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
-
-			var req = {};
-
-			if( protocol == "http:")
-			{
-				req = http_req.request(options, function(res) {
-					if (decode != "none")
-					{ 
-						res.setEncoding('binary');
-					}
-					res.on('data', function(chunk) { data += chunk; });
-					res.on('end', function(){
-						if (decode == "none"){
-							callback( data );
-						}
-						else
-						{
-							callback( iconv.decode(data, decode).toString('utf-8') );
-						}
-					});
-				});
-			}
-			else
-			{
-				if (!server)
-				{
-					req = https_req.request(options, function(res) {
-						res.on('data', function(chunk) { data += chunk; });
-						res.on('end', function(){ callback(data); });
-					});
-				}
-				else
-				{
-					callback({});
-				}
-			}
-			
-
-			if (method.toLowerCase() == "post" && postData != undefined) {
-				//console.log(postData);
-				req.write(postData);
-			}
-
-			req.end();
-			req.on('error', function(e) {
-				console.error(e);
-			});
-
-		};
-
-		app.get('/client', function (request, response) {
-			response.setHeader('Content-Type', 'text/plain');	
-			response.setHeader('Content-Type', 'text/plain');
-			response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-			response.setHeader('Access-Control-Allow-Credentials', 'true' );
-			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-			response.send('{"client":"true"}');
-		});
-
-		//generic api call GET
-		app.get('/api/get', function(request, response) {
-			var json = false;
-
-			if (typeof request.query.url == "undefined" || request.query.url == "") {
-				response.setHeader('Content-Type', 'text/plain');	
-				response.send("Paramter url needs to be set!");
-				return;
-			}
-
-			if (typeof request.query.json != "undefined" && request.query.json == "true") {
-				json = true;
-			}
-
-			var service_url = url.parse(request.query.url);	
-
-			var decode = "none";
-			if(typeof request.query.decode != "undefined")
-			{				
-				decode = request.query.decode;
-			}
-
-
-			callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
-				//console.log(data);
-				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-				response.setHeader('Access-Control-Allow-Credentials', 'true' );
-				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-  				response.charset = 'UTF-8';
-				if (json) {
-					try {
-						xml2js(data, function (err, result) {
-							if (err == undefined) {
-								response.send(JSON.stringify(result));
-							}
-							else {
-								response.send("Could not convert XML to JSON.");
-							}
-						});
-					}
-					catch(err) {
-						response.send("Could not convert XML to JSON.");
-					}
-				}
-				else {
-					response.send(data);
-				}
-			});
-		});
-
-		//generic api call POST
-		app.post("/api/post", function (request, response) {
-			if (typeof request.query.url == "undefined" || request.query.url == "") {
-				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-				response.setHeader('Access-Control-Allow-Credentials', 'true' );
-				response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );	
-				response.send("Paramter url needs to be set!");
-				return;
-			}
-
-			var service_url = url.parse(request.query.url);	
-			var postData = request.rawBody;
-
-			callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
-				console.log("Daten: " + data);
-				response.setHeader('Content-Type', 'text/plain');	
-				response.send(data);
-			}, postData);				
-		}); 
-
-		//ms-exchange calendar data request
-		if( !server )
-		{
-			app.get("/api/calDataSSO", function (request, response) {
-				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Content-Type', 'text/plain');
-				response.setHeader('Access-Control-Allow-Origin', 'http://ozarcs-bridge.mo.sap.corp:3000' );
-				response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-    			response.setHeader('Access-Control-Allow-Credentials', 'true' );
-    			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-				var json = function () {
-					if (typeof request.query.format != "undefined") {
-						return (request.query.format.toLowerCase() == "json") ? true : false;
-					}
-				}();
-
-				var ews = undefined;
-				try {
-					ews = new EWSClient(request.query.from, request.query.to, EWS_URI, user, json);
-				} catch (e) {
-					var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
-					console.log(ans);
-					response.send(ans);				
-					return;
-				}
-
-				ews.doRequest(function (res) {
-					if (res instanceof Error) {
-						var ans = "EWS-request resulted in an error:\n" + res.toString();
-						console.log(ans);
-						response.send(ans);
-					}
-					else {
-						response.send(res);
-					}
-				});
-
-			});
-		}
-
-		if(server)
-		{
+		var express = require("express");
+		var app 	= express();
+		
+		app.use('/', express.static(path.join(__dirname, '../webui')));
+		api.register(app, user, local, proxy, npm);
+		
+		if(!local)
+		{ 
 			http.createServer(app).listen(port);
 		}
 		else
@@ -257,45 +29,23 @@ var launch = function(npm)
 			http.createServer(app).listen(port, "localhost");
 		}
 
-		//most valuable feature of this server
-		console.log(' ____         _      _              ');
-		console.log('|  _ \\       (_)    | |            ');
-		console.log('| |_) | _ __  _   __| |  __ _   ___ ');
-		console.log('|  _ < | \'__|| | / _` | / _` | / _ \\');
-		console.log('| |_) || |   | || (_| || (_| ||  __/');
-		console.log('|____/ |_|   |_| \\__,_| \\__, | \\___|');
-        console.log('	                 __/ |      ');
-		console.log('                        |___/       ');	
-		console.log('Starting Server at http://localhost:' + port);
-
-		process.on('uncaughtException', function (error) {				
-		  	var s = new String(error.stack);
-		   	if (s.search(/EADDRINUSE/) > -1) {
-		   		//Error due to already used address
-		   		//console.log("Server cannot be started at http://localhost:" + port);
-		   		console.log("ERROR: Port " + port + " is already used.");
-		   		console.log("ERROR: You can pass the port as a commandline argument to server.js via -port");			   		
-		   	}
-		   	else {
-		   		console.log("ERROR: " + error.stack );
-		   	}
-		   	process.exit(1);
-		});		
+		helper.printConsole(port);		
+		helper.handleException(port);		
+	}
 	
+	function sso_start_server()
+	{
+		if (!local)
+		{
+			start_server();
+		}
+		else 
+		{
+			sso.execute( start_server );
+		}
 	}
 
-	//run either as server or client solution with or without user context
-	if (server)
-	{
-		start_server();
-	}
-	else 
-	{
-		sso.execute( start_server );
-	}
-
+	npm_load.get(proxy, npm, sso_start_server);
 }
 
-//run and export module
-exports.run = launch;
-if(require.main === module) { launch('npm'); }
+if(require.main === module){ exports.run('npm'); }
