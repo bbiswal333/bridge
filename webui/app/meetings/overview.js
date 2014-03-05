@@ -49,7 +49,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 				}catch(error){
 					$scope.errMsg = "Unable to connect to Exchange Server";
 					$scope.loading = false;
-					console.log(error);
+					console.log((error || $scope.errMsg));
 				}
 			});
 		};
