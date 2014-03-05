@@ -109,11 +109,12 @@ angular.module('app.atc').directive('app.atc',
         templateUrl: 'app/atc/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            // apply persisted config to our app
             var currentConfigItem;
-            var appConfig = bridgeConfig.getConfigForApp($scope.boxId);
+            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
 
             if (appConfig != undefined) {
+                appAtcConfig.clear();
+
                 for (configItem in appConfig.configItems) {
                     currentConfigItem = new appAtcConfig.newItem();
 

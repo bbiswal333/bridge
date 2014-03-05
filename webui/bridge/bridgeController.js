@@ -20,7 +20,8 @@ angular.module('bridge.app', [
     'app.meetings',
     'app.cats',
     'app.lunchWalldorf',
-    'app.githubMilestone']);
+    'app.githubMilestone',
+    'ui.sortable']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -32,8 +33,8 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig',
-    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig) {
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
+    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
             //alert('light mode detected');
@@ -41,8 +42,20 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
+                                           
+          
 
-        $scope.settings_click = function (boxId) {
+          $scope.toggleDragging = function(){
+            if( !$scope.sortableOptions.disabled )
+            {
+              bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
+              bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
+            }
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
+          }
+
+
+          $scope.settings_click = function (boxId) {
             var templateString;
             var templateController;
             var boxController;
@@ -97,13 +110,22 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
         };
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-            $scope.configLoadingFinished = true;
-            $scope.showLoadingAnimation = false;
-        });
-}]);
+                $scope.sortableOptions = sortableConfig.sortableOptions;
+                if (bridgeConfig.config.bridgeSettings.apps != undefined)
+                { 
+                    $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
+                }
+                else 
+                {
+                    $scope.apps = sortableConfig.getDefaultConfig();
+                }
+                    $scope.configLoadingFinished = true;
+                    $scope.showLoadingAnimation = false;   
+                });
+        }]);
 
 
-angular.module('bridge.app').config(function ($routeProvider, $locationProvider) {
+angular.module('bridge.app').config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
@@ -114,12 +136,12 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider)
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
 
-
+    // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
+    $httpProvider.defaults.withCredentials = true;
 
 });
 
-angular.module('bridge.app').run(function ($rootScope, $q, bridgeConfig) {
-
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
     var loadingRequests = 0;
 
     //Receive emitted message and broadcast it.

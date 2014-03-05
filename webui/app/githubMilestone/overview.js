@@ -1,9 +1,11 @@
-angular.module('app.githubMilestone', []);
+angular.module('app.githubMilestone', ["lib.utils"]);
 
-angular.module('app.githubMilestone').directive('app.githubMilestone', function() {
+angular.module('app.githubMilestone').directive('app.githubMilestone', 
+    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "bridgeConfig",
+    function($http, appGithubMilestoneConfig, calUtils, bridgeConfig) {
 
-    var directiveController = ['$scope', '$http', 'app.githubMilestone.configservice',
-        function($scope, $http, appGithubMilestoneConfig) {
+       
+    var directiveController = ['$scope', function($scope ) {
             $scope.boxTitle = "Github";
             $scope.initialized = true;
             $scope.boxIcon = '&#xe009;';
@@ -16,17 +18,20 @@ angular.module('app.githubMilestone').directive('app.githubMilestone', function(
                 controller: angular.module('app.githubMilestone').appGithubMilestoneSettings,
                 id: $scope.boxId,
             };
+        
 
-            getData();
+         $scope.returnConfig = function () {
+                return appGithubMilestoneConfig;
+            };
 
-            function getData() { 
+        $scope.getData = function() { 
             $scope.config = appGithubMilestoneConfig;
 
             $scope.boxTitle = "Github Milestone - "+$scope.config.repo.full_name;
                 $http({
                     method: 'GET',
-                    url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc'
-
+                    url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
+                    withCredentials: false
                 }).success(function(data, status, headers, config) {
                     $scope.milestones = data;
                     var currentDate = new Date();
@@ -44,9 +49,9 @@ angular.module('app.githubMilestone').directive('app.githubMilestone', function(
                         var start = new Date(due_on.getTime() - ($scope.config.milestoneDuration*1000*60*60*24) );
                         //console.log('Start: '+start);
                         //console.log('End '+due_on);
-                        var due_in = calcBusinessDays(start, due_on);
+                        var due_in = calUtils.calcBusinessDays(start, due_on);
                         //console.log('due_in  '+due_in);
-                        var pastDays = calcBusinessDays(start,currentDate);
+                        var pastDays = calUtils.calcBusinessDays(start,currentDate);
                         if(pastDays < 0) pastDays = 0;
                         //console.log('past days '+pastDays);
                         var pot =  (pastDays / due_in) * 100;
@@ -75,51 +80,38 @@ angular.module('app.githubMilestone').directive('app.githubMilestone', function(
                 });
             };//getData
 
-            function calcBusinessDays(dDate1, dDate2) { // input given as Date objects
-                var iWeeks, iDateDiff, iAdjust = 0;
-                if (dDate2 < dDate1) return -1; // error code if dates transposed
-
-                var iWeekday1 = dDate1.getDay(); // day of week
-                var iWeekday2 = dDate2.getDay();
-
-                iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
-                iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
-
-                if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
-                iWeekday1 = (iWeekday1 > 5) ? 5 : iWeekday1; // only count weekdays
-                iWeekday2 = (iWeekday2 > 5) ? 5 : iWeekday2;
-
-                // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
-                iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
-
-                if (iWeekday1 <= iWeekday2) {
-                  iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1)
-                } else {
-                  iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2)
-                }
-
-                iDateDiff -= iAdjust // take into account both days on weekend
-
-                return (iDateDiff ); // add 1 because dates are inclusive
-            };//calcBusinessDays
-
             //Watch for changes in the config
             $scope.$watch('config', function() {
-                $scope.update();
+                $scope.getData();
             },true);
-
-            //Update the app
-            $scope.update = function() {
-                getData();
-            };//$scope.update
-
-           
-        }
-    ];
+        }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/githubMilestone/overview.html',
-        controller: directiveController
-    };
-});
+        controller: directiveController,
+         link: function ($scope, $element, $attrs, $modelCtrl) {
+            var currentConfigItem;
+            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
+
+            if (appConfig != undefined) {
+
+                    appGithubMilestoneConfig.repo.name = appConfig.repo.name;
+                    appGithubMilestoneConfig.repo.full_name = appConfig.repo.full_name;
+                    appGithubMilestoneConfig.repo.html_url = appConfig.repo.html_url;
+                    appGithubMilestoneConfig.repo.api_url = appConfig.repo.api_url;
+                    appGithubMilestoneConfig.milestoneDuration = appConfig.milestoneDuration;
+                    appGithubMilestoneConfig.countMilestones = appConfig.countMilestones;
+                    appGithubMilestoneConfig.html_url = appConfig.html_url;
+                    appGithubMilestoneConfig.api_url = appConfig.api_url;
+                    appGithubMilestoneConfig.fork = appConfig.fork;
+
+                }
+            }
+        };
+}]);
+
+
+
+
+

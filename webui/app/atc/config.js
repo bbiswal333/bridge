@@ -66,6 +66,9 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 		}
 		return queryString;
 	};
+	Config.prototype.clear = function () {
+	    this.configItems.length = 0;
+	};
 	
 	return new Config(); 
 });

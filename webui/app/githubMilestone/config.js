@@ -8,8 +8,8 @@ angular.module('app.githubMilestone').factory("app.githubMilestone.configservice
 					api_url: "https://github.wdf.sap.corp/api/v3/Tools/bridge",
 			},	
 
-		milestoneDuration: 7, 	//Available in the Setting screen
-		countMilestones : 1, 	//How many milestones will be display
+		milestoneDuration: 7, 	
+		countMilestones : 1, 
         stateProp : 'open',
         html_url: "https://github.wdf.sap.corp/",
 		api_url: "https://github.wdf.sap.corp/api/v3/",

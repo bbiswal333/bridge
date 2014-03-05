@@ -1,14 +1,12 @@
 ﻿Client Installation
 ===============
-In order to run bridge, you need to install a local client on your windows or mac machine. Other operating systems are currently not yet supported. Please contact us, if you would like to change that. Main challenges include certificate and password access and packaging of an application with installer package.
-* Latest Windows Client: https://github.wdf.sap.corp/Tools/bridge-win/blob/master/setup.zip?raw=true
-* Latest Mac Client: https://github.wdf.sap.corp/Tools/bridge-mac/blob/master/Bridge.app.zip?raw=true
-
-More information about bridge are available on our [landing page](https://go.sap.corp/bridge).
+In order to run bridge with all features, you need to install the local client on your machine (running the latest stable version) or setup the developer environment.
+* [Windows](https://github.wdf.sap.corp/bridge/bridge-win)
+* [Mac](https://github.wdf.sap.corp/bridge/bridge-mac)
 
 Developer Guide
 ===============
-Bridge is an internal open source project. One main goal of this is contribution and collaboration. Therefore everything which is needed to run this application is included in this project. If you want to learn more about this project and the motivation, check out this [presentation](https://github.wdf.sap.corp/pages/Tools/bridge/presentation/).
+Bridge is an internal open source project. One main goal of this is contribution and collaboration. Therefore everything which is needed to run this application is included in this project. If you want to learn more about this project and the motivation, check out this [presentation](https://github.wdf.sap.corp/pages/Bridge/bridge/presentation/).
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)

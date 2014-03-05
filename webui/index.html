@@ -2,7 +2,11 @@
 <html lang="en" ng-app="bridge.app">
 	<head>
         <!-- browser compatibility  -->
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <!-- Jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
         <!-- browser test -->
         <script src="Browser.js"></script>
@@ -17,19 +21,19 @@
         <link href="css/animation.css" rel="stylesheet" />
 
         <!-- external bootstrapped libs -->
-	    <script src="lib/angular-1_2_13/angular.min.js"></script>
+        <script src="lib/angular-1_2_13/angular.min.js"></script>
         <script src="lib/angular-1_2_13/angular-route.min.js"></script>
         <script src="lib/angular-1_2_13/angular-resource.min.js"></script>
-        <script src="lib/angular-1_2_13/angular-animate.min.js"></script>    
-        <script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>    
-	    <script src="lib/jsapi.js"></script>
+        <script src="lib/angular-1_2_13/angular-animate.min.js"></script>
+        <script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>
+        <script src="lib/jsapi.js"></script>
 
         <!-- icon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
-    
+
         <!-- external packed libs -->
         <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
-	    <script src="lib/linq-2_2_0_2/linq.min.js"></script>
+        <script src="lib/linq-2_2_0_2/linq.min.js"></script>
         <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
         <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
         <script src="lib/underscore-1_5_2/underscore.js"></script>
@@ -38,7 +42,7 @@
 
         <script src="lib/angular-strap-2_0_0_RC3/angular-strap.min.js"></script>
         <script src="lib/angular-strap-2_0_0_RC3/angular-strap.tpl.min.js"></script>
-		
+
         <!-- bridge -->
         <script src="bridge/bridgeController.js"></script>
         <script src="bridge/bridgeSettingsController.js"></script>
@@ -58,13 +62,13 @@
         <script src="app/lunchWalldorf/overview.js"></script>
         <script src="app/atc/overview.js"></script>
         <script src="app/atc/config.js"></script>
-        <script src="app/atc/data.js"></script>        
-        <script src="app/atc/detail.js"></script>   	    
-        <script src="app/atc/settings.js"></script>        
+        <script src="app/atc/data.js"></script>
+        <script src="app/atc/detail.js"></script>
+        <script src="app/atc/settings.js"></script>
         <script src="app/jira/overview.js"></script>
         <script src="app/jira/JiraBox.js"></script>
         <script src="app/jira/detail.js"></script>
-        <script src="app/employeeSearch/overview.js"></script>        
+        <script src="app/employeeSearch/overview.js"></script>
         <script src="app/meetings/ews.js"></script>
         <script src="app/meetings/overview.js"></script>
         <script src="app/cats/cats.js"></script>
@@ -75,7 +79,9 @@
         <script src="app/githubMilestone/settings.js"></script>
         <script src="app/githubMilestone/config.js"></script>
 
-        <!-- counter -->
+        <script src="lib/jQueryUISortable.js"></script>
+        <script src="bridge/sortableService.js"></script>
+
         <script src="counter.js"></script>
 
 	    <title>Bridge</title>
