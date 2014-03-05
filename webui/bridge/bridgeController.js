@@ -7,7 +7,7 @@ angular.module('bridge.app', [
     'ui.bootstrap',
     'mgcrea.ngStrap',
     'ngTable',
-    'ng-scrollbar',
+    'mb-scrollbar',
     // bridge modules
     'bridge.employeeSearch',
     'bridge.box',
