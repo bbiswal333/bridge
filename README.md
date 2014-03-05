@@ -1,7 +1,7 @@
 ﻿Client Installation
 ===============
 In order to run bridge with all features, you need to install the local client on your machine (running the latest stable version) or setup the developer environment.
-* [Windows](https://github.wdf.sap.corp/bridge/bridge-windows)
+* [Windows](https://github.wdf.sap.corp/bridge/bridge-win)
 * [Mac](https://github.wdf.sap.corp/bridge/bridge-mac)
 
 Developer Guide
