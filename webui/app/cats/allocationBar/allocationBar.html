@@ -1,18 +1,23 @@
 <html>
-	<head>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
-		<script type="text/javascript" src="AllocationBarDirective.js"></script>
-	    <script type="text/javascript" src="svg.min.js"></script>
-	    <script type="text/javascript" src="svg.easing.min.js"></script>
-	    <script type="text/javascript" src="svg.draggable.js"></script>		
-	</head>
+<head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+	<script type="text/javascript" src="allocationBarControl.js"></script>
+	<script type="text/javascript" src="allocationBlock.js"></script>
+	<script type="text/javascript" src="AllocationBarDirective.js"></script>
+	<script type="text/javascript" src="allocationBarUtils.js"></script>
+	<script type="text/javascript" src="svg.min.js"></script>
+	<script type="text/javascript" src="svg.easing.min.js"></script>
+	<script type="text/javascript" src="svg.draggable.js"></script>		
+</head>
 
-	<body ng-app="app.cats.allocationbar">
-		<div ng-controller="myController">
-			{{blockdata}}
-			<app.cats.allocationbar data-width="810" data-height="90" data-blocks="blockdata" onvalchanged="myCallback(val)"></app.cats.allocationbar>
-			{{value}}
-			<button ng-click="addBlock()">Add Block</button>
-		</div>
-	</body>
+<body ng-app="app.cats.allocationbar">
+	<div ng-controller="myController">
+		{{blockdata}}
+		<app.cats.allocationbar data-width="810" data-height="100" data-blocks="blockdata" data-padding="10" onvalchanged="myCallback(val);"></app.cats.allocationbar>
+		<button ng-click="addBlock()">Add Block</button>
+	</div>
+</body>
 </html>
+<!--
+	Addition von Padding, Padding ist jedoch String wenn als Parameter definiert, dadurch definiert und gültig. Bei Ausgabe erfolgt Umwandlung, daher nicht sichtbar - offenkundig gleicher Wert! Bei Addition von "5" + 5 ergibt sich jedoch 55 und nicht wie bei 5 + 5 = 10
+-->
