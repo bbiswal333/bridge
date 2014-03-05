@@ -3,6 +3,7 @@ angular.module('bridge.app', [
     'ngAnimate',
     'ngRoute',
     'ngSanitize',
+    'dialogs',
     'googlechart',
     'ui.bootstrap',
     'mgcrea.ngStrap',
@@ -21,7 +22,9 @@ angular.module('bridge.app', [
     'app.cats',
     'app.lunchWalldorf',
     'app.githubMilestone',
-    'ui.sortable']);
+    'ui.sortable',
+    'app.cats.maintenanceView',
+    'ui.select2']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -135,6 +138,12 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider,
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
+
+    $routeProvider.when("/detail/cats/", { templateUrl: 'app/cats/detail.html'});    
+
+    $routeProvider.otherwise({
+        redirectTo: "/"
+    });
 
     // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
     $httpProvider.defaults.withCredentials = true;
