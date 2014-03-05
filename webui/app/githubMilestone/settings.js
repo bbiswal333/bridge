@@ -88,7 +88,8 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
             repo = arguments[1];
                     return $http({
                     method: 'GET',
-                    url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit
+                    url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit,
+                    withCredentials: false
                     //https://github.wdf.sap.corp/api/v3/search/repositories?q=bridge&per_page=5
                         }).then(function(res){
                              var results = [];
@@ -106,13 +107,15 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 
             return $http({
                             method: 'GET',
-                            url: 'https://github.wdf.sap.corp/api/v3/users/'+user
+                            url: 'https://github.wdf.sap.corp/api/v3/users/'+user,
+                            withCredentials: false
                         }).then(function(res) { 
                                 if(res.status == 200)
                                 {
                                     return $http({
                                                 method: 'GET',
-                                                url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'+user:'+user+'+fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit
+                                                url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'+user:'+user+'+fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit,
+                                                withCredentials: false
                                                 }).then(function(res){
                                                                         var results = [];
                                                                         angular.forEach(res.data.items, function(item){

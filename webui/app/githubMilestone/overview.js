@@ -31,7 +31,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                 $http({
                     method: 'GET',
                     url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
-                    withCredentials: false,
+                    withCredentials: false
                 }).success(function(data, status, headers, config) {
                     $scope.milestones = data;
                     var currentDate = new Date();

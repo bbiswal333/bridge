@@ -33,8 +33,8 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig',
-    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig) {
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
+    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
             //alert('light mode detected');
@@ -42,61 +42,18 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
-
-
-        /*---- SORT START ----*/                                             
-          $scope.sortableOptions = {
-            //placeholder: "sortable-placeholder",
-            //forceHelperSize: true,
-            //forcePlaceholderSize: true,
-            //helper: "clone",
-            delay: 50,
-            scroll: false,
-            tolerance: "pointer",
-            disabled: true,
-
-            update: function(e, ui) {
-               bridgeConfig.config.bridgeSettings = $scope.list;  
-            },
-
-            stop: function(e, ui) {
-            }
-          };
+                                           
+          
 
           $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
             {
-              bridgeConfig.persistInBackend();  
+              bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
+              bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
             }
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
           }
-          //ONLY FOR TESTING PURPOSE
-          window.resetSort = function(){
-            $scope.list = [                                        
-            {content: "app.cats", id: 1, size:"box-2"},
-            {content: "app.lunch-walldorf", id: 2, size:"box-1"},
-            {content: "app.jira", id: 3, size:"box-2"},
 
-            {content: "app.atc", id:4,  size:"box-2"},
-            {content: "app.employee-search", id: 5, size:"box-2"},
-            {content: "app.meetings", id: 6, size:"box-1"},
-
-            {content: "app.github-milestone", id: 7, size:"box-2"},
-            {content: "app.im", id: 8, size:"box-2"},
-            {content: "app.test", id: 9, size:"box-1"}
-                            ]; 
-            bridgeConfig.config.bridgeSettings = $scope.list; 
-            bridgeConfig.persistInBackend();
-          }
-          //ONLY FOR TESTING PURPOSE
-          window.addApp = function(content, id, size){
-            var newApp =  {content: content, id: id, size:size};
-            $scope.list.push(newApp);
-            bridgeConfig.config.bridgeSettings = $scope.list; 
-            bridgeConfig.persistInBackend();
-          }
-
-        /*---- SORT END----*/
 
           $scope.settings_click = function (boxId) {
             var templateString;
@@ -152,30 +109,16 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
             document.getElementById('projects-button').classList.add('selected');
         };
 
-       /* Load the config for App order */
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-                if (bridgeConfig.config.bridgeSettings != {})
+                $scope.sortableOptions = sortableConfig.sortableOptions;
+                if (bridgeConfig.config.bridgeSettings.apps != undefined)
                 { 
-                    $scope.list = bridgeConfig.config.bridgeSettings; 
+                    $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
                 }
                 else 
                 {
-                    $scope.list = [                                        
-                    {content: "app.cats", id: 1, size:"box-2"},
-                    {content: "app.lunch-walldorf", id: 2, size:"box-1"},
-                    {content: "app.jira", id: 3, size:"box-2"},
-
-                    {content: "app.atc", id:4,  size:"box-2"},
-                    {content: "app.employee-search", id: 5, size:"box-2"},
-                    {content: "app.meetings", id: 6, size:"box-1"},
-
-                    {content: "app.github-milestone", id: 7, size:"box-2"},
-                    {content: "app.im", id: 8, size:"box-2"},
-                    {content: "app.test", id: 9, size:"box-1"}
-                                    ]; 
+                    $scope.apps = sortableConfig.getDefaultConfig();
                 }
-
-
                     $scope.configLoadingFinished = true;
                     $scope.showLoadingAnimation = false;   
                 });

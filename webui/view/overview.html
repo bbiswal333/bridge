@@ -14,10 +14,10 @@
 -->
 
  <div class="container centeredContent" ng-dblclick="toggleDragging()">
-    <ul ui-sortable="sortableOptions" ng-model="list" class="list">
-      <li ng-repeat="item in list" class="item">
-        <div class="{{item.size}}"> 
-            <bridge.box content="{{item.content}}" id="{{item.id}}"></bridge.box>
+    <ul ui-sortable="sortableOptions" ng-model="apps" class="list">
+      <li ng-repeat="app in apps" class="item">
+        <div class="{{app.size}}"> 
+            <bridge.box content="{{app.content}}" id="{{app.id}}"></bridge.box>
         </div>
       </li>
     </ul>

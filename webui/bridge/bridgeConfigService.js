@@ -66,7 +66,9 @@
     //};
 
     this.config = {
-            bridgeSettings: {},
+            bridgeSettings: {
+                                apps: []
+                            },
             boxSettings: [],
     };
 });
