@@ -19,6 +19,7 @@ exports.run = function(npm)
 		var app 	= express();
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
+		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		api.register(app, user, local, proxy, npm, origin);
 		
 		if(!local)
