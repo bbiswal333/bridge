@@ -17,7 +17,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 	var ERR_MSG_PLATFORM_NOT_SUPPORTED = "Your platform doesn't support this feature - only Windows and Mac OS X are supported.";
 	var ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";
 	var ERR_MSG_WRONG_CREDENTIALS = "Seems your credentials were wrong. Please try again.";
-	var SAP_DOMAIN = "SAP_ALL\\";
+	var SAP_DOMAIN = ["GLOBAL", "SAP_ALL"];
 
 	var dateFrom = dateFrom_s;
 	var dateTo = dateTo_s;
@@ -63,7 +63,7 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 					//var diff = process.hrtime(start);		
 					// console.log("MAC strategy took " + diff[0] * 1e9 + diff[1] + " ns, this would be " + diff[0] + diff[1] / 1e9 + " seconds.");
 					handleData(ews_xml);
-				});						
+				}, 0);						
 			}
 			else {
 				console.log(ERR_MSG_PLATFORM_NOT_SUPPORTED);
@@ -156,8 +156,8 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 		}
 	}
 
-	function getDataFromExchange_Mac(soapString_s, callback_fn) {
-		var auth = new Buffer(SAP_DOMAIN + user.id + ':' + user.pass).toString('base64');
+	function getDataFromExchange_Mac(soapString_s, callback_fn, sapDomain_i) {
+		var auth = new Buffer(SAP_DOMAIN[sapDomain_i] + "\\" + user.id + ':' + user.pass).toString('base64');
 
 		var ews_url = url.parse(exchangeURI);
 
@@ -184,8 +184,13 @@ exports.EWSClient = function (dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_
 			});
 			res.on('end', function() {
 				if (data == "") {
-					console.log(ERR_MSG_WRONG_CREDENTIALS);
-					callback_fn(new Error(ERR_MSG_WRONG_CREDENTIALS));
+					if (sapDomain_i + 1 == SAP_DOMAIN.length) {
+						console.log(ERR_MSG_WRONG_CREDENTIALS);
+						callback_fn(new Error(ERR_MSG_WRONG_CREDENTIALS));
+					}
+					else {
+						getDataFromExchange_Mac(soapString_s, callback_fn, sapDomain_i + 1);
+					}
 				}
 				else {
 					callback_fn(data);
