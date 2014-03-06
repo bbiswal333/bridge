@@ -114,7 +114,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
                 $scope.sortableOptions = sortableConfig.sortableOptions;
-                if (bridgeConfig.config.bridgeSettings.apps != undefined)
+                if (bridgeConfig.config.bridgeSettings.apps != undefined && bridgeConfig.config.bridgeSettings.apps.length > 0 )
                 { 
                     $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
                 }

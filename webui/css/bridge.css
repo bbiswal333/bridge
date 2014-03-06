@@ -347,13 +347,12 @@ input[type="checkbox"]:checked:after {
 }
 
 
-.list {
+.sortable-list {
     list-style-type: none;
-
-  width: 1150px;
+    width: 1150px;
 }
 
-.item {
+.sortable-item {
   margin-left: 20px;
   margin-bottom: 20px; 
   float: left; 
