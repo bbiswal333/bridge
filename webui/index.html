@@ -1,90 +1,105 @@
 <!DOCTYPE HTML>
 <html lang="en" ng-app="bridge.app">
 	<head>
-      <!-- browser compatibility  -->
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <!-- Jquery -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <!-- browser compatibility  -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-      <!-- browser test -->
-      <script src="Browser.js"></script>
+        <!-- Jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
-      <!-- external css -->
-      <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
-      <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
-      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+        <!-- browser test -->
+        <script src="Browser.js"></script>
 
-      <!-- css -->
-      <link href="css/bridge.css" rel="stylesheet" />
-      <link href="css/animation.css" rel="stylesheet" />
+        <!-- external css -->
+        <link href="lib/bootstrap-3_0_3/css/bootstrap.css" rel="stylesheet" />
+        <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 
-      <!-- external bootstrapped libs -->
-    	<script src="lib/angular-1_2_13/angular.min.js"></script>
-    	<script src="lib/angular-1_2_13/angular-route.min.js"></script>
-    	<script src="lib/angular-1_2_13/angular-resource.min.js"></script>
-    	<script src="lib/angular-1_2_13/angular-animate.min.js"></script>
-    	<script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>
-			<script src="lib/jsapi.js"></script>
+        <!-- css -->
+        <link href="css/bridge.css" rel="stylesheet" />
+        <link href="css/animation.css" rel="stylesheet" />
 
-      <!-- icon -->
-      <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
+        <!-- external bootstrapped libs -->
+        <script src="lib/angular-1_2_13/angular.min.js"></script>
+        <script src="lib/angular-1_2_13/angular-route.min.js"></script>
+        <script src="lib/angular-1_2_13/angular-resource.min.js"></script>
+        <script src="lib/angular-1_2_13/angular-animate.min.js"></script>
+        <script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>
+        <script src="lib/jsapi.js"></script>
 
-      <!-- external packed libs -->
-      <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
-    	<script src="lib/linq-2_2_0_2/linq.min.js"></script>
-      <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
-      <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
-      <script src="lib/underscore-1_5_2/underscore.js"></script>
+        <!-- icon -->
+        <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
 
-      <script src="lib/ng-scrollbar/ng-scrollbar.js"></script>
+        <!-- external packed libs -->
+        <script src="lib/ng-google-chart-0_0_5/ng-google-chart.js"></script>
+        <script src="lib/linq-2_2_0_2/linq.min.js"></script>
+        <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
+        <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
+        <script src="lib/underscore-1_5_2/underscore.js"></script>
 
-      <script src="lib/angular-strap-2_0_0_RC3/angular-strap.min.js"></script>
-      <script src="lib/angular-strap-2_0_0_RC3/angular-strap.tpl.min.js"></script>
+        <script src="lib/ng-scrollbar/mb-scrollbar.modified.js"></script>
 
-      <!-- bridge -->
-      <script src="bridge/bridgeController.js"></script>
-      <script src="bridge/bridgeSettingsController.js"></script>
-      <script src="bridge/bridgeDataService.js"></script>
-      <script src="bridge/bridgeConfigService.js"></script>
-      <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
-      <script src="bridge/box/BoxDirective.js"></script>
-      <script src="bridge/employeeSearch/EmployeeSearchDirective.js"></script>
+        <script src="lib/angular-strap-2_0_0_RC3/angular-strap.min.js"></script>
+        <script src="lib/angular-strap-2_0_0_RC3/angular-strap.tpl.min.js"></script>
 
-      <!-- app -->
-      <script src="app/im/overview.js"></script>
-      <script src="app/im/im.js"></script>
-      <script src="app/im/detail.js"></script>
-      <script src="app/im/settings.js"></script>
-      <script src="app/im/config.js"></script>
-      <script src="app/test/overview.js"></script>
-      <script src="app/lunchWalldorf/overview.js"></script>
-      <script src="app/atc/overview.js"></script>
-      <script src="app/atc/config.js"></script>
-      <script src="app/atc/data.js"></script>
-      <script src="app/atc/detail.js"></script>
-      <script src="app/atc/settings.js"></script>
-      <script src="app/jira/overview.js"></script>
-      <script src="app/jira/JiraBox.js"></script>
-      <script src="app/jira/detail.js"></script>
-      <script src="app/employeeSearch/overview.js"></script>
-      <script src="app/meetings/ews.js"></script>
-      <script src="app/meetings/overview.js"></script>
-      <script src="app/cats/cats.js"></script>
-      <script src="bridge/libUtils.js"></script>
-      <script src="app/cats/overview.js"></script>
+        <script src="lib/dialogs/dialogs.min.js"></script>
 
-      <script src="app/githubMilestone/overview.js"></script>
-      <script src="app/githubMilestone/settings.js"></script>
-      <script src="app/githubMilestone/config.js"></script>
+        <!-- select2 -->
+        <script type="text/javascript" src="lib/select2-3_4_5/select2.min.js"></script>
+        <script type="text/javascript" src="lib/ui-select2/select2.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/select2-3_4_5/select2.css">        
 
-      <script src="lib/jQueryUISortable.js"></script>
-      <script src="bridge/sortableService.js"></script>
+        <!-- bridge -->
+        <script src="bridge/bridgeController.js"></script>
+        <script src="bridge/bridgeSettingsController.js"></script>
+        <script src="bridge/bridgeDataService.js"></script>
+        <script src="bridge/bridgeConfigService.js"></script>
+        <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
+        <script src="bridge/box/BoxDirective.js"></script>
+        <script src="bridge/employeeSearch/EmployeeSearchDirective.js"></script>
 
+        <!-- app -->
+        <script src="app/im/overview.js"></script>
+        <script src="app/im/im.js"></script>
+        <script src="app/im/detail.js"></script>
+        <script src="app/im/settings.js"></script>
+        <script src="app/im/config.js"></script>
+        <script src="app/test/overview.js"></script>
+        <script src="app/lunchWalldorf/overview.js"></script>
+        <script src="app/atc/overview.js"></script>
+        <script src="app/atc/config.js"></script>
+        <script src="app/atc/data.js"></script>
+        <script src="app/atc/detail.js"></script>
+        <script src="app/atc/settings.js"></script>
+        <script src="app/jira/overview.js"></script>
+        <script src="app/jira/JiraBox.js"></script>
+        <script src="app/jira/detail.js"></script>
+        <script src="app/employeeSearch/overview.js"></script>
+        <script src="app/meetings/ews.js"></script>
+        <script src="app/meetings/overview.js"></script>
+        <script src="app/cats/cats.js"></script>
+        <script src="bridge/libUtils.js"></script>
+        <script src="app/cats/overview.js"></script>
 
-      <!-- counter -->
-      <script src="counter.js"></script>
+        <script src="app/githubMilestone/overview.js"></script>
+        <script src="app/githubMilestone/settings.js"></script>
+        <script src="app/githubMilestone/config.js"></script>
 
+        <script src="lib/jQueryUISortable.js"></script>
+        <script src="bridge/sortableService.js"></script>
+
+        <!-- CATS maintencance -->
+        <script src="app/cats/detail/main.js"></script>
+        <script src="app/cats/detail/allocationBar/allocationBarControl.js"></script>
+        <script src="app/cats/detail/allocationBar/allocationBarDirective.js"></script>
+        <script src="app/cats/detail/allocationBar/allocationBarUtils.js"></script>
+        <script src="app/cats/detail/allocationBar/allocationBlock.js"></script>
+        <script src="app/cats/detail/allocationBar/svg.min.js"></script>
+        <script src="app/cats/detail/allocationBar/svg.draggable.js"></script>
+        <script src="app/cats/detail/allocationBar/svg.easing.min.js"></script>
+
+        <!--<script src="counter.js"></script>-->
 	    <title>Bridge</title>
 	</head>
 

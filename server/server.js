@@ -8,9 +8,10 @@ var helper		= require('./helper.js');
 
 exports.run = function(npm)
 {	
-	var port  = param.get("port", 8000);
-	var proxy = param.get("proxy", true);
-	var local = param.get("local", true);	
+	var port   = param.get("port", 8000);
+	var proxy  = param.get("proxy", true);
+	var local  = param.get("local", true);
+	var origin = param.get("origin", "http://localhost:8000");
 	
 	function start_server(user)
 	{
@@ -18,7 +19,8 @@ exports.run = function(npm)
 		var app 	= express();
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
-		api.register(app, user, local, proxy, npm);
+		app.use('/docs', express.static(path.join(__dirname, '../docs')));
+		api.register(app, user, local, proxy, npm, origin);
 		
 		if(!local)
 		{ 
