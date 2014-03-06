@@ -1,7 +1,8 @@
 ﻿<div class="app-lunchWalldorf-container">
-    <div ng-if="!loading && dateHasLunchMenu == true" mb-scrollbar>
+    <div ng-if="!loading && dateHasLunchMenu == true">
+    <div mb-scrollbar>
         <b>{{date}}</b>
-        <table >
+        <table>
             <tr>
                 <td class="app-lunchWalldorf-icon">
                     <img src="img/soup2.png" />                
@@ -47,6 +48,7 @@
         </table>
         <br>
         <b><a href="{{portalLink}}">{{portalLinkText}}</a></b>
+    </div>
     </div>
     <div ng-if="dateHasLunchMenu != true">
         <b>{{date}}</b><br>

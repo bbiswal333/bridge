@@ -34,7 +34,7 @@
 
         var date = dateHandling.getDateToDisplay(new Date());
         $scope.date = calUtils.getWeekdays()[dateHandling.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-        $scope.dateHasLunchMenu = dateHandling.getValidDateFlag(date);
+        $scope.dateHasLunchMenu = dateHandling.getValidDateFlag(new Date());
 
         if ($scope.dateHasLunchMenu && true){
             $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'

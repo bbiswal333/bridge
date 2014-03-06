@@ -1,4 +1,4 @@
-angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app.meetings",["$http", "app.meetings.ewsUtils", "lib.utils.calUtils", "$interval", function ($http, ewsUtils, calUtils, $interval) {
+angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app.meetings", ["$timeout", "$http", "app.meetings.ewsUtils", "lib.utils.calUtils", "$interval", function ($timeout, $http, ewsUtils, calUtils, $interval) {
 	var linkFn = function ($scope) {
 		/* ====================================== */
 		/* CONFIGURATION */
@@ -41,11 +41,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 					if (typeof eventsRaw != "undefined") {
 						parseExchangeData(eventsRaw);
 					}
-
-					$scope.currentEvent = 0;
+        			$scope.currentEvent = 0;
 					$scope.loading = false;
-
-					$scope.errMsg = null;
+        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 250);
+        					$scope.errMsg = null;
 				}catch(error){
 					$scope.errMsg = "Unable to connect to Exchange Server";
 					$scope.loading = false;

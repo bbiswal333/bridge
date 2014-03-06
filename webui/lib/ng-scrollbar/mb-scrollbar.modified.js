@@ -14,7 +14,9 @@ angular.module('mb-scrollbar', [])
         },
 // Using fixed hight for our apps
 //        template: "<div class='ngscroll-resizable' style='position: relative; width: 100%; height: 100%;'> <div class='ngscroll-container' style='width: 100%; height: 100%;' ng-transclude></div> <div class='ngscroll-scrollbar-container' ng-style='styles.scrollbarContainer'><div class='ngscroll-scrollbar' ng-style='styles.scrollbar'></div></div> </div>",
-        template: "<div class='ngscroll-resizable' style='position: relative; width: 100%; height: 144px;'> <div class='ngscroll-container' style='width: 100%; height: 100%;' ng-transclude></div> <div class='ngscroll-scrollbar-container' ng-style='styles.scrollbarContainer'><div class='ngscroll-scrollbar' ng-style='styles.scrollbar'></div></div> </div>",
+// Modification start
+        template: "<div class='ngscroll-resizable' style='position: relative; width: 100%; height: 100%; max-height: 138px;'> <div class='ngscroll-container' style='width: 100%; height: 100%;' ng-transclude></div> <div class='ngscroll-scrollbar-container' ng-style='styles.scrollbarContainer'><div class='ngscroll-scrollbar' ng-style='styles.scrollbar'></div></div> </div>",
+// Modification end
         link: function(scope, element) {
 
             // Helper functions
@@ -128,6 +130,12 @@ angular.module('mb-scrollbar', [])
 
                 child.css(config.dimension, length+'px');
                 scrollbarLength = ( containerSize / length ) * containerSize - config.scrollbar.margin * 2;
+                if ( scrollbarLength > containerSize - 6 )
+// Modification start
+                {
+                    scrollbarLength = containerSize - 6;
+                }
+// Modification end
                 scrollbar.css(config.dimension, scrollbarLength + 'px');
                 scrollbar.css('transition', 'opacity .3s ease-in-out, border-radius .1s linear, ' +
                     config.rDimension+' .1s linear, ' +
