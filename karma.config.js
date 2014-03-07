@@ -14,16 +14,37 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser (*.spec.js is redundant)
     files: [
-      './spec/ng/angular.js',
-      './spec/ng/angular-mocks.js',
-      //'./**/*.js'
+      './webui/lib/jQuery-2_1_0/jquery.min.js',
+      './webui/lib/angular-1_2_13/angular.min.js',
+      './webui/lib/**/*.js',
+
+      './webui/bridge/bridgeController.js',
+      './webui/bridge/**/*.js',
+
       './webui/app/meetings/*.js',
+
       './webui/app/lunchWalldorf/overview.js',
-      './webui/bridge/libUtils.js',
 
       './webui/app/githubMilestone/overview.js',
       './webui/app/githubMilestone/config.js',
       './webui/app/githubMilestone/settings.js',
+
+      './webui/app/test/overview.js',
+
+      './webui/app/jira/overview.js',
+      './webui/app/jira/*.js',
+
+      './webui/app/im/overview.js',
+      './webui/app/im/*.js',
+
+      './webui/app/employeeSearch/*.js',
+
+      './webui/app/cats/overview.js',
+      './webui/app/cats/detail/allocationBar/svg.min.js',
+      './webui/app/cats/**/*.js',
+
+      './webui/app/atc/overview.js',
+      './webui/app/atc/*.js',
 
       '**/*.spec.js'
     ],
@@ -66,7 +87,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
     //browsers: ['Chrome'],
 
     // If browser does not capture in given timeout [ms], kill it
