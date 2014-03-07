@@ -1,4 +1,8 @@
 ﻿angular.module('bridge.app').service('bridgeConfig', function ($http) {
+
+    this.showSettingsModal = function () {
+
+    };
   
     this.persistInBackend = function (boxInstances) {
             this.config.boxSettings.length = 0; // clears the array without creating a new one
@@ -48,22 +52,6 @@
             }
         }
     };
-
-    //this.applyConfigToApps = function (boxInstances, config) {
-    //        for (var box in boxInstances) {
-    //            if (angular.isFunction(boxInstances[box].scope.applyConfig)) {
-    //                var correspondingConfig;
-
-    //                for (var cfg in config.boxSettings) {
-    //                    if (boxInstances[box].scope.boxId == config.boxSettings[cfg].boxId) {
-    //                        correspondingConfig = config.boxSettings[cfg].setting;
-    //                        boxInstances[box].scope.applyConfig(correspondingConfig);
-    //                        break;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //};
 
     this.config = {
             bridgeSettings: {
