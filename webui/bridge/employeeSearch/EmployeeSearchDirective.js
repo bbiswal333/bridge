@@ -8,6 +8,15 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
         }
 
         $scope.doSearch = function (username) {
+            // removing stuff the service cannot handle
+            if (username.indexOf(",") != -1) {
+                username = username.replace(',', ' ');
+                username = username.replace('  ', ' ');
+                username = username.replace(';', ' ');
+                username = username.replace('  ', ' ');
+                username = username.replace('.', ' ');
+                username = username.replace('  ', ' ');
+            };
             return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=20&query=' + username + '&origin=' + location.origin).then(function (response) {
                 return response.data.DATA;
             });
