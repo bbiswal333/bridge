@@ -3,7 +3,7 @@ var npm_load	= require('./npm_load.js');
 
 exports.run = function(npm)
 {	
-	var port   = param.get("port", 8001);
+	var port   = param.get("port", 8080);
 	var proxy  = param.get("proxy", true);	
 	
 	function start_server()
