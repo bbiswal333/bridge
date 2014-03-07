@@ -36,8 +36,8 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
-    function ($scope, $modal, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
+    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
         $http.get('http://localhost:8000/client').success(function (data, status) {            
         }).error(function (data, status, header, config) {            
             //alert('light mode detected');
@@ -58,46 +58,8 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
           }
 
 
-          $scope.settings_click = function (boxId) {
-            var templateString;
-            var templateController;
-            var boxController;
-            var boxScope;
-
-            for (var boxProperty in bridgeDataService.boxInstances) {
-                if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
-                    templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
-                    templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
-                    boxController = bridgeDataService.boxInstances[boxProperty];
-                    boxScope = bridgeDataService.boxInstances[boxProperty].scope;
-                }
-            }
-
-            window.modalInstance = $modal.open({
-                templateUrl: 'view/settings.html',
-                controller: angular.module('bridge.app').settingsController,
-                resolve: {
-                    templateString: function () {
-                        return templateString;
-                    },
-                    templateController: function () {
-                        return templateController;
-                    },
-                    boxController: function () {
-                        return boxController;
-                    },
-                    boxScope: function () {
-                        return boxScope;
-                    },
-                }
-            });
-
-            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            modalInstance.result.then(function (selectedItem) {
-                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-            }, function () {
-                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-            });
+        $scope.settings_click = function (boxId) {
+            bridgeConfig.showSettingsModal(boxId);
         };
 
         $scope.overview_click = function () {

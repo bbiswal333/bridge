@@ -1,7 +1,48 @@
-﻿angular.module('bridge.app').service('bridgeConfig', function ($http) {
+﻿angular.module('bridge.app').service('bridgeConfig', function ($http, $modal, bridgeDataService) {
+    this.modalInstance = undefined;
 
-    this.showSettingsModal = function () {
+    this.showSettingsModal = function (boxId) {
+        var templateString;
+        var templateController;
+        var boxController;
+        var boxScope;
 
+        for (var boxProperty in bridgeDataService.boxInstances) {
+            if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
+                templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
+                templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
+                boxController = bridgeDataService.boxInstances[boxProperty];
+                boxScope = bridgeDataService.boxInstances[boxProperty].scope;
+            }
+        }
+
+        this.modalInstance = $modal.open({
+            templateUrl: 'view/settings.html',
+            controller: angular.module('bridge.app').settingsController,
+            resolve: {
+                templateString: function () {
+                    return templateString;
+                },
+                templateController: function () {
+                    return templateController;
+                },
+                boxController: function () {
+                    return boxController;
+                },
+                boxScope: function () {
+                    return boxScope;
+                },
+            }
+        });
+
+        var that = this;
+
+        // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+        this.modalInstance.result.then(function (selectedItem) {
+            that.persistInBackend(bridgeDataService.boxInstances);
+        }, function () {
+            that.persistInBackend(bridgeDataService.boxInstances);
+        });
     };
   
     this.persistInBackend = function (boxInstances) {

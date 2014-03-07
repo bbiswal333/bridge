@@ -1,4 +1,4 @@
-angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubMilestone.configservice', '$scope', '$http', function (appGithubMilestoneConfig, $scope, $http) {
+angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubMilestone.configservice', '$scope', '$http', 'bridgeConfig', function (appGithubMilestoneConfig, $scope, $http, bridgeConfig) {
 
 	 $scope.currentConfigValues = angular.copy(appGithubMilestoneConfig);
 	 $scope.error = {inputUrl:"has-success", display: "none", msg: "" };
@@ -18,7 +18,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         appGithubMilestoneConfig.repo.html_url = copiedConfigItem.repo.html_url;
         appGithubMilestoneConfig.milestoneDuration = copiedConfigItem.milestoneDuration;
 
-        window.modalInstance.close();
+        bridgeConfig.modalInstance.close();
     };//$scope.save_click
 
     $scope.getTypeaheadData =_.throttle(function() {
