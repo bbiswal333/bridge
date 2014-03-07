@@ -1,0 +1,151 @@
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Bridge</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ 		
+ 		<link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
+		<link rel="stylesheet" href="lib/reveal-2.6.1/css/reveal.min.css">
+		<link rel="stylesheet" href="lib/reveal-2.6.1/css/theme/sky.css" id="theme">
+		<link rel="stylesheet" href="lib/reveal-2.6.1/lib/css/zenburn.css">
+
+		<script>
+			document.write( '<link rel="stylesheet" href="lib/reveal-2.6.1/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				
+				<section>
+					<img src="img/logo-full.png" style="height:200px;border:0px;box-shadow:none;background:none"></img>
+					<!--<h1>Bridge</h1>-->
+					<h4>Inner Source Dashboard & Platform for Developers</h4>
+				</section>
+
+				<!--
+				<section>
+					<h2>Developer Tools</h2>
+						<ul>							
+							<li>support agile methods and processes</li>
+							<li>provide transparency on product quality</li>
+							<li>provide open frameworks which can be extended</li>							
+							<li>put main focus on end user experience</li>
+						</ul>
+				</section>
+				-->
+
+				<section>
+					<h2>Interview & Survey</h2>
+						<p>
+							"No direct place for finding information"<br />
+							"There is no place to get notified if something has changed"<br />
+							"I use a Mac and need to log on to WTS"<br />
+							"Entering data directly, like entering CAT2 entries"<br />
+							"A Fiori-like UI would be more fun to use"<br />
+							"..make a web based app with simple interaction patterns"<br />
+							"..look up the meeting room of the upcomming meeting"<br />
+						</p>
+				</section>
+
+				<section>
+					<h2>Current Solution</h2>
+					<img src="img/ed.png" style="border:0px" height="80%"></img>
+				</section>
+
+				<section>
+					<h2>Usage</h2>
+					<img src="img/ed_stats.png" style="border:0px" height="80%"></img>					    						
+				</section>
+
+				<section>
+					<h2>Main Apps</h2>
+						<ul>		
+							<li>CATS: 5.886</li>
+							<li>Links: 5.384</li>
+							<li>SAP Connect: 5.176</li>
+							<li>CSS Tickets: 1.826</li>
+							<li>Jira: 953</li>
+							<li>Notes/ Corrections: 510</li>
+							<li>Jenkins/ ATC: 340</li>
+						</ul>
+				</section>
+
+
+				<section>
+					<h2>Problems</h2>
+						<ul>
+							<li>windows only</li>
+							<li>c# knowledge needed</li>
+							<li>limited resources</li>
+							<li>lots of ideas/ requests</li>
+							<li>heterogeneity of tool landscape</li>
+						</ul>
+
+				</section>
+
+				<section>
+					<h2>Solution</h2>
+						<ul>
+							<li>use internal github for inner source approach</li>
+							<li>provide javascript based solution</li>							
+							<li>low entrance barrier/ footprint</li>				
+							<li>entry point to new applications</li>		
+							<!--<li>integrate new UI into current application</li>-->
+						</ul>
+				</section>
+
+				<section>
+					<h2>Plan</h2>
+						<ul>
+							<li>internal pilot in Q1</li>
+							<li>integrated solution in Q2</li>
+							<li>focus on main apps</li>
+							<li>integrate new tools</li>
+						</ul>
+				</section>
+
+				<section>
+					<h2>Demo / Q&A</h2>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/reveal-2.6.1/lib/js/head.min.js"></script>
+		<script src="lib/reveal-2.6.1/js/reveal.min.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme,
+				transition: Reveal.getQueryHash().transition || 'default',
+
+				dependencies: [
+					{ src: 'lib/reveal-2.6.1/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'lib/reveal-2.6.1/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-2.6.1/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'lib/reveal-2.6.1/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'lib/reveal-2.6.1/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'lib/reveal-2.6.1/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

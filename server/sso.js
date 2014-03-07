@@ -142,30 +142,44 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     	var SSOKeyPath         = path.join(__dirname, '/SSOCert.key');
     	var SSOCertPath        = path.join(__dirname, '/SSOCert.cert');
     	
-        exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr) {   	       	
-        		exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
-        			
-        			var identity = getIdentityFromPemBags( getPemBags( fs.readFileSync(SSOPemPath).toString() ) );
+        exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr)
+        {   	       	
+            exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr)
+            {
+            	var identity = getIdentityFromPemBags( getPemBags( fs.readFileSync(SSOPemPath).toString() ) );
 
-        			fs.writeFileSync(SSOCertPath, identity.certificate.data);
-        			fs.writeFileSync(SSOKeyPath, identity.key.data);
-                    user.id = identity.certificate.user;                
+            	fs.writeFileSync(SSOCertPath, identity.certificate.data);
+            	fs.writeFileSync(SSOKeyPath, identity.key.data);
+                user.id = identity.certificate.user;                
 
-        			exec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath + 
-        		      "' -in '" + SSOCertPath+ "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr) {
+            	exec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath + 
+                    "' -in '" + SSOCertPath+ "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr)
+                {
+            		user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
+            		var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
+            		exec(deleteCommand, function (error, stdout, stderr) { });	
 
-    					user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
-    	        		var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
-    					exec(deleteCommand, function (error, stdout, stderr) { });	
-
-                        exec("security find-generic-password -a " + identity.certificate.user.toLowerCase() + " -w", function(error, stdout, stderr) {
+                    exec("security find-generic-password -a " + identity.certificate.user.toLowerCase() + " -w", function(error, stdout, stderr)
+                    {
+                        if ( stderr.indexOf("SecKeychainSearchCopyNext") != -1)
+                        {
+                            exec("security find-generic-password -a " + identity.certificate.user.toUpperCase() + " -w", function(error, stdout, stderr)
+                            {
+                                console.log(stderr);
+                                var lines = stdout.toString().split('\n');
+                                user.pass = lines[0];
+                                callback(user);
+                            });
+                        }
+                        else
+                        {
                             var lines = stdout.toString().split('\n');
                             user.pass = lines[0];
                             callback(user);
-                        });      
-        		    });
-
-        		} );
+                        }
+                    });      
+                });
+            } );
     	});
     }
 };

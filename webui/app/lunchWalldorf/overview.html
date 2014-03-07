@@ -1,51 +1,58 @@
-﻿ <div class="app-lunchWalldorf-container">
- <div class="bridge-fade-anim" ng-if="!loading" ng-scrollbar>
-         <table>
-         <tr>
-             <b>{{date}}</b>
-         </tr>
-         <tr>
-             <td class="app-lunchWalldorf-icon">
-                <img src="img/soup2.png" />                
-             </td>
-             <td>
-                 {{lunch.soup}}
-             </td>
-         </tr>
-         <tr>
-             <td class="app-lunchWalldorf-icon" rowspan="3">
-                 <img src="img/main_course.png" />
-             </td>
-             <td>
-                 {{lunch.mainCourse[0]}}
-             </td>
-         </tr>
-         <tr>
-             <td>
-                 {{lunch.mainCourse[1]}}
-             </td>
-         </tr>
-         <tr>
-             <td>
-                 {{lunch.mainCourse[2]}}
-             </td>
-         </tr>
-         <tr>
-             <td class="app-lunchWalldorf-icon">
-                 <img src="img/sidedish.png" />
-             </td>
-             <td>
-                 {{lunch.sideDishes}}
-             </td>
-         </tr>
-         <tr>
-             <td class="app-lunchWalldorf-icon">
-                 <img src="img/dessert.png" />
-             </td>
-             <td>
-                 {{lunch.dessert}}
-             </td>
-         </tr>
-     </table>
-</div>
+﻿<div class="app-lunchWalldorf-container">
+    <div ng-if="!loading && dateHasLunchMenu == true">
+    <div mb-scrollbar>
+        <b>{{date}}</b>
+        <table>
+            <tr>
+                <td class="app-lunchWalldorf-icon">
+                    <img src="img/soup2.png" />                
+                </td>
+                <td>
+                    {{lunch.soup}}
+                </td>
+            </tr>
+            <tr>
+                <td class="app-lunchWalldorf-icon" rowspan="3">
+                    <img src="img/main_course.png" />
+                </td>
+                <td>
+                    {{lunch.mainCourse[0]}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{lunch.mainCourse[1]}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{lunch.mainCourse[2]}}
+                </td>
+            </tr>
+            <tr>
+                <td class="app-lunchWalldorf-icon">
+                    <img src="img/sidedish.png" />
+                </td>
+                <td>
+                    {{lunch.sideDishes}}
+                </td>
+            </tr>
+            <tr>
+                <td class="app-lunchWalldorf-icon">
+                    <img src="img/dessert.png" />
+                </td>
+                <td>
+                    {{lunch.dessert}}
+                </td>
+            </tr>
+        </table>
+        <br>
+        <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
+    </div>
+    </div>
+    <div ng-if="dateHasLunchMenu != true">
+        <b>{{date}}</b><br>
+        {{sorryString}}<br>
+        <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
+    </div>
 </div>
