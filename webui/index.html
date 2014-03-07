@@ -102,7 +102,7 @@
 	    <title>Bridge</title>
 	</head>
 
-	<body ng-controller="bridgeController">
+	<body ng-controller="bridgeController" class="noselect">
 
         <!-- hiding the overview page until the config is loaded ensures that the app-config is available at the time each app is started -->
         <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
@@ -118,7 +118,7 @@
             <div id="menu">
                 <ul class="mainNav">
                     <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
-                    <li id="projects-button" ng-click="projects_click()">PROJECTS</li>
+                    <!--<li id="projects-button" ng-click="projects_click()">PROJECTS</li>-->
                 </ul>
             </div>
 
