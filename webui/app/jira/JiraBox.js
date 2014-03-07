@@ -9,8 +9,8 @@ var JiraBox = function(http){
 JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.getIssuesforQuery = function (query, scope) {
-    scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
-    this.http.get('/api/get?url=' + encodeURI('https://sapjira-dev.wdf.sap.corp/rest/api/latest/search?jql=' + query)
+    scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });    
+    this.http.get('https://sapjira-dev.wdf.sap.corp/rest/api/latest/search?jql=' + encodeURIComponent('project=TEST1')
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
 
@@ -77,5 +77,5 @@ angular.module('app.jira').factory('JiraBox', ['$http',
 
 angular.module('app.jira').factory('JiraQuery', [
     function (){
-        return 'project%3DTEST';
+        return 'project=TEST';
     }]);
