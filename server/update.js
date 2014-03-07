@@ -12,8 +12,6 @@ exports.run = function(npm)
 		console.log("Git Hook Server started.");
 
 		gith({
-  			repo: 'D050049/test',
-  			branch: 'master'
 		}).on( 'all', function( payload ) {
   			console.log( payload );  			
 		});
