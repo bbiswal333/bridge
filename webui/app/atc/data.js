@@ -13,7 +13,7 @@
             $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
-            $http.get('https://ifpmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin='+location.origin)
+            $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin='+location.origin)
             .success(function (data) {
 
                 that.data = {
@@ -30,7 +30,7 @@
             $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
 
             var that = this;
-            $http.get('https://ifpmain.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin='+location.origin)
+            $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin='+location.origin)
             .success(function (data) {
 
                 //$scope.atcDetails = data.DATA;
