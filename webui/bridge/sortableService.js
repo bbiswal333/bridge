@@ -1,7 +1,6 @@
 angular.module('bridge.app').service('sortableConfig', function () {
 
 	this.getDefaultConfig = function(){
-
 		return [                                        
             {content: "app.cats", id: 1, size:"box-2"},
             {content: "app.lunch-walldorf", id: 2, size:"box-1"},
@@ -16,7 +15,6 @@ angular.module('bridge.app').service('sortableConfig', function () {
             {content: "app.test", id: 9, size:"box-1"}
         ]; 		
 	}
-
 
 	this.sortableOptions = {
             //placeholder: "sortable-placeholder",
