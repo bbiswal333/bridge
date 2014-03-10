@@ -30,10 +30,12 @@
             alt_text = "Or:";
             side_text = "Side dishes:";
             dessert_text = "Dessert:";
-            $scope.portalLinkText = "Lunch menu in the portal";
-            $scope.sorryString = "Sorry, no more lunch this week.";
-            $scope.noDataString = "Data could not be loaded.";
         };
+
+        // English texts standard for now...
+        $scope.portalLinkText = "Lunch menu in the portal";
+        $scope.sorryString = "Sorry, no more lunch this week.";
+        $scope.noDataString = "Data could not be loaded.";
 
         var date = dateHandling.getDateToDisplay(new Date());
         $scope.date = calUtils.getWeekdays()[dateHandling.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
