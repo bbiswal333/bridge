@@ -228,10 +228,10 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     }; //calcBusinessDays
 
     this.parseDate = function(str) {
-        if (typeof str != "string" || str.length != 8) return false;
-        var day = str.substr(0, 2);
-        var mon = str.substr(2, 2) - 1;
-        var year = str.substr(4, 4);
+        if (typeof str != "string" || str.length != 10) return false;
+        var day = str.substr(8, 2);
+        var mon = str.substr(5, 2) - 1;
+        var year = str.substr(0, 4);
         return new Date(year, mon, day);
     };
 
@@ -245,7 +245,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     this.stringifyDate = function(date_o) {
         if (!(date_o instanceof Date)) return null;
-        return this.useNDigits(date_o.getDate(), 2) + "" + this.useNDigits((date_o.getMonth() + 1), 2) + "" + date_o.getFullYear();
+        return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
     this.getWeekdays = function() {
