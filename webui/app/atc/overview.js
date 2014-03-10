@@ -5,7 +5,7 @@ angular.module('app.atc').directive('app.atc',
     function ($modal, $interval, appAtcConfig, appAtcData, bridgeConfig) {
     
     var directiveController = ['$scope', function ($scope) {
-        $scope.boxTitle = "ABAP Code Check Results";
+        $scope.boxTitle = "ATC Results";
         $scope.settingsTitle = "Configure Source Systems and Packages";
         $scope.boxIcon = '&#xe05e;';
         $scope.customCSSFile = "app/atc/style.css";
@@ -46,6 +46,7 @@ angular.module('app.atc').directive('app.atc',
         });
 
         $scope.$watch('atcData.data', function () { 
+            $scope.displayChart = true;
             $scope.updateATCChart($scope);
         });
         $scope.$watch('config', function () {

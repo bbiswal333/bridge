@@ -9,7 +9,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.boxTitle = "Github";
             $scope.initialized = true;
             $scope.boxIcon = '&#xe009;';
-            $scope.settingsTitle = "Settings";
+            $scope.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: "none", msg: ""};
 
             //Settings Screen
@@ -27,7 +27,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
         $scope.getData = function() { 
             $scope.config = appGithubMilestoneConfig;
 
-            $scope.boxTitle = "Github Milestone - "+$scope.config.repo.full_name;
+            $scope.boxTitle = "Github";
                 $http({
                     method: 'GET',
                     url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
