@@ -38,6 +38,14 @@ img
     cursor:default;
 }
 
+.usrimg
+{
+    background-image: -o-radial-gradient(circle, #fff, #b1b5be 150px);
+    background-image: -moz-radial-gradient(circle, #fff, #b1b5be 150px);
+    background-image: -webkit-radial-gradient(circle, #fff, #b1b5be 150px);
+    background-repeat: no-repeat;
+}
+
 .p1
 {
     font-size: 26px;

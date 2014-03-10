@@ -49,6 +49,93 @@ Bridge is an internal open source project. One main goal of this is contribution
 * run with `$ nodemon --debug server/server.js`
 
 Building Apps
+======================================
+
+## application structure
+* apps are contained in their own sub-folder `webui/app/appname`
+* apps must be an angluar-directive named `app.appname` inside it's own module named `app.appname`
+* the app directive must not have an isolated scope
+* apps contain at least the files `overview.js` and `overview.html` for rendering a box on the overview page
+* `$scope.boxId` is inherited from the `bridge.box` directive
+* apps can optionally define settings in a separate directive
+
+## overview.js
+```javascript
+
+angular.module('app.test', []);
+angular.module('app.test').directive('app.test', function () {
+
+    var directiveController = ['$scope', function ($scope) {
+        $scope.boxTitle = "Test App";
+        $scope.initialized = true;
+        $scope.boxIcon = '&#xe05c;'; 
+        
+        //optional settings screen
+        $scope.settingScreenData = {
+        	templatePath: "test/settings.html",
+            	controller: angular.module('app.test').appTestSettings,
+            	id: $scope.boxId,
+        };
+    }];
+
+    return {
+        restrict: 'E',
+        templateUrl: 'app/test/overview.html',
+        controller: directiveController
+    };
+});
+
+```
+
+## overview.html
+```html
+This is just an app with no real content. The app id is {{boxId}}.
+```
+## settings.js
+```javascript
+
+angular.module('app.test').appTestSettings = ['app.test.configservice', '$scope', function (appTestConfig, $scope) {
+ //...
+}];
+```
+## settings.html
+
+Release Backlog
 ===============
-If you want to learn how to build own apps, please read [here](BUILDING_APPS.md).
+
+## High Level Plan
+* deadline end of CW26
+* end user feedback as soon as possible
+* show and tell sessions every 2 weeks
+* internal pilot after "browser only" variant is ready
+
+## Top X Apps
+* Timesheet Information (CAT2) incl. maintenance
+* Links (SAPGui & URL)
+* Employee Search incl. SAP Connect
+* Internal Messages
+* Customer Messages
+* IT Tickets
+* Jira
+* ATC
+* Jenkins
+* Github
+* Lunch Menu
+* Meetings
+
+## Browser Only
+* running version available without client on monsoon
+* additional functionality with client installer
+
+## Framework
+* general settings
+* projects & team views
+* customizing of app order
+* browser compatability incl. mobile support
+* rfc calls for direct system access
+* multi instance apps
+
+## Inner Source
+* sample apps & docu to jump start app development
+
 
