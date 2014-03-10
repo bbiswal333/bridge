@@ -46,7 +46,15 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$modal',
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
                                            
-          
+          window.debug = {
+
+            resetSort: function(){
+                $scope.apps = sortableConfig.getDefaultConfig();
+                bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
+                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
+                        }
+          };
+
 
           $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )

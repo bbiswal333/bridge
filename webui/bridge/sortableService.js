@@ -18,6 +18,7 @@ angular.module('bridge.app').service('sortableConfig', function () {
 	}
 
 
+
 	this.sortableOptions = {
             //placeholder: "sortable-placeholder",
             //forceHelperSize: true,
