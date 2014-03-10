@@ -9,6 +9,7 @@ angular.module('bridge.app', [
     'mgcrea.ngStrap',
     'ngTable',
     'mb-scrollbar',
+    'ui.sortable',
     // bridge modules
     'bridge.employeeSearch',
     'bridge.box',
@@ -22,7 +23,7 @@ angular.module('bridge.app', [
     'app.cats',
     'app.lunchWalldorf',
     'app.githubMilestone',
-    'ui.sortable',
+    'app.links',
     'app.cats.maintenanceView',
     'ui.select2']);
 
