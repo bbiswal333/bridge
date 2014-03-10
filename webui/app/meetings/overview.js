@@ -134,7 +134,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 
 		$scope.getCurrentDate = function () {
 		    var date = new Date();
-		    return calUtils.getWeekdays()[date.getDay() - 1].short + "., " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).short + ".";
+		    return calUtils.getWeekdays()[date.getDay() - 1].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
 		};
 
 		var refreshInterval = null;
