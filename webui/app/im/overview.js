@@ -6,13 +6,13 @@ angular.module('app.im').directive('app.im', function () {
         $scope.boxTitle = "Internal Messages";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d3;';
-        $scope.settingsTitle = "Settings";
+        /*$scope.settingsTitle = "Settings";
 
         $scope.settingScreenData = {
             templatePath: "im/settings.html",
                 controller: angular.module('app.im').appImSettings,
                 id: $scope.boxId,
-            };
+            };*/
     }];
 
     return {
