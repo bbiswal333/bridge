@@ -15,6 +15,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             this.group = s;
             this.block = s.rect(width_i, height_i).move(x, y).fill(color_s).on("dblclick", function() {
                 self.remove();
+                self.p.fireAllocChanged();
             }).attr("class", "allocation-bar-block");
 
             this.textField.main = s.text(function(add) {

@@ -10,7 +10,7 @@
 				<div class="app-cats-day" ng-repeat="weekday in weekdays">{{weekday.medium | uppercase}}</div>
 			</div>
 			<div class="app-cats-week" ng-repeat="week in calArray">
-				<div ng-repeat="day in week" ng-if="day.data != null" class="app-cats-day app-cats-state{{day.data.state}}" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture, 'app-cats-today': day.today}" title="{{getDescForState(day.data.state)}}">
+				<div ng-repeat="day in week" ng-if="day.data != null" class="app-cats-day app-cats-state{{day.data.state}} clickable" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture, 'app-cats-today': day.today}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString);">
 					<span>{{day.dayNr}}</span>
 				</div>
 				<div ng-repeat="day in week" ng-if="day.data == null" class="app-cats-day app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
@@ -18,6 +18,6 @@
 				</div>				
 			</div>
 		</div>
-		<div class="app-cats-legend app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tpl.html" data-html="true" data-trigger="click" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
+		<div class="app-cats-legend clickable app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
 	</div>
 </div>

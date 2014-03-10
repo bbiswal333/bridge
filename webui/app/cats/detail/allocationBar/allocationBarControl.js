@@ -26,10 +26,15 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             this.minWidth = 2 * snapRange_i;
 
             //Draw background (with add functionality)
-            s.rect(width, height).move(x, y).fill("#DDDDDD").on("click", function () {
+            var bgPnl = s.foreignObject(width, height).move(x, y).fill("#DDDDDD").on("click", function () {
                 
                 callbackOnAdd_fn(self.getSizeUnallocated());
             }).attr("class", "allocation-bar-background-panel");
+
+            bgPnl.appendChild("div", {
+                style: "width: " + width + "px; height: " + height + "px;",
+                class: "allocation-bar-background-panel-div"
+            });
 
 
             this.construct = function(blocks_ar) {
@@ -42,11 +47,11 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                 colorUtils.resetColorGenerator();
 
                 for (var i = 0; i < blocks_ar.length; i++) {
-                    this.addBlock(blocks_ar[i]);
+                    this.addBlock(blocks_ar[i], (i == blocks_ar.length - 1));
                 }
             };
 
-            this.addBlock = function(block_o) {
+            this.addBlock = function(block_o, fireChange) {
                 var block_width = Math.floor((block_o.value / 100.0) * (width - 2 * PADDING));
 
                 //Check if there is space for another block
@@ -62,6 +67,8 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                 this.blocks.push(new BarBlock(s, self, block_o.desc, block_width, (height - 2 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
 
                 offset += block_width;
+
+                if (fireChange) self.fireAllocChanged();
 
                 return true;
             };

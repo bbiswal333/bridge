@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="200"
+   height="200"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="addButton.svg"
+   inkscape:export-filename="C:\Users\D059349\Documents\DEV\CATS2@Outlook\bridge\webui\app\cats\detail\addButton.png"
+   inkscape:export-xdpi="55.028572"
+   inkscape:export-ydpi="55.028572">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="74.435936"
+     inkscape:cy="13.316206"
+     inkscape:document-units="px"
+     inkscape:current-layer="g3013"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="838"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-852.36218)">
+    <g
+       id="g3013"
+       transform="translate(4.2857143,30)">
+      <rect
+         style="fill:#aaaaaa;fill-opacity:1;stroke:none;opacity:0"
+         id="rect3755"
+         width="175"
+         height="163.57143"
+         x="13.571428"
+         y="835.21936"
+         inkscape:export-filename="C:\Users\D059349\Documents\DEV\CATS2@Outlook\bridge\webui\app\cats\detail\addButton.png"
+         inkscape:export-xdpi="27.257143"
+         inkscape:export-ydpi="27.257143" />
+      <path
+         style="fill:#b3b3b3;stroke:none"
+         d="m 94.401786,844.26843 c -40.16821,0 -72.71875,32.58178 -72.71875,72.75 0,40.16821 32.55054,72.71875 72.71875,72.71875 40.168224,0 72.750004,-32.55054 72.750004,-72.71875 0,-40.16822 -32.58178,-72.75 -72.750004,-72.75 z m -12.125,12.125 24.250004,0 0,48.5 48.5,0 0,24.21875 -48.5,0 0,48.5 -24.250004,0 0,-48.5 -48.46875,0 0,-24.21875 48.46875,0 0,-48.5 z"
+         id="path2985"
+         inkscape:export-filename="C:\Users\D059349\Documents\DEV\CATS2@Outlook\bridge\webui\app\cats\detail\addButton.png"
+         inkscape:export-xdpi="27.257143"
+         inkscape:export-ydpi="27.257143"
+         inkscape:connector-curvature="0" />
+      <rect
+         style="opacity:0;fill:#e6e6e6;fill-opacity:1;stroke:none"
+         id="rect3755-1"
+         width="175"
+         height="163.57143"
+         x="4.642859"
+         y="1063.4336"
+         inkscape:export-filename="C:\Users\D059349\Documents\DEV\CATS2@Outlook\bridge\webui\app\cats\detail\addButton_hover.png"
+         inkscape:export-xdpi="27.257143"
+         inkscape:export-ydpi="27.257143" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#cccccc;fill-opacity:1;stroke:none"
+         d="m 85.473219,1072.4826 c -40.168214,0 -72.718754,32.5818 -72.718754,72.75 0,40.1682 32.55054,72.7188 72.718754,72.7188 40.168221,0 72.750001,-32.5506 72.750001,-72.7188 0,-40.1682 -32.58178,-72.75 -72.750001,-72.75 z m -12.125,12.125 24.25,0 0,48.5 48.500001,0 0,24.2188 -48.500001,0 0,48.5 -24.25,0 0,-48.5 -48.468754,0 0,-24.2188 48.468754,0 0,-48.5 z"
+         id="path2985-7"
+         inkscape:export-filename="C:\Users\D059349\Documents\DEV\CATS2@Outlook\bridge\webui\app\cats\detail\addButton_hover.png"
+         inkscape:export-xdpi="27.257143"
+         inkscape:export-ydpi="27.257143" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+.allocation-bar-dragger {
+
+}
+
+.allocation-bar-dragger-active {
+  fill: #777;
+  cursor: col-resize !important;
+}
+
+.allocation-bar-background-panel-div {
+  background: #AAA;
+  background-image: url("/app/cats/detail/addButton.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  cursor: pointer;
+}
+
+.allocation-bar-background-panel-div:hover {
+  background-image: url("/app/cats/detail/addButton_hover.png");
+}

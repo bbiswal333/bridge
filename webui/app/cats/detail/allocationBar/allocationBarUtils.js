@@ -2,6 +2,19 @@ angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationB
     var colorCounter = 0;
     var gradient = new SVG.Color('#0080C0').morph('#FFDB53');
 
+    var colors = [
+        "#3399cc",
+        "#6cb9e3",
+        "#a4d8f9",
+        "#c4e8ff",
+        "#dff5ff",
+        "#Fff7e1",
+        "#ffe9b8",
+        "#ffd07e",
+        "#ffb541",
+        "#ffa317"
+    ];
+
     function hex2Dec(hex_s) {
         var sum = 0;
         for (var i = 0; i < hex_s.length; i++) {
@@ -54,8 +67,18 @@ angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationB
         return res;
     }
 
-    function getNextColor(offset_f) {
-        offset_f = (offset_f || 0);
+    function getNextColor() {
+        var generated = null;
+        var len = colors.length;
+
+        if (Math.floor(colorCounter / len) % 2 == 0) {
+            generated = colors[colorCounter % len];
+        }
+        else {
+            generated = colors[len - 1 - (colorCounter % len)];
+        }
+
+        /*offset_f = (offset_f || 0);
 
         //var generated = gradient.at(offset_f + ((0.618033988749895 * colorCounter) % 1)).toHex();
         var mult = 0.1;
@@ -63,7 +86,7 @@ angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationB
           mult = 0.9;
         }
         var generated = gradient.at((offset_f + colorCounter * mult) % 1.0).toHex(); //Genrates 10 unique colors
-
+        */
         colorCounter++;
 
         return generated;

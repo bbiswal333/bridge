@@ -33,14 +33,18 @@ angular.module("app.cats.allocationBar", [
             $scope.$watch("blocks", function() {
                 if (!updateBySelfExpected) {
                     $scope.AllocationBarControl.construct($scope.blocks);
+                    console.log("Rebuild");
                 } else {
+                    console.log("no rebuild");
                     updateBySelfExpected = false;
                 }
+
+                console.log($scope.blocks);
             }, true);
 
-            $scope.AllocationBarControl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function(blocks) {
-                $scope.$apply(function() {
-                    updateBySelfExpected = true;
+            $scope.AllocationBarControl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
+                //$scope.$apply(function() {
+                    updateBySelfExpected = false; //Strange behaviour... Two way binding isn't working properly anymore
 
                     $scope.blocks = blocks;
                     if (typeof $scope.onValChanged == "function") {
@@ -48,7 +52,7 @@ angular.module("app.cats.allocationBar", [
                             val: blocks
                         });
                     }
-                });
+                //});
             }, function (possibleValue_i) {
                 $scope.onAddBtnPressed({posVal: possibleValue_i});
             }, function (removedBlock_o) {
