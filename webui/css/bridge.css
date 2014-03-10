@@ -27,6 +27,15 @@ img
 {
     pointer-events: none;
 }
+
+.image_rounded_shadow img {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    border-radius:8px;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;
+}
+
 .noselect
 {
     -webkit-touch-callout: none;

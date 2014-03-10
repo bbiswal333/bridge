@@ -1,8 +1,8 @@
 <bridge.employee-search selected-employee="selectedEmployee" placeholder="'Name...'" required="false"></bridge.employee-search>
 <div style="height:5px;width:100%"></div>
 <div class="boxLeft">
-	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">				
-		<img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined" class="usrimg" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img>	
+	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">		
+	<span class="image_rounded_shadow"><img ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined"  ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{selectedEmployee.BNAME}}?s=75x100"></img></span>
 	</div>
 </div>
 <div class="boxRight">

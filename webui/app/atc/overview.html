@@ -1,5 +1,9 @@
-﻿<div google-chart chart="chart" style="{{chart.cssStyle}}"></div>
-
-<div style="float:right;width:10%;position:absolute;top:75%;right:10%">
-    <a href="#/detail/atc" class="btn btn-default btn-sm">Details</a>
+﻿<div>	
+	<div class="prio">Prio 1: {{atcData.data.prio1}}</div>
+	<div class="prio">Prio 2: {{atcData.data.prio2}}</div>
+	<div class="prio">Prio 3: {{atcData.data.prio3}}</div>
+	<div class="prio">Prio 4: {{atcData.data.prio4}}</div>
+	<div ng-if="displayChart" style="float:right;width:10%;position:absolute;bottom:10px;right:50px" ng-if="displayChart">
+    	<a class="btn btn-default btn-sm" href="#/detail/atc">Details</a>
+	</div>	
 </div>
