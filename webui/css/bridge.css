@@ -38,6 +38,34 @@ img
     cursor:default;
 }
 
+.p1
+{
+    font-size: 26px;
+    width:100%;
+    padding-left:0px;
+}
+
+.p2
+{
+    font-size: 22px;
+    width:100%;
+    padding-left:10px;
+}
+
+.p3
+{
+    font-size: 18px;
+    width:100%;
+    padding-left:20px;
+}
+
+.p4
+{
+    font-size: 14px;
+    width:100%;
+    padding-left:30px;
+}
+
 .details{
     background-color: white;
 }
