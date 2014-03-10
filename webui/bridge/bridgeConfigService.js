@@ -59,7 +59,7 @@
             }
 
             $http({
-                url: 'https://ifpmain.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
                 method: "POST",
                 data: angular.toJson(this.config),
                 headers: { 'Content-Type': 'text/plain' },
@@ -73,7 +73,7 @@
 
     this.loadFromBackend = function (deferred) {
             $http({
-                url: 'https://ifpmain.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B&origin=' + encodeURIComponent(location.origin),
                 method: "GET",
             }).success(function (data, status, headers, config) {
                 console.log("Config loaded successfully");
