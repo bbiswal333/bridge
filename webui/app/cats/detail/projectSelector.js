@@ -31,6 +31,7 @@ angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "app
 
   for (var i = 0; i < items.length; i++) {
     var newItem = {};
+    newItem.id = i;
     newItem.name = items[i].taskDesc;
     newItem.desc = items[i].projectDesc;
     newItem.data = {};
@@ -41,11 +42,11 @@ angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "app
   }
 
   $scope.toogleSelect = function (indx) {
+    console.log(indx);
     $scope.items[indx].selected = !$scope.items[indx].selected;
   };
 
   $scope.resetFilter = function () {
-    console.log($scope.filterVal);
     $scope.filterVal = "";
   };
 

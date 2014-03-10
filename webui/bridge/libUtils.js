@@ -153,35 +153,40 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         }
     };
 
-    this.relativeTimeTo = function(dateFrom_o, dateTo_o, short) {
+    this.relativeTimeTo = function(dateFrom_o, dateTo_o, short_b) {
         var diffMin = dateTo_o.getTime() - dateFrom_o.getTime();
         diffMin = Math.floor(diffMin / 60000);
 
-        var days = Math.floor(diffMin / (24 * 60));
-        diffMin = diffMin - days * 24 * 60;
+        return this.getTimeInWords(diffMin, short_b);
+    };
 
-        var hours = Math.floor(diffMin / 60);
-        diffMin = diffMin - hours * 60;
+    this.getTimeInWords = function (minutes_i, short_b) {
+
+        var days = Math.floor(minutes_i / (24 * 60));
+        minutes_i = minutes_i - days * 24 * 60;
+
+        var hours = Math.floor(minutes_i / 60);
+        minutes_i = minutes_i - hours * 60;
 
         var res = "";
         if (days > 0) {
-            if (short)
+            if (short_b)
                 res += days + "d ";
             else
                 res += days + ((days == 1) ? " day, " : " days, ");
         }
         if (hours > 0) {
-            if (short)
+            if (short_b)
                 res += hours + "h ";
             else
                 res += hours + ((hours == 1) ? " hour, " : " hours, ");
         }
-        if (short)
-            res += diffMin + "m";
+        if (short_b)
+            res += minutes_i + "m";
         else
-            res += diffMin + ((diffMin == 1) ? " minute" : " minutes");
+            res += minutes_i + ((minutes_i == 1) ? " minute" : " minutes");
 
-        return res;
+        return res;       
     };
 
     this.useNDigits = function(val_i, n_i) {

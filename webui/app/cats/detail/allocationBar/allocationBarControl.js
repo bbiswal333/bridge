@@ -3,7 +3,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
     "app.cats.allocationBar.core.block",
     function(colorUtils, BarBlock) {
         // blocks_ar: [{desc: "Project A", value: 50}, {desc: "Project B", value: 25}, {desc: "Project X", value: 25}]
-        var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnAdd_fn, callbackOnRemove_fn) {
+        var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnAdd_fn, callbackOnRemove_fn, getValueToDisplay_fn) {
             var self = this;
             var colorOffset = "#aaaaaa";
             var PADDING = (padding_i || 5);
@@ -24,6 +24,8 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             this.PADDING = PADDING;
             this.snapRange = snapRange_i;
             this.minWidth = 2 * snapRange_i;
+
+            this.getValueToDisplay = getValueToDisplay_fn;
 
             //Draw background (with add functionality)
             var bgPnl = s.foreignObject(width, height).move(x, y).fill("#DDDDDD").on("click", function () {
@@ -152,7 +154,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
 
             this.getWidth = function() {
                 return width - 2 * PADDING;
-            }
+            };
         }
 
         return StackedBarInput;

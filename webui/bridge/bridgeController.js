@@ -133,7 +133,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
         $scope.overview_click = function () {
             $location.path('/');
             document.getElementById('overview-button').classList.add('selected');
-            document.getElementById('projects-button').classList.remove('selected');
+            //document.getElementById('projects-button').classList.remove('selected');
         };
 
         $scope.projects_click = function () {

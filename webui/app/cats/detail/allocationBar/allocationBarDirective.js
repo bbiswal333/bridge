@@ -25,7 +25,7 @@ angular.module("app.cats.allocationBar", [
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
             $scope.snapRange = parseInt($scope.snapRange || 20); //snap range of 20px is default
             $scope.padding = parseInt($scope.padding || 5);
-            $scope.heigh = parseInt($scope.height || 100);
+            $scope.height = parseInt($scope.height || 100);
 
             var svg = SVG(elem[0]).size($scope.width, $scope.height).attr("class", "allocation-bar-canvas");
             var updateBySelfExpected = false;
@@ -57,6 +57,12 @@ angular.module("app.cats.allocationBar", [
                 $scope.onAddBtnPressed({posVal: possibleValue_i});
             }, function (removedBlock_o) {
                 $scope.onBlockRemoved({removedBlock: removedBlock_o});
+            }, function (perc_f) {
+                console.log($scope.handlerValueToDisplay);
+                if (typeof $scope.handlerValueToDisplay == "function") {
+                    return $scope.handlerValueToDisplay({perc: perc_f});
+                }
+                return Math.floor(perc_f * 100) / 100 + " %";
             });
         };
 
@@ -66,6 +72,7 @@ angular.module("app.cats.allocationBar", [
                 onValChanged: "&onvalchanged",
                 onAddBtnPressed: "&onaddbtnpressed",
                 onBlockRemoved: "&onblockremoved",
+                handlerValueToDisplay: "&handlervaluetodisplay",
                 width: "@width",
                 height: "@height",
                 blocks: "=blocks",
