@@ -7,6 +7,7 @@
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d5;';
         $scope.loading = true;
+        $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";
 
@@ -19,8 +20,9 @@
             var alt_text = "Oder:";
             var side_text = "Beilagen:";
             var dessert_text = "Dessert:";
-            $scope.portalLinkText = "Lunch Menu im Portal";
+            $scope.portalLinkText = "Mittagsmenü im Portal";
             $scope.sorryString = "Sorry, diese Woche gibt's kein Mittagessen mehr.";
+            $scope.noDataString = "Daten konnten nicht geladen werden.";
         } else {
             lang = "en";
             soup_text = "Soup:";   
@@ -30,12 +32,13 @@
             dessert_text = "Dessert:";
             $scope.portalLinkText = "Lunch menu in the portal";
             $scope.sorryString = "Sorry, no more lunch this week.";
+            $scope.noDataString = "Data could not be loaded.";
         };
 
         var date = dateHandling.getDateToDisplay(new Date());
         $scope.date = calUtils.getWeekdays()[dateHandling.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-        $scope.dateHasLunchMenu = dateHandling.getValidDateFlag(new Date());
 
+        $scope.dateHasLunchMenu = dateHandling.getValidDateFlag(new Date());
         if ($scope.dateHasLunchMenu && true){
             $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
             ).success(function(data, status, headers, config) {            
@@ -85,6 +88,7 @@
                     }
                 }
                 $scope.lunch = lunchMenu;
+                $scope.contentLoaded = true;
             }).error(function(data, status, headers, config) {
                 console.log(data);
             });

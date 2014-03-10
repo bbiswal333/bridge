@@ -1,6 +1,5 @@
 ﻿<div class="app-lunchWalldorf-container">
-    <div ng-if="!loading && dateHasLunchMenu == true">
-    <div mb-scrollbar>
+    <div ng-if="!loading && contentLoaded == true" mb-scrollbar>
         <b>{{date}}</b>
         <table>
             <tr>
@@ -50,11 +49,15 @@
         <br>
         <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
     </div>
-    </div>
     <div ng-if="dateHasLunchMenu != true">
         <b>{{date}}</b><br>
         {{sorryString}}<br>
         <br>
         <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
     </div>
-</div>
+    <div ng-if="dateHasLunchMenu == true && contentLoaded == false">
+        <b>{{date}}</b><br>
+        {{noDataString}}<br>
+        <br>
+        <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
+    </div></div>
