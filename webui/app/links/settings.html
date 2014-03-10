@@ -1,0 +1,37 @@
+Add a new Link:
+<div class="row">
+		<div class="col-xs-1"><b>Name</b></div>
+ 		<div class="col-xs-4">
+ 			<input type="text" class="form-control"  ng-model="currentConfigValues.linkName" placeholder="Name for the Link" autofocus/>
+		</div>
+</div>
+
+<div class="row">
+		<div class="col-xs-1"><b>URL</b></div>
+ 		<div class="col-xs-4">
+ 			<input type="url" class="form-control"  ng-model="currentConfigValues.url" placeholder="URL" />
+		</div>
+</div>
+<button type="submit" ng-click="newEntry()">Add</button>
+
+Linklist:
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>URL</th>
+			<th>Category</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr ng-repeat="link in links">
+			<td>{{link.name}}</td>
+			<td>{{link.url}}</td>
+			<td>{{link.cat}}</td>
+			<td><span ng-click="deleteEntry(link)" class="glyphicon glyphicon-remove"></span></td>
+			<td><span ng-click="editEntry(link)" class="glyphicon glyphicon-pencil"></span></td>
+		</tr>
+	</tbody>
+</table>

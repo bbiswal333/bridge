@@ -1,6 +1,9 @@
 angular.module('app.links').factory("app.links.linkData", function () {
 
 	//Get all the links
-	return [{'name': 'Google','link':'http://google.de'},{'name': 'SAP','link':'http://google.de'}];
+	var linkList = [{'name': 'Google','url':'http://google.de','cat':'General'},{'name': 'SAP','url':'http://sap.de', 'cat':'General'}];
+
+	return linkList;
+
 
 });
