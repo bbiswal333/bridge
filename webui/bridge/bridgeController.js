@@ -3,7 +3,6 @@ angular.module('bridge.app', [
     'ngAnimate',
     'ngRoute',
     'ngSanitize',
-    'dialogs',
     'googlechart',
     'ui.bootstrap',
     'mgcrea.ngStrap',
@@ -24,7 +23,8 @@ angular.module('bridge.app', [
     'app.githubMilestone',
     'ui.sortable',
     'app.cats.maintenanceView',
-    'ui.select2']);
+    'ui.select2',
+    'lib.utils']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -65,9 +65,48 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
           }
 
-
         $scope.settings_click = function (boxId) {
             bridgeConfig.showSettingsModal(boxId);
+            var templateString;
+            var templateController;
+            var boxController;
+            var boxScope;
+
+            for (var boxProperty in bridgeDataService.boxInstances) {
+                if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
+                    templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
+                    templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
+                    boxController = bridgeDataService.boxInstances[boxProperty];
+                    boxScope = bridgeDataService.boxInstances[boxProperty].scope;
+                }
+            }
+
+            console.log($modal);
+            window.modalInstance = $modal.open({
+                templateUrl: 'view/settings.html',
+                controller: angular.module('bridge.app').settingsController,
+                resolve: {
+                    templateString: function () {
+                        return templateString;
+                    },
+                    templateController: function () {
+                        return templateController;
+                    },
+                    boxController: function () {
+                        return boxController;
+                    },
+                    boxScope: function () {
+                        return boxScope;
+                    },
+                }
+            });
+
+            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+            modalInstance.result.then(function (selectedItem) {
+                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
+            }, function () {
+                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
+            });
         };
 
         $scope.overview_click = function () {
@@ -98,7 +137,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
         }]);
 
 
-angular.module('bridge.app').config(function ($routeProvider, $locationProvider, $httpProvider) {
+angular.module('bridge.app').config(["$routeProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $locationProvider, $httpProvider, calUtils) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
@@ -109,8 +148,18 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider,
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
 
-    $routeProvider.when("/detail/cats/", { templateUrl: 'app/cats/detail.html'});    
+    $routeProvider.when("/detail/cats/:day/", { templateUrl: 'app/cats/detail.html'});
+    //If no date is given in URL insert today and redirect there
+    $routeProvider.when("/detail/cats/", { redirectTo: '/detail/cats/' + calUtils.stringifyDate(calUtils.today())});
 
+    $routeProvider.when("/cats", {redirectTo: "/detail/cats/"});
+
+    $routeProvider.when("/42/", {template: "", controller: function () {
+        console.log("test");
+         window.location.replace("https://de.wikipedia.org/wiki/Sinn_des_Lebens");
+    }});
+
+    //If no valid URL has been entered redirect to main entry point
     $routeProvider.otherwise({
         redirectTo: "/"
     });
@@ -118,7 +167,7 @@ angular.module('bridge.app').config(function ($routeProvider, $locationProvider,
     // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
     $httpProvider.defaults.withCredentials = true;
 
-});
+}]);
 
 angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
     var loadingRequests = 0;
