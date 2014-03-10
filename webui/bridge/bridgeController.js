@@ -24,7 +24,6 @@ angular.module('bridge.app', [
     'app.githubMilestone',
     'app.links',
     'app.cats.maintenanceView',
-    'ui.select2',
     'lib.utils']);
 
 angular.module('bridge.app').directive('errSrc', function() {
