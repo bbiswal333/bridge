@@ -65,6 +65,8 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
             scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
 
         }).error(function(data, status, headers, config) {
+            console.log(status);
+            console.log(data);
             scope.jiraData = [];
             scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
         });
