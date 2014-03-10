@@ -1,17 +1,12 @@
 <div ng-controller="app.im.directiveController">
 	{{lastElement}}
 
-	<div class="prio">Prio 1: {{prioarr[0]}}</div>
-	<div class="prio">Prio 2: {{prioarr[1]}}</div>
-	<div class="prio">Prio 3: {{prioarr[2]}}</div>
-	<div class="prio">Prio 4: {{prioarr[3]}}</div>
-	<!--
-	<div ng-if="displayChart">
-		<div google-chart chart="imChart" style="{{imChart.cssStyle}}">
-		
-		</div>
-	</div>-->
-	<div ng-if="displayChart" style="float:right;width:10%;position:absolute;bottom:10px;right:50px" ng-if="displayChart">
+	<div ng-if="displayChart" class="prio">Prio 1: {{prioarr[0]}}</div>
+	<div ng-if="displayChart" class="prio">Prio 2: {{prioarr[1]}}</div>
+	<div ng-if="displayChart" class="prio">Prio 3: {{prioarr[2]}}</div>
+	<div ng-if="displayChart" class="prio">Prio 4: {{prioarr[3]}}</div>
+
+	<div style="float:right;width:10%;position:absolute;bottom:10px;right:50px" ng-if="displayChart">
     	<a class="btn btn-default btn-sm" href="#/detail/im">Details</a>
 	</div>	
 </div>
