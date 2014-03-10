@@ -1,4 +1,4 @@
-angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$interval", function (calUtils, catsUtils, $interval) {
+angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$interval", "$location", function (calUtils, catsUtils, $interval, $location) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
 
@@ -17,7 +17,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 			return catsUtils.getDescForState(state_s);
 		};
 
-		var data = catsUtils.getData(handleCatsData);
+		var data = catsUtils.getCatsData(handleCatsData);
 
 		function handleCatsData (data) {
 			if (data != null) {
@@ -37,6 +37,10 @@ angular.module("app.cats", ["lib.utils", "app.cats.data"]).directive("app.cats",
 
 			console.log($scope.state);
 		} 
+
+		$scope.jump = function (dayString) {
+			$location.path("/detail/cats/" + dayString);
+		};
 
 		$scope.canGoBackward = function () {
 			if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)

@@ -8,7 +8,6 @@
 	bottom: 7px;
 	font-size: 16px;
 	color: #e1e1e1;
-	cursor: pointer;
 }
 
 	.app-cats-legend-popover ul {
@@ -25,7 +24,6 @@
 	}
 
 	.app-cats-legend-closeBtn {
-		cursor: pointer;
 		float: right;
 	}
 
