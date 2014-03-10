@@ -181,10 +181,13 @@ body {
     margin-right: auto;
     margin-top: auto;
     margin-bottom: auto;
-    padding-left: 10px;
-    width: 1110px;
+    min-width: 520px;
+    max-width: 1450px; 
     height: 640px;
     position: relative;
+    text-align: center;
+    left:-20px;
+
 }
 
 #loadingAnimation {
@@ -349,13 +352,18 @@ input[type="checkbox"]:checked:after {
 
 .sortable-list {
     list-style-type: none;
-    width: 1150px;
+    width: 100%;
+    display:inline-block;
+    text-align: center;
+
 }
 
 .sortable-item {
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
   margin-bottom: 20px; 
-  float: left; 
+  display:inline-block;
+  /*float: left; */
 }
 
 .sortable-placeholder{
