@@ -1,8 +1,7 @@
 angular.module('app.im').controller('app.im.detailController', ['$scope', '$http',
     function Controller($scope, $http) {
 
-        $scope.$parent.titleExtension = " - IM Details";
-   		$scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
+        $scope.$parent.titleExtension = " - IM Details";   		
 	    $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
 	   		
 	        ).success(function(data) {
@@ -20,12 +19,10 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
                        		$scope.tempobject.push(n);
 	       	   			});
                 	});
-	       	   	}
-	            $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+	       	   	}	            
 
 	        }).error(function(data) {
-	            $scope.imData = [];
-	            $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+	            $scope.imData = [];	            
 	        });
         } ] ) ;
 

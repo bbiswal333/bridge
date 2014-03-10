@@ -128,16 +128,7 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     //Event names must be distinct or browser will blow up!
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
-    });
-    $rootScope.$on('changeLoadingStatusRequested', function (event, args) {
-        var oldLoadingRequests = loadingRequests;
-
-        args.showLoadingBar ? loadingRequests++ : loadingRequests--;
-        if (loadingRequests > 0 && oldLoadingRequests == 0)
-            $rootScope.showLoadingBar = true;
-        else if (loadingRequests == 0 && oldLoadingRequests > 0)
-            $rootScope.showLoadingBar = false;
-    });
+    });    
 
     var deferred = $q.defer();
     var promise = bridgeConfig.loadFromBackend(deferred);
@@ -163,3 +154,39 @@ angular.module('bridge.app').filter("decodeIcon", function () {
         return str;
     }
 });
+
+
+angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootScope', '$injector', '$location',function($q, $rootScope, $injector, $location){
+  
+    var $http;
+    var checkResponse = function(response) {
+        $http = $http || $injector.get('$http');
+        if ($http.pendingRequests.length < 1)
+        {
+            $rootScope.showLoadingBar = false;
+        }
+    };
+
+    return {
+        'request': function(config)
+        {                   
+            $rootScope.showLoadingBar = true;            
+            return config || $q.when(config);
+        },
+        'response': function(response)
+        {            
+            checkResponse(response);                
+            return response || $q.when(response);
+        },
+        'responseError': function (response) 
+        {            
+            checkResponse(response);
+            return $q.reject(response);
+        }
+    };
+
+}]);
+
+angular.module('bridge.app').config(['$httpProvider',function($httpProvider) {
+  $httpProvider.interceptors.push('bridge.app.httpInterceptor');
+}]);
