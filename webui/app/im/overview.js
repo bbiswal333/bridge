@@ -32,8 +32,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         $scope.prionr = [1,2,3,4];
         $scope.displayChart = true;
         $scope.$parent.titleExtension = " - Internal Messages";
-        $scope.lastElement = "";
-        $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });
+        $scope.lastElement = "";        
         $http.get('/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
             ).success(function(data) {
                 
@@ -56,12 +55,10 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                 if ( ($scope.prioarr[0] + $scope.prioarr[1] + $scope.prioarr[2] + $scope.prioarr[3]) == 0) {
                     $scope.lastElement="You have no internal messages to display!";
                     $scope.displayChart = false;
-                }
-                $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+                }                
 
             }).error(function(data) {
-                $scope.imData = [];
-                $scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+                $scope.imData = [];                
             });
    
             var updateimChart = function ($scope) {

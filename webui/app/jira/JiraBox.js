@@ -8,8 +8,7 @@ var JiraBox = function(http){
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.getIssuesforQuery = function (query, scope) {
-    scope.$emit('changeLoadingStatusRequested', { showLoadingBar: true });    
+JiraBox.prototype.getIssuesforQuery = function (query, scope) {    
     this.http.get('https://sapjira-dev.wdf.sap.corp/rest/api/latest/search?jql=' + encodeURIComponent('project=TEST1')
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
@@ -60,15 +59,12 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
               }
 
               task.colorClass = 'taskColor_' + colorIndex;
-            });
-
-            scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+            });          
 
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
-            scope.jiraData = [];
-            scope.$emit('changeLoadingStatusRequested', { showLoadingBar: false });
+            scope.jiraData = [];            
         });
 };
 
