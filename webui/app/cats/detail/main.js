@@ -18,19 +18,26 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.blockdata = [{
         desc: "Project 1",
-        value: (2/32 * 100)
+        value: (2/32 * 100),
+        data: {objgextid: "test1", objguid: "0012"}
     }, {
         desc: "Project 2",
-        value: (2/32 * 100)
+        value: (2/32 * 100),
+        data: {objgextid: "test1", objguid: "0013"}
     }, {
         desc: "Project 3",
-        value: (2/32 * 100)
+        value: (2/32 * 100),
+        data: {objgextid: "test1", objguid: "0013"}
     }];
 
-    $scope.addBlock = function(desc_s, val_i) {
+    $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s) {
         $scope.blockdata.push({
             desc: desc_s,
-            value: val_i
+            value: val_i,
+            data: {
+                objgextid: objgextid_s,
+                objguid: objguid_s
+            }
         });
     };
 
@@ -46,12 +53,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.onAdd = function (posVal) {
         console.log(projectSelector);
+        
+        var alreadySelectedTasks = [];
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            alreadySelectedTasks.push({
+                objgextid: $scope.blockdata[i].data.objgextid,
+                objguid: $scope.blockdata[i].data.objguid
+            });
+        }
 
-        projectSelector.show([{name: "test", desc: "Projekt A"}, {name: "testABC", desc: "Projekt B"}], function (selectedProjects) {
+        projectSelector.show(alreadySelectedTasks, function (selectedProjects) {
+            if (selectedProjects == null) {
+                //Toast or alert telling no tasks have been seleceted
+                return;
+            }
+
             var val = posVal / selectedProjects.length;
-
             for (var i = 0; i < selectedProjects.length; i++) {
-                $scope.addBlock(selectedProjects[i].name, val);                
+                $scope.addBlock(selectedProjects[i].name, val, selectedProjects[i].data.objgextid, selectedProjects[i].data.objguid);                
             }
         });
     };

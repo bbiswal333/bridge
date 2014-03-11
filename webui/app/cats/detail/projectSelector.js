@@ -16,9 +16,27 @@ angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "app
     });
   };
 
-  var loadProjects = function (projects_ar, callback_fn) {
+  var loadProjects = function (exclude_ar, callback_fn) {
     catsUtils.getTasks(function (data) {
-      openModal(data, callback_fn);
+      console.log("Tasks");
+      console.log(data);
+      
+      var dataCleaned = [];
+      for (var i = 0; i < data.length; i++) {
+        var found = false;
+
+        for (var j = 0; j < exclude_ar.length; j++) {
+          if (data[i].objgextid == exclude_ar[j].objgextid && data[i].objguid == exclude_ar[j].objguid) {
+            found  = true;
+          }
+        }
+
+        if (!found) {
+          dataCleaned.push(data[i]);
+        }
+      }
+
+      openModal(dataCleaned, callback_fn);
     });
   }
 
