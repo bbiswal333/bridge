@@ -9,7 +9,7 @@ var JiraBox = function(http){
 JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.getIssuesforQuery = function (query, scope) {    
-    this.http.get('https://sapjira-dev.wdf.sap.corp/rest/api/latest/search?jql=' + encodeURIComponent('project=TEST1')
+    this.http.get('https://sapjira-dev.wdf.sap.corp/rest/api/latest/search?jql=' + encodeURIComponent('project=TEST')
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
 

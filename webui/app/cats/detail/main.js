@@ -9,6 +9,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector) {
     setDay($routeParams.day);
 
+
+    $scope.workHoursToday = 8;
 /*    catsUtils.getTasks(function (data) {
         console.log(data);
     });*/
@@ -48,7 +50,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.calcMinutes = function (perc) {
         //return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.floor(perc * 100) / 100 + " %)";    
-        return calUtils.getTimeInWords((8 * 60) * (perc / 100), true); 
+        return calUtils.getTimeInWords(($scope.workHoursToday * 60) * (perc / 100), true); 
     };
 
     $scope.onAdd = function (posVal) {

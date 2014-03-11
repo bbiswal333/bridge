@@ -226,26 +226,35 @@ angular.module('bridge.app').filter("decodeIcon", function () {
 });
 
 
-angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootScope', '$injector', '$location',function($q, $rootScope, $injector, $location){
+angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootScope', '$injector', '$location', '$timeout',function($q, $rootScope, $injector, $location, $timeout){
   
-    var $http;
+    var $http;      
+
     var checkResponse = function(response) {
+        
+        $timeout.cancel(response.config.timer);
+
         $http = $http || $injector.get('$http');
         if ($http.pendingRequests.length < 1)
         {
             $rootScope.showLoadingBar = false;
-        }
+            timer = undefined;
+        }         
     };
 
     return {
         'request': function(config)
-        {                   
-            $rootScope.showLoadingBar = true;            
+        {                                           
+            config.timer = $timeout(function()
+            {                 
+                $rootScope.showLoadingBar = true;               
+            }, 500, true); 
+            
             return config || $q.when(config);
         },
         'response': function(response)
         {            
-            checkResponse(response);                
+            checkResponse(response);   
             return response || $q.when(response);
         },
         'responseError': function (response) 
