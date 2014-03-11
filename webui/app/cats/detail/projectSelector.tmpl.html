@@ -1,13 +1,18 @@
 <style>
   #filter-bar {
-    width: 340px;
-    margin-left: 20px;
+    max-width: 640px;
+    margin: 0px auto;
+    margin-bottom: 20px;
+  }
+
+  #filter-bar hr {
+    border-top-width: 2px;
   }
 
   #app-cats-project-selector-button-container {
-    width: 720px;
+    max-width: 1020px;
     min-height: 150px;
-    margin-bottom: 40px;
+    margin: 0px auto;
   }
 
   .app-cats-project-selector-button-selected, .app-cats-project-selector-button-selected:focus {
@@ -48,30 +53,59 @@
     height: 50px;
   }
 
-  .app-cats-project-selector-control-button+.app-cats-project-selector-control-button {
+  .app-cats-project-selector-control-button {
+    margin-top: 40px;
     margin-right: 20px;
   }
+
+/*.animate-repeat {
+  line-height:40px;
+  list-style:none;
+  box-sizing:border-box;
+}
+ 
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+ 
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+  max-height:0;
+}
+ 
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
+  max-height:40px;
+}  */
 </style>
 <div class="div-background-gradient">
     <div class="div-background">
     </div>
 </div>
-<div style="position: relative">
+<div style="position: relative;">
   <div id="filter-bar">
     <div class="input-group">
-      <input type="text" ng-model="$parent.filterVal" class="form-control" placeholder="Type here to filter...">
+      <input type="text" ng-model="$parent.filterVal" class="form-control" placeholder="Type here to filter..." autofocus>
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="resetFilter();"><span class="glyphicon glyphicon-remove-circle"></span></button>
       </span>
     </div>
+    <hr>
   </div>
   <div id="app-cats-project-selector-button-container">
-    <div ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv">
-      <button class="btn btn-default app-cats-project-selector-button" ng-class="{'app-cats-project-selector-button-selected': item.selected}" ng-click="toogleSelect($index);">{{item.name}}<br><span>{{item.desc}}</span></button>
+    <div ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv animate-repeat">
+      <button class="btn btn-default app-cats-project-selector-button" ng-class="{'app-cats-project-selector-button-selected': item.selected}" ng-click="toogleSelect(item.id);">{{item.name}}<br><span>{{item.desc}}</span></button>
     </div>
     <div class="clearer"></div>
+    <button ng-click="cancel();" class="btn btn-warning app-cats-project-selector-control-button">Cancel</button>
+    <button ng-click="close();" class="btn btn-primary app-cats-project-selector-control-button">Select &amp; close</button>
+    <div class="clearer"></div>
   </div>
-  <button ng-click="cancel();" class="btn btn-default app-cats-project-selector-control-button">Cancel</button>
-  <button ng-click="close();" class="btn btn-primary app-cats-project-selector-control-button">Select &amp; close</button>
-  <div class="clearer"></div>
 </div>

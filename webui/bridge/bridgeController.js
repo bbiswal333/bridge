@@ -38,9 +38,31 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
     function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
-        $http.get('http://localhost:8000/client').success(function (data, status) {            
-        }).error(function (data, status, header, config) {            
-            //alert('light mode detected');
+        
+        function getOS()
+        {
+            var OSName="Unknown OS";
+            if (navigator.appVersion.indexOf("Win")!=-1) return "Windows";
+            if (navigator.appVersion.indexOf("Mac")!=-1) return "MacOS";
+            if (navigator.appVersion.indexOf("X11")!=-1) return "UNIX";
+            if (navigator.appVersion.indexOf("Linux")!=-1) return "Linux";
+            return OSName;
+        };
+        
+
+
+        $http.get('http://localhost:8000/client').success(function (data, status) {
+            $scope.winpro = false;
+            $scope.macpro = false;  
+        }).error(function (data, status, header, config) { 
+            if( getOS() == "Windows")
+            {
+                $scope.winpro = true;
+            }
+            else if( getOS() == "MacOS")
+            {
+                $scope.macpro = true;
+            }                      
         });
 
         if ($location.path() == "" || $location.path() == "/")
@@ -112,7 +134,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
         $scope.overview_click = function () {
             $location.path('/');
             document.getElementById('overview-button').classList.add('selected');
-            document.getElementById('projects-button').classList.remove('selected');
+            //document.getElementById('projects-button').classList.remove('selected');
         };
 
         $scope.projects_click = function () {

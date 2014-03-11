@@ -53,7 +53,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         };
 
         this.getCurrentValue = function () {
-            return self.getWidth() / self.p.getWidth() * 100;
+            return self.p.getValueToDisplay(self.getWidth() / self.p.getWidth() * 100);
         }
 
         function centerTextField() {
@@ -61,7 +61,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         }
 
         function updateTextField() {
-            self.textField.val.clear().text(Math.floor(self.getCurrentValue() * 100) / 100 + " %");
+            self.textField.val.clear().text(self.getCurrentValue());
 
             //Reclip and throw away old clips
             self.textField.main.clipper.remove();
@@ -139,7 +139,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             //Do some snapping  
             x = x - ((self.block.width() + x - elem.x()) % self.p.snapRange);
 
-            //No moving that would reduce width below 10 (width of drager)
+            //No moving that would reduce width below minwidth
             if (x + 5 < self.block.x() + self.p.minWidth) {
                 return false;
             }

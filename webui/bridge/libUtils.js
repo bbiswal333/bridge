@@ -153,35 +153,40 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         }
     };
 
-    this.relativeTimeTo = function(dateFrom_o, dateTo_o, short) {
+    this.relativeTimeTo = function(dateFrom_o, dateTo_o, short_b) {
         var diffMin = dateTo_o.getTime() - dateFrom_o.getTime();
         diffMin = Math.floor(diffMin / 60000);
 
-        var days = Math.floor(diffMin / (24 * 60));
-        diffMin = diffMin - days * 24 * 60;
+        return this.getTimeInWords(diffMin, short_b);
+    };
 
-        var hours = Math.floor(diffMin / 60);
-        diffMin = diffMin - hours * 60;
+    this.getTimeInWords = function (minutes_i, short_b) {
+
+        var days = Math.floor(minutes_i / (24 * 60));
+        minutes_i = minutes_i - days * 24 * 60;
+
+        var hours = Math.floor(minutes_i / 60);
+        minutes_i = minutes_i - hours * 60;
 
         var res = "";
         if (days > 0) {
-            if (short)
+            if (short_b)
                 res += days + "d ";
             else
                 res += days + ((days == 1) ? " day, " : " days, ");
         }
         if (hours > 0) {
-            if (short)
+            if (short_b)
                 res += hours + "h ";
             else
                 res += hours + ((hours == 1) ? " hour, " : " hours, ");
         }
-        if (short)
-            res += diffMin + "m";
+        if (short_b)
+            res += minutes_i + "m";
         else
-            res += diffMin + ((diffMin == 1) ? " minute" : " minutes");
+            res += minutes_i + ((minutes_i == 1) ? " minute" : " minutes");
 
-        return res;
+        return res;       
     };
 
     this.useNDigits = function(val_i, n_i) {
@@ -223,10 +228,10 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     }; //calcBusinessDays
 
     this.parseDate = function(str) {
-        if (typeof str != "string" || str.length != 8) return false;
-        var day = str.substr(0, 2);
-        var mon = str.substr(2, 2) - 1;
-        var year = str.substr(4, 4);
+        if (typeof str != "string" || str.length != 10) return false;
+        var day = str.substr(8, 2);
+        var mon = str.substr(5, 2) - 1;
+        var year = str.substr(0, 4);
         return new Date(year, mon, day);
     };
 
@@ -240,7 +245,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     this.stringifyDate = function(date_o) {
         if (!(date_o instanceof Date)) return null;
-        return this.useNDigits(date_o.getDate(), 2) + "" + this.useNDigits((date_o.getMonth() + 1), 2) + "" + date_o.getFullYear();
+        return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
     this.getWeekdays = function() {

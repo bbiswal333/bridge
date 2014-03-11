@@ -1,14 +1,3 @@
 <div ng-controller="app.cats.maintenanceView.mainCntrl">
-  <app.cats.allocationbar data-width="810" data-height="100" data-blocks="blockdata" data-padding="5" onvalchanged="myCallback(val);" onaddbtnpressed="onAdd(posVal);" onblockremoved="onRemove(removedBlock);"></app.cats.allocationbar>
+  <app.cats.allocationbar data-width="810" data-height="100" data-blocks="blockdata" data-padding="5" data-snaprange="25" onvalchanged="myCallback(val);" onaddbtnpressed="onAdd(posVal);" onblockremoved="onRemove(removedBlock);" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
 </div>
-
-
-<!-- For defining the background of allocationBar-->
-<svg>
-  <defs>
-    <pattern id="allocationBar-background" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse" >
-
-        <rect width="20" height="10" fill="url(http://localhost:8000/app/cats/detail/addButton.svg)"></rect>
-    </pattern>
-  </defs>
-</svg>

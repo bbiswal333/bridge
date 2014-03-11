@@ -18,13 +18,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.blockdata = [{
         desc: "Project 1",
-        value: 5
+        value: (2/32 * 100)
     }, {
         desc: "Project 2",
-        value: 5
+        value: (2/32 * 100)
     }, {
         desc: "Project 3",
-        value: 5
+        value: (2/32 * 100)
     }];
 
     $scope.addBlock = function(desc_s, val_i) {
@@ -39,6 +39,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         console.log(val);
     };
 
+    $scope.calcMinutes = function (perc) {
+        //return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.floor(perc * 100) / 100 + " %)";    
+        return calUtils.getTimeInWords((8 * 60) * (perc / 100), true); 
+    };
+
     $scope.onAdd = function (posVal) {
         console.log(projectSelector);
 
@@ -46,10 +51,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var val = posVal / selectedProjects.length;
 
             for (var i = 0; i < selectedProjects.length; i++) {
-                $scope.addBlock(selectedProjects[i].desc, val);                
+                $scope.addBlock(selectedProjects[i].name, val);                
             }
-
-            console.log("added");
         });
     };
 
