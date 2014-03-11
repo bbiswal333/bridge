@@ -33,7 +33,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         $scope.displayChart = true;
         $scope.$parent.titleExtension = " - Internal Messages";
         $scope.lastElement = "";        
-        $http.get('/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
+        $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
             ).success(function(data) {
                 
                 $scope.imData = data["asx:abap"];
