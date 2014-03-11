@@ -1,6 +1,6 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$http", "lib.utils.encodeForUrl", function ($http, encodeForUrl) {
 	var NODE_GET_API = "/api/get?url=";
-	var CATS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA";
+	var CATS_WEBSERVICE = 'http://localhost:8000/api/get?url=' + encodeURIComponent('https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA') + '&origin=' + location.origin;
 	//var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST";
 	var TASKS_WEBSERVICE = "http://localhost:8000/worklist.xml";
 
