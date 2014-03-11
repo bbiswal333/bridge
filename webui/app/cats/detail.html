@@ -1,3 +1,6 @@
 <div ng-controller="app.cats.maintenanceView.mainCntrl">
-  <app.cats.allocationbar data-width="810" data-height="100" data-blocks="blockdata" data-padding="5" data-snaprange="25" onvalchanged="myCallback(val);" onaddbtnpressed="onAdd(posVal);" onblockremoved="onRemove(removedBlock);" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
+  <div ng-if="loaded">
+    Hours to maintain today: {{workingHoursForDay}}
+    <app.cats.allocationbar data-width="810" data-height="100" data-blocks="blockdata" data-padding="5" data-snaprange="{{snaprange}}" onvalchanged="myCallback(val);" onaddbtnpressed="onAdd(posVal);" onblockremoved="onRemove(removedBlock);" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
+  </div>
 </div>

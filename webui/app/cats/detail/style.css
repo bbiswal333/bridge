@@ -1,3 +1,26 @@
+.allocation-bar-block-div {
+  transition: width 2s;
+}
+
+.allocation-bar-block-name-div {
+  width: 100%;
+  padding-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  -o-text-overflow: ellipsis;   /* Opera */
+  text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+  overflow: hidden;              /* don't show excess chars */
+  white-space: nowrap;  
+}
+
+.allocation-bar-block-value-div {
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
 .allocation-bar-dragger {
 
 }
@@ -18,3 +41,17 @@
 .allocation-bar-background-panel-div:hover {
   background-image: url("/app/cats/detail/addButton_hover.png");
 }
+
+.allocation-bar-block-bin-div {
+  border-radius: 2px;
+  width: 20px;
+  margin: 0px auto;
+  font-size: 18px;
+  text-align: center;
+}
+
+.allocation-bar-block-bin-div:hover {
+  color: #ED9C28;
+  cursor: pointer;
+}
+

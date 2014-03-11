@@ -7,30 +7,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.catsUtils",
   "app.cats.maintenanceView.projectSelector",
   function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector) {
+    $scope.blockdata = [];
+    $scope.loaded = false;
+
     setDay($routeParams.day);
 
-
-    $scope.workHoursToday = 8;
-/*    catsUtils.getTasks(function (data) {
-        console.log(data);
-    });*/
-
+                               //
     console.log("Test");
 
 
-    $scope.blockdata = [{
-        desc: "Project 1",
-        value: (2/32 * 100),
-        data: {objgextid: "test1", objguid: "0012"}
-    }, {
-        desc: "Project 2",
-        value: (2/32 * 100),
-        data: {objgextid: "test1", objguid: "0013"}
-    }, {
-        desc: "Project 3",
-        value: (2/32 * 100),
-        data: {objgextid: "test1", objguid: "0013"}
-    }];
+    catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+        $scope.workingHoursForDay = parseFloat(workingHours);
+
+        $scope.snaprange = ((800 * 15) / ($scope.workingHoursForDay * 60));
+        console.log("Snaprange: " + $scope.snaprange);
+
+        $scope.blockdata = [{
+            desc: "Project 1",
+            value: (2/32 * 100),
+            data: {objgextid: "test1", objguid: "0012"}
+        }, {
+            desc: "Project 2",
+            value: (2/32 * 100),
+            data: {objgextid: "test1", objguid: "0013"}
+        }, {
+            desc: "Project 3",
+            value: (2/32 * 100),
+            data: {objgextid: "test1", objguid: "0013"}
+        }];
+
+        $scope.loaded = true;
+    });
 
     $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s) {
         $scope.blockdata.push({
@@ -50,7 +57,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.calcMinutes = function (perc) {
         //return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.floor(perc * 100) / 100 + " %)";    
-        return calUtils.getTimeInWords(($scope.workHoursToday * 60) * (perc / 100), true); 
+        return calUtils.getTimeInWords(($scope.workingHoursForDay * 60) * (perc / 100), true); 
     };
 
     $scope.onAdd = function (posVal) {

@@ -33,8 +33,9 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             }).attr("class", "allocation-bar-background-panel");
 
             bgPnl.appendChild("div", {
-                style: "width: " + width + "px; height: " + height + "px;",
-                class: "allocation-bar-background-panel-div"
+                "style": "width: " + width + "px; height: " + height + "px;",
+                "class": "allocation-bar-background-panel-div",
+                "title": "Click to add further tasks."
             });
 
 
