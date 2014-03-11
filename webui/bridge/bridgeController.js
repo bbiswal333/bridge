@@ -22,7 +22,7 @@ angular.module('bridge.app', [
     'app.cats',
     'app.lunchWalldorf',
     'app.githubMilestone',
-    'app.links',
+    'app.linkList',
     'app.cats.maintenanceView',
     'lib.utils']);
 

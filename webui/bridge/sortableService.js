@@ -12,7 +12,7 @@ angular.module('bridge.app').service('sortableConfig', function () {
 
             {content: "app.github-milestone", id: 7, size:"box-2"},
             {content: "app.im", id: 8, size:"box-1"},
-            {content: "app.links", id: 9, size:"box-1"} 
+            {content: "app.link-list", id: 9, size:"box-1"} 
         ]; 		
 	}
 

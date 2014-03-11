@@ -57,6 +57,7 @@
                     this.config.boxSettings.push(boxSetting);
                 }
             }
+            console.log(this.config);
 
             $http({
                 url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),

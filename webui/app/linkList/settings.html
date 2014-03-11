@@ -1,19 +1,20 @@
 Add a new Link:
+<form name="ConfigItemForm">
 <div class="row">
 		<div class="col-xs-1"><b>Name</b></div>
  		<div class="col-xs-4">
- 			<input type="text" class="form-control"  ng-model="currentConfigValues.linkName" placeholder="Name for the Link" autofocus/>
+ 			<input type="text" class="form-control"  ng-model="$parent.currentConfigValues.linkName" placeholder="Name for the Link" autofocus />
 		</div>
 </div>
 
 <div class="row">
 		<div class="col-xs-1"><b>URL</b></div>
  		<div class="col-xs-4">
- 			<input type="url" class="form-control"  ng-model="currentConfigValues.url" placeholder="URL" />
+ 			<input type="url" class="form-control"  ng-model="$parent.currentConfigValues.url" placeholder="URL" />
 		</div>
 </div>
 <button type="submit" ng-click="newEntry()">Add</button>
-
+</form>
 Linklist:
 <table class="table table-striped">
 	<thead>
@@ -26,7 +27,7 @@ Linklist:
 	</thead>
 
 	<tbody>
-		<tr ng-repeat="link in links">
+		<tr ng-repeat="link in config.linkList">
 			<td>{{link.name}}</td>
 			<td>{{link.url}}</td>
 			<td>{{link.cat}}</td>
