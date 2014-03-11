@@ -21,10 +21,12 @@ describe("The mini calendar shall display information about the current CATS com
     var result1 = undefined;
     var result2 = undefined;
     catsUtils.getWorkingHoursForDay("2014-03-25", function (val) {
-      console.log("Request 1: " + val);
+      result1 = val;
+      //console.log("Request 1: " + val);
     });
     catsUtils.getWorkingHoursForDay("2013-12-25", function (val) {
-      console.log("Request 2: " + val);
+      result2 = val;
+      //console.log("Request 2: " + val);
     });
 
     $httpBackend.flush();

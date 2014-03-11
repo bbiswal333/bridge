@@ -97,20 +97,6 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             }
         };
 
-        this.setHoverBlock = function (hover) {
-            if (hover) {
-                this.bin = svg_o.foreignObject(20, 20).attr("class", "allocation-bar-block-bin").center(this.block.x() + this.block.width() / 2, height_i - 10).fill("#ff00ff").front();
-                this.bin.appendChild("div", {
-                    class: "allocation-bar-block-bin-div"
-                });
-
-                mouseOverBlock = true;
-            }
-            else {
-                if (this.bin) this.bin.remove();
-            }
-        };
-
         this.remove = function() {
             this.block.remove();
             this.dragger.remove();
