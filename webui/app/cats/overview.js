@@ -128,7 +128,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 	function processCatsData (cats_o) {
 		try {
 			var processed = {};
-			var days = cats_o["asx:abap"]["asx:values"][0].CATSCHK[0].ZCATSCHK_STR;
+			var days = cats_o;
 
 			for (var i = 0; i < days.length; i++) {
 				var dateStr = days[i].DATEFROM[0];
