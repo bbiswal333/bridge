@@ -46,6 +46,9 @@ module.exports = function(config) {
       './webui/app/atc/overview.js',
       './webui/app/atc/*.js',
 
+      './webui/app/cats/cats.js',
+      './webui/app/cats/cats.spec.js',
+
       '**/*.spec.js'
     ],
 
