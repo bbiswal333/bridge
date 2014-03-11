@@ -58,7 +58,6 @@ angular.module("app.cats.allocationBar", [
             }, function (removedBlock_o) {
                 $scope.onBlockRemoved({removedBlock: removedBlock_o});
             }, function (perc_f) {
-                console.log($scope.handlerValueToDisplay);
                 if (typeof $scope.handlerValueToDisplay == "function") {
                     return $scope.handlerValueToDisplay({perc: perc_f});
                 }

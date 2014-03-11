@@ -1,5 +1,5 @@
 angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.allocationBar.core.block", function() {
-    var BarBlock = function(svg_o, stackedBarInput_o, desc_s, width_i, height_i, x, y, color_s) {
+    var BarBlock = function(svg_o, stackedBarInput_o, desc_s, data_o, width_i, height_i, x, y, color_s) {
         var self = this;
         this.p = stackedBarInput_o;
         this.block = null;
@@ -7,6 +7,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         this.textField = {};
         this.desc = desc_s;
         this.group = null;
+        this.data = data_o;
         var inDragMode = false;
         var hoverReseted = false;
 
@@ -52,8 +53,12 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             });
         };
 
+        this.getCurrentValueRaw = function () {
+            return self.getWidth() / self.p.getWidth() * 100;
+        };
+
         this.getCurrentValue = function () {
-            return self.p.getValueToDisplay(self.getWidth() / self.p.getWidth() * 100);
+            return self.p.getValueToDisplay(self.getCurrentValueRaw());
         }
 
         function centerTextField() {
