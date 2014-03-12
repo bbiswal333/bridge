@@ -101,14 +101,14 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				$scope.events = $scope.events.sort(sortByStartTime);
 
 				if ($scope.hasEvents()) {
-					notifier.showInfo("Meetings", "You still have " + $scope.events.length + " meetings today.", function () {
-						alert("Do not click me again :)");
-					});
+					//notifier.showInfo("Meetings", "You still have " + $scope.events.length + " meetings today.", function () {
+					//	alert("Do not click me again :)");
+					//});
 				}
 				else {
-					notifier.showSuccess("Meetings", "You have no more meetings today.", function () {
-						alert("Do not click me again :)");
-					});					
+					//notifier.showSuccess("Meetings", "You have no more meetings today.", function () {
+					//	alert("Do not click me again :)");
+					//});					
 				}
 			}
 
