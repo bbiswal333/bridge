@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).directive("app.meetings", [
 	"$timeout",
 	"$http",
@@ -15,10 +16,20 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 			$scope.boxTitle = "Meetings";
 			$scope.boxIcon = '&#xe050;';
-			$scope.customCSSFile = "app/meetings/style.css";
 			$scope.currentEvent = 0;
 			$scope.events = [];
 			$scope.eventsRaw = {};
+
+		function sortByStartTime(a, b) {
+		    if (a.start > b.start)
+		        return 1;
+		    else if (a.start < b.start)
+		        return -1;
+		    else
+		        return 0;
+		};
+
+		function loadFromExchange () {
 			$scope.loading = true;
 			$scope.errMsg = null;
 			var eventsRaw = {};		

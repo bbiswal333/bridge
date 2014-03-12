@@ -11,7 +11,8 @@ angular.module('bridge.app').service('sortableConfig', function () {
             {content: "app.meetings", id: 6, size:"box-1"},
 
             {content: "app.github-milestone", id: 7, size:"box-2"},
-            {content: "app.im", id: 8, size:"box-1"}            
+            {content: "app.im", id: 8, size:"box-1"},
+            {content: "app.link-list", id: 9, size:"box-1"} 
         ]; 		
 	}
 
@@ -20,7 +21,7 @@ angular.module('bridge.app').service('sortableConfig', function () {
             //forceHelperSize: true,
             //forcePlaceholderSize: true,
             //helper: "clone",
-            delay: 50,
+            delay: 150,
             scroll: false,
             tolerance: "pointer",
             disabled: true,
