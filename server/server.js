@@ -5,7 +5,6 @@ var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
-var clc = require('cli-color');
 
 exports.run = function(npm)
 {	
@@ -51,7 +50,6 @@ exports.run = function(npm)
 	npm_load.get(proxy, npm, sso_start_server);
 }
 
-if(require.main === module){ 
-	console.log(clc.reset);
+if(require.main === module){ 	
 	exports.run('npm'); 
 }

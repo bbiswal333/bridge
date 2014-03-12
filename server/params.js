@@ -15,6 +15,6 @@ exports.get = function(parameter_name, parameter_default)
  			}		
 		}
 	}
-	console.log(parameter_name + ': ' + parameter_value);
+	//console.log(parameter_name + ': ' + parameter_value);
 	return parameter_value;
 }
