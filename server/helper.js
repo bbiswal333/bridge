@@ -1,23 +1,23 @@
 exports.printConsole = function(port)
 {	
 	var clc = require('cli-color');
-	console.log(clc.bgBlueBright.whiteBright('   ____         _      _                '));
-	console.log(clc.bgBlueBright.whiteBright('  |  _ \\       (_)    | |               '));
-	console.log(clc.bgBlueBright.whiteBright('  | |_) | _ __  _   __| |  __ _   ___   '));
-	console.log(clc.bgBlueBright.whiteBright('  |  _ < | \'__|| | / _` | / _` | / _ \\  '));
-	console.log(clc.bgBlueBright.whiteBright('  | |_) || |   | || (_| || (_| ||  __/  '));
-	console.log(clc.bgBlueBright.whiteBright('  |____/ |_|   |_| \\__,_| \\__, | \\___|  '));
-  	console.log(clc.bgBlueBright.whiteBright('	                   __/ |        '));
-	console.log(clc.bgBlueBright.whiteBright('                          |___/         '));
-	console.log(clc.bgBlueBright.whiteBright('                                        '));	
-	console.log("");
-	//console.log(clc.cyanBright('Starting Server at http://localhost:' + port));	
-	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));	
-	console.log("");
+	console.log(clc.reset);
+	console.log('   ____         _      _                ');
+	console.log('  |  _ \\       (_)    | |               ');
+	console.log('  | |_) | _ __  _   __| |  __ _   ___   ');
+	console.log('  |  _ < | \'__|| | / _` | / _` | / _ \\  ');
+	console.log('  | |_) || |   | || (_| || (_| ||  __/  ');
+	console.log('  |____/ |_|   |_| \\__,_| \\__, | \\___|  ');
+  	console.log('	                   __/ |        ');
+	console.log('                          |___/         ');
+	console.log('                                        ');	
+	console.log('');	
+	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));		
 }
 
 exports.handleException = function(port)
 {
+	var clc = require('cli-color');
 	process.on('uncaughtException', function (error) {				
 		var s = new String(error.stack);
 		if (s.search(/EADDRINUSE/) > -1)
