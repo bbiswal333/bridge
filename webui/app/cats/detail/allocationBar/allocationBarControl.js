@@ -12,7 +12,6 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             var y = y_i + PADDING;
             var width = width_i;
             var height = height_i - 2 * PADDING; //Because of expanding dragger on hovering
-            console.log("Padding: " + PADDING);
             this.blocks = [];
             this.blocks.last = function() {
                 if (this.length == 0) {

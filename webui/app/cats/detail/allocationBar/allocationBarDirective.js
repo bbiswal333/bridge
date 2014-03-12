@@ -38,17 +38,17 @@ angular.module("app.cats.allocationBar", [
             $scope.$watch("blocks", function() {
                 if (!updateBySelfExpected) {
                     $scope.AllocationBarControl.construct($scope.blocks);
-                    console.log("Rebuild");
+                    //console.log("Rebuild");
                 } else {
-                    console.log("no rebuild");
+                    //console.log("no rebuild");
                     updateBySelfExpected = false;
                 }
 
-                console.log("B: " + $scope.blocks);
-                console.log("SR: " + $scope.snapRange);
+                //console.log("B: " + $scope.blocks);
+                //console.log("SR: " + $scope.snapRange);
             }, true);
 
-            console.log("SR Initial: " + $scope.snapRange);
+            //console.log("SR Initial: " + $scope.snapRange);
 
             $scope.AllocationBarControl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
                 //$scope.$apply(function() {

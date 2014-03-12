@@ -18,7 +18,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
 
     catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-        $scope.workingHoursForDay = 5;
+        $scope.workingHoursForDay = workingHours;
 
         $scope.snaprange = ((810 * 15) / ($scope.workingHoursForDay * 60));
         console.log("Snaprange: " + $scope.snaprange);
@@ -53,7 +53,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.myCallback = function(val) {
         $scope.blockdata = val; //Because apply cannot be called anymore in directive, so two way binding doesn't work anymore
-        console.log(val);
     };
 
     $scope.calcMinutes = function (perc) {
