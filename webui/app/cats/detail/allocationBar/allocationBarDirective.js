@@ -4,12 +4,17 @@
         allocation-bar-dragger
         allocation-bar-dragger-active
         allocation-bar-block 
+        allocation-bar-block-div
+        allocation-bar-block-name-div
+        allocation-bar-block-value-div
         allocation-bar-block-active
         allocation-bar-textfield
         allocation-bar-textfield-val
         allocation-bar-textfield-desc
         allocation-bar-container
         allocation-bar-canvas
+        allocation-bar-block-bin-div
+        allocation-bar-block-bin
     Please note, that not all CSS styles known from stlying HTML-elements are applicable on SVG-elements (e. g. width, height, ...)
 */
 
@@ -23,7 +28,7 @@ angular.module("app.cats.allocationBar", [
         var linkFunction = function($scope, elem) {
             //Check whether auto-bound values are empty
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
-            $scope.snapRange = parseInt($scope.snapRange || 20); //snap range of 20px is default
+            $scope.snapRange = parseFloat($scope.snapRange || 20); //snap range of 20px is default
             $scope.padding = parseInt($scope.padding || 5);
             $scope.height = parseInt($scope.height || 100);
 
@@ -39,8 +44,11 @@ angular.module("app.cats.allocationBar", [
                     updateBySelfExpected = false;
                 }
 
-                console.log($scope.blocks);
+                console.log("B: " + $scope.blocks);
+                console.log("SR: " + $scope.snapRange);
             }, true);
+
+            console.log("SR Initial: " + $scope.snapRange);
 
             $scope.AllocationBarControl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
                 //$scope.$apply(function() {
@@ -58,7 +66,6 @@ angular.module("app.cats.allocationBar", [
             }, function (removedBlock_o) {
                 $scope.onBlockRemoved({removedBlock: removedBlock_o});
             }, function (perc_f) {
-                console.log($scope.handlerValueToDisplay);
                 if (typeof $scope.handlerValueToDisplay == "function") {
                     return $scope.handlerValueToDisplay({perc: perc_f});
                 }

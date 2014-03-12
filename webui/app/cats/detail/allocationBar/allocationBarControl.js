@@ -2,17 +2,17 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
     "app.cats.allocationBar.utils.colorUtils",
     "app.cats.allocationBar.core.block",
     function(colorUtils, BarBlock) {
-        // blocks_ar: [{desc: "Project A", value: 50}, {desc: "Project B", value: 25}, {desc: "Project X", value: 25}]
+        // blocks_ar: [{desc: "Project A", value: 50, data: {}}, {desc: "Project B", value: 25, data: {}}, {desc: "Project X", value: 25, data: {}}]
         var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnAdd_fn, callbackOnRemove_fn, getValueToDisplay_fn) {
             var self = this;
             var colorOffset = "#aaaaaa";
-            var PADDING = (padding_i || 5);
+            var PADDING = padding_i;
             var s = svg_o;
             var x = x_i;
             var y = y_i + PADDING;
             var width = width_i;
             var height = height_i - 2 * PADDING; //Because of expanding dragger on hovering
-
+            console.log("Padding: " + PADDING);
             this.blocks = [];
             this.blocks.last = function() {
                 if (this.length == 0) {
@@ -29,13 +29,13 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
 
             //Draw background (with add functionality)
             var bgPnl = s.foreignObject(width, height).move(x, y).fill("#DDDDDD").on("click", function () {
-                
                 callbackOnAdd_fn(self.getSizeUnallocated());
             }).attr("class", "allocation-bar-background-panel");
 
             bgPnl.appendChild("div", {
-                style: "width: " + width + "px; height: " + height + "px;",
-                class: "allocation-bar-background-panel-div"
+                "style": "width: " + width + "px; height: " + height + "px;",
+                "class": "allocation-bar-background-panel-div",
+                "title": "Click to add further tasks."
             });
 
 
@@ -54,7 +54,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             };
 
             this.addBlock = function(block_o, fireChange) {
-                var block_width = Math.floor((block_o.value / 100.0) * (width - 2 * PADDING));
+                var block_width = (block_o.value / 100.0) * (width - 2 * PADDING);
 
                 //Check if there is space for another block
                 if ((this.blocks.length >= 1 && this.blocks.last().getCoords().x2 + block_width > x + width - PADDING) || block_width > x + width - 2 * PADDING) {
@@ -66,7 +66,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                     offset = this.blocks.last().getCoords().x2;
                 }
 
-                this.blocks.push(new BarBlock(s, self, block_o.desc, block_width, (height - 2 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
+                this.blocks.push(new BarBlock(s, self, block_o.desc, block_o.data, block_width, (height - 1 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
 
                 offset += block_width;
 
@@ -95,7 +95,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             this.getSizeAllocated = function() {
                 var sizeAllocated = 0;
                 forEach(this.blocks, function(block) {
-                    sizeAllocated += block.getCurrentValue();
+                    sizeAllocated += block.getCurrentValueRaw();
                 });
 
                 return sizeAllocated;
@@ -136,7 +136,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             }
 
             this.fireAllocChanged = function() {
-                //Build array to return in style of the input array
+                //Build array to return (structured like the input array)
                 var res = [];
 
                 for (var i = 0; i < this.blocks.length; i++) {
@@ -144,6 +144,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                     var newBlock = {
                         desc: block.desc,
                         value: (block.getWidth() / (width - 2 * PADDING)) * 100,
+                        data: block.data
                     };
 
                     res.push(newBlock);
