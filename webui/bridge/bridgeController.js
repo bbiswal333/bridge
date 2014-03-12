@@ -21,6 +21,7 @@ angular.module('bridge.app', [
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
+    'app.wire',
     'app.lunchWalldorf',
     'app.githubMilestone',
     'app.linkList',
@@ -50,7 +51,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
             if (navigator.appVersion.indexOf("Linux")!=-1) return "Linux";
             return OSName;
         };
-        
+            
 
 
         $http.get('http://localhost:8000/client').success(function (data, status) {

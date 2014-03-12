@@ -50,7 +50,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 		}
 
 		var data = "";
-		//console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
+		console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
 
 		var req = {};
 

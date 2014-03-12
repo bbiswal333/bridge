@@ -3,6 +3,7 @@
     $scope.templateController = templateController;
     $scope.boxController = boxController;
     $scope.boxScope = boxScope;
+   
 
     $scope.done_click = function () {
         $modalInstance.close();
