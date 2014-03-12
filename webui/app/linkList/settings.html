@@ -1,76 +1,67 @@
 <div class="app-linkList-head">Add a new link</div>
 <form name="ConfigItemForm" ng-submit="newEntry()">
-<div class="row app-linkList-row">
-		<div class="col-xs-1"><b>Name</b></div>
- 		<div class="col-xs-4">
- 			<input type="text" class="form-control input-sm"  ng-model="$parent.currentConfigValues.linkName" placeholder="Name for the Link" autofocus />
-		</div>
-</div>
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>Name</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.linkName" placeholder="Name for the Link" autofocus />
+        </div>
+    </div>
 
-<div class="row app-linkList-row">
-		<div class="col-xs-1"><b>URL</b></div>
- 		<div class="col-xs-4">
- 			<input type="url" class="form-control input-sm"  ng-model="$parent.currentConfigValues.url" placeholder="URL" />
-		</div>
-</div>
-<div class="row app-linkList-row">
-	<div class="col-xs-1">
-		<button class="btn btn-primary btn-sm " type="submit" >Add</button>
-	</div>
-</div>
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>URL</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="url" class="form-control input-sm" ng-model="$parent.currentConfigValues.url" placeholder="URL" />
+        </div>
+    </div>
+    <div class="row app-linkList-row">
+        <div class="col-xs-1">
+            <button class="btn btn-primary btn-sm " type="submit">Add</button>
+        </div>
+    </div>
 
 </form>
 <hr>
 <div class="app-linkList-head">Edit links</div>
 
-	<div class="row app-linkList-row">
-		<div class="app-linkList-tableHeader col-xs-3">Name</div>
-		<div class="app-linkList-tableHeader col-xs-4">URL</div>
-		<div class="app-linkList-tableHeader col-xs-3">Category</div>
-		<div class="app-linkList-tableHeader col-xs-2"></div>
-	</div>
+<div class="row app-linkList-row">
+    <div class="app-linkList-tableHeader col-xs-3">Name</div>
+    <div class="app-linkList-tableHeader col-xs-4">URL</div>
+    <div class="app-linkList-tableHeader col-xs-3">Category</div>
+    <div class="app-linkList-tableHeader col-xs-2"></div>
+</div>
 
-	<div ui-sortable="sortableOptions" ng-model="config.linkList">
-		<div class="row app-linkList-row" ng-repeat="link in config.linkList" >
-			<form ng-submit="saveEdit(link)">
-				<div class=" col-xs-3">
-					<span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.name}}</span>
-					<input ng-show="link.editable"type="text" class="form-control input-sm"  ng-model="link.name" placeholder="Name for the Link" autofocus />
-				</div>
+<div ui-sortable="sortableOptions" ng-model="config.linkList">
+    <div class="row app-linkList-row" ng-repeat="link in config.linkList">
+        <form ng-submit="saveEdit(link)">
+            <div class=" col-xs-3">
+                <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.name}}</span>
+                <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" placeholder="Name for the Link" autofocus />
+            </div>
 
-				<div class=" col-xs-4">
-					<span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.url}}</span>
-					<input ng-show="link.editable" type="url" class="form-control input-sm"  ng-model="link.url" />
-				</div>
-				
-				<div class=" col-xs-3">
-					<span  ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.cat}}</span>				
-				</div>
-				
-				<div class="col-xs-2">
-					<div class="col-xs-9">
-					
-						<span ng-show="!link.editable" ng-click="activateEdit(link)" 
-					class="glyphicon glyphicon-pencil btn btn-primary btn-sm"></span>
-					<span ng-show="link.editable" ng-click="undoEdit(link)" 
-					class="glyphicon glyphicon-remove btn btn-warning btn-sm"></span>
-					<button ng-show="link.editable" type="submit"
-					class="glyphicon glyphicon-ok btn btn-primary btn-sm"></button>
+            <div class=" col-xs-4">
+                <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.url}}</span>
+                <input ng-show="link.editable" type="url" class="form-control input-sm" ng-model="link.url" />
+            </div>
 
-					
+            <div class=" col-xs-3">
+                <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.cat}}</span>
+            </div>
 
-					</div>
-					<div class="col-xs-3">
-						<span ng-click="deleteEntry(link)" class="glyphicon glyphicon-trash btn btn-primary btn-sm"></span>
-					</div>
+            <div class="col-xs-2">
+                <div class="col-xs-9">
 
-					
-					
-				
-			
-				
-				</div>
-			</form>
-		</div>
+                    <span ng-show="!link.editable" ng-click="activateEdit(link)" class="glyphicon glyphicon-pencil btn btn-primary btn-sm"></span>
+                    <span ng-show="link.editable" ng-click="undoEdit(link)" class="glyphicon glyphicon-remove btn btn-warning btn-sm"></span>
+                    <button ng-show="link.editable" type="submit" class="glyphicon glyphicon-ok btn btn-primary btn-sm"></button>
 
-	</div>
+                </div>
+                <div class="col-xs-3">
+                    <span ng-click="deleteEntry(link)" class="glyphicon glyphicon-trash btn btn-primary btn-sm"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
