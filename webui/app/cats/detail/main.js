@@ -9,6 +9,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector) {
     $scope.blockdata = [];
     $scope.loaded = false;
+    $scope.width = 810; 
 
     setDay($routeParams.day);
 
@@ -17,22 +18,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
 
     catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-        $scope.workingHoursForDay = parseFloat(workingHours);
+        $scope.workingHoursForDay = 5;
 
-        $scope.snaprange = ((800 * 15) / ($scope.workingHoursForDay * 60));
+        $scope.snaprange = ((810 * 15) / ($scope.workingHoursForDay * 60));
         console.log("Snaprange: " + $scope.snaprange);
 
         $scope.blockdata = [{
             desc: "Project 1",
-            value: (2/32 * 100),
+            value: (0.5/$scope.workingHoursForDay * 100),
             data: {objgextid: "test1", objguid: "0012"}
         }, {
             desc: "Project 2",
-            value: (2/32 * 100),
+            value: (0.5/$scope.workingHoursForDay * 100),
             data: {objgextid: "test1", objguid: "0013"}
         }, {
             desc: "Project 3",
-            value: (2/32 * 100),
+            value: (0.5/$scope.workingHoursForDay * 100),
             data: {objgextid: "test1", objguid: "0013"}
         }];
 

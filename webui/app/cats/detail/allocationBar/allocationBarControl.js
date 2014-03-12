@@ -6,13 +6,13 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
         var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnAdd_fn, callbackOnRemove_fn, getValueToDisplay_fn) {
             var self = this;
             var colorOffset = "#aaaaaa";
-            var PADDING = (padding_i || 5);
+            var PADDING = padding_i;
             var s = svg_o;
             var x = x_i;
             var y = y_i + PADDING;
             var width = width_i;
             var height = height_i - 2 * PADDING; //Because of expanding dragger on hovering
-
+            console.log("Padding: " + PADDING);
             this.blocks = [];
             this.blocks.last = function() {
                 if (this.length == 0) {
@@ -66,7 +66,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                     offset = this.blocks.last().getCoords().x2;
                 }
 
-                this.blocks.push(new BarBlock(s, self, block_o.desc, block_o.data, block_width, (height - 2 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
+                this.blocks.push(new BarBlock(s, self, block_o.desc, block_o.data, block_width, (height - 1 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
 
                 offset += block_width;
 
