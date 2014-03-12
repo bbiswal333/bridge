@@ -20,8 +20,6 @@ angular.module('app.linkList').appLinkListSettings =
 	$scope.deleteEntry = function(entry)
 	{
 		linkList = appLinklistConfig.linkList;
-		console.log("DEL");
-		console.log(entry);
 		for (var i=0; i<linkList.length; i++) 
 		{
 			link = linkList[i];

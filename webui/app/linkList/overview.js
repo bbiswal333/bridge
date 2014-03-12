@@ -28,13 +28,6 @@ angular.module('app.linkList').directive('app.linkList',
                         };
                         return configCopy;
                     }; 
-
-         var config = {};
-            $scope.scrollbar = function(direction, autoResize) {
-                config.direction = direction;
-                config.autoResize = autoResize;
-                return config;
-            }
     }];
     return {
         restrict: 'E',

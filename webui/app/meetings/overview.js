@@ -18,7 +18,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			$scope.currentEvent = 0;
 			$scope.events = [];
 			$scope.eventsRaw = {};
-
+			$scope.loading = true;
+			$scope.errMsg = null;
+			var eventsRaw = {};	
+			
 		function sortByStartTime(a, b) {
 		    if (a.start > b.start)
 		        return 1;
