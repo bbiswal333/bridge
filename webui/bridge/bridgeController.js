@@ -9,6 +9,7 @@ angular.module('bridge.app', [
     'ngTable',
     'mb-scrollbar',
     // bridge modules
+    'bridge.service',
     'bridge.employeeSearch',
     'bridge.box',
     // bridge apps
@@ -88,46 +89,6 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
 
         $scope.settings_click = function (boxId) {
             bridgeConfig.showSettingsModal(boxId);
-            var templateString;
-            var templateController;
-            var boxController;
-            var boxScope;
-
-            for (var boxProperty in bridgeDataService.boxInstances) {
-                if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
-                    templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
-                    templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
-                    boxController = bridgeDataService.boxInstances[boxProperty];
-                    boxScope = bridgeDataService.boxInstances[boxProperty].scope;
-                }
-            }
-
-            console.log($modal);
-            window.modalInstance = $modal.open({
-                templateUrl: 'view/settings.html',
-                controller: angular.module('bridge.app').settingsController,
-                resolve: {
-                    templateString: function () {
-                        return templateString;
-                    },
-                    templateController: function () {
-                        return templateController;
-                    },
-                    boxController: function () {
-                        return boxController;
-                    },
-                    boxScope: function () {
-                        return boxScope;
-                    },
-                }
-            });
-
-            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            modalInstance.result.then(function (selectedItem) {
-                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-            }, function () {
-                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-            });
         };
 
         $scope.overview_click = function () {
