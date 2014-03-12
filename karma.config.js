@@ -68,7 +68,7 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress', 'growl'],
 
 
     // web server port
@@ -96,8 +96,7 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: [(stealthMode) ? 'PhantomJS' : 'Chrome'],
-
+    browsers: [(stealthMode) ? 'PhantomJS' : 'Chrome'], 
 
     //browsers: ['Chrome'],
 
