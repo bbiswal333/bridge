@@ -263,6 +263,45 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         }
     };
 
+    this.getWeekNumber = function (date_o) {
+        //ISO 8601
+        //+ (date_o.getTimezoneOffset() / 60) * 3600000) -
+        var res = {};
+
+        var jan4Week = new Date(date_o.getFullYear(), 0, 4);
+        var jan4WeekDay = jan4Week.getDay();
+        if (jan4WeekDay != 0) {
+            jan4WeekDay = jan4WeekDay - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+        } else {
+            jan4WeekDay = 6;
+        }
+        console.log("-> " +  date_o);
+        var monInFirstWeek = new Date(jan4Week.getTime() - (jan4WeekDay * MILLISECS_DAY));
+        console.log(monInFirstWeek);
+        var daysSinceFirstMon = Math.round((date_o.getTime() - monInFirstWeek.getTime()) / MILLISECS_DAY);
+        console.log(daysSinceFirstMon);
+        res.weekNo = 1 + Math.floor(daysSinceFirstMon / 7);
+
+        var monInSelectedWeek = new Date(date_o.getTime() - ((date_o.getDay() != 0) ? date_o.getDay() - 1 : 6)  * MILLISECS_DAY);
+
+        var date_i = monInSelectedWeek.getTime();
+        var cnt = 1;
+        var yearOne = monInSelectedWeek.getFullYear();
+        for (var i = 1; i < 4; i++) {
+            if (new Date(date_i + i * MILLISECS_DAY).getFullYear() == yearOne) {
+                cnt++;
+
+                if (cnt == 4) {
+                    res.year = parseInt(yearOne);
+                    return res;
+                }
+            }
+        }
+        res.weekNo = 1;
+        res.year = parseInt(yearOne) + 1;
+        return res;
+    };
+
     //Factory-method of provider
     this.$get = function() {
         return self; //This way all methods available at config-Time as provider are also available as factory at runtime

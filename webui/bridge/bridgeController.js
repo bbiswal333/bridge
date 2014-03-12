@@ -24,7 +24,8 @@ angular.module('bridge.app', [
     'app.githubMilestone',
     'ui.sortable',
     'app.cats.maintenanceView',
-    'lib.utils']);
+    'lib.utils',
+    'notifier']);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
