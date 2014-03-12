@@ -57,6 +57,7 @@ angular.module('app.linkList').appLinkListSettings =
 			'url':  $scope.currentConfigValues.url,
 			'cat':'General'
 		}
+		$scope.currentConfigValues = '';
 		appLinklistConfig.linkList.push(entry);
 		//appLinklistConfig.linkList.push(angular.copy(entry));
 	} 

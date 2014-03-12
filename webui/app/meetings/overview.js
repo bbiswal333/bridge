@@ -8,7 +8,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils"]).directive("app
 
 		$scope.boxTitle = "Meetings";
 		$scope.boxIcon = '&#xe050;';
-		$scope.customCSSFile = "app/meetings/style.css";
 		$scope.currentEvent = 0;
 		$scope.events = [];
 		$scope.eventsRaw = {};

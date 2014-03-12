@@ -36,3 +36,9 @@
 	margin-top: 3px;
 }
 
+.app-linkList-container {
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;	
+}
+

@@ -1,10 +1,10 @@
 angular.module('app.linkList', ['ui.sortable']);
 
 angular.module('app.linkList').directive('app.linkList',
-        ['app.linkList.configservice','bridgeConfig', 
+        ['app.linkList.configservice','bridgeConfig',
         function(appLinklistConfig, bridgeConfig) {
 
-    var directiveController = ['$scope', function ($scope) {
+    var directiveController = ['$scope', '$timeout', function ($scope, $timeout) {
         $scope.boxTitle = "Linklist";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
@@ -27,7 +27,14 @@ angular.module('app.linkList').directive('app.linkList',
                             delete configCopy.linkList[i].old;
                         };
                         return configCopy;
-                    };            
+                    }; 
+
+         var config = {};
+            $scope.scrollbar = function(direction, autoResize) {
+                config.direction = direction;
+                config.autoResize = autoResize;
+                return config;
+            }
     }];
     return {
         restrict: 'E',
@@ -35,10 +42,8 @@ angular.module('app.linkList').directive('app.linkList',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
             var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-            console.log(appConfig);
-            if (appConfig != undefined) {
-                  
-                    appLinklistConfig.linkList = appConfig.linkList;
+            if (appConfig != undefined) {     
+                    appLinklistConfig.linkList = appConfig.linkList;                  
                 }
             }
     };
