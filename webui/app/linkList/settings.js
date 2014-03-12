@@ -6,9 +6,6 @@ angular.module('app.linkList').appLinkListSettings =
 	
 	$scope.currentConfigValues = {};
 
-	$scope.currentConfigValues.linkName = "yahoo";
-	$scope.currentConfigValues.url = "http://yahoo.de";
-
 	$scope.sortableOptions = {
             //placeholder: "sortable-placeholder",
             //forceHelperSize: true,
