@@ -1,20 +1,18 @@
-var clc = require('cli-color');
-
 exports.printConsole = function(port)
 {	
+	var clc = require('cli-color');
 	console.log(clc.bgBlueBright.whiteBright('   ____         _      _                '));
 	console.log(clc.bgBlueBright.whiteBright('  |  _ \\       (_)    | |               '));
 	console.log(clc.bgBlueBright.whiteBright('  | |_) | _ __  _   __| |  __ _   ___   '));
 	console.log(clc.bgBlueBright.whiteBright('  |  _ < | \'__|| | / _` | / _` | / _ \\  '));
 	console.log(clc.bgBlueBright.whiteBright('  | |_) || |   | || (_| || (_| ||  __/  '));
 	console.log(clc.bgBlueBright.whiteBright('  |____/ |_|   |_| \\__,_| \\__, | \\___|  '));
-  console.log(clc.bgBlueBright.whiteBright('	                   __/ |        '));
+  	console.log(clc.bgBlueBright.whiteBright('	                   __/ |        '));
 	console.log(clc.bgBlueBright.whiteBright('                          |___/         '));
 	console.log(clc.bgBlueBright.whiteBright('                                        '));	
 	console.log("");
-	console.log(clc.cyanBright('Starting Server at http://localhost:' + port));	
-	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));
-	console.log(clc.greenBright('To shutdown Bridge-client please press Strg+C or appropriate.'));
+	//console.log(clc.cyanBright('Starting Server at http://localhost:' + port));	
+	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));	
 	console.log("");
 }
 

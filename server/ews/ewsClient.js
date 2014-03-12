@@ -63,15 +63,14 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
                     handleData(ews_xml);
                 }, 0);
             } else {
-                console.log(ERR_MSG_PLATFORM_NOT_SUPPORTED);
+                console.log('1' + ERR_MSG_PLATFORM_NOT_SUPPORTED);
                 callback_fn(new Error(ERR_MSG_PLATFORM_NOT_SUPPORTED));
             }
 
             function handleData(ews_xml) {
                 if (json) {
                     try {
-                        xml2js(ews_xml, function(err, result) {
-                            console.log(err);
+                        xml2js(ews_xml, function(err, result) {                            
                             if (err == undefined) {
                                 callback_fn(JSON.stringify(result));
                             } else {
@@ -81,7 +80,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
                     } catch (err) {
                         var text = "Error parsing JSON. Please try again requesting XML."
                         callback_fn(text);
-                        console.log(text);
+                        console.log('3' + text);
                     }
                 } else {
                     callback_fn(ews_xml);
@@ -108,7 +107,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
         var filename = soapTmpPath + generateUniqueFileName();
         fs.writeFile(filename, soapString_s, function(err) {
             if (err) {
-                console.log(err);
+                console.log('4' + err);
             } else {
                 callExchange(filename);
             }
@@ -179,7 +178,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
             res.on('end', function() {
                 if (data == "") {
                     if (sapDomain_i + 1 == SAP_DOMAIN.length) {
-                        console.log(ERR_MSG_WRONG_CREDENTIALS);
+                        console.log('5' + ERR_MSG_WRONG_CREDENTIALS);
                         callback_fn(new Error(ERR_MSG_WRONG_CREDENTIALS));
                     } else {
                         getDataFromExchange_Mac(soapString_s, callback_fn, sapDomain_i + 1);
@@ -195,7 +194,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
         }
         req.end();
         req.on('error', function(e) {
-            console.error(e);
+            console.error('6' + e);
             callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
         });
     }
