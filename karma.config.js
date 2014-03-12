@@ -1,7 +1,12 @@
 // Karma configuration
 // Generated on Tue Jan 28 2014 15:40:23 GMT+0100 (W. Europe Standard Time)
-
 module.exports = function(config) {
+  var stealthMode = false;
+  if (typeof process.argv[4] != "undefined" && process.argv[4] == "-stealth") {
+    console.log("Running in stealth mode");
+    stealthMode = true;
+  }
+
   config.set({
 
     // base path, that will be used to resolve files and exclude
@@ -91,7 +96,9 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome'],
+    browsers: [(stealthMode) ? 'PhantomJS' : 'Chrome'],
+
+
     //browsers: ['Chrome'],
 
     // If browser does not capture in given timeout [ms], kill it

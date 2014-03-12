@@ -35,12 +35,10 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             divJQuery.hover(function () {
                 if (!binFadedIn) $(this).children(".allocation-bar-block-bin-div").fadeIn();
                 binFadedIn = true;
-                console.log("In");
             }, function () {
                 $(this).children(".allocation-bar-block-bin-div").fadeOut(function () {
                     binFadedIn = false;
                 });
-                console.log("Out")
             });
             updateTextField();
 
