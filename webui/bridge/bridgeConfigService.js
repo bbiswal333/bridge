@@ -1,36 +1,24 @@
-﻿angular.module('bridge.app').service('bridgeConfig', function ($http, $modal, bridgeDataService) {
+﻿angular.module('bridge.service').service('bridgeConfig', function ($http, $modal, bridgeDataService) {
     this.modalInstance = undefined;
 
     this.showSettingsModal = function (boxId) {
-        var templateString;
-        var templateController;
-        var boxController;
-        var boxScope;
-
-        for (var boxProperty in bridgeDataService.boxInstances) {
-            if (bridgeDataService.boxInstances[boxProperty].scope.boxId == boxId) {
-                templateString = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.templatePath;
-                templateController = bridgeDataService.boxInstances[boxProperty].scope.settingScreenData.controller;
-                boxController = bridgeDataService.boxInstances[boxProperty];
-                boxScope = bridgeDataService.boxInstances[boxProperty].scope;
-            }
-        }
+        var boxInstance = bridgeDataService.getBoxInstance(boxId);
 
         this.modalInstance = $modal.open({
             templateUrl: 'view/settings.html',
             controller: angular.module('bridge.app').settingsController,
             resolve: {
                 templateString: function () {
-                    return templateString;
+                    return boxInstance.scope.settingScreenData.templatePath;
                 },
                 templateController: function () {
-                    return templateController;
+                    return boxInstance.scope.settingScreenData.controller;
                 },
                 boxController: function () {
-                    return boxController;
+                    return boxInstance;
                 },
                 boxScope: function () {
-                    return boxScope;
+                    return boxInstance.scope;
                 },
             }
         });
