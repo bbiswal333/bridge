@@ -1,0 +1,38 @@
+.app-linkList-row{
+	font-size: 12px;
+	padding-bottom: 8px;
+
+}
+.app-linkList-tableHeader{
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.app-linkList-head{
+	font-size: 16px;
+	font-weight: bold;
+	padding-top:10px;
+	padding-bottom: 10px;
+}
+
+/*.app-linkList-link{
+	font-size: 12px;
+	text-align: center;
+	width: 100%;
+	padding-bottom: 7px;
+	padding-top: 7px;
+
+	margin-bottom: 3px;
+	margin-top: 3px;
+	background-color: #eee;
+
+	border-radius: 4px;
+}*/
+.app-linkList-link{
+	font-size: 12px;
+	text-align: center;
+	margin-bottom: 3px;
+	margin-top: 3px;
+}
+

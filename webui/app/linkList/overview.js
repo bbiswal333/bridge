@@ -1,4 +1,4 @@
-angular.module('app.linkList', []);
+angular.module('app.linkList', ['ui.sortable']);
 
 angular.module('app.linkList').directive('app.linkList',
         ['app.linkList.configservice','bridgeConfig', 
@@ -8,6 +8,7 @@ angular.module('app.linkList').directive('app.linkList',
         $scope.boxTitle = "Linklist";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
+        $scope.customCSSFile = "app/linkList/style.css";
 
          $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
@@ -16,17 +17,17 @@ angular.module('app.linkList').directive('app.linkList',
             };
 
             $scope.config = appLinklistConfig;
-        /*
-         $scope.$watch('appLinklistConfig.linkList', function() {
-                $scope.links = appLinklistConfig.linkList;  
-            },true);*/
 
         $scope.returnConfig = function () {
-                        console.log("return");
-                        console.log(appLinklistConfig);
-                        return appLinklistConfig;
-                    };
-            
+
+                        var configCopy = angular.copy(appLinklistConfig);
+                        for (var i = configCopy.linkList.length - 1; i >= 0; i--) {
+                            delete configCopy.linkList[i].$$hashKey;
+                            delete configCopy.linkList[i].editable;
+                            delete configCopy.linkList[i].old;
+                        };
+                        return configCopy;
+                    };            
     }];
     return {
         restrict: 'E',
@@ -34,9 +35,9 @@ angular.module('app.linkList').directive('app.linkList',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
             var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-            
+            console.log(appConfig);
             if (appConfig != undefined) {
-            console.log(appConfig);      
+                  
                     appLinklistConfig.linkList = appConfig.linkList;
                 }
             }

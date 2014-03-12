@@ -21,7 +21,7 @@ angular.module('bridge.app').service('sortableConfig', function () {
             //forceHelperSize: true,
             //forcePlaceholderSize: true,
             //helper: "clone",
-            delay: 50,
+            delay: 150,
             scroll: false,
             tolerance: "pointer",
             disabled: true,
