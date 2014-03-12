@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).directive("app.meetings", [
 	"$timeout",
 	"$http",
@@ -29,28 +28,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 		        return 0;
 		};
 
-		function loadFromExchange () {
-			$scope.loading = true;
-			$scope.errMsg = null;
-			var eventsRaw = {};		
-
-			/*$scope.$watch('dayCnt', function(newValue, oldValue, scope) {
-				if (newValue != "" && newValue > 0) {
-					$scope.loadFromExchange();
-				}	
-			});*/
-
-			function sortByStartTime(a, b) {
-			    if (a.start > b.start)
-			        return 1;
-			    else if (a.start < b.start)
-			        return -1;
-			    else
-			        return 0;
-			};
-
 			function loadFromExchange () {
 				$scope.loading = true;
+				$scope.errMsg = null;
+				var eventsRaw = {};		
 	          
 				$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
 					try{
