@@ -161,12 +161,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getTimeInWords = function (minutes_i, short_b) {
-
         var days = Math.floor(minutes_i / (24 * 60));
         minutes_i = minutes_i - days * 24 * 60;
 
         var hours = Math.floor(minutes_i / 60);
-        minutes_i = minutes_i - hours * 60;
+        minutes_i = Math.round(minutes_i - hours * 60);
 
         var res = "";
         if (days > 0) {

@@ -4,33 +4,45 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         this.p = stackedBarInput_o;
         this.block = null;
         this.dragger = null;
-        this.textField = {};
+        //this.textField = {};
         this.desc = desc_s;
         this.group = null;
         this.data = data_o;
+        this.bin = null;
         var inDragMode = false;
         var hoverReseted = false;
+        var binFadedIn = false; //Prevent reseting of in-progress animation
 
         this.initBlock = function() {
             var s = svg_o.group();
             this.group = s;
-            this.block = s.rect(width_i, height_i).move(x, y).fill(color_s).on("dblclick", function() {
+            this.block = s.foreignObject(width_i, height_i).move(x, y).on("dblclick", function() {
                 self.remove();
                 self.p.fireAllocChanged();
             }).attr("class", "allocation-bar-block");
+            this.block.appendChild("div", {
+                "style": "height: " + height_i + "px; width: 100%; background: " + color_s + ";",
+                "class": "allocation-bar-block-div"
+            });
+            var divJQuery = $(this.block.getChild(0));
 
-            this.textField.main = s.text(function(add) {
-                self.textField.desc = add.tspan(self.desc).attr("class", "allocation-bar-textfield-desc");
-                self.textField.val = add.tspan().attr("class", "allocation-bar-textfield-val").newLine();
-            }).font({
-                anchor: "middle"
-            }).style({
-                "dominant-baseline": "central"
-            }).clipWith(svg_o.use(self.block)).on("dblclick", function() {
+            divJQuery.append($("<div>").addClass('allocation-bar-block-name-div').text(desc_s).attr("title", desc_s));
+            divJQuery.append($("<div>").addClass('allocation-bar-block-value-div'));
+            divJQuery.append($("<div>").addClass('allocation-bar-block-bin-div').hide().html('<span class="glyphicon glyphicon-trash"></span>').click(function () {
                 self.remove();
-            }).attr("class", "allocation-bar-textfield");
+                self.p.fireAllocChanged();
+            }));
+            divJQuery.hover(function () {
+                if (!binFadedIn) $(this).children(".allocation-bar-block-bin-div").fadeIn();
+                binFadedIn = true;
+                console.log("In");
+            }, function () {
+                $(this).children(".allocation-bar-block-bin-div").fadeOut(function () {
+                    binFadedIn = false;
+                });
+                console.log("Out")
+            });
             updateTextField();
-            centerTextField();
 
             this.dragger = s.rect(5, height_i).move(x + width_i - 5, y).
             fill("#555").draggable(_dragRestrictor).attr("class", "allocation-bar-dragger");
@@ -41,15 +53,15 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             };
             this.dragger.dragend = function() {
                 inDragMode = false;
-                self.setHover(false);
+                self.setHoverDragger(false);
 
                 self.p.fireAllocChanged();
             };
             this.dragger.on("mouseenter", function(evt) {
-                self.setHover(true);
+                self.setHoverDragger(true);
             });
             this.dragger.on("mouseleave", function(evt) {
-                if (!inDragMode) self.setHover(false);
+                if (!inDragMode) self.setHoverDragger(false);
             });
         };
 
@@ -61,19 +73,11 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             return self.p.getValueToDisplay(self.getCurrentValueRaw());
         }
 
-        function centerTextField() {
-            self.textField.main.move(self.block.x() + self.getWidth() / 2, self.block.y() + height_i / 2 - 20);
-        }
-
         function updateTextField() {
-            self.textField.val.clear().text(self.getCurrentValue());
-
-            //Reclip and throw away old clips
-            self.textField.main.clipper.remove();
-            self.textField.main.clipWith(svg_o.use(self.block));
+            self.block.getChild(0).childNodes[1].innerText = self.getCurrentValue();
         }
 
-        this.setHover = function(hover) {
+        this.setHoverDragger = function(hover) {
             if (hover) {
                 this.block.attr("class", "allocation-bar-block allocation-bar-block-active");
                 this.dragger.attr("class", "allocation-bar-dragger allocation-bar-dragger-active");
@@ -96,7 +100,6 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         this.remove = function() {
             this.block.remove();
             this.dragger.remove();
-            this.textField.main.remove();
             this.group.remove();
 
             this.p.removeBlock(this);
@@ -113,7 +116,6 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             }
 
             updateTextField();
-            centerTextField();
         };
 
         //Fot the purpose of unit testing
