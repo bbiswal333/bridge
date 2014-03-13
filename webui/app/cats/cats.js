@@ -1,22 +1,23 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, encodeForUrl, calUtils) {
     var NODE_GET_API = 'http://localhost:8000/api/get?url=';
-    var CATS_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA';
+    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA';
     //var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST";
     var TASKS_WEBSERVICE = "http://localhost:8000/worklist.xml";
+    var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
 
     var catsDataCache = null;
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      var url = NODE_GET_API + encodeForUrl.encode(CATS_WEBSERVICE) + "&json=true&origin=" + location.origin;
+      var url = NODE_GET_API + encodeForUrl.encode(CATS_COMPLIANCE_WEBSERVICE) + "&json=true&origin=" + location.origin;
 
       _httpRequest(url, function(data) {
         callback_fn(data["asx:abap"]["asx:values"][0].CATSCHK[0].ZCATSCHK_STR);
       });
     }
 
-    var _getCatsData = function(callback_fn, forceUpdate_b) {
+    var _getCatsComplianceData = function(callback_fn, forceUpdate_b) {
       if (forceUpdate_b || catsDataCache == null) {
         _requestCatsData(function(data) {
           catsDataCache = data;
@@ -27,9 +28,40 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
       }
     };
 
+    var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
+      var res = [];
+
+      var weekNo = calUtils.getWeekNumber(day_o);
+
+      _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {
+      //_httpRequest("http://localhost:8000/cats_alloc.json", function(data, status) {
+        var records = data.TIMESHEETS.RECORDS;
+ 
+        for (var i = 0; i < records.length; i++) {
+          var record = records[i];
+          var task = {};
+          task.tasktype = record.TASKTYPE;
+          task.objguid = (record.ZCPR_OBJGUID == "") ? task.tasktype : record.ZCPR_OBJGUID;
+          task.objgextid = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_OBJGEXTID;
+          task.taskDesc = record.DESCR;
+          task.projDesc = record.ZCPR_EXTID;
+
+          var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
+          task.quantity = parseFloat(record.DAYS[dayOfWeek].QUANTITY);
+
+          //Only add to list when time has been spent on this task
+          if (!isNaN(task.quantity)) {
+            res.push(task);
+          }
+        } 
+
+        callback_fn(res);
+      });
+    };
+
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
     function _getWorkingHoursForDay(day_s, callback_fn) {
-      _getCatsData(function(data) {
+      _getCatsComplianceData(function(data) {
         for (var i = 0; i < data.length; i++) {
           if (data[i].DATEFROM[0] ==  day_s) {
           	callback_fn(data[i].STDAZ[0]);
@@ -80,7 +112,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
     function _httpRequest(url, callback_fn) {
       $http.get(url).success(function(data, status) {
         if (between(status, 200, 299)) {
-          callback_fn(eval(data));
+          callback_fn(data);
         }
       }).error(function(data, status, header, config) {
         console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
@@ -113,8 +145,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
     }
 
     return {
-      getCatsData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
-        _getCatsData(callback_fn, forceUpdate_b);
+      getCatsComplianceData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
+        _getCatsComplianceData(callback_fn, forceUpdate_b);
       },
       getDescForState: function(state_s) {
         return _getDescForState(state_s);
@@ -131,6 +163,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
       },
       getWorkingHoursForDay: function (day_s, callback_fn) {
       	_getWorkingHoursForDay(day_s, callback_fn);
+      },
+      getCatsAllocationDataForDay: function (day_s, callback_fn) {
+        _getCatsAllocationDataForDay(day_s, callback_fn);
       }
     };
   }
