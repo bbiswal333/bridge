@@ -47,7 +47,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						}
 						if(withNotifications){
 							if (eventsRaw.length > oldEventsRawLength) {
-								if (eventsRaw.length = oldEventsRawLength + 1) {
+								if (eventsRaw.length == oldEventsRawLength + 1) {
 									notifier.showInfo("Meetings", "You have a new meeting", "MeetingsApp");
 								}
 								else {
@@ -55,14 +55,13 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 								}
 							}
 						}
-						$scope.loading = false;
-	        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 250);
-	        					$scope.errMsg = null;
+				        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 250);
+	        			$scope.errMsg = null;
 					}catch(error){
 						$scope.errMsg = "Unable to connect to Exchange Server";
-						$scope.loading = false;
 						console.log((error || $scope.errMsg));
 					}
+					$scope.loading = false;
 				});
 			};
 
@@ -169,7 +168,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						parseExchangeData(eventsRaw);
 						i++;
 					}
-				}, 30000);
+				}, 500);
 			})();
 
 			loadFromExchange(false);
