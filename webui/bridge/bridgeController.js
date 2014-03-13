@@ -39,9 +39,23 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig',
-    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig) {
+angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal",
+    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal) {
         
+/*        if (notifier.chromePreCheckRequestNeeded()) {
+            $modal.open({
+              templateUrl: "/bridge/permissionsr.tmpl.html", 
+              controller: "app.cats.maintenanceView.projectSelectorCntrl",
+              keyboard: true,
+              resolve: {
+                items: function () {
+                  return projects_ar;
+                }
+              }
+            });
+            notifier.requestPermission();
+        }*/
+
         function getOS()
         {
             var OSName="Unknown OS";

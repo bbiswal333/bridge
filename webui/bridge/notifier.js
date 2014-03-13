@@ -11,19 +11,7 @@ angular.module("notifier", []).factory("notifier", function () {
       notifier.show();
   }
 
-  return {
-    showInfo: function (title_s, body_s, tag_s, onCLick_fn) {
-      showMsg(title_s, body_s, 0, tag_s, onCLick_fn);
-    },
-    showSuccess: function (title_s, body_s, tag_s, onCLick_fn) {
-      showMsg(title_s, body_s, 1, tag_s, onCLick_fn);
-    },
-    showError: function (title_s, body_s, tag_s, onCLick_fn) {
-      showMsg(title_s, body_s, 2, tag_s, onCLick_fn);
-    }
-  };
-
-  function Notifier(text, body, icon, tag, duration) {
+  var Notifier = function (text, body, icon, tag, duration) {
     var self = this;
     var n;
 
@@ -37,6 +25,7 @@ angular.module("notifier", []).factory("notifier", function () {
     this.onclick = undefined;
     this.onclose = undefined;
     this.onerror = undefined;
+    this.permissionCallback = undefined;
 
     this.show = function (){
       checkPermission(function () {
@@ -66,6 +55,8 @@ angular.module("notifier", []).factory("notifier", function () {
         alert("You did not allow notifications!");
       }, function () {
         alert("Your browser does not support the Notification API");
+      }, function () {
+        if (typeof self.permissionCallback != "undefined") self.permissionCallback();
       });
     };
 
@@ -79,12 +70,16 @@ angular.module("notifier", []).factory("notifier", function () {
       return n;
     };
 
-    function checkPermission(callbackGranted_fn, callbackDenied_fn, callbackNoSupport_fn) {
+    function checkPermission(callbackGranted_fn, callbackDenied_fn, callbackNoSupport_fn, callbackPermissionRequest_fn) {
       if (typeof window.Notification == "undefined") { 
         callbackNoSupport_fn();
       }
       else if (Notification.permission === "granted") {
         callbackGranted_fn();
+      }
+      else if (Notification.permission === "default") {
+        console.log("seems like you need to activate once");
+        callbackPermissionRequest_fn();
       }
       else if (Notification.permission !== "denied") {
         Notification.requestPermission(function (perm) {
@@ -100,5 +95,41 @@ angular.module("notifier", []).factory("notifier", function () {
         callbackDenied_fn();
       }
     }
-  } 
+  };
+
+  Notifier.prototype.chromePreCheckRequestNeeded = function () {
+    console.log(Notification.permission);
+    if (typeof window.Notification != "undefined") {
+      return (Notification.permission === "default");  
+    }
+    return false;
+  };
+
+  Notifier.prototype.requestPermission = function (callback_fn) {
+    if (typeof window.Notification != "undefined") {
+      Notification.requestPermission(callback_fn);
+    }
+  };
+
+  var instance = new Notifier();
+
+  return {
+    showInfo: function (title_s, body_s, tag_s, onClick_fn) {
+      showMsg(title_s, body_s, 0, onClick_fn);
+    },
+    showSuccess: function (title_s, body_s, tag_s, onClick_fn) {
+      showMsg(title_s, body_s, 1, onClick_fn);
+    },
+    showError: function (title_s, body_s, tag_s, onClick_fn) {
+      showMsg(title_s, body_s, 2, onClick_fn);
+    },
+    chromePreCheckRequestNeeded: function () {
+      return instance.chromePreCheckRequestNeeded();
+    },
+    requestPermission: function (callback_fn) {
+      new instance.requestPermission(function (perm) {
+        if (typeof callback_fn != "undefined") callback_fn(perm);
+      });
+    }
+  };  
 });
