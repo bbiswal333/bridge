@@ -97,6 +97,10 @@ angular.module("notifier", []).factory("notifier", function () {
     }
   };
 
+  //Because Chromium has a quite special implementation (Explicit user action is required for calling Notification.requestPermission()),
+  //we need to check whether notifications are granted/denied or permissions have never been requested for this page. In case permission has never been requested
+  //we need to display a screen where the user can explicitly take an action (press a button etc.) calling the requestPermission()-Method
+  //Also see here: http://stackoverflow.com/questions/5040107/webkit-notifications-requestpermission-function-doesnt-work
   Notifier.prototype.chromePreCheckRequestNeeded = function () {
     console.log(Notification.permission);
     if (typeof window.Notification != "undefined") {
