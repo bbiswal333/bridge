@@ -81,7 +81,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
                 this.dragger.attr("class", "allocation-bar-dragger allocation-bar-dragger-active");
                 this.dragger.fill("#777"); //Gets overriden by CSS definitions
                 this.dragger.animate(100).attr({
-                    height: height_i + 4 * this.p.PADDING,
+                    height: height_i + 4 * this.p.DRAGGER_EXPAND,
                     y: 0
                 });
             } else if (!hoverReseted) {
