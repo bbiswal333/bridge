@@ -116,6 +116,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 		if (typeof request.query.json != "undefined" && request.query.json == "true")
 		{
 			json = true;
+			response.setHeader('Content-Type', 'application/json');
 		}
 
 		var service_url = url.parse(request.query.url);	
