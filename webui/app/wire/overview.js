@@ -7,11 +7,11 @@ angular.module('app.wire').directive('app.wire', function () {
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d3;';
 
-        /*$http.get('http://localhost:8000/api/get?url=' + 'https%3A%2F%2Fsapwire.hana.ondemand.com%2Fapi%2F1%3Fjson%3D%7B%22function%22%3A%22getmessages%22%2C%22chatroom%22%3A%2287873%22%2C%22lastmessageid%22%3A%220%22%2C%22limit%22%3A%225%22%2C%22previous%22%3A%22false%22%2C%22source%22%3A%22web%22%7D'
+        $http.get('http://localhost:8000/api/wire?url=https://sapwire.hana.ondemand.com:443/api/1?json={"function":"getmessages","chatroom":"87873","lastmessageid":"0","limit":"5","previous":"false","source":"web"}'
         ).success(function(data) {
             $scope.messages = data;
         }).error(function(data) {
-        });*/
+        });
     }];
 
     return {

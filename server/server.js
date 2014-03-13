@@ -11,7 +11,7 @@ exports.run = function(npm)
 	var port   = param.get("port", 8000);
 	var proxy  = param.get("proxy", true);
 	var local  = param.get("local", true);
-	var origin = param.get("origin", "http://bridge.mo.sap.corp:8000");
+	var origin = param.get("origin", "http://bridge.mo.sap.corp");
 
 	function start_server(user)
 	{
