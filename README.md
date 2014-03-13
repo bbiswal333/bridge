@@ -1,6 +1,6 @@
 ﻿Bridge
 ======
-* [Bridge Production](http://bridge.mo.sap.corp:8000/)
+* [Bridge Production](http://bridge.mo.sap.corp)
 
 
 Client Installation
