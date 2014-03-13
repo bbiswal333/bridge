@@ -168,7 +168,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						parseExchangeData(eventsRaw);
 						i++;
 					}
-				}, 500);
+				}, 30000);
 			})();
 
 			loadFromExchange(false);
