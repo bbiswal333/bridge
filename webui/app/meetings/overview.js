@@ -15,26 +15,28 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 			$scope.boxTitle = "Meetings";
 			$scope.boxIcon = '&#xe050;';
-			$scope.currentEvent = 0;
 			$scope.events = [];
-			$scope.eventsRaw = {};
 			$scope.loading = true;
 			$scope.errMsg = null;
 			var eventsRaw = {};	
 			
-		function sortByStartTime(a, b) {
-		    if (a.start > b.start)
-		        return 1;
-		    else if (a.start < b.start)
-		        return -1;
-		    else
-		        return 0;
-		};
+			function sortByStartTime(a, b) {
+			    if (a.start > b.start)
+			        return 1;
+			    else if (a.start < b.start)
+			        return -1;
+			    else
+			        return 0;
+			};
 
-			function loadFromExchange () {
+			function loadFromExchange (withNotifications) {
 				$scope.loading = true;
 				$scope.errMsg = null;
-				var eventsRaw = {};		
+				var oldEventsRawLength = 0;
+
+				if(withNotifications){
+					oldEventsRawLength = eventsRaw.length;
+				};
 	          
 				$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
 					try{
@@ -43,7 +45,16 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						if (typeof eventsRaw != "undefined") {
 							parseExchangeData(eventsRaw);
 						}
-	        			$scope.currentEvent = 0;
+						if(withNotifications){
+							if (eventsRaw.length > oldEventsRawLength) {
+								if (eventsRaw.length = oldEventsRawLength + 1) {
+									notifier.showInfo("Meetings", "You have a new meeting", "MeetingsApp");
+								}
+								else {
+									notifier.showInfo("Meetings", "You have new meetings", "MeetingsApp");
+								}
+							}
+						}
 						$scope.loading = false;
 	        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 250);
 	        					$scope.errMsg = null;
@@ -100,19 +111,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						isCurrent: (start.getTime() < new Date().getTime())
 					});
 				}
-
 				$scope.events = $scope.events.sort(sortByStartTime);
-
-				if ($scope.hasEvents()) {
-					//notifier.showInfo("Meetings", "You still have " + $scope.events.length + " meetings today.", function () {
-					//	alert("Do not click me again :)");
-					//});
-				}
-				else {
-					//notifier.showSuccess("Meetings", "You have no more meetings today.", function () {
-					//	alert("Do not click me again :)");
-					//});					
-				}
 			}
 
 			$scope.upComingEvents = function () {
@@ -141,7 +140,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 			function reload() {
 				if (!$scope.isLoading()) {
-					loadFromExchange();
+					loadFromExchange(true);
 				}
 			};
 
@@ -173,7 +172,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				}, 30000);
 			})();
 
-			loadFromExchange();
+			loadFromExchange(false);
 		};
 
 		return {

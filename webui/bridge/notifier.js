@@ -1,25 +1,25 @@
 angular.module("notifier", []).factory("notifier", function () {
   var icons = [];
-  icons.push("http://openclipart.org/image/300px/svg_to_png/971/jean_victor_balin_info_green.png");  
-  icons.push("http://openclipart.org/image/300px/svg_to_png/159733/green-tick.png");
-  icons.push("http://openclipart.org/image/300px/svg_to_png/166859/red-cross.png");
-  var DEFAULT_DURATION = 3000;
+  icons.push("../img/notifier_info.png");      // Info
+  icons.push("../img/notifier_tick.png");      // Success
+  icons.push("../img/notifier_red_cross.png"); // Error
+  var DEFAULT_DURATION = 4000;
 
-  function showMsg(title_s, body_s, icon_i, onCLick_fn) {
-      var noti = new Notifier(title_s, body_s, icons[icon_i], "", DEFAULT_DURATION);
-      noti.onclick = onCLick_fn;
-      noti.show();
+  function showMsg(title_s, body_s, icon_i, tag_s, onCLick_fn) {
+      var notifier = new Notifier(title_s, body_s, icons[icon_i], tag_s, DEFAULT_DURATION);
+      notifier.onclick = onCLick_fn;
+      notifier.show();
   }
 
   return {
-    showInfo: function (title_s, body_s, onCLick_fn) {
-      showMsg(title_s, body_s, 0, onCLick_fn);
+    showInfo: function (title_s, body_s, tag_s, onCLick_fn) {
+      showMsg(title_s, body_s, 0, tag_s, onCLick_fn);
     },
-    showSuccess: function (title_s, body_s, onCLick_fn) {
-      showMsg(title_s, body_s, 1, onCLick_fn);
+    showSuccess: function (title_s, body_s, tag_s, onCLick_fn) {
+      showMsg(title_s, body_s, 1, tag_s, onCLick_fn);
     },
-    showError: function (title_s, body_s, onCLick_fn) {
-      showMsg(title_s, body_s, 2, onCLick_fn);
+    showError: function (title_s, body_s, tag_s, onCLick_fn) {
+      showMsg(title_s, body_s, 2, tag_s, onCLick_fn);
     }
   };
 
