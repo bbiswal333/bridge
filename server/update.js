@@ -6,7 +6,7 @@ exports.run = function(npm)
 {	
 	var port   = param.get("port", 8080);
 	var proxy  = param.get("proxy", true);
-	var mode   = param.get("mode", "all");
+	var mode   = param.get("mode", "all");	
 
 	function update_repo()
 	{
@@ -23,7 +23,7 @@ exports.run = function(npm)
 		if (mode == "all" | mode == "commit")
 		{
 			gith({
-				repo: 'D050049/gith-test',
+				repo: 'bridge/bridge',
 	  			branch: 'master'
 			}).on( 'file:all', function( payload ) {
 	  			console.log( "..file change event received" );
@@ -34,7 +34,7 @@ exports.run = function(npm)
 		if (mode == "all" | mode == "tag")
 		{
 			gith({
-				repo: 'D050049/gith-test'  			
+				repo: 'bridge/bridge'  			
 			}).on('tag:add', function( payload ) {
 				console.log( "..new tag event received" );
 			});
