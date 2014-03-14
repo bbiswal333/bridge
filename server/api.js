@@ -23,8 +23,7 @@ exports.register = function(app, user, local, proxy, npm)
 			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
 			response.setHeader('Access-Control-Allow-Credentials', 'true' );
 			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-		}    
-		
+		}    		
 		return response;
 	};
 
