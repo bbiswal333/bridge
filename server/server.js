@@ -5,6 +5,7 @@ var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
+var exec        = require('child_process').exec;
 
 exports.run = function(npm)
 {	
