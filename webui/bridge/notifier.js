@@ -26,6 +26,12 @@ angular.module("notifier", []).factory("notifier", function () {
     this.onclose = undefined;
     this.onerror = undefined;
     this.permissionCallback = undefined;
+    this.onNotificationsNotSupported = function () {
+      alert("Your browser does not support the Notification API");
+    };
+    this.onNotificationsDenied = function () {
+      alert("You did not allow notifications!");
+    };
 
     this.show = function (){
       checkPermission(function () {
@@ -51,11 +57,7 @@ angular.module("notifier", []).factory("notifier", function () {
         n.onerror = function () {
           if (typeof self.onerror != "undefined") self.onerror(n.tag);
         };
-      }, function () {
-        alert("You did not allow notifications!");
-      }, function () {
-        alert("Your browser does not support the Notification API");
-      }, function () {
+      }, self.onNotificationsDenied, self.onNotificationsNotSupported, function () {
         if (typeof self.permissionCallback != "undefined") self.permissionCallback();
       });
     };
