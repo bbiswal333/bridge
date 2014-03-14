@@ -5,7 +5,7 @@ var http_req	= require('http');
 var url 		= require('url');
 var npm_load	= require('./npm_load.js');
 
-exports.register = function(app, user, local, proxy, npm, origin)
+exports.register = function(app, user, local, proxy, npm)
 {
 	//get api modules	
 	var xml2js 	  = require("xml2js").parseString;
@@ -13,12 +13,26 @@ exports.register = function(app, user, local, proxy, npm, origin)
 	var EWSClient = require("./ews/ewsClient.js").EWSClient;
 	var wire      = require("./wire.js");
 
-	function setHeader(response)
+	function setHeader(request, response)
 	{	
 		response.setHeader('Content-Type', 'text/plain');
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    	return re.test(email);
+		if( request.headers.origin === "http://")
+
+		var allowed_origin = [];
 		if( origin != undefined )
 		{
-			response.setHeader('Access-Control-Allow-Origin', origin);
+			allowed_origin.push(origin);			
+		}
+		if( test_origin != undefined )
+		{
+			allowed_origin.push(test_origin);				
+		}
+
+		if( allowed_origin.length > 0 )
+		{
+			response.setHeader('Access-Control-Allow-Origin', allowed_origin);
 		}
 		response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
 		response.setHeader('Access-Control-Allow-Credentials', 'true' );
@@ -98,7 +112,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
-		response = setHeader( response );			
+		response = setHeader( request, response );			
 		response.send('{"client":"true"}');
 	});
 
@@ -108,7 +122,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
-			response = setHeader( response );	
+			response = setHeader( request, response );	
 			response.send("Paramter url needs to be set!");
 			return;
 		}
@@ -129,7 +143,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 
 
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
-			response = setHeader( response );	
+			response = setHeader( request, response );	
 			response.charset = 'UTF-8';
 			if (json) {
 				try {
@@ -177,7 +191,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 	app.post("/api/post", function (request, response) {
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
-			response = setHeader( response );	
+			response = setHeader( request, response );	
 			response.send("Paramter url needs to be set!");
 			return;
 		}
@@ -186,7 +200,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 		var postData = request.rawBody;
 
 		callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
-			response = setHeader( response );		
+			response = setHeader( request, response );		
 			response.send(data);
 		}, postData);				
 	}); 
@@ -195,7 +209,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 	if( local )
 	{
 		app.get("/api/calDataSSO", function (request, response) {
-			response = setHeader( response );	
+			response = setHeader( request, response );	
 			var json = function () {
 				if (typeof request.query.format != "undefined") {
 					return (request.query.format.toLowerCase() == "json") ? true : false;
