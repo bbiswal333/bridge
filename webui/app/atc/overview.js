@@ -34,7 +34,7 @@ angular.module('app.atc').directive('app.atc',
 
         var loadData = function () {
             if ($scope.config.configItems.length > 0)
-                $scope.atcData.getResultForConfig($scope, appAtcConfig, appAtcData);
+                $scope.atcData.getResultForConfig(appAtcConfig);
         }
 
         var refreshInterval = $interval(loadData, 60000 * 5);

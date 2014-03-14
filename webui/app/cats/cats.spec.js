@@ -31,10 +31,6 @@ describe("The mini calendar shall display information about the current CATS com
 
     $httpBackend.flush();
 
-    waitsFor(function () {
-      return (typeof result1 != "undefined" && typeof result2 != "undefined") ? true : false;
-    }, "the backend to respond");
-
     expect(result1).toBe("8.0");
     expect(result2).toBe("0.0");
   });

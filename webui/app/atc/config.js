@@ -1,6 +1,5 @@
 angular.module('app.atc').factory("app.atc.configservice", function () {
 
-
 	var ConfigItem = function() {
 		this.srcSystem = "";
 		this.devClass = "";
@@ -13,7 +12,6 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 		this.displayPrio4 = false;
 		this.onlyInProcess = false;
 	}
-
 
 	var IQueryString = {
 		getQueryString : function() { throw "Not Implemented"; }
@@ -38,7 +36,6 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 		
 		return query;
 	};
-
 
 	var Config = function() {
 		this.configItems = [];
