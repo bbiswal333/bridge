@@ -221,7 +221,7 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootSc
 
     return {
         'request': function(config)
-        {                                           
+        {                         
             config.timer = $timeout(function()
             {                 
                 $rootScope.showLoadingBar = true;               

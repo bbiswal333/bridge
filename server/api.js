@@ -16,27 +16,15 @@ exports.register = function(app, user, local, proxy, npm)
 	function setHeader(request, response)
 	{	
 		response.setHeader('Content-Type', 'text/plain');
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    	return re.test(email);
-		if( request.headers.origin === "http://")
-
-		var allowed_origin = [];
-		if( origin != undefined )
+		var re = /^((https:\/\/)|(http:\/\/)|)([a-zA-Z0-9\.\-]*(\.sap\.corp|\.corp\.sap)|localhost)(:\d+)?($|\/)/;
+		if ( request.headers.origin != undefined && re.test(request.headers.origin))
 		{
-			allowed_origin.push(origin);			
-		}
-		if( test_origin != undefined )
-		{
-			allowed_origin.push(test_origin);				
-		}
-
-		if( allowed_origin.length > 0 )
-		{
-			response.setHeader('Access-Control-Allow-Origin', allowed_origin);
-		}
-		response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
-		response.setHeader('Access-Control-Allow-Credentials', 'true' );
-		response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
+			response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
+			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+			response.setHeader('Access-Control-Allow-Credentials', 'true' );
+			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
+		}    
+		
 		return response;
 	};
 
