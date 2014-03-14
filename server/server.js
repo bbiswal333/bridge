@@ -21,15 +21,8 @@ exports.run = function(npm)
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		api.register(app, user, local, proxy, npm, origin);
-		
-		/*if(!local)
-		{ 
-			http.createServer(app).listen(port);
-		}
-		else
-		{*/
-			http.createServer(app).listen(port, "127.0.0.1");
-		//}
+				
+		http.createServer(app).listen(port, "127.0.0.1");	
 
 		helper.printConsole(port);		
 		helper.handleException(port);		
