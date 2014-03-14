@@ -12,32 +12,38 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.width = 810; 
 
     setDay($routeParams.day);
+                               
+    catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
+        console.log("Data from CATS:");
+        console.log(tasks);
 
-                               //
-    console.log("Test");
+        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+            $scope.workingHoursForDay = workingHours;
+
+            $scope.snaprange = ((810 * 15) / ($scope.workingHoursForDay * 60));
+            console.log("Snaprange: " + $scope.snaprange);
 
 
-    catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-        $scope.workingHoursForDay = workingHours;
+            for (var i = 0; i < tasks.length; i++) {
+                var task = tasks[i];
+                $scope.addBlock(task.taskDesc, task.quantity * 100, task.objgextid, task.objguid); 
+            }
+    /*        $scope.blockdata = [{
+                desc: "Project 1",
+                value: (0.5/$scope.workingHoursForDay * 100),
+                data: {objgextid: "test1", objguid: "0012"}
+            }, {
+                desc: "Project 2",
+                value: (0.5/$scope.workingHoursForDay * 100),
+                data: {objgextid: "test1", objguid: "0013"}
+            }, {
+                desc: "Project 3",
+                value: (0.5/$scope.workingHoursForDay * 100),
+                data: {objgextid: "test1", objguid: "0013"}
+            }];*/
 
-        $scope.snaprange = ((810 * 15) / ($scope.workingHoursForDay * 60));
-        console.log("Snaprange: " + $scope.snaprange);
-
-        $scope.blockdata = [{
-            desc: "Project 1",
-            value: (0.5/$scope.workingHoursForDay * 100),
-            data: {objgextid: "test1", objguid: "0012"}
-        }, {
-            desc: "Project 2",
-            value: (0.5/$scope.workingHoursForDay * 100),
-            data: {objgextid: "test1", objguid: "0013"}
-        }, {
-            desc: "Project 3",
-            value: (0.5/$scope.workingHoursForDay * 100),
-            data: {objgextid: "test1", objguid: "0013"}
-        }];
-
-        $scope.loaded = true;
+            $scope.loaded = true;
+        });        
     });
 
     $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s) {

@@ -17,7 +17,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 			return catsUtils.getDescForState(state_s);
 		};
 
-		var data = catsUtils.getCatsData(handleCatsData);
+		var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 		function handleCatsData (data) {
 			if (data != null) {

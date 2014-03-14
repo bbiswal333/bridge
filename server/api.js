@@ -11,7 +11,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 	var xml2js 	  = require("xml2js").parseString;
 	var iconv 	  = require("iconv-lite");
 	var EWSClient = require("./ews/ewsClient.js").EWSClient;
-	//var wire      = require("./wire.js");
+	var wire      = require("./wire.js");
 
 	function setHeader(response)
 	{	
@@ -116,6 +116,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 		if (typeof request.query.json != "undefined" && request.query.json == "true")
 		{
 			json = true;
+			response.setHeader('Content-Type', 'application/json');
 		}
 
 		var service_url = url.parse(request.query.url);	
@@ -153,9 +154,8 @@ exports.register = function(app, user, local, proxy, npm, origin)
 
 	/*app.get('/api/wire', function(request, response) {
 
-		wire(request.query.url, function(cookie){
-			console.log(cookie);
-			response.send("");
+		wire().getchatrooms('87873', 0, function(data){
+			response.send(data);
 		});
 
 	});*/
@@ -219,6 +219,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 					response.send(ans);
 				}
 				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
 					response.send(res);
 				}
 			});

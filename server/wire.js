@@ -1,169 +1,246 @@
-var authenticator = function(URL, callback){
-	var http = require('http');
-	var nodeURL = require("url");
-	var querystring = require('querystring');
-	var htmlparser = require("htmlparser");
-		
-	var WIRE_URL = URL;
-	var parsedWireURL = nodeURL.parse(WIRE_URL);
-	
-	var IDP_URL = "https://accounts.sap.com/saml2/idp/sso/accounts.sap.com";
-	var parsedIDPURL = nodeURL.parse(IDP_URL);
-	
-	//options for first call to wire
-	var post_options_proxy = {
-		host: "proxy",
-		port: 8080,
-		path: WIRE_URL,
-		method: "POST",
-		headers: {
-			'Host': parsedWireURL.host,
-			'Content-Type': 'application/x-www-form-urlencoded'	
-		}			
-	};
+var http = require('http'),
+    nodeURL = require("url"),
+    querystring = require('querystring'),
+    WireAuthenticator = require("./wire_auth");
+    //Logger = require('./Logger').init('sapwire');
+    //Administrator = require('./main.js');
 
-	//first request to wire
-	 var request = http.request(post_options_proxy, function (res) {
-		var data = '';
-		
-		res.on('data', function (chunk) {
-			//build the whole response
-			data += chunk.toString();
-		});
+var URL = "https://sapwire.hana.ondemand.com/api/1";
 
-		//extract the cookies that are later necessary. wireCookie is used for the request to wire after successful login in sap.accounts
-		var first_cookie = res.headers['set-cookie'][0].split(";")[0];
-		var second_cookie = res.headers['set-cookie'][1].split(";")[0];
-		var wireCookie = first_cookie + "; "+ second_cookie;
+var chatRoomArray = [];
+var availableChatRoomIDArray = [];
+var roomConfigurationArray = [];
+var roomIDMappingToBotID = [];
+//var wildCardAnswersForGroupChat = ["Sorry, I am getting old. Please repeat it for old Alice!", "Could you repeat that, please?", "La la la la...Uh, sorry. Did you say something?","Next question!"];
 
-		res.on('end', function () {		
-			//the handler is used to parse the html-responsestring to a dom-object
-			var handler = new htmlparser.DefaultHandler(function (error, dom) {
-				if (error){
-					console.log(error);
-				}						
-				else{			
-					console.log('RES:' + data);		
-					//get the SAMLRequest and RelayState information from the devwire-website
-					var SAMLRequestValue = dom[0].children[1].children[2].children[0].attribs.value;				
-					var requestRelayStateValue = dom[0].children[1].children[2].children[1].attribs.value;
-					
-					//postData for request to Identity Provider (IDP)
-					var SAMLRequestData = querystring.stringify({SAMLRequest: SAMLRequestValue,	RelayState: requestRelayStateValue, j_username:"aliceonwire@gmail.com", j_password:"Aliceonwire42"});
-					//connection settings for call to IDP
-					var post_options_proxy2 = {
-						host: "proxy",
-						port: 8080,
-						path: IDP_URL,
-						method: "POST",
-						Connection: "keep-alive",
-						headers: {
-							'Host': parsedIDPURL.host,
-							'Content-Type': 'application/x-www-form-urlencoded',
-							'Referer': "https://testwire.hana.ondemand.com/mobile",
-							'Content-Length': SAMLRequestData.length							
-						}			
-					};
-					
-					//request to IDP
-					var request2 = http.request(post_options_proxy2, function (res) {
-						var data = '';
-						res.setEncoding('utf8');
-						res.on('data', function (chunk) {
-							data += chunk.toString();
-						});
-						res.on('end', function () {			
-							
-							//extract the session id
-							var JSESSIONID_number = res.headers['set-cookie'][1].split(";")[0];
-							var number = JSESSIONID_number.split("=")[1];
+//getmessages, postmessages and getrooms are wire api methods used for api calls to wire
+var GET_ROOMS = {
+    "function": "getchatrooms",
+    "randomId": "",
+    "source": "web"
+};
 
-							//handler for the IDP-response
-							var handler2 = new htmlparser.DefaultHandler(function (error, dom) {
-								
-								//get the SAMLResponse and RelayState information from the IDP-website
-								var SAMLResponseValue = dom[2].children[3].children[1].children[4].children[0].children[0].children[1].children[1].children[5].children[1].children[1].attribs.value;			
-								var responseRelayStateValue = dom[2].children[3].children[1].children[4].children[0].children[0].children[1].children[1].children[5].children[1].children[3].attribs.value;
-								
-								//post content is built for second call to wire-api
-								var SAMLResponseData = querystring.stringify({SAMLResponse: SAMLResponseValue, RelayState: responseRelayStateValue});	
-								//connection settings for second call to wire-api
-								var post_options_proxy3 = {
-									host: "proxy",
-									port: 8080,
-									path: WIRE_URL,
-									method: "POST",
-									Connection: 'keep-alive',
-									headers: {
-										'Host': parsedWireURL.host,
-										'Content-Type': 'application/x-www-form-urlencoded',
-										'Referer': "https://accounts.sap.com/saml2/idp/sso/accounts.sap.com;jsessionid="+number,
-										"Cookie": wireCookie,
-										'Content-Length': SAMLResponseData.length							
-									}			
-								};
-								
-								//second request to wire-api
-								var request3 = http.request(post_options_proxy3, function (res) {
-									var data = '';
-									//extract the cookies that wire sends after successful login and concatenate it with one of the former cookies wire sent before the login
-									var third_cookie = res.headers['set-cookie'][2].split(";")[0];
-									var fourth_cookie = res.headers['set-cookie'][3].split(";")[0];
-									var finalCookie = second_cookie + "; " + third_cookie + "; " + fourth_cookie;
+var SapWire = function (){
+    var self = this;
 
-									
-									res.on('data', function (chunk) {
-										//build the whole response
-										data += chunk.toString();			
-									});
+    var callback = function(loginCookie){
 
-									res.on('end', function () {	
-										console.log(data);	
-									});
+        console.log("LoginCookie: " + loginCookie);
 
-									//this callback is used to start the bot (it conntects to wire with the final cookie)
-									console.log(finalCookie);
-									callback(finalCookie);
+        var isBotAdressed = function(message){
+            if(message.indexOf('@Alice') > -1 || message.indexOf('@alice') > -1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        };
 
-									res.on('err', function (err) {
-										console.log(err);
-									});
-								});
-								
-								//second request to wire after login
-								request3.write(SAMLResponseData);
-								request3.end();
-							});
-							
-							// parser for the IDP-request					
-							var parser2 = new htmlparser.Parser(handler2);
-							parser2.parseComplete(data);
-						});
-						res.on('err', function (err) {
-							console.log(err);
-						});
-					});
-					
-					//request to IDP
-					request2.write(SAMLRequestData);
-					request2.end();
-				}
-							
-			});
-			
-			//parser for the first wire-request to login
-			var parser = new htmlparser.Parser(handler);
-			parser.parseComplete(data);
-			
-		});
-		
-		res.on('err', function (err) {
-			console.log(err);
-		});
-	});
-	
-	//first request to wire before login
-	request.end();
+        var removeBotNameAdressing = function(text){
+            var modifiedText = text.replace('@Alice ', '');
+            modifiedText = modifiedText.replace('@alice', '');
+
+            return modifiedText;
+        };
+
+        var sendMessage = function (botID, text, cb) {
+            var chatroomID = roomConfigurationArray[botID].roomID;
+
+            var json = {
+                "function": "postmessage",
+                "type": "text",
+                "randomId": "bot",
+                "source": "web"
+            };
+
+
+            json.chatroom = chatroomID;
+            json.msg = text;
+
+
+            post(URL, json, function (data) {
+                if (cb){
+                    cb(data);
+                }
+            });
+        };
+
+        var getRooms = function (cb) {
+            post(URL, GET_ROOMS, function (data) {
+                cb(data);
+            });
+        };
+
+        var getMessages = function (chatroom, lastmessageid, cb) {
+            var json = {
+                "function": "getmessages",
+                "limit": "15",
+                "previous": "false",
+                "randomId": "",
+                "source": "web"
+            };
+
+            json.chatroom = chatroom;
+            json.lastmessageid = lastmessageid;
+
+            post(URL, json, function (data) {
+
+                cb(data);
+            });
+        };
+
+        var post = function (url, json, cb) {
+            var parsedURL = nodeURL.parse(URL);
+
+            var post_data = querystring.stringify({'json': JSON.stringify(json)});
+
+            var post_options_proxy = {
+                host: "proxy",
+                port: 8080,
+                path: URL,
+                method: "POST",
+                connection: 'keep-alive',
+                headers: {
+                    'Host': parsedURL.host,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Cookie': loginCookie,
+                    'Content-Length': post_data.length
+                }
+            };
+
+            var request = http.request(post_options_proxy, function (res) {
+                var data = '';
+                res.setEncoding('utf8');
+                res.on('data', function (chunk) {
+                    data += chunk;
+                });
+                res.on('end', function () {
+                    cb(data);
+                });
+                res.on('err', function (err) {
+
+                    //Logger.log("post", err);
+                });
+            });
+            request.write(post_data);
+            request.end();
+        };
+
+        //used to get new messages and pass them to the bot to process them
+        function pollMessage(botID, chatRoomID, lastMessageID, roomConfiguration) {
+            getMessages(chatRoomID, lastMessageID, function (data) {
+                var lastMessageID = roomConfiguration.messageID;
+                try {
+                    var json = JSON.parse(data);
+                    if (json.messages) {
+                        for (var i = 0; i < json.messages.length; i++) {
+
+                            var username = json.messages[i].username;
+                            var content = querystring.unescape(json.messages[i].content);
+                            if (lastMessageID !== 0 && username.indexOf("Alice the Bot") == -1){
+                                if(roomConfiguration.roomType != 'single'){
+                                    if(isBotAdressed(content)){
+                                        content = removeBotNameAdressing(content);
+                                        //Administrator.passMessageToBot(botID, content);
+                                    }
+                                }
+                                else{
+                                   //Administrator.passMessageToBot(botID, content);
+                                }
+                            }
+                        }
+
+                        if (json.messages.length > 0){
+                            //set the lastMessageID for current room to a new value, to only receive the new messages
+                            roomConfiguration.messageID = json.messages[json.messages.length - 1].messageid;
+                        }
+                    }
+                }
+                catch (e) {
+                    //Logger.log("pollMessage", e);
+                }
+            });
+        }
+
+        //used to poll all rooms that the bot has. So everyone can open a chat with the bot like he wants to. (even group chats)
+        function pollRooms(pollRoomTimeout){
+            getRooms(function(data){
+                try{
+                    var json = JSON.parse(data);
+                    if(json.chatrooms){
+                        chatRoomArray = json.chatrooms;
+                    }
+                    for(var i = 0; i < chatRoomArray.length; i++){
+                        var roomID = chatRoomArray[i].id;
+                        var roomType = chatRoomArray[i].type;
+                        var lastMessagePreview = chatRoomArray[i].lastMessagePreview;
+                        if(availableChatRoomIDArray.indexOf(roomID) === -1){  //push each NEW room into the roomid-array
+                            availableChatRoomIDArray.push(roomID);
+                            roomID =  ""+ roomID;
+                            var service = "Wire";
+                            var userInfo = chatRoomArray[i].name;
+                            var botID = Administrator.createBotInstance(sendMessage, service, userInfo);
+
+                            var roomConfiguration = {};
+//                            roomConfiguration.bot = bot;
+                            roomConfiguration.botID = botID;
+                            roomConfiguration.roomID = roomID;
+                            roomConfiguration.messageID = 0;
+                            roomConfiguration.roomType = roomType;
+
+                            roomConfigurationArray[botID] = roomConfiguration;
+                            roomIDMappingToBotID[roomID] = botID;
+                            console.log(botID);
+                            Administrator.runBot(botID);
+
+                            //write welcome message
+                            if(roomType == 'single'){
+                                //for single chats just say welcome message the first time the room was created and not on every bot-server-restart
+                                if(lastMessagePreview == ''){
+                                    sendMessage(botID, "Hello, I am Alice. It's nice to meet you. We can have a little small talk, but I do also have great knowledge about SAP. If you need any information about an employee, if you need detailed information about a building or if you want to know what two employees have in common, feel free to ask me.", function(){});
+                                }
+                            }
+                            else{
+                                sendMessage(botID, "Hello everyone, I am Alice, the new one. It's nice to meet all of you. We can have a little small talk, but I also have great knowledge about SAP. If you need any information about an employee, if you need detailed information about a building or if you want to know what two employees have in common, feel free to ask me. Actually, I am always very busy and can't read every single post in this chat, so it would be nice if you could refer to me directly by using @Alice. I would really appreciate that!", function(){});
+                            }
+
+                            //poll the messages for this room
+                            pollMessage(botID, roomID, 0, roomConfiguration);
+                        }
+                        else{
+                            //if the room already existed, check if new messages are available and if yes, get them
+                            if(chatRoomArray[i].unreadmessages > 0){
+                                roomID = "" + roomID;  //roomid has to be a string
+
+                                var botID = roomIDMappingToBotID[roomID];
+                                var messageID = roomConfigurationArray[botID].messageID;
+                                var roomConfiguration = roomConfigurationArray[botID];
+
+                                //call pollMessage with the bot that belongs to the room(ID) and pass the lastMessageID to get only new messages. Also pass the whole roomConfiguration to reset the messageID in the called function
+                                pollMessage(botID, roomID, messageID, roomConfiguration);
+                            }
+                        }
+                    }
+
+                    //check the rooms every <pollRoomTimeout>-seconds
+                    setTimeout(function () {
+                        pollRooms(pollRoomTimeout);
+                    }, pollRoomTimeout);
+                }
+                catch(e){
+                    //Logger.log("pollRooms", e);
+                    setTimeout(function () {
+                        pollRooms(pollRoomTimeout);
+                    }, pollRoomTimeout);
+                }
+
+            });
+
+        }
+        pollRooms(1000);
+    }
+    new WireAuthenticator(URL, callback);
 }
 
-module.exports = authenticator;
+module.exports = SapWire;
+
