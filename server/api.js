@@ -11,7 +11,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 	var xml2js 	  = require("xml2js").parseString;
 	var iconv 	  = require("iconv-lite");
 	var EWSClient = require("./ews/ewsClient.js").EWSClient;
-	//var wire      = require("./wire.js");
+	var wire      = require("./wire.js");
 
 	function setHeader(response)
 	{	
@@ -152,14 +152,13 @@ exports.register = function(app, user, local, proxy, npm, origin)
 		});
 	});
 
-	/*app.get('/api/wire', function(request, response) {
+	app.get('/api/wire', function(request, response) {
 
-		wire(request.query.url, function(cookie){
-			console.log(cookie);
-			response.send("");
+		wire().getchatrooms('87873', 0, function(data){
+			response.send(data);
 		});
 
-	});*/
+	});
 
 	//for fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
 	app.use(function(req, res, next) {
