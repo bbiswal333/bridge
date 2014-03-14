@@ -32,6 +32,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
       var res = [];
 
       var weekNo = calUtils.getWeekNumber(day_o);
+      weekNo.weekNo = calUtils.useNDigits(weekNo.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
 
       _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {
       //_httpRequest("http://localhost:8000/cats_alloc.json", function(data, status) {
@@ -43,8 +44,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
           task.tasktype = record.TASKTYPE;
           task.objguid = (record.ZCPR_OBJGUID == "") ? task.tasktype : record.ZCPR_OBJGUID;
           task.objgextid = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_OBJGEXTID;
-          task.taskDesc = record.DESCR;
-          task.projDesc = record.ZCPR_EXTID;
+          task.taskDesc = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.DESCR;
+          task.projDesc = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_EXTID;
 
           var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
           task.quantity = parseFloat(record.DAYS[dayOfWeek].QUANTITY);

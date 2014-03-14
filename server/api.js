@@ -219,6 +219,7 @@ exports.register = function(app, user, local, proxy, npm, origin)
 					response.send(ans);
 				}
 				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
 					response.send(res);
 				}
 			});
