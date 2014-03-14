@@ -3,6 +3,7 @@ angular.module('app.linkList').appLinkListSettings =
         function (appLinklistConfig, $scope,  bridgeConfig) {
 
 	$scope.config = appLinklistConfig;
+	$scope.addForm = true;
 	
 	$scope.currentConfigValues = {};
 
@@ -50,14 +51,33 @@ angular.module('app.linkList').appLinkListSettings =
 
 	$scope.newEntry = function()
 	{
-		entry = {
-			'name': $scope.currentConfigValues.linkName,
-			'url':  $scope.currentConfigValues.url,
-			'cat':'General'
+		if($scope.addForm)
+		{
+			entry = {
+				'name': $scope.currentConfigValues.linkName,
+				'url':  $scope.currentConfigValues.url,
+				'cat':'General',
+				'type': 'hyperlink'
+			}
+		}
+		else if(!$scope.addForm)
+		{
+			entry = {
+				'name': $scope.currentConfigValues.sapLinkName,
+				'sid':  $scope.currentConfigValues.sapLinkSID,
+				'transaction': $scope.currentConfigValues.sapLinkTransaction,
+				'parameters': $scope.currentConfigValues.sapLinkParameters,
+				'cat':'General',
+				'type': 'saplink',
+			}
 		}
 		$scope.currentConfigValues = '';
 		appLinklistConfig.linkList.push(entry);
 		//appLinklistConfig.linkList.push(angular.copy(entry));
 	} 
+	$scope.setAddForm = function(value)
+	{
+		$scope.addForm = value;
+	}
 }];
 

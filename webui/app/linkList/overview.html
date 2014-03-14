@@ -1,6 +1,10 @@
 
 <div class="app-linkList-container ">
 			<div class="app-linkList-link" ng-repeat="link in config.linkList" >
-				<a href="{{link.url}}" target="_blank">{{link.name}}</a>
+				<a ng-if="link.type == 'hyperlink'" href="{{link.url}}" target="_blank">{{link.name}}</a>
+
+				<a ng-if="link.type == 'saplink'" ng-href="{{link.sapGuiFile.objectURL}}" download="{{link.sapGuiFile.download}}">{{saplink.sapGuiFile.objectURL}} {{link.name}}</a>
+
 			</div>
+
 </div>
