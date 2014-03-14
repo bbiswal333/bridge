@@ -44,8 +44,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$
           task.tasktype = record.TASKTYPE;
           task.objguid = (record.ZCPR_OBJGUID == "") ? task.tasktype : record.ZCPR_OBJGUID;
           task.objgextid = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_OBJGEXTID;
-          task.taskDesc = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.DESCR;
-          task.projDesc = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_EXTID;
+          task.taskDesc = (record.taskDesc == "") ? task.tasktype : record.DESCR;
+          task.projDesc = (record.projDesc == "") ? task.tasktype : record.ZCPR_EXTID;
 
           var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
           task.quantity = parseFloat(record.DAYS[dayOfWeek].QUANTITY);
