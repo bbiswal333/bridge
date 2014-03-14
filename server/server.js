@@ -21,10 +21,16 @@ exports.run = function(npm)
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		api.register(app, user, local, proxy, npm);
 				
-		http.createServer(app).listen(port);//, "127.0.0.1");	
+		http.createServer(app).listen(port, "127.0.0.1");			
 
 		helper.printConsole(port);		
 		helper.handleException(port);		
+		if(!local)
+		{
+			exec('forever restart updater', function (error, stdout, stderr) {
+				console.log('..restarted updater');			
+			});
+		}
 	}
 	
 	function sso_start_server()

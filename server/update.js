@@ -37,6 +37,7 @@ exports.run = function(npm)
 				repo: 'bridge/bridge'  			
 			}).on('tag:add', function( payload ) {
 				console.log( "..new tag event received" );
+				update_repo();  
 			});
 		}	
 	}
