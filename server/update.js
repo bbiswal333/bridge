@@ -6,7 +6,7 @@ exports.run = function(npm)
 {	
 	var port   = param.get("port", 8080);
 	var proxy  = param.get("proxy", true);
-	var mode   = param.get("mode", "all");	
+	var mode   = param.get("mode", "tag");	
 
 	function update_repo()
 	{
