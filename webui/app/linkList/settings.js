@@ -56,7 +56,7 @@ angular.module('app.linkList').appLinkListSettings =
 			entry = {
 				'name': $scope.currentConfigValues.linkName,
 				'url':  $scope.currentConfigValues.url,
-				'cat':'General'
+				'cat':'General',
 				'type': 'hyperlink'
 			}
 		}
@@ -65,10 +65,10 @@ angular.module('app.linkList').appLinkListSettings =
 			entry = {
 				'name': $scope.currentConfigValues.sapLinkName,
 				'sid':  $scope.currentConfigValues.sapLinkSID,
-				'transaction': $scope.currentConfigValues.sapLinkTransaction
-				'parameters': $scope.currentConfigValues.sapLinkParameters
-				'cat':'General'
-				'type': 'saplink'
+				'transaction': $scope.currentConfigValues.sapLinkTransaction,
+				'parameters': $scope.currentConfigValues.sapLinkParameters,
+				'cat':'General',
+				'type': 'saplink',
 			}
 		}
 		$scope.currentConfigValues = '';

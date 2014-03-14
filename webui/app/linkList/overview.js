@@ -31,39 +31,53 @@ angular.module('app.linkList').directive('app.linkList',
                             delete configCopy.linkList[i].$$hashKey;
                             delete configCopy.linkList[i].editable;
                             delete configCopy.linkList[i].old;
+                            delete configCopy.linkList[i].sapGuiFile;
                         };
                         return configCopy;
                     }; 
 
-        /*----------TEST DOWNLOAD .SAP ---------*/
-        data =  "[System] \n"+
-                "Name=ZBA \n"+
-                "[User] \n"+
-                "[Function] \n"+
-                "Command=SESSION_MANAGER \n"
-
-            var blob = new Blob([data]);
-
-            $scope.sapLinks = [];
-            var saplink = {};
-
-                saplink.objectURL = window.URL.createObjectURL(blob);                 
-                saplink.name = "test";
-                saplink.download =  saplink.name+".sap";
-
-            $scope.sapLinks.push(saplink);
-
-        /*-------------------------------------*/
     }];
     return {
         restrict: 'E',
         templateUrl: 'app/linkList/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-            if (appConfig != undefined) {     
-                    appLinklistConfig.linkList = appConfig.linkList;                  
-                }
+                var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
+                if (appConfig != undefined) {  
+
+                    appLinklistConfig.linkList = appConfig.linkList;
+
+                    for (var i = appLinklistConfig.linkList.length - 1; i >= 0; i--) 
+                    {  
+                        link = appLinklistConfig.linkList[i];
+                        console.log(link);
+                        if(link.type == "saplink") 
+                        {
+                            link.sapGuiFile = generateBlob(link.name,link.sid,'','');
+                            console.log(link.sapGuiFile);
+                        }         
+                    };
+                    console.log(appLinklistConfig.linkList);
+
+                    }
+
+                function generateBlob(name,sid,transaction,parameters)
+                {
+                     data =     "[System] \n"+
+                                "Name="+sid+" \n"+
+                                "[User] \n"+
+                                "[Function] \n"+
+                                "Command=SESSION_MANAGER \n";
+
+                   var blob = new Blob([data]);
+                    $scope.sapLinks = [];
+                    var saplink = {};
+                        saplink.objectURL = window.URL.createObjectURL(blob);                 
+                        saplink.name = name;
+                        saplink.download =  saplink.name+".sap";
+                    return saplink; 
+                };//generateBlob
+
             }
     };
 }]);
