@@ -3,4 +3,9 @@
 			<div class="app-linkList-link" ng-repeat="link in config.linkList" >
 				<a href="{{link.url}}" target="_blank">{{link.name}}</a>
 			</div>
+
+			<div class="app-linkList-link" ng-repeat="saplink in sapLinks">
+				<a ng-href="{{saplink.objectURL}}" download="{{saplink.download}}">{{saplink.name}}</a>
+			</div>
+
 </div>

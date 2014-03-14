@@ -1,5 +1,18 @@
-<div class="app-linkList-head">Add a new link</div>
-<form name="ConfigItemForm" ng-submit="newEntry()">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="app-linkList-head">Add a new link</div>
+        </div>
+    </div>
+
+    <div class="row app-linkList-row">
+        <div class="col-md-offset-1 col-xs-4">
+            <button ng-click="setAddForm(true)" ng-class="{active: addForm}" type="button" class="btn btn-primary btn-sm">Weblink</button>
+
+            <button ng-click="setAddForm(false)" ng-class="{active: !addForm}" type="button" class="btn btn-primary btn-sm">SAP GUI</button>
+        </div>
+    </div>
+
+<form name="ConfigItemFormHyperlink" ng-submit="newEntry()" ng-show="addForm">
     <div class="row app-linkList-row">
         <div class="col-xs-1"><b>Name</b>
         </div>
@@ -20,16 +33,60 @@
             <button class="btn btn-primary btn-sm " type="submit">Add</button>
         </div>
     </div>
-
 </form>
+
+<form name="ConfigItemFormSAPlink" ng-submit="newEntry()" ng-show="!addForm">
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>Name</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" placeholder="Name for the SAP GUI Link" autofocus />
+        </div>
+    </div>
+
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>System ID</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkSID" placeholder="SID" />
+        </div>
+    </div>
+
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>Transaction</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkTransaction" placeholder="Transaction" />
+        </div>
+    </div>
+
+    <div class="row app-linkList-row">
+        <div class="col-xs-1"><b>Parameters</b>
+        </div>
+        <div class="col-xs-4">
+            <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkParameters" placeholder="Parameters" />
+        </div>
+    </div>
+
+    <div class="row app-linkList-row">
+        <div class="col-xs-1">
+            <button class="btn btn-primary btn-sm " type="submit">Add</button>
+        </div>
+    </div>
+</form>
+
+
+
 <hr>
 <div class="app-linkList-head">Edit links</div>
 
 <div class="row app-linkList-row">
     <div class="app-linkList-tableHeader col-xs-3">Name</div>
-    <div class="app-linkList-tableHeader col-xs-4">URL</div>
-    <div class="app-linkList-tableHeader col-xs-3">Category</div>
-    <div class="app-linkList-tableHeader col-xs-2"></div>
+    <div class="app-linkList-tableHeader col-xs-3">URL / SID</div>
+    <div class="app-linkList-tableHeader col-xs-2">Transaction</div>
+    <div class="app-linkList-tableHeader col-xs-2">Parameters</div>
+    <div class="app-linkList-tableHeader col-xs-1">Category</div>
+    <div class="app-linkList-tableHeader col-xs-1"></div>
 </div>
 
 <div ui-sortable="sortableOptions" ng-model="config.linkList">
