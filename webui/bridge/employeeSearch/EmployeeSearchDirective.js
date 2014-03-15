@@ -8,13 +8,6 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
         }
 
         $scope.doSearch = function (username) {
-            // removing stuff the service cannot handle
-            username = username.replace(',', ' ');
-            username = username.replace(';', ' ');
-            username = username.replace('.', ' ');
-            // regex replaces multiple spaces with a single space
-            username = username.replace(/ +(?= )/g, '');
-
             return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=20&query=' + username + '&origin=' + location.origin).then(function (response) {
                 return response.data.DATA;
             });
