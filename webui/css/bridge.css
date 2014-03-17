@@ -256,6 +256,17 @@ img {
     margin-right: 2px;
     float: right;
 }
+.download-icon {
+    font-family:'SAP-icons';
+    font-size: 20px;
+    color: #0099CC;    
+    padding-left: 10px;    
+}
+
+.download-icon:hover{
+    text-decoration: none;
+}
+
 .settingsIcon {
     font-family:'SAP-icons';
     font-size: 20px;

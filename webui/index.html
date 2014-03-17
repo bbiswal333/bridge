@@ -48,6 +48,7 @@
     <script src="bridge/bridgeSettingsController.js"></script>
     <script src="bridge/bridgeDataService.js"></script>
     <script src="bridge/bridgeConfigService.js"></script>
+    <script src="bridge/bridgeDownloadService.js"></script>
     <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
     <script src="bridge/box/BoxDirective.js"></script>
     <script src="bridge/employeeSearch/EmployeeSearchDirective.js"></script>
@@ -115,8 +116,7 @@
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"></div>
                 </div>
-                <span class="headertext">Bridge <a ng-if="winpro" href="https://github.wdf.sap.corp/pages/bridge/bridge-win/setup.zip">[get win client]</a>
-                <a ng-if="macpro" href="https://github.wdf.sap.corp/pages/bridge/bridge-mac/Bridge.app.zip">[get mac client]</a></span>
+                <span class="headertext">Bridge <a href="#/client" class="download-icon" title="Download Client">&#xe03a;</a></span>
             </div>
 
             <div id="menu">
