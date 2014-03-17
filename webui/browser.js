@@ -1,6 +1,7 @@
 navigator.featuresAvailable = function()
 {
     var feature_check = [];
+    var all_features_available = true;
 
     feature_check.push( Modernizr.cookies );
     feature_check.push( Modernizr.opacity );
@@ -12,9 +13,14 @@ navigator.featuresAvailable = function()
     feature_check.push( Modernizr.cssanimations );
     feature_check.push( Modernizr.csstransforms );
     feature_check.push( Modernizr.cssgradients );
-    feature_check.push( Modernizr.geolocation );    
+    feature_check.push( Modernizr.geolocation ); 
+    //feature_check.push( false ); - for manual testing ;-)
 
-    return feature_check.every(Boolean);    
+    for (var i = 0; i < feature_check.length; i++)
+    {
+        if(!feature_check[i]) all_features_available = false;
+    }
+    return all_features_available;
 }
 
 if( !navigator.featuresAvailable() )
