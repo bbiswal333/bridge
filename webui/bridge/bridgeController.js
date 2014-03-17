@@ -133,7 +133,7 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                 var URL = location.href;
                 URL = URL.replace("https://","");
                 URL = URL.replace("http://","");
-                $http.get('https://ifd.wdf.sap.corp:443/sap/bc/zxa/COLLECT_WEB_STATS?URL=' + encodeURIComponent( URL ) +
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/COLLECT_WEB_STATS?URL=' + encodeURIComponent( URL ) +
                                                                                     '&SECTION=' + 'MAIN' +
                                                                                     '&ACTION=' + 'PAGELOAD' +
                                                                                     '&origin=' + location.origin);
