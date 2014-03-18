@@ -1,4 +1,5 @@
-
+<span class="glyphicon glyphicon-resize-full btn btn-primary" ng-click="setBoxSize(2,3)"></span>
+<span class="glyphicon glyphicon-resize-small btn btn-primary" ng-click="setBoxSize(1,1)"></span>
 
 <div class="app-linkList-head">
     Edit links 
@@ -8,7 +9,6 @@
     <div class="app-linkList-tableHeader col-xs-4">URL / SAP System ID</div>
     <div class="app-linkList-tableHeader col-xs-2"></div>
     <div class="app-linkList-tableHeader col-xs-1"></div>
-
 </div>
 
 
@@ -17,7 +17,7 @@
     Column {{$index + 1}} - {{linkList.length}} of 6 links <br>
     <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
         
-        <div class="row app-linkList-row" ng-repeat="link in linkList track by $index">
+        <div class="row app-linkList-row" ng-repeat="link in linkList track by $index"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
             
             <form ng-submit="link.editable = false">
                 
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class=" col-xs-1">
-                     <span ng-click="deleteEntry($parent.$index,link)" class="glyphicon glyphicon-trash btn btn-primary btn-sm"></span>
+                     <span ng-show="isMouseOverRow" ng-click="deleteEntry($parent.$index,link)" class="glyphicon glyphicon-trash btn btn-primary btn-sm"></span>
                 </div>
                 
             </form>

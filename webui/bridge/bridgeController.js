@@ -91,7 +91,16 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                 $scope.apps = sortableConfig.getDefaultConfig();
                 bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
                 bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-                        }
+                        },
+            resetConfig: function(){
+                    bridgeConfig.config = {
+                                bridgeSettings: {
+                                apps: []
+                                            },
+                                 boxSettings: [],
+                    };    
+                    bridgeConfig.persistInBackend();
+            }
           };
 
 

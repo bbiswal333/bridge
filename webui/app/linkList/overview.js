@@ -23,7 +23,7 @@ angular.module('app.linkList').directive('app.linkList',
             $scope.config = appLinklistConfig;
 
     $scope.returnConfig = function () {
-        
+
         var configCopy = angular.copy(appLinklistConfig);
             
             if(configCopy.listCollection.length >= 1)
@@ -71,7 +71,7 @@ angular.module('app.linkList').directive('app.linkList',
                         };
                 }
 
-                if (appConfig == undefined)
+                else
                 {
                     console.log("noConfig");
                     appLinklistConfig.listCollection.push([]);

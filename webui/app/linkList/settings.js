@@ -30,6 +30,7 @@ angular.module('app.linkList').appLinkListSettings =
 	                 ui.item.sortable.cancel();
 	            }
         	}
+
        
           };
 
