@@ -39,9 +39,10 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
+
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter',
-    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter) {
+    ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
+    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
         
 /*        if (notifier.chromePreCheckRequestNeeded()) {
             $modal.open({
@@ -66,8 +67,8 @@ angular.module('bridge.app').controller('bridgeController',
             if (navigator.appVersion.indexOf("Linux")!=-1) return "Linux";
             return OSName;
         };
-            
-
+        
+        $scope.show_download = bridgeDownloadService.show_download;                    
 
         $http.get('http://localhost:8000/client').success(function (data, status) {
             $scope.winpro = false;

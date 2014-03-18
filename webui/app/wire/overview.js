@@ -12,7 +12,16 @@ angular.module('app.wire').directive('app.wire', function () {
             $scope.messages = data;
         }).error(function(data) {
         });*/
+
+        $http.get('https://mymailwdfvip.global.corp.sap/ews/Services.wsdl').success(function(data)
+        {            
+            console.log(data);
+        }
+        ).error(function(data) {
+            //console.log(data);   
+        });
     }];
+    
 
     return {
         restrict: 'E',
