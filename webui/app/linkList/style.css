@@ -16,19 +16,6 @@
 	padding-bottom: 10px;
 }
 
-/*.app-linkList-link{
-	font-size: 12px;
-	text-align: center;
-	width: 100%;
-	padding-bottom: 7px;
-	padding-top: 7px;
-
-	margin-bottom: 3px;
-	margin-top: 3px;
-	background-color: #eee;
-
-	border-radius: 4px;
-}*/
 .app-linkList-link{
 	font-size: 12px;
 	text-align: center;
@@ -40,5 +27,13 @@
 	margin-top: 10px; 
 	height: 145px;
 	overflow: hidden;	
+}
+
+.app-linkList-linkList {
+	min-height: 50px;
+}
+
+.app-linkList-hr{
+	border-top-width: 3px;
 }
 

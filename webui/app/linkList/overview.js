@@ -8,15 +8,13 @@ angular.module('app.linkList').directive('app.linkList',
         ['app.linkList.configservice','bridgeConfig',
         function(appLinklistConfig, bridgeConfig) {
 
-
-
     var directiveController = ['$scope', '$timeout', function ($scope, $timeout) {
         $scope.boxTitle = "Linklist";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
         $scope.customCSSFile = "app/linkList/style.css";
-
-         $scope.settingScreenData = {
+        
+        $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
                 controller: angular.module('app.linkList').appLinkListSettings,
                 id: $scope.boxId,
@@ -24,17 +22,27 @@ angular.module('app.linkList').directive('app.linkList',
 
             $scope.config = appLinklistConfig;
 
-        $scope.returnConfig = function () {
-
-                        var configCopy = angular.copy(appLinklistConfig);
-                        for (var i = configCopy.linkList.length - 1; i >= 0; i--) {
-                            delete configCopy.linkList[i].$$hashKey;
-                            delete configCopy.linkList[i].editable;
-                            delete configCopy.linkList[i].old;
-                            delete configCopy.linkList[i].sapGuiFile;
+    $scope.returnConfig = function () {
+        
+        var configCopy = angular.copy(appLinklistConfig);
+            
+            if(configCopy.listCollection.length >= 1)
+            {
+                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) 
+                {  
+                    linkList = configCopy.listCollection[i];
+                            
+                        for (var j = linkList.length - 1; j >= 0; j--)
+                        {
+                            delete linkList[j].$$hashKey;
+                            delete linkList[j].editable;
+                            delete linkList[j].old;
+                            delete linkList[j].sapGuiFile;
                         };
+                };
                         return configCopy;
                     }; 
+            };
 
     }];
     return {
@@ -43,40 +51,32 @@ angular.module('app.linkList').directive('app.linkList',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
                 var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-                if (appConfig != undefined) {  
 
-                    appLinklistConfig.linkList = appConfig.linkList;
+                if (appConfig != undefined) 
+                {  
+                    appLinklistConfig.listCollection = appConfig.listCollection;
 
-                    for (var i = appLinklistConfig.linkList.length - 1; i >= 0; i--) 
-                    {  
-                        link = appLinklistConfig.linkList[i];
-                        console.log(link);
-                        if(link.type == "saplink") 
+                    for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) 
                         {
-                            link.sapGuiFile = generateBlob(link.name,link.sid,'','');
-                            console.log(link.sapGuiFile);
-                        }         
-                    };
-                    console.log(appLinklistConfig.linkList);
+                            linkList = appLinklistConfig.listCollection[i];
+                        
+                            for (var j = linkList.length - 1; j >= 0; j--) 
+                            {  
+                                link = linkList[j];
+                                if(link.type == "saplink") 
+                                {
+                                    link.sapGuiFile = appLinklistConfig.generateBlob(link.name,link.sid,link.transaction,'');
+                                }         
+                            };   
+                        };
+                }
 
-                    }
-
-                function generateBlob(name,sid,transaction,parameters)
+                if (appConfig == undefined)
                 {
-                     data =     "[System] \n"+
-                                "Name="+sid+" \n"+
-                                "[User] \n"+
-                                "[Function] \n"+
-                                "Command=SESSION_MANAGER \n";
-
-                   var blob = new Blob([data]);
-                    $scope.sapLinks = [];
-                    var saplink = {};
-                        saplink.objectURL = window.URL.createObjectURL(blob);                 
-                        saplink.name = name;
-                        saplink.download =  saplink.name+".sap";
-                    return saplink; 
-                };//generateBlob
+                    console.log("noConfig");
+                    appLinklistConfig.listCollection.push([]);
+                }
+               
 
             }
     };
