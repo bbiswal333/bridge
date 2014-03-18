@@ -39,8 +39,9 @@ angular.module('bridge.app').directive('errSrc', function() {
   }
 });
 
-angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal",
-    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal) {
+angular.module('bridge.app').controller('bridgeController',
+    ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter',
+    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter) {
         
 /*        if (notifier.chromePreCheckRequestNeeded()) {
             $modal.open({
@@ -139,22 +140,18 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                 {
                     $scope.apps = sortableConfig.getDefaultConfig();
                 }
-                var URL = location.href;
-                URL = URL.replace("https://","");
-                URL = URL.replace("http://","");
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/COLLECT_WEB_STATS?URL=' + encodeURIComponent( URL ) +
-                                                                                    '&SECTION=' + 'MAIN' +
-                                                                                    '&ACTION=' + 'PAGELOAD' +
-                                                                                    '&origin=' + location.origin);
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/GET_WEB_STATS?URL=' + encodeURIComponent( URL ) +
-                                                                                '&SECTION=' + 'MAIN' +
-                                                                                '&ACTION=' + 'PAGELOAD' +
-                                                                                '&origin=' + location.origin).then(function (response) {
-                    console.log("Usage data for this server " + URL + " last week:");
-                    for (var i = 0; i < 7; i++) {
-                        console.log(response.data.DATA[i].DATE + ': ' + response.data.DATA[i].HITS + ' hits by ' + response.data.DATA[i].UNIQUE_USERS + ' distinct users');
+
+                bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
+                var deferred = $q.defer();
+                var promise = bridgeCounter.GetWebStats(deferred, '7', 'MAIN', 'PAGELOAD');
+                promise.then(function (counterData) {
+                    if (angular.isObject(counterData)){
+                        for (var i = 0; i < 7; i++) {
+                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
+                        };
                     };
                 });
+
                 $scope.configLoadingFinished = true;
                 $scope.showLoadingAnimation = false;   
             });
