@@ -146,6 +146,15 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                                                                                     '&SECTION=' + 'MAIN' +
                                                                                     '&ACTION=' + 'PAGELOAD' +
                                                                                     '&origin=' + location.origin);
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/GET_WEB_STATS?URL=' + encodeURIComponent( URL ) +
+                                                                                '&SECTION=' + 'MAIN' +
+                                                                                '&ACTION=' + 'PAGELOAD' +
+                                                                                '&origin=' + location.origin).then(function (response) {
+                    console.log("Usage data for this server " + URL + " last week:");
+                    for (var i = 0; i < 7; i++) {
+                        console.log(response.data.DATA[i].DATE + ': ' + response.data.DATA[i].HITS + ' hits by ' + response.data.DATA[i].UNIQUE_USERS + ' distinct users');
+                    };
+                });
                 $scope.configLoadingFinished = true;
                 $scope.showLoadingAnimation = false;   
             });
