@@ -316,7 +316,8 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    margin-bottom: auto;    
+    margin-bottom: auto;  
+    overflow: hidden;  
 }
 
 .download-dialog .modal-dialog {
