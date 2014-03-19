@@ -5,7 +5,8 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 	"lib.utils.calUtils",
 	"$interval",
 	"notifier",
-	function ($timeout, $http, ewsUtils, calUtils, $interval, notifier) {
+	"bridgeCounter",
+	function ($timeout, $http, ewsUtils, calUtils, $interval, notifier, bridgeCounter) {
 		var linkFn = function ($scope) {
 			/* ====================================== */
 			/* CONFIGURATION */

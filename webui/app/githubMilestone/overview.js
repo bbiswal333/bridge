@@ -1,8 +1,8 @@
 angular.module('app.githubMilestone', ["lib.utils"]);
 
 angular.module('app.githubMilestone').directive('app.githubMilestone', 
-    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "bridgeConfig",
-    function($http, appGithubMilestoneConfig, calUtils, bridgeConfig) {
+    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "bridgeConfig", "bridgeCounter",
+    function($http, appGithubMilestoneConfig, calUtils, bridgeConfig, bridgeCounter) {
 
        
     var directiveController = ['$scope', function($scope ) {
@@ -11,7 +11,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.boxIcon = '&#xe009;';
             $scope.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: "none", msg: ""};
-
+            bridgeCounter.CollectWebStats('GITHUB', 'APPLOAD');
             //Settings Screen
             $scope.settingScreenData = {
             templatePath: "githubMilestone/settings.html",

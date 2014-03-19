@@ -2,10 +2,12 @@ angular.module('app.im', []);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope' ,'app.im.configservice' , function ($scope, appimconfigservice) {
+    var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {
         $scope.boxTitle = "Internal Messages";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d3;';
+        bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD');
+        
         /*$scope.settingsTitle = "Settings";
 
         $scope.settingScreenData = {

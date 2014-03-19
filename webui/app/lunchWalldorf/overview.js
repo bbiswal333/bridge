@@ -1,6 +1,6 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", function ($timeout, calUtils, dataProcessor) {
+  directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "bridgeCounter", function ($timeout, calUtils, dataProcessor, bridgeCounter) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
@@ -10,6 +10,7 @@
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";
+        bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'APPLOAD');
 
         var lang = "de";
         //if( lang == "de") {
@@ -32,8 +33,9 @@
             ).success(function(data) {            
                 $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
                 $scope.contentLoaded = true;
+                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
             }).error(function() {
-                console.log("Error retrieving the lunch menu");
+                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
             });
         }
         $scope.loading = false;

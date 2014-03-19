@@ -8,7 +8,7 @@ angular.module('app.linkList').directive('app.linkList',
         ['app.linkList.configservice','bridgeConfig',
         function(appLinklistConfig, bridgeConfig) {
 
-    var directiveController = ['$scope', '$timeout', function ($scope, $timeout) {
+    var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {
         $scope.boxTitle = "Linklist";
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
@@ -18,6 +18,7 @@ angular.module('app.linkList').directive('app.linkList',
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linkList').appLinkListSettings,
         };
+        bridgeCounter.CollectWebStats('LINKLIST', 'APPLOAD');
 
             $scope.config = appLinklistConfig;
 

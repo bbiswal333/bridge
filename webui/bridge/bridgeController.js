@@ -137,16 +137,22 @@ angular.module('bridge.app').controller('bridgeController',
                 }
 
                 bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
-                var deferred = $q.defer();
-                var promise = bridgeCounter.GetWebStats(deferred, '7', 'MAIN', 'PAGELOAD');
-                promise.then(function (counterData) {
+                var deferred1 = $q.defer();
+                var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
+                var deferred2 = $q.defer();
+                var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
+                promise1.then(function (counterData) {
                     if (angular.isObject(counterData)){
-                        for (var i = 0; i < 7; i++) {
-                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
-                        };
+                        console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
                     };
+                    promise2.then(function (counterData) {
+                        if (angular.isObject(counterData)){
+                            for (var i = 0; i < 7; i++) {
+                                console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
+                            };
+                        };
+                    });
                 });
-
                 $scope.configLoadingFinished = true;
                 $scope.showLoadingAnimation = false;   
             });
@@ -174,7 +180,6 @@ angular.module('bridge.app').config(["$routeProvider", "$locationProvider", "$ht
     $routeProvider.when("/cats", {redirectTo: "/detail/cats/"});
 
     $routeProvider.when("/42/", {template: "", controller: function () {
-        console.log("test");
          window.location.replace("https://de.wikipedia.org/wiki/Sinn_des_Lebens");
     }});
 

@@ -1,14 +1,15 @@
 ﻿angular.module('app.atc', []);
 
 angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeConfig", 
-    function ($modal, $interval, appAtcConfig, appAtcData, bridgeConfig) {
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeConfig", "bridgeCounter",
+    function ($modal, $interval, appAtcConfig, appAtcData, bridgeConfig, bridgeCounter) {
     
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ATC Results";
         $scope.settingsTitle = "Configure Source Systems and Packages";
         $scope.boxIcon = '&#xe05e;';
         $scope.customCSSFile = "app/atc/style.css";
+        bridgeCounter.CollectWebStats('ATC', 'APPLOAD');
 
         $scope.settingScreenData = {
             templatePath: "atc/settings.html",
