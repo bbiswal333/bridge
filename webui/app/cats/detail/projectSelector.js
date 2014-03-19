@@ -3,6 +3,7 @@ angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "app
     var modalInstance = $modal.open({
       templateUrl: "/app/cats/detail/projectSelector.tmpl.html", 
       controller: "app.cats.maintenanceView.projectSelectorCntrl",
+      windowClass: 'settings-dialog',
       keyboard: true,
       resolve: {
         items: function () {

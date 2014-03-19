@@ -58,30 +58,12 @@ angular.module('bridge.app').controller('bridgeController',
             notifier.requestPermission();
         }*/
 
-        function getOS()
-        {
-            var OSName="Unknown OS";
-            if (navigator.appVersion.indexOf("Win")!=-1) return "Windows";
-            if (navigator.appVersion.indexOf("Mac")!=-1) return "MacOS";
-            if (navigator.appVersion.indexOf("X11")!=-1) return "UNIX";
-            if (navigator.appVersion.indexOf("Linux")!=-1) return "Linux";
-            return OSName;
-        };
-        
         $scope.show_download = bridgeDownloadService.show_download;                    
 
         $http.get('http://localhost:8000/client').success(function (data, status) {
-            $scope.winpro = false;
-            $scope.macpro = false;  
+            $scope.client = true;
         }).error(function (data, status, header, config) { 
-            if( getOS() == "Windows")
-            {
-                $scope.winpro = true;
-            }
-            else if( getOS() == "MacOS")
-            {
-                $scope.macpro = true;
-            }                      
+            $scope.client = false;     
         });
 
         if ($location.path() == "" || $location.path() == "/")

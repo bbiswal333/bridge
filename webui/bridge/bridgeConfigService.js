@@ -6,6 +6,7 @@
 
         this.modalInstance = $modal.open({
             templateUrl: 'view/settings.html',
+            windowClass: 'settings-dialog',
             controller: angular.module('bridge.app').settingsController,
             resolve: {
                 templateString: function () {

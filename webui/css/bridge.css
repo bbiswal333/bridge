@@ -286,19 +286,20 @@ img {
 .settingsIcon:hover {
     cursor: pointer;
 }
+
 @media screen and (min-width: 768px) {
-    .modal-dialog {
+    .settings-dialog .modal-dialog {
         width: auto;
         position: absolute;
         left: 100px;
         right: 100px;
     }
-    .modal-content {
+    .settings-dialog .modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 }
-.modal-content {
+.settings-dialog .modal-content {
     padding: 40px;
     position: relative;
     border: 0px;
@@ -308,6 +309,35 @@ img {
     background-clip: padding-box;
     outline: none;
 }
+
+.download-dialog {
+    width: 415px;
+    height: 240px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;    
+}
+
+.download-dialog .modal-dialog {
+    width: 415px;
+    height: 240px;
+    margin: 0px;
+}
+
+.download-dialog .modal-content {
+    width: 415px;
+    height: 240px;
+    padding: 20px;
+    position: relative;
+    border: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    background-clip: padding-box;
+    outline: none;
+}
+
 .div-background-gradient {
     position: absolute;
     height: 100%;
