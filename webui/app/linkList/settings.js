@@ -1,6 +1,6 @@
 angular.module('app.linkList').appLinkListSettings = 
-    ['app.linkList.configservice', '$scope', 'bridgeConfig',  
-        function (appLinklistConfig, $scope,  bridgeConfig) {
+    ['app.linkList.configservice', '$scope', '$rootScope', 'bridgeConfig',  
+        function (appLinklistConfig, $scope, $rootScope, bridgeConfig) {
 
 	$scope.config = appLinklistConfig;
 
@@ -29,14 +29,14 @@ angular.module('app.linkList').appLinkListSettings =
 
 	                 ui.item.sortable.cancel();
 	            }
-        	}
-
-       
+        	}      
           };
 
     $scope.setBoxSize = function(size,col)
     {
     	//SET BOX SIZE!!!
+    	$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
+    	$scope.boxScope.size = "box-"+size;
     	//CHECK IF LISTS EMPTY??
 
     	if(col > appLinklistConfig.listCollection.length)
@@ -57,10 +57,6 @@ angular.module('app.linkList').appLinkListSettings =
 	$scope.deleteEntry = function(colNo,entry)
 	{
 		linkList = appLinklistConfig.listCollection[colNo];
-
-		console.log("Delete colNo:" +colNo);
-		console.log(linkList);
-		console.log(entry);
 
 		if(linkList.length > 0)
 		{

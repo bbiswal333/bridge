@@ -1,6 +1,7 @@
 angular.module('app.linkList').factory("app.linkList.configservice", function () {
 
 	var configItem = {
+		version: 1, 
 		listCollection: [],
 		/*linkList: [],
 		linkList2: [],*/

@@ -85,33 +85,34 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
         if ($location.path() == "" || $location.path() == "/")
             $scope.showLoadingAnimation = true;
                                            
-          window.debug = {
+        window.debug = {
 
             resetSort: function(){
                 $scope.apps = sortableConfig.getDefaultConfig();
                 bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
                 bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
                         },
-            resetConfig: function(){
-                    bridgeConfig.config = {
-                                bridgeSettings: {
-                                apps: []
-                                            },
-                                 boxSettings: [],
-                    };    
-                    bridgeConfig.persistInBackend();
-            }
-          };
+            resetConfig: function()
+                        {
+                            bridgeConfig.config = {
+                                    bridgeSettings: {
+                                                    apps: []
+                                                    },
+                                    boxSettings: [],
+                                                    };    
+                            bridgeConfig.persistInBackend();
+                        }
+        };
 
 
-          $scope.toggleDragging = function(){
+        $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
             {
               bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
               bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
             }
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
-          }
+        };
 
         $scope.settings_click = function (boxId) {
             bridgeConfig.showSettingsModal(boxId);
@@ -128,6 +129,17 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
             document.getElementById('overview-button').classList.remove('selected');
             document.getElementById('projects-button').classList.add('selected');
         };
+        $scope.$on('changeBoxSizeReceived', function(event,size,boxId){
+            console.log(size,boxId);
+            console.log($scope.apps);
+            for (var i = $scope.apps.length - 1; i >= 0; i--) {
+                if($scope.apps[i].id == boxId)
+                {
+                    $scope.apps[i].size = "box-"+size;
+                    break;
+                }                                                    
+            };
+        })
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
                 $scope.sortableOptions = sortableConfig.sortableOptions;
@@ -149,7 +161,10 @@ angular.module('bridge.app').controller('bridgeController', ['$scope', '$http', 
                 $scope.configLoadingFinished = true;
                 $scope.showLoadingAnimation = false;   
             });
+
         }]);
+        
+
 
 
 angular.module('bridge.app').config(["$routeProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $locationProvider, $httpProvider, calUtils) {
@@ -191,7 +206,10 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     //Event names must be distinct or browser will blow up!
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
-    });    
+    });   
+    $rootScope.$on("changeBoxSize", function (event, size, boxId) {           
+            $rootScope.$broadcast('changeBoxSizeReceived', size, boxId);
+        }); 
 
     var deferred = $q.defer();
     var promise = bridgeConfig.loadFromBackend(deferred);

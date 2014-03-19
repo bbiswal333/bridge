@@ -13,12 +13,11 @@ angular.module('app.linkList').directive('app.linkList',
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
         $scope.customCSSFile = "app/linkList/style.css";
-        
+        console.log($scope);
         $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
-                controller: angular.module('app.linkList').appLinkListSettings,
-                id: $scope.boxId,
-            };
+            controller: angular.module('app.linkList').appLinkListSettings,
+        };
 
             $scope.config = appLinklistConfig;
 
@@ -47,13 +46,16 @@ angular.module('app.linkList').directive('app.linkList',
     }];
     return {
         restrict: 'E',
-        templateUrl: 'app/linkList/overview.html',
+        templateUrl: function(){return 'app/linkList/overview.html'},
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
                 var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
 
-                if (appConfig != undefined) 
+
+                if (appConfig != undefined && 'version' in appConfig) 
                 {  
+                    if(appConfig.version == 1)
+                    {
                     appLinklistConfig.listCollection = appConfig.listCollection;
 
                     for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) 
@@ -69,15 +71,25 @@ angular.module('app.linkList').directive('app.linkList',
                                 }         
                             };   
                         };
-                }
+                    }
+                    else
+                    {
+                       appLinklistConfig.listCollection.push([]);
+                        appConfig =  appLinklistConfig; 
+                    }
+                }  
+                else if (!('version' in appConfig))  
+                {
+                    console.log("wrong linkList config version");
+                    appLinklistConfig.listCollection.push([]);
+                    appConfig =  appLinklistConfig;
+                } 
 
                 else
                 {
-                    console.log("noConfig");
+                    console.log("no linkList Config");
                     appLinklistConfig.listCollection.push([]);
-                }
-               
-
+                }        
             }
     };
 }]);

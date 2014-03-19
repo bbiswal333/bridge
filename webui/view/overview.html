@@ -17,7 +17,7 @@
     <ul ui-sortable="sortableOptions" ng-model="apps" class="sortable-list">
       <li ng-repeat="app in apps" class="sortable-item">
         <div class="{{app.size}}"> 
-            <bridge.box content="{{app.content}}" id="{{app.id}}"></bridge.box>
+            <bridge.box content="{{app.content}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
         </div>
       </li>
     </ul>
