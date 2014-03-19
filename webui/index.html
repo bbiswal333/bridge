@@ -1,12 +1,18 @@
 <!DOCTYPE HTML>
 <html lang="en" ng-app="bridge.app">
 <head>
+    <!-- global variables -->
+    <script type='text/javascript' > 
+        window.feature_check = [];
+    </script>
+
     <!-- browser compatibility  -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- browser test -->
     <script src="modernizr.js"></script>
     <script src="browser.js"></script>
+    <script src="browser_redirect.js"></script>
 
     <!-- external css -->
     <link href="lib/bootstrap-3_1_1/css/bootstrap.css" rel="stylesheet" />
@@ -46,8 +52,10 @@
     <!-- bridge -->
     <script src="bridge/bridgeController.js"></script>
     <script src="bridge/bridgeSettingsController.js"></script>
+    <script src="bridge/bridgeDownloadController.js"></script>
     <script src="bridge/bridgeDataService.js"></script>
     <script src="bridge/bridgeConfigService.js"></script>
+    <script src="bridge/bridgeCounterService.js"></script>
     <script src="bridge/bridgeDownloadService.js"></script>
     <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
     <script src="bridge/box/BoxDirective.js"></script>
@@ -101,8 +109,6 @@
     <script src="app/cats/detail/allocationBar/svg.easing.min.js"></script>
     <script src="app/cats/detail/allocationBar/svg.foreignObject.js"></script>
     <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css">
-
-    <!--<script src="counter.js"></script>-->
     <title>Bridge</title>
 </head>
 
@@ -116,12 +122,12 @@
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"></div>
                 </div>
-                <span class="headertext">Bridge <a href="#/client" class="download-icon" title="Download Client">&#xe03a;</a></span>
+                <span class="headertext">Bridge <a href="" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a></span>
             </div>
 
             <div id="menu">
                 <ul class="mainNav">
-                    <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW2</li>
+                    <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
                     <!--<li id="projects-button" ng-click="projects_click()">PROJECTS</li>-->
                 </ul>
             </div>

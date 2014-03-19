@@ -1,7 +1,13 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="bridgeApp">
+<html lang="en">
 	<head>
-        <!-- css -->
+	    <!-- global variables -->
+	    <script type='text/javascript'> 
+        	window.feature_check = [];
+    	</script>
+        
+        <script src="modernizr.js"></script>
+        <script src="browser.js"></script>
         <link href="css/bridge.css" rel="stylesheet" />
         <link href="css/animation.css" rel="stylesheet" />
 
@@ -13,20 +19,16 @@
 			<b>We are really sorry, but your current browser version is not supported.</b><br /><br />
 			If you would like to use bridge, please use an <b>updated version</b> of a browser supporting the following features to enjoy a rich user experience.<br /><br />
 			
-				
-				<a href="http://www.browserleaks.com/modernizr#cors" target="_blank">cors</a> // 
-				<a href="http://www.browserleaks.com/modernizr#cookies" target="_blank">cookies</a> // 
-				<a href="http://www.browserleaks.com/modernizr#opacity" target="_blank">opacity</a> // 
-				<a href="http://www.browserleaks.com/modernizr#borderradius" target="_blank">borderradius</a> // 
-				<a href="http://www.browserleaks.com/modernizr#cors" target="_blank">cors</a> // 
-				<a href="http://www.browserleaks.com/modernizr#fontface" target="_blank">fontface</a> // 
-				<a href="http://www.browserleaks.com/modernizr#svg" target="_blank">svg</a> // 
-				<a href="http://www.browserleaks.com/modernizr#inlinesvg" target="_blank">inlinesvg</a> // 
-				<a href="http://www.browserleaks.com/modernizr#cssanimations" target="_blank">cssanimations</a> // 
-				<a href="http://www.browserleaks.com/modernizr#csstransforms" target="_blank">csstransforms</a> // 
-				<a href="http://www.browserleaks.com/modernizr#cssgradients" target="_blank">cssgradients</a> // 
-				<a href="http://www.browserleaks.com/modernizr#geolocation" target="_blank">geolocation</a>
-				
+				<script type='text/javascript'>
+					for( var i = 0; i < window.feature_check.length; i ++ )
+					{
+						document.write('<span class="feature_check_' + window.feature_check[i].test + 
+							'">' + 
+							window.feature_check[i].name + '</span>');
+						if( i < window.feature_check.length - 1 ) document.write(' // ');
+					}
+
+				</script>							
 
 				<br /><br />
 

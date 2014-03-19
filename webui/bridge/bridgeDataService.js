@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service', ['ui.bootstrap']).factory('bridgeDataService', function () {
+﻿angular.module('bridge.service', ['ui.bootstrap']).service('bridgeDataService', function () {
     return {
         boxInstances: {},
         getBoxInstance: function (boxId) {
