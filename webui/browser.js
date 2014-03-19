@@ -1,32 +1,32 @@
-navigator.featuresAvailable = function()
+function addTest(nameOfTest)
 {
-    var feature_check = [];
+    window.feature_check.push( {"name" : nameOfTest, "test" : Modernizr[nameOfTest] } );
+}
+
+navigator.featuresAvailable = function()
+{    
     var all_features_available = true;
+    addTest("cookies");
+    addTest("opacity");
+    addTest("borderradius");
+    addTest("cors");
+    addTest("fontface");
+    addTest("svg");
+    addTest("inlinesvg");
+    addTest("cssanimations");
+    addTest("csstransforms");
+    addTest("cssgradients");
+    addTest("geolocation");
 
-    feature_check.push( Modernizr.cookies );
-    feature_check.push( Modernizr.opacity );
-    feature_check.push( Modernizr.borderradius );
-    feature_check.push( Modernizr.cors );
-    feature_check.push( Modernizr.fontface );
-    feature_check.push( Modernizr.svg );
-    feature_check.push( Modernizr.inlinesvg );
-    feature_check.push( Modernizr.cssanimations );
-    feature_check.push( Modernizr.csstransforms );
-    feature_check.push( Modernizr.cssgradients );
-    feature_check.push( Modernizr.geolocation ); 
-    //feature_check.push( false ); - for manual testing ;-)
-
-    for (var i = 0; i < feature_check.length; i++)
+    for (var i = 0; i < window.feature_check.length; i++)
     {
-        if(!feature_check[i]) all_features_available = false;
+        if(!window.feature_check[i].test) all_features_available = false;
     }
     return all_features_available;
 }
 
-if( !navigator.featuresAvailable() )
-{
-    location.href="/browser_not_supported.html";
-}
+//run function once to initialize feature_check
+navigator.featuresAvailable();
 
 //compatibility fix for location.origin
 if (!window.location.origin) 

@@ -23,6 +23,15 @@ body {
 img {
     pointer-events: none;
 }
+
+.feature_check_true {
+    color: green;
+}
+
+.feature_check_false {
+    color: red;
+}
+
 .image_rounded_shadow img {
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
