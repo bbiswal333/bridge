@@ -13,13 +13,13 @@ angular.module('app.wire').directive('app.wire', function () {
         }).error(function(data) {
         });*/
 
-        $http.get('https://mymailwdfvip.global.corp.sap/ews/Services.wsdl').success(function(data)
+        /*$http.get('https://mymailwdfvip.global.corp.sap/ews/Services.wsdl').success(function(data)
         {            
             console.log(data);
         }
         ).error(function(data) {
             //console.log(data);   
-        });
+        });*/
     }];
     
 
