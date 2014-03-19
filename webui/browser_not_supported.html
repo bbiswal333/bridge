@@ -22,10 +22,10 @@
 				<script type='text/javascript'>
 					for( var i = 0; i < window.feature_check.length; i ++ )
 					{
-						document.write('<a class="feature_check_' + window.feature_check[i].test + 
-							'" href="http://www.browserleaks.com/modernizr#' + window.feature_check[i].name + '" target="_blank">' + 
-							window.feature_check[i].name + '</a>');
-						if( i < window.feature_check.length ) document.write(' // ');
+						document.write('<span class="feature_check_' + window.feature_check[i].test + 
+							'">' + 
+							window.feature_check[i].name + '</span>');
+						if( i < window.feature_check.length - 1 ) document.write(' // ');
 					}
 
 				</script>							
