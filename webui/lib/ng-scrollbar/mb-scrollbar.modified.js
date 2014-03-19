@@ -41,12 +41,12 @@ angular.module('mb-scrollbar', [])
                 autoResize: false,
                 direction: (scope.config || {}).direction || 'vertical',
                 scrollbar: {
-                    width: 6,
-                    hoverWidth: 8,
+                    width: 5,
+                    hoverWidth: 6,
                     color: 'rgba(0,0,0,.6)'
                 },
                 scrollbarContainer: {
-                    width: 12,
+                    width: 10,
                     color: 'rgba(0,0,0,.1)'
                 },
                 dragSpeedModifier : 1,
