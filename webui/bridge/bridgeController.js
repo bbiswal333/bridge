@@ -133,7 +133,8 @@ angular.module('bridge.app').controller('bridgeController',
                 }
                 else 
                 {
-                    $scope.apps = sortableConfig.getDefaultConfig();
+                    bridgeConfig.config.bridgeSettings.apps = sortableConfig.getDefaultConfig();
+                    $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
                 }
 
                 bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
