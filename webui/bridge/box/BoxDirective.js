@@ -17,7 +17,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
             $scope.client = false;     
         });
 
-        $scope.clientNeeded = boxNeedsClient && !$scope.client;
+        $scope.clientNeeded = boxNeedsClient && !$scope.client;    
 
         if($scope.clientNeeded)
         {
