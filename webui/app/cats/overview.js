@@ -6,6 +6,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		$scope.boxTitle = "CATS Compliance";
 		$scope.boxIcon = '&#xe0a3;';
 		$scope.customCSSFile = "app/cats/style.css";
+		$scope.boxNeedsClient = true;
 
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();

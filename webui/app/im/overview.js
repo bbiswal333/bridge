@@ -7,7 +7,7 @@ angular.module('app.im').directive('app.im', function () {
         $scope.initialized = true;
         $scope.boxIcon = '&#xe0d3;';
         bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD');
-        
+        $scope.boxNeedsClient = true;
         /*$scope.settingsTitle = "Settings";
 
         $scope.settingScreenData = {
