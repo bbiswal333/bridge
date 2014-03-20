@@ -73,8 +73,8 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                     { 
                         case 404:
                             $scope.milestones = "";
-                            $scope.error = {display: "block", msg: "Repository \" "+$scope.config.repo.html_url+" \" doesn't exist" };
-                            $scope.boxTitle = "Github Milestone - Repository doesn't exist";
+                            $scope.error = {display: "block", msg: "Repository \""+$scope.config.repo.html_url+"\" could not be accessed. Either the link is invalid or GitHub is currently in maintenance." };
+                            $scope.boxTitle = "Github - Repository not reached";
                             break;
                     }
                 });

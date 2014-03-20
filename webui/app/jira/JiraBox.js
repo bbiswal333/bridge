@@ -75,5 +75,5 @@ angular.module('app.jira').factory('JiraBox', ['$http',
 
 angular.module('app.jira').factory('JiraQuery', [
     function (){
-        return 'id in projectRankedIssues(I2MASEDEV) order by "Project Rank" ASC, Key ASC';
+        return 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC';
     }]);
