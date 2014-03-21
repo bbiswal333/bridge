@@ -13,41 +13,62 @@ angular.module('app.linkList').appLinkListSettings =
 	$scope.currentConfigValues = {};
 
 	$scope.sortableOptions = {
-            //placeholder: "sortable-placeholder",
+            placeholder: "app-linklist-placeholder",
             //forceHelperSize: true,
-            //forcePlaceholderSize: true,
+            forcePlaceholderSize: true,
             //helper: "clone",
             connectWith: '.sortableConnect',
             delay: 250,
             scroll: false,
             tolerance: "intersect",
-            disabled: false,
-            receive: function(event, ui) {
-            	console.log(event.target.childElementCount);
-	            if (event.target.childElementCount >= 6) {
-	            	console.log(ui);
+            disabled: false,         
 
-	                 ui.item.sortable.cancel();
+            receive: function(event, ui) {
+            	console.log(ui.sender.context.childElementCount);
+	            if (event.target.childElementCount >= 6) {
+	                ui.item.sortable.cancel();
+	            }
+	            else
+	            {
+	            	if (ui.sender.context.childElementCount == 0)
+	            		{
+	            			$scope.setBoxSize(appLinklistConfig.listCollection.length-1)	
+	            		}
 	            }
         	}      
           };
 
-    $scope.setBoxSize = function(size,col)
+    $scope.setBoxSize = function(col)
     {
-    	//SET BOX SIZE!!!
-    	$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
-    	$scope.boxScope.size = "box-"+size;
-    	//CHECK IF LISTS EMPTY??
-
+    	if(col == 1)
+    	{
+    		size = 1;
+    		//SET BOX SIZE!!!
+    		$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
+    		$scope.boxScope.size = "box-"+size;
+    	}
+    	else if(col > 1)
+    	{
+    		size = 2;
+    		//SET BOX SIZE!!!
+    		$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
+    		$scope.boxScope.size = "box-"+size;
+    	}
+    	
     	if(col > appLinklistConfig.listCollection.length)
     	{
     		for (var i = col-appLinklistConfig.listCollection.length -1; i >= 0; i--) {
     			appLinklistConfig.listCollection.push([]);
     		};
-    		console.log(col-appLinklistConfig.listCollection.length);
     	}
     	else if(col < appLinklistConfig.listCollection.length)
     	{
+    		for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
+    			if(appLinklistConfig.listCollection[i].length == 0)
+    			{
+    				appLinklistConfig.listCollection[i] = angular.copy(appLinklistConfig.listCollection[i+1]);
+    			}
+    		};
     		appLinklistConfig.listCollection.splice(col);
     		console.log(Math.abs(col-appLinklistConfig.listCollection.length));
     	}
@@ -81,6 +102,12 @@ angular.module('app.linkList').appLinkListSettings =
 					}
 				}
 			}
+		}
+		console.log(linkList.length);
+		console.log(appLinklistConfig.listCollection.length);
+		if(linkList.length == 0 && appLinklistConfig.listCollection.length > 1)
+		{	
+			$scope.setBoxSize(appLinklistConfig.listCollection.length-1)
 		}
 	}
 
@@ -204,10 +231,22 @@ angular.module('app.linkList').appLinkListSettings =
 			console.log("Max 6 Links per col")
 		}
 		
-	} 
+	};
+	
 	$scope.setAddForm = function(col,value)
 	{
 		$scope.addForm[col] = value;
-	}
+	};
+	$scope.toggleAddForm = function(col)
+	{
+		console.log($scope.addForm[col]);
+		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined) $scope.addForm[col] = 'web';
+		else if($scope.addForm[col] != '') $scope.addForm[col] = '';
+	};
+
+	$scope.closeForm = function()
+	{
+		bridgeConfig.modalInstance.close();
+	};
 }];
 

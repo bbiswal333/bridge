@@ -1,6 +1,9 @@
 .app-linkList-row{
 	font-size: 12px;
 	padding-bottom: 8px;
+	margin-left: 0px;
+	margin-right: 0px;
+	min-height:45px;
 
 }
 .app-linkList-tableHeader{
@@ -29,11 +32,11 @@
 }
 
 .app-linkList-linkList {
-	min-height: 50px;
+	min-height: 280px;
 }
 
 .app-linkList-hr{
-	border-top-width: 2px;
+	border-top-width: 5px;
 	margin-top:5px; 
 	margin-bottom:5px; 
 }
@@ -54,13 +57,44 @@
 }
 
 .app-linklist-categoryHead-1{
-	border-top: 2px solid #097AC5;
+	border-top: 4px solid #097AC5;
 
 }
 .app-linklist-categoryHead-2{
-	border-top: 2px solid #5CCCFF;
+	border-top: 4px solid #5CCCFF;
 }
 .app-linklist-categoryHead-3{
-	border-top: 2px solid #AFE5FF;
+	border-top: 4px solid #AFE5FF;
+}
+.app-linklist-noOverflow{
+	overflow: hidden;
 }
 
+.app-linklist-clickIcon{
+	cursor: pointer;
+}
+
+.app-linklist-placeholder{
+    border: 1px dashed rgba(172,172,172,0.8);
+    background-color: rgba(175,229,255,0.1);
+
+    color: white;
+}
+
+.app-linklist-editIcons{
+	display: inline-block;
+	float: right;
+	clear:right;
+	width: 50px;
+	padding-left:5px;
+	text-align: right;
+}
+
+.appLinklist-urlSetting{
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	width: -moz-calc(100% - 55px);
+	width: -webkit-calc(100% - 55px);
+    width: calc(100% - 55px);
+}

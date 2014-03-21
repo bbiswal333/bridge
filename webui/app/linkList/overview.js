@@ -52,14 +52,14 @@ angular.module('app.linkList').directive('app.linkList',
         link: function ($scope, $element, $attrs, $modelCtrl) {
                 var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
 
-
-                if (appConfig != undefined && 'version' in appConfig) 
-                {  
+            if(appConfig != undefined && appConfig != {})
+            {
+                if ('version' in appConfig) 
+                { 
                     if(appConfig.version == 1)
                     {
-                    appLinklistConfig.listCollection = appConfig.listCollection;
-
-                    for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) 
+                        appLinklistConfig.listCollection = appConfig.listCollection;
+                        for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) 
                         {
                             linkList = appLinklistConfig.listCollection[i];
                         
@@ -75,22 +75,27 @@ angular.module('app.linkList').directive('app.linkList',
                     }
                     else
                     {
-                       appLinklistConfig.listCollection.push([]);
-                        appConfig =  appLinklistConfig; 
+                        setDefaultConfig()
                     }
-                }  
-                else if (!('version' in appConfig))  
-                {
-                    console.log("wrong linkList config version");
-                    appLinklistConfig.listCollection.push([]);
-                    appConfig =  appLinklistConfig;
-                } 
-
+                }
                 else
                 {
-                    console.log("no linkList Config");
-                    appLinklistConfig.listCollection.push([]);
-                }        
+                    setDefaultConfig()
+                }
             }
+            else
+            {
+                setDefaultConfig()
+            }
+
+            function setDefaultConfig()
+            {
+                appLinklistConfig.listCollection.push([]);
+                appLinklistConfig.listCollection[0].push({"name":"Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
+                appConfig =  appLinklistConfig;
+            }
+       
+        }
+
     };
 }]);
