@@ -5,8 +5,9 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 
 		$scope.boxTitle = "CATS Compliance";
 		$scope.boxIcon = '&#xe0a3;';
-		$scope.customCSSFile = "app/cats/style.css";
 		$scope.boxNeedsClient = true;
+		//$scope.customCSSFile = "app/cats/style.css"; //Not needed anymore, included in index.html because also needed in detail screen
+
 
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();

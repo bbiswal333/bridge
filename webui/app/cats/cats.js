@@ -1,4 +1,4 @@
-angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
+angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, encodeForUrl, calUtils) {
     var NODE_GET_API = 'http://localhost:8000/api/get?url=';
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA';

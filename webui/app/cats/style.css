@@ -1,11 +1,12 @@
 .app-cats-body {
 	font-family: "Open Sans";
+	position: relative;
 }
 
 .app-cats-legend {
 	position: absolute;
-	right: 10px;
-	bottom: 7px;
+	right: 0px;
+	bottom: 0px;
 	font-size: 16px;
 	color: #e1e1e1;
 }
