@@ -1,12 +1,27 @@
-﻿<!-- override the UI template for a found match -->
+﻿<!-- override the UI template for a found match
+<style>
+    img {opacity:0;
+    -moz-transition: opacity 0.5s; /* Firefox 4 */
+    -webkit-transition: opacity 0.5s; /* Safari and Chrome */
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+    }
+</style>-->
 <script id="itemTemplate.html" type="text/ng-template">
     <div style="padding-left: 10px; padding-right: 10px">
-        <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
-        <span style="font-size: 13px">
-            <i>
-                {{match.model.KOSTX}}<br />            
-            </i>
-        </span>
+        <table>
+            <td>
+                <img height="33" width="25" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{match.model.BNAME}}"></img>&nbsp&nbsp
+            </td>
+            <td>
+                <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
+                <span style="font-size: 13px">
+                    <i>
+                        {{match.model.KOSTX}}<br />            
+                    </i>
+                </span>
+            </td>
+        </div>
     </div>
 </script>
 
