@@ -92,6 +92,7 @@ angular.module('app.linkList').directive('app.linkList',
                 appLinklistConfig.listCollection.push([]);
                 appLinklistConfig.listCollection[0].push({"name":"Corporate Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
                 appLinklistConfig.listCollection[0].push({"name":"Online Payslip","url":"https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP","type":"hyperlink"});                
+                appLinklistConfig.listCollection[0].push({"name":"Bridge Github Repo","url":"https://github.wdf.sap.corp/bridge/bridge","type":"hyperlink"});                
                 appConfig =  appLinklistConfig;
             };
        

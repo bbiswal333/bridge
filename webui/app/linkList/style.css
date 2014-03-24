@@ -5,6 +5,7 @@
 	margin-right: 0px;
 	min-height:45px;
 
+
 }
 .app-linkList-tableHeader{
 	font-size: 14px;
@@ -91,6 +92,11 @@
 }
 
 .appLinklist-urlSetting{
+	max-height: 45px;
+	-o-text-overflow: ellipsis;   /* Opera */
+ 	 text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+ 	white-space: nowrap;  
+	word-break:break-all;
 	display: inline-block;
 	float: left;
 	overflow: hidden;
