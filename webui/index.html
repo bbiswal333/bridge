@@ -117,11 +117,13 @@
     <title>Bridge</title>
 </head>
 
+
+
 <body ng-controller="bridgeController" class="noselect">
 
     
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
-        <div class="mainPageBackground" style="height:100%;">
+        <div class="mainPageBackground">
 
             <div class="headerline">
                 <div ng-if="!showLoadingBar" class="blueTitleBar"></div>
@@ -138,11 +140,11 @@
                 </ul>
             </div>
 
-            <div style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px)">                                
+            <div id="settings" style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px);overflow:hidden">                                
                 
-                <div ng-if="show_settings" style="height:100%;float:left;background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
+                <div ng-if="show_settings" style="height:100%;overflow:hidden;float:left;background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
                     <div style="text-overflow:clip;overflow:hidden">
-                        <div style="width:264px;padding:15px;">
+                        <div style="width:264px;padding:15px;height:100%">
                             <h4>Applications</h4>                            
                             <button class="btn btn-default">Wire</button><br />
                             <button class="btn btn-default">Linklist</button><br />
@@ -159,14 +161,15 @@
                     <div ng-if="!client" class="settingsButton" style="position:relative;top:40px;width:35px;" ng-click="show_download()">&#xe03a;</div>
                 </div>
 
-                <div style="height:100%;width: -moz-calc(100% - 36px);width: -webkit-calc(100% - 36px); width: calc(100% - 36px); float:left;overflow:hidden;" ng-class="{'animate-shrink':show_settings}">
+                <div style="height:100%;overflow:scroll;width: -moz-calc(100% - 36px);width: -webkit-calc(100% - 36px); width: calc(100% - 36px); float:left;" ng-class="{'animate-shrink':show_settings}">
                     <div style="width:100%;height:100%">                                            
                         <div class="animation-container">
-                            <div ng-view class="animation-content"></div>
+                            <div id="main" ng-view class="animation-content"></div>
                         </div>
                     </div>
                 </div>
 
+                <div style="clear: both;"></div>
 
             </div>   
 
