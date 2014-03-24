@@ -26,6 +26,8 @@ angular.module("app.cats.allocationBar", [
     "app.cats.allocationBar.core.control",
     function(colorUtils, AllocationBarControl) {
         var linkFunction = function($scope, elem) {
+            var allocBarCntrl;
+
             //Check whether auto-bound values are empty
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
             $scope.snapRange = parseFloat($scope.snapRange || 20); //snap range of 20px is default
@@ -36,48 +38,32 @@ angular.module("app.cats.allocationBar", [
             var updateBySelfExpected = false;
 
             $scope.$watch("blocks", function() {
-                if (!updateBySelfExpected) {
-                    $scope.AllocationBarControl.construct($scope.blocks);
-                    //console.log("Rebuild");
-                } else {
-                    //console.log("no rebuild");
-                    updateBySelfExpected = false;
-                }
-
-                //console.log("B: " + $scope.blocks);
-                //console.log("SR: " + $scope.snapRange);
+                allocBarCntrl.construct($scope.blocks);
             }, true);
 
             //console.log("SR Initial: " + $scope.snapRange);
 
-            $scope.AllocationBarControl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
-                //$scope.$apply(function() {
-                    updateBySelfExpected = false; //Strange behaviour... Two way binding isn't working properly anymore
-
-                    $scope.blocks = blocks;
-                    if (typeof $scope.onValChanged == "function") {
-                        $scope.onValChanged({
-                            val: blocks
-                        });
+            allocBarCntrl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
+                $scope.$apply(function () {
+                    //Copy changes from one array to the other ==> assigning them would destroy two-way-binding
+                    $scope.blocks.length = 0;
+                    for (var i = 0; i < blocks.length; i++) {
+                        $scope.blocks.push(blocks[i]);
                     }
-                //});
-            }, function (possibleValue_i) {
-                $scope.onAddBtnPressed({posVal: possibleValue_i});
+                });
             }, function (removedBlock_o) {
                 $scope.onBlockRemoved({removedBlock: removedBlock_o});
             }, function (perc_f) {
                 if (typeof $scope.handlerValueToDisplay == "function") {
                     return $scope.handlerValueToDisplay({perc: perc_f});
                 }
-                return Math.floor(perc_f * 100) / 100 + " %";
+                return Math.floor(perc_f * 100) / 100 + " %"; //Rounding on 2 digíts after decimal separator
             });
         };
 
         return {
             restrict: "E",
             scope: {
-                onValChanged: "&onvalchanged",
-                onAddBtnPressed: "&onaddbtnpressed",
                 onBlockRemoved: "&onblockremoved",
                 handlerValueToDisplay: "&handlervaluetodisplay",
                 width: "@width",

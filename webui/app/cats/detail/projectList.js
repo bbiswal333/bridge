@@ -1,5 +1,5 @@
 angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data"]).directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", function (catsUtils, $timeout) {
-    var linkFn = function ($scope) {
+  var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filterVal = "";
 
@@ -13,44 +13,54 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     $scope.toogleSelect = function (indx) {
-      console.log(indx);
       $scope.items[indx].selected = !$scope.items[indx].selected;
+
+      if ($scope.items[indx].selected) {
+        var ok = $scope.onProjectChecked({
+          desc_s: $scope.items[indx].name,
+          val_i: null,
+          objgextid_s: $scope.items[indx].data.objgextid,
+          objguid_s: $scope.items[indx].data.objguid
+        });
+
+        if (!ok) {
+          $scope.items[indx].selected = false;
+        }
+      }
+      else {
+        $scope.onProjectUnchecked({
+          objgextid_s: $scope.items[indx].data.objgextid,
+          objguid_s: $scope.items[indx].data.objguid
+        });
+      }
     };
 
     $scope.resetFilter = function () {
       $scope.filterVal = "";
     };
 
-    $scope.cancel = function () {
-      $modalInstance.close(null);
-    };
-  
     function loadProjects () {
       catsUtils.getTasks(function (data) {
         $scope.items = [];
-        console.log("Tasks");
-        console.log(data);
         
         for (var i = 0; i < data.length; i++) {
           var found = false;
 
-          for (var j = 0; j < $scope.excludeProjects.length; j++) {
-            if (data[i].objgextid == $scope.excludeProjects[j].objgextid && data[i].objguid == $scope.excludeProjects[j].objguid) {
+          for (var j = 0; j < $scope.blocks.length; j++) {
+            if (data[i].objgextid == $scope.blocks[j].data.objgextid && data[i].objguid == $scope.blocks[j].data.objguid) {
               found  = true;
             }
           }
 
-          if (!found) {
-            var newItem = {};
-            newItem.id = i;
-            newItem.name = data[i].taskDesc;
-            newItem.desc = data[i].projectDesc;
-            newItem.data = {};
-            newItem.data.objgextid = data[i].objgextid;
-            newItem.data.objguid = data[i].objguid;
-            newItem.selected = (data[i].selected || null);
-            $scope.items.push(newItem);
-          }
+          var newItem = {};
+          newItem.id = i;
+          newItem.name = data[i].taskDesc;
+          newItem.desc = data[i].projectDesc;
+          newItem.data = {};
+          newItem.data.objgextid = data[i].objgextid;
+          newItem.data.objguid = data[i].objguid;
+          newItem.selected = found;
+          $scope.items.push(newItem);
 
           $timeout(function () {
             $scope.$broadcast('rebuild:me');
@@ -58,6 +68,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         }
       });
     };
+
+    $scope.$watch("blocks", function () {
+      loadProjects();
+    }, true);
   };
 
   return {
@@ -65,7 +79,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     scope: {
         onProjectChecked: "&onprojectchecked",
         onProjectUnchecked: "&onprojectunchecked",
-        excludeProjects: "=excludeprojects"
+        blocks: "=blocks",
+        heightOfList: "@heightoflist"
     },
     replace: true,
     link: linkFn,

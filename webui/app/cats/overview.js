@@ -1,4 +1,4 @@
-angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter",
+angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter",
 	function (calUtils, catsUtils, $interval, $location, bridgeCounter) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
@@ -165,7 +165,9 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 
 	return {
 		restrict: "E",
-		scope: false,
+		scope: {
+			headline: "=headline"
+		},
 		templateUrl: "app/cats/overview.html",
 		replace: true,
 		link: linkFn

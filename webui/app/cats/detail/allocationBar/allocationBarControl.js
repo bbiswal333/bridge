@@ -3,7 +3,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
     "app.cats.allocationBar.core.block",
     function(colorUtils, BarBlock) {
         // blocks_ar: [{desc: "Project A", value: 50, data: {}}, {desc: "Project B", value: 25, data: {}}, {desc: "Project X", value: 25, data: {}}]
-        var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnAdd_fn, callbackOnRemove_fn, getValueToDisplay_fn) {
+        var StackedBarInput = function(svg_o, x_i, y_i, width_i, height_i, snapRange_i, padding_i, callbackOnChange_fn, callbackOnRemove_fn, getValueToDisplay_fn) {
             var self = this;
             var colorOffset = "#aaaaaa";
             var DRAGGER_EXPAND = 10;
@@ -28,10 +28,8 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
 
             this.getValueToDisplay = getValueToDisplay_fn;
 
-            //Draw background (with add functionality)
-            var bgPnl = s.foreignObject(width, height).move(x, y).fill("#DDDDDD").on("click", function () {
-                callbackOnAdd_fn(self.getSizeUnallocated());
-            }).attr("class", "allocation-bar-background-panel");
+            //Draw background (no more add functionality)
+            var bgPnl = s.foreignObject(width, height).move(x, y).fill("#DDDDDD").attr("class", "allocation-bar-background-panel");
 
             bgPnl.appendChild("div", {
                 "style": "width: " + width + "px; height: " + height + "px;",
@@ -50,6 +48,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                 colorUtils.resetColorGenerator();
 
                 for (var i = 0; i < blocks_ar.length; i++) {
+                    console.log("Call add");
                     this.addBlock(blocks_ar[i], (i == blocks_ar.length - 1));
                 }
             };
@@ -71,7 +70,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
 
                 offset += block_width;
 
-                if (fireChange) self.fireAllocChanged();
+                //if (fireChange) self.fireAllocChanged(); //Fires an onChangeCallback after an add -> So we get double digest-Cycles
 
                 return true;
             };
@@ -79,10 +78,10 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             this.removeBlock = function(block_o) {
                 var len = this.blocks.length
                 for (var i = 0; i < this.blocks.length; i++) {
-                    if (this.blocks[i] == block_o) {
-                        callbackOnRemove_fn(block_o);   
+                    if (this.blocks[i] == block_o) {  
                         this.blocks.splice(i, 1);
                         this.glueBlocks();
+                        callbackOnRemove_fn(block_o); 
                         return true;
                     }
                 }

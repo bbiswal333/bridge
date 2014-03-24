@@ -9,7 +9,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector) {
     $scope.blockdata = [];
     $scope.loaded = false;
-    $scope.width = 600; 
+    $scope.width = 810; 
 
     setDay($routeParams.day);
                                
@@ -47,6 +47,18 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     });
 
     $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s) {
+        if (val_i == null) {
+            val_i = (1 / $scope.workingHoursForDay) * 100;
+            if (val_i > $scope.percToMaintain()) {
+                val_i = $scope.percToMaintain();
+            }
+        }
+
+        //If there is less than 30Minutes left, project will not be added
+        if (val_i * ($scope.workingHoursForDay * 60) / 100 < 30) {
+            return false;
+        }
+
         $scope.blockdata.push({
             desc: desc_s,
             value: val_i,
@@ -55,11 +67,36 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 objguid: objguid_s
             }
         });
+
+        return true;
     };
 
-    $scope.myCallback = function(val) {
-        $scope.blockdata = val; //Because apply cannot be called anymore in directive, so two way binding doesn't work anymore
+    $scope.percToMaintain = function () {
+        var sum = 0;
+
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            sum = sum + $scope.blockdata[i].value;
+        }
+
+        return 100 - sum;
     };
+
+    $scope.removeBlock = function (objgextid_s, objguid_s) {
+        var i = 0;
+        while (i < $scope.blockdata.length) {
+            if (objgextid_s == $scope.blockdata[i].data.objgextid && objguid_s == $scope.blockdata[i].data.objguid) {
+                $scope.blockdata.splice(i, 1);
+            }
+            else {
+                i++;
+            }
+        }
+    };
+
+    $scope.$watch("blockdata", function () {
+        console.log("Blockdata changed");
+
+    }, true);
 
     $scope.calcMinutes = function (perc) {
         //return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.floor(perc * 100) / 100 + " %)";    
@@ -112,4 +149,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $location.path(path);
     }
   }
-]);
+]).filter("weekday", ["lib.utils.calUtils", function (calUtils) {
+    return function (day, format) { //format: 0=short, 1=medium, 2=long (default)
+        return calUtils.getWeekday(day, format);
+    };
+}]);

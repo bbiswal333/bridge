@@ -251,6 +251,25 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return _weekdays;
     };
 
+    this.getWeekday = function (day, format) {
+        if (day == 0) {
+            day = 6;
+        }
+        else {
+            day--;
+        }
+
+        if (format == 0) {
+            return _weekdays[day].short;
+        }
+        else if (format == 1) {
+            return _weekdays[day].medium;
+        }
+        else {
+            return _weekdays[day].long;
+        }
+    }
+
     this.getMonths = function() {
         return _months;
     };

@@ -1,7 +1,9 @@
 <div class="app-cats-project-list">
     <style>
     #filter-bar {
-        width: 100%;
+        width: 95%;
+        margin-left: 5%;
+        margin-right: 0%;
     }
     #filter-bar hr {
         border-top-width: 2px;
@@ -28,7 +30,8 @@
     .app-cats-project-selector-button span {
         font-size: 10px;
     }
-    .app-cats-project-selector-buttonDiv {
+    
+    .app-cats-project-selector-buttonDiv:not(:first-of-type)  {
         margin-top: 20px;
     }
     </style>
@@ -43,7 +46,7 @@
         </div>
         <hr>
     </div>
-    <div style="overflow-y: scroll; height: 300px;">
+    <div style="overflow-y: scroll; height: {{heightOfList}}">
         <div id="app-cats-project-selector-button-container">
             <div ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv animate-repeat">
                 <button class="btn btn-default app-cats-project-selector-button" ng-class="{'app-cats-project-selector-button-selected': item.selected}" ng-click="toogleSelect(item.id);">{{item.name}}

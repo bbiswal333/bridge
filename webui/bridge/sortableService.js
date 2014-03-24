@@ -2,7 +2,7 @@ angular.module('bridge.app').service('sortableConfig', function () {
 
 	this.getDefaultConfig = function(){
 		return [                                        
-            {content: "app.cats", id: 1, size:"box-2"},
+            {content: "app.cats.calendar", id: 1, size:"box-2"},
             {content: "app.lunch-walldorf", id: 2, size:"box-1"},
             {content: "app.jira", id: 3, size:"box-2"},
 
