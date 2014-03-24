@@ -1,4 +1,4 @@
-angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.catsUtils", "$interval", "$location", "bridgeCounter",
+angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive("app.cats", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter",
 	function (calUtils, catsUtils, $interval, $location, bridgeCounter) {
 	var linkFn = function ($scope) {
 		var monthRelative = 0;
@@ -16,8 +16,9 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		$scope.state = "";		
 		$scope.loading = true;
 		$scope.weekdays = calUtils.getWeekdays();
-        bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
-        $scope.getDescForState = function (state_s) {
+    //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
+    
+    $scope.getDescForState = function (state_s) {
 			return catsUtils.getDescForState(state_s);
 		};
 
