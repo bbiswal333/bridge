@@ -128,7 +128,7 @@
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"></div>
                 </div>
-                <span class="headertext"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"><a href="" ng-if="!client" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a></span>
+                <span class="headertext"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo">
             </div>
 
             <div id="menu">
@@ -153,7 +153,7 @@
                 <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">
                 
                     <div class="settingsButton" style="position:relative;top:40px;left:-1px;" ng-click="show_settings = !show_settings">&#xe00c;</div>
-                    <div class="settingsButton" style="position:relative;top:40px;width:35px;" ng-click="show_download()">&#xe03a;</div>
+                    <div ng-if="!client" class="settingsButton" style="position:relative;top:40px;width:35px;" ng-click="show_download()">&#xe03a;</div>
                 </div>
 
                 <div style="height:100%;width: -moz-calc(100% - 36px);width: -webkit-calc(100% - 36px); width: calc(100% - 36px); float:left;overflow:hidden;" ng-class="{'animate-shrink':show_settings}">
