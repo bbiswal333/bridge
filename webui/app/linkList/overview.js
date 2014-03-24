@@ -13,7 +13,6 @@ angular.module('app.linkList').directive('app.linkList',
         $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;'; 
         $scope.customCSSFile = "app/linkList/style.css";
-        console.log($scope);
         $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linkList').appLinkListSettings,
@@ -68,7 +67,7 @@ angular.module('app.linkList').directive('app.linkList',
                                 link = linkList[j];
                                 if(link.type == "saplink") 
                                 {
-                                    link.sapGuiFile = appLinklistConfig.generateBlob(link.name,link.sid,link.transaction,'');
+                                    link.sapGuiFile = appLinklistConfig.generateBlob(link.name,link.sid,link.transaction,link.parameters);
                                 }         
                             };   
                         };
@@ -91,9 +90,10 @@ angular.module('app.linkList').directive('app.linkList',
             function setDefaultConfig()
             {
                 appLinklistConfig.listCollection.push([]);
-                appLinklistConfig.listCollection[0].push({"name":"Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
+                appLinklistConfig.listCollection[0].push({"name":"Corporate Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
+                appLinklistConfig.listCollection[0].push({"name":"Online Payslip","url":"https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP","type":"hyperlink"});                
                 appConfig =  appLinklistConfig;
-            }
+            };
        
         }
 

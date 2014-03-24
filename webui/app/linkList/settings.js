@@ -38,43 +38,25 @@ angular.module('app.linkList').appLinkListSettings =
         	}      
           };
 
-    $scope.setBoxSize = function(col)
+    $scope.setBoxSize = function(size)
     {
-    	if(col == 1)
-    	{
-    		size = 1;
-    		//SET BOX SIZE!!!
-    		$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
-    		$scope.boxScope.size = "box-"+size;
-    	}
-    	else if(col > 1)
-    	{
-    		size = 2;
-    		//SET BOX SIZE!!!
-    		$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
-    		$scope.boxScope.size = "box-"+size;
-    	}
-    	
-    	if(col > appLinklistConfig.listCollection.length)
-    	{
-    		for (var i = col-appLinklistConfig.listCollection.length -1; i >= 0; i--) {
-    			appLinklistConfig.listCollection.push([]);
-    		};
-    	}
-    	else if(col < appLinklistConfig.listCollection.length)
-    	{
-    		for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
-    			if(appLinklistConfig.listCollection[i].length == 0)
-    			{
-    				appLinklistConfig.listCollection[i] = angular.copy(appLinklistConfig.listCollection[i+1]);
-    			}
-    		};
-    		appLinklistConfig.listCollection.splice(col);
-    		console.log(Math.abs(col-appLinklistConfig.listCollection.length));
-    	}
+    	$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
+    	$scope.boxScope.size = "box-"+size;
+    };
+    $scope.addLinkList = function()
+    {
+    	appLinklistConfig.listCollection.push([]);
+    	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
+    	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
+    };
 
+    $scope.removeLinkList = function(linkList)
+    {
+    	appLinklistConfig.listCollection.splice(linkList,1);
+    	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
+    	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
+    };
 
-    }      
 	$scope.deleteEntry = function(colNo,entry)
 	{
 		linkList = appLinklistConfig.listCollection[colNo];
@@ -103,13 +85,12 @@ angular.module('app.linkList').appLinkListSettings =
 				}
 			}
 		}
-		console.log(linkList.length);
-		console.log(appLinklistConfig.listCollection.length);
 		if(linkList.length == 0 && appLinklistConfig.listCollection.length > 1)
 		{	
-			$scope.setBoxSize(appLinklistConfig.listCollection.length-1)
+			$scope.removeLinkList(colNo);
+			//$scope.setBoxSize(appLinklistConfig.listCollection.length-1)
 		}
-	}
+	};
 
 	$scope.activateEdit = function(entry)
 	{
@@ -125,7 +106,7 @@ angular.module('app.linkList').appLinkListSettings =
 		entry.editable = true;
 		entry.old = angular.copy(entry);
 		}
-	}
+	};
 
 	$scope.inEditMode = function()
 	{
@@ -136,34 +117,10 @@ angular.module('app.linkList').appLinkListSettings =
 				}
 		}
 		return false;
-	}
+	};
 
 	$scope.undoEdit = function(entry)
-	{	console.log(entry);
-		if (arguments.length==0)
-		{
-			for (var i = $scope.config.linkList.length - 1; i >= 0; i--) {
-				
-				entryOld = angular.copy($scope.config.linkList[i].old);
-				entry = 	$scope.config.linkList[i];
-					if(entry.type == "hyperlink")
-					{
-						entry.name = angular.copy(entry.old.name);
-						entry.url = angular.copy(entry.old.url);
-						entry.editable = false;
-					}
-					else if(entry.type == "saplink")
-					{
-						entry.name = angular.copy(entry.old.name);
-						entry.sid = angular.copy(entry.old.sid);
-						entry.transaction = angular.copy(entry.old.transaction);
-						entry.parameters = angular.copy(entry.old.parameters);
-						entry.editable = false;
-					}
-			};
-		}
-		else
-		{
+	{	
 			if(entry.type == "hyperlink")
 			{
 				entry.name = angular.copy(entry.old.name);
@@ -179,8 +136,7 @@ angular.module('app.linkList').appLinkListSettings =
 				entry.editable = false;
 			}
 		
-		}
-	}
+	};
 	$scope.saveEdit = function(entry)
 	{
 		if (arguments.length==0)
@@ -219,7 +175,7 @@ angular.module('app.linkList').appLinkListSettings =
 					'type': 'saplink'
 				}
 				entry.sapGuiFile
-				 = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,'');
+				 = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,entry.parameters);
 			}
 			$scope.currentConfigValues = {};
 			$scope.setAddForm(colNo,'');
@@ -232,7 +188,7 @@ angular.module('app.linkList').appLinkListSettings =
 		}
 		
 	};
-	
+
 	$scope.setAddForm = function(col,value)
 	{
 		$scope.addForm[col] = value;

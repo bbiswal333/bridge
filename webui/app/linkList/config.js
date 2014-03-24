@@ -3,8 +3,6 @@ angular.module('app.linkList').factory("app.linkList.configservice", function ()
 	var configItem = {
 		version: 1, 
 		listCollection: [],
-		/*linkList: [],
-		linkList2: [],*/
 
 		generateBlob:  function(name,sid,transaction,parameters)
 		                {
@@ -13,7 +11,7 @@ angular.module('app.linkList').factory("app.linkList.configservice", function ()
 		                                "Client= \n"+
 		                                "[User] \n"+
 		                                "[Function] \n"+
-		                                "Command="+transaction+" \n";
+		                                "Command="+transaction+" "+parameters+" \n";
 
 		                    var blob = new Blob([data]);
 		                    var saplink = {};
@@ -23,8 +21,6 @@ angular.module('app.linkList').factory("app.linkList.configservice", function ()
 		                    return saplink; 
 		                }//generateBlob
 	};
-
-
 
 	return configItem; 
 });

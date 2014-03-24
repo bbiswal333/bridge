@@ -3,7 +3,7 @@
 <div ng-repeat="linkList in config.listCollection track by $index">
 <div class="col-md-4">
     <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
-    <span class="app-linkList-head" ng-if="linkList.length == 0" ng-click="setBoxSize(config.listCollection.length-1)"><span class="glyphicon glyphicon-minus"></span> Remove Linklist</span> 
+    <span class="app-linkList-head app-linklist-clickIcon" ng-if="linkList.length == 0 && $index != 0" ng-click="removeLinkList($index)"><span class="glyphicon glyphicon-minus"></span> Remove Linklist</span> 
     <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
         
         <div class="row app-linkList-row" ng-repeat="link in linkList track by $index"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
@@ -114,7 +114,7 @@
 </div>
 </div>
 <div ng-if="config.listCollection.length < 3" class="col-md-4">
-<span class="app-linkList-head" ng-click="setBoxSize(config.listCollection.length+1)"><span class="glyphicon glyphicon-plus"></span> Add new Linklist</span>
+<span class="app-linkList-head app-linklist-clickIcon" ng-click="addLinkList()"><span class="glyphicon glyphicon-plus"></span> Add new Linklist</span>
 </div>
 </div>
 
