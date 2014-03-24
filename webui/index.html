@@ -140,12 +140,15 @@
 
             <div style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px)">                                
                 
-                <div ng-if="show_settings" style="height:100%;float:left; background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
-                    <div style"width:100%;overflow:hidden;text-overflow:clip;">
-                        <div style="overflow:hidden;width:264px;text-overflow:clip;padding:15px;">
-                            <h4>Apps</h4>
-                            <div class="btn default">Test 1</div>
-                            <div class="btn default">Test 2</div>
+                <div ng-if="show_settings" style="height:100%;float:left;background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
+                    <div style="text-overflow:clip;overflow:hidden">
+                        <div style="width:264px;padding:15px;">
+                            <h4>Applications</h4>                            
+                            <button class="btn btn-default">Wire</button><br />
+                            <button class="btn btn-default">Linklist</button><br />
+                            <button class="btn btn-default">Employee Search</button><br />
+                            <button class="btn btn-default">CATS Compliance</button><br />
+                            <button class="btn btn-default">...</button>
                         </div>                                          
                     </div>
                 </div>
