@@ -25,15 +25,26 @@ img {
 }
 
 .settingsButton {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
     border-radius: 0 3px 3px 0;
-    cursor: pointer;    
-    position: absolute;
-    top:120px;
-    right:0px;
-    line-height: 1;
-    display: inline-block;
+    border-right: 1px solid rgba(231, 231, 231, 1);
+    border-top:  1px solid rgba(231, 231, 231, 1);
+    border-bottom:  1px solid rgba(231, 231, 231, 1);
+    cursor: pointer;                
+    line-height: 1;    
+    background-color:rgba(255, 255, 255, 1);        
+    color:#0099CC;
+    font-family: 'SAP-icons';
+    font-weight: normal;
+    font-size:20px;
+    padding:8px;
+    z-index: 1201;
+    text-align: center;
+}
+
+.settingsButton:hover {
+    color:#2A6496;
 }
 
 .feature_check_true {
@@ -331,6 +342,7 @@ img {
     background-clip: padding-box;
     outline: none;
 }
+
 
 .download-dialog {
     width: 415px;

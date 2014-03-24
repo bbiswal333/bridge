@@ -121,7 +121,7 @@
 
     
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
-        <div class="mainPageBackground">
+        <div class="mainPageBackground" style="height:100%;">
 
             <div class="headerline">
                 <div ng-if="!showLoadingBar" class="blueTitleBar"></div>
@@ -129,7 +129,6 @@
                     <div class="moveBox"></div>
                 </div>
                 <span class="headertext"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"><a href="" ng-if="!client" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a></span>
-                <a style="position:absolute;right:50px;top:10px" href="" ng-click="show_settings = !show_settings">Settings</a>
             </div>
 
             <div id="menu">
@@ -139,31 +138,33 @@
                 </ul>
             </div>
 
-            <div id="slideWrapper" style="width:100%;">
-                <div id="slideContentLeft" style="float:left;height:100%;width:100%" ng-class="{'animate-shrink':show_settings}">
-                    <div id="leftContent" style="width:100%; height:100%">
-                        
-                        
-
-
-                        <div class="animation-container">
-                            <div ng-view class="animation-content"></div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <div class="settingsButton" ng-click="show_settings = !show_settings"><span class="settingsIcon">&#xe00c;</span></div>
+            <div style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px)">                                
                 
-                <div ng-if="show_settings" id="slideContentRight" ng-class="{'animate-width':show_settings}" style="z-index:1200;position:absolute;right:0px;top:120px;height:740px;text-overflow:clip; float:left; background-color:rgba(255, 255, 255, 0.9); -webkit-box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0px 1px 6px rgba(23, 69, 88, .5);">
-                    <div style"background-color:grey;width:100%;">
-                        <div style="overflow:hidden;width:300px;text-overflow:clip">
-
-                            HERE COMES THE SETTINGS SCREEN !
+                <div ng-if="show_settings" style="height:100%;float:left; background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
+                    <div style"width:100%;overflow:hidden;text-overflow:clip;">
+                        <div style="overflow:hidden;width:264px;text-overflow:clip;padding:15px;">
+                            <h4>Apps</h4>
+                            <div class="btn default">Test 1</div>
+                            <div class="btn default">Test 2</div>
                         </div>                                          
                     </div>
                 </div>
+
+                <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">
+                
+                    <div class="settingsButton" style="position:relative;top:40px;left:-1px;" ng-click="show_settings = !show_settings">&#xe00c;</div>
+                    <div class="settingsButton" style="position:relative;top:40px;width:35px;" ng-click="show_download()">&#xe03a;</div>
+                </div>
+
+                <div style="height:100%;width: -moz-calc(100% - 36px);width: -webkit-calc(100% - 36px); width: calc(100% - 36px); float:left;overflow:hidden;" ng-class="{'animate-shrink':show_settings}">
+                    <div style="width:100%;height:100%">                                            
+                        <div class="animation-container">
+                            <div ng-view class="animation-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>   
 
         </div>

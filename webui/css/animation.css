@@ -215,12 +215,14 @@
     -moz-transition:0.25s linear all;
     -o-transition:0.25s linear all;
     transition:0.25s linear all;   
-    width: 100%;
+    width: -moz-calc(100% - 36px) !important;
+    width: -webkit-calc(100% - 36px) !important;
+    width: calc(100% - 36px) !important;   
 }
 .animate-shrink-add-active {
     width: -moz-calc(100% - 300px) !important;
     width: -webkit-calc(100% - 300px) !important;
-    width: calc(100% - 300px) !important;  
+    width: calc(100% - 300px) !important;      
 }
  
 .animate-shrink-remove {
@@ -230,15 +232,15 @@
     transition:0.25s linear all;    
 }
 .animate-shrink-remove-active {
-    width: 100%;
+    width: -moz-calc(100% - 36px) !important;
+    width: -webkit-calc(100% - 36px) !important;
+    width: calc(100% - 36px) !important;   
 }
 
 .animate-width {
-    width: 300px; 
-    height: -moz-calc(100% - 150px) !important;
-    height -webkit-calc(100% - 150px) !important;
-    height: calc(100% - 150px) !important;      
+    width: 264px;     
 }
+
 .animate-width.ng-enter{
     -webkit-transition:0.25s linear all;
     -moz-transition:0.25s linear all;
@@ -246,17 +248,19 @@
     transition:0.25s linear all;   
     width: 0%;
 }
+
 .animate-width.ng-enter-active {
-  width: 300px;
+  width: 264px;
 }
+
 .animate-width.ng-leave{
     -webkit-transition:0.25s linear all;
     -moz-transition:0.25s linear all;
     -o-transition:0.25s linear all;
-    transition:0.25s linear all;
-   
-    width: 300px;
+    transition:0.25s linear all;   
+    width: 264px;
 }
+
 .animate-width.ng-leave-active {
   width: 0%;
 }
