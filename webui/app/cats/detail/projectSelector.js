@@ -1,4 +1,4 @@
-angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "app.cats.data"]).factory("app.cats.maintenanceView.projectSelector", ["$modal", "app.cats.catsUtils", function ($modal, catsUtils) {
+angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "mb-scrollbar", "ngScrollbar", "app.cats.data"]).factory("app.cats.maintenanceView.projectSelector", ["$modal", "app.cats.data.catsUtils", function ($modal, catsUtils) {
   var openModal = function (projects_ar, callback_fn) {
     var modalInstance = $modal.open({
       templateUrl: "/app/cats/detail/projectSelector.tmpl.html", 
