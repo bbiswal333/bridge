@@ -27,7 +27,9 @@ angular.module('bridge.app', [
     'app.linkList',
     'app.cats.maintenanceView',
     'lib.utils',
-    'notifier']);
+    'notifier',
+    "app.cats.maintenanceView.projectList",
+    "ngScrollbar"]);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
