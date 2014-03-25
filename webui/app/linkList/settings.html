@@ -11,7 +11,7 @@
             <form ng-submit="link.editable = false">
                 <div class=" col-xs-4">
                     <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.name}}</span>
-                    <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" size="20" placeholder="Name for the Link" />
+                    <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
 
                     <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.transaction" placeholder="Transaction" />
                 </div>
@@ -61,7 +61,7 @@
     <form name="ConfigItemFormHyperlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'web'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.linkName" size="20" placeholder="Name for the Link" autofocus />
+                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.linkName" maxlength="20" placeholder="Name for the Link" autofocus />
             </div>
         </div>
 
@@ -81,7 +81,7 @@
     <form name="ConfigItemFormSAPlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'gui'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" size="20" placeholder="Name for the SAP GUI Link" autofocus />
+                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" maxlength="20" placeholder="Name for the SAP GUI Link" autofocus />
             </div>
         </div>
 
