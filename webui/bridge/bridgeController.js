@@ -7,7 +7,6 @@ angular.module('bridge.app', [
     'ui.bootstrap',
     'mgcrea.ngStrap',
     'ngTable',
-    'mb-scrollbar',
     'ui.sortable',
     // bridge modules
     'bridge.service',
@@ -46,20 +45,6 @@ angular.module('bridge.app').controller('bridgeController',
     ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
     function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
         
-/*        if (notifier.chromePreCheckRequestNeeded()) {
-            $modal.open({
-              templateUrl: "/bridge/permissionsr.tmpl.html", 
-              controller: "app.cats.maintenanceView.projectSelectorCntrl",
-              keyboard: true,
-              resolve: {
-                items: function () {
-                  return projects_ar;
-                }
-              }
-            });
-            notifier.requestPermission();
-        }*/
-
         $scope.getSidePane = function(){
             return $scope.sidePanel;
         }
