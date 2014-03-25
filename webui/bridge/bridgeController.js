@@ -102,7 +102,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
             {
-              bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
+              bridgeConfig.config.bridgeSettings.apps = $scope.apps; 
               bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
             }
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;

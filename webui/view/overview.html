@@ -1,22 +1,7 @@
-<!--
-<div class="centeredContent">
-    <div class="box-2"><bridge.box content="app.cats.calendar" id="1"></bridge.box></div>
-    <div class="box-1"><bridge.box content="app.lunch-walldorf" id="2"></bridge.box></div>
-    <div class="box-2"><bridge.box content="app.jira" id="3"></bridge.box></div>
-    <div class="box-2"><bridge.box content="app.atc" id="4"></bridge.box></div>
-    <div class="box-2"><bridge.box content="app.employee-search" id="5"></bridge.box></div>
-    <div class="box-1"><bridge.box content="app.meetings" id="6"></bridge.box></div>
-    <div class="box-2"><bridge.box content="app.github-milestone" id="7"></bridge.box></div>
-    <div class="box-2"><bridge.box content="app.im" id="8"></bridge.box></div>
-    <div class="box-1"><bridge.box content="app.test" id="9"></bridge.box></div>
-    <div style="clear: both;"></div>
-</div>
--->
-
  <div class=" centeredContent" ng-dblclick="toggleDragging()">
     <ul ui-sortable="sortableOptions" ng-model="apps" class="sortable-list">
-      <li ng-repeat="app in apps | filter:{ show: true }" class="sortable-item">
-        <div class="{{app.size}}"> 
+      <li ng-repeat="app in apps" class="sortable-item">
+        <div ng-if="app.show" class="{{app.size}}"> 
             <bridge.box content="{{app.content}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
         </div>
       </li>
