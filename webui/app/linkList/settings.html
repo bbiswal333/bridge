@@ -11,7 +11,7 @@
             <form ng-submit="link.editable = false">
                 <div class=" col-xs-4">
                     <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.name}}</span>
-                    <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" placeholder="Name for the Link" />
+                    <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" size="20" placeholder="Name for the Link" />
 
                     <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.transaction" placeholder="Transaction" />
                 </div>
