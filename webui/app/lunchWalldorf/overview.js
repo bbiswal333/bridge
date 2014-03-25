@@ -39,7 +39,6 @@
             });
         }
         $scope.loading = false;
-        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 350);
     }];
 
     return {

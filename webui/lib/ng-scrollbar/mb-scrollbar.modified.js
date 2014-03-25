@@ -38,7 +38,7 @@ angular.module('mb-scrollbar', [])
 
             // Base Configuration
             var config = {
-                autoResize: false,
+                autoResize: true,
                 direction: (scope.config || {}).direction || 'vertical',
                 scrollbar: {
                     width: 5,
