@@ -89,6 +89,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                     return $http({
                     method: 'GET',
                     url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit,
+                    headers: {'Accept': 'application/vnd.github.preview+json'},
                     withCredentials: false
                     //https://github.wdf.sap.corp/api/v3/search/repositories?q=bridge&per_page=5
                         }).then(function(res){
@@ -115,6 +116,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                                     return $http({
                                                 method: 'GET',
                                                 url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q='+repo+'+user:'+user+'+fork:'+$scope.currentConfigValues.fork+'+in:name&per_page='+limit,
+                                                headers: {'Accept': 'application/vnd.github.preview+json'},
                                                 withCredentials: false
                                                 }).then(function(res){
                                                                         var results = [];
