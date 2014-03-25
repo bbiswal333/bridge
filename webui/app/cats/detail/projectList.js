@@ -2,6 +2,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filterVal = "";
+    $scope.loaded = false;
 
     loadProjects();
 
@@ -61,6 +62,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           newItem.data.objguid = data[i].objguid;
           newItem.selected = found;
           $scope.items.push(newItem);
+
+          $scope.loaded = true;
 
           $timeout(function () {
             $scope.$broadcast('rebuild:me');

@@ -53,7 +53,7 @@
 <div class="centeredContent" ng-controller="app.cats.maintenanceView.mainCntrl">
     <div class="panel panel-default">
       <div class="panel-heading panel-title">CATS Compliance Details</div>
-      <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-if="loaded">
+      <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
         <ul id="app-cats-maintenance-header">
           <li id="app-cats-maintenance-header-projects">
             Projects
@@ -81,7 +81,7 @@
           <app.cats.allocationbar data-width="{{width}}" data-height="120" data-blocks="blockdata" data-padding="0" data-snaprange="{{snaprange}}" onblockremoved="onRemove(removedBlock);" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
         </div>
       </div>
-      <div class="panel-body" ng-if="!loaded">
+      <div class="panel-body" ng-show="!loaded">
         Loading...
       </div>
     </div>
