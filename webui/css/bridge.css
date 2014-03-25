@@ -178,7 +178,7 @@ img {
 }
 .mainNav {
     margin: 0px auto;
-    padding:0;
+    padding-left: 36px;
     height: 40px;
     min-width: 400px;
     background-color: rgb(255, 255, 255);
