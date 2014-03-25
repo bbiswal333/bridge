@@ -61,7 +61,7 @@
     <form name="ConfigItemFormHyperlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'web'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.linkName" placeholder="Name for the Link" autofocus />
+                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.linkName" size="20" placeholder="Name for the Link" autofocus />
             </div>
         </div>
 
@@ -81,7 +81,7 @@
     <form name="ConfigItemFormSAPlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'gui'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" placeholder="Name for the SAP GUI Link" autofocus />
+                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" size="20" placeholder="Name for the SAP GUI Link" autofocus />
             </div>
         </div>
 

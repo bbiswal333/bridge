@@ -24,7 +24,6 @@ angular.module('app.linkList').appLinkListSettings =
             disabled: false,         
 
             receive: function(event, ui) {
-            	console.log(ui.sender.context.childElementCount);
 	            if (event.target.childElementCount >= 6) {
 	                ui.item.sortable.cancel();
 	            }
@@ -195,7 +194,6 @@ angular.module('app.linkList').appLinkListSettings =
 	};
 	$scope.toggleAddForm = function(col)
 	{
-		console.log($scope.addForm[col]);
 		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined) $scope.addForm[col] = 'web';
 		else if($scope.addForm[col] != '') $scope.addForm[col] = '';
 	};
