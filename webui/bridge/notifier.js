@@ -3,7 +3,7 @@ angular.module("notifier", []).factory("notifier", function () {
   icons.push("../img/notifier_info.png");      // Info
   icons.push("../img/notifier_tick.png");      // Success
   icons.push("../img/notifier_red_cross.png"); // Error
-  var DEFAULT_DURATION = 4000;
+  var DEFAULT_DURATION = 5000;
 
   function showMsg(title_s, body_s, icon_i, tag_s, onCLick_fn) {
       var notifier = new Notifier(title_s, body_s, icons[icon_i], tag_s, DEFAULT_DURATION);

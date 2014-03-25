@@ -1,12 +1,11 @@
 //Implemented according to: https://developer.mozilla.org/en-US/docs/Web/API/notification (visited: 12.03.2014, 13:50)
 function notify() {
-  var noti = new Notifier("Hallo Bridge!", undefined, undefined, "10", 2000);
+  var noti = new Notifier("Bridge can now send you desktop notifications", undefined, "../img/notifier_tick.png", "10", 7000);
   noti.onshow = function (id) {
-    console.log("ID: " + id);
   };
   setTimeout(function() {
     noti.show();
-  }, 1000); 
+  }, 100); 
 }
 
 function Notifier(text, body, icon, tag, duration) {
