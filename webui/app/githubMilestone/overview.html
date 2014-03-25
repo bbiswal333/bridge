@@ -2,7 +2,7 @@
 
 	<div ng-if="error.display" class="alert alert-warning" style="display: block">{{error.msg}}</div>
 
-    <div ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:config.countMilestones " class="row">
+    <div ng-show="!error.display" ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:config.countMilestones " class="row">
         <div class="col-xs-4">
             <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
             <br />Due on: {{milestone.due_on | date:'dd.MM.yy'}}

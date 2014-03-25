@@ -20,7 +20,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             };
         
 
-         $scope.returnConfig = function () {
+        $scope.returnConfig = function () {
                 return appGithubMilestoneConfig;
             };
 
@@ -33,7 +33,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                     url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
                     withCredentials: false
                 }).success(function(data, status, headers, config) {
-                    if (data.length != 0){
+                    if (data != undefined && data.length != 0){
                     $scope.milestones = data;
                     var currentDate = new Date();
 

@@ -1,7 +1,7 @@
 angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubMilestone.configservice', '$scope', '$http', 'bridgeConfig', function (appGithubMilestoneConfig, $scope, $http, bridgeConfig) {
 
 	 $scope.currentConfigValues = angular.copy(appGithubMilestoneConfig);
-	 $scope.error = {inputUrl:"has-success", display: "none", msg: "" };
+	 $scope.error = {inputUrl:"has-success", display: false, msg: "" };
 	 $scope.searchResults = new Array;
 	 
 	 $scope.save_click = function () {  
