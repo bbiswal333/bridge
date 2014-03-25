@@ -140,43 +140,21 @@
                 </ul>
             </div>
 
-            <div id="settings" style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px);overflow:hidden">                                
+            <div id="settings" style="width:100%;height: -moz-calc(100% - 80px);height: -webkit-calc(100% - 80px); height: calc(100% - 80px);overflow:hidden;">                                
                 
                 <div ng-if="show_settings" style="height:100%;overflow:scroll;float:left;background-color:rgba(255, 255, 255, 1);" ng-class="{'animate-width':show_settings}">
                     <div style="text-overflow:clip;overflow:hidden">
                         <div style="width:264px;padding:15px;height:100%">
-                            <h4>Notifications</h4>
-                            ..current status
-
-                            <h4>Applications</h4>                            
-                            <button class="btn btn-default">Wire</button><br />
-                            <button class="btn btn-default">Linklist</button><br />
-                            <button class="btn btn-default">Employee Search</button><br />
-                            <button class="btn btn-default">CATS Compliance</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
-                            <button class="btn btn-default">...</button><br />
+                          <div ng-include src="getSidePane()"></div>                            
                         </div>                                          
                     </div>
                 </div>
 
                 <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">
                 
-                    <div class="settingsButton" style="position:relative;top:40px;left:-1px;" ng-click="show_settings = !show_settings">&#xe00c;</div>
-                    <div ng-if="!client" class="settingsButton" style="position:relative;top:40px;width:35px;" ng-click="show_download()">&#xe03a;</div>
+                    <div class="settingsButton" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()">&#xe00c;</div>
+                    <div class="settingsButton" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()">&#xe024;</div>
+                    <div ng-if="!client" class="settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()">&#xe03a;</div>
                 </div>
 
                 <div style="height:100%;overflow:scroll;width: -moz-calc(100% - 36px);width: -webkit-calc(100% - 36px); width: calc(100% - 36px); float:left;" ng-class="{'animate-shrink':show_settings}">

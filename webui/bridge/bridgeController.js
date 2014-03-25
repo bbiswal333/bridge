@@ -60,6 +60,29 @@ angular.module('bridge.app').controller('bridgeController',
             notifier.requestPermission();
         }*/
 
+        $scope.getSidePane = function(){
+            return $scope.sidePanel;
+        }
+
+        $scope.bridge_settings_click = function(){
+            $scope.sidePanel = 'view/bridgeSettings.html';
+            if($scope.sideView == "settings" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "settings";                        
+        }
+
+        $scope.bridge_feedback_click =  function(){
+            $scope.sidePanel = 'view/bridgeFeedback.html';
+            if($scope.sideView == "feedback" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "feedback";            
+        }
+
+
         $scope.show_download = bridgeDownloadService.show_download;                    
 
         $http.get('http://localhost:8000/client').success(function (data, status) {

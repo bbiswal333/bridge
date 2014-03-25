@@ -24,9 +24,21 @@ img {
     pointer-events: none;
 }
 
-.settingsButton {
+.tab-active {
+    left: -1px;
     width: 36px;
-    height: 36px;
+}
+.tab-inactive {
+    left: 0px;
+    width: 35px;
+}
+.settingsButton {
+    /*width: 36px;*/
+    height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
     border-radius: 0 3px 3px 0;
     border-right: 1px solid rgba(231, 231, 231, 1);
     border-top:  1px solid rgba(231, 231, 231, 1);
@@ -37,10 +49,10 @@ img {
     color:#0099CC;
     font-family: 'SAP-icons';
     font-weight: normal;
-    font-size:20px;
-    padding:8px;
+    font-size:18px;
     z-index: 1201;
     text-align: center;
+    vertical-align: middle;
 }
 
 .settingsButton:hover {
