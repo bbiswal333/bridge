@@ -10,7 +10,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.initialized = true;
             $scope.boxIcon = '&#xe009;';
             $scope.settingsTitle = "Configure Repository and Duration";
-            $scope.error = {display: "none", msg: ""};
+            $scope.error = {display: false, msg: ""};
             bridgeCounter.CollectWebStats('GITHUB', 'APPLOAD');
             //Settings Screen
             $scope.settingScreenData = {
@@ -33,6 +33,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                     url: $scope.config.api_url+'repos/'+$scope.config.repo.full_name+'/milestones?state=' + $scope.config.stateProp + '&sort=due_date&direction=asc',
                     withCredentials: false
                 }).success(function(data, status, headers, config) {
+                    if (data.length != 0){
                     $scope.milestones = data;
                     var currentDate = new Date();
 
@@ -67,13 +68,18 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                         }
 
                     })(i);
-                    $scope.error = {display: "none", msg: ""}; //Empty the error message
+                    $scope.error = {display: false, msg: ""}; //Empty the error message
+                }
+                 else
+                    {
+                        $scope.error = {display: true, msg: "Sorry, no milestones found in this project!"};   
+                    }
                 }).error(function(data, status, headers, config) {
                     switch (status) 
                     { 
                         case 404:
                             $scope.milestones = "";
-                            $scope.error = {display: "block", msg: "Repository \""+$scope.config.repo.html_url+"\" could not be accessed. Either the link is invalid or GitHub is currently in maintenance." };
+                            $scope.error = {display: true, msg: "Repository \""+$scope.config.repo.html_url+"\" could not be accessed. Either the link is invalid or GitHub is currently in maintenance." };
                             $scope.boxTitle = "Github - Repository not reached";
                             break;
                     }
