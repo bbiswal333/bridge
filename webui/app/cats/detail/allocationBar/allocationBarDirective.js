@@ -30,6 +30,7 @@ angular.module("app.cats.allocationBar", [
 
             //Check whether auto-bound values are empty
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
+            console.log("Received SnapRange: " + $scope.snapRange);
             $scope.snapRange = parseFloat($scope.snapRange || 20); //snap range of 20px is default
             $scope.padding = parseInt($scope.padding || 5);
             $scope.height = parseInt($scope.height || 100);
@@ -41,7 +42,7 @@ angular.module("app.cats.allocationBar", [
                 allocBarCntrl.construct($scope.blocks);
             }, true);
 
-            //console.log("SR Initial: " + $scope.snapRange);
+            console.log("SR Initial: " + $scope.snapRange);
 
             allocBarCntrl = new AllocationBarControl(svg, 0, 0, $scope.width, $scope.height, $scope.snapRange, $scope.padding, function (blocks) {
                 $scope.$apply(function () {

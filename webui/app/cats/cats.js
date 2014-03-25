@@ -1,18 +1,15 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, encodeForUrl, calUtils) {
-    var NODE_GET_API = 'http://localhost:8000/api/get?url=';
-    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json';
-    //var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json";
-    var TASKS_WEBSERVICE = "http://localhost:8000/worklist.json";
+    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
+    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;
+    //var TASKS_WEBSERVICE = "http://localhost:8000/worklist.json";
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
 
     var catsDataCache = null;
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      var url = CATS_COMPLIANCE_WEBSERVICE + "&origin=" + location.origin;
-
-      _httpRequest(url, function(data) {
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) {
         callback_fn(data.CATSCHK);
       });
     }
@@ -64,8 +61,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     function _getWorkingHoursForDay(day_s, callback_fn) {
       _getCatsComplianceData(function(data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].DATEFROM[0] ==  day_s) {
-          	callback_fn(data[i].STDAZ[0]);
+          if (data[i].DATEFROM ==  day_s) {
+          	callback_fn(data[i].STDAZ);
           	return;
           } 
         }
@@ -75,9 +72,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      var url = TASKS_WEBSERVICE + "&origin=" + location.origin;
-
-      _httpRequest(url, function(data) {
+      _httpRequest(TASKS_WEBSERVICE, function(data) {
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
@@ -95,13 +90,13 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           projectDesc: "Personal education"
         });
 
-        var nodes = data["asx:abap"]["asx:values"][0].WORKLIST[0].CATSW;
+        var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};
-          task.objguid = nodes[i].ZCPR_OBJGUID[0];
-          task.objgextid = nodes[i].ZCPR_OBJGEXTID[0];
-          task.projectDesc = nodes[i].DISPTEXTW1[0];
-          task.taskDesc = nodes[i].DISPTEXTW2[0];
+          task.objguid = nodes[i].ZCPR_OBJGUID;
+          task.objgextid = nodes[i].ZCPR_OBJGEXTID;
+          task.projectDesc = nodes[i].DISPTEXTW1;
+          task.taskDesc = nodes[i].DISPTEXTW2;
 
           tasks.push(task);
         }
