@@ -1,15 +1,17 @@
 <div ng-controller="mainSettingsController">
 <h4>Notifications</h4>
-<button onclick="notify();">Activate Notifications</button>
+<button class="btn btn-default" onclick="notify();">Activate Notifications</button>
 
 <h4>Applications</h4>       
 
 <table>
   <tr ng-repeat="app in apps">   	   	
   	<td style="padding-left: 5px; vertical-align: middle">
-    	<input type="checkbox" class="ng-pristine ng-valid"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
+    	<input type="checkbox" class="ng-pristine ng-valid" ng-model="app.show"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
     </td>
   </tr>
 </table>
+
+<button class="btn btn-default" ng-click="saveConfig()">Save</button>
 
 </div>

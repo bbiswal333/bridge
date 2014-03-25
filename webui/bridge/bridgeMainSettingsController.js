@@ -1,5 +1,8 @@
-angular.module('bridge.app').controller('mainSettingsController',['$scope', 'bridgeConfig', function ($scope, bridgeConfig){
+angular.module('bridge.app').controller('mainSettingsController',['$scope', 'bridgeConfig','bridgeDataService', function ($scope, bridgeConfig, bridgeDataService){
     
-    //currently only re-using $scope.apps from main controller
+	$scope.saveConfig = function(){
+		bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
+        bridgeConfig.persistInBackend(bridgeDataService.boxInstances);            
+    };
 
 }]);
