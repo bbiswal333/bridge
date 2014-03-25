@@ -1,19 +1,19 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, encodeForUrl, calUtils) {
     var NODE_GET_API = 'http://localhost:8000/api/get?url=';
-    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA';
-    //var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST";
-    var TASKS_WEBSERVICE = "http://localhost:8000/worklist.xml";
+    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json';
+    //var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json";
+    var TASKS_WEBSERVICE = "http://localhost:8000/worklist.json";
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
 
     var catsDataCache = null;
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      var url = NODE_GET_API + encodeForUrl.encode(CATS_COMPLIANCE_WEBSERVICE) + "&json=true&origin=" + location.origin;
+      var url = CATS_COMPLIANCE_WEBSERVICE + "&origin=" + location.origin;
 
       _httpRequest(url, function(data) {
-        callback_fn(data["asx:abap"]["asx:values"][0].CATSCHK[0].ZCATSCHK_STR);
+        callback_fn(data.CATSCHK);
       });
     }
 
@@ -75,7 +75,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      var url = NODE_GET_API + encodeForUrl.encode(TASKS_WEBSERVICE) + "&json=true&origin=" + location.origin;
+      var url = TASKS_WEBSERVICE + "&origin=" + location.origin;
 
       _httpRequest(url, function(data) {
         var tasks = [];

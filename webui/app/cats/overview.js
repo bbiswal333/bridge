@@ -136,8 +136,8 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 			var days = cats_o;
 
 			for (var i = 0; i < days.length; i++) {
-				var dateStr = days[i].DATEFROM[0];
-				var statusStr = days[i].STATUS[0];
+				var dateStr = days[i].DATEFROM;
+				var statusStr = days[i].STATUS;
 				
 				var time = parseDateToTime(dateStr);
 				if (time != null) {
