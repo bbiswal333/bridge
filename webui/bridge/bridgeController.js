@@ -67,6 +67,10 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sideView = "feedback";            
         }
 
+        $scope.bridge_hide_settings = function(){
+            $scope.show_settings = false;
+        }
+
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 
