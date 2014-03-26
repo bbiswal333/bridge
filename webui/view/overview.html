@@ -1,7 +1,7 @@
  <div class=" centeredContent" ng-dblclick="toggleDragging()">
-    <ul ui-sortable="sortableOptions" ng-model="apps" class="sortable-list">
-      <li ng-repeat="app in apps" class="sortable-item">
-        <div ng-if="app.show" class="{{app.size}}"> 
+    <ul ui-sortable="sortableOptions" ng-model="apps" class="sortable-list">      
+      <li ng-if="app.show" ng-repeat="app in apps" class="sortable-item">
+        <div class="{{app.size}}"> 
             <bridge.box content="{{app.content}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
         </div>
       </li>
