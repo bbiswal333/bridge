@@ -133,7 +133,18 @@ angular.module('bridge.app').controller('bridgeController',
                     break;
                 }                                                    
             };
-        })
+        });
+
+        $scope.$watch('apps', function()
+        {
+            if($scope.apps)
+            {
+                $scope.visible_apps = [];
+                for (var i = $scope.apps.length - 1; i >= 0; i--) {
+                    if($scope.apps[i].show) $scope.visible_apps.push($scope.apps[i]);
+                };            
+            }
+        }, true);
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
                 $scope.sortableOptions = sortableConfig.sortableOptions;
