@@ -165,9 +165,6 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 
 	return {
 		restrict: "E",
-		scope: {
-			headline: "=headline"
-		},
 		templateUrl: "app/cats/overview.html",
 		replace: true,
 		link: linkFn

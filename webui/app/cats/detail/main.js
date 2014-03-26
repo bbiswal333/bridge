@@ -12,7 +12,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.width = 800; 
 
     setDay($routeParams.day);
-                               
+                        
+    $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
+
     catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
         console.log("Data from CATS:");
         console.log(tasks);

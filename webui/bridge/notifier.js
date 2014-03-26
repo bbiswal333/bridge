@@ -133,7 +133,7 @@ angular.module("notifier", []).factory("notifier", function () {
       return instance.chromePreCheckRequestNeeded();
     },
     requestPermission: function (callback_fn) {
-      new instance.requestPermission(function (perm) {
+      instance.requestPermission(function (perm) {
         if (typeof callback_fn != "undefined") callback_fn(perm);
       });
     }

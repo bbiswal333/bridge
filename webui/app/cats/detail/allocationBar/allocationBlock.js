@@ -116,7 +116,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             updateTextField();
         };
 
-        //Fot the purpose of unit testing
+        //For the purpose of unit testing
         this.tryToMove = function(x, y) {
             return _dragRestrictor(x, y, this.dragger);
         };
