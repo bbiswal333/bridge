@@ -88,7 +88,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return true;
     };
 
-    this.lookupAdditionalDataForDay = function(dateDay_i) {
+    var lookupAdditionalDataForDay = function(dateDay_i) {
         for (var prop in _additionalData) {
             if (prop == dateDay_i) {
                 return _additionalData[prop];
@@ -119,7 +119,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var week = 0;
         var stop = false;
         for (i = 0; !stop; i++) {
-            var additionalDataForThisDay = self.lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
+            var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
             var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
@@ -226,6 +226,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return (iDateDiff); // add 1 if the end date should be included
     }; //calcBusinessDays
 
+    //Parses such dates: yyyy-mm-dd
     this.parseDate = function(str) {
         if (typeof str != "string" || str.length != 10) return false;
         var day = str.substr(8, 2);
@@ -234,6 +235,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return new Date(year, mon, day);
     };
 
+    //Return the start of today
     this.today = function() {
         var d = new Date();
         var day = d.getDate();
@@ -242,6 +244,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return new Date(year, mon, day);
     };
 
+    //Return strings like: yyyy-mm-dd (Which will be accepted by parseDate() as input again)
     this.stringifyDate = function(date_o) {
         if (!(date_o instanceof Date)) return null;
         return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);

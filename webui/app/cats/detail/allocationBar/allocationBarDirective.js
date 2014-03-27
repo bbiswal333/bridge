@@ -31,7 +31,7 @@ angular.module("app.cats.allocationBar", [
             //Check whether auto-bound values are empty
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
             console.log("Received SnapRange: " + $scope.snapRange);
-            $scope.snapRange = parseFloat($scope.snapRange || 20); //snap range of 20px is default
+            $scope.snapRange = parseFloat($scope.snapRange || 25); //snap range of 20px is default
             $scope.padding = parseInt($scope.padding || 5);
             $scope.height = parseInt($scope.height || 100);
 

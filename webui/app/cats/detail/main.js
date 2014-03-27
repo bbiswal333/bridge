@@ -132,10 +132,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         });
     };
 
-    $scope.onRemove = function (removedBlock) {
-
-    };
-
     function setDay (date) {
         if (typeof date == "undefined") {
             $scope.day = calUtils.today();

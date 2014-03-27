@@ -160,8 +160,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       getWorkingHoursForDay: function (day_s, callback_fn) {
       	_getWorkingHoursForDay(day_s, callback_fn);
       },
-      getCatsAllocationDataForDay: function (day_s, callback_fn) {
-        _getCatsAllocationDataForDay(day_s, callback_fn);
+      getCatsAllocationDataForDay: function (day_o, callback_fn) {
+        _getCatsAllocationDataForDay(day_o, callback_fn);
       }
     };
   }

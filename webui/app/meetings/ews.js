@@ -1,4 +1,4 @@
-angular.module("app.meetings.ews", []).factory("app.meetings.ewsUtils", function () {
+angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
 	var EWS_BASE_URL = "http://localhost:8000/api/CalDataSSO";
 
 	function _buildEWSUrl (dateFrom_o, days_i) {
@@ -9,11 +9,11 @@ angular.module("app.meetings.ews", []).factory("app.meetings.ewsUtils", function
 	
 		function buildDateString (date_o) {
 			var year = date_o.getFullYear();
-			var month = _useNDigits(date_o.getMonth() + 1, 2);
-			var day = _useNDigits(date_o.getDate(), 2);
-			var hour = _useNDigits(date_o.getHours(), 2);
-			var minute = _useNDigits(date_o.getMinutes(), 2);
-			var second = _useNDigits(date_o.getSeconds(), 2);
+			var month = calUtils.useNDigits(date_o.getMonth() + 1, 2);
+			var day = calUtils.useNDigits(date_o.getDate(), 2);
+			var hour = calUtils.useNDigits(date_o.getHours(), 2);
+			var minute = calUtils.useNDigits(date_o.getMinutes(), 2);
+			var second = calUtils.useNDigits(date_o.getSeconds(), 2);
 
 			return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z"; 
 		}
@@ -21,17 +21,6 @@ angular.module("app.meetings.ews", []).factory("app.meetings.ewsUtils", function
 		function encodeForUrl (val_s) {
 			return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
 		}
-	}
-
-	//Tested by a separate test
-	function _useNDigits (val_i, n_i) {
-		var str = new String(val_i);
-
-		for (var i = str.length; i < n_i; i++) {
-			str = "0" + str;
-		}
-
-		return str;
 	}
 
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
@@ -54,29 +43,6 @@ angular.module("app.meetings.ews", []).factory("app.meetings.ewsUtils", function
 		return new Date(d.getTime() + (offsetUTC_i * 3600000)); //3600000 milliseconds are one hour
 	}	
 
-	function _relativeTimeTo(dateFrom_o, dateTo_o) {
-		var diffMin = dateTo_o.getTime() - dateFrom_o.getTime();
-		diffMin = Math.floor(diffMin / 60000);
-
-		var days = Math.floor(diffMin / (24 * 60));
-		diffMin = diffMin - days * 24 * 60;
-
-		var hours = Math.floor(diffMin / 60);
-		diffMin = diffMin - hours * 60;
-
-		var res = "";
-		if (days > 0) {
-			res += days + ((days == 1) ? " day, " : " days, ");
-		}
-		if (hours > 0) {
-			res += hours + ((hours == 1) ? " hour, " : " hours, ");
-		}
-		res += diffMin + ((diffMin == 1) ? " minute" : " minutes");
-
-		return res;
-	}
-
-
 	return {
 		buildEWSUrl: function(dateFrom_o, days_i) {
 			return _buildEWSUrl(dateFrom_o, days_i);
@@ -86,12 +52,6 @@ angular.module("app.meetings.ews", []).factory("app.meetings.ewsUtils", function
 		},
 		parseEWSDateStringAutoTimeZone: function (ewsDateStr_s) {
 			return _parseEWSDateString(ewsDateStr_s, (new Date().getTimezoneOffset() / -60));			
-		},
-		relativeTimeTo: function (dateFrom_o, dateTo_o) {
-			return _relativeTimeTo(dateFrom_o, dateTo_o);
-		},
-		useNDigits: function (val_i, n_i) {
-			return _useNDigits (val_i, n_i);
 		}
 	};
-});
+}]);
