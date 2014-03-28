@@ -4,7 +4,7 @@
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
-        $scope.boxIcon = '&#xe0d5;';
+        $scope.boxIcon = '&#xf0f5;';
         $scope.initialized = true;
         $scope.loading = true;
         $scope.contentLoaded = false;

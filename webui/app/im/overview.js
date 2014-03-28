@@ -5,7 +5,7 @@ angular.module('app.im').directive('app.im', function () {
     var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {
         $scope.boxTitle = "Internal Messages";
         $scope.initialized = true;
-        $scope.boxIcon = '&#xe0d3;';
+        $scope.boxIcon = '&#xe81d;';
         bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD');
         $scope.boxNeedsClient = true;
         /*$scope.settingsTitle = "Settings";
