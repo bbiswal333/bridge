@@ -152,7 +152,7 @@
                 <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">
                 
                     <div class="settingsButton" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()">&#xe00c;</div>
-                    <div class="settingsButton" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()">&#xe024;</div>
+                    <div class="settingsButton" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="glyphicon glyphicon-heart"></span></div>
                     <div ng-if="!client" class="settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()">&#xe03a;</div>
                     <div style="height:100%;" ng-click="bridge_hide_settings()"></div>
                 </div>
