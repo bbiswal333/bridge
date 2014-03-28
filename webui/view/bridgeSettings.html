@@ -2,16 +2,18 @@
 <h4>Notifications</h4>
 
 <div ng-if="notificationSupported == 'pleaseAsk'">
-	<button class="btn btn-default" ng-click="requestPermission();">Activate Notifications</button>
+Notification are not configured.<br>
+<button class="btn btn-default" ng-click="requestPermission();">Activate</button>
 </div>
 <div ng-if="notificationSupported === true">
-Notifications are activated<br><button class="btn btn-default" ng-click="testNotification();">Test</button><br><br>
+Notifications are activated<br>
+<button class="btn btn-default" ng-click="testNotification();">Test</button><br><br>
 </div>
 <div ng-if="notificationSupported === false">
-Notifications are DEactivated<br><br>
+Notifications are deactivated<br><br>
 </div>
 <div ng-if="notificationSupported === undefined">
-This browser does not support notifications<br><br>
+Notifications are not supported.<br><br>
 </div>
 
 
