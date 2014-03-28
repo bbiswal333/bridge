@@ -206,7 +206,7 @@ img {
     cursor: pointer;
 }
 .mainNav > li.selected {
-    font-weight: bold;
+    font-weight: lighter;
     font-size: 17px;
     background: url('../img/menuArrow2.png') no-repeat center bottom;
 }
