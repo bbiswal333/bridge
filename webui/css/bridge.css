@@ -15,14 +15,21 @@
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
+  font-weight: 100;
+  src: local('Open Sans'), local('OpenSans'), url('fonts/open_sans_light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
   font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url('fonts/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+  src: local('Open Sans'), local('OpenSans'), url('fonts/open_sans_reg.woff') format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('fonts/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff') format('woff');
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('open_sans_bold.woff') format('woff');
 }
 
  @font-face {
