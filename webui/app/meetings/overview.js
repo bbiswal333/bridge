@@ -57,7 +57,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 								}
 							}
 						}
-				        $timeout(function () { $scope.$broadcast('recalculateMBScrollbars'); }, 250);
 	        			$scope.errMsg = null;
 					}catch(error){
 						$scope.errMsg = "Unable to connect to Exchange Server";

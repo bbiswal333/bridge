@@ -72,6 +72,21 @@ angular.module("notifier", []).factory("notifier", function () {
       return n;
     };
 
+    this.getPermission = function () {
+     if (typeof window.Notification == "undefined") { 
+        return undefined;
+      }
+      else if (Notification.permission === "granted") {
+        return true;
+      }
+      else if (Notification.permission === "denied") {
+        return false;
+      }
+      else {
+        return false;
+      }
+    };
+
     function checkPermission(callbackGranted_fn, callbackDenied_fn, callbackNoSupport_fn, callbackPermissionRequest_fn) {
       if (typeof window.Notification == "undefined") { 
         callbackNoSupport_fn();
@@ -104,7 +119,6 @@ angular.module("notifier", []).factory("notifier", function () {
   //we need to display a screen where the user can explicitly take an action (press a button etc.) calling the requestPermission()-Method
   //Also see here: http://stackoverflow.com/questions/5040107/webkit-notifications-requestpermission-function-doesnt-work
   Notifier.prototype.chromePreCheckRequestNeeded = function () {
-    console.log(Notification.permission);
     if (typeof window.Notification != "undefined") {
       return (Notification.permission === "default");  
     }
@@ -134,8 +148,14 @@ angular.module("notifier", []).factory("notifier", function () {
     },
     requestPermission: function (callback_fn) {
       instance.requestPermission(function (perm) {
-        if (typeof callback_fn != "undefined") callback_fn(perm);
+        if (instance.getPermission() == false) {
+          alert("Notifications are still not possible!");
+        };
+        callback_fn();
       });
+    },
+    getPermission: function () {
+      return instance.getPermission();
     }
   };  
 });

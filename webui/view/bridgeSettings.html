@@ -1,6 +1,16 @@
 <div ng-controller="mainSettingsController">
 <h4>Notifications</h4>
-<button class="btn btn-default" onclick="notify();">Activate Notifications</button>
+
+<div ng-if="notificationSupported === false">
+	<button class="btn btn-default" ng-click="requestPermission();">Activate Notifications</button>
+</div>
+<div ng-if="notificationSupported === true">
+Notifications are activated<br><button class="btn btn-default" ng-click="testNotification();">Test</button><br><br>
+</div>
+<div ng-if="notificationSupported === undefined">
+This browser does not support notifications<br><br>
+</div>
+
 
 <h4>Applications</h4>       
 

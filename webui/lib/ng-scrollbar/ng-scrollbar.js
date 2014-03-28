@@ -51,7 +51,7 @@ angular.module('ngScrollbar', []).directive('ngScrollbar', [
           event.stopPropagation();
         };
         var wheelHandler = function (event) {
-          var deltaY = event.wheelDeltaY !== undefined ? event.wheelDeltaY / 20 : event.wheelDelta !== undefined ? event.wheelDelta / 20 : -event.detail * 2;
+          var deltaY = event.wheelDeltaY !== undefined ? event.wheelDeltaY / 20 : event.wheelDelta !== undefined ? event.wheelDelta / 20 : - event.detail * 2;
           dragger.top = Math.max(0, Math.min(parseInt(page.height, 10) - parseInt(dragger.height, 10), parseInt(dragger.top, 10) - deltaY));
           redraw();
           if (!!event.preventDefault) {
