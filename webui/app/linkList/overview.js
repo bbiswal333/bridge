@@ -1,9 +1,5 @@
 angular.module('app.linkList', ['ui.sortable']);
 
-  angular.module('app.linkList').config(['$compileProvider', function($compileProvider) {
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob):/);  //make blob safe
-}]);
-
 angular.module('app.linkList').directive('app.linkList',
         ['app.linkList.configservice','bridgeConfig',
         function(appLinklistConfig, bridgeConfig) {

@@ -30,6 +30,11 @@ angular.module('bridge.app', [
     "app.cats.maintenanceView.projectList",
     "ngScrollbar"]);
 
+angular.module('bridge.app').config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  //make blob safe
+}]);
+
+
 angular.module('bridge.app').directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
