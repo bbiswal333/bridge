@@ -1,7 +1,7 @@
 angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).directive("app.meetings", [
 	"$timeout",
 	"$http",
-	"app.meetings.ewsUtils",
+	"app.meetings.ews.ewsUtils",
 	"lib.utils.calUtils",
 	"$interval",
 	"notifier",
