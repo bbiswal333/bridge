@@ -7,7 +7,7 @@ angular.module('app.atc').directive('app.atc',
     var directiveController = ['$scope', function ($scope) {
         $scope.boxTitle = "ATC Results";
         $scope.settingsTitle = "Configure Source Systems and Packages";
-        $scope.boxIcon = '&#xe80e;';
+        $scope.boxIcon = '&#xe792;';
         $scope.customCSSFile = "app/atc/style.css";
         bridgeCounter.CollectWebStats('ATC', 'APPLOAD');
 
