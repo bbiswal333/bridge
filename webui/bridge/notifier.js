@@ -83,7 +83,7 @@ angular.module("notifier", []).factory("notifier", function () {
         return false;
       }
       else {
-        return false;
+        return 'pleaseAsk';
       }
     };
 
@@ -148,9 +148,6 @@ angular.module("notifier", []).factory("notifier", function () {
     },
     requestPermission: function (callback_fn) {
       instance.requestPermission(function (perm) {
-        if (instance.getPermission() == false) {
-          alert("Notifications are still not possible!");
-        };
         callback_fn();
       });
     },
