@@ -4,7 +4,6 @@ angular.module('app.im').directive('app.im', function () {
 
     var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {
         $scope.boxTitle = "Internal Messages";
-        $scope.initialized = true;
         $scope.boxIcon = '&#xe81b;';
         bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD');
         $scope.boxNeedsClient = true;
@@ -117,7 +116,6 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
 
         $scope.$watch('imData', function () {
         updateimChart($scope);
-        $scope.initialized = true;
 
     });
 }]);
