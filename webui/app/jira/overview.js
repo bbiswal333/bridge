@@ -4,14 +4,12 @@ angular.module('app.jira').directive('app.jira', function () {
 
     var directiveController = ['$scope', 'JiraBox', 'JiraQuery', 'bridgeCounter', function ($scope, JiraBox, JiraQuery, bridgeCounter) {
         $scope.boxTitle = "Jira";
-        $scope.initialized = true;
         $scope.boxIcon = '&#xe80a;';
         bridgeCounter.CollectWebStats('JIRA', 'APPLOAD');
 
         //JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
             updateJiraChart($scope);
-            $scope.initialized = true;
         });
 
     }];

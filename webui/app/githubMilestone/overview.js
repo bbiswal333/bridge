@@ -7,7 +7,6 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
        
     var directiveController = ['$scope', function($scope ) {
             $scope.boxTitle = "Github";
-            $scope.initialized = true;
             $scope.boxIcon = '&#xe80d;';
             $scope.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};

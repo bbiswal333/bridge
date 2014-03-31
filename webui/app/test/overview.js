@@ -4,7 +4,6 @@ angular.module('app.test').directive('app.test', function () {
 
     var directiveController = ['$scope', 'bridgeCounter', function ($scope, bridgeCounter) {
         $scope.boxTitle = "Test App";
-        $scope.initialized = true;
         $scope.boxIcon = '&#xe05c;';
         bridgeCounter.CollectWebStats('TEST', 'APPLOAD');
     }];

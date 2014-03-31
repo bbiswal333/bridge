@@ -4,7 +4,6 @@ angular.module('app.wire').directive('app.wire', function () {
 
     var directiveController = ['$scope', '$http', 'bridgeCounter', function ($scope, $http, bridgeCounter) {
         $scope.boxTitle = "Wire";
-        $scope.initialized = true;
         $scope.boxIcon = '&#xe806;';
         bridgeCounter.CollectWebStats('WIRE', 'APPLOAD');      
         //$scope.boxNeedsClient = true;
