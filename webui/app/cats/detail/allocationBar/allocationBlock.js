@@ -1,5 +1,5 @@
 angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.allocationBar.core.block", function() {
-    var BarBlock = function(svg_o, stackedBarInput_o, desc_s, data_o, width_i, height_i, x, y, color_s) {
+    var BarBlock = function(svg_o, stackedBarInput_o, desc_s, fixed_b, data_o, width_i, height_i, x, y, color_s) {
         var self = this;
         this.p = stackedBarInput_o;
         this.block = null;
@@ -7,6 +7,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         //this.textField = {};
         this.desc = desc_s;
         this.group = null;
+        this.isFixed = fixed_b;
         this.data = data_o;
         this.bin = null;
         var inDragMode = false;
@@ -28,10 +29,12 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
 
             divJQuery.append($("<div>").addClass('allocation-bar-block-name-div').text(desc_s).attr("title", desc_s));
             divJQuery.append($("<div>").addClass('allocation-bar-block-value-div'));
-            divJQuery.append($("<div>").addClass('allocation-bar-block-bin-div').hide().html('<span class="glyphicon glyphicon-remove"></span>').click(function () {
-                self.remove();
-                self.p.fireAllocChanged();
-            }));
+            if (!this.isFixed) {
+                divJQuery.append($("<div>").addClass('allocation-bar-block-bin-div').hide().html('<span class="glyphicon glyphicon-remove"></span>').click(function () {
+                    self.remove();
+                    self.p.fireAllocChanged();
+                }));
+            }
             divJQuery.hover(function () {
                 if (!binFadedIn) $(this).children(".allocation-bar-block-bin-div").fadeIn();
                 binFadedIn = true;
@@ -42,29 +45,31 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             });
             updateTextField();
 
-            this.dragger = s.polygon([[5, 10],
-                                            [6, 10], [0, 0], [11, 0], [6, 10],
-                                      [7, 10], [7, height_i + 10],
-                                            [6, height_i + 10], [11, height_i + 20], [0, height_i + 20], [6, height_i + 10],
-                                      [5, height_i + 10]]).move(x + width_i -7, y - 10).
-                fill("#555").draggable(_dragRestrictor).attr("class", "allocation-bar-dragger");
-            
-            this.dragger.dragmove = _dragHandler;
-            this.dragger.dragstart = function() {
-                inDragMode = true;
-            };
-            this.dragger.dragend = function() {
-                inDragMode = false;
-                self.setHoverDragger(false);
+            if (!this.isFixed) {
+                this.dragger = s.polygon([[5, 10],
+                                                [6, 10], [0, 0], [11, 0], [6, 10],
+                                          [7, 10], [7, height_i + 10],
+                                                [6, height_i + 10], [11, height_i + 20], [0, height_i + 20], [6, height_i + 10],
+                                          [5, height_i + 10]]).move(x + width_i - 7, y - 10).
+                    fill("#555").draggable(_dragRestrictor).attr("class", "allocation-bar-dragger");
 
-                self.p.fireAllocChanged();
-            };
-            this.dragger.on("mouseenter", function(evt) {
-                self.setHoverDragger(true);
-            });
-            this.dragger.on("mouseleave", function(evt) {
-                if (!inDragMode) self.setHoverDragger(false);
-            });
+                this.dragger.dragmove = _dragHandler;
+                this.dragger.dragstart = function () {
+                    inDragMode = true;
+                };
+                this.dragger.dragend = function () {
+                    inDragMode = false;
+                    self.setHoverDragger(false);
+
+                    self.p.fireAllocChanged();
+                };
+                this.dragger.on("mouseenter", function (evt) {
+                    self.setHoverDragger(true);
+                });
+                this.dragger.on("mouseleave", function (evt) {
+                    if (!inDragMode) self.setHoverDragger(false);
+                });
+            }
         };
 
         this.getCurrentValueRaw = function () {

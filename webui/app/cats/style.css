@@ -59,7 +59,7 @@
 }
 
 .app-cats-calendar {
-	width: 285px;
+	width: 315px;
 	margin: 0px auto;
     font-family: Arial;
 }
@@ -71,13 +71,25 @@
 
 .app-cats-week {
 	height: 15px;
-	width: 285px;
+	width: 315px;
 	margin-top: 2px;
 }
 
 	 .app-cats-week:first-of-type {
 		margin-top: 3px;
 	}
+
+.app-cats-day-details
+{
+    width: 43px;
+	height: 21px;
+	float: left;
+    margin-right: 1px;
+    margin-left: 1px;
+	margin-bottom: 2px;
+	font-size: 14px;
+	text-align: center;
+}
 
 .app-cats-day {
 	width: 39px;

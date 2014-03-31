@@ -70,7 +70,7 @@
           <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="addBlock(desc_s, val_i, objgextid_s, objguid_s);" data-onprojectunchecked="removeBlock(objgextid_s, objguid_s);" data-heightoflist="300px"></app.cats.maintenance-view.project-list>        
         </div>
         <div id="app-cats-maintenance-navigation-div">
-          <app.cats.calendar style="width: 350px;"></app.cats.calendar>
+          <app.cats.calendar style="width: 400px;" data-day-class="app-cats-day-details"></app.cats.calendar>
         </div>        
         <div style="clear: both; width: 100%; float: none;"></div>
         <div id="app-cats-maintencance-header-allocation">
@@ -78,7 +78,7 @@
         </div>
         <div id="app-cats-maintencance-allocation-div" ng-if="loaded"> <!-- allocation-bar should not load before the scope is initialized - otherwise the snappingRange will not be set -->
           Hours to maintain today: {{workingHoursForDay}}
-          <app.cats.allocationbar data-width="{{width}}" data-height="120" data-blocks="blockdata" data-padding="0" data-snaprange="{{snaprange}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
+          <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-padding="0" data-snaprange="{{snaprange}}" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
         </div>
       </div>
       <div class="panel-body" ng-show="!loaded">

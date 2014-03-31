@@ -39,7 +39,7 @@ angular.module("app.cats.allocationBar", [
             var updateBySelfExpected = false;
 
             $scope.$watch("blocks", function() {
-                allocBarCntrl.construct($scope.blocks);
+                allocBarCntrl.construct($scope.blocks, $scope.totalValue);
             }, true);
 
             console.log("SR Initial: " + $scope.snapRange);
@@ -71,7 +71,8 @@ angular.module("app.cats.allocationBar", [
                 height: "@height",
                 blocks: "=blocks",
                 snapRange: "@snaprange",
-                padding: "@padding"
+                padding: "@padding",
+                totalValue: "@totalValue",
             },
             replace: true,
             link: linkFunction,

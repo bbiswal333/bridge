@@ -16,6 +16,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		$scope.state = "";		
 		$scope.loading = true;
 		$scope.weekdays = calUtils.getWeekdays();
+		$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
     //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
     
     $scope.getDescForState = function (state_s) {
@@ -167,6 +168,9 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		restrict: "E",
 		templateUrl: "app/cats/overview.html",
 		replace: true,
-		link: linkFn
+		link: linkFn,
+		scope: {
+            dayClassInput: '@dayClass',
+		}
 	};
 }]);

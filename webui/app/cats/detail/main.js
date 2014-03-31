@@ -28,38 +28,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < tasks.length; i++) {
                 var task = tasks[i];
-                $scope.addBlock(task.taskDesc, task.quantity * 100, task.objgextid, task.objguid); 
+                if (task.tasktype == "VACA")
+                    $scope.addBlock(task.tasktype, task.quantity, task.objgextid, task.objguid, true);
+                else
+                    $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.objgextid, task.objguid);
             }
-    /*        $scope.blockdata = [{
-                desc: "Project 1",
-                value: (0.5/$scope.workingHoursForDay * 100),
-                data: {objgextid: "test1", objguid: "0012"}
-            }, {
-                desc: "Project 2",
-                value: (0.5/$scope.workingHoursForDay * 100),
-                data: {objgextid: "test1", objguid: "0013"}
-            }, {
-                desc: "Project 3",
-                value: (0.5/$scope.workingHoursForDay * 100),
-                data: {objgextid: "test1", objguid: "0013"}
-            }];*/
 
             $scope.loaded = true;
         });        
     });
 
-    $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s) {
+    $scope.addBlock = function(desc_s, val_i, objgextid_s, objguid_s, fixed) {
         if (val_i == null) {
-            val_i = (1 / $scope.workingHoursForDay) * 100;
+            val_i = (4 / $scope.workingHoursForDay);
             if (val_i > $scope.percToMaintain()) {
                 val_i = $scope.percToMaintain();
             }
         }
 
         //If there is less than 30Minutes left, project will not be added
-        if (val_i * ($scope.workingHoursForDay * 60) / 100 < 30) {
+        /*if (val_i * ($scope.workingHoursForDay * 60) / 100 < 30) {
             return false;
-        }
+        }*/
 
         $scope.blockdata.push({
             desc: desc_s,
@@ -67,7 +57,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             data: {
                 objgextid: objgextid_s,
                 objguid: objguid_s
-            }
+            },
+            fixed: fixed || false,
         });
 
         return true;

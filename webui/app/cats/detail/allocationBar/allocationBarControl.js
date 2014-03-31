@@ -38,7 +38,8 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             });
 
 
-            this.construct = function(blocks_ar) {
+            this.construct = function (blocks_ar, totalValue) {
+                this.totalValue = parseFloat(totalValue);
                 var len = this.blocks.length;
                 for (var i = 0; i < len; i++) {
                     this.blocks[0].remove();
@@ -54,7 +55,8 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             };
 
             this.addBlock = function(block_o, fireChange) {
-                var block_width = (block_o.value / 100.0) * (width - 2 * PADDING);
+                //var block_width = (block_o.value / 100.0) * (width - 2 * PADDING);
+                var block_width = block_o.value * width / this.totalValue;
 
                 //Check if there is space for another block
                 if ((this.blocks.length >= 1 && this.blocks.last().getCoords().x2 + block_width > x + width - PADDING) || block_width > x + width - 2 * PADDING) {
@@ -66,7 +68,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                     offset = this.blocks.last().getCoords().x2;
                 }
 
-                this.blocks.push(new BarBlock(s, self, block_o.desc, block_o.data, block_width, (height - 1 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
+                this.blocks.push(new BarBlock(s, self, block_o.desc, block_o.fixed, block_o.data, block_width, (height - 1 * PADDING), offset, y + PADDING, colorUtils.getNextColor(0.0)));
 
                 offset += block_width;
 
@@ -143,7 +145,7 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
                     var block = this.blocks[i];
                     var newBlock = {
                         desc: block.desc,
-                        value: (block.getWidth() / (width - 2 * PADDING)) * 100,
+                        value: (block.getWidth() * this.totalValue / width),
                         data: block.data
                     };
 
