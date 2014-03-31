@@ -57,10 +57,14 @@ Building Apps
 ## application structure
 * apps are contained in their own sub-folder `webui/app/appname`
 * apps must be an angluar-directive named `app.appname` inside it's own module named `app.appname`
+  * your app module must be loaded by the main-module. To do this, reference your module in bridgeController.js
 * the app directive must not have an isolated scope
 * apps contain at least the files `overview.js` and `overview.html` for rendering a box on the overview page
+  * your overview.js must be loaded via <script> tag in the index.html
 * `$scope.boxId` is inherited from the `bridge.box` directive
 * apps can optionally define settings in a separate directive
+* to make your app visible, you have to add it to the default config in sortableService.js and reset your config via debug.resetConfig() in your Browser's console. This step is a workaround at the moment and will be obsolete in the future.
+
 
 ## overview.js
 ```javascript
