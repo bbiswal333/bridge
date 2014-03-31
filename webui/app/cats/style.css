@@ -61,6 +61,7 @@
 .app-cats-calendar {
 	width: 285px;
 	margin: 0px auto;
+    font-family: Arial;
 }
 
 .app-cats-week-labels {

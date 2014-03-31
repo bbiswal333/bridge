@@ -1,5 +1,7 @@
 .allocation-bar-block-div {
   transition: width 2s;
+  border-bottom: 1px dashed #e6e6e6;
+  border-top: 1px dashed #e6e6e6;
 }
 
 .allocation-bar-block-name-div {
@@ -40,7 +42,7 @@
   margin: 0px auto;
   font-size: 18px;
   text-align: center;
-  color: #AAA;
+  color: #e6e6e6;
   -webkit-transition: color 0.2s linear;
 }
 

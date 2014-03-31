@@ -42,8 +42,12 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             });
             updateTextField();
 
-            this.dragger = s.rect(5, height_i).move(x + width_i - 5, y).
-            fill("#555").draggable(_dragRestrictor).attr("class", "allocation-bar-dragger");
+            this.dragger = s.polygon([[5, 10],
+                                            [6, 10], [0, 0], [11, 0], [6, 10],
+                                      [7, 10], [7, height_i + 10],
+                                            [6, height_i + 10], [11, height_i + 20], [0, height_i + 20], [6, height_i + 10],
+                                      [5, height_i + 10]]).move(x + width_i -7, y - 10).
+                fill("#555").draggable(_dragRestrictor).attr("class", "allocation-bar-dragger");
             
             this.dragger.dragmove = _dragHandler;
             this.dragger.dragstart = function() {
@@ -106,7 +110,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         this.move = function(x, y) {
             if (x != null) {
                 this.block.x(x);
-                this.dragger.x(x + this.block.width() - 5);
+                this.dragger.x(x + this.block.width() - 7);
             }
             if (y != null) {
                 this.block.y(y);
@@ -145,7 +149,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
             x = x - ((self.block.width() + x - elem.x()) % self.p.snapRange);
 
             //No moving that would reduce width below minwidth
-            if (x + 5 < self.block.x() + self.p.minWidth) {
+            if (x + 7 < self.block.x() + self.p.minWidth) {
                 return false;
             }
 
@@ -178,7 +182,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         }
 
         function _dragHandler(delta) {
-            self.block.width(5 + delta.coord.x - self.block.x()); //5 is length of dragger because the left egde of the dragger is taken into calculation
+            self.block.width(7 + delta.coord.x - self.block.x()); //5 is length of dragger because the left egde of the dragger is taken into calculation
             self.p.glueBlocks();
         }
 
