@@ -7,6 +7,7 @@
 .allocation-bar-block-name-div {
   width: 100%;
   padding-top: 10px;
+  font-weight: bold;
   font-size: 14px;
   text-align: center;
   -o-text-overflow: ellipsis;   /* Opera */
@@ -21,6 +22,7 @@
   padding-bottom: 5px;
   font-size: 12px;
   text-align: center;
+  font-style: italic;
 }
 
 .allocation-bar-dragger {
@@ -34,6 +36,7 @@
 
 .allocation-bar-background-panel-div {
   background: #e6e6e6;
+  background-image: url("allocationBar/stripe.png");
 }
 
 .allocation-bar-block-bin-div {

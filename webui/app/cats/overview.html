@@ -12,7 +12,7 @@
 			</div>
 			<div class="app-cats-week" ng-repeat="week in calArray">
 				<div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}} app-cats-state{{day.data.state}} clickable" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture, 'app-cats-today': day.today}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString);">
-					<span>{{day.dayNr}}</span>
+					<span ng-class="{'bold': day.date.toDateString() == selectedDay.toDateString()}">{{day.dayNr}}</span>
 				</div>
 				<div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
 					<span>{{day.dayNr}}</span>

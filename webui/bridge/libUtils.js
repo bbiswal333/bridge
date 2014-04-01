@@ -127,7 +127,8 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 inFuture: (thisDay.getTime() >= todayInMs),
                 today: (thisDay.getFullYear() == today.getFullYear() && thisDay.getMonth() == today.getMonth() && thisDay.getDate() == today.getDate()),
                 data: additionalDataForThisDay,
-                dayString: self.stringifyDate(thisDay)
+                dayString: self.stringifyDate(thisDay),
+                date: thisDay,
             };
 
             if ((i + 1) % 7 == 0) {

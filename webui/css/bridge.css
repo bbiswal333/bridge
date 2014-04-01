@@ -484,3 +484,8 @@ input[type="checkbox"]:checked:after {
     border-width:2px;
     border-color:black;
 }
+
+.bold
+{
+    font-weight: bold;
+}

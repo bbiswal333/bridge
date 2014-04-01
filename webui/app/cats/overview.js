@@ -13,13 +13,13 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		$scope.month = new Date().getMonth();
 		$scope.currentMonth = "";
 		$scope.calArray;
-		$scope.state = "";		
+		$scope.state = "";
 		$scope.loading = true;
 		$scope.weekdays = calUtils.getWeekdays();
 		$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
-    //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
+	    //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
     
-    $scope.getDescForState = function (state_s) {
+        $scope.getDescForState = function (state_s) {
 			return catsUtils.getDescForState(state_s);
 		};
 
@@ -114,6 +114,12 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 
 		var refreshInterval = null;
 
+		if ($scope.selectedDay) {
+		    while (new Date($scope.selectedDay).getMonth() != $scope.month) {
+		        $scope.prevMonth();
+		    }
+		}
+
 		$scope.$on("$destroy", function(){
 			if (refreshInterval != null) {
 				$interval.cancel(refreshInterval);
@@ -170,6 +176,7 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		replace: true,
 		link: linkFn,
 		scope: {
+            selectedDay: '=selectedDay',
             dayClassInput: '@dayClass',
 		}
 	};

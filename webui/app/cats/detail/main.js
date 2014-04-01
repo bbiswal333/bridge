@@ -29,7 +29,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             for (var i = 0; i < tasks.length; i++) {
                 var task = tasks[i];
                 if (task.tasktype == "VACA")
-                    $scope.addBlock(task.tasktype, task.quantity, task.objgextid, task.objguid, true);
+                    $scope.addBlock("Vacation", task.quantity, task.objgextid, task.objguid, true);
                 else
                     $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.objgextid, task.objguid);
             }
