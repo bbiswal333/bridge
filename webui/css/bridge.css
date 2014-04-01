@@ -213,7 +213,7 @@ img {
     cursor: pointer;
 }
 .mainNav > li.selected {
-    font-weight: lighter;
+    font-weight: bold;
     font-size: 17px;
     background: url('../img/menuArrow2.png') no-repeat center bottom;
 }
@@ -327,7 +327,7 @@ img {
 .box-title {
     display: inline;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 500;
     font-family:'Open Sans', sans-serif;
     line-height: 32px;
 }
