@@ -175,9 +175,5 @@ angular.module("app.cats", ["lib.utils", "app.cats.data", "ngRoute"]).directive(
 		templateUrl: "app/cats/overview.html",
 		replace: true,
 		link: linkFn,
-		scope: {
-            selectedDay: '=selectedDay',
-            dayClassInput: '@dayClass',
-		}
 	};
 }]);
