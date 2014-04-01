@@ -21,6 +21,7 @@ angular.module('bridge.app', [
     'app.meetings',
     'app.cats',
     'app.wire',
+    'app.sapedia',
     'app.lunchWalldorf',
     'app.githubMilestone',
     'app.linkList',
