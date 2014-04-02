@@ -251,7 +251,7 @@ img {
     background-repeat: repeat;
     z-index: 10;
     position: absolute;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 .centeredContent {
