@@ -4,7 +4,7 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 	var ewsHelperUtils;
 
 	beforeEach(module("app.meetings.ews"));
-	beforeEach(inject(["app.meetings.ewsUtils", function (_ewsUtils_) {
+	beforeEach(inject(["app.meetings.ews.ewsUtils", function (_ewsUtils_) {
 		ewsHelperUtils = _ewsUtils_;
 	}]));
 
@@ -71,16 +71,9 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 	});	
 
 	it("should parse a date string and calculate my current time-zone (UTC+1) into it", function () {
-		var expected = new Date(2014, 0, 10, 13, 9, 44).getTime(); 
+	    var expected = new Date(2014, 0, 10, 12 + (new Date().getTimezoneOffset() / -60), 9, 44).getTime();
 
 		expect(ewsHelperUtils.parseEWSDateStringAutoTimeZone("2014-01-10T12:09:44Z").getTime()).toEqual(expected);
-	});
-
-
-	it("should calculate relative time between two date objects", function () {
-		expect(ewsHelperUtils.relativeTimeTo(new Date(2014, 10, 9, 21, 19, 0), new Date(2014, 10, 10, 22, 20, 10))).toEqual("1 day, 1 hour, 1 minute");
-		expect(ewsHelperUtils.relativeTimeTo(new Date(2014, 10, 10, 20, 20, 0), new Date(2014, 10, 10, 22, 20, 0))).toEqual("2 hours, 0 minutes");
-		expect(ewsHelperUtils.relativeTimeTo(new Date(2014, 10, 6, 20, 20, 0), new Date(2014, 10, 10, 22, 20, 0))).toEqual("4 days, 2 hours, 0 minutes");
 	});
 });
 

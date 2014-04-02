@@ -14,7 +14,7 @@
             $httpBackend = httpBackend;
 
             $httpBackend.whenGET("bridge/employeeSearch/EmployeeSearchDirective.html").respond("<div></div>");
-            $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap.corp:443\/sap\/bc\/zxa\/FIND_EMPLOYEE_JSON\?maxrow=20&query=Schueler/).respond(employeeSearchData);
+            $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap.corp:443\/sap\/bc\/zxa\/FIND_EMPLOYEE_JSON\?maxrow=\d+&query=Schueler/).respond(employeeSearchData);
         }]);
     });
 
