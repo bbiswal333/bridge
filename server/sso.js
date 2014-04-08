@@ -6,9 +6,9 @@ var exec         = require('child_process').exec;
 function getSSOCertSerialNumber(error, stdout, stderr) {
     var SSOCertificateFound = false;
     var SSOArchived = false;
-    var startCertificateSearchString = "================ Certificate";
-    var certificateArchivedSearchString = "Archived!";
-    var serialNumberSearchString = "Serial Number: ";
+	var startCertificateSearchString = "================ ";
+	var certificateArchivedSearchString = "!";
+	var serialNumberSearchString = ": ";
     var issuerSearchString = "CN=SSO_CA";
     var serialNumber = "";
 
@@ -17,23 +17,26 @@ function getSSOCertSerialNumber(error, stdout, stderr) {
         for (var i = 0; i < allLines.length; i++) {
 
             if (allLines[i].indexOf(startCertificateSearchString) != -1){
-                SSOCertificateFound = false;
-                SSOArchived = false;                     
+				// start of next certificate area found
+				if (allLines[i+1].indexOf(certificateArchivedSearchString) != -1){
+					// first line contains "Archived!", we don't need archived certificates
+					continue;
+				} 
+				else {
+					// if we don't have archived in line i+1, then we can check for the issuer in line i+2
+					if (allLines[i+2].indexOf(issuerSearchString) != -1){
+						// we are not archived, and we have the correct issuer, now get the serial number, which is in line i+1
+						serialNumber = allLines[i+1].substring(allLines[i+1].indexOf(serialNumberSearchString) + serialNumberSearchString.length);
+						return serialNumber;
+					}
+					else {
+						continue;
+					}
+				}                
             }
-
-            if (allLines[i].indexOf(certificateArchivedSearchString) != -1){
-                SSOArchived = true;
-            }
-            if (allLines[i].indexOf(serialNumberSearchString) != -1) {
-                serialNumber = allLines[i].substring(allLines[i].indexOf(serialNumberSearchString) + serialNumberSearchString.length);
-            }
-            if (allLines[i].indexOf(issuerSearchString) != -1) {
-                SSOCertificateFound = true;
-            }
-
-            if (SSOCertificateFound && !SSOArchived)
-                return serialNumber;
         }
+		
+		return serialNumber;
     }
 };
 
@@ -119,7 +122,8 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     user.SSOCertificatePassphrase = SSOCertificatePassphrase;
 
     if(process.platform == "win32") {
-    	exec("certutil -store -user -v my", function (error, stdout, stderr) {
+		// removed -v option, we don't need verbose output
+    	exec("certutil -store -user my", function (error, stdout, stderr) {
     	    var serialNumber = getSSOCertSerialNumber(error, stdout, stderr);
     	    var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
 
