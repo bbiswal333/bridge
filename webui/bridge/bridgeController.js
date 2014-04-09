@@ -8,10 +8,13 @@ angular.module('bridge.app', [
     'mgcrea.ngStrap',
     'ngTable',
     'ui.sortable',
+    'ngScrollbar',
     // bridge modules
     'bridge.service',
     'bridge.employeeSearch',
     'bridge.box',
+    'notifier',
+    'lib.utils',
     // bridge apps
     'app.test',
     'app.atc',
@@ -26,15 +29,8 @@ angular.module('bridge.app', [
     'app.githubMilestone',
     'app.linkList',
     'app.cats.maintenanceView',
-    'lib.utils',
-    'notifier',
-    "app.cats.maintenanceView.projectList",
-    "ngScrollbar"]);
-
-angular.module('bridge.app').config(['$compileProvider', function($compileProvider) {
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  //make blob safe
-}]);
-
+    'app.cats.maintenanceView.projectList'
+]);
 
 angular.module('bridge.app').directive('errSrc', function() {
   return {
@@ -48,8 +44,8 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
-    function ($scope, $http, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
         
         $scope.getSidePane = function(){
             return $scope.sidePanel;
@@ -71,6 +67,10 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "feedback";            
+        }
+
+        $scope.bridge_github_click = function () {
+            $window.open("https://github.wdf.sap.corp/bridge/bridge");
         }
 
         $scope.bridge_hide_settings = function(){
@@ -188,13 +188,9 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.configLoadingFinished = true;
                 $scope.showLoadingAnimation = false;   
             });
-
         }]);
-        
 
-
-
-angular.module('bridge.app').config(["$routeProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $locationProvider, $httpProvider, calUtils) {
+angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils) {
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
@@ -222,7 +218,10 @@ angular.module('bridge.app').config(["$routeProvider", "$locationProvider", "$ht
 
     // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
     $httpProvider.defaults.withCredentials = true;
+    $httpProvider.interceptors.push('bridge.app.httpInterceptor');
 
+    //make blob safe
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
 }]);
 
 angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
@@ -301,8 +300,4 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootSc
         }
     };
 
-}]);
-
-angular.module('bridge.app').config(['$httpProvider',function($httpProvider) {
-  $httpProvider.interceptors.push('bridge.app.httpInterceptor');
 }]);
