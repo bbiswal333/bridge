@@ -96,11 +96,11 @@ img {
 }
 
 .image_rounded_shadow img {
-    margin: 0px 0px 0px 0px;
+    margin: 15px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
-    border-radius:8px;
-    -moz-border-radius:8px;
-    -webkit-border-radius:8px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
 }
 .noselect {
     -webkit-touch-callout: none;
@@ -152,6 +152,7 @@ img {
     float: left;
     font-family:'Open Sans', sans-serif;
     color: #707070;
+    margin-top: 5px;
 }
 .box-1 {
     float: left;
@@ -322,7 +323,7 @@ img {
     height: 82%;
     font-family:'Open Sans', sans-serif;
     color: #707070;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 .box-title {
     display: inline;
