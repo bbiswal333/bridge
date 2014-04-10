@@ -3,7 +3,7 @@ angular.module('bridge.app', [
     'ngAnimate',
     'ngRoute',
     'ngSanitize',
-    'googlechart',
+    //'googlechart',
     'ui.bootstrap',
     'mgcrea.ngStrap',
     'ngTable',
