@@ -513,3 +513,10 @@ input[type="checkbox"]:checked:after {
     border: none;
     box-shadow: -1px -1px 0px rgba(0,0,0,0.2);
 }
+.ng-hide{
+    display: block !important;
+    color: rgba(0,0,0,0.2);
+}
+.progress{
+    border-radius: 0px;
+}
