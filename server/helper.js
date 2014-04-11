@@ -1,4 +1,8 @@
-exports.printConsole = function(port)
+var fs = require('fs');
+var exec = require('child_process').exec;
+var path = require('path');
+
+exports.printConsole = function (port)
 {	
 	var clc = require('cli-color');
 	console.log(clc.reset);
@@ -31,4 +35,21 @@ exports.handleException = function(port)
 		}
 		process.exit(1);
 	});	
-}		
+}
+
+var errorLogfile = path.join(__dirname, '/error.log'); 
+exports.logError = function (message) {
+    fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
+    console.log(message);
+}
+
+exports.wrappedExec = function (execString, callbackFn) {
+    exec(execString, function (error, stdout, stderr) {
+        if (error == null) {
+            callbackFn(error, stdout, stderr);
+        } else {
+            exports.logError(error);
+            callbackFn(error, stdout, stderr);
+        }
+    });
+}

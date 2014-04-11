@@ -1,5 +1,5 @@
 var path = require('path');
-var exec = require('child_process').exec;
+var helper = require('./helper.js');
 var fs   = require('fs');
 
 exports.get = function(proxy, npm, callback)
@@ -23,7 +23,7 @@ exports.get = function(proxy, npm, callback)
 		fs.mkdirSync(server_modules);
 	}
 	
-	exec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
+	helper.wrappedExec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
 		console.log(stderr);		
 		callback();		
 	});
