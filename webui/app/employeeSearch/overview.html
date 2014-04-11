@@ -7,11 +7,11 @@
 </div>
 <div class="boxRight">
 	<div ng-if="selectedEmployee != undefined && selectedEmployee.BNAME != undefined">		
-		Location: {{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
-		Cost Center: {{selectedEmployee.KOSTX}}<br />
+		{{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
+		{{selectedEmployee.KOSTX}}<br />
         <br />        
-        Email: <b><a href="mailto:{{selectedEmployee.SMTP_MAIL}}">{{selectedEmployee.SMTP_MAIL}}</a></b><br />
-        Phone: <b><a href="tel:{{selectedEmployee.TELNR}}">{{selectedEmployee.TELNR_DEF}}</a></b><br />
+        <b><a href="mailto:{{selectedEmployee.SMTP_MAIL}}">{{selectedEmployee.SMTP_MAIL}}</a></b><br />
+        <b><a href="tel:{{selectedEmployee.TELNR}}">{{selectedEmployee.TELNR_DEF}}</a></b><br />
         <br />
 		<b><a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}" target="_blank">User Profile</a></b>		
 	</div>

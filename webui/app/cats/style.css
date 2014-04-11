@@ -32,9 +32,7 @@
 	margin-bottom: 4px;
 	width: 100%;
 	text-align: center;
-	font-size: 12px;
-	font-weight: lighter;
-	color: #333333;	
+
 }
 
 	.app-cats-navigation span {
@@ -56,18 +54,18 @@
 	margin-right: 8px;
 	padding-top: 6px;
 	padding-bottom: 6px;
-    font-family: Arial;
+  
 }
 
 .app-cats-calendar {
 	width: 315px;
 	margin: 0px auto;
-    font-family: Arial;
+  
 }
 
 .app-cats-week-labels {
-	font-size: 7px;
-	color: #333333;
+	
+	
 }
 
 .app-cats-week {
@@ -97,9 +95,9 @@
 	height: 15px;
 	float: left;
 	margin-bottom: 2px;
-	font-size: 10px;
+	
 	text-align: center;
-	font-weight: bold;	
+		
 }
 
 	.app-cats-week .app-cats-day {
