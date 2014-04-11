@@ -12,8 +12,8 @@
                 <div style="height: 110px;" ng-scrollbar>
                     <table cellpadding="2" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
-                            <td style="border-right: 1px solid #f0ab00; width: 35px;" id="eventId{{($index+1)}}">
-                                <span ng-if="$first && !event.isCurrent" style="color: #333333">
+                            <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
+                                <span ng-if="$first && !event.isCurrent" >
                                     <b>{{event.startRel}}</b>
                                 </span>
                                 <span ng-if="!$first && !event.isCurrent">
@@ -26,7 +26,7 @@
                                 </span>
                             </td>
                             <td style="vertical-align: top; padding-left: 10px">
-                                <div style="color: #333333; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b>
                                     </span>
@@ -34,7 +34,7 @@
                                         {{event.subject}}
                                     </span>
                                 </div>
-                                <div style="color: #999999; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">{{event.location}}</div>
+                                {{event.location}}
                             </td>
                         </tr>
                     </table>
