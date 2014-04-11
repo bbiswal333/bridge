@@ -42,6 +42,16 @@ exports.logError = function (message) {
     fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
     console.log(message);
 }
+exports.checkErrorFileSize = function() {
+    if (fs.existsSync(errorLogfile)) {
+        var fileStats = fs.statSync(errorLogfile);
+
+        // logfileSize bigger than 2 MB -> delete
+        if (fileStats.size > 2 * 1024 * 1024) {
+            fs.unlinkSync(errorLogfile);
+        }
+    }
+}
 
 exports.wrappedExec = function (execString, callbackFn) {
     exec(execString, function (error, stdout, stderr) {

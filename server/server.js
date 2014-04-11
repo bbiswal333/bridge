@@ -10,7 +10,9 @@ exports.run = function(npm)
 {	
 	var port        = param.get("port", 8000);
 	var proxy       = param.get("proxy", true);
-	var local       = param.get("local", true);	
+	var local = param.get("local", true);
+
+	helper.checkErrorFileSize();
 
 	function start_server(user)
 	{
