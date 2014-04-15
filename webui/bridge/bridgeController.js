@@ -70,7 +70,13 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $scope.bridge_github_click = function () {
-            $window.open("https://github.wdf.sap.corp/bridge/bridge");
+            $scope.sidePanel = 'view/bridgegithub.html';
+            if($scope.sideView == "github" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "github";    
+            //$window.open("https://github.wdf.sap.corp/bridge/bridge");
         }
 
         $scope.bridge_hide_settings = function(){
