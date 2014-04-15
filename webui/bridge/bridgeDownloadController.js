@@ -22,12 +22,12 @@ angular.module('bridge.app').downloadController = function ($scope, $modalInstan
 
     if($scope.os == "Mac")
     {
-    	$scope.download_url = "https://github.wdf.sap.corp/pages/bridge/bridge-client/bridge.app.zip";
+    	$scope.download_url = "https://github.wdf.sap.corp/pages/bridge/bridge-client/bridge-mac.zip";
     }
 
     if($scope.os == "Windows")
     {
-    	$scope.download_url = "https://github.wdf.sap.corp/pages/bridge/bridge-client/setup.zip";
+    	$scope.download_url = "https://github.wdf.sap.corp/pages/bridge/bridge-client/bridge-win.zip";
     }
 
     $scope.download = function () {
