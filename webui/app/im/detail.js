@@ -2,10 +2,10 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
     function Controller($scope, $http) {
 
         $scope.$parent.titleExtension = " - IM Details";   		
-	    $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
+	    $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin 
 	   		
 	        ).success(function(data) {
-	        	
+	        	data = new X2JS().xml_str2json(data);
 	            $scope.imData = data["asx:abap"];
 	            $scope.imData = $scope.imData["asx:values"];
 	            $scope.imData = $scope.imData[0];
