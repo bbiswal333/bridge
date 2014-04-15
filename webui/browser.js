@@ -28,8 +28,18 @@ navigator.featuresAvailable = function()
 //run function once to initialize feature_check
 navigator.featuresAvailable();
 
-//compatibility fix for location.origin
+//set client information
+window.client = {};
+window.client.protocol = 'http:';
+window.client.hostname = "localhost";
+window.client.port = 8000;
+
+//set location and client origins
 if (!window.location.origin) 
 {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+}
+if (!window.client.origin)
+{
+    window.client.origin = window.client.protocol + "//" + window.client.hostname + (window.client.port ? ':' + window.client.port: '');
 }

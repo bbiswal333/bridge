@@ -1,5 +1,5 @@
 angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
-	var EWS_BASE_URL = "http://localhost:8000/api/CalDataSSO";
+	var EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
 
 	function _buildEWSUrl (dateFrom_o, days_i) {
 		var dateFrom_s = buildDateString(dateFrom_o);
