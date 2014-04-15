@@ -113,15 +113,15 @@
 	}
 
 .app-cats-stateR { /* Not maintained */
-	background: #f0ab00;
+	background: #F0AB00;
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #f0ab00;
+	background: #F0AB00;
 }
 
 .app-cats-stateG { /* maintained */
-	background: #fadd99;
+	background: #AFE5FF;
 }
 
 .app-cats-inFuture {
@@ -129,7 +129,7 @@
 }
 
 .app-cats-stateN { /* no need for maintainance */
-	background: #acacac;
+	background: #e1e1e1;
 }
 
 .app-cats-notInMonth {
