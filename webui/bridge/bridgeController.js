@@ -80,7 +80,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 
-        $http.get('http://localhost:8000/client').success(function (data, status) {
+        $http.get(window.client.origin + '/client').success(function (data, status) {
             $scope.client = true;
         }).error(function (data, status, header, config) { 
             $scope.client = false;     

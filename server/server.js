@@ -8,7 +8,7 @@ var helper		= require('./helper.js');
 
 exports.run = function(npm)
 {	
-	var port        = param.get("port", 8000);
+	var port        = param.get("port", 1972);
 	var proxy       = param.get("proxy", true);
 	var local = param.get("local", true);
 
