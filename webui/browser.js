@@ -32,7 +32,7 @@ navigator.featuresAvailable();
 window.client = {};
 window.client.protocol = 'http:';
 window.client.hostname = "localhost";
-window.client.port = 8000;
+window.client.port = 1972;
 
 //set location and client origins
 if (!window.location.origin) 
