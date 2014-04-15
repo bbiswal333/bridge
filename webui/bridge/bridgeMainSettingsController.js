@@ -3,9 +3,9 @@ angular.module('bridge.app').
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
 
         
-        for (var i = $scope.apps.length - 1; i >= 0; i--) 
+        for (var i = 0; i < $scope.apps.length; i++) 
         {        
-            var scope = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope;                    
+            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;                                 
         };
 
         
