@@ -6,8 +6,8 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 	   		
 	        ).success(function(data) {
 	        	data = new X2JS().xml_str2json(data);
-	            $scope.imData = data["asx:abap"];
-	            $scope.imData = $scope.imData["asx:values"];
+                $scope.imData = data["abap"];
+                $scope.imData = $scope.imData["values"];
 	            $scope.imData = $scope.imData[0];
 	       	 	$scope.tempobject = [];
 
