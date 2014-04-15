@@ -70,7 +70,7 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $scope.bridge_github_click = function () {
-            $scope.sidePanel = 'view/bridgegithub.html';
+            $scope.sidePanel = 'view/bridgeGithub.html';
             if($scope.sideView == "github" || !$scope.show_settings)
             {
                 $scope.show_settings = !$scope.show_settings;
