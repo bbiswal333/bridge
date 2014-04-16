@@ -30,7 +30,7 @@ navigator.featuresAvailable();
 
 //set client information
 window.client = {};
-window.client.protocol = 'http:';
+window.client.protocol = 'https:';
 window.client.hostname = "localhost";
 window.client.port = 1972;
 

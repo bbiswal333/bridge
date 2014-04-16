@@ -1,5 +1,6 @@
-var http		= require('http');
+var https		= require('https');
 var path        = require('path');
+var fs          = require('fs');
 var sso 		= require('./sso.js');
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
@@ -22,8 +23,13 @@ exports.run = function(npm)
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		api.register(app, user, local, proxy, npm);
-				
-		http.createServer(app).listen(port, "127.0.0.1");			
+	    
+		var options = {
+		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),
+		    cert: fs.readFileSync(path.join(__dirname, 'bridge.crt'))
+		};
+
+		https.createServer(options, app).listen(port, "127.0.0.1");			
 
 		helper.printConsole(port);		
 		helper.handleException(port);		
