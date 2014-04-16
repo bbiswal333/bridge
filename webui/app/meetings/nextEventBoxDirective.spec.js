@@ -1,6 +1,8 @@
 "use strict";
 
 describe("nextEventBoxDirective ewsHelperUtils test", function () {
+	window.client = {};
+	window.client.origin = 'localhost:8000';
 	var ewsHelperUtils;
 
 	beforeEach(module("app.meetings.ews"));
@@ -28,7 +30,7 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 
 	it("should be tested by a working test :-)", function () {
 		//3 days from 30.01.2014 10:15:30
-		var url = "localhost:8000/api/getCalDataSSO?from=" + encodeForUrl("2014-01-30T10:15:05Z") + "&to=" + encodeForUrl("2014-02-02T10:15:05Z") + "&format=json";
+		var url = window.client.origin + "localhost:8000/api/getCalDataSSO?from=" + encodeForUrl("2014-01-30T10:15:05Z") + "&to=" + encodeForUrl("2014-02-02T10:15:05Z") + "&format=json";
 		var expectation = new RegExp(".*\?from=" + encodeForUrl("2014-01-30T10:15:05Z") + "&to=" + encodeForUrl("2014-02-02T10:15:05Z") + "&format=json$");
 
 		expect(url).toMatch(expectation);

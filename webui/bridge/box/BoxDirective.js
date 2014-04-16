@@ -11,7 +11,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
     {
         $scope.clientNeeded = boxNeedsClient;
         
-        $http.get('http://localhost:8000/client').success(function (data, status) {
+        $http.get(window.client.origin + '/client').success(function (data, status) {
             $scope.client = true;
         }).error(function (data, status, header, config) { 
             $scope.client = false;     

@@ -1,25 +1,32 @@
 angular.module('bridge.app').
-	controller('mainSettingsController',['$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
-	function ($scope, $timeout, bridgeConfig, bridgeDataService, notifier){
-    
-	$scope.notificationSupported = notifier.getPermission();
+	controller('mainSettingsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
+	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
 
-    areNotificationsSupported = function(){
-        $timeout(function () {
-        	$scope.notificationSupported = notifier.getPermission()}, 500);
-    };
+        
+        for (var i = 0; i < $scope.apps.length; i++) 
+        {        
+            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;                                 
+        };
 
-    $scope.requestPermission = function(){
-    	notifier.requestPermission( areNotificationsSupported );
-    };
+        
+    	$scope.notificationSupported = notifier.getPermission();
 
-    $scope.testNotification = function(){
-    	notifier.showSuccess("Test","Notification is working","Settings");
-    };
+        areNotificationsSupported = function(){
+            $timeout(function () {
+            	$scope.notificationSupported = notifier.getPermission()}, 500);
+        };
 
-    $scope.saveConfig = function(){
-		bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
-        bridgeConfig.persistInBackend(bridgeDataService.boxInstances);            
-    };
+        $scope.requestPermission = function(){
+        	notifier.requestPermission( areNotificationsSupported );
+        };
+
+        $scope.testNotification = function(){
+        	notifier.showSuccess("Test","Notification is working","Settings");
+        };
+
+        $scope.saveConfig = function(){
+    		bridgeConfig.config.bridgeSettings.apps = $scope.apps; 
+            bridgeConfig.persistInBackend(bridgeDataService.boxInstances);            
+        };
 
 }]);

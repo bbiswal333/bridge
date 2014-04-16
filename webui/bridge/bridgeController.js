@@ -70,7 +70,13 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $scope.bridge_github_click = function () {
-            $window.open("https://github.wdf.sap.corp/bridge/bridge");
+            $scope.sidePanel = 'view/bridgeGithub.html';
+            if($scope.sideView == "github" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "github";    
+            //$window.open("https://github.wdf.sap.corp/bridge/bridge");
         }
 
         $scope.bridge_hide_settings = function(){
@@ -80,7 +86,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 
-        $http.get('http://localhost:8000/client').success(function (data, status) {
+        $http.get(window.client.origin + '/client').success(function (data, status) {
             $scope.client = true;
         }).error(function (data, status, header, config) { 
             $scope.client = false;     

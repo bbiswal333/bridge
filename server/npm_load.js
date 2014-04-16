@@ -23,7 +23,7 @@ exports.get = function(proxy, npm, callback)
 		fs.mkdirSync(server_modules);
 	}
 	
-	helper.wrappedExec(set_proxy + "cd " + server_path + ' && ' + npm + ' install', function (error, stdout, stderr) {
+	helper.wrappedExec(set_proxy + 'cd "' + server_path + '" && ' + npm + ' install', function (error, stdout, stderr) {
 		console.log(stderr);		
 		callback();		
 	});
