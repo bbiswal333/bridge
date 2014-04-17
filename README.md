@@ -33,7 +33,8 @@ Bridge is an internal open source project with the main goal of open contributio
 
 ## launch and execute application
 * in the terminal or command prompt navigate to the bridge directory using the `$ cd` command
-* run `$ node server/server.js` and open `http://localhost:8000` in a browser
+* run `$ node server/server.js` and open `https://localhost:1972` in a browser
+* if you try to launch the app in IE, first add `https://localhost` to your trusted sites: Internet Options -> Security -> Trusted Sites -> Sites. IE does not allow cross domain calls between security zones, so you need to put localhost into the same zone as all the other https://*.wdf.sap.corp sites if you want to launch bridge from localhost. This is only relevant to bridge developers, end users do not have to do that.
 
 ## debug node server
 * use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
