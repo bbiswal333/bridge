@@ -3,15 +3,10 @@
 * [Bridge Test](http://bridge-master.mo.sap.corp)
 * [Bridge Production](http://bridge.mo.sap.corp)
 
-Server
+Client & Server
 ======
-The wrapper code to set up a server on monsoon is available in the following repository.
-* [Server](https://github.wdf.sap.corp/bridge/bridge-server)
-
-Client Installation
-===============
-The wrapper code for the client using node-webkit is available in the following repository.
 * [Client](https://github.wdf.sap.corp/bridge/bridge-client)
+* [Server](https://github.wdf.sap.corp/bridge/bridge-server)
 
 Developer Guide
 ===============
