@@ -3,19 +3,23 @@
 * [Bridge Test](http://bridge-master.mo.sap.corp)
 * [Bridge Production](http://bridge.mo.sap.corp)
 
+Server
+======
+The wrapper code to set up a server on monsoon is available in the following repository.
+* [Server](https://github.wdf.sap.corp/bridge/bridge-server)
 
 Client Installation
 ===============
-In order to run bridge with all features, you need to install the local client on your machine or setup the complete developer environment.
-* [Windows & Mac](https://github.wdf.sap.corp/bridge/bridge-client)
+The wrapper code for the client using node-webkit is available in the following repository.
+* [Client](https://github.wdf.sap.corp/bridge/bridge-client)
 
 Developer Guide
 ===============
-Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this project. Just fork this project, make some changes and send us a pull request.
+Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. The server and client repository are just wrapping this repository (which is a npm module), deploy it and provide some update functionality around that. To contribute, just fork this project, make some changes and send us a pull request. 
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
-  * you may want to add Git Bash to your Desktop or Taskbar
+  * you may want to add git bash to your desktop or taskbar
 * for pushing changes to github
   * create user in GitHub (you should use your SAP D/I user name)
   * `$ ssh-keygen -t rsa -C "your.name@sap.com"` to generate SSH keys (private & public key)
@@ -109,12 +113,6 @@ angular.module('app.test').appTestSettings = ['app.test.configservice', '$scope'
 
 Release Backlog
 ===============
-## High Level Plan
-* deadline end of CW26
-* end user feedback as soon as possible
-* show and tell sessions every 2 weeks
-* internal pilot after "browser only" variant is ready
-
 ## Top X Apps
 * Timesheet Information (CAT2) incl. maintenance
 * Links (SAPGui & URL)
@@ -129,10 +127,6 @@ Release Backlog
 * Lunch Menu
 * Meetings
 
-## Browser Only
-* running version available without client on monsoon
-* additional functionality with client installer
-
 ## Framework
 * general settings
 * projects & team views
@@ -143,5 +137,4 @@ Release Backlog
 
 ## Inner Source
 * sample apps & docu to jump start app development
-
 
