@@ -17,8 +17,8 @@ npm-debug.log
 .DS_Store
 build/**/*
 node_modules/**/*
-webkit_download/**/*
-node_download/**/*
+client/webkit_download/**/*
+client/node_download/**/*
 *.sln
 *.log
 
