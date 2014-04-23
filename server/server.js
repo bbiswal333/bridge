@@ -19,17 +19,21 @@ exports.run = function(npm)
 	{
 		var express = require("express");
 		var app 	= express();
+		var socket  = require('socket.io');
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
-		api.register(app, user, local, proxy, npm);
+		api.register(app, user, local, proxy, npm, socket);
 	    
 		var options = {
 		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),
 		    cert: fs.readFileSync(path.join(__dirname, 'bridge.crt'))
 		};
-
-		https.createServer(options, app).listen(port, "127.0.0.1");			
+		
+		var server = https.createServer(options, app);
+		socket.listen(server);						
+		server.listen(port, "127.0.0.1");
+	 	
 
 		helper.printConsole(port);		
 		helper.handleException(port);		
