@@ -47,12 +47,12 @@
                 </span>
                 -->
             </div>
-            <hr style="float:left;width:420px;">
+            <hr>
         </div>
-        <div style="height: {{heightOfList}}">
+        <div style="overflow-y: scroll; height: {{heightOfList}}">
             <div id="app-cats-project-selector-button-container">
                 <div  ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv animate-repeat" >
-                    <button class="btn btn-default" ng-class="{'btn_blue': item.selected}" ng-click="toogleSelect(item.id);" style="width:48%;line-height: 1;margin:0px 4px;float:left;">{{item.name}}
+                    <button class="btn btn-default" ng-class="{'btn_blue': item.selected}" ng-click="toogleSelect(item.id);" style="width:48%;line-height: 1;margin:4px 4px;float:left;">{{item.name}}
                         <br>
                         <span style="font-size: 10px;">{{item.desc}}</span>
                     </button>
