@@ -44,9 +44,17 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload", 
     function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
-        
+
+        $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
+            if( newValue !== oldValue)
+            {
+                var _paq = _paq || [];
+                _paq.push(['trackPageView', newValue]);
+            }
+        });
+
         $scope.getSidePane = function(){
             return $scope.sidePanel;
         }
