@@ -108,7 +108,7 @@ exports.register = function(app, user, local, proxy, npm, socketio)
 		response = setHeader( request, response );			
 				
 		socketio.sockets.on('connection', function (socket) {
-  			socket.emit('client', {});
+  			socket.emit('client', request);
   			socket.on('client_response', function (data) {
     			response.send(data);
   			});
