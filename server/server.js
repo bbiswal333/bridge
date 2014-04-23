@@ -30,11 +30,20 @@ exports.run = function(npm)
 		};
 		
 		var server = https.createServer(options, app);
-		var socketio = socket.listen(server);						
-		api.register(app, user, local, proxy, npm, socketio);
-		
+		var socketio = socket.listen(server);										
+		api.register(app, user, local, proxy, npm);	 	
 		server.listen(port, "127.0.0.1");
-	 	
+
+		socketio.sockets.on('connection', function (socket) {		
+			app.get('/api/client', function (request, response) {	
+				var client_request = {};
+				client_request.url = "http://155.56.69.85:1081/lunch_de.txt";
+  				socket.emit('client', client_request);
+  				socket.on('client_response', function (client_response) {
+    				response.send(client_response);
+  				});		
+			});
+		});
 
 		helper.printConsole(port);		
 		helper.handleException(port);		
