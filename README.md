@@ -3,11 +3,6 @@
 * [Bridge Test](http://bridge-master.mo.sap.corp)
 * [Bridge Production](http://bridge.mo.sap.corp)
 
-Client & Server
-======
-* [Client](https://github.wdf.sap.corp/bridge/bridge-client)
-* [Server](https://github.wdf.sap.corp/bridge/bridge-server)
-
 Developer Guide
 ===============
 Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. The server and client repository are just wrapping this repository (which is a npm module), deploy it and provide some update functionality around that. To contribute, just fork this project, make some changes and send us a pull request. 
