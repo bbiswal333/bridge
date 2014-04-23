@@ -32,32 +32,33 @@
         }
         
         .app-cats-project-selector-buttonDiv:not(:first-of-type)  {
-            margin-top: 20px;
+          
         }
     </style>
 
     <div class="app-cats-project-list" ng-if="loaded" class="bridge-fade-anim">
         <div id="filter-bar">
             <div class="input-group">
-                <input type="text" ng-model="filterVal" class="form-control" placeholder="Type here to filter..." autofocus>
-                <span class="input-group-btn">
+                <input type="text" ng-model="filterVal" class="form-control form" placeholder="Type here to filter..." autofocus>
+                <!--<span class="input-group-btn">
                     <button class="btn btn-default" type="button" ng-click="resetFilter();">
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </button>
                 </span>
+                -->
             </div>
-            <hr>
+            <hr style="float:left;width:420px;">
         </div>
-        <div style="overflow-y: scroll; height: {{heightOfList}}">
+        <div style="height: {{heightOfList}}">
             <div id="app-cats-project-selector-button-container">
-                <div ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv animate-repeat">
-                    <button class="btn btn-default app-cats-project-selector-button" ng-class="{'app-cats-project-selector-button-selected': item.selected}" ng-click="toogleSelect(item.id);">{{item.name}}
+                <div  ng-repeat="item in items | filter:filterVal" class="app-cats-project-selector-buttonDiv animate-repeat" >
+                    <button class="btn btn-default" ng-class="{'btn_blue': item.selected}" ng-click="toogleSelect(item.id);" style="width:48%;line-height: 1;margin:0px 4px;float:left;">{{item.name}}
                         <br>
-                        <span>{{item.desc}}</span>
+                        <span style="font-size: 10px;">{{item.desc}}</span>
                     </button>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
     <div class="app-cats-project-list" ng-if="!loaded">
         Loading...
