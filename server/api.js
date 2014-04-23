@@ -5,7 +5,7 @@ var http_req	= require('http');
 var url 		= require('url');
 var npm_load	= require('./npm_load.js');
 
-exports.register = function(app, user, local, proxy, npm, socket)
+exports.register = function(app, user, local, proxy, npm, socketio)
 {
 	//get api modules	
 	var xml2js 	  = require("xml2js").parseString;
@@ -107,7 +107,7 @@ exports.register = function(app, user, local, proxy, npm, socket)
 	app.get('/api/client', function (request, response) {
 		response = setHeader( request, response );			
 				
-		socket.sockets.on('connection', function (socket) {
+		socketio.sockets.on('connection', function (socket) {
   			socket.emit('client', {});
   			socket.on('client_response', function (data) {
     			response.send(data);

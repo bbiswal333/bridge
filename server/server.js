@@ -22,8 +22,7 @@ exports.run = function(npm)
 		var socket  = require('socket.io');
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
-		app.use('/docs', express.static(path.join(__dirname, '../docs')));
-		api.register(app, user, local, proxy, npm, socket);
+		app.use('/docs', express.static(path.join(__dirname, '../docs')));		
 	    
 		var options = {
 		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),
@@ -31,7 +30,9 @@ exports.run = function(npm)
 		};
 		
 		var server = https.createServer(options, app);
-		socket.listen(server);						
+		var socketio = socket.listen(server);						
+		api.register(app, user, local, proxy, npm, socketio);
+		
 		server.listen(port, "127.0.0.1");
 	 	
 
