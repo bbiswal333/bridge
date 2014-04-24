@@ -2,7 +2,6 @@
 
 var gui = require('nw.gui');
 var tray;
-var local_bridge = false;
 var bridge = {};
 var bridge_repo = 'https://github.wdf.sap.corp/_nodeload/bridge/bridge/tar.gz/';
 var settings_file = "settings.json";
@@ -21,24 +20,20 @@ var latest_tag = 'v0.0';
 
 checkErrorFileSize();
 
-
 //try to load bridge locally
 if (gui.App.manifest.bridge_tag == "local")
 {
     try 
     {
         bridge = require('../../../../../../../');
-        local_bridge = true;
         bridgeLoadingFinished();
     } 
     catch (err) 
     {
-        local_bridge = false;
+        console.log("could not load bridge locally for testing");
     }
 }
-
-//if not load from github
-if( !local_bridge )
+else
 {
     callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) {
         //parse response from github server
@@ -124,7 +119,7 @@ if( !local_bridge )
 
 function bridgeLoadingFinished() {
     try {        
-        bridge.run('"../../../node/npm"');
+        bridge.run('"../../../node/npm"', 1972);
         
         function waitForClient(max, callback){
             $.get('https://localhost:1972/client', function() {

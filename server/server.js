@@ -7,10 +7,9 @@ var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
 
-exports.run = function(npm)
+exports.run = function(npm, port)
 {	
-	var port        = param.get("port", 1972);
-	var proxy       = param.get("proxy", true);
+	var proxy = param.get("proxy", true);
 	var local = param.get("local", true);
 
 	helper.checkErrorFileSize();
@@ -71,5 +70,5 @@ exports.run = function(npm)
 }
 
 if(require.main === module){ 	
-	exports.run('npm'); 
+	exports.run('npm', 8000); 
 }
