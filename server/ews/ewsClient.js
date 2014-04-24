@@ -49,13 +49,30 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
 
             //TODO: change to client handling here
             if (typeof webkitClient !== 'undefined' && webkitClient)
-            {
-                //webkitClient.jQuery
+            {                
 
+                webkitClient.jQuery.ajax({
+                    url: exchangeURI, 
+                    type: "POST",
+                    dataType: "xml", 
+                    data: data, 
+                    processData: false,
+                    contentType: "text/xml; charset=\"utf-8\"",
+                    success: 
+                        function(data)
+                        {                                        
+                            handleData(data);
+                        },
+                    error: 
+                        function() {
+                            console.log('6' + ERR_MSG_CONNECTION_TO_EXCHANGE);
+                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));                            
+                        }
+                });
 
             }
 
-            if (process.platform == "win32") {
+            /*if (process.platform == "win32") {
                 //Windows strategy: Writing SOAP in file, calling cURL with this file as parameter, let cURL write its output to temporary file, then read in this temporary file and send its content back to the user
                 // var start = process.hrtime();
                 getDataFromExchange_Win(data, function(ews_xml) {
@@ -74,7 +91,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
             } else {
                 console.log('1' + ERR_MSG_PLATFORM_NOT_SUPPORTED);
                 callback_fn(new Error(ERR_MSG_PLATFORM_NOT_SUPPORTED));
-            }
+            }*/
 
             function handleData(ews_xml) {
                 if (json) {
@@ -83,12 +100,12 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
                             if (err == undefined) {
                                 callback_fn(JSON.stringify(result));
                             } else {
-                                callback_fn("Error parsing JSON. Please try again requesting XML.");
+                                callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
                             }
                         });
                     } catch (err) {
                         var text = "Error parsing JSON. Please try again requesting XML."
-                        callback_fn(text);
+                        callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
                         console.log('3' + text);
                     }
                 } else {
@@ -111,7 +128,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
         });
     }
 
-    function getDataFromExchange_Win(soapString_s, callback_fn) {
+    /*function getDataFromExchange_Win(soapString_s, callback_fn) {
         //Create temporay file for soap-query
         var filename = soapTmpPath + generateUniqueFileName();
         fs.writeFile(filename, soapString_s, function(err) {
@@ -206,7 +223,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
             console.error('6' + e);
             callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
         });
-    }
+    }*/
 };
 
 function paramDefault(thing_o, def_o) {
