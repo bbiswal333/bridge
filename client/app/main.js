@@ -23,13 +23,18 @@ checkErrorFileSize();
 
 
 //try to load bridge locally
-try {
-    bridge = require('../../../../../../../');
-    local_bridge = true;
-    bridgeLoadingFinished();
-} 
-catch (err) {
-    local_bridge = false;
+if (gui.App.manifest.bridge_tag == "local")
+{
+    try 
+    {
+        bridge = require('../../../../../../../');
+        local_bridge = true;
+        bridgeLoadingFinished();
+    } 
+    catch (err) 
+    {
+        local_bridge = false;
+    }
 }
 
 //if not load from github
