@@ -25,7 +25,11 @@ if (gui.App.manifest.bridge_tag == "local")
 {
     try 
     {
-        bridge = require('../../../../../../../');
+        if (process.platform = "win32") {
+            bridge = require('../../../');
+        } else {
+            bridge = require('../../../../../../../');
+        }
         bridgeLoadingFinished();
     } 
     catch (err) 
