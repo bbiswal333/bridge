@@ -12,7 +12,6 @@
     "iconv-lite": "0.2.11",
     "gith": "1.0.4",
     "cli-color": "~0.2.3",
-    "htmlparser": "~1.7.7",
-    "socket.io": "0.9.16"
+    "htmlparser": "~1.7.7"    
   }  
 }

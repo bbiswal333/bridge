@@ -17,8 +17,7 @@ exports.run = function(npm, port)
 	function start_server(user)
 	{
 		var express = require("express");
-		var app 	= express();
-		var socket  = require('socket.io');
+		var app 	= express();		
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));		
@@ -28,31 +27,18 @@ exports.run = function(npm, port)
 		    cert: fs.readFileSync(path.join(__dirname, 'bridge.crt'))
 		};
 		
-		var server = https.createServer(options, app);
-		var socketio = socket.listen(server);										
+		var server = https.createServer(options, app);		
 		api.register(app, user, local, proxy, npm);	 	
-		server.listen(port, "127.0.0.1");
-
-		socketio.sockets.on('connection', function (socket) {		
-			app.get('/api/client', function (request, response) {	
-				var client_request = {};
-				client_request.url = "http://155.56.69.85:1081/lunch_de.txt";
-  				socket.emit('client', client_request);
-  				socket.on('client_response', function (client_response) {
-    				response.send(client_response);
-  				});		
-			});
-		});
-
-		if (typeof webkitClient !== 'undefined' && webkitClient) {
-		    webkitClient.serverStarted();
-		}
-		else {
-		    console.log("No client running");
-		}
-
+		server.listen(port, "127.0.0.1");		
+		
 		helper.printConsole(port);		
 		helper.handleException(port);		
+		
+		if (typeof webkitClient !== 'undefined' && webkitClient) 
+		{
+		    webkitClient.serverStarted();
+		}		
+		
 		if(!local)
 		{
 			helper.wrappedExec('forever restart updater', function (error, stdout, stderr) {

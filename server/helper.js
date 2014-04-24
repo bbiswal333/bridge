@@ -3,9 +3,7 @@ var exec = require('child_process').exec;
 var path = require('path');
 
 exports.printConsole = function (port)
-{	
-	var clc = require('cli-color');
-	console.log(clc.reset);
+{		
 	console.log('   ____         _      _                ');
 	console.log('  |  _ \\       (_)    | |               ');
 	console.log('  | |_) | _ __  _   __| |  __ _   ___   ');
@@ -14,9 +12,7 @@ exports.printConsole = function (port)
 	console.log('  |____/ |_|   |_| \\__,_| \\__, | \\___|  ');
   	console.log('	                   __/ |        ');
 	console.log('                          |___/         ');
-	console.log('                                        ');	
-	console.log('');	
-	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));		
+	console.log('                                        ');		
 }
 
 exports.handleException = function(port)

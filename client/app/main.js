@@ -20,7 +20,7 @@ var latest_tag = 'v0.0';
 
 checkErrorFileSize();
 
-//try to load bridge locally
+//try to load bridge locally if mentioned in package.json
 if (gui.App.manifest.bridge_tag == "local")
 {
     try 
@@ -122,55 +122,12 @@ else
 }
 
 function bridgeLoadingFinished() {
-    try {        
-        bridge.run('"../../../node/npm"', 1972);
-        
-
-        /*function waitForClient(max, callback){
-            $.get('https://localhost:1972/client', function() {
-                callback();
-            }).fail( function() {
-                if( max > 0 )
-                {
-                    var nmax = max - 1;
-                    setTimeout(function(){waitForClient(nmax, callback)}, 500);
-                }
-            });
-        }
-
-        waitForClient(50, function(){
-            //load socket.io from server
-            var s = document.createElement("script");
-            s.setAttribute("src", "https://localhost:1972/socket.io/socket.io.js");
-            s.onload = function(){   
-
-                clientLoaded();         
-                
-            }
-            document.head.appendChild(s);        
-        });
-
-        function clientLoaded(){
-            var socket = io.connect('https://localhost:1972');
-            
-            socket.on('client', function (request) {                
-                var response = {};
-                $.get(request.url, function(data) {
-                    response.code = 200;
-                    response.data = data;
-                    socket.emit('client_response', response); 
-                }).fail( function() {
-                    response.code = 500;
-                    socket.emit('client_response', response)
-                });                
-            });
-
-            var win = gui.Window.get();
-            win.hide();
-            createTrayIcon();
-        }*/
-
-    } catch (err) {
+    try 
+    {        
+        bridge.run('"../../../node/npm"', 1972);        
+    } 
+    catch (err) 
+    {
         logError(err);
     }
 }
