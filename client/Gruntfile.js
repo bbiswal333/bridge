@@ -92,15 +92,7 @@ module.exports = function (grunt) {
                     { src: ['build/mac/bridge.app/Contents/Resources/app.nw/package_build.json'], dest: 'build/mac/bridge.app/Contents/Resources/app.nw/package.json' },
                 ]
             },
-        },
-        chmod: {
-            options: {
-              mode: '777'
-            },
-            yourTarget1: {
-              src: ['build/mac/**/*']
-            }
-          }
+        }
     });
 
     grunt.registerTask('copynpm', function(){
@@ -160,10 +152,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-rename');
-    grunt.loadNpmTasks('grunt-chmod');
     grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask('default', ['clean:build', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'setRights', 'rename:mac_rename', 'chmod', 'copynpm']);
+    grunt.registerTask('default', ['clean:build', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'setRights', 'rename:mac_rename', 'copynpm']);
     grunt.registerTask('src', ['copy:src_only_win', 'copy:src_only_mac']);
     grunt.registerTask('deploy', ['default', 'clean:package', 'rename:package_rename']);
 };
