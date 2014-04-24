@@ -161,8 +161,9 @@ exports.register = function(app, user, local, proxy, npm)
 
 	});*/
 
+    // removed, we use express.bodyParser() in server.js now
 	//for fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
-	app.use(function(req, res, next) {
+	/*app.use(function(req, res, next) {
 	    var data = '';
 	    req.setEncoding('utf8');
 	    req.on('data', function(chunk) { 
@@ -172,7 +173,7 @@ exports.register = function(app, user, local, proxy, npm)
 	        req.rawBody = data;
 	        next();
 	    });
-	});
+	});*/
 
 	//generic api call post
 	app.post("/api/post", function (request, response) {
@@ -184,13 +185,9 @@ exports.register = function(app, user, local, proxy, npm)
 		}
 
 		var service_url = url.parse(request.query.url);	
-		var postData = request.rawBody;
+	    //var postData = request.rawBody;
+		var postData = JSON.stringify(request.body);
 
-		console.log("post: " + request.body);
-		/*console.log("params: " + request.params);
-		console.log("request.query: " + JSON.stringify(request.query));
-		console.log("request: " + JSON.stringify(request));
-*/
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
 			response = setHeader( request, response );		
 			response.send(data);

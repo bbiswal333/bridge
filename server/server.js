@@ -20,7 +20,8 @@ exports.run = function(npm, port)
 		var app 	= express();		
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
-		app.use('/docs', express.static(path.join(__dirname, '../docs')));		
+		app.use('/docs', express.static(path.join(__dirname, '../docs')));
+		app.use(express.bodyParser());
 	    
 		var options = {
 		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),

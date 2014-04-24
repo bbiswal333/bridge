@@ -139,9 +139,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $location.path(path);
     };
 
-    $scope.writeCATSdata = function() {
+    $scope.writeCATSdata = function () {
+        // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
-            CHECKMESSAGES: []
+            //CHECKMESSAGES: []
+            BOOKINGS: [],
         };
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
@@ -155,7 +157,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 UNIT: $scope.blockdata[i].data.UNIT,
                 QUANTITY: $scope.blockdata[i].value / $scope.workingHoursForDay,
             };
-            container.CHECKMESSAGES.push(booking);
+            container.BOOKINGS.push(booking);
         }
 
         /*$http({
@@ -169,8 +171,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 console.log("Error when saving config!");
             });
         */
-        //$http.defaults.headers.post["Content-Type"] = "application/json";
-        $http.post("/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), ).success(function(data, status) {
+        $http.post("/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             console.log(data);
         }).error(function(data, status, header, config) {
             console.log("GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
