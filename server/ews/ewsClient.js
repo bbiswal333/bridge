@@ -46,6 +46,15 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
             data = data.replace(PLACEHOLDER_FROM, dateFrom);
             data = data.replace(PLACEHOLDER_TO, dateTo);
 
+
+            //TODO: change to client handling here
+            if (typeof webkitClient !== 'undefined' && webkitClient)
+            {
+                //webkitClient.jQuery
+
+
+            }
+
             if (process.platform == "win32") {
                 //Windows strategy: Writing SOAP in file, calling cURL with this file as parameter, let cURL write its output to temporary file, then read in this temporary file and send its content back to the user
                 // var start = process.hrtime();
