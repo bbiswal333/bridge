@@ -24,7 +24,7 @@ checkErrorFileSize();
 
 //try to load bridge locally
 try {
-    bridge = require('../../');
+    bridge = require('../../../../../../../');
     local_bridge = true;
     bridgeLoadingFinished();
 } 
