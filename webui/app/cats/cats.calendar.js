@@ -132,6 +132,11 @@
 	                }
 	            }, 3 * 3600000);
 	        })();
+
+	        $scope.$on("refreshAppReceived", function () {
+	            catsUtils.getCatsComplianceData(handleCatsData, true);
+	            //catsUtils.getData(handleCatsData);
+	        });
 	    };
 
 	    function processCatsData(cats_o) {

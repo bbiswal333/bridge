@@ -76,26 +76,35 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         //Add prefdefined tasks (ADMI & EDUC)
         tasks.push({
-          objguid: "ADMI",
-          objgextid: "ADMI",
-          taskDesc: "ADMI",
-          projectDesc: "Administrative"
+            data: {
+                RAUFNR: "",
+                ZCPR_OBJGEXTID: "",
+                ZCPR_EXTID: "",
+                TASKTYPE: "ADMI",
+            },
+            taskDesc: "ADMI",
+            projectDesc: "Administrative"
         });
 
         tasks.push({
-          objguid: "EDUC",
-          objgextid: "EDUC",
-          taskDesc: "EDUC",
-          projectDesc: "Personal education"
+            data: {
+                RAUFNR: "",
+                ZCPR_OBJGEXTID: "",
+                ZCPR_EXTID: "",
+                TASKTYPE: "EDUC",
+            },
+            taskDesc: "EDUC",
+            projectDesc: "Personal education"
         });
 
         var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};
-          task.objguid = nodes[i].ZCPR_OBJGUID;
-          task.objgextid = nodes[i].ZCPR_OBJGEXTID;
+          task.OBJGUID = nodes[i].ZCPR_OBJGUID;
+          task.OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.projectDesc = nodes[i].DISPTEXTW1;
           task.taskDesc = nodes[i].DISPTEXTW2;
+          task.data = nodes[i];
 
           tasks.push(task);
         }
