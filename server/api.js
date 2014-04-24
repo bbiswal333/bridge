@@ -186,10 +186,15 @@ exports.register = function(app, user, local, proxy, npm)
 		var service_url = url.parse(request.query.url);	
 		var postData = request.rawBody;
 
-		callBackend(service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
+		console.log("post: " + request.body);
+		/*console.log("params: " + request.params);
+		console.log("request.query: " + JSON.stringify(request.query));
+		console.log("request: " + JSON.stringify(request));
+*/
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
 			response = setHeader( request, response );		
 			response.send(data);
-		}, postData);				
+		}, postData);
 	}); 
 
 	//ms-exchange calendar data request

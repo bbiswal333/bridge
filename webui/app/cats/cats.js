@@ -37,13 +37,14 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           var record = records[i];
           var task = {};
           task.tasktype = record.TASKTYPE;
-          task.objguid = (record.ZCPR_OBJGUID == "") ? task.tasktype : record.ZCPR_OBJGUID;
-          task.objgextid = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_OBJGEXTID;
           task.taskDesc = (record.taskDesc == "") ? task.tasktype : record.DESCR;
           task.projDesc = (record.projDesc == "") ? task.tasktype : record.ZCPR_EXTID;
+          task.record = record;
 
           var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
-          task.quantity = parseFloat(record.DAYS[dayOfWeek].QUANTITY);
+          record.booking = record.DAYS[dayOfWeek];
+          delete record.DAYS;
+          task.quantity = parseFloat(record.booking.QUANTITY);
 
           //Only add to list when time has been spent on this task
           if (!isNaN(task.quantity)) {
