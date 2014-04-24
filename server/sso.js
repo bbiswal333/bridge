@@ -152,29 +152,14 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
 
                 fs.writeFileSync(SSOCertPath, identity.certificate.data);
                 fs.writeFileSync(SSOKeyPath, identity.key.data);
-                user.id = identity.certificate.user;
+                
 
                 helper.wrappedExec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath +
                     "' -in '" + SSOCertPath + "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function (error, stdout, stderr) {
                         user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
                         var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
-                        helper.wrappedExec(deleteCommand, function (error, stdout, stderr) { });
-
-                        helper.wrappedExec("security find-generic-password -a " + identity.certificate.user.toLowerCase() + " -w", function (error, stdout, stderr) {
-                            if (stderr.indexOf("SecKeychainSearchCopyNext") != -1) {
-                                helper.wrappedExec("security find-generic-password -a " + identity.certificate.user.toUpperCase() + " -w", function (error, stdout, stderr) {
-                                    console.log(stderr);
-                                    var lines = stdout.toString().split('\n');
-                                    user.pass = lines[0];
-                                    callback(user);
-                                });
-                            }
-                            else {
-                                var lines = stdout.toString().split('\n');
-                                user.pass = lines[0];
-                                callback(user);
-                            }
-                        });
+                        helper.wrappedExec(deleteCommand, function (error, stdout, stderr) { });                    
+                        callback(user);
                     });
             });
     	});
