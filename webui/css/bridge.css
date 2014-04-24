@@ -37,7 +37,6 @@
     src: url('fonts/bridge_icons.eot'), url('fonts/bridge_icons.ttf');
     font-weight: normal;
     font-style: normal;
-    /*test4*/
 }
 
 body {
@@ -547,9 +546,21 @@ input[type="checkbox"]:checked:after {
 
 .settingsBtn{
     margin-bottom: 20px;
+    width: 220px;
+    position: relative;
+    top: 20px;
 }
 
 .btn_margin{
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.panel{
+    border: none;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    border-radius: 0;
+}
+.panel-heading{
+    color:#707070!important;
 }

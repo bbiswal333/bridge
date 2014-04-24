@@ -2,7 +2,7 @@
     <div class="box-heading">
         <div class="box-heading-content">
             <h6 class="box-title">{{boxTitle}}</h6>
-            <span class="box-icon" ng-bind="boxIcon|decodeIcon"></span>
+            <span class="box-icon" ng-class="boxIconClass"></span>
             <span ng-show="hover" ng-if="settingScreenData != undefined && !clientNeeded" class="settingsIcon" ng-click="settings_click(boxId)">&#xe00c;</span>
         </div>
     </div>

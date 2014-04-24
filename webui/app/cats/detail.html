@@ -21,6 +21,7 @@
     padding-left: 0px;
   }
 
+  /*
   #app-cats-maintenance-header-projects{
     width: 50%;
     text-align: center;
@@ -44,6 +45,7 @@
     float: left;
     padding-bottom: 10px;
   }  
+  */
 
   #app-cats-maintencance-allocation-div {
     width: 100%;
@@ -63,17 +65,17 @@
     <div class="panel panel-default">
       <div class="panel-heading panel-title">CATS Compliance Details</div>
       <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
-        <ul id="app-cats-maintenance-header">
+       <!-- <ul id="app-cats-maintenance-header">
           <li id="app-cats-maintenance-header-projects">
             Projects
           </li>
           <li id="app-cats-maintenance-header-navigation">
             Navigation
           </li>
-          <!--<li id="app-cats-maintenance-header-meetings">
+          <li id="app-cats-maintenance-header-meetings">
             Meetings
-          </li>-->
-        </ul>
+          </li>
+        </ul>-->
         <span style="clear: both; width: 100%; float: none;"></span>
         <div id="app-cats-maintenance-projects-div">
           <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="addBlock(desc_s, val_i, objgextid_s, objguid_s);" data-onprojectunchecked="removeBlock(objgextid_s, objguid_s);" data-heightoflist="300px"></app.cats.maintenance-view.project-list>        
@@ -82,9 +84,9 @@
           <app.cats.calendar style="width: 400px;" data-day-class="app-cats-day-details" data-selected-day="day"></app.cats.calendar>
         </div>        
         <div style="clear: both; width: 100%; float: none;"></div>
-        <div id="app-cats-maintencance-header-allocation">
+        <!--<div id="app-cats-maintencance-header-allocation">
           Maintenance
-        </div>
+        </div>-->
         <div id="app-cats-maintencance-allocation-div" ng-if="loaded"> <!-- allocation-bar should not load before the scope is initialized - otherwise the snappingRange will not be set -->
           Hours to maintain today: {{workingHoursForDay}}
           <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-padding="0" data-snaprange="{{snaprange}}" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>

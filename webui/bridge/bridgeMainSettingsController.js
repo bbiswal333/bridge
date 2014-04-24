@@ -5,7 +5,9 @@ angular.module('bridge.app').
         
         for (var i = 0; i < $scope.apps.length; i++) 
         {        
-            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;                                 
+            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;
+            $scope.apps[i].boxIcon = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIcon;  
+            $scope.apps[i].boxIconClass = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIconClass;                                
         };
 
         

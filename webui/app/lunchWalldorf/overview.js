@@ -5,6 +5,7 @@
         
         $scope.boxTitle = "Lunch Walldorf/ Rot";
         $scope.boxIcon = '&#xe824;';
+        $scope.boxIconClass = 'icon-meal';
         $scope.loading = true;
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";

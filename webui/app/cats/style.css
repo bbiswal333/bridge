@@ -147,6 +147,8 @@
 
 .app-cats-icon {
 	font-family: 'SAP-icons';
+	top: 100%;
+	right:10px;
 }
 
 .app-cats-noDataInCats {
@@ -155,6 +157,11 @@
 
 .app-cats-today {
 	background: rgb(0, 157, 224);
+}
+
+.selected_day{
+	background-color: grey;
+	
 }
 
 /* stuff for fancy animations */

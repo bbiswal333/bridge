@@ -7,6 +7,7 @@ angular.module('app.linkList').directive('app.linkList',
     var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {
         $scope.boxTitle = "Linklist";
         $scope.boxIcon = '&#x1f4cc;'; 
+        $scope.boxIconClass = 'icon-bookmark';
         $scope.customCSSFile = "app/linkList/style.css";
         $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
