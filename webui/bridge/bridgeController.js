@@ -23,7 +23,6 @@ angular.module('bridge.app', [
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
-    'app.wire',
     'app.sapedia',
     'app.lunchWalldorf',
     'app.githubMilestone',

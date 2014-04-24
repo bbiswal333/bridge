@@ -28,17 +28,6 @@ module.exports = function (grunt) {
         source: "http://nodejs.org/dist/npm/",
     };
 
-    function changeMacContent(content, srcpath) {
-        content = content.replace(
-            "'\" && \"node/npm\" install '",
-            "'\" && node/bin/npm install '");
-
-        content = content.replace(
-            "bridge.run('\"../../../node/npm\"');",
-            "bridge.run('../../../node/bin/npm');");
-        return content;
-    }
-
     grunt.initConfig({
 
         shell: {
@@ -71,13 +60,6 @@ module.exports = function (grunt) {
                     noProcess: 'true',
                 }
             },
-            mac_change: {
-              src: 'build/mac/node-webkit.app/Contents/Resources/app/main.js',
-              dest: 'build/mac/node-webkit.app/Contents/Resources/app/main.js',
-              options: {
-                  process: changeMacContent,
-              }
-            },
             src_only_win: {
                 files: [
                     { expand: true, cwd: 'app/', src: ['**'], dest: 'build/win' },
@@ -92,31 +74,25 @@ module.exports = function (grunt) {
                     noProcess: 'true',
                 }
             },
-            src_only_mac_change: {
-                src: 'build/mac/bridge.app/Contents/Resources/app.nw/main.js',
-                dest: 'build/mac/bridge.app/Contents/Resources/app.nw/main.js',
-                options: {
-                    process: changeMacContent,
-                }
-            }
         },        
-        clean: ["build"],
+        clean: {
+            build: ["build"],
+            package: ["build/win/package.json", "build/mac/bridge.app/Contents/Resources/app.nw/package.json"],
+        },
         rename: {
             mac_rename: {
                 files: [
                     { src: ['build/mac/node-webkit.app'], dest: 'build/mac/bridge.app' },
                     { src: ['build/mac/bridge.app/Contents/Resources/app'], dest: 'build/mac/bridge.app/Contents/Resources/app.nw' }
                 ]
-            }
-        },
-        chmod: {
-            options: {
-              mode: '777'
             },
-            yourTarget1: {
-              src: ['build/mac/**/*']
-            }
-          }
+            package_rename: {
+                files: [
+                    { src: ['build/win/package_build.json'], dest: 'build/win/package.json' },
+                    { src: ['build/mac/bridge.app/Contents/Resources/app.nw/package_build.json'], dest: 'build/mac/bridge.app/Contents/Resources/app.nw/package.json' },
+                ]
+            },
+        }
     });
 
     grunt.registerTask('copynpm', function(){
@@ -176,9 +152,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-rename');
-    grunt.loadNpmTasks('grunt-chmod');
     grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask('default', ['clean', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'copy:mac_change', 'setRights', 'rename', 'chmod', 'copynpm']);
-    grunt.registerTask('src', ['copy:src_only_win', 'copy:src_only_mac', 'copy:src_only_mac_change']);
+    grunt.registerTask('default', ['clean:build', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'setRights', 'rename:mac_rename', 'copynpm']);
+    grunt.registerTask('src', ['copy:src_only_win', 'copy:src_only_mac']);
+    grunt.registerTask('deploy', ['default', 'clean:package', 'rename:package_rename']);
 };

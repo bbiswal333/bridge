@@ -25,7 +25,7 @@ if (gui.App.manifest.bridge_tag == "local")
 {
     try 
     {
-        if (process.platform = "win32") {
+        if (process.platform == "win32") {
             bridge = require('../../../');
         } else {
             bridge = require('../../../../../../../');
@@ -91,7 +91,14 @@ else
             if (!fs.existsSync(bridge_module)) {
                 fs.mkdirSync(bridge_module);
             }
-            exec('cd "' + bridge_path + '" && "node/npm" install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
+
+            var npmPath;
+            if (process.platform == "win32") {
+                npmPath = "node/npm";
+            } else {
+                npmPath = "node/bin/npm";
+            }
+            exec('cd "' + bridge_path + '" && "' + npmPath + '" install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
                 logError(stderr);
 
                 if (error == null) {
@@ -123,8 +130,12 @@ else
 
 function bridgeLoadingFinished() {
     try 
-    {        
-        bridge.run('"../../../node/npm"', 1972);        
+    {
+        if (process.platform == "win32") {
+            bridge.run('"../../../node/npm"', 1972);
+        } else {
+            bridge.run('../../../node/bin/npm', 1972);
+        }
     } 
     catch (err) 
     {
