@@ -44,6 +44,13 @@ exports.run = function(npm, port)
 			});
 		});
 
+		if (typeof webkitClient !== 'undefined' && webkitClient) {
+		    webkitClient.serverStarted();
+		}
+		else {
+		    console.log("No client running");
+		}
+
 		helper.printConsole(port);		
 		helper.handleException(port);		
 		if(!local)

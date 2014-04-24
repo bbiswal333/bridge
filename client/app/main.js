@@ -125,7 +125,8 @@ function bridgeLoadingFinished() {
     try {        
         bridge.run('"../../../node/npm"', 1972);
         
-        function waitForClient(max, callback){
+
+        /*function waitForClient(max, callback){
             $.get('https://localhost:1972/client', function() {
                 callback();
             }).fail( function() {
@@ -167,7 +168,7 @@ function bridgeLoadingFinished() {
             var win = gui.Window.get();
             win.hide();
             createTrayIcon();
-        }
+        }*/
 
     } catch (err) {
         logError(err);
