@@ -1,5 +1,3 @@
-var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
-
 var https_req	= require('https');
 var http_req	= require('http');
 var url 		= require('url');
@@ -153,28 +151,6 @@ exports.register = function(app, user, local, proxy, npm)
 		});
 	});
 
-	/*app.get('/api/wire', function(request, response) {
-
-		wire().getchatrooms('87873', 0, function(data){
-			response.send(data);
-		});
-
-	});*/
-
-    // removed, we use express.bodyParser() in server.js now
-	//for fetching the rawBody of received POST-requests; Adapted from http://stackoverflow.com/questions/9920208/expressjs-raw-body
-	/*app.use(function(req, res, next) {
-	    var data = '';
-	    req.setEncoding('utf8');
-	    req.on('data', function(chunk) { 
-	        data += chunk;
-	    });
-	    req.on('end', function() {
-	        req.rawBody = data;
-	        next();
-	    });
-	});*/
-
 	//generic api call post
 	app.post("/api/post", function (request, response) {
 		if (typeof request.query.url == "undefined" || request.query.url == "")
@@ -207,9 +183,9 @@ exports.register = function(app, user, local, proxy, npm)
 
 			var ews = undefined;
 			try {
-				ews = new EWSClient(request.query.from, request.query.to, EWS_URI, user, json);
+				ews = new EWSClient(request.query.from, request.query.to, json);
 			} catch (e) {
-				var ans = "Initialisation of EWSClient resulted in an error:\n" + e.toString();
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);
 				response.send(ans);				
 				return;
