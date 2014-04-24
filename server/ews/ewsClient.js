@@ -61,7 +61,7 @@ exports.EWSClient = function(dateFrom_s, dateTo_s, exchangeURI_s, user_o, json_b
                     success: 
                         function(data)
                         {                                        
-                            handleData(data);
+                            handleData(data.children[0].childNodes[1].innerHTML);
                         },
                     error: 
                         function() {
