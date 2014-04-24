@@ -20,8 +20,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         var ok = $scope.onProjectChecked({
           desc_s: $scope.items[indx].name,
           val_i: null,
-          objgextid_s: $scope.items[indx].data.objgextid,
-          objguid_s: $scope.items[indx].data.objguid
+          data: $scope.items[indx].data,
         });
 
         if (!ok) {
@@ -30,8 +29,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].data.objgextid,
-          objguid_s: $scope.items[indx].data.objguid
+          objgextid_s: $scope.items[indx].data.OBJGEXTID,
+          objguid_s: $scope.items[indx].data.OBJGUID
         });
       }
     };
@@ -48,18 +47,16 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           var found = false;
 
           for (var j = 0; j < $scope.blocks.length; j++) {
-            if (data[i].objgextid == $scope.blocks[j].data.objgextid && data[i].objguid == $scope.blocks[j].data.objguid) {
-              found  = true;
-            }
+              if (data[i].OBJGEXTID == $scope.blocks[j].data.OBJGEXTID && data[i].OBJGUID == $scope.blocks[j].data.OBJGUID) {
+                  found = true;
+              }
           }
 
           var newItem = {};
           newItem.id = i;
           newItem.name = data[i].taskDesc;
           newItem.desc = data[i].projectDesc;
-          newItem.data = {};
-          newItem.data.objgextid = data[i].objgextid;
-          newItem.data.objguid = data[i].objguid;
+          newItem.data = data[i];
           newItem.selected = found;
           $scope.items.push(newItem);
 
@@ -72,9 +69,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       });
     };
 
-    $scope.$watch("blocks", function () {
+    /*$scope.$watch("blocks", function () {
       loadProjects();
-    }, true);
+    }, true);*/
   };
 
   return {

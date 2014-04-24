@@ -247,8 +247,11 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
     });   
     $rootScope.$on("changeBoxSize", function (event, size, boxId) {           
-            $rootScope.$broadcast('changeBoxSizeReceived', size, boxId);
-        }); 
+        $rootScope.$broadcast('changeBoxSizeReceived', size, boxId);
+    });
+    $rootScope.$on("refreshApp", function (event, args) {
+        $rootScope.$broadcast('refreshAppReceived', args);
+    });
 
     var deferred = $q.defer();
     var promise = bridgeConfig.loadFromBackend(deferred);

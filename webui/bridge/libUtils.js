@@ -339,6 +339,10 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return date.getFullYear() + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + this.toNumberOfCharactersString(date.getDate(), 2);
     };
 
+    this.transformDateToABAPFormatWithHyphen = function (date) {
+        return date.getFullYear() + "-" + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + "-" + this.toNumberOfCharactersString(date.getDate(), 2);
+    };
+
     this.toNumberOfCharactersString = function(str, numberOfCharacters) {
         var result = str.toString();
         while (result.length < numberOfCharacters) {
