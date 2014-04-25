@@ -9,7 +9,11 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
     function _requestCatsData(callback_fn) {
       _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) {
-        callback_fn(data.CATSCHK);
+        if (data != null) {
+          callback_fn(data.CATSCHK);
+        } else {
+          callback_fn();
+        };
       });
     }
 

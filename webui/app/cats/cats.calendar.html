@@ -1,4 +1,7 @@
 ﻿<div class="app-cats-body">
+	<div ng-if="hasError">
+		{{state}}
+	</div>
 	<div ng-if="!loading" class="bridge-fade-anim">
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">

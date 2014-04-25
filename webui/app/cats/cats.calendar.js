@@ -12,6 +12,7 @@
 	        $scope.calArray;
 	        $scope.state = "";
 	        $scope.loading = true;
+	        $scope.hasError = false;
 	        $scope.weekdays = calUtils.getWeekdays();
 	        $scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 	        //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
@@ -31,11 +32,13 @@
 	                    $scope.state = "CATS-Data received and processed";
 	                }
 	                else {
-	                    $scope.state = "CATS-Data received but during processing an error occurred";
+	                    $scope.state = "CATS-Data received from ISP but during processing an error occurred";
+	                    $scope.hasError = true;
 	                }
 	            }
 	            else {
-	                $scope.state = "CATS-Data could no be retrieved from system";
+	                $scope.state = "CATS-Data could no be retrieved from system ISP";
+	                $scope.hasError = true;
 	            }
 
 	            console.log($scope.state);
