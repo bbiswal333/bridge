@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'bridge_icons';
   src: url('bridge-icons.eot');
-  src: url('bridge-icons.eot?35650545#iefix') format('embedded-opentype'),
-       url('bridge-icons.woff?35650545') format('woff'),
-       url('bridge-icons.ttf?35650545') format('truetype'),
-       url('bridge-icons.svg?35650545#bridge-icons') format('svg');
+  src: url('bridge-icons.eot') format('embedded-opentype'),
+       url('bridge-icons.woff') format('woff'),
+       url('bridge-icons.ttf') format('truetype'),
+       url('bridge-icons.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }
