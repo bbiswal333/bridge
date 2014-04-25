@@ -527,6 +527,12 @@ input[type="checkbox"]:checked:after {
     box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
     background-color: rgba(66,139,202,1);
 }
+
+.btn_blue:focus{
+    background-color: rgba(66,139,202,1);
+    color: white;
+}
+
 .btn_blue:hover{
     background-color: rgba(50,120,190,1);
     color: white;
@@ -549,7 +555,14 @@ input[type="checkbox"]:checked:after {
     width: 220px;
     position: relative;
     top: 20px;
+    
 }
+.settingsBtn:focus{
+    outline-color: inherit;
+    outline-width: 0;
+    outline: hidden; 
+}
+
 
 .btn_margin{
     margin-top: 10px;
