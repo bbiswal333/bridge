@@ -1,27 +1,47 @@
 ﻿angular.module('app.jira', []);
 
-angular.module('app.jira').directive('app.jira', function () {
+angular.module('app.jira').directive('app.jira', ['bridgeConfig', 'app.jira.configservice', function (bridgeConfig, JiraConfig) {
 
-    var directiveController = ['$scope', 'JiraBox', 'JiraQuery', 'bridgeCounter', function ($scope, JiraBox, JiraQuery, bridgeCounter) {
+    var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {
         $scope.boxTitle = "Jira";
         $scope.boxIcon = '&#xe80a;';
         $scope.boxIconClass = 'icon-bell';
         $scope.boxSize = "2";
         bridgeCounter.CollectWebStats('JIRA', 'APPLOAD');
 
+        $scope.settingsTitle = "Configure JIRA Query";
+        $scope.settingScreenData = {
+            templatePath: "jira/settings.html",
+                controller: angular.module('app.jira').appJiraSettings,
+                id: $scope.boxId,
+        };
+
         //JiraBox.getIssuesforQuery(JiraQuery, $scope);
         $scope.$watch('jiraData', function () {
             updateJiraChart($scope);
         });
+
+        $scope.returnConfig = function(){
+            return JiraConfig.query;
+        }
 
     }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/jira/overview.html',
-        controller: directiveController
+        controller: directiveController,
+        link: function ($scope, $element, $attrs, $modelCtrl) {
+            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
+
+            if (appConfig != undefined) {
+
+                JiraConfig.query = appConfig;                
+
+            }
+        }
     };
-});
+}]);
 
 
 var updateJiraChart = function ($scope) {

@@ -8,8 +8,8 @@ var JiraBox = function(http){
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.getIssuesforQuery = function (query, scope) {    
-    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + query
+JiraBox.prototype.getIssuesforQuery = function (scope) {    
+    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + scope.config
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
 
@@ -77,7 +77,11 @@ angular.module('app.jira').factory('JiraBox', ['$http',
        return new JiraBox($http);
    }]);
 
-angular.module('app.jira').factory('JiraQuery', [
-    function (){
-        return 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC';
-    }]);
+angular.module('app.jira').factory("app.jira.configservice", function () {
+
+  var configItem = {
+    query: 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC'
+  };
+  
+  return configItem; 
+});

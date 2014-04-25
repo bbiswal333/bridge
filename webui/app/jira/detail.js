@@ -1,5 +1,10 @@
-﻿angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraQuery', 'JiraBox',
-    function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraQuery, JiraBox) {
-        $scope.$parent.titleExtension = " - Jira Details";
-        JiraBox.getIssuesforQuery(JiraQuery, $scope);
+﻿angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
+    function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
+
+        $scope.$watch('JiraConfig.query', function() {
+        	$scope.config = JiraConfig.query;
+            JiraBox.getIssuesforQuery($scope);
+        },true);
+
+        $scope.$parent.titleExtension = " - Jira Details";        
 }]);
