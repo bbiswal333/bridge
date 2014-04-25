@@ -5,7 +5,7 @@
 
 Developer Guide
 ===============
-Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. The server and client repository are just wrapping this repository (which is a npm module), deploy it and provide some update functionality around that. To contribute, just fork this project, make some changes and send us a pull request. 
+Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. We use the bridge-client repository to upload binaries of our client and the bridge-server repository for our monsoon readymade which makes it possible to setup a new bridge instance automatically in a few minutes.
 
 ## git installation & ssh setup
 * download and install `git` from [git-scm](http://git-scm.com/downloads)
@@ -27,8 +27,14 @@ Bridge is an internal open source project with the main goal of open contributio
 
 ## launch and execute application
 * in the terminal or command prompt navigate to the bridge directory using the `$ cd` command
-* run `$ node server/server.js` and open `https://localhost:1972` in a browser
+* run `$ node server/server.js` and open `https://localhost:8000` in a browser
 * if you try to launch the app in IE, first add `https://localhost` to your trusted sites: Internet Options -> Security -> Trusted Sites -> Sites. IE does not allow cross domain calls between security zones, so you need to put localhost into the same zone as all the other https://*.wdf.sap.corp sites if you want to launch bridge from localhost. This is only relevant to bridge developers, end users do not have to do that.
+
+## run locally with client
+* you can test your app with and without the client running depending on the services and connectivity you need for you application
+* if you need to adjust the client, go to the client subdirectory and execute `grunt` to rebuild the client and `grunt src` to just update the source files in the `client/app` directory
+* to build a productive version of the client, run `grunt deploy`
+* the local test version of the client uses the local bridge npm module on your pc and starts the node server there, the productive version downloads the latest version (git tag)
 
 ## debug node server
 * use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
