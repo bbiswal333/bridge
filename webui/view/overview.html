@@ -1,7 +1,13 @@
-<div class=" centeredContent" ng-dblclick="toggleDragging()">
+<div class="centeredContent" ng-dblclick="toggleDragging()">
 	<div ui-sortable="sortableOptions" ng-model="visible_apps" class="sortable-list">      
       		<div ng-repeat="app in visible_apps" class="sortable-item">
         		<div class="{{app.size}}"> 
+        			<div class="{{app.size}} disabled" 
+        					size="{{app.size}}" 
+        					ng-hide="sortableOptions.disabled" 
+        					ng-style="showOverlay" 
+        					ng-mouseenter="showOverlay={background:'none'}" 
+        					ng-mouseleave="showOverlay={}"></div>
             		<bridge.box content="{{app.content}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
         		</div>
       		</div>
