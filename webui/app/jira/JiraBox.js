@@ -13,6 +13,8 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
         ).success(function(data, status, headers, config) {
             scope.jiraData = [];
 
+            console.log(data.issues);
+
             angular.forEach(data.issues, function(issue) {
               scope.jiraData.push({
                 key:            issue.key,
@@ -59,7 +61,9 @@ JiraBox.prototype.getIssuesforQuery = function (query, scope) {
               }
 
               task.colorClass = 'taskColor_' + colorIndex;
-            });          
+            });   
+
+            console.log(scope.jiraData);       
 
         }).error(function(data, status, headers, config) {
             console.log(status);
