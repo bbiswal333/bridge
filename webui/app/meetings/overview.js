@@ -16,7 +16,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 			$scope.boxTitle = "Meetings";
 			$scope.boxIcon = '&#xe823;';
-			$scope.boxIconClass = 'icon-meetings';
+			$scope.boxIconClass = 'icon-meeting-o';
 			$scope.boxNeedsClient = true;
 			$scope.events = [];
 			$scope.loading = true;
