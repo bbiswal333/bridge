@@ -7,6 +7,7 @@ angular.module("app.cats").directive("app.cats",
 	        $scope.boxIcon = '&#xe81c;';
 	        $scope.boxIconClass = 'icon-clock';
 	        $scope.boxNeedsClient = false;
+	        $scope.boxSize = "2";
 	    }];
 
 	    return {

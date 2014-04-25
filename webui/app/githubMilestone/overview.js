@@ -9,6 +9,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.boxTitle = "Github";
             $scope.boxIcon = '&#xe80d;';
             $scope.boxIconClass = 'icon-github-circled';
+            $scope.boxSize = "2";
             $scope.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};
             bridgeCounter.CollectWebStats('GITHUB', 'APPLOAD');

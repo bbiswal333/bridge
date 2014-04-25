@@ -7,6 +7,7 @@
         $scope.boxIcon = '&#xe824;';
         $scope.boxIconClass = 'icon-meal';
         $scope.loading = true;
+        $scope.boxSize = "2";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";

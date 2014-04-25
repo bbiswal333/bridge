@@ -146,17 +146,6 @@ angular.module('bridge.app').controller('bridgeController',
             document.getElementById('overview-button').classList.remove('selected');
             document.getElementById('projects-button').classList.add('selected');
         };
-        $scope.$on('changeBoxSizeReceived', function(event,size,boxId){
-            console.log(size,boxId);
-            console.log($scope.apps);
-            for (var i = $scope.apps.length - 1; i >= 0; i--) {
-                if($scope.apps[i].id == boxId)
-                {
-                    $scope.apps[i].size = "box-"+size;
-                    break;
-                }                                                    
-            };
-        });
 
         $scope.$watch('apps', function()
         {
@@ -245,9 +234,6 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
     });   
-    $rootScope.$on("changeBoxSize", function (event, size, boxId) {           
-        $rootScope.$broadcast('changeBoxSizeReceived', size, boxId);
-    });
     $rootScope.$on("refreshApp", function (event, args) {
         $rootScope.$broadcast('refreshAppReceived', args);
     });

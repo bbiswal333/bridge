@@ -64,7 +64,6 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
             if ($attrs.id) {
                 $scope.boxId = $attrs.id;
-                $scope.size = $attrs.size;
 
                 if (!bridgeDataService.boxInstances[$attrs.id]) {
                     bridgeDataService.boxInstances[$attrs.id] = {

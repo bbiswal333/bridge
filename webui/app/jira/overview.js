@@ -6,6 +6,7 @@ angular.module('app.jira').directive('app.jira', function () {
         $scope.boxTitle = "Jira";
         $scope.boxIcon = '&#xe80a;';
         $scope.boxIconClass = 'icon-bell';
+        $scope.boxSize = "2";
         bridgeCounter.CollectWebStats('JIRA', 'APPLOAD');
 
         //JiraBox.getIssuesforQuery(JiraQuery, $scope);

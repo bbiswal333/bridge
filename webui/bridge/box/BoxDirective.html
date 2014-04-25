@@ -1,4 +1,4 @@
-﻿<div class="innerbox" ng-class="boxClass" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+﻿<div class="innerbox {{boxClass}} {{(boxSize ? ('box-'+boxSize) : 'box-1')}}" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
     <div class="box-heading">
         <div class="box-heading-content">
             <h6 class="box-title">{{boxTitle}}</h6>

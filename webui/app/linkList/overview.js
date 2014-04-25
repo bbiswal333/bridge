@@ -20,25 +20,25 @@ angular.module('app.linkList').directive('app.linkList',
     $scope.returnConfig = function () {
 
         var configCopy = angular.copy(appLinklistConfig);
+        configCopy.boxSize = $scope.boxSize;
             
-            if(configCopy.listCollection.length >= 1)
-            {
-                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) 
-                {  
-                    linkList = configCopy.listCollection[i];
+        if(configCopy.listCollection.length >= 1)
+        {
+            for (var i = configCopy.listCollection.length - 1; i >= 0; i--) 
+            {  
+                linkList = configCopy.listCollection[i];
                             
-                        for (var j = linkList.length - 1; j >= 0; j--)
-                        {
-                            delete linkList[j].$$hashKey;
-                            delete linkList[j].editable;
-                            delete linkList[j].old;
-                            delete linkList[j].sapGuiFile;
-                        };
-                };
-                        return configCopy;
-                    }; 
+                    for (var j = linkList.length - 1; j >= 0; j--)
+                    {
+                        delete linkList[j].$$hashKey;
+                        delete linkList[j].editable;
+                        delete linkList[j].old;
+                        delete linkList[j].sapGuiFile;
+                    };
             };
-
+                    return configCopy;
+                }; 
+        };
     }];
     return {
         restrict: 'E',
@@ -49,6 +49,9 @@ angular.module('app.linkList').directive('app.linkList',
 
             if(appConfig != undefined && appConfig != {})
             {
+                if (appConfig.boxSize)
+                    $scope.boxSize = appConfig.boxSize;
+
                 if ('version' in appConfig) 
                 { 
                     if(appConfig.version == 1)
