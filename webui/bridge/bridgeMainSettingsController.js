@@ -2,12 +2,13 @@ angular.module('bridge.app').
 	controller('mainSettingsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
 
-        
         for (var i = 0; i < $scope.apps.length; i++) 
-        {        
-            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;
-            $scope.apps[i].boxIcon = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIcon;  
-            $scope.apps[i].boxIconClass = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIconClass;                                
+        {   
+            if (bridgeDataService.getBoxInstance( $scope.apps[i].id )) {
+                $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;
+                $scope.apps[i].boxIcon = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIcon;
+                $scope.apps[i].boxIconClass = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIconClass;
+            };
         };
 
         
@@ -28,7 +29,7 @@ angular.module('bridge.app').
 
         $scope.saveConfig = function(){
     		bridgeConfig.config.bridgeSettings.apps = $scope.apps; 
-            bridgeConfig.persistInBackend(bridgeDataService.boxInstances);            
+            bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
         };
 
 }]);
