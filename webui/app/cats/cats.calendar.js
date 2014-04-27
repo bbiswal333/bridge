@@ -5,7 +5,6 @@
 
 	        //$scope.customCSSFile = "app/cats/style.css"; //Not needed anymore, included in index.html because also needed in detail screen
 
-
 	        $scope.year = new Date().getFullYear();
 	        $scope.month = new Date().getMonth();
 	        $scope.currentMonth = "";

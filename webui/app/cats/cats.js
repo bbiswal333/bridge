@@ -34,7 +34,10 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       var weekNo = calUtils.getWeekNumber(day_o);
       weekNo.weekNo = calUtils.useNDigits(weekNo.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
 
-      _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {      
+      _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {
+        if (!data){
+          return;
+        }
         var records = data.TIMESHEETS.RECORDS;
  
         for (var i = 0; i < records.length; i++) {
@@ -101,6 +104,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
             projectDesc: "Personal education"
         });
 
+        if (!data){
+          return;
+        }
         var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};

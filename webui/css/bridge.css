@@ -28,7 +28,7 @@
 
  @font-face {
     font-family:'bridge_icons';
-    src: url('fonts/bridge_icons.eot'), url('fonts/bridge_icons.ttf');
+    src: url('fonts/bridge-icons.eot'), url('fonts/bridge-icons.ttf');
     font-weight: normal;
     font-style: normal;
 }
@@ -412,9 +412,20 @@ input[type="checkbox"]:checked:after {
     /*float: left; */
 }
 .sortable-placeholder {
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 18px;
+    display:inline-block;
+
     border-style:dashed;
     border-width:2px;
     border-color:black;
+}
+
+.disabled {
+    position: absolute;
+    z-index: 10;
+    background: rgba(0,0,0,0.2);
 }
 
 .bold

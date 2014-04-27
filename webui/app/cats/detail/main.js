@@ -12,8 +12,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.blockdata = [];
     $scope.loaded = false;
-    $scope.width = 800; 
+    $scope.width = 800;
 
+    $http.get(window.client.origin + '/client').success(function (data, status) {
+        $scope.client = true;
+    }).error(function (data, status, header, config) { 
+        $scope.client = false;     
+    });
     setDay($routeParams.day);
                         
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
@@ -25,7 +30,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
                 $scope.workingHoursForDay = workingHours;
-                //$scope.blockdata = [];
 
                 for (var i = 0; i < tasks.length; i++) {
                     var task = tasks[i];
@@ -34,7 +38,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     else
                         $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
                 }
-
                 $scope.loaded = true;
             });
         });
