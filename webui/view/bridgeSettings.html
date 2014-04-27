@@ -1,4 +1,7 @@
 <div ng-controller="mainSettingsController">
+<h4>Background</h4>
+<input type="checkbox" class="regular-checkbox" ng-model="bridgeConfig.noBackgroundImage"><span style="position: relative; bottom: 13px; margin-left: 5px">No background image</span>
+
 <h4>Notifications</h4>
 
 <div ng-if="notificationSupported == 'pleaseAsk'">

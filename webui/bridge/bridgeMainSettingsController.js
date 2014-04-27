@@ -1,7 +1,7 @@
 angular.module('bridge.app').
 	controller('mainSettingsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
-
+	    $scope.bridgeConfig = bridgeConfig;
         
         for (var i = 0; i < $scope.apps.length; i++) 
         {        

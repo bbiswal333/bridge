@@ -105,9 +105,6 @@
 		
 }
 
-	.app-cats-week .app-cats-day {
-		color: white;
-	}
 	.app-cats-day-details span {
 		color:white;
 	}
@@ -119,50 +116,6 @@
 	.app-cats-day + .app-cats-day {
 		margin-left: 2px;
 	}
-
-.app-cats-stateR { /* Not maintained */
-	background: #F0AB00;
-}
-
-.app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #F0AB00;
-}
-
-.app-cats-stateG { /* maintained */
-	background: #AFE5FF;
-}
-
-.app-cats-inFuture {
-	background: #e1e1e1; /* currently the same as app-cats-inFuture */
-}
-
-.app-cats-stateN { /* no need for maintainance */
-	background: #e1e1e1;
-}
-
-.app-cats-notInMonth {
-	background: #e1e1e1;
-	opacity: 0;
-}
-
-.app-cats-icon {
-	font-family: 'SAP-icons';
-	top: 100%;
-	right:10px;
-}
-
-.app-cats-noDataInCats {
-	background: #555;
-}
-
-.app-cats-today {
-	background: rgb(0, 157, 224);
-}
-
-.selected_day{
-	background-color: grey;
-	
-}
 
 /* stuff for fancy animations */
 /* Moved to global animations stylesheet /*

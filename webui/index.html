@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="bridge.app">
+<html lang="en" ng-app="bridge.app" ng-controller="bridgeController">
 <head>
     <!-- browser compatibility  -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +19,8 @@
     <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
 
     <!-- css -->
+    <link ng-if="!bridgeConfig.noBackgroundImage" href="css/background-image.css" rel="stylesheet" />
+    <link ng-if="bridgeConfig.noBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
 
@@ -117,14 +119,16 @@
     
     <script src="app/cats/detail/allocationBar/svg.foreignObject.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css">
-    <link rel="stylesheet" type="text/css" href="app/cats/style.css">
+    <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css" />
+    <link rel="stylesheet" type="text/css" href="app/cats/style.css" />
+    <link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
+    <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />
     <title>Bridge</title>
 </head>
 
 
 
-<body ng-controller="bridgeController" class="noselect">    
+<body class="noselect">    
     
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
         <div class="mainPageBackground">

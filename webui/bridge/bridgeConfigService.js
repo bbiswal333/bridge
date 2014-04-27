@@ -84,9 +84,10 @@
     };
 
     this.config = {
-            bridgeSettings: {
-                                apps: []
-                            },
-            boxSettings: [],
+        bridgeSettings: {
+            noBackgroundImage: false,
+            apps: []
+        },
+        boxSettings: [],
     };
 });
