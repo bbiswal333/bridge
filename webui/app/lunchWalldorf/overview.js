@@ -114,7 +114,7 @@ angular.
         var lunchstring = data.split('************')[date.getDay() - 1];
         var lunchLines = lunchstring.split("\n");
         var previousLineCategory;
-        /*var dateValidated = false;
+        var dateValidated = false;
 
         for(var i = 0; i < lunchLines.length; i++) {
             if (lunchLines[i].indexOf(date.getUTCDate()) != -1) {
@@ -124,7 +124,7 @@ angular.
 
         if (!dateValidated) {
             return;
-        };*/
+        };
 
         for(var i = 0; i < lunchLines.length; i++) {
             if (lunchLines[i].indexOf(soup_text) != -1) {
