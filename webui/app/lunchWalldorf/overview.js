@@ -6,7 +6,6 @@
         $scope.boxTitle = "Lunch Walldorf/ Rot";
         $scope.boxIcon = '&#xe824;';
         $scope.boxIconClass = 'icon-meal';
-        $scope.loading = true;
         $scope.boxSize = "2";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
@@ -14,36 +13,44 @@
         bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'APPLOAD');
 
         var lang = "de";
-        //if( lang == "de") {
-        //    $scope.portalLinkText = "Mittagsmenü im Portal";
-        //    $scope.sorryString = "Sorry, diese Woche gibt's kein Mittagessen mehr.";
-        //    $scope.noDataString = "Daten konnten nicht geladen werden.";
-        //} else {
         // English texts standard for now...
         $scope.portalLinkText = "Lunch menu in the portal";
-        $scope.sorryString = "Sorry, no lunch menu available.";
-        $scope.noDataString = "Data could not be loaded.";
-        //};
+        $scope.noDataString = "Data could not be loaded from webservice.";
 
+        // Proceed to next potential lunch-relevant day
         var date = dataProcessor.getDateToDisplay(new Date());
-        $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-        $scope.dateHasLunchMenu = dataProcessor.getValidDateFlag(new Date());
+        while (!dataProcessor.isRegularWeekDay(date)) {
+            date.setDate( date.getDate() + 1 );
+        };
 
-        if ($scope.dateHasLunchMenu){
-            $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
-            ).success(function(data) {            
+        $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
+        ).success(function(data) {
+            // evaluate menu
+            $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
+            if($scope.lunch){
+                $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
+                $scope.contentLoaded = true;
+                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
+            } else {
+                // move on to next date
+                date.setDate( date.getDate() + 1 );
+                while (!dataProcessor.isRegularWeekDay(date)) {
+                    date.setDate( date.getDate() + 1 );
+                };
+                // evaluate menu
                 $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
-                if($scope.lunch.mainCourse){
+                if($scope.lunch){
+                    $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
                     $scope.contentLoaded = true;
                     bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
                 } else {
-                    $scope.dateHasLunchMenu = false;
+                    $scope.contentLoaded = false;
+                    bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
                 };
-            }).error(function() {
-                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
-            });
-        }
-        $scope.loading = false;
+            };
+        }).error(function() {
+            bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
+        });
     }];
 
     return {
@@ -64,12 +71,12 @@ angular.
         if (date.getDay()   >= Monday &&
             date.getDay()   <  Friday &&
             date.getHours() >= TimeAfterWhichToDisplayNextDay ){
-            date.setDate( date.getDate() + 1 )
+            date.setDate( date.getDate() + 1 );
         };
         return date;
     };
 
-    this.getValidDateFlag = function(date) {
+    this.isRegularWeekDay = function(date) {
         if ((date.getDay() == Friday && date.getHours() >= TimeAfterWhichToDisplayNextDay ) || 
             (date.getDay() > Friday) ||
             (date.getDay() < Monday)){
@@ -107,6 +114,17 @@ angular.
         var lunchstring = data.split('************')[date.getDay() - 1];
         var lunchLines = lunchstring.split("\n");
         var previousLineCategory;
+        var dateValidated = false;
+
+        for(var i = 0; i < lunchLines.length; i++) {
+            if (lunchLines[i].indexOf(date.getUTCDate()) != -1) {
+                dateValidated = true;
+            };
+        };
+
+        if (!dateValidated) {
+            return;
+        };
 
         for(var i = 0; i < lunchLines.length; i++) {
             if (lunchLines[i].indexOf(soup_text) != -1) {
