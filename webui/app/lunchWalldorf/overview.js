@@ -27,7 +27,7 @@
         ).success(function(data) {
             // evaluate menu
             $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
-            if($scope.lunch.mainCourse){
+            if($scope.lunch){
                 $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
                 $scope.contentLoaded = true;
                 bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
@@ -39,7 +39,7 @@
                 };
                 // evaluate menu
                 $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
-                if($scope.lunch.mainCourse){
+                if($scope.lunch){
                     $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
                     $scope.contentLoaded = true;
                     bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
