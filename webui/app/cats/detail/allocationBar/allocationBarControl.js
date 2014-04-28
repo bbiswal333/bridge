@@ -57,7 +57,6 @@ angular.module("app.cats.allocationBar.core.control", ["app.cats.allocationBar.c
             this.addBlock = function(block_o, fireChange) {
                 //var block_width = (block_o.value / 100.0) * (width - 2 * PADDING);
                 var block_width = block_o.value * width / this.totalValue;
-                block_width = Math.round(block_width * 1000) / 1000;
 
                 //Check if there is space for another block
                 if ((this.blocks.length >= 1 && this.blocks.last().getCoords().x2 + block_width > x + width - PADDING) || block_width > x + width - 2 * PADDING) {
