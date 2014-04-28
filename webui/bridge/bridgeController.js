@@ -303,11 +303,6 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootSc
         }
     };
 
-    var code = e.keyCode || e.which;
- if(code == 13) { //Enter keycode
-   alert('alert');
- }
-
 }]);
 
  
