@@ -4,14 +4,17 @@ var https_req	= require('https');
 var http_req	= require('http');
 var url 		= require('url');
 var npm_load	= require('./npm_load.js');
+var path		= require('path');
 
 exports.register = function(app, user, local, proxy, npm)
 {
 	//get api modules	
-	var xml2js 	  = require("xml2js").parseString;
-	var iconv 	  = require("iconv-lite");
-	var EWSClient = require("./ews/ewsClient.js").EWSClient;
-	var wire      = require("./wire.js");
+	var xml2js 	  	  = require("xml2js").parseString;
+	var iconv 	  	  = require("iconv-lite");
+	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
+	var wire          = require("./wire.js");
+	var execFile  	  = require('child_process').execFile;
+	var pathTrafLight = path.join( __dirname , '\\trafficlight');
 
 	function setHeader(request, response)
 	{	
@@ -227,4 +230,37 @@ exports.register = function(app, user, local, proxy, npm)
 
 		});
 	}
+	
+	app.get("/api/trafficLight" , function (request, response) {
+		/* 
+		traffic light command api parameters:
+		turn off (0 is the number 0)
+		1 turn on
+		R turn on red traffic light
+		Y turn on yellow traffic light
+		G turn on green traffic light
+		O turn off all traffic light
+		-# switch when the device consists of multiple switches, choose this one, first=0
+		-i nnn interval test, turn the device on and off, time interval nnn ms, in an endless loop
+		-I nnn interval test, turn on, wait nnn ms and turn off
+		-p t1 .. tn pulse mode, the switch will be turned on for 0.5 seconds then t1 seconds paused, turned on 0.5 s and t2 s pause, etc. after processing the last argument the switch turns off and the program terminates.
+		*/
+		var colorOn = request.query.color;
+		
+		var l_err = '';
+		if(process.platform == "win32") {
+			var child = execFile('USBswitchCmd.exe', [ colorOn ] , { cwd: pathTrafLight } , function( error, stdout, stderr) {
+				// callback function for switch
+			   if ( error ) {
+					// print error
+					console.log(stderr);
+					l_err = stderr;
+					// error handling & exit
+			   }
+		   });
+		}
+
+		response = setHeader( request, response );			
+		response.send('{"msg":"' + l_err + '"}');
+	});
 }

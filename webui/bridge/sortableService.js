@@ -1,5 +1,4 @@
 angular.module('bridge.app').service('sortableConfig', function () {
-
 	this.getDefaultConfig = function(){
 		return [                                        
             {content: "app.lunch-walldorf", id: 2, size:"box-2", show:true},
@@ -14,10 +13,11 @@ angular.module('bridge.app').service('sortableConfig', function () {
             {content: "app.link-list", id: 9, size:"box-1", show:true} ,
             {content: "app.wire", id: 10, size: "box-1", show: true },
 		    {content: "app.cats", id: 1, size: "box-2", show: true },
-            {content: "app.sapedia", id: 12, size: "box-1", show: true }
+            {content: "app.sapedia", id: 12, size: "box-1", show: true },
+            {content: "app.imtl", id: 13, size: "box-1", show: true }
         ]; 		
 	}
-
+	
 	this.sortableOptions = {
             //placeholder: "sortable-placeholder",
             //forceHelperSize: true,
