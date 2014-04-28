@@ -195,7 +195,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             container.BOOKINGS.push(booking);
         }
 
-        $http.post("/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
+        $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             console.log(data);
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
