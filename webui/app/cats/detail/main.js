@@ -82,9 +82,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
 
         if (val_i == null) {
-            val_i = (4 / $scope.workingHoursForDay);
-            if (val_i > $scope.percToMaintain()) {
-                val_i = $scope.percToMaintain();
+            val_i = 2;
+            if (val_i > $scope.hoursToMaintain()) {
+                val_i = Math.round($scope.hoursToMaintain() * 1000) / 1000
             }
         }
 
@@ -98,14 +98,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return true;
     };
 
-    $scope.percToMaintain = function () {
+    $scope.hoursToMaintain = function () {
         var sum = 0;
 
         for (var i = 0; i < $scope.blockdata.length; i++) {
             sum = sum + $scope.blockdata[i].value;
         }
 
-        return 100 - sum;
+        return $scope.workingHoursForDay - sum;
     };
 
     $scope.removeBlock = function (objgextid_s, objguid_s) {
@@ -113,7 +113,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].data.OBJGEXTID && objguid_s == $scope.blockdata[i].data.OBJGUID) {
                 $scope.blockdata.splice(i, 1);
-                //$scope.blockdata.value = 0;
+                $scope.blockdata.value = 0;
             }
             else {
                 i++;
