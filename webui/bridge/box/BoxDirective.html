@@ -1,4 +1,4 @@
-﻿<div class="innerbox {{boxClass}} {{(boxSize ? ('box-'+boxSize) : 'box-1')}}" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+﻿<div class="innerbox" ng-class="boxClass + ' ' + (boxSize ? ('box-'+boxSize) : 'box-1')" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
     <div class="box-heading">
         <div class="box-heading-content">
             <h6 class="box-title">{{boxTitle}}</h6>
@@ -10,17 +10,18 @@
     </div>
 
     <div id="boxContent" class="box-content" ng-if="clientNeeded" style="font-size:15px;text-align:center;">
-    <br />
+        <br />
 
-    <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
+        <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
 
-    <a href="" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a></div>
+            <a href="" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a>
+        </div>
 
-    Please download the 
-    <br>
-    bridge client to enable 
-    <br>
-    content.
+        Please download the
+        <br>
+        bridge client to enable
+        <br>
+        content.
 
     </div>
 </div>
