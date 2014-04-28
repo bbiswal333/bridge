@@ -21,7 +21,7 @@
         //} else {
         // English texts standard for now...
         $scope.portalLinkText = "Lunch menu in the portal";
-        $scope.sorryString = "Sorry, no more lunch this week.";
+        $scope.sorryString = "Sorry, no lunch menu available.";
         $scope.noDataString = "Data could not be loaded.";
         //};
 
@@ -33,8 +33,12 @@
             $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
             ).success(function(data) {            
                 $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
-                $scope.contentLoaded = true;
-                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
+                if($scope.lunch.mainCourse){
+                    $scope.contentLoaded = true;
+                    bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
+                } else {
+                    $scope.dateHasLunchMenu = false;
+                };
             }).error(function() {
                 bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
             });
