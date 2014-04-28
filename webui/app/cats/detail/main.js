@@ -27,6 +27,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
             console.log("Data from CATS:");
             console.log(tasks);
+            $scope.blockdata = [];
 
             catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
                 $scope.workingHoursForDay = workingHours;
@@ -180,6 +181,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+        if(!$scope.workingHoursForDay) {
+            console.log("Nothing to maintain as target hours are 0");
+            $scope.loadCATSDataForDay();
+            $scope.$emit("refreshApp");
+            return;
+        }
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
                 COUNTER: $scope.blockdata[i].data.booking.COUNTER,
