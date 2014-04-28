@@ -152,6 +152,12 @@ exports.register = function(app, user, local, proxy, npm)
 	});
 
 	//generic api call post
+	app.options("/api/post", function(request, response){
+		response = setHeader( request, response );	
+		response.send();
+		return;
+	});
+
 	app.post("/api/post", function (request, response) {
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
