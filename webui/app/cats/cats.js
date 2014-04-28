@@ -86,6 +86,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
             data: {
                 RAUFNR: "",
                 ZCPR_OBJGEXTID: "",
+                ZCPR_OBJGUID: "",
                 ZCPR_EXTID: "",
                 TASKTYPE: "ADMI",
             },
@@ -97,6 +98,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
             data: {
                 RAUFNR: "",
                 ZCPR_OBJGEXTID: "",
+                ZCPR_OBJGUID: "",
                 ZCPR_EXTID: "",
                 TASKTYPE: "EDUC",
             },

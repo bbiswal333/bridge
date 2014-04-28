@@ -57,13 +57,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             TASKTYPE: data.data.TASKTYPE,
             ZCPR_EXTID: data.data.ZCPR_EXTID,
             ZCPR_OBJGEXTID: data.data.ZCPR_OBJGEXTID,
+            ZCPR_OBJGUID: data.data.ZCPR_OBJGUID,
             UNIT: "T",
         };
-        $scope.addBlock(desc_s, val_i, block, false);
+        
+        return $scope.addBlock(desc_s, val_i, block, false);
     }
 
-    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s) {
-        $scope.removeBlock(objgextid_s, objguid_s);
+    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s, objtype_s) {
+        $scope.removeBlock(objgextid_s, objguid_s, objtype_s);
     }
 
     $scope.getByExtId = function (block) {
@@ -109,10 +111,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return $scope.workingHoursForDay - sum;
     };
 
-    $scope.removeBlock = function (objgextid_s, objguid_s) {
+    $scope.removeBlock = function (objgextid_s, objguid_s, objtype_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
-            if (objgextid_s == $scope.blockdata[i].data.OBJGEXTID && objguid_s == $scope.blockdata[i].data.OBJGUID) {
+            if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
+                $scope.blockdata.splice(i, 1);
+                $scope.blockdata.value = 0;
+            } else if (!objgextid_s && !objguid_s && objtype_s === $scope.blockdata[i].data.TASKTYPE ){
                 $scope.blockdata.splice(i, 1);
                 $scope.blockdata.value = 0;
             }
