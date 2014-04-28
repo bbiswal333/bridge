@@ -85,7 +85,7 @@
 
     this.config = {
         bridgeSettings: {
-            noBackgroundImage: false,
+            noBackgroundImage: true,
             apps: []
         },
         boxSettings: [],
