@@ -55,12 +55,14 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           for (var j = 0; j < $scope.blocks.length; j++) {
               if (data[i].data.ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID && // EDUC and ADMI
                   data[i].data.ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                  data[i].data.TASKTYPE == $scope.blocks[j].data.TASKTYPE ) {
+                  data[i].data.TASKTYPE == $scope.blocks[j].data.TASKTYPE &&
+                  $scope.blocks[j].value != 0 ) {
                   
                   found = true;
               }else if (data[i].data.ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID && // Others, which have no tasktype
                         data[i].data.ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                        data[i].data.TASKTYPE == "" ) {
+                        data[i].data.TASKTYPE == "" &&
+                        $scope.blocks[j].value != 0  ) {
                   
                   found = true;
               }
