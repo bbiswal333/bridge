@@ -1,7 +1,8 @@
 angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data"]).directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", function (catsUtils, $timeout) {
   var linkFn = function ($scope) {
     $scope.items = [];
-    $scope.filterVal = "";
+    $scope.filter = {};
+    $scope.filter.val = "";
     $scope.loaded = false;
 
     loadProjects();
@@ -11,6 +12,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         config.direction = direction;
         config.autoResize = autoResize;
         return config;
+    }
+
+    $scope.onPressEnter = function(){
+      if (event.which === 13) {
+        document.getElementById("projectButton").focus();
+      };
     }
 
     $scope.toogleSelect = function (indx) {
@@ -33,10 +40,11 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           objguid_s: $scope.items[indx].data.ZCPR_OBJGUID
         });
       }
+      document.getElementById("filterTextfield").focus();
     };
 
     $scope.resetFilter = function () {
-      $scope.filterVal = "";
+      $scope.filter.val = "";
     };
 
     function loadProjects () {
