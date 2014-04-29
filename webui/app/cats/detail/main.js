@@ -80,8 +80,18 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.addBlock = function (desc_s, val_i, data, fixed) {
         var existingBlock = $scope.getByExtId(data);
         if (existingBlock != null) {
-            existingBlock.data.booking.COUNTER = data.booking.COUNTER;
-            return;
+            if(data.booking.COUNTER) {
+                existingBlock.data.booking.COUNTER = data.booking.COUNTER;
+            };
+            if (!existingBlock.value) {
+                //existingBlock.value = 2;
+                //if (existingBlock.value > $scope.hoursToMaintain()) {
+                    existingBlock.value = Math.round($scope.hoursToMaintain() * 1000) / 1000
+                //};
+                return true;
+            } else {
+                return;
+            };
         }
 
         if (val_i == null) {
@@ -115,15 +125,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var i = 0;
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
-                $scope.blockdata.splice(i, 1);
-                $scope.blockdata.value = 0;
+                $scope.blockdata[i].value = 0;
             } else if (!objgextid_s && !objguid_s && objtype_s === $scope.blockdata[i].data.TASKTYPE ){
-                $scope.blockdata.splice(i, 1);
-                $scope.blockdata.value = 0;
+                $scope.blockdata[i].value = 0;
             }
-            else {
-                i++;
-            }
+            i++;
         }
     };
 
