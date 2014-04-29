@@ -59,16 +59,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             },
             TASKTYPE: data.data.TASKTYPE,
             ZCPR_EXTID: data.data.ZCPR_EXTID,
-            ZCPR_OBJGEXTID: data.data.ZCPR_OBJGEXTID,
-            ZCPR_OBJGUID: data.data.ZCPR_OBJGUID,
+            ZCPR_OBJGEXTID: data.ZCPR_OBJGEXTID,
+            ZCPR_OBJGUID: data.ZCPR_OBJGUID,
             UNIT: "T",
         };
         
         return $scope.addBlock(desc_s, val_i, block, false);
     }
 
-    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s, objtype_s) {
-        $scope.removeBlock(objgextid_s, objguid_s, objtype_s);
+    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s) {
+        $scope.removeBlock(objgextid_s, objguid_s);
     }
 
     $scope.getByExtId = function (block) {
@@ -150,12 +150,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return $scope.workingHoursForDay - sum;
     };
 
-    $scope.removeBlock = function (objgextid_s, objguid_s, objtype_s) {
+    $scope.removeBlock = function (objgextid_s, objguid_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
-                $scope.blockdata[i].value = 0;
-            } else if (!objgextid_s && !objguid_s && objtype_s === $scope.blockdata[i].data.TASKTYPE ){
                 $scope.blockdata[i].value = 0;
             }
             i++;
@@ -243,6 +241,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 UNIT: $scope.blockdata[i].data.UNIT,
                 QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 1000) / 1000,
             };
+
+            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
+                booking.ZCPR_OBJGEXTID = null;
+            };
+
             container.BOOKINGS.push(booking);
         }
 
