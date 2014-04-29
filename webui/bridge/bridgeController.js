@@ -128,7 +128,7 @@ angular.module('bridge.app').controller('bridgeController',
         }, true);
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-                bridgeInBrowserNotification.addAlert($scope, 'success','Bridge config has been loaded.');
+                bridgeInBrowserNotification.setScope($scope);
                 $scope.sortableOptions = sortableConfig.sortableOptions;
                 if (bridgeConfig.config.bridgeSettings.apps != undefined && bridgeConfig.config.bridgeSettings.apps.length > 0 )
                 { 

@@ -1,26 +1,32 @@
 angular.module('bridge.service').service('bridgeInBrowserNotification', function ($timeout) {
 
-    this.addAlert = function (scope, alertType, alertMsg) {
-    	if (!scope.alerts) {
-    		scope.alerts = [ ];
+	var scopeForDisplay;
+
+    this.setScope = function (scope) {
+    	scopeForDisplay = scope;
+    }
+
+    // alertType can be 'success', 'danger', undefined
+    this.addAlert = function (alertType, alertMsg, alertDuration) {
+    	if (!scopeForDisplay.alerts) {
+    		scopeForDisplay.alerts = [ ];
     	}
-        scope.alerts.push({type : alertType, msg: alertMsg});
-        if (alertType == "danger") {
-            this.closeAlertDelayed(scope, 0, 20);
+    	var alertID = alertType + alertMsg;
+        scopeForDisplay.alerts.push({type : alertType, msg: alertMsg, id: alertID});
+        if (alertDuration) {
+            this.closeAlert(alertID, alertDuration);
         } else {
-            this.closeAlertDelayed(scope, 0, 8);
+            this.closeAlert(alertID, 8);
         };
     };
 
-    this.closeAlert = function (scope, index) {
-        scope.alerts.splice(index, 1);
+    this.closeAlert = function (alertID, timeoutInSeconds) {
+        $timeout(function () {
+	        for (var i = 0; i < scopeForDisplay.alerts.length; i++) {
+	            if (scopeForDisplay.alerts[i].id == alertID) {
+	                scopeForDisplay.alerts.splice(i, 1);
+	            };
+	        };
+        } , 1000 * timeoutInSeconds);
     };
-
-    this.closeAlertDelayed = function (scope, index, timeoutInSeconds) {
-        $timeout(function () { scope.alerts.splice(index, 1); } , 1000 * timeoutInSeconds);
-    };
-
-    // Example calls
-    //$scope.addAlert('success','This is the notification area.');
-    //$scope.addAlert('danger','This is an error.');
 });

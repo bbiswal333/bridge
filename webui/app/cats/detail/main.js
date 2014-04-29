@@ -7,7 +7,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.data.catsUtils",
   "app.cats.maintenanceView.projectSelector",
   "$http",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector, $http) {
+  "bridgeInBrowserNotification",
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector, $http, bridgeInBrowserNotification) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -238,7 +239,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             BOOKINGS: [],
         };
         if(!$scope.workingHoursForDay) {
-            console.log("Nothing to maintain as target hours are 0");
+            bridgeInBrowserNotification.addAlert('success','Nothing to submit as target hours are 0');
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return;
@@ -265,10 +266,29 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             console.log(data);
+            if (window.DOMParser) {
+                parser=new DOMParser();
+                xmlDoc=parser.parseFromString(data,"text/xml");
+            } else { // Internet Explorer
+                xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async=false;
+                xmlDoc.loadXML(data);
+            };
+            var replyHasMessages = false;
+            for (var i = 0; i < 5; i++) {
+                var message = xmlDoc.getElementsByTagName("TEXT")[i];
+                if (message) {
+                    replyHasMessages = true;
+                    bridgeInBrowserNotification.addAlert('danger',message.childNodes[0].nodeValue);
+                }
+            }            
+            if (!replyHasMessages) {
+                bridgeInBrowserNotification.addAlert('success','Data was saved successfully');
+            }
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
         }).error(function(data, status, header, config) {
-            console.log("GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
+            bridgeInBrowserNotification.addAlert('success',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
         });
     }
   }
