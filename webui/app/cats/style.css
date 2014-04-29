@@ -1,3 +1,57 @@
+/*@media (max-width: 768px){
+    .col-xs-1-7 {
+        width: 13.2857143%;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-1-7 {
+        width: 13.2857143%;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-1-7 {
+        width: 13.2857143%;
+    }
+}*/
+/* detail.html*/
+
+  #app-cats-maintenance-projects-div, #app-cats-maintenance-navigation-div, #app-cats-maintenance-meetings-div {
+    margin-top: 20px;
+    /*width: 50%;   */
+    float: left;
+    margin-bottom: 20px;
+  }
+
+  #app-cats-maintenance-navigation-div {
+    /*width: 50%;*/
+    margin-top: 32px;
+  }
+
+  #app-cats-maintenance-meetings-div {
+
+  }
+
+  #app-cats-maintenance-header {
+    width: 100%;
+    list-style: none;
+    padding-left: 0px;
+  }
+
+  #app-cats-maintencance-allocation-div {
+    width: 100%;
+    text-align: center;    
+    margin-bottom: 25px; /* 10px Dragger-Expand, 15px padding von panel-body */
+    margin-top: 40px;
+  }
+
+  #app-cats-maintencance-header-allocation {
+    border-bottom: solid 1px #E1E1E1;
+    width: 100%;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+/*--------------*/
 .app-cats-body {
 	font-family: 'Open Sans', sans-serif;
 	position: relative;
@@ -13,22 +67,22 @@
 	color: #e1e1e1;
 }
 
-	.app-cats-legend-popover ul {
-		list-style: none;
-	}
+.app-cats-legend-popover ul {
+	list-style: none;
+}
 
-	.app-cats-legend-colorbox {
-		width: 10px;
-		height: 10px;
-		margin-top: 2px;
-		margin-bottom: 2px;
-		margin-right: 5px;
-		float: left;
-	}
+.app-cats-legend-colorbox {
+	width: 10px;
+	height: 10px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-right: 5px;
+	float: left;
+}
 
-	.app-cats-legend-closeBtn {
-		float: right;
-	}
+.app-cats-legend-closeBtn {
+	float: right;
+}
 
 .app-cats-navigation {
 	margin-bottom: 4px;
@@ -62,8 +116,7 @@
 }
 
 .app-cats-calendar {
-
-	
+	max-width: 400px;
 }
 
 .app-cats-week-labels {
@@ -83,7 +136,7 @@
 
 .app-cats-day-details
 {
-    width: 54px;
+    /*width: 54px;*/
 	height: 20px;
 	float: left;
 	padding-top: 3px;
@@ -117,5 +170,59 @@
 		margin-left: 2px;
 	}
 
+/* Project List Template*/
+
+@media (min-width: 1420px) {
+	.app-cats-project-selector-button {
+	    width: 48%;
+	}
+	.col-xs-1-7 {
+        width: 13.2857143%;
+    }
+}
+
+@media (max-width: 1419px) {
+    .app-cats-project-selector-button {
+	    width: 100%;
+    }
+    .col-xs-1-7 {
+        width: 13.2857143%;
+    }
+}
+
+#filter-bar {
+    width: 95%;
+    margin-left: 5%;
+    margin-right: 0%;
+    margin-bottom: 20px;
+}
+#app-cats-project-selector-button-container {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.app-cats-project-selector-button-selected, .app-cats-project-selector-button-selected:focus {
+    background: #DFF5FF;
+}
+.app-cats-project-selector-button-selected:hover {
+    background: #A4D8F9;
+}
+.app-cats-project-selector-button {
+    height: 50px;
+    line-height: 1;
+    margin:4px 4px;
+    float:left;
+}
+.app-cats-project-selector-button {
+    font-size: 14px;
+    line-height: 1;
+}
+.app-cats-project-selector-button span {
+    font-size: 10px;
+}
+
+.app-cats-project-selector-buttonDiv:not(:first-of-type)  {
+  
+}
 /* stuff for fancy animations */
 /* Moved to global animations stylesheet /*

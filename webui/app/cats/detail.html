@@ -1,99 +1,30 @@
 <style>
-  #app-cats-maintenance-projects-div, #app-cats-maintenance-navigation-div, #app-cats-maintenance-meetings-div {
-    margin-top: 20px;
-    width: 50%;   
-    float: left;
-    margin-bottom: 20px;
-  }
 
-  #app-cats-maintenance-navigation-div {
-    width: 50%;
-    margin-top: 32px;
-  }
-
-  #app-cats-maintenance-meetings-div {
-
-  }
-
-  #app-cats-maintenance-header {
-    width: 100%;
-    list-style: none;
-    padding-left: 0px;
-  }
-
-  /*
-  #app-cats-maintenance-header-projects{
-    width: 50%;
-    text-align: center;
-    border-bottom: solid 1px #E1E1E1;
-    float: left;
-    padding-bottom: 10px;
-  }
-
-  #app-cats-maintenance-header-navigation {
-    width: 50%;
-    text-align: center;
-    border-bottom: solid 1px #E1E1E1;
-    float: left;
-    padding-bottom: 10px;
-  }
-
-  #app-cats-maintenance-header-meetings {
-    width: 23.3%;
-    text-align: center;
-    border-bottom: solid 1px #E1E1E1;
-    float: left;
-    padding-bottom: 10px;
-  }  
-  */
-
-  #app-cats-maintencance-allocation-div {
-    width: 100%;
-    text-align: center;    
-    margin-bottom: 25px; /* 10px Dragger-Expand, 15px padding von panel-body */
-    margin-top: 40px;
-  }
-
-  #app-cats-maintencance-header-allocation {
-    border-bottom: solid 1px #E1E1E1;
-    width: 100%;
-    padding-bottom: 10px;
-    text-align: center;
-  }
 </style>
 <div class="centeredContent" ng-controller="app.cats.maintenanceView.mainCntrl">
     <div class="panel panel-default">
       <div class="panel-heading panel-title">CATS Compliance Details</div>
       <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
-       <!-- <ul id="app-cats-maintenance-header">
-          <li id="app-cats-maintenance-header-projects">
-            Projects
-          </li>
-          <li id="app-cats-maintenance-header-navigation">
-            Navigation
-          </li>
-          <li id="app-cats-maintenance-header-meetings">
-            Meetings
-          </li>
-        </ul>-->
+
         <span style="clear: both; width: 100%; float: none;"></span>
-        <div id="app-cats-maintenance-projects-div">
-          <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, data);" data-onprojectunchecked="handleProjectUnchecked(objgextid_s, objguid_s);" data-heightoflist="300px"></app.cats.maintenance-view.project-list>        
+        <div class="row">
+          <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-lg-6 col-lg-push-6">
+            <app.cats.calendar class="app-cats-calendar" data-day-class="app-cats-day-details" data-selected-day="day"></app.cats.calendar>
+          </div> 
+          <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-lg-6 col-lg-pull-6">
+            <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, data);" data-onprojectunchecked="handleProjectUnchecked(objgextid_s, objguid_s);" data-heightoflist="300px"></app.cats.maintenance-view.project-list>        
+          </div>
         </div>
-        <div id="app-cats-maintenance-navigation-div">
-          <app.cats.calendar style="width: 400px;" data-day-class="app-cats-day-details" data-selected-day="day"></app.cats.calendar>
-        </div>        
+
         <div style="clear: both; width: 100%; float: none;"></div>
-        <!--<div id="app-cats-maintencance-header-allocation">
-          Maintenance
-        </div>-->
+
         <div id="app-cats-maintencance-allocation-div" ng-if="loaded"> <!-- allocation-bar should not load before the scope is initialized - otherwise the snappingRange will not be set -->
           Hours to maintain today: {{workingHoursForDay}}
           <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-padding="0" data-snaprange="{{width/100}}" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
         </div>
         <div>
-        <input ng-if="client" type="button" value="Save Timesheet" ng-click="writeCATSdata()"></input>
         <input ng-if="client" type="button" value="Cancel" ng-click="ResetToLastSavedState()"></input>
+        <input ng-if="client" type="button" value="Save Timesheet" ng-click="writeCATSdata()"></input>
         <div ng-if="!client">
           Updating the timesheet is only possible with the Bridge Client.
         </div>
