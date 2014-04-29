@@ -85,7 +85,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
 
         if (val_i == null) {
-            val_i = 2;
+            val_i = 8;
             if (val_i > $scope.hoursToMaintain()) {
                 val_i = Math.round($scope.hoursToMaintain() * 1000) / 1000
             }
