@@ -29,9 +29,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].data.OBJGEXTID,
-          objguid_s: $scope.items[indx].data.OBJGUID,
-          objtype_s: $scope.items[indx].data.data.TASKTYPE
+          objgextid_s: $scope.items[indx].data.ZCPR_OBJGEXTID,
+          objguid_s: $scope.items[indx].data.ZCPR_OBJGUID
         });
       }
     };
@@ -47,22 +46,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         for (var i = 0; i < data.length; i++) {
           var found = false;
 
-          // for (var j = 0; j < $scope.blocks.length; j++) {
-          //     if (data[i].OBJGEXTID == $scope.blocks[j].data.OBJGEXTID && data[i].OBJGUID == $scope.blocks[j].data.OBJGUID) {
-          //         found = true;
-          //     }
-          // }
           for (var j = 0; j < $scope.blocks.length; j++) {
-              if (data[i].data.ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID && // EDUC and ADMI
-                  data[i].data.ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                  data[i].data.TASKTYPE == $scope.blocks[j].data.TASKTYPE &&
-                  $scope.blocks[j].value != 0 ) {
-                  
-                  found = true;
-              }else if (data[i].data.ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID && // Others, which have no tasktype
-                        data[i].data.ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                        data[i].data.TASKTYPE == "" &&
-                        $scope.blocks[j].value != 0  ) {
+              if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID &&
+                  data[i].ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
+                  $scope.blocks[j].value != 0  ) {
                   
                   found = true;
               }
