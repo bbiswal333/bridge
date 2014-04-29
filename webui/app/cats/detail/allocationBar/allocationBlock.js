@@ -81,7 +81,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         }
 
         function updateTextField() {
-            self.block.getChild(0).childNodes[1].innerText = self.getCurrentValue();
+            self.block.getChild(0).childNodes[1].textContent = self.getCurrentValue();
         }
 
         this.setHoverDragger = function(hover) {
