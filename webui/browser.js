@@ -25,7 +25,8 @@ navigator.featuresAvailable = function()
     return all_features_available;
 }
 
-//run function once to initialize feature_check
+
+if( !window.feature_check ) window.feature_check = [];
 navigator.featuresAvailable();
 
 //set client information

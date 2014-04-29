@@ -1,36 +1,3 @@
-angular.module('bridge.app', [
-    //external stuff
-    'ngAnimate',
-    'ngRoute',
-    'ngSanitize',
-    //'googlechart',
-    'ui.bootstrap',
-    'mgcrea.ngStrap',
-    'ngTable',
-    'ui.sortable',
-    'ngScrollbar',
-    // bridge modules
-    'bridge.service',
-    'bridge.employeeSearch',
-    'bridge.box',
-    'notifier',
-    'lib.utils',
-    // bridge apps
-    'app.test',
-    'app.atc',
-    'app.im',
-    'app.jira',
-    'app.employeeSearch', 
-    'app.meetings',
-    'app.cats',
-    'app.sapedia',
-    'app.lunchWalldorf',
-    'app.githubMilestone',
-    'app.linkList',
-    'app.cats.maintenanceView',
-    'app.cats.maintenanceView.projectList'
-]);
-
 angular.module('bridge.app').directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
