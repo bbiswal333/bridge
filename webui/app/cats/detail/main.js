@@ -160,6 +160,20 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             i++;
         }
+        // it is required to move the removed block to the beginning of the array
+        // otherwise it can be dragged again in the UI
+        var newBlockdata = [];
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if (!$scope.blockdata[i].value) {
+                newBlockdata.push($scope.blockdata[i]);
+            }
+        }
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if ($scope.blockdata[i].value) {
+                newBlockdata.push($scope.blockdata[i]);
+            }
+        }
+        $scope.blockdata = newBlockdata; 
     };
 
     $scope.$watch("blockdata", function () {
