@@ -317,7 +317,7 @@ img {
 
 .download-dialog {
     width: 415px;
-    height: 240px;
+    height: 310px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
@@ -327,13 +327,13 @@ img {
 
 .download-dialog .modal-dialog {
     width: 415px;
-    height: 240px;
+    height: 310px;
     margin: 0px;
 }
 
 .download-dialog .modal-content {
     width: 415px;
-    height: 240px;
+    height: 310px;
     padding: 20px;
     position: relative;
     border: 0px;
