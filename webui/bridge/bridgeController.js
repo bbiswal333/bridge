@@ -43,8 +43,8 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeInBrowserNotification, bridgeDownloadService) {
         $scope.bridgeConfig = bridgeConfig;
         
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
@@ -161,6 +161,7 @@ angular.module('bridge.app').controller('bridgeController',
         }, true);
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
+                bridgeInBrowserNotification.addAlert($scope, 'success','Bridge config has been loaded.');
                 $scope.sortableOptions = sortableConfig.sortableOptions;
                 if (bridgeConfig.config.bridgeSettings.apps != undefined && bridgeConfig.config.bridgeSettings.apps.length > 0 )
                 { 
