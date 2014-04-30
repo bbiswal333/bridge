@@ -1,63 +1,47 @@
-﻿angular.module('bridge.service').service('bridgeConfig', function ($http, $modal, bridgeDataService) {
-    this.modalInstance = undefined;
-
-    this.showSettingsModal = function (boxId) {
-        var boxInstance = bridgeDataService.getBoxInstance(boxId);
-
-        this.modalInstance = $modal.open({
-            templateUrl: 'view/settings.html',
-            windowClass: 'settings-dialog',
-            controller: angular.module('bridge.app').settingsController,
-            resolve: {
-                templateString: function () {
-                    return boxInstance.scope.settingScreenData.templatePath;
-                },
-                templateController: function () {
-                    return boxInstance.scope.settingScreenData.controller;
-                },
-                boxController: function () {
-                    return boxInstance;
-                },
-                boxScope: function () {
-                    return boxInstance.scope;
-                },
+﻿angular.module('bridge.service').service('bridgeConfig', function ($http) {
+    function getAppsData(project) {
+        var apps = [];
+        if (project.apps) {
+            for (var i = 0; i < project.apps.length; i++) {
+                apps.push({
+                    metadata: project.apps[i].metadata,
+                    appConfig: project.apps[i].scope ? (project.apps[i].scope.returnConfig ? project.apps[i].scope.returnConfig() : project.apps[i].appConfig) : {},
+                });
             }
-        });
+        }
+        return apps;
+    }
 
-        var that = this;
+    this.persistInBackend = function (dataService) {
+        var configPayload = {projects: []};
+        var projects = dataService.getProjects();
+        for (var i = 0; i < projects.length; i++) {
+            configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
+        }
 
-        // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-        this.modalInstance.result.then(function (selectedItem) {
-            that.persistInBackend(bridgeDataService.boxInstances);
-        }, function () {
-            that.persistInBackend(bridgeDataService.boxInstances);
-        });
-    };
-  
-    this.persistInBackend = function (boxInstances) {
-            this.config.boxSettings.length = 0; // clears the array without creating a new one
+        /*configPayload.noBackgroundImage = this.config.noBackgroundImage ? true : false;
+        configPayload.boxSettings = [];
 
-            for (var property in boxInstances) {
-                if (angular.isFunction(boxInstances[property].scope.returnConfig)) {
-                    var boxSetting = {};
-                    boxSetting.boxId = boxInstances[property].scope.boxId;
-                    boxSetting.setting = boxInstances[property].scope.returnConfig();
+        for (var property in this.config.boxInstances) {
+            if (angular.isFunction(this.config.boxInstances[property].scope.returnConfig)) {
+                var boxSetting = {};
+                boxSetting.boxId = this.config.boxInstances[property].scope.boxId;
+                boxSetting.setting = this.config.boxInstances[property].scope.returnConfig();
 
-                    this.config.boxSettings.push(boxSetting);
-                }
+                configPayload.boxSettings.push(boxSetting);
             }
+        }*/
 
-            $http({
-                url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
-                method: "POST",
-                data: angular.toJson(this.config),
-                headers: { 'Content-Type': 'text/plain' },
-            }).success(function (data, status, headers, config) {
-                console.log("Config saved successfully");
-            }).error(function (data, status, headers, config) {
-                console.log("Error when saving config!");
-            });
-
+        $http({
+            url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
+            method: "POST",
+            data: angular.toJson(configPayload),
+            headers: { 'Content-Type': 'text/plain' },
+        }).success(function (data, status, headers, config) {
+            console.log("Config saved successfully");
+        }).error(function (data, status, headers, config) {
+            console.log("Error when saving config!");
+        });
     };
 
     this.loadFromBackend = function (deferred) {
@@ -75,19 +59,28 @@
             return deferred.promise;
     };
 
-    this.getConfigForApp = function (boxId) {
-        for (var cfg in this.config.boxSettings) {
-            if (boxId == this.config.boxSettings[cfg].boxId) {
-                return this.config.boxSettings[cfg].setting;
-            }
-        }
-    };
+    this.getDefaultConfig = function () {
+        return {
+            projects: [
+                {
+                    name: "OVERVIEW",
+                    type: "PERSONAL",
+                    apps: [
+                        { content: "app.lunch-walldorf", id: 2, show: true },
+                        { content: "app.jira", id: 3, show: true },
 
-    this.config = {
-        bridgeSettings: {
-            noBackgroundImage: false,
-            apps: []
-        },
-        boxSettings: [],
-    };
+                        { content: "app.atc", id: 4, show: true },
+                        { content: "app.employee-search", id: 5, show: true },
+                        { content: "app.meetings", id: 6, show: true },
+
+                        { content: "app.github-milestone", id: 7, show: true },
+                        { content: "app.im", id: 8, show: true },
+                        { content: "app.link-list", id: 9, show: true },
+                        { content: "app.cats", id: 1, show: true },
+                        { content: "app.sapedia", id: 12, show: true }
+                    ]
+                }
+            ]
+        };
+    }
 });

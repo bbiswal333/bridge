@@ -1,6 +1,6 @@
 ﻿angular.module('app.jira', []);
 
-angular.module('app.jira').directive('app.jira', ['bridgeConfig', 'app.jira.configservice', function (bridgeConfig, JiraConfig) {
+angular.module('app.jira').directive('app.jira', ['app.jira.configservice', function (JiraConfig) {
 
     var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {
         $scope.boxTitle = "Jira";
@@ -32,12 +32,8 @@ angular.module('app.jira').directive('app.jira', ['bridgeConfig', 'app.jira.conf
         templateUrl: 'app/jira/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-
-            if (appConfig != undefined) {
-
-                JiraConfig.query = appConfig;                
-
+            if ($scope.appConfig != undefined) {
+                JiraConfig.query = $scope.appConfig;
             }
         }
     };

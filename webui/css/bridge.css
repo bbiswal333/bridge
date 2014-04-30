@@ -89,7 +89,7 @@ img {
 }
 
 .image_rounded_shadow img {
-    margin: 15px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 }
 .noselect {
@@ -506,7 +506,4 @@ input[type="checkbox"]:checked:after {
     border: none;
     box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
     border-radius: 0;
-}
-.panel-heading{
-    color:#707070!important;
 }

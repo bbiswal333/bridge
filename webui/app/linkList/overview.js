@@ -1,8 +1,8 @@
 angular.module('app.linkList', ['ui.sortable']);
 
 angular.module('app.linkList').directive('app.linkList',
-        ['app.linkList.configservice','bridgeConfig',
-        function(appLinklistConfig, bridgeConfig) {
+        ['app.linkList.configservice',
+        function(appLinklistConfig) {
 
     var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {
         $scope.boxTitle = "Linklist";
@@ -45,18 +45,16 @@ angular.module('app.linkList').directive('app.linkList',
         templateUrl: function(){return 'app/linkList/overview.html'},
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-                var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
-
-            if(appConfig != undefined && appConfig != {})
+            if ($scope.appConfig != undefined && $scope.appConfig != {})
             {
-                if (appConfig.boxSize)
-                    $scope.boxSize = appConfig.boxSize;
+                if ($scope.appConfig.boxSize)
+                    $scope.boxSize = $scope.appConfig.boxSize;
 
-                if ('version' in appConfig) 
+                if ('version' in $scope.appConfig)
                 { 
-                    if(appConfig.version == 1)
+                    if ($scope.appConfig.version == 1)
                     {
-                        appLinklistConfig.listCollection = appConfig.listCollection;
+                        appLinklistConfig.listCollection = $scope.appConfig.listCollection;
                         for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) 
                         {
                             linkList = appLinklistConfig.listCollection[i];
@@ -92,7 +90,7 @@ angular.module('app.linkList').directive('app.linkList',
                 appLinklistConfig.listCollection[0].push({"name":"Corporate Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
                 appLinklistConfig.listCollection[0].push({"name":"Online Payslip","url":"https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP","type":"hyperlink"});                
                 appLinklistConfig.listCollection[0].push({"name":"Bridge Github Repo","url":"https://github.wdf.sap.corp/bridge/bridge","type":"hyperlink"});                
-                appConfig =  appLinklistConfig;
+                $scope.appConfig = appLinklistConfig;
             };
        
         }

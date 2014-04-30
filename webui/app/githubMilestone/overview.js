@@ -1,8 +1,8 @@
 angular.module('app.githubMilestone', ["lib.utils"]);
 
 angular.module('app.githubMilestone').directive('app.githubMilestone', 
-    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "bridgeConfig", "bridgeCounter",
-    function($http, appGithubMilestoneConfig, calUtils, bridgeConfig, bridgeCounter) {
+    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "bridgeCounter",
+    function($http, appGithubMilestoneConfig, calUtils, bridgeCounter) {
 
        
     var directiveController = ['$scope', function($scope ) {
@@ -99,20 +99,17 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
         controller: directiveController,
          link: function ($scope, $element, $attrs, $modelCtrl) {
             var currentConfigItem;
-            var appConfig = angular.copy(bridgeConfig.getConfigForApp($scope.boxId));
 
-            if (appConfig != undefined) {
-
-                    appGithubMilestoneConfig.repo.name = appConfig.repo.name;
-                    appGithubMilestoneConfig.repo.full_name = appConfig.repo.full_name;
-                    appGithubMilestoneConfig.repo.html_url = appConfig.repo.html_url;
-                    appGithubMilestoneConfig.repo.api_url = appConfig.repo.api_url;
-                    appGithubMilestoneConfig.milestoneDuration = appConfig.milestoneDuration;
-                    appGithubMilestoneConfig.countMilestones = appConfig.countMilestones;
-                    appGithubMilestoneConfig.html_url = appConfig.html_url;
-                    appGithubMilestoneConfig.api_url = appConfig.api_url;
-                    appGithubMilestoneConfig.fork = appConfig.fork;
-
+            if ($scope.appConfig != undefined) {
+                appGithubMilestoneConfig.repo.name = $scope.appConfig.repo.name;
+                appGithubMilestoneConfig.repo.full_name = $scope.appConfig.repo.full_name;
+                appGithubMilestoneConfig.repo.html_url = $scope.appConfig.repo.html_url;
+                appGithubMilestoneConfig.repo.api_url = $scope.appConfig.repo.api_url;
+                appGithubMilestoneConfig.milestoneDuration = $scope.appConfig.milestoneDuration;
+                appGithubMilestoneConfig.countMilestones = $scope.appConfig.countMilestones;
+                appGithubMilestoneConfig.html_url = $scope.appConfig.html_url;
+                appGithubMilestoneConfig.api_url = $scope.appConfig.api_url;
+                appGithubMilestoneConfig.fork = $scope.appConfig.fork;
                 }
             }
         };

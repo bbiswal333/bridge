@@ -53,7 +53,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         else {
             console.log("Stylesheet " + path_s + " already loaded.")
         }
-    } 
+    }
 
     return {
         restrict: 'E',
@@ -64,11 +64,10 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
             if ($attrs.id) {
                 $scope.boxId = $attrs.id;
+                $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
 
-                if (!bridgeDataService.boxInstances[$attrs.id]) {
-                    bridgeDataService.boxInstances[$attrs.id] = {
-                        scope: $scope,
-                    };
+                if (!bridgeDataService.getAppById($attrs.id).scope) {
+                    bridgeDataService.getAppById($attrs.id).scope = $scope;
                 }
             }
             else {
@@ -92,7 +91,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
             });
 
             if ($attrs.id) {
-                bridgeDataService.boxInstances[$attrs.id].element = newElement;
+                bridgeDataService.getAppById($attrs.id).element = newElement;
             }
         }
     };

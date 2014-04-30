@@ -3,6 +3,10 @@
     $scope.currentConfigValues = appAtcConfig.newItem();
     $scope.currentConfigValues.onlyInProcess = true;
 
+    $scope.closeForm = function () {
+        $scope.$emit('closeSettingsScreen');
+    }
+
     $scope.$watch('config', function () {
         if ($scope.tableParams.settings().$scope != null)
             $scope.tableParams.reload();

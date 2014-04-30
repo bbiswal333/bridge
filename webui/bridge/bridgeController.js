@@ -44,9 +44,7 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 angular.module('bridge.app').controller('bridgeController',
     ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
-        $scope.bridgeConfig = bridgeConfig;
-        
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {        
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
             if( newValue !== oldValue)
             {
@@ -61,10 +59,10 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.bridge_settings_click = function(){
             $scope.sidePanel = 'view/bridgeSettings.html';
-            if($scope.sideView == "settings" || !$scope.show_settings)
-            {
-                $scope.show_settings = !$scope.show_settings;
-            }
+            if (!$scope.show_settings)
+                $scope.show_settings = true;
+            else
+                $scope.bridge_hide_settings();
             $scope.sideView = "settings";                        
         }
 
@@ -89,6 +87,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.bridge_hide_settings = function(){
             $scope.show_settings = false;
+            bridgeConfig.persistInBackend(bridgeDataService);
         }
 
 
@@ -104,30 +103,18 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.showLoadingAnimation = true;
                                            
         window.debug = {
-
-            resetSort: function(){
-                $scope.apps = sortableConfig.getDefaultConfig();
-                bridgeConfig.config.bridgeSettings.apps = $scope.apps ; 
-                bridgeConfig.persistInBackend(bridgeDataService.boxInstances);
-                        },
             resetConfig: function()
-                        {
-                            bridgeConfig.config = {
-                                    bridgeSettings: {
-                                                    apps: []
-                                                    },
-                                    boxSettings: [],
-                                                    };    
-                            bridgeConfig.persistInBackend();
-                        }
+            {
+                bridgeDataService.toDefault();
+                bridgeConfig.persistInBackend(bridgeDataService);
+            }
         };
 
 
         $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
             {
-              bridgeConfig.config.bridgeSettings.apps = $scope.apps; 
-              bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
+              bridgeConfig.persistInBackend(bridgeDataService);  
             }
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
         };
@@ -148,50 +135,79 @@ angular.module('bridge.app').controller('bridgeController',
             document.getElementById('projects-button').classList.add('selected');
         };
 
-        $scope.$watch('apps', function()
-        {
-            if($scope.apps)
-            {
+        $scope.showSettingsModal = function (appId) {
+            var appInstance = bridgeDataService.getAppById(appId);
+
+            $scope.modalInstance = $modal.open({
+                templateUrl: 'view/settings.html',
+                windowClass: 'settings-dialog',
+                controller: angular.module('bridge.app').settingsController,
+                resolve: {
+                    templateString: function () {
+                        return appInstance.scope.settingScreenData.templatePath;
+                    },
+                    templateController: function () {
+                        return appInstance.scope.settingScreenData.controller;
+                    },
+                    boxController: function () {
+                        return appInstance;
+                    },
+                    boxScope: function () {
+                        return appInstance.scope;
+                    },
+                }
+            });
+
+            var that = this;
+
+            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+            this.modalInstance.result.then(function (selectedItem) {
+                bridgeConfig.persistInBackend(bridgeDataService);
+            }, function () {
+                bridgeConfig.persistInBackend(bridgeDataService);
+            });
+        };
+
+        $scope.apps = [];
+        $scope.$watch('apps', function () {
+            if ($scope.apps) {
                 $scope.visible_apps = [];
                 for (var i = $scope.apps.length - 1; i >= 0; i--) {
-                    if($scope.apps[i].show) $scope.visible_apps.push($scope.apps[i]);
-                };            
+                    if ($scope.apps[i].show) $scope.visible_apps.push($scope.apps[i]);
+                };
             }
         }, true);
 
-        $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-                $scope.sortableOptions = sortableConfig.sortableOptions;
-                if (bridgeConfig.config.bridgeSettings.apps != undefined && bridgeConfig.config.bridgeSettings.apps.length > 0 )
-                { 
-                    $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
-                }
-                else 
-                {
-                    bridgeConfig.config.bridgeSettings.apps = sortableConfig.getDefaultConfig();
-                    $scope.apps = bridgeConfig.config.bridgeSettings.apps; 
-                }
+        $scope.$on('closeSettingsScreenRequested', function () {
+            $scope.modalInstance.close();
+        });
 
-                bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
-                var deferred1 = $q.defer();
-                var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
-                var deferred2 = $q.defer();
-                var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
-                promise1.then(function (counterData) {
+        $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
+            $scope.sortableOptions = sortableConfig.sortableOptions;
+            $scope.apps = bridgeDataService.getAppMetadataForProject(0);
+
+            bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
+            var deferred1 = $q.defer();
+            var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
+            var deferred2 = $q.defer();
+            var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
+            promise1.then(function (counterData) {
+                if (angular.isObject(counterData)){
+                    console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
+                };
+                promise2.then(function (counterData) {
                     if (angular.isObject(counterData)){
-                        console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
-                    };
-                    promise2.then(function (counterData) {
-                        if (angular.isObject(counterData)){
-                            for (var i = 0; i < 7; i++) {
-                                console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
-                            };
+                        for (var i = 0; i < 7; i++) {
+                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
                         };
-                    });
+                    };
                 });
-                $scope.configLoadingFinished = true;
-                $scope.showLoadingAnimation = false;   
             });
-        }]);
+            $scope.configLoadingFinished = true;
+            $scope.showLoadingAnimation = false;   
+        });
+    }
+]);
 
 angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils) {
     $routeProvider.when("/", {
@@ -227,7 +243,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
 }]);
 
-angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeConfig) {
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeDataService) {
     var loadingRequests = 0;
 
     //Receive emitted message and broadcast it.
@@ -238,14 +254,12 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     $rootScope.$on("refreshApp", function (event, args) {
         $rootScope.$broadcast('refreshAppReceived', args);
     });
+    $rootScope.$on("closeSettingsScreen", function (event, args) {
+        $rootScope.$broadcast('closeSettingsScreenRequested', args);
+    });
 
     var deferred = $q.defer();
-    var promise = bridgeConfig.loadFromBackend(deferred);
-
-    promise.then(function (config) {
-        // if the config is not an object, then the user has no configuration stored in the backend
-        if (angular.isObject(config))
-            bridgeConfig.config = config;
+    bridgeDataService.initialize(deferred).then(function () {
         $rootScope.$emit('bridgeConfigLoaded', {});
     }, function () { // promise rejected = config load failed
         alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");

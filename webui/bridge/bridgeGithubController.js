@@ -1,6 +1,6 @@
 angular.module('bridge.app').
-	controller('mainGithubController',['$http', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
-	function ($http, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
+	controller('mainGithubController',['$http', '$scope', '$timeout','bridgeDataService', "notifier",
+	function ($http, $scope, $timeout, bridgeDataService, notifier){
 
         $http.get('https://github.wdf.sap.corp/api/v3/repos/bridge/bridge/contributors',{withCredentials:false}
         ).success(function(data) {
