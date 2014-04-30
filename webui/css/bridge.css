@@ -46,6 +46,10 @@ img {
     pointer-events: none;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+        
 .tab-active {
     left: -1px;
     width: 36px;
@@ -102,10 +106,17 @@ img {
     cursor:default;
 }
 .prio {
-    font-size: 18px;
     width:100%;
-    padding-left:20px;
+    vertical-align: text-bottom;
+    float: left;
+    text-align: left;
+   
 }
+
+.prio span{
+    font-size: 14px;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -284,7 +295,6 @@ img {
 .settingsIcon {
     font-family:'SAP-icons';
     font-size: 20px;
-    color:#707070;
     margin-right: 10px;
     float: right;
 }
@@ -318,7 +328,7 @@ img {
 
 .download-dialog {
     width: 415px;
-    height: 240px;
+    height: 310px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
@@ -328,13 +338,13 @@ img {
 
 .download-dialog .modal-dialog {
     width: 415px;
-    height: 240px;
+    height: 310px;
     margin: 0px;
 }
 
 .download-dialog .modal-content {
     width: 415px;
-    height: 240px;
+    height: 310px;
     padding: 20px;
     position: relative;
     border: 0px;

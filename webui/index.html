@@ -1,13 +1,8 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="bridge.app" ng-controller="bridgeController">
+<html lang="en" ng-controller="bridgeController">
 <head>
     <!-- browser compatibility  -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- global variables -->
-    <script type='text/javascript' > 
-        window.feature_check = [];
-    </script>
 
     <!-- browser test -->
     <script src="lib/modernizr-2_7_1/modernizr.js"></script>
@@ -19,16 +14,16 @@
     <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
 
     <!-- css -->
-    <link ng-if="!bridgeConfig.noBackgroundImage" href="css/background-image.css" rel="stylesheet" />
-    <link ng-if="bridgeConfig.noBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />
+    <!--<link ng-if="!bridgeConfig.noBackgroundImage" href="css/background-image.css" rel="stylesheet" />
+    <link ng-if="bridgeConfig.noBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />-->
+    <link href="css/background-stripes.css" rel="stylesheet" />
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
 
     <!-- external bootstrapped libs -->
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
-
-    <!--<script src="lib/angular-1_2_13/angular.min.js"></script>-->
+    
     <script src="lib/angular-1_2_13/angular.js"></script>
     <script src="lib/angular-1_2_13/angular-route.min.js"></script>
     <script src="lib/angular-1_2_13/angular-resource.min.js"></script>
@@ -39,11 +34,7 @@
 
     <!-- icon -->
     <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
-    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
-    <!--<link href="css/fonts/bridge-icons-codes.css" rel="stylesheet" />
-    <link href="css/fonts/bridge-icons-embedded.css" rel="stylesheet" />
-    <link href="css/fonts/bridge-icons-ie7-codes.css" rel="stylesheet" />
-    <link href="css/fonts/bridge-icons-ie7.css" rel="stylesheet" />-->
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />    
 
     <!-- external packed libs -->
     <script src="lib/linq-2_2_0_2/linq.min.js"></script>
@@ -56,74 +47,12 @@
 
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.min.js"></script>
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
-
-    <!-- bridge -->
-    <script src="bridge/bridgeController.js"></script>    
-    <script src="bridge/bridgeSettingsController.js"></script>
-    <script src="bridge/bridgeMainSettingsController.js"></script>
-    <script src="bridge/bridgeDownloadController.js"></script>
-    <script src="bridge/bridgeGithubController.js"></script>
-    <script src="bridge/bridgeDataService.js"></script>
-    <script src="bridge/bridgeConfigService.js"></script>
-    <script src="bridge/bridgeCounterService.js"></script>
-    <script src="bridge/bridgeDownloadService.js"></script>
-    <link href="bridge/employeeSearch/EmployeeSearch.css" rel="stylesheet" />
-    <script src="bridge/box/BoxDirective.js"></script>
-    <script src="bridge/employeeSearch/EmployeeSearchDirective.js"></script>
-    <script src="bridge/notifier.js"></script>
-    <!-- app -->
-    <script src="app/im/overview.js"></script>
-    <script src="app/im/detail.js"></script>
-    <script src="app/im/settings.js"></script>
-    <script src="app/im/config.js"></script>
-    <script src="app/test/overview.js"></script>
-    <script src="app/lunchWalldorf/overview.js"></script>
-    <script src="app/atc/overview.js"></script>
-    <script src="app/atc/config.js"></script>
-    <script src="app/atc/data.js"></script>
-    <script src="app/atc/detail.js"></script>
-    <script src="app/atc/settings.js"></script>
-    <script src="app/jira/overview.js"></script>
-    <script src="app/jira/JiraBox.js"></script>
-    <script src="app/jira/detail.js"></script>
-    <script src="app/jira/settings.js"></script>
-    <script src="app/employeeSearch/overview.js"></script>
-    <script src="app/meetings/ews.js"></script>
-    <script src="app/meetings/overview.js"></script>
-    <script src="app/cats/cats.js"></script>
-    <script src="bridge/libUtils.js"></script>
-    <script src="app/cats/overview.js"></script>
-    <script src="app/cats/cats.calendar.js"></script>    
-    <script src="app/sapedia/overview.js"></script>
-
-    <script src="app/githubMilestone/overview.js"></script>
-    <script src="app/githubMilestone/settings.js"></script>
-    <script src="app/githubMilestone/config.js"></script>
-
-    <script src="app/linkList/overview.js"></script>
-    <script src="app/linkList/settings.js"></script>
-    <script src="app/linkList/config.js"></script>
-
     <script src="lib/jQueryUISortable.js"></script>
-    <script src="bridge/sortableService.js"></script>
 
-    <!-- CATS maintencance -->
-    <script src="app/cats/detail/main.js"></script>
-    <script src="app/cats/detail/allocationBar/allocationBarControl.js"></script>
-    <script src="app/cats/detail/allocationBar/allocationBarDirective.js"></script>
-    <script src="app/cats/detail/allocationBar/allocationBarUtils.js"></script>
-    <script src="app/cats/detail/allocationBar/allocationBlock.js"></script>
-    <script src="app/cats/detail/projectSelector.js"></script>
-    <script src="app/cats/detail/projectList.js"></script>
-    <script src="app/cats/detail/allocationBar/svg.min.js"></script>
-    <script src="app/cats/detail/allocationBar/svg.draggable.js"></script>
-    
-    <script src="app/cats/detail/allocationBar/svg.foreignObject.js"></script>
+    <script src="loader.js"></script>    
 
-    <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css" />
-    <link rel="stylesheet" type="text/css" href="app/cats/style.css" />
-    <link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
-    <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />
+    <!--<link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
+    <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />-->   
     <title>Bridge</title>
 </head>
 
@@ -131,7 +60,7 @@
 
 <body class="noselect">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <div class="mainPageBackground">
 
             <div class="headerline">
@@ -171,6 +100,11 @@
                     <div style="width:100%;height:100%">                                            
                         <div class="animation-container" ng-click="bridge_hide_settings()">
                             <div id="main" ng-view class="animation-content"></div>
+                        </div>
+                        <div>
+                            <div style="position:absolute;bottom:20px;width:95%">
+                                <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>                            
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -68,7 +68,23 @@ SVG.extend(SVG.Element, {
     }
     
     /* while dragging */
-    drag = function(event) {
+    drag = function (event) {
+
+        function move(x, y) {
+            element.move(x, y)
+
+            /* invoke any callbacks */
+            if (element.dragmove) {
+                delta.x = x - element.startPosition.x
+                delta.y = y - element.startPosition.y
+                delta.coord = {
+                    x: x,
+                    y: y
+                }
+                element.dragmove(delta, event)
+            }
+        }
+
       event = event || window.event
       
       if (element.startEvent) {
@@ -136,21 +152,6 @@ SVG.extend(SVG.Element, {
         }
         else if (typeof constraint == "object") {
           move(x, y)          
-        }
-
-        function move(x, y) {
-          element.move(x, y)
-
-          /* invoke any callbacks */
-          if (element.dragmove) {
-            delta.x = x - element.startPosition.x
-            delta.y = y - element.startPosition.y
-            delta.coord = {
-              x: x,
-              y: y
-            }
-            element.dragmove(delta, event)
-          }
         }
       }
     }

@@ -1,0 +1,5 @@
+{
+	"modules" : ["bridge.box"],
+	"js_files" : ["BoxDirective.js"],
+	"css_files" : []
+}

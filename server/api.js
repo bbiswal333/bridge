@@ -1,6 +1,8 @@
 var https_req	= require('https');
 var http_req	= require('http');
 var url 		= require('url');
+var fs          = require('fs');
+var path 		= require('path');
 var npm_load	= require('./npm_load.js');
 
 exports.register = function(app, user, local, proxy, npm)
@@ -152,6 +154,12 @@ exports.register = function(app, user, local, proxy, npm)
 	});
 
 	//generic api call post
+	app.options("/api/post", function(request, response){
+		response = setHeader( request, response );	
+		response.send();
+		return;
+	});
+
 	app.post("/api/post", function (request, response) {
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
@@ -169,6 +177,103 @@ exports.register = function(app, user, local, proxy, npm)
 			response.send(data);
 		}, postData);
 	}); 
+
+	var getFiles = function(dir, files)
+	{		
+		    
+		var files = fs.readdirSync(dir);	    
+		var out_files = {};
+		out_files.modules = [];
+		out_files.js_files = [];
+		out_files.css_files = [];
+		    
+		for (var i = 0; i < files.length; i++){	    
+		    var name = path.join(dir, '/', files[i]);			     
+
+		    if (fs.statSync(name).isDirectory())
+		    {
+		        out_files.js_files  = out_files.js_files.concat(getFiles(name).js_files);	            
+		        out_files.css_files = out_files.css_files.concat(getFiles(name).css_files);
+		        out_files.modules = out_files.modules.concat(getFiles(name).modules);
+		    }
+		    else
+		    {
+		    	if (path.basename(name) == '_modules.json')
+		    	{
+		    		try
+		    		{
+		    			delete require.cache[require.resolve(name)];
+			    		var module = require(name);
+			    		out_files.modules = out_files.modules.concat(module.modules);
+			    		
+			    		if ( Object.prototype.toString.call( module.js_files ) === '[object Array]' )
+			    		{
+				    		for (var j = 0; j < module.js_files.length; j++)
+				    		{
+				    			var filename = path.join(path.dirname(name), module.js_files[j]);		    			
+				    			out_files.js_files.push(path.relative(path.join(__dirname, '../webui'), filename));
+				    		}	
+				    	}
+				    	if ( Object.prototype.toString.call( module.css_files ) === '[object Array]' )
+				    	{
+				    		for (var j = 0; j < module.css_files.length; j++)
+				    		{
+				    			var filename = path.join(path.dirname(name), module.css_files[j]);		    			
+				    			out_files.css_files.push(path.relative(path.join(__dirname, '../webui'), filename));		    		
+				    		}
+			    		}			    				    
+			    	}
+			    	catch(e)
+			    	{
+			    		console.log(e);
+			    	}
+		    	}		        
+		    }
+		}	    
+		return out_files;
+	}
+
+	app.get("/api/modules", function (request, response) 
+	{
+		response = setHeader( request, response );			
+
+		var bridge_path = path.join(__dirname, '../webui/bridge');
+	    var bridge_files = getFiles(bridge_path);
+	    var app_path = path.join(__dirname, '../webui/app');
+	    var app_files = getFiles(app_path);	
+	   	var files = {};
+	    files.modules = bridge_files.modules.concat(app_files.modules); 
+	    files.js_files = bridge_files.js_files.concat(app_files.js_files);
+	    files.css_files = bridge_files.css_files.concat(app_files.css_files);  
+
+	    if (typeof request.query.format == "undefined")
+	    {
+	    	response.setHeader('Content-Type', 'text/plain;');						    	   
+			response.send(JSON.stringify(files));		
+		}
+		else if( request.query.format == "js")
+		{
+			var js = "";			
+			for( var i = 0; i < files.js_files.length; i++)
+			{
+				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.js_files[i]), 'utf8').toString();
+				js = js + data;			
+			}
+			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+			response.send(js);		
+		}
+		else if( request.query.format == "css")
+		{
+			var css = "";			
+			for( var i = 0; i < files.css_files.length; i++)
+			{
+				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.css_files[i]), 'utf8').toString();
+				css = css + data;			
+			}
+			response.setHeader('Content-Type', 'text/css; charset=utf-8');
+			response.send(css);	
+		}
+	});	
 
 	//ms-exchange calendar data request
 	if( local )

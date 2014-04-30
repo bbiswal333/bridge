@@ -53,6 +53,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           delete record.DAYS;
           task.quantity = parseFloat(record.booking.QUANTITY);
 
+          enrichTaskData(task);
           //Only add to list when time has been spent on this task
           if (!isNaN(task.quantity)) {
             res.push(task);
@@ -82,27 +83,23 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
-        tasks.push({
+        tasks.push(enrichTaskData({
             data: {
                 RAUFNR: "",
-                ZCPR_OBJGEXTID: "",
-                ZCPR_EXTID: "",
                 TASKTYPE: "ADMI",
             },
             taskDesc: "ADMI",
             projectDesc: "Administrative"
-        });
+        }));
 
-        tasks.push({
+        tasks.push(enrichTaskData({
             data: {
                 RAUFNR: "",
-                ZCPR_OBJGEXTID: "",
-                ZCPR_EXTID: "",
                 TASKTYPE: "EDUC",
             },
             taskDesc: "EDUC",
             projectDesc: "Personal education"
-        });
+        }));
 
         if (!data){
           return;
@@ -110,8 +107,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};
-          task.OBJGUID = nodes[i].ZCPR_OBJGUID;
-          task.OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
+          task.ZCPR_OBJGUID = nodes[i].ZCPR_OBJGUID;
+          task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.projectDesc = nodes[i].DISPTEXTW1;
           task.taskDesc = nodes[i].DISPTEXTW2;
           task.data = nodes[i];
@@ -121,6 +118,21 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         callback_fn(tasks);
       });
+    }
+
+    function enrichTaskData(task){
+      if (task.data &&
+          !task.data.ZCPR_OBJGEXTID &&
+          !task.data.ZCPR_OBJGUID) {
+        task.ZCPR_OBJGEXTID = task.data.TASKTYPE;
+        task.ZCPR_OBJGUID = task.data.TASKTYPE;
+      } else if (task.record &&
+          !task.record.ZCPR_OBJGEXTID &&
+          !task.record.ZCPR_OBJGUID) {
+        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
+        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
+      };
+      return task;
     }
 
     function _httpRequest(url, callback_fn) {

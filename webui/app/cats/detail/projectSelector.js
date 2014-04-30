@@ -27,7 +27,7 @@ angular.module("app.cats.maintenanceView.projectSelector", ["ui.bootstrap", "ngS
         var found = false;
 
         for (var j = 0; j < exclude_ar.length; j++) {
-            if (data[i].OBJGEXTID == exclude_ar[j].OBJGEXTID && data[i].OBJGUID == exclude_ar[j].OBJGUID) {
+            if (data[i].ZCPR_OBJGEXTID == exclude_ar[j].ZCPR_OBJGEXTID && data[i].ZCPR_OBJGUID == exclude_ar[j].ZCPR_OBJGUID) {
                 found = true;
             }
         }

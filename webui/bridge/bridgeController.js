@@ -1,36 +1,3 @@
-angular.module('bridge.app', [
-    //external stuff
-    'ngAnimate',
-    'ngRoute',
-    'ngSanitize',
-    //'googlechart',
-    'ui.bootstrap',
-    'mgcrea.ngStrap',
-    'ngTable',
-    'ui.sortable',
-    'ngScrollbar',
-    // bridge modules
-    'bridge.service',
-    'bridge.employeeSearch',
-    'bridge.box',
-    'notifier',
-    'lib.utils',
-    // bridge apps
-    'app.test',
-    'app.atc',
-    'app.im',
-    'app.jira',
-    'app.employeeSearch', 
-    'app.meetings',
-    'app.cats',
-    'app.sapedia',
-    'app.lunchWalldorf',
-    'app.githubMilestone',
-    'app.linkList',
-    'app.cats.maintenanceView',
-    'app.cats.maintenanceView.projectList'
-]);
-
 angular.module('bridge.app').directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
@@ -43,8 +10,8 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {        
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeInBrowserNotification, bridgeDownloadService) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
             if( newValue !== oldValue)
             {
@@ -104,19 +71,20 @@ angular.module('bridge.app').controller('bridgeController',
                                            
         window.debug = {
             resetConfig: function()
-            {
+                        {
                 bridgeDataService.toDefault();
                 bridgeConfig.persistInBackend(bridgeDataService);
-            }
+                        }
         };
 
 
         $scope.toggleDragging = function(){
-            if( !$scope.sortableOptions.disabled )
+            /*if( !$scope.sortableOptions.disabled )
             {
               bridgeConfig.persistInBackend(bridgeDataService);  
             }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;*/
+            $scope.sortableOptions.disabled = true; //until it works this is diabled ;-) !!!
         };
 
         $scope.settings_click = function (boxId) {
@@ -174,7 +142,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.visible_apps = [];
                 for (var i = $scope.apps.length - 1; i >= 0; i--) {
                     if ($scope.apps[i].show) $scope.visible_apps.push($scope.apps[i]);
-                };
+                };            
             }
         }, true);
 
@@ -183,29 +151,30 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-            $scope.sortableOptions = sortableConfig.sortableOptions;
+                bridgeInBrowserNotification.setScope($scope);
+                $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
 
-            bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
-            var deferred1 = $q.defer();
-            var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
-            var deferred2 = $q.defer();
-            var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
-            promise1.then(function (counterData) {
-                if (angular.isObject(counterData)){
-                    console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
-                };
-                promise2.then(function (counterData) {
+                bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
+                var deferred1 = $q.defer();
+                var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
+                var deferred2 = $q.defer();
+                var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
+                promise1.then(function (counterData) {
                     if (angular.isObject(counterData)){
-                        for (var i = 0; i < 7; i++) {
-                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
-                        };
+                        console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
                     };
+                    promise2.then(function (counterData) {
+                        if (angular.isObject(counterData)){
+                            for (var i = 0; i < 7; i++) {
+                                console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
+                            };
+                        };
+                    });
                 });
+                $scope.configLoadingFinished = true;
+                $scope.showLoadingAnimation = false;   
             });
-            $scope.configLoadingFinished = true;
-            $scope.showLoadingAnimation = false;   
-        });
     }
 ]);
 
@@ -316,11 +285,6 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootSc
             return $q.reject(response);
         }
     };
-
-    var code = e.keyCode || e.which;
- if(code == 13) { //Enter keycode
-   alert('alert');
- }
 
 }]);
 
