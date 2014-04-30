@@ -102,10 +102,17 @@ img {
     cursor:default;
 }
 .prio {
-    font-size: 18px;
     width:100%;
-    padding-left:20px;
+    vertical-align: text-bottom;
+    float: left;
+    text-align: left;
+   
 }
+
+.prio span{
+    font-size: 14px;
+}
+
 .clickable {
     cursor: pointer;
 }

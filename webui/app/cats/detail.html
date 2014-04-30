@@ -23,8 +23,8 @@
           <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-padding="0" data-snaprange="{{width/100}}" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
         </div>
         <div>
-        <input ng-if="client" type="button" value="Cancel" ng-click="ResetToLastSavedState()"></input>
-        <input ng-if="client" type="button" value="Save Timesheet" ng-click="writeCATSdata()"></input>
+        <input class="btn btn-default" ng-if="client" type="button" value="Cancel" ng-click="ResetToLastSavedState()"></input>
+        <input class="btn btn-default btn_blue" ng-if="client" type="button" value="Save Timesheet" ng-click="writeCATSdata()" style="margin:4px"></input>
         <div ng-if="!client">
           Updating the timesheet is only possible with the Bridge Client.
         </div>
