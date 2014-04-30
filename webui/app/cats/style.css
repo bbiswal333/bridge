@@ -1,29 +1,13 @@
-/*@media (max-width: 768px){
-    .col-xs-1-7 {
-        width: 13.2857143%;
-    }
-}
-@media (min-width: 1200px) {
-    .col-lg-1-7 {
-        width: 13.2857143%;
-    }
-}
-@media (min-width: 992px) {
-    .col-md-1-7 {
-        width: 13.2857143%;
-    }
-}*/
+
 /* detail.html*/
 
   #app-cats-maintenance-projects-div, #app-cats-maintenance-navigation-div, #app-cats-maintenance-meetings-div {
     margin-top: 20px;
-    /*width: 50%;   */
     float: left;
     margin-bottom: 20px;
   }
 
   #app-cats-maintenance-navigation-div {
-    /*width: 50%;*/
     margin-top: 32px;
   }
 
@@ -51,7 +35,13 @@
     text-align: center;
   }
 
-/*--------------*/
+/* CATS Calendar*/
+.app-cats-week-labels.row, 
+.app-cats-week.row{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
 .app-cats-body {
 	font-family: 'Open Sans', sans-serif;
 	position: relative;
@@ -91,20 +81,20 @@
 
 }
 
-	.app-cats-navigation span {
-		display: inline;
-		
-	}
+.app-cats-navigation span {
+	display: inline;
+	
+}
 
 .app-cats-text-button {
 	cursor: pointer;
 	padding: 6px;
 }
 
-	.app-cats-text-button-disabled {
-		color: #aaaaaa;
-		cursor: not-allowed;
-	}
+.app-cats-text-button-disabled {
+	color: #aaaaaa;
+	cursor: not-allowed;
+}
 
 .app-cats-current-month {
 	margin-left: 8px;
@@ -120,23 +110,19 @@
 }
 
 .app-cats-week-labels {
-	
-	
 }
 
 .app-cats-week {
 	height: 15px;
-	
 	margin-top: 2px;
 }
 
-	 .app-cats-week:first-of-type {
-		margin-top: 3px;
-	}
+ .app-cats-week:first-of-type {
+	margin-top: 3px;
+}
 
 .app-cats-day-details
 {
-    /*width: 54px;*/
 	height: 20px;
 	float: left;
 	padding-top: 3px;
@@ -158,17 +144,17 @@
 		
 }
 
-	.app-cats-day-details span {
-		color:white;
-	}
+.app-cats-day-details span {
+	color:white;
+}
 
-	.app-cats-week:last-of-type .app-cats-day {
-		margin-bottom: 0px;
-	}
+.app-cats-week:last-of-type .app-cats-day {
+	margin-bottom: 0px;
+}
 
-	.app-cats-day + .app-cats-day {
-		margin-left: 2px;
-	}
+.app-cats-day + .app-cats-day {
+	margin-left: 2px;
+}
 
 /* Project List Template*/
 
@@ -190,13 +176,12 @@
     }
 }
 
-#filter-bar {
-    width: 95%;
-    margin-left: 5%;
-    margin-right: 0%;
-    margin-bottom: 20px;
+.app-cats-project-filter-input{
+	margin: 4px 4px 20px 4px;
+	width: 95%;
 }
-#app-cats-project-selector-button-container {
+
+.app-cats-project-container {
     width: 90%;
     margin-left: 5%;
     margin-right: 5%;
