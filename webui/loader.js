@@ -1,6 +1,6 @@
 //loader module with load service
 angular.module('loader',[]);
-angular.module('loader').factory('loadservice',["$http", function ($http) {
+angular.module('loader').factory('loadservice',["$http", "$location", function ($http, $location) {
 
   return{ 
     load: function()
@@ -13,14 +13,18 @@ angular.module('loader').factory('loadservice',["$http", function ($http) {
         var loaded_script = 0;
 
         //callback when js files are loaded
-        var script_loaded = function()
+        var script_loaded = function(combined)
         {
           loaded_script = loaded_script + 1;
-          if( loaded_script < data.js_files.length )
+          
+          var number_of_files = data.js_files.length;
+          if(combined) number_of_files = 1;
+
+          if( loaded_script < number_of_files )
           {
             return;
           }            
-          angular.bootstrap(document, ['bridge.app']);  
+          angular.bootstrap(document, ['bridge.app']); 
         }
 
         function load_scripts(array,callback)
@@ -65,9 +69,18 @@ angular.module('loader').factory('loadservice',["$http", function ($http) {
               }  
           })();  
         } 
+              
+        if ($location.search().debug === "true")        
+        {
 
-        load_styles(data.css_files, function(){});
-        load_scripts(data.js_files, function(){ script_loaded() });                                        
+          load_styles(data.css_files, function(){});
+          load_scripts(data.js_files, function(){ script_loaded(false) });                                        
+        }
+        else
+        {          
+          load_styles(["/api/modules?format=css"], function(){});
+          load_scripts(["/api/modules?format=js"], function(){ script_loaded(true) });                                                  
+        }
 
         }).error(function(data, status, headers, config) {
           console.log("modules could not be loaded");       

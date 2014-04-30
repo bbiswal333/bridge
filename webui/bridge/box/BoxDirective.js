@@ -32,7 +32,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         }
     }
 
-    function includeStylesheet (path_s) {
+    /*function includeStylesheet (path_s) {
         //Check if stylesheet is already loaded
         if (document.querySelector("link[href=\"" + path_s + "\"]") == null) { 
             var elem = document.createElement("link");
@@ -53,7 +53,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         else {
             console.log("Stylesheet " + path_s + " already loaded.")
         }
-    } 
+    } */
 
     return {
         restrict: 'E',
@@ -77,11 +77,11 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
             //Include custom stylesheet for directive
-            $scope.$watch("customCSSFile", function (val, oldVal, scope) {
+            /*$scope.$watch("customCSSFile", function (val, oldVal, scope) {
                 if (typeof val != "undefined") {
                     includeStylesheet($scope.customCSSFile);
                 }
-            });
+            });*/
 
             $element.children().children().next().append(newElement);
 

@@ -48,8 +48,8 @@
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.min.js"></script>
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
-    
-    <script src="loader.js"></script>
+
+    <script src="loader.js"></script>    
 
     <!--<link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
     <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />-->   
@@ -60,7 +60,7 @@
 
 <body class="noselect">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <div class="mainPageBackground">
 
             <div class="headerline">

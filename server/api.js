@@ -233,20 +233,47 @@ exports.register = function(app, user, local, proxy, npm)
 		return out_files;
 	}
 
-	app.get("/api/modules", function (request, response) {
-		response.setHeader('Content-Type', 'text/plain');					
+	app.get("/api/modules", function (request, response) 
+	{
+		response = setHeader( request, response );			
 
 		var bridge_path = path.join(__dirname, '../webui/bridge');
 	    var bridge_files = getFiles(bridge_path);
 	    var app_path = path.join(__dirname, '../webui/app');
-	    var app_files = getFiles(app_path);	   
-
-	    var files = {};
+	    var app_files = getFiles(app_path);	
+	   	var files = {};
 	    files.modules = bridge_files.modules.concat(app_files.modules); 
 	    files.js_files = bridge_files.js_files.concat(app_files.js_files);
-	    files.css_files = bridge_files.css_files.concat(app_files.css_files); 	     
-		response.send(JSON.stringify(files));		
-	});		
+	    files.css_files = bridge_files.css_files.concat(app_files.css_files);  
+
+	    if (typeof request.query.format == "undefined")
+	    {
+	    	response.setHeader('Content-Type', 'text/plain;');						    	   
+			response.send(JSON.stringify(files));		
+		}
+		else if( request.query.format == "js")
+		{
+			var js = "";			
+			for( var i = 0; i < files.js_files.length; i++)
+			{
+				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.js_files[i]), 'utf8').toString();
+				js = js + data;			
+			}
+			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+			response.send(js);		
+		}
+		else if( request.query.format == "css")
+		{
+			var css = "";			
+			for( var i = 0; i < files.css_files.length; i++)
+			{
+				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.css_files[i]), 'utf8').toString();
+				css = css + data;			
+			}
+			response.setHeader('Content-Type', 'text/css; charset=utf-8');
+			response.send(css);	
+		}
+	});	
 
 	//ms-exchange calendar data request
 	if( local )

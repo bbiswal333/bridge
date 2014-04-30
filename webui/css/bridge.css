@@ -46,6 +46,10 @@ img {
     pointer-events: none;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+        
 .tab-active {
     left: -1px;
     width: 36px;
