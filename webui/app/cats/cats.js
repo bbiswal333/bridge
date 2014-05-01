@@ -1,8 +1,7 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, encodeForUrl, calUtils) {
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
-    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;
-    //var TASKS_WEBSERVICE = "http://localhost:8000/worklist.json";
+    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
 
     var catsDataCache = null;
@@ -10,7 +9,11 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
     function _requestCatsData(callback_fn) {
       _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) {
-        callback_fn(data.CATSCHK);
+        if (data != null) {
+          callback_fn(data.CATSCHK);
+        } else {
+          callback_fn();
+        };
       });
     }
 
@@ -32,20 +35,23 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       weekNo.weekNo = calUtils.useNDigits(weekNo.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
 
       _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {
-      //_httpRequest("http://localhost:8000/cats_alloc.json", function(data, status) {
+        if (!data){
+          return;
+        }
         var records = data.TIMESHEETS.RECORDS;
  
         for (var i = 0; i < records.length; i++) {
           var record = records[i];
           var task = {};
           task.tasktype = record.TASKTYPE;
-          task.objguid = (record.ZCPR_OBJGUID == "") ? task.tasktype : record.ZCPR_OBJGUID;
-          task.objgextid = (record.ZCPR_OBJGEXTID == "") ? task.tasktype : record.ZCPR_OBJGEXTID;
           task.taskDesc = (record.taskDesc == "") ? task.tasktype : record.DESCR;
           task.projDesc = (record.projDesc == "") ? task.tasktype : record.ZCPR_EXTID;
+          task.record = record;
 
           var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
-          task.quantity = parseFloat(record.DAYS[dayOfWeek].QUANTITY);
+          record.booking = record.DAYS[dayOfWeek];
+          delete record.DAYS;
+          task.quantity = parseFloat(record.booking.QUANTITY);
 
           //Only add to list when time has been spent on this task
           if (!isNaN(task.quantity)) {
@@ -77,26 +83,38 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         //Add prefdefined tasks (ADMI & EDUC)
         tasks.push({
-          objguid: "ADMI",
-          objgextid: "ADMI",
-          taskDesc: "ADMI",
-          projectDesc: "Administrative"
+            data: {
+                RAUFNR: "",
+                ZCPR_OBJGEXTID: "",
+                ZCPR_EXTID: "",
+                TASKTYPE: "ADMI",
+            },
+            taskDesc: "ADMI",
+            projectDesc: "Administrative"
         });
 
         tasks.push({
-          objguid: "EDUC",
-          objgextid: "EDUC",
-          taskDesc: "EDUC",
-          projectDesc: "Personal education"
+            data: {
+                RAUFNR: "",
+                ZCPR_OBJGEXTID: "",
+                ZCPR_EXTID: "",
+                TASKTYPE: "EDUC",
+            },
+            taskDesc: "EDUC",
+            projectDesc: "Personal education"
         });
 
+        if (!data){
+          return;
+        }
         var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};
-          task.objguid = nodes[i].ZCPR_OBJGUID;
-          task.objgextid = nodes[i].ZCPR_OBJGEXTID;
+          task.OBJGUID = nodes[i].ZCPR_OBJGUID;
+          task.OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.projectDesc = nodes[i].DISPTEXTW1;
           task.taskDesc = nodes[i].DISPTEXTW2;
+          task.data = nodes[i];
 
           tasks.push(task);
         }

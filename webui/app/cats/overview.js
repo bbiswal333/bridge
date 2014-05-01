@@ -5,7 +5,9 @@ angular.module("app.cats").directive("app.cats",
 	    var controller = ['$scope', function ($scope) {
 	        $scope.boxTitle = "CATS Compliance";
 	        $scope.boxIcon = '&#xe81c;';
+	        $scope.boxIconClass = 'icon-clock-o';
 	        $scope.boxNeedsClient = false;
+	        $scope.boxSize = "2";
 	    }];
 
 	    return {

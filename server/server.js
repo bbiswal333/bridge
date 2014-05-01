@@ -1,34 +1,48 @@
-var http		= require('http');
+var https		= require('https');
 var path        = require('path');
+var fs          = require('fs');
 var sso 		= require('./sso.js');
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
-var exec        = require('child_process').exec;
 
-exports.run = function(npm)
+exports.run = function(npm, port)
 {	
-	var port        = param.get("port", 8000);
-	var proxy       = param.get("proxy", true);
-	var local       = param.get("local", true);	
+	var proxy = param.get("proxy", true);
+	var local = param.get("local", true);
+
+	helper.checkErrorFileSize();
 
 	function start_server(user)
 	{
 		var express = require("express");
-		var app 	= express();
+		var app 	= express();		
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
-		api.register(app, user, local, proxy, npm);
-				
-		http.createServer(app).listen(port, "127.0.0.1");			
-
+		app.use(express.bodyParser());
+	    
+		var options = {
+		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),
+		    cert: fs.readFileSync(path.join(__dirname, 'bridge.crt'))
+		};
+		
+		var server = https.createServer(options, app);		
+		api.register(app, user, local, proxy, npm);	 	
+		server.listen(port, "127.0.0.1");		
+		
 		helper.printConsole(port);		
 		helper.handleException(port);		
+		
+		if (typeof webkitClient !== 'undefined' && webkitClient) 
+		{
+		    webkitClient.serverStarted();
+		}		
+		
 		if(!local)
 		{
-			exec('forever restart updater', function (error, stdout, stderr) {
+			helper.wrappedExec('forever restart updater', function (error, stdout, stderr) {
 				console.log('..restarted updater');			
 			});
 		}
@@ -50,5 +64,5 @@ exports.run = function(npm)
 }
 
 if(require.main === module){ 	
-	exports.run('npm'); 
+	exports.run('npm', 8000); 
 }

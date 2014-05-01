@@ -16,6 +16,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 			$scope.boxTitle = "Meetings";
 			$scope.boxIcon = '&#xe823;';
+			$scope.boxIconClass = 'icon-meeting-o';
 			$scope.boxNeedsClient = true;
 			$scope.events = [];
 			$scope.loading = true;
@@ -43,7 +44,8 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
 					try{
 						eventsRaw = {};
-						eventsRaw = data["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
+					    //eventsRaw = data["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
+						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 						if (typeof eventsRaw != "undefined") {
 							parseExchangeData(eventsRaw);
 						}

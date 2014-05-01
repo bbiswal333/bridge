@@ -1,6 +1,6 @@
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
-var exec        = require('child_process').exec;
+var helper = require('./helper.js');
 
 exports.run = function(npm)
 {	
@@ -10,7 +10,7 @@ exports.run = function(npm)
 
 	function update_repo()
 	{
-		exec('cd /srv/bridge/ && git pull origin master && forever restart server', function (error, stdout, stderr) {
+		helper.wrappedExec('cd /srv/bridge/ && git pull origin master && forever restart server', function (error, stdout, stderr) {
 			console.log('updated');			
 		});
 

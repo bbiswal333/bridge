@@ -23,7 +23,6 @@ angular.module('bridge.app', [
     'app.employeeSearch', 
     'app.meetings',
     'app.cats',
-    'app.wire',
     'app.sapedia',
     'app.imtl',
     'app.lunchWalldorf',
@@ -45,9 +44,18 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload",
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', "bridge.service.bridgeDownload", 
     function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeDownloadService) {
+        $scope.bridgeConfig = bridgeConfig;
         
+        $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
+            if( newValue !== oldValue)
+            {
+                var _paq = _paq || [];
+                _paq.push(['trackPageView', newValue]);
+            }
+        });
+
         $scope.getSidePane = function(){
             return $scope.sidePanel;
         }
@@ -71,7 +79,13 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $scope.bridge_github_click = function () {
-            $window.open("https://github.wdf.sap.corp/bridge/bridge");
+            $scope.sidePanel = 'view/bridgeGithub.html';
+            if($scope.sideView == "github" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "github";    
+            //$window.open("https://github.wdf.sap.corp/bridge/bridge");
         }
 
         $scope.bridge_hide_settings = function(){
@@ -81,7 +95,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 
-        $http.get('http://localhost:8000/client').success(function (data, status) {
+        $http.get(window.client.origin + '/client').success(function (data, status) {
             $scope.client = true;
         }).error(function (data, status, header, config) { 
             $scope.client = false;     
@@ -111,12 +125,13 @@ angular.module('bridge.app').controller('bridgeController',
 
 
         $scope.toggleDragging = function(){
-            if( !$scope.sortableOptions.disabled )
+            /*if( !$scope.sortableOptions.disabled )
             {
               bridgeConfig.config.bridgeSettings.apps = $scope.apps; 
               bridgeConfig.persistInBackend(bridgeDataService.boxInstances);  
             }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;*/
+            $scope.sortableOptions.disabled = true; //until it works this is diabled ;-) !!!
         };
 
         $scope.settings_click = function (boxId) {
@@ -134,17 +149,6 @@ angular.module('bridge.app').controller('bridgeController',
             document.getElementById('overview-button').classList.remove('selected');
             document.getElementById('projects-button').classList.add('selected');
         };
-        $scope.$on('changeBoxSizeReceived', function(event,size,boxId){
-            console.log(size,boxId);
-            console.log($scope.apps);
-            for (var i = $scope.apps.length - 1; i >= 0; i--) {
-                if($scope.apps[i].id == boxId)
-                {
-                    $scope.apps[i].size = "box-"+size;
-                    break;
-                }                                                    
-            };
-        });
 
         $scope.$watch('apps', function()
         {
@@ -233,9 +237,9 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
     });   
-    $rootScope.$on("changeBoxSize", function (event, size, boxId) {           
-            $rootScope.$broadcast('changeBoxSizeReceived', size, boxId);
-        }); 
+    $rootScope.$on("refreshApp", function (event, args) {
+        $rootScope.$broadcast('refreshAppReceived', args);
+    });
 
     var deferred = $q.defer();
     var promise = bridgeConfig.loadFromBackend(deferred);
@@ -302,3 +306,5 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootSc
     };
 
 }]);
+
+ 

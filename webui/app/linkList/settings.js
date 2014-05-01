@@ -39,8 +39,7 @@ angular.module('app.linkList').appLinkListSettings =
 
     $scope.setBoxSize = function(size)
     {
-    	$rootScope.$emit("changeBoxSize", size,$scope.boxScope.boxId);
-    	$scope.boxScope.size = "box-"+size;
+        $scope.boxScope.boxSize = size;
     };
     $scope.addLinkList = function()
     {

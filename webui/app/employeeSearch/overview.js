@@ -5,6 +5,8 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ()
     var directiveController = ['$scope', 'bridgeCounter', function ($scope, bridgeCounter) {
         $scope.boxTitle = "Employee Search";
         $scope.boxIcon = '&#xe818;';
+        $scope.boxIconClass = 'icon-user-o';
+        $scope.boxSize = "2";
         bridgeCounter.CollectWebStats('EMPLOYEE_SEARCH', 'APPLOAD');
     }];
 

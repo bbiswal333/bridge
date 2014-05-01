@@ -11,7 +11,7 @@
     <div style="padding-left: 10px; padding-right: 10px">
         <table>
             <td>
-                <img style=" border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;" ng-src="http://avatars.wdf.sap.corp:1080/avatar/{{match.model.BNAME}}?s=25x25"></img>&nbsp&nbsp
+                <img style=" border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;" ng-src="https://avatars.wdf.sap.corp/avatar/{{match.model.BNAME}}?s=25x25"></img>&nbsp&nbsp
             </td>
             <td>
                 <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
@@ -34,8 +34,8 @@
 </script>
 
 <!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
-<input ng-if="setRequired" required class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" style="height:30px"/>
+<input ng-if="setRequired" required class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" />
     
-<input ng-if="!setRequired" class="form-control" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" style="height:30px" />    
+<input ng-if="!setRequired" class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
+    typeahead-template-url="itemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)"  />    

@@ -35,21 +35,21 @@ describe("This suite tests various date operations", function () {
 	});
 
 	it ("Friday after 2pm returns null date object", function () {
-		//var scope.InvalidLunchMenu = false;
 		expect(
 			dataProcessor.getDateToDisplay(new Date(2014,02,28,14)).getDay()).toBe(
 			new Date(2014,02,28,14).getDay());
 	});
 
-	it ("Should set valid date flag to false Friday after 2pm", function(){
-		expect(dataProcessor.getValidDateFlag(new Date(2014,02,28,14))).toBe(false);
+	it ("Should set valid date flag to true for Friday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,28))).toBe(true);
 	});
-
-	it ("Should set valid date flag to false Saturday before 2pm", function(){
-		expect(dataProcessor.getValidDateFlag(new Date(2014,02,29,10))).toBe(false);
+	it ("Should set valid date flag to false for Saturday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,29))).toBe(false);
 	});
-
-	it ("Should set valid date flag to false Sunday before 2pm", function(){
-		expect(dataProcessor.getValidDateFlag(new Date(2014,02,30,10))).toBe(false);
+	it ("Should set valid date flag to false for Sunday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,30))).toBe(false);
+	});
+	it ("Should set valid date flag to true for Monday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,31))).toBe(true);
 	});
 });

@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 	<head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 		<!-- script tag triggers request to our counter. We do not care about the response -->
 		<script type="text/javascript" src="https://ifp.wdf.sap.corp:443/sap/bc/zxa/COLLECT_WEB_STATS?URL=root&SECTION=BROWSER_NOT_SUPPORTED&ACTION=PAGELOAD"></script>
 	    <!-- global variables -->
@@ -8,8 +10,9 @@
         	window.feature_check = [];
     	</script>
         
-        <script src="lib/modernisz-2_7_1/modernizr.js"></script>
+        <script src="lib/modernizr-2_7_1/modernizr.js"></script>
         <script src="browser.js"></script>
+        <script src="bridge/piwik.js"></script>
         <link href="css/bridge.css" rel="stylesheet" />
         <link href="css/animation.css" rel="stylesheet" />
 
@@ -22,6 +25,7 @@
 			If you would like to use bridge, please use an <b>updated version</b> of a browser supporting the following features to enjoy a rich user experience.<br /><br />
 			
 				<script type='text/javascript'>
+					_paq.push(['trackPageView', "browser_not_supported"]);
 					for( var i = 0; i < window.feature_check.length; i ++ )
 					{
 						document.write('<span class="feature_check_' + window.feature_check[i].test + 
@@ -32,7 +36,10 @@
 
 				</script>							
 
-				<br /><br />
+				<br />
+                
+                If you are using Internet Explorer, please make sure to deactivate the compatibility mode for Bridge. This mode is activated in Intenet Explorer by default for all SAP internal sites.
+                <br /><br />
 
 				We suggest to use the most recent version of one of the following browsers.<br /><br />
 

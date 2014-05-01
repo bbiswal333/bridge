@@ -1,7 +1,9 @@
-exports.printConsole = function(port)
-{	
-	var clc = require('cli-color');
-	console.log(clc.reset);
+var fs = require('fs');
+var exec = require('child_process').exec;
+var path = require('path');
+
+exports.printConsole = function (port)
+{		
 	console.log('   ____         _      _                ');
 	console.log('  |  _ \\       (_)    | |               ');
 	console.log('  | |_) | _ __  _   __| |  __ _   ___   ');
@@ -10,9 +12,7 @@ exports.printConsole = function(port)
 	console.log('  |____/ |_|   |_| \\__,_| \\__, | \\___|  ');
   	console.log('	                   __/ |        ');
 	console.log('                          |___/         ');
-	console.log('                                        ');	
-	console.log('');	
-	console.log(clc.greenBright('Please keep this window open and refresh Bridge in your browser!'));		
+	console.log('                                        ');		
 }
 
 exports.handleException = function(port)
@@ -31,4 +31,31 @@ exports.handleException = function(port)
 		}
 		process.exit(1);
 	});	
-}		
+}
+
+var errorLogfile = path.join(__dirname, '/error.log'); 
+exports.logError = function (message) {
+    fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
+    console.log(message);
+}
+exports.checkErrorFileSize = function() {
+    if (fs.existsSync(errorLogfile)) {
+        var fileStats = fs.statSync(errorLogfile);
+
+        // logfileSize bigger than 2 MB -> delete
+        if (fileStats.size > 2 * 1024 * 1024) {
+            fs.unlinkSync(errorLogfile);
+        }
+    }
+}
+
+exports.wrappedExec = function (execString, callbackFn) {
+    exec(execString, function (error, stdout, stderr) {
+        if (error == null) {
+            callbackFn(error, stdout, stderr);
+        } else {
+            exports.logError(error);
+            callbackFn(error, stdout, stderr);
+        }
+    });
+}

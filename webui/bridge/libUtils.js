@@ -143,15 +143,8 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return cal;
     };
 
-    this.getLengthOfMonth = function(year_i, month_i) {
-        var days = 28;
-        while (true) {
-            var d = new Date(year_i, month_i, days + 1);
-            if (d.getMonth() != month_i) {
-                return days;
-            }
-            days++;
-        }
+    this.getLengthOfMonth = function(year, month) {
+        return new Date(year, month + 1, 0).getDate();
     };
 
     this.relativeTimeTo = function(dateFrom_o, dateTo_o, short_b) {
@@ -323,6 +316,43 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         res.weekNo = 1;
         res.year = parseInt(yearOne) + 1;
         return res;
+    };
+
+    this.getUTC = function(year, month, date) {
+        if (!arguments || arguments.length == 0) {
+            var today = new Date();
+            return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+        }
+
+        return new Date(Date.UTC(year, month, date));
+    }
+
+    this.substractMonths = function (date, months) {
+        var newDate = date.getUTCDate();
+        if (newDate > this.getLengthOfMonth(date.getUTCFullYear(), date.getUTCMonth() - months))
+            newDate = this.getLengthOfMonth(date.getUTCFullYear(), date.getUTCMonth() - months);
+
+        return this.getUTC(date.getUTCFullYear(), date.getUTCMonth() - months, newDate);
+    };
+
+    this.transformDateToABAPFormat = function (date) {
+        return date.getFullYear() + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + this.toNumberOfCharactersString(date.getDate(), 2);
+    };
+
+    this.transformDateToABAPFormatWithHyphen = function (date) {
+        return date.getFullYear() + "-" + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + "-" + this.toNumberOfCharactersString(date.getDate(), 2);
+    };
+
+    this.toNumberOfCharactersString = function(str, numberOfCharacters) {
+        var result = str.toString();
+        while (result.length < numberOfCharacters) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    this.moveDateToFirstDayInMonth = function (date) {
+        return this.getUTC(date.getUTCFullYear(), date.getUTCMonth(), 1);
     };
 
     //Factory-method of provider

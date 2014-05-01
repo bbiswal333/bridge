@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="bridge.app">
+<html lang="en" ng-app="bridge.app" ng-controller="bridgeController">
 <head>
+    <!-- browser compatibility  -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <!-- global variables -->
     <script type='text/javascript' > 
         window.feature_check = [];
     </script>
-
-    <!-- browser compatibility  -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- browser test -->
     <script src="lib/modernizr-2_7_1/modernizr.js"></script>
@@ -19,6 +19,9 @@
     <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
 
     <!-- css -->
+    <!--<link ng-if="!bridgeConfig.noBackgroundImage" href="css/background-image.css" rel="stylesheet" />
+    <link ng-if="bridgeConfig.noBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />-->
+    <link href="css/background-stripes.css" rel="stylesheet" />
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
 
@@ -26,14 +29,22 @@
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
 
-    <script src="lib/angular-1_2_13/angular.min.js"></script>
+    <!--<script src="lib/angular-1_2_13/angular.min.js"></script>-->
+    <script src="lib/angular-1_2_13/angular.js"></script>
     <script src="lib/angular-1_2_13/angular-route.min.js"></script>
     <script src="lib/angular-1_2_13/angular-resource.min.js"></script>
     <script src="lib/angular-1_2_13/angular-animate.min.js"></script>
     <script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>
+    <script src="bridge/piwik.js"></script>
+    <script src="lib/xml2json.js"></script>
 
     <!-- icon -->
     <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
+    <!--<link href="css/fonts/bridge-icons-codes.css" rel="stylesheet" />
+    <link href="css/fonts/bridge-icons-embedded.css" rel="stylesheet" />
+    <link href="css/fonts/bridge-icons-ie7-codes.css" rel="stylesheet" />
+    <link href="css/fonts/bridge-icons-ie7.css" rel="stylesheet" />-->
 
     <!-- external packed libs -->
     <script src="lib/linq-2_2_0_2/linq.min.js"></script>
@@ -52,6 +63,7 @@
     <script src="bridge/bridgeSettingsController.js"></script>
     <script src="bridge/bridgeMainSettingsController.js"></script>
     <script src="bridge/bridgeDownloadController.js"></script>
+    <script src="bridge/bridgeGithubController.js"></script>
     <script src="bridge/bridgeDataService.js"></script>
     <script src="bridge/bridgeConfigService.js"></script>
     <script src="bridge/bridgeCounterService.js"></script>
@@ -62,7 +74,6 @@
     <script src="bridge/notifier.js"></script>
     <!-- app -->
     <script src="app/im/overview.js"></script>
-    <script src="app/im/im.js"></script>
     <script src="app/im/detail.js"></script>
     <script src="app/im/settings.js"></script>
     <script src="app/im/config.js"></script>
@@ -76,14 +87,14 @@
     <script src="app/jira/overview.js"></script>
     <script src="app/jira/JiraBox.js"></script>
     <script src="app/jira/detail.js"></script>
+    <script src="app/jira/settings.js"></script>
     <script src="app/employeeSearch/overview.js"></script>
     <script src="app/meetings/ews.js"></script>
     <script src="app/meetings/overview.js"></script>
     <script src="app/cats/cats.js"></script>
     <script src="bridge/libUtils.js"></script>
     <script src="app/cats/overview.js"></script>
-    <script src="app/cats/cats.calendar.js"></script>
-    <script src="app/wire/overview.js"></script>
+    <script src="app/cats/cats.calendar.js"></script>    
     <script src="app/sapedia/overview.js"></script>
 	
 	<!--Demo--> 
@@ -121,15 +132,18 @@
     
     <script src="app/cats/detail/allocationBar/svg.foreignObject.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css">
-    <link rel="stylesheet" type="text/css" href="app/cats/style.css">
+    <link rel="stylesheet" type="text/css" href="app/cats/detail/style.css" />
+    <link rel="stylesheet" type="text/css" href="app/cats/style.css" />
+
+    <!--<link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
+    <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />-->
+    <link rel="stylesheet" type="text/css" href="app/cats/style-background-stripes.css" />
     <title>Bridge</title>
 </head>
 
 
 
-<body ng-controller="bridgeController" class="noselect">
-
+<body class="noselect">    
     
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished">
         <div class="mainPageBackground">
@@ -159,12 +173,11 @@
                     </div>
                 </div>
 
-                <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">
-                
-                    <div class="settingsButton" title="Open Settings" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()">&#xe00c;</div>
-                    <div class="settingsButton" title="Give Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="glyphicon glyphicon-heart"></span></div>
-                    <div class="settingsButton" title="Visit us on Github" style="font-family: 'bridge_icons'; font-size: 20px; position: relative; top: -1px;"  ng-bind="'&#xe80d;'|decodeIcon" ng-click="bridge_github_click()"></div>
-                    <div ng-if="!client" class="settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()">&#xe03a;</div>
+                <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);">                
+                    <div class="settingsButton" title="Open Settings" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()">&#xe00c;</div>                    
+                    <div class="settingsButton" title="Give Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="icon-heart"></span></div>                    
+                    <div class="settingsButton" title="Collaborate on GitHub" style="font-size: 20px; position: relative; top: -1px;"  ng-class="{'tab-active':sideView=='github', 'tab-inactive':sideView!='github'}" ng-click="bridge_github_click()"><span class="icon-github-circled"></span></div>
+                    <div ng-if="!client" class="settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()"><span class="icon-download"></span></div>
                     <div style="height:100%;" ng-click="bridge_hide_settings()"></div>
                 </div>
 

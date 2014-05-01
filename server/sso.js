@@ -1,7 +1,6 @@
 var fs           = require('fs');
 var path         = require('path');
-var exec         = require('child_process').exec;
-
+var helper       = require('./helper.js');
 
 function getSSOCertSerialNumber(error, stdout, stderr) {
     var SSOCertificateFound = false;
@@ -123,7 +122,7 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
 
     if(process.platform == "win32") {
 		// removed -v option, we don't need verbose output
-    	exec("certutil -store -user my", function (error, stdout, stderr) {
+        helper.wrappedExec("certutil -store -user my", function (error, stdout, stderr) {
     	    var serialNumber = getSSOCertSerialNumber(error, stdout, stderr);
     	    var SSOCertificatePath = path.join(__dirname, '/SSOCert.pfx');
 
@@ -133,10 +132,10 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
                 return;
             }
 
-    	    exec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {            
-    	        user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
-    	        var deleteCommand = 'del "' + SSOCertificatePath + '"';
-    	        exec(deleteCommand, function (error, stdout, stderr) { });
+            helper.wrappedExec("certutil -f -user -p " + SSOCertificatePassphrase + " -exportPFX " + serialNumber + " \"" + SSOCertificatePath + "\"", function (error, stdout, stderr) {
+                user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
+                var deleteCommand = 'del "' + SSOCertificatePath + '"';
+                helper.wrappedExec(deleteCommand, function (error, stdout, stderr) { });
                 callback(user);
     	    });
     	});
@@ -146,44 +145,23 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     	var SSOKeyPath         = path.join(__dirname, '/SSOCert.key');
     	var SSOCertPath        = path.join(__dirname, '/SSOCert.cert');
     	
-        exec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath+ "' -f pkcs12", function(error, stdout, stderr)
-        {   	       	
-            exec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr)
-            {
-            	var identity = getIdentityFromPemBags( getPemBags( fs.readFileSync(SSOPemPath).toString() ) );
+    	helper.wrappedExec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath + "' -f pkcs12", function (error, stdout, stderr)
+        {
+    	    helper.wrappedExec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function (error, stdout, stderr) {
+                var identity = getIdentityFromPemBags(getPemBags(fs.readFileSync(SSOPemPath).toString()));
 
-            	fs.writeFileSync(SSOCertPath, identity.certificate.data);
-            	fs.writeFileSync(SSOKeyPath, identity.key.data);
-                user.id = identity.certificate.user;                
+                fs.writeFileSync(SSOCertPath, identity.certificate.data);
+                fs.writeFileSync(SSOKeyPath, identity.key.data);
+                
 
-            	exec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath + 
-                    "' -in '" + SSOCertPath+ "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function(error, stdout, stderr)
-                {
-            		user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
-            		var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
-            		exec(deleteCommand, function (error, stdout, stderr) { });	
-
-                    exec("security find-generic-password -a " + identity.certificate.user.toLowerCase() + " -w", function(error, stdout, stderr)
-                    {
-                        if ( stderr.indexOf("SecKeychainSearchCopyNext") != -1)
-                        {
-                            exec("security find-generic-password -a " + identity.certificate.user.toUpperCase() + " -w", function(error, stdout, stderr)
-                            {
-                                console.log(stderr);
-                                var lines = stdout.toString().split('\n');
-                                user.pass = lines[0];
-                                callback(user);
-                            });
-                        }
-                        else
-                        {
-                            var lines = stdout.toString().split('\n');
-                            user.pass = lines[0];
-                            callback(user);
-                        }
-                    });      
-                });
-            } );
+                helper.wrappedExec("openssl pkcs12 -export -out '" + SSOCertificatePath + "' -inkey '" + SSOKeyPath +
+                    "' -in '" + SSOCertPath + "'" + " -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function (error, stdout, stderr) {
+                        user.SSOCertificate = fs.readFileSync(SSOCertificatePath);
+                        var deleteCommand = 'rm "' + SSOCertificatePath + '" "' + SSOPemPath + '" "' + SSOKeyPath + '" "' + SSOCertPath + '"';
+                        helper.wrappedExec(deleteCommand, function (error, stdout, stderr) { });                    
+                        callback(user);
+                    });
+            });
     	});
     }
 };

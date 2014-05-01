@@ -1,13 +1,17 @@
 <div ng-controller="mainSettingsController">
+<!--<h4>Background</h4>
+<input type="checkbox" class="regular-checkbox" ng-model="bridgeConfig.noBackgroundImage"><span style="position: relative; bottom: 13px; margin-left: 5px">No background image</span>
+    -->
+
 <h4>Notifications</h4>
 
 <div ng-if="notificationSupported == 'pleaseAsk'">
 Notification are not configured.<br>
-<button class="btn btn-default" ng-click="requestPermission();">Activate</button>
+<button class="btn btn-default btn_margin" ng-click="requestPermission();">Activate</button>
 </div>
 <div ng-if="notificationSupported === true">
 Notifications are activated<br>
-<button class="btn btn-default" ng-click="testNotification();">Test</button><br><br>
+<button class="btn btn-default btn_margin" ng-click="testNotification();">Test</button><br><br>
 </div>
 <div ng-if="notificationSupported === false">
 Notifications are deactivated<br><br>
@@ -21,12 +25,21 @@ Notifications are not supported.<br><br>
 
 <table>
   <tr ng-repeat="app in apps">   	   	
-  	<td style="padding-left: 5px; vertical-align: middle">
-    	<input type="checkbox" class="ng-pristine ng-valid" ng-model="app.show"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
-    </td>
+  	<td style="vertical-align: middle">
+	    <!--<input type="checkbox" class="ng-pristine ng-valid" ng-model="app.show"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
+	    -->
+	    <!-- test
+	    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn">{{app.boxTitle}}</button>
+	    -->
+    
+		    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn" style="text-align:left;">
+	    		<i class="box-icon {{app.boxIconClass}}" style="color:inherit;"></i>
+	    		<p class="box-title" >{{app.boxTitle}}</p>
+	    	</button>
+	</td>
   </tr>
 </table>
 
-<button class="btn btn-default" ng-click="saveConfig()">Save</button>
+<button class="btn btn-default btn_margin" ng-click="saveConfig()" style="margin-top:20px;">Save</button>
 
 </div>
