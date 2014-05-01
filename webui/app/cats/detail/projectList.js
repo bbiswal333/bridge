@@ -1,7 +1,8 @@
 angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data"]).directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", function (catsUtils, $timeout) {
   var linkFn = function ($scope) {
     $scope.items = [];
-    $scope.filterVal = "";
+    $scope.filter = {};
+    $scope.filter.val = "";
     $scope.loaded = false;
 
     loadProjects();
@@ -11,6 +12,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         config.direction = direction;
         config.autoResize = autoResize;
         return config;
+    }
+
+    $scope.onPressEnter = function(){
+      if (event.which === 13) {
+        document.getElementById("projectButton").focus();
+      };
     }
 
     $scope.toogleSelect = function (indx) {
@@ -29,14 +36,15 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].data.OBJGEXTID,
-          objguid_s: $scope.items[indx].data.OBJGUID
+          objgextid_s: $scope.items[indx].data.ZCPR_OBJGEXTID,
+          objguid_s: $scope.items[indx].data.ZCPR_OBJGUID
         });
       }
+      document.getElementById("filterTextfield").focus();
     };
 
     $scope.resetFilter = function () {
-      $scope.filterVal = "";
+      $scope.filter.val = "";
     };
 
     function loadProjects () {
@@ -47,7 +55,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           var found = false;
 
           for (var j = 0; j < $scope.blocks.length; j++) {
-              if (data[i].OBJGEXTID == $scope.blocks[j].data.OBJGEXTID && data[i].OBJGUID == $scope.blocks[j].data.OBJGUID) {
+              if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID &&
+                  data[i].ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
+                  $scope.blocks[j].value != 0  ) {
+                  
                   found = true;
               }
           }
@@ -69,9 +80,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       });
     };
 
-    /*$scope.$watch("blocks", function () {
+    $scope.$watch("blocks", function () {
       loadProjects();
-    }, true);*/
+    }, true);
   };
 
   return {

@@ -5,7 +5,7 @@
     $scope.boxScope = boxScope;
    
 
-    $scope.done_click = function () {
+    /*$scope.done_click = function () {
         $modalInstance.close();
-    };
+    };*/
 };

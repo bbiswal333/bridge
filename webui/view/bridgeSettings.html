@@ -32,14 +32,12 @@ Notifications are not supported.<br><br>
 	    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn">{{app.boxTitle}}</button>
 	    -->
     
-		    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn" style="text-align:left;">
-	    		<i class="box-icon {{app.boxIconClass}}" style="color:inherit;"></i>
-	    		<p class="box-title" >{{app.boxTitle}}</p>
+		    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.metadata.show];" ng-click="app.metadata.show = !app.metadata.show" class="btn btn-default settingsBtn" style="text-align:left;">
+	    		<i class="box-icon {{app.metadata.boxIconClass}}" style="color:inherit;"></i>
+	    		<p class="box-title" >{{app.metadata.boxTitle}}</p>
 	    	</button>
 	</td>
   </tr>
 </table>
-
-<button class="btn btn-default btn_margin" ng-click="saveConfig()" style="margin-top:20px;">Save</button>
 
 </div>

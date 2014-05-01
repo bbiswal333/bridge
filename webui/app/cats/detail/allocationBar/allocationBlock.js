@@ -29,12 +29,12 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
 
             divJQuery.append($("<div>").addClass('allocation-bar-block-name-div').text(desc_s).attr("title", desc_s));
             divJQuery.append($("<div>").addClass('allocation-bar-block-value-div'));
-            if (!this.isFixed) {
+            /*if (!this.isFixed) {
                 divJQuery.append($("<div>").addClass('allocation-bar-block-bin-div').hide().html('<span class="glyphicon glyphicon-remove"></span>').click(function () {
                     self.remove();
                     self.p.fireAllocChanged();
                 }));
-            }
+            }*/
             divJQuery.hover(function () {
                 if (!binFadedIn) $(this).children(".allocation-bar-block-bin-div").fadeIn();
                 binFadedIn = true;
@@ -81,7 +81,7 @@ angular.module("app.cats.allocationBar.core.block", []).factory("app.cats.alloca
         }
 
         function updateTextField() {
-            self.block.getChild(0).childNodes[1].innerText = self.getCurrentValue();
+            self.block.getChild(0).childNodes[1].textContent = self.getCurrentValue();
         }
 
         this.setHoverDragger = function(hover) {

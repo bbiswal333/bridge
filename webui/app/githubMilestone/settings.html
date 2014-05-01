@@ -31,20 +31,22 @@
 
 	<div class="row">
 		<div class="col-xs-1"><b>Milestone Duration</b></div>
- 			<form>
-   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="7"> 1 Week
-   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="14"> 2 Weeks 
-   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="21"> 3 Weeks 
-   				<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="28"> 4 Weeks <br/>
-  			</form>	
-  		</div>
-
-	<button class="btn btn-default" ng-click="save_click()">Save</button>
+ 		<form>
+   			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="7"> 1 Week
+   			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="14"> 2 Weeks 
+   			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="21"> 3 Weeks 
+   			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="28"> 4 Weeks <br/>
+  		</form>	
+  	</div>
 </form>
 
 
 </p>
 
-
+<div class="row">
+        <div class="col-xs-1 col-xs-offset-10">
+            <div class="btn btn-primary btn_blue" ng-click="save_click()">Save & Close</div>
+        </div>
+    </div>
 
 </div>

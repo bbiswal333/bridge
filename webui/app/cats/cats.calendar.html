@@ -10,14 +10,14 @@
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
 		<div class="app-cats-calendar">
-			<div class="app-cats-week-labels">
-				<div class="{{dayClass}}" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
+			<div class="app-cats-week-labels row">
+				<div class="{{dayClass}} col-xs-1-7" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
 			</div>
-			<div class="app-cats-week" ng-repeat="week in calArray">
-				<div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}} app-cats-state{{day.data.state}} clickable" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture, 'app-cats-today': day.today, 'selected_day': day.date.toDateString() == selectedDay.toDateString()}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString);">
+			<div class="app-cats-week row" ng-repeat="week in calArray">
+				<div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}} app-cats-state{{day.data.state}} clickable col-xs-1-7" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture, 'app-cats-today': day.today, 'selected_day': day.date.toDateString() == selectedDay.toDateString()}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString);">
 					<span ng-class="{'bold': day.date.toDateString() == selectedDay.toDateString()}">{{day.dayNr}}</span>
 				</div>
-				<div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
+				<div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats col-xs-1-7" ng-class="{'app-cats-notInMonth': !day.inMonth, 'app-cats-inFuture': day.inFuture}" title="No data available in CATS for this date.">
 					<span>{{day.dayNr}}</span>
 				</div>				
 			</div>

@@ -32,7 +32,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         }
     }
 
-    function includeStylesheet (path_s) {
+    /*function includeStylesheet (path_s) {
         //Check if stylesheet is already loaded
         if (document.querySelector("link[href=\"" + path_s + "\"]") == null) { 
             var elem = document.createElement("link");
@@ -53,7 +53,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         else {
             console.log("Stylesheet " + path_s + " already loaded.")
         }
-    } 
+    } */
 
     return {
         restrict: 'E',
@@ -64,11 +64,10 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
             if ($attrs.id) {
                 $scope.boxId = $attrs.id;
+                $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
 
-                if (!bridgeDataService.boxInstances[$attrs.id]) {
-                    bridgeDataService.boxInstances[$attrs.id] = {
-                        scope: $scope,
-                    };
+                if (!bridgeDataService.getAppById($attrs.id).scope) {
+                    bridgeDataService.getAppById($attrs.id).scope = $scope;
                 }
             }
             else {
@@ -77,22 +76,30 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
             var newElement = $compile("<" + $attrs.content + "/>")($scope);
             //Include custom stylesheet for directive
-            $scope.$watch("customCSSFile", function (val, oldVal, scope) {
+            /*$scope.$watch("customCSSFile", function (val, oldVal, scope) {
                 if (typeof val != "undefined") {
                     includeStylesheet($scope.customCSSFile);
                 }
-            });
+            });*/
 
             $element.children().children().next().append(newElement);
 
-            $scope.$watch("boxNeedsClient", function(val, oldVal, scope) {
+            $scope.$watch("boxNeedsClient", function (val, oldVal, scope) {
                 if (typeof val != "undefined") {
                     needsClient(val, $scope, $element);
-                }  
+                }
+            });
+
+            $scope.$watch("boxTitle", function (val, oldVal, scope) {
+                bridgeDataService.getAppById($attrs.id).metadata.boxTitle = $scope.boxTitle;
+            });
+
+            $scope.$watch("boxIconClass", function (val, oldVal, scope) {
+                bridgeDataService.getAppById($attrs.id).metadata.boxIconClass = $scope.boxIconClass;
             });
 
             if ($attrs.id) {
-                bridgeDataService.boxInstances[$attrs.id].element = newElement;
+                bridgeDataService.getAppById($attrs.id).element = newElement;
             }
         }
     };
