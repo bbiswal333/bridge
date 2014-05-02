@@ -26,12 +26,12 @@
                     <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                 </div>
                     <div class="app-linklist-editIcons" ng-show="isMouseOverRow">
-                    <span ng-click="deleteEntry($parent.$index,link)" class="app-linklist-clickIcon glyphicon glyphicon-trash"></span>
-                    <span ng-click="activateEdit(link)" class="app-linklist-clickIcon glyphicon glyphicon-pencil" ng-show="!link.editable"></span>       
+                    <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;"class="btn btn-default app-linklist-clickIcon glyphicon glyphicon-trash" ng-show="!link.editable"></span>
+                    <span ng-click="activateEdit(link)" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-pencil" ng-show="!link.editable"></span>       
                     
-                    <span ng-click="link.editable = false" class="app-linklist-clickIcon glyphicon glyphicon-ok" ng-show="link.editable"></span> 
+                    <span ng-click="link.editable = false" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-ok" ng-show="link.editable"></span> 
 
-                    <span ng-click="undoEdit(link)" class="app-linklist-clickIcon glyphicon glyphicon-remove" ng-show="link.editable"></span>
+                    <span ng-click="undoEdit(link)" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-remove" ng-show="link.editable"></span>
 
                     <button style="visibility:hidden"type="submit" class="glyphicon glyphicon-ok" ng-show="link.editable"></button>   
                 </div>

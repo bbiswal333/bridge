@@ -68,9 +68,6 @@
 	width: 100%;
 	height: 5px;
 }
-.save_close_btn{
-	margin-left: 88.333333%;
-}
 .app-linklist-categoryBar-1{
 	background-color: #097AC5;
 }
@@ -112,7 +109,7 @@
 	display: inline-block;
 	float: right;
 	clear:right;
-	width: 50px;
+	width: 85px;
 	padding-left:5px;
 	text-align: right;
 }
@@ -126,7 +123,7 @@
 	display: inline-block;
 	float: left;
 	overflow: hidden;
-	width: -moz-calc(100% - 55px);
-	width: -webkit-calc(100% - 55px);
-    width: calc(100% - 55px);
+	width: -moz-calc(100% - 90px);
+	width: -webkit-calc(100% - 90px);
+    width: calc(100% - 90px);
 }
