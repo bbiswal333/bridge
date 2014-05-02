@@ -153,6 +153,29 @@ exports.register = function(app, user, local, proxy, npm)
 		});
 	});
 
+	app.get('/api/client/get', function(request, response)
+	{
+		if (typeof webkitClient !== 'undefined' && webkitClient)
+            {                
+
+                webkitClient.jQuery.ajax({
+                    url: request.query.url, 
+                    type: "GET",                    
+                    success: 
+                        function(data)
+                        {                                        
+                            response.send(data);
+                        },
+                    error: 
+                        function() {
+                            response.send("error calling " + request.query.url);                            
+                        }
+                });
+
+            }  
+            else response.send("no client");      
+	});
+
 	//generic api call post
 	app.options("/api/post", function(request, response){
 		response = setHeader( request, response );	
@@ -253,25 +276,17 @@ exports.register = function(app, user, local, proxy, npm)
 		}
 		else if( request.query.format == "js")
 		{
-			var js = "";			
-			for( var i = 0; i < files.js_files.length; i++)
-			{
-				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.js_files[i]), 'utf8').toString();
-				js = js + data;			
-			}
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
+			buildify.concat(files.js_files);		
 			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
-			response.send(js);		
+			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
 		}
 		else if( request.query.format == "css")
 		{
-			var css = "";			
-			for( var i = 0; i < files.css_files.length; i++)
-			{
-				var data = fs.readFileSync( path.join(__dirname, '..', '/webui', files.css_files[i]), 'utf8').toString();
-				css = css + data;			
-			}
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
+			buildify.concat(files.css_files);				
 			response.setHeader('Content-Type', 'text/css; charset=utf-8');
-			response.send(css);	
+			response.send(buildify.cssmin().getContent());	
 		}
 	});	
 
