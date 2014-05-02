@@ -3,25 +3,27 @@
 <div ng-repeat="linkList in config.listCollection track by $index">
 <div class="col-md-4">
     <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
-    <span class="app-linkList-head app-linklist-clickIcon" ng-if="linkList.length == 0 && $index != 0" ng-click="removeLinkList($index)"><span class="glyphicon glyphicon-minus"></span> Remove Linklist</span> 
+    <span class="btn-default btn remove_btn" ng-if="linkList.length == 0 && $index != 0" ng-click="removeLinkList($index)">
+        Remove Linklist
+    </span> 
     <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
         
         <div class="row app-linkList-row" ng-repeat="link in linkList track by $index"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
             
             <form ng-submit="link.editable = false">
-                <div class=" col-xs-4">
+                <div class="no-padd col-xs-4 bold">
                     <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.name}}</span>
-                    <input ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
+                    <input ng-show="link.editable" type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
 
-                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.transaction" placeholder="Transaction" />
+                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
                 </div>
 
-                <div class="col-xs-8">
+                <div class="no-padd padd-left col-xs-8">
                 <div class="appLinklist-urlSetting">
                     <span ng-dblclick="activateEdit(link)" ng-show="!link.editable">{{link.url}} {{link.sid}}</span>
-                    <input ng-if="link.type=='hyperlink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.url" />
-                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.sid" />
-                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control input-sm" ng-model="link.parameters" placeholder="Parameters"/>
+                    <input ng-if="link.type=='hyperlink'" ng-show="link.editable" type="text" class="form-control form" ng-model="link.url" />
+                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control form" ng-model="link.sid" />
+                    <input ng-if="link.type=='saplink'" ng-show="link.editable" type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                 </div>
                     <div class="app-linklist-editIcons" ng-show="isMouseOverRow">
                     <span ng-click="deleteEntry($parent.$index,link)" class="app-linklist-clickIcon glyphicon glyphicon-trash"></span>
@@ -46,14 +48,14 @@
     <!---ADD FORM -->
     <div class="row app-linkList-row">
         <div class="col-xs-12">
-            <button ng-disabled="linkList.length >= 6" ng-click="toggleAddForm($index)" ng-class="{active: addForm[$index] != ''  && addForm[$index] != undefined}" type="button" class="btn btn-default btn-sm">New Link</button>
+            <button ng-disabled="linkList.length >= 6" ng-click="toggleAddForm($index)" ng-class="{btn_blue: addForm[$index] != ''  && addForm[$index] != undefined}" type="button" class="btn btn-default">New Link</button>
         </div>
     </div>
     <div class="row app-linkList-row" ng-show="addForm[$index] != ''  && addForm[$index] != undefined">
         <div class="col-xs-12">
             <div class="btn-group">
-                <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'web')" ng-class="{active: addForm[$index] == 'web'}" type="button" class="btn btn-default btn-sm">Web </button>
-                <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'gui')" ng-class="{active: addForm[$index] == 'gui'}" type="button" class="btn btn-default btn-sm">SAP GUI</button>
+                <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'web')" ng-class="{btn_blue: addForm[$index] == 'web'}" type="button" class="btn btn-default">Web </button>
+                <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'gui')" ng-class="{btn_blue: addForm[$index] == 'gui'}" type="button" class="btn btn-default">SAP GUI</button>
             </div>
         </div>
     </div>
@@ -61,19 +63,19 @@
     <form name="ConfigItemFormHyperlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'web'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.linkName" maxlength="20" placeholder="Name for the Link" autofocus />
+                <input type="text" class="form-control form" ng-model="currentConfigValues.linkName" maxlength="20" placeholder="Name for the Link" autofocus />
             </div>
         </div>
 
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="currentConfigValues.url" placeholder="URL" />
+                <input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL" />
             </div>
         </div>
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <button class="btn btn-primary btn-sm btn_blue " type="submit">Add</button>
-                <span class="btn btn-default btn-sm" ng-click="setAddForm($index,'')">Cancel</span>
+                <button class="btn btn-primary  btn_blue " type="submit">Add</button>
+                <span class="btn btn-default " ng-click="setAddForm($index,'')">Cancel</span>
             </div>
         </div>
     </form>
@@ -81,32 +83,32 @@
     <form name="ConfigItemFormSAPlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'gui'">
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkName" maxlength="20" placeholder="Name for the SAP GUI Link" autofocus />
+                <input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.sapLinkName" maxlength="20" placeholder="Name for the SAP GUI Link" autofocus />
             </div>
         </div>
 
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkSID" placeholder="SAP System ID" />
+                <input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sapLinkSID" placeholder="SAP System ID" />
             </div>
         </div>
 
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkTransaction" placeholder="Transaction" />
+                <input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.sapLinkTransaction" placeholder="Transaction" />
             </div>
         </div>
 
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <input type="text" class="form-control input-sm" ng-model="$parent.currentConfigValues.sapLinkParameters" placeholder="Parameters" />
+                <input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.sapLinkParameters" placeholder="Parameters" />
             </div>
         </div>
 
         <div class="row app-linkList-row">
             <div class="col-xs-12">
-                <button class="btn btn-primary btn-sm btn_blue " type="submit">Add</button>
-                <span class="btn btn-default btn-sm" ng-click="setAddForm($index,'')">Cancel</span>
+                <button class="btn btn-primary btn_blue " type="submit">Add</button>
+                <span class="btn btn-default" ng-click="setAddForm($index,'')">Cancel</span>
             </div>
         </div>
     </form>
@@ -114,12 +116,12 @@
 </div>
 </div>
 <div ng-if="config.listCollection.length < 3" class="col-md-4">
-<span class="app-linkList-head app-linklist-clickIcon" ng-click="addLinkList()"><span class="glyphicon glyphicon-plus"></span> Add new Linklist</span>
+    <span class="btn-default btn"  ng-click="addLinkList()"  style="margin-top:40px">Add new Linklist</span>
 </div>
 
     <div class="row">
         <div class="col-xs-1 col-xs-offset-10">
-            <div class="btn btn-primary btn_blue" ng-click="closeForm()">Save & Close</div>
+            <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
         </div>
     </div>
 </div>

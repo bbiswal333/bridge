@@ -50,6 +50,7 @@ angular.module('app.linkList').appLinkListSettings =
     	appLinklistConfig.listCollection.push([]);
     	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
     	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
+
     };
 
     $scope.removeLinkList = function(linkList)

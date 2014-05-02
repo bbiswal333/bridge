@@ -32,21 +32,45 @@
 	overflow: hidden;	
 }
 
+.no-padd{
+	padding-left: 0;
+	padding-right: 0;
+}
+.padd-right{
+	padding-left: 0;
+	padding-right: 7px;
+}
+.padd-left{
+	padding-left: 7px;
+	padding-right: 0;
+}
+.padd-left2{
+	padding-left: 7px;
+	padding-right: 0;
+}
+.padd-both{
+	padding-right: 3px;
+	padding-left: 3px;
+}
+.padd_bot{
+	margin-top: 10px;
+}
 .app-linkList-linkList {
 	min-height: 280px;
 }
 
 .app-linkList-hr{
 	border-top-width: 5px;
-	margin-top:5px; 
-	margin-bottom:5px; 
+
 }
 
 .app-linklist-categoryBar{
 	width: 100%;
 	height: 5px;
 }
-
+.save_close_btn{
+	margin-left: 88.333333%;
+}
 .app-linklist-categoryBar-1{
 	background-color: #097AC5;
 }
@@ -58,14 +82,16 @@
 }
 
 .app-linklist-categoryHead-1{
-	border-top: 4px solid #097AC5;
-
+	border-top: 5px solid #097AC5;
+}
+.remove_btn{
+	position: absolute;
 }
 .app-linklist-categoryHead-2{
-	border-top: 4px solid #5CCCFF;
+	border-top: 5px solid #5CCCFF;
 }
 .app-linklist-categoryHead-3{
-	border-top: 4px solid #AFE5FF;
+	border-top: 5px solid #AFE5FF;
 }
 .app-linklist-noOverflow{
 	overflow: hidden;
