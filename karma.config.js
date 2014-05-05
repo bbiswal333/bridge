@@ -23,6 +23,8 @@ module.exports = function(config) {
       './webui/lib/angular-1_2_13/angular.min.js',
       './webui/lib/**/*.js',
 
+      './webui/loader.js',
+
       './webui/bridge/bridgeController.js',
       './webui/bridge/bridgeDataService.js',
       './webui/bridge/**/*.js',
