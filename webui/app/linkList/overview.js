@@ -65,7 +65,9 @@ angular.module('app.linkList').directive('app.linkList',
                                 if(link.type == "saplink") 
                                 {
                                     link.sapGuiFile = appLinklistConfig.generateBlob(link.name,link.sid,link.transaction,link.parameters);
-                                }         
+                                }else if(link.type == "hyperlink" && (link.url.indexOf("http") == -1)){
+                                    link.url = "http://" + link.url;
+                                };
                             };   
                         };
                     }

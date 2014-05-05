@@ -162,6 +162,10 @@ angular.module('app.linkList').appLinkListSettings =
 		{
 			if($scope.addForm[colNo] == "web")
 			{
+				if($scope.currentConfigValues.url.indexOf("http") == -1){
+                    $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
+                };
+
 				entry = {
 					'name': $scope.currentConfigValues.linkName,
 					'url':  $scope.currentConfigValues.url,
