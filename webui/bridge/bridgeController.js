@@ -1,4 +1,4 @@
-angular.module('bridge.app', []).directive('errSrc', function() {
+angular.module('bridge.app').directive('errSrc', function() {
   return {
     link: function(scope, element, attrs) {
       element.bind('error', function() {
