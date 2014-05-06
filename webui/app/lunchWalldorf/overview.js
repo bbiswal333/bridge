@@ -3,7 +3,7 @@
   directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "bridgeCounter", function ($timeout, calUtils, dataProcessor, bridgeCounter) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
-        $scope.boxTitle = "Lunch Walldorf/ Rot";
+        $scope.boxTitle = "Lunch Wdf / Rot";
         $scope.boxIcon = '&#xe824;';
         $scope.boxIconClass = 'icon-meal';
         $scope.boxSize = "1";

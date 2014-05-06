@@ -2,17 +2,15 @@
 <p>
 <form name="ConfigItemForm">
 	<div class="row" style="margin-top:20px;">
-		<div class="col-xs-2">Repository URL</div>
- 		<div class="col-xs-6 has-feedback {{error.inputUrl}}" style="float:none">
+		<div class="col-xs-12 form_head">Repository URL</div>
+ 		<div class="col-xs-6 has-feedback {{error.inputUrl}}" >
  			<input type="text" class="form-control form"  ng-model="currentConfigValues.repo.html_url" placeholder="Repository URL" autofocus
  			 typeahead="searchResult for searchResult in getTypeaheadData()| limitTo:10 " typeahead-wait-ms="200"/>
 		</div>
-	</div>
-
-	<div class="row" style="margin-top:15px;">    
-		    <span ng-click="currentConfigValues.fork = !currentConfigValues.fork" style="text-align:left; margin-left:15px;" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.fork];">
+  
+		  <span ng-click="currentConfigValues.fork = !currentConfigValues.fork" style="text-align:left; margin-left:15px;" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.fork];">
 	    		Forked Repositories?
-	    	</span>
+	      </span>
 	</div>
 
 	<div class="row">
@@ -26,7 +24,7 @@
 	<p></p>
 
 	<div class="row">
-		<div class="col-xs-2" style="float:none;">Milestone Duration</div>
+		<div class="col-xs-2 form_head" style="float:none;">Milestone Duration</div>
  		<!--<form>
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="7"> 1 Week
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="14"> 2 Weeks 
@@ -45,10 +43,10 @@
 
 </p>
 
-<div class="row">
-        <div class="col-xs-1 col-xs-offset-10">
+
+        <div class="row" >
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
         </div>
-    </div>
+    
 
 </div>

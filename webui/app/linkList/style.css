@@ -1,5 +1,4 @@
 .app-linkList-row{
-	font-size: 12px;
 	padding-bottom: 8px;
 	margin-left: 0px;
 	margin-right: 0px;
@@ -56,9 +55,14 @@
 	margin-top: 10px;
 }
 .app-linkList-linkList {
-	min-height: 280px;
-}
 
+}
+.new_link_zero{
+	margin-top: 45px;
+}
+.new_link_zero_undo{
+	margin-top: 0;
+}
 .app-linkList-hr{
 	border-top-width: 5px;
 
@@ -115,7 +119,7 @@
 }
 
 .appLinklist-urlSetting{
-	max-height: 45px;
+
 	-o-text-overflow: ellipsis;   /* Opera */
  	 text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
  	white-space: nowrap;  

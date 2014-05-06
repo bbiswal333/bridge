@@ -23,7 +23,8 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.getSidePane = function(){
             return $scope.sidePanel;
         }
-
+        
+        /*
         $scope.bridge_settings_click = function(){
             $scope.sidePanel = 'view/bridgeSettings.html';
             if (!$scope.show_settings)
@@ -31,6 +32,16 @@ angular.module('bridge.app').controller('bridgeController',
             else
                 $scope.bridge_hide_settings();
             $scope.sideView = "settings";                        
+        }
+        */
+
+         $scope.bridge_settings_click =  function(){
+            $scope.sidePanel = 'view/bridgeSettings.html';
+            if($scope.sideView == "settings" || !$scope.show_settings)
+            {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "settings";            
         }
 
         $scope.bridge_feedback_click =  function(){

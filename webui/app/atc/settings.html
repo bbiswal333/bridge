@@ -1,6 +1,6 @@
 ﻿<div style="width: 100%; font-size:12px;">
-    <form name="newConfigItemForm">
-        <table style="margin-top: 45px">
+  <!--   <form name="newConfigItemForm">
+       <table style="margin-top: 45px">
             <tr>
                 <td style="vertical-align: middle; width: 150px; vertical-align: middle">
                     Source System
@@ -56,6 +56,45 @@
             </tr>
         </table>        
     </form>
+-->
+
+<form name="newConfigItemForm">
+      
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
+                 <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
+                 <span style="margin-left:15px;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>
+            </div>  
+           
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
+                <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
+                <span style="margin-left:15px;" ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>
+            </div>
+
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Object Responsible</span>
+                <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/> 
+                <div style="float:left;">
+                    <div class="btn-group" style="margin-left:15px;">
+                        <span ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
+                        <span ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio2];">Prio 2</span>
+                        <span ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio3];" >Prio 3</span>
+                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>
+                    </div>
+                </div>
+              </div>
+                    
+            
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head">AKH Component</span>
+                <input type="text" class="form-control form" style="width:25%;" ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+            </div>  
+
+             <div class="row" style="margin:25px 0 0 0;">
+                <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
+            </div>
+    </form>
 
     <table ng-table="tableParams" class="table tableTransparentBorder" style="text-align: center; margin-top: 45px;">
         <thead style="background-color: #ECECEC;">
@@ -67,7 +106,7 @@
                 <th>Display Suppressed</th>
                 <th>Ignore Completed</th>
                 <th>Priorities</th>
-                <th></th> <!-- Empty Head for functions -->
+                <th>Functions</th> <!-- Empty Head for functions -->
             </tr>
         </thead>
         <tbody>
@@ -94,16 +133,14 @@
                         <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
                     </span>
                 </td>
-                <td data-title="'Functions'" style="width:150px">
-                    <span style="width:20px; height:20px; float:none" ng-show="isMouseOverRow" class="settingsIcon" ng-click="remove_click(configItem)">&#xe03d;</span>
+                <td data-title="'Functions'">
+                    <span style="width:40px; float:none;margin:0 auto;display:block;" class="btn btn-default glyphicon glyphicon-remove" ng-click="remove_click(configItem)"></span>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <div class="row">
-        <div class="col-xs-1 col-xs-offset-10">
-            <div class="btn btn-primary btn_blue" ng-click="closeForm()">Save & Close</div>
-        </div>
+            <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
     </div>
 </div>

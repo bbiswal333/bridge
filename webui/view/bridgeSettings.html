@@ -1,43 +1,48 @@
 <div ng-controller="mainSettingsController">
-<!--<h4>Background</h4>
-<input type="checkbox" class="regular-checkbox" ng-model="bridgeConfig.noBackgroundImage"><span style="position: relative; bottom: 13px; margin-left: 5px">No background image</span>
-    -->
-
-<h4>Notifications</h4>
-
-<div ng-if="notificationSupported == 'pleaseAsk'">
-Notification are not configured.<br>
-<button class="btn btn-default btn_margin" ng-click="requestPermission();">Activate</button>
-</div>
-<div ng-if="notificationSupported === true">
-Notifications are activated<br>
-<button class="btn btn-default btn_margin" ng-click="testNotification();">Test</button><br><br>
-</div>
-<div ng-if="notificationSupported === false">
-Notifications are deactivated<br><br>
-</div>
-<div ng-if="notificationSupported === undefined">
-Notifications are not supported.<br><br>
-</div>
-
-
-<h4>Applications</h4>       
-
-<table>
-  <tr ng-repeat="app in apps">   	   	
-  	<td style="vertical-align: middle">
-	    <!--<input type="checkbox" class="ng-pristine ng-valid" ng-model="app.show"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
+	<div class="underline" style="margin-right:15px;">
+		<h4 class="box-title">Settings</h4>
+		<span class="settingsIcon" style="color:inherit!important;cursor:default!important;margin-right:0;"></span>
+	</div>
+	<!--<h4>Background</h4>
+	<input type="checkbox" class="regular-checkbox" ng-model="bridgeConfig.noBackgroundImage"><span style="position: relative; bottom: 13px; margin-left: 5px">No background image</span>
 	    -->
-	    <!-- test
-	    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn">{{app.boxTitle}}</button>
-	    -->
-    
-		    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.metadata.show];" ng-click="app.metadata.show = !app.metadata.show" class="btn btn-default settingsBtn" style="text-align:left;">
-	    		<i class="box-icon {{app.metadata.boxIconClass}}" style="color:inherit;"></i>
-	    		<p class="box-title" >{{app.metadata.boxTitle}}</p>
-	    	</button>
-	</td>
-  </tr>
-</table>
 
+	<div class="notifications" style="margin-top:15px;">
+		<div ng-if="notificationSupported == 'pleaseAsk'">
+			Notification are not configured.<br>
+			<button class="btn btn-default btn_blue btn_margin" ng-click="requestPermission();">Activate</button>
+		</div>
+		<div ng-if="notificationSupported === true">
+			Notifications are activated<br>
+			<button class="btn btn-default btn_margin" ng-click="testNotification();">Test</button><br><br>
+		</div>
+		<div ng-if="notificationSupported === false">
+			Notifications are deactivated<br><br>
+		</div>
+		<div ng-if="notificationSupported === undefined">
+			Notifications are not supported.<br><br>
+		</div>
+	</div>
+	<div class="applications">
+		<div class="underline" style="margin-right:15px;">	
+			<b class="box-title">Applications</b>   
+			<span class="settingsIcon icon-star-empty" style="color:inherit!important;cursor:default!important;margin-right:0;"></span>   
+		</div>
+		<table>
+		  <tr ng-repeat="app in apps">   	   	
+		  	<td style="vertical-align: middle">
+			    <!--<input type="checkbox" class="ng-pristine ng-valid" ng-model="app.show"><span style="position: relative; bottom: 13px; margin-left: 5px">{{app.content}}</span>
+			    -->
+			    <!-- test
+			    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.show];" ng-click="app.show = !app.show" class="btn btn-default settingsBtn">{{app.boxTitle}}</button>
+			    -->
+		    
+				    <button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.metadata.show];" ng-click="app.metadata.show = !app.metadata.show" class="btn btn-default settingsBtn" style="text-align:left;">
+			    		<i class="box-icon {{app.metadata.boxIconClass}}" style="color:inherit;"></i>
+			    		<p style="padding-top:5px;margin: 0 0 0 0;" >{{app.metadata.boxTitle}}</p>
+			    	</button>
+			</td>
+		  </tr>
+		</table>
+	</div>
 </div>

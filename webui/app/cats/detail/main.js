@@ -239,7 +239,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             BOOKINGS: [],
         };
         if(!$scope.workingHoursForDay) {
-            bridgeInBrowserNotification.addAlert('success','Nothing to submit as target hours are 0');
+            bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return;
@@ -283,12 +283,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }            
             if (!replyHasMessages) {
-                bridgeInBrowserNotification.addAlert('success','Data was saved successfully');
+                bridgeInBrowserNotification.addAlert('info','Well done! Data was saved successfully');
             }
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
         }).error(function(data, status, header, config) {
-            bridgeInBrowserNotification.addAlert('success',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            bridgeInBrowserNotification.addAlert('info',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
         });
     }
   }
