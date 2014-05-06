@@ -17,6 +17,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         appGithubMilestoneConfig.repo.api_url = api_url +'/'+full_name;
         appGithubMilestoneConfig.repo.html_url = copiedConfigItem.repo.html_url;
         appGithubMilestoneConfig.milestoneDuration = copiedConfigItem.milestoneDuration;
+        appGithubMilestoneConfig.fork = copiedConfigItem.fork;
 
         $scope.$emit('closeSettingsScreen');
     };//$scope.save_click
