@@ -146,7 +146,7 @@ function runWithPassphrase(SSOCertificatePassphrase, callback)
     	var SSOCertPath        = path.join(__dirname, '/SSOCert.cert');
     	
     	//helper.wrappedExec("security export -k login.keychain -t identities -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath + "' -f pkcs12", function (error, stdout, stderr)
-        console.log("cd " + __dirname + " && mac_keychain_identity/mac_keychain_identity -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath);
+        console.log("cd '" + __dirname + "' && mac_keychain_identity/mac_keychain_identity -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath);
         helper.wrappedExec("cd " + __dirname + " && mac_keychain_identity/mac_keychain_identity -P '" + SSOCertificatePassphrase + "' -o '" + SSOCertificatePath + "'", function (error, stdout, stderr)
         {
     	    helper.wrappedExec("openssl pkcs12 -in '" + SSOCertificatePath + "' -out '" + SSOPemPath + "' -passin pass:" + SSOCertificatePassphrase + " -passout pass:" + SSOCertificatePassphrase, function (error, stdout, stderr) {
