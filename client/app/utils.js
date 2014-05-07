@@ -43,6 +43,14 @@ function createTrayIcon() {
     tray.menu = menu;
 }
 
+function notifiy_started() {    
+    var settings = require('./package.json');
+    var notification_window = gui.Window.open('notification.html', 
+        { "show": settings.window.show, "frame": settings.window.frame, "toolbar": settings.window.toolbar, "width": settings.window.width, "height": settings.window.height, "focus": true } );  
+    notification_window.setPosition('center');  
+
+}
+
 function callBackend(hostname, port, path, method, callback) {
     var options = {
         hostname: hostname,
