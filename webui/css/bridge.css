@@ -553,7 +553,7 @@ input[type="checkbox"]:checked:after {
     box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
     border-radius: 0;
 }
-<<<<<<< HEAD
+
 .dropdown-menu > li > a:hover{
     background-color: inherit;
     color: white;
@@ -563,6 +563,4 @@ input[type="checkbox"]:checked:after {
     border-radius: 0;
     border:none;
 }
-=======
 
->>>>>>> Added button to arrage tiles in setting
