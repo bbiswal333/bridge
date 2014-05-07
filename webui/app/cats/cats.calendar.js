@@ -43,7 +43,16 @@
 	            console.log($scope.state);
 	        }
 
-	        $scope.jump = function (dayString) {
+	        $scope.jump = function (dayString, event) {
+	        	
+	        	var range_click = event.shiftKey;
+	        	var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
+	        	var single_click = !range_click && !multi_click;	        
+
+	        	console.log("RANGE:" + range_click);
+	        	console.log("MULTI:" + multi_click);
+	        	console.log("SINGLE:" + single_click);	        	
+
 	            $location.path("/detail/cats/" + dayString);
 	        };
 
