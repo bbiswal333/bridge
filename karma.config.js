@@ -48,7 +48,6 @@ module.exports = function(config) {
       './webui/app/employeeSearch/*.js',
 
       './webui/app/cats/overview.js',
-      './webui/app/cats/detail/allocationBar/svg.min.js',
       './webui/app/cats/**/*.js',
 
       './webui/app/atc/overview.js',
