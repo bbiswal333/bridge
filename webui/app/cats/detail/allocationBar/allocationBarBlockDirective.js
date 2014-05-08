@@ -53,6 +53,8 @@
             $scope.$watch("blockData.value", function () {
                 $scope.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
                 originalBlockWidth = $scope.blockWidth;
+
+                $scope.localValue = $scope.blockData.value
             });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"
