@@ -1,14 +1,13 @@
-angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.data", "app.cats.maintenanceView.projectSelector", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
+angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.data", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
   "$scope", 
   "$modal",
   "$routeParams",
   "$location",
   "lib.utils.calUtils",
   "app.cats.data.catsUtils",
-  "app.cats.maintenanceView.projectSelector",
   "$http",
   "bridgeInBrowserNotification",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector, $http, bridgeInBrowserNotification) {
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -24,15 +23,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                         
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
-    $scope.loadCATSDataForDay = function () {
+    function loadCATSDataForDay() {
         catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
-            $scope.displayCATSDataForDay(tasks);
+            displayCATSDataForDay(tasks);
         });
     };
 
-    $scope.loadCATSDataForDay();
+    loadCATSDataForDay();
 
-    $scope.displayCATSDataForDay = function (tasks) {
+    function displayCATSDataForDay(tasks) {
         $scope.lastCatsAllocationDataForDay = tasks;
         $scope.blockdata = [];
 
@@ -42,9 +41,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             for (var i = 0; i < tasks.length; i++) {
                 var task = tasks[i];
                 if (task.tasktype == "VACA")
-                    $scope.addBlock("Vacation", task.quantity, task.record, true);
+                    addBlock("Vacation", task.quantity, task.record, true);
                 else
-                    $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+                    addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
             }
             $scope.loaded = true;
         });
@@ -65,14 +64,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             UNIT: "T",
         };
         
-        return $scope.addBlock(desc_s, val_i, block, false);
+        return addBlock(desc_s, val_i, block, false);
     }
 
     $scope.handleProjectUnchecked = function (objgextid_s, objguid_s) {
-        $scope.removeBlock(objgextid_s, objguid_s);
+        removeBlock(objgextid_s, objguid_s);
     }
 
-    $scope.getByExtId = function (block) {
+    function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].data.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) || (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].data.TASKTYPE == block.TASKTYPE))
                 return $scope.blockdata[i];
@@ -80,7 +79,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return null;
     }
 
-    $scope.getVisibleLength = function () {
+    function getVisibleLength() {
         var visibleLength = 0;
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ($scope.blockdata[i].value) {
@@ -92,7 +91,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return visibleLength;
     };
 
-    $scope.adjustBarValues = function () {
+    function adjustBarValues() {
         // only ajust if all space is taken
         var total = 0;
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -103,31 +102,31 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ($scope.blockdata[i].value) {
-                $scope.blockdata[i].value = $scope.workingHoursForDay * (Math.floor(100 / ($scope.getVisibleLength() + 1)) / 100);
+                $scope.blockdata[i].value = $scope.workingHoursForDay * (Math.floor(100 / (getVisibleLength() + 1)) / 100);
             }
         }
     }
 
-    $scope.addBlock = function (desc_s, val_i, data, fixed) {
+    function addBlock(desc_s, val_i, data, fixed) {
 
-        var existingBlock = $scope.getByExtId(data);
+        var existingBlock = getByExtId(data);
         if (existingBlock != null) {
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
-                $scope.adjustBarValues();
-                existingBlock.value = Math.round($scope.hoursToMaintain() * 1000) / 1000;
+                adjustBarValues();
+                existingBlock.value = Math.round(hoursToMaintain() * 1000) / 1000;
                 return true;
             } else { // no need to add
-                $scope.adjustBarValues();
+                adjustBarValues();
                 return;
             };
         }
 
-        $scope.adjustBarValues();
+        adjustBarValues();
 
         if (val_i == null) {
             val_i = 8;
-            if (val_i > $scope.hoursToMaintain()) {
-                val_i = Math.round($scope.hoursToMaintain() * 1000) / 1000
+            if (val_i > hoursToMaintain()) {
+                val_i = Math.round(hoursToMaintain() * 1000) / 1000
             }
         }
 
@@ -141,7 +140,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return true;
     };
 
-    $scope.hoursToMaintain = function () {
+    function hoursToMaintain() {
         var sum = 0;
 
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -151,7 +150,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return $scope.workingHoursForDay - sum;
     };
 
-    $scope.removeBlock = function (objgextid_s, objguid_s) {
+    function removeBlock(objgextid_s, objguid_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
@@ -175,41 +174,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata = newBlockdata; 
     };
 
-    $scope.$watch("blockdata", function () {
-        console.log("Blockdata changed");
-
-    }, true);
-
     $scope.calcMinutes = function (perc) {
         console.log(perc);
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
-        //return calUtils.getTimeInWords(($scope.workingHoursForDay * 60) * (perc / 100), true); 
-    };
-
-    $scope.onAdd = function (posVal) {
-        console.log(projectSelector);
-        
-        var alreadySelectedTasks = [];
-        for (var i = 0; i < $scope.blockdata.length; i++) {
-            alreadySelectedTasks.push({
-                OBJGEXTID: $scope.blockdata[i].data.objgextid,
-                OBJGUID: $scope.blockdata[i].data.objguid
-            });
-        }
-
-        projectSelector.show(alreadySelectedTasks, function (selectedProjects) {
-            if (selectedProjects == null) {
-                //Toast or alert telling no tasks have been seleceted
-                return;
-            }
-
-            var val = posVal / selectedProjects.length;
-            console.log(posVal);
-            if ((1 / $scope.workingHoursForDay) * 100 * selectedProjects.length <= posVal) val = (1 / $scope.workingHoursForDay) * 100;
-            for (var i = 0; i < selectedProjects.length; i++) {
-                $scope.addBlock(selectedProjects[i].name, val, selectedProjects[i].data.OBJGEXTID, selectedProjects[i].data.OBJGUID);                
-            }
-        });
     };
 
     function setDay (date) {
@@ -229,7 +196,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     $scope.ResetToLastSavedState = function () {
-        $scope.displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
+        displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
     };
 
     $scope.writeCATSdata = function () {
@@ -240,7 +207,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         };
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
-            $scope.loadCATSDataForDay();
+            loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return;
         }
@@ -285,7 +252,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (!replyHasMessages) {
                 bridgeInBrowserNotification.addAlert('info','Well done! Data was saved successfully');
             }
-            $scope.loadCATSDataForDay();
+            loadCATSDataForDay();
             $scope.$emit("refreshApp");
         }).error(function(data, status, header, config) {
             bridgeInBrowserNotification.addAlert('info',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
