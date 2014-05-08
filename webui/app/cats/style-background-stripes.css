@@ -1,9 +1,10 @@
-﻿.app-cats-stateR { /* Not maintained */
+﻿.app-cats-stateR { 
+	/* Not maintained */
 	background: #F0AB00;
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #F0AB00;
+	background: rgba(240, 171, 0,0.5);
 }
 
 .app-cats-stateG { /* maintained */
@@ -11,7 +12,7 @@
 }
 
 .app-cats-inFuture {
-	background: #e1e1e1; /* currently the same as app-cats-inFuture */
+	background: #F0AB00; /* currently the same as app-cats-inFuture */
 }
 
 .app-cats-stateN { /* no need for maintainance */
@@ -25,7 +26,7 @@
 
 .app-cats-icon {
 	font-family: 'SAP-icons';
-	top: 100%;
+	top: 90%;
 	right:10px;
 }
 
@@ -37,8 +38,16 @@
 	background: rgb(0, 157, 224);
 }
 
+.selected_day span{
+	position: relative;
+	top: -2px;
+}
+
 .selected_day{
-	background-color: grey;	
+	background: rgb(255, 255, 255);
+	border: 2px solid rgb(0, 157, 224);
+	color: #707070!important;
+	font-weight: 600;
 }
 
 .app-cats-week .app-cats-day {

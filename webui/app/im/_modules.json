@@ -1,0 +1,5 @@
+{
+	"modules" : ["app.im"],
+	"js_files" : ["overview.js", "detail.js","settings.js","config.js"],
+	"css_files" : []
+}

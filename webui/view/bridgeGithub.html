@@ -1,7 +1,8 @@
 <div ng-controller="mainGithubController">
-<h4>Collaboration</h4>
-
-<font size="2">
+<div class="underline" style="margin-right:15px;">
+	<h4 class="box-title">Collaboration</h4>
+	<span class="settingsIcon icon-github-circled" style="color:inherit!important;cursor:default!important;margin-right:0;"></span>
+</div>
 <br>
 
 If you want to help us, <a target="_blank" href="https://github.wdf.sap.corp/bridge/bridge">visit our project</a> on GitHub and send us <a target="_blank" href="https://github.wdf.sap.corp/bridge/bridge/pulls">pull requests</a>.
@@ -12,13 +13,12 @@ If you want to help us, <a target="_blank" href="https://github.wdf.sap.corp/bri
   <tr ng-repeat="contributor in contributors">   	   	
   	<td style="vertical-align: middle"> 
 		<div class="boxLeft">
-			<a target="_blank" class="select" href="{{contributor.html_url}}"><span class="image_rounded_shadow"><img ng-if="contributor.avatar_url" style="pointer-events:auto" ng-src="{{contributor.avatar_url}}" width="50px" height="50px" /></span></a>
+			<a target="_blank" class="select" href="{{contributor.html_url}}"><span class="image_rounded_shadow"><img ng-if="contributor.avatar_url" style="pointer-events:auto;border-radius:100%;" ng-src="{{contributor.avatar_url}}" width="50px" height="50px" /></span></a>
 		</div>
-		<div class="boxRight" style="padding-top:15px;padding-left:10px">
-			<a target="_blank" href="https://github.wdf.sap.corp/bridge/bridge/commits?author={{contributor.login}}">{{contributor.name}}</a><br />{{contributor.department}}
+		<div class="boxRight" style="padding-top:10px;padding-left:20px">
+			<a target="_blank" class="copy_head" href="https://github.wdf.sap.corp/bridge/bridge/commits?author={{contributor.login}}">{{contributor.name.toUpperCase()}}</a><br />{{contributor.department}}
 		<div>	    		
 	</td>
   </tr>
 </table>
-</font>
 </div>

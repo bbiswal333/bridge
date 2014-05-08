@@ -78,11 +78,11 @@ else
 
             if (test_update)
             {
-                changeTitle("Test Update for Bridge...");
+                changeTitle("Test Update..");
             }
             else
             {
-                changeTitle("Updating Bridge...");
+                changeTitle("Updating..");
             }
 
             bridge_repo = bridge_repo + latest_tag;
@@ -103,7 +103,7 @@ else
 
                 if (error == null) {
                     console.log("bridge installed..");
-                    changeTitle("Starting Bridge...");
+                    changeTitle("Starting..");
 
                     //save back metaData
                     if (!metaData.update_tag)

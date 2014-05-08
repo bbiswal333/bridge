@@ -1,6 +1,8 @@
 var https_req	= require('https');
 var http_req	= require('http');
 var url 		= require('url');
+var fs          = require('fs');
+var path 		= require('path');
 var npm_load	= require('./npm_load.js');
 
 exports.register = function(app, user, local, proxy, npm)
@@ -151,6 +153,29 @@ exports.register = function(app, user, local, proxy, npm)
 		});
 	});
 
+	app.get('/api/client/get', function(request, response)
+	{
+		if (typeof webkitClient !== 'undefined' && webkitClient)
+            {                
+
+                webkitClient.jQuery.ajax({
+                    url: request.query.url, 
+                    type: "GET",                    
+                    success: 
+                        function(data)
+                        {                                        
+                            response.send(data);
+                        },
+                    error: 
+                        function() {
+                            response.send("error calling " + request.query.url);                            
+                        }
+                });
+
+            }  
+            else response.send("no client");      
+	});
+
 	//generic api call post
 	app.options("/api/post", function(request, response){
 		response = setHeader( request, response );	
@@ -175,6 +200,95 @@ exports.register = function(app, user, local, proxy, npm)
 			response.send(data);
 		}, postData);
 	}); 
+
+	var getFiles = function(dir, files)
+	{		
+		    
+		var files = fs.readdirSync(dir);	    
+		var out_files = {};
+		out_files.modules = [];
+		out_files.js_files = [];
+		out_files.css_files = [];
+		    
+		for (var i = 0; i < files.length; i++){	    
+		    var name = path.join(dir, '/', files[i]);			     
+
+		    if (fs.statSync(name).isDirectory())
+		    {
+		        out_files.js_files  = out_files.js_files.concat(getFiles(name).js_files);	            
+		        out_files.css_files = out_files.css_files.concat(getFiles(name).css_files);
+		        out_files.modules = out_files.modules.concat(getFiles(name).modules);
+		    }
+		    else
+		    {
+		    	if (path.basename(name) == '_modules.json')
+		    	{
+		    		try
+		    		{
+		    			delete require.cache[require.resolve(name)];
+			    		var module = require(name);
+			    		out_files.modules = out_files.modules.concat(module.modules);
+			    		
+			    		if ( Object.prototype.toString.call( module.js_files ) === '[object Array]' )
+			    		{
+				    		for (var j = 0; j < module.js_files.length; j++)
+				    		{
+				    			var filename = path.join(path.dirname(name), module.js_files[j]);		    			
+				    			out_files.js_files.push(path.relative(path.join(__dirname, '../webui'), filename));
+				    		}	
+				    	}
+				    	if ( Object.prototype.toString.call( module.css_files ) === '[object Array]' )
+				    	{
+				    		for (var j = 0; j < module.css_files.length; j++)
+				    		{
+				    			var filename = path.join(path.dirname(name), module.css_files[j]);		    			
+				    			out_files.css_files.push(path.relative(path.join(__dirname, '../webui'), filename));		    		
+				    		}
+			    		}			    				    
+			    	}
+			    	catch(e)
+			    	{
+			    		console.log(e);
+			    	}
+		    	}		        
+		    }
+		}	    
+		return out_files;
+	}
+
+	app.get("/api/modules", function (request, response) 
+	{
+		response = setHeader( request, response );			
+
+		var bridge_path = path.join(__dirname, '../webui/bridge');
+	    var bridge_files = getFiles(bridge_path);
+	    var app_path = path.join(__dirname, '../webui/app');
+	    var app_files = getFiles(app_path);	
+	   	var files = {};
+	    files.modules = bridge_files.modules.concat(app_files.modules); 
+	    files.js_files = bridge_files.js_files.concat(app_files.js_files);
+	    files.css_files = bridge_files.css_files.concat(app_files.css_files);  
+
+	    if (typeof request.query.format == "undefined")
+	    {
+	    	response.setHeader('Content-Type', 'text/plain;');						    	   
+			response.send(JSON.stringify(files));		
+		}
+		else if( request.query.format == "js")
+		{
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
+			buildify.concat(files.js_files);		
+			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
+		}
+		else if( request.query.format == "css")
+		{
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
+			buildify.concat(files.css_files);				
+			response.setHeader('Content-Type', 'text/css; charset=utf-8');
+			response.send(buildify.cssmin().getContent());	
+		}
+	});	
 
 	//ms-exchange calendar data request
 	if( local )

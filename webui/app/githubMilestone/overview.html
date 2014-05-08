@@ -4,7 +4,7 @@
 
     <div ng-show="!error.display" ng-repeat="milestone in milestones  | filter:{due_on: '!!'} | limitTo:config.countMilestones " class="row">
         <div class="col-xs-4" style="width:100%;">
-            <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b style="font-size:16px;">{{milestone.title}}</b></a>
+            <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank"><b>{{milestone.title}}</b></a>
             <br />Due on: {{milestone.due_on | date:'dd.MM.yy'}}
             <br />
     	</div>
@@ -12,13 +12,13 @@
         <div class=" col-xs-12" style="margin-top:20px;">
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
             <div class="progress">
-                <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.poc}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;" ng-style="{width: milestone.poc + '%'}">
+                <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.issueProgress}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;" ng-style="{width: milestone.issueProgress + '%'}">
            
                 </div>
             </div>
-            {{ milestone.pastDays}} days past - {{milestone.remainingDays}} days remaining
+            {{ milestone.passedDays}} days passed - {{milestone.remainingDays}} days remaining
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.pot}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;" ng-style="{width: milestone.pot + '%'}"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.timeProgress}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;" ng-style="{width: milestone.timeProgress + '%'}"></div>
             </div>
         </div>
     </div>

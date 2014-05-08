@@ -2,13 +2,14 @@
 <p>
 <form name="ConfigItemForm">
 	<div class="row">
-		<div class="col-xs-1"><b>Jira Query</b></div>
+		<div class="col-xs-12 copy form_head">Jira Query</div>
  		<div class="col-xs-6 has-feedback">
  			<input type="text" class="form form-control" ng-model="data.query" placeholder="Jira Query" autofocus/>
 		</div>
 	</div>
-
-	<button class="btn btn-default" ng-click="save_click()">Save</button>
+	<div class="row">
+		<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>
+	</div>	
 </form>
 
 

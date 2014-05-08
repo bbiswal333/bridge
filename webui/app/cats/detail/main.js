@@ -7,7 +7,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.data.catsUtils",
   "app.cats.maintenanceView.projectSelector",
   "$http",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector, $http) {
+  "bridgeInBrowserNotification",
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, projectSelector, $http, bridgeInBrowserNotification) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -25,26 +26,29 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.loadCATSDataForDay = function () {
         catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
-            console.log("Data from CATS:");
-            console.log(tasks);
-            $scope.blockdata = [];
-
-            catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-                $scope.workingHoursForDay = workingHours;
-
-                for (var i = 0; i < tasks.length; i++) {
-                    var task = tasks[i];
-                    if (task.tasktype == "VACA")
-                        $scope.addBlock("Vacation", task.quantity, task.record, true);
-                    else
-                        $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
-                }
-                $scope.loaded = true;
-            });
+            $scope.displayCATSDataForDay(tasks);
         });
     };
 
     $scope.loadCATSDataForDay();
+
+    $scope.displayCATSDataForDay = function (tasks) {
+        $scope.lastCatsAllocationDataForDay = tasks;
+        $scope.blockdata = [];
+
+        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+            $scope.workingHoursForDay = workingHours;
+
+            for (var i = 0; i < tasks.length; i++) {
+                var task = tasks[i];
+                if (task.tasktype == "VACA")
+                    $scope.addBlock("Vacation", task.quantity, task.record, true);
+                else
+                    $scope.addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+            }
+            $scope.loaded = true;
+        });
+    };
 
     $scope.handleProjectChecked = function (desc_s, val_i, data, fixed) {
         var block = {
@@ -56,16 +60,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             },
             TASKTYPE: data.data.TASKTYPE,
             ZCPR_EXTID: data.data.ZCPR_EXTID,
-            ZCPR_OBJGEXTID: data.data.ZCPR_OBJGEXTID,
-            ZCPR_OBJGUID: data.data.ZCPR_OBJGUID,
+            ZCPR_OBJGEXTID: data.ZCPR_OBJGEXTID,
+            ZCPR_OBJGUID: data.ZCPR_OBJGUID,
             UNIT: "T",
         };
         
         return $scope.addBlock(desc_s, val_i, block, false);
     }
 
-    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s, objtype_s) {
-        $scope.removeBlock(objgextid_s, objguid_s, objtype_s);
+    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s) {
+        $scope.removeBlock(objgextid_s, objguid_s);
     }
 
     $scope.getByExtId = function (block) {
@@ -73,26 +77,52 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].data.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) || (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].data.TASKTYPE == block.TASKTYPE))
                 return $scope.blockdata[i];
         }
-
         return null;
     }
 
+    $scope.getVisibleLength = function () {
+        var visibleLength = 0;
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if ($scope.blockdata[i].value) {
+                visibleLength++;
+            } else {
+                continue;
+            };
+        };
+        return visibleLength;
+    };
+
+    $scope.adjustBarValues = function () {
+        // only ajust if all space is taken
+        var total = 0;
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            total = $scope.blockdata[i].value + total;
+        }
+        if (total != $scope.workingHoursForDay) {
+            return;
+        }
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if ($scope.blockdata[i].value) {
+                $scope.blockdata[i].value = $scope.workingHoursForDay * (Math.floor(100 / ($scope.getVisibleLength() + 1)) / 100);
+            }
+        }
+    }
+
     $scope.addBlock = function (desc_s, val_i, data, fixed) {
+
         var existingBlock = $scope.getByExtId(data);
         if (existingBlock != null) {
-            if(data.booking.COUNTER) {
-                existingBlock.data.booking.COUNTER = data.booking.COUNTER;
-            };
-            if (!existingBlock.value) {
-                //existingBlock.value = 2;
-                //if (existingBlock.value > $scope.hoursToMaintain()) {
-                    existingBlock.value = Math.round($scope.hoursToMaintain() * 1000) / 1000
-                //};
+            if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
+                $scope.adjustBarValues();
+                existingBlock.value = Math.round($scope.hoursToMaintain() * 1000) / 1000;
                 return true;
-            } else {
+            } else { // no need to add
+                $scope.adjustBarValues();
                 return;
             };
         }
+
+        $scope.adjustBarValues();
 
         if (val_i == null) {
             val_i = 8;
@@ -121,16 +151,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return $scope.workingHoursForDay - sum;
     };
 
-    $scope.removeBlock = function (objgextid_s, objguid_s, objtype_s) {
+    $scope.removeBlock = function (objgextid_s, objguid_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
                 $scope.blockdata[i].value = 0;
-            } else if (!objgextid_s && !objguid_s && objtype_s === $scope.blockdata[i].data.TASKTYPE ){
-                $scope.blockdata[i].value = 0;
             }
             i++;
         }
+        // it is required to move the removed block to the beginning of the array
+        // otherwise it can be dragged again in the UI
+        var newBlockdata = [];
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if (!$scope.blockdata[i].value) {
+                newBlockdata.push($scope.blockdata[i]);
+            }
+        }
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if ($scope.blockdata[i].value) {
+                newBlockdata.push($scope.blockdata[i]);
+            }
+        }
+        $scope.blockdata = newBlockdata; 
     };
 
     /*$scope.$watch("blockdata", function () {
@@ -186,6 +228,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $location.path(path);
     };
 
+    $scope.ResetToLastSavedState = function () {
+        $scope.displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
+    };
+
     $scope.writeCATSdata = function () {
         // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
@@ -193,7 +239,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             BOOKINGS: [],
         };
         if(!$scope.workingHoursForDay) {
-            console.log("Nothing to maintain as target hours are 0");
+            bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return;
@@ -210,15 +256,39 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 UNIT: $scope.blockdata[i].data.UNIT,
                 QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 1000) / 1000,
             };
+
+            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
+                booking.ZCPR_OBJGEXTID = null;
+            };
+
             container.BOOKINGS.push(booking);
         }
 
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             console.log(data);
+            if (window.DOMParser) {
+                parser=new DOMParser();
+                xmlDoc=parser.parseFromString(data,"text/xml");
+            } else { // Internet Explorer
+                xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async=false;
+                xmlDoc.loadXML(data);
+            };
+            var replyHasMessages = false;
+            for (var i = 0; i < 5; i++) {
+                var message = xmlDoc.getElementsByTagName("TEXT")[i];
+                if (message) {
+                    replyHasMessages = true;
+                    bridgeInBrowserNotification.addAlert('danger',message.childNodes[0].nodeValue);
+                }
+            }            
+            if (!replyHasMessages) {
+                bridgeInBrowserNotification.addAlert('info','Well done! Data was saved successfully');
+            }
             $scope.loadCATSDataForDay();
             $scope.$emit("refreshApp");
         }).error(function(data, status, header, config) {
-            console.log("GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
+            bridgeInBrowserNotification.addAlert('info',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
         });
     }
   }

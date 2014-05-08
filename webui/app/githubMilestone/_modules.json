@@ -1,0 +1,5 @@
+{
+	"modules" : ["app.githubMilestone"],
+	"js_files" : ["overview.js", "settings.js", "config.js"],
+	"css_files" : []
+}

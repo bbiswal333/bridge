@@ -1,16 +1,20 @@
 angular.module('app.linkList').appLinkListSettings = 
-    ['app.linkList.configservice', '$scope', '$rootScope', 'bridgeConfig',  
-        function (appLinklistConfig, $scope, $rootScope, bridgeConfig) {
+    ['app.linkList.configservice', '$scope', '$rootScope',  
+        function (appLinklistConfig, $scope, $rootScope) {
 
 	$scope.config = appLinklistConfig;
 
 	$scope.addForm = [];
 	
-		for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
-			$scope.addForm.push('');
-		};
+	for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
+		$scope.addForm.push('');
+	};
 
 	$scope.currentConfigValues = {};
+
+	$scope.closeForm = function () {
+		$scope.$emit('closeSettingsScreen');
+	}
 
 	$scope.sortableOptions = {
             placeholder: "app-linklist-placeholder",
@@ -46,6 +50,7 @@ angular.module('app.linkList').appLinkListSettings =
     	appLinklistConfig.listCollection.push([]);
     	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
     	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
+
     };
 
     $scope.removeLinkList = function(linkList)
@@ -157,6 +162,10 @@ angular.module('app.linkList').appLinkListSettings =
 		{
 			if($scope.addForm[colNo] == "web")
 			{
+				if($scope.currentConfigValues.url.indexOf("http") == -1){
+                    $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
+                };
+
 				entry = {
 					'name': $scope.currentConfigValues.linkName,
 					'url':  $scope.currentConfigValues.url,
@@ -195,11 +204,6 @@ angular.module('app.linkList').appLinkListSettings =
 	{
 		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined) $scope.addForm[col] = 'web';
 		else if($scope.addForm[col] != '') $scope.addForm[col] = '';
-	};
-
-	$scope.closeForm = function()
-	{
-		bridgeConfig.modalInstance.close();
 	};
 }];
 

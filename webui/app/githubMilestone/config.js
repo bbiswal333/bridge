@@ -13,7 +13,7 @@ angular.module('app.githubMilestone').factory("app.githubMilestone.configservice
         stateProp : 'open',
         html_url: "https://github.wdf.sap.corp/",
 		api_url: "https://github.wdf.sap.corp/api/v3/",
-		fork: 'false'
+		fork: false
 	};
 	
 	return configItem; 
