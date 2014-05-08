@@ -18,5 +18,5 @@
 		"detail/allocationBar/allocationBarDirective.js", 
 		"detail/projectList.js"
 	],
-	"css_files" : ["style.css", "style-background-stripes.css", "detail/style.css"]
+	"css_files" : ["style.css", "detail/style.css"]
 }

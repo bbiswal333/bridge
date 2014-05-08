@@ -164,30 +164,31 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.$on('bridgeConfigLoadedReceived', function (event, args) {
-                bridgeInBrowserNotification.setScope($scope);
-                $scope.sortableOptions = sortableConfig.sortableOptions;
+            bridgeInBrowserNotification.setScope($scope);
+            $scope.sortableOptions = sortableConfig.sortableOptions;
+            $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
 
-                bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
-                var deferred1 = $q.defer();
-                var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
-                var deferred2 = $q.defer();
-                var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
-                promise1.then(function (counterData) {
+            bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
+            var deferred1 = $q.defer();
+            var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
+            var deferred2 = $q.defer();
+            var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
+            promise1.then(function (counterData) {
+                if (angular.isObject(counterData)){
+                    console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
+                };
+                promise2.then(function (counterData) {
                     if (angular.isObject(counterData)){
-                        console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
-                    };
-                    promise2.then(function (counterData) {
-                        if (angular.isObject(counterData)){
-                            for (var i = 0; i < 7; i++) {
-                                console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
-                            };
+                        for (var i = 0; i < 7; i++) {
+                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
                         };
-                    });
+                    };
                 });
-                $scope.configLoadingFinished = true;
-                $scope.showLoadingAnimation = false;   
             });
+            $scope.configLoadingFinished = true;
+            $scope.showLoadingAnimation = false;   
+        });
     }
 ]);
 

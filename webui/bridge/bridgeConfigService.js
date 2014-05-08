@@ -17,31 +17,20 @@
         var projects = dataService.getProjects();
         for (var i = 0; i < projects.length; i++) {
             configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
-            }
+        }
 
-        /*configPayload.noBackgroundImage = this.config.noBackgroundImage ? true : false;
-        configPayload.boxSettings = [];
+        configPayload.bridgeSettings = dataService.getBridgeSettings();
 
-        for (var property in this.config.boxInstances) {
-            if (angular.isFunction(this.config.boxInstances[property].scope.returnConfig)) {
-                    var boxSetting = {};
-                boxSetting.boxId = this.config.boxInstances[property].scope.boxId;
-                boxSetting.setting = this.config.boxInstances[property].scope.returnConfig();
-
-                configPayload.boxSettings.push(boxSetting);
-            }
-        }*/
-
-            $http({
-                url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
-                method: "POST",
-            data: angular.toJson(configPayload),
-                headers: { 'Content-Type': 'text/plain' },
-            }).success(function (data, status, headers, config) {
-                console.log("Config saved successfully");
-            }).error(function (data, status, headers, config) {
-                console.log("Error when saving config!");
-            });
+        $http({
+            url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
+            method: "POST",
+        data: angular.toJson(configPayload),
+            headers: { 'Content-Type': 'text/plain' },
+        }).success(function (data, status, headers, config) {
+            console.log("Config saved successfully");
+        }).error(function (data, status, headers, config) {
+            console.log("Error when saving config!");
+        });
     };
 
     this.loadFromBackend = function (deferred) {
