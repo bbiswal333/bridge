@@ -4,6 +4,15 @@
     this.configRawData = null;
     var that = this;
 
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop))
+                return false;
+        }
+
+        return true;
+    }
+
     function _initialize(deferredIn) {
         var deferred = $q.defer();
         var promise = bridgeConfig.loadFromBackend(deferred);
@@ -11,7 +20,7 @@
             that.configRawData = config;
 
             // if the config is not an object, then the user has no configuration stored in the backend
-            if (angular.isObject(config)) {
+            if (angular.isObject(config) && !isEmpty(config)) {
                 parseProjects(config);
                 parseSettings(config);
             } else {
