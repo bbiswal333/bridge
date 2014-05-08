@@ -19,4 +19,9 @@ angular.module('bridge.app').
         $scope.testNotification = function(){
         	notifier.showSuccess("Test","Notification is working","Settings");
         };
+
+        $scope.activateArrange = function(){
+            $scope.arrage = true;
+            console.log('Activate arranging tile...');
+        }
 }]);
