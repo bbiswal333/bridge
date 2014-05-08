@@ -1,18 +1,7 @@
 angular.module('bridge.app').
 	controller('mainSettingsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
-	    /*$scope.bridgeConfig = bridgeConfig.config;
-        
-        for (var i = 0; i < $scope.apps.length; i++) 
-        {
-            var app = bridgeDataService.getAppById();
-            if (bridgeDataService.getBoxInstance( $scope.apps[i].id )) {
-            $scope.apps[i].boxTitle = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxTitle;
-            $scope.apps[i].boxIcon = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIcon;  
-            $scope.apps[i].boxIconClass = bridgeDataService.getBoxInstance( $scope.apps[i].id ).scope.boxIconClass;                                
-            };
-        };*/
-
+	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	    $scope.apps = bridgeDataService.getProjects()[0].apps;
 
         

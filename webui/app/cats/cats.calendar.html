@@ -1,4 +1,7 @@
 ﻿<div class="app-cats-body">
+    <link rel="stylesheet"  ng-if="bridgeSettings.useBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
+    <link rel="stylesheet"  ng-if="!bridgeSettings.useBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />
+
 	<div ng-if="hasError">
 		{{state}}
 	</div>

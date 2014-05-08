@@ -19,7 +19,7 @@
             }
             deferredIn.resolve();
         }, function (data) {
-            deferred.reject(data);
+            deferredIn.reject(data);
         });
 
         return deferredIn.promise;
@@ -64,7 +64,8 @@
     }
 
     function parseSettings(config) {
-
+        if (config.bridgeSettings)
+            that.bridgeSettings = config.bridgeSettings;
     }
 
     function _getProjects() {
@@ -118,8 +119,13 @@
         return appMetadata;
     }
 
+    function _getBridgeSettings() {
+        return that.bridgeSettings;
+    }
+
     return {
         initialize: _initialize,
+        getBridgeSettings: _getBridgeSettings,
         getProjects: _getProjects,
         getAppMetadataForProject: _getAppMetadataForProject,
         getAppById: _getAppById,

@@ -1,8 +1,9 @@
-﻿angular.module("app.cats").directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter",
-	function (calUtils, catsUtils, $interval, $location, bridgeCounter) {
+﻿angular.module("app.cats").directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter", "bridgeDataService",
+	function (calUtils, catsUtils, $interval, $location, bridgeCounter, bridgeDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
+	        $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	        //$scope.customCSSFile = "app/cats/style.css"; //Not needed anymore, included in index.html because also needed in detail screen
 
 	        $scope.year = new Date().getFullYear();

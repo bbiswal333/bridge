@@ -14,9 +14,9 @@
     <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
 
     <!-- css -->
-    <!--<link ng-if="!bridgeConfig.noBackgroundImage" href="css/background-image.css" rel="stylesheet" />
-    <link ng-if="bridgeConfig.noBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />-->
-    <link href="css/background-stripes.css" rel="stylesheet" />
+    <link ng-if="bridgeSettings.useBackgroundImage" href="css/background-image.css" rel="stylesheet" />
+    <link ng-if="!bridgeSettings.useBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />
+    <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
 
@@ -49,10 +49,7 @@
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
 
-    <script src="loader.js"></script>    
-
-    <!--<link rel="stylesheet"  ng-if="!bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-image.css" />
-    <link rel="stylesheet"  ng-if="bridgeConfig.noBackgroundImage" type="text/css" href="app/cats/style-background-stripes.css" />-->   
+    <script src="loader.js"></script>
     <title>Bridge</title>
 </head>
 
