@@ -15,7 +15,7 @@
             // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
             $scope.localValue = $scope.blockData.value;
 
-            $scope.dragBarWidth = 2;
+            $scope.dragBarWidth = 5;
             $scope.blockColor = colorUtils.getNextColor();
 
             $scope.getValueAsPercentage = function () {
@@ -68,7 +68,9 @@
                 '<div class="allocation-bar-time-text">{{getTimeText()}} ({{getValueAsPercentage()}} %)</div>' +
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
-                '<img class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
+                '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' + 
+                    '<img class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
+                '</div>' +
             '</div>' +
         '</div>'
     );
