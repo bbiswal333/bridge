@@ -1,6 +1,23 @@
 {
-	"modules" : ["app.cats","app.cats.allocationBar","app.cats.allocationBar.core.control", "app.cats.allocationBar.core.block", "app.cats.allocationBar.utils", "app.cats.maintenanceView","app.cats.maintenanceView.projectList"],
-	"js_files" : ["cats.js", "overview.js", "cats.calendar.js", "detail/main.js", "detail/allocationBar/allocationBarControl.js", "detail/allocationBar/allocationBarControl.js", "detail/allocationBar/allocationBarDirective.js", "detail/allocationBar/allocationBarUtils.js",
-				  "detail/allocationBar/allocationBlock.js", "detail/projectSelector.js", "detail/projectList.js", "detail/allocationBar/svg.min.js", "detail/allocationBar/svg.draggable.js", "detail/allocationBar/svg.foreignObject.js"],
+	"modules" : [
+		"app.cats",
+		"app.cats.allocationBar",
+		"app.cats.allocationBarBlock",
+		"app.cats.allocationBar.utils",
+		"app.cats.maintenanceView",
+		"app.cats.maintenanceView.projectList"
+	],
+
+	"js_files" : [
+		"cats.js", 
+		"overview.js", 
+		"cats.calendar.js", 
+		"detail/main.js", 
+		"detail/allocationBar/allocationBarUtils.js",
+		"detail/allocationBar/allocationBarBlockDirective.js",
+		"detail/allocationBar/allocationBarDirective.js", 
+		"detail/projectSelector.js", 
+		"detail/projectList.js"
+	],
 	"css_files" : ["style.css", "style-background-stripes.css", "detail/style.css"]
 }
