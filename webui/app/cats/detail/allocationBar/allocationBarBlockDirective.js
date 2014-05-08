@@ -25,11 +25,6 @@
                 return calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
             }
 
-            if ($scope.blockData != undefined) {
-                $scope.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
-                originalBlockWidth = $scope.blockWidth;
-            }
-
             elem.find(".allocation-bar-dragBar").draggable({
                 axis: 'x',
                 drag: function (event, ui) {
@@ -52,6 +47,12 @@
                         $scope.blockData.value = blockCalculations.getValueFromWidth($scope.blockWidth, $scope.totalWidth, $scope.totalValue);
                     });
                 }
+            });
+
+            // blockData.value gets adjusted from outside when adding a new project
+            $scope.$watch("blockData.value", function () {
+                $scope.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
+                originalBlockWidth = $scope.blockWidth;
             });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"
