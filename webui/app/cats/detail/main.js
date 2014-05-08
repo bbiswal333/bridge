@@ -133,10 +133,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     };
 
-    $scope.$watch("blockdata", function () {
+    /*$scope.$watch("blockdata", function () {
         console.log("Blockdata changed");
 
-    }, true);
+    }, true);*/
 
     $scope.calcMinutes = function (perc) {
         console.log(perc);
