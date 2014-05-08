@@ -63,9 +63,11 @@ angular.module('bridge.app').controller('bridgeController',
             //$window.open("https://github.wdf.sap.corp/bridge/bridge");
         }
 
-        $scope.bridge_hide_settings = function(){
-            $scope.show_settings = false;
-            bridgeConfig.persistInBackend(bridgeDataService);
+        $scope.bridge_hide_settings = function () {
+            if ($scope.show_settings == true) {
+                $scope.show_settings = false;
+                bridgeConfig.persistInBackend(bridgeDataService);
+            }
         }
 
 
