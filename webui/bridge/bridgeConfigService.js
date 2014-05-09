@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeConfig', function ($http) {
+﻿angular.module('bridge.service').service('bridgeConfig', function ($http, bridgeInstance) {
     function getAppsData(project) {
         var apps = [];
         if (project.apps) {
@@ -22,7 +22,7 @@
         configPayload.bridgeSettings = dataService.getBridgeSettings();
 
         $http({
-            url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/SETUSRCONFIG?new_devdb=B&user_environment=&origin=' + encodeURIComponent(location.origin),
+            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
             method: "POST",
         data: angular.toJson(configPayload),
             headers: { 'Content-Type': 'text/plain' },
@@ -35,7 +35,7 @@
 
     this.loadFromBackend = function (deferred) {
             $http({
-                url: 'https://ifp.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance .getCurrentInstance()+ '&origin=' + encodeURIComponent(location.origin),
                 method: "GET",
             }).success(function (data, status, headers, config) {
                 console.log("Config loaded successfully");
