@@ -199,6 +199,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
     };
 
+    $scope.goBackToMainPage = function () {
+        displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
+        $location.path('/#');
+    };
+
     $scope.writeCATSdata = function () {
         // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
