@@ -114,6 +114,9 @@ angular.module('app.linkList').appLinkListSettings =
 		{
 			if($scope.addForm[colNo] == "web")
 			{
+				if(!$scope.currentConfigValues.url || !$scope.currentConfigValues.linkName) {
+					return;
+				};
 				if($scope.currentConfigValues.url.indexOf("http") == -1){
                     $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
                 };
@@ -126,8 +129,11 @@ angular.module('app.linkList').appLinkListSettings =
 			}
 			else if($scope.addForm[colNo] == "gui")
 			{
+				if(!$scope.currentConfigValues.sapLinkSID || !$scope.currentConfigValues.sapLinkName) {
+					return;
+				};
 				entry = {
-					'id': 'ID' + colNo + appLinklistConfig.listCollection[colNo].length + $scope.currentConfigValues.linkName,
+					'id': 'ID' + colNo + appLinklistConfig.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName,
 					'name': $scope.currentConfigValues.sapLinkName,
 					'sid':  $scope.currentConfigValues.sapLinkSID,
 					'transaction': $scope.currentConfigValues.sapLinkTransaction,
