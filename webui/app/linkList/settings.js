@@ -2,8 +2,8 @@ angular.module('app.linkList').appLinkListSettings =
     ['app.linkList.configservice', '$scope', '$rootScope',  
         function (appLinklistConfig, $scope, $rootScope) {
 
-	$scope.config = appLinklistConfig;
-
+	$scope.config  = appLinklistConfig;
+	var oldConfig  = angular.copy(appLinklistConfig);
 	$scope.addForm = [];
 	
 	for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
@@ -14,41 +14,49 @@ angular.module('app.linkList').appLinkListSettings =
 
 	$scope.closeForm = function () {
 		$scope.$emit('closeSettingsScreen');
-	}
+	};
+
+	$scope.cancelForm = function () {
+	    $scope.config     = angular.copy(oldConfig);
+	    appLinklistConfig = angular.copy(oldConfig);
+		$scope.$emit('closeSettingsScreen',true);
+	};
 
 	$scope.sortableOptions = {
-            placeholder: "app-linklist-placeholder",
-            //forceHelperSize: true,
-            forcePlaceholderSize: true,
-            //helper: "clone",
-            connectWith: '.sortableConnect',
-            delay: 250,
-            scroll: false,
-            tolerance: "intersect",
-            disabled: false,         
+        placeholder: "app-linklist-placeholder",
+        //forceHelperSize: true,
+        forcePlaceholderSize: true,
+        //helper: "clone",
+        connectWith: '.sortableConnect',
+        delay: 250,
+        scroll: false,
+        tolerance: "intersect",
+        disabled: false,         
 
-            receive: function(event, ui) {
-	            if (event.target.childElementCount >= 6) {
-	                ui.item.sortable.cancel();
-	            }
-	            else
-	            {
-	            	if (ui.sender.context.childElementCount == 0)
-	            		{
-	            			$scope.setBoxSize(appLinklistConfig.listCollection.length-1)	
-	            		}
-	            }
-        	}      
-          };
+        receive: function(event, ui)
+        {
+            if (event.target.childElementCount >= 6) {
+                ui.item.sortable.cancel();
+            }
+            else
+            {
+            	if (ui.sender.context.childElementCount == 0)
+        		{
+        			$scope.setBoxSize(appLinklistConfig.listCollection.length-1)	
+        		}
+            }
+    	}      
+    };
 
     $scope.setBoxSize = function(size)
     {
         $scope.boxScope.boxSize = size;
     };
+
     $scope.addLinkList = function()
     {
     	appLinklistConfig.listCollection.push([]);
-    	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
+    	if(appLinklistConfig.listCollection.length == 1)     $scope.setBoxSize(1);
     	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
 
     };
@@ -56,7 +64,7 @@ angular.module('app.linkList').appLinkListSettings =
     $scope.removeLinkList = function(linkList)
     {
     	appLinklistConfig.listCollection.splice(linkList,1);
-    	if(appLinklistConfig.listCollection.length == 1) $scope.setBoxSize(1);
+    	if(appLinklistConfig.listCollection.length == 1)     $scope.setBoxSize(1);
     	else if(appLinklistConfig.listCollection.length > 1) $scope.setBoxSize(2);
     };
 
@@ -91,7 +99,6 @@ angular.module('app.linkList').appLinkListSettings =
 		if(linkList.length == 0 && appLinklistConfig.listCollection.length > 1)
 		{	
 			$scope.removeLinkList(colNo);
-			//$scope.setBoxSize(appLinklistConfig.listCollection.length-1)
 		}
 	};
 
@@ -103,43 +110,40 @@ angular.module('app.linkList').appLinkListSettings =
 				$scope.config.linkList[i].editable = true;
 				$scope.config.linkList[i].old = angular.copy($scope.config.linkList[i]);
 			};
-		}
-		else
-		{			
-		entry.editable = true;
-		entry.old = angular.copy(entry);
+		} else {
+			entry.editable = true;
+			entry.old = angular.copy(entry);
 		}
 	};
 
 	$scope.inEditMode = function()
 	{
 		for (var i = $scope.config.linkList.length - 1; i >= 0; i--) {
-			if ($scope.config.linkList[i].editable == true) 
-				{
-					return true;
-				}
+			if ($scope.config.linkList[i].editable == true) {
+				return true;
+			}
 		}
 		return false;
 	};
 
 	$scope.undoEdit = function(entry)
 	{	
-			if(entry.type == "hyperlink")
-			{
-				entry.name = angular.copy(entry.old.name);
-				entry.url = angular.copy(entry.old.url);
-				entry.editable = false;
-			}
-			else if(entry.type == "saplink")
-			{
-				entry.name = angular.copy(entry.old.name);
-				entry.sid = angular.copy(entry.old.sid);
-				entry.transaction = angular.copy(entry.old.transaction);
-				entry.parameters = angular.copy(entry.old.parameters);
-				entry.editable = false;
-			}
-		
+		if(entry.type == "hyperlink")
+		{
+			entry.name = angular.copy(entry.old.name);
+			entry.url = angular.copy(entry.old.url);
+			entry.editable = false;
+		}
+		else if(entry.type == "saplink")
+		{
+			entry.name = angular.copy(entry.old.name);
+			entry.sid = angular.copy(entry.old.sid);
+			entry.transaction = angular.copy(entry.old.transaction);
+			entry.parameters = angular.copy(entry.old.parameters);
+			entry.editable = false;
+		}
 	};
+
 	$scope.saveEdit = function(entry)
 	{
 		if (arguments.length==0)
@@ -150,22 +154,19 @@ angular.module('app.linkList').appLinkListSettings =
 		}
 		else
 		{	
-		entry.editable = false;	
+			entry.editable = false;	
 		}
-	}
-
+	};
 
 	$scope.newEntry = function(colNo)
 	{
-
-		if(appLinklistConfig.listCollection[colNo].length <=5)
+		if(appLinklistConfig.listCollection[colNo].length <= 5)
 		{
 			if($scope.addForm[colNo] == "web")
 			{
 				if($scope.currentConfigValues.url.indexOf("http") == -1){
                     $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
                 };
-
 				entry = {
 					'name': $scope.currentConfigValues.linkName,
 					'url':  $scope.currentConfigValues.url,
@@ -181,8 +182,7 @@ angular.module('app.linkList').appLinkListSettings =
 					'parameters': $scope.currentConfigValues.sapLinkParameters,
 					'type': 'saplink'
 				}
-				entry.sapGuiFile
-				 = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,entry.parameters);
+				entry.sapGuiFile = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,entry.parameters);
 			}
 			$scope.currentConfigValues = {};
 			$scope.setAddForm(colNo,'');
@@ -190,7 +190,6 @@ angular.module('app.linkList').appLinkListSettings =
 		}
 		else
 		{
-			//Error
 			console.log("Max 6 Links per col")
 		}
 		
@@ -200,10 +199,16 @@ angular.module('app.linkList').appLinkListSettings =
 	{
 		$scope.addForm[col] = value;
 	};
+
 	$scope.toggleAddForm = function(col)
 	{
-		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined) $scope.addForm[col] = 'web';
-		else if($scope.addForm[col] != '') $scope.addForm[col] = '';
+		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined)
+		{
+			$scope.addForm[col] = 'web';
+		}
+		else if($scope.addForm[col] != '')
+		{
+			$scope.addForm[col] = '';
+		}
 	};
 }];
-
