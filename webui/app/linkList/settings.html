@@ -7,20 +7,20 @@
                 Remove Linklist
             </span> 
             <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
-                <div class="row app-linkList-row" ng-repeat="link in linkList track by $index"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
                         <input type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
                         <input ng-if="link.type=='saplink'" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
                     </div>
                     <div class="no-padd padd-left col-xs-8">
-                    <div class="appLinklist-urlSetting">
-                        <input ng-if="link.type=='hyperlink'"  type="text" class="form-control form" ng-model="link.url" placeholder="Hyperlink" />
-                        <input ng-if="link.type=='saplink'"  type="text" class="form-control form" ng-model="link.sid" placeholder="System ID" />
-                        <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
-                    </div>
-                    <div class="app-linklist-editIcons">
-                        <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-remove" ></span>
-                    </div>
+                        <div class="appLinklist-urlSetting">
+                            <input ng-if="link.type=='hyperlink'"  type="text" class="form-control form" ng-model="link.url" placeholder="Hyperlink" />
+                            <input ng-if="link.type=='saplink'"  type="text" class="form-control form" ng-model="link.sid" placeholder="System ID" />
+                            <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
+                        </div>
+                        <div class="app-linklist-editIcons">
+                            <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-remove" ></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,5 +103,4 @@
 
 <div class="row">
     <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
-    <!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="cancelForm()">Cancel</div>-->
 </div>
