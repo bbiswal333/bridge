@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.githubMilestone"],
+	"app":
+	{
+		"module_name"			:	"app.githubMilestone",
+		"title"					:	"GitHub",
+		"icon_css"				:	"icon-github-circled",
+		"overview_directive"	:	"app.githubMilestone",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js"],
 	"css_files" : []
 }

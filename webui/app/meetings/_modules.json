@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.meetings"],
+	"app":
+	{
+		"module_name"			:	"app.meetings",
+		"title"					:	"Meetings",
+		"icon_css"				:	"icon-meeting-o",
+		"overview_directive"	:	"app.meetings",
+		"needs_client"			:	true
+	},
+	"modules" : [],
 	"js_files" : ["ews.js", "overview.js"],
 	"css_files" : []
 }

@@ -1,57 +1,51 @@
-.allocation-bar-block-div {
-  transition: width 2s;
-  border-bottom: 1px dashed #e6e6e6;
-  border-top: 1px dashed #e6e6e6;
-}
-
-.allocation-bar-block-name-div {
-  width: 100%;
-  padding-top: 10px;
-  font-weight: bold;
-  font-size: 14px;
-  text-align: center;
-  -o-text-overflow: ellipsis;   /* Opera */
-  text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
-  overflow: hidden;              /* don't show excess chars */
-  white-space: nowrap;  
-}
-
-.allocation-bar-block-value-div {
-  width: 100%;
-  padding-top: 2px;
-  padding-bottom: 5px;
-  font-size: 12px;
-  text-align: center;
-  font-style: italic;
-}
-
-.allocation-bar-dragger {
-
-}
-
-.allocation-bar-dragger-active {
-  fill: #777;
-  cursor: col-resize !important;
+.allocation-bar-background-panel {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .allocation-bar-background-panel-div {
   background: #e6e6e6;
-  background-image: url("allocationBar/stripe.png");
+  background-image: url("/app/cats/detail/allocationBar/stripe.png");
+  width: 100%;
 }
 
-.allocation-bar-block-bin-div {
-  border-radius: 2px;
-  width: 20px;
-  margin: -6px auto;
-  font-size: 18px;
-  text-align: center;
-  color: #ffb6b6;
-  -webkit-transition: color 0.2s linear;
+.allocation-bar-block {
+    height:60px;
+    float:left
 }
 
-.allocation-bar-block-bin-div:hover {
-  color: #d44242;
-  cursor: pointer;
+.allocation-bar-dragBar-image {
+    height: 80px;
+    width: 50px;
+    margin-left: -21px;
+    margin-top: -10px;
+}
+
+.allocation-bar-dragBar {
+    margin-top: -10px;
+    height: 80px;
+    float: left;
+    cursor: w-resize;
+}
+
+.allocation-bar-project-text {
+    margin-top: 10px; 
+    font-weight: bold; 
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.allocation-bar-time-text {
+    padding-top: 2px;
+    padding-bottom: 5px;
+    font-size: 12px;
+    text-align: center;
+    font-style: italic;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .app-cats-body {

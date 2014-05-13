@@ -3,11 +3,11 @@ var _paq = _paq || [];
 
 if( document.location.hostname == "localhost" || document.location.hostname == "bridge-master.mo.sap.corp")
 {
-  _paq.push(['setSiteId', 4]);
+  _paq.push(['setSiteId', 9]);
 }
 if( document.location.hostname == "bridge.mo.sap.corp")
 {
-  _paq.push(['setSiteId', 3]); 
+  _paq.push(['setSiteId', 8]); 
 }
 _paq.push(['setTrackerUrl', u+'piwik.php']);
 _paq.push(['trackPageView']);

@@ -6,9 +6,23 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
     load: function()
     {      
       $http.get('/api/modules').success(function (data) {                      
-                
+        
+        //get all modules
         modules = data.modules;
-        angular.module('bridge.app', modules);   
+        for (var i = 0; i < data.app.length; i++)
+        {          
+          if( data.app[i]['module_name'] !== undefined )
+          {
+            modules.push(data.app[i]['module_name']);
+          }
+        };
+
+        angular.module('bridge.app', modules);  
+        angular.module('bridge.service', ['ui.bootstrap']);
+        angular.module('bridge.service').service('bridge.service.loader', function () 
+        {
+          this.apps = data.app;          
+        });
 
         var loaded_script = 0;
 

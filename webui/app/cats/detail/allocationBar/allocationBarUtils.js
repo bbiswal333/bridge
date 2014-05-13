@@ -1,6 +1,5 @@
-angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationBar.utils.colorUtils", function() {
+angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationBar.utils.colorUtils", function () {
     var colorCounter = 0;
-    var gradient = new SVG.Color('#0080C0').morph('#FFDB53');
 
     var colors = [
         "#3399cc",
@@ -15,59 +14,7 @@ angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationB
         "#ffa317"
     ];
 
-    function hex2Dec(hex_s) {
-        var sum = 0;
-        for (var i = 0; i < hex_s.length; i++) {
-            sum += valOfChar(hex_s.charAt(i)) * Math.pow(16, hex_s.length - 1 - i);
-        }
-
-        function valOfChar(c) {
-            c = c.toLowerCase();
-            var i = parseInt(c);
-            if (typeof i == "number" && i <= 9) return i;
-            if (c == "a") return 10;
-            else if (c == "b") return 11;
-            else if (c == "c") return 12;
-            else if (c == "d") return 13;
-            else if (c == "e") return 14;
-            else if (c == "f") return 15;
-            else return null;
-        }
-
-        return sum;
-    }
-
-    function dec2Hex(dec_i) {
-        var res = "";
-        var a;
-
-        while (true) {
-            a = Math.floor(dec_i / 16);
-            res = getSignForValue(Math.floor(dec_i % 16)) + res;
-            dec_i = a;
-
-            if (a < 16) {
-                res = (a == 0) ? res : getSignForValue(a) + res;
-                break;
-            }
-        }
-
-        function getSignForValue(i) {
-            if (i < 10) {
-                return i;
-            }
-            if (i == 10) return "A";
-            if (i == 11) return "B";
-            if (i == 12) return "C";
-            if (i == 13) return "D";
-            if (i == 14) return "E";
-            if (i == 15) return "F";
-        }
-
-        return res;
-    }
-
-    function getNextColor() {
+     this.getNextColor = function() {
         var generated = null;
         var len = colors.length;
 
@@ -78,45 +25,46 @@ angular.module("app.cats.allocationBar.utils", []).factory("app.cats.allocationB
             generated = colors[len - 1 - (colorCounter % len)];
         }
 
-        /*offset_f = (offset_f || 0);
-
-        //var generated = gradient.at(offset_f + ((0.618033988749895 * colorCounter) % 1)).toHex();
-        var mult = 0.1;
-        if (colorCounter % 2 == 0 || colorCounter == 0) {
-          mult = 0.9;
-        }
-        var generated = gradient.at((offset_f + colorCounter * mult) % 1.0).toHex(); //Genrates 10 unique colors
-        */
         colorCounter++;
 
         return generated;
+     }
+
+     this.resetColorCounter = function () {
+         colorCounter = 0;
+     }
+})
+
+.service("app.cats.allocationBar.utils.blockCalculations", function () {
+    this.getWidthFromValue = function(value, totalWidth, totalValue) {
+        return value * parseInt(totalWidth, 10) / parseInt(totalValue, 10);
     }
 
-    function getRandomColor(offset_s) {
-        var r, g, b;
-        r = hex2Dec(offset.substr(1, 2));
-        g = hex2Dec(offset.substr(2, 2));
-        b = hex2Dec(offset.substr(4, 2));
-
-        r += Math.floor(Math.random() * 150);
-        g += Math.floor(Math.random() * 150);
-        b += Math.floor(Math.random() * 150);
-
-        if (r > 255) r = 255;
-        if (g > 255) g = 255;
-        if (b > 255) b = 255;
-
-        return "#" + dec2Hex(r) + dec2Hex(g) + dec2Hex(b);
+    this.getValueFromWidth = function(width, totalWidth, totalValue) {
+        return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
     }
 
-    return {
-        setUpGradient: function(start_s, end_s) {
-            gradient = new SVG.Color(start_s).morph(end_s);
-        },
-        getNextColor: getNextColor,
-        resetColorGenerator: function() {
-            colorCounter = 0;
-        },
-        getRandomColor: getRandomColor
-    };
+    this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue) {
+        var newWidth = originalBlockWidth + offset;
+
+        // calculate potential new Value from the new width
+        var newValue = this.getValueFromWidth(newWidth, totalWidth, totalValue);
+
+        // check boundaries of the new value
+        var valueDiff = newValue - currentValue;
+
+        if (newValue < 0) {
+            newValue = 0;
+        } else if (valueDiff > remainingValue) {
+            newValue = currentValue + remainingValue; // == maxValue
+        }
+
+        // calculate actual new width from the new value
+        newWidth = this.getWidthFromValue(newValue, totalWidth, totalValue);
+
+        return {
+            newWidth: newWidth,
+            newValue: newValue,
+        }
+    }
 });

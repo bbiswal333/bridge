@@ -1,8 +1,9 @@
-﻿angular.module("app.cats").directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter",
-	function (calUtils, catsUtils, $interval, $location, bridgeCounter) {
+﻿angular.module("app.cats").directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter", "bridgeDataService",
+	function (calUtils, catsUtils, $interval, $location, bridgeCounter, bridgeDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
+	        $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	        //$scope.customCSSFile = "app/cats/style.css"; //Not needed anymore, included in index.html because also needed in detail screen
 
 	        $scope.year = new Date().getFullYear();
@@ -43,7 +44,16 @@
 	            console.log($scope.state);
 	        }
 
-	        $scope.jump = function (dayString) {
+	        $scope.jump = function (dayString, event) {
+	        	
+	        	var range_click = event.shiftKey;
+	        	var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
+	        	var single_click = !range_click && !multi_click;	        
+
+	        	console.log("RANGE:" + range_click);
+	        	console.log("MULTI:" + multi_click);
+	        	console.log("SINGLE:" + single_click);	        	
+
 	            $location.path("/detail/cats/" + dayString);
 	        };
 

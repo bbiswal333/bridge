@@ -23,6 +23,8 @@ module.exports = function(config) {
       './webui/lib/angular-1_2_13/angular.min.js',
       './webui/lib/**/*.js',
 
+      './webui/loader_unit_test.js',
+
       './webui/bridge/bridgeController.js',
       './webui/bridge/bridgeDataService.js',
       './webui/bridge/**/*.js',
@@ -46,7 +48,6 @@ module.exports = function(config) {
       './webui/app/employeeSearch/*.js',
 
       './webui/app/cats/overview.js',
-      './webui/app/cats/detail/allocationBar/svg.min.js',
       './webui/app/cats/**/*.js',
 
       './webui/app/atc/overview.js',

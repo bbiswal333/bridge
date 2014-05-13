@@ -1,7 +1,7 @@
-angular.module('app.linkList', ['ui.sortable']);
+angular.module('app.linklist', ['ui.sortable']);
 
-angular.module('app.linkList').directive('app.linkList',
-        ['app.linkList.configservice',
+angular.module('app.linklist').directive('app.linklist',
+        ['app.linklist.configservice',
         function(appLinklistConfig) {
 
     var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {
@@ -11,7 +11,7 @@ angular.module('app.linkList').directive('app.linkList',
         $scope.customCSSFile = "app/linkList/style.css";
         $scope.settingScreenData = {
             templatePath: "linkList/settings.html",
-            controller: angular.module('app.linkList').appLinkListSettings,
+            controller: angular.module('app.linklist').appLinkListSettings,
         };
         bridgeCounter.CollectWebStats('LINKLIST', 'APPLOAD');
 
@@ -65,7 +65,9 @@ angular.module('app.linkList').directive('app.linkList',
                                 if(link.type == "saplink") 
                                 {
                                     link.sapGuiFile = appLinklistConfig.generateBlob(link.name,link.sid,link.transaction,link.parameters);
-                                }         
+                                }else if(link.type == "hyperlink" && (link.url.indexOf("http") == -1)){
+                                    link.url = "http://" + link.url;
+                                };
                             };   
                         };
                     }

@@ -14,12 +14,6 @@
     color: white;
 }
 
-.app-cats-inFuture {
-	background: rgba(0, 0, 0, 1);
-    opacity: 0.15;
-    color: white;
-}
-
 .app-cats-stateN { /* no need for maintainance */
 	background: rgba(80, 80, 80, 0.7);
     background-image: url('../../img/stripes2.png');

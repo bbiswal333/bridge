@@ -6,46 +6,32 @@
     var bridgeDataService;
     var $rootScope;
     var $httpBackend;
+    var $q;
 
     beforeEach(function () {
 
         module("bridge.service");
 
-        inject(["$rootScope", "$httpBackend", "$templateCache", "bridgeConfig", "bridgeDataService", function (rootScope, httpBackend, $templateCache, _bridgeConfig, _bridgeDataService) {
+        inject(["$rootScope", "$q", "$httpBackend", "$templateCache", "bridgeConfig", "bridgeDataService", function (rootScope, q, httpBackend, $templateCache, _bridgeConfig, _bridgeDataService) {
             bridgeConfig = _bridgeConfig;
             bridgeDataService = _bridgeDataService;
             $rootScope = rootScope;
+            $q = q;
 
             $httpBackend = httpBackend;
-            $httpBackend.whenGET("view/settings.html").respond("");
+            $httpBackend.whenGET("https://ifp.wdf.sap.corp:443/sap/bc/devdb/GETUSRCONFIG?new_devdb=B&origin=" + encodeURIComponent(location.origin)).respond('{"projects":[{"name":"OVERVIEW","type":"PERSONAL","apps":[{"metadata":{"content":"app.lunch-walldorf","id":2,"show":true,"boxTitle":"Lunch Wdf / Rot","boxIconClass":"icon-meal"},"appConfig":{}},{"metadata":{"content":"app.jira","id":3,"show":true,"boxTitle":"Jira","boxIconClass":"icon-bell"},"appConfig":{}},{"metadata":{"content":"app.atc","id":4,"show":true,"boxTitle":"ATC Results","boxIconClass":" icon-wrench"},"appConfig":{"configItems":[]}},{"metadata":{"content":"app.employee-search","id":5,"show":true,"boxTitle":"Employee Search","boxIconClass":"icon-user-o"},"appConfig":{}}]}], "bridgeSettings": {"someFlag": true}}');
         }]);
-
-        bridgeDataService.boxInstances.mockBox = {};
-        bridgeDataService.boxInstances["mockBox"].scope = {};
-        bridgeDataService.boxInstances["mockBox"].scope.boxId = "mockBox";
-        bridgeDataService.boxInstances["mockBox"].scope.settingScreenData = {};
-        bridgeDataService.boxInstances["mockBox"].scope.settingScreenData.templatePath = mockTemplatePath;
-        bridgeDataService.boxInstances["mockBox"].scope.settingScreenData.controller = mockController;
     });
 
-    it("Modal instance exists after show modal", function () {
-        bridgeConfig.showSettingsModal("mockBox");
-        expect(bridgeConfig.modalInstance).toBeDefined();
-    });
-
-    it("Should save the config when modal gets closed", function () {
-        var persistInBackendCalled = false;
-        // mock away the persist in backend function
-        bridgeConfig.persistInBackend = function () {
-            persistInBackendCalled = true;
-        };
-
-        // show Settings Modall triggers a http request which we intercept in $httpBackend
-        bridgeConfig.showSettingsModal("mockBox");
+    it("Check load config from backend and parse it", function () {
+        var deferred = $q.defer();
+        var promise = bridgeDataService.initialize(deferred);
+        promise.then(function () {
+            expect(bridgeDataService.getProjects()[0].apps.length).toBe(4);
+            expect(bridgeDataService.getBridgeSettings().someFlag).toBe(true);
+        }, function () {
+            console.error("fuck");
+        });
         $httpBackend.flush();
-        // without $apply, the callbacks registered to close() will not be called
-        $rootScope.$apply(function () { bridgeConfig.modalInstance.close(); });
-
-        expect(persistInBackendCalled).toBe(true);
     });
 });

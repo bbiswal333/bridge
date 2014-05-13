@@ -1,20 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
     <head>
-        <link href="client.css" rel="stylesheet" />
+        <link href="css/background-stripes.css" rel="stylesheet" />
+        <link href="css/bridge.css" rel="stylesheet" />
+        <link href="css/animation.css" rel="stylesheet" />
 
         <script src="lib/jquery-2.1.0.min.js"></script>        
         <script src="utils.js"></script>
         <script src="main.js"></script>
         <script src="globalDefinitions.js"></script>
-    </head>
-    <body style="background-color: #009DE0; font-family: sans-serif; ">
-        <div id="titleText" class="spinnerTitle">Starting Bridge...</div>
-        <div>
-            <div id="spinner" class="spinner">
-                <div class="cube1"></div>
-                <div class="cube2"></div>
-            </div>
+    </head> 
+    
+    <body style="margin:0px">           
+        <div class="headerline">
+            <div class="blueTitleBar"></div>
+            <span class="headertext" style="top:12px"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></span>
+        </div>
+
+        <div style="margin:0px;padding:5px;background-color:white;width:100%;height:100%" class="centeredContent" id="titleText">            
+        Initializing..
         </div>
     </body>
 </html>

@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.employeeSearch"],
+	"app":
+	{
+		"module_name"			:	"app.employeeSearch",
+		"title"					:	"Employee Search",
+		"icon_css"				:	"icon-user-o",
+		"overview_directive"	:	"app.employeeSearch",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js"],
 	"css_files" : []
 }

@@ -57,8 +57,24 @@
 	color: #e1e1e1;
 }
 
+.app-cats-legend-popover{
+	border-radius: 0;
+	border:none;
+	box-shadow:2px 2px 0px rgba(0,0,0,0.1);
+}
+
 .app-cats-legend-popover ul {
 	list-style: none;
+	margin: 0;
+	padding:0;
+}
+
+.popover-title{
+	border-radius: 0;
+}
+
+.popover-content{
+	padding:14px;
 }
 
 .app-cats-legend-colorbox {
@@ -107,6 +123,7 @@
 
 .app-cats-calendar {
 	max-width: 400px;
+	min-height: 120px;
 }
 
 .app-cats-week-labels {
@@ -144,7 +161,7 @@
 		
 }
 
-.app-cats-day-details span {
+.app-cats-day-details {
 	color:white;
 }
 
@@ -163,7 +180,7 @@
 	    width: 48%;
 	}
 	.col-xs-1-7 {
-        width: 13.2857143%;
+        width: 13.5%; /* width: 13.2857143%; << does not fit */
     }
 }
 
@@ -171,8 +188,9 @@
     .app-cats-project-selector-button {
 	    width: 100%;
     }
+
     .col-xs-1-7 {
-        width: 13.2857143%;
+        width: 13.5%;
     }
 }
 
@@ -197,6 +215,7 @@
     line-height: 1;
     margin:4px 4px;
     float:left;
+    overflow: hidden;
 }
 .app-cats-project-selector-button {
     font-size: 14px;
@@ -209,5 +228,3 @@
 .app-cats-project-selector-buttonDiv:not(:first-of-type)  {
   
 }
-/* stuff for fancy animations */
-/* Moved to global animations stylesheet /*

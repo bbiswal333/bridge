@@ -1,24 +1,18 @@
 <div style="width: 100%">
 <p>
 <form name="ConfigItemForm">
-	<div class="row">
-		<div class="col-xs-1"><b>Repository URL</b></div>
- 		<div class="col-xs-6 has-feedback {{error.inputUrl}}">
- 			<input type="text" class="form form-control"  ng-model="currentConfigValues.repo.html_url" placeholder="Repository URL" autofocus
+	<div class="row" style="margin-top:20px;">
+		<div class="col-xs-12 form_head">Repository URL</div>
+ 		<div class="col-xs-6 has-feedback {{error.inputUrl}}" >
+ 			<input type="text" class="form-control form"  ng-model="currentConfigValues.repo.html_url" placeholder="Repository URL" autofocus
  			 typeahead="searchResult for searchResult in getTypeaheadData()| limitTo:10 " typeahead-wait-ms="200"/>
 		</div>
+  
+		  <span ng-click="currentConfigValues.fork = !currentConfigValues.fork" style="text-align:left; margin-left:15px;" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.fork];">
+	    		Forked Repositories?
+	      </span>
 	</div>
 
-	<div class="row">
-
-		<div class="col-xs-1">Forked Repositories?</div>
-		<div class="col-xs-1">
-			<form name="forkForm">
-   				<input type="checkbox" ng-model="currentConfigValues.fork"> <br/>
-  			</form> 
-		</div>
-
-	</div>
 	<div class="row">
 		<div class="col-xs-offset-1 col-xs-4">
 			<div ng-if="error.display" class="alert alert-danger" style="display: block">{{error.msg}} {{error.display}}</div>
@@ -30,23 +24,29 @@
 	<p></p>
 
 	<div class="row">
-		<div class="col-xs-1"><b>Milestone Duration</b></div>
- 		<form>
+		<div class="col-xs-2 form_head" style="float:none;">Milestone Duration</div>
+ 		<!--<form>
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="7"> 1 Week
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="14"> 2 Weeks 
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="21"> 3 Weeks 
    			<input type="radio" ng-model="currentConfigValues.milestoneDuration" value="28"> 4 Weeks <br/>
-  		</form>	
+  		</form>-->
+  		<div class="btn-group" style="margin-left:15px;">
+  				<span ng-click="currentConfigValues.milestoneDuration = 7" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.milestoneDuration == 7];" style="margin-right:0;">1 Week</span>
+  				<span ng-click="currentConfigValues.milestoneDuration = 14" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 14];" style="margin-right:0;">2 Week</span>
+  				<span ng-click="currentConfigValues.milestoneDuration = 21" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 21];" style="margin-right:0;">3 Week</span>
+  				<span ng-click="currentConfigValues.milestoneDuration = 28" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 28];" style="margin-right:0;">3 Week</span>
+  		</div>
   	</div>
 </form>
 
 
 </p>
 
-<div class="row">
-        <div class="col-xs-1 col-xs-offset-10">
-            <div class="btn btn-primary btn_blue" ng-click="save_click()">Save & Close</div>
+
+        <div class="row" >
+            <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
         </div>
-    </div>
+    
 
 </div>

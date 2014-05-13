@@ -1,24 +1,25 @@
-﻿<div class="innerbox" ng-class="boxClass + ' ' + (boxSize ? ('box-'+boxSize) : 'box-1')" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+﻿<div id="innerbox" class="innerbox" ng-class="(boxSize ? ('box-'+boxSize) : 'box-1')" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
     <div class="box-heading">
         <div class="box-heading-content">
-            <h6 class="box-title">{{boxTitle}}</h6>
-            <span class="box-icon" ng-class="boxIconClass"></span>
-            <span ng-show="hover" ng-if="settingScreenData != undefined && !clientNeeded" class="settingsIcon" ng-click="showSettingsModal(boxId)">&#xe00c;</span>
+            <h6 class="box-title">{{title}}</h6>
+            <span class="box-icon" ng-class="icon_css"></span>
+            <span ng-show="hover" ng-if="settingScreenData != undefined && !needs_client" class="settingsIcon" ng-click="showSettingsModal(id)">&#xe00c;</span>
         </div>
     </div>
-    <div id="boxContent" class="box-content">
+
+    <div id="boxContent" class="box-content"> 
     </div>
 
-    <div id="boxContent" class="box-content" ng-if="clientNeeded" style="font-size:15px;text-align:center;">
-    <br />
-    <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
-            <a href="" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a>
-        </div>
+    <div class="box-content" style="font-size:15px;text-align:center;" ng-if="needs_client && !client">
+        <br />
+        <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
+                <a href="" ng-click="show_download()" class="download-icon" title="Download Client">&#xe03a;</a>
+            </div>
 
-    Please download the 
-        <br />
-    bridge client to enable 
-        <br />
-    content.
+        Please download the 
+            <br />
+        bridge client to enable 
+            <br />
+        content.
     </div>
 </div>
