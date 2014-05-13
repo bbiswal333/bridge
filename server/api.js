@@ -328,7 +328,7 @@ exports.register = function(app, user, local, proxy, npm)
 		-I nnn interval test, turn on, wait nnn ms and turn off
 		-p t1 .. tn pulse mode, the switch will be turned on for 0.5 seconds then t1 seconds paused, turned on 0.5 s and t2 s pause, etc. after processing the last argument the switch turns off and the program terminates.
 		*/
-		var colorOn = request.query.color;
+		var colorOn = request.query.color;	
 		
 		var l_err = '';
 		if(process.platform == "win32") {

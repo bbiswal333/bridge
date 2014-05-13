@@ -185,6 +185,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 
     $routeProvider.when("/detail/im/", { templateUrl: 'app/im/detail.html', controller: 'app.im.detailController' });
+    $routeProvider.when("/detail/imtl/", { templateUrl: 'app/imtl/detail.html', controller: 'app.imtl.detailController' });
     //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
     $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
     $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });

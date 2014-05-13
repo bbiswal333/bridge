@@ -1,6 +1,14 @@
 <div style="width: 100%">
 	<p>
-		Dummy Screen
+		<form name="ConfigItemForm">
+			<div class="row">
+				<div class="col-xs-1"><b>Traffic Light Query</b></div>
+				<div class="col-xs-6 has-feedback">
+					<input type="textarea" class="form form-control" ng-model="data.tlquery" placeholder="Traffic Light Query" autofocus/>
+				</div>
+			</div>
+			<button class="btn btn-default" ng-click="save_click()">Save</button>
+		</form>
 	</p>
 </div>
 

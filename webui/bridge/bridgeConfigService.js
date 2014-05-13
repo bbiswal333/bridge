@@ -77,7 +77,9 @@
                         { content: "app.im", id: 8, show: true },
                         { content: "app.link-list", id: 9, show: true },
                         { content: "app.cats", id: 1, show: true },
-                        { content: "app.sapedia", id: 12, show: true }
+                        { content: "app.sapedia", id: 12, show: true },
+						
+                        { content: "app.imtl", id: 13, show: true }
                     ]
         }
             ]

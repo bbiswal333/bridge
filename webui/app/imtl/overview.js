@@ -1,27 +1,37 @@
 angular.module('app.imtl', []);
 
-angular.module('app.imtl').directive('app.imtl', function () {
+angular.module('app.imtl').directive('app.imtl', ['app.imtl.configservice', function (appImtlConfig) {
 
-    var directiveController = ['$scope' ,'app.imtl.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {
+    var directiveController = ['$scope' , 'bridgeCounter', function ($scope, bridgeCounter) {
         $scope.boxTitle = "Internal Messages";
         $scope.boxIcon = '&#xe81b;';
-        bridgeCounter.CollectWebStats('INTERNAL_MESSAGES_TL', 'APPLOAD');
-        $scope.boxNeedsClient = true;
-        /*$scope.settingsTitle = "Settings";
-
+        $scope.boxIconClass = 'icon-comment-empty';
+		
+        bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD'); 
+		
+        $scope.settingsTitle = "Configure Traffic Light";
         $scope.settingScreenData = {
-            templatePath: "im/settings.html",
-                controller: angular.module('app.imtl').appImSettings,
-                id: $scope.boxId,
-            };*/
+            templatePath: "imtl/settings.html",
+			controller: angular.module('app.imtl').appImtlSettings,
+        };
+		
+		$scope.returnConfig = function(){
+            return appImtlConfig.trafficlightquery;
+        }
+		
     }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/imtl/overview.html',
-        controller: directiveController
+        controller: directiveController,
+/*		link: function ($scope, $element, $attrs, $modelCtrl) {
+            if ($scope.appConfig != undefined) {
+                appImtlConfig.trafficlightquery = $scope.appConfig;
+            }
+        }*/
     };
-});
+}]);
 
     angular.module('app.imtl').run(function ($rootScope) {
 });
@@ -31,25 +41,32 @@ angular.module('app.imtl').controller('app.imtl.directiveController', ['$scope',
 
         $scope.prioarr = [0,0,0,0];
         $scope.prionr = [1,2,3,4];
-        $scope.displayChart = true;
-        $scope.$parent.titleExtension = " - Internal Messages w/ Traffic Light";
-        $scope.lastElement = "";        
-        $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
+        $scope.$parent.titleExtension = " - Internal Messages"; 
+		
+		var updateTrafficLight = function ($scope) {
+			if( $scope.prioarr[0] ){
+				console.log( 'turn red on' );
+				//window.client.origin
+				$http.get('/api/trafficLight?color=r');
+			}else if( $scope.prioarr[1] ){
+				console.log( 'turn yellow on' );
+				$http.get('/api/trafficLight?color=y');
+			}else{
+				console.log( 'turn green on' );
+				$http.get('/api/trafficLight?color=g');
+			}
+		}	
+		
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin
             ).success(function(data) {
-                
-                $scope.imData = data["asx:abap"];
-                $scope.imData = $scope.imData["asx:values"];
-                $scope.imData = $scope.imData[0];
-                $scope.tempobject = [];
-                
-                if ($scope.imData.INTCOMP_LONG[0] !== "") {
-                    _.each($scope.imData.INTCOMP_LONG[0].DEVDB_MESSAGE_OUT, function (n) {$scope.tempobject.push(n); });
-                }
-
-                _.each($scope.tempobject, function (n) { 
+                data = new X2JS().xml_str2json(data);
+                $scope.imData = data["abap"];
+                $scope.imData = $scope.imData["values"];
+				
+                _.each($scope.imData.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT, function (n) {
                     _.each($scope.prionr, function (u,i) {
                         i = i + 1;
-                        if(n.PRIO[0] == i)
+                        if(n.PRIO == i.toString())
                             $scope.prioarr[i-1] ++;
                     });
                 });
@@ -57,79 +74,13 @@ angular.module('app.imtl').controller('app.imtl.directiveController', ['$scope',
                     $scope.lastElement="You have no internal messages to display!";
                     $scope.displayChart = false;
                 }                
-
+                else
+                {
+                    $scope.displayChart = true;
+                }
+				updateTrafficLight($scope);
             }).error(function(data) {
                 $scope.imData = [];                
             });
-   
-            var updateimChart = function ($scope) {
-				var chart1 = {};
-					 
-				chart1.type = "PieChart";
-				chart1.cssStyle = "height:150px; width:100%;";
-				chart1.displayed = true;
-
-				chart1.data = {
-					"cols": [
-						{ id: "prio", label: "Priority", type: "string" },
-						{ id: "numberMessages", label: "Message(s)", type: "number" },
-					], "rows": [
-					{
-						c: [
-						   { v: "Prio 1 (" + $scope.prioarr[0] + ")"},
-						   { v: $scope.prioarr[0], f: $scope.prioarr[0] + " Messages" }
-						]
-					},
-					{
-						c: [
-						   { v: "Prio 2 (" + $scope.prioarr[1] + ")"},
-						   { v: $scope.prioarr[1], f: $scope.prioarr[1] + " Messages" }
-						]
-					},
-					{
-						c: [
-						   { v: "Prio 3 (" + $scope.prioarr[2] + ")"},
-						   { v:  $scope.prioarr[2], f: $scope.prioarr[2] + " Messages"  }
-						]
-					},
-					{
-						c: [
-						   { v: "Prio 4 (" + $scope.prioarr[3] + ")"},
-						   { v:  $scope.prioarr[3], f: $scope.prioarr[3] + " Messages"  }
-						]
-					}
-				]};
-
-				chart1.options = {
-					"title": "",
-					"sliceVisibilityThreshold": 0,
-					"colors": ['#097AC5', '#5CCCFF', '#AFE5FF', '#E6F7FF'],
-					"pieHole": 0.75,
-					"fill": 10,
-					"displayExactValues": false,
-				};
-
-				chart1.formatters = {};
-				$scope.imChart = chart1;
-
-			}
-
-			var updateTrafficLight = function ($scope) {
-				if( $scope.prioarr[0] ){
-					console.log( 'turn red on' );
-					$http.get('http://localhost:8000/api/trafficLight?color=r');
-				}else if( $scope.prioarr[1] ){
-					console.log( 'turn yellow on' );
-					$http.get('http://localhost:8000/api/trafficLight?color=y');
-				}else{
-					console.log( 'turn green on' );
-					$http.get('http://localhost:8000/api/trafficLight?color=g');
-				}
-			}
-			
-			$scope.$watch('imData', function () {
-				updateimChart($scope);
-				updateTrafficLight($scope);
-			});
 }]);
     

@@ -2,24 +2,25 @@ angular.module('app.imtl').controller('app.imtl.detailController', ['$scope', '$
     function Controller($scope, $http) {
 
         $scope.$parent.titleExtension = " - IM Details";   		
-	    $http.get('http://localhost:8000/api/get?url=' + encodeURI('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS') + '&json=true'
+	    $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin 
 	   		
 	        ).success(function(data) {
 	        	
-	            $scope.imData = data["asx:abap"];
-	            $scope.imData = $scope.imData["asx:values"];
-	            $scope.imData = $scope.imData[0];
+	        	data = new X2JS().xml_str2json(data);
+                $scope.imData = data["abap"];
+                $scope.imData = $scope.imData["values"];	            
 	       	 	$scope.tempobject = [];
 
-	       	   	if ($scope.imData.INTCOMP_LONG[0] !== "") {
-	       	   		_.each($scope.imData.INTCOMP_LONG[0].DEVDB_MESSAGE_OUT, function (n) {
-	       	   			$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + n.SUSID[0] + '&origin=' + location.origin).then(function (response) {
+	       	   	if ($scope.imData.INTCOMP_LONG !== "") {
+	       	   		_.each($scope.imData.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT, function (n) {
+	       	   			$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + n.SUSID + '&origin=' + location.origin).then(function (response) {
 	                        n.employee = response.data.DATA;
 	                        n.employee.TELNR = n.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
                        		$scope.tempobject.push(n);
 	       	   			});
                 	});
 	       	   	}	            
+     
 
 	        }).error(function(data) {
 	            $scope.imData = [];	            
