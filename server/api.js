@@ -20,7 +20,7 @@ exports.register = function(app, user, local, proxy, npm)
 		if ( request.headers.origin != undefined && re.test(request.headers.origin))
 		{
 			response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
-			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept' );
 			response.setHeader('Access-Control-Allow-Credentials', 'true' );
 			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
 		}    		
