@@ -3,12 +3,15 @@
         var apps = [];
         if (project.apps) {
             for (var i = 0; i < project.apps.length; i++) {
-                apps.push({
-                    metadata: {
-                        "module_name": project.apps[i].metadata["module_name"]
-                    },
-                    appConfig: project.apps[i].scope ? (project.apps[i].scope.returnConfig ? project.apps[i].scope.returnConfig() : project.apps[i].appConfig) : {},
-                });
+                if(project.apps[i].metadata.show)
+                {
+                    apps.push({
+                        metadata: {
+                            "module_name": project.apps[i].metadata["module_name"]
+                        },
+                        appConfig: project.apps[i].scope ? (project.apps[i].scope.returnConfig ? project.apps[i].scope.returnConfig() : project.apps[i].appConfig) : {},
+                    });
+                }
             }
         }
         return apps;

@@ -30,8 +30,18 @@ angular.module('bridge.app').controller('bridgeController',
             if($scope.sideView == "settings" || !$scope.show_settings)
             {
                 $scope.show_settings = !$scope.show_settings;
+                if ($scope.show_settings == false) {    
+                    bridgeConfig.persistInBackend(bridgeDataService);                    
+                }
             }
-            $scope.sideView = "settings";            
+            $scope.sideView = "settings";                   
+        }
+
+        $scope.bridge_hide_settings = function () {
+            if ($scope.show_settings == true) {
+                $scope.show_settings = false;
+                bridgeConfig.persistInBackend(bridgeDataService);
+            }
         }
 
         $scope.bridge_feedback_click =  function(){
@@ -50,14 +60,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "github";                
-        }
-
-        $scope.bridge_hide_settings = function () {
-            if ($scope.show_settings == true) {
-                $scope.show_settings = false;
-                bridgeConfig.persistInBackend(bridgeDataService);
-            }
-        }
+        }    
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 

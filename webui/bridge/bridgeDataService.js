@@ -34,23 +34,6 @@
         return deferredIn.promise;
     }
 
-    function getAppMetadata(id, app) {
-
-        for(var i = 0; i < bridgeLoaderService.apps.length; i++ ){
-            if ( bridgeLoaderService.apps[i]['module_name'] == app.metadata["module_name"] )
-            {
-                for (var attribute in bridgeLoaderService.apps[i]) {
-                    if (bridgeLoaderService.apps[i].hasOwnProperty(attribute)) 
-                    {
-                        app.metadata[attribute] = bridgeLoaderService.apps[i][attribute];
-                    }
-                }
-                app.metadata.id = id;
-                return app.metadata;
-            }
-        }
-    }
-
     function parseProjects(config) {
         if (config.bridgeSettings && config.bridgeSettings.apps) {
             parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
@@ -68,14 +51,33 @@
 
     function parseApps(project) {
         var apps = [];
-        if (project.apps) {
-            for (var i = 0; i < project.apps.length; i++) {
-                apps.push({ metadata: getAppMetadata(i, project.apps[i]) });
 
-                if (apps[apps.length - 1].metadata.show === undefined)
-                    apps[apps.length - 1].metadata.show = true;
+        for (var i = 0; i < bridgeLoaderService.apps.length; i++)
+        {
+            //initialize metadata from loader service
+            var app = {};
+            app.metadata = bridgeLoaderService.apps[i];
+            app.metadata.id = i; 
+            app.metadata.show = false;
+
+            //fetch corresponding config from backend
+            for(var j = 0; j < project.apps.length; j++)
+            {
+                if(project.apps[j].metadata.module_name == app.metadata.module_name)
+                {
+                    app.metadata.show = true;
+                    app.metadata.order = j;
+                    app.appConfig = project.apps[j].appConfig;
+                }
             }
+            apps.push(app);    
         }
+
+        apps.sort(function (app1, app2){
+                if( app1.metadata.title < app2.metadata.title ) return -1;
+                if( app1.metadata.title > app2.metadata.title ) return 1;
+                return 0;
+        });        
         return apps;
     }
 
