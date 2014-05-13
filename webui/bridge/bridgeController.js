@@ -84,11 +84,20 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
-            {
-              bridgeConfig.persistInBackend(bridgeDataService);  
+            {              
+
+              for (var i = 0; i < $scope.visible_apps.length; i++) {
+                    for(var j = 0; j < $scope.apps.length; j++)
+                    {
+                        if($scope.apps[j].module_name == $scope.visible_apps[i].module_name)
+                        {
+                            $scope.apps[j].order = i;
+                        }
+                    }
+              }
+              bridgeConfig.persistInBackend(bridgeDataService);                          
             }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
-            //$scope.sortableOptions.disabled = true; //until it works this is diabled ;-) !!!
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;            
         };
 
         $scope.settings_click = function (boxId) {
@@ -142,11 +151,54 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.apps = [];
         $scope.$watch('apps', function () {
-            if ($scope.apps) {
-                $scope.visible_apps = [];
-                for (var i = $scope.apps.length - 1; i >= 0; i--) {
-                    if ($scope.apps[i].show) $scope.visible_apps.push($scope.apps[i]);
-                };            
+            if(!$scope.visible_apps) $scope.visible_apps = [];
+            if ($scope.apps) 
+            {            
+                for (var i = 0; i < $scope.apps.length; i++) 
+                {
+                    if ($scope.apps[i].show)
+                    {
+                        var module_visible = false;
+                        for(var j = 0; j < $scope.visible_apps.length; j++)
+                        {                            
+                            if( $scope.apps[i].module_name == $scope.visible_apps[j].module_name )
+                            {
+                                module_visible = true;
+                            }                         
+                        }    
+                       if(!module_visible)
+                        {
+                            var push_app = $scope.apps[i];
+                            if(push_app.order == undefined) push_app.order = $scope.visible_apps.length;
+                            $scope.visible_apps.push(push_app);        
+                        }                                    
+                    }
+                    else
+                    {
+                        var module_visible = false;
+                        var module_index = 0;
+                        for(var j = 0; j < $scope.visible_apps.length; j++)
+                        {                            
+                            if( $scope.apps[i].module_name == $scope.visible_apps[j].module_name )
+                            {
+                                module_visible = true;
+                                module_index = j;                                
+                            }                         
+                        }    
+                       if(module_visible)
+                        {
+                            $scope.visible_apps.splice(module_index, 1);
+                        }       
+                    }
+                };   
+                
+                
+                $scope.visible_apps.sort(function (app1, app2){
+                    if( app1.order < app2.order ) return -1;
+                    if( app1.order > app2.order ) return 1;
+                    return 0;
+                });
+                                 
             }
         }, true);
 

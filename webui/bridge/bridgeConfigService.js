@@ -1,18 +1,31 @@
 ﻿angular.module('bridge.service').service('bridgeConfig', ['$http', 'bridge.service.loader', 'bridgeInstance', function ($http, bridgeLoaderService, bridgeInstance) {
     function getAppsData(project) {
+        var visible_apps = [];
         var apps = [];
+
         if (project.apps) {
             for (var i = 0; i < project.apps.length; i++) {
                 if(project.apps[i].metadata.show)
                 {
-                    apps.push({
-                        metadata: {
-                            "module_name": project.apps[i].metadata["module_name"]
-                        },
-                        appConfig: project.apps[i].scope ? (project.apps[i].scope.returnConfig ? project.apps[i].scope.returnConfig() : project.apps[i].appConfig) : {},
-                    });
+                    visible_apps.push(project.apps[i]);
                 }
             }
+        }
+
+        visible_apps.sort(function(app1, app2){
+            if (app1.metadata.order < app2.metadata.order) return -1;
+            if (app1.metadata.order > app2.metadata.order) return 1;
+            return 0;
+        });
+        
+        for (var i = 0; i < visible_apps.length; i++) 
+        {
+            apps.push({
+                metadata: {
+                    "module_name": visible_apps[i].metadata["module_name"]
+                },
+                appConfig: visible_apps[i].scope ? (visible_apps[i].scope.returnConfig ? visible_apps[i].scope.returnConfig() : visible_apps[i].appConfig) : {},
+            });                        
         }
         return apps;
     }
