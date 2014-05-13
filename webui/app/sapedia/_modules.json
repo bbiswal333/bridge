@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.sapedia"],
+	"app":
+	{
+		"module_name"			:	"app.sapedia",
+		"title"					:	"SAPedia",
+		"icon_css"				:	"icon-lightbulb",
+		"overview_directive"	:	"app.sapedia",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js"],
 	"css_files" : []
 }

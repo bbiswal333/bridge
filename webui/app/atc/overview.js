@@ -4,13 +4,8 @@ angular.module('app.atc').directive('app.atc',
     ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeCounter",
     function ($modal, $interval, appAtcConfig, appAtcData, bridgeCounter) {
     
-    var directiveController = ['$scope', function ($scope) {
-        $scope.boxTitle = "ATC Results";
-        $scope.settingsTitle = "Configure Source Systems and Packages";
-        $scope.boxIcon = '&#xe792;';
-        $scope.boxIconClass = ' icon-wrench';
-        $scope.customCSSFile = "app/atc/style.css";
-        bridgeCounter.CollectWebStats('ATC', 'APPLOAD');
+    var directiveController = ['$scope', function ($scope) {        
+        $scope.settingsTitle = "Configure Source Systems and Packages";                
 
         $scope.settingScreenData = {
             templatePath: "atc/settings.html",
@@ -23,16 +18,7 @@ angular.module('app.atc').directive('app.atc',
         };
 
         $scope.atcData = appAtcData;
-        $scope.config = appAtcConfig;
-        
-        //add dummy item to config
-        /*var configItem = appAtcConfig.newItem();
-        configItem.srcSystem = 'CI3';
-        configItem.displayPrio1 = 'X';        
-        configItem.displayPrio2 = 'X';           
-        $scope.config.addConfigItem(configItem);
-        console.log($scope.cofig);*/
-        
+        $scope.config = appAtcConfig;                    
 
         var loadData = function () {
             if ($scope.config.configItems.length > 0)
@@ -47,64 +33,10 @@ angular.module('app.atc').directive('app.atc',
             }
         });
 
-        $scope.$watch('atcData.data', function () { 
-            $scope.displayChart = true;
-            $scope.updateATCChart($scope);
-        });
+        
         $scope.$watch('config', function () {
             loadData();
-        }, true);
-
-        $scope.updateATCChart = function ($scope) {
-            var chart1 = {};
-            chart1.type = "PieChart";
-            chart1.displayed = true;
-            chart1.cssStyle = "height:150px; width:100%;";
-            chart1.data = {
-                "cols": [
-                    { id: "month", label: "Month", type: "string" },
-                    { id: "laptop-id", label: "Laptop", type: "number" },
-                ], "rows": [
-                    {
-                        c: [
-                           { v: "Prio 1 (" + $scope.atcData.data.prio1 + ")" },
-                           { v: $scope.atcData.data.prio1, f: $scope.atcData.data.prio1 + " Prio 1 messages" }
-                        ]
-                    },
-                    {
-                        c: [
-                           { v: "Prio 2 (" + $scope.atcData.data.prio2 + ")" },
-                           { v: $scope.atcData.data.prio2, f: $scope.atcData.data.prio2 + " Prio 2 messages" }
-                        ]
-                    },
-                    {
-                        c: [
-                           { v: "Prio 3 (" + $scope.atcData.data.prio3 + ")" },
-                           { v: $scope.atcData.data.prio3 }
-                        ]
-                    },
-                    {
-                        c: [
-                           { v: "Prio 4 (" + $scope.atcData.data.prio4 + ")" },
-                           { v: $scope.atcData.data.prio4 }
-                        ]
-                    }
-                ]
-            };
-
-            chart1.options = {
-                "title": "",
-                "sliceVisibilityThreshold": 0,
-                "colors": ['#097AC5', '#5CCCFF', '#AFE5FF', '#E6F7FF'],
-                "pieHole": 0.75,
-                "fill": 20,
-                "displayExactValues": false
-            };
-
-            chart1.formatters = {};
-
-            $scope.chart = chart1;
-        }
+        }, true);    
     }];
 
     return {

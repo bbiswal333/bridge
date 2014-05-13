@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service', ['ui.bootstrap']).service('bridgeDataService', function (bridgeConfig, $q) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig','$q','bridge.service.loader', function (bridgeConfig, $q, bridgeLoaderService) {
     this.projects = [];
     this.bridgeSettings = {};
     this.configRawData = null;
@@ -34,6 +34,23 @@
         return deferredIn.promise;
     }
 
+    function getAppMetadata(id, app) {
+
+        for(var i = 0; i < bridgeLoaderService.apps.length; i++ ){
+            if ( bridgeLoaderService.apps[i]['module_name'] == app.metadata["module_name"] )
+            {
+                for (var attribute in bridgeLoaderService.apps[i]) {
+                    if (bridgeLoaderService.apps[i].hasOwnProperty(attribute)) 
+                    {
+                        app.metadata[attribute] = bridgeLoaderService.apps[i][attribute];
+                    }
+                }
+                app.metadata.id = id;
+                return app.metadata;
+            }
+        }
+    }
+
     function parseProjects(config) {
         if (config.bridgeSettings && config.bridgeSettings.apps) {
             parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
@@ -41,13 +58,6 @@
         else if (config.projects) {
             for (var i = 0; i < config.projects.length; i++) {
                 parseProject(config.projects[i]);
-            }
-        }
-
-        //TODO: to be deleted, this is a transformation from the old structure to the new one
-        if (config.boxSettings) {
-            for (var i = 0; i < config.boxSettings.length; i++) {
-                _getAppById(config.boxSettings[i].boxId).appConfig = config.boxSettings[i].setting;
             }
         }
     }
@@ -60,10 +70,7 @@
         var apps = [];
         if (project.apps) {
             for (var i = 0; i < project.apps.length; i++) {
-                if (project.apps[i].metadata)
-                    apps.push(project.apps[i]);
-                else
-                    apps.push({ metadata: project.apps[i] });
+                apps.push({ metadata: getAppMetadata(i, project.apps[i]) });
 
                 if (apps[apps.length - 1].metadata.show === undefined)
                     apps[apps.length - 1].metadata.show = true;
@@ -141,4 +148,4 @@
         getAppConfigById: _getAppConfigById,
         toDefault: _toDefault,
     };
-});
+}]);

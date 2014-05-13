@@ -1,6 +1,13 @@
 {
-	"modules" : [
-		"app.cats",
+	"app":
+	{
+		"module_name"			:	"app.cats",
+		"title"					:	"CATS Compliance",
+		"icon_css"				:	"icon-clock-o",
+		"overview_directive"	:	"app.cats",
+		"needs_client"			:	false
+	},
+	"modules" : [		
 		"app.cats.allocationBar",
 		"app.cats.allocationBarBlock",
 		"app.cats.allocationBar.utils",

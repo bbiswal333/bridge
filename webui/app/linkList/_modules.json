@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.linkList"],
+	"app":
+	{
+		"module_name"			:	"app.linklist",
+		"title"					:	"Linklist",
+		"icon_css"				:	"icon-bookmark-empty",
+		"overview_directive"	:	"app.linklist",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js"],
 	"css_files" : ["style.css"]
 }

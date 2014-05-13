@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.test"],
+	"app":
+	{
+		"module_name"			:	"app.test",
+		"title"					:	"Test App",
+		"icon_css"				:	"icon-lightbulb",
+		"overview_directive"	:	"app.test",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js"],
 	"css_files" : []
 }

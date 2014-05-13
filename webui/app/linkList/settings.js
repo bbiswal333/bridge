@@ -1,5 +1,5 @@
-angular.module('app.linkList').appLinkListSettings = 
-    ['app.linkList.configservice', '$scope', '$rootScope',  
+angular.module('app.linklist').appLinkListSettings = 
+    ['app.linklist.configservice', '$scope', '$rootScope',  
         function (appLinklistConfig, $scope, $rootScope) {
 
 	$scope.config  = appLinklistConfig;

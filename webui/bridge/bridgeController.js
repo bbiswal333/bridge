@@ -11,7 +11,8 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 angular.module('bridge.app').controller('bridgeController',
     ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeInBrowserNotification, bridgeDownloadService) {
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeInBrowserNotification, bridgeDownloadService) {            
+
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
             if( newValue !== oldValue)
             {
@@ -24,17 +25,6 @@ angular.module('bridge.app').controller('bridgeController',
             return $scope.sidePanel;
         }
         
-        /*
-        $scope.bridge_settings_click = function(){
-            $scope.sidePanel = 'view/bridgeSettings.html';
-            if (!$scope.show_settings)
-                $scope.show_settings = true;
-            else
-                $scope.bridge_hide_settings();
-            $scope.sideView = "settings";                        
-        }
-        */
-
          $scope.bridge_settings_click =  function(){
             $scope.sidePanel = 'view/bridgeSettings.html';
             if($scope.sideView == "settings" || !$scope.show_settings)
@@ -59,8 +49,7 @@ angular.module('bridge.app').controller('bridgeController',
             {
                 $scope.show_settings = !$scope.show_settings;
             }
-            $scope.sideView = "github";    
-            //$window.open("https://github.wdf.sap.corp/bridge/bridge");
+            $scope.sideView = "github";                
         }
 
         $scope.bridge_hide_settings = function () {
@@ -69,7 +58,6 @@ angular.module('bridge.app').controller('bridgeController',
                 bridgeConfig.persistInBackend(bridgeDataService);
             }
         }
-
 
         $scope.show_download = bridgeDownloadService.show_download;                    
 
