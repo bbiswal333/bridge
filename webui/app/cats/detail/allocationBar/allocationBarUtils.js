@@ -36,8 +36,10 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
 })
 
 .service("app.cats.allocationBar.utils.blockCalculations", function () {
-    this.getWidthFromValue = function(value, totalWidth, totalValue) {
-        return value * parseInt(totalWidth, 10) / parseInt(totalValue, 10);
+    this.getWidthFromValue = function (value, totalWidth, totalValue) {
+        var calcValue = value * parseInt(totalWidth, 10) / parseInt(totalValue, 10);
+        calcValue = Math.round(calcValue * 1000) / 1000;
+        return calcValue;
     }
 
     this.getValueFromWidth = function(width, totalWidth, totalValue) {
