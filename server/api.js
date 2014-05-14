@@ -79,8 +79,12 @@ exports.register = function(app, user, local, proxy, npm)
 		{
 
 			req = https_req.request(options, function(res) {
-				res.on('data', function(chunk) { data += chunk; });
-				res.on('end', function(){ callback(data); });
+			    res.on('data', function (chunk) {
+			        data += chunk;
+			    });
+			    res.on('end', function () {
+			        callback(data);
+			    });
 			});
 		}
 		
@@ -90,11 +94,10 @@ exports.register = function(app, user, local, proxy, npm)
 			req.write(postData);
 		}
 
-		req.end();
-		req.on('error', function(e) {
-			console.error(e);
+	    req.end();
+		req.on('error', function (e) {
+		    console.error(e);
 		});
-
 	};
 
 	//api to check if client is existing
