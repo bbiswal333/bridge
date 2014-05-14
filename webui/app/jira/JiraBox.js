@@ -76,12 +76,3 @@ angular.module('app.jira').factory('JiraBox', ['$http',
    function ($http) {
        return new JiraBox($http);
    }]);
-
-angular.module('app.jira').factory("app.jira.configservice", function () {
-
-  var configItem = {
-    query: 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC'
-  };
-  
-  return configItem; 
-});
