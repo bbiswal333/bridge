@@ -30,7 +30,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
             if ($scope.appConfig !== undefined && $scope.appConfig.query !== undefined) {
-                JiraConfig.query = $scope.appConfig;
+                JiraConfig.query = $scope.appConfig.query;
             }
         }
     };
