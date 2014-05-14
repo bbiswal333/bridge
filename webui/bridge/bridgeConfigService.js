@@ -24,7 +24,7 @@
                 metadata: {
                     "module_name": visible_apps[i].metadata["module_name"]
                 },
-                appConfig: visible_apps[i].scope ? (visible_apps[i].scope.returnConfig ? visible_apps[i].scope.returnConfig() : visible_apps[i].appConfig) : {},
+                appConfig: visible_apps[i].scope ? (visible_apps[i].scope.box ? (visible_apps[i].scope.box.returnConfig ? visible_apps[i].scope.box.returnConfig() : visible_apps[i].appConfig) : {}) : {},
             });                        
         }
         return apps;

@@ -13,7 +13,7 @@ angular.module('app.linklist').directive('app.linklist',
 
             $scope.config = appLinklistConfig;
 
-    $scope.returnConfig = function () {
+    $scope.box.returnConfig = function () {
 
         var configCopy = angular.copy(appLinklistConfig);
         configCopy.boxSize = $scope.box.boxSize;

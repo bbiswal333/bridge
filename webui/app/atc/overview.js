@@ -12,7 +12,7 @@ angular.module('app.atc').directive('app.atc',
             id: $scope.boxId,
         };
 
-        $scope.returnConfig = function () {
+        $scope.box.returnConfig = function () {
             return appAtcConfig;
         };
 

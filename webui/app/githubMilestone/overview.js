@@ -18,7 +18,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             };
         
 
-        $scope.returnConfig = function () {
+        $scope.box.returnConfig = function () {
                 return appGithubMilestoneConfig;
             };
 

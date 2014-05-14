@@ -18,7 +18,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
                 id: $scope.boxId,
         };        
 
-        $scope.returnConfig = function(){
+        $scope.box.returnConfig = function(){
             return JiraConfig;
         }
 
