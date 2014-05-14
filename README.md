@@ -45,14 +45,27 @@ Building Apps
 ======================================
 ## application structure
 * apps are contained in their own sub-folder `webui/app/appname`
-* apps must be an angluar-directive named `app.appname` inside it's own module named `app.appname`
-  * your app module must be loaded by the main-module. To do this, reference your module in bridgeController.js
+* apps must be an angluar-directive own module and shoul be named/ prefixed with `app.appname` to avoid naming collisions
 * the app directive must not have an isolated scope
-* apps contain at least the files `overview.js` and `overview.html` for rendering a box on the overview page
-  * your overview.js must be loaded via `<script>` tag in the index.html
-* `$scope.boxId` is inherited from the `bridge.box` directive
-* apps can optionally define settings in a separate directive
-* to make your app visible, you have to add it to the default config in sortableService.js and reset your config via debug.resetConfig() in your Browser's console. This step is a workaround at the moment and will be obsolete in the future.
+* metadata for the app is defined in a file called `_modules.json`
+* the app modules (plus everything mentioned in modules) is loaded during startup automatically and the app should be visibile in the settings screen
+
+## _modules.json
+```
+{
+  "app":
+  {
+    "module_name"     : "app.test",
+    "title"         : "Test App",
+    "icon_css"        : "icon-lightbulb",
+    "overview_directive"  : "app.test",
+    "needs_client"      : false
+  },
+  "modules" : [],
+  "js_files" : ["overview.js"],
+  "css_files" : []
+}
+```
 
 
 ## overview.js
@@ -62,16 +75,8 @@ angular.module('app.test', []);
 angular.module('app.test').directive('app.test', function () {
 
     var directiveController = ['$scope', function ($scope) {
-        $scope.boxTitle = "Test App";
-        $scope.initialized = true;
-        $scope.boxIcon = '&#xe05c;'; 
-        
-        //optional settings screen
-        $scope.settingScreenData = {
-        	templatePath: "test/settings.html",
-            	controller: angular.module('app.test').appTestSettings,
-            	id: $scope.boxId,
-        };
+        //$scope.data = {};
+        //$scope.data.test = "my test data";
     }];
 
     return {
@@ -85,13 +90,6 @@ angular.module('app.test').directive('app.test', function () {
 
 ## overview.html
 ```html
-This is just an app with no real content. The app id is {{boxId}}.
-```
-## settings.js
-```javascript
-
-angular.module('app.test').appTestSettings = ['app.test.configservice', '$scope', function (appTestConfig, $scope) {
- //...
-}];
+This is just an app with no real content. Some test data: {{data.test}}.
 ```
 
