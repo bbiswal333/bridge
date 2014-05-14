@@ -58,9 +58,9 @@ angular.module('app.linklist').appLinkListSettings =
     $scope.setBoxSize = function(listCollection)
     {
     	if(listCollection.length > 1) {
-	        $scope.boxScope.boxSize = 2;
+	        $scope.boxScope.box.boxSize = 2;
     	} else {
-	        $scope.boxScope.boxSize = 1;
+	        $scope.boxScope.box.boxSize = 1;
     	}
     };
 

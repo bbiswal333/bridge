@@ -125,10 +125,10 @@ angular.module('bridge.app').controller('bridgeController',
                 controller: angular.module('bridge.app').settingsController,
                 resolve: {
                     templateString: function () {
-                        return appInstance.scope.settingScreenData.templatePath;
+                        return appInstance.scope.box.settingScreenData.templatePath;
                     },
                     templateController: function () {
-                        return appInstance.scope.settingScreenData.controller;
+                        return appInstance.scope.box.settingScreenData.controller;
                     },
                     boxController: function () {
                         return appInstance;

@@ -3,8 +3,9 @@
 angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataService', 'bridge.service.bridgeDownload', '$http', function ($compile, bridgeDataService, bridgeDownload, $http) {
 
     function directiveController($scope)
-    {
-        $scope.show_download = bridgeDownloadService.show_download;        
+    {        
+        $scope.box = {};
+        $scope.box.show_download = bridgeDownloadService.show_download;        
     }
 
     function snake_case(name){
@@ -20,7 +21,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         directiveController: directiveController,
         scope: true,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-
+            $scope.box = {};
             if ($attrs.id) {
                 //get app metadata and app config
                 var metadata = bridgeDataService.getAppById($attrs.id).metadata;
@@ -29,12 +30,12 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
                     {
                         $scope[attribute] = metadata[attribute];
                     }
-                }
+                }                
                 $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
+                $scope.box.needs_client = $scope.needs_client;                
 
-                $scope.$parent.needs_client = $scope.needs_client;
-
-                if (!bridgeDataService.getAppById($attrs.id).scope) {
+                if (!bridgeDataService.getAppById($attrs.id).scope) 
+                {                    
                     bridgeDataService.getAppById($attrs.id).scope = $scope;
                 }
             }
@@ -42,19 +43,24 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
                 console.error("Box has no id!");
             }            
 
-            var newElement = $compile("<" + snake_case($attrs.content) + "/>")($scope);
-            var boxContent = $element.find("#boxContent");
-            boxContent.append(newElement);
-
-            // append ng if to show either content or "need client"-screen. after appending it, we need to compile the element again or angular won't resolve the ng-if directive
-            boxContent.attr("ng-if", "!(needs_client && !client)");
-            $compile(boxContent)($scope);
-
+            
             if( $scope.needs_client && !$scope.client )
             {
                 var innerBox = $element.find("#innerbox");
-                innerBox.attr("class", "boxDisable " + innerBox.attr("class"));            
+                innerBox.addClass("boxDisable");                
             }
+            else
+            {
+                var innerBox = $element.find("#innerbox");
+                innerBox.removeClass("boxDisable");
+            }
+
+            var boxContent = $element.find("#boxContent");
+            boxContent.attr("ng-if", "!(needs_client && !client)");
+            var newElement = "<" + snake_case($attrs.content) + "/>";
+            boxContent.append(newElement);  
+            var box = $element.find("#innerbox");
+            box = $compile(box)($scope);
         }
     };
 }]);

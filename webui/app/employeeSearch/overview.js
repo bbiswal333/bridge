@@ -3,7 +3,7 @@ angular.module('app.employeeSearch', ['bridge.employeeSearch']);
 angular.module('app.employeeSearch').directive('app.employeeSearch', function () {
 
     var directiveController = ['$scope', 'bridgeCounter', function ($scope, bridgeCounter) {        
-        $scope.boxSize = "2";        
+        $scope.box.boxSize = "2";        
     }];
 
     return {

@@ -10,9 +10,9 @@ angular.module('app.jira').factory("app.jira.configservice", function ()
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', function (JiraConfig) {
 
     var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
-        $scope.boxSize = "2";
-        $scope.settingsTitle = "Configure JIRA Query";
-        $scope.settingScreenData = {
+        $scope.box.boxSize = "2";
+        $scope.box.settingsTitle = "Configure JIRA Query";
+        $scope.box.settingScreenData = {
             templatePath: "jira/settings.html",
                 controller: angular.module('app.jira').appJiraSettings,
                 id: $scope.boxId,

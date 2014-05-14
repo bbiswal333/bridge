@@ -5,16 +5,13 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
     function($http, appGithubMilestoneConfig, calUtils, bridgeCounter) {
 
        
-    var directiveController = ['$scope', function($scope ) {
-            $scope.boxTitle = "Github";
-            $scope.boxIcon = '&#xe80d;';
-            $scope.boxIconClass = 'icon-github-circled';
-            $scope.boxSize = "2";
-            $scope.settingsTitle = "Configure Repository and Duration";
+    var directiveController = ['$scope', function($scope ) {           
+            $scope.box.boxSize = "2";
+            $scope.box.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};
             bridgeCounter.CollectWebStats('GITHUB', 'APPLOAD');
             //Settings Screen
-            $scope.settingScreenData = {
+            $scope.box.settingScreenData = {
             templatePath: "githubMilestone/settings.html",
                 controller: angular.module('app.githubMilestone').appGithubMilestoneSettings,
                 id: $scope.boxId,

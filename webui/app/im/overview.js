@@ -2,11 +2,7 @@ angular.module('app.im', []);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {
-        $scope.boxTitle = "Internal Msg";
-        $scope.boxIcon = '&#xe81b;';
-        $scope.boxIconClass = 'icon-comment-empty';
-        bridgeCounter.CollectWebStats('INTERNAL_MESSAGES', 'APPLOAD');        
+    var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {        
     }];
 
     return {
