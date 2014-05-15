@@ -16,7 +16,46 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
             templatePath: "jira/settings.html",
                 controller: angular.module('app.jira').appJiraSettings,
                 id: $scope.boxId,
-        };        
+        };    
+
+        $scope.data = {};
+        $scope.data.exampleData = [
+            { key: "Open", y: 6 },
+            { key: "In Progess", y: 4 },
+            { key: "Completed", y: 7 }            
+        ];    
+
+        $scope.xFunction = function(){
+            return function(d) {
+                return d.key;
+            };
+        }   
+
+        $scope.yFunction = function(){
+            return function(d){
+                return d.y;
+            };  
+        }
+
+        //copied from the cats allocation bar
+        var colors = [
+            "#3399cc",
+            "#6cb9e3",
+            "#a4d8f9",
+            "#c4e8ff",
+            "#dff5ff",
+            "#Fff7e1",
+            "#ffe9b8",
+            "#ffd07e",
+            "#ffb541",
+            "#ffa317"
+        ];
+
+        $scope.colorFunction = function() {
+            return function(d, i) {
+                return colors[i];
+            };
+        }
 
         $scope.box.returnConfig = function(){
             return JiraConfig;
