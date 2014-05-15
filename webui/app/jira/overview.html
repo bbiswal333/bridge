@@ -1,5 +1,5 @@
 ﻿<nvd3-pie-chart
-	data="data.exampleData"
+	data="data.jiraChart"
     id="exampleId"
     width="331"
     height="146"
@@ -7,9 +7,11 @@
     y="yFunction()"    
     margin="{left:0,top:10,bottom:5,right:0}"
     color="colorFunction()"
-    showLabels="true"
+    showLabels="false"
     donutLabelsOutside="true"
-    donut="true">
+    donut="true"
+    noData=""
+    tooltips="true">
     <svg height="146px"></svg>
 </nvd3-pie-chart>
 

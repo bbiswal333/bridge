@@ -7,7 +7,7 @@ angular.module('app.jira').factory("app.jira.configservice", function ()
     return data;
 });
 
-angular.module('app.jira').directive('app.jira', ['app.jira.configservice', function (JiraConfig) {
+angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
     var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
         $scope.box.boxSize = "2";
@@ -16,24 +16,23 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
             templatePath: "jira/settings.html",
                 controller: angular.module('app.jira').appJiraSettings,
                 id: $scope.boxId,
-        };    
+        };  
 
         $scope.data = {};
-        $scope.data.exampleData = [
-            { key: "Open", y: 6 },
-            { key: "In Progess", y: 4 },
-            { key: "Completed", y: 7 }            
-        ];    
+        $scope.data.jiraData = [];
+        $scope.data.jiraChart = [];
+
+        $scope.config = {};        
 
         $scope.xFunction = function(){
-            return function(d) {
-                return d.key;
+            return function(issue) {
+                return issue.status;
             };
         }   
 
         $scope.yFunction = function(){
-            return function(d){
-                return d.y;
+            return function(issue){
+                return issue.count;
             };  
         }
 
@@ -61,6 +60,53 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
             return JiraConfig;
         }
 
+        $scope.$watch('config', function() {            
+            JiraBox.getIssuesforQuery($scope);            
+        },true);    
+
+        $scope.$watch('data.jiraData', function() {
+
+            var jiraStatus = {};
+            for(var i = 0; i < $scope.data.jiraData.length; i++)
+            {
+                if(!jiraStatus[$scope.data.jiraData[i].status])
+                {
+                    jiraStatus[$scope.data.jiraData[i].status] = 1
+                }
+                else
+                {
+                    jiraStatus[$scope.data.jiraData[i].status] = jiraStatus[$scope.data.jiraData[i].status] + 1;   
+                }            
+            }        
+
+            $scope.data.jiraChart = [];
+            for (var attribute in jiraStatus) {
+                if (jiraStatus.hasOwnProperty(attribute)) 
+                {                    
+                    $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute]});
+                }
+            }        
+
+            $scope.data.jiraChart.sort(function(item1, item2){
+                if(item1.count < item2.count) return 1;
+                if(item1.count > item2.count) return -1;
+                return 0;
+            });
+
+            if( $scope.data.jiraChart.length > 4)
+            {
+                var others_count = 0;
+                for(var i = 4; i < $scope.data.jiraChart.length; i++)
+                {
+                    others_count = others_count + $scope.data.jiraChart[i].count;
+                }
+                $scope.data.jiraChart.splice(4, $scope.data.jiraChart.length-4);
+                $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
+            }
+
+            console.log($scope.data.jiraChart);
+        },true);    
+
     }];
 
     return {
@@ -70,6 +116,8 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
         link: function ($scope, $element, $attrs, $modelCtrl) {
             if ($scope.appConfig !== undefined && $scope.appConfig.query !== undefined) {
                 JiraConfig.query = $scope.appConfig.query;
+                $scope.config = JiraConfig;
+                //$scope.config.query = JiraConfig;
             }
         }
     };

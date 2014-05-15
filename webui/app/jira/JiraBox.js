@@ -9,14 +9,13 @@ var JiraBox = function(http){
 JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.getIssuesforQuery = function (scope) {    
-    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + scope.config
+    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + scope.config.query
         ).success(function(data, status, headers, config) {
-            scope.jiraData = [];
-
-            console.log(data.issues);
+            if(!scope.data) scope.data = {};
+            scope.data.jiraData = [];        
 
             angular.forEach(data.issues, function(issue) {
-              scope.jiraData.push({
+              scope.data.jiraData.push({
                 key:            issue.key,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
@@ -28,7 +27,7 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
               });   
             });
 
-            scope.jiraData.sort(function (a,b) {
+            scope.data.jiraData.sort(function (a,b) {
               if (a.parentKey < b.parentKey) return -1;
               if (a.parentKey > b.parentKey) return 1;
               if (a.key < b.key) return -1;
@@ -54,22 +53,20 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
 
             var group      = null;
             var colorIndex = 0;
-            angular.forEach(scope.jiraData, function(task) {
+            angular.forEach(scope.data.jiraData, function(task) {
               if (getGroup(task) != group) {
                   ++colorIndex;
                   group = getGroup(task);
               }
 
               task.colorClass = 'taskColor_' + colorIndex;
-            });   
-
-            console.log(scope.jiraData);       
+            });                        
 
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
-            scope.jiraData = [];            
-        });
+            scope.jiraData = [];                        
+        });        
 };
 
 angular.module('app.jira').factory('JiraBox', ['$http',
