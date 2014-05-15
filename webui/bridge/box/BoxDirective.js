@@ -44,22 +44,16 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
             }            
 
             
-            if( $scope.needs_client && !$scope.client )
-            {
-                var innerBox = $element.find("#innerbox");
-                innerBox.addClass("boxDisable");                
-            }
-            else
-            {
-                var innerBox = $element.find("#innerbox");
-                innerBox.removeClass("boxDisable");
-            }
+            
 
             var boxContent = $element.find("#boxContent");
             boxContent.attr("ng-if", "!(needs_client && !client)");
             var newElement = "<" + snake_case($attrs.content) + "/>";
             boxContent.append(newElement);  
             var box = $element.find("#innerbox");
+
+
+
             box = $compile(box)($scope);
         }
     };
