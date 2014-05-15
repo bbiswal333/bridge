@@ -42,18 +42,12 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
             else {
                 console.error("Box has no id!");
             }            
-
-            
-            
-
+                
             var boxContent = $element.find("#boxContent");
             boxContent.attr("ng-if", "!(needs_client && !client)");
             var newElement = "<" + snake_case($attrs.content) + "/>";
             boxContent.append(newElement);  
             var box = $element.find("#innerbox");
-
-
-
             box = $compile(box)($scope);
         }
     };
