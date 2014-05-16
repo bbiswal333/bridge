@@ -114,11 +114,11 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         templateUrl: 'app/jira/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            if ($scope.appConfig !== undefined && $scope.appConfig.query !== undefined) {
+            if ($scope.appConfig !== undefined && $scope.appConfig != {} && $scope.appConfig.query !== undefined) 
+            {
                 JiraConfig.query = $scope.appConfig.query;
-                $scope.config = JiraConfig;
-                //$scope.config.query = JiraConfig;
             }
+            $scope.config = JiraConfig;                        
         }
     };
 }]);
