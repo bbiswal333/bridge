@@ -21,37 +21,31 @@ var latest_tag = 'v0.0';
 checkErrorFileSize();
 
 //try to load bridge locally if mentioned in package.json
-if (gui.App.manifest.bridge_tag == "local")
-{
-    try 
-    {
+if (gui.App.manifest.bridge_tag == "local") {
+    try {
         if (process.platform == "win32") {
             bridge = require('../../../');
         } else {
             bridge = require('../../../../../../../');
         }
         bridgeLoadingFinished();
-    } 
-    catch (err) 
-    {
+    }
+    catch (err) {
         console.log("could not load bridge locally for testing");
     }
 }
-else
-{
+else {
     callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) {
         //parse response from github server
         var gitTags = JSON.parse(data);
 
         //tags can be entered in package.json for testing
-        if(gui.App.manifest.bridge_tag)
-        {
-            latest_tag = gui.App.manifest.bridge_tag; 
-            needs_update = true;  
+        if (gui.App.manifest.bridge_tag) {
+            latest_tag = gui.App.manifest.bridge_tag;
+            needs_update = true;
             test_update = true;
         }
-        else
-        {
+        else {
             //expecting format vX.Y for version
             for (var i = 0; i < gitTags.length; i++) {
                 if (gitTags[i].name[1] > latest_tag[1] || (gitTags[i].name[1] == latest_tag[1] && parseInt(gitTags[i].name.substring(3)) > parseInt(latest_tag.substring(3)))) {
@@ -62,11 +56,11 @@ else
 
             try {
                 metaData = require(settings_filename);
-                
+
                 console.log("Bridge Version locally: " + metaData.local_tag);
                 if (latest_tag[1] > metaData.local_tag[1] || (latest_tag[1] == metaData.local_tag[1] && parseInt(latest_tag.substring(3)) > parseInt(metaData.local_tag.substring(3)))) {
-                 needs_update = true;
-                }            
+                    needs_update = true;
+                }
 
             } catch (err) {
                 console.log("No local Bridge Version found.");
@@ -76,12 +70,10 @@ else
 
         if (needs_update) {
 
-            if (test_update)
-            {
+            if (test_update) {
                 changeTitle("Test Update..");
             }
-            else
-            {
+            else {
                 changeTitle("Updating..");
             }
 
@@ -106,8 +98,7 @@ else
                     changeTitle("Starting..");
 
                     //save back metaData
-                    if (!metaData.update_tag)
-                    {
+                    if (!metaData.update_tag) {
                         metaData.local_tag = latest_tag;
                         fs.writeFileSync(settings_filename, JSON.stringify(metaData));
                     }
@@ -129,16 +120,14 @@ else
 }
 
 function bridgeLoadingFinished() {
-    try 
-    {
+    try {
         if (process.platform == "win32") {
             bridge.run('"../../../node/npm"', 1972);
         } else {
             bridge.run('../../../node/bin/npm', 1972);
         }
-    } 
-    catch (err) 
-    {
+    }
+    catch (err) {
         logError(err);
     }
 }
@@ -146,4 +135,24 @@ function bridgeLoadingFinished() {
 function changeTitle(text) {
     var titleDiv = document.getElementById('titleText');
     titleDiv.innerHTML = text;
+}
+
+function hideWindow() {
+    var win = gui.Window.get();
+    win.hide();
+}
+
+function gotoBridge() {
+    gui.Shell.openExternal('https://bridge.mo.sap.corp');
+    hideWindow();
+}
+
+function notifiy_started() {
+    changeTitle("Bridge Client is now running.<br />Refresh Bridge in your browser or<br/>");
+
+    var link = $("#openBridgeLink");
+    link.css("visibility", "visible");
+
+    var button = $("#closeWindowButton");
+    button.css("visibility", "visible");
 }
