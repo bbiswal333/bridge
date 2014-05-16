@@ -1,13 +1,31 @@
-﻿angular.module('bridge.service').service('bridgeConfig', function ($http, bridgeInstance) {
+﻿angular.module('bridge.service').service('bridgeConfig', ['$http', 'bridge.service.loader', 'bridgeInstance', function ($http, bridgeLoaderService, bridgeInstance) {
     function getAppsData(project) {
+        var visible_apps = [];
         var apps = [];
+
         if (project.apps) {
             for (var i = 0; i < project.apps.length; i++) {
-                apps.push({
-                    metadata: project.apps[i].metadata,
-                    appConfig: project.apps[i].scope ? (project.apps[i].scope.returnConfig ? project.apps[i].scope.returnConfig() : project.apps[i].appConfig) : {},
-                });
+                if(project.apps[i].metadata.show)
+                {
+                    visible_apps.push(project.apps[i]);
+                }
             }
+        }
+
+        visible_apps.sort(function(app1, app2){
+            if (app1.metadata.order < app2.metadata.order) return -1;
+            if (app1.metadata.order > app2.metadata.order) return 1;
+            return 0;
+        });
+        
+        for (var i = 0; i < visible_apps.length; i++) 
+        {
+            apps.push({
+                metadata: {
+                    "module_name": visible_apps[i].metadata["module_name"]
+                },
+                appConfig: visible_apps[i].scope ? (visible_apps[i].scope.box ? (visible_apps[i].scope.box.returnConfig ? visible_apps[i].scope.box.returnConfig() : visible_apps[i].appConfig) : {}) : {},
+            });                        
         }
         return apps;
     }
@@ -49,27 +67,24 @@
     };
 
     this.getDefaultConfig = function () {
+        var apps = [];       
+        for( var i = 0; i < bridgeLoaderService.apps.length; i++)
+        {
+            apps[i] = {};
+            apps[i].metadata = {};
+            apps[i].metadata['module_name'] = bridgeLoaderService.apps[i]['module_name'];
+            apps[i].metadata.id = i;
+            apps[i].metadata.show = true;
+        }
+
         return {
             projects: [
                 {
                     name: "OVERVIEW",
                     type: "PERSONAL",
-                    apps: [
-                        { content: "app.lunch-walldorf", id: 2, show: true },
-                        { content: "app.jira", id: 3, show: true },
-
-                        { content: "app.atc", id: 4, show: true },
-                        { content: "app.employee-search", id: 5, show: true },
-                        { content: "app.meetings", id: 6, show: true },
-
-                        { content: "app.github-milestone", id: 7, show: true },
-                        { content: "app.im", id: 8, show: true },
-                        { content: "app.link-list", id: 9, show: true },
-                        { content: "app.cats", id: 1, show: true },
-                        { content: "app.sapedia", id: 12, show: true }
-                    ]
-        }
+                    apps: apps                    
+                }
             ]
     };
     }
-});
+}]);

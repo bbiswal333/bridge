@@ -1,4 +1,4 @@
-angular.module('app.linkList').factory("app.linkList.configservice", function () {
+angular.module('app.linklist').factory("app.linklist.configservice", function () {
 
 	var configItem = {
 		version: 1, 

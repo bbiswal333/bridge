@@ -1,29 +1,111 @@
 ﻿angular.module('app.jira', []);
 
-angular.module('app.jira').directive('app.jira', ['app.jira.configservice', function (JiraConfig) {
+angular.module('app.jira').factory("app.jira.configservice", function () 
+{  
+    var data = {};
+    data.query = 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC';
+    return data;
+});
 
-    var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {
-        $scope.boxTitle = "Jira";
-        $scope.boxIcon = '&#xe80a;';
-        $scope.boxIconClass = 'icon-bell';
-        $scope.boxSize = "2";
-        bridgeCounter.CollectWebStats('JIRA', 'APPLOAD');
+angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
-        $scope.settingsTitle = "Configure JIRA Query";
-        $scope.settingScreenData = {
+    var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
+        $scope.box.boxSize = "1";
+        $scope.box.settingsTitle = "Configure JIRA Query";
+        $scope.box.settingScreenData = {
             templatePath: "jira/settings.html",
                 controller: angular.module('app.jira').appJiraSettings,
                 id: $scope.boxId,
-        };
+        };  
 
-        //JiraBox.getIssuesforQuery(JiraQuery, $scope);
-        $scope.$watch('jiraData', function () {
-            updateJiraChart($scope);
-        });
+        $scope.data = {};
+        $scope.data.jiraData = [];
+        $scope.data.jiraChart = [];
 
-        $scope.returnConfig = function(){
-            return JiraConfig.query;
+        $scope.config = {};        
+
+        $scope.xFunction = function(){
+            return function(issue) {
+                return issue.status;
+            };
+        }   
+
+        $scope.yFunction = function(){
+            return function(issue){
+                return issue.count;
+            };  
         }
+
+        //copied from the cats allocation bar
+        var colors = [
+            "#3399cc",
+            "#6cb9e3",
+            "#a4d8f9",
+            "#c4e8ff",
+            "#dff5ff",
+            "#Fff7e1",
+            "#ffe9b8",
+            "#ffd07e",
+            "#ffb541",
+            "#ffa317"
+        ];
+
+        $scope.colorFunction = function() {
+            return function(d, i) {
+                return colors[i];
+            };
+        }
+
+        $scope.box.returnConfig = function(){
+            return JiraConfig;
+        }
+
+        $scope.$watch('config', function() {            
+            JiraBox.getIssuesforQuery($scope);            
+        },true);    
+
+        $scope.$watch('data.jiraData', function() {
+
+            var jiraStatus = {};
+            for(var i = 0; i < $scope.data.jiraData.length; i++)
+            {
+                if(!jiraStatus[$scope.data.jiraData[i].status])
+                {
+                    jiraStatus[$scope.data.jiraData[i].status] = 1
+                }
+                else
+                {
+                    jiraStatus[$scope.data.jiraData[i].status] = jiraStatus[$scope.data.jiraData[i].status] + 1;   
+                }            
+            }        
+
+            $scope.data.jiraChart = [];
+            for (var attribute in jiraStatus) {
+                if (jiraStatus.hasOwnProperty(attribute)) 
+                {                    
+                    $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute]});
+                }
+            }        
+
+            $scope.data.jiraChart.sort(function(item1, item2){
+                if(item1.count < item2.count) return 1;
+                if(item1.count > item2.count) return -1;
+                return 0;
+            });
+
+            if( $scope.data.jiraChart.length > 4)
+            {
+                var others_count = 0;
+                for(var i = 4; i < $scope.data.jiraChart.length; i++)
+                {
+                    others_count = others_count + $scope.data.jiraChart[i].count;
+                }
+                $scope.data.jiraChart.splice(4, $scope.data.jiraChart.length-4);
+                $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
+            }
+
+            console.log($scope.data.jiraChart);
+        },true);    
 
     }];
 
@@ -32,55 +114,11 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', func
         templateUrl: 'app/jira/overview.html',
         controller: directiveController,
         link: function ($scope, $element, $attrs, $modelCtrl) {
-            if ($scope.appConfig != undefined) {
-                JiraConfig.query = $scope.appConfig;
+            if ($scope.appConfig !== undefined && $scope.appConfig != {} && $scope.appConfig.query !== undefined) 
+            {
+                JiraConfig.query = $scope.appConfig.query;
             }
+            $scope.config = JiraConfig;                        
         }
     };
 }]);
-
-
-var updateJiraChart = function ($scope) {
-    var chart1 = {};
-    chart1.type = "PieChart";
-    chart1.displayed = true;
-    chart1.cssStyle = "height:150px; width:100%;";
-    chart1.data = {
-        "cols": [
-            { id: "month", label: "Month", type: "string" },
-            { id: "laptop-id", label: "Laptop", type: "number" },
-        ], "rows": [
-            {
-                c: [
-                   { v: "Open (5)" },
-                   { v: 5, f: "5 Issues Open" }
-                ]
-            },
-            {
-                c: [
-                   { v: "In Prog.(4)" },
-                   { v: 4, f: "4 Issues In Progress" }
-                ]
-            },
-            {
-                c: [
-                   { v: "Compl. (2)" },
-                   { v: 2, f: "2 Issues Completed" }
-                ]
-            }
-    ]};
-    
-
-    chart1.options = {
-        "title": "",
-        "sliceVisibilityThreshold": 0,
-        "colors": ['#097AC5', '#5CCCFF', '#AFE5FF', '#E6F7FF'],
-        "pieHole": 0.75,
-        "fill": 20,
-        "displayExactValues": false
-    };
-
-    chart1.formatters = {};
-
-    $scope.jiraChart = chart1;
-}

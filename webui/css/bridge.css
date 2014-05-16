@@ -439,14 +439,13 @@ input[type="checkbox"]:checked:after {
     /*float: left; */
 }
 .sortable-placeholder {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-bottom: 18px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     display:inline-block;
-
-    border-style:dashed;
-    border-width:2px;
-    border-color:black;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);    
 }
 
 .disabled {

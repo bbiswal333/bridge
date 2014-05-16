@@ -210,6 +210,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
@@ -233,7 +234,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 booking.ZCPR_OBJGEXTID = null;
             };
 
-            container.BOOKINGS.push(booking);
+            if (booking.QUANTITY) { // book time > 0
+                container.BOOKINGS.push(booking);
+            } else { // book time = 0 only when RAUFNR exists ==> "Deletion of task"
+                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.length; j++) {
+                    if ($scope.lastCatsAllocationDataForDay[j].record.RAUFNR == booking.RAUFNR) {
+                        container.BOOKINGS.push(booking);
+                        break;
+                    }
+                }
+            }
         }
 
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {

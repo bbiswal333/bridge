@@ -1,5 +1,13 @@
 {
-	"modules" : ["app.jira"],
+	"app":
+	{
+		"module_name"			:	"app.jira",
+		"title"					:	"Jira",
+		"icon_css"				:	"icon-bell",
+		"overview_directive"	:	"app.jira",
+		"needs_client"			:	false
+	},
+	"modules" : [],
 	"js_files" : ["overview.js", "detail.js","settings.js","JiraBox.js"],
 	"css_files" : []
 }

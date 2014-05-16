@@ -8,7 +8,7 @@
     $scope.atcData.getDetailsForConfig(atcConfig, $scope);
 
     $scope.$watch('atcData.detailsData', function () {
-        if ($scope.atcData !== undefined && $scope.atcData.detailsData.length > 0 && $scope.tableParams.settings().$scope != null) {
+        if ($scope.atcData !== undefined && $scope.atcData.detailsData.length > 0 && $scope.tableParams.settings().$scope != null) {            
             $scope.tableParams.total($scope.atcData.detailsData.length);
             $scope.tableParams.reload();
         }

@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service', ['ui.bootstrap']).service('bridgeDataService', function (bridgeConfig, $q) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig','$q','bridge.service.loader', function (bridgeConfig, $q, bridgeLoaderService) {
     this.projects = [];
     this.bridgeSettings = {};
     this.configRawData = null;
@@ -43,13 +43,6 @@
                 parseProject(config.projects[i]);
             }
         }
-
-        //TODO: to be deleted, this is a transformation from the old structure to the new one
-        if (config.boxSettings) {
-            for (var i = 0; i < config.boxSettings.length; i++) {
-                _getAppById(config.boxSettings[i].boxId).appConfig = config.boxSettings[i].setting;
-            }
-        }
     }
 
     function parseProject(project) {
@@ -58,17 +51,33 @@
 
     function parseApps(project) {
         var apps = [];
-        if (project.apps) {
-            for (var i = 0; i < project.apps.length; i++) {
-                if (project.apps[i].metadata)
-                    apps.push(project.apps[i]);
-                else
-                    apps.push({ metadata: project.apps[i] });
 
-                if (apps[apps.length - 1].metadata.show === undefined)
-                    apps[apps.length - 1].metadata.show = true;
+        for (var i = 0; i < bridgeLoaderService.apps.length; i++)
+        {
+            //initialize metadata from loader service
+            var app = {};
+            app.metadata = bridgeLoaderService.apps[i];
+            app.metadata.id = i; 
+            app.metadata.show = false;
+
+            //fetch corresponding config from backend
+            for(var j = 0; j < project.apps.length; j++)
+            {
+                if(project.apps[j].metadata.module_name == app.metadata.module_name)
+                {
+                    app.metadata.show = true;
+                    app.metadata.order = j;
+                    app.appConfig = project.apps[j].appConfig;
+                }
             }
+            apps.push(app);    
         }
+
+        apps.sort(function (app1, app2){
+                if( app1.metadata.title < app2.metadata.title ) return -1;
+                if( app1.metadata.title > app2.metadata.title ) return 1;
+                return 0;
+        });        
         return apps;
     }
 
@@ -141,4 +150,4 @@
         getAppConfigById: _getAppConfigById,
         toDefault: _toDefault,
     };
-});
+}]);

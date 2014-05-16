@@ -1,26 +1,22 @@
-angular.module('app.linkList', ['ui.sortable']);
+angular.module('app.linklist', ['ui.sortable']);
 
-angular.module('app.linkList').directive('app.linkList',
-        ['app.linkList.configservice',
+angular.module('app.linklist').directive('app.linklist',
+        ['app.linklist.configservice',
         function(appLinklistConfig) {
 
-    var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {
-        $scope.boxTitle = "Linklist";
-        $scope.boxIcon = '&#x1f4cc;'; 
-        $scope.boxIconClass = 'icon-bookmark-empty';
-        $scope.customCSSFile = "app/linkList/style.css";
-        $scope.settingScreenData = {
+    var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {        
+        $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
-            controller: angular.module('app.linkList').appLinkListSettings,
+            controller: angular.module('app.linklist').appLinkListSettings,
         };
         bridgeCounter.CollectWebStats('LINKLIST', 'APPLOAD');
 
             $scope.config = appLinklistConfig;
 
-    $scope.returnConfig = function () {
+    $scope.box.returnConfig = function () {
 
         var configCopy = angular.copy(appLinklistConfig);
-        configCopy.boxSize = $scope.boxSize;
+        configCopy.boxSize = $scope.box.boxSize;
             
         if(configCopy.listCollection.length >= 1)
         {
@@ -48,7 +44,7 @@ angular.module('app.linkList').directive('app.linkList',
             if ($scope.appConfig != undefined && $scope.appConfig != {})
             {
                 if ($scope.appConfig.boxSize)
-                    $scope.boxSize = $scope.appConfig.boxSize;
+                    $scope.box.boxSize = $scope.appConfig.boxSize;
 
                 if ('version' in $scope.appConfig)
                 { 

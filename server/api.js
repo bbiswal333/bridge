@@ -204,23 +204,44 @@ exports.register = function(app, user, local, proxy, npm)
 		}, postData);
 	}); 
 
+
+	var concatAttributes = function(array, object, mapFunction)
+	{
+		for (var attribute in object) {
+			if (object.hasOwnProperty(attribute)) 
+			{
+			 	if(!array[attribute])
+				{
+				 	array[attribute] = [];
+				}
+				
+				var value = object[attribute];
+				if( mapFunction !== undefined )
+				{
+					value = mapFunction(attribute, value);
+				}		
+
+				if( value !== undefined )
+				{				
+					array[attribute] = array[attribute].concat(value); 				
+				}
+			}
+		}	
+		return array;
+	}
+
 	var getFiles = function(dir, files)
 	{		
 		    
 		var files = fs.readdirSync(dir);	    
 		var out_files = {};
-		out_files.modules = [];
-		out_files.js_files = [];
-		out_files.css_files = [];
 		    
 		for (var i = 0; i < files.length; i++){	    
-		    var name = path.join(dir, '/', files[i]);			     
+		    var name = path.join(dir, '/', files[i]);			    		    
 
 		    if (fs.statSync(name).isDirectory())
-		    {
-		        out_files.js_files  = out_files.js_files.concat(getFiles(name).js_files);	            
-		        out_files.css_files = out_files.css_files.concat(getFiles(name).css_files);
-		        out_files.modules = out_files.modules.concat(getFiles(name).modules);
+		    {		    	
+		    	out_files = concatAttributes(out_files, getFiles(name));		    	    
 		    }
 		    else
 		    {
@@ -230,24 +251,20 @@ exports.register = function(app, user, local, proxy, npm)
 		    		{
 		    			delete require.cache[require.resolve(name)];
 			    		var module = require(name);
-			    		out_files.modules = out_files.modules.concat(module.modules);
-			    		
-			    		if ( Object.prototype.toString.call( module.js_files ) === '[object Array]' )
+
+			    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
 			    		{
-				    		for (var j = 0; j < module.js_files.length; j++)
-				    		{
-				    			var filename = path.join(path.dirname(name), module.js_files[j]);		    			
-				    			out_files.js_files.push(path.relative(path.join(__dirname, '../webui'), filename));
-				    		}	
-				    	}
-				    	if ( Object.prototype.toString.call( module.css_files ) === '[object Array]' )
-				    	{
-				    		for (var j = 0; j < module.css_files.length; j++)
-				    		{
-				    			var filename = path.join(path.dirname(name), module.css_files[j]);		    			
-				    			out_files.css_files.push(path.relative(path.join(__dirname, '../webui'), filename));		    		
-				    		}
-			    		}			    				    
+			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) == "_files" )
+			    			{								
+			    				for (var i = 0; i < value.length; i++)
+			    				{
+									var filename = path.join(path.dirname(name), value[i]);	
+									value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
+								}
+								return value;
+			    			}	
+			    			else return value;		    			
+			    		});	    				   
 			    	}
 			    	catch(e)
 			    	{
@@ -263,14 +280,16 @@ exports.register = function(app, user, local, proxy, npm)
 	{
 		response = setHeader( request, response );			
 
+	    var files = {};
+
 		var bridge_path = path.join(__dirname, '../webui/bridge');
 	    var bridge_files = getFiles(bridge_path);
-	    var app_path = path.join(__dirname, '../webui/app');
+	    files = concatAttributes(files, bridge_files);
+
+		var app_path = path.join(__dirname, '../webui/app');
 	    var app_files = getFiles(app_path);	
-	   	var files = {};
-	    files.modules = bridge_files.modules.concat(app_files.modules); 
-	    files.js_files = bridge_files.js_files.concat(app_files.js_files);
-	    files.css_files = bridge_files.css_files.concat(app_files.css_files);  
+	    files = concatAttributes(files, app_files);
+
 
 	    if (typeof request.query.format == "undefined")
 	    {
@@ -279,7 +298,7 @@ exports.register = function(app, user, local, proxy, npm)
 		}
 		else if( request.query.format == "js")
 		{
-			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
 			buildify.concat(files.js_files);		
 			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
 			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
