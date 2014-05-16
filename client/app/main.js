@@ -19,6 +19,7 @@ var metaData = {};
 var latest_tag = 'v0.0';
 
 checkErrorFileSize();
+registerWindowHandler();
 
 //try to load bridge locally if mentioned in package.json
 if (gui.App.manifest.bridge_tag == "local") {
@@ -151,8 +152,16 @@ function notifiy_started() {
     changeTitle("Bridge Client is now running.<br />Refresh Bridge in your browser or<br/>");
 
     var link = $("#openBridgeLink");
-    link.css("visibility", "visible");
+    link.css("display", "normal");
 
     var button = $("#closeWindowButton");
-    button.css("visibility", "visible");
+    button.css("display", "normal");
+}
+
+function registerWindowHandler() {
+    var win = gui.Window.get();
+    win.on('close', function () {
+        this.hide(); 
+        //this.close(true);
+    });
 }

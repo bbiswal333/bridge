@@ -6,7 +6,7 @@
 		"show": true,
 		"frame": false,
 		"width": 400,
-		"height": 150,
+		"height": 200,
 		"toolbar": false
 	},
 	"chromium-args": "--ignore-certificate-errors --auth-server-whitelist='*' --auth-negotiate-delegate-whitelist='*'"
