@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeConfig', ['$http', 'bridge.service.loader', 'bridgeInstance', function ($http, bridgeLoaderService, bridgeInstance) {
+﻿angular.module('bridge.service').service('bridgeConfig', ['$http', 'bridge.service.loader', 'bridgeInstance', function ($http, bridgeLoaderServiceProvider, bridgeInstance) {
     function getAppsData(project) {
         var visible_apps = [];
         var apps = [];
@@ -68,11 +68,11 @@
 
     this.getDefaultConfig = function () {
         var apps = [];       
-        for( var i = 0; i < bridgeLoaderService.apps.length; i++)
+        for( var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++)
         {
             apps[i] = {};
             apps[i].metadata = {};
-            apps[i].metadata['module_name'] = bridgeLoaderService.apps[i]['module_name'];
+            apps[i].metadata['module_name'] = bridgeLoaderServiceProvider.apps[i]['module_name'];
             apps[i].metadata.id = i;
             apps[i].metadata.show = true;
         }

@@ -16,13 +16,14 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
             modules.push(data.app[i]['module_name']);
           }
         };
-
-        angular.module('bridge.app', modules);  
+        
         angular.module('bridge.service', ['ui.bootstrap']);
-        angular.module('bridge.service').service('bridge.service.loader', function () 
-        {
-          this.apps = data.app;          
-        });
+        angular.module('bridge.service').provider("bridge.service.loader", function()         
+        {                    
+          this.apps   = data.app;          
+          this.$get = function() { return this; };
+        });        
+        angular.module('bridge.app', modules);  
 
         var loaded_script = 0;
 

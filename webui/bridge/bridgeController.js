@@ -235,27 +235,47 @@ angular.module('bridge.app').controller('bridgeController',
     }
 ]);
 
-angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", function ($routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils) {
+angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider","bridge.service.loaderProvider", function ($routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils, bridgeLoaderServiceProvider) {
+    //main overview page
     $routeProvider.when("/", {
         templateUrl: 'view/overview.html',
     });
-    $routeProvider.when("/projects", { templateUrl: 'view/projects.html' });
 
-    $routeProvider.when("/detail/im/", { templateUrl: 'app/im/detail.html', controller: 'app.im.detailController' });
-    //$routeProvider.when("/settings", { templateUrl: 'view/settings.html', controller: 'bridgeSettingsController' });
-    $routeProvider.when("/detail/atc/", { templateUrl: 'app/atc/detail.html', controller: 'app.atc.detailcontroller' });
-    $routeProvider.when("/detail/jira/", { templateUrl: 'app/jira/detail.html', controller: 'app.jira.detailController' });
-
-    $routeProvider.when("/detail/cats/:day/", { templateUrl: 'app/cats/detail.html'});
-    //If no date is given in URL insert today and redirect there
-    $routeProvider.when("/detail/cats/", { redirectTo: '/detail/cats/' + calUtils.stringifyDate(calUtils.today())});
-
-    $routeProvider.when("/cats", {redirectTo: "/detail/cats/"});
-
-    $routeProvider.when("/42/", {template: "", controller: function () {
-         window.location.replace("https://de.wikipedia.org/wiki/Sinn_des_Lebens");
-    }});
-
+    //detail controller registered by module files
+    for(var i = 0; i < bridgeLoaderServiceProvider.apps.length; i ++)
+    {
+        var app = bridgeLoaderServiceProvider.apps[i];
+        if(app.routes !== undefined && Object.prototype.toString.call( app.routes ) == '[object Array]')
+        {
+            for(var j = 0; j < app.routes.length; j++)
+            {                                
+                $routeProvider.when(app.routes[j].route, 
+                    {
+                        templateUrl: 'view/detail.html', 
+                        controller: 'bridge.app.detailController',
+                        info: app.routes[j],
+                        app: bridgeLoaderServiceProvider.apps[i],
+                        resolve: {
+                            routeInfo: function ($q, $route) 
+                            {
+                                var defer = $q.defer();                        
+                                var info = $route.current.info;
+                                defer.resolve(info);                                            
+                                return defer.promise;                        
+                            },
+                            appInfo:  function ($q, $route) 
+                            {
+                                var defer = $q.defer();                        
+                                var info = $route.current.app;
+                                defer.resolve(info);                                            
+                                return defer.promise;                        
+                            }
+                        }                              
+                    });
+            }
+        }
+    }
+    
     //If no valid URL has been entered redirect to main entry point
     $routeProvider.otherwise({
         redirectTo: "/"
@@ -265,7 +285,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $httpProvider.defaults.withCredentials = true;
     $httpProvider.interceptors.push('bridge.app.httpInterceptor');
 
-    //make blob safe
+    //allow blob, tel, mailto links
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
 }]);
 
