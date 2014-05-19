@@ -4,8 +4,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
 
     function directiveController($scope)
     {        
-        $scope.box = {};
-        $scope.box.show_download = bridgeDownloadService.show_download;        
+        $scope.show_download     = bridgeDownloadService.show_download;                    
     }
 
     function snake_case(name){

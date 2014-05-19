@@ -1,6 +1,6 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["$timeout", "lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "bridgeCounter", function ($timeout, calUtils, dataProcessor, bridgeCounter) {
+  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "bridgeCounter", function (calUtils, dataProcessor, bridgeCounter) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Wdf / Rot";
