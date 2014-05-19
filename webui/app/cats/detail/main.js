@@ -236,7 +236,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (booking.QUANTITY) { // book time > 0
                 container.BOOKINGS.push(booking);
-            } else { // book time = 0 only when RAUFNR exists ==> "Deletion of task"
+            } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
                 for(var j = 0; j < $scope.lastCatsAllocationDataForDay.length; j++) {
                     if ($scope.lastCatsAllocationDataForDay[j].record.RAUFNR == booking.RAUFNR) {
                         container.BOOKINGS.push(booking);
