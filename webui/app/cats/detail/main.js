@@ -247,33 +247,39 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
 
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
-            console.log(data);
-            if (window.DOMParser) {
-                parser=new DOMParser();
-                xmlDoc=parser.parseFromString(data,"text/xml");
-            } else { // Internet Explorer
-                xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async=false;
-                xmlDoc.loadXML(data);
-            };
-            var replyHasMessages = false;
-            for (var i = 0; i < 5; i++) {
-                var message = xmlDoc.getElementsByTagName("TEXT")[i];
-                if (message) {
-                    replyHasMessages = true;
-                    bridgeInBrowserNotification.addAlert('danger',message.childNodes[0].nodeValue);
-                }
-            }            
-            if (!replyHasMessages) {
-                bridgeInBrowserNotification.addAlert('info','Well done! Data was saved successfully');
-            }
-            loadCATSDataForDay();
-            $scope.$emit("refreshApp");
-        }).error(function(data, status, header, config) {
-            bridgeInBrowserNotification.addAlert('info',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            checkPostReply(data);
+        }).error(function (data, status, header, config) {
+            if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
+                bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            else
+                checkPostReply(data);
         });
     }
-  }
+
+    function checkPostReply(data) {
+        if (window.DOMParser) {
+            parser = new DOMParser();
+            xmlDoc = parser.parseFromString(data, "text/xml");
+        } else { // Internet Explorer
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc.async = false;
+            xmlDoc.loadXML(data);
+        };
+        var replyHasMessages = false;
+        for (var i = 0; i < 5; i++) {
+            var message = xmlDoc.getElementsByTagName("TEXT")[i];
+            if (message) {
+                replyHasMessages = true;
+                bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
+            }
+        }
+        if (!replyHasMessages) {
+            bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
+        }
+        loadCATSDataForDay();
+        $scope.$emit("refreshApp");
+    }
+}
 ]).filter("weekday", ["lib.utils.calUtils", function (calUtils) {
     return function (day, format) { //format: 0=short, 1=medium, 2=long (default)
         return calUtils.getWeekday(day, format);

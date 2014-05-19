@@ -4,12 +4,6 @@ var fs = require('fs');
 // unlike in node.js, __dirname is not available in node-webkit, this is our workaround. On mac/linux we have a slash, in windows a backslash
 function getCurrentDirectory() {
     return process.cwd()
-    /*if (process.execPath.lastIndexOf('/') == -1) {
-        return process.execPath.substr(0, process.execPath.lastIndexOf('\\'));
-    }
-    else {
-        return dirname = process.execPath.substr(0, process.execPath.lastIndexOf('/'));
-    }*/
 }
 
 function createTrayIcon() {
@@ -41,14 +35,6 @@ function createTrayIcon() {
     menu.append(item);
 
     tray.menu = menu;
-}
-
-function notifiy_started() {    
-    var settings = require('./package.json');
-    var notification_window = gui.Window.open('notification.html', 
-        { "show": settings.window.show, "frame": settings.window.frame, "toolbar": settings.window.toolbar, "width": settings.window.width, "height": settings.window.height, "focus": true } );  
-    notification_window.setPosition('center');  
-
 }
 
 function callBackend(hostname, port, path, method, callback) {

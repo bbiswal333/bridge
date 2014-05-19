@@ -1,26 +1,31 @@
 ﻿<!DOCTYPE html>
-<html>
+<html >
     <head>
         <link href="css/background-stripes.css" rel="stylesheet" />
         <link href="css/bridge.css" rel="stylesheet" />
         <link href="css/animation.css" rel="stylesheet" />
 
-        <script src="lib/jquery-2.1.0.min.js"></script>        
+        <script src="lib/jquery-2.1.0.min.js"></script>
+        <script src="lib/angular-1_2_13/angular.min.js"></script>  
+            
         <script src="utils.js"></script>
         <script src="main.js"></script>
         <script src="globalDefinitions.js"></script>
     </head> 
     
-    <body style="margin:0px">           
-        <div class="headerline">
-            <div class="blueTitleBar"></div>
-            <span class="headertext" style="top:12px"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></span>
-        </div>
+<body style="margin: 0px; overflow: hidden;">
+    <div class="headerline">
+        <div class="blueTitleBar"></div>
+        <span class="headertext" style="top:12px"><img src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></span>
+        <button id="closeWindowButton" class="btn btn_blue" style="position:absolute;top:10px;right:0px;height:25px;width:50px;z-index:3000;display:none" onclick="hideWindow()">Hide</button>
+    </div>
 
-        <div style="margin:0px;padding:5px;background-color:white;width:100%;height:100%" class="centeredContent" id="titleText">            
-        Initializing..
-        </div>
-    </body>
+    <div style="margin:0px;padding:5px;background-color:white;width:100%;height:100%" class="centeredContent">
+        <span id="titleText">Initializing..</span>
+        <a id="openBridgeLink" onclick="gotoBridge()" style="display:none; cursor:pointer">open it here.</a>
+    </div>
+   
+</body>
 </html>
 
 
