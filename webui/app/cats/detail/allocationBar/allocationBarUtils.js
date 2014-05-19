@@ -43,6 +43,8 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     }
 
     this.getValueFromWidth = function(width, totalWidth, totalValue) {
+        // round to full percentage points
+        width = Math.round(width / totalWidth * 100) / 100 * totalWidth;
         return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
     }
 

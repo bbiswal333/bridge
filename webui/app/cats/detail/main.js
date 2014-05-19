@@ -217,6 +217,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.$emit("refreshApp");
             return;
         }
+        var checkSumQuantity = 0;
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
                 COUNTER: $scope.blockdata[i].data.booking.COUNTER,
@@ -227,8 +228,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 ZCPR_OBJGEXTID: $scope.blockdata[i].data.ZCPR_OBJGEXTID,
                 STATUS: $scope.blockdata[i].data.booking.STATUS,
                 UNIT: $scope.blockdata[i].data.UNIT,
-                QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 1000) / 1000,
+                QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
             };
+
+            checkSumQuantity = checkSumQuantity + booking.QUANTITY;
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
@@ -245,6 +248,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
         }
+
+        checkSumQuantity;
 
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             checkPostReply(data);
