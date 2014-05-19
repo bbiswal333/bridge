@@ -36,8 +36,13 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             };  
         }
 
+        $scope.toolTipContentFunction = function(){
+            return function(key, x, y) {
+            return  '<p class="chart_toolTip">' +  x +'</p>'
+    }
+}
         //copied from the cats allocation bar
-        var colors = [
+        $scope.colors = [
             "#3399cc",
             "#6cb9e3",
             "#a4d8f9",
@@ -52,7 +57,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.colorFunction = function() {
             return function(d, i) {
-                return colors[i];
+                return $scope.colors[i];
             };
         }
 

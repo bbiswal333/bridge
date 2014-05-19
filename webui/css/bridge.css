@@ -594,4 +594,7 @@ input[type="checkbox"]:checked:after {
     border-radius: 0;
     border:none;
 }
-
+.subNav_title h6{
+    position: relative;
+    top: -7px;
+}

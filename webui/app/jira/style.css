@@ -1,0 +1,35 @@
+.chart{
+	position: relative;
+	float: left;
+	left: -15px;
+	top: -10px;
+}
+
+.chart_legend_container{
+float: left;
+position: relative;
+	left: 100px;
+	top: -120px;
+}
+.chart_legend{
+	margin-top: 5px;
+
+}
+.chart_legend_color{
+	width:14px;
+	height:14px;
+	float:left;
+}
+
+.chart_legend_count{
+	min-width: 30px;
+	margin-left: 5px;
+}
+
+.chart_legend_status{
+	margin-left: 5px;
+}
+svg{
+	height: 120px;
+	width: 120px;
+}
