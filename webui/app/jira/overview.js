@@ -98,14 +98,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 return 0;
             });
 
-            if( $scope.data.jiraChart.length > 4)
+            if( $scope.data.jiraChart.length > 3)
             {
                 var others_count = 0;
-                for(var i = 4; i < $scope.data.jiraChart.length; i++)
+                for(var i = 3; i < $scope.data.jiraChart.length; i++)
                 {
                     others_count = others_count + $scope.data.jiraChart[i].count;
                 }
-                $scope.data.jiraChart.splice(4, $scope.data.jiraChart.length-4);
+                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-3);
                 $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
             }
 
