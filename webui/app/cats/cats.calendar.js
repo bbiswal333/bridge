@@ -4,7 +4,6 @@
 	        var monthRelative = 0;
 
 	        $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-	        //$scope.customCSSFile = "app/cats/style.css"; //Not needed anymore, included in index.html because also needed in detail screen
 
 	        $scope.year = new Date().getFullYear();
 	        $scope.month = new Date().getMonth();
@@ -15,7 +14,8 @@
 	        $scope.hasError = false;
 	        $scope.weekdays = calUtils.getWeekdays();
 	        $scope.dayClass = $scope.dayClassInput || 'app-cats-day';
-	        //bridgeCounter.CollectWebStats('CATS', 'APPLOAD');
+            
+
 
 	        $scope.getDescForState = function (state_s) {
 	            return catsUtils.getDescForState(state_s);
@@ -192,6 +192,7 @@
 	        scope: {
 	            selectedDay: '=selectedDay',
 	            dayClassInput: '@dayClass',
+                maintainable: '=',
 	        }
 	    };
 	}]);
