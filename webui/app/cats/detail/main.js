@@ -54,17 +54,18 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function displayCATSDataForDay(tasks) {
         $scope.lastCatsAllocationDataForDay = tasks;
 
-        // Do not refresh the display with new colors if the reloaded data is just the same (== save successful)
         if (loadedCATSDataIsIdentical(tasks)) {
+        // Copy data only
             for (var i = 0; i < $scope.blockdata.length; i++) {
                 for (var j = 0; j < tasks.length; j++) {
-                    if ($scope.blockdata[i].desc == tasks[j].taskDesc) {
+                    if ($scope.blockdata[i].data.ZCPR_OBJGEXTID == tasks[j].record.ZCPR_OBJGEXTID) {
                         $scope.blockdata[i].data =  tasks[j].record;
                         break;
                     }
                 }
             }
         } else {
+        // Copy data and rebuild allocation bar
             $scope.blockdata = [];
             catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
                 $scope.workingHoursForDay = workingHours;
