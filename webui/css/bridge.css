@@ -598,3 +598,10 @@ input[type="checkbox"]:checked:after {
     position: relative;
     top: -7px;
 }
+
+.mainContainer {
+    width: 100%;
+    position: absolute;
+    top: 80px;
+    bottom: 0px;
+}
