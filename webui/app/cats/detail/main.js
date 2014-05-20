@@ -31,22 +31,55 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     loadCATSDataForDay();
 
+    function loadedCATSDataIsIdentical(tasks) {
+        if ($scope.lastPostedCatsAllocationDataForDay && tasks && $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length >= tasks.length) {
+            var identicalEntriesCounter = 0;
+            for (var i = 0; i < tasks.length; i++) {
+                for (var j = 0; j < $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length; j++) {
+                    if ($scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_EXTID == tasks[i].projDesc &&
+                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].QUANTITY == tasks[i].quantity &&
+                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_OBJGEXTID == tasks[i].record.ZCPR_OBJGEXTID) {
+                        identicalEntriesCounter++;
+                        break;
+                    }
+                }
+            }
+            if (identicalEntriesCounter && identicalEntriesCounter == tasks.length) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     function displayCATSDataForDay(tasks) {
         $scope.lastCatsAllocationDataForDay = tasks;
-        $scope.blockdata = [];
 
-        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-            $scope.workingHoursForDay = workingHours;
-
-            for (var i = 0; i < tasks.length; i++) {
-                var task = tasks[i];
-                if (task.tasktype == "VACA")
-                    addBlock("Vacation", task.quantity, task.record, true);
-                else
-                    addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+        if (loadedCATSDataIsIdentical(tasks)) {
+        // Copy data only
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                for (var j = 0; j < tasks.length; j++) {
+                    if ($scope.blockdata[i].data.ZCPR_OBJGEXTID == tasks[j].record.ZCPR_OBJGEXTID) {
+                        $scope.blockdata[i].data =  tasks[j].record;
+                        break;
+                    }
+                }
             }
-            $scope.loaded = true;
-        });
+        } else {
+        // Copy data and rebuild allocation bar
+            $scope.blockdata = [];
+            catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+                $scope.workingHoursForDay = workingHours;
+
+                for (var i = 0; i < tasks.length; i++) {
+                    var task = tasks[i];
+                    if (task.tasktype == "VACA")
+                        addBlock("Vacation", task.quantity, task.record, true);
+                    else
+                        addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+                }
+                $scope.loaded = true;
+            });
+        }
     };
 
     $scope.handleProjectChecked = function (desc_s, val_i, data, fixed) {
@@ -217,7 +250,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.$emit("refreshApp");
             return;
         }
-        var checkSumQuantity = 0;
+
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
                 COUNTER: $scope.blockdata[i].data.booking.COUNTER,
@@ -230,8 +263,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 UNIT: $scope.blockdata[i].data.UNIT,
                 QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
             };
-
-            checkSumQuantity = checkSumQuantity + booking.QUANTITY;
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
@@ -249,8 +280,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
 
-        checkSumQuantity;
-
+        $scope.lastPostedCatsAllocationDataForDay = container;
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             checkPostReply(data);
         }).error(function (data, status, header, config) {
