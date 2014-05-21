@@ -26,7 +26,7 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 
 	ConfigItem.prototype = Object.create(IQueryString);
 	ConfigItem.prototype.getQueryString = function() {
-		var query = this.srcSystem + ';' + this.devClass + ';' + this.tadirResponsible + ';' + this.component + ';';
+		var query = this.srcSystem + ';' + this.devClass + ';' + (this.tadirResponsible.SAPNA ? this.tadirResponsible.SAPNA : this.tadirResponsible) + ';' + this.component + ';';
 		query += this.showSuppressed ? "X;" : ";";
 		query += this.displayPrio1 ? "X;" : ";";
 		query += this.displayPrio2 ? "X;" : ";";
