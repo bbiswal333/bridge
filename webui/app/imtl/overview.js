@@ -24,12 +24,7 @@ angular.module('app.imtl').directive('app.imtl', ['app.imtl.configservice', func
     return {
         restrict: 'E',
         templateUrl: 'app/imtl/overview.html',
-        controller: directiveController,
-/*		link: function ($scope, $element, $attrs, $modelCtrl) {
-            if ($scope.appConfig != undefined) {
-                appImtlConfig.trafficlightquery = $scope.appConfig;
-            }
-        }*/
+        controller: directiveController
     };
 }]);
 
@@ -57,19 +52,25 @@ angular.module('app.imtl').controller('app.imtl.directiveController', ['$scope',
 			}
 		}	
 		
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin
+		//Ask about frequency of refresh interval
+        $http.get('https://gte.wdf.sap.corp/sap/bc/devdb/MSGSFROMMYTPS?user=D055469&origin=' + location.origin
             ).success(function(data) {
                 data = new X2JS().xml_str2json(data);
                 $scope.imData = data["abap"];
                 $scope.imData = $scope.imData["values"];
 				
-                _.each($scope.imData.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT, function (n) {
-                    _.each($scope.prionr, function (u,i) {
-                        i = i + 1;
-                        if(n.PRIO == i.toString())
-                            $scope.prioarr[i-1] ++;
-                    });
+                _.each($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"], function (n) {
+					if( n["MSG_PRIO"] == 1 ){
+						$scope.prioarr[0] = $scope.prioarr[0] + 1;
+					}else if( n["MSG_PRIO"] == 2 ){
+						$scope.prioarr[1] = $scope.prioarr[1] + 1;
+					}else if( n["MSG_PRIO"] == 3 ){
+						$scope.prioarr[2] = $scope.prioarr[2] + 1;
+					}else{
+						$scope.prioarr[3] = $scope.prioarr[3] + 1;
+					}					
                 });
+				
                 if ( ($scope.prioarr[0] + $scope.prioarr[1] + $scope.prioarr[2] + $scope.prioarr[3]) == 0) {
                     $scope.lastElement="You have no internal messages to display!";
                     $scope.displayChart = false;

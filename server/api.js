@@ -298,8 +298,8 @@ exports.register = function(app, user, local, proxy, npm)
 		}
 		else if( request.query.format == "js")
 		{
-			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
-			buildify.concat(files.js_files);		
+			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
+			buildify.concat(files.js_files);
 			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
 			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
 		}

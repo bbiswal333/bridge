@@ -84,7 +84,6 @@
                     type: "PERSONAL",
                     apps: apps                    
                 }
->>>>>>> upstream/master
             ]
     };
     }
