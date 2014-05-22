@@ -5,15 +5,14 @@ angular.module('app.atc').directive('app.atc',
     function ($modal, $interval, appAtcConfig, appAtcData, bridgeCounter) {
     
     var directiveController = ['$scope', function ($scope) {        
-        $scope.settingsTitle = "Configure Source Systems and Packages";                
-
-        $scope.settingScreenData = {
+        $scope.box.settingsTitle = "Configure Source Systems and Packages";                
+        $scope.box.settingScreenData = {
             templatePath: "atc/settings.html",
             controller: angular.module('app.atc').appAtcSettings,
             id: $scope.boxId,
         };
 
-        $scope.returnConfig = function () {
+        $scope.box.returnConfig = function () {
             return appAtcConfig;
         };
 

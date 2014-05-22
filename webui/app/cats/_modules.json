@@ -5,7 +5,14 @@
 		"title"					:	"CATS Compliance",
 		"icon_css"				:	"icon-clock-o",
 		"overview_directive"	:	"app.cats",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/cats/:day/",
+				"templateUrl"	:	"app/cats/detail.html"			
+			}
+		]	
 	},
 	"modules" : [		
 		"app.cats.allocationBar",

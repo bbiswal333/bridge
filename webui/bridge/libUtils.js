@@ -245,7 +245,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getWeekdays = function() {
-        return _weekdays;
+        return angular.copy(_weekdays);
     };
 
     this.getWeekday = function (day, format) {

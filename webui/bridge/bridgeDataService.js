@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig','$q','bridge.service.loader', function (bridgeConfig, $q, bridgeLoaderService) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig','$q','bridge.service.loader', function (bridgeConfig, $q, bridgeLoaderServiceProvider) {
     this.projects = [];
     this.bridgeSettings = {};
     this.configRawData = null;
@@ -52,11 +52,11 @@
     function parseApps(project) {
         var apps = [];
 
-        for (var i = 0; i < bridgeLoaderService.apps.length; i++)
+        for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++)
         {
             //initialize metadata from loader service
             var app = {};
-            app.metadata = bridgeLoaderService.apps[i];
+            app.metadata = bridgeLoaderServiceProvider.apps[i];
             app.metadata.id = i; 
             app.metadata.show = false;
 

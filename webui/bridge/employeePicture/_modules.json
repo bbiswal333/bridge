@@ -1,0 +1,5 @@
+﻿{
+	"modules" : ["bridge.employeePicture"],
+	"js_files" : ["EmployeePictureDirective.js"],
+	"css_files" : []
+}

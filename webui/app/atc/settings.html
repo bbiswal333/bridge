@@ -74,7 +74,8 @@
 
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Object Responsible</span>
-                <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/> 
+                <!--<input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/> -->
+                <bridge.employee-search selected-employee="currentConfigValues.tadirResponsible" style="width: 25%; float: left" placeholder="'Name...'" required="false"></bridge.employee-search>>
                 <div style="float:left;">
                     <div class="btn-group" style="margin-left:15px;">
                         <span ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
@@ -113,8 +114,8 @@
             <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                 <td data-title="'Source System'">{{configItem.srcSystem}}</td>
                 <td data-title="'Package'">{{configItem.devClass}}</td>
-                <td data-title="'Object Responsible'">{{configItem.tadirResponsible}}</td>
-                <td data-title="'AKH Component'">{{configItem.tadirResponsible}}</td>
+                <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> {{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</td>
+                <td data-title="'AKH Component'">{{configItem.component}}</td>
                 <td data-title="'Display Suppressed'">
                     <span>
                         <input type="checkbox" ng-model="configItem.showSuppressed" disabled>

@@ -207,6 +207,33 @@ img {
     font-size: 17px;
     background: url('../img/menuArrow2.png') no-repeat center bottom;
 }
+.subNav {
+    margin: 0px auto;
+    padding-left: 36px;
+    height: 30px;
+    min-width: 400px;
+    background-color: rgb(255, 255, 255);
+    background: url('../img/menuLine.png') repeat-x left bottom rgba(255, 255, 255, 0.9);
+}
+.subNav > li {
+    height: 30px;
+    display: -moz-inline-box;
+    /* THE KEY LINES */
+    display: inline-block;
+    /* THE KEY LINES */
+    font-size: 10px;
+    font-family:'Open Sans';
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    padding: 5px;
+    margin: 0px;
+    cursor: pointer;
+}
+.subNav > li.selected {
+    font-weight: bold;
+    font-size: 10px;
+    background: url('../img/menuArrow2.png') no-repeat center bottom;
+}
 .sapIcon {
     font-family:'SAP-icons';
     padding-right: 13px;
@@ -290,6 +317,10 @@ img {
 .form_head{
     font-size: 1em;
     line-height: 20px;
+}
+
+.icon {
+    font-family:'bridge_icons';
 }
 
 .box-icon {
@@ -439,14 +470,13 @@ input[type="checkbox"]:checked:after {
     /*float: left; */
 }
 .sortable-placeholder {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-bottom: 18px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     display:inline-block;
-
-    border-style:dashed;
-    border-width:2px;
-    border-color:black;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);    
 }
 
 .disabled {
@@ -552,6 +582,7 @@ input[type="checkbox"]:checked:after {
     border: none;
     box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
     border-radius: 0;
+    height:100%;
 }
 
 .dropdown-menu > li > a:hover{
@@ -563,4 +594,14 @@ input[type="checkbox"]:checked:after {
     border-radius: 0;
     border:none;
 }
+.subNav_title h6{
+    position: relative;
+    top: -7px;
+}
 
+.mainContainer {
+    width: 100%;
+    position: absolute;
+    top: 80px;
+    bottom: 0px;
+}

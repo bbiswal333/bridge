@@ -5,8 +5,16 @@
 		"title"					:	"ATC Results",
 		"icon_css"				:	"icon-wrench",
 		"overview_directive"	:	"app.atc",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{		
+				"route"			:	"/detail/atc",
+				"templateUrl"	:	"app/atc/detail.html"			
+			}
+		]	
 	},	
+
 	"modules" 		: [],
 	"js_files" 		: ["overview.js", "config.js", "data.js", "detail.js", "settings.js"],
 	"css_files" 	: ["style.css"]

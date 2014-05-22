@@ -31,22 +31,55 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     loadCATSDataForDay();
 
+    function loadedCATSDataIsIdentical(tasks) {
+        if ($scope.lastPostedCatsAllocationDataForDay && tasks && $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length >= tasks.length) {
+            var identicalEntriesCounter = 0;
+            for (var i = 0; i < tasks.length; i++) {
+                for (var j = 0; j < $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length; j++) {
+                    if ($scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_EXTID == tasks[i].projDesc &&
+                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].QUANTITY == tasks[i].quantity &&
+                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_OBJGEXTID == tasks[i].record.ZCPR_OBJGEXTID) {
+                        identicalEntriesCounter++;
+                        break;
+                    }
+                }
+            }
+            if (identicalEntriesCounter && identicalEntriesCounter == tasks.length) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     function displayCATSDataForDay(tasks) {
         $scope.lastCatsAllocationDataForDay = tasks;
-        $scope.blockdata = [];
 
-        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-            $scope.workingHoursForDay = workingHours;
-
-            for (var i = 0; i < tasks.length; i++) {
-                var task = tasks[i];
-                if (task.tasktype == "VACA")
-                    addBlock("Vacation", task.quantity, task.record, true);
-                else
-                    addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+        if (loadedCATSDataIsIdentical(tasks)) {
+        // Copy data only
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                for (var j = 0; j < tasks.length; j++) {
+                    if ($scope.blockdata[i].data.ZCPR_OBJGEXTID == tasks[j].record.ZCPR_OBJGEXTID) {
+                        $scope.blockdata[i].data =  tasks[j].record;
+                        break;
+                    }
+                }
             }
-            $scope.loaded = true;
-        });
+        } else {
+        // Copy data and rebuild allocation bar
+            $scope.blockdata = [];
+            catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+                $scope.workingHoursForDay = workingHours;
+
+                for (var i = 0; i < tasks.length; i++) {
+                    var task = tasks[i];
+                    if (task.tasktype == "VACA")
+                        addBlock("Vacation", task.quantity, task.record, true);
+                    else
+                        addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
+                }
+                $scope.loaded = true;
+            });
+        }
     };
 
     $scope.handleProjectChecked = function (desc_s, val_i, data, fixed) {
@@ -210,12 +243,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return;
         }
+
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
                 COUNTER: $scope.blockdata[i].data.booking.COUNTER,
@@ -226,44 +261,60 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 ZCPR_OBJGEXTID: $scope.blockdata[i].data.ZCPR_OBJGEXTID,
                 STATUS: $scope.blockdata[i].data.booking.STATUS,
                 UNIT: $scope.blockdata[i].data.UNIT,
-                QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 1000) / 1000,
+                QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
             };
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
             };
 
-            container.BOOKINGS.push(booking);
+            if (booking.QUANTITY) { // book time > 0
+                container.BOOKINGS.push(booking);
+            } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
+                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.length; j++) {
+                    if ($scope.lastCatsAllocationDataForDay[j].record.RAUFNR == booking.RAUFNR) {
+                        container.BOOKINGS.push(booking);
+                        break;
+                    }
+                }
+            }
         }
 
+        $scope.lastPostedCatsAllocationDataForDay = container;
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
-            console.log(data);
-            if (window.DOMParser) {
-                parser=new DOMParser();
-                xmlDoc=parser.parseFromString(data,"text/xml");
-            } else { // Internet Explorer
-                xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async=false;
-                xmlDoc.loadXML(data);
-            };
-            var replyHasMessages = false;
-            for (var i = 0; i < 5; i++) {
-                var message = xmlDoc.getElementsByTagName("TEXT")[i];
-                if (message) {
-                    replyHasMessages = true;
-                    bridgeInBrowserNotification.addAlert('danger',message.childNodes[0].nodeValue);
-                }
-            }            
-            if (!replyHasMessages) {
-                bridgeInBrowserNotification.addAlert('info','Well done! Data was saved successfully');
-            }
-            loadCATSDataForDay();
-            $scope.$emit("refreshApp");
-        }).error(function(data, status, header, config) {
-            bridgeInBrowserNotification.addAlert('info',"GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            checkPostReply(data);
+        }).error(function (data, status, header, config) {
+            if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
+                bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            else
+                checkPostReply(data);
         });
     }
-  }
+
+    function checkPostReply(data) {
+        if (window.DOMParser) {
+            parser = new DOMParser();
+            xmlDoc = parser.parseFromString(data, "text/xml");
+        } else { // Internet Explorer
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc.async = false;
+            xmlDoc.loadXML(data);
+        };
+        var replyHasMessages = false;
+        for (var i = 0; i < 5; i++) {
+            var message = xmlDoc.getElementsByTagName("TEXT")[i];
+            if (message) {
+                replyHasMessages = true;
+                bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
+            }
+        }
+        if (!replyHasMessages) {
+            bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
+        }
+        loadCATSDataForDay();
+        $scope.$emit("refreshApp");
+    }
+}
 ]).filter("weekday", ["lib.utils.calUtils", function (calUtils) {
     return function (day, format) { //format: 0=short, 1=medium, 2=long (default)
         return calUtils.getWeekday(day, format);

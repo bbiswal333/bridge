@@ -117,7 +117,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			}
 
 			$scope.upComingEvents = function () {
-			    $scope.$broadcast('recalculateScrollbars');
 			    return $scope.events;
 			};
 

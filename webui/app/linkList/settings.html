@@ -3,11 +3,12 @@
     <div ng-repeat="linkList in config.listCollection track by $index">
         <div class="col-md-4">
             <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
-            <span class="btn-default btn remove_btn" ng-if="linkList.length == 0 && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;">
-                Remove Linklist
-            </span> 
+
+            <!--- DISPLAY existing Links -->
             <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
-                <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id"  ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                <div class="app-linkList-row" style="min-height:0px;" ng-if="!linkList[0]" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                </div>
+                <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
                         <input type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
                         <input ng-if="link.type=='saplink'" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
@@ -25,22 +26,29 @@
                 </div>
             </div>
 
-            <!---ADD LINKLIST -->
+            <!--- REMOVE empty LinkList -->
+            <span class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;">
+                Remove Linklist
+            </span> 
+
+            <!--- DISPLAY New Link button -->
             <div class="row app-linkList-row" >
                 <div class="col-xs-12" style="padding:0 0 0 0;">
-                    <button ng-disabled="linkList.length >= 6" ng-click="toggleAddForm($index)"  type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
+                    <button ng-disabled="linkList.length >= 7 || !isAddFormPossible()" ng-click="toggleAddForm($index)" type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
                 </div>
             </div>
+
+            <!--- SELECT type of New Link -->
             <div class="row app-linkList-row" ng-show="addForm[$index] != ''  && addForm[$index] != undefined">
                 <div class="col-xs-12" style="padding:0 0 0 0;">
                     <div class="btn-group">
-                        <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'web')" ng-class="{btn_blue: addForm[$index] == 'web'}" type="button" class="btn btn-default">Web </button>
-                        <button ng-disabled="linkList.length >= 6" ng-click="setAddForm($index,'gui')" ng-class="{btn_blue: addForm[$index] == 'gui'}" type="button" class="btn btn-default">SAP GUI</button>
+                        <button ng-disabled="linkList.length >= 7" ng-click="setAddForm($index,'web')" ng-class="{btn_blue: addForm[$index] == 'web'}" type="button" class="btn btn-default">Web </button>
+                        <button ng-disabled="linkList.length >= 7" ng-click="setAddForm($index,'gui')" ng-class="{btn_blue: addForm[$index] == 'gui'}" type="button" class="btn btn-default">SAP GUI</button>
                     </div>
                 </div>
             </div>
 
-            <!---ADD HYPERLINK -->
+            <!--- ADD HYPERLINK -->
             <form name="ConfigItemFormHyperlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'web'">
                 <div class="row app-linkList-row">
                     <div class="col-xs-12" style="padding:0 0 0 0;">
@@ -61,7 +69,7 @@
                 </div>
             </form>
 
-            <!---ADD SAP-LINK -->
+            <!--- ADD SAP-LINK -->
             <form name="ConfigItemFormSAPlink" ng-submit="newEntry($index)" ng-show="addForm[$index] == 'gui'">
                 <div class="row app-linkList-row">
                     <div class="col-xs-12" style="padding:0 0 0 0;">
@@ -96,9 +104,12 @@
             </form>
         </div>
     </div>
+
+    <!--- ADD empty LinkList -->
     <div ng-if="config.listCollection.length < 3" class="col-md-4">
         <span class="btn-default btn"  ng-click="addLinkList()"  style="margin-top:40px">Add new Linklist</span>
     </div>
+
 </div>
 
 <div class="row">

@@ -5,9 +5,16 @@
 		"title"					:	"Jira",
 		"icon_css"				:	"icon-bell",
 		"overview_directive"	:	"app.jira",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/jira",
+				"templateUrl"	:	"app/jira/detail.html"			
+			}
+		]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js","settings.js","JiraBox.js"],
-	"css_files" : []
+	"css_files" : ["style.css"]	
 }

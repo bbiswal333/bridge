@@ -3,7 +3,7 @@ angular.module('app.jira').appJiraSettings = ['$scope', 'app.jira.configservice'
     $scope.data.query = JiraConfig.query;
 
      $scope.save_click = function () {  
-        JiraConfig.query = $scope.data.query;
+        JiraConfig.query = $scope.data.query;        
         $scope.$emit('closeSettingsScreen');
     };
     

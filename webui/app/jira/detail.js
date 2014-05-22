@@ -2,7 +2,7 @@
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
 
         $scope.$watch('JiraConfig.query', function() {
-        	$scope.config = JiraConfig.query;
+        	$scope.config = JiraConfig;
             JiraBox.getIssuesforQuery($scope);
         },true);
 

@@ -23,7 +23,7 @@ exports.register = function(app, user, local, proxy, npm)
 		if ( request.headers.origin != undefined && re.test(request.headers.origin))
 		{
 			response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
-			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-Wit, Content-Type, Accept' );
+			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept' );
 			response.setHeader('Access-Control-Allow-Credentials', 'true' );
 			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
 		}    		
@@ -82,8 +82,12 @@ exports.register = function(app, user, local, proxy, npm)
 		{
 
 			req = https_req.request(options, function(res) {
-				res.on('data', function(chunk) { data += chunk; });
-				res.on('end', function(){ callback(data); });
+			    res.on('data', function (chunk) {
+			        data += chunk;
+			    });
+			    res.on('end', function () {
+			        callback(data);
+			    });
 			});
 		}
 		
@@ -93,11 +97,10 @@ exports.register = function(app, user, local, proxy, npm)
 			req.write(postData);
 		}
 
-		req.end();
-		req.on('error', function(e) {
-			console.error(e);
+	    req.end();
+		req.on('error', function (e) {
+		    console.error(e);
 		});
-
 	};
 
 	//api to check if client is existing
