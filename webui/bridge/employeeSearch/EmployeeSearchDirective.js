@@ -1,4 +1,4 @@
-﻿angular.module('bridge.employeeSearch', []);
+﻿angular.module('bridge.employeeSearch', ['bridge.employeePicture']);
 
 angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', function () {
 
