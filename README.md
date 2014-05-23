@@ -1,10 +1,10 @@
-﻿Bridge
-======
+#Bridge
+
 * [Bridge Test](http://bridge-master.mo.sap.corp)
 * [Bridge Production](http://bridge.mo.sap.corp)
 
-Developer Guide
-===============
+#Developer Guide
+
 Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. We use the bridge-client repository to upload binaries of our client and the bridge-server repository for our monsoon readymade which makes it possible to setup a new bridge instance automatically in a few minutes.
 
 ## git & ssh
@@ -41,9 +41,7 @@ Bridge is an internal open source project with the main goal of open contributio
 * copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
 * for full documentation and more features (automatically break in first line, attach debugger to an already running server...) see https://github.com/node-inspector/node-inspector
 
-Building Apps
-======================================
-## application structure
+## building apps
 * apps are contained in their own sub-folder `webui/app/appname`
 * apps must be an angluar-directive own module and shoul be named/ prefixed with `app.appname` to avoid naming collisions
 * the app directive must not have an isolated scope
