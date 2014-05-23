@@ -1,4 +1,4 @@
-angular.module('app.im', []);
+angular.module('app.im', ['ngTable']);
 
 angular.module('app.im').directive('app.im', function () {
 
