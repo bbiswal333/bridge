@@ -49,47 +49,4 @@ Building Apps
 * the app directive must not have an isolated scope
 * metadata for the app is defined in a file called `_modules.json`
 * the app modules (plus everything mentioned in modules) is loaded during startup automatically and the app should be visibile in the settings screen
-
-## _modules.json
-```
-{
-  "app":
-  {
-    "module_name"     : "app.test",
-    "title"         : "Test App",
-    "icon_css"        : "icon-lightbulb",
-    "overview_directive"  : "app.test",
-    "needs_client"      : false
-  },
-  "modules" : [],
-  "js_files" : ["overview.js"],
-  "css_files" : []
-}
-```
-
-
-## overview.js
-```javascript
-
-angular.module('app.test', []);
-angular.module('app.test').directive('app.test', function () {
-
-    var directiveController = ['$scope', function ($scope) {
-        //$scope.data = {};
-        //$scope.data.test = "my test data";
-    }];
-
-    return {
-        restrict: 'E',
-        templateUrl: 'app/test/overview.html',
-        controller: directiveController
-    };
-});
-
-```
-
-## overview.html
-```html
-This is just an app with no real content. Some test data: {{data.test}}.
-```
-
+* to get started, just copy our "test app" and adjust it.. you should have your first app running in a few minutes
