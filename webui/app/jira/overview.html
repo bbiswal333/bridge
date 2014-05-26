@@ -1,4 +1,7 @@
-﻿<a href="#/detail/jira">
+﻿
+
+<div ng-if="data.jiraChart.length > 0">
+<a href="#/detail/jira">
 <nvd3-pie-chart
 	data="data.jiraChart"
     id="exampleId"
@@ -33,3 +36,11 @@
 </div>
 -->
 </a>
+</div>
+
+
+<div ng-if="data.jiraChart.length <= 0">
+
+<img src="../app/jira/nodata.svg" width="100px" class="chart no_data">
+        <span class="no_data_content">only a filled chart is a happy chart.</span>
+</div>
