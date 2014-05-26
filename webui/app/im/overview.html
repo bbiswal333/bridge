@@ -1,4 +1,4 @@
-<div ng-controller="app.im.directiveController">
+<!--<div ng-controller="app.im.directiveController">
 	{{lastElement}}
 	<div ng-show="displayChart">
 		<div class="prio">Prio 1: {{prioarr[0]}}</div>
@@ -10,4 +10,64 @@
 	    	<a class="btn btn-default btn-sm" href="#/detail/im">Details</a>
 		</div>	
 	</div>
+</div>-->
+
+<!--Internal mssgs-->
+
+
+<div ng-controller="app.im.directiveController">
+	{{lastElement}}
+	<a href="#/detail/im">
+	<div  style="width:170px; height:140px">
+		<div class="r_container">
+			<div class="r_row">
+				<div class="r_col1">
+					<div class="prio_box">
+						<p>Prio 2</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{prioarr[0]}}</p>
+						</div>
+				</div>
+
+				<div class="r_col2">
+					<div class="prio_box">
+						<p>Prio 1</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{prioarr[1]}}</p>
+						</div>
+				</div>
+			</div>
+
+			<div class="r_row">
+				<div class="r_col3">
+					<div class="prio_box">
+						<p>Prio 4</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{prioarr[3]}}</p>
+						</div>
+			</div>
+
+				<div class="r_col4">
+					<div class="prio_box">
+						<p>Prio 3</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{prioarr[2]}}</p>
+						</div>
+
+				</div>
+
+
+			</div>
+		
+		</div>
+
+	</div>
+</a>
+
 </div>
+			
+

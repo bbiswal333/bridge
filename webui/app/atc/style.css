@@ -67,3 +67,85 @@
 .oddRowBackground {
     background-color: rgba(255,255,255,0.5);
 }
+
+
+
+
+.r_container{
+    width:100%; 
+    height:100%
+}
+
+.r_row{
+    width:100%; 
+    height:50%
+
+}
+
+
+.r_col1{
+    width:48%; 
+    height:90%; 
+    background-color:#428bca;
+    float:right;
+    opacity:0.75;
+
+}
+
+.r_col2{
+    width:48%; 
+    height:90%; 
+    background-color:#428bca;
+    float:left;
+    opacity:1.
+}
+
+.r_col3{
+    width:48%; 
+    height:90%; 
+    background-color:#428bca;
+    float:right;
+    opacity:0.25;
+}
+
+.r_col4{
+    width:48%; 
+    height:90%; 
+    background-color:#428bca;
+    float:left;
+    opacity:0.50;
+}
+
+
+
+.prio_box{ 
+    width:100%; 
+    height:30%; 
+    float:left;
+    color:white; 
+    text-align: left;
+    padding-left:.1cm;
+    font-family: Open Sans
+
+}
+
+
+.zahlen_box{ 
+    width:100%;
+    height:70%; 
+    color: white; 
+    float: right; 
+    text-align: right;
+    padding-right:.1cm;  
+    font-family: Open Sans
+
+}
+
+
+.prio_zahlen{
+    font-size:34px
+
+}
+
+
+
