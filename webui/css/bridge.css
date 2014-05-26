@@ -97,6 +97,8 @@ img {
 .image_rounded_shadow img {
     margin: 5px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
+    border-radius: 100%;
+    margin-top: 15px;
 }
 .noselect {
     -webkit-touch-callout: none;
