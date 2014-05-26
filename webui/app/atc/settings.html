@@ -113,7 +113,7 @@
             <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                 <td data-title="'Source System'">{{configItem.srcSystem}}</td>
                 <td data-title="'Package'">{{configItem.devClass}}</td>
-                <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> {{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</td>
+                <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
                 <td data-title="'AKH Component'">{{configItem.component}}</td>
                 <td data-title="'Display Suppressed'">
                     <span>
