@@ -61,7 +61,7 @@
     color: white; 
     float: right; 
     text-align: right;
-    padding-right:.1cm;  
+    padding-right:.1cm; 
     font-family: Open Sans
 
 }
@@ -75,6 +75,13 @@
 
 
 
+.circle_1 {
+	background-color: #37A047;
+	height:20px;
+	width:20px;
+	border-radius:20px;
+	border-radius:20px;
+}
 
 
 
