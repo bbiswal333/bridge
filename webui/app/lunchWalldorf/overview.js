@@ -124,25 +124,29 @@ angular.
         };
 
         // make this more robust by checking for the day before
-        if (date.getUTCDate() > 1) {
+        if (!dateValidated && date.getDay() > 2) {
             var lunchstringTheDayBefore = data.split('************')[date.getDay() - 2];
-            var lunchLinesTheDayBefore = lunchstringTheDayBefore.split("\n");
-            for(var i = 0; i < lunchLinesTheDayBefore.length; i++) {
-                if (lunchLinesTheDayBefore[i].indexOf(date.getUTCDate()-1) != -1) {
-                    dateValidated = true;
-                    break;
+            if(lunchstringTheDayBefore) {
+                var lunchLinesTheDayBefore = lunchstringTheDayBefore.split("\n");
+                for(var i = 0; i < lunchLinesTheDayBefore.length; i++) {
+                    if (lunchLinesTheDayBefore[i].indexOf(date.getUTCDate()-1) != -1) {
+                        dateValidated = true;
+                        break;
+                    };
                 };
             };
         }
 
         // or by checking for the day after
-        if (date.getUTCDate() < 5) {
+        if (!dateValidated && date.getDay() < 5) {
             var lunchstringTheDayAfter = data.split('************')[date.getDay()];
-            var lunchLinesTheDayAfter = lunchstringTheDayAfter.split("\n");
-            for(var i = 0; i < lunchLinesTheDayAfter.length; i++) {
-                if (lunchLinesTheDayAfter[i].indexOf(date.getUTCDate()+1) != -1) {
-                    dateValidated = true;
-                    break;
+            if(lunchstringTheDayAfter) {
+                var lunchLinesTheDayAfter = lunchstringTheDayAfter.split("\n");
+                for(var i = 0; i < lunchLinesTheDayAfter.length; i++) {
+                    if (lunchLinesTheDayAfter[i].indexOf(date.getUTCDate()+1) != -1) {
+                        dateValidated = true;
+                        break;
+                    };
                 };
             };
         }
