@@ -20,14 +20,15 @@
                             <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                         </div>
                         <div class="app-linklist-editIcons">
-                            <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;"class=" btn btn-default app-linklist-clickIcon glyphicon glyphicon-remove" ></span>
+                            <span class="fa fa-arrows btn btn-default app-linklist-clickIcon" style="margin-right:0;padding-top:10px;"></span>
+                            <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;"class=" btn btn-default app-linklist-clickIcon fa fa-minus" ></span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!--- REMOVE empty LinkList -->
-            <span class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;">
+            <span class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;position:relative;top:-8px;">
                 Remove Linklist
             </span> 
 
@@ -107,7 +108,7 @@
 
     <!--- ADD empty LinkList -->
     <div ng-if="config.listCollection.length < 3" class="col-md-4">
-        <span class="btn-default btn"  ng-click="addLinkList()"  style="margin-top:40px">Add new Linklist</span>
+        <span class="btn-default btn "  ng-click="addLinkList()"  style="margin-top:45px">Add new Linklist</span>
     </div>
 
 </div>
