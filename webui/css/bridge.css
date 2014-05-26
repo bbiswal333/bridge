@@ -145,7 +145,7 @@ img {
 }
 .box-1 {
     float: left;
-    width: 200px;
+    width: 205px;
     height: 200px;
     position: relative;
     text-align: left;
@@ -465,7 +465,7 @@ input[type="checkbox"]:checked:after {
     padding-left: 0px;
 }
 .sortable-item {
-    margin: 5px;
+    margin:2.5px 5px 5px 5px;
     display:inline-block;
     /*float: left; */
 }
