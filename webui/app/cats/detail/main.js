@@ -7,12 +7,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.data.catsUtils",
   "$http",
   "bridgeInBrowserNotification",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification) {
+  "app.cats.monthlyData",
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyData) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
     $scope.loaded = false;
     $scope.width = 800;
+
+    var myTest = monthlyData.getWeeklyData(2014, 20);
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
