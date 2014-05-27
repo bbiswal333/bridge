@@ -36,8 +36,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].data.ZCPR_OBJGEXTID,
-          objguid_s: $scope.items[indx].data.ZCPR_OBJGUID
+          objgextid_s: $scope.items[indx].data.ZCPR_OBJGEXTID
         });
       }
       document.getElementById("filterTextfield").focus();
@@ -56,9 +55,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
           for (var j = 0; j < $scope.blocks.length; j++) {
               if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID &&
-                  data[i].ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                  $scope.blocks[j].value != 0  ) {
-                  
+                  $scope.blocks[j].QUANTITY != 0  ) {
                   found = true;
               }
           }

@@ -1,6 +1,6 @@
 angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 .service("app.cats.monthlyData", ["$http", "$q", "lib.utils.calUtils",  function($http, $q, calenderUtils){
-	this.getMonthData = function(year, month){
+	this.getMonthData = function(year, month, callback){
 		var weeks = this.getWeeksOfMonth(year, month);
 		var monthData = {};
 		monthData.weeks = [];
@@ -9,16 +9,18 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
         for (var i = 0; i < weeks.length; i++) {
         	counter++;
         	this.getWeeklyData(weeks[i].year, weeks[i].weekNo).then(function(data){
-	        	monthData.weeks.push(data);
 	        	counter--;
-	        	targetHoursCounter = targetHoursCounter + data.hasTargetHoursForHowManyDays;
+	        	if(data) {
+		        	monthData.weeks.push(data);
+		        	targetHoursCounter = targetHoursCounter + data.hasTargetHoursForHowManyDays;
+	        	}
 	        	if (counter === 0) {
-	        		if(targetHoursCounter == 7 * monthData.weeks.length) {
+	        		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length) {
 	        			monthData.hasTargetHours = true;
 	        		} else {
 	        			monthData.hasTargetHours = false;
 	        		}
-			        return monthData;
+			        callback(monthData);
 	        	};
         	});
         }
@@ -79,6 +81,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            	if(ISPTaskIterator == 0) { // build the target array in the first place
 		            		var day = {};
 		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
 		            		weekData.days.push( day );
