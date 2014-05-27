@@ -93,4 +93,45 @@ describe("Cats Monthly Data Service", function () {
     expect(weeks[4].weekNo).toBe(22);
   });
 
+  it("should calculate the correct weeks for Jan 2014", function() {
+    var weeks = catsMonthlyDataService.getWeeksOfMonth(2014, 0);
+    expect(weeks.length).toBe(5);
+    expect(weeks[0].year).toBe(2014);
+    expect(weeks[0].weekNo).toBe(1);
+    expect(weeks[4].weekNo).toBe(5);
+  });
+
+  it("should calculate the correct weeks for Jan 2016", function() {
+    var weeks = catsMonthlyDataService.getWeeksOfMonth(2016, 0);
+    expect(weeks.length).toBe(5);
+    expect(weeks[0].year).toBe(2015);
+    expect(weeks[0].weekNo).toBe(53);
+    expect(weeks[4].year).toBe(2016);
+    expect(weeks[4].weekNo).toBe(4);
+  });
+
+  it("should calculate the correct weeks for Dez 2014", function() {
+    var weeks = catsMonthlyDataService.getWeeksOfMonth(2014, 11);
+    expect(weeks.length).toBe(5);
+    expect(weeks[0].year).toBe(2014);
+    expect(weeks[0].weekNo).toBe(49);
+    expect(weeks[4].year).toBe(2015);
+    expect(weeks[4].weekNo).toBe(1);
+  });
+
+  it("should calculate the correct weeks for May 2016", function() {
+    var weeks = catsMonthlyDataService.getWeeksOfMonth(2016, 4);
+    expect(weeks.length).toBe(6);
+    expect(weeks[0].year).toBe(2016);
+    expect(weeks[0].weekNo).toBe(17);
+    expect(weeks[5].weekNo).toBe(22);
+  });
+
+  it("should calculate the correct weeks for Feb 2010", function() {
+    var weeks = catsMonthlyDataService.getWeeksOfMonth(2010, 1);
+    expect(weeks.length).toBe(4);
+    expect(weeks[0].year).toBe(2010);
+    expect(weeks[0].weekNo).toBe(5);
+    expect(weeks[3].weekNo).toBe(8);
+  });
 });

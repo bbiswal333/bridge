@@ -15,7 +15,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.loaded = false;
     $scope.width = 800;
 
-    var myTest = monthlyData.getWeeklyData(2014, 20);
+    var myTest = monthlyData.getMonthData(2014,4);
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
