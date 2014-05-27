@@ -14,6 +14,7 @@
 		</div>
 		<div class="app-cats-calendar">
 			<div class="app-cats-week-labels row">
+        <div class="{{dayClass}} app-cats-col-xs-1-8" ng-if="maintainable"> </div>
 				<div class="{{dayClass}} app-cats-col-xs-1-8" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
 			</div>
 			<div class="app-cats-week row" ng-repeat="week in calArray">

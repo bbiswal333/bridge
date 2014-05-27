@@ -3,11 +3,11 @@
         <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
             <span style="clear: both; width: 100%; float: none;"></span>
             <div class="row">
-                <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-lg-8 col-lg-push-4">
+                <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-8 col-md-push-4 col-lg-6 col-lg-push-6">
                     <app.cats.calendar class="app-cats-calendar" data-day-class="app-cats-day-details" data-selected-day="day" data-maintainable="true">
                     </app.cats.calendar>
                 </div> 
-                <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-lg-4 col-lg-pull-8">
+                <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-4 col-md-pull-8 col-lg-6 col-lg-pull-6">
                     <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, data);" data-onprojectunchecked="handleProjectUnchecked(objgextid_s, objguid_s);" data-heightoflist="300px">
                     </app.cats.maintenance-view.project-list>        
                 </div>

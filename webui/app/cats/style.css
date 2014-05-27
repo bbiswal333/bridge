@@ -185,7 +185,7 @@
 
 @media (min-width: 1420px) {
 	.app-cats-project-selector-button {
-	    width: 48%;
+	    width: 47%;
 	}
 	.app-cats-col-xs-1-8 {
         width: 12.5%;
@@ -194,7 +194,7 @@
 
 @media (max-width: 1419px) {
     .app-cats-project-selector-button {
-	    width: 100%;
+	    width: 95%;
     }
 
     .app-cats-col-xs-1-8 {
