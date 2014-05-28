@@ -14,8 +14,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.blockdata = [];
     $scope.loaded = false;
     $scope.width = 800;
-
-    var myTest = monthlyData.getMonthData(2014,4);
+    $scope.monthlyData = {};
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -27,89 +26,67 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
     function loadCATSDataForDay() {
-        catsUtils.getCatsAllocationDataForDay($scope.day, function (tasks) {
-            displayCATSDataForDay(tasks);
+        monthlyData.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
+            $scope.monthlyData  = monthData;
+            var currentDay      = calUtils.stringifyDate($scope.day);
+
+            // get tasks of particular day
+            for (var i = 0; i < monthData.weeks.length; i++) {
+                for (var j = 0; j < monthData.weeks[i].days.length; j++) {
+                    if (monthData.weeks[i].days[j].date == currentDay) {
+                        displayCATSDataForDay(monthData.weeks[i].days[j]);
+                        return;
+                    }
+                }
+            }
         });
     };
 
     loadCATSDataForDay();
 
-    function loadedCATSDataIsIdentical(tasks) {
-        if ($scope.lastPostedCatsAllocationDataForDay && tasks && $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length >= tasks.length) {
-            var identicalEntriesCounter = 0;
-            for (var i = 0; i < tasks.length; i++) {
-                for (var j = 0; j < $scope.lastPostedCatsAllocationDataForDay.BOOKINGS.length; j++) {
-                    if ($scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_EXTID == tasks[i].projDesc &&
-                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].QUANTITY == tasks[i].quantity &&
-                        $scope.lastPostedCatsAllocationDataForDay.BOOKINGS[j].ZCPR_OBJGEXTID == tasks[i].record.ZCPR_OBJGEXTID) {
-                        identicalEntriesCounter++;
-                        break;
-                    }
-                }
+    function displayCATSDataForDay(day) {
+        $scope.lastCatsAllocationDataForDay = day;
+        $scope.blockdata = [];
+        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+            $scope.workingHoursForDay = workingHours;
+
+            for (var i = 0; i < day.tasks.length; i++) {
+                var task = day.tasks[i];
+                if (task.TASKTYPE == "VACA")
+                    addBlock("Vacation", task.QUANTITY, task, true);
+                else
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY * $scope.workingHoursForDay, task);
             }
-            if (identicalEntriesCounter && identicalEntriesCounter == tasks.length) {
-                return true;
-            }
-        }
-        return false;
+            $scope.loaded = true;
+        });
     };
 
-    function displayCATSDataForDay(tasks) {
-        $scope.lastCatsAllocationDataForDay = tasks;
-
-        if (loadedCATSDataIsIdentical(tasks)) {
-        // Copy data only
-            for (var i = 0; i < $scope.blockdata.length; i++) {
-                for (var j = 0; j < tasks.length; j++) {
-                    if ($scope.blockdata[i].data.ZCPR_OBJGEXTID == tasks[j].record.ZCPR_OBJGEXTID) {
-                        $scope.blockdata[i].data =  tasks[j].record;
-                        break;
-                    }
-                }
-            }
-        } else {
-        // Copy data and rebuild allocation bar
-            $scope.blockdata = [];
-            catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
-                $scope.workingHoursForDay = workingHours;
-
-                for (var i = 0; i < tasks.length; i++) {
-                    var task = tasks[i];
-                    if (task.tasktype == "VACA")
-                        addBlock("Vacation", task.quantity, task.record, true);
-                    else
-                        addBlock(task.taskDesc || task.tasktype, task.quantity * $scope.workingHoursForDay, task.record);
-                }
-                $scope.loaded = true;
-            });
-        }
-    };
-
-    $scope.handleProjectChecked = function (desc_s, val_i, data, fixed) {
+    $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
         var block = {
-            RAUFNR: data.data.RAUFNR,
-            booking: {
+            RAUFNR: task.RAUFNR,
+            // booking: {
                 COUNTER: 0,
                 WORKDATE: calUtils.transformDateToABAPFormatWithHyphen($scope.day),
                 STATUS: 30,
-            },
-            TASKTYPE: data.data.TASKTYPE,
-            ZCPR_EXTID: data.data.ZCPR_EXTID,
-            ZCPR_OBJGEXTID: data.ZCPR_OBJGEXTID,
-            ZCPR_OBJGUID: data.ZCPR_OBJGUID,
+            // },
+            TASKTYPE: task.TASKTYPE,
+            ZCPR_EXTID: task.ZCPR_EXTID,
+            ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
+            // ZCPR_OBJGUID: data.ZCPR_OBJGUID,
             UNIT: "T",
         };
         
         return addBlock(desc_s, val_i, block, false);
     }
 
-    $scope.handleProjectUnchecked = function (objgextid_s, objguid_s) {
-        removeBlock(objgextid_s, objguid_s);
+    $scope.handleProjectUnchecked = function (objgextid_s) {
+        removeBlock(objgextid_s);
     }
 
     function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].data.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) || (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].data.TASKTYPE == block.TASKTYPE))
+            if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].task.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) ||
+                (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].task.TASKTYPE == block.TASKTYPE))
                 return $scope.blockdata[i];
         }
         return null;
@@ -143,9 +120,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function addBlock(desc_s, val_i, data, fixed) {
+    function addBlock(desc_s, val_i, block, fixed) {
 
-        var existingBlock = getByExtId(data);
+        var existingBlock = getByExtId(block);
         if (existingBlock != null) {
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                 adjustBarValues();
@@ -169,7 +146,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata.push({
             desc: desc_s,
             value: val_i,
-            data: data,
+            task: block,
             fixed: fixed || false,
         });
 
@@ -186,10 +163,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return $scope.workingHoursForDay - sum;
     };
 
-    function removeBlock(objgextid_s, objguid_s) {
+    function removeBlock(objgextid_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
-            if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID && objguid_s == $scope.blockdata[i].data.ZCPR_OBJGUID) {
+            if (objgextid_s == $scope.blockdata[i].task.ZCPR_OBJGEXTID) {
                 $scope.blockdata[i].value = 0;
             }
             i++;
@@ -256,14 +233,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
-                COUNTER: $scope.blockdata[i].data.booking.COUNTER,
-                WORKDATE: $scope.blockdata[i].data.booking.WORKDATE,
-                RAUFNR: $scope.blockdata[i].data.RAUFNR,
-                TASKTYPE: $scope.blockdata[i].data.TASKTYPE,
-                ZCPR_EXTID: $scope.blockdata[i].data.ZCPR_EXTID,
-                ZCPR_OBJGEXTID: $scope.blockdata[i].data.ZCPR_OBJGEXTID,
-                STATUS: $scope.blockdata[i].data.booking.STATUS,
-                UNIT: $scope.blockdata[i].data.UNIT,
+                COUNTER: $scope.blockdata[i].task.COUNTER,
+                WORKDATE: $scope.blockdata[i].task.WORKDATE,
+                RAUFNR: $scope.blockdata[i].task.RAUFNR,
+                TASKTYPE: $scope.blockdata[i].task.TASKTYPE,
+                ZCPR_EXTID: $scope.blockdata[i].task.ZCPR_EXTID,
+                ZCPR_OBJGEXTID: $scope.blockdata[i].task.ZCPR_OBJGEXTID,
+                STATUS: $scope.blockdata[i].task.STATUS,
+                UNIT: $scope.blockdata[i].task.UNIT,
                 QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
             };
 
@@ -274,8 +251,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (booking.QUANTITY) { // book time > 0
                 container.BOOKINGS.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.length; j++) {
-                    if ($scope.lastCatsAllocationDataForDay[j].record.RAUFNR == booking.RAUFNR) {
+                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.tasks.length; j++) {
+                    if ($scope.lastCatsAllocationDataForDay.tasks[j].RAUFNR == booking.RAUFNR) {
                         container.BOOKINGS.push(booking);
                         break;
                     }

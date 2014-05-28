@@ -27,7 +27,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         var ok = $scope.onProjectChecked({
           desc_s: $scope.items[indx].name,
           val_i: null,
-          data: $scope.items[indx].data,
+          task: $scope.items[indx]
         });
 
         if (!ok) {
@@ -36,8 +36,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].data.ZCPR_OBJGEXTID,
-          objguid_s: $scope.items[indx].data.ZCPR_OBJGUID
+          objgextid_s: $scope.items[indx].ZCPR_OBJGEXTID
         });
       }
       document.getElementById("filterTextfield").focus();
@@ -55,20 +54,19 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           var found = false;
 
           for (var j = 0; j < $scope.blocks.length; j++) {
-              if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].data.ZCPR_OBJGEXTID &&
-                  data[i].ZCPR_OBJGUID == $scope.blocks[j].data.ZCPR_OBJGUID &&
-                  $scope.blocks[j].value != 0  ) {
-                  
+              if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].task.ZCPR_OBJGEXTID &&
+                  $scope.blocks[j].value != 0
+                  // $scope.blocks[j].task.QUANTITY != 0  
+                  ) {
                   found = true;
               }
           }
 
-          var newItem = {};
-          newItem.id = i;
-          newItem.name = data[i].taskDesc;
-          newItem.desc = data[i].projectDesc;
-          newItem.data = data[i];
-          newItem.selected = found;
+          var newItem = data[i];
+          newItem.id        = i;
+          newItem.name      = data[i].taskDesc;
+          newItem.desc      = data[i].projectDesc;
+          newItem.selected  = found;
           $scope.items.push(newItem);
 
           $scope.loaded = true;
