@@ -307,6 +307,8 @@ img {
     font-style: italic;
     font-weight: bold;
 }
+
+
 .copy_head{
     font-weight: bold;
 }
@@ -331,6 +333,25 @@ img {
     margin-right: 2px;
     float: right;
 }
+
+.box-icon_2 {
+    font-family:'bridge_icons';
+    font-size: 14px;
+    margin-right: 2px;
+    float: right;
+    padding-right: 2px;
+    color:#0099CC;
+}
+
+.box-icon_3 {
+    font-family:'bridge_icons';
+    font-size: 14px;
+    margin-right: 2px;
+    float: right;
+    padding-right: 7px;
+    color:#0099CC;
+}
+
 .download-icon {
     font-family:'SAP-icons';
     font-size: 20px;

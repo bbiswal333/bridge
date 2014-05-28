@@ -7,11 +7,11 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 
         var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';
         var usercellTemplate = 
-            '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">' + 
-            '<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.SUSID}}?s=20x26" style="height:100%;border-radius:3px;margin-right:10px"></img>' + 
+            '<div class="ngCellText " ng-class="col.colIndex()" style="border:2px solid white;height:40px">' + 
+            '<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.SUSID}}?s=20x20" style="height:100%;border-radius:100%;margin-right:20px"></img>' + 
             '<a target="_blank" href="{{row.entity.url}}">{{row.entity.username}}</a>' +
-            ' <a href="mailto:{{row.entity.mail}}">[M]</a>' +
-            ' <a href="tel:{{row.entity.tel}}">[T]</a>' +
+            ' <a href="mailto:{{row.entity.mail}}"><p class="box-icon_2 icon-mail"></p></a>' +
+            ' <a href="tel:{{row.entity.tel}}"><p class="box-icon_3 icon-phone"></p></a>' +
             '</div>';
 
         $scope.gridOptions = {                        
