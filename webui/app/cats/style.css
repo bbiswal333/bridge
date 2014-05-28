@@ -184,22 +184,26 @@
 /* Project List Template*/
 
 @media (min-width: 1420px) {
-	.app-cats-project-selector-button {
+	/*.app-cats-project-selector-button {
 	    width: 47%;
-	}
+	}*/
 	.app-cats-col-xs-1-8 {
         width: 12.5%;
     }
 }
 
 @media (max-width: 1419px) {
-    .app-cats-project-selector-button {
+    /*.app-cats-project-selector-button {
 	    width: 95%;
-    }
+    }*/
 
     .app-cats-col-xs-1-8 {
         width: 12.5%;
     }
+}
+
+.app-cats-project-selector-button {
+    width: 100%;
 }
 
 .app-cats-project-filter-input{
@@ -208,8 +212,8 @@
 }
 
 .app-cats-project-container {
-    width: 90%;
-    margin-left: 5%;
+    /*width: 90%;
+    margin-left: 5%;*/
     margin-right: 5%;
 }
 .app-cats-project-selector-button-selected, .app-cats-project-selector-button-selected:focus {
@@ -228,6 +232,10 @@
 .app-cats-project-selector-button {
     font-size: 14px;
     line-height: 1;
+}
+
+.app-cats-project-selector-button-container {
+    margin-right: 0;
 }
 .app-cats-project-selector-button span {
     font-size: 10px;
