@@ -13,18 +13,26 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             ' <a href="mailto:{{row.entity.mail}}"><p class="box-icon_2 icon-mail"></p></a>' +
             ' <a href="tel:{{row.entity.tel}}"><p class="box-icon_3 icon-phone"></p></a>' +
             '</div>';
+        var descriptioncellTemplate = 
+            '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px"><a target="_blank" href="{{row.entity.ticket_url}}">{{row.entity.KTEXT}}</a></div>';
+
+
+        $scope.filterOptions = {
+            filterText: ''
+        };
 
         $scope.gridOptions = {                        
             enableColumnReordering:true,
             enableRowSelection:false,            
             rowHeight: 40,
-            showFilter:true,
+            showFilter:false,
+            filterOptions: $scope.filterOptions,
             columnDefs: [
                 {field:'PRIOSTXT', displayName:'Priority', width:'10%', cellTemplate: cellTemplate},                
                 {field:'THEMKEXT', displayName:'Component', width:'15%', cellTemplate: cellTemplate},
                 {field:'STATUSSTXT', displayName:'Status', width:'15%', cellTemplate: cellTemplate},      
                 {field:'username', displayName:'Processor', width:'20%', cellTemplate: usercellTemplate},   
-                {field:'KTEXT', displayName:'Description', width:'40%', cellTemplate: cellTemplate}            
+                {field:'KTEXT', displayName:'Description', width:'40%', cellTemplate: descriptioncellTemplate}            
             ]
         }
 
@@ -49,6 +57,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 	                        message.employee = response.data.DATA;
 	                        message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
                             message.url = 'https://people.wdf.sap.corp/profiles/' + message.SUSID;
+                            message.ticket_url = 'https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta=' + message.CSINSTA + '&mnumm=' + message.MNUMM + '&myear=' + message.MYEAR + '&sap-language=en#';
                             message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
                             message.mail = message.employee.SMTP_MAIL;
                             message.tel = message.employee.TELNR;
