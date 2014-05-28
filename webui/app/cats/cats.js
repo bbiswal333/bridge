@@ -53,7 +53,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           delete record.DAYS;
           task.quantity = parseFloat(record.booking.QUANTITY);
 
-          enrichTaskData(task);
+          _enrichTaskData(task);
           //Only add to list when time has been spent on this task
           if (!isNaN(task.quantity)) {
             res.push(task);
@@ -83,20 +83,16 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
-        tasks.push(enrichTaskData({
-            data: {
-                RAUFNR: "",
-                TASKTYPE: "ADMI",
-            },
+        tasks.push(_enrichTaskData({
+            RAUFNR: "",
+            TASKTYPE: "ADMI",
             taskDesc: "ADMI",
             projectDesc: "Administrative"
         }));
 
-        tasks.push(enrichTaskData({
-            data: {
-                RAUFNR: "",
-                TASKTYPE: "EDUC",
-            },
+        tasks.push(_enrichTaskData({
+            RAUFNR: "",
+            TASKTYPE: "EDUC",
             taskDesc: "EDUC",
             projectDesc: "Personal education"
         }));
@@ -107,11 +103,15 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         var nodes = data.WORKLIST;
         for (var i = 0; i < nodes.length; i++) {
           var task = {};
-          task.ZCPR_OBJGUID = nodes[i].ZCPR_OBJGUID;
+          task.RAUFNR         = nodes[i].RAUFNR;
+          task.TASKTYPE       = nodes[i].TASKTYPE;
+          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
           task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
-          task.projectDesc = nodes[i].DISPTEXTW1;
-          task.taskDesc = nodes[i].DISPTEXTW2;
-          task.data = nodes[i];
+          task.UNIT           = nodes[i].UNIT;
+          task.projectDesc    = nodes[i].DISPTEXTW1;
+          task.taskDesc       = nodes[i].DISPTEXTW2;
+
+          // task.data = nodes[i];
 
           tasks.push(task);
         }
@@ -120,12 +120,12 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       });
     }
 
-    function enrichTaskData(task){
-      if (task.data &&
-          !task.data.ZCPR_OBJGEXTID &&
-          !task.data.ZCPR_OBJGUID) {
-        task.ZCPR_OBJGEXTID = task.data.TASKTYPE;
-        task.ZCPR_OBJGUID = task.data.TASKTYPE;
+    function _enrichTaskData(task){
+      if (task &&
+          !task.ZCPR_OBJGEXTID &&
+          !task.ZCPR_OBJGUID) {
+        task.ZCPR_OBJGEXTID = task.TASKTYPE;
+        task.ZCPR_OBJGUID = task.TASKTYPE;
       } else if (task.record &&
           !task.record.ZCPR_OBJGEXTID &&
           !task.record.ZCPR_OBJGUID) {
@@ -192,6 +192,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       getCatsAllocationDataForDay: function (day_o, callback_fn) {
         _getCatsAllocationDataForDay(day_o, callback_fn);
+      },
+      enrichTaskData: function(task){
+        return _enrichTaskData(task);
       }
     };
   }

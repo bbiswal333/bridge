@@ -27,12 +27,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function loadCATSDataForDay() {
         monthlyData.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
-            $scope.monthlyData = monthData;
-            if($scope.day.getMonth()+1 >= 10){
-                var currentDay = $scope.day.getFullYear() + "-"  + parseInt($scope.day.getMonth()+1) + "-" + $scope.day.getDate();
-            } else {
-                var currentDay = $scope.day.getFullYear() + "-0" + parseInt($scope.day.getMonth()+1) + "-" + $scope.day.getDate();
-            }
+            $scope.monthlyData  = monthData;
+            var currentDay      = calUtils.stringifyDate($scope.day);
+
             // get tasks of particular day
             for (var i = 0; i < monthData.weeks.length; i++) {
                 for (var j = 0; j < monthData.weeks[i].days.length; j++) {
@@ -48,7 +45,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     loadCATSDataForDay();
 
     function displayCATSDataForDay(day) {
-        $scope.lastCatsAllocationDataForDay = day.tasks;
+        $scope.lastCatsAllocationDataForDay = day;
         $scope.blockdata = [];
         catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
             $scope.workingHoursForDay = workingHours;
@@ -58,24 +55,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 if (task.TASKTYPE == "VACA")
                     addBlock("Vacation", task.QUANTITY, task, true);
                 else
-                    addBlock(task.ZCPR_EXTID || task.TASKTYPE, task.QUANTITY * $scope.workingHoursForDay, task);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY * $scope.workingHoursForDay, task);
             }
             $scope.loaded = true;
         });
     };
 
-    $scope.handleProjectChecked = function (desc_s, val_i, data, fixed) {
+    $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
         var block = {
-            RAUFNR: data.data.RAUFNR,
-            booking: {
+            RAUFNR: task.RAUFNR,
+            // booking: {
                 COUNTER: 0,
                 WORKDATE: calUtils.transformDateToABAPFormatWithHyphen($scope.day),
                 STATUS: 30,
-            },
-            TASKTYPE: data.data.TASKTYPE,
-            ZCPR_EXTID: data.data.ZCPR_EXTID,
-            ZCPR_OBJGEXTID: data.ZCPR_OBJGEXTID,
-            ZCPR_OBJGUID: data.ZCPR_OBJGUID,
+            // },
+            TASKTYPE: task.TASKTYPE,
+            ZCPR_EXTID: task.ZCPR_EXTID,
+            ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
+            // ZCPR_OBJGUID: data.ZCPR_OBJGUID,
             UNIT: "T",
         };
         
@@ -88,8 +85,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].data.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) ||
-                (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].data.TASKTYPE == block.TASKTYPE))
+            if ((block.ZCPR_OBJGEXTID != "" && $scope.blockdata[i].task.ZCPR_OBJGEXTID == block.ZCPR_OBJGEXTID) ||
+                (block.ZCPR_OBJGEXTID == "" && $scope.blockdata[i].task.TASKTYPE == block.TASKTYPE))
                 return $scope.blockdata[i];
         }
         return null;
@@ -123,9 +120,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function addBlock(desc_s, val_i, data, fixed) {
+    function addBlock(desc_s, val_i, block, fixed) {
 
-        var existingBlock = getByExtId(data);
+        var existingBlock = getByExtId(block);
         if (existingBlock != null) {
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                 adjustBarValues();
@@ -149,7 +146,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata.push({
             desc: desc_s,
             value: val_i,
-            data: data,
+            task: block,
             fixed: fixed || false,
         });
 
@@ -169,7 +166,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function removeBlock(objgextid_s) {
         var i = 0;
         while (i < $scope.blockdata.length) {
-            if (objgextid_s == $scope.blockdata[i].data.ZCPR_OBJGEXTID) {
+            if (objgextid_s == $scope.blockdata[i].task.ZCPR_OBJGEXTID) {
                 $scope.blockdata[i].value = 0;
             }
             i++;
@@ -236,14 +233,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
-                COUNTER: $scope.blockdata[i].data.booking.COUNTER,
-                WORKDATE: $scope.blockdata[i].data.booking.WORKDATE,
-                RAUFNR: $scope.blockdata[i].data.RAUFNR,
-                TASKTYPE: $scope.blockdata[i].data.TASKTYPE,
-                ZCPR_EXTID: $scope.blockdata[i].data.ZCPR_EXTID,
-                ZCPR_OBJGEXTID: $scope.blockdata[i].data.ZCPR_OBJGEXTID,
-                STATUS: $scope.blockdata[i].data.booking.STATUS,
-                UNIT: $scope.blockdata[i].data.UNIT,
+                COUNTER: $scope.blockdata[i].task.COUNTER,
+                WORKDATE: $scope.blockdata[i].task.WORKDATE,
+                RAUFNR: $scope.blockdata[i].task.RAUFNR,
+                TASKTYPE: $scope.blockdata[i].task.TASKTYPE,
+                ZCPR_EXTID: $scope.blockdata[i].task.ZCPR_EXTID,
+                ZCPR_OBJGEXTID: $scope.blockdata[i].task.ZCPR_OBJGEXTID,
+                STATUS: $scope.blockdata[i].task.STATUS,
+                UNIT: $scope.blockdata[i].task.UNIT,
                 QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
             };
 
@@ -254,8 +251,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (booking.QUANTITY) { // book time > 0
                 container.BOOKINGS.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.length; j++) {
-                    if ($scope.lastCatsAllocationDataForDay[j].record.RAUFNR == booking.RAUFNR) {
+                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.tasks.length; j++) {
+                    if ($scope.lastCatsAllocationDataForDay.tasks[j].RAUFNR == booking.RAUFNR) {
                         container.BOOKINGS.push(booking);
                         break;
                     }

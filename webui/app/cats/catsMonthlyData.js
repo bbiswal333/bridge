@@ -1,5 +1,5 @@
 angular.module("app.cats.monthlyDataModule", ["lib.utils"])
-.service("app.cats.monthlyData", ["$http", "$q", "lib.utils.calUtils",  function($http, $q, calenderUtils){
+.service("app.cats.monthlyData", ["$http", "$q", "lib.utils.calUtils", "app.cats.data.catsUtils", function($http, $q, calenderUtils, catsUtils){
 	this.getMonthData = function(year, month, callback){
 		var weeks = this.getWeeksOfMonth(year, month);
 		var monthData = {};
@@ -97,7 +97,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
 		            		task.UNIT = ISPtask.UNIT;
 		            		task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
+		            		task.DESCR = ISPtask.DESCR;
 		            		weekData.days[DayIterator].tasks.push( task );
+		            		catsUtils.enrichTaskData(task);
 		            	}
 		           	}
 		        }
