@@ -16,8 +16,8 @@
 
 
 <div ng-controller="app.im.directiveController">
-	{{lastElement}}
-	<a href="#/detail/im">
+	No messages received…
+	<a href="#/detail/im" ng-show="displayChart">
 	<div  style="width:175px; height:140px">
 		<div class="r_container">
 			<div class="r_row">
@@ -26,7 +26,7 @@
 						<p>Prio 2</p>
 					</div>
 						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[0]}}</p>
+							<p class="prio_zahlen">{{prioarr[1]}}</p>
 						</div>
 				</div>
 
@@ -35,7 +35,7 @@
 						<p>Prio 1</p>
 					</div>
 						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[1]}}</p>
+							<p class="prio_zahlen">{{prioarr[0]}}</p>
 						</div>
 				</div>
 			</div>
