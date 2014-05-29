@@ -1,6 +1,6 @@
-<div class="centeredContent">
+<div ng-controller="app.imtl.detailController">
     <div class="panel panel-default">
-      <div class="panel-heading panel-title">Tester<span style="float: right;" ><input type="text" style="height: 22px;" class="form-control" ng-model="search" placeholder="Search..." ></span></div>
+      <span style="float: right;" ><input type="text" style="height: 22px;" class="form-control" ng-model="search" placeholder="Search..." ></span>
       <div class="panel-body">
         <table ng-table class="table" ng-controller="app.imtl.detailController">
             <tr ng-repeat="obj in tempobject | filter : search | orderBy : MSG_PRIO_TEXT" >
