@@ -19,12 +19,14 @@
 		"app.cats.allocationBarBlock",
 		"app.cats.allocationBar.utils",
 		"app.cats.maintenanceView",
-		"app.cats.maintenanceView.projectList"
+		"app.cats.maintenanceView.projectList",
+		"app.cats.monthlyDataModule"
 	],
 
 	"js_files" : [
-		"cats.js", 
-		"overview.js", 
+		"catsMonthlyData.js",
+		"cats.js",
+		"overview.js",
 		"cats.calendar.js", 
 		"detail/main.js", 
 		"detail/allocationBar/allocationBarUtils.js",

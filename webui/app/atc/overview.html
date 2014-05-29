@@ -1,4 +1,4 @@
-﻿<div>	
+﻿<!--<div>	
 	<div class="prio"><span class="bold">{{atcData.data.prio1}}</span><br>Prio 1</div>
 	<div class="prio"><span class="bold">{{atcData.data.prio2}}</span><br>Prio 2</div>
 	<div class="prio"><span class="bold">{{atcData.data.prio3}}</span><br>Prio 3</div>
@@ -7,3 +7,64 @@
     	<a class="btn btn-default btn-sm" href="#/detail/atc">Details</a>
 	</div>	
 </div>
+		-->
+
+
+<!--ATC-->
+
+<div>
+	<p ng-show="config.configItems.length == 0">No Source System defined…</p>
+
+	<a href="#/detail/atc" ng-show="config.configItems.length > 0">
+	<div  style="width:175px; height:140px">
+		<div class="r_container">
+			<div class="r_row">
+				<div class="r_col r_col_right bg_basic_blue">
+					<div class="prio_box">
+						<p>Prio 2</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{atcData.data.prio2}}</p>
+						</div>
+				</div>
+
+				<div class="r_col r_col_left bg_dark_blue">
+					<div class="prio_box">
+						<p>Prio 1</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{atcData.data.prio1}}</p>
+						</div>
+				</div>
+			</div>
+
+			<div class="r_row">
+				<div class="r_col r_col_right bg_light_blue">
+					<div class="prio_box">
+						<p>Prio 4</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{atcData.data.prio4}}</p>
+						</div>
+			</div>
+
+				<div class="r_col r_col_left bg_blue">
+					<div class="prio_box">
+						<p>Prio 3</p>
+					</div>
+						<div class="zahlen_box">
+							<p class="prio_zahlen">{{atcData.data.prio3}}</p>
+						</div>
+
+				</div>
+
+
+			</div>
+		
+		</div>
+
+	</div>
+</a>
+
+</div>
+		

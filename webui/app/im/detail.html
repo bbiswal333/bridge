@@ -1,21 +1,9 @@
-<div ng-controller="app.im.detailController">
-    <div class="panel panel-default">
-      
-      <span style="float: right;" ><input type="text" style="height: 22px;" class="form-control" ng-model="search" placeholder="Search..." ></span>
-      <div class="panel-body">
-        <table ng-table class="table" ng-controller="app.im.detailController">
-            <tr ng-repeat="nachricht in tempobject | filter : search | orderBy : ['-AEDATUM','-AEZEIT']" >
-                <td data-title="'Prio'" align="center">{{nachricht.PRIOSTXT}}</td>
-                <td data-title="'Component'" align="center">{{nachricht.THEMKEXT}}</td>        
-                <td data-title="'Status'" align="center">{{nachricht.STATUSSTXT}}</td>
-                <td data-title="'Processor'" align="center" >
-                <a href="" data-placement="right" data-title="{{nachricht.VORNA}} {{nachricht.NACHN}}" data-trigger="click" 
-                data-template="app/im/detail_popover.tpl.html" data-html="true" bs-popover>{{nachricht.VORNA}} {{nachricht.NACHN}}</a></td>
-                <td data-title="'Description'" align="center">
-                <a href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{nachricht.CSINSTA}}&mnumm={{nachricht.MNUMM}}&myear={{nachricht.MYEAR}}&sap-language=en#" target="_blank">{{nachricht.KTEXT}}</a></td>
-            </tr>
-        </table>
-      </div>
+<div ng-controller="app.im.detailController" style="height:100%;box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;height:100%;box-sizing:border-box;">                
+    	<strong>Filter:</strong><input type="text" ng-model="filterOptions.filterText" />
+        <div style="height:500px">
+            <bridge.table grid-options="gridOptions" grid-data="messages"></bridge.table>
+        </div>        
     </div>
 </div>
 

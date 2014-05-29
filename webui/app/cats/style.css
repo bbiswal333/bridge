@@ -122,8 +122,8 @@
 }
 
 .app-cats-calendar {
-	max-width: 400px;
-	min-height: 120px;
+    max-width: 700px;
+    min-height: 120px;
 }
 
 .app-cats-week-labels {
@@ -138,17 +138,29 @@
 	margin-top: 3px;
 }
 
-.app-cats-day-details
-{
-	height: 20px;
-	float: left;
-	padding-top: 3px;
-    margin-right: 1px;
-    margin-left: 1px;
-	margin-bottom: 2px;
-	font-size: 1em;
-	text-align: center;
-	color: #707070;
+.app-cats-day-details {
+    height: 40px;
+    float: left;
+    padding: 3px;
+    text-align: center;
+    color: #707070;
+}
+
+.app-cats-day-inner-small {
+    height: 100%;
+}
+
+.app-cats-day-inner-big {
+    height: 100%;
+    line-height: 34px;
+}
+
+.app-cats-day-text-small {
+    font-size: 1em;
+}
+
+.app-cats-day-text-big {
+    font-size: 2em;
 }
 
 .app-cats-day {
@@ -172,22 +184,26 @@
 /* Project List Template*/
 
 @media (min-width: 1420px) {
-	.app-cats-project-selector-button {
-	    width: 48%;
-	}
-	.col-xs-1-7 {
-        width: 13.5%; /* width: 13.2857143%; << does not fit */
+	/*.app-cats-project-selector-button {
+	    width: 47%;
+	}*/
+	.app-cats-col-xs-1-8 {
+        width: 12.5%;
     }
 }
 
 @media (max-width: 1419px) {
-    .app-cats-project-selector-button {
-	    width: 100%;
-    }
+    /*.app-cats-project-selector-button {
+	    width: 95%;
+    }*/
 
-    .col-xs-1-7 {
-        width: 13.5%;
+    .app-cats-col-xs-1-8 {
+        width: 12.5%;
     }
+}
+
+.app-cats-project-selector-button {
+    width: 100%;
 }
 
 .app-cats-project-filter-input{
@@ -196,8 +212,8 @@
 }
 
 .app-cats-project-container {
-    width: 90%;
-    margin-left: 5%;
+    /*width: 90%;
+    margin-left: 5%;*/
     margin-right: 5%;
 }
 .app-cats-project-selector-button-selected, .app-cats-project-selector-button-selected:focus {
@@ -217,10 +233,29 @@
     font-size: 14px;
     line-height: 1;
 }
+
+.app-cats-project-selector-button-container {
+    margin-right: 0;
+}
 .app-cats-project-selector-button span {
     font-size: 10px;
 }
 
 .app-cats-project-selector-buttonDiv:not(:first-of-type)  {
   
+}
+
+.app-cats-button-container{
+    display: table;
+}
+
+.app-cats-button-center {
+    display: table-cell;
+    vertical-align: middle;
+    margin-right: 0px;
+}
+
+.app-cats-cw-button {
+    height: 30px;
+    width: 50px;
 }

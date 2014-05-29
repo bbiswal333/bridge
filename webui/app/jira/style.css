@@ -1,10 +1,19 @@
 .chart{
 	position: relative;
 	float: left;
-	left: 20px;
+	left: 30px;
 	top: -10px;
 }
-
+.no_data{
+	position: relative;
+	left: 35px;
+	top: 0px;
+}
+.no_data_content{
+	float: left;
+	margin-top: 20px;
+	margin-left: 5px;
+}
 .chart_legend_container{
 	float: left;
 	position: relative;

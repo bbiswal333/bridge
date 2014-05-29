@@ -77,9 +77,8 @@ angular.
     };
 
     this.isRegularWeekDay = function(date) {
-        if ((date.getDay() == Friday && date.getHours() >= TimeAfterWhichToDisplayNextDay ) || 
-            (date.getDay() > Friday) ||
-            (date.getDay() < Monday)){
+        if (date.getDay() > Friday ||
+            date.getDay() < Monday){
             return false;
         }else{
             return true;
@@ -116,11 +115,41 @@ angular.
         var previousLineCategory;
         var dateValidated = false;
 
+        // this works if the date in the lunch menu is correct (BUT not if it is mistakingly wrong by e.g. only one day)
         for(var i = 0; i < lunchLines.length; i++) {
             if (lunchLines[i].indexOf(date.getUTCDate()) != -1) {
                 dateValidated = true;
+                break;
             };
         };
+
+        // make this more robust by checking for the day before
+        if (!dateValidated && date.getDay() > 2) {
+            var lunchstringTheDayBefore = data.split('************')[date.getDay() - 2];
+            if(lunchstringTheDayBefore) {
+                var lunchLinesTheDayBefore = lunchstringTheDayBefore.split("\n");
+                for(var i = 0; i < lunchLinesTheDayBefore.length; i++) {
+                    if (lunchLinesTheDayBefore[i].indexOf(date.getUTCDate()-1) != -1) {
+                        dateValidated = true;
+                        break;
+                    };
+                };
+            };
+        }
+
+        // or by checking for the day after
+        if (!dateValidated && date.getDay() < 5) {
+            var lunchstringTheDayAfter = data.split('************')[date.getDay()];
+            if(lunchstringTheDayAfter) {
+                var lunchLinesTheDayAfter = lunchstringTheDayAfter.split("\n");
+                for(var i = 0; i < lunchLinesTheDayAfter.length; i++) {
+                    if (lunchLinesTheDayAfter[i].indexOf(date.getUTCDate()+1) != -1) {
+                        dateValidated = true;
+                        break;
+                    };
+                };
+            };
+        }
 
         if (!dateValidated) {
             return;

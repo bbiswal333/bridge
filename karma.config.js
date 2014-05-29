@@ -23,10 +23,11 @@ module.exports = function(config) {
       './webui/lib/angular-1_2_13/angular.min.js',
       './webui/lib/**/*.js',
 
-      './webui/loader_unit_test.js',
+      './webui/loader_mock.js',
 
       './webui/bridge/bridgeController.js',
       './webui/bridge/bridgeDataService.js',
+
       './webui/bridge/**/*.js',
 
       './webui/app/meetings/*.js',
@@ -47,16 +48,13 @@ module.exports = function(config) {
 
       './webui/app/employeeSearch/*.js',
 
-      './webui/app/cats/overview.js',
-      './webui/app/cats/**/*.js',
-
       './webui/app/atc/overview.js',
       './webui/app/atc/*.js',
 
-      './webui/app/cats/cats.js',
-      './webui/app/cats/cats.spec.js',
+      './webui/app/cats/overview.js',
+      './webui/app/cats/**/*.js',
 
-      '**/*.spec.js'
+      '**/*.spec.js',
     ],
 
 
@@ -69,7 +67,7 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress', 'growl'],
+    reporters: ['progress'],
 
 
     // web server port

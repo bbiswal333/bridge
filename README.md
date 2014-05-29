@@ -1,10 +1,10 @@
-﻿Bridge
-======
+#Bridge
+
 * [Bridge Test](http://bridge-master.mo.sap.corp)
 * [Bridge Production](http://bridge.mo.sap.corp)
 
-Developer Guide
-===============
+#Developer Guide
+
 Bridge is an internal open source project with the main goal of open contribution and collaboration. Therefore everything which is needed to run this application is included in this repository. We use the bridge-client repository to upload binaries of our client and the bridge-server repository for our monsoon readymade which makes it possible to setup a new bridge instance automatically in a few minutes.
 
 ## git & ssh
@@ -41,55 +41,10 @@ Bridge is an internal open source project with the main goal of open contributio
 * copy the URL that is displayed by node inspector into Chrome (usually that is `http://127.0.0.1:8080/debug?port=5858`)
 * for full documentation and more features (automatically break in first line, attach debugger to an already running server...) see https://github.com/node-inspector/node-inspector
 
-Building Apps
-======================================
-## application structure
+## building apps
 * apps are contained in their own sub-folder `webui/app/appname`
 * apps must be an angluar-directive own module and shoul be named/ prefixed with `app.appname` to avoid naming collisions
 * the app directive must not have an isolated scope
 * metadata for the app is defined in a file called `_modules.json`
 * the app modules (plus everything mentioned in modules) is loaded during startup automatically and the app should be visibile in the settings screen
-
-## _modules.json
-```
-{
-  "app":
-  {
-    "module_name"     : "app.test",
-    "title"         : "Test App",
-    "icon_css"        : "icon-lightbulb",
-    "overview_directive"  : "app.test",
-    "needs_client"      : false
-  },
-  "modules" : [],
-  "js_files" : ["overview.js"],
-  "css_files" : []
-}
-```
-
-
-## overview.js
-```javascript
-
-angular.module('app.test', []);
-angular.module('app.test').directive('app.test', function () {
-
-    var directiveController = ['$scope', function ($scope) {
-        //$scope.data = {};
-        //$scope.data.test = "my test data";
-    }];
-
-    return {
-        restrict: 'E',
-        templateUrl: 'app/test/overview.html',
-        controller: directiveController
-    };
-});
-
-```
-
-## overview.html
-```html
-This is just an app with no real content. Some test data: {{data.test}}.
-```
-
+* to get started, just copy our "test app" and adjust it.. you should have your first app running in a few minutes

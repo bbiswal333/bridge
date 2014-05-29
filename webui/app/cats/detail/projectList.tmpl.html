@@ -10,8 +10,9 @@
             </div>
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}">
-            <div id="app-cats-project-selector-button-container" class="app-cats-project-container">
-                <div  ng-repeat="item in items | filter:filter.val" class="app-cats-project-selector-buttonDiv animate-repeat" >
+            <div id="app-cats-project-selector-button-container" class="app-cats-project-container row">
+                <!-- <div  ng-repeat="item in items | filter:filter.val" class="app-cats-project-selector-buttonDiv animate-repeat" > -->
+                <div  ng-repeat="item in items | filter:filter.val" class="col-xs-12 col-lg-6 animate-repeat" >
                     <button class="btn btn-default app-cats-project-selector-button" ng-class="{'btn_blue': item.selected}" id="projectButton" ng-click="toogleSelect(item.id);">{{item.name}}
                         <br>
                         <span style="font-size: 10px;">{{item.desc}}</span>
