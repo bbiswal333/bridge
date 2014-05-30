@@ -8,9 +8,7 @@
  			 typeahead="searchResult for searchResult in getTypeaheadData()| limitTo:10 " typeahead-wait-ms="200"/>
 		</div>
   
-		  <span ng-click="currentConfigValues.fork = !currentConfigValues.fork" style="text-align:left; margin-left:15px;" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.fork];">
-	    		Forked Repositories?
-	      </span>
+		  <span ng-click="currentConfigValues.fork = !currentConfigValues.fork" style="text-align:left; margin-left:15px;" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.fork];" class=" btn btn-default fa fa-code-fork fa-2x"></span>
 	</div>
 
 	<div class="row">
