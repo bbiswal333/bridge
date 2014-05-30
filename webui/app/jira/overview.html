@@ -1,36 +1,25 @@
-﻿
-
-<div ng-if="data.jiraChart.length > 0">
-    <nvd3-pie-chart
-    	data="data.jiraChart"
-        id="exampleId"
-        width="120"
-        height="120"
-        x="xFunction()"
-        y="yFunction()"    
-        margin="{left:0,top:0,bottom:0,right:0}"
-        color="colorFunction()"
-        showLabels="false"
-        donutLabelsOutside="true"
-        donut="true"
-        noData=""
-        tooltips="true"
-        tooltipcontent="toolTipContentFunction()"
-        class="chart">
-        <svg></svg>
-    </nvd3-pie-chart>
-    <div class="chart_legend_container" >
-        <a href="#/detail/jira">
-            <div ng-repeat="data in data.jiraChart" class="chart_legend">
-                    <div class="chart_legend_color" style="background-color:{{colors[$index]}};"></div>
-                   <!-- <span class="chart_legend_count bold">{{data.count}}</span>-->
-                    <span class="chart_legend_status">{{data.status}}</span>
-            </div>
-        </a>
+﻿<a href="#/detail/jira">
+    <div ng-if="data.jiraChart.length > 0">
+        <nvd3-pie-chart
+        	data="data.jiraChart"
+            id="exampleId"
+            width="170"
+            height="170"
+            x="xFunction()"
+            y="yFunction()"    
+            margin="{left:0,top:0,bottom:0,right:0}"
+            color="colorFunction()"
+            showLabels="false"
+            donutLabelsOutside="true"
+            donut="true"
+            noData=""
+            tooltips="true"
+            tooltipcontent="toolTipContentFunction()"
+            class="chart">
+            <svg></svg>
+        </nvd3-pie-chart>
     </div>
-</div>
-
+</a>
 <div ng-if="data.jiraChart.length <= 0">
-    <img src="../app/jira/nodata.svg" width="100px" class="chart no_data">
-    <span class="no_data_content">only a filled chart is a happy chart.</span>
+    <span>only a filled chart is a happy chart.</span>
 </div>

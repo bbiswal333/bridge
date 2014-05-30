@@ -38,7 +38,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.toolTipContentFunction = function(){
             return function(key, x, y) {
-            return  '<p class="chart_toolTip">' +  x +'</p>'
+            return  '<p class="chart_toolTip">' +'<strong>' + key + '</strong><br>' + x +'</p>'
     }
 }
         //copied from the cats allocation bar

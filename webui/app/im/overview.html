@@ -1,97 +1,5 @@
-<!--<div ng-controller="app.im.directiveController">
-	{{lastElement}}
-	<div ng-show="displayChart">
-		<div class="prio">Prio 1: {{prioarr[0]}}</div>
-		<div class="prio">Prio 2: {{prioarr[1]}}</div>
-		<div class="prio">Prio 3: {{prioarr[2]}}</div>
-		<div class="prio">Prio 4: {{prioarr[3]}}</div>
-
-		<div style="float:right;width:10%;position:absolute;bottom:10px;right:50px">
-	    	<a class="btn btn-default btn-sm" href="#/detail/im">Details</a>
-		</div>	
-	</div>
-</div>-->
-
-<!--Internal mssgs
-
-
 <div ng-controller="app.im.directiveController">
 	{{lastElement}}
-	<a href="#/detail/im" ng-show="displayChart">
-	<div  style="width:175px; height:140px">
-		<div class="r_container">
-			<div class="r_row">
-				<div class="r_col r_col_right bg_basic_blue">
-					<div class="prio_box">
-						<p>Prio 2</p>
-					</div>
-						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[1]}}</p>
-						</div>
-				</div>
-
-				<div class="r_col r_col_left bg_dark_blue">
-					<div class="prio_box">
-						<p>Prio 1</p>
-					</div>
-						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[0]}}</p>
-						</div>
-				</div>
-			</div>
-
-			<div class="r_row">
-				<div class="r_col r_col_right bg_light_blue">
-					<div class="prio_box">
-						<p>Prio 4</p>
-					</div>
-						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[3]}}</p>
-						</div>
-			</div>
-
-				<div class="r_col r_col_left bg_blue">
-					<div class="prio_box">
-						<p>Prio 3</p>
-					</div>
-						<div class="zahlen_box">
-							<p class="prio_zahlen">{{prioarr[2]}}</p>
-						</div>
-
-				</div>
-
-
-			</div>
-		
-		</div>
-
-	</div>
-</a>
-
-</div>
-		
-<div>
-	<p ng-show="config.configItems.length == 0">No Source System defined…</p>
-	<a href="#/detail/atc" ng-show="config.configItems.length > 0">
-	<div  style="width:175px; height:140px">
-		<div class="r_container">		
-				<div ng-repeat="data in atcData.data" class="r_col bg_{{$index+1}}">
-					<div class="prio_box">
-						<p>Prio {{$index+1}}</p>
-					</div>
-					<div class="zahlen_box">
-						<p class="prio_zahlen" ng-show="!tooMuch">{{atcData.data["prio"+($index+1)]}}</p>
-						<p class="prio_zahlen" ng-show="tooMuch">{{tooMuchTxt}}</p>
-					</div>
-				</div>
-		</div>
-	</div>
-	</a>
-</div>
--->	
-<div ng-controller="app.im.directiveController">
-	{{lastElement}}
-	
 	<div ng-show="displayChart" style="width:175px; height:140px">
 		<div class="prio_container">
 				<a href="#/detail/im" >
@@ -107,6 +15,4 @@
 				</a>	
 		</div>
 	</div>
-	
-
 </div>
