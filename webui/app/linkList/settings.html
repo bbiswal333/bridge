@@ -20,8 +20,8 @@
                             <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                         </div>
                         <div class="app-linklist-editIcons">
-                            <i class="fa fa-arrows btn btn-default app-linklist-clickIcon" style="margin-right:0;padding-top:10px;"></i>
-                            <i ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;"class=" btn btn-default app-linklist-clickIcon fa fa-minus" ></i>
+                            <span class="btn btn-default app-linklist-clickIcon" style="margin-right:0;padding-top:10px;"><i class="fa fa-arrows"></i></span>
+                            <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;"class=" btn btn-default app-linklist-clickIcon" ><i class="fa fa-minus"></i></span>
                         </div>
                     </div>
                 </div>
