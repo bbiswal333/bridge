@@ -74,9 +74,10 @@
 		-->
 <div>
 	<p ng-show="config.configItems.length == 0">No Source System defined…</p>
-	<a href="#/detail/atc" ng-show="config.configItems.length > 0">
-	<div  style="width:175px; height:140px">
+	
+	<div ng-show="config.configItems.length > 0"  style="width:175px; height:140px">
 		<div class="prio_container">		
+				<a href="#/detail/atc" >
 				<div ng-repeat="data in atcData.data" class="prio_col prio_bg_{{$index+1}}">
 					<div class="prio_box">
 						<p>Prio {{$index+1}}</p>
@@ -86,7 +87,8 @@
 						<p ng-if="atcData.data['prio'+($index+1)]>=999">+999</p>
 					</div>
 				</div>
+				</a>
 		</div>
 	</div>
-	</a>
+	
 </div>
