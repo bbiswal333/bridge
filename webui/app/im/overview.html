@@ -12,7 +12,7 @@
 	</div>
 </div>-->
 
-<!--Internal mssgs-->
+<!--Internal mssgs
 
 
 <div ng-controller="app.im.directiveController">
@@ -69,5 +69,42 @@
 </a>
 
 </div>
-			
+		
+<div>
+	<p ng-show="config.configItems.length == 0">No Source System defined…</p>
+	<a href="#/detail/atc" ng-show="config.configItems.length > 0">
+	<div  style="width:175px; height:140px">
+		<div class="r_container">		
+				<div ng-repeat="data in atcData.data" class="r_col bg_{{$index+1}}">
+					<div class="prio_box">
+						<p>Prio {{$index+1}}</p>
+					</div>
+					<div class="zahlen_box">
+						<p class="prio_zahlen" ng-show="!tooMuch">{{atcData.data["prio"+($index+1)]}}</p>
+						<p class="prio_zahlen" ng-show="tooMuch">{{tooMuchTxt}}</p>
+					</div>
+				</div>
+		</div>
+	</div>
+	</a>
+</div>
+-->	
+<div ng-controller="app.im.directiveController">
+	{{lastElement}}
+	<a href="#/detail/im" ng-show="displayChart">
+	<div  style="width:175px; height:140px">
+		<div class="prio_container">
+				<div ng-repeat="prio in prioarr" class="prio_col prio_bg_{{$index+1}}">
+					<div class="prio_box">
+						<p>Prio {{$index+1}}</p>
+					</div>
+					<div class="prio_content_box">
+						<p ng-if="prioarr[$index]<=999">{{prioarr[$index]}}</p>
+						<p ng-if="prioarr[$index]>=1000">+999</p>
+					</div>
+				</div>	
+		</div>
+	</div>
+	</a>
 
+</div>

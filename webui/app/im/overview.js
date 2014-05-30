@@ -38,7 +38,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                     $scope.lastElement="You have no internal messages to display!";
                     $scope.displayChart = false;
                 }                
-                else
+                else 
                 {
                     $scope.displayChart = true;
                 }
