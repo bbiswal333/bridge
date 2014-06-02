@@ -27,6 +27,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function loadCATSDataForDay() {
         monthlyData.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
+
+            monthData.weeks.sort(function(a,b){return a.week - b.week});
             $scope.monthlyData  = monthData;
             var currentDay      = calUtils.stringifyDate($scope.day);
 
