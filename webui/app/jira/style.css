@@ -1,3 +1,4 @@
+/*
 .chart{
 	position: relative;
 	left: 0px;
@@ -38,4 +39,34 @@
 svg{
 	height: 100%;
 	width: 100%;
+}
+*/
+.jira_container{
+	height: 100%;
+	display: block;
+	margin: 0 auto;
+}
+.status_container{
+	height: 73%;
+	float: left;
+	text-align: center;
+	width: 78px;	
+}
+.status_bar_container{
+	height: 100%;
+	position: relative;
+	width: 80px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.status_bar{
+	width: 70px;
+	max-height: 100%;
+	display: block;
+	margin: 0 auto;
+	position: absolute;
+	bottom: 0;
+}
+.status_title{
+	width: 80px;
 }

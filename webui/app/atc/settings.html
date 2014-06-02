@@ -1,4 +1,5 @@
-﻿<div style="width: 100%; font-size:12px;"> <!--   <form name="newConfigItemForm">
+﻿
+<!--   <form name="newConfigItemForm">
        <table style="margin-top: 45px">
             <tr>
                 <td style="vertical-align: middle; width: 150px; vertical-align: middle">
@@ -56,7 +57,7 @@
         </table>        
     </form>
 -->
-
+<div style="width: 100%; font-size:12px;"> 
 <form name="newConfigItemForm">
       
             <div class="row" style="margin:15px 0 0 0;">
@@ -134,7 +135,7 @@
                     </span>
                 </td>
                 <td data-title="'Functions'">
-                    <span style="width:40px; float:none;margin:0 auto;display:block;" class="btn btn-default glyphicon glyphicon-remove" ng-click="remove_click(configItem)"></span>
+                    <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;" class=" btn btn-default app-linklist-clickIcon fa fa-minus"></span>
                 </td>
             </tr>
         </tbody>

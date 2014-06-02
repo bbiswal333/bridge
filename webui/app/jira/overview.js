@@ -10,7 +10,7 @@ angular.module('app.jira').factory("app.jira.configservice", function ()
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
     var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
-        $scope.box.boxSize = "1";
+        $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Configure JIRA Query";
         $scope.box.settingScreenData = {
             templatePath: "jira/settings.html",
@@ -43,7 +43,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 }
         //copied from the cats allocation bar
         $scope.colors = [
-            "#3399cc",
+            "#428bca",
             "#6cb9e3",
             "#a4d8f9",
             "#c4e8ff",
@@ -98,14 +98,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 return 0;
             });
 
-            if( $scope.data.jiraChart.length > 3)
+            if( $scope.data.jiraChart.length > 4)
             {
                 var others_count = 0;
-                for(var i = 3; i < $scope.data.jiraChart.length; i++)
+                for(var i = 4; i < $scope.data.jiraChart.length; i++)
                 {
                     others_count = others_count + $scope.data.jiraChart[i].count;
                 }
-                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-3);
+                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-4);
                 $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
             }
 

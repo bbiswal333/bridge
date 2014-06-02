@@ -316,7 +316,8 @@ img {
     font-size: 1em;
 }
 .link, a{
-   color:#0099CC;  
+   color:#428bca; 
+   text-decoration: none!important; 
 }
 .form_head{
     font-size: 1em;
@@ -584,7 +585,7 @@ input[type="checkbox"]:checked:after {
     width: 220px;
     position: relative;
     top: 20px;
-    
+    height: 40px;
 }
 .settingsBtn:focus{
     outline-color: inherit;
@@ -678,3 +679,10 @@ input[type="checkbox"]:checked:after {
     font-size:34px
 }
 
+.pixel_art{
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    float: right;
+    opacity: 0.5;
+}

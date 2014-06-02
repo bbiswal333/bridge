@@ -1,4 +1,4 @@
-﻿<a href="#/detail/jira">
+﻿<!-- <a href="#/detail/jira">
     <div ng-if="data.jiraChart.length > 0">
         <nvd3-pie-chart
         	data="data.jiraChart"
@@ -22,4 +22,29 @@
 </a>
 <div ng-if="data.jiraChart.length <= 0">
     <span>only a filled chart is a happy chart.</span>
+    <img class="pixel_art" src="/../../img/jira-03.png" width="120">
+</div>
+-->
+<div class="jira_container" ng-if="data.jiraChart.length > 0">
+    <div ng-repeat="data in data.jiraChart" class="status_container">
+        <div class="status_bar_container">
+            <a href="#/detail/jira">
+                <div class="status_bar" style="height:{{data.count}}%;background-color:{{colors[$index]}}">     
+                </div>
+            </a>
+        </div>
+        <a href="#/detail/jira">
+            <div class="status_title">
+                {{data.status}}
+            </div>
+            <div class="status_count bold">
+                {{data.count}}
+            </div>
+         </a>      
+    </div>
+</div>
+
+<div ng-if="data.jiraChart.length <= 0">
+    <span>no data for the J-rex...</span>
+    <img class="pixel_art" src="/../../img/j-rex.gif" width="400">
 </div>
