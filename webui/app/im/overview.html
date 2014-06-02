@@ -1,6 +1,6 @@
 <div ng-controller="app.im.directiveController">
 	{{lastElement}}
-	<div ng-show="displayChart" style="width:175px; height:140px">
+	<div ng-if="displayChart" style="width:175px; height:140px">
 		<div class="prio_container">
 				<a href="#/detail/im" >
 				<div ng-repeat="prio in prioarr" class="prio_col prio_bg_{{$index+1}}">
