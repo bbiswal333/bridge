@@ -24,23 +24,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.config = {};        
 
-        $scope.xFunction = function(){
-            return function(issue) {
-                return issue.status;
-            };
-        }   
-
-        $scope.yFunction = function(){
-            return function(issue){
-                return issue.count;
-            };  
-        }
-
-        $scope.toolTipContentFunction = function(){
-            return function(key, x, y) {
-            return  '<p class="chart_toolTip">' +'<strong>' + key + '</strong><br>' + x +'</p>'
-    }
-}
+ 
         //copied from the cats allocation bar
         $scope.colors = [
             "#428bca",
@@ -54,6 +38,9 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             "#ffb541",
             "#ffa317"
         ];
+
+        
+        
 
         $scope.colorFunction = function() {
             return function(d, i) {
@@ -109,6 +96,8 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
             }
 
+            
+            
             console.log($scope.data.jiraChart);
         },true);    
 

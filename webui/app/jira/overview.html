@@ -1,31 +1,4 @@
-﻿<!-- <a href="#/detail/jira">
-    <div ng-if="data.jiraChart.length > 0">
-        <nvd3-pie-chart
-        	data="data.jiraChart"
-            id="exampleId"
-            width="170"
-            height="170"
-            x="xFunction()"
-            y="yFunction()"    
-            margin="{left:0,top:0,bottom:0,right:0}"
-            color="colorFunction()"
-            showLabels="false"
-            donutLabelsOutside="true"
-            donut="true"
-            noData=""
-            tooltips="true"
-            tooltipcontent="toolTipContentFunction()"
-            class="chart">
-            <svg></svg>
-        </nvd3-pie-chart>
-    </div>
-</a>
-<div ng-if="data.jiraChart.length <= 0">
-    <span>only a filled chart is a happy chart.</span>
-    <img class="pixel_art" src="/../../img/jira-03.png" width="120">
-</div>
--->
-<div class="jira_container" ng-if="data.jiraChart.length > 0">
+﻿<div class="jira_container" ng-if="data.jiraChart.length > 0">
     <div ng-repeat="data in data.jiraChart" class="status_container">
         <div class="status_bar_container">
             <a href="#/detail/jira">
@@ -37,7 +10,7 @@
             <div class="status_title">
                 {{data.status}}
             </div>
-            <div class="status_count bold">
+            <div class="status_count bold"> 
                 {{data.count}}
             </div>
          </a>      
