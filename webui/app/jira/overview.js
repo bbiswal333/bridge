@@ -72,9 +72,11 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             }        
 
             $scope.data.jiraChart = [];
+            $scope.totalCount = 0;
             for (var attribute in jiraStatus) {
                 if (jiraStatus.hasOwnProperty(attribute)) 
                 {                    
+                    $scope.totalCount = $scope.totalCount + jiraStatus[attribute];
                     $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute]});
                 }
             }        
@@ -86,7 +88,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             });
 
             if( $scope.data.jiraChart.length > 4)
-            {
+            {                
                 var others_count = 0;
                 for(var i = 4; i < $scope.data.jiraChart.length; i++)
                 {
