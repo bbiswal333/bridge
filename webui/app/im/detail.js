@@ -33,7 +33,8 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
                 {field:'STATUSSTXT', displayName:'Status', width:'15%', cellTemplate: cellTemplate},      
                 {field:'username', displayName:'Processor', width:'20%', cellTemplate: usercellTemplate},   
                 {field:'KTEXT', displayName:'Description', width:'40%', cellTemplate: descriptioncellTemplate}            
-            ]
+            ],
+            plugins: [new ngGridFlexibleHeightPlugin()]
         }
 
 	    $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin 
@@ -42,14 +43,6 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 	        	data = new X2JS().xml_str2json(data);
                 $scope.imData = data["abap"];
                 $scope.imData = $scope.imData["values"];	 
-                /*for(var i = 0; i < $scope.imData.INTCOMP_LONG.DEVDB_MESSAGE_OUT.length; i++)
-                {
-                    var message = {};
-                    message.prio = $scope.imData.INTCOMP_LONG.DEVDB_MESSAGE_OUT[i].PRIOSTXT;
-                    message.component = $scope.imData.INTCOMP_LONG.DEVDB_MESSAGE_OUT[i].THEMKEXT;
-                    $scope.messages.push(message);                    
-                }*/                
-	       	 	//$scope.tempobject = [];
 
 	       	   	if ($scope.imData.INTCOMP_LONG !== "") {
 	       	   		_.each($scope.imData.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {

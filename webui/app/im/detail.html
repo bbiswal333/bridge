@@ -1,7 +1,7 @@
-<div ng-controller="app.im.detailController" style="height:100%;box-sizing:border-box;">    
-    <div class="panel panel-default" style="padding:30px;height:100%;box-sizing:border-box;">                
-    	<strong>Filter:</strong><input type="text" ng-model="filterOptions.filterText" />
-        <div style="height:500px">
+<div ng-controller="app.im.detailController" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+    	<input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." />
+        <div>
             <bridge.table grid-options="gridOptions" grid-data="messages"></bridge.table>
         </div>        
     </div>
