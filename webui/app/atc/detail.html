@@ -1,4 +1,4 @@
-﻿<div class="" ng-controller="app.atc.detailcontroller">
+﻿<!--<div class="" ng-controller="app.atc.detailcontroller">
     <div class="panel panel-default">      
       <div class="panel-body">
     
@@ -44,6 +44,21 @@
       </div>
     </div>
 </div>
+-->
+
+<div ng-controller="app.atc.detailcontroller" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." />
+        <div>
+            <bridge.table grid-options="gridOptions" grid-data="atcData.detailsData"></bridge.table>
+        </div>        
+    </div>
+</div>
+
+
+
+
+
 
 
 

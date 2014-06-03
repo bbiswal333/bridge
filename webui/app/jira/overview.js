@@ -9,7 +9,7 @@ angular.module('app.jira').factory("app.jira.configservice", function ()
 
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
-    var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
+    var directiveController = ['$scope', 'JiraBox', function ($scope, JiraBox) {        
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Configure JIRA Query";
         $scope.box.settingScreenData = {
@@ -96,11 +96,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 }
                 $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-4);
                 $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
-            }
-
-            
-            
-            console.log($scope.data.jiraChart);
+            }                        
         },true);    
 
     }];

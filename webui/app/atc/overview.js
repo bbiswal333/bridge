@@ -1,8 +1,8 @@
 ﻿angular.module('app.atc', []);
 
 angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeCounter", "bridgeDataService",
-    function ($modal, $interval, appAtcConfig, appAtcData, bridgeCounter, bridgeDataService) {
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeDataService",
+    function ($modal, $interval, appAtcConfig, appAtcData, bridgeDataService) {
     
     var directiveController = ['$scope', function ($scope) {        
         $scope.box.settingsTitle = "Configure Source Systems and Packages";                

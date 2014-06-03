@@ -2,7 +2,7 @@ angular.module('app.im', ['ngTable']);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope' ,'app.im.configservice', 'bridgeCounter', function ($scope, appimconfigservice, bridgeCounter) {        
+    var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {        
     }];
 
     return {

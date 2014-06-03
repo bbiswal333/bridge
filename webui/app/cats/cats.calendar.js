@@ -3,10 +3,9 @@
 		["lib.utils.calUtils", 
 		 "app.cats.data.catsUtils", 
 		 "$interval", 
-		 "$location", 
-		 "bridgeCounter", 
+		 "$location",  
 		 "bridgeDataService",
-	function (calUtils, catsUtils, $interval, $location, bridgeCounter, bridgeDataService) {
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
@@ -49,7 +48,7 @@
 	                $scope.hasError = true;
 	            }
 
-	            console.log($scope.state);
+	            //console.log($scope.state);
 	        }
 
 	        $scope.jump = function (dayString, event) {
