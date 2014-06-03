@@ -10,8 +10,8 @@ angular.module('bridge.app').directive('errSrc', function() {
 
 
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeCounter', 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeCounter, bridgeInBrowserNotification, bridgeDownloadService) {            
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService) {            
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
             if( newValue !== oldValue)
@@ -210,25 +210,7 @@ angular.module('bridge.app').controller('bridgeController',
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-            $scope.apps = bridgeDataService.getAppMetadataForProject(0);
-
-            bridgeCounter.CollectWebStats('MAIN', 'PAGELOAD');
-            var deferred1 = $q.defer();
-            var promise1 = bridgeCounter.GetWebStats(deferred1, '1', 'BROWSER_NOT_SUPPORTED', 'PAGELOAD');
-            var deferred2 = $q.defer();
-            var promise2 = bridgeCounter.GetWebStats(deferred2, '7', 'MAIN', 'PAGELOAD');
-            promise1.then(function (counterData) {
-                if (angular.isObject(counterData)){
-                    console.log('Browser not supported page for <ALL_SERVERS> today: ' + counterData.DATA[0].HITS + ' hits by ' + counterData.DATA[0].UNIQUE_USERS + ' distinct users');
-                };
-                promise2.then(function (counterData) {
-                    if (angular.isObject(counterData)){
-                        for (var i = 0; i < 7; i++) {
-                            console.log(counterData.DATA[i].DATE + ': ' + counterData.DATA[i].HITS + ' hits by ' + counterData.DATA[i].UNIQUE_USERS + ' distinct users');
-                        };
-                    };
-                });
-            });
+            $scope.apps = bridgeDataService.getAppMetadataForProject(0);            
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;   
         });

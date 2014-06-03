@@ -1,5 +1,11 @@
-﻿angular.module("app.cats").directive("app.cats.calendar", ["lib.utils.calUtils", "app.cats.data.catsUtils", "$interval", "$location", "bridgeCounter", "bridgeDataService",
-	function (calUtils, catsUtils, $interval, $location, bridgeCounter, bridgeDataService) {
+﻿angular.module("app.cats")
+	.directive("app.cats.calendar", 
+		["lib.utils.calUtils", 
+		 "app.cats.data.catsUtils", 
+		 "$interval", 
+		 "$location",  
+		 "bridgeDataService",
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
@@ -14,8 +20,9 @@
 	        $scope.hasError = false;
 	        $scope.weekdays = calUtils.getWeekdays();
 	        $scope.dayClass = $scope.dayClassInput || 'app-cats-day';
+	        $scope.calUtils = calUtils;
             
-
+	        var selectedDayArray = [];
 
 	        $scope.getDescForState = function (state_s) {
 	            return catsUtils.getDescForState(state_s);
@@ -41,7 +48,7 @@
 	                $scope.hasError = true;
 	            }
 
-	            console.log($scope.state);
+	            //console.log($scope.state);
 	        }
 
 	        $scope.jump = function (dayString, event) {
@@ -56,6 +63,22 @@
 
 	            $location.path("/detail/cats/" + dayString);
 	        };
+
+	        $scope.selectWeek = function (weekNo) {
+        		console.log(weekNo);
+        		//get days of this week
+        		//loop over all thees days and select/deselect them
+        		var ok = $scope.onDaySelected({
+		          date: date
+		        });
+
+		        if (!ok) {
+		        }
+	        };
+
+	        $scope.isSelected = function(day){
+	        	return selectedDayArray.indexOf(day)!=-1;
+	        }
 
 	        $scope.canGoBackward = function () {
 	            if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)

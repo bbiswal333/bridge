@@ -13,9 +13,11 @@
     }, true);
 
     $scope.add_click = function () {
-        var copiedConfigItem = angular.copy($scope.currentConfigValues);
-                    
-        $scope.config.addConfigItem(copiedConfigItem);
+        if (!$scope.currentConfigValues.isEmpty()) {
+            var copiedConfigItem = angular.copy($scope.currentConfigValues);
+            $scope.currentConfigValues.clear();
+            $scope.config.addConfigItem(copiedConfigItem);
+        }
     };
 
     $scope.remove_click = function (configItem) {

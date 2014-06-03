@@ -1,46 +1,23 @@
-﻿
-
-<div ng-if="data.jiraChart.length > 0">
-<a href="#/detail/jira">
-<nvd3-pie-chart
-	data="data.jiraChart"
-    id="exampleId"
-    width="120"
-    height="120"
-    x="xFunction()"
-    y="yFunction()"    
-    margin="{left:0,top:0,bottom:0,right:0}"
-    color="colorFunction()"
-    showLabels="false"
-    donutLabelsOutside="true"
-    donut="true"
-    noData=""
-    tooltips="true"
-    tooltipcontent="toolTipContentFunction()"
-    class="chart">
-    <svg></svg>
-</nvd3-pie-chart>
-
-<div class="chart_legend_container" >
-    <div ng-repeat="data in data.jiraChart" class="chart_legend">
-            <div class="chart_legend_color" style="background-color:{{colors[$index]}};"></div>
-           <!-- <span class="chart_legend_count bold">{{data.count}}</span>-->
-            <span class="chart_legend_status">{{data.status}}</span>
-
+﻿<div class="jira_container" ng-if="data.jiraChart.length > 0">
+    <div ng-repeat="data in data.jiraChart" class="status_container">
+        <div class="status_bar_container">
+            <a href="#/detail/jira/{{data.status}}">         
+                <div class="status_bar" style="height:{{(data.count/totalCount)*100}}%;background-color:{{colors[$index]}}">     
+                </div>   
+            </a>         
+        </div>
+        <a href="#/detail/jira/{{data.status}}">
+            <div class="status_title">
+                {{data.status}}
+            </div>
+            <div class="status_count bold"> 
+                {{data.count}}
+            </div>
+         </a>      
     </div>
 </div>
 
-<!--
-<div style="float:right;width:10%;position:absolute;bottom:10px;right:50px" >
-    <a class="btn btn-default btn-sm" href="#/detail/jira">Details</a>
-</div>
--->
-</a>
-</div>
-
-
 <div ng-if="data.jiraChart.length <= 0">
-
-<img src="../app/jira/nodata.svg" width="100px" class="chart no_data">
-        <span class="no_data_content">only a filled chart is a happy chart.</span>
+    <span>no data for the J-rex...</span>
+    <img class="pixel_art" src="/../../img/j-rex.gif" width="400">
 </div>

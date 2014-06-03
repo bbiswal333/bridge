@@ -9,8 +9,8 @@ angular.module('app.jira').factory("app.jira.configservice", function ()
 
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
-    var directiveController = ['$scope', 'JiraBox', 'bridgeCounter', function ($scope, JiraBox, bridgeCounter) {        
-        $scope.box.boxSize = "1";
+    var directiveController = ['$scope', 'JiraBox', function ($scope, JiraBox) {        
+        $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Configure JIRA Query";
         $scope.box.settingScreenData = {
             templatePath: "jira/settings.html",
@@ -24,26 +24,10 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.config = {};        
 
-        $scope.xFunction = function(){
-            return function(issue) {
-                return issue.status;
-            };
-        }   
-
-        $scope.yFunction = function(){
-            return function(issue){
-                return issue.count;
-            };  
-        }
-
-        $scope.toolTipContentFunction = function(){
-            return function(key, x, y) {
-            return  '<p class="chart_toolTip">' +  x +'</p>'
-    }
-}
+ 
         //copied from the cats allocation bar
         $scope.colors = [
-            "#3399cc",
+            "#428bca",
             "#6cb9e3",
             "#a4d8f9",
             "#c4e8ff",
@@ -54,6 +38,9 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             "#ffb541",
             "#ffa317"
         ];
+
+        
+        
 
         $scope.colorFunction = function() {
             return function(d, i) {
@@ -85,9 +72,11 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             }        
 
             $scope.data.jiraChart = [];
+            $scope.totalCount = 0;
             for (var attribute in jiraStatus) {
                 if (jiraStatus.hasOwnProperty(attribute)) 
                 {                    
+                    $scope.totalCount = $scope.totalCount + jiraStatus[attribute];
                     $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute]});
                 }
             }        
@@ -98,18 +87,16 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 return 0;
             });
 
-            if( $scope.data.jiraChart.length > 3)
-            {
+            if( $scope.data.jiraChart.length > 4)
+            {                
                 var others_count = 0;
-                for(var i = 3; i < $scope.data.jiraChart.length; i++)
+                for(var i = 4; i < $scope.data.jiraChart.length; i++)
                 {
                     others_count = others_count + $scope.data.jiraChart[i].count;
                 }
-                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-3);
+                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-4);
                 $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
-            }
-
-            console.log($scope.data.jiraChart);
+            }                        
         },true);    
 
     }];

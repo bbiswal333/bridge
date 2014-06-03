@@ -12,13 +12,17 @@
         <div class=" col-xs-12" style="margin-top:20px;">
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
             <div class="progress">
-                <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.issueProgress}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;" ng-style="{width: milestone.issueProgress + '%'}">
-           
-                </div>
+                <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank">
+                    <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.issueProgress}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;" ng-style="{width: milestone.issueProgress + '%'}">
+               
+                    </div>
+                </a>
             </div>
             {{ milestone.passedDays}} days passed - {{milestone.remainingDays}} days remaining
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.timeProgress}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;" ng-style="{width: milestone.timeProgress + '%'}"></div>
+                <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.timeProgress}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;" ng-style="{width: milestone.timeProgress + '%'}"></div>
+                </a>
             </div>
         </div>
     </div>

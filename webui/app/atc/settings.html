@@ -1,146 +1,97 @@
-﻿<div style="width: 100%; font-size:12px;"> <!--   <form name="newConfigItemForm">
-       <table style="margin-top: 45px">
-            <tr>
-                <td style="vertical-align: middle; width: 150px; vertical-align: middle">
-                    Source System
-                </td>
-                <td>
-                    <input type="text" class="form-control form" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
-                </td>
-                <td style="padding-left: 45px; vertical-align: middle">
-                    <input type="checkbox" ng-model="currentConfigValues.showSuppressed"><span style="position: relative; bottom: 13px; margin-left: 5px">Display Suppressed</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align: middle">
-                    Package
-                </td>
-                <td>
-                    <input type="text" class="form-control form" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
-                </td>
-                <td style="padding-left: 45px; vertical-align: middle">
-                    <input type="checkbox" ng-model="currentConfigValues.onlyInProcess"><span style="position: relative; bottom: 13px; margin-left: 5px">Ignore Completed</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align: middle">
-                    Object Responsible
-                </td>
-                <td>
-                    <input type="text" class="form-control form" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/>
-                </td>
-                <td style="padding-left: 45px">
-                    <span style="position: relative; bottom: 13px; margin-right: 15px">Priorities</span>
-            	    <input type="checkbox" class="regular-checkbox" ng-model="currentConfigValues.displayPrio1"><span style="position: relative; bottom: 13px; margin-left: 5px">Prio 1</span>
-            	    <input type="checkbox" ng-model="currentConfigValues.displayPrio2"><span style="position: relative; bottom: 13px; margin-left: 5px">Prio 2</span>
-            	    <input type="checkbox" ng-model="currentConfigValues.displayPrio3"><span style="position: relative; bottom: 13px; margin-left: 5px">Prio 3</span>
-            	    <input type="checkbox" ng-model="currentConfigValues.displayPrio4"><span style="position: relative; bottom: 13px; margin-left: 5px">Prio 4</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align: middle">
-                    AKH Component
-                </td>
-                <td>
-                    <input type="text" class="form-control form" ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
-                </td>
-                <td>
-
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
-                </td>
-            </tr>
-        </table>        
-    </form>
--->
-
-<form name="newConfigItemForm">
-      
+﻿
+<div style="width: 100%;height:450px; "> 
+<form name="newConfigItemForm" class="atc_input">
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
-                 <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
-                 <span style="margin-left:15px;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>
+                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
+                 
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
-                <input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
-                <span style="margin-left:15px;" ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>
+                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
+                
             </div>
 
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Object Responsible</span>
                 <!--<input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/> -->
-                <bridge.employee-search selected-employee="currentConfigValues.tadirResponsible" style="width: 25%; float: left" placeholder="'Name...'" required="false"></bridge.employee-search>
-                <div style="float:left;">
-                    <div class="btn-group" style="margin-left:15px;">
-                        <span ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
-                        <span ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio2];">Prio 2</span>
-                        <span ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio3];" >Prio 3</span>
-                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>
-                    </div>
-                </div>
+                <bridge.employee-search selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Name...'" required="false" ></bridge.employee-search>
+              
               </div>
                     
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">AKH Component</span>
-                <input type="text" class="form-control form" style="width:25%;" ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+                <input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+
             </div>  
+
+            <div class="row" style="margin:25px 0 0 0;">
+                <span ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>
+                <span  ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>
+            </div>
+
+            <div class="row" style="margin:15px 0 0 0;">
+                    <div >
+                        <span ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
+                        <span ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio2];">Prio 2</span>
+                        <span ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio3];" >Prio 3</span>
+                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>
+                    </div>
+            </div>
 
              <div class="row" style="margin:25px 0 0 0;">
                 <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
             </div>
     </form>
+    <div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+        <table ng-table="tableParams" class="table tableTransparentBorder" >
+            <thead style="background-color: #ECECEC;">
+                <tr>
+                    <th>Source System</th>
+                    <th>Package</th>
+                    <th>Object Responsible</th>
+                    <th>AKH Component</th>
+                    <th>Display Suppressed</th>
+                    <th>Ignore Completed</th>
+                    <th>Priorities</th>
+                    <th>Functions</th> <!-- Empty Head for functions -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                    <td data-title="'Source System'">{{configItem.srcSystem}}</td>
+                    <td data-title="'Package'">{{configItem.devClass}}</td>
+                    <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
+                    <td data-title="'AKH Component'">{{configItem.component}}</td>
+                    <td data-title="'Display Suppressed'">
+                        <span>
+                            <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
+                        </span>
+                    </td>
+                    <td data-title="'Ignore Completed'">
+                        <span>
+                            <input type="checkbox" ng-model="configItem.onlyInProcess" disabled>
+                        </span>
+                    </td>
+                    <td data-title="'Priorities'">
+                        <span>
+                            <span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />
+                            <span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />
+                            <span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />
+                            <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
+                        </span>
+                    </td>
+                    <td data-title="'Functions'">
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" btn btn-default app-linklist-clickIcon fa fa-minus"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <table ng-table="tableParams" class="table tableTransparentBorder" style="text-align: center; margin-top: 45px;">
-        <thead style="background-color: #ECECEC;">
-            <tr>
-                <th>Source System</th>
-                <th>Package</th>
-                <th>Object Responsible</th>
-                <th>AKH Component</th>
-                <th>Display Suppressed</th>
-                <th>Ignore Completed</th>
-                <th>Priorities</th>
-                <th>Functions</th> <!-- Empty Head for functions -->
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
-                <td data-title="'Source System'">{{configItem.srcSystem}}</td>
-                <td data-title="'Package'">{{configItem.devClass}}</td>
-                <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
-                <td data-title="'AKH Component'">{{configItem.component}}</td>
-                <td data-title="'Display Suppressed'">
-                    <span>
-                        <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
-                    </span>
-                </td>
-                <td data-title="'Ignore Completed'">
-                    <span>
-                        <input type="checkbox" ng-model="configItem.onlyInProcess" disabled>
-                    </span>
-                </td>
-                <td data-title="'Priorities'">
-                    <span>
-                        <span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />
-                        <span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />
-                        <span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />
-                        <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
-                    </span>
-                </td>
-                <td data-title="'Functions'">
-                    <span style="width:40px; float:none;margin:0 auto;display:block;" class="btn btn-default glyphicon glyphicon-remove" ng-click="remove_click(configItem)"></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="row">
+    <div class="row atc_btn" style="width:50%;float:right;">
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
     </div>
 </div>

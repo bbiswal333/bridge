@@ -1,16 +1,27 @@
 angular.module('app.atc').factory("app.atc.configservice", function () {
 
 	var ConfigItem = function() {
-		this.srcSystem = "";
-		this.devClass = "";
-		this.tadirResponsible = "";
-		this.component = "";
-		this.showSuppressed = false;
-		this.displayPrio1 = false;
-		this.displayPrio2 = false;
-		this.displayPrio3 = false;
-		this.displayPrio4 = false;
-		this.onlyInProcess = false;
+		this.clear = function () {
+		    this.srcSystem = "";
+		    this.devClass = "";
+		    this.tadirResponsible = "";
+		    this.component = "";
+		    this.showSuppressed = false;
+		    this.displayPrio1 = false;
+		    this.displayPrio2 = false;
+		    this.displayPrio3 = false;
+		    this.displayPrio4 = false;
+		    this.onlyInProcess = false;
+		}
+
+		this.isEmpty = function () {
+		    if (this.srcSystem == "" && this.devClass == "" && this.tadirResponsible == "" && this.component == "")
+		        return true;
+		    else
+		        false;
+		}
+
+		this.clear();
 	}
 
 	var IQueryString = {

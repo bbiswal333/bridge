@@ -1,7 +1,7 @@
 ﻿angular.module('app.test', []);
 angular.module('app.test').directive('app.test', function () {
 
-    var directiveController = ['$scope', 'bridgeCounter', function ($scope, bridgeCounter) 
+    var directiveController = ['$scope', function ($scope) 
     {
         //put some stuff in here           
     }];

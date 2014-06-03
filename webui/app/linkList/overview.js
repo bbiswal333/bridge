@@ -4,14 +4,12 @@ angular.module('app.linklist').directive('app.linklist',
         ['app.linklist.configservice',
         function(appLinklistConfig) {
 
-    var directiveController = ['$scope', '$timeout', 'bridgeCounter', function ($scope, $timeout, bridgeCounter) {        
+    var directiveController = ['$scope', '$timeout', function ($scope, $timeout) {        
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linklist').appLinkListSettings,
-        };
-        bridgeCounter.CollectWebStats('LINKLIST', 'APPLOAD');
-
-            $scope.config = appLinklistConfig;
+        };        
+        $scope.config = appLinklistConfig;
 
     $scope.box.returnConfig = function () {
 

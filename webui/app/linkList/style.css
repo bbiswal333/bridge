@@ -103,9 +103,10 @@
 }
 
 .app-linklist-placeholder{
-    border: 1px dashed rgba(172,172,172,0.8);
-    background-color: rgba(175,229,255,0.1);
-
+    border: 2px 2px solid rgba(0,0,0,0.8);
+    background-color: rgba(175,229,255,0.3);
+    margin-top:5px;
+    margin-bottom:15px;
     color: white;
 }
 

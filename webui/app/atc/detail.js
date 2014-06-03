@@ -4,38 +4,48 @@
     var atcConfig = appAtcConfig;
     $scope.$parent.titleExtension = " - ATC Details";
 
+    $scope.atcData = {};
+    $scope.atcData.detailsData = [];
+    $scope.atcData.tableData = [];   
+
     $scope.atcData = appAtcData;    
-    $scope.atcData.getDetailsForConfig(atcConfig, $scope);
+    $scope.atcData.getDetailsForConfig(atcConfig, $scope);    
 
-    $scope.$watch('atcData.detailsData', function () {
-        if ($scope.atcData !== undefined && $scope.atcData.detailsData.length > 0 && $scope.tableParams.settings().$scope != null) {            
-            $scope.tableParams.total($scope.atcData.detailsData.length);
-            $scope.tableParams.reload();
+    $scope.$watch('atcData.detailsData', function () 
+    {
+        if ($scope.atcData !== undefined) 
+        {       
+            $scope.atcData.tableData = [];     
+            for(var i = 0; i < $scope.atcData.detailsData.length; i++)
+            {
+                if($routeParams['prio'] == $scope.atcData.detailsData[i].CHECK_MSG_PRIO && $scope.atcData.tableData.length < 50)
+                {
+                    $scope.atcData.tableData.push($scope.atcData.detailsData[i]);
+                }
+            }            
         }
     });
 
-    $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 10,          // count per page
-        sorting: {
-            CHECK_MSG_PRIO: 'asc'     // initial sorting
-        },
-    }, {
-        total: $scope.atcDetails == undefined ? 0 : $scope.atcDetails.length, // length of data
-        getData: function ($defer, params) {
-            var orderedData = params.sorting() ?
-                                $filter('orderBy')($scope.atcData.detailsData, params.orderBy()) :
-                                $scope.atcData.detailsData;
 
-            if (orderedData != undefined) {
-                orderedData = params.filter() ?
-                                $filter('filter')(orderedData, params.filter()) :
-                                orderedData;
+    var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';    
 
-                params.total(orderedData.length);
+    $scope.filterOptions = {
+        filterText: ''
+    };
 
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-            }
-        }
-    });
+    $scope.gridOptions = {                        
+        enableColumnReordering:true,
+        enableRowSelection:false,            
+        rowHeight: 40,
+        showFilter:false,
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+            {field:'CHECK_MSG_PRIO', displayName:'Prio', width:'20%', cellTemplate: cellTemplate},                
+            {field:'CHECK_SYSTEM', displayName:'System', width:'20%', cellTemplate: cellTemplate},
+            {field:'CHECK_DESCRIPTION', displayName:'Check', width:'20%', cellTemplate: cellTemplate},
+            {field:'CHECK_MESSAGE', displayName:'Check Message', width:'20%', cellTemplate: cellTemplate},
+            {field:'OBJ_NAME', displayName:'Object', width:'20%', cellTemplate: cellTemplate},
+        ],
+        plugins: [new ngGridFlexibleHeightPlugin()]
+    }       
 }]);

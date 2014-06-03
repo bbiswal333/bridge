@@ -1,6 +1,6 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "bridgeCounter", function (calUtils, dataProcessor, bridgeCounter) {
+  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", function (calUtils, dataProcessor) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxTitle = "Lunch Wdf / Rot";
@@ -9,8 +9,7 @@
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
-        $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";
-        bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'APPLOAD');
+        $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";        
 
         var lang = "de";
         // English texts standard for now...
@@ -29,8 +28,7 @@
             $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
             if($scope.lunch){
                 $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                $scope.contentLoaded = true;
-                bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
+                $scope.contentLoaded = true;                
             } else {
                 // move on to next date
                 date.setDate( date.getDate() + 1 );
@@ -41,15 +39,12 @@
                 $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
                 if($scope.lunch){
                     $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                    $scope.contentLoaded = true;
-                    bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'SUCCESS_GET_DATA');
+                    $scope.contentLoaded = true;                    
                 } else {
-                    $scope.contentLoaded = false;
-                    bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
+                    $scope.contentLoaded = false;                    
                 };
             };
-        }).error(function() {
-            bridgeCounter.CollectWebStats('LUNCH_WALLDORF', 'ERROR_GET_DATA');
+        }).error(function() {            
         });
     }];
 

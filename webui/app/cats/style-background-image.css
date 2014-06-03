@@ -27,7 +27,7 @@
 
 .app-cats-icon {
 	font-family: 'SAP-icons';
-	top: 100%;
+	top: 90%;
 	right:10px;
 }
 
@@ -43,4 +43,16 @@
 .selected_day{
 	background-color: grey;
 	
+}
+
+.app-cats-legend-popover {
+	border-radius: 0;
+	border: none;
+	box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	background-color: rgba(30, 30, 30, 0.90);
+}
+
+.popover-title {
+	border-radius: 0;
+	background-color: rgba(30, 30, 30, 0.90);
 }
