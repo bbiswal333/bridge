@@ -1,6 +1,5 @@
-﻿<div ng-controller="app.jira.detailController" stlye="height:100%">
-    <div class="panel panel-default">
-      <!--<div class="panel-heading panel-title">Jira Details</div>-->
+﻿<!--<div ng-controller="app.jira.detailController" stlye="height:100%">
+    <div class="panel panel-default">      
       <div class="panel-body">
         <table ng-table class="table">
             <tr ng-repeat="issue in data.jiraData">
@@ -11,7 +10,19 @@
         </table>
       </div>
     </div>
+</div>-->
+
+
+<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." />
+        <div>
+            <bridge.table grid-options="gridOptions" grid-data="data.filteredJiraData"></bridge.table>
+        </div>        
+    </div>
 </div>
+
+
 
 
 

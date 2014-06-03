@@ -60,7 +60,7 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
               }
 
               task.colorClass = 'taskColor_' + colorIndex;
-            });                        
+            });                                                                
 
         }).error(function(data, status, headers, config) {
             console.log(status);
