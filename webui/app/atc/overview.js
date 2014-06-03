@@ -1,8 +1,8 @@
 ﻿angular.module('app.atc', []);
 
 angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeCounter",
-    function ($modal, $interval, appAtcConfig, appAtcData, bridgeCounter) {
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeCounter", "bridgeDataService",
+    function ($modal, $interval, appAtcConfig, appAtcData, bridgeCounter, bridgeDataService) {
     
     var directiveController = ['$scope', function ($scope) {        
         $scope.box.settingsTitle = "Configure Source Systems and Packages";                
@@ -46,23 +46,29 @@ angular.module('app.atc').directive('app.atc',
         link: function ($scope, $element, $attrs, $modelCtrl) {
             var currentConfigItem;
 
-            if ($scope.appConfig != undefined) {
-                appAtcConfig.clear();
+            if (appAtcConfig.configItems.length == 0) {
+                if ($scope.appConfig.configItems) {
+                    appAtcConfig.clear();
 
-                for (configItem in $scope.appConfig.configItems) {
-                    currentConfigItem = new appAtcConfig.newItem();
+                    for (configItem in $scope.appConfig.configItems) {
+                        currentConfigItem = appAtcConfig.newItem();
 
-                    currentConfigItem.component = $scope.appConfig.configItems[configItem].component;
-                    currentConfigItem.devClass = $scope.appConfig.configItems[configItem].devClass;
-                    currentConfigItem.displayPrio1 = $scope.appConfig.configItems[configItem].displayPrio1;
-                    currentConfigItem.displayPrio2 = $scope.appConfig.configItems[configItem].displayPrio2;
-                    currentConfigItem.displayPrio3 = $scope.appConfig.configItems[configItem].displayPrio3;
-                    currentConfigItem.displayPrio4 = $scope.appConfig.configItems[configItem].displayPrio4;
-                    currentConfigItem.onlyInProcess = $scope.appConfig.configItems[configItem].onlyInProcess;
-                    currentConfigItem.showSuppressed = $scope.appConfig.configItems[configItem].showSuppressed;
-                    currentConfigItem.srcSystem = $scope.appConfig.configItems[configItem].srcSystem;
-                    currentConfigItem.tadirResponsible = $scope.appConfig.configItems[configItem].tadirResponsible;
+                        currentConfigItem.component = $scope.appConfig.configItems[configItem].component;
+                        currentConfigItem.devClass = $scope.appConfig.configItems[configItem].devClass;
+                        currentConfigItem.displayPrio1 = $scope.appConfig.configItems[configItem].displayPrio1;
+                        currentConfigItem.displayPrio2 = $scope.appConfig.configItems[configItem].displayPrio2;
+                        currentConfigItem.displayPrio3 = $scope.appConfig.configItems[configItem].displayPrio3;
+                        currentConfigItem.displayPrio4 = $scope.appConfig.configItems[configItem].displayPrio4;
+                        currentConfigItem.onlyInProcess = $scope.appConfig.configItems[configItem].onlyInProcess;
+                        currentConfigItem.showSuppressed = $scope.appConfig.configItems[configItem].showSuppressed;
+                        currentConfigItem.srcSystem = $scope.appConfig.configItems[configItem].srcSystem;
+                        currentConfigItem.tadirResponsible = $scope.appConfig.configItems[configItem].tadirResponsible;
 
+                        appAtcConfig.addConfigItem(currentConfigItem);
+                    }
+                } else {
+                    currentConfigItem = appAtcConfig.newItem();
+                    currentConfigItem.tadirResponsible = bridgeDataService.getUserInfo();
                     appAtcConfig.addConfigItem(currentConfigItem);
                 }
             }

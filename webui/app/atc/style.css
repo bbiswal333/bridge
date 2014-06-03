@@ -16,7 +16,7 @@
 }
 
 .tableTransparentBorder {
-    border-spacing: 2px;
+    /*border-spacing: 2px;
     border-collapse: separate;
     float:right;
     text-align: center; 
@@ -24,7 +24,12 @@
     width:70%;
       position: absolute;
     top:50px;
-    right: 0;
+    right: 0;*/
+    border-spacing: 2px;
+    border-collapse: separate;
+    float: right;
+    text-align: center;
+    padding: 20px;
 }
 
 .tableTransparentBorder > thead > tr > th {
@@ -79,9 +84,10 @@
 
 .atc_input{
     width: 25%;
+    min-width: 336px;
     float:left;
 }
 .atc_btn{
     position: relative;
-    top: 350px;
+    top: 30px;
 }

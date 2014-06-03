@@ -45,50 +45,51 @@
                 <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
             </div>
     </form>
-
-    <table ng-table="tableParams" class="table tableTransparentBorder" >
-        <thead style="background-color: #ECECEC;">
-            <tr>
-                <th>Source System</th>
-                <th>Package</th>
-                <th>Object Responsible</th>
-                <th>AKH Component</th>
-                <th>Display Suppressed</th>
-                <th>Ignore Completed</th>
-                <th>Priorities</th>
-                <th>Functions</th> <!-- Empty Head for functions -->
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
-                <td data-title="'Source System'">{{configItem.srcSystem}}</td>
-                <td data-title="'Package'">{{configItem.devClass}}</td>
-                <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
-                <td data-title="'AKH Component'">{{configItem.component}}</td>
-                <td data-title="'Display Suppressed'">
-                    <span>
-                        <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
-                    </span>
-                </td>
-                <td data-title="'Ignore Completed'">
-                    <span>
-                        <input type="checkbox" ng-model="configItem.onlyInProcess" disabled>
-                    </span>
-                </td>
-                <td data-title="'Priorities'">
-                    <span>
-                        <span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />
-                        <span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />
-                        <span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />
-                        <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
-                    </span>
-                </td>
-                <td data-title="'Functions'">
-                    <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;" class=" btn btn-default app-linklist-clickIcon fa fa-minus"></span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+        <table ng-table="tableParams" class="table tableTransparentBorder" >
+            <thead style="background-color: #ECECEC;">
+                <tr>
+                    <th>Source System</th>
+                    <th>Package</th>
+                    <th>Object Responsible</th>
+                    <th>AKH Component</th>
+                    <th>Display Suppressed</th>
+                    <th>Ignore Completed</th>
+                    <th>Priorities</th>
+                    <th>Functions</th> <!-- Empty Head for functions -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                    <td data-title="'Source System'">{{configItem.srcSystem}}</td>
+                    <td data-title="'Package'">{{configItem.devClass}}</td>
+                    <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
+                    <td data-title="'AKH Component'">{{configItem.component}}</td>
+                    <td data-title="'Display Suppressed'">
+                        <span>
+                            <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
+                        </span>
+                    </td>
+                    <td data-title="'Ignore Completed'">
+                        <span>
+                            <input type="checkbox" ng-model="configItem.onlyInProcess" disabled>
+                        </span>
+                    </td>
+                    <td data-title="'Priorities'">
+                        <span>
+                            <span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />
+                            <span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />
+                            <span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />
+                            <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
+                        </span>
+                    </td>
+                    <td data-title="'Functions'">
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" btn btn-default app-linklist-clickIcon fa fa-minus"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div class="row atc_btn" style="width:50%;float:right;">
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>

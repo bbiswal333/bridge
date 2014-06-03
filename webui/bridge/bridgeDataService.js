@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig','$q','bridge.service.loader', function (bridgeConfig, $q, bridgeLoaderServiceProvider) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http) {
     this.projects = [];
     this.bridgeSettings = {};
     this.configRawData = null;
@@ -18,6 +18,8 @@
         var promise = bridgeConfig.loadFromBackend(deferred);
         promise.then(function (config) {
             that.configRawData = config;
+
+            _fetchUserInfo();
 
             // if the config is not an object, then the user has no configuration stored in the backend
             if (angular.isObject(config) && !isEmpty(config)) {
@@ -43,6 +45,16 @@
                 parseProject(config.projects[i]);
             }
         }
+    }
+
+    //TODO: this extra call should be integrated with the config, projects, etc
+    function _fetchUserInfo() {
+        $http({
+            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
+            method: "GET",
+        }).success(function (data, status, headers, config) {
+            that.userInfo = data.USERINFO;
+        });
     }
 
     function parseProject(project) {
@@ -118,6 +130,10 @@
             return {};
     }
 
+    function _getUserInfo() {
+        return that.userInfo;
+    }
+
     function _toDefault() {
         that.projects.length = 0;
         var defaultConfig = bridgeConfig.getDefaultConfig();
@@ -144,6 +160,7 @@
     return {
         initialize: _initialize,
         getBridgeSettings: _getBridgeSettings,
+        getUserInfo: _getUserInfo,
         getProjects: _getProjects,
         getAppMetadataForProject: _getAppMetadataForProject,
         getAppById: _getAppById,
