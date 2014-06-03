@@ -1,12 +1,7 @@
 ﻿<div class="jira_container" ng-if="data.jiraChart.length > 0">
     <div ng-repeat="data in data.jiraChart" class="status_container">
         <div class="status_bar_container">
-            <a href="#/detail/jira/{{data.status}}">
-                <!-- 
-                count1 + count2 + ... = allCount 
-                data.count / allCount }}%
-                 -->
-                
+            <a href="#/detail/jira/{{data.status}}">         
                 <div class="status_bar" style="height:{{(data.count/totalCount)*100}}%;background-color:{{colors[$index]}}">     
                 </div>   
             </a>         
