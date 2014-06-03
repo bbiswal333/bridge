@@ -3,9 +3,10 @@
 		["lib.utils.calUtils", 
 		 "app.cats.data.catsUtils", 
 		 "$interval", 
-		 "$location",  
+		 "$location", 
 		 "bridgeDataService",
-	function (calUtils, catsUtils, $interval, $location, bridgeDataService) {
+		 "app.cats.monthlyData",
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
@@ -22,13 +23,14 @@
 	        $scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 	        $scope.calUtils = calUtils;
             
-	        var selectedDayArray = [];
+	        // var selectedDates = [$scope.selectedDay.toDateString()];
+	        var selectedDates = $scope.selectedDates;
+	        var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 	        $scope.getDescForState = function (state_s) {
 	            return catsUtils.getDescForState(state_s);
 	        };
 
-	        var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 	        function handleCatsData(data) {
 	            if (data != null) {
@@ -64,20 +66,52 @@
 	            $location.path("/detail/cats/" + dayString);
 	        };
 
-	        $scope.selectWeek = function (weekNo) {
-        		console.log(weekNo);
-        		//get days of this week
-        		//loop over all thees days and select/deselect them
-        		var ok = $scope.onDaySelected({
-		          date: date
-		        });
+	        $scope.selectWeek = function (index) {
+        		console.log(index);
+	        	var week = $scope.calArray[index];
+	        	var hasSelection = hasSelectedDates(week);
 
-		        if (!ok) {
-		        }
+	        	week.forEach(function(day){
+	        		var dateString = day.date.toDateString();
+	        		if (hasSelection && $scope.isSelected(dateString)) {
+	        			var ok = $scope.onDateDeselected({
+				        	date: day.date
+				        });
+
+				        if (!ok) {
+				        	console.log("Date couldn't be deselected: ", day.date);
+				        }	        			
+				        // var dateIndex = selectedDates.indexOf(dateString);
+	        			// selectedDates.splice(dateIndex, 1);
+	        		} else if (!hasSelection){
+	        			var ok = $scope.onDateSelected({
+				        	date: day.date
+				        });
+
+				        if (!ok) {
+				        	console.log("Date couldn't be selected: ", day.date);
+				        }
+	        		};
+	        	});
+        		//loop over all thees days and select/deselect them
+        		
 	        };
 
-	        $scope.isSelected = function(day){
-	        	return selectedDayArray.indexOf(day)!=-1;
+	        $scope.isSelected = function(date){
+	        	if (!selectedDates)
+	        		return false;
+	        	return selectedDates.indexOf(date)!=-1;
+	        }
+
+	        function hasSelectedDates(week){
+	        	var selected = false;
+	        	week.some(function(day){
+	        		if ($scope.isSelected(day.date.toDateString())) {
+	        			selected = true;
+	       				return true; //break the loop
+	        		};
+	        	});	
+	        	return selected;
 	        }
 
 	        $scope.canGoBackward = function () {
@@ -214,6 +248,9 @@
 	        link: linkFn,
 	        scope: {
 	            selectedDay: '=selectedDay',
+	            selectedDates: '=selectedDates',
+	            onDateSelected: "&ondateselected",
+	            onDateDeselected: "&ondatedeselected",
 	            dayClassInput: '@dayClass',
                 maintainable: '=',
 	        }

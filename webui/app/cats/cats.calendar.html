@@ -20,7 +20,7 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container app-cats-col-xs-1-8">
                     <div class="app-cats-button-center">
-                        <button class="app-cats-cw-button" ng-click="selectWeek(calUtils.getWeekNumber(week[0].date).weekNo)">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button class="app-cats-cw-button" ng-click="selectWeek($index)">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                         <!-- <button class="app-cats-cw-button" ng-click="selectWeek(monthService.getWeeksOfMonth(year, month)[$index].weekNo)">CW {{monthService.getWeeksOfMonth(year, month)[$index].weekNo}}</button> -->
                     </div>
                 </div>
@@ -29,10 +29,10 @@
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
-                         'selected_day': day.date.toDateString() == selectedDay.toDateString()}">
+                         'selected_day': isSelected(day.date.toDateString())}">
 
                         <span ng-class="{
-                              'bold': day.date.toDateString() == selectedDay.toDateString(),
+                              'bold': isSelected(day.date.toDateString()),
                               'app-cats-day-text-small': !maintainable,
                               'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>

@@ -8,13 +8,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyData) {
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
     $scope.loaded = false;
     $scope.width = 800;
     $scope.monthlyData = {};
+    $scope.selectedDates = [];
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -26,7 +27,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
     function loadCATSDataForDay() {
-        monthlyData.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
+        monthlyDataService.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
 
             monthData.weeks.sort(function(a,b){return a.week - b.week});
             $scope.monthlyData  = monthData;
@@ -83,6 +84,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectUnchecked = function (objgextid_s) {
         removeBlock(objgextid_s);
+    }
+
+    $scope.handleSelectedDate = function(date){
+        var dateHasTargetHours = false;
+        var dateString = calUtils.stringifyDate(date);
+        monthlyDataService.getMonthData(date.getFullYear(), date.getMonth(), function(monthlyData){
+            monthlyData.weeks.some(function(week){
+                var dateFound = false;
+                week.days.some(function(day){
+                    if (day.date === dateString) {
+                        dateFound = true;
+                        if (day.targetHours > 0) {
+                            dateHasTargetHours = true;
+                        };
+                    };
+                    return dateFound;
+                });
+                return dateFound;
+            });
+
+            if (dateHasTargetHours) {
+                $scope.selectedDates.push(date.toDateString());
+            };
+            return true;
+        });
+    }
+
+    $scope.handleDeselectedDate = function(date){
+        var dateIndex = $scope.selectedDates.indexOf(date.toDateString());
+        $scope.selectedDates.splice(dateIndex, 1);
+        return true;
     }
 
     function getByExtId(block) {
@@ -205,10 +237,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.day = calUtils.parseDate(date);
         }
 
+        $scope.selectedDates = [$scope.day.toDateString()];
+
         var path = "/detail/cats/" + calUtils.stringifyDate($scope.day) + "/";
         console.log(path);
         $location.path(path);
     };
+
 
     $scope.ResetToLastSavedState = function () {
         displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
@@ -219,13 +254,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $location.path('/#');
     };
 
-    $scope.writeCATSdata = function () {
+    $scope.saveTimesheet = function(){
         // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+        $scope.selectedDates.forEach(function(dateString){
+            var workdate = calUtils.stringifyDate(new Date(dateString));
+            
+            container = prepareCATSData(workdate, container);
+        });
 
+        $scope.writeCATSdata(container);
+        monthlyDataService.getAllAvailableMonths();
+    }
+
+    function prepareCATSData (workdate, container){
+        
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
@@ -236,7 +282,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         for(var i = 0; i < $scope.blockdata.length; i++) {
             var booking = {
                 COUNTER: $scope.blockdata[i].task.COUNTER,
-                WORKDATE: $scope.blockdata[i].task.WORKDATE,
+                WORKDATE: workdate || $scope.blockdata[i].task.WORKDATE,
                 RAUFNR: $scope.blockdata[i].task.RAUFNR,
                 TASKTYPE: $scope.blockdata[i].task.TASKTYPE,
                 ZCPR_EXTID: $scope.blockdata[i].task.ZCPR_EXTID,
@@ -253,8 +299,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (booking.QUANTITY) { // book time > 0
                 container.BOOKINGS.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.tasks.length; j++) {
-                    if ($scope.lastCatsAllocationDataForDay.tasks[j].RAUFNR == booking.RAUFNR) {
+                var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
+                for(var j = 0; j < oldTasks.length; j++) {
+                    if (oldTasks[j].RAUFNR == booking.RAUFNR) {
                         container.BOOKINGS.push(booking);
                         break;
                     }
@@ -263,6 +310,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
 
         $scope.lastPostedCatsAllocationDataForDay = container;
+        return container;
+    }
+
+    $scope.writeCATSdata = function (container) {
+        
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             checkPostReply(data);
         }).error(function (data, status, header, config) {

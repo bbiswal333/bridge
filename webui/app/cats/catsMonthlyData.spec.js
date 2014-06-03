@@ -6,6 +6,7 @@ describe("Cats Monthly Data Service", function () {
   var fakeNextWeekData = JSON.parse('{"TIMESHEETS":{"WEEK":"21.2014","DATEFROM":"2014-05-19","DATETO":"2014-05-25"},"ERRORS":[]}');
 
   beforeEach(function() {
+    module("app.cats.data");
   	module("app.cats.monthlyDataModule");
 
   	inject(["$httpBackend", "app.cats.monthlyData", function (_$httpBackend, _catsMonthlyDataService) {
