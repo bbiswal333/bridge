@@ -17,30 +17,28 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 		this.months = {};
 		for( var i = 0; i < 4; i++){
-			promises.push(this.getMonthData(date.getFullYear(), date.getMonth(), function(data){}));
+			promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
 			date.setMonth(date.getMonth() - 1);
 		}
 		this.promise = $q.all(promises);
 		return this.promise;
 	}
 
-	this.getMonthData = function(year, month, callback){
+	this.getMonthData = function(year, month){
 		var monthData = {};
 		var self = this;
 		monthData.weeks = [];
+		var deferred = $q.defer();
 		var promise = null;
 		var promises = [];
 	    var targetHoursCounter = 0;
 
 	    if (!this.months[month] && this.promise) {
-	    	this.promise.then(function(){
-	    		callback(self.months[month]);
-	    	});
-	    	return promise;
+	    	return this.promise;
 	    } 
 	    else if (this.months[month]) {
-	    	callback(this.months[month]);
-	    	return null;
+	    	deferred.resolve();
+	    	return deferred.promise;
 	    };
 
 		var weeks = this.getWeeksOfMonth(year, month);
@@ -62,11 +60,23 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
     		} else {
     			monthData.hasTargetHours = false;
     		}
-	        callback(monthData);
+	        // callback(monthData);
 	        self.months[month] = monthData;
         });
 
         return promise;
+	};
+
+	this.getDataForDate = function(date){
+		var deferred = $q.defer();
+
+	    if (!this.days[date] && this.promise) {
+	    	return this.promise;
+	    } 
+	    else if (this.days[date]) {
+	    	deferred.resolve();
+	    	return deferred.promise;
+	    };
 	};
 
 	this.getWeeksOfMonth = function(year, month){
@@ -171,19 +181,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.getTasksForDate = function(workdate){
-		var tasks = [];
-		var dayFound = false;
-		this.months[workdate.substring(5,7)-1].weeks.some(function(week){
-			week.days.some(function(day){
-				if (day.date === workdate) {
-					dayFound = true;
-					tasks = day.tasks;
-				};
-				return dayFound;
-			})
-			return dayFound;
-		})
-		return tasks;
+		return this.days[workdate].tasks;
 	}
 
 	this.getAllAvailableMonths();
