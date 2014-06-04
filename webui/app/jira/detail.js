@@ -8,12 +8,13 @@
 
         $scope.$watch('data.jiraData', function()
         {
+            var status_filter = $routeParams['status'].split('|');
         	if($scope.data && $scope.data.jiraData)
         	{
 	        	$scope.data.filteredJiraData = [];
 	        	for(var i = 0; i < $scope.data.jiraData.length; i++ )
 	        	{
-	        		if($scope.data.jiraData[i].status == $routeParams['status'])
+	        		if(status_filter.indexOf($scope.data.jiraData[i].status) > -1)
 	        		{
 	        			$scope.data.filteredJiraData.push($scope.data.jiraData[i]);
 	        		}
