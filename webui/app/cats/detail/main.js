@@ -8,13 +8,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyData) {
+  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
     $scope.loaded = false;
     $scope.width = 800;
-    $scope.monthlyData = {};
+    $scope.selectedDates = [];
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -26,21 +26,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
     function loadCATSDataForDay() {
-        monthlyData.getMonthData($scope.day.getFullYear(),$scope.day.getMonth(),function(monthData) {
-
-            monthData.weeks.sort(function(a,b){return a.week - b.week});
-            $scope.monthlyData  = monthData;
-            var currentDay      = calUtils.stringifyDate($scope.day);
-
-            // get tasks of particular day
-            for (var i = 0; i < monthData.weeks.length; i++) {
-                for (var j = 0; j < monthData.weeks[i].days.length; j++) {
-                    if (monthData.weeks[i].days[j].date == currentDay) {
-                        displayCATSDataForDay(monthData.weeks[i].days[j]);
-                        return;
-                    }
-                }
-            }
+        var currentDay = calUtils.stringifyDate($scope.day);
+        var promise = monthlyDataService.getDataForDate(currentDay);
+        promise.then(function() {
+            displayCATSDataForDay(monthlyDataService.days[currentDay]);
         });
     };
 
@@ -83,6 +72,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectUnchecked = function (objgextid_s) {
         removeBlock(objgextid_s);
+    }
+
+    $scope.handleSelectedDate = function(date){
+        var dateHasTargetHours = false;
+        var dateString = calUtils.stringifyDate(date);
+
+        if (monthlyDataService.days[dateString] &&
+            monthlyDataService.days[dateString].targetHours > 0) {
+            
+            if (!hasVacationTask(monthlyDataService.days[dateString])) {
+                $scope.selectedDates.push(date.toDateString());
+            };
+        };
+
+        return true;
+    }
+
+    $scope.handleDeselectedDate = function(date){
+        var dateIndex = $scope.selectedDates.indexOf(date.toDateString());
+        $scope.selectedDates.splice(dateIndex, 1);
+        return true;
+    }
+
+    function hasVacationTask (day){
+        var hasVacationTask = false;
+        day.tasks.forEach(function(task){
+            if (task.TASKTYPE === "VACA") {
+                hasVacationTask = true;
+            };
+        })
+        return hasVacationTask;
     }
 
     function getByExtId(block) {
@@ -205,27 +225,46 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.day = calUtils.parseDate(date);
         }
 
+        $scope.selectedDates = [$scope.day.toDateString()];
+
         var path = "/detail/cats/" + calUtils.stringifyDate($scope.day) + "/";
         console.log(path);
         $location.path(path);
     };
 
+
     $scope.ResetToLastSavedState = function () {
-        displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
+        displayCATSDataForDay(monthlyDataService.days[calUtils.stringifyDate($scope.day)]);
     };
 
     $scope.goBackToMainPage = function () {
-        displayCATSDataForDay($scope.lastCatsAllocationDataForDay);
+        displayCATSDataForDay(monthlyDataService.days[calUtils.stringifyDate($scope.day)]);
         $location.path('/#');
     };
 
-    $scope.writeCATSdata = function () {
+    $scope.saveTimesheet = function(){
+        var clearOldTasks = false;
         // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+        if ($scope.selectedDates.length > 1) {
+            clearOldTasks = true;
+        };
 
+        $scope.selectedDates.forEach(function(dateString){
+            var workdate = calUtils.stringifyDate(new Date(dateString));
+            
+            container = prepareCATSData(workdate, container, clearOldTasks);
+        });
+
+        $scope.writeCATSdata(container);
+        // monthlyDataService.getAllAvailableMonths();
+    }
+
+    function prepareCATSData (workdate, container, clearOldTasks){
+        
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
@@ -233,28 +272,39 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             return;
         }
 
+        if (clearOldTasks) {
+            monthlyDataService.days[workdate].tasks.forEach(function(task){
+                if (task.QUANTITY == 0) { 
+                    return ;
+                }
+                var taskDeletion = angular.copy(task);
+                taskDeletion.WORKDATE = workdate || task.WORKDATE;
+                taskDeletion.QUANTITY = 0;
+
+                container.BOOKINGS.push(taskDeletion);
+            })
+        };
+
         for(var i = 0; i < $scope.blockdata.length; i++) {
-            var booking = {
-                COUNTER: $scope.blockdata[i].task.COUNTER,
-                WORKDATE: $scope.blockdata[i].task.WORKDATE,
-                RAUFNR: $scope.blockdata[i].task.RAUFNR,
-                TASKTYPE: $scope.blockdata[i].task.TASKTYPE,
-                ZCPR_EXTID: $scope.blockdata[i].task.ZCPR_EXTID,
-                ZCPR_OBJGEXTID: $scope.blockdata[i].task.ZCPR_OBJGEXTID,
-                STATUS: $scope.blockdata[i].task.STATUS,
-                UNIT: $scope.blockdata[i].task.UNIT,
-                QUANTITY: Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100,
-            };
+
+            var booking = angular.copy($scope.blockdata[i].task);
+            booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
+            booking.QUANTITY = Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100;
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
-            };
+            }
 
+            if (clearOldTasks) {
+                booking.COUNTER = 0;
+            }
             if (booking.QUANTITY) { // book time > 0
                 container.BOOKINGS.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                for(var j = 0; j < $scope.lastCatsAllocationDataForDay.tasks.length; j++) {
-                    if ($scope.lastCatsAllocationDataForDay.tasks[j].RAUFNR == booking.RAUFNR) {
+                var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
+                for(var j = 0; j < oldTasks.length; j++) {
+                    if (oldTasks[j].RAUFNR == booking.RAUFNR
+                        && !clearOldTasks) {
                         container.BOOKINGS.push(booking);
                         break;
                     }
@@ -262,7 +312,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
 
-        $scope.lastPostedCatsAllocationDataForDay = container;
+        monthlyDataService.days[workdate].tasks = container.BOOKINGS;
+        return container;
+    }
+
+    $scope.writeCATSdata = function (container) {
+        
         $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
             checkPostReply(data);
         }).error(function (data, status, header, config) {

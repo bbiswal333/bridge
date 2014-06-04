@@ -1,29 +1,82 @@
 angular.module("app.cats.monthlyDataModule", ["lib.utils"])
-.service("app.cats.monthlyData", ["$http", "$q", "lib.utils.calUtils", "app.cats.data.catsUtils", function($http, $q, calenderUtils, catsUtils){
-	this.getMonthData = function(year, month, callback){
-		var weeks = this.getWeeksOfMonth(year, month);
+.service("app.cats.monthlyData", 
+	["$http", 
+	"$q", 
+	"lib.utils.calUtils", 
+	"app.cats.data.catsUtils", 
+	
+	function($http, $q, calenderUtils, catsUtils){
+	this.months = {};
+	this.days = {};
+	this.promise = null;
+
+
+	this.getAllAvailableMonths = function(){
+		var date = calenderUtils.today();
+		var promises = [];
+
+		this.months = {};
+		for( var i = 0; i < 4; i++){
+			promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
+			date.setMonth(date.getMonth() - 1);
+		}
+		this.promise = $q.all(promises);
+		return this.promise;
+	}
+
+	this.getMonthData = function(year, month){
 		var monthData = {};
+		var self = this;
 		monthData.weeks = [];
-		var counter = 0;
+		var deferred = $q.defer();
+		var promise = null;
+		var promises = [];
 	    var targetHoursCounter = 0;
+
+	    if (!this.months[month] && this.promise) {
+	    	return this.promise;
+	    } 
+	    else if (this.months[month]) {
+	    	deferred.resolve();
+	    	return deferred.promise;
+	    };
+
+		var weeks = this.getWeeksOfMonth(year, month);
         for (var i = 0; i < weeks.length; i++) {
-        	counter++;
-        	this.getWeeklyData(weeks[i].year, weeks[i].weekNo).then(function(data){
-	        	counter--;
+        	promise = this.getWeeklyData(weeks[i].year, weeks[i].weekNo);
+        	promises.push(promise);
+        	promise.then(function(data){
 	        	if(data) {
 		        	monthData.weeks.push(data);
 		        	targetHoursCounter = targetHoursCounter + data.hasTargetHoursForHowManyDays;
 	        	}
-	        	if (counter === 0) {
-	        		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length) {
-	        			monthData.hasTargetHours = true;
-	        		} else {
-	        			monthData.hasTargetHours = false;
-	        		}
-			        callback(monthData);
-	        	};
         	});
         }
+
+        promise = $q.all(promises);
+        promise.then(function(){
+    		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length) {
+    			monthData.hasTargetHours = true;
+    		} else {
+    			monthData.hasTargetHours = false;
+    		}
+	        // callback(monthData);
+	        self.months[month] = monthData;
+        });
+
+        return promise;
+	};
+
+	this.getDataForDate = function(date){
+		var deferred = $q.defer();
+
+	    if (!this.days[date] && this.promise) {
+	    	return this.promise;
+	    } 
+	    else if (this.days[date]) {
+	    	deferred.resolve();
+	    	return deferred.promise;
+	    };
 	};
 
 	this.getWeeksOfMonth = function(year, month){
@@ -84,6 +137,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
+		            		day.year = year;
+		            		day.week = week;
 		            		weekData.days.push( day );
 		            	}
 		            	if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
@@ -101,6 +156,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		weekData.days[DayIterator].tasks.push( task );
 		            		catsUtils.enrichTaskData(task);
 		            	}
+
+		            	if (day) {
+		            		this.days[day.date] = day;
+		            	};
 		           	}
 		        }
 		    }
@@ -120,5 +179,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	    });
 	    return deferred.promise;
 	};
+
+	this.getTasksForDate = function(workdate){
+		return this.days[workdate].tasks;
+	}
+
+	this.getAllAvailableMonths();
+
 }]);
 

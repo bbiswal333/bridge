@@ -602,6 +602,9 @@ input[type="checkbox"]:checked:after {
     margin-right: 15px;
     float: right;
 }
+.btn-group{
+    max-width: 70%;
+}
 
 .panel{
     border: none;
@@ -686,3 +689,4 @@ input[type="checkbox"]:checked:after {
     float: right;
     opacity: 0.5;
 }
+
