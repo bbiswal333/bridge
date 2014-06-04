@@ -31,10 +31,10 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
       var res = [];
 
-      var weekNo = calUtils.getWeekNumber(day_o);
-      weekNo.weekNo = calUtils.useNDigits(weekNo.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
+      var week = calUtils.getWeekNumber(day_o);
+      week.weekNo = calUtils.useNDigits(week.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
 
-      _httpRequest(CATS_ALLOC_WEBSERVICE + weekNo.year + "." + weekNo.weekNo, function(data, status) {
+      _httpRequest(CATS_ALLOC_WEBSERVICE + week.year + "." + week.weekNo, function(data, status) {
         if (!data){
           return;
         }
