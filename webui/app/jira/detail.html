@@ -1,8 +1,8 @@
 ﻿<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">    
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." style="width:280px;" />
+      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
       <div class="btn-group">
-          <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active">{{status.name}}</span>
+          <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">{{status.name}}</span>
       </div>
         <div>
             <bridge.table grid-options="gridOptions" grid-data="data.filteredJiraData"></bridge.table>

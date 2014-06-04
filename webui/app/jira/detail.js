@@ -64,9 +64,9 @@
 
         $scope.$parent.titleExtension = " - Jira Details"; 
 
-        var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';
+        var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:35px">{{row.getProperty(col.field)}}</div>';
         var issuecellTemplate = 
-            '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px"><a target="_blank" href="https://sapjira.wdf.sap.corp/browse/{{row.entity.key}}">{{row.entity.summary}}</a></div>';
+            '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:35px;padding-left:10px;"><a target="_blank" href="https://sapjira.wdf.sap.corp/browse/{{row.entity.key}}">{{row.entity.summary}}</a></div>';
 
 
         $scope.filterOptions = {
@@ -76,7 +76,7 @@
         $scope.gridOptions = {                        
             enableColumnReordering:true,
             enableRowSelection:false,            
-            rowHeight: 40,
+            rowHeight: 35,
             showFilter:false,
             filterOptions: $scope.filterOptions,
             columnDefs: [
