@@ -74,36 +74,36 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         removeBlock(objgextid_s);
     }
 
-    $scope.handleSelectedDate = function(date){
-        var dateHasTargetHours = false;
-        var dateString = calUtils.stringifyDate(date);
+    $scope.handleSelectedDate = function(dayString){
+        // var dateHasTargetHours = false;
+        // var dateString = calUtils.stringifyDate(date);
 
-        if (monthlyDataService.days[dateString] &&
-            monthlyDataService.days[dateString].targetHours > 0) {
+        // if (monthlyDataService.days[dateString] &&
+        //     monthlyDataService.days[dateString].targetHours > 0) {
             
-            if (!hasVacationTask(monthlyDataService.days[dateString])) {
-                $scope.selectedDates.push(date.toDateString());
-            };
-        };
+        //     if (!hasVacationTask(monthlyDataService.days[dateString])) {
+        //     };
+        // };
 
+        $scope.selectedDates.push(dayString);
         return true;
     }
 
-    $scope.handleDeselectedDate = function(date){
-        var dateIndex = $scope.selectedDates.indexOf(date.toDateString());
+    $scope.handleDeselectedDate = function(dayString){
+        var dateIndex = $scope.selectedDates.indexOf(dayString);
         $scope.selectedDates.splice(dateIndex, 1);
         return true;
     }
 
-    function hasVacationTask (day){
-        var hasVacationTask = false;
-        day.tasks.forEach(function(task){
-            if (task.TASKTYPE === "VACA") {
-                hasVacationTask = true;
-            };
-        })
-        return hasVacationTask;
-    }
+    // function hasVacationTask (day){
+    //     var hasVacationTask = false;
+    //     day.tasks.forEach(function(task){
+    //         if (task.TASKTYPE === "VACA") {
+    //             hasVacationTask = true;
+    //         };
+    //     })
+    //     return hasVacationTask;
+    // }
 
     function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -225,7 +225,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.day = calUtils.parseDate(date);
         }
 
-        $scope.selectedDates = [$scope.day.toDateString()];
+        $scope.selectedDates = [calUtils.stringifyDate($scope.day)];
 
         var path = "/detail/cats/" + calUtils.stringifyDate($scope.day) + "/";
         console.log(path);
@@ -249,7 +249,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
-        if ($scope.selectedDates.length > 1) {
+        if ($scope.selectedDates.length > 1 &&
+            $scope.selectedDates[0] === calUtils.stringifyDate($scope.day)) {
             clearOldTasks = true;
         };
 

@@ -63,55 +63,115 @@
 	        	console.log("MULTI:" + multi_click);
 	        	console.log("SINGLE:" + single_click);	        	
 
-	            $location.path("/detail/cats/" + dayString);
+	        	if (single_click) {
+	            	$location.path("/detail/cats/" + dayString);
+	        	} else if (multi_click) {
+	        		selectDay(dayString);
+	        	} else if (range_click) {
+	        		selectRange(collectRange(dayString));
+	        	}
 	        };
 
 	        $scope.selectWeek = function (index) {
         		console.log(index);
 	        	var week = $scope.calArray[index];
-	        	var hasSelection = hasSelectedDates(week);
-
-	        	week.forEach(function(day){
-	        		var dateString = day.date.toDateString();
-	        		if (hasSelection && $scope.isSelected(dateString)) {
-	        			var ok = $scope.onDateDeselected({
-				        	date: day.date
-				        });
-
-				        if (!ok) {
-				        	console.log("Date couldn't be deselected: ", day.date);
-				        }	        			
-				        // var dateIndex = selectedDates.indexOf(dateString);
-	        			// selectedDates.splice(dateIndex, 1);
-	        		} else if (!hasSelection){
-	        			var ok = $scope.onDateSelected({
-				        	date: day.date
-				        });
-
-				        if (!ok) {
-				        	console.log("Date couldn't be selected: ", day.date);
-				        }
-	        		};
-	        	});
-        		//loop over all thees days and select/deselect them
-        		
+	        	
+        		selectRange(week);
 	        };
 
-	        $scope.isSelected = function(date){
-	        	if (!selectedDates)
-	        		return false;
-	        	return selectedDates.indexOf(date)!=-1;
+	        function collectRange(dayString) {
+	        	var range = [];
+	        	var lastDate = calUtils.parseDate($scope.selectedDates[$scope.selectedDates.length - 1]);
+	        	var selectedDate = calUtils.parseDate(dayString);
+
+	        	function collectDates(a, b){
+	        		var dateStrings = [];
+
+	        		if (a < b) {
+	        			var first = a;
+	        			var last = b;
+	        		} else {
+	        			var first = b;
+	        			var last = a;
+	        		}
+
+	        		while(first.getTime() != last.getTime()){
+	        			dateStrings.push(calUtils.stringifyDate(first));
+	        			first.setDate(first.getDate() + 1);
+	        		}
+	        		dateStrings.push(calUtils.stringifyDate(first));
+
+	        		return dateStrings;
+	        	}
+
+	        	collectDates(lastDate, selectedDate).forEach(function(dateString){
+	        		range.push(monthlyDataService.days[dateString]);
+	        	})
+
+	        	return range;
 	        }
 
-	        function hasSelectedDates(week){
-	        	var selected = false;
-	        	week.some(function(day){
-	        		if ($scope.isSelected(day.date.toDateString())) {
-	        			selected = true;
-	       				return true; //break the loop
+	        function selectRange(daysArray){
+	        	var toSelect = getUnselectedDays(daysArray);
+
+	        	if (toSelect && toSelect.length > 0) {
+	        		toSelect.forEach(function(day){
+	        			selectDay(day.dayString);
+	        		})
+	        	} else {
+		        	daysArray.forEach(function(day){
+	        			selectDay(day.dayString);
+		        	});
+	        	}
+	        }
+
+	        function selectDay (dayString) {
+				var dateHasTargetHours = false;
+
+	        	if ($scope.isSelected(dayString)) {
+        			var ok = $scope.onDateDeselected({dayString: dayString});
+        		} else if (isSelectable(dayString)) {
+        			var ok = $scope.onDateSelected({dayString: dayString});
+        		};
+		        if (!ok) {
+		        	console.log("Date couldn't be de- /selected: ", dayString);
+		        }	        			
+	        }
+
+	        function isSelectable(dayString){
+	        	if (monthlyDataService.days[dayString] &&
+		            monthlyDataService.days[dayString].targetHours > 0 &&
+		            !hasVacationTask(monthlyDataService.days[dayString])) {
+	        		return true;
+        		}
+        		return false;
+	        }
+
+	        $scope.isSelected = function(dayString){
+	        	if (!selectedDates)
+	        		return false;
+	        	return selectedDates.indexOf(dayString)!=-1;
+	        }
+
+	        function hasVacationTask (day){
+		        var hasVacationTask = false;
+		        day.tasks.forEach(function(task){
+		            if (task.TASKTYPE === "VACA") {
+		                hasVacationTask = true;
+		            };
+		        })
+		        return hasVacationTask;
+		    }
+
+	        function getUnselectedDays(daysArray){
+	        	var unselected = [];
+	        	daysArray.forEach(function(day){
+	        		if (isSelectable(day.dayString) &&
+	        			!$scope.isSelected(day.dayString)) {
+	        			unselected.push(day);
 	        		};
 	        	});	
-	        	return selected;
+	        	return unselected;
 	        }
 
 	        $scope.canGoBackward = function () {

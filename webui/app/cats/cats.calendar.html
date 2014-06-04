@@ -29,10 +29,10 @@
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
-                         'selected_day': isSelected(day.date.toDateString())}">
+                         'selected_day': isSelected(day.dayString)}">
 
                         <span ng-class="{
-                              'bold': isSelected(day.date.toDateString()),
+                              'bold': isSelected(day.dayString),
                               'app-cats-day-text-small': !maintainable,
                               'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>

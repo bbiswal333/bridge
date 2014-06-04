@@ -135,6 +135,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var day = {};
 		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
 		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		day.dayString   = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
 		            		day.year = year;
