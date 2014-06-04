@@ -1,4 +1,4 @@
-angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', function Controller($scope, $http, $templateCache) {
+angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData',  function Controller($scope, $http, $templateCache, ticketData) {
 
         $scope.$parent.titleExtension = " - IM Details";   
         $scope.myOptions = { data: 'tempobject' };	    
@@ -37,7 +37,28 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             plugins: [new ngGridFlexibleHeightPlugin()]
         }
 
-	    $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin 
+        function enhanceMessage(message) {
+            $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + location.origin).then(function (response) {
+                message.employee = response.data.DATA;
+                message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
+                message.url = 'https://people.wdf.sap.corp/profiles/' + message.SUSID;
+                message.ticket_url = 'https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta=' + message.CSINSTA + '&mnumm=' + message.MNUMM + '&myear=' + message.MYEAR + '&sap-language=en#';
+                message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
+                message.mail = message.employee.SMTP_MAIL;
+                message.tel = message.employee.TELNR;
+                $scope.messages.push(message);
+            });
+        }
+
+        if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
+            _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
+                enhanceMessage(message);
+            });
+        } else {
+            enhanceMessage(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+        }
+
+	    /*$http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin 
 	   		
 	        ).success(function(data) {
 	        	data = new X2JS().xml_str2json(data);
@@ -62,7 +83,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 
 	        }).error(function(data) {
 	            $scope.imData = [];	            
-	        }); 		 		     
+	        }); */		 		     
         }
 ]);
 
