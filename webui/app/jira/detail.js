@@ -42,7 +42,7 @@
             showFilter:false,
             filterOptions: $scope.filterOptions,
             columnDefs: [
-                {field:'summary', displayName:'Issue', width:'20%', cellTemplate: issuecellTemplate},                
+                {field:'summary', displayName:'Summary', width:'20%', cellTemplate: issuecellTemplate},                
                 {field:'description', displayName:'Description', width:'70%', cellTemplate: cellTemplate},
                 {field:'status', displayName:'Status', width:'10%', cellTemplate: cellTemplate}                      
             ],

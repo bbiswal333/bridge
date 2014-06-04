@@ -1,6 +1,7 @@
 var https		= require('https');
 var path        = require('path');
 var fs          = require('fs');
+var crypto 		= require('crypto');
 var sso 		= require('./sso.js');
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
@@ -11,13 +12,22 @@ exports.run = function(npm, port)
 {	
 	var proxy = param.get("proxy", true);
 	var local = param.get("local", true);
+	var cache = param.get("cache", false);
 
 	helper.checkErrorFileSize();
 
 	function start_server(user)
 	{
 		var express = require("express");
-		var app 	= express();		
+		var app 	= express();
+
+		var eTag = undefined;
+		if(cache)
+		{			
+			var current_date = (new Date()).valueOf().toString();
+			var random = Math.random().toString();
+			eTag = '"' + crypto.createHash('sha1').update(current_date + random).digest('hex') + '"';
+		}
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
@@ -29,7 +39,7 @@ exports.run = function(npm, port)
 		};
 		
 		var server = https.createServer(options, app);		
-		api.register(app, user, local, proxy, npm);	 	
+		api.register(app, user, local, proxy, npm, eTag);	 	
 		server.listen(port, "127.0.0.1");		
 		
 		helper.printConsole(port);		
