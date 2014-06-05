@@ -244,6 +244,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.saveTimesheet = function(){
         var clearOldTasks = false;
+        var weeks = [];
         // Return to "CHECKMESSAGES" when the transport arrived in ISP -> change also in for-loop below
         var container = {
             //CHECKMESSAGES: []
@@ -255,17 +256,33 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         };
 
         $scope.selectedDates.forEach(function(dateString){
-            var workdate = calUtils.stringifyDate(new Date(dateString));
-            
-            container = prepareCATSData(workdate, container, clearOldTasks);
+            container = prepareCATSData(dateString, container, clearOldTasks);
+
+            var day = monthlyDataService.days[dateString];
+            if (weeks.indexOf(day.year + '.' + day.week) === -1) {
+                weeks.push(day.year + '.' + day.week);
+            };
         });
 
-        $scope.writeCATSdata(container);
-        // monthlyDataService.getAllAvailableMonths();
+        // $scope.writeCATSdata(container);
+        catsUtils.writeCATSData(container).then(function(data){
+            checkPostReply(data);
+            monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                loadCATSDataForDay();
+                $scope.$emit("refreshApp");
+            });        
+        }, function(status){
+            bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+            loadCATSDataForDay();
+            $scope.$emit("refreshApp");
+        });
+        
     }
+    
 
     function prepareCATSData (workdate, container, clearOldTasks){
-        
+        var workdateBookings = [];
+
         if(!$scope.workingHoursForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
@@ -300,20 +317,20 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 booking.COUNTER = 0;
             }
             if (booking.QUANTITY) { // book time > 0
-                container.BOOKINGS.push(booking);
+                workdateBookings.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
                 var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
                 for(var j = 0; j < oldTasks.length; j++) {
                     if (oldTasks[j].RAUFNR == booking.RAUFNR
                         && !clearOldTasks) {
-                        container.BOOKINGS.push(booking);
+                        workdateBookings.push(booking);
                         break;
                     }
                 }
             }
         }
-
-        monthlyDataService.days[workdate].tasks = container.BOOKINGS;
+        container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
+        monthlyDataService.days[workdate].tasks = workdateBookings;
         return container;
     }
 
@@ -349,8 +366,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         if (!replyHasMessages) {
             bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
         }
-        loadCATSDataForDay();
-        $scope.$emit("refreshApp");
     }
 }
 ]).filter("weekday", ["lib.utils.calUtils", function (calUtils) {

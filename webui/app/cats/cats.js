@@ -1,8 +1,9 @@
-angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "lib.utils.encodeForUrl", "lib.utils.calUtils",
-  function($http, encodeForUrl, calUtils) {
+angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "$q", "lib.utils.encodeForUrl", "lib.utils.calUtils",
+  function($http, $q, encodeForUrl, calUtils) {
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
     var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
+    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     var catsDataCache = null;
     var taskCache = null;
@@ -170,6 +171,20 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       }
     }
 
+    function _writeCATSData(container){
+      var deferred = $q.defer();
+
+      $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
+          deferred.resolve(data);
+      }).error(function (data, status, header, config) {
+          if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
+              deferred.reject(status);
+          else
+              deferred.resolve(data);
+      });
+      return deferred.promise;
+    }
+
     return {
       getCatsComplianceData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
         _getCatsComplianceData(callback_fn, forceUpdate_b);
@@ -195,6 +210,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       enrichTaskData: function(task){
         return _enrichTaskData(task);
+      },
+      writeCATSData: function (container) {
+        return _writeCATSData(container);
       }
     };
   }

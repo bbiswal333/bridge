@@ -181,6 +181,16 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	    return deferred.promise;
 	};
 
+	this.loadDataForSelectedWeeks = function(weeks){
+        var promises = [];
+        var self = this;
+
+        weeks.forEach(function(week){
+            promises.push(self.getWeeklyData(week.substring(0,4),week.substring(5,7)));
+        })
+        return $q.all(promises);
+    }
+
 	this.getTasksForDate = function(workdate){
 		return this.days[workdate].tasks;
 	}

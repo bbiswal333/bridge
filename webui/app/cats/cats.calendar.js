@@ -75,8 +75,13 @@
 	        $scope.selectWeek = function (index) {
         		console.log(index);
 	        	var week = $scope.calArray[index];
-	        	
-        		selectRange(week);
+	        	var range = [];
+	        	week.forEach(function(day){
+	        		if (day.inMonth) {
+	        			range.push(day);
+	        		};
+	        	})
+        		selectRange(range);
 	        };
 
 	        function collectRange(dayString) {
