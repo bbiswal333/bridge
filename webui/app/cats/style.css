@@ -157,7 +157,10 @@
 }
 
 .app-cats-day-text-small {
-    font-size: 1em;
+    font-size: 0.9em;
+    position: relative;
+    bottom: 1px;
+
 }
 
 .app-cats-day-text-big {

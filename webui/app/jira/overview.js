@@ -27,7 +27,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
  
         //copied from the cats allocation bar
         $scope.colors = [
-            "#428bca",
+            "#428BCA",
             "#6cb9e3",
             "#a4d8f9",
             "#c4e8ff",

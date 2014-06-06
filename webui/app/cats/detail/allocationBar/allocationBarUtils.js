@@ -2,7 +2,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     var colorCounter = 0;
 
     var colors = [
-        "#3399cc",
+        "#428BCA",
         "#6cb9e3",
         "#a4d8f9",
         "#c4e8ff",
