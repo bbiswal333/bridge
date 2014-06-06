@@ -75,16 +75,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     $scope.handleSelectedDate = function(dayString){
-        // var dateHasTargetHours = false;
-        // var dateString = calUtils.stringifyDate(date);
-
-        // if (monthlyDataService.days[dateString] &&
-        //     monthlyDataService.days[dateString].targetHours > 0) {
-            
-        //     if (!hasVacationTask(monthlyDataService.days[dateString])) {
-        //     };
-        // };
-
         $scope.selectedDates.push(dayString);
         return true;
     }
@@ -94,16 +84,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.selectedDates.splice(dateIndex, 1);
         return true;
     }
-
-    // function hasVacationTask (day){
-    //     var hasVacationTask = false;
-    //     day.tasks.forEach(function(task){
-    //         if (task.TASKTYPE === "VACA") {
-    //             hasVacationTask = true;
-    //         };
-    //     })
-    //     return hasVacationTask;
-    // }
 
     function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -332,18 +312,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
         monthlyDataService.days[workdate].tasks = workdateBookings;
         return container;
-    }
-
-    $scope.writeCATSdata = function (container) {
-        
-        $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
-            checkPostReply(data);
-        }).error(function (data, status, header, config) {
-            if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
-                bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
-            else
-                checkPostReply(data);
-        });
     }
 
     function checkPostReply(data) {
