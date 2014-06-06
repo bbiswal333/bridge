@@ -18,6 +18,10 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 
                 return remaining;
             };
+
+            $scope.getBlockIndex = function(block){
+                return $scope.blocks.indexOf(block);
+            }
         };
 
         return {
@@ -39,7 +43,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
         '<div class="allocation-bar-container">' +
             '<div class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
                 '<div class="allocation-bar-background-panel-div" style="height:60px">' +
-                    '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" total-value="totalValue" get-remaining-value="getRemainingValue" total-width="width">' +
+                    '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" total-width="width">' +
                     '</app.cats.allocationbar-block>' +
                 '</div>' +
             '</div>' +
