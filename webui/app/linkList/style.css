@@ -73,26 +73,26 @@
 	height: 5px;
 }
 .app-linklist-categoryBar-1{
-	background-color: #097AC5;
+	background-color: #428BCA;
 }
 .app-linklist-categoryBar-2{
-	background-color: #5CCCFF;
+	background-color: #6cb9e3;
 }
 .app-linklist-categoryBar-3{
-	background-color: #AFE5FF;
+	background-color: #a4d8f9;
 }
 
 .app-linklist-categoryHead-1{
-	border-top: 5px solid #097AC5;
+	border-top: 5px solid #428BCA;
 }
 .remove_btn{
 	position: absolute;
 }
 .app-linklist-categoryHead-2{
-	border-top: 5px solid #5CCCFF;
+	border-top: 5px solid #6cb9e3;
 }
 .app-linklist-categoryHead-3{
-	border-top: 5px solid #AFE5FF;
+	border-top: 5px solid #a4d8f9;
 }
 .app-linklist-noOverflow{
 	overflow: hidden;

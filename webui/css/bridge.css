@@ -36,7 +36,7 @@
 body {
     height: 100%;
     width: 100%;
-    font-size: 1em;
+    font-size: 1.2em;
     /*line-height: 1.4;*/
     font-family:'Open Sans', sans-serif;
     color: #707070;
@@ -655,7 +655,7 @@ input[type="checkbox"]:checked:after {
 }
 
 .prio_bg_1{
-    background-color:#3399cc;
+    background-color:#428BCA;
 }
 .prio_bg_2{
     background-color:#6cb9e3;
