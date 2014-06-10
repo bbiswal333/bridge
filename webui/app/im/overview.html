@@ -2,17 +2,18 @@
 	{{lastElement}}
 	<div ng-if="displayChart" style="width:175px; height:140px">
 		<div class="prio_container">
-				<a href="#/detail/im" >
+				
 				<div ng-repeat="prio in prios" class="prio_col prio_bg_{{$index+1}}">
-					<div class="prio_box">
-						<p>Prio {{$index+1}}</p>
+				<a href="#/detail/im/{{prios[$index].name}}" >
+					<div class="prio_box" style="color:white">
+						<p>{{prios[$index].name}}</p>
 					</div>
-					<div class="prio_content_box">
+					<div class="prio_content_box" style="color:white">
 						<p ng-if="prios[$index].amount<=999">{{prios[$index].amount}}</p>
 						<p ng-if="prios[$index].amount>=1000">+999</p>
 					</div>
-				</div>
 				</a>	
+				</div>				
 		</div>
 	</div>
 </div>

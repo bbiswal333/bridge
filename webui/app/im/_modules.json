@@ -9,7 +9,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/im",
+				"route"			:	"/detail/im/:prio",
 				"templateUrl"	:	"app/im/detail.html"			
 			}
 		]	

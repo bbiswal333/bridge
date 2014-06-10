@@ -1,9 +1,68 @@
-angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData',  function Controller($scope, $http, $templateCache, ticketData) {
+angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData','$routeParams',  function Controller($scope, $http, $templateCache, ticketData, $routeParams) {
 
         $scope.$parent.titleExtension = " - IM Details";   
         $scope.myOptions = { data: 'tempobject' };	    
-
+        
         $scope.messages = [];
+        $scope.data = {};        
+
+        $scope.prios = [{
+            name: "Very High", number: 1, amount: 0,
+        }, {
+            name: "High", number: 2, amount: 0,
+        }, {
+            name: "Medium", number: 3, amount: 0,
+        }, {
+            name: "Low", number: 4, amount: 0,
+        }];
+
+        $scope.$watch('messages', function () 
+        {                        
+            update_table();            
+        }, true);
+
+        $scope.$watch('data.status', function()
+        {
+            update_table();
+        }, true);
+
+        function update_table()
+        {
+            if($scope.messages && $scope.messages.length > 0)
+            {
+                if(!$scope.data.status)
+                {
+                    var status_filter = $routeParams['prio'].split('|'); 
+                    var status = [];
+                    $scope.data.status = [];  
+                    for(var i = 0; i < $scope.prios.length; i++)
+                    {
+                        if(status_filter.indexOf($scope.prios[i].name) > -1)
+                        {
+                            status.push({"name":$scope.prios[i].name,"active":true});   
+                        }
+                        else
+                        {
+                            status.push({"name":$scope.prios[i].name,"active":false});   
+                        }    
+                    }
+
+                    $scope.data.status = status;  
+                }
+                $scope.data.tableData = [];
+                                
+                for(var i = 0; i < $scope.messages.length; i++ )
+                {
+                    for(var j = 0; j < $scope.data.status.length; j++)
+                    {
+                        if($scope.messages[i].PRIOSTXT == $scope.data.status[j].name && $scope.data.status[j].active)
+                        {
+                            $scope.data.tableData.push($scope.messages[i]);
+                        }
+                    }
+                } 
+            }                      
+        }
 
         var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';
         var usercellTemplate = 

@@ -19,13 +19,13 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
     function Controller($scope, $http, ticketData) {
 
         $scope.prios = [{
-            number: 1, amount: 0,
+            name: "Very High", number: 1, amount: 0,
         }, {
-            number: 2, amount: 0,
+            name: "High", number: 2, amount: 0,
         }, {
-            number: 3, amount: 0,
+            name: "Medium", number: 3, amount: 0,
         }, {
-            number: 4, amount: 0,
+            name: "Low", number: 4, amount: 0,
         }];
 
         function parseBackendTicket(backendTicket) {
