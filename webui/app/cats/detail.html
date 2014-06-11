@@ -3,7 +3,7 @@
         <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
             <span style="clear: both; width: 100%; float: none;"></span>
             <div class="row">
-                <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-8 col-md-push-4 col-lg-6 col-lg-push-6">
+                <div id="app-cats-maintenance-navigation-div" class="col-xs-10 col-md-8 col-md-push-4 col-lg-8">
                     <app.cats.calendar 
                         class="app-cats-calendar" 
                         ondateselected="handleSelectedDate(dayString)"
@@ -14,7 +14,7 @@
                         data-maintainable="true">
                     </app.cats.calendar>
                 </div> 
-                <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-4 col-md-pull-8 col-lg-6 col-lg-pull-6">
+                <div id="app-cats-maintenance-projects-div" class="col-xs-10 col-md-4 col-md-pull-8 col-lg-4">
                     <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(objgextid_s, objguid_s);" data-heightoflist="300px">
                     </app.cats.maintenance-view.project-list>        
                 </div>
@@ -26,7 +26,7 @@
                 <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
             </div>
 
-            <div>
+            <div class="save_close_btn">
                 <input class="btn btn-default" type="button" value="Back" ng-click="goBackToMainPage()"></input>
                 <input class="btn btn-default" type="button" value="Cancel" ng-click="ResetToLastSavedState()"></input>
                 <input class="btn btn-default btn_blue" type="button" value="Save Timesheet" ng-click="saveTimesheet()" style="margin:4px"></input>
