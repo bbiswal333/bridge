@@ -140,6 +140,7 @@
 }
 
 .app-cats-day-details {
+    width: 12.5%;
     height: 40px;
     float: left;
     padding: 3px;
@@ -168,7 +169,7 @@
 }
 
 .app-cats-day {
-	width: 54px;
+	width: 13.5%;
 	height: 15px;
 	float: left;
 	margin-bottom: 2px;

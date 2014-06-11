@@ -10,7 +10,7 @@
             </div>
             <div style="margin-top: 5px; height: 110px; overflow: hidden;">
                 <div style="height: 110px;overflow-y: scroll;">
-                    <table cellpadding="2" >
+                    <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
                                 <span ng-if="$first && !event.isCurrent" >
