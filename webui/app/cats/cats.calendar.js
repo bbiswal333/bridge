@@ -84,6 +84,19 @@
         		selectRange(range);
 	        };
 
+	        function weekIsSelected(index){
+	        	var week = $scope.calArray[index];
+	        	week.forEach(function(day){
+	        		if (day.inMonth && isSelectable(day.dayString)) {
+	        			if (!isSelected(day.dayString)) {
+	        				return false;
+	        			};
+	        		};
+	        	});
+	        	return true;
+	        	console.log('weekIsSelected');
+	        };
+
 	        function collectRange(dayString) {
 	        	var range = [];
 	        	var lastDate = calUtils.parseDate($scope.selectedDates[$scope.selectedDates.length - 1]);
