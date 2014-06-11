@@ -109,8 +109,10 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
 var loadingContainer = document.createElement('div');
 
 angular.module('loader').run(function (loadservice) { 
-  loadservice.load(); 
-  loadingContainer.remove();  
+    loadservice.load();
+    // element.remove does not work in IE10, use jQuery remove instead
+    //loadingContainer.remove();  
+  $(loadingContainer).remove();
 });
 
 angular.element(document).ready(function() {         

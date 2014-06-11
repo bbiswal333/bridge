@@ -271,7 +271,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
 }]);
 
-angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridgeDataService) {
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService) {
     var loadingRequests = 0;
 
     //Receive emitted message and broadcast it.
@@ -285,6 +285,10 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, bridg
     $rootScope.$on("closeSettingsScreen", function (event, args) {
         $rootScope.$broadcast('closeSettingsScreenRequested', args);
     });
+
+    if ($location.search().clientMode == "true") {
+        bridgeDataService.setClientMode(true);
+    }
 
     var deferred = $q.defer();
     bridgeDataService.initialize(deferred).then(function () {
@@ -307,25 +311,53 @@ angular.module('bridge.app').filter("decodeIcon", function () {
 });
 
 
-angular.module('bridge.app').factory('bridge.app.httpInterceptor',['$q','$rootScope', '$injector', '$location', '$timeout',function($q, $rootScope, $injector, $location, $timeout){
+angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$rootScope', '$injector', '$location', '$timeout', function ($q, $rootScope, $injector, $location, $timeout) {
   
-    var $http;      
+    var $http;
+    var bridgeDataService;
+    var rProtocol = /^http|^https/i;
+    var rLocalhost = /^https:\/\/localhost/i;
 
-    var checkResponse = function(response) {
-        
+    function checkResponse (response) {
         $timeout.cancel(response.config.timer);
 
+        // inject $http object manually, see: http://stackoverflow.com/questions/20647483/angularjs-injecting-service-into-a-http-interceptor-circular-dependency
+        // for the same reason we need to inject the bridgeDataService manually (as it needs the $https service)
         $http = $http || $injector.get('$http');
         if ($http.pendingRequests.length < 1)
         {
             $rootScope.showLoadingBar = false;
             timer = undefined;
         }         
-    };
+    }
+
+    function rerouteCall(oConfig) {
+        var sNewUrl = "";
+        var sEncodedUrl = "";
+
+        if (oConfig.method == "GET") {
+            //oConfig.url = oConfig.url.replace(/\?/, "&");
+            sEncodedUrl = encodeURIComponent(oConfig.url);
+            sNewUrl = "https://localhost:1972/api/get?url=" + sEncodedUrl;
+        } else {
+            sNewUrl = oConfig.url;
+        }
+
+        return sNewUrl;
+    }
 
     return {
         'request': function(config)
-        {                         
+        {
+            bridgeDataService = bridgeDataService || $injector.get('bridgeDataService');
+            // if we have an external call (starting with http/https) and we are in client mode, then route all calls via the client
+            if (bridgeDataService.getClientMode() == true && rProtocol.test(config.url)) {
+                // if the call already targets to localhost, don't modify it
+                if (!rLocalhost.test(config.url)) {
+                    var sNewUrl = rerouteCall(config);
+                    config.url = sNewUrl;
+                }
+            }
             config.timer = $timeout(function()
             {                 
                 $rootScope.showLoadingBar = true;               

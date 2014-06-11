@@ -2,6 +2,7 @@
     this.projects = [];
     this.bridgeSettings = {};
     this.configRawData = null;
+    this.clientMode = false;
     var that = this;
 
     function isEmpty(obj) {
@@ -157,6 +158,14 @@
         return that.bridgeSettings;
     }
 
+    function _setClientMode(bClientMode) {
+        this.clientMode = bClientMode;
+    }
+
+    function _getClientMode() {
+        return this.clientMode;
+    }
+
     return {
         initialize: _initialize,
         getBridgeSettings: _getBridgeSettings,
@@ -166,5 +175,7 @@
         getAppById: _getAppById,
         getAppConfigById: _getAppConfigById,
         toDefault: _toDefault,
+        setClientMode: _setClientMode,
+        getClientMode: _getClientMode,
     };
 }]);
