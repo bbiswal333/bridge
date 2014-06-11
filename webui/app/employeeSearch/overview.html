@@ -10,7 +10,7 @@
 		{{selectedEmployee.BUILDING}}, {{selectedEmployee.ROOMNUMBER}}<br />
 		{{selectedEmployee.KOSTX}}<br />       
         <b><a href="mailto:{{selectedEmployee.SMTP_MAIL}}">{{selectedEmployee.SMTP_MAIL}}</a></b><br />
-        <b><a href="tel:{{selectedEmployee.TELNR}}">{{selectedEmployee.TELNR_DEF}}</a></b><br />
+        <b><a href="tel:{{selectedEmployee.TELNR}}">{{selectedEmployee.TELNR_DEF}}</a></b><!--<a href="" ng-click="copyClipboard(selectedEmployee.TELNR)">_CP</a>--><br />
         <br />
 		<b><a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}" target="_blank">User Profile</a></b>		
 	</div>
