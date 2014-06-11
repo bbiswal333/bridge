@@ -38,7 +38,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function displayCATSDataForDay(day) {
         $scope.lastCatsAllocationDataForDay = day;
         $scope.blockdata = [];
-        catsUtils.getWorkingHoursForDay(calUtils.stringifyDate($scope.day), function (workingHours) {
+        catsUtils.getWorkingHoursForDay(day.dayString, function (workingHours) {
             $scope.workingHoursForDay = workingHours;
 
             for (var i = 0; i < day.tasks.length; i++) {
@@ -230,8 +230,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
-        if ($scope.selectedDates.length > 1 &&
-            $scope.selectedDates[0] === calUtils.stringifyDate($scope.day)) {
+        if ($scope.selectedDates.length > 1) {
             clearOldTasks = true;
         };
 

@@ -9,17 +9,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.months = {};
 	this.days = {};
 	this.promise = null;
+	this.promiseForMonth = {};
 
 
-	this.getAllAvailableMonths = function(){
+	this.getDataForCurrentMonth = function(){
 		var date = calenderUtils.today();
+		// a cool way to wait for multiple promises (coding example)
 		var promises = [];
-
-		this.months = {};
-		for( var i = 0; i < 4; i++){
-			promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
-			date.setMonth(date.getMonth() - 1);
-		}
+		promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
 		this.promise = $q.all(promises);
 		return this.promise;
 	}
@@ -33,8 +30,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		var promises = [];
 	    var targetHoursCounter = 0;
 
-	    if (!this.months[month] && this.promise) {
-	    	return this.promise;
+	    if (!this.months[month] && this.promiseForMonth[month]) {
+	    	return this.promiseForMonth[month];
 	    } 
 	    else if (this.months[month]) {
 	    	deferred.resolve();
@@ -62,17 +59,25 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
     			monthData.hasTargetHours = false;
     		
 	        self.months[month] = monthData;
+	        delete self.promiseForMonth[month];
         });
 
+        this.promiseForMonth[month] = promise;
         return promise;
 	};
 
 	this.getDataForDate = function(date){
 		var deferred = $q.defer();
+		var unstringifiedDate = calenderUtils.parseDate(date);
+		var month = unstringifiedDate.getMonth();
+		var year = unstringifiedDate.getFullYear();
 
-	    if (!this.days[date] && this.promise) {
-	    	return this.promise;
+	    if (!this.days[date] && this.promiseForMonth[month]) {
+	    	return this.promiseForMonth[month];
 	    } 
+	    else if (!this.days[date]){
+	    	return this.getMonthData(year, month);
+	    }
 	    else if (this.days[date]) {
 	    	deferred.resolve();
 	    	return deferred.promise;
@@ -203,7 +208,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return this.days[workdate].tasks;
 	}
 
-	this.getAllAvailableMonths();
+	this.getDataForCurrentMonth();
 
 }]);
 
