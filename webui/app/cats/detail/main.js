@@ -16,7 +16,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.width = 800;
     $scope.selectedDates = [];
 
-
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
     }).error(function (data, status, header, config) { 
@@ -288,10 +287,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
             booking.QUANTITY = Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100;
-
-            if (booking.TASKTYPE === 'VACA'){
-                continue;
-            }
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
