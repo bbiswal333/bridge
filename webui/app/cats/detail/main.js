@@ -16,6 +16,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.width = 800;
     $scope.selectedDates = [];
 
+
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
     }).error(function (data, status, header, config) { 
