@@ -6,7 +6,8 @@
 		 "$location", 
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
-	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService) {
+		 "bridgeInBrowserNotification",
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
@@ -49,8 +50,6 @@
 	                $scope.state = "CATS-Data could no be retrieved from system ISP";
 	                $scope.hasError = true;
 	            }
-
-	            //console.log($scope.state);
 	        }
 
 	        $scope.jump = function (dayString, event) {
@@ -66,14 +65,13 @@
 	        	if (single_click) {
 	            	$location.path("/detail/cats/" + dayString);
 	        	} else if (multi_click) {
-	        		selectDay(dayString);
+	        		selectRange([monthlyDataService.days[dayString]]);
 	        	} else if (range_click) {
 	        		selectRange(collectRange(dayString));
 	        	}
 	        };
 
 	        $scope.selectWeek = function (index) {
-        		console.log(index);
 	        	var week = $scope.calArray[index];
 	        	var range = [];
 	        	week.forEach(function(day){
@@ -88,10 +86,10 @@
 	        	var week = $scope.calArray[index];
 	        	var allSelected = true;
 	        	var weekIsSelectable = false;
-	        	week.some(function(day){
-	        		if (day.inMonth && isSelectable(day.dayString)) {
+	        	week.some(function(calDay){
+	        		if (calDay.inMonth && isSelectable(calDay)) {
 	        			weekIsSelectable = true;
-	        			if (!$scope.isSelected(day.dayString)) {
+	        			if (!$scope.isSelected(calDay.dayString)) {
 	        				allSelected = false;
 	        				return false;
 	        			};
@@ -102,7 +100,6 @@
 	        		return true;
 	        	else
 	        		return false;
-	        	console.log('weekIsSelected');
 	        };
 
 	        function collectRange(dayString) {
@@ -139,26 +136,41 @@
 
 	        function selectRange(daysArray){
 	        	var toSelect = getUnselectedDays(daysArray);
+	        	var showVacationNotification = false;
+	        	var thisIsASelectOperation = true;
 
+	        	daysArray.forEach(function(day){
+					if(hasVacationTask(monthlyDataService.days[day.dayString])) {
+						showVacationNotification = true;
+					}
+					if($scope.weekIsSelected())
+	        	});
+
+	        	// Select
 	        	if (toSelect && toSelect.length > 0) {
 	        		toSelect.forEach(function(day){
-	        			selectDay(day.dayString);
+	        			selectDay(day);
 	        		})
+		        // Unselect or no day is selectable
 	        	} else {
 		        	daysArray.forEach(function(day){
-	        			selectDay(day.dayString);
+	        			selectDay(day);
 		        	});
 	        	}
+				if(showVacationNotification) {
+					bridgeInBrowserNotification.addAlert('info', 'Days with vacation can not be selected.');
+				}
 	        }
 
-	        function selectDay (dayString) {
+	        function selectDay (day) {
+	        	var dayString = day.dayString;
 				var dateHasTargetHours = false;
 
 				monthlyDataService.getDataForDate(dayString).then(function(){
 					
 		        	if ($scope.isSelected(dayString)) {
 	        			var ok = $scope.onDateDeselected({dayString: dayString});
-	        		} else if (isSelectable(dayString)) {
+	        		} else if (isSelectable(day)) {
 	        			var ok = $scope.onDateSelected({dayString: dayString});
 	        		};
 			        if (!ok) {
@@ -168,10 +180,10 @@
 
 	        }
 
-	        function isSelectable(dayString){
-	        	if (monthlyDataService.days[dayString] &&
-		            monthlyDataService.days[dayString].targetHours > 0 &&
-		            !hasVacationTask(monthlyDataService.days[dayString])) {
+	        function isSelectable(calDay){
+	        	if (monthlyDataService.days[calDay.dayString] &&
+	        		monthlyDataService.days[calDay.dayString].targetHours > 0 &&
+	        		!hasVacationTask(monthlyDataService.days[calDay.dayString])) {
 	        		return true;
         		}
         		return false;
@@ -196,8 +208,7 @@
 	        function getUnselectedDays(daysArray){
 	        	var unselected = [];
 	        	daysArray.forEach(function(day){
-	        		if (isSelectable(day.dayString) &&
-	        			!$scope.isSelected(day.dayString)) {
+	        		if (isSelectable(day) && !$scope.isSelected(day.dayString)) {
 	        			unselected.push(day);
 	        		};
 	        	});	

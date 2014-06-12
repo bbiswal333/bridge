@@ -26,7 +26,8 @@
 
 .app-cats-notInMonth {
 	background: #e1e1e1;
-	opacity: 0;
+	/*opacity: 0;*/
+	visibility: hidden;
 }
 
 .app-cats-icon {
