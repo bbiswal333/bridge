@@ -1,14 +1,14 @@
 ﻿.app-cats-stateR { 
 	/* Not maintained */
-	background: #F0AB00;
+	background: #428BCA;
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: rgba(240, 171, 0,0.5);
+	background: #428BCA;
 }
 
 .app-cats-stateG { /* maintained */
-	background: #AFE5FF;
+	background: #c4e8ff;
 }
 
 .app-cats-stateN { /* no need for maintainance */
@@ -31,7 +31,7 @@
 }
 
 .app-cats-today {
-	background: rgb(0, 157, 224);
+	background: #6cb9e3;
 }
 
 .selected_day span{
@@ -48,4 +48,5 @@
 
 .app-cats-week .app-cats-day {
 		color: white;
+		width: 13.5%;
 	}

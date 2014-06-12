@@ -4,6 +4,10 @@
 
 }
 
+.ngHeaderScroller{
+   position:fixed;
+}
+
 .ngGrid {
   background-color: white;
 }

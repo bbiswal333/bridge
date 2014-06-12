@@ -3,7 +3,7 @@
 angular.module('app.jira').factory("app.jira.configservice", function () 
 {  
     var data = {};
-    data.query = 'id in projectRankedIssues(I2MASEDEV) AND status != "Accepted" AND status != "Blocked" order by "Project Rank" ASC, Key ASC';
+    data.query = 'assignee = currentUser()';
     return data;
 });
 
@@ -27,7 +27,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
  
         //copied from the cats allocation bar
         $scope.colors = [
-            "#428bca",
+            "#428BCA",
             "#6cb9e3",
             "#a4d8f9",
             "#c4e8ff",
@@ -77,7 +77,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 if (jiraStatus.hasOwnProperty(attribute)) 
                 {                    
                     $scope.totalCount = $scope.totalCount + jiraStatus[attribute];
-                    $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute]});
+                    $scope.data.jiraChart.push({"status" : attribute, "count" : jiraStatus[attribute], "status_filter" : attribute});
                 }
             }        
 
@@ -90,12 +90,21 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             if( $scope.data.jiraChart.length > 4)
             {                
                 var others_count = 0;
+                var others_filter = '';
                 for(var i = 4; i < $scope.data.jiraChart.length; i++)
                 {
                     others_count = others_count + $scope.data.jiraChart[i].count;
+                    if(others_filter == "")
+                    {
+                        others_filter = $scope.data.jiraChart[i].status;
+                    }
+                    else
+                    {
+                        others_filter = others_filter + '|' + $scope.data.jiraChart[i].status;
+                    }
                 }
-                $scope.data.jiraChart.splice(3, $scope.data.jiraChart.length-4);
-                $scope.data.jiraChart.push({"status" : "Others", "count" : others_count});
+                $scope.data.jiraChart.splice(4, $scope.data.jiraChart.length-4);
+                $scope.data.jiraChart.push({"status" : "Others", "count" : others_count, "status_filter": others_filter});
             }                        
         },true);    
 

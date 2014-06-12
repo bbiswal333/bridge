@@ -36,7 +36,7 @@
 body {
     height: 100%;
     width: 100%;
-    font-size: 1em;
+    font-size: 1.2em;
     /*line-height: 1.4;*/
     font-family:'Open Sans', sans-serif;
     color: #707070;
@@ -602,6 +602,9 @@ input[type="checkbox"]:checked:after {
     margin-right: 15px;
     float: right;
 }
+.btn-group{
+    max-width: 70%;
+}
 
 .panel{
     border: none;
@@ -652,7 +655,7 @@ input[type="checkbox"]:checked:after {
 }
 
 .prio_bg_1{
-    background-color:#3399cc;
+    background-color:#428BCA;
 }
 .prio_bg_2{
     background-color:#6cb9e3;
@@ -685,4 +688,7 @@ input[type="checkbox"]:checked:after {
     right: 10px;
     float: right;
     opacity: 0.5;
+}
+.meetings-table{
+    font-size:0.9em;
 }

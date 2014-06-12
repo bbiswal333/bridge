@@ -1,29 +1,87 @@
 angular.module("app.cats.monthlyDataModule", ["lib.utils"])
-.service("app.cats.monthlyData", ["$http", "$q", "lib.utils.calUtils", "app.cats.data.catsUtils", function($http, $q, calenderUtils, catsUtils){
-	this.getMonthData = function(year, month, callback){
-		var weeks = this.getWeeksOfMonth(year, month);
+.service("app.cats.monthlyData", 
+	["$http", 
+	"$q", 
+	"lib.utils.calUtils", 
+	"app.cats.data.catsUtils", 
+	
+	function($http, $q, calenderUtils, catsUtils){
+	this.months = {};
+	this.days = {};
+	this.promise = null;
+	this.promiseForMonth = {};
+
+
+	this.getDataForCurrentMonth = function(){
+		var date = calenderUtils.today();
+		// a cool way to wait for multiple promises (coding example)
+		var promises = [];
+		promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
+		this.promise = $q.all(promises);
+		return this.promise;
+	}
+
+	this.getMonthData = function(year, month){
 		var monthData = {};
+		var self = this;
 		monthData.weeks = [];
-		var counter = 0;
+		var deferred = $q.defer();
+		var promise = null;
+		var promises = [];
 	    var targetHoursCounter = 0;
+
+	    if (!this.months[month] && this.promiseForMonth[month]) {
+	    	return this.promiseForMonth[month];
+	    } 
+	    else if (this.months[month]) {
+	    	deferred.resolve();
+	    	return deferred.promise;
+	    };
+
+		var weeks = this.getWeeksOfMonth(year, month);
         for (var i = 0; i < weeks.length; i++) {
-        	counter++;
-        	this.getWeeklyData(weeks[i].year, weeks[i].weekNo).then(function(data){
-	        	counter--;
+        	promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo)
+        	promises.push(promise);
+        	promise.then(function(data){
 	        	if(data) {
-		        	monthData.weeks.push(data);
-		        	targetHoursCounter = targetHoursCounter + data.hasTargetHoursForHowManyDays;
+	        		var weekData = self.convertWeekData(data);
+		        	monthData.weeks.push(weekData);
+		        	targetHoursCounter = targetHoursCounter + weekData.hasTargetHoursForHowManyDays;
 	        	}
-	        	if (counter === 0) {
-	        		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length) {
-	        			monthData.hasTargetHours = true;
-	        		} else {
-	        			monthData.hasTargetHours = false;
-	        		}
-			        callback(monthData);
-	        	};
         	});
         }
+
+        promise = $q.all(promises);
+        promise.then(function(){
+    		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length)
+    			monthData.hasTargetHours = true;
+    		else
+    			monthData.hasTargetHours = false;
+    		
+	        self.months[month] = monthData;
+	        delete self.promiseForMonth[month];
+        });
+
+        this.promiseForMonth[month] = promise;
+        return promise;
+	};
+
+	this.getDataForDate = function(date){
+		var deferred = $q.defer();
+		var unstringifiedDate = calenderUtils.parseDate(date);
+		var month = unstringifiedDate.getMonth();
+		var year = unstringifiedDate.getFullYear();
+
+	    if (!this.days[date] && this.promiseForMonth[month]) {
+	    	return this.promiseForMonth[month];
+	    } 
+	    else if (!this.days[date]){
+	    	return this.getMonthData(year, month);
+	    }
+	    else if (this.days[date]) {
+	    	deferred.resolve();
+	    	return deferred.promise;
+	    };
 	};
 
 	this.getWeeksOfMonth = function(year, month){
@@ -57,16 +115,18 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return weeks;
 	};
 
-	this.convertWeekData = function (backendData, year, week) {
-		if(!backendData || !year || !week) {
-			console.log("convertWeekData() at least one import parameter is empty.");
-			return null;
-		}
+	this.convertWeekData = function (backendData) {
+		// if(!backendData || !year || !week) {
+		// 	console.log("convertWeekData() at least one import parameter is empty.");
+		// 	return null;
+		// }
 
-		if (backendData.TIMESHEETS.WEEK != week + "." + year){
-			console.log("convertWeekData() data does not correspond to given week and year.");
-			return null;
-		}
+		// if (backendData.TIMESHEETS.WEEK != week + "." + year){
+		// 	console.log("convertWeekData() data does not correspond to given week and year.");
+		// 	return null;
+		// }
+		var week = backendData.TIMESHEETS.WEEK.substring(0,2);
+		var year = backendData.TIMESHEETS.WEEK.substring(3,7);
 
 		var weekData = {};
 		weekData.year = year;
@@ -82,8 +142,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var day = {};
 		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
 		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		day.dayString   = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
+		            		day.year = year;
+		            		day.week = week;
 		            		weekData.days.push( day );
 		            	}
 		            	if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
@@ -101,6 +164,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		weekData.days[DayIterator].tasks.push( task );
 		            		catsUtils.enrichTaskData(task);
 		            	}
+
+		            	if (day) {
+		            		this.days[day.date] = day;
+		            	};
 		           	}
 		        }
 		    }
@@ -111,14 +178,37 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return weekData;
 	};
 
-	this.getWeeklyData = function (year, week) {
-	    var deferred = $q.defer();
-	    var that = this;
-	    $http.get('https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=' + year + '.' + week)
-	    .success(function (data) {
-	        deferred.resolve(that.convertWeekData(data, year, week));
-	    });
-	    return deferred.promise;
-	};
+	// this.getWeeklyData = function (year, week) {
+	//     var deferred = $q.defer();
+	//     var that = this;
+	//     $http.get('https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=' + year + '.' + week)
+	//     .success(function (data) {
+	//         deferred.resolve(that.convertWeekData(data, year, week));
+	//     });
+	//     return deferred.promise;
+	// };
+
+	this.loadDataForSelectedWeeks = function(weeks){
+        var promises = [];
+        var self = this;
+
+        weeks.forEach(function(week){
+        	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
+            promises.push(promise);
+        	promise.then(function(data){
+	        	if(data) {
+	        		self.convertWeekData(data);
+	        	}
+        	});
+        })
+        return $q.all(promises);
+    }
+
+	this.getTasksForDate = function(workdate){
+		return this.days[workdate].tasks;
+	}
+
+	this.getDataForCurrentMonth();
+
 }]);
 

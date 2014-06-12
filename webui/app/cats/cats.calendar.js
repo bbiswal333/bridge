@@ -3,9 +3,10 @@
 		["lib.utils.calUtils", 
 		 "app.cats.data.catsUtils", 
 		 "$interval", 
-		 "$location",  
+		 "$location", 
 		 "bridgeDataService",
-	function (calUtils, catsUtils, $interval, $location, bridgeDataService) {
+		 "app.cats.monthlyData",
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService) {
 	    var linkFn = function ($scope) {
 	        var monthRelative = 0;
 
@@ -22,13 +23,14 @@
 	        $scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 	        $scope.calUtils = calUtils;
             
-	        var selectedDayArray = [];
+	        // var selectedDates = [$scope.selectedDay.toDateString()];
+	        var selectedDates = $scope.selectedDates;
+	        var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 	        $scope.getDescForState = function (state_s) {
 	            return catsUtils.getDescForState(state_s);
 	        };
 
-	        var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 	        function handleCatsData(data) {
 	            if (data != null) {
@@ -61,23 +63,145 @@
 	        	console.log("MULTI:" + multi_click);
 	        	console.log("SINGLE:" + single_click);	        	
 
-	            $location.path("/detail/cats/" + dayString);
+	        	if (single_click) {
+	            	$location.path("/detail/cats/" + dayString);
+	        	} else if (multi_click) {
+	        		selectDay(dayString);
+	        	} else if (range_click) {
+	        		selectRange(collectRange(dayString));
+	        	}
 	        };
 
-	        $scope.selectWeek = function (weekNo) {
-        		console.log(weekNo);
-        		//get days of this week
-        		//loop over all thees days and select/deselect them
-        		var ok = $scope.onDaySelected({
-		          date: date
-		        });
-
-		        if (!ok) {
-		        }
+	        $scope.selectWeek = function (index) {
+        		console.log(index);
+	        	var week = $scope.calArray[index];
+	        	var range = [];
+	        	week.forEach(function(day){
+	        		if (day.inMonth) {
+	        			range.push(day);
+	        		};
+	        	})
+        		selectRange(range);
 	        };
 
-	        $scope.isSelected = function(day){
-	        	return selectedDayArray.indexOf(day)!=-1;
+	        $scope.weekIsSelected = function(index){
+	        	var week = $scope.calArray[index];
+	        	var allSelected = true;
+	        	var weekIsSelectable = false;
+	        	week.some(function(day){
+	        		if (day.inMonth && isSelectable(day.dayString)) {
+	        			weekIsSelectable = true;
+	        			if (!$scope.isSelected(day.dayString)) {
+	        				allSelected = false;
+	        				return false;
+	        			};
+	        		};
+	        	});
+
+	        	if (weekIsSelectable && allSelected) 
+	        		return true;
+	        	else
+	        		return false;
+	        	console.log('weekIsSelected');
+	        };
+
+	        function collectRange(dayString) {
+	        	var range = [];
+	        	var lastDate = calUtils.parseDate($scope.selectedDates[$scope.selectedDates.length - 1]);
+	        	var selectedDate = calUtils.parseDate(dayString);
+
+	        	function collectDates(a, b){
+	        		var dateStrings = [];
+
+	        		if (a < b) {
+	        			var first = a;
+	        			var last = b;
+	        		} else {
+	        			var first = b;
+	        			var last = a;
+	        		}
+
+	        		while(first.getTime() != last.getTime()){
+	        			dateStrings.push(calUtils.stringifyDate(first));
+	        			first.setDate(first.getDate() + 1);
+	        		}
+	        		dateStrings.push(calUtils.stringifyDate(first));
+
+	        		return dateStrings;
+	        	}
+
+	        	collectDates(lastDate, selectedDate).forEach(function(dateString){
+	        		range.push(monthlyDataService.days[dateString]);
+	        	})
+
+	        	return range;
+	        }
+
+	        function selectRange(daysArray){
+	        	var toSelect = getUnselectedDays(daysArray);
+
+	        	if (toSelect && toSelect.length > 0) {
+	        		toSelect.forEach(function(day){
+	        			selectDay(day.dayString);
+	        		})
+	        	} else {
+		        	daysArray.forEach(function(day){
+	        			selectDay(day.dayString);
+		        	});
+	        	}
+	        }
+
+	        function selectDay (dayString) {
+				var dateHasTargetHours = false;
+
+				monthlyDataService.getDataForDate(dayString).then(function(){
+					
+		        	if ($scope.isSelected(dayString)) {
+	        			var ok = $scope.onDateDeselected({dayString: dayString});
+	        		} else if (isSelectable(dayString)) {
+	        			var ok = $scope.onDateSelected({dayString: dayString});
+	        		};
+			        if (!ok) {
+			        	console.log("Date couldn't be de- /selected: ", dayString);
+			        }	        			
+				})
+
+	        }
+
+	        function isSelectable(dayString){
+	        	if (monthlyDataService.days[dayString] &&
+		            monthlyDataService.days[dayString].targetHours > 0 &&
+		            !hasVacationTask(monthlyDataService.days[dayString])) {
+	        		return true;
+        		}
+        		return false;
+	        }
+
+	        $scope.isSelected = function(dayString){
+	        	if (!selectedDates)
+	        		return false;
+	        	return selectedDates.indexOf(dayString)!=-1;
+	        }
+
+	        function hasVacationTask (day){
+		        var hasVacationTask = false;
+		        day.tasks.forEach(function(task){
+		            if (task.TASKTYPE === "VACA") {
+		                hasVacationTask = true;
+		            };
+		        })
+		        return hasVacationTask;
+		    }
+
+	        function getUnselectedDays(daysArray){
+	        	var unselected = [];
+	        	daysArray.forEach(function(day){
+	        		if (isSelectable(day.dayString) &&
+	        			!$scope.isSelected(day.dayString)) {
+	        			unselected.push(day);
+	        		};
+	        	});	
+	        	return unselected;
 	        }
 
 	        $scope.canGoBackward = function () {
@@ -214,6 +338,9 @@
 	        link: linkFn,
 	        scope: {
 	            selectedDay: '=selectedDay',
+	            selectedDates: '=selectedDates',
+	            onDateSelected: "&ondateselected",
+	            onDateDeselected: "&ondatedeselected",
 	            dayClassInput: '@dayClass',
                 maintainable: '=',
 	        }

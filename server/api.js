@@ -6,7 +6,7 @@ var path 		= require('path');
 var npm_load	= require('./npm_load.js');
 var path		= require('path');
 
-exports.register = function(app, user, local, proxy, npm)
+exports.register = function(app, user, local, proxy, npm, eTag)
 {
 	//get api modules	
 	var xml2js 	  	  = require("xml2js").parseString;
@@ -281,19 +281,42 @@ exports.register = function(app, user, local, proxy, npm)
 
 	app.get("/api/modules", function (request, response) 
 	{
-		response = setHeader( request, response );			
+		response = setHeader( request, response );
 
-	    var files = {};
+		//cache module files for etag if existing
+		var getResponse = true;		
+		if(eTag !== undefined)
+		{
+			response.setHeader('Cache-Control', 'public, max-age=2592000');	// 30 days		
+			response.setHeader('ETag', eTag);		
+			if( request.headers['if-none-match'] == eTag)
+			{
+				getResponse = false;
+			}
+		}
+		else
+		{
+			response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+			response.removeHeader('Etag');
+		}
+		
+		//console.log(eTag);
+		//console.log(request.headers['if-none-match']);		
 
-		var bridge_path = path.join(__dirname, '../webui/bridge');
-	    var bridge_files = getFiles(bridge_path);
-	    files = concatAttributes(files, bridge_files);
+		if( getResponse )
+		{
+		    var files = {};
 
-		var app_path = path.join(__dirname, '../webui/app');
-	    var app_files = getFiles(app_path);	
-	    files = concatAttributes(files, app_files);
+			var bridge_path = path.join(__dirname, '../webui/bridge');
+		    var bridge_files = getFiles(bridge_path);
+		    files = concatAttributes(files, bridge_files);
+
+			var app_path = path.join(__dirname, '../webui/app');
+		    var app_files = getFiles(app_path);	
+		    files = concatAttributes(files, app_files);
 
 
+<<<<<<< HEAD
 	    if (typeof request.query.format == "undefined")
 	    {
 	    	response.setHeader('Content-Type', 'text/plain;');						    	   
@@ -305,13 +328,31 @@ exports.register = function(app, user, local, proxy, npm)
 			buildify.concat(files.js_files);
 			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
 			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
+=======
+		    if (typeof request.query.format == "undefined")
+		    {
+		    	response.setHeader('Content-Type', 'text/plain;');						    	   
+				response.send(JSON.stringify(files));		
+			}
+			else if( request.query.format == "js")
+			{
+				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
+				buildify.concat(files.js_files);		
+				response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+				response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
+			}
+			else if( request.query.format == "css")
+			{
+				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
+				buildify.concat(files.css_files);				
+				response.setHeader('Content-Type', 'text/css; charset=utf-8');
+				response.send(buildify.cssmin().getContent());	
+			}
+>>>>>>> upstream/master
 		}
-		else if( request.query.format == "css")
+		else
 		{
-			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
-			buildify.concat(files.css_files);				
-			response.setHeader('Content-Type', 'text/css; charset=utf-8');
-			response.send(buildify.cssmin().getContent());	
+			response.send();
 		}
 	});	
 

@@ -15,26 +15,43 @@ angular.module('app.im').directive('app.im', function () {
     angular.module('app.im').run(function ($rootScope) {
 });
 
-angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http',
-    function Controller($scope, $http) {
+angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
+    function Controller($scope, $http, ticketData) {
 
-        $scope.prioarr = [0,0,0,0];
-        $scope.prionr = [1,2,3,4];
+        $scope.prios = [{
+            name: "Very High", number: 1, amount: 0,
+        }, {
+            name: "High", number: 2, amount: 0,
+        }, {
+            name: "Medium", number: 3, amount: 0,
+        }, {
+            name: "Low", number: 4, amount: 0,
+        }];
+
+        function parseBackendTicket(backendTicket) {
+            _.each($scope.prios, function (prios) {
+                if (backendTicket.PRIO == prios.number.toString())
+                    prios.amount++;
+            });
+        }
+
         $scope.$parent.titleExtension = " - Internal Messages"; 
         $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin
             ).success(function(data) {
                 data = new X2JS().xml_str2json(data);
-                $scope.imData = data["abap"];
-                $scope.imData = $scope.imData["values"];
+                var imData = data["abap"];
+                ticketData.backendTickets = imData["values"];
 
-                _.each($scope.imData.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (n) {
-                    _.each($scope.prionr, function (u,i) {
-                        i = i + 1;
-                        if(n.PRIO == i.toString())
-                            $scope.prioarr[i-1] ++;
+                // if you have multiple tickets, DEVDB_MESSAGE_OUT is an array, otherwise a simple object
+                if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
+                    _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
+                        parseBackendTicket(backendTicket);
                     });
-                });
-                if ( ($scope.prioarr[0] + $scope.prioarr[1] + $scope.prioarr[2] + $scope.prioarr[3]) == 0) {
+                } else {
+                    parseBackendTicket(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+                }
+
+                if (($scope.prios[0].amount + $scope.prios[1].amount + $scope.prios[2].amount + $scope.prios[3].amount) == 0) {
                     $scope.lastElement="You have no internal messages to display!";
                     $scope.displayChart = false;
                 }                

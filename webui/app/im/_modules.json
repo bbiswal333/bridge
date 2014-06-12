@@ -9,12 +9,12 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/im",
+				"route"			:	"/detail/im/:prio",
 				"templateUrl"	:	"app/im/detail.html"			
 			}
 		]	
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js","settings.js","config.js"],
+	"js_files" : ["overview.js", "detail.js","settings.js","config.js", "ticketData.js"],
 	"css_files" : []
 }

@@ -80,4 +80,5 @@ describe("The calUtils-Lib provides various functions for working with dates", f
   it("should move date to first day in month", function () {
       expect(calUtils.moveDateToFirstDayInMonth(calUtils.getUTC(2014, 3, 15)).toISOString()).toBe("2014-04-01T00:00:00.000Z");
   });
+
 });
