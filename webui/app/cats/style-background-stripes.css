@@ -10,6 +10,7 @@
 	background-image: url('/../../img/part_maint.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position-x: 100%;
 }
 
 .app-cats-stateG { /* maintained */
@@ -40,6 +41,7 @@
 	background-image: url('/../../img/ecke_dunkel_noshadow.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position-x: 100%;
 }
 
 .selected_day span{
@@ -62,7 +64,7 @@
 	background-image: url('/../../img/part_maint_TODAY.svg');
 	background-repeat: no-repeat;
 	background-size: cover;
-
+	background-position-x: 100%;
 }
 
 
