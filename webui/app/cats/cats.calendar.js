@@ -134,48 +134,57 @@
 	        	return range;
 	        }
 
+	        function isSelectOperation(daysArray){
+	        	var hasSelectableDay = false;
+	        	var hasSelectedDays  = false;
+	        	daysArray.forEach(function(calDay){
+					if(!$scope.isSelected(calDay.dayString) &&
+					   isSelectable(calDay) &&
+					   !hasVacationTask(monthlyDataService.days[calDay.dayString])) {
+						hasSelectableDay = true;
+					}
+					if($scope.isSelected(calDay.dayString)) {
+						hasSelectedDays = true;
+					}
+	        	});
+	        	if(hasSelectableDay || (!hasSelectableDay && !hasSelectedDays)) {
+	        		return true;
+	        	}
+	        	return false;
+	        }
+
 	        function selectRange(daysArray){
 	        	var toSelect = getUnselectedDays(daysArray);
-	        	var showVacationNotification = false;
-	        	var thisIsASelectOperation = true;
-
-	        	daysArray.forEach(function(day){
-					if(hasVacationTask(monthlyDataService.days[day.dayString])) {
-						showVacationNotification = true;
-					}
-					if($scope.weekIsSelected())
-	        	});
-
-	        	// Select
 	        	if (toSelect && toSelect.length > 0) {
 	        		toSelect.forEach(function(day){
 	        			selectDay(day);
 	        		})
-		        // Unselect or no day is selectable
 	        	} else {
 		        	daysArray.forEach(function(day){
 	        			selectDay(day);
 		        	});
 	        	}
-				if(showVacationNotification) {
+
+	        	var showVacationNotification = false;
+	        	daysArray.forEach(function(day){
+					if(hasVacationTask(monthlyDataService.days[day.dayString])) {
+						showVacationNotification = true;
+					}
+	        	});
+				if(showVacationNotification && isSelectOperation(daysArray)) {
 					bridgeInBrowserNotification.addAlert('info', 'Days with vacation can not be selected.');
 				}
 	        }
 
-	        function selectDay (day) {
-	        	var dayString = day.dayString;
-				var dateHasTargetHours = false;
+	        function selectDay (calDay) {
+	        	var dayString = calDay.dayString;
 
 				monthlyDataService.getDataForDate(dayString).then(function(){
-					
 		        	if ($scope.isSelected(dayString)) {
 	        			var ok = $scope.onDateDeselected({dayString: dayString});
-	        		} else if (isSelectable(day)) {
+	        		} else if (isSelectable(calDay)) {
 	        			var ok = $scope.onDateSelected({dayString: dayString});
 	        		};
-			        if (!ok) {
-			        	console.log("Date couldn't be de- /selected: ", dayString);
-			        }	        			
 				})
 
 	        }
