@@ -141,7 +141,7 @@
 }
 
 .app-cats-day-details {
-    width: 12.5%;
+    width: calc(100%/8);
     height: 40px;
     float: left;
     padding: 3px;
@@ -190,24 +190,8 @@
 
 /* Project List Template*/
 
-@media (min-width: 1420px) {
-	/*.app-cats-project-selector-button {
-	    width: 47%;
-	}*/
-	.app-cats-col-xs-1-8 {
-        width: 12.5%;
-    }
-}
 
-@media (max-width: 1419px) {
-    /*.app-cats-project-selector-button {
-	    width: 95%;
-    }*/
 
-    .app-cats-col-xs-1-8 {
-        width: 12%;
-    }
-}
 
 .app-cats-project-selector-button {
     width: 100%;
@@ -267,3 +251,75 @@
     height: 30px;
     width: 50px;
 }
+
+.app-cats-stateR { 
+    /* Not maintained */
+    background: #a4d8f9;
+    
+}
+
+.app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
+    background-color:#dff5ff;
+
+    background-image: url('/../../img/part_maint.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 100%;
+}
+
+.app-cats-stateG { /* maintained */
+    background: #dff5ff;
+}
+
+.app-cats-stateN { /* no need for maintainance */
+    background: #e1e1e1;
+}
+
+.app-cats-notInMonth {
+    background: #e1e1e1;
+    /*opacity: 0;*/
+    visibility: hidden;
+}
+
+.app-cats-icon {
+    font-family: 'SAP-icons';
+    top: 90%;
+    right:10px;
+}
+
+.app-cats-noDataInCats {
+    background: #555;
+}
+
+.app-cats-today { 
+    background-image: url('/../../img/ecke_dunkel_noshadow.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 100%;
+}
+
+.selected_day span{
+    position: relative;
+    top: -2px;
+}
+
+.selected_day{
+    background: ;
+    border: 2px solid #ffd07e;
+    color: #707070!important;
+    font-weight: 600;
+}
+
+
+
+.app-cats-stateY_TODAY { 
+
+    /*background-color:#dff5ff;*/
+    background-image: url('/../../img/part_maint_TODAY.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 100%;
+}
+
+
+

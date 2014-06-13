@@ -199,7 +199,7 @@ img {
     height: 40px;
     min-width: 400px;
     background-color: rgb(255, 255, 255);
-    background: url('../img/menuLine.png') repeat-x left bottom rgba(255, 255, 255, 0.9);
+    background: url('../img/menuLine.png') repeat-x left bottom rgba(255, 255, 255, 1);
 }
 .mainNav > li {
     height: 40px;
