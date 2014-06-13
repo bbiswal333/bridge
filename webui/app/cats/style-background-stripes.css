@@ -4,7 +4,12 @@
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #428BCA;
+	background-color:#dff5ff;
+
+	background-image: url('/../../img/part_maint.svg');
+	background-repeat: no-repeat;
+	background-position-x: 50%;
+	background-position-y: 50%;
 }
 
 .app-cats-stateG { /* maintained */
@@ -46,6 +51,19 @@
 	color: #707070!important;
 	font-weight: 600;
 }
+
+
+
+.app-cats-stateY_TODAY { 
+
+	/*background-color:#dff5ff;*/
+	background-image: url('/../../img/part_maint_TODAY.svg');
+	background-repeat: no-repeat;
+	background-position-x: 50%;
+	background-position-y: 50%;
+
+}
+
 
 .app-cats-week .app-cats-day {
 		color: white;

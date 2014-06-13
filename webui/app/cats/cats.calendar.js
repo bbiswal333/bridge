@@ -307,6 +307,13 @@
 	            catsUtils.getCatsComplianceData(handleCatsData, true);
 	            //catsUtils.getData(handleCatsData);
 	        });
+		    
+		    $scope.getStateClassSubstring = function(calDay){
+		    	if(calDay.data.state == 'Y' && calDay.today)
+		    		return 'Y_TODAY';
+		    	else
+		    		return calDay.data.state;
+		    }
 	    };
 
 	    function processCatsData(cats_o) {
@@ -341,6 +348,7 @@
 	            return new Date(year, month, day).getTime();
 	        }
 	    }
+
 
 	    return {
 	        restrict: "E",

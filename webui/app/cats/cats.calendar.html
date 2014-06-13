@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}}  clickable app-cats-col-xs-1-8" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString, $event);">
-                    <div id="inner" class="app-cats-state{{day.data.state}}" ng-class="{
+                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
