@@ -1,14 +1,3 @@
-angular.module('bridge.app').directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        element.attr('src', attrs.errSrc);
-      });
-    }
-  }
-});
-
-
 angular.module('bridge.app').controller('bridgeController',
     ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
     function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService) {            
@@ -378,5 +367,3 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$root
     };
 
 }]);
-
- 
