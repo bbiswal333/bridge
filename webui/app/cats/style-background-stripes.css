@@ -9,8 +9,7 @@
 
 	background-image: url('/../../img/part_maint.svg');
 	background-repeat: no-repeat;
-	background-position-x: 50%;
-	background-position-y: 50%;
+	background-size: cover;
 }
 
 .app-cats-stateG { /* maintained */
@@ -40,9 +39,7 @@
 .app-cats-today { 
 	background-image: url('/../../img/ecke_dunkel_noshadow.svg');
 	background-repeat: no-repeat;
-	background-position-x: 100%;
-
-	
+	background-size: cover;
 }
 
 .selected_day span{
@@ -64,8 +61,7 @@
 	/*background-color:#dff5ff;*/
 	background-image: url('/../../img/part_maint_TODAY.svg');
 	background-repeat: no-repeat;
-	background-position-x: 50%;
-	background-position-y: 50%;
+	background-size: cover;
 
 }
 
