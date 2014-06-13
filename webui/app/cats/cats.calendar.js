@@ -63,9 +63,9 @@ angular.module("app.cats")
 				if (single_click) {
 					$location.path("/detail/cats/" + dayString);
 				} else if (multi_click) {
-					selectRange([monthlyDataService.days[dayString]]);
+					selectRange([monthlyDataService.days[dayString]],dayString);
 				} else if (range_click) {
-					selectRange(collectRange(dayString));
+					selectRange(collectRange(dayString),dayString);
 				}
 			};
 
@@ -159,21 +159,28 @@ angular.module("app.cats")
 				return false;
 			}
 
-			function selectRange(daysArray){
+			function selectRange(daysArray,clickedOnDayString){
 				selectedDates = selectedDates;
 				var toSelect = getUnselectedDays(daysArray);
 				if (toSelect && toSelect.length > 0) {
 					toSelect.forEach(function(calDay){
 						selectDay(calDay);
 					})
-				} else {
+				} else if (!clickedOnDayString || $scope.isSelected(clickedOnDayString)){
 					daysArray.forEach(function(calDay){
 						unSelectDay(calDay);
 					});
 				}
 
+				// clear incorrect selections like vacation or weekend days...
+				daysArray.forEach(function(calDay){
+					if (!isSelectable(calDay) && $scope.isSelected(calDay.dayString)) {
+						unSelectDay(calDay);
+					};
+				});
+
 				if(containsVacationDay(daysArray) && isSelectOperation(daysArray)) {
-					bridgeInBrowserNotification.addAlert('info', 'Days with vacation can not be selected.');
+					bridgeInBrowserNotification.addAlert('', 'Days with vacation can not be selected.');
 				}
 			}
 
@@ -230,9 +237,9 @@ angular.module("app.cats")
 
 			function getUnselectedDays(daysArray){
 				var unselected = [];
-				daysArray.forEach(function(day){
-					if (isSelectable(day) && !$scope.isSelected(day.dayString)) {
-						unselected.push(day);
+				daysArray.forEach(function(calDay){
+					if (isSelectable(calDay) && !$scope.isSelected(calDay.dayString)) {
+						unselected.push(calDay);
 					};
 				});	
 				return unselected;
