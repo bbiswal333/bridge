@@ -109,6 +109,16 @@ img {
     user-select: none;
     cursor:default;
 }
+
+.select {
+    -webkit-touch-callout: auto;
+    -webkit-user-select: auto;
+    -khtml-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+    cursor:auto;  
+}
 .prio {
     width:100%;
     vertical-align: text-bottom;
@@ -127,10 +137,11 @@ img {
 .details {
     background-color: white;
 }
-
+/*
 .boxDisable * {
     opacity: 0.9;
 }
+*/
 
 .boxLeft {
     width: 25%;
@@ -356,7 +367,7 @@ img {
 .download-icon {
     font-family:'SAP-icons';
     font-size: 20px;
-    color: #0099CC;    
+    color: #428BCA;    
     padding-left: 10px;    
 }
 
