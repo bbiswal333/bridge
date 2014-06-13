@@ -109,6 +109,16 @@ img {
     user-select: none;
     cursor:default;
 }
+
+.select {
+    -webkit-touch-callout: auto;
+    -webkit-user-select: auto;
+    -khtml-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+    cursor:auto;  
+}
 .prio {
     width:100%;
     vertical-align: text-bottom;
