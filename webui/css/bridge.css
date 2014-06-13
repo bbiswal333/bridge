@@ -127,10 +127,11 @@ img {
 .details {
     background-color: white;
 }
-
+/*
 .boxDisable * {
     opacity: 0.9;
 }
+*/
 
 .boxLeft {
     width: 25%;
@@ -356,7 +357,7 @@ img {
 .download-icon {
     font-family:'SAP-icons';
     font-size: 20px;
-    color: #0099CC;    
+    color: #428BCA;    
     padding-left: 10px;    
 }
 
