@@ -84,6 +84,27 @@
         		selectRange(range);
 	        };
 
+	        $scope.weekIsSelected = function(index){
+	        	var week = $scope.calArray[index];
+	        	var allSelected = true;
+	        	var weekIsSelectable = false;
+	        	week.some(function(day){
+	        		if (day.inMonth && isSelectable(day.dayString)) {
+	        			weekIsSelectable = true;
+	        			if (!$scope.isSelected(day.dayString)) {
+	        				allSelected = false;
+	        				return false;
+	        			};
+	        		};
+	        	});
+
+	        	if (weekIsSelectable && allSelected) 
+	        		return true;
+	        	else
+	        		return false;
+	        	console.log('weekIsSelected');
+	        };
+
 	        function collectRange(dayString) {
 	        	var range = [];
 	        	var lastDate = calUtils.parseDate($scope.selectedDates[$scope.selectedDates.length - 1]);
@@ -133,14 +154,18 @@
 	        function selectDay (dayString) {
 				var dateHasTargetHours = false;
 
-	        	if ($scope.isSelected(dayString)) {
-        			var ok = $scope.onDateDeselected({dayString: dayString});
-        		} else if (isSelectable(dayString)) {
-        			var ok = $scope.onDateSelected({dayString: dayString});
-        		};
-		        if (!ok) {
-		        	console.log("Date couldn't be de- /selected: ", dayString);
-		        }	        			
+				monthlyDataService.getDataForDate(dayString).then(function(){
+					
+		        	if ($scope.isSelected(dayString)) {
+	        			var ok = $scope.onDateDeselected({dayString: dayString});
+	        		} else if (isSelectable(dayString)) {
+	        			var ok = $scope.onDateSelected({dayString: dayString});
+	        		};
+			        if (!ok) {
+			        	console.log("Date couldn't be de- /selected: ", dayString);
+			        }	        			
+				})
+
 	        }
 
 	        function isSelectable(dayString){

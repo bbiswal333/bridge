@@ -690,4 +690,6 @@ input[type="checkbox"]:checked:after {
     float: right;
     opacity: 0.5;
 }
-
+.meetings-table{
+    font-size:0.9em;
+}

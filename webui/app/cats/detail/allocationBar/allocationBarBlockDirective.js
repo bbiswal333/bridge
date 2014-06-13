@@ -8,6 +8,7 @@
             totalValue: "=",
             totalWidth: "=",
             getRemainingValue: "=",
+            getBlockIndex: "=",
         },
         replace: true,
         link: function ($scope, elem) {
@@ -16,7 +17,7 @@
             $scope.localValue = $scope.blockData.value;
 
             $scope.dragBarWidth = 5;
-            $scope.blockColor = colorUtils.getNextColor();
+            $scope.blockColor = colorUtils.getNextColor($scope.getBlockIndex($scope.blockData));
 
             $scope.getValueAsPercentage = function () {
                 return Math.round($scope.localValue / $scope.totalValue * 100);
