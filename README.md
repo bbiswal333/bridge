@@ -7,7 +7,7 @@ This is bridge, the internal Inner Source Dashboard & Platform for Developers, w
 
 
 # Developer Guide
-Everything which is needed to run this application is included in this repository. To get started with Git & GitHub, check out our [Bootcamp](https://github-bootcamp.mo.sap.corp).
+Everything which is needed to is included in this repository. To get started with Git & GitHub, check out our [Bootcamp](https://github-bootcamp.mo.sap.corp).
 
 ## setup
 * fork this repository and clone your fork to get a local copy
@@ -15,14 +15,13 @@ Everything which is needed to run this application is included in this repositor
 
 ## run locally
 * run `node server/server.js` and open `https://localhost:8000` in a browser
-* for internet explorer add `https://localhost` to your trusted sites: Internet Options -> Security -> Trusted Sites -> Sites. IE does not allow cross domain calls between security zones, so you need to put localhost into the same zone as all the other https://*.wdf.sap.corp sites if you want to launch bridge from localhost. This is only relevant to bridge developers, end users do not have to do that.
+* for [internet explorer](http://thefunniestpictures.com/wp-content/uploads/2013/09/funny-browsers-Internet-Explorer-slow.jpg) add `https://localhost` to your trusted sites
 
-## run locally with client
-* you can test your app with and without the client running depending on the services and connectivity you need for you application
-* if you need to adjust the client, go to the client subdirectory and execute `grunt` to rebuild the client and `grunt src` to just update the source files in the `client/app` directory
-* to build a productive version of the client, run `grunt deploy`
-* the local test version of the client uses the local bridge npm module on your pc and starts the node server there, the productive version downloads the latest version (git tag)
-* note that at the end you will have two node servers running
+## client
+* for most things you do not need to adjust the client and you can just install it
+* to build the client yourself, execute `grunt` in the `client` directory
+* to only update sources, execute `grunt src`
+* to build a productive version of the client, execute `grunt deploy`
 
 ## debug node server
 * use a tool like node-inspector for debugging: https://github.com/node-inspector/node-inspector
