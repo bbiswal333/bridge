@@ -51,13 +51,14 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
+
 .boxDisable {
     background-color: #E6E6E6;
 }
 
 .box-icon
 {
-    color: #097AC5;
+    color: #428BCA;
 }
 
 .settingsIcon{
