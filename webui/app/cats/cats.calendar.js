@@ -1,4 +1,4 @@
-﻿angular.module("app.cats")
+angular.module("app.cats")
 	.directive("app.cats.calendar", 
 		["lib.utils.calUtils", 
 		 "app.cats.data.catsUtils", 
@@ -54,11 +54,11 @@
 				
 				var range_click = event.shiftKey;
 				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
-				var single_click = !range_click && !multi_click;			
+				var single_click = !range_click && !multi_click;
 
 				console.log("RANGE:" + range_click);
 				console.log("MULTI:" + multi_click);
-				console.log("SINGLE:" + single_click);				
+				console.log("SINGLE:" + single_click);
 
 				if (single_click) {
 					$location.path("/detail/cats/" + dayString);
@@ -100,14 +100,18 @@
 					return false;
 			};
 
+			function getSelectionBaseDate(dayString) {
+				var date = calUtils.parseDate($scope.selectedDates[0]);
+				if((!date || date == false) && dayString) {
+					date = calUtils.parseDate(dayString);
+				}
+				return date;
+			}
+
 			function collectRange(dayString) {
 				var range = [];
-				var lastDate = calUtils.parseDate($scope.selectedDates[$scope.selectedDates.length - 1]);
+				var lastDate = getSelectionBaseDate(dayString);
 				var selectedDate = calUtils.parseDate(dayString);
-
-				if(!lastDate || lastDate == false) {
-					lastDate = selectedDate;
-				}
 
 				function collectDates(a, b){
 					var dateStrings = [];
@@ -156,6 +160,7 @@
 			}
 
 			function selectRange(daysArray){
+				selectedDates = selectedDates;
 				var toSelect = getUnselectedDays(daysArray);
 				if (toSelect && toSelect.length > 0) {
 					toSelect.forEach(function(calDay){
@@ -166,25 +171,24 @@
 						unSelectDay(calDay);
 					});
 				}
+
 				if(containsVacationDay(daysArray) && isSelectOperation(daysArray)) {
 					bridgeInBrowserNotification.addAlert('info', 'Days with vacation can not be selected.');
 				}
 			}
 
 			function selectDay(calDay) {
-				var dayString = calDay.dayString;
-				monthlyDataService.getDataForDate(dayString).then(function(){
+				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
 					if (isSelectable(calDay)) {
-						var ok = $scope.onDateSelected({dayString: dayString});
+						var ok = $scope.onDateSelected({dayString: calDay.dayString});
 					};
 				})
 			}
 
 			function unSelectDay(calDay) {
-				var dayString = calDay.dayString;
-				monthlyDataService.getDataForDate(dayString).then(function(){
-					if ($scope.isSelected(dayString)) {
-						var ok = $scope.onDateDeselected({dayString: dayString});
+				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
+					if ($scope.isSelected(calDay.dayString)) {
+						var ok = $scope.onDateDeselected({dayString: calDay.dayString});
 					}
 				})
 			}
