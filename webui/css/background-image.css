@@ -24,9 +24,7 @@
     height: 100%;
     width: 100%;
     right:0;
-    background-color:#0442b9;
-    background-image: url('../img/273907_l_srgb_s_gl.jpg');
-    background-repeat: no-repeat;
+    background-image: url('../img/clouds-01.svg');
     background-size: 100% auto;
     background-position-y: bottom;
 }

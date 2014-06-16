@@ -1,18 +1,17 @@
 
 /* detail.html*/
 
-  #app-cats-maintenance-projects-div, #app-cats-maintenance-navigation-div, #app-cats-maintenance-meetings-div {
-    margin-top: 20px;
+.app-cats-box{
+    margin: 20px 0 20px 0;
+}
+
+  #app-cats-maintenance-projects-div {
     float: left;
-    margin-bottom: 20px;
   }
 
   #app-cats-maintenance-navigation-div {
-    margin-top: 32px;
-  }
-
-  #app-cats-maintenance-meetings-div {
-
+    float: right;
+    margin: 10px 0 20px 0;
   }
 
   #app-cats-maintenance-header {
@@ -26,7 +25,9 @@
     text-align: center;    
     margin-bottom: 25px; /* 10px Dragger-Expand, 15px padding von panel-body */
     margin-top: 40px;
-    color: #ffffff;
+    color: #fff;
+    padding-right: 2%;
+    padding-left: 2%;
   }
 
   #app-cats-maintencance-header-allocation {
@@ -42,43 +43,38 @@
 	margin-left: 0px;
 	margin-right: 0px;
 }
-
 .app-cats-body {
-	font-family: 'Open Sans', sans-serif;
 	position: relative;
 	margin: 0 auto;
-	width: 100%;
-   
+	width: 100%;  
 }
 
 .app-cats-legend {
 	position: absolute;
-	right: 0px;
-	bottom: 0px;
+	right: 3%;
+	top: 0px;
 	font-size: 16px;
 	color: #e1e1e1;
 }
-
+.app-cats-legend-hide{
+    display: none;
+}
 .app-cats-legend-popover{
 	border-radius: 0;
 	border:none;
 	box-shadow:2px 2px 0px rgba(0,0,0,0.1);
 }
-
 .app-cats-legend-popover ul {
 	list-style: none;
 	margin: 0;
 	padding:0;
 }
-
 .popover-title{
 	border-radius: 0;
 }
-
 .popover-content{
 	padding:14px;
 }
-
 .app-cats-legend-colorbox {
 	width: 10px;
 	height: 10px;
@@ -87,125 +83,85 @@
 	margin-right: 5px;
 	float: left;
 }
-
 .app-cats-legend-closeBtn {
 	float: right;
 }
 
 .app-cats-navigation {
-	margin-bottom: 4px;
+    float: left;
+	margin-bottom: 5px;
 	width: 100%;
 	text-align: center;
-
 }
-
-.app-cats-navigation span {
-	display: inline;
-	
-}
-
 .app-cats-text-button {
 	cursor: pointer;
 	padding: 6px;
 }
-
 .app-cats-text-button-disabled {
 	color: #aaaaaa;
-	cursor: not-allowed;
+    padding: 6px;
+    cursor: default;
 }
-
 .app-cats-current-month {
-	margin-left: 8px;
-	margin-right: 8px;
-	padding-top: 6px;
-	padding-bottom: 6px;
-	color: #707070;
-  
+    margin: 0 8px 0 8px;  
 }
-
+.app-cats-current-year{
+    font-size: 5rem;
+    font-weight: 300;
+}
 .app-cats-calendar {
-    max-width: 700px;
-    min-height: 120px;
+    max-width: 800px;
 }
-
-.app-cats-week-labels {
-}
-
 .app-cats-week {
 	height: 15px;
 	margin-top: 2px;
 }
-
  .app-cats-week:first-of-type {
 	margin-top: 3px;
 }
-
 .app-cats-day-details {
-    width: calc(100%/8);
+    width: 12%;
     height: 40px;
     float: left;
     padding: 3px;
     text-align: center;
     color: #707070;
 }
-
 .app-cats-day-inner-small {
     height: 100%;
 }
-
 .app-cats-day-inner-big {
     height: 100%;
     line-height: 34px;
 }
-
 .app-cats-day-text-small {
     font-size: 0.9em;
     position: relative;
     bottom: 1px;
     color: #707070;
-
 }
-
 .app-cats-day-text-big {
     font-size: 2em;
 }
-
 .app-cats-day {
 	width: 13.5%;
 	height: 15px;
 	float: left;
 	margin-bottom: 2px;
-
-	text-align: center;
-		
+	text-align: center;		
 }
-
 .app-cats-week:last-of-type .app-cats-day {
 	margin-bottom: 0px;
 }
-
 .app-cats-day + .app-cats-day {
 	margin-left: 2px;
 }
 
-/* Project List Template*/
-
-
-
-
 .app-cats-project-selector-button {
     width: 100%;
 }
-
 .app-cats-project-filter-input{
 	margin: 4px 4px 20px 4px;
-	width: 35%;
-}
-
-.app-cats-project-container {
-    /*width: 90%;
-    margin-left: 5%;*/
-    margin-right: 5%;
 }
 .app-cats-project-selector-button-selected, .app-cats-project-selector-button-selected:focus {
     background: #DFF5FF;
@@ -224,29 +180,19 @@
     font-size: 14px;
     line-height: 1;
 }
-
-.app-cats-project-selector-button-container {
+#app-cats-project-selector-button-container {
     margin-right: 0;
 }
 .app-cats-project-selector-button span {
     font-size: 10px;
 }
-
-.app-cats-project-selector-buttonDiv:not(:first-of-type)  {
-  
-}
-
 .app-cats-button-container{
     display: table;
-
 }
-
 .app-cats-button-center {
     display: table-cell;
     vertical-align: middle;
-    margin-right: 0px;
 }
-
 .app-cats-cw-button {
     height: 30px;
     width: 50px;
@@ -254,14 +200,11 @@
 
 .app-cats-stateR { 
     /* Not maintained */
-    background: #a4d8f9;
-    
+    background: #a4d8f9;  
 }
-
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
     background-color:#dff5ff;
-
-    background-image: url('/../../img/part_maint_B.svg');
+    background-image: url('/../../img/part_maint.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
@@ -270,25 +213,13 @@
 .app-cats-stateG { /* maintained */
     background: #dff5ff;
 }
-
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
 }
-
 .app-cats-notInMonth {
     background: #e1e1e1;
     /*opacity: 0;*/
     visibility: hidden;
-}
-
-.app-cats-icon {
-    font-family: 'SAP-icons';
-    top: 90%;
-    right:10px;
-}
-
-.app-cats-noDataInCats {
-    background: #555;
 }
 
 .app-cats-today { 
@@ -310,16 +241,75 @@
     font-weight: 600;
 }
 
-
-
 .app-cats-stateY_TODAY { 
-
     /*background-color:#dff5ff;*/
-    background-image: url('/../../img/part_maint_TODAY_B.svg');
+    background-image: url('/../../img/part_maint_TODAY.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
 }
 
-
-
+.app-cats-icon {
+    font-family: 'SAP-icons';
+}
+.app-cats-noDataInCats {
+    background: #555;
+}
+.app-cats-week .app-cats-day {
+    color: white;
+    width: 13.5%;
+}
+.allocation-bar-background-panel {
+  margin-left: auto;
+  
+}
+.allocation-bar-background-panel-div {
+  background: #e6e6e6;
+  background-image: url("/app/cats/detail/allocationBar/stripe.png");
+  width: 100%;
+}
+.allocation-bar-block {
+    height:60px;
+    float:left
+}
+.allocation-bar-dragBar-image {
+    height: 80px;
+    width: 50px;
+    margin-left: -21px;
+    margin-top: -10px;
+}
+.allocation-bar-dragBar {
+    margin-top: -10px;
+    height: 80px;
+    float: left;
+    cursor: w-resize;
+}
+.allocation-bar-project-text {
+    margin-top: 10px; 
+    font-weight: bold; 
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.allocation-bar-time-text {
+    padding-top: 2px;
+    padding-bottom: 5px;
+    font-size: 12px;
+    text-align: center;
+    font-style: italic;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.app-cats-body {
+    margin: 0px auto;
+}
+.app-cats-headline {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.app-cats-save_close_btn{
+    text-align: center;
+    margin: 0 2% 20px 0;
+}
