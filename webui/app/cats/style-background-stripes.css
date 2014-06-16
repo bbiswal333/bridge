@@ -1,14 +1,20 @@
 ﻿.app-cats-stateR { 
 	/* Not maintained */
-	background: #428BCA;
+	background: #a4d8f9;
+	
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #428BCA;
+	background-color:#dff5ff;
+
+	background-image: url('/../../img/part_maint.svg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position-x: 100%;
 }
 
 .app-cats-stateG { /* maintained */
-	background: #c4e8ff;
+	background: #dff5ff;
 }
 
 .app-cats-stateN { /* no need for maintainance */
@@ -17,7 +23,8 @@
 
 .app-cats-notInMonth {
 	background: #e1e1e1;
-	opacity: 0;
+	/*opacity: 0;*/
+	visibility: hidden;
 }
 
 .app-cats-icon {
@@ -30,8 +37,11 @@
 	background: #555;
 }
 
-.app-cats-today {
-	background: #6cb9e3;
+.app-cats-today { 
+	background-image: url('/../../img/ecke_dunkel_noshadow.svg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position-x: 100%;
 }
 
 .selected_day span{
@@ -40,11 +50,23 @@
 }
 
 .selected_day{
-	background: rgb(255, 255, 255);
-	border: 2px solid rgb(0, 157, 224);
+	background: ;
+	border: 2px solid #ffd07e;
 	color: #707070!important;
 	font-weight: 600;
 }
+
+
+
+.app-cats-stateY_TODAY { 
+
+	/*background-color:#dff5ff;*/
+	background-image: url('/../../img/part_maint_TODAY.svg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position-x: 100%;
+}
+
 
 .app-cats-week .app-cats-day {
 		color: white;

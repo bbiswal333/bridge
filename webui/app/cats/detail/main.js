@@ -1,5 +1,6 @@
 angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.data", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
-  "$scope", 
+  "$scope",
+  "$q",
   "$modal",
   "$routeParams",
   "$location",
@@ -8,14 +9,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
-  function ($scope, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
     $scope.loaded = false;
     $scope.width = 800;
     $scope.selectedDates = [];
-
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -26,8 +26,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                         
     $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
-    function loadCATSDataForDay() {
-        var currentDay = calUtils.stringifyDate($scope.day);
+    function loadCATSDataForDay(day) {
+        if(!day){
+            var currentDay = calUtils.stringifyDate($scope.day);
+        } else {
+            var currentDay = calUtils.stringifyDate(day);
+        }
         var promise = monthlyDataService.getDataForDate(currentDay);
         promise.then(function() {
             displayCATSDataForDay(monthlyDataService.days[currentDay]);
@@ -76,13 +80,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     $scope.handleSelectedDate = function(dayString){
+        var before = $scope.selectedDates.length;
         $scope.selectedDates.push(dayString);
+        var after  = $scope.selectedDates.length;
+        if(before == 1 && after == 2){
+            $scope.blockdata = [];
+            $scope.workingHoursForDay = 8;
+        }
         return true;
     }
 
     $scope.handleDeselectedDate = function(dayString){
+        var before = $scope.selectedDates.length;
         var dateIndex = $scope.selectedDates.indexOf(dayString);
         $scope.selectedDates.splice(dateIndex, 1);
+        var after  = $scope.selectedDates.length;
+        if(before == 2 && after == 1){
+            // this leads to data beeing displayed even after ALL days are removed
+            //loadCATSDataForDay(calUtils.parseDate($scope.selectedDates[0]));
+        } else if(after == 0){
+            $scope.blockdata = [];
+            $scope.workingHoursForDay = 0;
+        }
         return true;
     }
 
@@ -108,7 +127,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     function adjustBarValues() {
-        // only ajust if all space is taken
+        // only adjust if all space is taken
         var total = 0;
         for (var i = 0; i < $scope.blockdata.length; i++) {
             total = $scope.blockdata[i].value + total;
@@ -288,10 +307,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
             booking.QUANTITY = Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100;
-
-            if (booking.TASKTYPE === 'VACA'){
-                continue;
-            }
 
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;

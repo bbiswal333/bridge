@@ -19,7 +19,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
     function Controller($scope, $http, ticketData) {
 
         $scope.prios = [{
-            name: "Very High", number: 1, amount: 0,
+            name: "Very high", number: 1, amount: 0,
         }, {
             name: "High", number: 2, amount: 0,
         }, {
@@ -36,7 +36,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         }
 
         $scope.$parent.titleExtension = " - Internal Messages"; 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
             ).success(function(data) {
                 data = new X2JS().xml_str2json(data);
                 var imData = data["abap"];
