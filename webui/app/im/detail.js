@@ -7,7 +7,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         $scope.data = {};        
 
         $scope.prios = [{
-            name: "Very High", number: 1, amount: 0,
+            name: "Very high", number: 1, amount: 0,
         }, {
             name: "High", number: 2, amount: 0,
         }, {
