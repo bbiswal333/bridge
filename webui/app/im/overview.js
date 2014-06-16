@@ -1,4 +1,4 @@
-angular.module('app.im', ['ngTable']);
+angular.module('app.im', ['ngTable','bridge.service']);
 
 angular.module('app.im').directive('app.im', function () {
 
@@ -15,8 +15,8 @@ angular.module('app.im').directive('app.im', function () {
     angular.module('app.im').run(function ($rootScope) {
 });
 
-angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
-    function Controller($scope, $http, ticketData) {
+angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData','bridgeDataService', 
+    function Controller($scope, $http, ticketData, bridgeDataService) {
 
         $scope.prios = [{
             name: "Very high", number: 1, amount: 0,
@@ -35,8 +35,11 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             });
         }
 
+        //try to prevent popups for username/ pw
+        var userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
+
         $scope.$parent.titleExtension = " - Internal Messages"; 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&sap-user=' + userid + '&origin=' + location.origin
             ).success(function(data) {
                 data = new X2JS().xml_str2json(data);
                 var imData = data["abap"];
