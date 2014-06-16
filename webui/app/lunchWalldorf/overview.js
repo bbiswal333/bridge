@@ -11,6 +11,7 @@
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";        
 
+
         var lang = "de";
         // English texts standard for now...
         $scope.portalLinkText = "Lunch menu in the portal";
