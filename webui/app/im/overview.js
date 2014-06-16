@@ -47,7 +47,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                     _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
                         parseBackendTicket(backendTicket);
                     });
-                } else {
+                } else if (angular.isObject(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
                     parseBackendTicket(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
                 }
 
