@@ -15,6 +15,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         appAtcConfig.initialize($routeParams['appId']);
     }
     $scope.atcData.getDetailsForConfig(appAtcConfig, $scope);
+    $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
 
     $scope.$watch('atcData.detailsData', function () 
     {            

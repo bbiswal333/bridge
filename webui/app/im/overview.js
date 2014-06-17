@@ -13,7 +13,7 @@ angular.module('app.im').directive('app.im', function () {
     };
 });
 
-    angular.module('app.im').run(function ($rootScope) {
+angular.module('app.im').run(function ($rootScope) {
 });
 
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',

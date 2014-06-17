@@ -1,4 +1,5 @@
 ﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$interval", "app.atc.configservice", function ($http, $interval, atcConfig) {
+    var that = this;
 
     this.data = {
         prio1: 0,
@@ -33,7 +34,7 @@
 
     this.loadOverviewData = function() {
         if (atcConfig.configItems.length > 0) {
-            this.getResultForConfig(atcConfig);
+            that.getResultForConfig(atcConfig);
         }
     };
 
