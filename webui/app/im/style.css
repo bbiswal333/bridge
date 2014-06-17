@@ -5,3 +5,30 @@
 	border:2px solid white;
 	height:40px;
 }
+.im-prio_col{
+	width: 48%;
+	height: 54%;
+}
+.im-prio_col:nth-child(2), .im-prio_col:nth-child(4) {
+	margin-left: 0;
+}
+.im-prio_col:nth-child(3), .im-prio_col:nth-child(4) {
+	margin-top: 0;
+}
+.im-prio_container{
+	width: 80%;
+	height: 90%;
+	float: left;
+}
+.im-btn-container{
+	width: 20%;
+	height: 86%;
+	float: right;
+}
+.im-btn-box{
+    
+    height: 25%;
+    margin-right: 0;
+    margin-bottom: 5px;
+    float: right;
+}
