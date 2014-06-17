@@ -21,6 +21,6 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * apps are contained in `webui/app/appname`
 * metadata for the app is defined in `_modules.json` inside that folder
 * apps must be inside an own module and shoul be named/ prefixed with `app.appname`
-* to get started, just copy our "test app" and adjust it.. you should have your first app running in a few minutes
+* to get started, just copy our "test app" and adjust it
 
 Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
