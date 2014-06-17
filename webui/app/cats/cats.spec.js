@@ -26,11 +26,11 @@ describe("The mini calendar shall display information about the current CATS com
   it ("should be possible to make an asynchronous test whether working hours on one day can be retrieved from CATS", function () {
     var result1 = undefined;
     var result2 = undefined;
-    catsUtils.getWorkingHoursForDay("2014-03-25", function (val) {
+    catsUtils.getTotalWorkingTimeForDay("2014-03-25", function (val) {
       result1 = val;
     });
     // January 6th is a public holidy, so working ours should be 0
-    catsUtils.getWorkingHoursForDay("2014-01-06", function (val) {
+    catsUtils.getTotalWorkingTimeForDay("2014-01-06", function (val) {
       result2 = val;
     });
 
@@ -40,7 +40,7 @@ describe("The mini calendar shall display information about the current CATS com
     expect(result2).toBe(0);
   });
 
-  it ("should return an array containing tasks with value how many percent of the day has been spent on it", function () {
+  xit ("should return an array containing tasks with value how many percent of the day has been spent on it", function () {
     var fetchedData = false;
 
     catsUtils.getCatsAllocationDataForDay(new Date(2014, 2, 8), function (data) {

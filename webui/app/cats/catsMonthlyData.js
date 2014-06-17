@@ -140,9 +140,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            	var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
 		            	if(ISPTaskIterator == 0) { // build the target array in the first place
 		            		var day = {};
+		            		var HoursOfWorkingDay = 8;
 		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
-		            		day.dayString   = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		day.targetTimeInPercentageOfDay = day.targetHours / HoursOfWorkingDay;
+		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
 		            		day.year = year;
