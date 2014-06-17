@@ -659,7 +659,7 @@ input[type="checkbox"]:checked:after {
     float: right;
 }
 .btn-box{
-    width: 55%;
+    
     height: 25%;
     margin-right: 0;
     margin-bottom: 5px;
