@@ -20,7 +20,7 @@
             $scope.blockColor = colorUtils.getNextColor($scope.getBlockIndex($scope.blockData));
 
             $scope.getValueAsPercentage = function () {
-                return Math.round($scope.localValue / $scope.totalValue * 100);
+                return Math.round($scope.localValue / $scope.totalValue * 1000) / 10;
             };
             $scope.getTimeText = function () {
                 return calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
@@ -30,7 +30,15 @@
                 axis: 'x',
                 drag: function (event, ui) {
                     $scope.$apply(function () {
-                        var blockMetrics = blockCalculations.calculateBlockMetrics(ui.position.left, originalBlockWidth, $scope.totalWidth, $scope.blockData.value, $scope.getRemainingValue(), $scope.totalValue);
+                        var blockMetrics =
+                            blockCalculations.calculateBlockMetrics(
+                                ui.position.left,
+                                originalBlockWidth,
+                                $scope.totalWidth,
+                                $scope.blockData.value,
+                                $scope.getRemainingValue(),
+                                $scope.totalValue,
+                                $scope.blockData.fixed);
 
                         $scope.blockWidth = blockMetrics.newWidth;
                         $scope.localValue = blockMetrics.newValue;

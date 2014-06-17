@@ -52,8 +52,12 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
     }
 
-    this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue) {
-        var newWidth = originalBlockWidth + offset;
+    this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue, fixed) {
+        if(!fixed) {
+            var newWidth = originalBlockWidth + offset;
+        } else {
+            var newWidth = originalBlockWidth;
+        }
 
         // calculate potential new Value from the new width
         var newValue = this.getValueFromWidth(newWidth, totalWidth, totalValue);
