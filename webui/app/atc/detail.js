@@ -58,7 +58,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     }, true);
 
 
-    var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';    
+    var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()" >{{row.getProperty(col.field)}}</div>';    
 
     $scope.filterOptions = {
         filterText: ''

@@ -16,5 +16,5 @@
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js","settings.js","config.js", "ticketData.js"],
-	"css_files" : []
+	"css_files" : ["style.css"]
 }

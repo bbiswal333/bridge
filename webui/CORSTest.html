@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>CORS Test</title>
+    <script type="text/javascript" src="lib/jQuery-2_1_0/jquery.min.js"></script>
+    <script type="text/javascript">
+        function loadUrl(url) {
+            $.get(url, function( data ) {
+                $( ".result" ).html( data );
+                alert( "Load was performed." );
+            });
+        }
+    </script>
+</head>
+<body>    
+    <input type="text" id="url" style="width: 500px" value="https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?origin=https://bridge-master.mo.sap.corp"></input>
+    <input type="button" value="Submit" onclick="loadUrl(document.getElementById('url').value)" />
+
+    <div class="result"></div>
+</body>
+
+</html>
+
+
+
+                    

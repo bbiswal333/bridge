@@ -2,7 +2,8 @@ angular.module('app.im', ['ngTable']);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {        
+    var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {  
+        $scope.box.boxSize = "2";      
     }];
 
     return {

@@ -22,15 +22,11 @@
             <div style="clear: both; width: 100%; float: none;"></div>        
 
             <div id="app-cats-maintencance-allocation-div" >
-                Hours to maintain today: {{workingHoursForDay}}
-                <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-total-value="{{workingHoursForDay}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
+                <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-total-value="{{totalWorkingTime}}" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
             </div>
 
             <div class="save_close_btn">
-                <input class="btn btn-default" type="button" value="Back" ng-click="goBackToMainPage()"></input>
-                <input class="btn btn-default" type="button" value="Cancel" ng-click="ResetToLastSavedState()"></input>
                 <input class="btn btn-default btn_blue" type="button" value="Save Timesheet" ng-click="saveTimesheet()" style="margin:4px"></input>
-                <!-- <a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaverequest?sap-language=en" target="_blank">Leave Request</a> -->
             </div>
         </div>
         <div class="panel-body" ng-show="!loaded">

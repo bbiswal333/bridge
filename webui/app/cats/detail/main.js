@@ -43,35 +43,35 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function displayCATSDataForDay(day) {
         $scope.lastCatsAllocationDataForDay = day;
         $scope.blockdata = [];
-        catsUtils.getWorkingHoursForDay(day.dayString, function (workingHours) {
-            $scope.workingHoursForDay = workingHours;
+        if(day.targetTimeInPercentageOfDay)
+            $scope.totalWorkingTime = 1;
+        else
+            $scope.totalWorkingTime = 0;
 
-            for (var i = 0; i < day.tasks.length; i++) {
-                var task = day.tasks[i];
-                if (task.TASKTYPE == "VACA")
-                    addBlock("Vacation", task.QUANTITY, task, true);
-                else
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY * $scope.workingHoursForDay, task);
-            }
-            $scope.loaded = true;
-        });
+        for (var i = 0; i < day.tasks.length; i++) {
+            var task = day.tasks[i];
+            var HoursOfWorkingDay = 8;
+            if (task.TASKTYPE == "VACA")
+                addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
+            else if (task.UNIT == "H")
+                addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
+            else
+                addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
+        }
+        $scope.loaded = true;
     };
 
     $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
         var block = {
             RAUFNR: task.RAUFNR,
-            // booking: {
-                COUNTER: 0,
-                WORKDATE: calUtils.transformDateToABAPFormatWithHyphen($scope.day),
-                STATUS: 30,
-            // },
+            COUNTER: 0,
+            WORKDATE: calUtils.transformDateToABAPFormatWithHyphen($scope.day),
+            STATUS: 30,
             TASKTYPE: task.TASKTYPE,
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
-            // ZCPR_OBJGUID: data.ZCPR_OBJGUID,
             UNIT: "T",
         };
-        
         return addBlock(desc_s, val_i, block, false);
     }
 
@@ -85,7 +85,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var after  = $scope.selectedDates.length;
         if(before == 1 && after == 2){
             $scope.blockdata = [];
-            $scope.workingHoursForDay = 8;
+            $scope.totalWorkingTime = 1;
         }
         return true;
     }
@@ -100,7 +100,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //loadCATSDataForDay(calUtils.parseDate($scope.selectedDates[0]));
         } else if(after == 0){
             $scope.blockdata = [];
-            $scope.workingHoursForDay = 0;
+            $scope.totalWorkingTime = 0;
         }
         return true;
     }
@@ -132,12 +132,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         for (var i = 0; i < $scope.blockdata.length; i++) {
             total = $scope.blockdata[i].value + total;
         }
-        if (total != $scope.workingHoursForDay) {
+        if (total != $scope.totalWorkingTime) {
             return;
         }
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ($scope.blockdata[i].value) {
-                $scope.blockdata[i].value = $scope.workingHoursForDay * (Math.floor(100 / (getVisibleLength() + 1)) / 100);
+                $scope.blockdata[i].value = $scope.totalWorkingTime * (Math.floor(1000 / (getVisibleLength() + 1)) / 1000);
             }
         }
     }
@@ -148,7 +148,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         if (existingBlock != null) {
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                 adjustBarValues();
-                existingBlock.value = Math.round(hoursToMaintain() * 1000) / 1000;
+                existingBlock.value = Math.round(timeToMaintain() * 1000) / 1000;
                 return true;
             } else { // no need to add
                 adjustBarValues();
@@ -159,9 +159,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         adjustBarValues();
 
         if (val_i == null) {
-            val_i = 8;
-            if (val_i > hoursToMaintain()) {
-                val_i = Math.round(hoursToMaintain() * 1000) / 1000
+            val_i = 1;
+            if (val_i > timeToMaintain()) {
+                val_i = Math.round(timeToMaintain() * 1000) / 1000
             }
         }
 
@@ -175,14 +175,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return true;
     };
 
-    function hoursToMaintain() {
+    function timeToMaintain() {
         var sum = 0;
 
         for (var i = 0; i < $scope.blockdata.length; i++) {
             sum = sum + $scope.blockdata[i].value;
         }
 
-        return $scope.workingHoursForDay - sum;
+        return $scope.totalWorkingTime - sum;
     };
 
     function removeBlock(objgextid_s) {
@@ -281,8 +281,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function prepareCATSData (workdate, container, clearOldTasks){
         var workdateBookings = [];
+        var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
 
-        if(!$scope.workingHoursForDay) {
+        if(!totalWorkingTimeForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
             loadCATSDataForDay();
             $scope.$emit("refreshApp");
@@ -306,8 +307,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
-            booking.QUANTITY = Math.round($scope.blockdata[i].value / $scope.workingHoursForDay * 100) / 100;
 
+            booking.QUANTITY = Math.round($scope.blockdata[i].value / totalWorkingTimeForDay * 1000) / 1000;
+
+            if (booking.TASKTYPE === 'VACA'){
+                continue;
+            }
+            
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
             }

@@ -45,7 +45,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       return deferred.promise;
     }
 
-    var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
+    /*var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
       var res = [];
 
       var week = calUtils.getWeekNumber(day_o);
@@ -79,14 +79,16 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         callback_fn(res);
       });
-    };
+    };*/
 
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
-    function _getWorkingHoursForDay(day_s, callback_fn) {
+    function _getTotalWorkingTimeForDay(day_s, callback_fn) {
       _getCatsComplianceData(function(data) {
         for (var i = 0; i < data.length; i++) {
           if (data[i].DATEFROM ==  day_s) {
-          	callback_fn(data[i].STDAZ);
+            var HoursOfWorkingDay = 8;
+            var totalTimeInPercentOf8HourDay = Math.round(data[i].STDAZ / HoursOfWorkingDay * 1000) / 1000;
+          	callback_fn(totalTimeInPercentOf8HourDay);
           	return;
           } 
         }
@@ -219,12 +221,12 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           callback_fn(taskCache);
         }
       },
-      getWorkingHoursForDay: function (day_s, callback_fn) {
-      	_getWorkingHoursForDay(day_s, callback_fn);
+      getTotalWorkingTimeForDay: function (day_s, callback_fn) {
+      	_getTotalWorkingTimeForDay(day_s, callback_fn);
       },
-      getCatsAllocationDataForDay: function (day_o, callback_fn) {
+      /*getCatsAllocationDataForDay: function (day_o, callback_fn) {
         _getCatsAllocationDataForDay(day_o, callback_fn);
-      },
+      },*/
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);
       },
