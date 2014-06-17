@@ -64,16 +64,16 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             }                      
         }
 
-        var cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px">{{row.getProperty(col.field)}}</div>';
+        var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()">{{row.getProperty(col.field)}}</div>';
         var usercellTemplate = 
-            '<div class="ngCellText " ng-class="col.colIndex()" style="border:2px solid white;height:40px">' + 
+            '<div class="ngCellText " ng-class="col.colIndex()">' + 
             '<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.SUSID}}?s=20x20" style="height:100%;border-radius:100%;margin-right:20px"></img>' + 
             '<a target="_blank" href="{{row.entity.url}}">{{row.entity.username}}</a>' +
-            ' <a href="mailto:{{row.entity.mail}}"><p class="box-icon_2 icon-mail"></p></a>' +
-            ' <a href="tel:{{row.entity.tel}}"><p class="box-icon_3 icon-phone"></p></a>' +
+            ' <a href="mailto:{{row.entity.mail}}"><p class="table-icon-small icon-mail"></p></a>' +
+            ' <a href="tel:{{row.entity.tel}}"><p class="table-icon-small icon-phone"></p></a>' +
             '</div>';
         var descriptioncellTemplate = 
-            '<div class="ngCellText" ng-class="col.colIndex()" style="border:2px solid white;height:40px"><a target="_blank" href="{{row.entity.ticket_url}}">{{row.entity.KTEXT}}</a></div>';
+            '<div class="ngCellText table-cell" ng-class="col.colIndex()"><a target="_blank" href="{{row.entity.ticket_url}}">{{row.entity.KTEXT}}</a></div>';
 
 
         $scope.filterOptions = {

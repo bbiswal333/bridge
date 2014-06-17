@@ -346,22 +346,20 @@ img {
     float: right;
 }
 
-.box-icon_2 {
+.table-icon-small {
     font-family:'bridge_icons';
     font-size: 14px;
     margin-right: 2px;
     float: right;
-    padding-right: 2px;
+    padding-right: 8px;
+    padding-top: 4px;
     color:#0099CC;
 }
-
-.box-icon_3 {
-    font-family:'bridge_icons';
-    font-size: 14px;
-    margin-right: 2px;
-    float: right;
-    padding-right: 7px;
-    color:#0099CC;
+.table-cell{
+    border:2px solid white;
+    height:40px;
+    padding-top:8px;
+    padding-left: 10px;
 }
 
 .download-icon {
