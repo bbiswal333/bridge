@@ -7,6 +7,7 @@
 
     beforeEach(function () {
 
+        module('bridge.service');
         module("app.atc");
 
         inject(["$rootScope", "$httpBackend", "app.atc.configservice", "app.atc.dataservice", function (_$rootScope, _$httpBackend, _atcConfigService, _atcDataService) {

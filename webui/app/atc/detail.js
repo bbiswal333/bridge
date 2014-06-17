@@ -1,7 +1,6 @@
 angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'app.atc.configservice', 'app.atc.dataservice', 
     function ($scope, $http, $filter, $route, $routeParams, ngTableParams, appAtcConfig, appAtcData) {
     
-    var atcConfig = appAtcConfig;
     $scope.$parent.titleExtension = " - ATC Details";
 
     $scope.atcData = {};
@@ -9,9 +8,13 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.data = {};
     $scope.data.status = [];     
 
-    $scope.atcData = appAtcData;        
-    $scope.atcData.getDetailsForConfig(atcConfig, $scope);    
-    $scope.atcData.tableData = []; 
+    $scope.atcData = appAtcData;          
+    $scope.atcData.tableData = [];
+
+    if (appAtcConfig.isInitialized == false) {
+        appAtcConfig.initialize($routeParams['appId']);
+    }
+    $scope.atcData.getDetailsForConfig(appAtcConfig, $scope);
 
     $scope.$watch('atcData.detailsData', function () 
     {            

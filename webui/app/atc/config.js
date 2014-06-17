@@ -1,5 +1,4 @@
-angular.module('app.atc').factory("app.atc.configservice", function () {
-
+angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
 	var ConfigItem = function() {
 		this.clear = function () {
 		    this.srcSystem = "";
@@ -49,7 +48,8 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 	};
 
 	var Config = function() {
-		this.configItems = [];
+	    this.configItems = [];
+	    this.isInitialized = false;
 	};
 
 	Config.prototype = Object.create(IConfig);
@@ -77,6 +77,39 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 	Config.prototype.clear = function () {
 	    this.configItems.length = 0;
 	};
+	Config.prototype.initialize = function (sAppId) {
+	    this.isInitialized = true;
+	    var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
+	    var currentConfigItem;
+
+	    if (persistedConfig.configItems) {
+	        this.clear();
+
+	        for (configItem in persistedConfig.configItems) {
+	            currentConfigItem = this.newItem();
+
+	            currentConfigItem.component = persistedConfig.configItems[configItem].component;
+	            currentConfigItem.devClass = persistedConfig.configItems[configItem].devClass;
+	            currentConfigItem.displayPrio1 = persistedConfig.configItems[configItem].displayPrio1;
+	            currentConfigItem.displayPrio2 = persistedConfig.configItems[configItem].displayPrio2;
+	            currentConfigItem.displayPrio3 = persistedConfig.configItems[configItem].displayPrio3;
+	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
+	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
+	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
+	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
+	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
+
+	            this.addConfigItem(currentConfigItem);
+	        }
+	    } else {
+	        currentConfigItem = this.newItem();
+	        currentConfigItem.tadirResponsible = bridgeDataService.getUserInfo();
+	        this.addConfigItem(currentConfigItem);
+	    }
+	};
+
+    // this gets executed the first time this factory gets injected
+	var config = new Config();
 	
-	return new Config(); 
-});
+	return config; 
+}]);
