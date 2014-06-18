@@ -34,15 +34,11 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
 		
 		var updateTrafficLight = function ($scope) {
 			if( $scope.prioarray[0] ){
-				console.log( 'turn red on' );
-				//window.client.origin
-				$http.get('/api/trafficLight?color=r');
+				$http.get(window.client.origin + '/api/trafficLight?color=r');
 			}else if( $scope.prioarray[1] ){
-				console.log( 'turn yellow on' );
-				$http.get('/api/trafficLight?color=y');
+				$http.get(window.client.origin + '/api/trafficLight?color=y');
 			}else{
-				console.log( 'turn green on' );
-				$http.get('/api/trafficLight?color=g');
+				$http.get(window.client.origin + '/api/trafficLight?color=g');
 			}
 		}	
 		
@@ -50,8 +46,6 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
                 data = new X2JS().xml_str2json(data);
                 $scope.imData = data["abap"];
                 $scope.imData = $scope.imData["values"];
-                
-                console.log("oie");
 				
                 _.each($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"], function (n) {
                 	console.log(n["MSG_PRIO"]);
