@@ -24,9 +24,11 @@
     height: 100%;
     width: 100%;
     right:0;
-    background-image: url('../img/clouds-01.svg');
+    background-image: url('../img/b.jpg');
     background-size: 100% auto;
     background-position-y: bottom;
+    background-size: cover;
+    background-position-x: center;
 }
 .mainPageBackground {
     width: 100%;
