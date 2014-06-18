@@ -132,11 +132,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var day = {};
 		            		var HoursOfWorkingDay = 8;
 		            		// test test test
-		            		//if(ISPtask.DAYS[DayIterator].TARGET) {
+		            		if(ISPtask.DAYS[DayIterator].TARGET) {
 			            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-							//} else {
-							//	day.targetHours = 0;
-							//}
+							} else {
+								day.targetHours = 0;
+							}
 		            		day.targetTimeInPercentageOfDay = day.targetHours / HoursOfWorkingDay;
 		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;

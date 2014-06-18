@@ -343,6 +343,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
+        
+        // adjust slight deviations in QUANTITY when posting part time
+        var totalBookingQuantity = 0;
+        var biggestBooking;
+        container.BOOKINGS.forEach(function(booking){
+            if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
+                biggestBooking = booking;
+            }
+            totalBookingQuantity += booking.QUANTITY;
+        });
+
+        if(((totalBookingQuantity - totalWorkingTimeForDay) > 0 &&
+            (totalBookingQuantity - totalWorkingTimeForDay) < 0.02) ||
+           ((totalBookingQuantity - totalWorkingTimeForDay) < 0 &&
+            (totalBookingQuantity - totalWorkingTimeForDay) > -0.02)) {
+            biggestBooking.QUANTITY -= totalBookingQuantity - totalWorkingTimeForDay;
+        }
+
         monthlyDataService.days[workdate].tasks = workdateBookings;
         return container;
     }
