@@ -4,11 +4,11 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
 
     var directiveController = ['$scope' , function ($scope) {
 		
-        $scope.settingsTitle = "Configure Traffic Light";
-        $scope.settingScreenData = {
-            templatePath: "imtps/settings.html",
-			controller: angular.module('app.imtps').appimtpsSettings,
-        };
+//        $scope.settingsTitle = "Configure Traffic Light";
+//        $scope.settingScreenData = {
+//            templatePath: "imtps/settings.html",
+//			controller: angular.module('app.imtps').appimtpsSettings,
+//        };
 		
 		$scope.returnConfig = function(){
             return appimtpsConfig.trafficlightquery;
