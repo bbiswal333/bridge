@@ -193,7 +193,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       var deferred = $q.defer();
 
       // $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
-      $http.post(CATS_WRITE_WEBSERVICE, container ).success(function(data, status) {
+      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data, status) {
           deferred.resolve(data);
       }).error(function (data, status, header, config) {
           if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
