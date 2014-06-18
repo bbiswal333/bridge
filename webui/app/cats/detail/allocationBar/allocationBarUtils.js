@@ -13,25 +13,22 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         "#dff5ff",
         "#Fff7e1"
     ];
+    this.blockColors = {};
 
-    this.getNextColor = function(blockIndex) {
+    this.getColorForBlock = function(block){
         var generated = null;
         var len = colors.length;
 
-        if (blockIndex != undefined) {
-            colorCounter = blockIndex;
+        if (!block)
+            return colors[0];
+
+        var blockId = block.task.ZCPR_OBJGEXTID || block.task.TASKTYPE;
+
+        if (!this.blockColors[blockId]) {
+            this.blockColors[blockId] = colors[colorCounter];
+            colorCounter++;
         };
-
-        if (Math.floor(colorCounter / len) % 2 == 0) {
-            generated = colors[colorCounter % len];
-        }
-        else {
-            generated = colors[len - 1 - (colorCounter % len)];
-        }
-
-        colorCounter++;
-
-        return generated;
+        return this.blockColors[blockId]; 
     }
 
     this.resetColorCounter = function () {

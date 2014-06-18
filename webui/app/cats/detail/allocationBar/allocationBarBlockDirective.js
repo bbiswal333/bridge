@@ -19,7 +19,7 @@
             $scope.blockData.localValue = $scope.blockData.value;
 
             $scope.dragBarWidth = 5;
-            $scope.blockColor = colorUtils.getNextColor($scope.getBlockIndex($scope.blockData));
+            $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getValueAsPercentage = function () {
                 return Math.round($scope.blockData.localValue / $scope.totalValue * 1000) / 10;
