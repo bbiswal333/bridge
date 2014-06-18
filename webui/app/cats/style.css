@@ -203,7 +203,7 @@
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
     background-color:#dff5ff;
-    background-image: url('/../../img/part_maint.svg');
+    background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
@@ -239,7 +239,7 @@
 }
 .app-cats-stateY_TODAY { 
     /*background-color:#dff5ff;*/
-    background-image: url('/../../img/part_maint_TODAY.svg');
+    background-image: url('/../../img/part_maint_TODAY_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
