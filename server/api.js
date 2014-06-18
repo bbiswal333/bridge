@@ -316,19 +316,6 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		    files = concatAttributes(files, app_files);
 
 
-<<<<<<< HEAD
-	    if (typeof request.query.format == "undefined")
-	    {
-	    	response.setHeader('Content-Type', 'text/plain;');						    	   
-			response.send(JSON.stringify(files));		
-		}
-		else if( request.query.format == "js")
-		{
-			var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
-			buildify.concat(files.js_files);
-			response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
-			response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
-=======
 		    if (typeof request.query.format == "undefined")
 		    {
 		    	response.setHeader('Content-Type', 'text/plain;');						    	   
@@ -348,7 +335,6 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 				response.setHeader('Content-Type', 'text/css; charset=utf-8');
 				response.send(buildify.cssmin().getContent());	
 			}
->>>>>>> upstream/master
 		}
 		else
 		{
