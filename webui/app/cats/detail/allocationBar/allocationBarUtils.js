@@ -65,8 +65,8 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         // check boundaries of the new value
         var valueDiff = newValue - currentValue;
 
-        if (newValue < 0) {
-            newValue = 0;
+        if (newValue < 0.01) {
+            newValue = 0.01;
         } else if (valueDiff > remainingValue) {
             newValue = currentValue + remainingValue; // == maxValue
         }

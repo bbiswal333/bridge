@@ -9,61 +9,50 @@
             totalWidth: "=",
             getRemainingValue: "=",
             getBlockIndex: "=",
+            blockSizeChangeRequested: "=",
+            applyChangesInBlocks: "="
         },
         replace: true,
         link: function ($scope, elem) {
             var originalBlockWidth;
             // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
-            $scope.localValue = $scope.blockData.value;
+            $scope.blockData.localValue = $scope.blockData.value;
 
             $scope.dragBarWidth = 5;
             $scope.blockColor = colorUtils.getNextColor($scope.getBlockIndex($scope.blockData));
 
             $scope.getValueAsPercentage = function () {
-                return Math.round($scope.localValue / $scope.totalValue * 1000) / 10;
+                return Math.round($scope.blockData.localValue / $scope.totalValue * 1000) / 10;
             };
             $scope.getTimeText = function () {
                 return calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
+            }
+            $scope.setWidth = function(width) {
+                $scope.blockData.blockWidth = width;
             }
 
             elem.find(".allocation-bar-dragBar").draggable({
                 axis: 'x',
                 drag: function (event, ui) {
                     $scope.$apply(function () {
-                        var blockMetrics =
-                            blockCalculations.calculateBlockMetrics(
-                                ui.position.left,
-                                originalBlockWidth,
-                                $scope.totalWidth,
-                                $scope.blockData.value,
-                                $scope.getRemainingValue(),
-                                $scope.totalValue,
-                                $scope.blockData.fixed);
-
-                        $scope.blockWidth = blockMetrics.newWidth;
-                        $scope.localValue = blockMetrics.newValue;
-
+                        $scope.blockSizeChangeRequested($scope.blockData, ui.position.left, originalBlockWidth);
                         // normally, jquery would position the dragged element using the left property. we don't need that as we change the width of the element
                         ui.position.left = 0;
                     });
                 },
                 stop: function (event, ui) {
                     $scope.$apply(function () {
-                        // reset originalBlockwidth to the current blockWidth for the next dragging actions
-                        originalBlockWidth = $scope.blockWidth;
-
                         // setting blockData is expensive (probably a lot of watches on this) so don't do it in the drag-handler
-                        $scope.blockData.value = blockCalculations.getValueFromWidth($scope.blockWidth, $scope.totalWidth, $scope.totalValue);
+                        $scope.applyChangesInBlocks();
                     });
                 }
             });
 
-            // blockData.value gets adjusted from outside when adding a new project
             $scope.$watch("blockData.value", function () {
-                $scope.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
-                originalBlockWidth = $scope.blockWidth;
-
-                $scope.localValue = $scope.blockData.value
+                $scope.blockData.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
+                // reset originalBlockwidth to the current blockWidth for the next dragging actions
+                originalBlockWidth = $scope.blockData.blockWidth;
+                $scope.blockData.localValue = $scope.blockData.value
             });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"
@@ -72,7 +61,7 @@
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockWidth - dragBarWidth), background: blockColor}">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
                 '<div class="allocation-bar-time-text">{{getTimeText()}} ({{getValueAsPercentage()}} %)</div>' +
             '</div>' +
