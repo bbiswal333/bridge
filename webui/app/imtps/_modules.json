@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.imtps",
-		"title"					:	"MSG Worklist",
+		"title"					:	"GTP Test MSG",
 		"icon_css"				:	"icon-comment-empty",
 		"overview_directive"	:	"app.imtps",
 		"needs_client"			:	false,
