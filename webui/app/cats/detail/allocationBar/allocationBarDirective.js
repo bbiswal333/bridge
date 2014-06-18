@@ -79,7 +79,6 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                     }
                 });
                 sumOffValuesAfterChange = Math.round(sumOffValuesAfterChange * 1000) / 1000;
-                console.log(sumOffValuesAfterChange);
                 if(sumOffValuesAfterChange > 1)
                     return false;
                 else

@@ -24,8 +24,10 @@
             $scope.getValueAsPercentage = function () {
                 return Math.round($scope.blockData.localValue / $scope.totalValue * 1000) / 10;
             };
+
+            // Do not show time due to part time and mixed part time/ full time maintenance
             $scope.getTimeText = function () {
-                return calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
+                return "";// calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
             }
             $scope.setWidth = function(width) {
                 $scope.blockData.blockWidth = width;
@@ -63,7 +65,7 @@
         '<div ng-hide="blockData.value == 0">' +
             '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
-                '<div class="allocation-bar-time-text">{{getTimeText()}} ({{getValueAsPercentage()}} %)</div>' +
+                '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} %</div>' +
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
                 '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' + 

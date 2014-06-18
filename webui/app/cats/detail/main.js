@@ -144,11 +144,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function addBlock(desc_s, val_i, block, fixed) {
 
+        var targetTimeInPercentageOfDay = monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay;
+
+        // Scale data which is read from backend
+        if(block.COUNTER) {
+            val_i = val_i / targetTimeInPercentageOfDay;
+        }
+
         var existingBlock = getByExtId(block);
         if (existingBlock != null) {
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                 adjustBarValues();
                 existingBlock.value = Math.round(timeToMaintain() * 1000) / 1000;
+                existingBlock.value = existingBlock.value / targetTimeInPercentageOfDay;
                 return true;
             } else { // no need to add
                 adjustBarValues();
@@ -308,7 +316,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            booking.QUANTITY = Math.round($scope.blockdata[i].value / totalWorkingTimeForDay * 1000) / 1000;
+            booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
             if (booking.TASKTYPE === 'VACA'){
                 continue;
@@ -335,6 +343,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
+        
+        // adjust slight deviations in QUANTITY when posting part time
+        var totalBookingQuantity = 0;
+        var biggestBooking;
+        container.BOOKINGS.forEach(function(booking){
+            if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
+                biggestBooking = booking;
+            }
+            totalBookingQuantity += booking.QUANTITY;
+        });
+
+        if(((totalBookingQuantity - totalWorkingTimeForDay) > 0 &&
+            (totalBookingQuantity - totalWorkingTimeForDay) < 0.02) ||
+           ((totalBookingQuantity - totalWorkingTimeForDay) < 0 &&
+            (totalBookingQuantity - totalWorkingTimeForDay) > -0.02)) {
+            biggestBooking.QUANTITY -= totalBookingQuantity - totalWorkingTimeForDay;
+        }
+
         monthlyDataService.days[workdate].tasks = workdateBookings;
         return container;
     }

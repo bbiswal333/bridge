@@ -5,13 +5,13 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         "#428BCA",
         "#6cb9e3",
         "#a4d8f9",
-        "#c4e8ff",
-        "#dff5ff",
-        "#Fff7e1",
         "#ffe9b8",
         "#ffd07e",
         "#ffb541",
-        "#ffa317"
+        "#ffa317",
+        "#c4e8ff",
+        "#dff5ff",
+        "#Fff7e1"
     ];
 
     this.getNextColor = function(blockIndex) {
