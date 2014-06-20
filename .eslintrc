@@ -1,0 +1,12 @@
+{
+	"globals": 
+	{
+        "angular": true,
+        "location": true        
+    },
+    "rules": 
+    {        
+        "quotes": 0,
+        "strict": 0
+    }
+}
