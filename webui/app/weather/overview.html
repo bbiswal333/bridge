@@ -1,5 +1,10 @@
-﻿<div>{{temperature}} °C</div>
-<div>{{clouds}} percent clouds in the sky</div>
-<div>{{rain}} mm of rain</div>
-{{raining}}
-<div>in {{city}}</div>
+﻿<div ng-if="support">
+	<div>{{temperature}} °C</div>
+	<div>{{clouds}} percent clouds in the sky</div>
+	<div ng-if="raining">{{rain}} mm of rain, damn!</div>
+	<div ng-if="!raining">no rain, hooray!</div>
+	<div>in {{city}}</div>
+</div>
+<div ng-if="!support">
+	you have to activate your browsers geolocation!!!
+</div>

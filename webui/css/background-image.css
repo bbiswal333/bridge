@@ -38,7 +38,21 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
+.mainPageBackground_day{
 
+}
+.mainPageBackground_night{
+
+}
+.smallClouds{
+
+}
+.bigClouds{
+
+}
+.rain{
+
+}
 
 .boxDisable {
     background-color: #E6E6E6;

@@ -30,13 +30,20 @@ angular.module('app.weather').directive('app.weather', function () {
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
-            if (weatherData.clouds.all >= 0 && weatherData.clouds.all <= 40){
+            if(weatherData.clouds.all == 0){
+				$scope.noClouds = true;
+				$scope.bigClouds = false;
+				$scope.smallClouds = false;
+			}
+            if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
             	$scope.smallClouds = true;
             	$scope.bigClouds = false;
+            	$scope.noClouds = false;
             } 
             if (weatherData.clouds.all >= 41){
             	$scope.bigClouds = true;
             	$scope.smallClouds = false;
+            	$scope.noClouds = false;
             } 
             console.log($scope.clouds);
 
