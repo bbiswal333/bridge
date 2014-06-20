@@ -1,5 +1,10 @@
 {
-	"globals": 
+	"env": 
+    {
+        "browser": true,
+        "node": true
+    },
+    "globals": 
 	{
         "angular": true,
         "location": true        
