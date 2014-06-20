@@ -354,11 +354,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             totalBookingQuantity += booking.QUANTITY;
         });
 
-        if(((totalBookingQuantity - totalWorkingTimeForDay) > 0 &&
-            (totalBookingQuantity - totalWorkingTimeForDay) < 0.02) ||
-           ((totalBookingQuantity - totalWorkingTimeForDay) < 0 &&
-            (totalBookingQuantity - totalWorkingTimeForDay) > -0.02)) {
-            biggestBooking.QUANTITY -= totalBookingQuantity - totalWorkingTimeForDay;
+        totalBookingQuantity = Math.round(totalBookingQuantity * 1000) / 1000;
+
+        var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
+        if((bookingDif > 0 && bookingDif < 0.02) ||
+           (bookingDif < 0 && bookingDif > -0.02)) {
+            biggestBooking.QUANTITY -= bookingDif;
         }
 
         monthlyDataService.days[workdate].tasks = workdateBookings;
