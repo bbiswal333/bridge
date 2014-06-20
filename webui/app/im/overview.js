@@ -14,6 +14,18 @@ angular.module('app.im').directive('app.im', function () {
 });
 
     angular.module('app.im').run(function ($rootScope) {
+
+        //weatherMAGIC
+
+            function get_location() {
+                console.log('get_Location start');
+              if (Modernizr.geolocation) {
+                navigator.geolocation.getCurrentPosition(show_map);
+              } else {
+                // no native support; maybe try a fallback?
+              }
+            }
+        
 });
 
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
@@ -64,5 +76,9 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             }).error(function(data) {
                 $scope.imData = [];                
             });
-}]);
+
+
+
+
+ }]);
     

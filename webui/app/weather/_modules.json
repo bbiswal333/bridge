@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.weather",
+		"title"					:	"weather",
+		"icon_css"				:	"icon-lightbulb",
+		"overview_directive"	:	"app.weather",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["style.css"]
+}

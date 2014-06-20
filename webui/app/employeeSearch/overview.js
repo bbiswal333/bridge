@@ -17,6 +17,9 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
             	$window.location.href = '#/tetris'
             }
         }, true);  
+
+            
+            
             
     }];
 
@@ -25,6 +28,7 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
         templateUrl: 'app/employeeSearch/overview.html',
         controller: directiveController
     };
+  
 });
 
 
