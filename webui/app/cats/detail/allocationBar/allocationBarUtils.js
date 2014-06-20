@@ -20,7 +20,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         var len = colors.length;
 
         if (!block)
-            return colors[0];
+            return null;
 
         var blockId = block.task.ZCPR_OBJGEXTID || block.task.TASKTYPE;
 
