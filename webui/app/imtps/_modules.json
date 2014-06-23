@@ -1,0 +1,20 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.imtps",
+		"title"					:	"GTP Test MSG",
+		"icon_css"				:	"icon-comment-empty",
+		"overview_directive"	:	"app.imtps",
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/imtps",
+				"templateUrl"	:	"app/imtps/detail.html"			
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js","settings.js","config.js"],
+	"css_files" : []
+}

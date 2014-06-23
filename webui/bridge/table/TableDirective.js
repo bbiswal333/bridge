@@ -2,11 +2,28 @@ angular.module('bridge.table', []);
 angular.module('bridge.table').directive('bridge.table', ['$templateCache', '$http', '$q', function ($templateCache, $http, $q) {
 
 	var directiveController = ['$scope', '$http', '$q', function ($scope, $http, $q) {
-		$scope.gridOptions.data = 'gridData';		
+		var infinityLimitStep = 50;
+		var infinityLimit = infinityLimitStep;
+		var limitedData = {};
+
+		// $scope.gridOptions.data = 'gridData';		
+		$scope.gridOptions.data = 'limitedData';
 		$scope.config = {};
 
 		var defer = $q.defer();
 	    var promises = [];
+
+	    var getLimitedData = function(){
+	    	if ($scope.gridData && $scope.gridData.length > infinityLimit)
+	    		return $scope.gridData.slice(0,infinityLimit);
+	    	else
+	    		return $scope.gridData;
+	    }
+
+	    $scope.increaseInfinityLimit = function(){
+	    	infinityLimit += infinityLimitStep;
+	    	$scope.limitedData = getLimitedData();
+	    }
 
 	    //replace templates if needed
 	    promises.push(
@@ -37,6 +54,11 @@ angular.module('bridge.table').directive('bridge.table', ['$templateCache', '$ht
 	        })
         );	
 
+        $scope.$watch("gridData",function(){
+        	console.log("watcher on gridData ");
+    		$scope.limitedData = getLimitedData();
+        });
+
         $q.all(promises).then(function(){ $scope.config.loaded = true; });        
         return defer.promise;
 			
@@ -53,6 +75,21 @@ angular.module('bridge.table').directive('bridge.table', ['$templateCache', '$ht
 		}                       
     };
 }]);
+
+angular.module('bridge.table').directive("infinitescroll", ['$window', function($window){
+	return function(scope, elm, attr) {
+		var wind = angular.element( document.querySelector( '#detailContainer' ));
+		var raw = wind[0];
+
+	    wind.bind("scroll", function() {
+	        if (raw.scrollTop + raw.offsetHeight >= elm[0].scrollHeight) {
+	            scope.$apply(scope.increaseInfinityLimit());
+	        } else if (raw.scrollTop === 0){
+	            //should it be reset to the initial limit size?
+	        }
+	    });    
+	}
+}])
 
 
 

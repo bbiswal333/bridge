@@ -1,5 +1,4 @@
 ﻿<div class="app-cats-body">
-  
 
 	<div ng-if="hasError">
 		{{state}}
@@ -7,23 +6,24 @@
 	<div ng-if="!loading" class="bridge-fade-anim">
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">
+      <span ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</span>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"> &#xe1ee; </span>	
-			<b class="app-cats-current-month">{{currentMonth}}</b> 
+			<b class="app-cats-current-month" ng-class="{'box-title':maintainable}">{{currentMonth}}</b> 
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
 		<div class="app-cats-calendar">
 			<div class="app-cats-week-labels row">
-        <div class="{{dayClass}} app-cats-col-xs-1-8 fixed-width" ng-if="maintainable"> </div>
-				<div class="{{dayClass}} app-cats-col-xs-1-8 fixed-width" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
+        <div class="{{dayClass}}" ng-if="maintainable"> </div>
+				<div class="{{dayClass}}" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
 			</div>
 			<div class="app-cats-week row" ng-repeat="week in calArray">
-                <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container app-cats-col-xs-1-8">
+                <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
                         <button class="btn btn-default"  ng-click="selectWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                         <!-- <button class="app-cats-cw-button" ng-click="selectWeek(monthService.getWeeksOfMonth(year, month)[$index].weekNo)">CW {{monthService.getWeeksOfMonth(year, month)[$index].weekNo}}</button> -->
                     </div>
                 </div>
-                <div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}}  clickable app-cats-col-xs-1-8" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString, $event);">
+                <div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}}  clickable" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString, $event);">
                     <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
@@ -37,12 +37,14 @@
                               'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
                 </div>
-                <div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats app-cats-col-xs-1-8" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="No data available in CATS for this date.">
+                <div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="No data available in CATS for this date.">
                     <span>{{day.dayNr}}</span>
                 </div>				
 			</div>
 		</div>
 		<div style="clear: both;"></div>
-		<div class="app-cats-legend clickable app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
+    
+		<div ng-class="{'app-cats-legend':!maintainable,'app-cats-legend-hide':maintainable}" class=" clickable app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
+    
 	</div>
 </div>

@@ -17,7 +17,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 		    if (this.srcSystem == "" && this.devClass == "" && this.tadirResponsible == "" && this.component == "")
 		        return true;
 		    else
-		        false;
+		        return false;
 		}
 
 		this.clear();

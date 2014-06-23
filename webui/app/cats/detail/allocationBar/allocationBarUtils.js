@@ -1,41 +1,39 @@
 angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationBar.utils.colorUtils", function () {
-    var colorCounter = 0;
+    this.colorCounter = 0;
 
-    var colors = [
+    this.colors = [
         "#428BCA",
         "#6cb9e3",
         "#a4d8f9",
-        "#c4e8ff",
-        "#dff5ff",
-        "#Fff7e1",
         "#ffe9b8",
         "#ffd07e",
         "#ffb541",
-        "#ffa317"
+        "#ffa317",
+        "#c4e8ff",
+        "#dff5ff",
+        "#Fff7e1"
     ];
+    this.blockColors = {};
 
-    this.getNextColor = function(blockIndex) {
+    this.getColorForBlock = function(block){
         var generated = null;
-        var len = colors.length;
+        var len = this.colors.length;
 
-        if (blockIndex != undefined) {
-            colorCounter = blockIndex;
+        if (!block)
+            return null;
+
+        var blockId = block.task.ZCPR_OBJGEXTID || block.task.TASKTYPE;
+
+        if (!this.blockColors[blockId]) {
+            this.blockColors[blockId] = this.colors[this.colorCounter % len];
+            this.colorCounter++;
         };
-
-        if (Math.floor(colorCounter / len) % 2 == 0) {
-            generated = colors[colorCounter % len];
-        }
-        else {
-            generated = colors[len - 1 - (colorCounter % len)];
-        }
-
-        colorCounter++;
-
-        return generated;
+        return this.blockColors[blockId]; 
     }
 
     this.resetColorCounter = function () {
-       colorCounter = 0;
+        this.blockColors = {};
+        this.colorCounter = 0;
     }
 })
 
@@ -65,8 +63,8 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         // check boundaries of the new value
         var valueDiff = newValue - currentValue;
 
-        if (newValue < 0) {
-            newValue = 0;
+        if (newValue < 0.01) {
+            newValue = 0.01;
         } else if (valueDiff > remainingValue) {
             newValue = currentValue + remainingValue; // == maxValue
         }

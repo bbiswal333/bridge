@@ -1,0 +1,20 @@
+{
+	"env": 
+    {
+        "browser": true,
+        "node": false
+    },
+    "globals": 
+	{
+        "angular": true,
+        "location": true,
+        "Modernizr": true,
+        "console": true        
+    },
+    "rules": 
+    {        
+        "quotes": 0,
+        "strict": 0,
+        "camelcase": 0
+    }
+}

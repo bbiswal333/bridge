@@ -1,24 +1,23 @@
 <div ng-controller="app.im.directiveController">
 	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
-		<div class="prio_container_box-size-2" style="width:175px; ">
-				
-				<div ng-repeat="prio in prios" class="prio_col prio_bg_{{$index+1}}">
-				<a href="#/detail/im/{{prios[$index].name}}" >
-					<div class="prio_box" style="color:white">
-						<p>{{prios[$index].name}}</p>
-					</div>
-					<div class="prio_content_box" style="color:white">
-						<p ng-if="prios[$index].amount<=999">{{prios[$index].amount}}</p>
-						<p ng-if="prios[$index].amount>=1000">+999</p>
-					</div>
-				</a>	
-				</div>	
+		<div class="im-prio_container" style="width:175px; ">	
+			<div ng-repeat="prio in prios" class="prio_col im-prio_col prio_bg_{{$index+1}}">
+			<a href="#/detail/im/{{prios[$index].name}}" >
+				<div class="prio_box" style="color:white">
+					<p>{{prios[$index].name}}</p>
+				</div>
+				<div class="prio_content_box" style="color:white">
+					<p ng-if="prios[$index].amount<=99">{{prios[$index].amount}}</p>
+					<p ng-if="prios[$index].amount>=100">+99</p>
+				</div>
+			</a>	
+			</div>	
 		</div>
-		<div class="btn-container">
-			<div class="btn btn-default btn-box" style="width:180px">Selected Components</div>	
-			<div class="btn btn-default btn-box" style="width:180px">Assigned to Colleagues</div>	
-			<div class="btn btn-default btn-box" style="width:180px">Assigned to Me</div>	
-			<div class="btn btn-default btn-box" style="width:180px">Created by Me</div>	
+		<div class="im-btn-container">
+			<div class="btn btn-default im-btn-box" style="width:35px;" title="Selected Components"><i class="fa fa-cube"></i></div>	
+			<div class="btn btn-default im-btn-box" style="width:35px;" title="Assigned to Colleagues"><i class="fa fa-users"  style="position: relative;right: 2px;"></i></div>	
+			<div class="btn btn-default im-btn-box" style="width:35px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></div>	
+			<div class="btn btn-default im-btn-box" style="width:35px;" title="Created by Me"><i class="fa fa-user"></i></div>	
 		</div>
 	</div>
     <div ng-if="showNoMessages">

@@ -116,18 +116,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.convertWeekData = function (backendData) {
-		// if(!backendData || !year || !week) {
-		// 	console.log("convertWeekData() at least one import parameter is empty.");
-		// 	return null;
-		// }
-
-		// if (backendData.TIMESHEETS.WEEK != week + "." + year){
-		// 	console.log("convertWeekData() data does not correspond to given week and year.");
-		// 	return null;
-		// }
 		var week = backendData.TIMESHEETS.WEEK.substring(0,2);
 		var year = backendData.TIMESHEETS.WEEK.substring(3,7);
-
 		var weekData = {};
 		weekData.year = year;
 		weekData.week = week;
@@ -141,7 +131,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            	if(ISPTaskIterator == 0) { // build the target array in the first place
 		            		var day = {};
 		            		var HoursOfWorkingDay = 8;
-		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+		            		// test test test
+		            		if(ISPtask.DAYS[DayIterator].TARGET) {
+			            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+							} else {
+								day.targetHours = 0;
+							}
 		            		day.targetTimeInPercentageOfDay = day.targetHours / HoursOfWorkingDay;
 		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
@@ -180,16 +175,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return weekData;
 	};
 
-	// this.getWeeklyData = function (year, week) {
-	//     var deferred = $q.defer();
-	//     var that = this;
-	//     $http.get('https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=' + year + '.' + week)
-	//     .success(function (data) {
-	//         deferred.resolve(that.convertWeekData(data, year, week));
-	//     });
-	//     return deferred.promise;
-	// };
-
 	this.loadDataForSelectedWeeks = function(weeks){
         var promises = [];
         var self = this;
@@ -213,4 +198,3 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.getDataForCurrentMonth();
 
 }]);
-

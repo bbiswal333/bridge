@@ -1,4 +1,5 @@
-angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data"]).directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", function (catsUtils, $timeout) {
+angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data", "app.cats.allocationBar.utils"]).
+  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils", function (catsUtils, $timeout, colorUtils) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -51,15 +52,14 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         $scope.items = [];
         
         for (var i = 0; i < data.length; i++) {
+          var color = null;
           var found = false;
 
           for (var j = 0; j < $scope.blocks.length; j++) {
-              if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].task.ZCPR_OBJGEXTID &&
-                  $scope.blocks[j].value != 0
-                  // $scope.blocks[j].task.QUANTITY != 0  
-                  ) {
-                  found = true;
-              }
+            if (data[i].ZCPR_OBJGEXTID == $scope.blocks[j].task.ZCPR_OBJGEXTID && $scope.blocks[j].value != 0){
+              found = true;
+              color = colorUtils.getColorForBlock($scope.blocks[j]);    
+            }
           }
 
           var newItem = data[i];
@@ -67,6 +67,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           newItem.name      = data[i].taskDesc;
           newItem.desc      = data[i].projectDesc;
           newItem.selected  = found;
+          newItem.color     = color;
           $scope.items.push(newItem);
 
           $scope.loaded = true;

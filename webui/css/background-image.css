@@ -24,11 +24,11 @@
     height: 100%;
     width: 100%;
     right:0;
-    background-color:#0442b9;
-    background-image: url('../img/273907_l_srgb_s_gl.jpg');
-    background-repeat: no-repeat;
+    background-image: url('../img/b.jpg');
     background-size: 100% auto;
     background-position-y: bottom;
+    background-size: cover;
+    background-position-x: center;
 }
 .mainPageBackground {
     width: 100%;
@@ -38,7 +38,21 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
+.mainPageBackground_day{
 
+}
+.mainPageBackground_night{
+
+}
+.smallClouds{
+
+}
+.bigClouds{
+
+}
+.rain{
+
+}
 
 .boxDisable {
     background-color: #E6E6E6;

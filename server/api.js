@@ -4,14 +4,17 @@ var url 		= require('url');
 var fs          = require('fs');
 var path 		= require('path');
 var npm_load	= require('./npm_load.js');
+var path		= require('path');
 
 exports.register = function(app, user, local, proxy, npm, eTag)
 {
 	//get api modules	
-	var xml2js 	  = require("xml2js").parseString;
-	var iconv 	  = require("iconv-lite");
-	var EWSClient = require("./ews/ewsClient.js").EWSClient;
-	var wire      = require("./wire.js");
+	var xml2js 	  	  = require("xml2js").parseString;
+	var iconv 	  	  = require("iconv-lite");
+	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
+	var wire          = require("./wire.js");
+	var execFile  	  = require('child_process').execFile;
+	var pathTrafLight = path.join( __dirname , '\\trafficlight');
 
 	function setHeader(request, response)
 	{	
@@ -27,7 +30,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		return response;
 	};
 
-	function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
+	function callBackend(protocol, hostname, port, path, method, proxy, decode, callback, postData){
 
 		var options = 
 		{
@@ -37,6 +40,18 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			method: method,
 			rejectUnauthorized: false
 		};
+
+		if(proxy)
+		{
+			options = {
+				host: "proxy.wdf.sap.corp",
+			 	port: 8080,
+			 	path: protocol + "//" + hostname + ":" + port + path,
+			 	headers: {
+			    	Host: hostname
+			  	}
+			};
+		}
 
 		if (local)
 		{
@@ -109,6 +124,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 	//generic api call get
 	app.get('/api/get', function(request, response) {
 		var json = false;
+		var proxy = false;
 
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
@@ -123,6 +139,11 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			response.setHeader('Content-Type', 'application/json');
 		}
 
+		if (typeof request.query.proxy != "undefined" && request.query.proxy == "true")
+		{
+			proxy = true;
+		}
+
 		var service_url = url.parse(request.query.url);	
 
 		var decode = "none";
@@ -132,7 +153,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		}
 
 
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', proxy, decode, function (data) {
 			response = setHeader( request, response );	
 			response.charset = 'UTF-8';
 			if (json) {
@@ -198,7 +219,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 	    //var postData = request.rawBody;
 		var postData = JSON.stringify(request.body);
 
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", false, "none", function(data) {
 			response = setHeader( request, response );		
 			response.send(data);
 		}, postData);
@@ -374,4 +395,37 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 
 		});
 	}
+	
+	app.get("/api/trafficLight" , function (request, response) {
+		/* 
+		traffic light command api parameters:
+		turn off (0 is the number 0)
+		1 turn on
+		R turn on red traffic light
+		Y turn on yellow traffic light
+		G turn on green traffic light
+		O turn off all traffic light
+		-# switch when the device consists of multiple switches, choose this one, first=0
+		-i nnn interval test, turn the device on and off, time interval nnn ms, in an endless loop
+		-I nnn interval test, turn on, wait nnn ms and turn off
+		-p t1 .. tn pulse mode, the switch will be turned on for 0.5 seconds then t1 seconds paused, turned on 0.5 s and t2 s pause, etc. after processing the last argument the switch turns off and the program terminates.
+		*/
+		var colorOn = request.query.color;	
+		
+		var l_err = '';
+		if(process.platform == "win32") {
+			var child = execFile('USBswitchCmd.exe', [ colorOn ] , { cwd: pathTrafLight } , function( error, stdout, stderr) {
+				// callback function for switch
+			   if ( error ) {
+					// print error
+					console.log(stderr);
+					l_err = stderr;
+					// error handling & exit
+			   }
+		   });
+		}
+
+		response = setHeader( request, response );			
+		response.send('{"msg":"' + l_err + '"}');
+	});
 }

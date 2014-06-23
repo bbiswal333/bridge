@@ -1,4 +1,4 @@
-﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', function ($http, $q) {
+﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', function ($http, $q, $interval) {
     var that = this;
 
     this.backendTickets = null;
@@ -26,7 +26,7 @@
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
+        $http.get('https://cid.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
         ).success(function (data) {
             data = new X2JS().xml_str2json(data);
             var imData = data["abap"];

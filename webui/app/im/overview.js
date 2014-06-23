@@ -3,7 +3,7 @@ angular.module('app.im', ['ngTable']);
 angular.module('app.im').directive('app.im', function () {
 
     var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {  
-        $scope.box.boxSize = "2";      
+        $scope.box.boxSize = "1";      
     }];
 
     return {
@@ -11,9 +11,6 @@ angular.module('app.im').directive('app.im', function () {
         templateUrl: 'app/im/overview.html',
         controller: directiveController
     };
-});
-
-angular.module('app.im').run(function ($rootScope) {
 });
 
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
