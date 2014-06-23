@@ -1,7 +1,7 @@
 ﻿angular.module('app.weather', []);
 angular.module('app.weather').directive('app.weather', function () {
 
-    var directiveController = ['$scope', function ($scope) 
+    var directiveController = ['$scope', '$http', function ($scope, $http) 
     {
     	$scope.box.boxSize = "1"; 
         
@@ -16,17 +16,18 @@ angular.module('app.weather').directive('app.weather', function () {
           	$scope.support = false;
           }
         };
+
         //get the json data with specific coords
          $scope.show_map = function(position) {
           $scope.latitude = position.coords.latitude;
           $scope.longitude = position.coords.longitude;
           $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
 
-          $.getJSON($scope.weatherData, function(weatherData) {
+          $http.get($scope.weatherData).success(function (weatherData) {
             //ask for clouds, rain, etc
             //temperature in celsius
             $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
-            console.log($scope.temperature);
+            //console.log($scope.temperature);
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
@@ -45,21 +46,22 @@ angular.module('app.weather').directive('app.weather', function () {
             	$scope.smallClouds = false;
             	$scope.noClouds = false;
             } 
-            console.log($scope.clouds);
+            //console.log($scope.clouds);
 
             //city
             $scope.city = weatherData.name; 
-            console.log($scope.city);
+            //console.log($scope.city);
 
             //rain
-            $scope.rain = weatherData.rain['3h'];
-            if (weatherData.rain['3h'] > 0){
-            	$scope.raining = true;
+            $scope.raining = false;
+            if(weatherData.rain)
+            {            
+                $scope.rain = weatherData.rain['3h'];
+                if (weatherData.rain['3h'] > 0){
+                	$scope.raining = true;
+                }            
             }
-            if(weatherData.rain['3h'] <= 0){
-            	$scope.raining = false;
-            }
-            console.log($scope.rain);
+            
 
           });
         };

@@ -2,13 +2,14 @@
 	"env": 
     {
         "browser": true,
-        "node": true
+        "node": false
     },
     "globals": 
 	{
         "angular": true,
         "location": true,
-        "Modernizr": true        
+        "Modernizr": true,
+        "console": true        
     },
     "rules": 
     {        
