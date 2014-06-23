@@ -206,7 +206,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 if ($scope.blockdata[i].task.COUNTER) {
                     $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
                 } else {
-                    $scope.blockdata.splice(i);
+                    $scope.blockdata.splice(i,1);
                 }
             }
             i++;
@@ -296,9 +296,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         } else {
             bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
         }
-        
     }
-    
 
     function prepareCATSData (workdate, container, clearOldTasks){
         var workdateBookings = [];

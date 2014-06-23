@@ -2,7 +2,7 @@ angular.module('app.im', ['ngTable']);
 
 angular.module('app.im').directive('app.im', function () {
 
-    var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {  
+    var directiveController = ['$scope', function ($scope) {  
         $scope.box.boxSize = "1";      
     }];
 
@@ -15,6 +15,12 @@ angular.module('app.im').directive('app.im', function () {
 
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
     function Controller($scope, $http, ticketData) {
+
+        $scope.selection = {};
+        $scope.selection.sel_components = true;
+        $scope.selection.colleagues = false;
+        $scope.selection.assigned_me = false;
+        $scope.selection.created_me = false;
 
         $scope.prios = ticketData.prios;
         $scope.$parent.titleExtension = " - Internal Messages";

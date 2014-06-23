@@ -1,6 +1,6 @@
 <div ng-controller="app.im.directiveController">
 	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
-		<div class="im-prio_container" style="width:175px; ">	
+		<div class="im-prio_container">	
 			<div ng-repeat="prio in prios" class="prio_col im-prio_col prio_bg_{{$index+1}}">
 			<a href="#/detail/im/{{prios[$index].name}}" >
 				<div class="prio_box" style="color:white">
@@ -14,10 +14,22 @@
 			</div>	
 		</div>
 		<div class="im-btn-container">
-			<div class="btn btn-default im-btn-box" style="width:35px;" title="Selected Components"><i class="fa fa-cube"></i></div>	
-			<div class="btn btn-default im-btn-box" style="width:35px;" title="Assigned to Colleagues"><i class="fa fa-users"  style="position: relative;right: 2px;"></i></div>	
-			<div class="btn btn-default im-btn-box" style="width:35px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></div>	
-			<div class="btn btn-default im-btn-box" style="width:35px;" title="Created by Me"><i class="fa fa-user"></i></div>	
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.sel_components];" ng-click="selection.sel_components = !selection.sel_components" 
+			style="width:35px;" title="Selected Components">
+				<i class="fa fa-cube"></i>
+			</div>	
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.colleagues];" ng-click="selection.colleagues = !selection.colleagues"
+			style="width:35px;" title="Assigned to Colleagues">
+				<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+			</div>	
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.assigned_me];" ng-click="selection.assigned_me = !selection.assigned_me"
+			style="width:35px;" title="Assigned to Me">
+				<i class="fa fa-1.5x fa-crosshairs"></i>
+			</div>	
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.created_me];" ng-click="selection.created_me = !selection.created_me"
+			style="width:35px;" title="Created by Me">
+				<i class="fa fa-user"></i>
+			</div>	
 		</div>
 	</div>
     <div ng-if="showNoMessages">
