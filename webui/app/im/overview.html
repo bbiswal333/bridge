@@ -1,6 +1,5 @@
 <div ng-controller="app.im.directiveController">
-	{{lastElement}}
-	<div ng-if="displayChart" style="height:140px">
+	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
 		<div class="prio_container_box-size-2" style="width:175px; ">
 				
 				<div ng-repeat="prio in prios" class="prio_col prio_bg_{{$index+1}}">
@@ -14,8 +13,6 @@
 					</div>
 				</a>	
 				</div>	
-
-
 		</div>
 		<div class="btn-container">
 			<div class="btn btn-default btn-box" style="width:180px">Selected Components</div>	
@@ -24,4 +21,7 @@
 			<div class="btn btn-default btn-box" style="width:180px">Created by Me</div>	
 		</div>
 	</div>
+    <div ng-if="showNoMessages">
+        You have no internal messages to display!
+    </div>
 </div>

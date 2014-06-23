@@ -6,15 +6,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         $scope.messages = [];
         $scope.data = {};        
 
-        $scope.prios = [{
-            name: "Very high", number: 1, amount: 0,
-        }, {
-            name: "High", number: 2, amount: 0,
-        }, {
-            name: "Medium", number: 3, amount: 0,
-        }, {
-            name: "Low", number: 4, amount: 0,
-        }];
+        $scope.prios = ticketData.prios;
 
         $scope.$watch('messages', function () 
         {                        
@@ -109,13 +101,26 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             });
         }
 
-        if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-            _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
-                enhanceMessage(message);
+        function enhanceAllMessages() {
+            if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
+                _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
+                    enhanceMessage(message);
+                });
+            } else {
+                enhanceMessage(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+            }
+        }
+
+        if (ticketData.isInitialized.value === false) {
+            var promise = ticketData.initialize();
+
+            promise.then(function success(data) {
+                enhanceAllMessages();
             });
         } else {
-            enhanceMessage(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+            enhanceAllMessages();
         }
+
 	 		     
 }]);
 

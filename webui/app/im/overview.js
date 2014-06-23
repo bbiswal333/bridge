@@ -19,50 +19,29 @@ angular.module('app.im').run(function ($rootScope) {
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
     function Controller($scope, $http, ticketData) {
 
-        $scope.prios = [{
-            name: "Very high", number: 1, amount: 0,
-        }, {
-            name: "High", number: 2, amount: 0,
-        }, {
-            name: "Medium", number: 3, amount: 0,
-        }, {
-            name: "Low", number: 4, amount: 0,
-        }];
+        $scope.prios = ticketData.prios;
+        $scope.$parent.titleExtension = " - Internal Messages";
+        $scope.dataInitialized = ticketData.isInitialized;
+        $scope.showNoMessages = false;
 
-        function parseBackendTicket(backendTicket) {
-            _.each($scope.prios, function (prios) {
-                if (backendTicket.PRIO == prios.number.toString())
-                    prios.amount++;
+        $scope.$watch("prios", function () {
+            setNoMessagesFlag();
+        }, true);
+
+        function setNoMessagesFlag() {
+            if (ticketData.isInitialized.value == true && ($scope.prios[0].amount + $scope.prios[1].amount + $scope.prios[2].amount + $scope.prios[3].amount) == 0) {
+                $scope.showNoMessages = true;
+            } else {
+                $scope.showNoMessages = false;
+            }
+        };
+
+        if (ticketData.isInitialized.value === false) {
+            var initPromise = ticketData.initialize();
+            initPromise.then(function success(data) {
+                setNoMessagesFlag();
             });
         }
 
-        $scope.$parent.titleExtension = " - Internal Messages"; 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
-            ).success(function(data) {
-                data = new X2JS().xml_str2json(data);
-                var imData = data["abap"];
-                ticketData.backendTickets = imData["values"];
-
-                // if you have multiple tickets, DEVDB_MESSAGE_OUT is an array, otherwise a simple object
-                if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                    _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
-                        parseBackendTicket(backendTicket);
-                    });
-                } else if (angular.isObject(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                    parseBackendTicket(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
-                }
-
-                if (($scope.prios[0].amount + $scope.prios[1].amount + $scope.prios[2].amount + $scope.prios[3].amount) == 0) {
-                    $scope.lastElement="You have no internal messages to display!";
-                    $scope.displayChart = false;
-                }                
-                else 
-                {
-                    $scope.displayChart = true;
-                }
-
-            }).error(function(data) {
-                $scope.imData = [];                
-            });
 }]);
     
