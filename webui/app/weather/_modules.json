@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.weather",
-		"title"					:	"weather",
+		"title"					:	"Weather",
 		"icon_css"				:	"icon-lightbulb",
 		"overview_directive"	:	"app.weather",
 		"needs_client"			:	false

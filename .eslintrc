@@ -7,11 +7,13 @@
     "globals": 
 	{
         "angular": true,
-        "location": true        
+        "location": true,
+        "Modernizr": true        
     },
     "rules": 
     {        
         "quotes": 0,
-        "strict": 0
+        "strict": 0,
+        "camelcase": 0
     }
 }

@@ -15,12 +15,12 @@ angular.module('app.weather').directive('app.weather', function () {
           } else {
           	$scope.support = false;
           }
-        }
+        };
         //get the json data with specific coords
          $scope.show_map = function(position) {
           $scope.latitude = position.coords.latitude;
           $scope.longitude = position.coords.longitude;
-          $scope.weatherData =  'http://api.openweathermap.org/data/2.5/weather?lat='+$scope.latitude+'&lon='+$scope.longitude;
+          $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
 
           $.getJSON($scope.weatherData, function(weatherData) {
             //ask for clouds, rain, etc
@@ -30,7 +30,7 @@ angular.module('app.weather').directive('app.weather', function () {
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
-            if(weatherData.clouds.all == 0){
+            if(weatherData.clouds.all === 0){
 				$scope.noClouds = true;
 				$scope.bigClouds = false;
 				$scope.smallClouds = false;
@@ -62,7 +62,7 @@ angular.module('app.weather').directive('app.weather', function () {
             console.log($scope.rain);
 
           });
-        }
+        };
         //start whole weathermagic
         $scope.get_location();          
     }];
