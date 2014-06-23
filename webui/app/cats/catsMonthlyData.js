@@ -133,7 +133,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var HoursOfWorkingDay = 8;
 		            		// test test test
 		            		if(ISPtask.DAYS[DayIterator].TARGET) {
-			            		day.targetHours = 1.1;
+			            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
 							} else {
 								day.targetHours = 0;
 							}
