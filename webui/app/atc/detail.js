@@ -11,7 +11,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = appAtcData;          
     $scope.atcData.tableData = [];
 
-    var infinityLimitStep = 50;
+    var infinityLimitStep = 100;
     $scope.infinityLimit = infinityLimitStep;
     $scope.reverse = true;
     $scope.predicate = null;
@@ -104,13 +104,12 @@ angular.module('app.atc').directive("infinitescroll", ['$window', function($wind
     return function(scope, elm, attr) {
         var container = angular.element( document.querySelector( '#detailContainer' ));
         var cont = container[0];
-        var loadBuffer = 1000;
 
         container.bind("scroll", function() {
-            if (cont.scrollTop + cont.offsetHeight +loadBuffer >= elm[0].scrollHeight) {
+            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight) {
                 scope.$apply(scope.increaseInfinityLimit());
             } else if (cont.scrollTop === 0){
-                //should it be reset to the initial limit size?
+                //should we reset limit to the initial size?
             }
         });    
     }
