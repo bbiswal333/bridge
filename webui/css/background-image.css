@@ -23,10 +23,11 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    right:0;
-    background-image: url('../img/b.jpg');
+    left:0;
+    top: 0;
+    background-image: url('../img/sun.png');
     background-size: 100% auto;
-    background-position-y: bottom;
+    background-position-y: top;
     background-size: cover;
     background-position-x: center;
 }
@@ -38,21 +39,46 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
-.mainPageBackground_day{
-
-}
-.mainPageBackground_night{
-
+.night{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url();
 }
 .smallClouds{
-
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/small_clouds.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+   
 }
 .bigClouds{
-
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/large_clouds.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+   
 }
 .rain{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/rain.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+   }
 
-}
+
 
 .boxDisable {
     background-color: #E6E6E6;

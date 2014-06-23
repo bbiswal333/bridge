@@ -1,6 +1,5 @@
 
 ﻿<!--To Do's
-	-add weekday names for next days
 	-add some error-handling
 		what if the user is not allowing geolocation
 
@@ -9,8 +8,6 @@
 		-option of typing the city and add it to the overview-box (max 3)
 		-farenheit - celsius option
 		-maybe choose how many days forecast you want to have
-
-
  -->
 
 
@@ -18,7 +15,7 @@
 <div ng-if="support" class="weather-container">
 	<div class="weather-box-large">
 		<div>{{city}}</div>
-		<div class="font-lightweight-large">{{temperature}} °C</div>
+		<div class="font-lightweight-large blue">{{temperature}} °C</div>
 		<div>today</div>
 	</div>
 	<div class="weather-row">
@@ -43,13 +40,6 @@
 			<b>{{forecast_temperature_4}}°</b>
 		</div>
 	</div>
-	<!--
-	<div class="weather-navi">
-		<div class="weather-navi-point">*</div>
-		<div class="weather-navi-point">*</div>
-		<div class="weather-navi-point">*</div>
-	</div>
-	-->
 </div>
 <div ng-if="!support">
 	your browser isn't supporting geolocation.

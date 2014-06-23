@@ -4,11 +4,6 @@ angular.module('app.weather').directive('app.weather', function () {
     var directiveController = ['$scope', '$http', function ($scope, $http) 
     {
     	$scope.box.boxSize = "1"; 
-
-        //$scope.box.settingScreenData = {
-        //    templatePath: "weather/settings.html",
-        //    controller: angular.module('app.weather').appWeatherSettings,
-        //    };
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -69,7 +64,7 @@ angular.module('app.weather').directive('app.weather', function () {
             	$scope.smallClouds = false;
             	$scope.noClouds = false;
             } 
-            //console.log($scope.clouds);
+            console.log($scope.clouds);
 
             //city
             $scope.city = weatherData.name; 
@@ -91,16 +86,16 @@ angular.module('app.weather').directive('app.weather', function () {
         $http.get($scope.forecastData).success(function (forecastData) {
             //next days
             $scope.forecast_temperature_1 = forecastData.list[0].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_1);
+            //console.log($scope.forecast_temperature_1);
 
             $scope.forecast_temperature_2 = forecastData.list[1].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_2);
+            //console.log($scope.forecast_temperature_2);
 
             $scope.forecast_temperature_3 = forecastData.list[2].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_3);
+            //console.log($scope.forecast_temperature_3);
 
             $scope.forecast_temperature_4 = forecastData.list[3].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_4);
+            //console.log($scope.forecast_temperature_4);
           });
 
         
