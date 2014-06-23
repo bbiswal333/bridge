@@ -1,9 +1,10 @@
 ﻿angular.module('app.weather', []);
 angular.module('app.weather').directive('app.weather', function () {
 
-    var directiveController = ['$scope', '$http', function ($scope, $http) 
+    var directiveController = ['$scope', '$http', 'bridgeDataService', function ($scope, $http, bridgeDataService) 
     {
     	$scope.box.boxSize = "1"; 
+
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -50,21 +51,15 @@ angular.module('app.weather').directive('app.weather', function () {
             //clouds
             $scope.clouds = weatherData.clouds.all;
             if(weatherData.clouds.all === 0){
-				$scope.noClouds = true;
-				$scope.bigClouds = false;
-				$scope.smallClouds = false;
+				bridgeDataService.getBridgeSettings().backgroundClass = "sun";
 			}
             if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
-            	$scope.smallClouds = true;
-            	$scope.bigClouds = false;
-            	$scope.noClouds = false;
+            	bridgeDataService.getBridgeSettings().backgroundClass = "smallClouds";
             } 
             if (weatherData.clouds.all >= 41){
-            	$scope.bigClouds = true;
-            	$scope.smallClouds = false;
-            	$scope.noClouds = false;
+            	bridgeDataService.getBridgeSettings().backgroundClass = "bigClouds";
             } 
-            console.log($scope.clouds);
+            //console.log($scope.clouds);
 
             //city
             $scope.city = weatherData.name; 
@@ -76,7 +71,7 @@ angular.module('app.weather').directive('app.weather', function () {
             {            
                 $scope.rain = weatherData.rain['3h'];
                 if (weatherData.rain['3h'] > 0){
-                	$scope.raining = true;
+                	bridgeDataService.getBridgeSettings().backgroundClass = "rain";
                 }            
             }
             
