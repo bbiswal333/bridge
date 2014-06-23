@@ -4,7 +4,7 @@
     box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
     border-color: #dddddd;
     padding:5px 15px;
-    opacity: 0.9;
+    /*opacity: 0.9;*/
 }
 .box-heading {
     font-family:'Open Sans', sans-serif;
