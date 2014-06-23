@@ -203,7 +203,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var i = 0;
         while (i < $scope.blockdata.length) {
             if (objgextid_s == $scope.blockdata[i].task.ZCPR_OBJGEXTID) {
-                $scope.blockdata[i].value = 0;
+                if ($scope.blockdata[i].task.COUNTER) {
+                    $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
+                } else {
+                    $scope.blockdata.splice(i);
+                }
             }
             i++;
         }
