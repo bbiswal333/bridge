@@ -1,10 +1,55 @@
-﻿<div ng-if="support">
-	<div>{{temperature}} °C</div>
-	<div>{{clouds}} percent clouds in the sky</div>
-	<div ng-if="raining">{{rain}} mm of rain, damn!</div>
-	<div ng-if="!raining">no rain, hooray!</div>
-	<div>in {{city}}</div>
+﻿<!--To Do's
+	-add weekday names for next days
+	-add some error-handling
+		what if the user is not allowing geolocation
+
+	Optional
+	-add settingsscreen 
+		-option of typing the city and add it to the overview-box (max 3)
+		-farenheit - celsius option
+		-maybe choose how many days forecast you want to have
+
+
+ -->
+
+
+
+<div ng-if="support" class="weather-container">
+	<div class="weather-box-large">
+		<div>{{city}}</div>
+		<div class="font-lightweight-large">{{temperature}} °C</div>
+		<div>today</div>
+	</div>
+	<div class="weather-row">
+		<div class="weather-box-small">
+			{{dd+1}}.{{mm}}
+			<br>
+			<b>{{forecast_temperature_1}}°</b>
+		</div>
+		<div class="weather-box-small">
+			{{dd+2}}.{{mm}}
+			<br>
+			<b>{{forecast_temperature_2}}°</b>
+		</div>
+		<div class="weather-box-small">
+			{{dd+3}}.{{mm}}
+			<br>
+			<b>{{forecast_temperature_3}}°</b>
+		</div>
+		<div class="weather-box-small">
+			{{dd+4}}.{{mm}}
+			<br>
+			<b>{{forecast_temperature_4}}°</b>
+		</div>
+	</div>
+	<!--
+	<div class="weather-navi">
+		<div class="weather-navi-point">*</div>
+		<div class="weather-navi-point">*</div>
+		<div class="weather-navi-point">*</div>
+	</div>
+	-->
 </div>
 <div ng-if="!support">
-	you have to activate your browsers geolocation!!!
+	your browser isn't supporting geolocation.
 </div>

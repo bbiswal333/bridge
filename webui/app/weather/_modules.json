@@ -3,11 +3,11 @@
 	{
 		"module_name"			:	"app.weather",
 		"title"					:	"weather",
-		"icon_css"				:	"icon-lightbulb",
+		"icon_css"				:	"fa fa-cloud fixed-lineheight",
 		"overview_directive"	:	"app.weather",
 		"needs_client"			:	false
 	},
 	"modules" : [],
-	"js_files" : ["overview.js"],
+	"js_files" : ["overview.js", "settings.js"],
 	"css_files" : ["style.css"]
 }
