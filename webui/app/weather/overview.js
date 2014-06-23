@@ -44,7 +44,7 @@ angular.module('app.weather').directive('app.weather', function () {
           $scope.longitude = position.coords.longitude;
 
           $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
-          $scope.forecastData ='/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org/data/2.5/forecast/daily?lat='+$scope.latitude+'&lon='+$scope.longitude+'&cnt=4&mode=json');
+          $scope.forecastData ='/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat='+$scope.latitude+'&lon='+$scope.longitude+'&cnt=4&mode=json');
 
           $http.get($scope.weatherData).success(function (weatherData) {
             //ask for clouds, rain, etc
@@ -87,7 +87,7 @@ angular.module('app.weather').directive('app.weather', function () {
             
 
           });
-       
+   
         $http.get($scope.forecastData).success(function (forecastData) {
             //next days
             $scope.forecast_temperature_1 = forecastData.list[0].temp.day.toFixed(0) - 273;
