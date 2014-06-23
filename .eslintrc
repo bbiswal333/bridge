@@ -9,7 +9,8 @@
         "angular": true,
         "location": true,
         "Modernizr": true,
-        "console": true        
+        "console": true,
+        "X2JS": true        
     },
     "rules": 
     {        
