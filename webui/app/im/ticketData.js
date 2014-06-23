@@ -26,7 +26,7 @@
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://cid.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
         ).success(function (data) {
             data = new X2JS().xml_str2json(data);
             var imData = data["abap"];
