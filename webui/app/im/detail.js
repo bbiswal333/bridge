@@ -103,7 +103,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 
         function enhanceAllMessages() {
             if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
+                angular.forEach(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
                     enhanceMessage(message);
                 });
             } else {

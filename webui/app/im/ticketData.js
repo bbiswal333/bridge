@@ -7,7 +7,7 @@
     this.loadTicketDataInterval = null;
 
     function parseBackendTicket(backendTicket) {
-        _.each(that.prios, function (prio) {
+        angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIO == prio.number.toString())
                 prio.amount++;
         });
@@ -42,7 +42,7 @@
 
             // if you have multiple tickets, DEVDB_MESSAGE_OUT is an array, otherwise a simple object
             if (angular.isArray(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                _.each(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
+                angular.forEach(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
                     parseBackendTicket(backendTicket);
                 });
             } else if (angular.isObject(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
