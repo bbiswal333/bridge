@@ -133,11 +133,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var HoursOfWorkingDay = 8;
 		            		// test test test
 		            		if(ISPtask.DAYS[DayIterator].TARGET) {
-			            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+			            		day.targetHours = 1.1;
 							} else {
 								day.targetHours = 0;
 							}
-		            		day.targetTimeInPercentageOfDay = day.targetHours / HoursOfWorkingDay;
+		            		day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
 		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;

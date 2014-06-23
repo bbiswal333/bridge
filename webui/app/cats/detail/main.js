@@ -141,7 +141,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ($scope.blockdata[i].value) {
-                $scope.blockdata[i].value = $scope.totalWorkingTime * (Math.floor(1000 / (getVisibleLength() + 1)) / 1000);
+                $scope.blockdata[i].value = Math.round($scope.totalWorkingTime * (Math.floor(1000 / (getVisibleLength() + 1)) / 1000) * 1000) / 1000;
             }
         }
     }
@@ -152,7 +152,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         // Scale data which is read from backend
         if(block.COUNTER) {
-            val_i = val_i / targetTimeInPercentageOfDay;
+            val_i = Math.round(val_i / targetTimeInPercentageOfDay * 1000) / 1000;
         }
 
         var existingBlock = getByExtId(block);
@@ -160,7 +160,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                 adjustBarValues();
                 existingBlock.value = Math.round(timeToMaintain() * 1000) / 1000;
-                existingBlock.value = existingBlock.value / targetTimeInPercentageOfDay;
                 return true;
             } else { // no need to add
                 adjustBarValues();
