@@ -130,6 +130,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         // only adjust if all space is taken
         var total = 0;
         for (var i = 0; i < $scope.blockdata.length; i++) {
+            // do not adjust when a fixed block, e.g. vacation is found!
+            if($scope.blockdata[i].fixed) {
+                return;
+            }
             total = $scope.blockdata[i].value + total;
         }
         if (total != $scope.totalWorkingTime) {
@@ -173,12 +177,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
 
-        $scope.blockdata.push({
-            desc: desc_s,
-            value: val_i,
-            task: block,
-            fixed: fixed || false,
-        });
+        if (val_i) { // val_i could be 0 e.g. in case of vacation
+            $scope.blockdata.push({
+                desc: desc_s,
+                value: val_i,
+                task: block,
+                fixed: fixed || false,
+            });
+        }
 
         return true;
     };
@@ -271,18 +277,21 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             };
         });
 
-        // $scope.writeCATSdata(container);
-        catsUtils.writeCATSData(container).then(function(data){
-            checkPostReply(data);
-            monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+        if (container.BOOKINGS.length) {
+            catsUtils.writeCATSData(container).then(function(data){
+                checkPostReply(data);
+                monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                    loadCATSDataForDay();
+                    $scope.$emit("refreshApp");
+                });        
+            }, function(status){
+                bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
                 loadCATSDataForDay();
                 $scope.$emit("refreshApp");
-            });        
-        }, function(status){
-            bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
-            loadCATSDataForDay();
-            $scope.$emit("refreshApp");
-        });
+            });
+        } else {
+            bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
+        }
         
     }
     

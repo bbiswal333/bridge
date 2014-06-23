@@ -14,7 +14,7 @@ angular.module('bridge.table').directive('bridge.table', ['$templateCache', '$ht
 	    var promises = [];
 
 	    var getLimitedData = function(){
-	    	if ($scope.gridData.length > infinityLimit)
+	    	if ($scope.gridData && $scope.gridData.length > infinityLimit)
 	    		return $scope.gridData.slice(0,infinityLimit);
 	    	else
 	    		return $scope.gridData;
@@ -54,18 +54,9 @@ angular.module('bridge.table').directive('bridge.table', ['$templateCache', '$ht
 	        })
         );	
 
-        var unregister = $scope.$watch("gridData",function(){
+        $scope.$watch("gridData",function(){
         	console.log("watcher on gridData ");
-
-        	if ($scope.gridData.length > 0) {
-        		$scope.limitedData = getLimitedData();
-        		unregister(); // stop watching after first update because of infinte scrolling
-        	};
-        });
-
-        $scope.$on('ngGridEventScroll', function(){
-        	console.log("Scroll event ");
-
+    		$scope.limitedData = getLimitedData();
         });
 
         $q.all(promises).then(function(){ $scope.config.loaded = true; });        
