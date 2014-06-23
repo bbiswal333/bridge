@@ -30,7 +30,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		return response;
 	};
 
-	function callBackend(protocol, hostname, port, path, method, decode, callback, postData){
+	function callBackend(protocol, hostname, port, path, method, proxy, decode, callback, postData){
 
 		var options = 
 		{
@@ -40,6 +40,18 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			method: method,
 			rejectUnauthorized: false
 		};
+
+		if(proxy)
+		{
+			options = {
+				host: "proxy.wdf.sap.corp",
+			 	port: 8080,
+			 	path: protocol + "//" + hostname + ":" + port + path,
+			 	headers: {
+			    	Host: hostname
+			  	}
+			};
+		}
 
 		if (local)
 		{
@@ -112,6 +124,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 	//generic api call get
 	app.get('/api/get', function(request, response) {
 		var json = false;
+		var proxy = false;
 
 		if (typeof request.query.url == "undefined" || request.query.url == "")
 		{
@@ -126,6 +139,11 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			response.setHeader('Content-Type', 'application/json');
 		}
 
+		if (typeof request.query.proxy != "undefined" && request.query.proxy == "true")
+		{
+			proxy = true;
+		}
+
 		var service_url = url.parse(request.query.url);	
 
 		var decode = "none";
@@ -135,7 +153,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		}
 
 
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', decode, function (data) {
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', proxy, decode, function (data) {
 			response = setHeader( request, response );	
 			response.charset = 'UTF-8';
 			if (json) {
@@ -201,7 +219,7 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 	    //var postData = request.rawBody;
 		var postData = JSON.stringify(request.body);
 
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", "none", function(data) {
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", false, "none", function(data) {
 			response = setHeader( request, response );		
 			response.send(data);
 		}, postData);

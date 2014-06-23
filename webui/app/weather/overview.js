@@ -1,7 +1,7 @@
 ﻿angular.module('app.weather', []);
 angular.module('app.weather').directive('app.weather', function () {
 
-    var directiveController = ['$scope', function ($scope) 
+    var directiveController = ['$scope', '$http', function ($scope, $http) 
     {
     	$scope.box.boxSize = "1"; 
 
@@ -36,23 +36,25 @@ angular.module('app.weather').directive('app.weather', function () {
           } else {
           	$scope.support = false;
           }
-        }
+        };
+
         //get the json data with specific coords
          $scope.get_weather = function(position) {
           $scope.latitude = position.coords.latitude;
           $scope.longitude = position.coords.longitude;
-          $scope.weatherData =  'http://api.openweathermap.org/data/2.5/weather?lat='+$scope.latitude+'&lon='+$scope.longitude;
-          $scope.forecastData = 'http://api.openweathermap.org/data/2.5/forecast/daily?lat='+$scope.latitude+'&lon='+$scope.longitude+'&cnt=4&mode=json';
 
-          $.getJSON($scope.weatherData, function(weatherData) {
+          $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
+          $scope.forecastData ='/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org/data/2.5/forecast/daily?lat='+$scope.latitude+'&lon='+$scope.longitude+'&cnt=4&mode=json');
+
+          $http.get($scope.weatherData).success(function (weatherData) {
             //ask for clouds, rain, etc
             //temperature in celsius
             $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
-            console.log($scope.temperature);
+            //console.log($scope.temperature);
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
-            if(weatherData.clouds.all == 0){
+            if(weatherData.clouds.all === 0){
 				$scope.noClouds = true;
 				$scope.bigClouds = false;
 				$scope.smallClouds = false;
@@ -67,24 +69,26 @@ angular.module('app.weather').directive('app.weather', function () {
             	$scope.smallClouds = false;
             	$scope.noClouds = false;
             } 
-            console.log($scope.clouds);
+            //console.log($scope.clouds);
 
             //city
             $scope.city = weatherData.name; 
-            console.log($scope.city);
+            //console.log($scope.city);
 
             //rain
-            $scope.rain = weatherData.rain['3h'];
-            if (weatherData.rain['3h'] > 0){
-            	$scope.raining = true;
+            $scope.raining = false;
+            if(weatherData.rain)
+            {            
+                $scope.rain = weatherData.rain['3h'];
+                if (weatherData.rain['3h'] > 0){
+                	$scope.raining = true;
+                }            
             }
-            if(weatherData.rain['3h'] <= 0){
-            	$scope.raining = false;
-            }
-            console.log($scope.rain);
+            
 
           });
-        $.getJSON($scope.forecastData, function(forecastData) {
+       
+        $http.get($scope.forecastData).success(function (forecastData) {
             //next days
             $scope.forecast_temperature_1 = forecastData.list[0].temp.day.toFixed(0) - 273;
             console.log($scope.forecast_temperature_1);
@@ -99,7 +103,10 @@ angular.module('app.weather').directive('app.weather', function () {
             console.log($scope.forecast_temperature_4);
           });
 
-        }
+        
+
+        };
+
         //start whole weathermagic
         $scope.get_location();          
     }];
