@@ -254,7 +254,7 @@ img {
     vertical-align: middle;
 }
 .centeredContent {
-    top: 20px;
+    top: 80px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
@@ -642,7 +642,7 @@ input[type="checkbox"]:checked:after {
 .mainContainer {
     width: 100%;
     position: absolute;
-    top: 80px;
+    top: 0px;
     bottom: 0px;
 }
 /* ##### PRIO TILES ##### */
