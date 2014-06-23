@@ -23,11 +23,19 @@
         name: "Low", number: 4, amount: 0,
     }];
 
+    this.resetPrios = function () {
+        angular.forEach(that.prios, function (prio, key) {
+            prio.amount = 0;
+        });
+    };
+
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
         $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
         ).success(function (data) {
+            that.resetPrios();
+
             data = new X2JS().xml_str2json(data);
             var imData = data["abap"];
             that.backendTickets = imData["values"];
@@ -38,7 +46,7 @@
                     parseBackendTicket(backendTicket);
                 });
             } else if (angular.isObject(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                parseBackendTicket(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+                parseBackendTicket(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
             }
 
             deferred.resolve();
@@ -51,7 +59,7 @@
     };
 
     this.initialize = function () {
-        this.loadTicketDataInterval =  $interval(this.loadTicketData, 60000 * 5);
+        this.loadTicketDataInterval =  $interval(this.loadTicketData, 60000 * 10);
 
         var loadTicketPromise = this.loadTicketData();
         loadTicketPromise.then(function success(data) {
