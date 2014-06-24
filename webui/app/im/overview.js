@@ -16,13 +16,11 @@ angular.module('app.im').directive('app.im', function () {
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
     function Controller($scope, $http, ticketData) {
 
-        $scope.selection = {};
-        $scope.selection.sel_components = true;
-        $scope.selection.colleagues = false;
-        $scope.selection.assigned_me = false;
-        $scope.selection.created_me = false;
-
-        $scope.prios = ticketData.prios;
+        if($scope.selection === undefined)
+        {
+            $scope.selection = {};
+        }
+        $scope.prios = ticketData.prios;        
         $scope.$parent.titleExtension = " - Internal Messages";
         $scope.dataInitialized = ticketData.isInitialized;
         $scope.showNoMessages = false;
@@ -31,8 +29,20 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             setNoMessagesFlag();
         }, true);
 
+
+        $scope.$watch('selection', function() {      
+            angular.forEach($scope.prios, function(prio){
+                prio.selected = 0;
+                if($scope.selection.sel_components) { prio.selected = prio.selected + prio.sel_components; }
+                if($scope.selection.colleagues)     { prio.selected = prio.selected + prio.colleagues; }
+                if($scope.selection.assigned_me)    { prio.selected = prio.selected + prio.assigned_me; }
+                if($scope.selection.created_me)     { prio.selected = prio.selected + prio.created_me; }
+                
+            });                  
+        },true);  
+
         function setNoMessagesFlag() {
-            if (ticketData.isInitialized.value == true && ($scope.prios[0].amount + $scope.prios[1].amount + $scope.prios[2].amount + $scope.prios[3].amount) == 0) {
+            if (ticketData.isInitialized.value == true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) == 0) {
                 $scope.showNoMessages = true;
             } else {
                 $scope.showNoMessages = false;
@@ -43,6 +53,10 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             var initPromise = ticketData.initialize();
             initPromise.then(function success(data) {
                 setNoMessagesFlag();
+                $scope.selection.sel_components = true;
+                $scope.selection.colleagues = false;
+                $scope.selection.assigned_me = false;
+                $scope.selection.created_me = false;
             });
         }
 
