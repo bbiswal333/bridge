@@ -1,10 +1,15 @@
-﻿angular.module('app.weather', []);
+﻿angular.module('app.weather', ["lib.utils"]);
 angular.module('app.weather').directive('app.weather', function () {
 
-    var directiveController = ['$scope', '$http', 'bridgeDataService', function ($scope, $http, bridgeDataService) 
+    var directiveController = ['$scope', '$http', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, bridgeDataService, calUtils) 
     {
     	$scope.box.boxSize = "1"; 
 
+        $scope.getCurrentDate = function (days)
+        {
+            var date = new Date();
+            return calUtils.getWeekdays()[date.getDay() - 1 + days].medium;
+        };
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -26,10 +31,6 @@ angular.module('app.weather').directive('app.weather', function () {
         if($scope.hh>=7 && $scope.hh <= 19){
             bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
         }
-
-   
-
-
 
         //get location coords via geolocation
         $scope.get_location = function() {
@@ -71,6 +72,7 @@ angular.module('app.weather').directive('app.weather', function () {
 
             //city
             $scope.city = weatherData.name; 
+            $scope.city_id = weatherData.id;
             //console.log($scope.city);
 
             //rain
