@@ -20,10 +20,10 @@ angular.module('app.weather').directive('app.weather', function () {
          $scope.mm='0'+$scope.mm
         }
 
-        if($scope.hh<=8 && $scope.hh >= 20){
+        if($scope.hh<=8 && $scope.hh >= 18){
             bridgeDataService.getBridgeSettings().backgroundDayNight = "night";
         }
-        if($scope.hh>=7 && $scope.hh <= 19){
+        if($scope.hh>=7 && $scope.hh <= 17){
             bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
         }
 

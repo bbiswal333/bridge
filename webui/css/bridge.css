@@ -617,10 +617,15 @@ input[type="checkbox"]:checked:after {
 .btn-group{
     max-width: 70%;
 }
-
+.back-btn{
+    font-size: 2rem;
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+}
 .panel{
     border: none;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+  
     border-radius: 0;
     height:100%;
     min-width: 900px;
@@ -714,4 +719,7 @@ input[type="checkbox"]:checked:after {
 }
 .meetings-table{
     font-size:0.9em;
+}
+#detailContainer{
+    text-align: left;
 }
