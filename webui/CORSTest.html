@@ -8,6 +8,8 @@
             $.get(url, function( data ) {
                 $( ".result" ).html( data );
                 alert( "Load was performed." );
+            }).fail(function() {
+                alert("Could not load data")
             });
         }
     </script>
