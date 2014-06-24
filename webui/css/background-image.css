@@ -43,7 +43,11 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    background-image: url();
+    background-image: url('../img/night.png');
+     background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
 }
 .smallClouds{
     position: absolute;
@@ -76,9 +80,7 @@
     background-position-y: top;
     background-size: cover;
     background-position-x: center;
-   }
-
-
+}
 
 .boxDisable {
     background-color: #E6E6E6;
