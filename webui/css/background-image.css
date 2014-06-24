@@ -43,11 +43,36 @@
     position: absolute;
     height: 100%;
     width: 100%;
+    left:0;
+    top: 0;
     background-image: url('../img/night.png');
-     background-size: 100% auto;
+    background-size: 100% auto;
     background-position-y: top;
     background-size: cover;
     background-position-x: center;
+}
+.day{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left:0;
+    top: 0;
+    background-image: url('../img/sun.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+}
+.sun{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/sun.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+    background-color: #65aeeb;
 }
 .smallClouds{
     position: absolute;

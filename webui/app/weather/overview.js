@@ -11,12 +11,20 @@ angular.module('app.weather').directive('app.weather', function () {
         $scope.today = new Date();
         $scope.dd = $scope.today.getDate();
         $scope.mm = $scope.today.getMonth()+1; //January is 0
+        $scope.hh = $scope.today.getHours();
 
         if($scope.dd<10) {
          $scope.dd='0'+$scope.dd
         } 
         if($scope.mm<10) {
          $scope.mm='0'+$scope.mm
+        }
+
+        if($scope.hh<=8 && $scope.hh >= 20){
+            bridgeDataService.getBridgeSettings().backgroundDayNight = "night";
+        }
+        if($scope.hh>=7 && $scope.hh <= 19){
+            bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
         }
 
    

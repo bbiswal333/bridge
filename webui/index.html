@@ -62,7 +62,7 @@
 
 <body class="noselect" style="overflow:auto">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: bridgeSettings.backgroundDayNight}[(bridgeSettings.backgroundDayNight == undefined)]" ng-cloak>
         <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.backgroundClass}[(bridgeSettings.backgroundClass == undefined)]">
           
                         <!--<div class="headerline">
