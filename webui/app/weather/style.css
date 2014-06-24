@@ -8,11 +8,14 @@
 	width: 100%;
 	height: 60%; 
 	line-height: 1.2;
-	
+	position: relative;
+	bottom:15px;
 }
 .weather-row{
 	width: 100%;
 	height:40%;
+	position: relative;
+	bottom: 5px;
 }
 .weather-box-small{
 	height: 55%;
@@ -23,15 +26,7 @@
 .weather-box-small:last-child{
 	border:none;
 }
-.weather-navi{
-	width: 25%;
-	height: 10%;
-	margin: 0 auto;
-}
-.weather-navi-point{
-	width:calc(100%/3);
-	float: left;
-}
+
 
 .fixed-lineheight{
 	line-height: 1.6;

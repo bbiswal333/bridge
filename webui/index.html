@@ -62,18 +62,18 @@
 
 <body class="noselect" style="overflow:auto">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: bridgeSettings.backgroundDayNight}[(bridgeSettings.backgroundDayNight == undefined)]" ng-cloak>
         <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.backgroundClass}[(bridgeSettings.backgroundClass == undefined)]">
           
-                        <!--<div class="headerline">
+                        <div>
                             <div ng-if="!showLoadingBar" class="TitleBar"></div>
                             <div ng-if="showLoadingBar" class="loadingBar">
                                 <div class="moveBox"></div>
                             </div>
-                            <span class="headertext">
+                            <!--<span class="headertext">
                                 <a href="/#"><img style="pointer-events:auto" src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></a>
-                            </span>
-                        </div>-->
+                            </span>-->
+                        </div>
 
                         <!--<div id="menu">
                             <ul class="mainNav">

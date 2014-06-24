@@ -14,28 +14,28 @@
 
 <div ng-if="support" class="weather-container">
 	<div class="weather-box-large">
-		<div>{{city}}</div>
+		<div><a target="_blank" href="http://openweathermap.org/city/{{city_id}}">{{city}}</a></div>
 		<div class="font-lightweight-large blue">{{temperature}} °C</div>
 		<div>today</div>
 	</div>
 	<div class="weather-row">
 		<div class="weather-box-small">
-			{{dd+1}}.{{mm}}
+			{{getCurrentDate(1)}}
 			<br>
 			<b>{{forecast_temperature_1}}°</b>
 		</div>
 		<div class="weather-box-small">
-			{{dd+2}}.{{mm}}
+			{{getCurrentDate(2)}}
 			<br>
 			<b>{{forecast_temperature_2}}°</b>
 		</div>
 		<div class="weather-box-small">
-			{{dd+3}}.{{mm}}
+			{{getCurrentDate(3)}}
 			<br>
 			<b>{{forecast_temperature_3}}°</b>
 		</div>
 		<div class="weather-box-small">
-			{{dd+4}}.{{mm}}
+			{{getCurrentDate(4)}}
 			<br>
 			<b>{{forecast_temperature_4}}°</b>
 		</div>

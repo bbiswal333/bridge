@@ -254,11 +254,12 @@ img {
     vertical-align: middle;
 }
 .centeredContent {
-    top: 80px;
+    top: 40px;
+    margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    margin-bottom: auto;
+    /*margin-bottom: auto;*/
     position: relative;
     text-align: center;
 }
@@ -615,11 +616,17 @@ input[type="checkbox"]:checked:after {
 }
 .btn-group{
     max-width: 70%;
+    display: flex;
 }
-
+.back-btn{
+    font-size: 2rem;
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+}
 .panel{
     border: none;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+  
     border-radius: 0;
     height:100%;
     min-width: 900px;
@@ -713,4 +720,7 @@ input[type="checkbox"]:checked:after {
 }
 .meetings-table{
     font-size:0.9em;
+}
+#detailContainer{
+    text-align: left;
 }
