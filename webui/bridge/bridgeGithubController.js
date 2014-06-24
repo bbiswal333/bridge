@@ -6,7 +6,7 @@ angular.module('bridge.app').
         ).success(function(data) {
             $scope.contributors = data;
 
-            _.each($scope.contributors, function (contributor) {
+            angular.forEach($scope.contributors, function (contributor) {
                 var user = contributor.login.toUpperCase();                
                 $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + user + '&origin=' + location.origin).then(function (response) {
                     contributor.name = response.data.DATA.VORNA + ' ' + response.data.DATA.NACHN;
