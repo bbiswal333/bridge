@@ -53,11 +53,11 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			};
 		}
 
-		if (local)
+		/*if (local)
 		{
 			options.pfx = user.SSOCertificate;
 			options.passphrase = user.SSOCertificatePassphrase;
-		}
+		}*/
 
 		if (method.toLowerCase() == "post" && postData != undefined) {
 			options.headers = {
