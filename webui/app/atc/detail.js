@@ -75,24 +75,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         $scope.reverse = !$scope.reverse;
     }
 
-    var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()" >{{row.getProperty(col.field)}}</div>';    
-
-
-    // $scope.gridOptions = {                        
-    //     enableColumnReordering:true,
-    //     enableRowSelection:false,            
-    //     rowHeight: 40,
-    //     showFilter:false,
-    //     filterOptions: $scope.filterOptions,
-    //     columnDefs: [
-    //         {field:'CHECK_MSG_PRIO', displayName:'Prio', width:'20%', cellTemplate: cellTemplate},                
-    //         {field:'CHECK_SYSTEM', displayName:'System', width:'20%', cellTemplate: cellTemplate},
-    //         {field:'CHECK_DESCRIPTION', displayName:'Check', width:'20%', cellTemplate: cellTemplate},
-    //         {field:'CHECK_MESSAGE', displayName:'Check Message', width:'20%', cellTemplate: cellTemplate},
-    //         {field:'OBJ_NAME', displayName:'Object', width:'20%', cellTemplate: cellTemplate},
-    //     ],
-    //     plugins: [new ngGridFlexibleHeightPlugin()]
-    // }       
 }]);
 
 angular.module('app.atc').directive("infinitescroll", ['$window', function($window){
@@ -101,8 +83,10 @@ angular.module('app.atc').directive("infinitescroll", ['$window', function($wind
         var cont = container[0];
 
         container.bind("scroll", function() {
-            //console.log(cont.scrollTop, cont.offsetHeight, elm[0].scrollHeight);
-            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight + elm[0].offsetTop) {
+            var containerBottom = cont.scrollTop + cont.offsetHeight;
+            var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
+
+            if (containerBottom >= elementBottom) {
                 scope.$apply(scope.increaseInfinityLimit());
             } else if (cont.scrollTop === 0){
                 //should we reset limit to the initial size?
