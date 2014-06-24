@@ -24,12 +24,15 @@ angular.module('app.weather').directive('app.weather', function () {
         if($scope.mm<10) {
          $scope.mm='0'+$scope.mm
         }
-
-        if($scope.hh<=8 && $scope.hh >= 18){
+        
+        if($scope.hh >= 18 || $scope.hh <=7){
             bridgeDataService.getBridgeSettings().backgroundDayNight = "night";
+            bridgeDataService.getBridgeSettings().backgroundClass = "night";
+           
         }
-        if($scope.hh>=7 && $scope.hh <= 17){
+        if($scope.hh>=8 && $scope.hh <= 17){
             bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
+            
         }
 
         //get location coords via geolocation
@@ -59,9 +62,7 @@ angular.module('app.weather').directive('app.weather', function () {
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
-            if(weatherData.clouds.all === 0){
-				bridgeDataService.getBridgeSettings().backgroundClass = "sun";
-			}
+            
             if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
             	bridgeDataService.getBridgeSettings().backgroundClass = "smallClouds";
             } 
