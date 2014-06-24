@@ -616,6 +616,7 @@ input[type="checkbox"]:checked:after {
 }
 .btn-group{
     max-width: 70%;
+    display: flex;
 }
 .back-btn{
     font-size: 2rem;
