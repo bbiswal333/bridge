@@ -11,6 +11,12 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = appAtcData;          
     $scope.atcData.tableData = [];
 
+    var infinityLimitStep = 100;
+    $scope.infinityLimit = infinityLimitStep;
+    $scope.reverse = true;
+    $scope.predicate = null;
+
+
     if (appAtcConfig.isInitialized == false) {
         appAtcConfig.initialize($routeParams['appId']);
     }
@@ -58,6 +64,18 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         }
     }, true);
 
+    $scope.zebraCell = function(index){
+        return 'row' + index%2;
+    }
+
+    $scope.increaseInfinityLimit = function(){
+        $scope.infinityLimit += infinityLimitStep;
+    }
+
+    $scope.sort = function(selector){
+        $scope.predicate = selector;
+        $scope.reverse = !$scope.reverse;
+    }
 
     var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()" >{{row.getProperty(col.field)}}</div>';    
 
@@ -81,3 +99,18 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         plugins: [new ngGridFlexibleHeightPlugin()]
     }       
 }]);
+
+angular.module('app.atc').directive("infinitescroll", ['$window', function($window){
+    return function(scope, elm, attr) {
+        var container = angular.element( document.querySelector( '#detailContainer' ));
+        var cont = container[0];
+
+        container.bind("scroll", function() {
+            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight) {
+                scope.$apply(scope.increaseInfinityLimit());
+            } else if (cont.scrollTop === 0){
+                //should we reset limit to the initial size?
+            }
+        });    
+    }
+}])

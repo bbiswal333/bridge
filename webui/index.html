@@ -15,8 +15,8 @@
     <!--<link href="lib/ng-grid-2_0_11/ng-grid.css" rel="stylesheet">-->
 
     <!-- css -->
-    <link ng-if="bridgeSettings.useBackgroundImage" href="css/background-image.css" rel="stylesheet" />
-    <link ng-if="!bridgeSettings.useBackgroundImage" href="css/background-stripes.css" rel="stylesheet" />
+    <link href="css/background-image.css" rel="stylesheet" />
+
     <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
@@ -63,34 +63,33 @@
 <body class="noselect" style="overflow:auto">    
     
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
-        <div class="mainPageBackground">
+        <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.backgroundClass}[(bridgeSettings.backgroundClass == undefined)]">
+          
+                        <!--<div class="headerline">
+                            <div ng-if="!showLoadingBar" class="TitleBar"></div>
+                            <div ng-if="showLoadingBar" class="loadingBar">
+                                <div class="moveBox"></div>
+                            </div>
+                            <span class="headertext">
+                                <a href="/#"><img style="pointer-events:auto" src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></a>
+                            </span>
+                        </div>-->
 
-            <div class="headerline">
-                <div ng-if="!showLoadingBar" class="blueTitleBar"></div>
-                <div ng-if="showLoadingBar" class="loadingBar">
-                    <div class="moveBox"></div>
-                </div>
-                <span class="headertext">
-                    <a href="/#"><img style="pointer-events:auto" src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></a>
-                </span>
-            </div>
+                        <!--<div id="menu">
+                            <ul class="mainNav">
+                                <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
+                                
+                            </ul>
+                        </div>-->
+                        
+                        <div id="main-container" ng-view class="mainContainer">
+                        </div>
 
-            <div id="menu">
-                <ul class="mainNav">
-                    <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
-                    <!--<li id="projects-button" ng-click="projects_click()">PROJECTS</li>-->
-                </ul>
-            </div>
-            
-            <div id="main-container" ng-view class="mainContainer">
-            </div>
-
-            <div>
-                <div style="position:absolute;top:5px;right:0px;z-index:101;width:25%;">
-                    <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>                            
-                </div>
-            </div>
-
+                        <div>
+                            <div style="position:absolute;top:5px;right:0px;z-index:101;width:25%;">
+                                <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>                            
+                            </div>
+                        </div>
         </div>
     </div>
 </body>

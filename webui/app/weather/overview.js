@@ -1,14 +1,10 @@
 ﻿angular.module('app.weather', []);
 angular.module('app.weather').directive('app.weather', function () {
 
-    var directiveController = ['$scope', '$http', function ($scope, $http) 
+    var directiveController = ['$scope', '$http', 'bridgeDataService', function ($scope, $http, bridgeDataService) 
     {
     	$scope.box.boxSize = "1"; 
 
-        //$scope.box.settingScreenData = {
-        //    templatePath: "weather/settings.html",
-        //    controller: angular.module('app.weather').appWeatherSettings,
-        //    };
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -55,19 +51,13 @@ angular.module('app.weather').directive('app.weather', function () {
             //clouds
             $scope.clouds = weatherData.clouds.all;
             if(weatherData.clouds.all === 0){
-				$scope.noClouds = true;
-				$scope.bigClouds = false;
-				$scope.smallClouds = false;
+				bridgeDataService.getBridgeSettings().backgroundClass = "sun";
 			}
             if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
-            	$scope.smallClouds = true;
-            	$scope.bigClouds = false;
-            	$scope.noClouds = false;
+            	bridgeDataService.getBridgeSettings().backgroundClass = "smallClouds";
             } 
             if (weatherData.clouds.all >= 41){
-            	$scope.bigClouds = true;
-            	$scope.smallClouds = false;
-            	$scope.noClouds = false;
+            	bridgeDataService.getBridgeSettings().backgroundClass = "bigClouds";
             } 
             //console.log($scope.clouds);
 
@@ -81,7 +71,7 @@ angular.module('app.weather').directive('app.weather', function () {
             {            
                 $scope.rain = weatherData.rain['3h'];
                 if (weatherData.rain['3h'] > 0){
-                	$scope.raining = true;
+                	bridgeDataService.getBridgeSettings().backgroundClass = "rain";
                 }            
             }
             
@@ -91,16 +81,16 @@ angular.module('app.weather').directive('app.weather', function () {
         $http.get($scope.forecastData).success(function (forecastData) {
             //next days
             $scope.forecast_temperature_1 = forecastData.list[0].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_1);
+            //console.log($scope.forecast_temperature_1);
 
             $scope.forecast_temperature_2 = forecastData.list[1].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_2);
+            //console.log($scope.forecast_temperature_2);
 
             $scope.forecast_temperature_3 = forecastData.list[2].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_3);
+            //console.log($scope.forecast_temperature_3);
 
             $scope.forecast_temperature_4 = forecastData.list[3].temp.day.toFixed(0) - 273;
-            console.log($scope.forecast_temperature_4);
+            //console.log($scope.forecast_temperature_4);
           });
 
         
