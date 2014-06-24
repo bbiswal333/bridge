@@ -102,11 +102,12 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
 
 angular.module('app.atc').directive("infinitescroll", ['$window', function($window){
     return function(scope, elm, attr) {
-        var container = angular.element( document.querySelector( '#detailContainer' ));
+        var container = angular.element( document.querySelector( '#scrollContainer' ));
         var cont = container[0];
 
         container.bind("scroll", function() {
-            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight) {
+            console.log(cont.scrollTop, cont.offsetHeight, elm[0].scrollHeight);
+            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight + elm[0].offsetTop) {
                 scope.$apply(scope.increaseInfinityLimit());
             } else if (cont.scrollTop === 0){
                 //should we reset limit to the initial size?
