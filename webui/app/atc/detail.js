@@ -11,7 +11,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = appAtcData;          
     $scope.atcData.tableData = [];
     
-    $scope.statusArray = [];     
+    $scope.statusMap = {};     
 
     if (appAtcConfig.isInitialized == false) {
         appAtcConfig.initialize($routeParams['appId']);
@@ -24,38 +24,32 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         if($scope.atcData.detailsData.length > 0)
         {
             var status_filter = $routeParams['prio'].split('|'); 
-            var status = [];
-            $scope.statusArray = [];  
+            $scope.statusMap = {};  
             for(var i = 1; i <= 4; i++)
             {
                 if(status_filter.indexOf(i + "") > -1)
-                    status.push({"name":i,"active":true});   
+                    $scope.statusMap[i] = {"active":true};
                 else
-                    status.push({"name":i,"active":false});   
+                    $scope.statusMap[i] = {"active":false};
             }
-            $scope.statusArray = status;         
         }
-        
     }, true);
 
-    $scope.$watch('statusArray', function()
+    $scope.$watch('statusMap', function()
     {
         $scope.atcData.tableData = [];
         if($scope.atcData && $scope.atcData.detailsData)
         {
-            for(var i = 0; i < $scope.atcData.detailsData.length; i++ )
+            $scope.atcData.detailsData.forEach(function (atcEntry)
             {
-                for(var j = 0; j < $scope.statusArray.length; j++)
-                {
-                    if($scope.atcData.detailsData[i].CHECK_MSG_PRIO == $scope.statusArray[j].name && $scope.statusArray[j].active)
-                    {
-                        $scope.atcData.tableData.push($scope.atcData.detailsData[i]);
-                    }
-                }
-            }
+                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active)
+                    $scope.atcData.tableData.push(atcEntry);
+            })
         }
     }, true);
 
-
+    $scope.getStatusArray = function(){
+        return Object.keys($scope.statusMap);
+    }
 
 }]);
