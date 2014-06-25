@@ -1,14 +1,19 @@
 ﻿angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
 
-        $scope.$watch('JiraConfig.query', function() {
-        	$scope.config = JiraConfig;
-            JiraBox.getIssuesforQuery($scope);            
+        $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
+            if (newVal != oldVal) { // this avoids the call of our change listener for the initial watch setup
+                $scope.config = JiraConfig;
+                JiraBox.getIssuesforQuery(JiraConfig.query);
+            }
         },true);
+
+        $scope.filterText = '';
 
         $scope.data = {};
         $scope.data.filteredJiraData = [];
-        $scope.data.status = [];
+        $scope.data.jiraData = JiraBox.data;
+        $scope.data.status = {};
 
         $scope.$watch('data.jiraData', function()
         {
@@ -17,7 +22,7 @@
         	{
 	        	//get status values and selected ones
                 var all_status = [];
-                var status = [];
+                var status = {};
 	        	for(var i = 0; i < $scope.data.jiraData.length; i++ )
 	        	{
                     if( !(all_status.indexOf($scope.data.jiraData[i].status) > -1 ))
@@ -31,59 +36,39 @@
                 for(var i = 0; i < all_status.length; i++ )
                 {
                     if(status_filter.indexOf(all_status[i]) > -1)
-                    {
-                        status.push({"name":all_status[i],"active":true});
-                    }
+                        status[all_status[i]] = {"active":true};
                     else
-                    {
-                        status.push({"name":all_status[i],"active":false});   
-                    }
+                        status[all_status[i]] = {"active":false};
                 }  
                 $scope.data.status = status;
         	}
         },true);
+
+        
 
         $scope.$watch('data.status', function()
         {
             $scope.data.filteredJiraData = [];
             if($scope.data && $scope.data.jiraData)
             {
-                for(var i = 0; i < $scope.data.jiraData.length; i++ )
-                {
-                    for(var j = 0; j < $scope.data.status.length; j++)
+                $scope.data.jiraData.forEach(function (jiraEntry){
+                    if($scope.data.status[jiraEntry.status].active)
                     {
-                        if($scope.data.jiraData[i].status == $scope.data.status[j].name && $scope.data.status[j].active)
-                        {
-                            $scope.data.filteredJiraData.push($scope.data.jiraData[i]);
-                        }
+                        $scope.data.filteredJiraData.push(jiraEntry);
                     }
-                }
+                });
             }
         }, true);
 
+        $scope.getStatusArray = function(){
+            return Object.keys($scope.data.status);
+        }
 
-        $scope.$parent.titleExtension = " - Jira Details"; 
+        $scope.$parent.titleExtension = " - Jira Details";
 
-        var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()">{{row.getProperty(col.field)}}</div>';
-        var issuecellTemplate = 
-            '<div class="ngCellText table-cell" ng-class="col.colIndex()"><a target="_blank" href="https://sapjira.wdf.sap.corp/browse/{{row.entity.key}}">{{row.entity.summary}}</a></div>';
+        if (JiraConfig.isInitialized == false) {
+            JiraConfig.initialize($routeParams['appId']);
+            JiraBox.getIssuesforQuery(JiraConfig.query);
+        }
 
-
-        $scope.filterOptions = {
-            filterText: ''
-        };
-
-        $scope.gridOptions = {                        
-            enableColumnReordering:true,
-            enableRowSelection:false,            
-            rowHeight: 40,
-            showFilter:false,
-            filterOptions: $scope.filterOptions,
-            columnDefs: [
-                {field:'summary', displayName:'Summary', width:'20%', cellTemplate: issuecellTemplate},                
-                {field:'description', displayName:'Description', width:'70%', cellTemplate: cellTemplate},
-                {field:'status', displayName:'Status', width:'10%', cellTemplate: cellTemplate}                      
-            ],
-            plugins: [new ngGridFlexibleHeightPlugin()]
-        }       
 }]);

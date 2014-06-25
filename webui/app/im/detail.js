@@ -1,19 +1,18 @@
 angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData','$routeParams',  function Controller($scope, $http, $templateCache, ticketData, $routeParams) {
 
         $scope.$parent.titleExtension = " - IM Details";   
-        $scope.myOptions = { data: 'tempobject' };	    
-        
+        $scope.filterText = '';
         $scope.messages = [];
-        $scope.data = {};        
-
         $scope.prios = ticketData.prios;
+        $scope.statusMap = {};  
+
 
         $scope.$watch('messages', function () 
         {                        
             update_table();            
         }, true);
 
-        $scope.$watch('data.status', function()
+        $scope.$watch('statusMap', function()
         {
             update_table();
         }, true);
@@ -22,70 +21,25 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         {
             if($scope.messages && $scope.messages.length > 0)
             {
-                if(!$scope.data.status)
+                if(!$scope.getStatusArray().length)
                 {
                     var status_filter = $routeParams['prio'].split('|'); 
-                    var status = [];
-                    $scope.data.status = [];  
-                    for(var i = 0; i < $scope.prios.length; i++)
-                    {
-                        if(status_filter.indexOf($scope.prios[i].name) > -1)
-                        {
-                            status.push({"name":$scope.prios[i].name,"active":true});   
-                        }
+
+                    $scope.prios.forEach(function (prio){
+                        if(status_filter.indexOf(prio.name) > -1)
+                            $scope.statusMap[prio.name] = {"active":true};
                         else
-                        {
-                            status.push({"name":$scope.prios[i].name,"active":false});   
-                        }    
-                    }
-
-                    $scope.data.status = status;  
+                            $scope.statusMap[prio.name] = {"active":false};
+                    })
                 }
-                $scope.data.tableData = [];
-                                
-                for(var i = 0; i < $scope.messages.length; i++ )
-                {
-                    for(var j = 0; j < $scope.data.status.length; j++)
-                    {
-                        if($scope.messages[i].PRIOSTXT == $scope.data.status[j].name && $scope.data.status[j].active)
-                        {
-                            $scope.data.tableData.push($scope.messages[i]);
-                        }
-                    }
-                } 
+                $scope.tableData = [];
+
+                $scope.messages.forEach(function (message){
+                    if ($scope.statusMap[message.PRIOSTXT].active) {
+                        $scope.tableData.push(message);
+                    };
+                })                                
             }                      
-        }
-
-        var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()">{{row.getProperty(col.field)}}</div>';
-        var usercellTemplate = 
-            '<div class="ngCellText " ng-class="col.colIndex()">' + 
-            '<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.SUSID}}?s=20x20" style="height:100%;border-radius:100%;margin-right:20px"></img>' + 
-            '<a target="_blank" href="{{row.entity.url}}">{{row.entity.username}}</a>' +
-            ' <a href="mailto:{{row.entity.mail}}"><p class="table-icon-small icon-mail"></p></a>' +
-            ' <a href="tel:{{row.entity.tel}}"><p class="table-icon-small icon-phone"></p></a>' +
-            '</div>';
-        var descriptioncellTemplate = 
-            '<div class="ngCellText table-cell" ng-class="col.colIndex()"><a target="_blank" href="{{row.entity.ticket_url}}">{{row.entity.KTEXT}}</a></div>';
-
-
-        $scope.filterOptions = {
-            filterText: ''
-        };
-
-        $scope.gridOptions = {                        
-            enableColumnReordering:true,
-            enableRowSelection:false,            
-            rowHeight: 40,
-            showFilter:false,
-            filterOptions: $scope.filterOptions,
-            columnDefs: [
-                {field:'PRIOSTXT', displayName:'Priority', width:'10%', cellTemplate: cellTemplate},                
-                {field:'THEMKEXT', displayName:'Component', width:'15%', cellTemplate: cellTemplate},
-                {field:'STATUSSTXT', displayName:'Status', width:'15%', cellTemplate: cellTemplate},      
-                {field:'username', displayName:'Reporter/ Processor', width:'25%', cellTemplate: usercellTemplate},   
-                {field:'KTEXT', displayName:'Description', width:'35%', cellTemplate: descriptioncellTemplate}            
-            ],
-            plugins: [new ngGridFlexibleHeightPlugin()]
         }
 
         function enhanceMessage(message) {
@@ -111,6 +65,10 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             }
         }
 
+        $scope.getStatusArray = function(){
+            return Object.keys($scope.statusMap);
+        }
+
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
@@ -120,8 +78,6 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         } else {
             enhanceAllMessages();
         }
-
-	 		     
 }]);
 
 

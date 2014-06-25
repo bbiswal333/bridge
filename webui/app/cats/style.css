@@ -206,10 +206,18 @@
     background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 50%;
+    background-position-y:50%;
 }
 .app-cats-stateG { /* maintained */
     background: #dff5ff;
+}
+.app-cats-stateOVERBOOKED { /*overbooked*/
+    background-image: url('/../../img/over_booked.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y: 50%;
 }
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
@@ -220,12 +228,17 @@
     visibility: hidden;
 }
 .app-cats-today { 
-    background-image: url('/../../img/ecke_dunkel_noshadow.svg');
+    background-image: url('/../../img/ecke_dunkel.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
 }
-
+.app-cats-today-legend { 
+    background-image: url('/../../img/ecke_dunkel_legend.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+/*    background-position-x: 100%;*/
+}
 .selected_day span{
     position: relative;
     top: -2px;
@@ -244,6 +257,13 @@
     background-size: cover;
     background-position-x: 100%;
 }
+.app-cats-stateOVERBOOKED_TODAY { 
+    /*background-color:#dff5ff;*/
+    background-image: url('/../../img/over_booked_TODAY.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 100%;
+} 
 .app-cats-icon {
     font-family: 'SAP-icons';
 }

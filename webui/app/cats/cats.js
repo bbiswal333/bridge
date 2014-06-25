@@ -187,6 +187,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       if (state_s == "n") {
         return "No need for maintenance";
       }
+      if (state_s == "overbooked") {
+        return "Overbooked";
+      }
     }
 
     function _writeCATSData(container){

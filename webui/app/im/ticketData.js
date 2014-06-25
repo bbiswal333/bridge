@@ -1,4 +1,4 @@
-﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', function ($http, $q, $interval) {
+﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', 'bridgeDataService', function ($http, $q, $interval, bridgeDataService) {
     var that = this;
 
     this.backendTickets = null;
@@ -10,18 +10,30 @@
     function parseBackendTicket(backendTicket, category) {
         angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIO === prio.number.toString())
-            {
-                prio[category]++;
+            {                
+                var category_aa = "";
+                if(category !== "created_me")
+                {
+                    category_aa = category + '_aa';
+                }
+                if(backendTicket.STATUSSTXT === "Author Action" && category_aa !== "")
+                {
+                    prio[category_aa]++;
+                }
+                else
+                {
+                    prio[category]++;
+                }            
                 prio.total++;
             }
         });
     }
 
     this.prios = [
-        { name: "Very high",    number: 1, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 },
-        { name: "High",         number: 2, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }, 
-        { name: "Medium",       number: 3, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }, 
-        { name: "Low",          number: 4, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }];    
+        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 },
+        { name: "High",         number: 2, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }, 
+        { name: "Medium",       number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }, 
+        { name: "Low",          number: 4, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }];    
 
     this.resetPrios = function () {
         angular.forEach(that.prios, function (prio) {
@@ -29,10 +41,12 @@
         });
     };
 
+    this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
+
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             that.resetPrios();
 

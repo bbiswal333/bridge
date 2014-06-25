@@ -9,7 +9,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/jira/:status",
+				"route"			:	"/detail/jira/:appId/:status",
 				"templateUrl"	:	"app/jira/detail.html"			
 			}
 		]

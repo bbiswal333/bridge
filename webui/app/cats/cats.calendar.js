@@ -7,7 +7,8 @@ angular.module("app.cats")
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
-	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification) {
+		 "$q",
+	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q) {
 		var linkFn = function ($scope) {
 			var monthRelative = 0;
 
@@ -55,21 +56,40 @@ angular.module("app.cats")
 				var range_click = event.shiftKey;
 				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
 				var single_click = !range_click && !multi_click;
-
-				console.log("RANGE:" + range_click);
-				console.log("MULTI:" + multi_click);
-				console.log("SINGLE:" + single_click);
+				var promises = [];
 
 				if (single_click) {
-					$location.path("/detail/cats/" + dayString);
+					promises = $scope.selectSingleDay(dayString);
+					$location.path("/detail/cats/");
 				} else if (multi_click) {
-					selectRange([monthlyDataService.days[dayString]],dayString);
+					promises = selectRange([monthlyDataService.days[dayString]],dayString);
 				} else if (range_click) {
-					selectRange(collectRange(dayString),dayString);
+					promises = selectRange(collectRange(dayString),dayString);
 				}
+				
+				promise = $q.all(promises);
+				promise.then(function(){
+					$scope.selectionCompleted();
+				});
 			};
 
+			$scope.selectSingleDay = function (dayString) {
+				var promises = [];
+				for(var i = 0; i < $scope.calArray.length; i++) {
+					for(var j = 0; j < $scope.calArray[i].length; j++) {
+						promise = unSelectDay($scope.calArray[i][j]);
+						promises.push(promise);
+						if(dayString && $scope.calArray[i][j].dayString == dayString) {
+							promise = selectDay($scope.calArray[i][j],true);
+							promises.push(promise);
+						}
+					}
+				}
+				return promises;
+			}
+
 			$scope.selectWeek = function (index) {
+				var promises = [];
 				var week = $scope.calArray[index];
 				var range = [];
 				week.forEach(function(day){
@@ -77,7 +97,11 @@ angular.module("app.cats")
 						range.push(day);
 					};
 				})
-				selectRange(range);
+				promises = selectRange(range);
+				promise = $q.all(promises);
+				promise.then(function(){
+					$scope.selectionCompleted();
+				});
 			};
 
 			$scope.weekIsSelected = function(index){
@@ -160,219 +184,61 @@ angular.module("app.cats")
 			}
 
 			function selectRange(daysArray,clickedOnDayString){
+				var promises = [];
+
 				selectedDates = selectedDates;
 				var toSelect = getUnselectedDays(daysArray);
 				if (toSelect && toSelect.length > 0) {
 					toSelect.forEach(function(calDay){
-						selectDay(calDay);
+						promise = selectDay(calDay);
+						promises.push(promise);
 					})
 				} else if (!clickedOnDayString || $scope.isSelected(clickedOnDayString)){
 					daysArray.forEach(function(calDay){
-						unSelectDay(calDay);
+						promise = unSelectDay(calDay);
+						promises.push(promise);
 					});
 				}
 
 				// clear incorrect selections like vacation or weekend days...
 				daysArray.forEach(function(calDay){
 					if (!isSelectable(calDay) && $scope.isSelected(calDay.dayString)) {
-						unSelectDay(calDay);
+						promise = unSelectDay(calDay);
+						promises.push(promise);
+
 					};
 				});
 
 				if(containsVacationDay(daysArray) && isSelectOperation(daysArray)) {
 					bridgeInBrowserNotification.addAlert('', 'Days with vacation can not be selected.');
 				}
+
+				return promises;
 			}
 
-			function selectDay(calDay) {
+			function selectDay(calDay, selectAnyways) {
+				var deferred = $q.defer();
+
 				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
-					if (isSelectable(calDay)) {
+					if (selectAnyways || isSelectable(calDay)) {
 						var ok = $scope.onDateSelected({dayString: calDay.dayString});
 					};
-				})
+					deferred.resolve();
+				});
+				return deferred.promise;
 			}
 
 			function unSelectDay(calDay) {
+				var deferred = $q.defer();
+
 				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
 					if ($scope.isSelected(calDay.dayString)) {
 						var ok = $scope.onDateDeselected({dayString: calDay.dayString});
-					}
-				})
-			}
-
-			function isSelectable(calDay){
-				if (monthlyDataService.days[calDay.dayString] &&
-					monthlyDataService.days[calDay.dayString].targetHours > 0 &&
-					!hasVacationTask(monthlyDataService.days[calDay.dayString])) {
-					return true;
-				}
-				return false;
-			}
-
-			$scope.isSelected = function(dayString){
-				if (!selectedDates)
-					return false;
-				return selectedDates.indexOf(dayString)!=-1;
-			}
-
-			function hasVacationTask(day){
-				var hasVacationTask = false;
-				day.tasks.forEach(function(task){
-					if (task.TASKTYPE === "VACA") {
-						hasVacationTask = true;
 					};
-				})
-				return hasVacationTask;
-			}
-
-			function containsVacationDay(daysArray){
-   				var containsVacationDay = false;
-				daysArray.forEach(function(calDay){
-					if(hasVacationTask(monthlyDataService.days[calDay.dayString])) {
-						containsVacationDay = true;
-					}
+					deferred.resolve();
 				});
-				return containsVacationDay;
+				return deferred.promise;
 			}
-
-			function getUnselectedDays(daysArray){
-				var unselected = [];
-				daysArray.forEach(function(calDay){
-					if (isSelectable(calDay) && !$scope.isSelected(calDay.dayString)) {
-						unselected.push(calDay);
-					};
-				});	
-				return unselected;
-			}
-
-			$scope.canGoBackward = function () {
-				if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)
-					return false;
-				}
-
-				return true;
-			};
-
-			$scope.prevMonth = function () {
-				if (!$scope.canGoBackward()) {
-					return;
-				}
-				monthRelative--;
-
-				if ($scope.month == 0) {
-					$scope.month = 11;
-					$scope.year--;
-				}
-				else {
-					$scope.month--;
-				}
-
-				reload();
-			};
-
-			$scope.canGoForward = function () {
-				if (monthRelative + 1 > 0) { //Go back a maximum of four month
-					return false;
-				}
-
-				return true;
-			};
-
-
-			$scope.nextMonth = function () {
-				if (!$scope.canGoForward()) {
-					return;
-				}
-				monthRelative++;
-
-				if ($scope.month == 11) {
-					$scope.month = 0;
-					$scope.year++;
-				}
-				else {
-					$scope.month++;
-				}
-
-				reload();
-			};
-
-			$scope.reloadCalendar = function () {
-				reload();
-			};
-
-			function reload() {
-				$scope.loading = true;
-
-				$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-				$scope.currentMonth = calUtils.getMonthName($scope.month).long;
-
-				$scope.loading = false;
-			}
-
-			var refreshInterval = null;
-
-			if ($scope.selectedDay) {
-				while (new Date($scope.selectedDay).getMonth() != $scope.month) {
-					$scope.prevMonth();
-				}
-			}
-
-			$scope.$on("$destroy", function () {
-				if (refreshInterval != null) {
-					$interval.cancel(refreshInterval);
-				}
-			});
-
-			(function springGun() {
-				var dateLastRun = new Date().getDate();
-
-				refreshInterval = $interval(function () {
-					if (dateLastRun != new Date().getDate()) {
-						catsUtils.getData(handleCatsData);
-					}
-				}, 3 * 3600000);
-			})();
-
-			$scope.$on("refreshAppReceived", function () {
-				catsUtils.getCatsComplianceData(handleCatsData, true);
-				//catsUtils.getData(handleCatsData);
-			});
-
-		    $scope.getStateClassSubstring = function(calDay){
-		    	if(calDay.data.state == 'Y' && calDay.today)
-		    		return 'Y_TODAY';
-		    	else
-		    		return calDay.data.state;
-		    }
-
-		};
-
-		function processCatsData(cats_o) {
-			try {
-				var processed = {};
-				var days = cats_o;
-
-				for (var i = 0; i < days.length; i++) {
-					var dateStr = days[i].DATEFROM;
-					var statusStr = days[i].STATUS;
-
-					var time = parseDateToTime(dateStr);
-					if (time != null) {
-						processed[time] = { state: statusStr };
-					}
-				}
-
-				return processed;
-			} catch (error) {
-				return null;
-			}
-
-			function parseDateToTime(date_s) {
-				if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) == -1) { //Checks for pattern: YYYY-MM-DD
-					return null;
-				}
-
-	        }
 
 	        function isSelectable(calDay){
 	        	if (monthlyDataService.days[calDay.dayString] &&
@@ -398,6 +264,16 @@ angular.module("app.cats")
 		        })
 		        return hasVacationTask;
 		    }
+
+			function containsVacationDay(daysArray){
+   				var containsVacationDay = false;
+				daysArray.forEach(function(calDay){
+					if(hasVacationTask(monthlyDataService.days[calDay.dayString])) {
+						containsVacationDay = true;
+					}
+				});
+				return containsVacationDay;
+			}
 
 	        function getUnselectedDays(daysArray){
 	        	var unselected = [];
@@ -464,50 +340,61 @@ angular.module("app.cats")
 	            reload();
 	        };
 
-	        function reload() {
-	            $scope.loading = true;
+			function reload() {
+			    $scope.loading = true;
+				var promises = [];
+				if ($scope.calArray) {
+					for(var i = 0; i < $scope.calArray.length; i++) {
+						for(var j = 0; j < $scope.calArray[i].length; j++) {
+							promises.push(unSelectDay($scope.calArray[i][j]));
+						}
+					}
+				}
+				promise = $q.all(promises);
+				promise.then(function(){
+					$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
+					$scope.currentMonth = calUtils.getMonthName($scope.month).long;
+					$scope.loading = false;
+					$scope.selectionCompleted();
+				});
+			}
 
-	            $scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-	            $scope.currentMonth = calUtils.getMonthName($scope.month).long;
+			var refreshInterval = null;
 
-	            $scope.loading = false;
-	        }
+			if ($scope.selectedDay) {
+			    while (new Date($scope.selectedDay).getMonth() != $scope.month) {
+			        $scope.prevMonth();
+			    }
+			}
 
-	        var refreshInterval = null;
+			$scope.$on("$destroy", function () {
+			    if (refreshInterval != null) {
+			        $interval.cancel(refreshInterval);
+			    }
+			});
 
-	        if ($scope.selectedDay) {
-	            while (new Date($scope.selectedDay).getMonth() != $scope.month) {
-	                $scope.prevMonth();
-	            }
-	        }
+			(function springGun() {
+			    var dateLastRun = new Date().getDate();
 
-	        $scope.$on("$destroy", function () {
-	            if (refreshInterval != null) {
-	                $interval.cancel(refreshInterval);
-	            }
-	        });
+			    refreshInterval = $interval(function () {
+			        if (dateLastRun != new Date().getDate()) {
+			            catsUtils.getData(handleCatsData);
+			        }
+			    }, 3 * 3600000);
+			})();
 
-	        (function springGun() {
-	            var dateLastRun = new Date().getDate();
+			$scope.$on("refreshAppReceived", function () {
+			    catsUtils.getCatsComplianceData(handleCatsData, true);
+			});
 
-	            refreshInterval = $interval(function () {
-	                if (dateLastRun != new Date().getDate()) {
-	                    catsUtils.getData(handleCatsData);
-	                }
-	            }, 3 * 3600000);
-	        })();
-
-	        $scope.$on("refreshAppReceived", function () {
-	            catsUtils.getCatsComplianceData(handleCatsData, true);
-	            //catsUtils.getData(handleCatsData);
-	        });
-		    
-		    $scope.getStateClassSubstring = function(calDay){
-		    	if(calDay.data.state == 'Y' && calDay.today)
-		    		return 'Y_TODAY';
-		    	else
-		    		return calDay.data.state;
-		    }
+			$scope.getStateClassSubstring = function(calDay){
+				if(calDay.data.state == 'Y' && calDay.today)
+					return 'Y_TODAY';
+				else if(calDay.data.state == 'OVERBOOKED' && calDay.today)
+					return 'OVERBOOKED_TODAY';
+				else
+					return calDay.data.state;
+			}
 	    };
 
 	    function processCatsData(cats_o) {
@@ -518,6 +405,11 @@ angular.module("app.cats")
 	            for (var i = 0; i < days.length; i++) {
 	                var dateStr = days[i].DATEFROM;
 	                var statusStr = days[i].STATUS;
+	                // special handling for overbooked days
+	                if (days[i].STATUS == "Y" && days[i].QUANTITYH > days[i].STDAZ) {
+	                	statusStr = "OVERBOOKED";
+	                	days[i].STATUS = "OVERBOOKED"
+	                }
 
 	                var time = parseDateToTime(dateStr);
 	                if (time != null) {
@@ -554,6 +446,7 @@ angular.module("app.cats")
 	            selectedDates: '=selectedDates',
 	            onDateSelected: "&ondateselected",
 	            onDateDeselected: "&ondatedeselected",
+	            selectionCompleted: "&selectioncompleted",
 	            dayClassInput: '@dayClass',
                 maintainable: '=',
 	        }
