@@ -50,6 +50,14 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         $scope.dataInitialized = ticketData.isInitialized;
         $scope.showNoMessages = false;
 
+        function setNoMessagesFlag() {
+            if (ticketData.isInitialized.value === true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) === 0) {
+                $scope.showNoMessages = true;
+            } else {
+                $scope.showNoMessages = false;
+            }
+        }
+
         $scope.$watch("prios", function () {
             setNoMessagesFlag();
         }, true);
@@ -75,20 +83,17 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             }
         },true);  
 
-        function setNoMessagesFlag() {
-            if (ticketData.isInitialized.value == true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) == 0) {
-                $scope.showNoMessages = true;
-            } else {
-                $scope.showNoMessages = false;
-            }
-        };
+
 
         if (ticketData.isInitialized.value === false) {
             var initPromise = ticketData.initialize();
-            initPromise.then(function success(data) {
+            initPromise.then(function success() {
                 setNoMessagesFlag();
                 $scope.config = configservice;
             });
+        }
+        else{
+            $scope.config = configservice;
         }
 
 }]);

@@ -1,4 +1,4 @@
-angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData','$routeParams',  function Controller($scope, $http, $templateCache, ticketData, $routeParams) {
+angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
 
         $scope.$parent.titleExtension = " - IM Details";   
         $scope.filterText = '';
@@ -6,6 +6,34 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};  
 
+
+        function update_table()
+        {
+            $scope.tableData = [];
+            if($scope.messages && $scope.messages.length > 0)
+            {
+                if(!$scope.getStatusArray().length)
+                {
+                    var status_filter = $routeParams.prio.split('|'); 
+
+                    $scope.prios.forEach(function (prio){
+                        if(status_filter.indexOf(prio.name) > -1)
+                        {
+                            $scope.statusMap[prio.name] = {"active":true};
+                        }
+                        else
+                        {
+                            $scope.statusMap[prio.name] = {"active":false};
+                        }
+                    });
+                }                
+                $scope.messages.forEach(function (message){
+                    if ($scope.statusMap[message.PRIOSTXT].active) {
+                        $scope.tableData.push(message);
+                    }
+                });                               
+            }                      
+        }
 
         $scope.$watch('messages', function () 
         {                        
@@ -17,30 +45,6 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             update_table();
         }, true);
 
-        function update_table()
-        {
-            if($scope.messages && $scope.messages.length > 0)
-            {
-                if(!$scope.getStatusArray().length)
-                {
-                    var status_filter = $routeParams['prio'].split('|'); 
-
-                    $scope.prios.forEach(function (prio){
-                        if(status_filter.indexOf(prio.name) > -1)
-                            $scope.statusMap[prio.name] = {"active":true};
-                        else
-                            $scope.statusMap[prio.name] = {"active":false};
-                    })
-                }
-                $scope.tableData = [];
-
-                $scope.messages.forEach(function (message){
-                    if ($scope.statusMap[message.PRIOSTXT].active) {
-                        $scope.tableData.push(message);
-                    };
-                })                                
-            }                      
-        }
 
         function enhanceMessage(message) {
             $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + location.origin).then(function (response) {
@@ -51,32 +55,54 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
                 message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
                 message.mail = message.employee.SMTP_MAIL;
                 message.tel = message.employee.TELNR;
-                $scope.messages.push(message);
+                //$scope.messages.push(message);
             });
         }
 
-        function enhanceAllMessages() {
-            if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                angular.forEach(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (message) {
-                    enhanceMessage(message);
-                });
-            } else {
-                enhanceMessage(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
-            }
+        function enhanceAllMessages() 
+        {
+            angular.forEach(ticketData.backendTickets.sel_components, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.sel_components_aa, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.colleagues, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.colleagues_aa, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.assigned_me, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.assigned_me_aa, function (message) { enhanceMessage(message); });
+            angular.forEach(ticketData.backendTickets.created_me, function (message) { enhanceMessage(message); });            
         }
 
         $scope.getStatusArray = function(){
             return Object.keys($scope.statusMap);
-        }
+        };
+
+        $scope.$watch('config', function() {      
+            if($scope.config !== undefined)
+            {
+                var selected_messages = [];                
+                if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components, function (message) { selected_messages.push(message); }); }
+                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues, function (message) { selected_messages.push(message); }); }
+                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me, function (message) { selected_messages.push(message); }); }
+                if($scope.config.data.selection.created_me)     { angular.forEach(ticketData.backendTickets.created_me, function (message) { selected_messages.push(message); }); }
+                if(!$scope.config.data.settings.ignore_author_action)
+                {
+                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components_aa, function (message) { selected_messages.push(message); }); }
+                    if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, function (message) { selected_messages.push(message); }); }
+                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, function (message) { selected_messages.push(message); }); }
+                }                                            
+                $scope.messages = selected_messages;
+                bridgeConfig.persistInBackend(bridgeDataService);                
+            }
+        },true);  
 
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
-            promise.then(function success(data) {
+            promise.then(function success() {
                 enhanceAllMessages();
+                $scope.config = configservice;
             });
         } else {
             enhanceAllMessages();
+            $scope.config = configservice;
         }
 }]);
 
