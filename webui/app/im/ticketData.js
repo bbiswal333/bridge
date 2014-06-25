@@ -1,4 +1,4 @@
-﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', function ($http, $q, $interval) {
+﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', 'bridgeDataService', function ($http, $q, $interval, bridgeDataService) {
     var that = this;
 
     this.backendTickets = null;
@@ -29,10 +29,12 @@
         });
     };
 
+    this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
+
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             that.resetPrios();
 
