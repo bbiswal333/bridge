@@ -253,15 +253,30 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-.centeredContent {
+/*.centeredContent {
     top: 40px;
     margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    /*margin-bottom: auto;*/
+    
     position: relative;
     text-align: center;
+}
+*/
+.animation-container{
+    height: 100%;
+}
+#main{
+    display: table;
+    height: 100%;
+    margin: 40px auto;
+}
+.centeredContent {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
 }
 /* 6 column */
  @media (min-width: 1620px) {
