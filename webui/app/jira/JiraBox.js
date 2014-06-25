@@ -4,18 +4,22 @@ var IJiraBox = {
 
 var JiraBox = function(http){
     this.http = http;
+    this.data = [];
+    this.isInitialized = false;
 };
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.getIssuesforQuery = function (scope) {    
-    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + scope.config.query
-        ).success(function(data, status, headers, config) {
-            if(!scope.data) scope.data = {};
-            scope.data.jiraData = [];        
+JiraBox.prototype.getIssuesforQuery = function (sQuery) {
+    var that = this;
+
+    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + sQuery
+        ).success(function (data, status, headers, config) {
+
+            that.data.length = 0;        
 
             angular.forEach(data.issues, function(issue) {
-              scope.data.jiraData.push({
+              that.data.push({
                 key:            issue.key,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
@@ -27,7 +31,7 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
               });   
             });
 
-            scope.data.jiraData.sort(function (a,b) {
+            that.data.sort(function (a,b) {
               if (a.parentKey < b.parentKey) return -1;
               if (a.parentKey > b.parentKey) return 1;
               if (a.key < b.key) return -1;
@@ -53,7 +57,7 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
 
             var group      = null;
             var colorIndex = 0;
-            angular.forEach(scope.data.jiraData, function(task) {
+            angular.forEach(that.data, function(task) {
               if (getGroup(task) != group) {
                   ++colorIndex;
                   group = getGroup(task);
@@ -65,7 +69,7 @@ JiraBox.prototype.getIssuesforQuery = function (scope) {
         }).error(function(data, status, headers, config) {
             console.log(status);
             console.log(data);
-            scope.jiraData = [];                        
+            that.data = [];
         });        
 };
 

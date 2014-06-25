@@ -3,11 +3,16 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="82px" height="34px" viewBox="0 0 82 34" enable-background="new 0 0 82 34" xml:space="preserve">
+<rect x="32.824" y="-0.016" fill="#F8FEFF" width="60.016" height="34"/>
+<rect x="-6.51" y="-76.683" fill="#F0FBFF" width="88.517" height="34"/>
+<rect x="-14.458" y="-4.383" fill="#DFF5FF" width="55.406" height="42.738"/>
 <rect x="-28.719" y="6.219" fill="#FFFFFF" width="2" height="2"/>
 <rect x="-23.016" y="-0.203" fill="#FFFFFF" width="2" height="2"/>
 <rect x="-23.016" y="31.8" fill="#FFFFFF" width="2" height="2"/>
-<rect x="0.007" y="-0.016" fill="#E0F3FD" width="82" height="34"/>
-<rect x="-13.25" y="-3.88" fill="#FFFFFF" width="54.258" height="41.72"/>
+<polygon fill="#F8FDFF" points="41,105.498 73.5,105.5 73.499,70.271 81.999,70.273 82,114 40.999,114 "/>
+<polygon fill="#F8FDFF" points="286.167,42.282 311.077,17.375 286.168,-7.534 292.178,-13.544 323.1,17.375 292.178,48.295 "/>
+<polygon fill="#F8FDFF" points="303.5,42.282 328.41,17.375 303.5,-7.534 309.511,-13.544 340.432,17.375 309.511,48.295 "/>
 <rect x="68.049" y="-10.692" fill="#FFFFFF" width="28.096" height="23.609"/>
 <polygon fill="#428BCA" points="68.049,-0.022 82.01,12.905 68.049,12.905 "/>
+<rect x="94.324" y="39.484" fill="#F8FEFF" width="52.682" height="34"/>
 </svg>

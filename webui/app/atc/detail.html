@@ -2,7 +2,7 @@
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
       <input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.."  style="width:280px;float:left;margin-right:25px;" />
       <div class="btn-group" style="height:32px">      	
-          <span ng-repeat="status in statusArray" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">Prio {{status.name}}</span>
+          <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
       </div>
         <div infinitescroll>
             <!-- <bridge.table grid-options="gridOptions" grid-data="atcData.tableData"></bridge.table> -->
