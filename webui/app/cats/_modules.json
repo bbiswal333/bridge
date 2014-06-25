@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.cats",
 		"title"					:	"CATS Compliance",
-		"icon_css"				:	"fa fa-paw",
+		"icon_css"				:	"fa fa-star",
 		"overview_directive"	:	"app.cats",
 		"needs_client"			:	false,
 		"routes"		:
