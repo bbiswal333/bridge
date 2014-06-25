@@ -355,6 +355,7 @@ angular.module("app.cats")
 					$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
 					$scope.currentMonth = calUtils.getMonthName($scope.month).long;
 					$scope.loading = false;
+					$scope.selectionCompleted();
 				});
 			}
 
@@ -389,6 +390,8 @@ angular.module("app.cats")
 			$scope.getStateClassSubstring = function(calDay){
 				if(calDay.data.state == 'Y' && calDay.today)
 					return 'Y_TODAY';
+				else if(calDay.data.state == 'OVERBOOKED' && calDay.today)
+					return 'OVERBOOKED_TODAY';
 				else
 					return calDay.data.state;
 			}

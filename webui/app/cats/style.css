@@ -212,7 +212,7 @@
 .app-cats-stateG { /* maintained */
     background: #dff5ff;
 }
-.app-cats_overbooked { /*overbooked*/
+.app-cats-stateOVERBOOKED { /*overbooked*/
     background-image: url('/../../img/over_booked.svg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -257,7 +257,7 @@
     background-size: cover;
     background-position-x: 100%;
 }
-.app-cats-overbooked_TODAY { 
+.app-cats-stateOVERBOOKED_TODAY { 
     /*background-color:#dff5ff;*/
     background-image: url('/../../img/over_booked_TODAY.svg');
     background-repeat: no-repeat;
