@@ -751,3 +751,9 @@ input[type="checkbox"]:checked:after {
 #detailContainer{
     text-align: left;
 }
+.fa{
+    line-height: inherit!important;
+}
+.box-icon.fa{
+    padding-top: 2px;
+}

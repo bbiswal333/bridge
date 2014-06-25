@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.sapedia",
 		"title"					:	"SAPedia",
-		"icon_css"				:	"icon-lightbulb",
+		"icon_css"				:	"fa fa-book",
 		"overview_directive"	:	"app.sapedia",
 		"needs_client"			:	false
 	},

@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.imtps",
 		"title"					:	"GTP Test MSG",
-		"icon_css"				:	"icon-comment-empty",
+		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.imtps",
 		"needs_client"			:	false,
 		"routes"		:

@@ -1,9 +1,28 @@
 <div ng-controller="app.im.detailController" style="box-sizing:border-box;">    
     <div style="padding:30px;box-sizing:border-box;">                
     	<input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
-        <div class="btn-group" style="height:32px">      	
+        <div class="btn-group" style="height:32px;max-width:100%;">      	
           <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">{{status.name}}</span>
-      	</div>
+          <div style="position:absolute;right:0">
+	          <div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.sel_components];" ng-click="selection.sel_components = !selection.sel_components" 
+				style="width:35px;" title="Selected Components">
+					<i class="fa fa-cube"></i>
+				</div>	
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.colleagues];" ng-click="selection.colleagues = !selection.colleagues"
+				style="width:35px;" title="Assigned to Colleagues">
+					<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+				</div>	
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.assigned_me];" ng-click="selection.assigned_me = !selection.assigned_me"
+				style="width:35px;" title="Assigned to Me">
+					<i class="fa fa-1.5x fa-crosshairs"></i>
+				</div>	
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[selection.created_me];" ng-click="selection.created_me = !selection.created_me"
+				style="width:35px;margin-right:0;" title="Created by Me">
+					<i class="fa fa-user"></i>
+				</div>	
+      	  </div>
+			
+		</div>
         <div>
             <bridge.table grid-options="gridOptions" grid-data="data.tableData"></bridge.table>
         </div>        

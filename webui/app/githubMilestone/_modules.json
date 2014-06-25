@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.githubMilestone",
 		"title"					:	"GitHub",
-		"icon_css"				:	"icon-github-circled",
+		"icon_css"				:	"fa fa-github-alt",
 		"overview_directive"	:	"app.githubMilestone",
 		"needs_client"			:	false
 	},

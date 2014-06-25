@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.employeeSearch",
 		"title"					:	"Employee Search",
-		"icon_css"				:	"icon-user-o",
+		"icon_css"				:	"fa fa-user",
 		"overview_directive"	:	"app.employeeSearch",
 		"needs_client"			:	false,
 		"routes"		:

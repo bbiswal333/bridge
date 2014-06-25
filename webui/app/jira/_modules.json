@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.jira",
 		"title"					:	"Jira",
-		"icon_css"				:	"icon-bell",
+		"icon_css"				:	"fa fa-bell",
 		"overview_directive"	:	"app.jira",
 		"needs_client"			:	false,
 		"routes"		:

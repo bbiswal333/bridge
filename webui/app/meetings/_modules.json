@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.meetings",
 		"title"					:	"Meetings",
-		"icon_css"				:	"icon-meeting-o",
+		"icon_css"				:	"fa fa-users",
 		"overview_directive"	:	"app.meetings",
 		"needs_client"			:	true
 	},
