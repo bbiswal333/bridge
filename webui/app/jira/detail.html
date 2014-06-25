@@ -1,11 +1,29 @@
 ﻿<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">    
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
-      <div class="btn-group" style="height:32px">
-          <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">{{status.name}}</span>
-      </div>
+		<input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
+		<div class="btn-group" style="height:32px">
+		  <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">{{status.name}}</span>
+		</div>
         <div>
-            <bridge.table grid-options="gridOptions" grid-data="data.filteredJiraData"></bridge.table>
+        	<div infinitescroll>
+            <div class="row">
+	            <div class="box-title col-sm-3" ng-click="sort('summary')">Summary
+	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'summary'"></i>
+	            </div>
+	        	<div class="box-title col-sm-7" ng-click="sort('description')">Description
+	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'description'"></i>
+	        	</div>
+	        	<div class="box-title col-sm-2" ng-click="sort('status')">Status
+	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'status'"></i>
+	        	</div>
+	        </div>
+            <div ng-repeat="row in data.filteredJiraData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+            	<div class="cellText col-sm-3">
+	            	<a target="_blank" href="https://sapjira.wdf.sap.corp/browse/{{row.key}}">{{row.summary}}</a>
+            	</div>
+            	<div class="cellText col-sm-7">{{row.description}}</div>
+            	<div class="cellText col-sm-2">{{row.status}}</div>
+            </div>
         </div>        
     </div>
 </div>

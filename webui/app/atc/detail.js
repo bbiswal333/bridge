@@ -13,12 +13,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     
     $scope.statusArray = [];     
 
-    var infinityLimitStep = 100;
-    $scope.infinityLimit = infinityLimitStep;
-    $scope.reverse = true;
-    $scope.predicate = null;
-
-
     if (appAtcConfig.isInitialized == false) {
         appAtcConfig.initialize($routeParams['appId']);
     }
@@ -62,35 +56,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         }
     }, true);
 
-    $scope.zebraCell = function(index){
-        return 'row' + index%2;
-    }
 
-    $scope.increaseInfinityLimit = function(){
-        $scope.infinityLimit += infinityLimitStep;
-    }
-
-    $scope.sort = function(selector){
-        $scope.predicate = selector;
-        $scope.reverse = !$scope.reverse;
-    }
 
 }]);
-
-angular.module('app.atc').directive("infinitescroll", ['$window', function($window){
-    return function(scope, elm, attr) {
-        var container = angular.element( document.querySelector( '#scrollContainer' ));
-        var cont = container[0];
-
-        container.bind("scroll", function() {
-            var containerBottom = cont.scrollTop + cont.offsetHeight;
-            var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
-
-            if (containerBottom >= elementBottom) {
-                scope.$apply(scope.increaseInfinityLimit());
-            } else if (cont.scrollTop === 0){
-                //should we reset limit to the initial size?
-            }
-        });    
-    }
-}])
