@@ -53,6 +53,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var HoursOfWorkingDay = 8;
             if (task.TASKTYPE == "VACA")
                 addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
+            else if (task.TASKTYPE == "ABSE")
+                addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, true);
             else if (task.UNIT == "H")
                 addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
             else
@@ -79,29 +81,26 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         removeBlock(objgextid_s);
     }
 
-    $scope.handleSelectedDate = function(dayString){
-        var before = $scope.selectedDates.length;
-        $scope.selectedDates.push(dayString);
-        var after  = $scope.selectedDates.length;
-        if(before == 1 && after == 2){
+    $scope.selectionCompleted = function() {
+        if($scope.selectedDates.length == 0) { // Nothing selected
+            $scope.blockdata = [];
+            $scope.totalWorkingTime = 0;
+        } else if($scope.selectedDates.length == 1) { // Single day
+            loadCATSDataForDay(calUtils.parseDate($scope.selectedDates[0]));
+        } else { // Range selected
             $scope.blockdata = [];
             $scope.totalWorkingTime = 1;
         }
+    }
+
+    $scope.handleSelectedDate = function(dayString){
+        $scope.selectedDates.push(dayString);
         return true;
     }
 
     $scope.handleDeselectedDate = function(dayString){
-        var before = $scope.selectedDates.length;
         var dateIndex = $scope.selectedDates.indexOf(dayString);
         $scope.selectedDates.splice(dateIndex, 1);
-        var after  = $scope.selectedDates.length;
-        if(before == 2 && after == 1){
-            // this leads to data beeing displayed even after ALL days are removed
-            //loadCATSDataForDay(calUtils.parseDate($scope.selectedDates[0]));
-        } else if(after == 0){
-            $scope.blockdata = [];
-            $scope.totalWorkingTime = 0;
-        }
         return true;
     }
 
@@ -241,12 +240,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         else {
             $scope.day = calUtils.parseDate(date);
         }
-
         $scope.selectedDates = [calUtils.stringifyDate($scope.day)];
-
-        var path = "/detail/cats/" + calUtils.stringifyDate($scope.day) + "/";
-        console.log(path);
-        $location.path(path);
     };
 
 

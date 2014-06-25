@@ -2,29 +2,29 @@
     var that = this;
 
     this.backendTickets = null;
+    
     // make an object so that we can have it referenced in the scope
     this.isInitialized = { value: false };
     this.loadTicketDataInterval = null;
 
-    function parseBackendTicket(backendTicket) {
+    function parseBackendTicket(backendTicket, category) {
         angular.forEach(that.prios, function (prio) {
-            if (backendTicket.PRIO == prio.number.toString())
-                prio.amount++;
+            if (backendTicket.PRIO === prio.number.toString())
+            {
+                prio[category]++;
+                prio.total++;
+            }
         });
     }
 
-    this.prios = [{
-        name: "Very high", number: 1, amount: 0,
-    }, {
-        name: "High", number: 2, amount: 0,
-    }, {
-        name: "Medium", number: 3, amount: 0,
-    }, {
-        name: "Low", number: 4, amount: 0,
-    }];
+    this.prios = [
+        { name: "Very high",    number: 1, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 },
+        { name: "High",         number: 2, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }, 
+        { name: "Medium",       number: 3, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }, 
+        { name: "Low",          number: 4, sel_components: 0, colleagues:0, assigned_me: 0, created_me: 0, selected: 0, total: 0 }];    
 
     this.resetPrios = function () {
-        angular.forEach(that.prios, function (prio, key) {
+        angular.forEach(that.prios, function (prio) {
             prio.amount = 0;
         });
     };
@@ -37,21 +37,48 @@
             that.resetPrios();
 
             data = new X2JS().xml_str2json(data);
-            var imData = data["abap"];
-            that.backendTickets = imData["values"];
+            var imData = data.abap;
+            that.backendTickets = imData.values;
 
-            // if you have multiple tickets, DEVDB_MESSAGE_OUT is an array, otherwise a simple object
+            //selected component
             if (angular.isArray(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
                 angular.forEach(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
-                    parseBackendTicket(backendTicket);
+                    parseBackendTicket(backendTicket, 'sel_components');
                 });
             } else if (angular.isObject(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                parseBackendTicket(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+                parseBackendTicket(that.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, 'sel_components');
+            }
+
+            //colleagues
+            if (angular.isArray(that.backendTickets.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT)) {
+                angular.forEach(that.backendTickets.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT, function (backendTicket) {
+                    parseBackendTicket(backendTicket, 'colleagues');
+                });
+            } else if (angular.isObject(that.backendTickets.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT)) {
+                parseBackendTicket(that.backendTickets.INTCOMPCOLLEAGUES_LONG.DEVDB_INTMESSAGE_OUT, 'colleagues');
+            }
+
+            //assigned to me
+            if (angular.isArray(that.backendTickets.INTPERS_LONG.DEVDB_MESSAGE_OUT)) {
+                angular.forEach(that.backendTickets.INTPERS_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
+                    parseBackendTicket(backendTicket, 'assigned_me');
+                });
+            } else if (angular.isObject(that.backendTickets.INTPERS_LONG.DEVDB_MESSAGE_OUT)) {
+                parseBackendTicket(that.backendTickets.INTPERS_LONG.DEVDB_MESSAGE_OUT, 'assigned_me');
+            }
+
+            //created by me
+            if (angular.isArray(that.backendTickets.INTCREATED_LONG.DEVDB_INTMESSAGE_OUT)) {
+                angular.forEach(that.backendTickets.INTCREATED_LONG.DEVDB_INTMESSAGE_OUT, function (backendTicket) {
+                    parseBackendTicket(backendTicket, 'created_me');
+                });
+            } else if (angular.isObject(that.backendTickets.INTCREATED_LONG.DEVDB_INTMESSAGE_OUT)) {
+                parseBackendTicket(that.backendTickets.INTCREATED_LONG.DEVDB_INTMESSAGE_OUT, 'created_me');
             }
 
             deferred.resolve();
 
-        }).error(function (data) {
+        }).error(function () {
             deferred.reject();
         });
 
@@ -62,7 +89,7 @@
         this.loadTicketDataInterval =  $interval(this.loadTicketData, 60000 * 10);
 
         var loadTicketPromise = this.loadTicketData();
-        loadTicketPromise.then(function success(data) {
+        loadTicketPromise.then(function success() {
             that.isInitialized.value = true;
         });
 

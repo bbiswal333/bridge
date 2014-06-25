@@ -7,7 +7,7 @@
 					<p>{{prios[$index].name}}</p>
 				</div>
 				<div class="prio_content_box" style="color:white">
-					<p ng-if="prios[$index].amount<=99">{{prios[$index].amount}}</p>
+					<p ng-if="prios[$index].amount<=99">{{prios[$index].selected}}</p>
 					<p ng-if="prios[$index].amount>=100">+99</p>
 				</div>
 			</a>	

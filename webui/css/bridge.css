@@ -253,15 +253,42 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-.centeredContent {
+/*.centeredContent {
     top: 40px;
     margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    /*margin-bottom: auto;*/
+    
     position: relative;
     text-align: center;
+}
+*/
+.animation-container{
+    height: 100%;
+}
+#main{
+    display: table;
+    height: 100%;
+    margin: auto;
+}
+.centeredContent {
+    
+    display: table-cell;
+    vertical-align: middle;
+    
+    margin-bottom:40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    padding: 40px 0;
+    text-align: center;
+    position: relative;
+}
+#scrollContainer .centeredContent{
+    display: block;
+    padding: 5px 15px;
+    top:40px;
 }
 /* 6 column */
  @media (min-width: 1620px) {
@@ -714,7 +741,7 @@ input[type="checkbox"]:checked:after {
 .pixel_art{
     position: absolute;
     bottom: 5px;
-    right: 10px;
+    left: 10px;
     float: right;
     opacity: 0.5;
 }
@@ -723,4 +750,38 @@ input[type="checkbox"]:checked:after {
 }
 #detailContainer{
     text-align: left;
+}
+
+.table-cell{
+    border:2px solid white;
+    height:40px;
+    padding-top:8px;
+    padding-left: 10px;
+}
+
+.row0{
+    background-color: rgb(243, 243, 243);
+    margin-left: 0;
+}
+
+.row1{
+    background-color: rgb(253, 253, 253);
+    margin-left: 0;
+}
+
+.cellText {
+    height: 35px;
+    padding-left: 10px;
+    line-height: 2.5;
+    overflow: hidden;
+}
+
+.box-title {
+    margin-top: 30px;
+    font-size: 14px;
+    line-height: 32px;
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: bold;
+    cursor: pointer;
 }

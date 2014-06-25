@@ -72,9 +72,14 @@
         {
             apps[i] = {};
             apps[i].metadata = {};
-            apps[i].metadata['module_name'] = bridgeLoaderServiceProvider.apps[i]['module_name'];
             apps[i].metadata.id = i;
-            apps[i].metadata.show = true;
+            if (bridgeLoaderServiceProvider.apps[i].module_name == 'app.meetings' ||
+                bridgeLoaderServiceProvider.apps[i].module_name == 'app.imtps') {
+                apps[i].metadata.show = false;
+            } else {
+                apps[i].metadata.show = true;
+                apps[i].metadata['module_name'] = bridgeLoaderServiceProvider.apps[i]['module_name'];
+            }
         }
 
         return {

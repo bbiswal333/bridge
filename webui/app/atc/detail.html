@@ -1,8 +1,8 @@
 ﻿<div ng-controller="app.atc.detailcontroller" style="box-sizing:border-box;" >    
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-      <input type="text" class="form form-control" ng-model="filterOptions.filterText" placeholder="Filter.."  style="width:280px;float:left;margin-right:25px;" />
+      <input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.."  style="width:280px;float:left;margin-right:25px;" />
       <div class="btn-group" style="height:32px">      	
-          <span ng-repeat="status in data.status" ng-class="{true: 'btn btn_blue', false: 'btn'}[status.active];" class="btn btn-default" ng-click="status.active = !status.active" style="margin-bottom:20px;">Prio {{status.name}}</span>
+          <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
       </div>
         <div infinitescroll>
             <!-- <bridge.table grid-options="gridOptions" grid-data="atcData.tableData"></bridge.table> -->
@@ -23,7 +23,7 @@
 	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'OBJ_NAME'"></i>
 	        	</div>
 	        </div>
-            <div ng-repeat="row in atcData.tableData | filter:filterOptions.filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+            <div ng-repeat="row in atcData.tableData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
             	<div class="cellText col-sm-1">{{row.CHECK_MSG_PRIO}}</div>
             	<div class="cellText col-sm-1">{{row.CHECK_SYSTEM}}</div>
             	<div class="cellText col-sm-2">{{row.CHECK_DESCRIPTION}}</div>
@@ -31,7 +31,7 @@
             	<div class="cellText col-sm-4">{{row.OBJ_NAME}}</div>
             </div>
 
-            <div class="fa fa-circle-o-notch fa-spin fa-2x" style="margin-left: auto; margin-top: 15px; margin-bottom: 100px" ng-show="atcData.tableData.length > infinityLimit"></div>
+            <!-- <div id="loadSpinner" class="fa fa-circle-o-notch fa-spin fa-2x" style="margin-left: 50%; margin-top: 15px; margin-bottom: 100px" ng-show="atcData.tableData.length > infinityLimit"></div> -->
 
         </div>        
     </div>

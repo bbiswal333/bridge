@@ -2,20 +2,16 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     function ($scope, $http, $filter, $route, $routeParams, ngTableParams, appAtcConfig, appAtcData) {
     
     $scope.$parent.titleExtension = " - ATC Details";
+    $scope.filterText = '';
+
 
     $scope.atcData = {};
     $scope.atcData.detailsData = [];    
-    $scope.data = {};
-    $scope.data.status = [];     
 
     $scope.atcData = appAtcData;          
     $scope.atcData.tableData = [];
-
-    var infinityLimitStep = 100;
-    $scope.infinityLimit = infinityLimitStep;
-    $scope.reverse = true;
-    $scope.predicate = null;
-
+    
+    $scope.statusMap = {};     
 
     if (appAtcConfig.isInitialized == false) {
         appAtcConfig.initialize($routeParams['appId']);
@@ -28,89 +24,32 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         if($scope.atcData.detailsData.length > 0)
         {
             var status_filter = $routeParams['prio'].split('|'); 
-            var status = [];
-            $scope.data.status = [];  
+            $scope.statusMap = {};  
             for(var i = 1; i <= 4; i++)
             {
                 if(status_filter.indexOf(i + "") > -1)
-                {
-                    status.push({"name":i,"active":true});   
-                }
+                    $scope.statusMap[i] = {"active":true};
                 else
-                {
-                    status.push({"name":i,"active":false});   
-                }    
+                    $scope.statusMap[i] = {"active":false};
             }
-            $scope.data.status = status;         
         }
-        
     }, true);
 
-    $scope.$watch('data.status', function()
+    $scope.$watch('statusMap', function()
     {
         $scope.atcData.tableData = [];
         if($scope.atcData && $scope.atcData.detailsData)
         {
-            for(var i = 0; i < $scope.atcData.detailsData.length; i++ )
+            $scope.atcData.detailsData.forEach(function (atcEntry)
             {
-                for(var j = 0; j < $scope.data.status.length; j++)
-                {
-                    if($scope.atcData.detailsData[i].CHECK_MSG_PRIO == $scope.data.status[j].name && $scope.data.status[j].active)
-                    {
-                        $scope.atcData.tableData.push($scope.atcData.detailsData[i]);
-                    }
-                }
-            }
+                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active)
+                    $scope.atcData.tableData.push(atcEntry);
+            })
         }
     }, true);
 
-    $scope.zebraCell = function(index){
-        return 'row' + index%2;
+    $scope.getStatusArray = function(){
+        return Object.keys($scope.statusMap);
     }
 
-    $scope.increaseInfinityLimit = function(){
-        $scope.infinityLimit += infinityLimitStep;
-    }
-
-    $scope.sort = function(selector){
-        $scope.predicate = selector;
-        $scope.reverse = !$scope.reverse;
-    }
-
-    var cellTemplate = '<div class="ngCellText table-cell" ng-class="col.colIndex()" >{{row.getProperty(col.field)}}</div>';    
-
-    $scope.filterOptions = {
-        filterText: ''
-    };
-
-    $scope.gridOptions = {                        
-        enableColumnReordering:true,
-        enableRowSelection:false,            
-        rowHeight: 40,
-        showFilter:false,
-        filterOptions: $scope.filterOptions,
-        columnDefs: [
-            {field:'CHECK_MSG_PRIO', displayName:'Prio', width:'20%', cellTemplate: cellTemplate},                
-            {field:'CHECK_SYSTEM', displayName:'System', width:'20%', cellTemplate: cellTemplate},
-            {field:'CHECK_DESCRIPTION', displayName:'Check', width:'20%', cellTemplate: cellTemplate},
-            {field:'CHECK_MESSAGE', displayName:'Check Message', width:'20%', cellTemplate: cellTemplate},
-            {field:'OBJ_NAME', displayName:'Object', width:'20%', cellTemplate: cellTemplate},
-        ],
-        plugins: [new ngGridFlexibleHeightPlugin()]
-    }       
 }]);
-
-angular.module('app.atc').directive("infinitescroll", ['$window', function($window){
-    return function(scope, elm, attr) {
-        var container = angular.element( document.querySelector( '#detailContainer' ));
-        var cont = container[0];
-
-        container.bind("scroll", function() {
-            if (cont.scrollTop + cont.offsetHeight >= elm[0].scrollHeight) {
-                scope.$apply(scope.increaseInfinityLimit());
-            } else if (cont.scrollTop === 0){
-                //should we reset limit to the initial size?
-            }
-        });    
-    }
-}])

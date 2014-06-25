@@ -82,8 +82,8 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
                 {field:'PRIOSTXT', displayName:'Priority', width:'10%', cellTemplate: cellTemplate},                
                 {field:'THEMKEXT', displayName:'Component', width:'15%', cellTemplate: cellTemplate},
                 {field:'STATUSSTXT', displayName:'Status', width:'15%', cellTemplate: cellTemplate},      
-                {field:'username', displayName:'Reporter/ Processor', width:'20%', cellTemplate: usercellTemplate},   
-                {field:'KTEXT', displayName:'Description', width:'40%', cellTemplate: descriptioncellTemplate}            
+                {field:'username', displayName:'Reporter/ Processor', width:'25%', cellTemplate: usercellTemplate},   
+                {field:'KTEXT', displayName:'Description', width:'35%', cellTemplate: descriptioncellTemplate}            
             ],
             plugins: [new ngGridFlexibleHeightPlugin()]
         }

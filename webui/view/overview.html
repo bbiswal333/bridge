@@ -8,10 +8,10 @@
         </div>
     </div>
 
-    <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);position:relative;top:40px;">                
-        <div class="settingsButton" title="Open Settings" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()">&#xe00c;</div>                    
-        <div class="settingsButton" title="Give Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="icon-heart"></span></div>                    
-        <div class="settingsButton" title="Collaborate on GitHub" style="font-size: 20px; position: relative; top: -1px;"  ng-class="{'tab-active':sideView=='github', 'tab-inactive':sideView!='github'}" ng-click="bridge_github_click()"><span class="icon-github-circled"></span></div>
+    <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);position:relative;top:48px;">                
+        <div class="settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()"><span class="fa fa-tachometer"></span></div>                    
+        <div class="settingsButton" title="Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="icon-heart"></span></div>                    
+        <div class="settingsButton" title="Collaboratation" style="font-size: 20px; position: relative; top: -1px;"  ng-class="{'tab-active':sideView=='github', 'tab-inactive':sideView!='github'}" ng-click="bridge_github_click()"><span class="icon-github-circled"></span></div>
         <div ng-if="!client" class="settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()"><span class="icon-download"></span></div>
         <div style="height:100%;" ng-click="bridge_hide_settings()"></div>
     </div>
