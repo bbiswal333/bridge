@@ -1,7 +1,7 @@
-﻿<div class="jira_container" ng-if="data.jiraChart.length > 0">
-    <div ng-repeat="data in data.jiraChart" class="status_container">
+﻿<div class="jira_container" ng-if="jiraChartData.length > 0">
+    <div ng-repeat="data in jiraChartData" class="status_container">
         <div class="status_bar_container">
-            <a href="#/detail/jira/{{data.status_filter}}">         
+            <a href="#/detail/jira/{{id}}/{{data.status_filter}}">         
                 <div class="status_bar" ng-style="{'height':(data.count/totalCount)*100 + '%', 'background-color':colors[$index] }">      
                 </div>   
             </a>         
@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div ng-if="data.jiraChart.length <= 0">
+<div ng-if="jiraChartData.length <= 0">
     <span>no data for the J-rex...</span>
     <img class="pixel_art" src="/../../img/j-rex.gif" width="400">
 </div>

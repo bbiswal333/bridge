@@ -1,13 +1,16 @@
 ﻿angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
 
-        $scope.$watch('JiraConfig.query', function() {
-        	$scope.config = JiraConfig;
-            JiraBox.getIssuesforQuery($scope);            
+        $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
+            if (newVal != oldVal) { // this avoids the call of our change listener for the initial watch setup
+                $scope.config = JiraConfig;
+                JiraBox.getIssuesforQuery(JiraConfig.query);
+            }
         },true);
 
         $scope.data = {};
         $scope.data.filteredJiraData = [];
+        $scope.data.jiraData = JiraBox.data;
         $scope.data.status = [];
 
         $scope.$watch('data.jiraData', function()
@@ -85,5 +88,10 @@
                 {field:'status', displayName:'Status', width:'10%', cellTemplate: cellTemplate}                      
             ],
             plugins: [new ngGridFlexibleHeightPlugin()]
-        }       
+        }
+
+        if (JiraConfig.isInitialized == false) {
+            JiraConfig.initialize($routeParams['appId']);
+            JiraBox.getIssuesforQuery(JiraConfig.query);
+        }
 }]);
