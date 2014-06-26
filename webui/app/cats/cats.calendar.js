@@ -171,7 +171,7 @@ angular.module("app.cats")
 				daysArray.forEach(function(calDay){
 					if(!$scope.isSelected(calDay.dayString) &&
 					   isSelectable(calDay) &&
-					   !hasVacationTask(monthlyDataService.days[calDay.dayString])) {
+					   !hasFixedTask(monthlyDataService.days[calDay.dayString])) {
 						hasSelectableDay = true;
 					}
 					if($scope.isSelected(calDay.dayString)) {
@@ -210,8 +210,8 @@ angular.module("app.cats")
 					};
 				});
 
-				if(containsVacationDay(daysArray) && isSelectOperation(daysArray)) {
-					bridgeInBrowserNotification.addAlert('', 'Days with vacation can not be selected.');
+				if(containsDayWithAFixedTask(daysArray) && isSelectOperation(daysArray)) {
+					bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
 				}
 
 				return promises;
@@ -221,7 +221,8 @@ angular.module("app.cats")
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
-					if (selectAnyways || isSelectable(calDay)) {
+					if (monthlyDataService.days[calDay.dayString] &&
+	        			monthlyDataService.days[calDay.dayString].targetHours > 0) {
 						var ok = $scope.onDateSelected({dayString: calDay.dayString});
 					};
 					deferred.resolve();
@@ -244,7 +245,7 @@ angular.module("app.cats")
 	        function isSelectable(calDay){
 	        	if (monthlyDataService.days[calDay.dayString] &&
 	        		monthlyDataService.days[calDay.dayString].targetHours > 0 &&
-	        		!hasVacationTask(monthlyDataService.days[calDay.dayString])) {
+	        		!hasFixedTask(monthlyDataService.days[calDay.dayString])) {
 	        		return true;
         		}
         		return false;
@@ -256,24 +257,24 @@ angular.module("app.cats")
 	        	return selectedDates.indexOf(dayString)!=-1;
 	        }
 
-	        function hasVacationTask (day){
-		        var hasVacationTask = false;
+	        function hasFixedTask (day){
+		        var hasFixedTask = false;
 		        day.tasks.forEach(function(task){
-		            if (task.TASKTYPE === "VACA") {
-		                hasVacationTask = true;
+		            if (task.TASKTYPE === "VACA" || task.TASKTYPE === "ABSE") {
+		                hasFixedTask = true;
 		            };
 		        })
-		        return hasVacationTask;
+		        return hasFixedTask;
 		    }
 
-			function containsVacationDay(daysArray){
-   				var containsVacationDay = false;
+			function containsDayWithAFixedTask(daysArray){
+   				var containsDayWithAFixedTask = false;
 				daysArray.forEach(function(calDay){
-					if(hasVacationTask(monthlyDataService.days[calDay.dayString])) {
-						containsVacationDay = true;
+					if(hasFixedTask(monthlyDataService.days[calDay.dayString])) {
+						containsDayWithAFixedTask = true;
 					}
 				});
-				return containsVacationDay;
+				return containsDayWithAFixedTask;
 			}
 
 	        function getUnselectedDays(daysArray){
