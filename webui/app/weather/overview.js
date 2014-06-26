@@ -8,7 +8,7 @@ angular.module('app.weather').directive('app.weather', function () {
         $scope.getCurrentDate = function (days)
         {
             var date = new Date();
-            return calUtils.getWeekdays()[date.getDay() - 1 + days].medium;
+            return calUtils.getWeekdays()[(date.getDay() - 1 + days) % 7].medium;
         };
         
         //get current date
