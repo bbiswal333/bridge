@@ -283,6 +283,13 @@
   background-image: url("/app/cats/detail/allocationBar/stripe.png");
   width: 100%;
 }
+.allocation-bar-background-panel-hint {
+    color: #bbbbbb;
+    font-weight: bold; 
+    font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;}
 .allocation-bar-block {
     height:60px;
     float:left

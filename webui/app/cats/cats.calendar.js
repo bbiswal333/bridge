@@ -60,6 +60,7 @@ angular.module("app.cats")
 
 				if (single_click) {
 					promises = $scope.selectSingleDay(dayString);
+					$scope.day = [monthlyDataService.days[dayString]];
 					$location.path("/detail/cats/");
 				} else if (multi_click) {
 					promises = selectRange([monthlyDataService.days[dayString]],dayString);
@@ -384,7 +385,7 @@ angular.module("app.cats")
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
-			    catsUtils.getCatsComplianceData(handleCatsData, true);
+			    catsUtils.getCatsComplianceData(handleCatsData, true); // force update
 			});
 
 			$scope.getStateClassSubstring = function(calDay){

@@ -22,15 +22,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }).error(function (data, status, header, config) { 
         $scope.client = false;     
     });
-    setDay($routeParams.day);
-                        
-    $scope.headline = calUtils.getWeekday($scope.day.getDay()); //Parameter for CATS-Compliance-App
 
     function loadCATSDataForDay(day) {
         if(!day){
-            var currentDay = calUtils.stringifyDate($scope.day);
+            $scope.loaded = true;
+            return;
         } else {
             var currentDay = calUtils.stringifyDate(day);
+        }
+        if (!currentDay) {
+            $scope.loaded = true;
+            return;
         }
         var promise = monthlyDataService.getDataForDate(currentDay);
         promise.then(function() {
@@ -67,7 +69,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,
-            WORKDATE: calUtils.transformDateToABAPFormatWithHyphen($scope.day),
+            WORKDATE: "", //that shall be decided later ...
             STATUS: 30,
             TASKTYPE: task.TASKTYPE,
             ZCPR_EXTID: task.ZCPR_EXTID,
@@ -147,11 +149,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function addBlock(desc_s, val_i, block, fixed) {
 
-        var targetTimeInPercentageOfDay = monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay;
-
         // Scale data which is read from backend
-        if(block.COUNTER) {
-            val_i = Math.round(val_i / targetTimeInPercentageOfDay * 1000) / 1000;
+        if (block.COUNTER && // already in backend
+            monthlyDataService.days[block.WORKDATE] &&
+            monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay) {
+
+            val_i = Math.round(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay * 1000) / 1000;
         }
 
         var existingBlock = getByExtId(block);
@@ -230,29 +233,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
 
-    function setDay (date) {
-        if (typeof date == "undefined") {
-            $scope.day = calUtils.today();
-        }
-        else if (date instanceof Date) {
-            $scope.day = date;
-        }
-        else {
-            $scope.day = calUtils.parseDate(date);
-        }
-        $scope.selectedDates = [calUtils.stringifyDate($scope.day)];
-    };
-
-
-    $scope.ResetToLastSavedState = function () {
-        displayCATSDataForDay(monthlyDataService.days[calUtils.stringifyDate($scope.day)]);
-    };
-
-    $scope.goBackToMainPage = function () {
-        displayCATSDataForDay(monthlyDataService.days[calUtils.stringifyDate($scope.day)]);
-        $location.path('/#');
-    };
-
     $scope.saveTimesheet = function(){
         var clearOldTasks = false;
         var weeks = [];
@@ -277,9 +257,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         if (container.BOOKINGS.length) {
             catsUtils.writeCATSData(container).then(function(data){
                 checkPostReply(data);
+                $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                 monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                     loadCATSDataForDay();
-                    $scope.$emit("refreshApp");
                 });        
             }, function(status){
                 bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
