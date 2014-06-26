@@ -66,7 +66,8 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         $scope.$watch('config', function() {      
             if($scope.config !== undefined)
             {
-                angular.forEach($scope.prios, function(prio){
+                ticketData.updatePrioSelectionCounts();
+                /*angular.forEach($scope.prios, function(prio){
                     prio.selected = 0;
                     if($scope.config.data.selection.sel_components) { prio.selected = prio.selected + prio.sel_components; }
                     if($scope.config.data.selection.colleagues)     { prio.selected = prio.selected + prio.colleagues; }
@@ -78,7 +79,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                         if($scope.config.data.selection.colleagues)     { prio.selected = prio.selected + prio.colleagues_aa; }
                         if($scope.config.data.selection.assigned_me)    { prio.selected = prio.selected + prio.assigned_me_aa; }
                     }                                            
-                }); 
+                }); */
                 bridgeConfig.persistInBackend(bridgeDataService);                
             }
         },true);  

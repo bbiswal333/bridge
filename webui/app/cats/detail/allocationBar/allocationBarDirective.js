@@ -121,7 +121,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
         '<div class="allocation-bar-container">' +
             '<div class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
                 '<div class="allocation-bar-background-panel-div" style="height:60px">' +
-                    '<font ng-if="!blocks.length" class="allocation-bar-background-panel-hint">Please select a time interval an choose tasks from the list on the left</font>' +
+                    '<font ng-if="!blocks.length" class="allocation-bar-background-panel-hint">Please select date(s) and choose tasks from the list on the left</font>' +
                     '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width">' +
                     '</app.cats.allocationbar-block>' +
                 '</div>' +
