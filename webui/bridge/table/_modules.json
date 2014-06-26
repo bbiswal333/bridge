@@ -1,5 +1,0 @@
-{	
-	"modules" : ["bridge.table"],
-	"js_files" : ["TableDirective.js"],
-	"css_files" : ["style.css"]
-}
