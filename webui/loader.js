@@ -42,11 +42,19 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
           angular.bootstrap(document, ['bridge.app']); 
         }
 
+        function uncachifyUrl(Url) {
+          var resultUrl = Url + "?" + new Date().toISOString();
+          if(Url.indexOf("?") >= 0) {
+            resultUrl = Url + "&" + new Date().toISOString();
+          }
+          return resultUrl;
+        }
+
         function load_scripts(array,callback)
         {  
           var loader = function(src,handler){  
               var script = document.createElement("script");  
-              script.src = src;  
+              script.src = uncachifyUrl(src);
               script.onload = script.onreadystatechange = function(){  
                     script.onreadystatechange = script.onload = null;
                     // in IE 10 we need a delayed loading of the next resource, otherwise the execution order is messed up and we get angular injector errors ('module not found...')
