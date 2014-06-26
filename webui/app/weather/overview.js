@@ -21,44 +21,53 @@ angular.module('app.weather').directive('app.weather', function () {
         $scope.today = $scope.dd + ' ' + $scope.mm;
         $scope.today = new Date();
         $scope.dd = $scope.today.getDate();
-        $scope.mm = $scope.today.getMonth()+1; //January is 0
+        $scope.mm = $scope.today.getMonth() + 1; //January is 0
         $scope.hh = $scope.today.getHours();
 
-        if($scope.dd<10) {
-         $scope.dd='0'+$scope.dd
+        if ($scope.dd < 10) 
+        {
+            $scope.dd = '0' + $scope.dd;
         } 
-        if($scope.mm<10) {
-         $scope.mm='0'+$scope.mm
+
+        if ($scope.mm < 10) 
+        {
+            $scope.mm = '0' + $scope.mm;
         }
         
-        if($scope.hh >= 18 || $scope.hh <=7){
+        if ($scope.hh >= 18 || $scope.hh <= 7){
             bridgeDataService.getBridgeSettings().local.backgroundDayNight = "night";
             bridgeDataService.getBridgeSettings().local.backgroundClass = "night";
            
         }
-        if($scope.hh>=8 && $scope.hh <= 17){
+        if ($scope.hh >= 8 && $scope.hh <= 17 ){
             bridgeDataService.getBridgeSettings().local.backgroundDayNight = "day";
             
         }
 
         //get location coords via geolocation
-        $scope.get_location = function() {
+        $scope.get_location = function()
+        {
           //check if geolocation is supported
-          if (Modernizr.geolocation) {
-            navigator.geolocation.getCurrentPosition($scope.get_weather);
-            $scope.support = true;
-          } else {
-          	$scope.support = false;
+          $scope.support = false;
+          if (Modernizr.geolocation) 
+          {
+            navigator.geolocation.getCurrentPosition($scope.get_weather, $scope.location_error);
           }
+        };
+
+        $scope.location_error = function()
+        {
+            $scope.support = false;
         };
 
         //get the json data with specific coords
          $scope.get_weather = function(position) {
           $scope.latitude = position.coords.latitude;
           $scope.longitude = position.coords.longitude;
+          $scope.support = true;
 
           $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
-          $scope.forecastData ='/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat='+$scope.latitude+'&lon='+$scope.longitude+'&cnt=4&mode=json');
+          $scope.forecastData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=4&mode=json');
 
           $http.get($scope.weatherData).success(function (weatherData) {
             //ask for clouds, rain, etc
@@ -77,8 +86,7 @@ angular.module('app.weather').directive('app.weather', function () {
             } 
             if (weatherData.clouds.all >= 41){
             	bridgeDataService.getBridgeSettings().local.backgroundClass = "bigClouds";
-            } 
-            console.log($scope.clouds);
+            }             
 
             //city
             $scope.city = weatherData.name; 
@@ -104,9 +112,7 @@ angular.module('app.weather').directive('app.weather', function () {
 
             function maximalPossibleEntries(list, maxItems) {
                 return list.length > maxItems ? maxItems : list.length;
-            };
-
-          
+            }        
 
             for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++){
                 $scope.forecastDays[i] = {
@@ -114,12 +120,9 @@ angular.module('app.weather').directive('app.weather', function () {
                     temperatureMax: forecastData.list[i].temp.max.toFixed(0) - 273,
                     weatherDes: forecastData.list[i].weather[0].description,
                     weatherIco: forecastData.list[i].weather[0].icon   
-                };
-
-                console.log($scope.forecastDays[i].weatherIco);
-
+                };            
                
-            };
+            }
           });
 
         
