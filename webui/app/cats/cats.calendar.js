@@ -450,6 +450,7 @@ angular.module("app.cats")
 	            selectionCompleted: "&selectioncompleted",
 	            dayClassInput: '@dayClass',
                 maintainable: '=',
+                loading: '='
 	        }
 	    };
 	}]);
