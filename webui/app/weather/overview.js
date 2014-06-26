@@ -10,6 +10,12 @@ angular.module('app.weather').directive('app.weather', function () {
             var date = new Date();
             return calUtils.getWeekdays()[(date.getDay() - 1 + days) % 7].medium;
         };
+
+        //set stuff locally
+        if(!bridgeDataService.getBridgeSettings().local)
+        {
+            bridgeDataService.getBridgeSettings().local = {};
+        }
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -26,12 +32,12 @@ angular.module('app.weather').directive('app.weather', function () {
         }
         
         if($scope.hh >= 18 || $scope.hh <=7){
-            bridgeDataService.getBridgeSettings().backgroundDayNight = "night";
-            bridgeDataService.getBridgeSettings().backgroundClass = "night";
+            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "night";
+            bridgeDataService.getBridgeSettings().local.backgroundClass = "night";
            
         }
         if($scope.hh>=8 && $scope.hh <= 17){
-            bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
+            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "day";
             
         }
 
@@ -67,10 +73,10 @@ angular.module('app.weather').directive('app.weather', function () {
             $scope.clouds = weatherData.clouds.all;
           
             if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
-            	bridgeDataService.getBridgeSettings().backgroundClass = "smallClouds";
+            	bridgeDataService.getBridgeSettings().local.backgroundClass = "smallClouds";
             } 
             if (weatherData.clouds.all >= 41){
-            	bridgeDataService.getBridgeSettings().backgroundClass = "bigClouds";
+            	bridgeDataService.getBridgeSettings().local.backgroundClass = "bigClouds";
             } 
             console.log($scope.clouds);
 
@@ -85,7 +91,7 @@ angular.module('app.weather').directive('app.weather', function () {
             {            
                 $scope.rain = weatherData.rain['3h'];
                 if (weatherData.rain['3h'] > 0){
-                	bridgeDataService.getBridgeSettings().backgroundClass = "rain";
+                	bridgeDataService.getBridgeSettings().local.backgroundClass = "rain";
                 }            
             }
             
