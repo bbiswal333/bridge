@@ -115,34 +115,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return null;
     }
 
-    function getVisibleLength() {
-        var visibleLength = 0;
-        for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ($scope.blockdata[i].value) {
-                visibleLength++;
-            } else {
-                continue;
-            };
-        };
-        return visibleLength;
-    };
-
     function adjustBarValues() {
         // only adjust if all space is taken
-        var total = 0;
+        var totalOfAdjustableTasks = 0;
+        var spaceWhichIsAdjustable = $scope.totalWorkingTime;
+        var adjustableLength = 0;
+
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            // do not adjust when a fixed block, e.g. vacation is found!
-            if($scope.blockdata[i].fixed) {
-                return;
+            if ($scope.blockdata[i].value) {
+                if ($scope.blockdata[i].fixed) {
+                    spaceWhichIsAdjustable = spaceWhichIsAdjustable - $scope.blockdata[i].value;
+                } else {
+                    totalOfAdjustableTasks = totalOfAdjustableTasks + $scope.blockdata[i].value;
+                    adjustableLength++;
+                }
             }
-            total = $scope.blockdata[i].value + total;
         }
-        if (total != $scope.totalWorkingTime) {
+        if (totalOfAdjustableTasks != spaceWhichIsAdjustable) {
             return;
         }
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ($scope.blockdata[i].value) {
-                $scope.blockdata[i].value = Math.round($scope.totalWorkingTime * (Math.floor(1000 / (getVisibleLength() + 1)) / 1000) * 1000) / 1000;
+            if ($scope.blockdata[i].value && !$scope.blockdata[i].fixed) {
+                $scope.blockdata[i].value = Math.round(spaceWhichIsAdjustable * (Math.floor(1000 / (adjustableLength + 1)) / 1000) * 1000) / 1000;
             }
         }
     }
@@ -302,7 +296,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
-            if (booking.TASKTYPE === 'VACA'){
+            if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
                 continue;
             }
             

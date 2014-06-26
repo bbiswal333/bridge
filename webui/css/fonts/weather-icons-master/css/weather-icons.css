@@ -43,7 +43,7 @@
 .wi-day-cloudy-windy:before {
   content: "\f001";
 }
-.wi-day-cloudy:before {
+.wi-day-cloudy:before, .02d:before, .02n:before, .03d:before {
   content: "\f002";
 }
 .wi-day-fog:before {
@@ -73,10 +73,10 @@
 .wi-day-sprinkle:before {
   content: "\f00b";
 }
-.wi-day-sunny-overcast:before {
+.wi-day-sunny-overcast:before, .01d:before {
   content: "\f00c";
 }
-.wi-day-sunny:before {
+.wi-day-sunny:before, .03d {
   content: "\f00d";
 }
 .wi-day-storm-showers:before {

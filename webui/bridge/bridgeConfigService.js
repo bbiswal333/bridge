@@ -38,6 +38,7 @@
         }
 
         configPayload.bridgeSettings = dataService.getBridgeSettings();
+        delete configPayload.bridgeSettings.local;
 
         $http({
             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),

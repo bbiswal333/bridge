@@ -20,21 +20,29 @@
 	</div>
 	<div class="weather-row">
 		<div class="weather-box-small">
+			<i class="wi 03d"></i>
+			<br>
 			{{getCurrentDate(1)}}
 			<br>
 			{{forecastDays[0].temperatureMin}}°<b>{{forecastDays[0].temperatureMax}}°</b>
 		</div>
 		<div class="weather-box-small">
+			<i class="{{forecastDays[0].weatherIco}}"></i>
+			<br>
 			{{getCurrentDate(2)}}
 			<br>
 			{{forecastDays[1].temperatureMin}}°<b>{{forecastDays[1].temperatureMax}}°</b>
 		</div>
 		<div class="weather-box-small">
+			<i class="{{forecastDays[0].weatherIco}}"></i>
+			<br>
 			{{getCurrentDate(3)}}
 			<br>
 			{{forecastDays[2].temperatureMin}}°<b>{{forecastDays[2].temperatureMax}}°</b>
 		</div>
 		<div class="weather-box-small">
+			<i class="{{forecastDays[0].weatherIco}}"></i>
+			<br>
 			{{getCurrentDate(4)}}
 			<br>
 			{{forecastDays[3].temperatureMin}}°<b>{{forecastDays[3].temperatureMax}}°</b>

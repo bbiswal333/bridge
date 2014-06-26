@@ -42,7 +42,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
     <link href="css/fonts/bridge-icons.css" rel="stylesheet" />  
     <link href="css/fonts/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" /> 
-    <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.min.css">   
+     
+    <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">  
 
     <!-- external packed libs -->
     <script src="lib/linq-2_2_0_2/linq.min.js"></script>
@@ -63,8 +64,8 @@
 
 <body class="noselect" style="overflow:auto">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: bridgeSettings.backgroundDayNight}[(bridgeSettings.backgroundDayNight == undefined)]" ng-cloak>
-        <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.backgroundClass}[(bridgeSettings.backgroundClass == undefined)]">
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: bridgeSettings.local.backgroundDayNight}[(bridgeSettings.local.backgroundDayNight == undefined)]" ng-cloak>
+        <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.local.backgroundClass}[(bridgeSettings.local.backgroundClass == undefined)]">
           
                         <div>
                             <div ng-if="!showLoadingBar" class="TitleBar"></div>

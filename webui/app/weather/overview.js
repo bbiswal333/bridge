@@ -10,6 +10,12 @@ angular.module('app.weather').directive('app.weather', function () {
             var date = new Date();
             return calUtils.getWeekdays()[(date.getDay() - 1 + days) % 7].medium;
         };
+
+        //set stuff locally
+        if(!bridgeDataService.getBridgeSettings().local)
+        {
+            bridgeDataService.getBridgeSettings().local = {};
+        }
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -26,12 +32,12 @@ angular.module('app.weather').directive('app.weather', function () {
         }
         
         if($scope.hh >= 18 || $scope.hh <=7){
-            bridgeDataService.getBridgeSettings().backgroundDayNight = "night";
-            bridgeDataService.getBridgeSettings().backgroundClass = "night";
+            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "night";
+            bridgeDataService.getBridgeSettings().local.backgroundClass = "night";
            
         }
         if($scope.hh>=8 && $scope.hh <= 17){
-            bridgeDataService.getBridgeSettings().backgroundDayNight = "day";
+            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "day";
             
         }
 
@@ -65,14 +71,14 @@ angular.module('app.weather').directive('app.weather', function () {
 
             //clouds
             $scope.clouds = weatherData.clouds.all;
-            
+          
             if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
-            	bridgeDataService.getBridgeSettings().backgroundClass = "smallClouds";
+            	bridgeDataService.getBridgeSettings().local.backgroundClass = "smallClouds";
             } 
             if (weatherData.clouds.all >= 41){
-            	bridgeDataService.getBridgeSettings().backgroundClass = "bigClouds";
+            	bridgeDataService.getBridgeSettings().local.backgroundClass = "bigClouds";
             } 
-            //console.log($scope.clouds);
+            console.log($scope.clouds);
 
             //city
             $scope.city = weatherData.name; 
@@ -85,7 +91,7 @@ angular.module('app.weather').directive('app.weather', function () {
             {            
                 $scope.rain = weatherData.rain['3h'];
                 if (weatherData.rain['3h'] > 0){
-                	bridgeDataService.getBridgeSettings().backgroundClass = "rain";
+                	bridgeDataService.getBridgeSettings().local.backgroundClass = "rain";
                 }            
             }
             
@@ -100,40 +106,20 @@ angular.module('app.weather').directive('app.weather', function () {
                 return list.length > maxItems ? maxItems : list.length;
             };
 
-            for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 4); i++){
+          
+
+            for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++){
                 $scope.forecastDays[i] = {
                     temperatureMin: forecastData.list[i].temp.min.toFixed(0) - 273,
                     temperatureMax: forecastData.list[i].temp.max.toFixed(0) - 273,
                     weatherDes: forecastData.list[i].weather[0].description,
-                    weatherIco: forecastData.list[i].weather[0].icon
-                    
+                    weatherIco: forecastData.list[i].weather[0].icon   
                 };
 
+                console.log($scope.forecastDays[i].weatherIco);
+
+               
             };
-/*
-            $scope.forecast_temperature_1_min = forecastData.list[0].temp.min.toFixed(0) - 273;
-            $scope.forecast_temperature_1_max = forecastData.list[0].temp.max.toFixed(0) - 273;
-            $scope.forecast_temperature_1_des = forecastData.list[0].weather[0].description;
-            $scope.forecast_temperature_1_ico = forecastData.list[0].weather[0].icon;
-            //console.log($scope.forecast_temperature_1);
-
-            $scope.forecast_temperature_2_min = forecastData.list[1].temp.min.toFixed(0) - 273;
-            $scope.forecast_temperature_2_max = forecastData.list[1].temp.max.toFixed(0) - 273;
-            $scope.forecast_temperature_2_des = forecastData.list[1].weather[0].description;
-            $scope.forecast_temperature_2_ico = forecastData.list[1].weather[0].icon;
-            //console.log($scope.forecast_temperature_2);
-
-            $scope.forecast_temperature_3_min = forecastData.list[2].temp.min.toFixed(0) - 273;
-            $scope.forecast_temperature_3_max = forecastData.list[2].temp.max.toFixed(0) - 273;
-            $scope.forecast_temperature_3_des = forecastData.list[2].weather[0].description;
-            $scope.forecast_temperature_3_ico = forecastData.list[2].weather[0].icon;
-            //console.log($scope.forecast_temperature_3);
-
-            $scope.forecast_temperature_4_min = forecastData.list[3].temp.min.toFixed(0) - 273;
-            $scope.forecast_temperature_4_max = forecastData.list[3].temp.max.toFixed(0) - 273;
-            $scope.forecast_temperature_4_des = forecastData.list[3].weather[0].description;
-            $scope.forecast_temperature_4_ico = forecastData.list[3].weather[0].icon;
-            //console.log($scope.forecast_temperature_4);*/
           });
 
         
