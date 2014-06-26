@@ -5,6 +5,8 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         $scope.messages = [];
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};  
+        $scope.zoomIndex = -1;
+        $scope.zoomImg = null;
 
 
         function update_table()
@@ -93,6 +95,13 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             }
         },true);  
 
+        $scope.zoom = function(index, event){
+            console.log(index);
+            $scope.zoomIndex = index;
+            if (event) {
+                $scope.zoomImg = event.currentTarget;
+            };
+        }
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 

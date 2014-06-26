@@ -52,7 +52,14 @@
 	            	<div class="cellText col-sm-2">{{row.THEMKEXT}}</div>
 	            	<div class="cellText col-sm-2">{{row.STATUSSTXT}}</div>
 	            	<div class="cellText col-sm-3">
-		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.SUSID}}?s=20x20" style="height:100%;border-radius:100%;margin-right:20px"></img>
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.SUSID}}?s=60x60" 
+		            		 style = "height:80%; border-radius:100%; margin-right:20px; vertical-align:middle; pointer-events:all" 
+		            		 ng-mouseenter="zoom($index, $event)"></img>
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.SUSID}}?s=100x100" 
+		            		 style="height:100px;border-radius:100%;margin-right:20px; position:fixed; pointer-events:all; z-index:99;" 
+		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2}"
+		            		 ng-show="zoomIndex === $index"
+		            		 ng-mouseleave="zoom(-1)"></img>
 			            <a target="_blank" href="{{row.url}}">{{row.username}}</a>
 			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
 			            <a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
