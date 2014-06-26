@@ -24,26 +24,26 @@
         }]);
     });
 
-    it("should increased the ticket counter according to the backend data", function () { 
+    it("should increase the ticket counter according to the backend data", function () { 
         imTicketData.loadTicketData();
         $httpBackend.flush();
-        expect(imTicketData.prios[0].amount).toBe(0);
-        expect(imTicketData.prios[1].amount).toBe(0);
-        expect(imTicketData.prios[2].amount).toBe(0);
-        expect(imTicketData.prios[3].amount).toBe(1); 
+        expect(imTicketData.prios[0].total).toBe(0);
+        expect(imTicketData.prios[1].total).toBe(1);
+        expect(imTicketData.prios[2].total).toBe(11);
+        expect(imTicketData.prios[3].total).toBe(2);
     });
 
     it("should reset the priorities in the data structure", function () {
         imTicketData.loadTicketData();
         $httpBackend.flush();
-        expect(imTicketData.prios[3].amount).toBe(1);
+        expect(imTicketData.prios[3].total).toBe(2);
 
-        imTicketData.resetPrios();
+        imTicketData.resetData();
 
-        expect(imTicketData.prios[0].amount).toBe(0);
-        expect(imTicketData.prios[1].amount).toBe(0);
-        expect(imTicketData.prios[2].amount).toBe(0);
-        expect(imTicketData.prios[3].amount).toBe(0);
+        expect(imTicketData.prios[0].total).toBe(0);
+        expect(imTicketData.prios[1].total).toBe(0);
+        expect(imTicketData.prios[2].total).toBe(0);
+        expect(imTicketData.prios[3].total).toBe(0);
     });
 
     it("should set the initialized flag and get the data from the backend", function () {
