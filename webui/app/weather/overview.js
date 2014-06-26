@@ -60,6 +60,9 @@ angular.module('app.weather').directive('app.weather', function () {
             $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
             //console.log($scope.temperature);
 
+            //description
+            $scope.des = weatherData.weather[0].description;
+
             //clouds
             $scope.clouds = weatherData.clouds.all;
             
@@ -91,17 +94,46 @@ angular.module('app.weather').directive('app.weather', function () {
    
         $http.get($scope.forecastData).success(function (forecastData) {
             //next days
-            $scope.forecast_temperature_1 = forecastData.list[0].temp.day.toFixed(0) - 273;
+            $scope.forecastDays = [];
+
+            function maximalPossibleEntries(list, maxItems) {
+                return list.length > maxItems ? maxItems : list.length;
+            };
+
+            for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 4); i++){
+                $scope.forecastDays[i] = {
+                    temperatureMin: forecastData.list[i].temp.min.toFixed(0) - 273,
+                    temperatureMax: forecastData.list[i].temp.max.toFixed(0) - 273,
+                    weatherDes: forecastData.list[i].weather[0].description,
+                    weatherIco: forecastData.list[i].weather[0].icon
+                    
+                };
+
+            };
+/*
+            $scope.forecast_temperature_1_min = forecastData.list[0].temp.min.toFixed(0) - 273;
+            $scope.forecast_temperature_1_max = forecastData.list[0].temp.max.toFixed(0) - 273;
+            $scope.forecast_temperature_1_des = forecastData.list[0].weather[0].description;
+            $scope.forecast_temperature_1_ico = forecastData.list[0].weather[0].icon;
             //console.log($scope.forecast_temperature_1);
 
-            $scope.forecast_temperature_2 = forecastData.list[1].temp.day.toFixed(0) - 273;
+            $scope.forecast_temperature_2_min = forecastData.list[1].temp.min.toFixed(0) - 273;
+            $scope.forecast_temperature_2_max = forecastData.list[1].temp.max.toFixed(0) - 273;
+            $scope.forecast_temperature_2_des = forecastData.list[1].weather[0].description;
+            $scope.forecast_temperature_2_ico = forecastData.list[1].weather[0].icon;
             //console.log($scope.forecast_temperature_2);
 
-            $scope.forecast_temperature_3 = forecastData.list[2].temp.day.toFixed(0) - 273;
+            $scope.forecast_temperature_3_min = forecastData.list[2].temp.min.toFixed(0) - 273;
+            $scope.forecast_temperature_3_max = forecastData.list[2].temp.max.toFixed(0) - 273;
+            $scope.forecast_temperature_3_des = forecastData.list[2].weather[0].description;
+            $scope.forecast_temperature_3_ico = forecastData.list[2].weather[0].icon;
             //console.log($scope.forecast_temperature_3);
 
-            $scope.forecast_temperature_4 = forecastData.list[3].temp.day.toFixed(0) - 273;
-            //console.log($scope.forecast_temperature_4);
+            $scope.forecast_temperature_4_min = forecastData.list[3].temp.min.toFixed(0) - 273;
+            $scope.forecast_temperature_4_max = forecastData.list[3].temp.max.toFixed(0) - 273;
+            $scope.forecast_temperature_4_des = forecastData.list[3].weather[0].description;
+            $scope.forecast_temperature_4_ico = forecastData.list[3].weather[0].icon;
+            //console.log($scope.forecast_temperature_4);*/
           });
 
         
