@@ -302,7 +302,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
-            if (booking.TASKTYPE === 'VACA'){
+            if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
                 continue;
             }
             
