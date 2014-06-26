@@ -49,16 +49,21 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 
 
         function enhanceMessage(message) {
-            $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + location.origin).then(function (response) {
-                message.employee = response.data.DATA;
-                message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                message.url = 'https://people.wdf.sap.corp/profiles/' + message.SUSID;
-                message.ticket_url = 'https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta=' + message.CSINSTA + '&mnumm=' + message.MNUMM + '&myear=' + message.MYEAR + '&sap-language=en#';
-                message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
-                message.mail = message.employee.SMTP_MAIL;
-                message.tel = message.employee.TELNR;
-                //$scope.messages.push(message);
-            });
+            if(message.SUSID !== "")
+            {
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + location.origin).then(function (response) {
+                    message.employee = response.data.DATA;
+                    if(message.employee.BNAME !== "")
+                    {
+                        message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
+                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.SUSID;
+                        message.ticket_url = 'https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta=' + message.CSINSTA + '&mnumm=' + message.MNUMM + '&myear=' + message.MYEAR + '&sap-language=en#';
+                        message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
+                        message.mail = message.employee.SMTP_MAIL;
+                        message.tel = message.employee.TELNR;
+                    }
+                });
+            }
         }
 
         function enhanceAllMessages() 
