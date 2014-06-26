@@ -5,7 +5,8 @@
 		"title"					:	"Meetings",
 		"icon_css"				:	"fa fa-users",
 		"overview_directive"	:	"app.meetings",
-		"needs_client"			:	true
+		"needs_client"			:	true,
+		"default_hidden"		: 	true	
 	},
 	"modules" : [],
 	"js_files" : ["ews.js", "overview.js"],

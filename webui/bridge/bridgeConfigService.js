@@ -72,14 +72,16 @@
         {
             apps[i] = {};
             apps[i].metadata = {};
-            apps[i].metadata.id = i;
-            if (bridgeLoaderServiceProvider.apps[i].module_name == 'app.meetings' ||
-                bridgeLoaderServiceProvider.apps[i].module_name == 'app.imtps') {
+            apps[i].metadata.id = i;            
+            if(bridgeLoaderServiceProvider.apps[i].default_hidden)
+            {
                 apps[i].metadata.show = false;
-            } else {
-                apps[i].metadata.show = true;
-                apps[i].metadata['module_name'] = bridgeLoaderServiceProvider.apps[i]['module_name'];
             }
+            else
+            {
+                apps[i].metadata.module_name = bridgeLoaderServiceProvider.apps[i].module_name;
+                apps[i].metadata.show = true;                
+            }        
         }
 
         return {
