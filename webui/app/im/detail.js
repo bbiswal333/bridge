@@ -96,7 +96,6 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
         },true);  
 
         $scope.zoom = function(index, event){
-            console.log(index);
             $scope.zoomIndex = index;
             if (event) {
                 $scope.zoomImg = event.currentTarget;
