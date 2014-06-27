@@ -23,20 +23,20 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
 }]);
 
 
-// angular.module('bridge.app').directive("infinitescroll", ['$window', function($window){
-//     return function(scope, elm, attr) {
-//         var container = angular.element( document.querySelector( '#scrollContainer' ));
-//         var cont = container[0];
+angular.module('bridge.app').directive("infinitescroll", ['$window', function($window){
+    return function(scope, elm, attr) {
+        var container = angular.element( document.querySelector( '#scrollContainer' ));
+        var cont = container[0];
 
-//         container.bind("scroll", function() {
-//             var containerBottom = cont.scrollTop + cont.offsetHeight;
-//             var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
+        container.bind("scroll", function() {
+            var containerBottom = cont.scrollTop + cont.offsetHeight;
+            var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
 
-//             if (containerBottom >= elementBottom) {
-//                 scope.$apply(scope.increaseInfinityLimit());
-//             } else if (cont.scrollTop === 0){
-//                 //should we reset limit to the initial size?
-//             }
-//         });    
-//     }
-// }])
+            if (containerBottom >= elementBottom) {
+                scope.$apply(scope.increaseInfinityLimit());
+            } else if (cont.scrollTop === 0){
+                //should we reset limit to the initial size?
+            }
+        });    
+    }
+}])
