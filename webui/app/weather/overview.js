@@ -155,6 +155,11 @@ angular.module('app.weather').directive('app.weather', function () {
             //clouds
             //$scope.clouds = weatherData.clouds.all;
 
+                    //set stuff locally
+            if(!bridgeDataService.getBridgeSettings().local)
+            {
+                bridgeDataService.getBridgeSettings().local = {};
+            }
             bridgeDataService.getBridgeSettings().local.backgroundClass = $scope.checkWeatherConditionClouds(weatherData.clouds.all);
             
             //console.log(weatherData.clouds);

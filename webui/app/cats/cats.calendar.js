@@ -210,7 +210,7 @@ angular.module("app.cats")
 				var promises = [];
 
 				daysArray.forEach(function(calDay){
-					promises.push($scope.selectSingleDay(calDay.dayString);
+					promises.push($scope.selectSingleDay(calDay.dayString));
 				});
 
 				// var toSelect = getUnselectedDays(daysArray);
