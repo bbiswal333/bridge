@@ -793,3 +793,7 @@ input[type="checkbox"]:checked:after {
     cursor: pointer;
 
 }
+.wi {
+    font-size: 1.6rem;
+    padding-left: 2px;
+}
