@@ -24,7 +24,7 @@ angular.module("app.cats")
 			$scope.weekdays = calUtils.getWeekdays();
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
-			
+
 			var selectedDates = $scope.selectedDates;
 			var data = catsUtils.getCatsComplianceData(handleCatsData);
 
@@ -59,11 +59,12 @@ angular.module("app.cats")
 				var promises = [];
 
 				if (single_click) {
-					promises = $scope.selectSingleDay(dayString);
-					$scope.day = [monthlyDataService.days[dayString]];
+					promises = $scope.selectSingleDay(dayString, true);
+					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
 					$location.path("/detail/cats/");
 				} else if (multi_click) {
-					promises = selectRange([monthlyDataService.days[dayString]],dayString);
+					promises = $scope.selectSingleDay(dayString);
+					// promises = selectRange([monthlyDataService.days[dayString]],dayString);
 				} else if (range_click) {
 					promises = selectRange(collectRange(dayString),dayString);
 				}
@@ -74,12 +75,14 @@ angular.module("app.cats")
 				});
 			};
 
-			$scope.selectSingleDay = function (dayString) {
+			$scope.selectSingleDay = function (dayString, unselectOthers) {
 				var promises = [];
 				for(var i = 0; i < $scope.calArray.length; i++) {
 					for(var j = 0; j < $scope.calArray[i].length; j++) {
-						promise = unSelectDay($scope.calArray[i][j]);
-						promises.push(promise);
+						if (unselectOthers) {
+							promise = unSelectDay($scope.calArray[i][j]);
+							promises.push(promise);
+						};
 						if(dayString && $scope.calArray[i][j].dayString == dayString) {
 							promise = selectDay($scope.calArray[i][j],true);
 							promises.push(promise);
@@ -125,17 +128,13 @@ angular.module("app.cats")
 					return false;
 			};
 
-			function getSelectionBaseDate(dayString) {
-				var date = calUtils.parseDate($scope.selectedDates[0]);
-				if((!date || date == false) && dayString) {
-					date = calUtils.parseDate(dayString);
-				}
-				return date;
-			}
-
 			function collectRange(dayString) {
+
+				if (!monthlyDataService.lastSingleClickDay) {
+					return;
+				}
 				var range = [];
-				var lastDate = getSelectionBaseDate(dayString);
+				var lastDate = calUtils.parseDate(monthlyDataService.lastSingleClickDay.dayString);
 				var selectedDate = calUtils.parseDate(dayString);
 
 				function collectDates(a, b){
@@ -185,7 +184,17 @@ angular.module("app.cats")
 			}
 
 			function selectRange(daysArray,clickedOnDayString){
+				if (!daysArray || !clickedOnDayString) {
+					return;
+				}
 				var promises = [];
+
+				for(var i = 0; i < $scope.calArray.length; i++) {
+					for(var j = 0; j < $scope.calArray[i].length; j++) {
+						promise = unSelectDay($scope.calArray[i][j]);
+						promises.push(promise);
+					}
+				}
 
 				selectedDates = selectedDates;
 				var toSelect = getUnselectedDays(daysArray);
@@ -359,6 +368,7 @@ angular.module("app.cats")
 					$scope.loading = false;
 					$scope.selectionCompleted();
 				});
+				return promise;
 			}
 
 			var refreshInterval = null;
@@ -396,6 +406,17 @@ angular.module("app.cats")
 					return 'OVERBOOKED_TODAY';
 				else
 					return calDay.data.state;
+			}
+
+			if (monthlyDataService.lastSingleClickDay) {
+				reload().then( function() {
+					var promises = [];
+					promises = $scope.selectSingleDay(monthlyDataService.lastSingleClickDay.dayString, true);
+					var promise = $q.all(promises);
+					promise.then(function(){
+						$scope.selectionCompleted();
+					});
+				})
 			}
 	    };
 
@@ -437,21 +458,18 @@ angular.module("app.cats")
 	        }
 	    }
 
-
 	    return {
 	        restrict: "E",
 	        templateUrl: "app/cats/cats.calendar.html",
 	        replace: true,
 	        link: linkFn,
 	        scope: {
-	            selectedDay: '=selectedDay',
 	            selectedDates: '=selectedDates',
 	            onDateSelected: "&ondateselected",
 	            onDateDeselected: "&ondatedeselected",
 	            selectionCompleted: "&selectioncompleted",
 	            dayClassInput: '@dayClass',
-                maintainable: '=',
-                loading: '='
+                maintainable: '='
 	        }
 	    };
 	}]);
