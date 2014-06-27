@@ -2,9 +2,16 @@ angular.module('app.jira').appJiraSettings = ['$scope', 'app.jira.configservice'
 	$scope.data = {};
     $scope.data.query = JiraConfig.query;
 
-     $scope.save_click = function () {  
+    $scope.save_click = function () {  
         JiraConfig.query = $scope.data.query;        
         $scope.$emit('closeSettingsScreen');
     };
-    
+
+    $scope.applyAssignedToMeTemplate = function() {
+    	$scope.data.query = "assignee = currentUser()";
+    };
+
+    $scope.applyIssuesOfProjectTemplate = function() {
+    	$scope.data.query = "project = '...' AND status = Open ORDER BY priority DESC";
+    };
 }];

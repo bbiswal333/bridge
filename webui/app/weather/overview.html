@@ -1,17 +1,3 @@
-
-﻿<!--To Do's
-	-add some error-handling
-		what if the user is not allowing geolocation
-
-	Optional
-	-add settingsscreen 
-		-option of typing the city and add it to the overview-box (max 3)
-		-farenheit - celsius option
-		-maybe choose how many days forecast you want to have
- -->
-
-
-
 <div ng-if="support" class="weather-container">
 	<div class="weather-box-large">
 		<div><a target="_blank" href="http://openweathermap.org/city/{{city_id}}">{{city}}</a></div>
@@ -50,5 +36,5 @@
 	</div>
 </div>
 <div ng-if="!support">
-	your browser isn't supporting geolocation.
+	Geolocation information missing.
 </div>
