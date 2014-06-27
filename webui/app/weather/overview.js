@@ -103,6 +103,9 @@ angular.module('app.weather').directive('app.weather', function () {
             if($scope.checkWeatherConditionClouds(clouds) == null && $scope.checkWeatherConditionRain(rain) == null){
                 return 'wi wi-day-sunny'
             };
+            if($scope.checkWeatherConditionClouds(clouds) == "sun" && $scope.checkWeatherConditionRain(rain) == null){
+                return 'wi wi-day-sunny'
+            };
             if($scope.checkWeatherConditionClouds(clouds) == "smallClouds" && $scope.checkWeatherConditionRain(rain) == null){
                 return 'wi wi-day-cloudy'
             };
@@ -120,6 +123,9 @@ angular.module('app.weather').directive('app.weather', function () {
             if($scope.checkWeatherConditionClouds(clouds) == null && $scope.checkWeatherConditionRain(rain) == null){
                 return 'sunny'
             };
+            if($scope.checkWeatherConditionClouds(clouds) == "sun" && $scope.checkWeatherConditionRain(rain) == null){
+                return 'sunny'
+            };
             if($scope.checkWeatherConditionClouds(clouds) == "smallClouds" && $scope.checkWeatherConditionRain(rain) == null){
                 return 'sunny with clouds'
             };
@@ -133,9 +139,14 @@ angular.module('app.weather').directive('app.weather', function () {
            }
 
           $http.get($scope.weatherData).success(function (weatherData) {
-            //ask for clouds, rain, etc
-            //temperature in celsius
-            $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
+            
+            $scope.fahrenheit = false;
+            if($scope.fahrenheit){
+                $scope.temperature = weatherData.main.temp.toFixed(0);
+            }
+            if(!$scope.fahrenheit){
+                $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
+            }
             //console.log($scope.temperature);
 
             
@@ -181,9 +192,11 @@ angular.module('app.weather').directive('app.weather', function () {
                 	bridgeDataService.getBridgeSettings().local.backgroundClass = "rain";
                 }            
             }*/
-            console.log($scope.checkWeatherConditionRain());
-            console.log($scope.checkWeatherConditionClouds());
+            
+            console.log(weatherData.clouds.all);
             $scope.des = $scope.checkConditionForDes(weatherData.rain,weatherData.clouds.all);
+            
+             
 
           });
    
