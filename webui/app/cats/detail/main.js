@@ -278,7 +278,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         if (clearOldTasks) {
             monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY == 0) { 
+                if (task.QUANTITY == 0 ||
+                    task.TASKTYPE == "VACA" ||
+                    task.TASKTYPE == "ABSE") { 
                     return ;
                 }
                 var taskDeletion = angular.copy(task);

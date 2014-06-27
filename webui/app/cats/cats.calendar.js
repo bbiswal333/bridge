@@ -196,7 +196,6 @@ angular.module("app.cats")
 					}
 				}
 
-				selectedDates = selectedDates;
 				var toSelect = getUnselectedDays(daysArray);
 				if (toSelect && toSelect.length > 0) {
 					toSelect.forEach(function(calDay){
@@ -226,7 +225,7 @@ angular.module("app.cats")
 				return promises;
 			}
 
-			function selectDay(calDay, selectAnyways) {
+			function selectDay(calDay) {
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(calDay.dayString).then(function(){
