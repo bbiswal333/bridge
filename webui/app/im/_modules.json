@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.im",
-		"title"					:	"Internal Msg",
+		"title"					:	"Internal MsgX",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.im",
 		"needs_client"			:	false,
