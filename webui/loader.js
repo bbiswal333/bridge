@@ -38,8 +38,9 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
           if( loaded_script < number_of_files )
           {
             return;
-          }            
-          angular.bootstrap(document, ['bridge.app']); 
+          }
+
+          angular.bootstrap(document, ['bridge.app']);
         }
 
         function load_scripts(array,callback)
@@ -47,15 +48,18 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
           var loader = function(src,handler){  
               var script = document.createElement("script");  
               script.src = src;  
-              script.onload = script.onreadystatechange = function(){  
-                    script.onreadystatechange = script.onload = null;
-                    // in IE 10 we need a delayed loading of the next resource, otherwise the execution order is messed up and we get angular injector errors ('module not found...')
-                    if (/MSIE ([0-9]+\.\d+);/.test(navigator.userAgent)) {
-                        window.setTimeout(function () { handler(); }, 8, this);
-                    }
-                    else {
-                        handler();
-                    }
+              script.onload = script.onreadystatechange = function () {
+                  // in IE, ready State must be "loaded", in Chrome ready state is undefined and we do not have to take care of it
+                  if (script.readyState == undefined || script.readyState == 'loaded') {
+                      script.onreadystatechange = script.onload = null;
+                      // in IE 10 we need a delayed loading of the next resource, otherwise the execution order is messed up and we get angular injector errors ('module not found...')
+                      if (/MSIE ([0-9]+\.\d+);/.test(navigator.userAgent)) {
+                          window.setTimeout(function () { handler(); }, 8, this);
+                      }
+                      else {
+                          handler();
+                      }
+                  }
               }  
               var head = document.getElementsByTagName("head")[0];  
               (head || document.body).appendChild( script );  
