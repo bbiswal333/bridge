@@ -43,20 +43,20 @@ angular.module('loader').factory('loadservice',["$http", "$location", function (
           angular.bootstrap(document, ['bridge.app']);
         }
 
-        function uncachifyUrl(Url) {
+        /*function uncachifyUrl(Url) {
           var resultUrl = Url + "?" + new Date().toISOString();
           if(Url.indexOf("?") >= 0) {
             resultUrl = Url + "&" + new Date().toISOString();
           }
           return resultUrl;
-        }
+        }*/
 
         function load_scripts(array,callback)
         {  
           var loader = function(src,handler){  
               var script = document.createElement("script");  
 
-              script.src = uncachifyUrl(src);  
+              script.src = src;  
               script.onload = script.onreadystatechange = function () {
                   // in IE, ready State must be "loaded", in Chrome ready state is undefined and we do not have to take care of it
                   if (script.readyState == undefined || script.readyState == 'loaded') {
