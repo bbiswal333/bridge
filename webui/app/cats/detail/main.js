@@ -62,6 +62,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             else
                 addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
         }
+        checkAndCorrectPartTimeInconsistancies(day);
         $scope.loaded = true;
     };
 
@@ -125,12 +126,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if ($scope.blockdata[i].value) {
+                $scope.blockdata[i].value = Math.round($scope.blockdata[i].value * 1000) / 1000;
                 if ($scope.blockdata[i].fixed) {
                     spaceWhichIsAdjustable = spaceWhichIsAdjustable - $scope.blockdata[i].value;
                 } else {
                     totalOfAdjustableTasks = totalOfAdjustableTasks + $scope.blockdata[i].value;
                     adjustableLength++;
                 }
+                totalOfAdjustableTasks = Math.round(totalOfAdjustableTasks * 1000) / 1000;
             }
         }
         if (totalOfAdjustableTasks != spaceWhichIsAdjustable) {
@@ -143,12 +146,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    function checkAndCorrectPartTimeInconsistancies(day) {
+        if (monthlyDataService.days[day.dayString] &&
+            monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay &&
+            monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay ==
+            monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay) {
+
+            // adjust slight deviations in QUANTITY when posting part time
+            var totalBlockValue = 0;
+            var biggestBlock;
+            $scope.blockdata.forEach(function(block){
+                if(!biggestBlock || biggestBlock.value <= block.value) {
+                    biggestBlock = block;
+                }
+                totalBlockValue += block.value;
+            });
+            totalBlockValue = Math.round(totalBlockValue * 1000) / 1000;
+            var blockDif = totalBlockValue - 1;
+            if((blockDif > 0 && blockDif < 0.03) ||
+               (blockDif < 0 && blockDif > -0.03)) {
+                biggestBlock.value -= blockDif;
+            }
+        }
+    }
+
     function addBlock(desc_s, val_i, block, fixed) {
 
-        // Scale data which is read from backend
+        // Scale data which is read from backend BUT only if it is not OVERBOOKED
         if (block.COUNTER && // already in backend
             monthlyDataService.days[block.WORKDATE] &&
-            monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay) {
+            monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
+            monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
 
             val_i = Math.round(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay * 1000) / 1000;
         }
@@ -346,12 +374,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             totalBookingQuantity += booking.QUANTITY;
         });
-
         totalBookingQuantity = Math.round(totalBookingQuantity * 1000) / 1000;
-
         var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
-        if((bookingDif > 0 && bookingDif < 0.02) ||
-           (bookingDif < 0 && bookingDif > -0.02)) {
+        if((bookingDif > 0 && bookingDif < 0.03) ||
+           (bookingDif < 0 && bookingDif > -0.03)) {
             biggestBooking.QUANTITY -= bookingDif;
         }
 

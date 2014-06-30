@@ -9,8 +9,22 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) {
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
+          data.CATSCHK.forEach(function(CATSCHKforDay){
+            // test test test
+            if (CATSCHKforDay.STDAZ && false) {
+              CATSCHKforDay.STDAZ = 7.55;
+              CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+              if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
+                if (CATSCHKforDay.STDAZ != CATSCHKforDay.QUANTITYH) {
+                  CATSCHKforDay.STATUS = "Y";
+                } else {
+                  CATSCHKforDay.STATUS = "G";
+                }
+              }
+            }
+          });
           callback_fn(data.CATSCHK);
         } else {
           callback_fn();
@@ -32,7 +46,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
       
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) {
+      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) { // /zdevdb/GETCATSDATA
         if (!data)
           deferred.reject(status);
         else if (data.TIMESHEETS.WEEK != week + "." + year ){
@@ -44,42 +58,6 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
       return deferred.promise;
     }
-
-    /*var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
-      var res = [];
-
-      var week = calUtils.getWeekNumber(day_o);
-      week.weekNo = calUtils.useNDigits(week.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
-
-      _httpRequest(CATS_ALLOC_WEBSERVICE + week.year + "." + week.weekNo, function(data, status) {
-        if (!data){
-          return;
-        }
-        var records = data.TIMESHEETS.RECORDS;
- 
-        for (var i = 0; i < records.length; i++) {
-          var record = records[i];
-          var task = {};
-          task.tasktype = record.TASKTYPE;
-          task.taskDesc = (record.taskDesc == "") ? task.tasktype : record.DESCR;
-          task.projDesc = (record.projDesc == "") ? task.tasktype : record.ZCPR_EXTID;
-          task.record = record;
-
-          var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
-          record.booking = record.DAYS[dayOfWeek];
-          delete record.DAYS;
-          task.quantity = parseFloat(record.booking.QUANTITY);
-
-          _enrichTaskData(task);
-          //Only add to list when time has been spent on this task
-          if (!isNaN(task.quantity)) {
-            res.push(task);
-          }
-        } 
-
-        callback_fn(res);
-      });
-    };*/
 
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
     function _getTotalWorkingTimeForDay(day_s, callback_fn) {
@@ -98,7 +76,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE, function(data) {
+      _httpRequest(TASKS_WEBSERVICE, function(data) { // /zdevdb/GETWORKLIST
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
@@ -196,6 +174,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       var deferred = $q.defer();
 
       // $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
+      // /zdevdb/WRITECATSDATA
       $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data, status) {
           deferred.resolve(data);
       }).error(function (data, status, header, config) {

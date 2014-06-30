@@ -131,13 +131,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            	if(ISPTaskIterator == 0) { // build the target array in the first place
 		            		var day = {};
 		            		var HoursOfWorkingDay = 8;
+							day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
 		            		// test test test
-		            		if(ISPtask.DAYS[DayIterator].TARGET) {
-			            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-							} else {
-								day.targetHours = 0;
-							}
+		            		//if(day.targetHours && false) {
+			            	//	day.targetHours = 7.55;
+							//} else {
+							//	day.targetHours = 0;
+							//}
 		            		day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
+		            		day.actualTimeInPercentageOfDay = 0; // to be calulated later
 		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
@@ -160,6 +162,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		task.DESCR = ISPtask.DESCR;
 		            		weekData.days[DayIterator].tasks.push( task );
 		            		catsUtils.enrichTaskData(task);
+		            		if (task.UNIT == 'H') {
+		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / HoursOfWorkingDay;
+		            		} else {
+		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY;
+		            		}
+		            		weekData.days[DayIterator].actualTimeInPercentageOfDay = Math.round(weekData.days[DayIterator].actualTimeInPercentageOfDay * 1000) / 1000;
 		            	}
 
 		            	if (day) {
