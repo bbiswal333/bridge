@@ -23,20 +23,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.client = false;     
     });
 
-    function loadCATSDataForDay(day) {
-        if(!day){
-            $scope.loaded = true;
-            return;
-        } else {
-            var currentDay = calUtils.stringifyDate(day);
+    function loadCATSDataForDay(dayString) {
+        if(!dayString && monthlyDataService.lastSingleClickDay){
+            dayString = monthlyDataService.lastSingleClickDay.dayString;
         }
-        if (!currentDay) {
+        else if (!dayString)
+        {
             $scope.loaded = true;
             return;
         }
-        var promise = monthlyDataService.getDataForDate(currentDay);
+
+        var promise = monthlyDataService.getDataForDate(dayString);
         promise.then(function() {
-            displayCATSDataForDay(monthlyDataService.days[currentDay]);
+            displayCATSDataForDay(monthlyDataService.days[dayString]);
         });
     };
 
@@ -89,7 +88,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.blockdata = [];
             $scope.totalWorkingTime = 0;
         } else if($scope.selectedDates.length == 1) { // Single day
-            loadCATSDataForDay(calUtils.parseDate($scope.selectedDates[0]));
+            loadCATSDataForDay($scope.selectedDates[0]);
         } else { // Range selected
             $scope.blockdata = [];
             $scope.totalWorkingTime = 1;
