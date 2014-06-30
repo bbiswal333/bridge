@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.clearCapacity",
+		"title"					:	"Clear Capacity",
+		"icon_css"				:	"fa fa-user",
+		"overview_directive"	:	"app.clearCapacity",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}

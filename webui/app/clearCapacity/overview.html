@@ -1,0 +1,19 @@
+<div>
+	<span><a href="https://ifp.wdf.sap.corp/ccm" target="_blank">Clear Capacity</a></span><br />
+	<span>Planned capacity: {{clearCapacityData.zbsgrd_txt}}</span><br />
+	<div style="display: inline-table; width: 30%">
+		<div ng-repeat="team in clearCapacityData.team_ass">
+			{{team.project_id}} ({{toPercent(team.capacity)}}%)
+		</div>
+	</div>
+	<div style="display: inline-table; width: 30%">
+		<div ng-repeat="activity in clearCapacityData.act_ass">
+			{{activity.activity_cat_txt_level_1}} ({{toPercent(activity.capacity)}}%)
+		</div>
+	</div>
+	<div style="display: inline-table; width: 30%">
+		<div ng-repeat="project in clearCapacityData.proj_ass">
+			{{project.project_id}} ({{toPercent(project.capacity)}}%)
+		</div>
+	</div>
+</div>
