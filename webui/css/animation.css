@@ -164,10 +164,10 @@
     height: 4px;
     margin-left: 0;
     /*background-color: #009DE0;*/
-    background-image: linear-gradient(left, rgba(0,0,0,0) 0%, #fff 50%, rgba(0,0,0,0) 100%);
-    background-image: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, #fff 50%, rgba(0,0,0,0) 100%);
-    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, #fff 50%, rgba(0,0,0,0) 100%);
-    background-image: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, #fff 50%, rgba(0,0,0,0) 100%);
+    background-image: linear-gradient(left, rgba(0,0,0,0) 0%, #428BCA 50%, rgba(0,0,0,0) 100%);
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, #428BCA 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, #428BCA 50%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, #428BCA 50%, rgba(0,0,0,0) 100%);
 
     animation: move 2s infinite linear;
     -webkit-animation: move 2s infinite linear;
