@@ -64,9 +64,11 @@ angular.module("app.cats")
 
 				if (single_click) {
 					//unselectOthers
-					$scope.selectedDates.forEach(function(selectedDayString){
-						promises.push(unSelectDay(selectedDayString));
-					});
+					if ($scope.selectedDates) {
+						$scope.selectedDates.forEach(function(selectedDayString){
+							promises.push(unSelectDay(selectedDayString));
+						});
+					};
 					promises.push(selectDay(dayString));
 
 					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
