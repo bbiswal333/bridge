@@ -1,10 +1,5 @@
 ﻿describe("The bridgeConfig handles loading/saving/displaying of the configuration", function () {
-    var mockTemplatePath = "myMockTemplatePath";
-    var mockController = "myMockController";
-
-    var bridgeConfig;
     var bridgeDataService;
-    var $rootScope;
     var $httpBackend;
     var $q;
 
@@ -13,9 +8,7 @@
         module("bridge.service");
 
         inject(["$rootScope", "$q", "$httpBackend", "$templateCache", "bridgeConfig", "bridgeDataService","bridgeInstance", function (rootScope, q, httpBackend, $templateCache, _bridgeConfig, _bridgeDataService, bridgeInstance) {
-            bridgeConfig = _bridgeConfig;
             bridgeDataService = _bridgeDataService;
-            $rootScope = rootScope;
             $q = q;
 
             $httpBackend = httpBackend;                                  

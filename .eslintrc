@@ -17,13 +17,15 @@
 		"module": true,
 		"inject": true,
 		"it": true,
-		"expect": true
+		"expect": true,
+		"alert": true
     },
     "rules": 
     {        
         "quotes": 0,
         "strict": 0,
         "camelcase": 0,
-		"no-console": 0
+		"no-console": 0,
+		"no-alert": 0
     }
 }

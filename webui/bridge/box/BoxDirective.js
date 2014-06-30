@@ -1,10 +1,10 @@
 ﻿angular.module('bridge.box', ['bridge.service']);
 
-angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataService', 'bridge.service.bridgeDownload', '$http', function ($compile, bridgeDataService, bridgeDownload, $http) {
+angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataService', 'bridge.service.bridgeDownload', function ($compile, bridgeDataService, bridgeDownload) {
 
     function directiveController($scope)
     {        
-        $scope.show_download = bridgeDownloadService.show_download;                    
+        $scope.show_download = bridgeDownload.show_download;                    
     }
 
     function snake_case(name){
@@ -19,7 +19,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
         templateUrl: 'bridge/box/BoxDirective.html',
         directiveController: directiveController,
         scope: true,
-        link: function ($scope, $element, $attrs, $modelCtrl) {
+        link: function ($scope, $element, $attrs) {
             $scope.box = {};
             if ($attrs.id) {
                 //get app metadata and app config

@@ -7,7 +7,7 @@ angular.module('bridge.employeePicture').directive('bridge.employeePicture', fun
         scope: {
             employeeUser: '@',
             width: '=',
-            height: '=',
-        },
+            height: '='
+        }
     };
 });
