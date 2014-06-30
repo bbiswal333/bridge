@@ -10,12 +10,14 @@
         "location": true,
         "Modernizr": true,
         "console": true,
-        "X2JS": true        
+        "X2JS": true,
+		"$": true
     },
     "rules": 
     {        
         "quotes": 0,
         "strict": 0,
-        "camelcase": 0
+        "camelcase": 0,
+		"no-console": 0
     }
 }
