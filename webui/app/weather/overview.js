@@ -5,6 +5,12 @@ angular.module('app.weather').directive('app.weather', function () {
     {
     	$scope.box.boxSize = "1"; 
 
+
+        /*$scope.box.settingScreenData = {
+            templatePath: "weather/settings.html",
+            controller: angular.module('app.weather').appWeatherSettings,
+        }; */
+
         $scope.getCurrentDate = function (days)
         {
             var date = new Date();
