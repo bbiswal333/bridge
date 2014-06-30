@@ -199,6 +199,7 @@ angular.module('bridge.app').controller('bridgeController',
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
+            $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);            
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;   

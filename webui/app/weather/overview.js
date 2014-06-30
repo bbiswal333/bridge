@@ -10,12 +10,6 @@ angular.module('app.weather').directive('app.weather', function () {
             var date = new Date();
             return calUtils.getWeekdays()[(date.getDay() - 1 + days) % 7].medium;
         };
-
-        //set stuff locally
-        if(!bridgeDataService.getBridgeSettings().local)
-        {
-            bridgeDataService.getBridgeSettings().local = {};
-        }
         
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
@@ -35,12 +29,12 @@ angular.module('app.weather').directive('app.weather', function () {
         }
         
         if ($scope.hh >= 18 || $scope.hh <= 7){
-            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "night";
-            bridgeDataService.getBridgeSettings().local.backgroundClass = "night";
+            bridgeDataService.getTemporaryData().backgroundDayNight = "night";
+            bridgeDataService.getTemporaryData().backgroundClass = "night";
            
         }
         if ($scope.hh >= 8 && $scope.hh <= 17 ){
-            bridgeDataService.getBridgeSettings().local.backgroundDayNight = "day";
+            bridgeDataService.getTemporaryData().backgroundDayNight = "day";
             
         }
 
@@ -66,10 +60,32 @@ angular.module('app.weather').directive('app.weather', function () {
           $scope.longitude = position.coords.longitude;
           $scope.support = true;
 
-          $scope.weatherData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
-          $scope.forecastData = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=4&mode=json');
+          var weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
+          var forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=4&mode=json');
 
-          $scope.checkWeatherConditionClouds = function(clouds){
+          $http.get(weatherDataURL).success(function (weatherDataJSON) {
+            
+            $scope.fahrenheit = false;
+            if($scope.fahrenheit){
+                $scope.temperature = weatherDataJSON.main.temp.toFixed(0);
+            }
+            if(!$scope.fahrenheit){
+                $scope.temperature = weatherDataJSON.main.temp.toFixed(0) - 273;
+            }
+
+            var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
+            bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
+            
+            $scope.city = weatherDataJSON.name; 
+            $scope.city_id = weatherDataJSON.id;
+
+            $scope.des = weatherData.description;
+            
+             
+
+          });
+   
+          function checkWeatherConditionClouds (clouds){
             if(clouds != undefined){
                 if (clouds == 0){
                     return "sun";
@@ -86,7 +102,7 @@ angular.module('app.weather').directive('app.weather', function () {
             }
             
           }
-          $scope.checkWeatherConditionRain = function(rain){
+          function checkWeatherConditionRain(rain){
             if(rain != undefined) {            
                 if (rain['3h'] > 0){
                     return  "rain";
@@ -99,129 +115,54 @@ angular.module('app.weather').directive('app.weather', function () {
                     return null;
                 } 
           }
-          $scope.checkConditionForIcon = function(rain,clouds){
-            if($scope.checkWeatherConditionClouds(clouds) == null && $scope.checkWeatherConditionRain(rain) == null){
-                return 'wi wi-day-sunny'
+
+          function parseWeatherData(rain,clouds){
+            var weatherData = {
+                rain: checkWeatherConditionRain(rain),
+                clouds: checkWeatherConditionClouds(clouds)
             };
-            if($scope.checkWeatherConditionClouds(clouds) == "sun" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'wi wi-day-sunny'
+            if((weatherData.clouds == null || weatherData.clouds == "sun")
+                && weatherData.rain == null){
+                weatherData.description = 'sunny';
+                weatherData.backgroundClass = 'sun';
+                weatherData.icon = 'wi wi-day-sunny';
             };
-            if($scope.checkWeatherConditionClouds(clouds) == "smallClouds" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'wi wi-day-cloudy'
+            if(weatherData.clouds == "smallClouds" && weatherData.rain == null){
+                weatherData.description = 'sunny with clouds';
+                weatherData.backgroundClass = 'smallClouds';
+                weatherData.icon = 'wi wi-day-cloudy';
             };
-            if($scope.checkWeatherConditionClouds(clouds) == "bigClouds" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'wi wi-cloudy'
+            if(weatherData.clouds == "bigClouds" && weatherData.rain == null){
+                weatherData.description = 'cloudy';
+                weatherData.backgroundClass = 'bigClouds';
+                weatherData.icon = 'wi wi-cloudy';
             };
-            if($scope.checkWeatherConditionRain(rain) != null){
-                return 'wi wi-rain'
+            if(weatherData.rain != null){
+                weatherData.description = 'rainy';
+                weatherData.backgroundClass = 'rain';
+                weatherData.icon = 'wi wi-rain';
             };
-          
-               
-            
-           }
-           $scope.checkConditionForDes = function(rain,clouds){
-            if($scope.checkWeatherConditionClouds(clouds) == null && $scope.checkWeatherConditionRain(rain) == null){
-                return 'sunny'
-            };
-            if($scope.checkWeatherConditionClouds(clouds) == "sun" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'sunny'
-            };
-            if($scope.checkWeatherConditionClouds(clouds) == "smallClouds" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'sunny with clouds'
-            };
-            if($scope.checkWeatherConditionClouds(clouds) == "bigClouds" && $scope.checkWeatherConditionRain(rain) == null){
-                return 'cloudy'
-            };
-            if($scope.checkWeatherConditionRain(rain) != null){
-                return 'rainy'
-            };
-           
+            return weatherData;
            }
 
-          $http.get($scope.weatherData).success(function (weatherData) {
-            
-            $scope.fahrenheit = false;
-            if($scope.fahrenheit){
-                $scope.temperature = weatherData.main.temp.toFixed(0);
-            }
-            if(!$scope.fahrenheit){
-                $scope.temperature = weatherData.main.temp.toFixed(0) - 273;
-            }
-            //console.log($scope.temperature);
-
-            
-            
-
-            //clouds
-            //$scope.clouds = weatherData.clouds.all;
-
-                    //set stuff locally
-            if(!bridgeDataService.getBridgeSettings().local)
-            {
-                bridgeDataService.getBridgeSettings().local = {};
-            }
-            bridgeDataService.getBridgeSettings().local.backgroundClass = $scope.checkWeatherConditionClouds(weatherData.clouds.all);
-            
-            //console.log(weatherData.clouds);
-            //console.log('clouds' + bridgeDataService.getBridgeSettings().local.backgroundClass);
-            //console.log($scope.checkWeatherConditionClouds(weatherData.clouds.all));
-
-
-            /*if (weatherData.clouds.all == 0){
-                bridgeDataService.getBridgeSettings().local.backgroundClass = "sun";
-            } 
-            if (weatherData.clouds.all > 0 && weatherData.clouds.all <= 40){
-            	bridgeDataService.getBridgeSettings().local.backgroundClass = "smallClouds";
-            } 
-            if (weatherData.clouds.all >= 41){
-            	bridgeDataService.getBridgeSettings().local.backgroundClass = "bigClouds";
-            }   */          
-
-            //city
-            $scope.city = weatherData.name; 
-            $scope.city_id = weatherData.id;
-            //console.log($scope.city);
-
-            //rain
-
-            bridgeDataService.getBridgeSettings().local.backgroundClass = $scope.checkWeatherConditionRain(weatherData.rain);
-            //console.log(weatherData.rain);
-            //console.log('rain' + bridgeDataService.getBridgeSettings().local.backgroundClass);
-
-            /*
-            $scope.raining = false;
-            if(weatherData.rain)
-            {            
-                $scope.rain = weatherData.rain['3h'];
-                if (weatherData.rain['3h'] > 0){
-                	bridgeDataService.getBridgeSettings().local.backgroundClass = "rain";
-                }            
-            }*/
-            
-            console.log(weatherData.clouds.all);
-            $scope.des = $scope.checkConditionForDes(weatherData.rain,weatherData.clouds.all);
-            
-             
-
-          });
-   
-        $http.get($scope.forecastData).success(function (forecastData) {
+        $http.get(forecastDataURL).success(function (forecastData) {
             //next days
             $scope.forecastDays = [];
 
             function maximalPossibleEntries(list, maxItems) {
                 return list.length > maxItems ? maxItems : list.length;
-            }        
-            
+            }
+
             for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++){
+                var weatherData = parseWeatherData(forecastData.list[i].rain,forecastData.list[i].clouds);
                 $scope.forecastDays[i] = {
                     temperatureMin: forecastData.list[i].temp.min.toFixed(0) - 273,
                     temperatureMax: forecastData.list[i].temp.max.toFixed(0) - 273,
-                    rain: $scope.checkWeatherConditionRain(forecastData.list[i].rain),
-                    clouds: $scope.checkWeatherConditionClouds(forecastData.list[i].clouds),
-                    weatherIco : $scope.checkConditionForIcon(forecastData.list[i].rain,forecastData.list[i].clouds)
+                    rain: weatherData.rain,
+                    clouds: weatherData.clouds,
+                    weatherIco : weatherData.icon
                 };            
-               console.log($scope.forecastDays[i].weatherIco+' '+$scope.forecastDays[i].clouds);
+               //console.log($scope.forecastDays[i].weatherIco+' '+$scope.forecastDays[i].clouds);
                 
             }
           });
