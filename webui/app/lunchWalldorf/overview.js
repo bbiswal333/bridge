@@ -10,23 +10,20 @@
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";        
-
-
-        var lang = "de";
-        // English texts standard for now...
+    
         $scope.portalLinkText = "Lunch menu in the portal";
         $scope.noDataString = "Data could not be loaded from webservice.";
 
-        // Proceed to next potential lunch-relevant day
+        // proceed to next potential lunch-relevant day
         var date = dataProcessor.getDateToDisplay(new Date());
         while (!dataProcessor.isRegularWeekDay(date)) {
             date.setDate( date.getDate() + 1 );
-        };
+        }    
 
-        $http.get('/api/get?url=' + encodeURI('http://155.56.69.85:1081/lunch_' + lang + '.txt') + '&decode=win1252'
-        ).success(function(data) {
+        $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
+        ).success(function(data) {            
             // evaluate menu
-            $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
+            $scope.lunch = dataProcessor.getLunchMenu(data, date);
             if($scope.lunch){
                 $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
                 $scope.contentLoaded = true;                
@@ -35,16 +32,16 @@
                 date.setDate( date.getDate() + 1 );
                 while (!dataProcessor.isRegularWeekDay(date)) {
                     date.setDate( date.getDate() + 1 );
-                };
+                }
                 // evaluate menu
-                $scope.lunch = dataProcessor.getLunchMenu(data, date, lang);
+                $scope.lunch = dataProcessor.getLunchMenu(data, date);
                 if($scope.lunch){
                     $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
                     $scope.contentLoaded = true;                    
                 } else {
                     $scope.contentLoaded = false;                    
-                };
-            };
+                }
+            }
         }).error(function() {            
         });
     }];
@@ -56,9 +53,7 @@
         };
 }]);
 
-angular.
-  module("app.lunchWalldorf").
-  service('app.lunchWalldorf.dataProcessor', function(){
+angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', function(){
     var Monday = 1;
     var Friday = 5;
     var TimeAfterWhichToDisplayNextDay = 14;
@@ -68,7 +63,7 @@ angular.
             date.getDay()   <  Friday &&
             date.getHours() >= TimeAfterWhichToDisplayNextDay ){
             date.setDate( date.getDate() + 1 );
-        };
+        }
         return date;
     };
 
@@ -78,7 +73,7 @@ angular.
             return false;
         }else{
             return true;
-        };
+        }
     };
 
     this.getDay = function (date) {
@@ -86,110 +81,52 @@ angular.
             return 6;
         }else{
             return date.getDay() - 1;
-        };
+        }
     };
 
-    this.getLunchMenu = function (data, date, lang) {
-        if( lang == "de") {
-            var soup_text = "Suppe:";
-            var main_text = "Hauptgericht:";
-            var alt_text = "Oder:";
-            var side_text = "Beilagen:";
-            var dessert_text = "Dessert:";
-        } else {
-            lang = "en";
-            soup_text = "Soup:";   
-            main_text = "Main course:";
-            alt_text = "Or:";
-            side_text = "Side dishes:";
-            dessert_text = "Dessert:";
-        };
+    this.getLunchMenu = function (data, date) 
+    {                                
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);        
+        date = Math.floor(date.getTime() / 1000);        
 
-        var lunchMenu = {};
-        var lunchstring = data.split('************')[date.getDay() - 1];
-        var lunchLines = lunchstring.split("\n");
-        var previousLineCategory;
-        var dateValidated = false;
+        for(var i = 0; i < data.menu.length; i++)
+        {                    
+            var diff = ((data.menu[i].date - date) / 60 / 60);              
 
-        // this works if the date in the lunch menu is correct (BUT not if it is mistakingly wrong by e.g. only one day)
-        for(var i = 0; i < lunchLines.length; i++) {
-            if (lunchLines[i].indexOf(date.getUTCDate()) != -1) {
-                dateValidated = true;
-                break;
-            };
-        };
+            if(diff === 0)
+            {
+                var lunchMenu = {};
+                var date_menu = data.menu[i].counters;
 
-        // make this more robust by checking for the day before
-        if (!dateValidated && date.getDay() > 2) {
-            var lunchstringTheDayBefore = data.split('************')[date.getDay() - 2];
-            if(lunchstringTheDayBefore) {
-                var lunchLinesTheDayBefore = lunchstringTheDayBefore.split("\n");
-                for(var i = 0; i < lunchLinesTheDayBefore.length; i++) {
-                    if (lunchLinesTheDayBefore[i].indexOf(date.getUTCDate()-1) != -1) {
-                        dateValidated = true;
-                        break;
-                    };
-                };
-            };
-        }
+                for(var j = 0; j < date_menu.length; j++)
+                {
+                    if(date_menu[j].title.en === "Soup")
+                    {
+                        lunchMenu.soup = date_menu[j].dishes[0].title.de;
+                    }
+                    else if(date_menu[j].title.en === "Side dish")
+                    {
+                        lunchMenu.sideDishes = date_menu[j].dishes[0].title.de;
+                    }
+                    else if(date_menu[j].title.en === "Dessert")
+                    {
+                        lunchMenu.dessert = date_menu[j].dishes[0].title.de;
+                    }
+                    else
+                    {
+                        if(!lunchMenu.mainCourse)
+                        {
+                            lunchMenu.mainCourse = [];
+                        }
+                        lunchMenu.mainCourse.push( date_menu[j].dishes[0].title.de );   
+                    }
 
-        // or by checking for the day after
-        if (!dateValidated && date.getDay() < 5) {
-            var lunchstringTheDayAfter = data.split('************')[date.getDay()];
-            if(lunchstringTheDayAfter) {
-                var lunchLinesTheDayAfter = lunchstringTheDayAfter.split("\n");
-                for(var i = 0; i < lunchLinesTheDayAfter.length; i++) {
-                    if (lunchLinesTheDayAfter[i].indexOf(date.getUTCDate()+1) != -1) {
-                        dateValidated = true;
-                        break;
-                    };
-                };
-            };
-        }
-
-        if (!dateValidated) {
-            return;
-        };
-
-        for(var i = 0; i < lunchLines.length; i++) {
-            if (lunchLines[i].indexOf(soup_text) != -1) {
-                lunchMenu.soup = lunchLines[i].substring(lunchLines[i].indexOf(soup_text) + soup_text.length).replace(/^\s+|\s+$/g, '');
-                previousLineCategory = "soup";
-            }
-            else if (lunchLines[i].indexOf(main_text) != -1) {
-                lunchMenu.mainCourse = [];
-                lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf(main_text) + main_text.length).replace(/^\s+|\s+$/g, ''));
-                previousLineCategory = "mainCourse";
-            }
-            else if (lunchLines[i].indexOf(alt_text) != -1) {
-                lunchMenu.mainCourse.push(lunchLines[i].substring(lunchLines[i].indexOf(alt_text) + alt_text.length).replace(/^\s+|\s+$/g, ''));
-                previousLineCategory = "mainCourse";
-            }
-            else if (lunchLines[i].indexOf(side_text) != -1) {
-                lunchMenu.sideDishes = lunchLines[i].substring(lunchLines[i].indexOf(side_text) + side_text.length).replace(/^\s+|\s+$/g, '');
-                previousLineCategory = "sideDish";
-            }
-            else if (lunchLines[i].indexOf(dessert_text) != -1) {
-                lunchMenu.dessert = lunchLines[i].substring(lunchLines[i].indexOf(dessert_text) + dessert_text.length).replace(/^\s+|\s+$/g, '');
-                previousLineCategory = "dessert";
-            }
-            else {
-                switch (previousLineCategory) {
-                    case "soup":
-                        lunchMenu.soup += ' ' + lunchLines[i].replace(/^\s+|\s+$/g, '');
-                        break;
-                    case "mainCourse":
-                        lunchMenu.mainCourse[lunchMenu.mainCourse.length - 1] += ' ' + lunchLines[i].replace(/^\s+|\s+$/g, '');
-                        break;
-                    case "dessert":
-                        lunchMenu.dessert += ' ' + lunchLines[i].replace(/^\s+|\s+$/g, '');
-                        break;
-                    case "sideDish":
-                        lunchMenu.sideDishes += ' ' + lunchLines[i].replace(/^\s+|\s+$/g, '');
-                        break;
                 }
+                return lunchMenu;
             }
         }
-        return lunchMenu;
     };
 });
