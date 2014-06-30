@@ -96,7 +96,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     $scope.handleSelectedDate = function(dayString){
-        $scope.selectedDates.push(dayString);
+        if($scope.selectedDates.indexOf(dayString) === -1) {
+            $scope.selectedDates.push(dayString);
+        }
         return true;
     }
 

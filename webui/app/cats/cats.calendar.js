@@ -73,6 +73,7 @@ angular.module("app.cats")
 
 					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
 					rangeSelectionStartDay = monthlyDataService.days[dayString];
+					rangeSelectionEndDay = null;
 					$location.path("/detail/cats/");
 				} else if (multi_click) {
 					var selectedDay = monthlyDataService.days[dayString];
@@ -80,10 +81,16 @@ angular.module("app.cats")
 
 					if (!hasFixedTask(selectedDay)) {
 						rangeSelectionStartDay = monthlyDataService.days[dayString];
+						rangeSelectionEndDay = null;
+
 						clearSelectionFromDaysWithFixedTasks();
 					};
 
 				} else if (range_click) {
+					if (rangeSelectionEndDay) {
+						oldRange = collectRange(rangeSelectionEndDay.dayString);
+						unSelectRange(oldRange);
+					};
 					promises = selectRange(collectRange(dayString),dayString);
 				}
 				
@@ -152,12 +159,18 @@ angular.module("app.cats")
 
 			function collectRange(dayString) {
 
-				if (!monthlyDataService.lastSingleClickDay) {
-					return;
+				if (!rangeSelectionStartDay) {
+					rangeSelectionStartDay = monthlyDataService.days[dayString];
+					var firstOfSelectedMonth = dayString.substr(0,8) + "01";
+					rangeSelectionEndDay = monthlyDataService.days[firstOfSelectedMonth];
+				}
+				else
+				{
+					rangeSelectionEndDay = monthlyDataService.days[dayString];
 				}
 				var range = [];
 				var startDate = calUtils.parseDate(rangeSelectionStartDay.dayString);
-				var selectedDate = calUtils.parseDate(dayString);
+				var endDate = calUtils.parseDate(rangeSelectionEndDay.dayString);
 
 				function collectDates(a, b){
 					var dateStrings = [];
@@ -179,7 +192,7 @@ angular.module("app.cats")
 					return dateStrings;
 				}
 
-				collectDates(startDate, selectedDate).forEach(function(dateString){
+				collectDates(startDate, endDate).forEach(function(dateString){
 					range.push(monthlyDataService.days[dateString]);
 				})
 
@@ -203,6 +216,12 @@ angular.module("app.cats")
 					return true;
 				}
 				return false;
+			}
+
+			function unSelectRange(daysArray){
+				daysArray.forEach(function(day){
+					unSelectDay(day.dayString);
+				})
 			}
 
 			function selectRange(daysArray,clickedOnDayString){
