@@ -11,7 +11,13 @@
         "Modernizr": true,
         "console": true,
         "X2JS": true,
-		"$": true
+		"$": true,
+		"describe": true,
+		"beforeEach": true,
+		"module": true,
+		"inject": true,
+		"it": true,
+		"expect": true
     },
     "rules": 
     {        
