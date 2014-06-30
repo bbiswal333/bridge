@@ -96,7 +96,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     $scope.handleSelectedDate = function(dayString){
-        $scope.selectedDates.push(dayString);
+        if($scope.selectedDates.indexOf(dayString) === -1) {
+            $scope.selectedDates.push(dayString);
+        }
         return true;
     }
 
@@ -235,6 +237,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             //CHECKMESSAGES: []
             BOOKINGS: [],
         };
+
+        var selectedDates = $scope.selectedDates;
+        $scope.selectedDates = [];
+        selectedDates.forEach(function(dateString){
+            if($scope.selectedDates.indexOf(dateString) === -1) {
+                $scope.selectedDates.push(dateString);
+            } else {
+                console.log("The selectedDates array had double entries! Please check selection functionality.")
+            }
+        });
+
         if ($scope.selectedDates.length > 1) {
             clearOldTasks = true;
         };

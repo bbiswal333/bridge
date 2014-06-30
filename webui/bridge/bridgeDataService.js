@@ -1,6 +1,7 @@
 ﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http) {
     this.projects = [];
     this.bridgeSettings = {};
+    this.temporaryData = {};
     this.configRawData = null;
     this.clientMode = false;
     var that = this;
@@ -158,6 +159,10 @@
         return that.bridgeSettings;
     }
 
+    function _getTemporaryData() {
+        return that.temporaryData;
+    }
+
     function _setClientMode(bClientMode) {
         this.clientMode = bClientMode;
     }
@@ -169,6 +174,7 @@
     return {
         initialize: _initialize,
         getBridgeSettings: _getBridgeSettings,
+        getTemporaryData: _getTemporaryData,
         getUserInfo: _getUserInfo,
         getProjects: _getProjects,
         getAppMetadataForProject: _getAppMetadataForProject,

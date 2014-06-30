@@ -64,8 +64,9 @@
 
 <body class="noselect" style="overflow:auto">    
     
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: bridgeSettings.local.backgroundDayNight}[(bridgeSettings.local.backgroundDayNight == undefined)]" ng-cloak>
-        <div class="sun" ng-class="{true: 'mainPageBackground', false: bridgeSettings.local.backgroundClass}[(bridgeSettings.local.backgroundClass == undefined)]">
+    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: temporaryData.backgroundDayNight}[(temporaryData.backgroundDayNight == undefined)]" ng-cloak>
+        <div class="sun" ng-class="{true: 'mainPageBackground', false: temporaryData.backgroundClass}[(temporaryData.backgroundClass == undefined)]">
+
           
                         <div>
                             <div ng-if="!showLoadingBar" class="TitleBar"></div>
