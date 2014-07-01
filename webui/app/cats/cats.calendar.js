@@ -9,6 +9,46 @@ angular.module("app.cats")
 		 "bridgeInBrowserNotification",
 		 "$q",
 	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q) {
+		function processCatsData(cats_o) {
+	        function parseDateToTime(date_s) {
+	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
+	                return null;
+	            }
+
+	            var year = date_s.substr(0, 4);
+	            var month = date_s.substr(5, 2) - 1;
+	            var day = date_s.substr(8, 2);
+
+	            return new Date(year, month, day).getTime();
+	        }
+
+	        try {
+	            var processed = {};
+	            var days = cats_o;
+
+	            for (var i = 0; i < days.length; i++) {
+	                var dateStr = days[i].DATEFROM;
+	                var statusStr = days[i].STATUS;
+	                // special handling for overbooked days
+	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > days[i].STDAZ) {
+	                	statusStr = "OVERBOOKED";
+	                	days[i].STATUS = "OVERBOOKED";
+	                }
+
+	                var time = parseDateToTime(dateStr);
+	                if (time !== null) {
+	                    processed[time] = { state: statusStr };
+	                }
+	            }
+
+	            return processed;
+	        } catch (error) {
+	            return null;
+	        }
+
+	        
+	    }
+
 		var linkFn = function ($scope) {
 			var monthRelative = 0;
 
@@ -17,7 +57,7 @@ angular.module("app.cats")
 			$scope.year = new Date().getFullYear();
 			$scope.month = new Date().getMonth();
 			$scope.currentMonth = "";
-			$scope.calArray;
+			$scope.calArray = [];
 			$scope.state = "";
 			$scope.loading = true;
 			$scope.hasError = false;
@@ -28,7 +68,6 @@ angular.module("app.cats")
 			var rangeSelectionStartDayString = null;
 			var rangeSelectionEndDayString = null;
 
-			var selectedDates = $scope.selectedDates;
 			var data = catsUtils.getCatsComplianceData(handleCatsData);
 
 			$scope.getDescForState = function (state_s) {
@@ -36,9 +75,9 @@ angular.module("app.cats")
 			};
 
 			function handleCatsData(data) {
-				if (data != null) {
+				if (data !== null) {
 					var additionalData = processCatsData(data);
-					if (additionalData != null) {
+					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
 						reload();
 						$scope.state = "CATS-Data received and processed";
@@ -53,6 +92,74 @@ angular.module("app.cats")
 					$scope.hasError = true;
 				}
 			}
+
+			function hasFixedTask (dayString){
+	        	var day = monthlyDataService.days[dayString];
+		        var containsFixedTask = false;
+		        day.tasks.forEach(function(task){
+		            if (task.TASKTYPE === "VACA" || task.TASKTYPE === "ABSE") {
+		                containsFixedTask = true;
+		            }
+		        });
+		        return containsFixedTask;
+		    }
+
+		    var daysElements = [];
+		    function getDaysElements (element){
+		    	if (!daysElements || daysElements.indexOf(element) === -1) {
+		    		daysElements = [];
+		    		var elements = element.parentElement.parentElement.children;
+		    		for( var i = 0; i < elements.length; i++){
+		    			for ( var j = 0; j < elements[i].children.length; j++){
+		    				if (elements[i].children[j].id === "calendarDay") {
+			    				daysElements.push(elements[i].children[j]);
+			    			}
+		    			}
+		    		}
+				}
+
+		    	return daysElements;
+		    }
+
+			$scope.navigate = function(dayString, event){
+				var originDate = calUtils.parseDate(dayString);
+				var targetDate = new Date();
+				var currentElement = event.target;
+				var nextElement = null;
+
+				switch (event.keyCode) {
+					case 37: //left
+						daysElements = getDaysElements(currentElement);
+						targetDate.setDate(originDate.getDate() - 1);
+						nextElement = daysElements[daysElements.indexOf(currentElement) - 1];
+						break;
+					case 38: //up
+						daysElements = getDaysElements(currentElement);
+						targetDate.setDate(originDate.getDate() - 7);
+						nextElement = daysElements[daysElements.indexOf(currentElement) - 7];
+						break;
+					case 39: //right
+						daysElements = getDaysElements(currentElement);
+						targetDate.setDate(originDate.getDate() + 1);
+						nextElement = daysElements[daysElements.indexOf(currentElement) + 1];
+						break;
+					case 40: //down
+						daysElements = getDaysElements(currentElement);
+						targetDate.setDate(originDate.getDate() + 7);
+						nextElement = daysElements[daysElements.indexOf(currentElement) + 7];
+						break;
+					default:
+						return;
+				}
+				
+				if (nextElement){
+					nextElement.focus();
+				}
+
+				if (originDate.getMonth() === targetDate.getMonth()) {
+					$scope.jump(calUtils.stringifyDate(targetDate), event);
+				}
+			};
 
 			$scope.jump = function (dayString, event) {
 				
@@ -160,6 +267,10 @@ angular.module("app.cats")
 				})
 			}
 
+			function setRangeDays (startDate, endDate){
+				rangeSelectionStartDayString = startDate;
+				rangeSelectionEndDayString = endDate;
+			}
 
 			function collectRange(dayString) {
 
@@ -178,15 +289,10 @@ angular.module("app.cats")
 				function collectDates(a, b){
 					var dateStrings = [];
 
-					if (a < b) {
-						var first = a;
-						var last = b;
-					} else {
-						var first = b;
-						var last = a;
-					}
+					var first = a < b ? a : b;
+					var last = a < b ? b : a;
 
-					while(first.getTime() != last.getTime()){
+					while(first.getTime() !== last.getTime()){
 						dateStrings.push(calUtils.stringifyDate(first));
 						first.setDate(first.getDate() + 1);
 					}
@@ -197,7 +303,7 @@ angular.module("app.cats")
 
 				collectDates(startDate, endDate).forEach(function(dateString){
 					range.push(dateString);
-				})
+				});
 
 				return range;
 			}
@@ -271,16 +377,7 @@ angular.module("app.cats")
 	        	return $scope.selectedDates.indexOf(dayString)!=-1;
 	        }
 
-	        function hasFixedTask (dayString){
-	        	var day = monthlyDataService.days[dayString];
-		        var hasFixedTask = false;
-		        day.tasks.forEach(function(task){
-		            if (task.TASKTYPE === "VACA" || task.TASKTYPE === "ABSE") {
-		                hasFixedTask = true;
-		            };
-		        })
-		        return hasFixedTask;
-		    }
+	        
 
 			function containsDayWithAFixedTask(daysStringsArray){
    				var containsDayWithAFixedTask = false;
@@ -316,7 +413,7 @@ angular.module("app.cats")
 	            }
 	            monthRelative--;
 
-	            if ($scope.month == 0) {
+	            if ($scope.month === 0) {
 	                $scope.month = 11;
 	                $scope.year--;
 	            }
@@ -342,7 +439,7 @@ angular.module("app.cats")
 	            }
 	            monthRelative++;
 
-	            if ($scope.month == 11) {
+	            if ($scope.month === 11) {
 	                $scope.month = 0;
 	                $scope.year++;
 	            }
@@ -365,21 +462,27 @@ angular.module("app.cats")
 				// $scope.selectionCompleted();
 			}
 
-			function setRangeDays (startDate, endDate){
-				rangeSelectionStartDayString = startDate;
-				rangeSelectionEndDayString = endDate;
-			}
-
+			
+			
+			$scope.getStateClassSubstring = function(calDay){
+				if(calDay.data.state === 'Y' && calDay.today)
+					return 'Y_TODAY';
+				else if(calDay.data.state === 'OVERBOOKED' && calDay.today)
+					return 'OVERBOOKED_TODAY';
+				else
+					return calDay.data.state;
+			};
+			
 			var refreshInterval = null;
 
 			if ($scope.selectedDay) {
-			    while (new Date($scope.selectedDay).getMonth() != $scope.month) {
+			    while (new Date($scope.selectedDay).getMonth() !== $scope.month) {
 			        $scope.prevMonth();
 			    }
 			}
 
 			$scope.$on("$destroy", function () {
-			    if (refreshInterval != null) {
+			    if (refreshInterval !== null) {
 			        $interval.cancel(refreshInterval);
 			    }
 			});
@@ -388,7 +491,7 @@ angular.module("app.cats")
 			    var dateLastRun = new Date().getDate();
 
 			    refreshInterval = $interval(function () {
-			        if (dateLastRun != new Date().getDate()) {
+			        if (dateLastRun !== new Date().getDate()) {
 			            catsUtils.getData(handleCatsData);
 			        }
 			    }, 3 * 3600000);
@@ -398,65 +501,11 @@ angular.module("app.cats")
 			    catsUtils.getCatsComplianceData(handleCatsData, true); // force update
 			});
 
-			$scope.getStateClassSubstring = function(calDay){
-				if(calDay.data.state == 'Y' && calDay.today)
-					return 'Y_TODAY';
-				else if(calDay.data.state == 'OVERBOOKED' && calDay.today)
-					return 'OVERBOOKED_TODAY';
-				else
-					return calDay.data.state;
-			}
-
 			if (monthlyDataService.lastSingleClickDay) {
 				reload();
-					// var promises = [];
-					// promises.push($scope.selectSingleDay(monthlyDataService.lastSingleClickDay.dayString, true));
-					// var promise = $q.all(promises);
-					// promise.then(function(){
-					// 	$scope.selectionCompleted();
-					// });
 				$scope.jump(monthlyDataService.lastSingleClickDay.dayString, {});
-			
 			}
 	    };
-
-	    function processCatsData(cats_o) {
-	        try {
-	            var processed = {};
-	            var days = cats_o;
-
-	            for (var i = 0; i < days.length; i++) {
-	                var dateStr = days[i].DATEFROM;
-	                var statusStr = days[i].STATUS;
-	                // special handling for overbooked days
-	                if (days[i].STATUS == "Y" && days[i].QUANTITYH > days[i].STDAZ) {
-	                	statusStr = "OVERBOOKED";
-	                	days[i].STATUS = "OVERBOOKED"
-	                }
-
-	                var time = parseDateToTime(dateStr);
-	                if (time != null) {
-	                    processed[time] = { state: statusStr };
-	                }
-	            }
-
-	            return processed;
-	        } catch (error) {
-	            return null;
-	        }
-
-	        function parseDateToTime(date_s) {
-	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) == -1) { //Checks for pattern: YYYY-MM-DD
-	                return null;
-	            }
-
-	            var year = date_s.substr(0, 4);
-	            var month = date_s.substr(5, 2) - 1;
-	            var day = date_s.substr(8, 2);
-
-	            return new Date(year, month, day).getTime();
-	        }
-	    }
 
 	    return {
 	        restrict: "E",
