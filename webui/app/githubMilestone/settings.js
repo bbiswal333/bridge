@@ -119,7 +119,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         $scope.$emit('closeSettingsScreen');
     };//$scope.save_click
 
-    $scope.getTypeaheadData = _.throttle(function() { /* eslint no_undef */
+    $scope.getTypeaheadData = function() { /* eslint no_undef */
         var copiedConfigItem = angular.copy($scope.currentConfigValues); 
         //$scope.searchResults = [];
         if(copiedConfigItem.repo.html_url !== undefined && copiedConfigItem.repo.html_url !== null && copiedConfigItem.repo.html_url !== '')
@@ -128,5 +128,5 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         return parseInput(copiedConfigItem.repo.html_url);
       
         }
-    },250);
+    };
 }];
