@@ -148,6 +148,11 @@ angular.module("app.cats")
 						targetDate.setDate(originDate.getDate() + 7);
 						nextElement = daysElements[daysElements.indexOf(currentElement) + 7];
 						break;
+					case 9:
+						console.log("tab");
+						nextElement = angular.element(document.querySelector( '#filter-bar input' ));
+						nextElement.focus();
+						return;
 					default:
 						return;
 				}
