@@ -10,11 +10,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.days = {};
 	this.promise = null;
 	this.promiseForMonth = {};
+	this.reloadInProgress = { value:false };
 
 
 	this.getDataForCurrentMonth = function(){
 		var date = calenderUtils.today();
-		// a cool way to wait for multiple promises (coding example)
 		var promises = [];
 		promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
 		this.promise = $q.all(promises);
@@ -38,6 +38,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	    	return deferred.promise;
 	    };
 
+	    this.reloadInProgress.value = true;
+
 		var weeks = this.getWeeksOfMonth(year, month);
         for (var i = 0; i < weeks.length; i++) {
         	promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo)
@@ -60,6 +62,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
     		
 	        self.months[month] = monthData;
 	        delete self.promiseForMonth[month];
+		    self.reloadInProgress.value = false;
         });
 
         this.promiseForMonth[month] = promise;
@@ -187,10 +190,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
         var promises = [];
         var self = this;
 
+		self.reloadInProgress.value = true;
         weeks.forEach(function(week){
         	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
             promises.push(promise);
         	promise.then(function(data){
+				self.reloadInProgress.value = false;
 	        	if(data) {
 	        		self.convertWeekData(data);
 	        	}
@@ -203,6 +208,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return this.days[workdate].tasks;
 	}
 
-	this.getDataForCurrentMonth();
+	//this.getDataForCurrentMonth();
 
 }]);
