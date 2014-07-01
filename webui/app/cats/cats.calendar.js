@@ -45,8 +45,6 @@ angular.module("app.cats")
 	        } catch (error) {
 	            return null;
 	        }
-
-	        
 	    }
 
 		var linkFn = function ($scope) {
@@ -67,8 +65,7 @@ angular.module("app.cats")
 
 			var rangeSelectionStartDayString = null;
 			var rangeSelectionEndDayString = null;
-
-			var data = catsUtils.getCatsComplianceData(handleCatsData);
+		    var daysElements = [];
 
 			$scope.getDescForState = function (state_s) {
 				return catsUtils.getDescForState(state_s);
@@ -104,7 +101,6 @@ angular.module("app.cats")
 		        return containsFixedTask;
 		    }
 
-		    var daysElements = [];
 		    function getDaysElements (element){
 		    	if (!daysElements || daysElements.indexOf(element) === -1) {
 		    		daysElements = [];
@@ -166,65 +162,90 @@ angular.module("app.cats")
 				}
 			};
 
-			$scope.jump = function (dayString, event) {
+			function selectDay(dayString) {
+				var deferred = $q.defer();
 
-				if (monthlyDataService.reloadInProgress.value == true) {
-					return;
-				}
-				
-				var range_click = event.shiftKey;
-				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
-				var single_click = !range_click && !multi_click;
-				var promise = null;
-				var promises = [];
-
-				if (single_click) {
-					//unselectOthers
-					if ($scope.selectedDates) {
-						$scope.selectedDates.forEach(function(selectedDayString){
-							promises.push(unSelectDay(selectedDayString));
-						});
-					};
-					promises.push(selectDay(dayString));
-
-					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
-					setRangeDays(dayString, null);
-
-					if (event.originalEvent) {
-						$location.path("/detail/cats/");
-					};
-				} else if (multi_click) {
-					promises.push($scope.selectSingleDay(dayString, true));
-
-					if (!hasFixedTask(dayString)) {
-						setRangeDays(dayString, null);
-						clearSelectionFromDaysWithFixedTasks();
-					} 
-					else
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
-
-
-				} else if (range_click) {
-					if (rangeSelectionEndDayString) {
-						oldRange = collectRange(rangeSelectionEndDayString);
-						unSelectRange(oldRange);
-					};
-					promises = selectRange(collectRange(dayString));
-				}
-				
-				promise = $q.all(promises);
-				promise.then(function(){
-					$scope.selectionCompleted();
+				monthlyDataService.getDataForDate(dayString).then(function(){
+					if (monthlyDataService.days[dayString] &&
+	        			monthlyDataService.days[dayString].targetHours > 0) {
+						$scope.onDateSelected({dayString: dayString});
+					}
+					deferred.resolve();
 				});
-			};
+				return deferred.promise;
+			}
 
+			function unSelectDay(dayString) {
+				var deferred = $q.defer();
+
+				monthlyDataService.getDataForDate(dayString).then(function(){
+					if ($scope.isSelected(dayString)) {
+						$scope.onDateDeselected({dayString: dayString});
+					}
+					deferred.resolve();
+				});
+				return deferred.promise;
+			}
+			
 			$scope.selectSingleDay = function (dayString, toggle) {
 				if (dayString && !hasFixedTask(dayString)) {
-					if (toggle && $scope.isSelected(dayString))
+					if (toggle && $scope.isSelected(dayString)){
 						return unSelectDay(dayString);
-					else
+					}
+					else{
 						return selectDay(dayString);
+					}
 				}
+			};
+
+			function unSelectRange(daysStringsArray){
+				var promises = [];
+
+				daysStringsArray.forEach(function(dayString){
+					promises.push(unSelectDay(dayString));
+				});
+				return promises;
+			}
+
+
+	        function containsDayWithAFixedTask(daysStringsArray){
+   				var thereIsSuchDay = false;
+				daysStringsArray.forEach(function(dayString){
+					if(hasFixedTask(dayString)) {
+						thereIsSuchDay = true;
+					}
+				});
+				return thereIsSuchDay;
+			}
+
+			function clearSelectionFromDaysWithFixedTasks()  {
+				$scope.selectedDates.forEach(function(selectedDayString){
+					if (hasFixedTask(selectedDayString)) {
+						unSelectDay(selectedDayString);
+						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+					}
+				});
+			}
+
+			function selectRange(daysStringsArray){
+				var promises = [];
+
+				if (!daysStringsArray) {
+					return null;
+				}
+
+				daysStringsArray.forEach(function(dayString){
+					promises.push($scope.selectSingleDay(dayString));
+				});
+
+				// clear incorrect selections like vacation or weekend days...
+				clearSelectionFromDaysWithFixedTasks();
+
+				if(containsDayWithAFixedTask(daysStringsArray)) {
+					bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+				}
+
+				return promises;
 			}
 
 			$scope.selectWeek = function (index) {
@@ -234,18 +255,37 @@ angular.module("app.cats")
 				week.forEach(function(day){
 					if (day.inMonth) {
 						range.push(day.dayString);
-					};
-				})
+					}
+				});
 
-				if ($scope.weekIsSelected(index))
+				if ($scope.weekIsSelected(index)){
 					promises = unSelectRange(range);
-				else
+				}
+				else{
 					promises = selectRange(range);
+				}
 
 				$q.all(promises).then(function(){
 					$scope.selectionCompleted();
 				});
 			};
+
+	        function isSelectable(dayString){
+	        	if (monthlyDataService.days[dayString] &&
+	        		monthlyDataService.days[dayString].targetHours > 0 &&
+	        		!hasFixedTask(dayString)) {
+	        		return true;
+        		}
+        		return false;
+	        }
+
+	        $scope.isSelected = function(dayString){
+	        	if (!$scope.selectedDates){
+	        		return false;
+	        	}
+	        	return $scope.selectedDates.indexOf(dayString) !== -1;
+	        };
+
 
 			$scope.weekIsSelected = function(index){
 				var week = $scope.calArray[index];
@@ -257,24 +297,17 @@ angular.module("app.cats")
 						if (!$scope.isSelected(calDay.dayString)) {
 							allSelected = false;
 							return false;
-						};
-					};
+						}
+					}
 				});
 
-				if (weekIsSelectable && allSelected) 
+				if (weekIsSelectable && allSelected) {
 					return true;
-				else
+				}
+				else{
 					return false;
+				}
 			};
-
-			function clearSelectionFromDaysWithFixedTasks()  {
-				$scope.selectedDates.forEach(function(selectedDayString){
-					if (hasFixedTask(selectedDayString)) {
-						unSelectDay(selectedDayString);
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
-					};
-				})
-			}
 
 			function setRangeDays (startDate, endDate){
 				rangeSelectionStartDayString = startDate;
@@ -317,101 +350,61 @@ angular.module("app.cats")
 				return range;
 			}
 
-			function unSelectRange(daysStringsArray){
-				var promises = [];
+			$scope.jump = function (dayString, event) {
 
-				daysStringsArray.forEach(function(dayString){
-					promises.push(unSelectDay(dayString));
-				})
-				return promises;
-			}
-
-			function selectRange(daysStringsArray){
-				if (!daysStringsArray) {
+				if (monthlyDataService.reloadInProgress.value == true) {
 					return;
 				}
+				
+				var range_click = event.shiftKey;
+				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
+				var single_click = !range_click && !multi_click;
+				var promise = null;
 				var promises = [];
 
-				daysStringsArray.forEach(function(dayString){
-					promises.push($scope.selectSingleDay(dayString));
-				});
-
-				// clear incorrect selections like vacation or weekend days...
-				clearSelectionFromDaysWithFixedTasks();
-
-				if(containsDayWithAFixedTask(daysStringsArray)) {
-					bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
-				}
-
-				return promises;
-			}
-
-			function selectDay(dayString) {
-				var deferred = $q.defer();
-				monthlyDataService.getDataForDate(dayString).then(function(){
-					if (monthlyDataService.days[dayString] &&
-	        			monthlyDataService.days[dayString].targetHours > 0) {
-						var ok = $scope.onDateSelected({dayString: dayString});
-					};
-					deferred.resolve();
-				});
-				return deferred.promise;
-			}
-
-			function unSelectDay(dayString) {
-				var deferred = $q.defer();
-
-				monthlyDataService.getDataForDate(dayString).then(function(){
-					if ($scope.isSelected(dayString)) {
-						var ok = $scope.onDateDeselected({dayString: dayString});
-					};
-					deferred.resolve();
-				});
-				return deferred.promise;
-			}
-
-	        function isSelectable(dayString){
-	        	if (monthlyDataService.days[dayString] &&
-	        		monthlyDataService.days[dayString].targetHours > 0 &&
-	        		!hasFixedTask(dayString)) {
-	        		return true;
-        		}
-        		return false;
-	        }
-
-	        $scope.isSelected = function(dayString){
-	        	if (!$scope.selectedDates)
-	        		return false;
-	        	return $scope.selectedDates.indexOf(dayString)!=-1;
-	        }
-
-	        
-
-			function containsDayWithAFixedTask(daysStringsArray){
-   				var containsDayWithAFixedTask = false;
-				daysStringsArray.forEach(function(dayString){
-					if(hasFixedTask(dayString)) {
-						containsDayWithAFixedTask = true;
+				if (single_click) {
+					//unselectOthers
+					if ($scope.selectedDates) {
+						$scope.selectedDates.forEach(function(selectedDayString){
+							promises.push(unSelectDay(selectedDayString));
+						});
 					}
-				});
-				return containsDayWithAFixedTask;
-			}
+					promises.push(selectDay(dayString));
 
-	        function getUnselectedDays(daysStringsArray){
-	        	var unselected = [];
-	        	daysStringsArray.forEach(function(day){
-	        		if (isSelectable(day.dayString) && !$scope.isSelected(day.dayString)) {
-	        			unselected.push(day);
-	        		};
-	        	});	
-	        	return unselected;
-	        }
+					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
+					setRangeDays(dayString, null);
+
+					if (event.originalEvent) {
+						$location.path("/detail/cats/");
+					}
+				} else if (multi_click) {
+					promises.push($scope.selectSingleDay(dayString, true));
+
+					if (!hasFixedTask(dayString)) {
+						setRangeDays(dayString, null);
+						clearSelectionFromDaysWithFixedTasks();
+					} 
+					else{
+						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+					}
+				} else if (range_click) {
+					if (rangeSelectionEndDayString) {
+						var oldRange = collectRange(rangeSelectionEndDayString);
+						unSelectRange(oldRange);
+					}
+					promises = selectRange(collectRange(dayString));
+				}
+				
+				promise = $q.all(promises);
+				promise.then(function(){
+					$scope.selectionCompleted();
+				});
+			};
 
 	        $scope.canGoBackward = function () {
 	            if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)
 	                return false;
 	            }
-
 	            return true;
 	        };
 
@@ -428,7 +421,6 @@ angular.module("app.cats")
 	            else {
 	                $scope.month--;
 	            }
-
 	            reload();
 	        };
 
@@ -439,7 +431,6 @@ angular.module("app.cats")
 
 	            return true;
 	        };
-
 
 	        $scope.nextMonth = function () {
 	            if (!$scope.canGoForward()) {
@@ -475,15 +466,20 @@ angular.module("app.cats")
 			}
 			
 			$scope.getStateClassSubstring = function(calDay){
-				if(calDay.data.state === 'Y' && calDay.today)
+				if(calDay.data.state === 'Y' && calDay.today){
 					return 'Y_TODAY';
-				else if(calDay.data.state === 'OVERBOOKED' && calDay.today)
+				}
+				else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
 					return 'OVERBOOKED_TODAY';
-				else
+				}
+				else {
 					return calDay.data.state;
+				}
 			};
 			
 			var refreshInterval = null;
+
+			catsUtils.getCatsComplianceData(handleCatsData);
 
 			if ($scope.selectedDay) {
 			    while (new Date($scope.selectedDay).getMonth() !== $scope.month) {
