@@ -2,16 +2,11 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     this.colorCounter = 0;
 
     this.colors = [
-        "#428BCA",
-        "#6cb9e3",
-        "#a4d8f9",
-        "#ffe9b8",
-        "#ffd07e",
-        "#ffb541",
-        "#ffa317",
-        "#c4e8ff",
-        "#dff5ff",
-        "#Fff7e1"
+        "#18334a",
+        "#2d5f8a",
+        "#428bca",
+        "#3a79b0",
+        "#4694d7"
     ];
     this.blockColors = {};
 
