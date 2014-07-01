@@ -62,6 +62,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
         }
         checkAndCorrectPartTimeInconsistancies(day);
+        if(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay > monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay) {
+            var actualHours = Math.round(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay * 100 * 8) / 100;
+            var targetHours = Math.round(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay * 100 * 8) / 100;
+            bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
+                actualHours + "'' but target hours are only '" +
+                targetHours + "'!");
+        }
         $scope.loaded = true;
     };
 
@@ -294,7 +301,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                 monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                     loadCATSDataForDay();
-                });        
+                });
             }, function(status){
                 bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
                 loadCATSDataForDay();

@@ -41,8 +41,8 @@
     it("block should not be decreasable if it is already 0px width", function () {
         var newBlockMetrics = blockCalculations.calculateBlockMetrics(-5, 0, 200, 0, 10, 10);
 
-        expect(newBlockMetrics.newWidth).toBe(0);
-        expect(newBlockMetrics.newValue).toBe(0);
+        expect(newBlockMetrics.newWidth).toBe(0.2);
+        expect(newBlockMetrics.newValue).toBe(0.01);
     });
 
 });

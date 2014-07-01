@@ -36,7 +36,7 @@ describe("The mini calendar shall display information about the current CATS com
 
     $httpBackend.flush();
 
-    expect(result1).toBe(8);
+    expect(result1).toBe(1);
     expect(result2).toBe(0);
   });
 
