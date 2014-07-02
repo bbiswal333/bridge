@@ -98,7 +98,7 @@ angular.module("app.cats")
 
 			
 			function handleCatsData(data) {
-				if (data !== null && data != undefined) {
+				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
 					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
@@ -339,13 +339,13 @@ angular.module("app.cats")
 
 			$scope.monthIsSelected = function(){
 				var calArrayForMonth = [];
-				for (var i = 0; i < $scope.calArray.length; i++) {
-					$scope.calArray[i].forEach(function(calDay) {
-						if (calDay.inMonth) {
-							calArrayForMonth.push(calDay);
-						}
+					$scope.calArray.forEach(function(week){
+						week.forEach(function(calDay) {
+							if (calDay.inMonth) {
+								calArrayForMonth.push(calDay);
+							}
+						});	
 					});
-				};
 				return $scope.rangeIsSelected(calArrayForMonth);
 			};
 
@@ -408,7 +408,7 @@ angular.module("app.cats")
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
 					
 					// load data, in case it is not yet done
-					var promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
+					promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
 					promise.then(function() {
 						monthlyDataService.lastSingleClickDayString = firstOfMonthDayString;
 						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
@@ -452,7 +452,7 @@ angular.module("app.cats")
 				
 				promise = $q.all(promises);
 				promise.then(function(){
-					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates.length > 0) {
+					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
 						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
 					}
 					$scope.selectionCompleted();

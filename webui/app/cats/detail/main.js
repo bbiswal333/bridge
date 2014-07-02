@@ -371,12 +371,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
         }
-        container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
-        
+
         // adjust slight deviations in QUANTITY when posting part time
         var totalBookingQuantity = 0;
         var biggestBooking;
-        container.BOOKINGS.forEach(function(booking){
+        workdateBookings.forEach(function(booking){
             if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
                 biggestBooking = booking;
             }
@@ -389,6 +388,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             biggestBooking.QUANTITY -= bookingDif;
         }
 
+        container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
         monthlyDataService.days[workdate].tasks = workdateBookings;
         return container;
     }
