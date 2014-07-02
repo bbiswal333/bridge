@@ -48,8 +48,8 @@
 
                             script.src = src;
                             script.onload = script.onreadystatechange = function () {
-                                // in IE, ready State must be "loaded", in Chrome ready state is undefined and we do not have to take care of it
-                                if (script.readyState === undefined || script.readyState === 'loaded') {
+                                // in IE, ready State must be "loaded" or "complete", in Chrome ready state is undefined and we do not have to take care of it
+                                if (script.readyState === undefined || script.readyState === 'loaded' || script.readyState === 'complete') {
                                     script.onreadystatechange = script.onload = null;
                                     // in IE 10 we need a delayed loading of the next resource, otherwise the execution order is messed up and we get angular injector errors ('module not found...')
                                     if (/MSIE ([0-9]+\.\d+);/.test(navigator.userAgent)) {
