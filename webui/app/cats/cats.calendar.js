@@ -90,6 +90,9 @@ angular.module("app.cats")
 			    $scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month);
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
+				if ($scope.maintainable) {
+					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date($scope.year,$scope.month)));
+				}
 				$scope.loading = false;
 			}
 
@@ -407,7 +410,7 @@ angular.module("app.cats")
 					// load data, in case it is not yet done
 					var promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
 					promise.then(function() {
-						monthlyDataService.lastSingleClickDay = firstOfMonthDayString;
+						monthlyDataService.lastSingleClickDayString = firstOfMonthDayString;
 						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
 						if ($scope.monthIsSelected()) {
 							promises = unSelectRange(collectRange(lastOfMonthDayString));
@@ -423,8 +426,7 @@ angular.module("app.cats")
 						});
 					}
 					promises.push(selectDay(dayString));
-
-					monthlyDataService.lastSingleClickDay = monthlyDataService.days[dayString];
+					monthlyDataService.lastSingleClickDayString = dayString;
 					setRangeDays(dayString, null);
 
 					if (event.originalEvent) {
@@ -450,6 +452,9 @@ angular.module("app.cats")
 				
 				promise = $q.all(promises);
 				promise.then(function(){
+					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates.length > 0) {
+						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
+					}
 					$scope.selectionCompleted();
 				});
 			};
@@ -563,17 +568,15 @@ angular.module("app.cats")
 			    catsUtils.getCatsComplianceData(handleCatsData, true); // force update
 			});
 
-
-			if (monthlyDataService.lastSingleClickDay) {
-				reload();
-			}
-
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
 			$scope.$watch("reloadInProgress", function() {
 				if ($scope.reloadInProgress.value === true) {
 					$scope.reloadAnimation = 'cats-fade-anim';
 				} else {
 					$scope.reloadAnimation = '';
+					if (monthlyDataService.lastSingleClickDayString && $scope.selectedDates.length <= 1) {
+						$scope.jump(monthlyDataService.lastSingleClickDayString, {});
+					}
 				}
 			}, true);
 	    };

@@ -7,7 +7,7 @@
 		<div class="app-cats-navigation">
         <span ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</span>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"> &#xe1ee; </span>	
-			<b class="app-cats-current-month" ng-class="{'box-title':maintainable}" ng-click="jump('', $event);">{{currentMonth}}</b> 
+			<b class="app-cats-current-month" ng-class="{'box-title':maintainable, 'clickable': true}" ng-click="jump('', $event);">{{currentMonth}}</b> 
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
 		<div class="app-cats-calendar">
