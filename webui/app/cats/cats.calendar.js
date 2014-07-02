@@ -87,7 +87,7 @@ angular.module("app.cats")
 			};
 
 			function handleCatsData(data) {
-				if (data !== null) {
+				if (data !== null && data != undefined) {
 					var additionalData = processCatsData(data);
 					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
