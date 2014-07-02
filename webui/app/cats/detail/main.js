@@ -16,6 +16,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.loaded = false;
     $scope.width = 800;
     $scope.selectedDates = [];
+    $scope.totalWorkingTime = 0;
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -24,8 +25,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     });
 
     function loadCATSDataForDay(dayString) {
-        if(!dayString && monthlyDataService.lastSingleClickDay){
-            dayString = monthlyDataService.lastSingleClickDay.dayString;
+        if(!dayString && monthlyDataService.lastSingleClickDayString){
+            dayString = monthlyDataService.lastSingleClickDayString;
         }
         else if (!dayString)
         {
@@ -36,6 +37,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var promise = monthlyDataService.getDataForDate(dayString);
         promise.then(function() {
             displayCATSDataForDay(monthlyDataService.days[dayString]);
+            $scope.loaded = true;
         });
     };
 
@@ -69,7 +71,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 actualHours + "'' but target hours are only '" +
                 targetHours + "'!");
         }
-        $scope.loaded = true;
     };
 
     $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
@@ -97,7 +98,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         } else if($scope.selectedDates.length == 1) { // Single day
             loadCATSDataForDay($scope.selectedDates[0]);
         } else { // Range selected
-            $scope.blockdata = [];
             $scope.totalWorkingTime = 1;
         }
     }

@@ -7,7 +7,7 @@
 		<div class="app-cats-navigation">
         <span ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</span>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"> &#xe1ee; </span>	
-			<b class="app-cats-current-month" ng-class="{'box-title':maintainable}">{{currentMonth}}</b> 
+			<b class="app-cats-current-month" ng-class="{'box-title':maintainable, 'clickable': true}" ng-click="jump('', $event);">{{currentMonth}}</b> 
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
 		<div class="app-cats-calendar">
@@ -19,10 +19,20 @@
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
                         <button class="btn btn-default"  ng-click="selectWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
-                        <!-- <button class="app-cats-cw-button" ng-click="selectWeek(monthService.getWeeksOfMonth(year, month)[$index].weekNo)">CW {{monthService.getWeeksOfMonth(year, month)[$index].weekNo}}</button> -->
                     </div>
                 </div>
-                <div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}}" ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString, $event);">
+
+                <div id="calendarDay"
+                     class="{{dayClass}}" 
+                     title="{{getDescForState(day.data.state)}}" 
+                     ng-repeat="day in week" 
+                     ng-if="day.data != null" 
+                     ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}" 
+                     ng-click="jump(day.dayString, $event);" 
+                     ng-keyup="navigate(day.dayString, $event);" 
+                     tabindex="1"
+                     style="outline: 0">
+
                     <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
