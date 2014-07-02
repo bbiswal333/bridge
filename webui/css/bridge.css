@@ -791,9 +791,7 @@ input[type="checkbox"]:checked:after {
     line-height: 32px;
     text-transform: uppercase;
     font-style: italic;
-    font-weight: bold;
-    cursor: pointer;
-
+    font-weight: bold;    
 }
 .wi {
     font-size: 1.6rem;
