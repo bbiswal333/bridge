@@ -1,4 +1,4 @@
-var _paq = _paq || [];
+var _paq = _paq || []; 
 (function(){ var u=(("https:" == document.location.protocol) ? "https://tracking.mo.sap.corp/piwik/" : "http://tracking.mo.sap.corp/piwik/");
 
 if( document.location.hostname == "localhost" || document.location.hostname == "bridge-master.mo.sap.corp")

@@ -335,3 +335,21 @@
     text-align: center;
     margin: 0 2% 20px 0;
 }
+
+.cats-fade-anim-remove {
+  opacity: 0.3;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.cats-fade-anim-remove.cats-fade-anim-remove-active {
+  opacity: 1;
+}
+
+.cats-fade-anim-add {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+.cats-fade-anim,
+.cats-fade-anim-add.cats-fade-anim-add-active {
+  opacity: 0.3;
+}

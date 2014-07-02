@@ -296,7 +296,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         });
 
         if (container.BOOKINGS.length) {
+            monthlyDataService.reloadInProgress.value = true;
             catsUtils.writeCATSData(container).then(function(data){
+            monthlyDataService.reloadInProgress.value = false;
                 checkPostReply(data);
                 $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                 monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){

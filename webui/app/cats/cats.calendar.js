@@ -71,13 +71,6 @@ angular.module("app.cats")
 				return catsUtils.getDescForState(state_s);
 			};
 
-			function reload() {
-			    $scope.loading = true;
-				$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-				$scope.currentMonth = calUtils.getMonthName($scope.month).long;
-				$scope.loading = false;
-			}
-
 			function handleCatsData(data) {
 				if (data !== null) {
 					var additionalData = processCatsData(data);
@@ -358,6 +351,10 @@ angular.module("app.cats")
 			}
 
 			$scope.jump = function (dayString, event) {
+
+				if (monthlyDataService.reloadInProgress.value == true) {
+					return;
+				}
 				
 				var range_click = event.shiftKey;
 				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
@@ -455,6 +452,18 @@ angular.module("app.cats")
 	        $scope.reloadCalendar = function () {
 	            reload();
 	        };
+
+			function reload() {
+				// access single day to cause data load
+				var date = new Date($scope.year, $scope.month, 1)
+				monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+
+			    $scope.loading = true;
+				$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
+				$scope.currentMonth = calUtils.getMonthName($scope.month).long;
+				$scope.loading = false;
+				// $scope.selectionCompleted();
+			}
 			
 			$scope.getStateClassSubstring = function(calDay){
 				if(calDay.data.state === 'Y' && calDay.today){
@@ -498,10 +507,20 @@ angular.module("app.cats")
 			    catsUtils.getCatsComplianceData(handleCatsData, true); // force update
 			});
 
+
 			if (monthlyDataService.lastSingleClickDay) {
 				reload();
 				$scope.jump(monthlyDataService.lastSingleClickDay.dayString, {});
 			}
+
+			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
+			$scope.$watch("reloadInProgress", function() {
+				if ($scope.reloadInProgress.value == true) {
+					$scope.reloadAnimation = 'cats-fade-anim';
+				} else {
+					$scope.reloadAnimation = '';
+				}
+			}, true);
 	    };
 
 	    return {
@@ -516,7 +535,6 @@ angular.module("app.cats")
 	            selectionCompleted: "&selectioncompleted",
 	            dayClassInput: '@dayClass',
                 maintainable: '='
-                // loading: '='
 	        }
 	    };
 	}]);
