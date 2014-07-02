@@ -21,7 +21,18 @@
                         <button class="btn btn-default"  ng-click="selectWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                     </div>
                 </div>
-                <div ng-repeat="day in week" ng-if="day.data != null" class="{{dayClass}}" ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}" title="{{getDescForState(day.data.state)}}" ng-click="jump(day.dayString, $event);">
+
+                <div id="calendarDay"
+                     class="{{dayClass}}" 
+                     title="{{getDescForState(day.data.state)}}" 
+                     ng-repeat="day in week" 
+                     ng-if="day.data != null" 
+                     ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}" 
+                     ng-click="jump(day.dayString, $event);" 
+                     ng-keyup="navigate(day.dayString, $event);" 
+                     tabindex="1"
+                     style="outline: 0">
+
                     <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,

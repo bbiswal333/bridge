@@ -86,6 +86,14 @@ angular.module("app.cats")
 				return catsUtils.getDescForState(state_s);
 			};
 
+			function reload() {
+			    $scope.loading = true;
+				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month);
+				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
+				$scope.loading = false;
+			}
+
+			
 			function handleCatsData(data) {
 				if (data !== null && data != undefined) {
 					var additionalData = processCatsData(data);
@@ -381,7 +389,7 @@ angular.module("app.cats")
 
 			$scope.jump = function (dayString, event) {
 
-				if (monthlyDataService.reloadInProgress.value == true) {
+				if (monthlyDataService.reloadInProgress.value === true) {
 					return;
 				}
 
@@ -513,13 +521,6 @@ angular.module("app.cats")
 	            reload();
 	        };
 
-			function reload() {
-			    $scope.loading = true;
-				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month);
-				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
-				$scope.loading = false;
-			}
-			
 			$scope.getStateClassSubstring = function(calDay){
 				if(calDay.data.state === 'Y' && calDay.today){
 					return 'Y_TODAY';
@@ -569,7 +570,7 @@ angular.module("app.cats")
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
 			$scope.$watch("reloadInProgress", function() {
-				if ($scope.reloadInProgress.value == true) {
+				if ($scope.reloadInProgress.value === true) {
 					$scope.reloadAnimation = 'cats-fade-anim';
 				} else {
 					$scope.reloadAnimation = '';
@@ -588,7 +589,8 @@ angular.module("app.cats")
 	            onDateDeselected: "&ondatedeselected",
 	            selectionCompleted: "&selectioncompleted",
 	            dayClassInput: '@dayClass',
-                maintainable: '='
+                maintainable: '=',
+                loading: '='
 	        }
 	    };
 	}]);
