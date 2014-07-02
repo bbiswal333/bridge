@@ -1,5 +1,5 @@
 (function () {
-    "use strict";
+
     //loader module with load service
     angular.module('loader', []);
     angular.module('loader').factory('loadservice', ["$http", "$location", function ($http, $location) {
