@@ -5,7 +5,9 @@
 		"title"					:	"Clear Capacity",
 		"icon_css"				:	"fa fa-user",
 		"overview_directive"	:	"app.clearCapacity",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"default_hidden"		: 	true
+
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],
