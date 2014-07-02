@@ -47,13 +47,27 @@ angular.module("app.cats")
 	        }
 	    }
 
-		var linkFn = function ($scope) {
-			var monthRelative = 0;
+		function monthDiff(d1, d2) {
+		    var months;
+		    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+		    months -= d1.getMonth();
+		    months += d2.getMonth();
+		    return months;
+		}
 
+		var linkFn = function ($scope) {
 			$scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 
-			$scope.year = new Date().getFullYear();
-			$scope.month = new Date().getMonth();
+			$scope.year = monthlyDataService.year;
+			if (!$scope.year) {
+				monthlyDataService.year = new Date().getFullYear();
+				$scope.year = monthlyDataService.year;
+			}
+			$scope.month = monthlyDataService.month;
+			if (!$scope.month) {
+				monthlyDataService.month = new Date().getMonth();
+				$scope.month = monthlyDataService.month;
+			}
 			$scope.currentMonth = "";
 			$scope.calArray = [];
 			$scope.state = "";
@@ -63,6 +77,7 @@ angular.module("app.cats")
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
 
+			var monthRelative = monthDiff(new Date(),new Date(monthlyDataService.year,monthlyDataService.month));
 			var rangeSelectionStartDayString = null;
 			var rangeSelectionEndDayString = null;
 		    var daysElements = [];
@@ -286,14 +301,12 @@ angular.module("app.cats")
 	        	return $scope.selectedDates.indexOf(dayString) !== -1;
 	        };
 
-
-			$scope.weekIsSelected = function(index){
-				var week = $scope.calArray[index];
+			$scope.rangeIsSelected = function(calArray){
 				var allSelected = true;
-				var weekIsSelectable = false;
-				week.some(function(calDay){
+				var rangeIsSelectable = false;
+				calArray.some(function(calDay){
 					if (calDay.inMonth && isSelectable(calDay.dayString)) {
-						weekIsSelectable = true;
+						rangeIsSelectable = true;
 						if (!$scope.isSelected(calDay.dayString)) {
 							allSelected = false;
 							return false;
@@ -301,12 +314,28 @@ angular.module("app.cats")
 					}
 				});
 
-				if (weekIsSelectable && allSelected) {
+				if (rangeIsSelectable && allSelected) {
 					return true;
 				}
 				else{
 					return false;
 				}
+			};
+
+			$scope.weekIsSelected = function(index){
+				return $scope.rangeIsSelected($scope.calArray[index]);
+			};
+
+			$scope.monthIsSelected = function(){
+				var calArrayForMonth = [];
+				for (var i = 0; i < $scope.calArray.length; i++) {
+					$scope.calArray[i].forEach(function(calDay) {
+						if (calDay.inMonth) {
+							calArrayForMonth.push(calDay);
+						}
+					});
+				};
+				return $scope.rangeIsSelected(calArrayForMonth);
 			};
 
 			function setRangeDays (startDate, endDate){
@@ -355,14 +384,30 @@ angular.module("app.cats")
 				if (monthlyDataService.reloadInProgress.value == true) {
 					return;
 				}
-				
+
 				var range_click = event.shiftKey;
 				var multi_click = (event.ctrlKey || event.metaKey) && !range_click;
 				var single_click = !range_click && !multi_click;
 				var promise = null;
 				var promises = [];
 
-				if (single_click) {
+				if (!dayString && $scope.year && $scope.month) {
+					// togle complete month
+					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
+					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
+					
+					// load data, in case it is not yet done
+					var promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
+					promise.then(function() {
+						monthlyDataService.lastSingleClickDay = firstOfMonthDayString;
+						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
+						if ($scope.monthIsSelected()) {
+							promises = unSelectRange(collectRange(lastOfMonthDayString));
+						} else {
+							promises = selectRange(collectRange(lastOfMonthDayString));
+						}
+					});
+				} else if (single_click) {
 					//unselectOthers
 					if ($scope.selectedDates) {
 						$scope.selectedDates.forEach(function(selectedDayString){
@@ -414,14 +459,22 @@ angular.module("app.cats")
 	            }
 	            monthRelative--;
 
-	            if ($scope.month === 0) {
-	                $scope.month = 11;
-	                $scope.year--;
+	            if (monthlyDataService.month === 0) {
+	                monthlyDataService.month = 11;
+	                monthlyDataService.year--;
 	            }
 	            else {
-	                $scope.month--;
+	                monthlyDataService.month--;
 	            }
-	            reload();
+				$scope.year = monthlyDataService.year;
+				$scope.month = monthlyDataService.month;
+
+				// access single day to cause data load
+				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
+				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+				promise.then(function() {
+					reload();
+				});
 	        };
 
 	        $scope.canGoForward = function () {
@@ -438,15 +491,22 @@ angular.module("app.cats")
 	            }
 	            monthRelative++;
 
-	            if ($scope.month === 11) {
-	                $scope.month = 0;
-	                $scope.year++;
+	            if (monthlyDataService.month === 11) {
+	                monthlyDataService.month = 0;
+	                monthlyDataService.year++;
 	            }
 	            else {
-	                $scope.month++;
+	                monthlyDataService.month++;
 	            }
+				$scope.year = monthlyDataService.year;
+				$scope.month = monthlyDataService.month;
 
-	            reload();
+				// access single day to cause data load
+				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
+				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+				promise.then(function() {
+					reload();
+				});
 	        };
 
 	        $scope.reloadCalendar = function () {
@@ -454,15 +514,10 @@ angular.module("app.cats")
 	        };
 
 			function reload() {
-				// access single day to cause data load
-				var date = new Date($scope.year, $scope.month, 1)
-				monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-
 			    $scope.loading = true;
-				$scope.calArray = calUtils.buildCalendarArray($scope.year, $scope.month);
-				$scope.currentMonth = calUtils.getMonthName($scope.month).long;
+				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month);
+				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				$scope.loading = false;
-				// $scope.selectionCompleted();
 			}
 			
 			$scope.getStateClassSubstring = function(calDay){
@@ -482,7 +537,7 @@ angular.module("app.cats")
 			catsUtils.getCatsComplianceData(handleCatsData);
 
 			if ($scope.selectedDay) {
-			    while (new Date($scope.selectedDay).getMonth() !== $scope.month) {
+			    while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
 			        $scope.prevMonth();
 			    }
 			}
@@ -510,7 +565,6 @@ angular.module("app.cats")
 
 			if (monthlyDataService.lastSingleClickDay) {
 				reload();
-				$scope.jump(monthlyDataService.lastSingleClickDay.dayString, {});
 			}
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;

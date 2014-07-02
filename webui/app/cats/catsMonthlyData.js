@@ -6,12 +6,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"app.cats.data.catsUtils", 
 	
 	function($http, $q, calenderUtils, catsUtils){
+
 	this.months = {};
 	this.days = {};
 	this.promise = null;
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
-
+	this.year = new Date().getFullYear();
+	this.month = new Date().getMonth();
 
 	this.getDataForCurrentMonth = function(){
 		var date = calenderUtils.today();

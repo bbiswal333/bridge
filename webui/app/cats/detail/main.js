@@ -36,6 +36,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var promise = monthlyDataService.getDataForDate(dayString);
         promise.then(function() {
             displayCATSDataForDay(monthlyDataService.days[dayString]);
+            $scope.loaded = true;
         });
     };
 
@@ -69,7 +70,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 actualHours + "'' but target hours are only '" +
                 targetHours + "'!");
         }
-        $scope.loaded = true;
     };
 
     $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
