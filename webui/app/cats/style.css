@@ -286,7 +286,7 @@
 .allocation-bar-background-panel-hint {
     color: #bbbbbb;
     font-weight: 200; 
-    font-size: 18px;
+    font-size: 14px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -311,7 +311,7 @@
 }
 .allocation-bar-project-text {
     margin-top: 10px; 
-    font-weight: bold; 
+    font-weight: 300; 
     font-size: 14px;
     text-overflow: ellipsis;
     overflow: hidden;
