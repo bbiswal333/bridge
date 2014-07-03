@@ -285,11 +285,14 @@
 }
 .allocation-bar-background-panel-hint {
     color: #bbbbbb;
-    font-weight: bold; 
+    font-weight: 200; 
     font-size: 18px;
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;}
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 60px;
+}
 .allocation-bar-block {
     height:60px;
     float:left
