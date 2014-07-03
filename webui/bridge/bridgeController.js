@@ -264,7 +264,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
 }]);
 
-angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService) {
+angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService, bridgeInBrowserNotification) {
     //Receive emitted message and broadcast it.
     //Event names must be distinct or browser will blow up!
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
@@ -285,7 +285,8 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $loca
     bridgeDataService.initialize(deferred).then(function () {
         $rootScope.$emit('bridgeConfigLoaded', {});
     }, function () { // promise rejected = config load failed
-        alert("Bridge could not load your configuration from system IFP. Make sure that you are connected to the network and refresh the page.");
+        bridgeInBrowserNotification.setScope($rootScope);
+        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
     });
 });
 

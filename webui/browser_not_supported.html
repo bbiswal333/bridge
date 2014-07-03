@@ -14,38 +14,37 @@
 <body>
 	<div class="mainPageBackgroundGradient">
 		<div class="centeredContent" style="width:600px">
-			<b>We are really sorry, but your current browser version is not supported.</b><br /><br />
-			If you would like to use bridge, please use an <b>updated version</b> of a browser supporting the following features to enjoy a rich user experience.<br /><br />
-			
-				<script type='text/javascript'>
-					_paq.push(['trackPageView', "browser_not_supported"]);
-					for( var i = 0; i < window.feature_check.length; i ++ )
-					{
-						document.write('<span class="feature_check_' + window.feature_check[i].test + 
-							'">' + 
-							window.feature_check[i].name + '</span>');
-						if( i < window.feature_check.length - 1 ) document.write(' // ');
-					}
+			<b>We are really sorry, but your current browser version is not supported.</b>
+            <br /><br />
+            Visit our <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support">wiki page</a> to learn more about the supported browsers and the needed browser configuration.
+            <br /><br />
+            If you would like to use bridge, please use an <b>updated version</b> of a browser supporting the following features to enjoy a rich user experience.<br /><br />
 
-				</script>							
+    <script type='text/javascript'>
+        _paq.push(['trackPageView', "browser_not_supported"]);
+        for (var i = 0; i < window.feature_check.length; i++) {
+            document.write('<span class="feature_check_' + window.feature_check[i].test +
+                '">' +
+                window.feature_check[i].name + '</span>');
+            if (i < window.feature_check.length - 1) document.write(' // ');
+        }
 
-				<br />
-                
-                If you are using Internet Explorer, please make sure to deactivate the compatibility mode for Bridge. This mode is activated in Intenet Explorer by default for all SAP internal sites.
-                <br /><br />
+    </script>
 
-				We suggest to use the most recent version of one of the following browsers.<br /><br />
+    <br /><br />
 
-				<a href="http://www.google.de/intl/de/chrome/browser/" target="_blank">Chrome</a> // 
-				<a href="http://www.mozilla.org/de/firefox/new/" target="_blank">Firefox</a> // 
-				<a href="http://www.apple.com/safari/" target="_blank">Safari (Mac)</a> //
-				<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer</a>
+    We suggest to use the most recent version of one of the following browsers.<br /><br />
 
-				<br /><br />
+    <a href="http://www.google.de/intl/de/chrome/browser/" target="_blank">Chrome</a> //
+    <a href="http://www.mozilla.org/de/firefox/new/" target="_blank">Firefox</a> //
+    <a href="http://www.apple.com/safari/" target="_blank">Safari (Mac)</a> //
+    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer</a>
+
+    <br /><br />
 
 
-				For more information, please feel free to visit us on <a href="https://github.wdf.sap.corp/bridge/bridge" target="_blank">GitHub<a/>.
-		</div>
+    For more information, please feel free to visit us on <a href="https://github.wdf.sap.corp/bridge/bridge" target="_blank">GitHub<a />.
+</div>
 	</div>
 </body>
 </html>
