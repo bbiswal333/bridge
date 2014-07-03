@@ -6,8 +6,8 @@ To **use it**, visit our test or production instance links below.
 To **enhance it**, just follow the instructions on this page.
 To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bootcamp.mo.sap.corp). 
 
-* [Bridge Test](http://bridge-master.mo.sap.corp)
-* [Bridge Production](http://bridge.mo.sap.corp)
+* [Bridge Test](https://bridge-master.mo.sap.corp)
+* [Bridge Production](https://bridge.mo.sap.corp)
 
 ## development setup
 * fork this repository and clone your fork to get a local copy
