@@ -13,8 +13,8 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     
     $scope.statusMap = {};     
 
-    if (appAtcConfig.isInitialized == false) {
-        appAtcConfig.initialize($routeParams['appId']);
+    if (appAtcConfig.isInitialized === false) {
+        appAtcConfig.initialize($routeParams.appId);
     }
     $scope.atcData.getDetailsForConfig(appAtcConfig, $scope);
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
@@ -23,14 +23,15 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     {            
         if($scope.atcData.detailsData.length > 0)
         {
-            var status_filter = $routeParams['prio'].split('|'); 
+            var status_filter = $routeParams.prio.split('|'); 
             $scope.statusMap = {};  
             for(var i = 1; i <= 4; i++)
             {
-                if(status_filter.indexOf(i + "") > -1)
-                    $scope.statusMap[i] = {"active":true};
-                else
-                    $scope.statusMap[i] = {"active":false};
+                if (status_filter.indexOf(i + "") > -1) {
+                    $scope.statusMap[i] = { "active": true };
+                } else {
+                    $scope.statusMap[i] = { "active": false };
+                }
             }
         }
     }, true);
@@ -40,16 +41,16 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         $scope.atcData.tableData = [];
         if($scope.atcData && $scope.atcData.detailsData)
         {
-            $scope.atcData.detailsData.forEach(function (atcEntry)
-            {
-                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active)
+            $scope.atcData.detailsData.forEach(function (atcEntry) {
+                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active) {
                     $scope.atcData.tableData.push(atcEntry);
-            })
+                }
+            });
         }
     }, true);
 
-    $scope.getStatusArray = function(){
+    $scope.getStatusArray = function () {
         return Object.keys($scope.statusMap);
-    }
+    };
 
 }]);

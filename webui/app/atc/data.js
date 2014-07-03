@@ -5,7 +5,7 @@
         prio1: 0,
         prio2: 0,
         prio3: 0,
-        prio4: 0,
+        prio4: 0
     };
 
     this.detailsData = [];
@@ -19,7 +19,7 @@
                 prio1: data.PRIOS.PRIO1,
                 prio2: data.PRIOS.PRIO2,
                 prio3: data.PRIOS.PRIO3,
-                prio4: data.PRIOS.PRIO4,
+                prio4: data.PRIOS.PRIO4
             };                
         });
     };
@@ -38,5 +38,6 @@
         }
     };
 
-    var refreshInterval = $interval(this.loadOverviewData, 60000 * 5);
+    // set up the refresh interval for the data loading
+    $interval(this.loadOverviewData, 60000 * 5);
 }]);
