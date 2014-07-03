@@ -125,7 +125,7 @@
 
         for (var i = 0; i < _getProjects().length; i++) {
             for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                if (_getProjects()[i].apps[a].metadata.id === id) {
+                if (_getProjects()[i].apps[a].metadata.id.toString() === id.toString()) {
                     return _getProjects()[i].apps[a];
                 }
             }
