@@ -8,11 +8,83 @@
 
     function isEmpty(obj) {
         for (var prop in obj) {
-            if (obj.hasOwnProperty(prop))
+            if (obj.hasOwnProperty(prop)) {
                 return false;
+            }
         }
 
         return true;
+    }
+
+    //TODO: this extra call should be integrated with the config, projects, etc
+    function _fetchUserInfo() {
+        $http({
+            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
+            method: "GET"
+        }).success(function (data) {
+            that.userInfo = data.USERINFO;
+        });
+    }
+
+    function parseApps(project) {
+        var apps = [];
+
+        for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
+            //initialize metadata from loader service
+            var app = {};
+            app.metadata = bridgeLoaderServiceProvider.apps[i];
+            app.metadata.id = i;
+            app.metadata.show = false;
+
+            //fetch corresponding config from backend
+            for (var j = 0; j < project.apps.length; j++) {
+                if (project.apps[j].metadata.module_name === app.metadata.module_name) {
+                    app.metadata.show = true;
+                    app.metadata.order = j;
+                    app.appConfig = project.apps[j].appConfig;
+                }
+            }
+            apps.push(app);
+        }
+
+        apps.sort(function (app1, app2) {
+            if (app1.metadata.title < app2.metadata.title) {
+                return -1;
+            }
+            if (app1.metadata.title > app2.metadata.title) {
+                return 1;
+            }
+            return 0;
+        });
+        return apps;
+    }
+
+    function parseProject(project) {
+        that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
+    }
+
+    function parseProjects(config) {
+        if (config.bridgeSettings && config.bridgeSettings.apps) {
+            parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+        }
+        else if (config.projects) {
+            for (var i = 0; i < config.projects.length; i++) {
+                parseProject(config.projects[i]);
+            }
+        }
+    }
+
+    function parseSettings(config) {
+        if (config.bridgeSettings) {
+            that.bridgeSettings = config.bridgeSettings;
+        }
+    }
+
+    function _toDefault() {
+        that.projects.length = 0;
+        var defaultConfig = bridgeConfig.getDefaultConfig();
+        parseProjects(defaultConfig);
+        parseSettings(defaultConfig);
     }
 
     function _initialize(deferredIn) {
@@ -38,83 +110,24 @@
         return deferredIn.promise;
     }
 
-    function parseProjects(config) {
-        if (config.bridgeSettings && config.bridgeSettings.apps) {
-            parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
-        }
-        else if (config.projects) {
-            for (var i = 0; i < config.projects.length; i++) {
-                parseProject(config.projects[i]);
-            }
-        }
-    }
-
-    //TODO: this extra call should be integrated with the config, projects, etc
-    function _fetchUserInfo() {
-        $http({
-            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
-            method: "GET",
-        }).success(function (data, status, headers, config) {
-            that.userInfo = data.USERINFO;
-        });
-    }
-
-    function parseProject(project) {
-        that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
-    }
-
-    function parseApps(project) {
-        var apps = [];
-
-        for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++)
-        {
-            //initialize metadata from loader service
-            var app = {};
-            app.metadata = bridgeLoaderServiceProvider.apps[i];
-            app.metadata.id = i; 
-            app.metadata.show = false;
-
-            //fetch corresponding config from backend
-            for(var j = 0; j < project.apps.length; j++)
-            {
-                if(project.apps[j].metadata.module_name == app.metadata.module_name)
-                {
-                    app.metadata.show = true;
-                    app.metadata.order = j;
-                    app.appConfig = project.apps[j].appConfig;
-                }
-            }
-            apps.push(app);    
-        }
-
-        apps.sort(function (app1, app2){
-                if( app1.metadata.title < app2.metadata.title ) return -1;
-                if( app1.metadata.title > app2.metadata.title ) return 1;
-                return 0;
-        });        
-        return apps;
-    }
-
-    function parseSettings(config) {
-        if (config.bridgeSettings)
-            that.bridgeSettings = config.bridgeSettings;
-    }
-
     function _getProjects() {
-        if(!that.configRawData)
+        if (!that.configRawData) {
             throw new Error("Bridge data not yet initialized");
+        }
 
         return that.projects;
-    };
+    }
 
     function _getAppById(id) {
-        if (!that.configRawData)
+        if (!that.configRawData) {
             throw new Error("Bridge data not yet initialized");
+        }
 
         for (var i = 0; i < _getProjects().length; i++) {
             for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                if (_getProjects()[i].apps[a].metadata.id == id)
+                if (_getProjects()[i].apps[a].metadata.id === id) {
                     return _getProjects()[i].apps[a];
+                }
             }
         }
 
@@ -122,31 +135,27 @@
     }
 
     function _getAppConfigById(id) {
-        if (!that.configRawData)
+        if (!that.configRawData) {
             throw new Error("Bridge data not yet initialized");
+        }
 
         var app = _getAppById(id);
-        if (app.appConfig)
+        if (app.appConfig) {
             return app.appConfig;
-        else
+        } else {
             return {};
+        }
     }
 
     function _getUserInfo() {
         return that.userInfo;
     }
 
-    function _toDefault() {
-        that.projects.length = 0;
-        var defaultConfig = bridgeConfig.getDefaultConfig();
-        parseProjects(defaultConfig);
-        parseSettings(defaultConfig);
-    }
-
     function _getAppMetadataForProject(projectIndex) {
         var project = _getProjects()[projectIndex];
-        if (!project)
+        if (!project) {
             throw new Error("Project was not found");
+        }
 
         var appMetadata = [];
         for (var i = 0; i < project.apps.length; i++) {
@@ -182,6 +191,6 @@
         getAppConfigById: _getAppConfigById,
         toDefault: _toDefault,
         setClientMode: _setClientMode,
-        getClientMode: _getClientMode,
+        getClientMode: _getClientMode
     };
 }]);
