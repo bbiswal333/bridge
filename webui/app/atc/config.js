@@ -1,27 +1,29 @@
 angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
-	var ConfigItem = function() {
-		this.clear = function () {
-		    this.srcSystem = "";
-		    this.devClass = "";
-		    this.tadirResponsible = "";
-		    this.component = "";
-		    this.showSuppressed = false;
-		    this.displayPrio1 = false;
-		    this.displayPrio2 = false;
-		    this.displayPrio3 = false;
-		    this.displayPrio4 = false;
-		    this.onlyInProcess = false;
-		}
+    var ConfigItem = function () {
+        this.clear = function () {
+            this.srcSystem = "";
+            this.devClass = "";
+            this.tadirResponsible = "";
+            this.component = "";
+            this.showSuppressed = false;
+            this.displayPrio1 = false;
+            this.displayPrio2 = false;
+            this.displayPrio3 = false;
+            this.displayPrio4 = false;
+            this.onlyInProcess = false;
+        };
 
-		this.isEmpty = function () {
-		    if (this.srcSystem == "" && this.devClass == "" && this.tadirResponsible == "" && this.component == "")
-		        return true;
-		    else
-		        return false;
-		}
+        this.isEmpty = function () {
+            if (this.srcSystem === "" && this.devClass === "" && this.tadirResponsible === "" && this.component === "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
 
-		this.clear();
-	}
+        this.clear();
+    };
 
 	var IQueryString = {
 		getQueryString : function() { throw "Not Implemented"; }
@@ -53,10 +55,9 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 	};
 
 	Config.prototype = Object.create(IConfig);
-	Config.prototype.newItem = function()
-	{
-		return new ConfigItem();
-	}
+	Config.prototype.newItem = function () {
+	    return new ConfigItem();
+	};
 
 	Config.prototype.addConfigItem = function(item){
 		this.configItems.push(item);
@@ -65,12 +66,14 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 		return this.configItems;
 	};
 	Config.prototype.getQueryString = function() {
-		queryString = "";
+		var queryString = "";
 		for(var i = 0; i < this.getConfigItems().length; i++) {
-			if(i == this.getConfigItems().length - 1)
-				queryString += this.getConfigItems()[i].getQueryString(); 
-			else
-				queryString += this.getConfigItems()[i].getQueryString() + "|"; 
+		    if (i === this.getConfigItems().length - 1) {
+		        queryString += this.getConfigItems()[i].getQueryString();
+		    }
+		    else {
+		        queryString += this.getConfigItems()[i].getQueryString() + "|";
+		    }
 		}
 		return queryString;
 	};
@@ -85,7 +88,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 	    if (persistedConfig.configItems) {
 	        this.clear();
 
-	        for (configItem in persistedConfig.configItems) {
+	        for (var configItem in persistedConfig.configItems) {
 	            currentConfigItem = this.newItem();
 
 	            currentConfigItem.component = persistedConfig.configItems[configItem].component;
