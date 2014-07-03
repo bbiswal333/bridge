@@ -18,7 +18,8 @@
 		"inject": true,
 		"it": true,
 		"expect": true,
-		"alert": true        
+		"alert": true,
+        "Notification":  true      
     },
     "rules": 
     {        
