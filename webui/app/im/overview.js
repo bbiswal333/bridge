@@ -63,24 +63,15 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         }, true);
 
 
-        $scope.$watch('config', function() {      
-            if($scope.config !== undefined)
+        $scope.$watch('config', function (newVal, oldVal) {
+            if($scope.config !== undefined && newVal !== oldVal)
             {
                 ticketData.updatePrioSelectionCounts();
-                /*angular.forEach($scope.prios, function(prio){
-                    prio.selected = 0;
-                    if($scope.config.data.selection.sel_components) { prio.selected = prio.selected + prio.sel_components; }
-                    if($scope.config.data.selection.colleagues)     { prio.selected = prio.selected + prio.colleagues; }
-                    if($scope.config.data.selection.assigned_me)    { prio.selected = prio.selected + prio.assigned_me; }
-                    if($scope.config.data.selection.created_me)     { prio.selected = prio.selected + prio.created_me; }
-                    if(!$scope.config.data.settings.ignore_author_action)
-                    {
-                        if($scope.config.data.selection.sel_components) { prio.selected = prio.selected + prio.sel_components_aa; }
-                        if($scope.config.data.selection.colleagues)     { prio.selected = prio.selected + prio.colleagues_aa; }
-                        if($scope.config.data.selection.assigned_me)    { prio.selected = prio.selected + prio.assigned_me_aa; }
-                    }                                            
-                }); */
-                bridgeConfig.persistInBackend(bridgeDataService);                
+                
+                // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
+                if (oldVal !== undefined) {
+                    bridgeConfig.persistInBackend(bridgeDataService);
+                }
             }
         },true);  
 
