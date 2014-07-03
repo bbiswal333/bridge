@@ -6,12 +6,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"app.cats.data.catsUtils", 
 	
 	function($http, $q, calenderUtils, catsUtils){
+
 	this.months = {};
 	this.days = {};
 	this.promise = null;
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
-
+	this.year = new Date().getFullYear();
+	this.month = new Date().getMonth();
 
 	this.getDataForCurrentMonth = function(){
 		var date = calenderUtils.today();
@@ -136,11 +138,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		var HoursOfWorkingDay = 8;
 							day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
 		            		// test test test
-		            		//if(day.targetHours && false) {
-			            	//	day.targetHours = 7.55;
-							//} else {
-							//	day.targetHours = 0;
-							//}
+		            		/*if(day.targetHours) {
+			            		day.targetHours = 7.55;
+							} else {
+								day.targetHours = 0;
+							}*/
 		            		day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
 		            		day.actualTimeInPercentageOfDay = 0; // to be calulated later
 		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
