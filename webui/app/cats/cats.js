@@ -9,7 +9,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
           data.CATSCHK.forEach(function(CATSCHKforDay){
             // test test test
@@ -46,7 +46,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
       
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&date=" + new Date().getTime(), function(data, status) { // /zdevdb/GETCATSDATA
         if (!data)
           deferred.reject(status);
         else if (data.TIMESHEETS.WEEK != week + "." + year ){
@@ -76,7 +76,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE, function(data) { // /zdevdb/GETWORKLIST
+      _httpRequest(TASKS_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/GETWORKLIST
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
