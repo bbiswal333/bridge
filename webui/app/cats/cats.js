@@ -1,15 +1,15 @@
 angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "$q", "lib.utils.encodeForUrl", "lib.utils.calUtils",
   function($http, $q, encodeForUrl, calUtils) {
-    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin + "&date=" + new Date().getTime();
-    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin + "&date=" + new Date().getTime();    
+    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
+    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
-    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + location.origin + "&date=" + new Date().getTime();
+    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + location.origin;
 
     var catsDataCache = null;
     var taskCache = null;
 
     function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
           data.CATSCHK.forEach(function(CATSCHKforDay){
             // test test test
@@ -76,7 +76,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE, function(data) { // /zdevdb/GETWORKLIST
+      _httpRequest(TASKS_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/GETWORKLIST
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
