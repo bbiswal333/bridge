@@ -130,11 +130,12 @@ angular.module("app.cats")
 		    function getDaysElements (element){
 		    	if (!daysElements || daysElements.indexOf(element) === -1) {
 		    		daysElements = [];
-		    		var elements = element.parentElement.parentElement.children;
-		    		for( var i = 0; i < elements.length; i++){
-		    			for ( var j = 0; j < elements[i].children.length; j++){
-		    				if (elements[i].children[j].id === "calendarDay") {
-			    				daysElements.push(elements[i].children[j]);
+		    		var elements = $(element).parents(".app-cats-calendar").children();
+		    		for (var i = 0; i < elements.length; i++) {
+		    		    var days = $(elements[i]).children();
+		    		    for (var j = 0; j < days.length; j++) {
+		    		        if (days[j].id === "calendarDay") {
+		    		            daysElements.push(days[j]);
 			    			}
 		    			}
 		    		}
@@ -147,6 +148,10 @@ angular.module("app.cats")
 				var originDate = calUtils.parseDate(dayString);
 				var targetDate = new Date();
 				var currentElement = event.target;
+                // in IE event.target is one element too deep
+				if (currentElement.parentElement.id === "calendarDay") {
+				    currentElement = currentElement.parentElement;
+				}
 				var nextElement = null;
 
 				switch (event.keyCode) {
