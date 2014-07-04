@@ -180,7 +180,7 @@ angular.module("app.cats")
 				}
 				
 				if (nextElement){
-					nextElement.focus();
+					setTimeout(function() { nextElement.focus(); }, 1);					
 				}
 
 				if (originDate.getMonth() === targetDate.getMonth()) {
