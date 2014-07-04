@@ -1,0 +1,19 @@
+.ccm-box{
+	width: 33%;
+	float: left;
+	text-align: center;
+	border-right: 1px solid #e5e5e5;
+}
+.ccm-box:last-child{
+	border:none;
+}
+.ccm-row{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.ccm-head{
+	display: inline-table;
+	width: 30%;
+
+}
