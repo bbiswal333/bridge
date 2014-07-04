@@ -10,6 +10,7 @@
                 </div>
                 <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
+
                         <input type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
                         <input ng-if="link.type=='saplink'" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
                     </div>
@@ -20,6 +21,7 @@
                             <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                         </div>
                         <div class="app-linklist-editIcons">
+                            <i class="fa fa-arrows" style="margin-right:10px;"></i>
                             <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;"class=" app-linklist-clickIcon fa fa-times" ></span>
                         </div>
                     </div>
