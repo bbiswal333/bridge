@@ -6,7 +6,7 @@
 
             <!--- DISPLAY existing Links -->
             <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
-                <div class="app-linkList-row" style="min-height:0px;" ng-if="!linkList[0]" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                <div class="app-linkList-row" style="min-height:45px;" ng-if="!linkList[0]" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                 </div>
                 <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
@@ -25,16 +25,19 @@
                     </div>
                 </div>
             </div>
+            <div>Drag and drop your items here.</div>
 
-            <!--- REMOVE empty LinkList -->
-            <span class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;position:relative;top:-8px;">
-                Remove Linklist
-            </span> 
+            <div style="z-index:1;position:relative;margin-top: 8px;">
+                <!--- REMOVE empty LinkList -->
+                <div class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)">
+                    Remove Linklist
+                </div>
 
-            <!--- DISPLAY New Link button -->
-            <div class="row app-linkList-row" >
-                <div class="col-xs-12" style="padding:0 0 0 0;">
-                    <button ng-disabled="linkList.length >= 7 || !isAddFormPossible()" ng-click="toggleAddForm($index)" type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
+                <!--- DISPLAY New Link button -->
+                <div >
+                    <div class="col-xs-12" style="padding:0 0 0 0;">
+                        <button ng-disabled="linkList.length >= 7 || !isAddFormPossible()" ng-click="toggleAddForm($index)" type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
+                    </div>
                 </div>
             </div>
 
