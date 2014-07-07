@@ -18,7 +18,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 
             $scope.getBlockIndex = function(block) {
                 return $scope.blocks.indexOf(block);
-            }
+            };
 
             $scope.blockSizeChangeRequested = function(block, uiPositionLeft, originalBlockWidth){
                 var changeValue = block.localValue;
@@ -63,7 +63,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                     nextBlock.localValue = Math.round((0.01) * 1000) / 1000;
                     nextBlock.blockWidth = Math.round((nextBlock.blockWidth - changeWidth) * 1000) / 1000;
                 }
-            }
+            };
 
             $scope.areChangesCorrect = function(){
                 var sumOffValuesAfterChange = 0;
@@ -79,28 +79,29 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                     }
                 });
                 sumOffValuesAfterChange = Math.round(sumOffValuesAfterChange * 1000) / 1000;
-                if(sumOffValuesAfterChange > 1)
+                if(sumOffValuesAfterChange > 1) {
                     return false;
-                else
+                } else {
                     return true;
-            }
+                }
+            };
 
             $scope.applyChangesInBlocks = function(){
                 $scope.blocks.forEach(function(block){
                     block.value = block.localValue;
-                })
-            }
+                });
+            };
 
             $scope.hasNext = function(block) {
-                return $scope.getBlockIndex(block)+1 != $scope.blocks.length
-            }
+                return $scope.getBlockIndex(block) + 1 !== $scope.blocks.length;
+            };
 
             $scope.getNext = function(block) {
                 if($scope.hasNext(block)) {
-                    return $scope.blocks[$scope.getBlockIndex(block)+1];
+                    return $scope.blocks[$scope.getBlockIndex(block) + 1];
                 }
                 return null;
-            }
+            };
         };
 
         return {
@@ -110,6 +111,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                 height: "@height",
                 blocks: "=blocks",
                 totalValue: "@totalValue",
+                text: "=text"
             },
             replace: true,
             link: linkFunction,
@@ -119,6 +121,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarDirective.tmpl.html",
         '<div class="allocation-bar-container">' +
+            '<div class="allocation-bar-background-panel-hint">{{text}}</div>' +
             '<div class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
                 '<div class="allocation-bar-background-panel-div" style="height:60px">' +
                     '<font ng-if="!blocks.length" class="allocation-bar-background-panel-hint">Please select date(s) and choose tasks from the list on the left</font>' +

@@ -28,7 +28,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         if (data != null) {
           data.CATSCHK.forEach(function(CATSCHKforDay){
             // test test test
-            if (CATSCHKforDay.STDAZ && false) {
+            if (CATSCHKforDay.STDAZ && true) {
               CATSCHKforDay.STDAZ = 7.55;
               CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
               if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {

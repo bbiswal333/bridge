@@ -17,6 +17,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.width = 800;
     $scope.selectedDates = [];
     $scope.totalWorkingTime = 0;
+    $scope.hintText = "";
 
     $http.get(window.client.origin + '/client').success(function (data, status) {
         $scope.client = true;
@@ -176,6 +177,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function displayCATSDataForDay(day) {
         $scope.lastCatsAllocationDataForDay = day;
         $scope.blockdata = [];
+        $scope.hintText = "";
         if(day.targetTimeInPercentageOfDay) {
             $scope.totalWorkingTime = 1;
         } else {
@@ -196,9 +198,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
         checkAndCorrectPartTimeInconsistancies(day);
+        if(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 0 &&
+           monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 1 ) {
+            $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
+        }
+
         if(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay > monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay) {
             var actualHours = Math.round(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay * 100 * 8) / 100;
             var targetHours = Math.round(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay * 100 * 8) / 100;
+            $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
             bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
                 actualHours + "'' but target hours are only '" +
                 targetHours + "'!");
