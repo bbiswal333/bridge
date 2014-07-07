@@ -1,6 +1,6 @@
 <div class="row">
 <!-- LISTS -->
-    <div ng-repeat="linkList in config.listCollection track by $index">
+    <div ng-repeat="linkList in config.data.listCollection track by $index">
         <div class="col-md-4">
             <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
 
@@ -109,7 +109,7 @@
     </div>
 
     <!--- ADD empty LinkList -->
-    <div ng-if="config.listCollection.length < 3" class="col-md-4">
+    <div ng-if="config.data.listCollection.length < 3" class="col-md-4">
         <span class="btn-default btn "  ng-click="addLinkList()"  style="margin-top:45px">Add new Linklist</span>
     </div>
 

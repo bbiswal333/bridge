@@ -1,8 +1,6 @@
 angular.module('app.linklist', ['ui.sortable']);
 
-angular.module('app.linklist').directive('app.linklist',
-        ['app.linklist.configservice',
-        function(appLinklistConfig) {
+angular.module('app.linklist').directive('app.linklist', ['app.linklist.configservice', function(appLinklistConfig) {
 
     var directiveController = ['$scope', '$timeout', function ($scope, $timeout) {        
         $scope.box.settingScreenData = {
@@ -11,29 +9,28 @@ angular.module('app.linklist').directive('app.linklist',
         };        
         $scope.config = appLinklistConfig;
 
-    $scope.box.returnConfig = function () {
+        $scope.box.returnConfig = function () {
 
-        var configCopy = angular.copy(appLinklistConfig);
-        configCopy.boxSize = $scope.box.boxSize;
+            var configCopy = angular.copy(appLinklistConfig.data);
+            configCopy.boxSize = $scope.box.boxSize;
             
-        if(configCopy.listCollection.length >= 1)
-        {
-            for (var i = configCopy.listCollection.length - 1; i >= 0; i--) 
-            {  
-                linkList = configCopy.listCollection[i];
+            if(configCopy.listCollection.length >= 1) {
+                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
+                    linkList = configCopy.listCollection[i];
                             
-                    for (var j = linkList.length - 1; j >= 0; j--)
-                    {
+                    for (var j = linkList.length - 1; j >= 0; j--){
                         delete linkList[j].$$hashKey;
                         delete linkList[j].editable;
                         delete linkList[j].old;
                         delete linkList[j].sapGuiFile;
                     };
-            };
-                    return configCopy;
-                }; 
+                };
+
+                return configCopy;
+            }; 
         };
     }];
+
     return {
         restrict: 'E',
         templateUrl: function(){return 'app/linkList/overview.html'},
@@ -48,9 +45,9 @@ angular.module('app.linklist').directive('app.linklist',
                 setDefaultConfig();
             }
 
-            appLinklistConfig.listCollection = $scope.appConfig.listCollection;
-            for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
-                linkList = appLinklistConfig.listCollection[i];
+            appLinklistConfig.data.listCollection = $scope.appConfig.listCollection;
+            for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
+                linkList = appLinklistConfig.data.listCollection[i];
 
                 for (var j = linkList.length - 1; j >= 0; j--) {
                     link = linkList[j];
@@ -64,14 +61,14 @@ angular.module('app.linklist').directive('app.linklist',
 
             function setDefaultConfig()
             {
-                appLinklistConfig.listCollection.push([]);
-                appLinklistConfig.listCollection[0].push({ "name":"Corporate Portal","url":"https://portal.wdf.sap.corp/irj/portal","type":"hyperlink"});
-                appLinklistConfig.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
-                appLinklistConfig.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview", "type": "hyperlink" });
-                appLinklistConfig.listCollection[0].push({ "name": "Bridge Github Repo", "url": "https://github.wdf.sap.corp/bridge/bridge", "type": "hyperlink" });
-                appLinklistConfig.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
-                appLinklistConfig.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
-                appLinklistConfig.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
+                appLinklistConfig.data.listCollection.push([]);
+                appLinklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "Bridge Github Repo", "url": "https://github.wdf.sap.corp/bridge/bridge", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
+                appLinklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
                 $scope.appConfig = appLinklistConfig;
             };
        

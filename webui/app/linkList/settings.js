@@ -5,16 +5,16 @@ angular.module('app.linklist').appLinkListSettings =
 	$scope.config  = appLinklistConfig;
 
 	$scope.addForm = [];
-	for (var i = appLinklistConfig.listCollection.length - 1; i >= 0; i--) {
+	for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
 		$scope.addForm.push('');
 	};
 
 	$scope.currentConfigValues = {};
 
 	calculateIDsForSortable = function () {
-		for (var i=0; i<appLinklistConfig.listCollection.length; i++)
+		for (var i=0; i<appLinklistConfig.data.listCollection.length; i++)
 		{
-			var currentList = appLinklistConfig.listCollection[i];
+		    var currentList = appLinklistConfig.data.listCollection[i];
 			for (var j=0; j<currentList.length; j++)
 			{
 				currentList[j].id = 'ID' + i + j; // ID based on position
@@ -24,7 +24,7 @@ angular.module('app.linklist').appLinkListSettings =
 	calculateIDsForSortable();
 
 	$scope.closeForm = function () {
-		$scope.setBoxSize(appLinklistConfig.listCollection);
+	    $scope.setBoxSize(appLinklistConfig.data.listCollection);
 		$scope.$emit('closeSettingsScreen');
 	};
 
@@ -44,7 +44,7 @@ angular.module('app.linklist').appLinkListSettings =
             //if (event.target.childElementCount >= 6) {
                 //ui.item.sortable.cancel();
             //}
-			$scope.setBoxSize(appLinklistConfig.listCollection);
+            $scope.setBoxSize(appLinklistConfig.data.listCollection);
     	}
     };
 
@@ -59,17 +59,17 @@ angular.module('app.linklist').appLinkListSettings =
 
     $scope.addLinkList = function()
     {
-    	appLinklistConfig.listCollection.push([]);
+        appLinklistConfig.data.listCollection.push([]);
     };
 
     $scope.removeLinkList = function(colNo)
     {
-    	appLinklistConfig.listCollection.splice(colNo,1);
+        appLinklistConfig.data.listCollection.splice(colNo, 1);
     };
 
     $scope.isLinkListEmpty = function(colNo)
     {
-    	if(appLinklistConfig.listCollection[colNo].length == 0)
+        if (appLinklistConfig.data.listCollection[colNo].length == 0)
     	{
     		return true;
     	}
@@ -77,7 +77,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.deleteEntry = function(colNo,entry)
 	{
-		linkList = appLinklistConfig.listCollection[colNo];
+	    linkList = appLinklistConfig.data.listCollection[colNo];
 
 		if(linkList.length > 0)
 		{
@@ -86,14 +86,14 @@ angular.module('app.linklist').appLinkListSettings =
 				link = linkList[i];
 
 				if(!entry && !link) {
-					appLinklistConfig.listCollection[colNo].splice(i,1);
+				    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 					break;
 				}
 				if(link.type=="saplink")
 				{
 					if(entry && link && link.name == entry.name && link.sid == entry.sid && link.transaction == entry.transaction)
 					{
-						appLinklistConfig.listCollection[colNo].splice(i,1);
+					    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 						break;
 					}
 				}
@@ -101,7 +101,7 @@ angular.module('app.linklist').appLinkListSettings =
 				{
 					if(entry && link && link.name == entry.name && link.url == entry.url)
 					{
-						appLinklistConfig.listCollection[colNo].splice(i,1);
+					    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 						break;
 					}
 				}
@@ -115,7 +115,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.newEntry = function(colNo)
 	{
-		if(appLinklistConfig.listCollection[colNo].length <= 6)
+	    if (appLinklistConfig.data.listCollection[colNo].length <= 6)
 		{
 			if($scope.addForm[colNo] == "web")
 			{
@@ -126,7 +126,7 @@ angular.module('app.linklist').appLinkListSettings =
                     $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
                 };
 				entry = {
-					'id': 'ID' + colNo + appLinklistConfig.listCollection[colNo].length + $scope.currentConfigValues.linkName,
+				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.linkName,
 					'name': $scope.currentConfigValues.linkName,
 					'url':  $scope.currentConfigValues.url,
 					'type': 'hyperlink'
@@ -138,7 +138,7 @@ angular.module('app.linklist').appLinkListSettings =
 					return;
 				};
 				entry = {
-					'id': 'ID' + colNo + appLinklistConfig.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName,
+				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName,
 					'name': $scope.currentConfigValues.sapLinkName,
 					'sid':  $scope.currentConfigValues.sapLinkSID,
 					'transaction': $scope.currentConfigValues.sapLinkTransaction,
@@ -149,7 +149,7 @@ angular.module('app.linklist').appLinkListSettings =
 			}
 			$scope.currentConfigValues = {};
 			$scope.setAddForm(colNo,'');
-			appLinklistConfig.listCollection[colNo].push(entry);
+			appLinklistConfig.data.listCollection[colNo].push(entry);
 		}
 	};
 
