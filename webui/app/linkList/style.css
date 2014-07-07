@@ -131,7 +131,7 @@
 	display: inline-block;
 	float: left;
 	overflow: hidden;
-	width: -moz-calc(100% - 20x);
-	width: -webkit-calc(100% - 20px);
-    width: calc(100% - 20px);
+	width: -moz-calc(100% - 25px);
+	width: -webkit-calc(100% - 25px);
+    width: calc(100% - 40px);
 }

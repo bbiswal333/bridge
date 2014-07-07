@@ -8,6 +8,21 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var catsDataCache = null;
     var taskCache = null;
 
+    function between(val_i, min_i, max_i) {
+      return (val_i >= min_i && val_i <= max_i);
+    }
+    
+    function _httpRequest(url, callback_fn) {
+      $http.get(url).success(function(data, status) {
+        if (between(status, 200, 299)) {
+          callback_fn(data);
+        }
+      }).error(function(data, status, header, config) {
+        console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
+        callback_fn(null);
+      });
+    }
+    
     function _requestCatsData(callback_fn) {
       _httpRequest(CATS_COMPLIANCE_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
@@ -57,13 +72,13 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       });
 
       return deferred.promise;
-    }
+    };
 
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
     function _getTotalWorkingTimeForDay(day_s, callback_fn) {
       _getCatsComplianceData(function(data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].DATEFROM ==  day_s) {
+          if (data[i].DATEFROM ===  day_s) {
             var HoursOfWorkingDay = 8;
             var totalTimeInPercentOf8HourDay = Math.round(data[i].STDAZ / HoursOfWorkingDay * 1000) / 1000;
           	callback_fn(totalTimeInPercentOf8HourDay);
@@ -128,44 +143,29 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           !task.record.ZCPR_OBJGUID) {
         task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
         task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
-      };
+      }
       return task;
     }
 
-    function _httpRequest(url, callback_fn) {
-      $http.get(url).success(function(data, status) {
-        if (between(status, 200, 299)) {
-          callback_fn(data);
-        }
-      }).error(function(data, status, header, config) {
-        console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
-        callback_fn(null);
-      });
-    }
-
-    function between(val_i, min_i, max_i) {
-      return (val_i >= min_i && val_i <= max_i);
-    }
-
     function _getDescForState(state_s) {
-      if (typeof state_s == "undefined") {
+      if (typeof state_s === "undefined") {
         return "";
       }
 
       state_s = state_s.toLowerCase();
-      if (state_s == "r") {
+      if (state_s === "r") {
         return "Not maintained";
       }
-      if (state_s == "y") {
+      if (state_s === "y") {
         return "Partially maintained";
       }
-      if (state_s == "g") {
+      if (state_s === "g") {
         return "Maintained";
       }
-      if (state_s == "n") {
+      if (state_s === "n") {
         return "No need for maintenance";
       }
-      if (state_s == "overbooked") {
+      if (state_s === "overbooked") {
         return "Overbooked";
       }
     }
@@ -178,10 +178,11 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data, status) {
           deferred.resolve(data);
       }).error(function (data, status, header, config) {
-          if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
+          if (status !== "404") { // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
               deferred.reject(status);
-          else
+          } else {
               deferred.resolve(data);
+          }
       });
       return deferred.promise;
     }

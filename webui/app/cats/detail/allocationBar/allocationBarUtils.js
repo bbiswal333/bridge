@@ -2,22 +2,41 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     this.colorCounter = 0;
 
     this.colors = [
-           "#2574A9",
-           "#5C97BF",
-           "#6BB9F0",
-           "#52B3D9",
-           "#22A7F0",
-           "#3498db",
-           "#4b77be",
-           "#89c4f4",
-           "#3a539b",
-           "#67809f",
+    
+            "#16354A",
+            "#005997",
+            "#0077CA",
+            "#3F96D3",
+            "#6BB9F0",
+            "#16354A url(/../../img/stripes6.png)",
+            "#005997 url(/../../img/stripes6.png)",
+            "#0077CA url(/../../img/stripes6.png)",
+            "#3F96D3 url(/../../img/stripes6.png)",
+            "#6BB9F0 url(/../../img/stripes6.png)",
+            "#16354A url(/../../img/stripes5.png)",
+            "#005997 url(/../../img/stripes5.png)",
+            "#0077CA url(/../../img/stripes5.png)",
+            "#3F96D3 url(/../../img/stripes5.png)",
+            "#6BB9F0 url(/../../img/stripes5.png)"
+           
 
-        // "#18334a",
-        // "#2d5f8a",
-        // "#428bca",
-        // "#3a79b0",
-        // "#4694d7"
+
+           // "#2574A9",
+           // "#5C97BF",
+           // // "#6BB9F0",
+           // "#52B3D9",
+           // "#22A7F0",
+           // "#3498db",
+           // // "#4b77be",
+           // "#89c4f4",
+           // // "#3a539b",
+           // "#67809f",
+           // "#18334a",
+           // "#2d5f8a",
+           // "#428bca",
+           // "#3a79b0",
+           // "#4694d7",
+
     ];
     this.blockColors = {};
 

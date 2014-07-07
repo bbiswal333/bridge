@@ -278,6 +278,11 @@
   margin-left: auto;
   
 }
+.allocation-bar-hours-text {
+  margin-left: auto;
+  color: #bbbbbb;
+  
+}
 .allocation-bar-background-panel-div {
   background: #e6e6e6;
   background-image: url("/app/cats/detail/allocationBar/stripe.png");
