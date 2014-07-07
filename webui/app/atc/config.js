@@ -6,8 +6,8 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
             this.tadirResponsible = "";
             this.component = "";
             this.showSuppressed = false;
-            this.displayPrio1 = false;
-            this.displayPrio2 = false;
+            this.displayPrio1 = true;
+            this.displayPrio2 = true;
             this.displayPrio3 = false;
             this.displayPrio4 = false;
             this.onlyInProcess = false;
