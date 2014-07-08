@@ -63,7 +63,7 @@
         controller: directiveController,
         link: function ($scope) 
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {}) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
                  {
                     lunchConfigService.configItem = $scope.appConfig.configItem;
                  }            
