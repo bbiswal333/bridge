@@ -2,6 +2,9 @@
 	<div ng-if="hasError">
 		{{state}}
 	</div>
+    <div style="position: absolute; top: 50%; left: 47%; z-index: 10">
+        <i ng-class="{'fa fa-spin fa-spinner fa-2x' : reloadAnimation != ''}"></i>
+    </div>
 	<div ng-if="!loading" ng-class="reloadAnimation">
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">
@@ -10,9 +13,7 @@
 			<b class="app-cats-current-month" ng-class="{'box-title':maintainable, 'clickable': true}" ng-click="jump('', $event);">{{currentMonth}}</b> 
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
-        <!--<div>
-            <i style="" ng-class="{'fa fa-spin fa-spinner' : reloadAnimation != ''}"></i>
-        </div>-->
+        
 		<div class="app-cats-calendar">
 			<div class="app-cats-week-labels row">
                 <div class="{{dayClass}}" ng-if="maintainable"> </div>
