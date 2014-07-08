@@ -1,16 +1,21 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", function (calUtils, dataProcessor) {
+  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "app.lunchWalldorf.configservice", function (calUtils, dataProcessor, configService) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
-        $scope.boxTitle = "Lunch Wdf / Rot";
         $scope.boxIcon = '&#xe824;';
-        $scope.boxIconClass = 'icon-meal';
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
         $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";        
-    
+
+        $scope.box.settingsTitle = "Configure language";
+        $scope.box.settingScreenData = {
+            templatePath: "lunchWalldorf/settings.html",
+                controller: angular.module('app.lunchWalldorf').applunchWalldorfSettings,
+                id: $scope.boxId
+        };  
+
         $scope.portalLinkText = "Lunch menu in the portal";
         $scope.noDataString = "Data could not be loaded from webservice.";
 
@@ -18,7 +23,11 @@
         var date = dataProcessor.getDateToDisplay(new Date());
         while (!dataProcessor.isRegularWeekDay(date)) {
             date.setDate( date.getDate() + 1 );
-        }    
+        }
+
+        $scope.box.returnConfig = function(){
+            return configService;
+        };    
 
         $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
         ).success(function(data) {            
@@ -49,7 +58,14 @@
     return {
         restrict: 'E',
         templateUrl: 'app/lunchWalldorf/overview.html',
-        controller: directiveController
+        controller: directiveController,
+        link: function ($scope) 
+             {
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {}) 
+                 {
+                    configService = $scope.appConfig;
+                 }            
+             }
         };
 }]);
 

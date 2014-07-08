@@ -2,12 +2,12 @@
 	"app":
 	{
 		"module_name"			:	"app.lunchWalldorf",
-		"title"					:	"Lunch Wdf / Rot",
+		"title"					:	"Lunch Wdf",
 		"icon_css"				:	"icon-meal",
 		"overview_directive"	:	"app.lunchWalldorf",
 		"needs_client"			:	false
 	},
 	"modules" : [],
-	"js_files" : ["overview.js"],
+	"js_files" : ["overview.js","settings.js","config.js"],
 	"css_files" : ["style.css"]
 }
