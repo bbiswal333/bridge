@@ -1,0 +1,17 @@
+<div style="width: 100%">
+	<p>
+		<form name="ConfigItemForm">
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select menu language</div>
+		  		<div class="btn-group" style="margin-left:15px;margin-top:10px">
+		  				<span ng-click="currentConfigValues.language = 'DE'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.language === 'DE' || !currentConfigValues.language];" style="margin-right:0;">Deutsch</span>
+		  				<span ng-click="currentConfigValues.language = 'EN'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.language === 'EN'];" style="margin-right:0;">English</span>
+		  		</div>
+		  	</div>
+		</form>
+	</p>
+
+	<div class="row" >
+        <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+    </div>
+</div>
