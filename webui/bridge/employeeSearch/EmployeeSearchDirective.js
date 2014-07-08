@@ -27,6 +27,8 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
                     if(data.items.item[i].objidshort === $item.BUILDING && data.items.item[i].geolinkB !== undefined)
                     {
                         $scope.selectedEmployee.building_url = data.items.item[i].geolinkB;
+                        $scope.selectedEmployee.city = data.items.item[i].city;
+                        $scope.selectedEmployee.street = data.items.item[i].street;
                     }                    
                 }
                 });
