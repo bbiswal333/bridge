@@ -7,7 +7,7 @@
                     <i class="box-icon icon-lunch_soup" style="margin-bottom:5px;margin-right:10px"></i>             
                 </td>
                 <td>
-                    {{lunch.soup}}
+                    {{lunch.soup.title[configService.configItem.language]}}
                 </td>
             </tr>
             <tr>
@@ -15,17 +15,17 @@
                     <i class="box-icon icon-lunch_plate" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.mainCourse[0]}}
+                    {{lunch.mainCourse[0].title[configService.configItem.language]}}
                 </td>
             </tr>
             <tr>
                 <td>
-                    {{lunch.mainCourse[1]}}
+                    {{lunch.mainCourse[1].title[configService.configItem.language]}}
                 </td>
             </tr>
             <tr>
                 <td>
-                    {{lunch.mainCourse[2]}}
+                    {{lunch.mainCourse[2].title[configService.configItem.language]}}
                 </td>
             </tr>
             <tr>
@@ -33,7 +33,7 @@
                     <i class="box-icon icon-lunch_veg" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.sideDishes}}
+                    {{lunch.sideDishes.title[configService.configItem.language]}}
                 </td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@
                     <i class="box-icon icon-lunch_cake" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.dessert}}
+                    {{lunch.dessert.title[configService.configItem.language]}}
                 </td>
             </tr>
         </table>

@@ -1,6 +1,6 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "app.lunchWalldorf.configservice", function (calUtils, dataProcessor, configService) {
+  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "app.lunchWalldorf.configservice", function (calUtils, dataProcessor, lunchConfigService) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxIcon = '&#xe824;';
@@ -19,6 +19,8 @@
         $scope.portalLinkText = "Lunch menu in the portal";
         $scope.noDataString = "Data could not be loaded from webservice.";
 
+        $scope.configService = lunchConfigService;
+
         // proceed to next potential lunch-relevant day
         var date = dataProcessor.getDateToDisplay(new Date());
         while (!dataProcessor.isRegularWeekDay(date)) {
@@ -26,7 +28,7 @@
         }
 
         $scope.box.returnConfig = function(){
-            return configService;
+            return angular.copy($scope.configService);
         };    
 
         $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
@@ -63,13 +65,13 @@
              {
                 if ($scope.appConfig !== undefined && $scope.appConfig !== {}) 
                  {
-                    configService = $scope.appConfig;
+                    lunchConfigService.configItem = $scope.appConfig.configItem;
                  }            
              }
         };
 }]);
 
-angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', function(){
+angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', ["app.lunchWalldorf.configservice" ,function(lunchConfigService){
     var Monday = 1;
     var Friday = 5;
     var TimeAfterWhichToDisplayNextDay = 14;
@@ -121,15 +123,15 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                 {
                     if(date_menu[j].title.en === "Soup")
                     {
-                        lunchMenu.soup = date_menu[j].dishes[0].title.de;
+                            lunchMenu.soup = date_menu[j].dishes[0];
                     }
                     else if(date_menu[j].title.en === "Side dish")
                     {
-                        lunchMenu.sideDishes = date_menu[j].dishes[0].title.de;
+                        lunchMenu.sideDishes = date_menu[j].dishes[0];
                     }
                     else if(date_menu[j].title.en === "Dessert")
                     {
-                        lunchMenu.dessert = date_menu[j].dishes[0].title.de;
+                        lunchMenu.dessert = date_menu[j].dishes[0];
                     }
                     else
                     {
@@ -137,7 +139,7 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                         {
                             lunchMenu.mainCourse = [];
                         }
-                        lunchMenu.mainCourse.push( date_menu[j].dishes[0].title.de );   
+                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );   
                     }
 
                 }
@@ -145,4 +147,4 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
             }
         }
     };
-});
+}]);
