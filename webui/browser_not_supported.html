@@ -22,13 +22,21 @@
 
     <script type='text/javascript'>
         _paq.push(['trackPageView', "browser_not_supported"]);
+        var luckilyNoTestFailed = true;
         for (var i = 0; i < window.feature_check.length; i++) {
+            if (window.feature_check[i].test !== true) {
+                luckilyNoTestFailed = false;
+            }
             document.write('<span class="feature_check_' + window.feature_check[i].test +
                 '">' +
                 window.feature_check[i].name + '</span>');
-            if (i < window.feature_check.length - 1) document.write(' // ');
+            if (i < window.feature_check.length - 1) {
+                document.write(' // ');
+            }
         }
-
+        if (luckilyNoTestFailed === true) {
+            document.location.href = '../';
+        }
     </script>
 
     <br /><br />
