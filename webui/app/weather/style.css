@@ -20,7 +20,8 @@
 }
 .weather-box-small{
 	
-	width:calc(100%/4);
+	/*width:calc(100%/4); does not work in IE10 when zooming to 125% */
+	width:calc(97%/4);
 	float: left;
 	border-right: 1px solid rgba(0,0,0,0.3);
 }
