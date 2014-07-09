@@ -659,7 +659,7 @@ input[type="checkbox"]:checked:after {
     box-shadow: none;
     border-radius: 0;
     height:100%;
-    min-width: 900px;
+    min-width: 850px;
 }
 
 .dropdown-menu > li > a:hover{
