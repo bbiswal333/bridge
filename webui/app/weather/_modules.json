@@ -8,6 +8,6 @@
 		"needs_client"			:	false
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "settings.js"],
+	"js_files" : ["overview.js", "settings.js", "config.js"],
 	"css_files" : ["style.css"]
 }

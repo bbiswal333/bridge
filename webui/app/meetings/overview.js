@@ -20,8 +20,8 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
-			var eventsRaw = {};	
-			
+			var eventsRaw = {};
+
 			function sortByStartTime(a, b) {
 			    if (a.start > b.start)
 			        return 1;
@@ -39,7 +39,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
 				};
-	          
+
 				$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
 					try{
 						eventsRaw = {};
@@ -130,7 +130,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						cnt++;
 					}
 				}
-				
+
 			  return cnt + " meeting" + (cnt == 1 ? "" : "s") + " left for today.";
 			}
 

@@ -1,6 +1,7 @@
-<div ng-if="support" class="weather-container">
+<div class="weather-container">
 	<div class="weather-box-large">
-		<div><a target="_blank" href="http://openweathermap.org/city/{{city_id}}">{{city}}</a></div>
+		<div>{{city_name}}</div>
+		<!--<div><a target="_blank" href="http://openweathermap.org/city/{{city_id}}">{{city}}</a></div>-->
 		<div class="font-lightweight-large blue">{{temperature}} <span ng-if="!fahrenheit">°C</span><span ng-if="fahrenheit">°F</span></div>
 		<div>{{des}}</div>
 	</div>
@@ -35,8 +36,3 @@
 		</div>
 	</div>
 </div>
-<div ng-if="!support" class="noforecast_display">
-	Please eneable the Geolocation information on your browser.
-	<img src="/../../img/nosupport-01.svg" width="200">
-</div>
-
