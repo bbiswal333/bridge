@@ -2,46 +2,36 @@
     <div ng-if="contentLoaded">
         <b>{{date}}</b>
         <table>
-            <tr>
-                <td class="app-lunchWalldorf-icon">
+            <tr ng-repeat="soup in lunch.soup">
+                <td class="app-lunchWalldorf-icon" ng-if="$index === 0" rowspan="{{lunch.soup.length}}">
                     <i class="box-icon icon-lunch_soup" style="margin-bottom:5px;margin-right:10px"></i>             
                 </td>
                 <td>
-                    {{lunch.soup.title[configService.configItem.language]}}
+                    {{soup.title[configService.configItem.language]}}
                 </td>
             </tr>
-            <tr>
-                <td class="app-lunchWalldorf-icon" rowspan="3">
+            <tr ng-repeat="mainCourse in lunch.mainCourse">
+                <td class="app-lunchWalldorf-icon" ng-if="$index === 0" rowspan="{{lunch.mainCourse.length}}">
                     <i class="box-icon icon-lunch_plate" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.mainCourse[0].title[configService.configItem.language]}}
+                    {{mainCourse.title[configService.configItem.language]}}
                 </td>
             </tr>
-            <tr>
-                <td>
-                    {{lunch.mainCourse[1].title[configService.configItem.language]}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {{lunch.mainCourse[2].title[configService.configItem.language]}}
-                </td>
-            </tr>
-            <tr>
-                <td class="app-lunchWalldorf-icon">
+            <tr ng-repeat="sideDish in lunch.sideDishes">
+                <td class="app-lunchWalldorf-icon" ng-if="$index === 0" rowspan="{{lunch.sideDishes.length}}">
                     <i class="box-icon icon-lunch_veg" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.sideDishes.title[configService.configItem.language]}}
+                    {{sideDish.title[configService.configItem.language]}}
                 </td>
             </tr>
-            <tr>
-                <td class="app-lunchWalldorf-icon">
+            <tr  ng-repeat="dessert in lunch.dessert">
+                <td class="app-lunchWalldorf-icon" ng-if="$index === 0" rowspan="{{lunch.dessert.length}}">
                     <i class="box-icon icon-lunch_cake" style="margin-bottom:5px;margin-right:10px"></i> 
                 </td>
                 <td>
-                    {{lunch.dessert.title[configService.configItem.language]}}
+                    {{dessert.title[configService.configItem.language]}}
                 </td>
             </tr>
         </table>

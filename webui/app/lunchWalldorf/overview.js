@@ -71,7 +71,7 @@
         };
 }]);
 
-angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', ["app.lunchWalldorf.configservice" ,function(lunchConfigService){
+angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', function(){
     var Monday = 1;
     var Friday = 5;
     var TimeAfterWhichToDisplayNextDay = 14;
@@ -123,15 +123,15 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', [
                 {
                     if(date_menu[j].title.en === "Soup")
                     {
-                            lunchMenu.soup = date_menu[j].dishes[0];
+                            lunchMenu.soup = date_menu[j].dishes;
                     }
                     else if(date_menu[j].title.en === "Side dish")
                     {
-                        lunchMenu.sideDishes = date_menu[j].dishes[0];
+                        lunchMenu.sideDishes = date_menu[j].dishes;
                     }
                     else if(date_menu[j].title.en === "Dessert")
                     {
-                        lunchMenu.dessert = date_menu[j].dishes[0];
+                        lunchMenu.dessert = date_menu[j].dishes;
                     }
                     else
                     {
@@ -147,4 +147,4 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', [
             }
         }
     };
-}]);
+});
