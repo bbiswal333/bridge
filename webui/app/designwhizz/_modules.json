@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.designwhizz",
+		"title"					:	"Design Quote",
+		"icon_css"				:	"fa",
+		"overview_directive"	:	"app.designwhizz",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["style.css"]
+}
