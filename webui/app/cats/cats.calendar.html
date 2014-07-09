@@ -8,7 +8,7 @@
 	<div ng-if="!loading" ng-class="reloadAnimation">
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">
-        <span ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</span>
+        <h1 ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</h1>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"> &#xe1ee; </span>	
 			<b class="app-cats-current-month" ng-class="{'box-title':maintainable, 'clickable': true}" ng-click="jump('', $event);">{{currentMonth}}</b> 
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
