@@ -1,0 +1,10 @@
+
+.whizz-bottom {
+	position: absolute;
+	bottom:0;
+}
+.whizz-bottom-right{
+	position: absolute;
+	bottom: 0;
+	right:10px;
+}
