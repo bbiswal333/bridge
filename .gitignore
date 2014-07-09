@@ -8,6 +8,7 @@ lib-cov
 *.gz
 *.suo
 setup.exe
+test-results.xml
 
 pids
 logs

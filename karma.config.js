@@ -54,7 +54,7 @@ module.exports = function(config) {
       './webui/app/cats/overview.js',
       './webui/app/cats/**/*.js',
 
-      '**/*.spec.js',
+      '**/*.spec.js'
     ],
 
 
@@ -67,7 +67,12 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress','dots','junit'],
+
+    
+    junitReporter: {
+      outputFile: 'test-results.xml'
+    },
 
 
     // web server port
