@@ -64,7 +64,6 @@ module.exports = function(config) {
       "./server/**/*"
     ],
 
-
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['progress','dots','junit'],
