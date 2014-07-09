@@ -9,7 +9,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 		var linkFn = function ($scope) {
 			/* ====================================== */
 			/* CONFIGURATION */
-			$scope.dayCnt = 1;
+			$scope.dayCnt = 2; // Because of time Zone issues
 			$scope.hideAllDayEvents = true;
 			/* ====================================== */
 
@@ -20,16 +20,65 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
-			var eventsRaw = {};	
+			var eventsRaw = {};
+			var today = new Date(new Date().toDateString());
 			
 			function sortByStartTime(a, b) {
-			    if (a.start > b.start)
+			    if (a.start > b.start) {
 			        return 1;
-			    else if (a.start < b.start)
+			    } else if (a.start < b.start) {
 			        return -1;
-			    else
+			    } else {
 			        return 0;
-			};
+			    }
+			}
+
+			function parseExchangeData(events) {
+				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
+				$scope.events = [];
+
+				if (typeof events === "undefined") {
+					return;
+				}
+
+				for (var i = 0; i < events.length; i++) {
+					//ignore events, which are over already
+					if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
+						continue;
+					}
+
+					//ignore allday events
+					if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] !== "false") {
+						continue;
+					}
+
+					var start = dateFn(events[i]["t:Start"][0]);
+					var end = dateFn(events[i]["t:End"][0]);
+
+					if (start.getDate() === today.getDate()) {
+						$scope.events.push({
+							subject: events[i]["t:Subject"][0],
+							start: start,
+							startRel: calUtils.relativeTimeTo(new Date(), start, true),
+							startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
+							end: end,
+							endRel: calUtils.relativeTimeTo(new Date(), end, true),
+							endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
+							timeZone: events[i]["t:TimeZone"][0],
+							location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
+							getEventTime: function () {
+							    if ($scope.events.indexOf(this) === 0) {
+							        return "<b>" + this.startRel + "</b>";
+							    } else {
+							        return this.startTime + "<br />" + this.endTime;
+							    }
+							},
+							isCurrent: (start.getTime() < new Date().getTime())
+						});
+					}
+				}
+				$scope.events = $scope.events.sort(sortByStartTime);
+			}
 
 			function loadFromExchange (withNotifications) {
 				$scope.loading = true;
@@ -38,19 +87,20 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
-				};
-	          
-				$http.get(ewsUtils.buildEWSUrl(new Date(new Date().toDateString()), $scope.dayCnt)).success(function (data, status) {
+				}
+
+				var dateForewsCall = new Date();
+				dateForewsCall.setDate(today.getDate() - 1);
+				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data, status) {
 					try{
 						eventsRaw = {};
-					    //eventsRaw = data["s:Envelope"]["s:Body"][0]["m:FindItemResponse"][0]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-						if (typeof eventsRaw != "undefined") {
+						if (typeof eventsRaw !== "undefined") {
 							parseExchangeData(eventsRaw);
 						}
 						if(withNotifications){
 							if (eventsRaw.length > oldEventsRawLength) {
-								if (eventsRaw.length == oldEventsRawLength + 1) {
+								if (eventsRaw.length === oldEventsRawLength + 1) {
 									notifier.showInfo("Meetings", "You have a new meeting", "MeetingsApp");
 								}
 								else {
@@ -65,54 +115,6 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 					}
 					$scope.loading = false;
 				});
-			};
-
-			function parseExchangeData(events) {
-				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
-				var today = new Date();
-				today.setHours(0);
-				today.setMinutes(0);
-				today.setSeconds(0);
-				$scope.events = [];
-
-				if (typeof events == "undefined") {
-					return;
-				}
-
-				for (var i = 0; i < events.length; i++) {
-					//ignore events, which are over already
-					if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
-						continue;
-					}
-
-					//ignore allday events
-					if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] != "false") {
-						continue;
-					}
-
-					var start = dateFn(events[i]["t:Start"][0]);
-					var end = dateFn(events[i]["t:End"][0]);
-
-					$scope.events.push({
-						subject: events[i]["t:Subject"][0],
-						start: start,
-						startRel: calUtils.relativeTimeTo(new Date(), start, true),
-						startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
-						end: end,
-						endRel: calUtils.relativeTimeTo(new Date(), end, true),
-						endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
-						timeZone: events[i]["t:TimeZone"][0],
-						location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
-						getEventTime: function () {
-						    if ($scope.events.indexOf(this) == 0)
-						        return "<b>" + this.startRel + "</b>";
-						    else
-						        return this.startTime + "<br />" + this.endTime;
-						},
-						isCurrent: (start.getTime() < new Date().getTime())
-					});
-				}
-				$scope.events = $scope.events.sort(sortByStartTime);
 			}
 
 			$scope.upComingEvents = function () {
@@ -120,7 +122,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			};
 
 			$scope.hasEvents = function () {
-			    return ($scope.events.length != 0);
+			    return ($scope.events.length !== 0);
 			};
 
 			$scope.getMeetingsLeftText = function () {
@@ -130,9 +132,8 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 						cnt++;
 					}
 				}
-				
-			  return cnt + " meeting" + (cnt == 1 ? "" : "s") + " left for today.";
-			}
+				return cnt + " meeting" + (cnt === 1 ? "" : "s") + " left for today.";
+			};
 
 			$scope.isLoading = function () {
 				return $scope.loading;
@@ -142,7 +143,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				if (!$scope.isLoading()) {
 					loadFromExchange(true);
 				}
-			};
+			}
 
 			$scope.getCurrentDate = function () {
 			    var date = new Date();
@@ -161,7 +162,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 				var i = 1;
 				//Full reload every 300 seconds, refresh of UI all 30 seconds
 				refreshInterval = $interval(function () {
-					if (i % 10 == 0) {
+					if (i % 10 === 0) {
 						reload();
 						i = 1;
 					}

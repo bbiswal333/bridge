@@ -2,11 +2,6 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 	var EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
 
 	function _buildEWSUrl (dateFrom_o, days_i) {
-		var dateFrom_s = buildDateString(dateFrom_o);
-		var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
-
-		return EWS_BASE_URL + "?from=" + encodeForUrl(dateFrom_s) + "&to=" + encodeForUrl(dateTo_s) + "&format=json";
-	
 		function buildDateString (date_o) {
 			var year = date_o.getFullYear();
 			var month = calUtils.useNDigits(date_o.getMonth() + 1, 2);
@@ -21,13 +16,18 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 		function encodeForUrl (val_s) {
 			return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
 		}
+
+		var dateFrom_s = buildDateString(dateFrom_o);
+		var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
+
+		return EWS_BASE_URL + "?from=" + encodeForUrl(dateFrom_s) + "&to=" + encodeForUrl(dateTo_s) + "&format=json";
 	}
 
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
 		var s = ewsDateStr_s;
 
 		//Check whether this string seems to be valid
-		if (s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/) == -1) {
+		if (s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/) === -1) {
 			return null;
 		}
 
