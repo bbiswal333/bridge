@@ -8,7 +8,16 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
         }
 
         $scope.doSearch = function (username) {
-            return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=18&query=' + username + '&origin=' + location.origin).then(function (response) {
+
+            //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
+            var searchname = username;
+            var outlook_support = username.split('"');
+            if(outlook_support.length === 3 && outlook_support[0] === "")
+            {
+                searchname = outlook_support[1];
+            }
+            
+            return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?maxrow=18&query=' + searchname + '&origin=' + location.origin).then(function (response) {
                 return response.data.DATA;
             });
         };
