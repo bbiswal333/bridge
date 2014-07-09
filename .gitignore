@@ -12,6 +12,7 @@ setup.exe
 pids
 logs
 results
+tmp
 
 npm-debug.log
 .DS_Store
