@@ -1,4 +1,5 @@
 # Bridge
+[![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/buildStatus/icon?job=Bridge)](http://mo-c97a0800b.mo.sap.corp:49153/job/Bridge/)
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
 which is the **hackable successor of the Employee Dashboard** hosted on our internal GitHub instance. 
