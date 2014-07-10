@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.designwhizz",
 		"title"					:	"Design Quote",
-		"icon_css"				:	"fa",
+		"icon_css"				:	"designwhizz-icon",
 		"overview_directive"	:	"app.designwhizz",
 		"needs_client"			:	false
 	},

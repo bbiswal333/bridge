@@ -10,7 +10,7 @@ angular.module('app.designwhizz').directive('app.designwhizz', function () {
 		url: "app/designwhizz/DesignQuotes.json",
 		success: function (data) {
 		  messages=data['Messages'];
-		  $('#quote').text($scope.randomQuote());
+		  $('#quote').text("'"+ $scope.randomQuote()+"'");
 		  // change periodically
 		  window.setInterval(function() {
 			$('#quote').text($scope.randomQuote());
@@ -21,7 +21,7 @@ angular.module('app.designwhizz').directive('app.designwhizz', function () {
 			$('#quote').text($scope.randomQuote());
 			return false;
 		});		
-		$('#whizzJam').click(function() {
+		$('.designwhizz-icon').click(function() {
 			window.open('https://go.sap.corp/w');
 			return false;
 		});	

@@ -3,8 +3,17 @@
 	position: absolute;
 	bottom:0;
 }
-.whizz-bottom-right{
-	position: absolute;
-	bottom: 0;
-	right:10px;
+#quote{
+	font-style: italic;
+	font-weight: 400;
+	text-transform: none;
+}
+.designwhizz-icon{
+	background-image: url(../../app/designwhizz/Whizz_Logo_64.png);
+	background-size: 20px;
+	height: 20px;
+	width: 20px;
+	margin-top: 5px;
+	cursor: pointer;
+	
 }
