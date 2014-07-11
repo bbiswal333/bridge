@@ -6,6 +6,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.filter = {};
     $scope.filter.val = "";
     $scope.loaded = false;
+    var additionalData = undefined;
 
     var config = {};
     $scope.scrollbar = function(direction, autoResize) {
@@ -56,10 +57,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         }
       });
     
-      var newItem = item;
+      var newItem       = item;
       newItem.id        = $scope.items.length;
-      newItem.name      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID;
-      newItem.desc      = item.projectDesc || item.ZCPR_EXTID;
+      newItem.name      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
+      newItem.desc      = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
       newItem.selected  = found;
       newItem.color     = color;
       $scope.items.push(newItem);
@@ -71,23 +72,21 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         if ($scope.blocks === undefined) {
           $scope.blocks = [];
         }
-        
         data.forEach(function(entry){
-
           createNewProjectItem(entry);  
-
-          $scope.loaded = true;
-
           $timeout(function () {
             $scope.$broadcast('rebuild:me');
           }, 100);
         });
-          
       });
 
-      var week = calenderUtils.getWeekNumber(new Date());
-      var promise = catsUtils.getCatsAllocationDataForWeek(week.year, week.weekNo);
-      promise.then(function(data){
+      $scope.loaded = true;
+
+      if (additionalData === undefined) {
+        var week = calenderUtils.getWeekNumber(new Date());
+        additionalData = catsUtils.getCatsAllocationDataForWeek(week.year, week.weekNo);
+      }
+      additionalData.then(function(data){
         if(data) {
           data.TIMESHEETS.RECORDS.forEach(function(record) {
             var allreadyExists = false;
@@ -108,14 +107,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
             if (!allreadyExists) {
               createNewProjectItem(record);  
             }
+            $timeout(function () {
+              $scope.$broadcast('rebuild:me');
+            }, 100);
           });
-          // compare either TASKTYPE ADMI EDUC (ABSE, VACA) ...
-          // compare combination of RAUFNR, ZCPR_EXTID, ZCPR_OBJGEXTID ...
-          // ... with already existing entries in $scope.items
-          // Add task if NOT found, if DESCR is empty then use ZCPR_OBJGEXTID
         }
       });
-
     }
 
     loadProjects();
