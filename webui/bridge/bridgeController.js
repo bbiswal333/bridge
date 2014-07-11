@@ -339,6 +339,15 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$root
         return sNewUrl;
     }
 
+    function uncachifyUrl(url) {
+        var resultUrl = url + "?" + new Date().getTime();
+        if(url.indexOf("?") >= 0)
+        {
+            resultUrl = url + "&" + new Date().getTime();
+        }
+        return resultUrl;
+    }
+
     return {
         'request': function(config)
         {
@@ -351,6 +360,13 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$root
                     config.url = sNewUrl;
                 }
             }
+
+            //IE wants to cache everything so all external https calls are uncached here
+            if(config.url.indexOf("https://") !== -1)
+            {
+                config.url = uncachifyUrl(config.url);
+            }        
+
             config.timer = $timeout(function()
             {                 
                 $rootScope.showLoadingBar = true;               
