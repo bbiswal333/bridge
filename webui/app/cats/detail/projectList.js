@@ -46,6 +46,25 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       $scope.filter.val = "";
     };
 
+    function createNewProjectItem (item) {
+      var found = false;
+      var color = null;
+      $scope.blocks.some(function(block){
+        if (item.ZCPR_OBJGEXTID === block.task.ZCPR_OBJGEXTID && block.value !== 0){
+          found = true;
+          color = colorUtils.getColorForBlock(block);    
+        }
+      });
+    
+      var newItem = item;
+      newItem.id        = $scope.items.length;
+      newItem.name      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID;
+      newItem.desc      = item.projectDesc || item.ZCPR_EXTID;
+      newItem.selected  = found;
+      newItem.color     = color;
+      $scope.items.push(newItem);
+    }
+
     function loadProjects () {
       catsUtils.getTasks(function (data) {
         $scope.items = [];
@@ -53,31 +72,17 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           $scope.blocks = [];
         }
         
-        for (var i = 0; i < data.length; i++) {
-          var color = null;
-          var found = false;
+        data.forEach(function(entry){
 
-          for (var j = 0; j < $scope.blocks.length; j++) {
-            if (data[i].ZCPR_OBJGEXTID === $scope.blocks[j].task.ZCPR_OBJGEXTID && $scope.blocks[j].value !== 0){
-              found = true;
-              color = colorUtils.getColorForBlock($scope.blocks[j]);    
-            }
-          }
-
-          var newItem = data[i];
-          newItem.id        = i;
-          newItem.name      = data[i].taskDesc;
-          newItem.desc      = data[i].projectDesc;
-          newItem.selected  = found;
-          newItem.color     = color;
-          $scope.items.push(newItem);
+          createNewProjectItem(entry);  
 
           $scope.loaded = true;
 
           $timeout(function () {
             $scope.$broadcast('rebuild:me');
           }, 100);
-        }
+        });
+          
       });
 
       var week = calenderUtils.getWeekNumber(new Date());
@@ -85,26 +90,24 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       promise.then(function(data){
         if(data) {
           data.TIMESHEETS.RECORDS.forEach(function(record) {
-            var found = false;
-            $scope.items.forSome(function(item) {
-              if (record.TASKTYPE       === item.TASKTYPE &&
-                  record.RAUFNR         === item.RAUFNR &&
-                  record.ZCPR_EXTID     === item.ZCPR_EXTID &&
-                  record.ZCPR_OBJGEXTID === item.ZCPR_OBJGEXTID) {
-                found = true;
+            var allreadyExists = false;
+            var taskTypeList = ['ADMI', 'EDUC', 'ABSE', 'VACA'];
+            $scope.items.some(function(item) {
+              if (taskTypeList.indexOf(record.TASKTYPE) >= 0) {
+                allreadyExists = true;
                 return true;
               }
+              if (record.RAUFNR         === item.RAUFNR &&
+                  record.ZCPR_EXTID     === item.ZCPR_EXTID &&
+                  record.ZCPR_OBJGEXTID === item.ZCPR_OBJGEXTID) {
+                allreadyExists = true;
+                return true;
+              }
+            });
+
+            if (!allreadyExists) {
+              createNewProjectItem(record);  
             }
-            // if (found === false) {
-            //   var newItem = data[i];
-            //   newItem.id        = i;
-            //   newItem.name      = data[i].taskDesc;
-            //   newItem.desc      = data[i].projectDesc;
-            //   newItem.selected  = found;
-            //   newItem.color     = color;
-            //   $scope.items.push(newItem);
-            // }
-            );
           });
           // compare either TASKTYPE ADMI EDUC (ABSE, VACA) ...
           // compare combination of RAUFNR, ZCPR_EXTID, ZCPR_OBJGEXTID ...
