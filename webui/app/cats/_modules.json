@@ -27,6 +27,8 @@
 		"catsMonthlyData.js",
 		"cats.js",
 		"overview.js",
+		"settings.js",
+		"config.js",
 		"cats.calendar.js", 
 		"detail/main.js", 
 		"detail/allocationBar/allocationBarUtils.js",

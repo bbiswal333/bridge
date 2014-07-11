@@ -32,7 +32,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
               CATSCHKforDay.STDAZ = 7.55;
               CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
               if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
-                if (CATSCHKforDay.STDAZ != CATSCHKforDay.QUANTITYH) {
+                if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
                   CATSCHKforDay.STATUS = "Y";
                 } else {
                   CATSCHKforDay.STATUS = "G";
@@ -43,7 +43,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           callback_fn(data.CATSCHK);
         } else {
           callback_fn();
-        };
+        }
       });
     }
 
@@ -62,13 +62,14 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       var deferred = $q.defer();
       
       _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&date=" + new Date().getTime(), function(data, status) { // /zdevdb/GETCATSDATA
-        if (!data)
+        if (!data) {
           deferred.reject(status);
-        else if (data.TIMESHEETS.WEEK != week + "." + year ){
+        } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
           console.log("_getCatsAllocationDataForWeek() data does not correspond to given week and year.");
           deferred.resolve();
-        } else
+        } else {
           deferred.resolve(data);
+        }
       });
 
       return deferred.promise;
@@ -88,6 +89,21 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         callback_fn(null);
       }, false);
+    }
+
+    function _enrichTaskData(task){
+      if (task &&
+          !task.ZCPR_OBJGEXTID &&
+          !task.ZCPR_OBJGUID) {
+        task.ZCPR_OBJGEXTID = task.TASKTYPE;
+        task.ZCPR_OBJGUID = task.TASKTYPE;
+      } else if (task.record &&
+          !task.record.ZCPR_OBJGEXTID &&
+          !task.record.ZCPR_OBJGUID) {
+        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
+        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
+      }
+      return task;
     }
 
     function _requestTasks(callback_fn) {
@@ -130,21 +146,6 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
         callback_fn(tasks);
       });
-    }
-
-    function _enrichTaskData(task){
-      if (task &&
-          !task.ZCPR_OBJGEXTID &&
-          !task.ZCPR_OBJGUID) {
-        task.ZCPR_OBJGEXTID = task.TASKTYPE;
-        task.ZCPR_OBJGUID = task.TASKTYPE;
-      } else if (task.record &&
-          !task.record.ZCPR_OBJGEXTID &&
-          !task.record.ZCPR_OBJGUID) {
-        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
-        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
-      }
-      return task;
     }
 
     function _getDescForState(state_s) {
