@@ -2,7 +2,7 @@ angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', 
     function Controller($scope, $http) {
 
         $scope.$parent.titleExtension = " - IM Details";   		
-	    $http.get('https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps?origin=' + location.origin 
+	    $http.get('https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps?testplans=GS_BNK_LA_FIT_T08S01_*&origin=' + location.origin 
 	   		
 	        ).success(function(data) {
 	        	

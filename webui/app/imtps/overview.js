@@ -34,15 +34,15 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
 		
 		var updateTrafficLight = function ($scope) {
 			if( $scope.prioarray[0] ){
-				$http.get(window.client.origin + '/api/trafficLight?color=r');
+				$http.get('/api/trafficLight?color=r');
 			}else if( $scope.prioarray[1] ){
-				$http.get(window.client.origin + '/api/trafficLight?color=y');
+				$http.get('/api/trafficLight?color=y');
 			}else{
-				$http.get(window.client.origin + '/api/trafficLight?color=g');
+				$http.get('/api/trafficLight?color=g');
 			}
 		}	
 		
-        $http.get('https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps?origin=' + location.origin ).success(function(data) {
+        $http.get('https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps?testplans=GS_BNK_LA_FIT_T08S01_*&origin=' + location.origin ).success(function(data) {
                 data = new X2JS().xml_str2json(data);
                 $scope.imData = data["abap"];
                 $scope.imData = $scope.imData["values"];
