@@ -2,9 +2,9 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', function
 
 	var scopeForDisplay;
 
-    this.setScope = function (scope) {
-    	scopeForDisplay = scope;
-    }
+	this.setScope = function (scope) {
+	    scopeForDisplay = scope;
+	};
 
     // alertType can be 'success', 'danger', undefined
     this.addAlert = function (alertType, alertMsg, alertDuration) {
@@ -12,21 +12,22 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', function
     		scopeForDisplay.alerts = [ ];
     	}
     	var alertID = alertType + alertMsg;
-        scopeForDisplay.alerts.push({type : alertType, msg: alertMsg, id: alertID});
+    	scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID });
+
         if (alertDuration) {
             this.closeAlert(alertID, alertDuration);
         } else {
             this.closeAlert(alertID, 8);
-        };
+        }
     };
 
     this.closeAlert = function (alertID, timeoutInSeconds) {
         $timeout(function () {
 	        for (var i = 0; i < scopeForDisplay.alerts.length; i++) {
-	            if (scopeForDisplay.alerts[i].id == alertID) {
+	            if (scopeForDisplay.alerts[i].id === alertID) {
 	                scopeForDisplay.alerts.splice(i, 1);
-	            };
-	        };
+	            }
+	        }
         } , 1000 * timeoutInSeconds);
     };
 });

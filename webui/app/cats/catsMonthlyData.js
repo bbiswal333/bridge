@@ -6,20 +6,22 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"app.cats.data.catsUtils", 
 	
 	function($http, $q, calenderUtils, catsUtils){
+
 	this.months = {};
 	this.days = {};
 	this.promise = null;
 	this.promiseForMonth = {};
-
+	this.reloadInProgress = { value:false };
+	this.year = new Date().getFullYear();
+	this.month = new Date().getMonth();
 
 	this.getDataForCurrentMonth = function(){
 		var date = calenderUtils.today();
-		// a cool way to wait for multiple promises (coding example)
 		var promises = [];
 		promises.push(this.getMonthData(date.getFullYear(), date.getMonth()));
 		this.promise = $q.all(promises);
 		return this.promise;
-	}
+	};
 
 	this.getMonthData = function(year, month){
 		var monthData = {};
@@ -36,11 +38,13 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	    else if (this.months[month]) {
 	    	deferred.resolve();
 	    	return deferred.promise;
-	    };
+	    }
+
+	    this.reloadInProgress.value = true;
 
 		var weeks = this.getWeeksOfMonth(year, month);
         for (var i = 0; i < weeks.length; i++) {
-        	promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo)
+        	promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
         	promises.push(promise);
         	promise.then(function(data){
 	        	if(data) {
@@ -53,13 +57,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
         promise = $q.all(promises);
         promise.then(function(){
-    		if(targetHoursCounter > 27 && targetHoursCounter == 7 * monthData.weeks.length)
+    		if(targetHoursCounter > 27 && targetHoursCounter === 7 * monthData.weeks.length) {
     			monthData.hasTargetHours = true;
-    		else
+    		} else {
     			monthData.hasTargetHours = false;
+    		}
     		
 	        self.months[month] = monthData;
 	        delete self.promiseForMonth[month];
+		    self.reloadInProgress.value = false;
         });
 
         this.promiseForMonth[month] = promise;
@@ -81,23 +87,24 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	    else if (this.days[date]) {
 	    	deferred.resolve();
 	    	return deferred.promise;
-	    };
+	    }
 	};
 
 	this.getWeeksOfMonth = function(year, month){
 		var day = new Date(year, month, 1);
+		var lastDayInMonth = 0;
 		if (month < 11) {
-			var lastDayInMonth = new Date(year, month+1, 1);
+			lastDayInMonth = new Date(year, month + 1, 1);
 		} else {
-			var lastDayInMonth = new Date(year+1,0, 1);
+			lastDayInMonth = new Date(year + 1,0, 1);
 		}
-		lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 )
+		lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 );
 
 		var weeks = [];
 		var week  = calenderUtils.getWeekNumber(day);
 
-		if(month == 0 && week.weekNo == 0) { // special case where first week of year is the 52 or 53 of the old year
-			var week = calenderUtils.getWeekNumber(new Date(year-1, 11, 31));
+		if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
+			week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
 			weeks.push(angular.copy(week));
 			week = calenderUtils.getWeekNumber(day);
 			week.year = year;
@@ -116,18 +123,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.convertWeekData = function (backendData) {
-		// if(!backendData || !year || !week) {
-		// 	console.log("convertWeekData() at least one import parameter is empty.");
-		// 	return null;
-		// }
-
-		// if (backendData.TIMESHEETS.WEEK != week + "." + year){
-		// 	console.log("convertWeekData() data does not correspond to given week and year.");
-		// 	return null;
-		// }
 		var week = backendData.TIMESHEETS.WEEK.substring(0,2);
 		var year = backendData.TIMESHEETS.WEEK.substring(3,7);
-
 		var weekData = {};
 		weekData.year = year;
 		weekData.week = week;
@@ -138,11 +135,20 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		        for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
 		            for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
 		            	var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
-		            	if(ISPTaskIterator == 0) { // build the target array in the first place
+		            	if(ISPTaskIterator === 0) { // build the target array in the first place
 		            		var day = {};
-		            		day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-		            		day.date        = ISPtask.DAYS[DayIterator].WORKDATE;
-		            		day.dayString   = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		var HoursOfWorkingDay = 8;
+							day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+		            		// test test test
+		            		/*if(day.targetHours) {
+			            		day.targetHours = 7.55;
+							} else {
+								day.targetHours = 0;
+							}*/
+		            		day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
+		            		day.actualTimeInPercentageOfDay = 0; // to be calulated later
+		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
+		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
 		            		weekData.hasTargetHoursForHowManyDays++;
 		            		day.tasks = [];
 		            		day.year = year;
@@ -163,11 +169,17 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		            		task.DESCR = ISPtask.DESCR;
 		            		weekData.days[DayIterator].tasks.push( task );
 		            		catsUtils.enrichTaskData(task);
+		            		if (task.UNIT === 'H') {
+		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / HoursOfWorkingDay;
+		            		} else {
+		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY;
+		            		}
+		            		weekData.days[DayIterator].actualTimeInPercentageOfDay = Math.round(weekData.days[DayIterator].actualTimeInPercentageOfDay * 1000) / 1000;
 		            	}
 
 		            	if (day) {
 		            		this.days[day.date] = day;
-		            	};
+		            	}
 		           	}
 		        }
 		    }
@@ -178,37 +190,28 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return weekData;
 	};
 
-	// this.getWeeklyData = function (year, week) {
-	//     var deferred = $q.defer();
-	//     var that = this;
-	//     $http.get('https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=' + year + '.' + week)
-	//     .success(function (data) {
-	//         deferred.resolve(that.convertWeekData(data, year, week));
-	//     });
-	//     return deferred.promise;
-	// };
-
 	this.loadDataForSelectedWeeks = function(weeks){
         var promises = [];
         var self = this;
 
+		self.reloadInProgress.value = true;
         weeks.forEach(function(week){
         	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
             promises.push(promise);
         	promise.then(function(data){
+				self.reloadInProgress.value = false;
 	        	if(data) {
 	        		self.convertWeekData(data);
 	        	}
         	});
-        })
+        });
         return $q.all(promises);
-    }
+    };
 
 	this.getTasksForDate = function(workdate){
 		return this.days[workdate].tasks;
-	}
+	};
 
-	this.getDataForCurrentMonth();
+	//this.getDataForCurrentMonth();
 
 }]);
-

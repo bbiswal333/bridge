@@ -4,13 +4,13 @@ angular.module('bridge.app').
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	    $scope.apps = bridgeDataService.getProjects()[0].apps;
 
-        
     	$scope.notificationSupported = notifier.getPermission();
 
-        areNotificationsSupported = function(){
+    	function areNotificationsSupported() {
             $timeout(function () {
-            	$scope.notificationSupported = notifier.getPermission()}, 500);
-        };
+                $scope.notificationSupported = notifier.getPermission();
+            }, 500);
+        }
 
         $scope.requestPermission = function(){
         	notifier.requestPermission( areNotificationsSupported );

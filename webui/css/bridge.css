@@ -109,6 +109,16 @@ img {
     user-select: none;
     cursor:default;
 }
+
+.select {
+    -webkit-touch-callout: auto;
+    -webkit-user-select: auto;
+    -khtml-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+    cursor:auto;  
+}
 .prio {
     width:100%;
     vertical-align: text-bottom;
@@ -127,10 +137,11 @@ img {
 .details {
     background-color: white;
 }
-
+/*
 .boxDisable * {
     opacity: 0.9;
 }
+*/
 
 .boxLeft {
     width: 25%;
@@ -188,7 +199,7 @@ img {
     height: 40px;
     min-width: 400px;
     background-color: rgb(255, 255, 255);
-    background: url('../img/menuLine.png') repeat-x left bottom rgba(255, 255, 255, 0.9);
+    background: url('../img/menuLine.png') repeat-x left bottom rgba(255, 255, 255, 1);
 }
 .mainNav > li {
     height: 40px;
@@ -242,14 +253,41 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-.centeredContent {
-    top: 20px;
+/*.centeredContent {
+    top: 40px;
+    margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    margin-bottom: auto;
+    
     position: relative;
     text-align: center;
+}
+*/
+.animation-container{
+    height: 100%;
+}
+#main{
+    display: table;
+    height: 100%;
+    margin: auto;
+}
+.centeredContent {
+    
+    display: table-cell;
+    vertical-align: middle;
+    margin-bottom:40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    padding: 40px 0;
+    text-align: center;
+    position: relative;
+}
+#scrollContainer .centeredContent{
+    display: block;
+    padding: 5px 15px;
+    top:40px;
 }
 /* 6 column */
  @media (min-width: 1620px) {
@@ -335,28 +373,26 @@ img {
     float: right;
 }
 
-.box-icon_2 {
+.table-icon-small {
     font-family:'bridge_icons';
     font-size: 14px;
     margin-right: 2px;
     float: right;
-    padding-right: 2px;
+    padding-right: 8px;
+    padding-top: 4px;
     color:#0099CC;
 }
-
-.box-icon_3 {
-    font-family:'bridge_icons';
-    font-size: 14px;
-    margin-right: 2px;
-    float: right;
-    padding-right: 7px;
-    color:#0099CC;
+.table-cell{
+    border:2px solid white;
+    height:40px;
+    padding-top:8px;
+    padding-left: 10px;
 }
 
 .download-icon {
     font-family:'SAP-icons';
     font-size: 20px;
-    color: #0099CC;    
+    color: #428BCA;    
     padding-left: 10px;    
 }
 
@@ -508,7 +544,9 @@ input[type="checkbox"]:checked:after {
     z-index: 10;
     background: rgba(0,0,0,0.2);
 }
-
+.blue{
+    color: rgba(66,139,202,1);
+}
 .bold
 {
     font-weight: bold;
@@ -536,7 +574,7 @@ input[type="checkbox"]:checked:after {
     border-radius: 0px;
 }
 /*#### BUTTONS #####*/
-.btn{
+.btn, button{
     border-radius: 0px;
     border: none;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
@@ -545,17 +583,18 @@ input[type="checkbox"]:checked:after {
     margin-right: 15px;
     height: 32px;
 }
-.btn:active{
+.btn:active, button:active{
     border-radius: 0px;
     border: none;
     box-shadow: -1px -1px 0px rgba(0,0,0,0.2);
 }
-.btn:focus{
+.btn:focus, button:focus{
     border-radius: 0px;
     border: none;
     box-shadow: -1px -1px 0px rgba(0,0,0,0.2);
+    outline: none;
 }
-.btn:hover{
+.btn:hover, button:hover{
     background-color: rgba(230,230,230,1);
 }
 .btn_blue{
@@ -568,7 +607,9 @@ input[type="checkbox"]:checked:after {
 
 .btn_blue:focus{
     background-color: rgba(66,139,202,1);
-    color: white;
+    /*background-color: #f5f5f5;*/
+    color: rgba(240,240,240,1);
+    outline:0;
 }
 
 .btn_blue:hover{
@@ -604,14 +645,22 @@ input[type="checkbox"]:checked:after {
 }
 .btn-group{
     max-width: 70%;
+    display: -ms-flexbox;
+    display: flex;
 }
-
+.back-btn{
+    font-size: 2rem;
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+}
 .panel{
     border: none;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    -webkit box-shadow: none;
+    box-shadow: none;
     border-radius: 0;
     height:100%;
-    min-width: 900px;
+    min-width: 850px;
 }
 
 .dropdown-menu > li > a:hover{
@@ -631,18 +680,29 @@ input[type="checkbox"]:checked:after {
 .mainContainer {
     width: 100%;
     position: absolute;
-    top: 80px;
+    top: 0px;
     bottom: 0px;
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
     width:100%; 
     height:90%;
+}
+.btn-container{
+    width: 50%;
+    height: 90%;
+    float: right;
+}
+.btn-box{
     
+    height: 25%;
+    margin-right: 0;
+    margin-bottom: 5px;
+    float: right;
 }
 .prio_col{
     width:47%;
-    height: 50%;
+    height: 51%;
     float:left;
     background-color: grey;
     color: white;
@@ -685,10 +745,69 @@ input[type="checkbox"]:checked:after {
 .pixel_art{
     position: absolute;
     bottom: 5px;
-    right: 10px;
+    left: 10px;
     float: right;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 .meetings-table{
     font-size:0.9em;
 }
+#detailContainer{
+    text-align: left;
+}
+.fa{
+    line-height: inherit!important;
+}
+.box-icon.fa{
+    padding-top: 2px;
+}
+.table-cell{
+    border:2px solid white;
+    height:40px;
+    padding-top:8px;
+    padding-left: 10px;
+}
+
+.row0{
+    background-color: rgb(243, 243, 243);
+    margin-left: 0;
+    margin-top: 5px;
+}
+
+.row1{
+    background-color: rgb(253, 253, 253);
+    margin-left: 0;
+    margin-top: 5px;
+}
+
+.cellText {
+    font-size: 14px;
+    height: 40px;
+    padding-left: 10px;
+    line-height: 2.5;
+    overflow: hidden;
+}
+
+.box-title {
+    margin-top: 30px;
+    font-size: 14px;
+    line-height: 32px;
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: bold;    
+}
+.wi {
+    font-size: 1.6rem;
+    padding-left: 2px;
+}
+h1{
+    font-size: 5rem;
+    font-weight: 300;
+    line-height: 1;
+}
+h3{
+    font-size:1.4rem;
+    font-weight:600;
+    font-style:italic;
+    text-transform:uppercase;
+    }

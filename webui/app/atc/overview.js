@@ -1,41 +1,27 @@
 ﻿angular.module('app.atc', []);
 
 angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice", "bridgeDataService",
-    function ($modal, $interval, appAtcConfig, appAtcData, bridgeDataService) {
+    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice",
+    function ($modal, $interval, appAtcConfig, appAtcData) {
     
     var directiveController = ['$scope', function ($scope) {        
         $scope.box.settingsTitle = "Configure Source Systems and Packages";                
         $scope.box.settingScreenData = {
             templatePath: "atc/settings.html",
-            controller: angular.module('app.atc').appAtcSettings,
-            id: $scope.boxId,
+            controller: angular.module('app.atc').appAtcSettings
         };
 
         $scope.box.returnConfig = function () {
             return appAtcConfig;
         };
 
-        $scope.atcData = appAtcData;
-        $scope.config = appAtcConfig;                    
-
-        var loadData = function () {
-            if ($scope.config.configItems.length > 0){
-                $scope.atcData.getResultForConfig(appAtcConfig);
+        $scope.atcData = $scope.atcData || appAtcData;
+        $scope.config = $scope.config || appAtcConfig;                    
+      
+        $scope.$watch('config', function (newVal, oldVal) {
+            if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
+                appAtcData.loadOverviewData();
             }
-        }
-
-        var refreshInterval = $interval(loadData, 60000 * 5);
-        $scope.$on('$destroy', function () {
-            if (angular.isDefined(refreshInterval)) {
-                $interval.cancel(refreshInterval);
-                refreshInterval = undefined;
-            }
-        });
-
-        
-        $scope.$watch('config', function () {
-            loadData();
         }, true);    
     }];
 
@@ -43,34 +29,10 @@ angular.module('app.atc').directive('app.atc',
         restrict: 'E',
         templateUrl: 'app/atc/overview.html',
         controller: directiveController,
-        link: function ($scope, $element, $attrs, $modelCtrl) {
-            var currentConfigItem;
-
-            if (appAtcConfig.configItems.length == 0) {
-                if ($scope.appConfig.configItems) {
-                    appAtcConfig.clear();
-
-                    for (configItem in $scope.appConfig.configItems) {
-                        currentConfigItem = appAtcConfig.newItem();
-
-                        currentConfigItem.component = $scope.appConfig.configItems[configItem].component;
-                        currentConfigItem.devClass = $scope.appConfig.configItems[configItem].devClass;
-                        currentConfigItem.displayPrio1 = $scope.appConfig.configItems[configItem].displayPrio1;
-                        currentConfigItem.displayPrio2 = $scope.appConfig.configItems[configItem].displayPrio2;
-                        currentConfigItem.displayPrio3 = $scope.appConfig.configItems[configItem].displayPrio3;
-                        currentConfigItem.displayPrio4 = $scope.appConfig.configItems[configItem].displayPrio4;
-                        currentConfigItem.onlyInProcess = $scope.appConfig.configItems[configItem].onlyInProcess;
-                        currentConfigItem.showSuppressed = $scope.appConfig.configItems[configItem].showSuppressed;
-                        currentConfigItem.srcSystem = $scope.appConfig.configItems[configItem].srcSystem;
-                        currentConfigItem.tadirResponsible = $scope.appConfig.configItems[configItem].tadirResponsible;
-
-                        appAtcConfig.addConfigItem(currentConfigItem);
-                    }
-                } else {
-                    currentConfigItem = appAtcConfig.newItem();
-                    currentConfigItem.tadirResponsible = bridgeDataService.getUserInfo();
-                    appAtcConfig.addConfigItem(currentConfigItem);
-                }
+        link: function ($scope) {
+            if (appAtcConfig.isInitialized === false) {
+                appAtcConfig.initialize($scope.id);
+                appAtcData.loadOverviewData();
             }
         }
     };

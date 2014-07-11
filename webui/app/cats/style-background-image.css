@@ -1,28 +1,32 @@
-﻿.app-cats-stateR { /* Not maintained */
-	background: #F0AB00;
-    color: white;
+
+
+.app-cats-stateR { 
+	/* Not maintained */
+	background: #a4d8f9;
+	
 }
 
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-	background: #F0AB00;
-    color: white;
+	background-color:#dff5ff;
+
+	background-image: url('/../../img/part_maint.svg');
+	background-repeat: no-repeat;
+	background-position-x: 50%;
+	background-position-y: 50%;
 }
 
 .app-cats-stateG { /* maintained */
-	background: rgba(0, 0, 0, 1);
-    opacity: 0.15;
-    color: white;
+	background: #dff5ff;
 }
 
 .app-cats-stateN { /* no need for maintainance */
-	background: rgba(80, 80, 80, 0.7);
-    background-image: url('../../img/stripes2.png');
-    color: white;
+	background: #e1e1e1;
 }
 
 .app-cats-notInMonth {
 	background: #e1e1e1;
-	opacity: 0;
+	/*opacity: 0;*/
+	visibility: hidden;
 }
 
 .app-cats-icon {
@@ -35,24 +39,40 @@
 	background: #555;
 }
 
-.app-cats-today {
-	background: rgb(0, 157, 224);
-    opacity: 1;
-}
+.app-cats-today { 
+	background-image: url('/../../img/ecke_dunkel_noshadow.svg');
+	background-repeat: no-repeat;
+	background-position-x: 100%;
 
-.selected_day{
-	background-color: grey;
 	
 }
 
-.app-cats-legend-popover {
-	border-radius: 0;
-	border: none;
-	box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-	background-color: rgba(30, 30, 30, 0.90);
+.selected_day span{
+	position: relative;
+	top: -2px;
 }
 
-.popover-title {
-	border-radius: 0;
-	background-color: rgba(30, 30, 30, 0.90);
+.selected_day{
+	background: ;
+	border: 2px solid #ffd07e;
+	color: #707070!important;
+	font-weight: 600;
 }
+
+
+
+.app-cats-stateY_TODAY { 
+
+	/*background-color:#dff5ff;*/
+	background-image: url('/../../img/part_maint_TODAY.svg');
+	background-repeat: no-repeat;
+	background-position-x: 50%;
+	background-position-y: 50%;
+
+}
+
+
+.app-cats-week .app-cats-day {
+		color: white;
+		width: 13.5%;
+	}

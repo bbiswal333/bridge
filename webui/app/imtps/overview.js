@@ -47,7 +47,7 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
                 $scope.imData = data["abap"];
                 $scope.imData = $scope.imData["values"];
 				
-                _.each($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"], function (n) {
+                angular.forEach($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"], function (n) {
                 	console.log(n["MSG_PRIO"]);
 					if( n["MSG_PRIO"] == 1 ){
 						$scope.prioarray[0] = $scope.prioarray[0] + 1;

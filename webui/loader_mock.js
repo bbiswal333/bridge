@@ -12,14 +12,14 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
         needs_client: false,
         overview_directive: "app.atc",
         routes: null,
-        title: "ATC Results",
+        title: "ATC Results"
     }, {
         icon_css: "icon-clock-o",
         module_name: "app.cats",
         needs_client: false,
         overview_directive: "app.cats",
         routes: null,
-        title: "CATS Compliance",
+        title: "CATS Compliance"
     }];
     this.$get = function () { return this; };
 });

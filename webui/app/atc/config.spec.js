@@ -1,15 +1,43 @@
 ﻿describe("Manages the ATC app-configuration", function () {
 
-    var $rootScope;
+    var bridgeDataService;
     var atcConfigService;
 
-    beforeEach(function () {
+     function createConfigItemForSystem(System) {
+        var myConfigItem = atcConfigService.newItem();
 
+        myConfigItem.srcSystem = System;
+        myConfigItem.devClass = "S_DEVREPORTING";
+        myConfigItem.tadirResponsible = "D051804";
+        myConfigItem.component = "BA-BS";
+        myConfigItem.showSuppressed = true;
+        myConfigItem.displayPrio1 = true;
+        myConfigItem.displayPrio3 = true;
+        myConfigItem.onlyInProcess = true;
+        return myConfigItem;
+    }
+
+     beforeEach(function () {
+         // create the mock module
+        angular.module("mock.atc", []).service("bridgeDataService", function () {
+            this.hasConfigForATC = true;
+            this.getAppConfigById = function () {
+                if (this.hasConfigForATC) {
+                    return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true}]}');
+                } else {
+                    return {};
+                }
+            };
+            this.getUserInfo = function () {
+                return {};
+            };
+        });
+        module("mock.atc");
         module("app.atc");
 
-        inject(["$rootScope", "app.atc.configservice", function (rootScope, _atcConfigService) {
-            $rootScope = rootScope;
+        inject(["app.atc.configservice", "bridgeDataService", function (_atcConfigService, _bridgeDataService) {
             atcConfigService = _atcConfigService;
+            bridgeDataService = _bridgeDataService;
         }]);
     });
 
@@ -24,18 +52,20 @@
         expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;;X;;X|CI3;S_DEVREPORTING;D051804;BA-BS;X;X;;X;;X");
     });
 
-    function createConfigItemForSystem(System) {
-        var myConfigItem = new atcConfigService.newItem();
+    it("should initialize itself from the bridge config service", function () {
+        atcConfigService.initialize();
+        expect(atcConfigService.isInitialized).toBe(true);
 
-        myConfigItem.srcSystem = System;
-        myConfigItem.devClass = "S_DEVREPORTING";
-        myConfigItem.tadirResponsible = "D051804";
-        myConfigItem.component = "BA-BS";
-        myConfigItem.showSuppressed = true;
-        myConfigItem.displayPrio1 = true;
-        myConfigItem.displayPrio3 = true;
-        myConfigItem.onlyInProcess = true;
-        return myConfigItem;
-    }
+        expect(atcConfigService.configItems.length).toBe(1);
+        expect(atcConfigService.configItems[0].srcSystem).toBe("Z7Y");
+    });
+
+    it("should initialize itself with the default config if no backend config is available", function () {
+        bridgeDataService.hasConfigForATC = false;
+        atcConfigService.initialize();
+
+        expect(atcConfigService.configItems.length).toBe(1);
+        expect(atcConfigService.configItems[0].tadirResponsible).toBeDefined();
+    });
 
 });

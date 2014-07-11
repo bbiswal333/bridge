@@ -5,11 +5,12 @@
 
     $scope.closeForm = function () {
         $scope.$emit('closeSettingsScreen');
-    }
+    };
 
     $scope.$watch('config', function () {
-        if ($scope.tableParams.settings().$scope != null)
+        if ($scope.tableParams.settings().$scope != null) {
             $scope.tableParams.reload();
+        }
     }, true);
 
     $scope.add_click = function () {
@@ -27,13 +28,15 @@
         }
     };
 
+/*eslint-disable */
     $scope.tableParams = new ngTableParams({
+/*eslint-enable */
         page: 1,            // show first page
-        count: 100,           // count per page
+        count: 100           // count per page
     }, {
         counts: [], // hide page counts control
         total: $scope.config.configItems.length,
-        getData: function($defer, params) {
+        getData: function ($defer, params) {
             var orderedData = params.sorting() ?
                     $filter('orderBy')($scope.config.configItems, params.orderBy()) :
                     $scope.config.configItems;

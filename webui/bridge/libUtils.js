@@ -74,7 +74,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     }];
 
     this.addAdditionalData = function(data_o) {
-        if (typeof data_o != "object") {
+        if (typeof data_o !== "object") {
             return false;
         }
 
@@ -90,7 +90,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     var lookupAdditionalDataForDay = function(dateDay_i) {
         for (var prop in _additionalData) {
-            if (prop == dateDay_i) {
+            if (prop === dateDay_i.toString()) {
                 return _additionalData[prop];
             }
         }
@@ -99,14 +99,14 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.buildCalendarArray = function(year_i, month_i) {
-        var cal = new Array();
+        var cal = [];
         var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
         var daysInLastMonth = 0;
         var today = new Date(); //Needed as a workaround for strange behaviour of javascript
         var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
 
-        cal[0] = new Array();
-        if (firstDayInMonth != 0) {
+        cal[0] = [];
+        if (firstDayInMonth !== 0) {
             daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
         } else {
             daysInLastMonth = 6;
@@ -116,26 +116,25 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
 
         var i;
-        var week = 0;
         var stop = false;
         for (i = 0; !stop; i++) {
             var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
             var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
-                inMonth: (thisDay.getMonth() == month_i),
+                inMonth: (thisDay.getMonth() === month_i),
                 inFuture: (thisDay.getTime() >= todayInMs),
-                today: (thisDay.getFullYear() == today.getFullYear() && thisDay.getMonth() == today.getMonth() && thisDay.getDate() == today.getDate()),
+                today: (thisDay.getFullYear() === today.getFullYear() && thisDay.getMonth() === today.getMonth() && thisDay.getDate() === today.getDate()),
                 data: additionalDataForThisDay,
                 dayString: self.stringifyDate(thisDay),
-                date: thisDay,
+                date: thisDay
             };
 
-            if ((i + 1) % 7 == 0) {
-                if (new Date(firstDateOfGridInMs + i * MILLISECS_DAY).getMonth() != month_i) {
+            if ((i + 1) % 7 === 0) {
+                if (new Date(firstDateOfGridInMs + i * MILLISECS_DAY).getMonth() !== month_i) {
                     stop = true;
                 } else {
-                    cal[Math.floor((i + 1) / 7)] = new Array();
+                    cal[Math.floor((i + 1) / 7)] = [];
                 }
             }
         }
@@ -163,27 +162,33 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
         var res = "";
         if (days > 0) {
-            if (short_b)
+            if (short_b) {
                 res += days + "d ";
-            else
-                res += days + ((days == 1) ? " day, " : " days, ");
+            }
+            else {
+                res += days + ((days === 1) ? " day, " : " days, ");
+            }
         }
         if (hours > 0) {
-            if (short_b)
+            if (short_b) {
                 res += hours + "h ";
-            else
-                res += hours + ((hours == 1) ? " hour, " : " hours, ");
+            }
+            else {
+                res += hours + ((hours === 1) ? " hour, " : " hours, ");
+            }
         }
-        if (short_b)
+        if (short_b) {
             res += minutes_i + "m";
-        else
-            res += minutes_i + ((minutes_i == 1) ? " minute" : " minutes");
+        }
+        else {
+            res += minutes_i + ((minutes_i === 1) ? " minute" : " minutes");
+        }
 
         return res;       
     };
 
     this.useNDigits = function(val_i, n_i) {
-        var str = new String(val_i);
+        var str = val_i.toString();
 
         for (var i = str.length; i < n_i; i++) {
             str = "0" + str;
@@ -194,35 +199,42 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     this.calcBusinessDays = function(dDate1, dDate2) { // input given as Date objects
         var iWeeks, iDateDiff, iAdjust = 0;
-        if (dDate2 < dDate1) return -1; // error code if dates transposed
+        if (dDate2 < dDate1) {
+            return -1; // error code if dates transposed
+        }
 
         var iWeekday1 = dDate1.getDay(); // day of week
         var iWeekday2 = dDate2.getDay();
 
-        iWeekday1 = (iWeekday1 == 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
-        iWeekday2 = (iWeekday2 == 0) ? 7 : iWeekday2;
+        iWeekday1 = (iWeekday1 === 0) ? 7 : iWeekday1; // change Sunday from 0 to 7
+        iWeekday2 = (iWeekday2 === 0) ? 7 : iWeekday2;
 
-        if ((iWeekday1 > 5) && (iWeekday2 > 5)) iAdjust = 1; // adjustment if both days on weekend
+        if ((iWeekday1 > 5) && (iWeekday2 > 5)) {
+            iAdjust = 1; // adjustment if both days on weekend
+        }
         iWeekday1 = (iWeekday1 > 5) ? 5 : iWeekday1; // only count weekdays
         iWeekday2 = (iWeekday2 > 5) ? 5 : iWeekday2;
 
         // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
-        iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000)
+        iWeeks = Math.floor((dDate2.getTime() - dDate1.getTime()) / 604800000);
 
         if (iWeekday1 <= iWeekday2) {
-            iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1)
+            iDateDiff = (iWeeks * 5) + (iWeekday2 - iWeekday1);
         } else {
-            iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2)
+            iDateDiff = ((iWeeks + 1) * 5) - (iWeekday1 - iWeekday2);
         }
 
-        iDateDiff -= iAdjust // take into account both days on weekend
+        iDateDiff -= iAdjust; // take into account both days on weekend
 
         return (iDateDiff); // add 1 if the end date should be included
     }; //calcBusinessDays
 
     //Parses such dates: yyyy-mm-dd
     this.parseDate = function(str) {
-        if (typeof str != "string" || str.length != 10) return false;
+        if (typeof str !== "string" || str.length !== 10) {
+            return false;
+        }
+
         var day = str.substr(8, 2);
         var mon = str.substr(5, 2) - 1;
         var year = str.substr(0, 4);
@@ -240,7 +252,9 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     //Return strings like: yyyy-mm-dd (Which will be accepted by parseDate() as input again)
     this.stringifyDate = function(date_o) {
-        if (!(date_o instanceof Date)) return null;
+        if (!(date_o instanceof Date)) {
+            return null;
+        }
         return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
@@ -249,23 +263,23 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getWeekday = function (day, format) {
-        if (day == 0) {
+        if (day === 0) {
             day = 6;
         }
         else {
             day--;
         }
 
-        if (format == 0) {
+        if (format === 0) {
             return _weekdays[day].short;
         }
-        else if (format == 1) {
+        else if (format === 1) {
             return _weekdays[day].medium;
         }
         else {
             return _weekdays[day].long;
         }
-    }
+    };
 
     this.getMonths = function() {
         return _months;
@@ -286,7 +300,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
         var jan4Week = new Date(date_o.getFullYear(), 0, 4);
         var jan4WeekDay = jan4Week.getDay();
-        if (jan4WeekDay != 0) {
+        if (jan4WeekDay !== 0) {
             jan4WeekDay = jan4WeekDay - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
         } else {
             jan4WeekDay = 6;
@@ -298,16 +312,16 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         //console.log(daysSinceFirstMon);
         res.weekNo = 1 + Math.floor(daysSinceFirstMon / 7);
 
-        var monInSelectedWeek = new Date(date_o.getTime() - ((date_o.getDay() != 0) ? date_o.getDay() - 1 : 6)  * MILLISECS_DAY);
+        var monInSelectedWeek = new Date(date_o.getTime() - ((date_o.getDay() !== 0) ? date_o.getDay() - 1 : 6)  * MILLISECS_DAY);
 
         var date_i = monInSelectedWeek.getTime();
         var cnt = 1;
         var yearOne = monInSelectedWeek.getFullYear();
         for (var i = 1; i < 4; i++) {
-            if (new Date(date_i + i * MILLISECS_DAY).getFullYear() == yearOne) {
+            if (new Date(date_i + i * MILLISECS_DAY).getFullYear() === yearOne) {
                 cnt++;
 
-                if (cnt == 4) {
+                if (cnt === 4) {
                     res.year = parseInt(yearOne);
                     return res;
                 }
@@ -318,19 +332,20 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return res;
     };
 
-    this.getUTC = function(year, month, date) {
-        if (!arguments || arguments.length == 0) {
+    this.getUTC = function (year, month, date) {
+        if (!arguments || arguments.length === 0) {
             var today = new Date();
             return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
         }
 
         return new Date(Date.UTC(year, month, date));
-    }
+    };
 
     this.substractMonths = function (date, months) {
         var newDate = date.getUTCDate();
-        if (newDate > this.getLengthOfMonth(date.getUTCFullYear(), date.getUTCMonth() - months))
+        if (newDate > this.getLengthOfMonth(date.getUTCFullYear(), date.getUTCMonth() - months)) {
             newDate = this.getLengthOfMonth(date.getUTCFullYear(), date.getUTCMonth() - months);
+        }
 
         return this.getUTC(date.getUTCFullYear(), date.getUTCMonth() - months, newDate);
     };
@@ -343,13 +358,13 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return date.getFullYear() + "-" + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + "-" + this.toNumberOfCharactersString(date.getDate(), 2);
     };
 
-    this.toNumberOfCharactersString = function(str, numberOfCharacters) {
+    this.toNumberOfCharactersString = function (str, numberOfCharacters) {
         var result = str.toString();
         while (result.length < numberOfCharacters) {
             result = "0" + result;
         }
         return result;
-    }
+    };
 
     this.moveDateToFirstDayInMonth = function (date) {
         return this.getUTC(date.getUTCFullYear(), date.getUTCMonth(), 1);
@@ -367,7 +382,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 }).factory("lib.utils.stringUtils", function() {
     function _startsWith(string_s, toStartWith_s) {
-        if (typeof string_s == "undefined" || typeof toStartWith_s == "undefined" || toStartWith_s.length > string_s.length) {
+        if (typeof string_s === "undefined" || typeof toStartWith_s === "undefined" || toStartWith_s.length > string_s.length) {
             return false;
         }
 

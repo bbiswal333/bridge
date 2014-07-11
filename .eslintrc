@@ -1,0 +1,33 @@
+{
+	"env": 
+    {
+        "browser": true,
+        "node": false
+    },
+    "globals": 
+	{
+        "angular": true,
+        "location": true,
+        "Modernizr": true,
+        "console": true,
+        "X2JS": true,
+		"$": true,
+		"describe": true,
+		"beforeEach": true,
+		"module": true,
+		"inject": true,
+		"it": true,
+		"expect": true,
+		"alert": true,
+        "Notification":  true      
+    },
+    "rules": 
+    {        
+        "quotes": 0,
+        "strict": 0,
+        "camelcase": 0,
+		"no-console": 0,
+		"no-alert": 0,
+        "no-underscore-dangle": 0
+    }
+}

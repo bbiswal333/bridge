@@ -8,9 +8,9 @@ angular.module('bridge.app').service('sortableConfig', function () {
         scroll: false,
         tolerance: "pointer",
         disabled: true,
-        update: function (e, ui) {
+        update: function () {
         },
-        stop: function (e, ui) {
+        stop: function () {
         }
     };
 });

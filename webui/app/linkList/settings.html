@@ -1,15 +1,16 @@
 <div class="row">
 <!-- LISTS -->
-    <div ng-repeat="linkList in config.listCollection track by $index">
+    <div ng-repeat="linkList in config.data.listCollection track by $index">
         <div class="col-md-4">
             <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
 
             <!--- DISPLAY existing Links -->
             <div ui-sortable="sortableOptions" ng-model="linkList" class="sortableConnect app-linkList-linkList">
-                <div class="app-linkList-row" style="min-height:0px;" ng-if="!linkList[0]" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                <div class="app-linkList-row" style="min-height:45px;" ng-if="!linkList[0]" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                 </div>
                 <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
+
                         <input type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
                         <input ng-if="link.type=='saplink'" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
                     </div>
@@ -20,21 +21,25 @@
                             <input ng-if="link.type=='saplink'"  type="text" class="form-control form padd_bot" ng-model="link.parameters" placeholder="Parameters"/>
                         </div>
                         <div class="app-linklist-editIcons">
+                            <i class="fa fa-arrows" style="margin-right:10px;"></i>
                             <span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;"class=" app-linklist-clickIcon fa fa-times" ></span>
                         </div>
                     </div>
                 </div>
             </div>
+            <div>Drag and drop your items here.</div>
 
-            <!--- REMOVE empty LinkList -->
-            <span class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)" style="z-index:1;position:relative;top:-8px;">
-                Remove Linklist
-            </span> 
+            <div style="z-index:1;position:relative;margin-top: 8px;">
+                <!--- REMOVE empty LinkList -->
+                <div class="btn-default btn remove_btn" ng-if="isLinkListEmpty($index) && $index != 0" ng-click="removeLinkList($index)">
+                    Remove Linklist
+                </div>
 
-            <!--- DISPLAY New Link button -->
-            <div class="row app-linkList-row" >
-                <div class="col-xs-12" style="padding:0 0 0 0;">
-                    <button ng-disabled="linkList.length >= 7 || !isAddFormPossible()" ng-click="toggleAddForm($index)" type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
+                <!--- DISPLAY New Link button -->
+                <div >
+                    <div class="col-xs-12" style="padding:0 0 0 0;">
+                        <button ng-disabled="linkList.length >= 7 || !isAddFormPossible()" ng-click="toggleAddForm($index)" type="button" class="btn btn-default btn_blue" ng-class="{new_link_zero:linkList.length == 0}" style="z-index:3;">New Link</button>
+                    </div>
                 </div>
             </div>
 
@@ -106,7 +111,7 @@
     </div>
 
     <!--- ADD empty LinkList -->
-    <div ng-if="config.listCollection.length < 3" class="col-md-4">
+    <div ng-if="config.data.listCollection.length < 3" class="col-md-4">
         <span class="btn-default btn "  ng-click="addLinkList()"  style="margin-top:45px">Add new Linklist</span>
     </div>
 

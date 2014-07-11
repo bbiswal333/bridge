@@ -1,4 +1,4 @@
 if( !navigator.featuresAvailable() )
 {
-    location.href="/browser_not_supported.html";
+    location.href = "/browser_not_supported.html";
 }

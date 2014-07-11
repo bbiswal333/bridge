@@ -1,5 +1,5 @@
 ﻿describe("The Employee Search should display SAP Users according to the Search string", function () {
-
+    var employeeSearchData = { "DATA": [{ "BNAME": "D030212", "VORNA": "Arnulf", "NACHN": "Schueler", "BNAME_STR": "D030212 Arnulf Schueler" }, { "BNAME": "C5065029", "VORNA": "Hans", "NACHN": "Schueler", "BNAME_STR": "C5065029 Hans Schueler" }, { "BNAME": "D051804", "VORNA": "Daniel", "NACHN": "Schueler", "BNAME_STR": "D051804 Daniel Schueler" }, { "BNAME": "I826687", "VORNA": "Jack", "NACHN": "Schueler", "BNAME_STR": "I826687 Jack Schueler" }, { "BNAME": "C5187726", "VORNA": "Ricarda", "NACHN": "Schueler", "BNAME_STR": "C5187726 Ricarda Schueler" }, { "BNAME": "I840490", "VORNA": "Ricarda", "NACHN": "Schueler", "BNAME_STR": "I840490 Ricarda Schueler" }] };
     var $rootScope;
     var $httpBackend;
     var $compile;
@@ -30,6 +30,4 @@
         });
         $httpBackend.flush();
     });
-
-    var employeeSearchData = { "DATA": [{ "BNAME": "D030212", "VORNA": "Arnulf", "NACHN": "Schueler", "BNAME_STR": "D030212 Arnulf Schueler" }, { "BNAME": "C5065029", "VORNA": "Hans", "NACHN": "Schueler", "BNAME_STR": "C5065029 Hans Schueler" }, { "BNAME": "D051804", "VORNA": "Daniel", "NACHN": "Schueler", "BNAME_STR": "D051804 Daniel Schueler" }, { "BNAME": "I826687", "VORNA": "Jack", "NACHN": "Schueler", "BNAME_STR": "I826687 Jack Schueler" }, { "BNAME": "C5187726", "VORNA": "Ricarda", "NACHN": "Schueler", "BNAME_STR": "C5187726 Ricarda Schueler" }, { "BNAME": "I840490", "VORNA": "Ricarda", "NACHN": "Schueler", "BNAME_STR": "I840490 Ricarda Schueler" }] };
 });  

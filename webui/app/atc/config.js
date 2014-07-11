@@ -1,28 +1,29 @@
-angular.module('app.atc').factory("app.atc.configservice", function () {
+angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
+    var ConfigItem = function () {
+        this.clear = function () {
+            this.srcSystem = "";
+            this.devClass = "";
+            this.tadirResponsible = "";
+            this.component = "";
+            this.showSuppressed = false;
+            this.displayPrio1 = true;
+            this.displayPrio2 = true;
+            this.displayPrio3 = false;
+            this.displayPrio4 = false;
+            this.onlyInProcess = false;
+        };
 
-	var ConfigItem = function() {
-		this.clear = function () {
-		    this.srcSystem = "";
-		    this.devClass = "";
-		    this.tadirResponsible = "";
-		    this.component = "";
-		    this.showSuppressed = false;
-		    this.displayPrio1 = false;
-		    this.displayPrio2 = false;
-		    this.displayPrio3 = false;
-		    this.displayPrio4 = false;
-		    this.onlyInProcess = false;
-		}
+        this.isEmpty = function () {
+            if (this.srcSystem === "" && this.devClass === "" && this.tadirResponsible === "" && this.component === "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
 
-		this.isEmpty = function () {
-		    if (this.srcSystem == "" && this.devClass == "" && this.tadirResponsible == "" && this.component == "")
-		        return true;
-		    else
-		        false;
-		}
-
-		this.clear();
-	}
+        this.clear();
+    };
 
 	var IQueryString = {
 		getQueryString : function() { throw "Not Implemented"; }
@@ -49,14 +50,14 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 	};
 
 	var Config = function() {
-		this.configItems = [];
+	    this.configItems = [];
+	    this.isInitialized = false;
 	};
 
 	Config.prototype = Object.create(IConfig);
-	Config.prototype.newItem = function()
-	{
-		return new ConfigItem();
-	}
+	Config.prototype.newItem = function () {
+	    return new ConfigItem();
+	};
 
 	Config.prototype.addConfigItem = function(item){
 		this.configItems.push(item);
@@ -65,18 +66,53 @@ angular.module('app.atc').factory("app.atc.configservice", function () {
 		return this.configItems;
 	};
 	Config.prototype.getQueryString = function() {
-		queryString = "";
+		var queryString = "";
 		for(var i = 0; i < this.getConfigItems().length; i++) {
-			if(i == this.getConfigItems().length - 1)
-				queryString += this.getConfigItems()[i].getQueryString(); 
-			else
-				queryString += this.getConfigItems()[i].getQueryString() + "|"; 
+		    if (i === this.getConfigItems().length - 1) {
+		        queryString += this.getConfigItems()[i].getQueryString();
+		    }
+		    else {
+		        queryString += this.getConfigItems()[i].getQueryString() + "|";
+		    }
 		}
 		return queryString;
 	};
 	Config.prototype.clear = function () {
 	    this.configItems.length = 0;
 	};
+	Config.prototype.initialize = function (sAppId) {
+	    this.isInitialized = true;
+	    var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
+	    var currentConfigItem;
+
+	    if (persistedConfig.configItems) {
+	        this.clear();
+
+	        for (var configItem in persistedConfig.configItems) {
+	            currentConfigItem = this.newItem();
+
+	            currentConfigItem.component = persistedConfig.configItems[configItem].component;
+	            currentConfigItem.devClass = persistedConfig.configItems[configItem].devClass;
+	            currentConfigItem.displayPrio1 = persistedConfig.configItems[configItem].displayPrio1;
+	            currentConfigItem.displayPrio2 = persistedConfig.configItems[configItem].displayPrio2;
+	            currentConfigItem.displayPrio3 = persistedConfig.configItems[configItem].displayPrio3;
+	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
+	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
+	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
+	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
+	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
+
+	            this.addConfigItem(currentConfigItem);
+	        }
+	    } else {
+	        currentConfigItem = this.newItem();
+	        currentConfigItem.tadirResponsible = bridgeDataService.getUserInfo();
+	        this.addConfigItem(currentConfigItem);
+	    }
+	};
+
+    // this gets executed the first time this factory gets injected
+	var config = new Config();
 	
-	return new Config(); 
-});
+	return config; 
+}]);

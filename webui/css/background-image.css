@@ -1,38 +1,38 @@
 ﻿.innerbox {
-    background-color: rgba(30, 30, 30, 0.90);
+    background-color: rgba(255, 255, 255, 1);
     padding: 5px;
     box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
     border-color: #dddddd;
     padding:5px 15px;
+    /*opacity: 0.9;*/
 }
-
-.boxDisable {
-    background-color: rgba(80, 80, 80, 0.8);
-}
-
 .box-heading {
     font-family:'Open Sans', sans-serif;
-    color: #ffffff;
+    color: #707070;
     border-bottom: 1px solid #CCCCCC;
     height: 18%;
 }
-
+.box-heading-detail-view {
+    height: 6%;
+}
 .box-content {
     width: 100%;
     height: 82%;
     font-family:'Open Sans', sans-serif;
-    color: #eeeeee;
+    color: #707070;
     margin-top: 10px;
 }
-
 .mainPageBackgroundGradient { 
     position: absolute;
     height: 100%;
     width: 100%;
-    right:0;
-    background-image: url('../img/273879_l_srgb_s_gl.jpg');
+    left:0;
+    top: 0;
+    background-image: url('../img/sun.png');
     background-size: 100% auto;
-    background-position-y: bottom;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
 }
 .mainPageBackground {
     width: 100%;
@@ -42,43 +42,89 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
+.night{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left:0;
+    top: 0;
+    background-image: url('../img/night.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+}
+.day{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left:0;
+    top: 0;
+    background-image: url('../img/sun.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+}
+.sun{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/sun.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+    background-color: #65aeeb;
+}
+
+.smallClouds{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/small_clouds.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+   
+}
+.bigClouds{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/large_clouds.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+   
+}
+.rain{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/rain.png');
+    background-size: 100% auto;
+    background-position-y: top;
+    background-size: cover;
+    background-position-x: center;
+}
+
+.boxDisable {
+    background-color: #E6E6E6;
+}
 
 .box-icon
 {
-    color: #ffffff;
+    color: #428BCA;
 }
 
 .settingsIcon{
     display: block !important;
-    color: rgba(0,0,0,1);
+    color: rgba(0,0,0,0.2);
 }
 .settingsIcon:hover{
     display: block !important;
-    color: rgba(255,255,255,1);
-}
-
-.progress
-{
-    background: rgba(245, 245, 245, 0.2);
-}
-
-.panel
-{
-    background-color:rgba(30, 30, 30, 0.90) ;
-}
-
-div .panel-default > .panel-heading, panel-title
-{
-    background-color: rgba(140,140,140,0.9);
-    color: white;
-}
-
-.panel
-{
-    color: #e6e6e6;
-}
-
-.typeahead
-{
-    color: black;
+    color: rgba(0,0,0,0.5);
 }

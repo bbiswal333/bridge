@@ -1,9 +1,9 @@
 ﻿angular.module('app.test', []);
 angular.module('app.test').directive('app.test', function () {
 
-    var directiveController = ['$scope', function ($scope) 
+    var directiveController = ['$scope', function ($scope)
     {
-        //put some stuff in here           
+        //put some stuff in here
     }];
 
     return {

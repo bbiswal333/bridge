@@ -1,67 +1,92 @@
 angular.module('app.im', ['ngTable']);
 
-angular.module('app.im').directive('app.im', function () {
+angular.module('app.im').factory("app.im.configservice", function () 
+{  
+    //set the default configuration object
+    var config = {};
+    config.data = {};
+    config.data.settings = {};
+    config.data.selection = {};
+    config.data.settings.ignore_author_action = true;
+    config.data.selection.sel_components = true;
+    config.data.selection.colleagues = false;
+    config.data.selection.assigned_me = false;
+    config.data.selection.created_me = false;
+    return config;
+});
 
-    var directiveController = ['$scope' ,'app.im.configservice', function ($scope, appimconfigservice) {        
-    }];
-
+angular.module('app.im').directive('app.im', ['app.im.configservice', function (configservice) 
+{
     return {
         restrict: 'E',
-        templateUrl: 'app/im/overview.html',
-        controller: directiveController
+        templateUrl: 'app/im/overview.html',        
+        link: function ($scope) 
+        {
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined) 
+            {
+                configservice.data = $scope.appConfig.data;
+            }            
+        }
     };
-});
+}]);
 
-    angular.module('app.im').run(function ($rootScope) {
-});
+angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData', 'app.im.configservice','bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig) {
 
-angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData',
-    function Controller($scope, $http, ticketData) {
+        $scope.box.boxSize = "1";      
+        $scope.box.settingScreenData = {
+            templatePath: "im/settings.html",
+            controller: angular.module('app.im').appImSettings,
+            id: $scope.boxId
+        };          
 
-        $scope.prios = [{
-            name: "Very High", number: 1, amount: 0,
-        }, {
-            name: "High", number: 2, amount: 0,
-        }, {
-            name: "Medium", number: 3, amount: 0,
-        }, {
-            name: "Low", number: 4, amount: 0,
-        }];
+        $scope.box.returnConfig = function()
+        {
+            return configservice;
+        };
 
-        function parseBackendTicket(backendTicket) {
-            _.each($scope.prios, function (prios) {
-                if (backendTicket.PRIO == prios.number.toString())
-                    prios.amount++;
-            });
+        $scope.prios = ticketData.prios;        
+        $scope.$parent.titleExtension = " - Internal Messages";
+        $scope.dataInitialized = ticketData.isInitialized;
+        $scope.showNoMessages = false;
+
+        function setNoMessagesFlag() {
+            if (ticketData.isInitialized.value === true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) === 0) {
+                $scope.showNoMessages = true;
+            } else {
+                $scope.showNoMessages = false;
+            }
         }
 
-        $scope.$parent.titleExtension = " - Internal Messages"; 
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?origin=' + location.origin
-            ).success(function(data) {
-                data = new X2JS().xml_str2json(data);
-                var imData = data["abap"];
-                ticketData.backendTickets = imData["values"];
+        $scope.$watch("prios", function () {
+            setNoMessagesFlag();
+        }, true);
 
-                // if you have multiple tickets, DEVDB_MESSAGE_OUT is an array, otherwise a simple object
-                if (angular.isArray(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT)) {
-                    _.each(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT, function (backendTicket) {
-                        parseBackendTicket(backendTicket);
-                    });
-                } else {
-                    parseBackendTicket(ticketData.backendTickets.INTCOMP_LONG.DEVDB_MESSAGE_OUT);
+
+        $scope.$watch('config', function (newVal, oldVal) {
+            if($scope.config !== undefined && newVal !== oldVal)
+            {
+                ticketData.updatePrioSelectionCounts();
+                
+                // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
+                if (oldVal !== undefined) {
+                    bridgeConfig.persistInBackend(bridgeDataService);
                 }
+            }
+        },true);  
 
-                if (($scope.prios[0].amount + $scope.prios[1].amount + $scope.prios[2].amount + $scope.prios[3].amount) == 0) {
-                    $scope.lastElement="You have no internal messages to display!";
-                    $scope.displayChart = false;
-                }                
-                else 
-                {
-                    $scope.displayChart = true;
-                }
 
-            }).error(function(data) {
-                $scope.imData = [];                
+
+        if (ticketData.isInitialized.value === false) {
+            var initPromise = ticketData.initialize();
+            initPromise.then(function success() {
+                setNoMessagesFlag();
+                $scope.config = configservice;
             });
+        }
+        else{
+            $scope.config = configservice;
+        }
+
 }]);
     

@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.im",
 		"title"					:	"Internal Msg",
-		"icon_css"				:	"icon-comment-empty",
+		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.im",
 		"needs_client"			:	false,
 		"routes"		:
@@ -15,6 +15,6 @@
 		]	
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js","settings.js","config.js", "ticketData.js"],
-	"css_files" : []
+	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js"],
+	"css_files" : ["style.css"]
 }

@@ -2,8 +2,8 @@
 	"app":
 	{
 		"module_name"			:	"app.linklist",
-		"title"					:	"Linklist",
-		"icon_css"				:	"icon-bookmark-empty",
+		"title"					:	"Links",
+		"icon_css"				:	"fa fa-bookmark",
 		"overview_directive"	:	"app.linklist",
 		"needs_client"			:	false
 	},

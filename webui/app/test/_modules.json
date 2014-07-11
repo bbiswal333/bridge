@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.test",
 		"title"					:	"Test App",
-		"icon_css"				:	"icon-lightbulb",
+		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.test",
 		"needs_client"			:	false
 	},

@@ -3,7 +3,7 @@
 	margin-left: 0px;
 	margin-right: 0px;
 	min-height:45px;
-
+	cursor: move;
 
 }
 .app-linkList-tableHeader{
@@ -55,7 +55,10 @@
 	margin-top: 10px;
 }
 .app-linkList-linkList {
-
+    padding: 5px;
+    border-style: dashed;
+    border-color: rgb(175,229,255);
+    border-width: thin;
 }
 .new_link_zero{
 	margin-top: 5px;
@@ -86,7 +89,7 @@
 	border-top: 5px solid #428BCA;
 }
 .remove_btn{
-	position: absolute;
+	
 }
 .app-linklist-categoryHead-2{
 	border-top: 5px solid #6cb9e3;
@@ -128,7 +131,7 @@
 	display: inline-block;
 	float: left;
 	overflow: hidden;
-	width: -moz-calc(100% - 20x);
-	width: -webkit-calc(100% - 20px);
-    width: calc(100% - 20px);
+	width: -moz-calc(100% - 25px);
+	width: -webkit-calc(100% - 25px);
+    width: calc(100% - 40px);
 }

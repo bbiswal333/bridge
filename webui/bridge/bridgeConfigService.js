@@ -13,18 +13,22 @@
         }
 
         visible_apps.sort(function(app1, app2){
-            if (app1.metadata.order < app2.metadata.order) return -1;
-            if (app1.metadata.order > app2.metadata.order) return 1;
+            if (app1.metadata.order < app2.metadata.order) {
+                return -1;
+            }
+            if (app1.metadata.order > app2.metadata.order) {
+                return 1;
+            }
             return 0;
         });
         
-        for (var i = 0; i < visible_apps.length; i++) 
+        for (var j = 0; j < visible_apps.length; j++) 
         {
             apps.push({
                 metadata: {
-                    "module_name": visible_apps[i].metadata["module_name"]
+                    "module_name": visible_apps[j].metadata.module_name
                 },
-                appConfig: visible_apps[i].scope ? (visible_apps[i].scope.box ? (visible_apps[i].scope.box.returnConfig ? visible_apps[i].scope.box.returnConfig() : visible_apps[i].appConfig) : {}) : {},
+                appConfig: visible_apps[j].scope ? (visible_apps[j].scope.box ? (visible_apps[j].scope.box.returnConfig ? visible_apps[j].scope.box.returnConfig() : visible_apps[j].appConfig) : {}) : {}
             });                        
         }
         return apps;
@@ -38,27 +42,28 @@
         }
 
         configPayload.bridgeSettings = dataService.getBridgeSettings();
+        delete configPayload.bridgeSettings.local;
 
         $http({
             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
             method: "POST",
         data: angular.toJson(configPayload),
-            headers: { 'Content-Type': 'text/plain' },
-        }).success(function (data, status, headers, config) {
+            headers: { 'Content-Type': 'text/plain' }
+        }).success(function () {
             console.log("Config saved successfully");
-        }).error(function (data, status, headers, config) {
+        }).error(function () {
             console.log("Error when saving config!");
         });
     };
 
     this.loadFromBackend = function (deferred) {
             $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance .getCurrentInstance()+ '&origin=' + encodeURIComponent(location.origin),
-                method: "GET",
-            }).success(function (data, status, headers, config) {
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                method: "GET"
+            }).success(function (data) {
                 console.log("Config loaded successfully");
                 deferred.resolve(data);
-            }).error(function (data, status, headers, config) {
+            }).error(function (data) {
                 console.log("Error when loading config!");
                 deferred.reject(data);
             });
@@ -67,14 +72,18 @@
     };
 
     this.getDefaultConfig = function () {
-        var apps = [];       
-        for( var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++)
-        {
+        var apps = [];
+        for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
             apps[i] = {};
             apps[i].metadata = {};
-            apps[i].metadata['module_name'] = bridgeLoaderServiceProvider.apps[i]['module_name'];
             apps[i].metadata.id = i;
-            apps[i].metadata.show = true;
+            if (bridgeLoaderServiceProvider.apps[i].default_hidden) {
+                apps[i].metadata.show = false;
+            }
+            else {
+                apps[i].metadata.module_name = bridgeLoaderServiceProvider.apps[i].module_name;
+                apps[i].metadata.show = true;
+            }
         }
 
         return {
@@ -82,9 +91,9 @@
                 {
                     name: "OVERVIEW",
                     type: "PERSONAL",
-                    apps: apps                    
+                    apps: apps
                 }
             ]
+        };
     };
-    }
 }]);

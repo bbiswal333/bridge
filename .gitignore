@@ -8,10 +8,12 @@ lib-cov
 *.gz
 *.suo
 setup.exe
+test-results.xml
 
 pids
 logs
 results
+tmp
 
 npm-debug.log
 .DS_Store

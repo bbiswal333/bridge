@@ -1,41 +1,64 @@
 angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationBar.utils.colorUtils", function () {
-    var colorCounter = 0;
+    this.colorCounter = 0;
 
-    var colors = [
-        "#428BCA",
-        "#6cb9e3",
-        "#a4d8f9",
-        "#c4e8ff",
-        "#dff5ff",
-        "#Fff7e1",
-        "#ffe9b8",
-        "#ffd07e",
-        "#ffb541",
-        "#ffa317"
+    this.colors = [
+    
+            "#16354A",
+            "#005997",
+            "#0077CA",
+            "#3F96D3",
+            "#6BB9F0",
+            "#16354A url(/../../img/stripes6.png)",
+            "#005997 url(/../../img/stripes6.png)",
+            "#0077CA url(/../../img/stripes6.png)",
+            "#3F96D3 url(/../../img/stripes6.png)",
+            "#6BB9F0 url(/../../img/stripes6.png)",
+            "#16354A url(/../../img/stripes5.png)",
+            "#005997 url(/../../img/stripes5.png)",
+            "#0077CA url(/../../img/stripes5.png)",
+            "#3F96D3 url(/../../img/stripes5.png)",
+            "#6BB9F0 url(/../../img/stripes5.png)"
+           
+
+
+           // "#2574A9",
+           // "#5C97BF",
+           // // "#6BB9F0",
+           // "#52B3D9",
+           // "#22A7F0",
+           // "#3498db",
+           // // "#4b77be",
+           // "#89c4f4",
+           // // "#3a539b",
+           // "#67809f",
+           // "#18334a",
+           // "#2d5f8a",
+           // "#428bca",
+           // "#3a79b0",
+           // "#4694d7",
+
     ];
+    this.blockColors = {};
 
-    this.getNextColor = function(blockIndex) {
+    this.getColorForBlock = function(block){
         var generated = null;
-        var len = colors.length;
+        var len = this.colors.length;
 
-        if (blockIndex != undefined) {
-            colorCounter = blockIndex;
+        if (!block)
+            return null;
+
+        var blockId = block.task.ZCPR_OBJGEXTID || block.task.TASKTYPE;
+
+        if (!this.blockColors[blockId]) {
+            this.blockColors[blockId] = this.colors[this.colorCounter % len];
+            this.colorCounter++;
         };
-
-        if (Math.floor(colorCounter / len) % 2 == 0) {
-            generated = colors[colorCounter % len];
-        }
-        else {
-            generated = colors[len - 1 - (colorCounter % len)];
-        }
-
-        colorCounter++;
-
-        return generated;
+        return this.blockColors[blockId]; 
     }
 
     this.resetColorCounter = function () {
-       colorCounter = 0;
+        this.blockColors = {};
+        this.colorCounter = 0;
     }
 })
 
@@ -52,8 +75,12 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
     }
 
-    this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue) {
-        var newWidth = originalBlockWidth + offset;
+    this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue, fixed) {
+        if(!fixed) {
+            var newWidth = originalBlockWidth + offset;
+        } else {
+            var newWidth = originalBlockWidth;
+        }
 
         // calculate potential new Value from the new width
         var newValue = this.getValueFromWidth(newWidth, totalWidth, totalValue);
@@ -61,8 +88,8 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         // check boundaries of the new value
         var valueDiff = newValue - currentValue;
 
-        if (newValue < 0) {
-            newValue = 0;
+        if (newValue < 0.01) {
+            newValue = 0.01;
         } else if (valueDiff > remainingValue) {
             newValue = currentValue + remainingValue; // == maxValue
         }

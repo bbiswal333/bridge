@@ -8,13 +8,42 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var catsDataCache = null;
     var taskCache = null;
 
+    function between(val_i, min_i, max_i) {
+      return (val_i >= min_i && val_i <= max_i);
+    }
+    
+    function _httpRequest(url, callback_fn) {
+      $http.get(url).success(function(data, status) {
+        if (between(status, 200, 299)) {
+          callback_fn(data);
+        }
+      }).error(function(data, status, header, config) {
+        console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
+        callback_fn(null);
+      });
+    }
+    
     function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) {
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
+          data.CATSCHK.forEach(function(CATSCHKforDay){
+            // test test test
+            if (CATSCHKforDay.STDAZ && false) {
+              CATSCHKforDay.STDAZ = 7.55;
+              CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+              if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
+                if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
+                  CATSCHKforDay.STATUS = "Y";
+                } else {
+                  CATSCHKforDay.STATUS = "G";
+                }
+              }
+            }
+          });
           callback_fn(data.CATSCHK);
         } else {
           callback_fn();
-        };
+        }
       });
     }
 
@@ -32,61 +61,28 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
       
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) {
-        if (!data)
+      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&date=" + new Date().getTime(), function(data, status) { // /zdevdb/GETCATSDATA
+        if (!data) {
           deferred.reject(status);
-        else if (data.TIMESHEETS.WEEK != week + "." + year ){
+        } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
           console.log("_getCatsAllocationDataForWeek() data does not correspond to given week and year.");
           deferred.resolve();
-        } else
+        } else {
           deferred.resolve(data);
+        }
       });
 
       return deferred.promise;
-    }
-
-    var _getCatsAllocationDataForDay = function (day_o, callback_fn) {
-      var res = [];
-
-      var week = calUtils.getWeekNumber(day_o);
-      week.weekNo = calUtils.useNDigits(week.weekNo, 2); //ABAP server doesn't like the week number it is not two digits long
-
-      _httpRequest(CATS_ALLOC_WEBSERVICE + week.year + "." + week.weekNo, function(data, status) {
-        if (!data){
-          return;
-        }
-        var records = data.TIMESHEETS.RECORDS;
- 
-        for (var i = 0; i < records.length; i++) {
-          var record = records[i];
-          var task = {};
-          task.tasktype = record.TASKTYPE;
-          task.taskDesc = (record.taskDesc == "") ? task.tasktype : record.DESCR;
-          task.projDesc = (record.projDesc == "") ? task.tasktype : record.ZCPR_EXTID;
-          task.record = record;
-
-          var dayOfWeek = (day_o.getDay() != 0) ? day_o.getDay() - 1 : 6;
-          record.booking = record.DAYS[dayOfWeek];
-          delete record.DAYS;
-          task.quantity = parseFloat(record.booking.QUANTITY);
-
-          _enrichTaskData(task);
-          //Only add to list when time has been spent on this task
-          if (!isNaN(task.quantity)) {
-            res.push(task);
-          }
-        } 
-
-        callback_fn(res);
-      });
     };
 
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
-    function _getWorkingHoursForDay(day_s, callback_fn) {
+    function _getTotalWorkingTimeForDay(day_s, callback_fn) {
       _getCatsComplianceData(function(data) {
         for (var i = 0; i < data.length; i++) {
-          if (data[i].DATEFROM ==  day_s) {
-          	callback_fn(data[i].STDAZ);
+          if (data[i].DATEFROM ===  day_s) {
+            var HoursOfWorkingDay = 8;
+            var totalTimeInPercentOf8HourDay = Math.round(data[i].STDAZ / HoursOfWorkingDay * 1000) / 1000;
+          	callback_fn(totalTimeInPercentOf8HourDay);
           	return;
           } 
         }
@@ -95,8 +91,23 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       }, false);
     }
 
+    function _enrichTaskData(task){
+      if (task &&
+          !task.ZCPR_OBJGEXTID &&
+          !task.ZCPR_OBJGUID) {
+        task.ZCPR_OBJGEXTID = task.TASKTYPE;
+        task.ZCPR_OBJGUID = task.TASKTYPE;
+      } else if (task.record &&
+          !task.record.ZCPR_OBJGEXTID &&
+          !task.record.ZCPR_OBJGUID) {
+        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
+        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
+      }
+      return task;
+    }
+
     function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE, function(data) {
+      _httpRequest(TASKS_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/GETWORKLIST
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
@@ -137,53 +148,26 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       });
     }
 
-    function _enrichTaskData(task){
-      if (task &&
-          !task.ZCPR_OBJGEXTID &&
-          !task.ZCPR_OBJGUID) {
-        task.ZCPR_OBJGEXTID = task.TASKTYPE;
-        task.ZCPR_OBJGUID = task.TASKTYPE;
-      } else if (task.record &&
-          !task.record.ZCPR_OBJGEXTID &&
-          !task.record.ZCPR_OBJGUID) {
-        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
-        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
-      };
-      return task;
-    }
-
-    function _httpRequest(url, callback_fn) {
-      $http.get(url).success(function(data, status) {
-        if (between(status, 200, 299)) {
-          callback_fn(data);
-        }
-      }).error(function(data, status, header, config) {
-        console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
-        callback_fn(null);
-      });
-    }
-
-    function between(val_i, min_i, max_i) {
-      return (val_i >= min_i && val_i <= max_i);
-    }
-
     function _getDescForState(state_s) {
-      if (typeof state_s == "undefined") {
+      if (typeof state_s === "undefined") {
         return "";
       }
 
       state_s = state_s.toLowerCase();
-      if (state_s == "r") {
+      if (state_s === "r") {
         return "Not maintained";
       }
-      if (state_s == "y") {
+      if (state_s === "y") {
         return "Partially maintained";
       }
-      if (state_s == "g") {
+      if (state_s === "g") {
         return "Maintained";
       }
-      if (state_s == "n") {
+      if (state_s === "n") {
         return "No need for maintenance";
+      }
+      if (state_s === "overbooked") {
+        return "Overbooked";
       }
     }
 
@@ -191,13 +175,15 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       var deferred = $q.defer();
 
       // $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
-      $http.post(CATS_WRITE_WEBSERVICE, container ).success(function(data, status) {
+      // /zdevdb/WRITECATSDATA
+      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data, status) {
           deferred.resolve(data);
       }).error(function (data, status, header, config) {
-          if (status != "404") // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
+          if (status !== "404") { // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
               deferred.reject(status);
-          else
+          } else {
               deferred.resolve(data);
+          }
       });
       return deferred.promise;
     }
@@ -219,12 +205,12 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           callback_fn(taskCache);
         }
       },
-      getWorkingHoursForDay: function (day_s, callback_fn) {
-      	_getWorkingHoursForDay(day_s, callback_fn);
+      getTotalWorkingTimeForDay: function (day_s, callback_fn) {
+      	_getTotalWorkingTimeForDay(day_s, callback_fn);
       },
-      getCatsAllocationDataForDay: function (day_o, callback_fn) {
+      /*getCatsAllocationDataForDay: function (day_o, callback_fn) {
         _getCatsAllocationDataForDay(day_o, callback_fn);
-      },
+      },*/
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);
       },
