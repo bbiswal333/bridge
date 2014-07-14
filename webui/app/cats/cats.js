@@ -1,5 +1,5 @@
-angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "$q", "lib.utils.encodeForUrl", "lib.utils.calUtils",
-  function($http, $q, encodeForUrl, calUtils) {
+angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils", ["$http", "$q",
+  function($http, $q) {
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
     var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
@@ -17,14 +17,14 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         if (between(status, 200, 299)) {
           callback_fn(data);
         }
-      }).error(function(data, status, header, config) {
+      }).error(function(data, status) {
         console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
         callback_fn(null);
       });
     }
     
     function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/MYCATSDATA
+      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
           data.CATSCHK.forEach(function(CATSCHKforDay){
             // test test test
@@ -61,7 +61,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
       
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&date=" + new Date().getTime(), function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) { // /zdevdb/GETCATSDATA
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
@@ -107,7 +107,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE + "&date=" + new Date().getTime(), function(data) { // /zdevdb/GETWORKLIST
+      _httpRequest(TASKS_WEBSERVICE, function(data) { // /zdevdb/GETWORKLIST
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
@@ -138,9 +138,6 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           task.UNIT           = nodes[i].UNIT;
           task.projectDesc    = nodes[i].DISPTEXTW1;
           task.taskDesc       = nodes[i].DISPTEXTW2;
-
-          // task.data = nodes[i];
-
           tasks.push(task);
         }
 
@@ -173,12 +170,10 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
     function _writeCATSData(container){
       var deferred = $q.defer();
-
-      // $http.post(window.client.origin + "/api/post?url=" + encodeURI(CATS_WRITE_WEBSERVICE), container ).success(function(data, status) {
       // /zdevdb/WRITECATSDATA
-      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data, status) {
+      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
           deferred.resolve(data);
-      }).error(function (data, status, header, config) {
+      }).error(function (data, status) {
           if (status !== "404") { // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
               deferred.reject(status);
           } else {
@@ -208,9 +203,6 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       getTotalWorkingTimeForDay: function (day_s, callback_fn) {
       	_getTotalWorkingTimeForDay(day_s, callback_fn);
       },
-      /*getCatsAllocationDataForDay: function (day_o, callback_fn) {
-        _getCatsAllocationDataForDay(day_o, callback_fn);
-      },*/
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);
       },

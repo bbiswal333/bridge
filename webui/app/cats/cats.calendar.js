@@ -418,10 +418,14 @@ angular.module("app.cats")
 						monthlyDataService.lastSingleClickDayString = firstOfMonthDayString;
 						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
 						if ($scope.monthIsSelected()) {
-							promises = unSelectRange(collectRange(lastOfMonthDayString));
+							promises.push(unSelectRange(collectRange(lastOfMonthDayString)));
 						} else {
-							promises = selectRange(collectRange(lastOfMonthDayString));
+							promises.push(selectRange(collectRange(lastOfMonthDayString)));
 						}
+						promise = $q.all(promises);
+						promise.then(function(){
+							$scope.selectionCompleted();
+						});
 					});
 				} else if (single_click) {
 					//unselectOthers

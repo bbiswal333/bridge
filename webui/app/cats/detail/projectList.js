@@ -6,7 +6,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.filter = {};
     $scope.filter.val = "";
     $scope.loaded = false;
-    var additionalData = undefined;
+    var additionalData;
 
     var config = {};
     $scope.scrollbar = function(direction, autoResize) {
@@ -80,8 +80,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         });
       });
 
-      $scope.loaded = true;
-
       if (additionalData === undefined) {
         var week = calenderUtils.getWeekNumber(new Date());
         additionalData = catsUtils.getCatsAllocationDataForWeek(week.year, week.weekNo);
@@ -112,6 +110,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
             }, 100);
           });
         }
+      $scope.loaded = true;
       });
     }
 
