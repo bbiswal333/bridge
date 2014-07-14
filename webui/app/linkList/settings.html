@@ -1,6 +1,6 @@
-<div class="row" id="dropzone">
+<div class="row" ondragover="event.preventDefault()">
 <!-- LISTS -->
-    <div ng-repeat="linkList in config.data.listCollection track by $index">
+    <div ng-repeat="linkList in config.data.listCollection track by $index" ondragover="event.preventDefault()">
         <div class="col-md-4">
             <hr class="app-linkList-hr app-linklist-categoryHead-{{$index+1}}">
 
