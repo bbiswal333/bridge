@@ -15,15 +15,16 @@
 
 .quote-bubble {
   position:relative;
-  padding:5px;
+  padding:5px 10px;
   margin:0 0 5px;
   color:#707070;
   background:#dff5ff;
   font-size: 12px;
   border-left: 0px;
+  /*
   -webkit-border-radius:10px;
   -moz-border-radius:10px;
-  border-radius:10px;
+  border-radius:10px;*/
 }
 
 /* colored triangle*/
@@ -55,6 +56,6 @@
   width:0;
 }
 .quote-bubble + p {
-margin: 10px 0 2em 60px;
-font-style: italic;
+margin: 0px -10px 1em 60px;
+/*font-style: italic;*/
 }
