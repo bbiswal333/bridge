@@ -26,5 +26,3 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * to get started, just copy our "test app" and adjust it
 
 Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
-
-
