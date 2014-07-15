@@ -27,3 +27,4 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 
 Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
 
+
