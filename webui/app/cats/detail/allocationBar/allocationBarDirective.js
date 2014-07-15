@@ -1,7 +1,7 @@
 angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.cats.allocationBar.utils"
 ]).directive("app.cats.allocationbar", [ "app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", function (colorUtils, blockCalculations) {
 
-        var linkFunction = function($scope, elem) {
+        var linkFunction = function($scope) {
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
             $scope.height = parseInt($scope.height || 100);
 
@@ -49,8 +49,9 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                 block.blockWidth = Math.round(blockMetrics.newWidth * 1000) / 1000;
                 block.localValue = Math.round(blockMetrics.newValue * 1000) / 1000;
 
-                if(!nextBlock)
+                if(!nextBlock) {
                     return;
+                }
 
                 changeValue = Math.round((blockMetrics.newValue - changeValue) * 1000) / 1000;
                 changeWidth = Math.round((blockMetrics.newWidth - changeWidth) * 1000) / 1000;

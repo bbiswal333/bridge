@@ -63,34 +63,34 @@ describe("Test the color utils for the allocation bar", function () {
         var newBlock = {'task':{'ZCPR_OBJGEXTID':1}};
 
         expect(colorUtils.getColorForBlock(newBlock)).toBeDefined();
-    })
+    });
 
     it("should return different colors for different blocks", function(){
         var block1 = {'task':{'ZCPR_OBJGEXTID':1}};
         var block2 = {'task':{'ZCPR_OBJGEXTID':2}};
 
         expect(colorUtils.getColorForBlock(block1)).not.toBe(colorUtils.getColorForBlock(block2));
-    })
+    });
 
     it("should return same color for same block", function(){
         var block1 = {'task':{'ZCPR_OBJGEXTID':1}};
         var block2 = block1;
 
         expect(colorUtils.getColorForBlock(block1)).toBe(colorUtils.getColorForBlock(block2));
-    })
+    });
 
     it("should return color for a block without ZCPR_OBJGEXTID but with TASKTYPE", function(){
         var block1 = {'task':{'TASKTYPE':'ABC'}};
 
         expect(colorUtils.getColorForBlock(block1)).toBeDefined();
-    })
+    });
 
     it("should return different colors for blocks with differn tasktypes", function(){
         var block1 = {'task':{'TASKTYPE':'ABC'}};
         var block2 = {'task':{'TASKTYPE':'DEF'}};
 
         expect(colorUtils.getColorForBlock(block1)).not.toBe(colorUtils.getColorForBlock(block2));
-    })
+    });
 
     it("should start to return same colors if there are more tasks then colors", function(){
         colorUtils.colors = ['onlyOneColorCode'];
@@ -98,7 +98,7 @@ describe("Test the color utils for the allocation bar", function () {
         var block2 = {'task':{'TASKTYPE':'DEF'}};
 
         expect(colorUtils.getColorForBlock(block1)).toBe(colorUtils.getColorForBlock(block2));
-    })
+    });
 
     it("should reset both colorCounter AND remebered colors on reset function", function(){
         var block1 = {'task':{'TASKTYPE':'ABC'}};
@@ -112,5 +112,5 @@ describe("Test the color utils for the allocation bar", function () {
         expect(colorUtils.blockColors['ABC']).toBeUndefined();  
         expect(colorUtils.colorCounter).toBe(0);
 
-    })
+    });
 });
