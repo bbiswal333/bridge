@@ -19,9 +19,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
 
-    $http.get(window.client.origin + '/client').success(function (data, status) {
+    $http.get(window.client.origin + '/client').success(function () {
         $scope.client = true;
-    }).error(function (data, status, header, config) { 
+    }).error(function () { 
         $scope.client = false;     
     });
 
@@ -31,7 +31,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         for (var i = 0; i < $scope.blockdata.length; i++) {
             sum = sum + $scope.blockdata[i].value;
         }
-
         return $scope.totalWorkingTime - sum;
     }
 
@@ -274,6 +273,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     function checkPostReply(data) {
+        var parser;
+        var xmlDoc;
         if (window.DOMParser) {
             parser = new DOMParser();
             xmlDoc = parser.parseFromString(data, "text/xml");
@@ -288,7 +289,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (message) {
                 replyHasMessages = true;
                 if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                    bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. Please use CAT2 transaction until the issue is fixed.");
+                    bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
                 } else {
                     bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
                 }
