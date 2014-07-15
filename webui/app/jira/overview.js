@@ -3,12 +3,17 @@
 angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService", function (bridgeDataService){  
     this.isInitialized = false;
     this.query = 'assignee = currentUser()';
+    this.jira = 'sapjira';
 
     this.initialize = function (sAppId) {
         var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
 
         if (persistedConfig != undefined && persistedConfig != {} && persistedConfig.query !== undefined) {
             this.query = persistedConfig.query;
+            if(persistedConfig.jira !== undefined)
+            {
+                this.jira = persistedConfig.jira;
+            }
         }
 
         this.isInitialized = true;
@@ -57,7 +62,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal != oldVal) { // this avoids the call of our change listener for the initial watch setup
-                JiraBox.getIssuesforQuery(JiraConfig.query);
+                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
             }
         },true);    
 
@@ -123,7 +128,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
             if (JiraConfig.isInitialized == false) {
                 JiraConfig.initialize($scope.id);
-                JiraBox.getIssuesforQuery(JiraConfig.query);
+                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
             }
             $scope.config = JiraConfig;                        
         }
