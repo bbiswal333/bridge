@@ -21,7 +21,7 @@ angular.module('app.designwhizz').directive('app.designwhizz', function () {
 			$('#author').text(q.author);
 		};
 		$scope.randomQuote = function() {
-		var ind=Math.floor(Math.random()*10 /*messages.length*/);
+		var ind=Math.floor(Math.random()*messages.length);
 		var quoteauthor=messages[ind].split('//');
 		if(quoteauthor.length>1)
 			return { quote:quoteauthor[0],author:quoteauthor[1]};
