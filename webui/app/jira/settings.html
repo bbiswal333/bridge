@@ -2,6 +2,14 @@
 <p>
 <form name="ConfigItemForm">
 	<div class="row">
+		<div class="col-xs-12 copy form_head">Jira Instance</div>
+		<div class="col-xs-6 has-feedback">
+			<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'sapjira'];"ng-click="data.jira = 'sapjira'">SAP Jira</button>
+			<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'issuemanagement'];" ng-click="data.jira = 'issuemanagement'">Issuemanagement</button>
+		</div>
+	</div>	
+	<div class="row">&nbsp;</div>
+	<div class="row">
 		<div class="col-xs-12 copy form_head">Query Templates</div>
 		<div class="col-xs-6 has-feedback">
 			<button class="btn btn-default btn_blue" ng-click="applyAssignedToMeTemplate()">Issues assigned to me</button> <button class="btn btn-default btn_blue" ng-click="applyIssuesOfProjectTemplate()">Open issues of project '...'</button>

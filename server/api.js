@@ -6,7 +6,7 @@ var path 		= require('path');
 var npm_load	= require('./npm_load.js');
 var path		= require('path');
 
-exports.register = function(app, user, local, proxy, npm, eTag)
+exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 {
 	//get api modules	
 	var xml2js 	  	  = require("xml2js").parseString;
@@ -53,11 +53,11 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			};
 		}
 
-		/*if (local)
+		if (local && sso_enable)
 		{
 			options.pfx = user.SSOCertificate;
 			options.passphrase = user.SSOCertificatePassphrase;
-		}*/
+		}
 
 		if (method.toLowerCase() == "post" && postData != undefined) {
 			options.headers = {

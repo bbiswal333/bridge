@@ -10,9 +10,10 @@ var helper		= require('./helper.js');
 
 exports.run = function(npm, port)
 {	
-	var proxy = param.get("proxy", true);
-	var local = param.get("local", true);
-	var cache = param.get("cache", false);
+	var proxy      = param.get("proxy", true);
+	var local      = param.get("local", true);
+	var cache 	   = param.get("cache", false);
+	var sso_enable = param.get("sso", false);
 
 	helper.checkErrorFileSize();
 
@@ -40,7 +41,7 @@ exports.run = function(npm, port)
 		};
 		
 		var server = https.createServer(options, app);		
-		api.register(app, user, local, proxy, npm, eTag);	 	
+		api.register(app, user, local, proxy, npm, eTag, sso_enable);	 	
 		server.listen(port, "127.0.0.1");		
 		
 		helper.printConsole(port);		
@@ -67,9 +68,17 @@ exports.run = function(npm, port)
 		}
 		else 
 		{
-			start_server();
-			//Removed SSO due to missing possibility to export the client certificate on MAC
-			//sso.execute( start_server );
+			if( !sso_enable )
+			{
+				start_server();
+			}
+			else
+			{
+				//removed SSO in default due to missing possibility to export the client certificate on MAC
+				sso.execute( start_server );
+			}
+			
+			
 		}
 	}
 
