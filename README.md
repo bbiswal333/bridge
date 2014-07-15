@@ -24,6 +24,7 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * metadata for the app is defined in `_modules.json` inside that folder
 * apps must be inside an own module and shoul be named/ prefixed with `app.appname`
 * to get started, just copy our "test app" and adjust it
+* a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
 Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
 
