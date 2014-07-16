@@ -592,7 +592,8 @@ angular.module("app.cats")
 					$scope.reloadAnimation = 'cats-fade-anim';
 				} else {
 					$scope.reloadAnimation = '';
-					if (monthlyDataService.lastSingleClickDayString && $scope.selectedDates.length <= 1) {
+					if (monthlyDataService.lastSingleClickDayString &&
+						(!$scope.selectedDates || $scope.selectedDates.length <= 1)) {
 						$scope.jump(monthlyDataService.lastSingleClickDayString, {});
 					}
 				}

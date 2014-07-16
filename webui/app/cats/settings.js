@@ -54,8 +54,8 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
 		return true;
 	};
 
-	$scope.handleProjectUnchecked = function (objgextid_s) {
-		var index = getIndexOfFavoriteTask(objgextid_s);
+	$scope.handleProjectUnchecked = function (task) {
+		var index = getIndexOfFavoriteTask(task.ZCPR_OBJGEXTID);
     	if (index >= 0) {
     		$scope.favoriteTasks.splice(index,1);
     		$scope.selectedTask = $scope.favoriteTasks[$scope.favoriteTasks.length - 1];
