@@ -6,12 +6,12 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 	        $scope.box.boxSize = "2";
 	        $scope.configService = catsConfigService;
 
-	        // $scope.box.settingsTitle = "Configure Work List";
-	        // $scope.box.settingScreenData = {
-	        //     templatePath: "cats/settings.html",
-         //        controller: angular.module('app.cats').catsSettings,
-         //        id: $scope.boxId
-	        // };  
+	        $scope.box.settingsTitle = "Configure Work List";
+	        $scope.box.settingScreenData = {
+	            templatePath: "cats/settings.html",
+                controller: angular.module('app.cats').catsSettings,
+                id: $scope.boxId
+	        };  
 
 	        $scope.getCatClass = function(){
 	        	$scope.catClass = Math.floor(Math.random() * 2);
@@ -28,9 +28,12 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 		    templateUrl: "app/cats/overview.html",
 		    link: function ($scope) 
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.favoriteItems) 
                  {
-                    catsConfigService.configItem = $scope.appConfig.configItem;
+                    catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
+                    // if ($scope.appConfig.catsItems) {
+                    // 	catsConfigService.catsItems = $scope.appConfig.catsItems;
+                    // }
                  }            
              }
 	    };

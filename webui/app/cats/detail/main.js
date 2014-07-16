@@ -234,7 +234,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     loadCATSDataForDay();
-    $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
+    $scope.handleProjectChecked = function (desc_s, val_i, task) {
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,
