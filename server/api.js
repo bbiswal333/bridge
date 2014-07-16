@@ -333,10 +333,6 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		    var app_files = getFiles(app_path);	
 		    files = concatAttributes(files, app_files);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 		    if (typeof request.query.format == "undefined")
 		    {
 		    	response.setHeader('Content-Type', 'text/plain;');						    	   

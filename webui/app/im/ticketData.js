@@ -69,6 +69,7 @@
 
     this.loadTicketData = function () {
         var deferred = $q.defer();
+        console.log("loadTicketData");
 
         //this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
         $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
@@ -141,7 +142,7 @@
     };
 
     this.initialize = function () {
-        this.loadTicketDataInterval = $interval(this.loadTicketData, 60000 * 10);
+        this.loadTicketDataInterval = $interval(this.loadTicketData, 5000 );
 
         var loadTicketPromise = this.loadTicketData();
         loadTicketPromise.then(function success() {

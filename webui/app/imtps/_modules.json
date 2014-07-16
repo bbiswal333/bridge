@@ -16,6 +16,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js","settings.js","config.js"],
+	"js_files" : ["overview.js", "detail.js","settings.js","config.js","msgReaderData.js"],
 	"css_files" : []
 }
