@@ -37,7 +37,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
       else {
         $scope.onProjectUnchecked({
-          objgextid_s: $scope.items[indx].ZCPR_OBJGEXTID
+          task: $scope.items[indx]
         });
       }
       document.getElementById("filterTextfield").focus();
@@ -94,6 +94,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       newItem.selected  = found;
       newItem.color     = color;
       $scope.items.push(newItem);
+
+      $timeout(function () {
+        $scope.$broadcast('rebuild:me');
+      }, 10);
     }
 
     function loadProjects () {
@@ -106,7 +110,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           createNewProjectItem(entry);  
           $timeout(function () {
             $scope.$broadcast('rebuild:me');
-          }, 100);
+          }, 10);
         });
       });
 
@@ -131,25 +135,22 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
                 return true;
               }
             });
-
             if (!allreadyExists) {
               createNewProjectItem(record);  
             }
-            $timeout(function () {
-              $scope.$broadcast('rebuild:me');
-            }, 100);
           });
         }
-      $scope.loaded = true;
+        $scope.loaded = true;
       });
     }
-
-    loadProjects();
 
     $scope.$watch("blocks", function () {
       loadProjects();
     }, true);
-  };
+
+    $scope.$watch("items", function () {
+      loadProjects();
+    }, true);  };
 
   return {
     restrict: "E",

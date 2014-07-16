@@ -42,9 +42,10 @@ angular.module("app.cats")
 	            }
 
 	            return processed;
-	        } catch (error) {
-	            return null;
-	        }
+			} catch(err) {
+				console.log("parseDateToTime(): " + err);
+				return null;
+			}
 	    }
 
 		function monthDiff(d1, d2) {
