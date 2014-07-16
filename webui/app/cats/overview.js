@@ -28,9 +28,9 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 		    templateUrl: "app/cats/overview.html",
 		    link: function ($scope) 
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.favoriteItems) 
                  {
-                    catsConfigService.configItem = $scope.appConfig.configItem;
+                    // catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
                  }            
              }
 	    };

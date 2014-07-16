@@ -41,8 +41,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function getByExtId(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ((block.ZCPR_OBJGEXTID !== "" && $scope.blockdata[i].task.ZCPR_OBJGEXTID === block.ZCPR_OBJGEXTID) ||
-                (block.ZCPR_OBJGEXTID === "" && $scope.blockdata[i].task.TASKTYPE === block.TASKTYPE)) {
+            if ((block.ZCPR_OBJGEXTID === $scope.blockdata[i].task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
+                (block.ZCPR_OBJGEXTID === $scope.blockdata[i].task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
+                 $scope.blockdata[i].task.RAUFNR === block.RAUFNR &&
+                 $scope.blockdata[i].task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
                 return $scope.blockdata[i];
             }
         }
@@ -232,7 +234,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     loadCATSDataForDay();
-    $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
+    $scope.handleProjectChecked = function (desc_s, val_i, task) {
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,

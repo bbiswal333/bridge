@@ -491,12 +491,16 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				// access single day to cause data load
-				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
-				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-				promise.then(function() {
+				if ($scope.maintainable) {
+					// access single day in the middle of the month to cause data load
+					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
+					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+					promise.then(function() {
+						reload();
+					});
+				} else {
 					reload();
-				});
+				}
 	        };
 
 	        $scope.canGoForward = function () {
@@ -523,12 +527,16 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				// access single day to cause data load
-				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
-				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-				promise.then(function() {
+				if ($scope.maintainable) {
+					// access single day in the middle of the month to cause data load
+					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
+					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+					promise.then(function() {
+						reload();
+					});
+				} else {
 					reload();
-				});
+				}
 	        };
 
 	        $scope.reloadCalendar = function () {
