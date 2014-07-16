@@ -48,10 +48,40 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     };
 
     function createNewProjectItem (item) {
+      // The items we get here can be of really bad data quality
+
+      //TEST
+      //if (item.TASKTYPE === "ADMI") {
+      //  return;
+      //}
+
+      // Service that reads the template on weekly basis
+      // Minimal item would be only TASKTYPE: "MAIN" with RAUFNR and other IDs empty
+      // There coult also be only TASKTYPE and RAUFNR filled
+      // Maximum there could be also ZCPR_EXTID AND ZCPR_OBJEXTID filled
+
+      // Service that reads the 4 month compliance
+      //  RAUFNR: ""
+      //  TASKTYPE: "ADMI"
+      //  ZCPR_OBJGEXTID: "ADMI"
+      //  ZCPR_OBJGUID: "ADMI"
+      //  projectDesc: "Administrative"
+      //  taskDesc: "ADMI"
+      // or
+      //  RAUFNR: "000505220105"
+      //  TASKTYPE: ""
+      //  UNIT: undefined
+      //  ZCPR_EXTID: "I2M_2013_RESEARCH_INNOV"
+      //  ZCPR_OBJGEXTID: "00000000000000617094"
+      //  projectDesc: "I2M_2013_RESEARCH_INNOV"
+      //  taskDesc: "I2M Research & Innovation"
+
       var found = false;
       var color = null;
       $scope.blocks.some(function(block){
-        if (item.ZCPR_OBJGEXTID === block.task.ZCPR_OBJGEXTID && block.value !== 0){
+        if ((item.ZCPR_OBJGEXTID === block.task.ZCPR_OBJGEXTID &&
+             item.RAUFNR         === block.task.RAUFNR) &&
+            block.value !== 0){
           found = true;
           color = colorUtils.getColorForBlock(block);    
         }
