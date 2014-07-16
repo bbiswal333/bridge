@@ -1,5 +1,6 @@
-﻿angular.module("app.cats.allocationBarBlock", ["app.cats.allocationBar.utils", "lib.utils",
-]).directive("app.cats.allocationbarBlock", ["app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", "lib.utils.calUtils", function (colorUtils, blockCalculations, calUtils) {
+﻿angular.module("app.cats.allocationBarBlock", ["app.cats.allocationBar.utils", "lib.utils"
+]).directive("app.cats.allocationbarBlock", ["app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", "lib.utils.calUtils",
+function (colorUtils, blockCalculations, calUtils) {
 
     return {
         restrict: "E",
@@ -28,10 +29,10 @@
             // Do not show time due to part time and mixed part time/ full time maintenance
             $scope.getTimeText = function () {
                 return "";// calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
-            }
+            };
             $scope.setWidth = function(width) {
                 $scope.blockData.blockWidth = width;
-            }
+            };
 
             elem.find(".allocation-bar-dragBar").draggable({
                 axis: 'x',
@@ -42,7 +43,7 @@
                         ui.position.left = 0;
                     });
                 },
-                stop: function (event, ui) {
+                stop: function () {
                     $scope.$apply(function () {
                         // setting blockData is expensive (probably a lot of watches on this) so don't do it in the drag-handler
                         $scope.applyChangesInBlocks();
@@ -54,7 +55,7 @@
                 $scope.blockData.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
                 // reset originalBlockwidth to the current blockWidth for the next dragging actions
                 originalBlockWidth = $scope.blockData.blockWidth;
-                $scope.blockData.localValue = $scope.blockData.value
+                $scope.blockData.localValue = $scope.blockData.value;
             });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"

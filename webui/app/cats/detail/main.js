@@ -178,8 +178,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata = [];
         $scope.hintText = "";
         if(day.targetTimeInPercentageOfDay) {
+            //$scope.hintText = "Allocation bar represents the data form the backend for the " + day.dayString;
             $scope.totalWorkingTime = 1;
         } else {
+            //$scope.hintText = "No maintenance possible for the " + day.dayString;
             $scope.totalWorkingTime = 0;
         }
 
@@ -246,6 +248,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectUnchecked = function (objgextid_s) {
         removeBlock(objgextid_s);
+    };
+
+    $scope.updateHintText = function(hintText){
+        $scope.hintText = hintText;
     };
 
     $scope.selectionCompleted = function() {

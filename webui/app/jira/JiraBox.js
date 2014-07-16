@@ -10,10 +10,16 @@ var JiraBox = function(http){
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.getIssuesforQuery = function (sQuery) {
+JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
     var that = this;
+    var jira_url = 'https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=';
+    
+    if(jira_instance === 'issuemanagement')
+    {
+      jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
+    }
 
-    this.http.get('https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=' + sQuery
+    this.http.get(jira_url + sQuery
         ).success(function (data, status, headers, config) {
 
             that.data.length = 0;        
