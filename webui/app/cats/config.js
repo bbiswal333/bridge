@@ -1,5 +1,5 @@
 angular.module("app.cats").service('app.cats.configService', function(){
-	this.configItem = {
-		language : 'de'
-	};
+	this.loaded = false;
+	this.catsItems = [];
+	this.favoriteItems = [];
 });

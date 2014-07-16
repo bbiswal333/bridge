@@ -19,20 +19,23 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
 
-    $http.get(window.client.origin + '/client').success(function (data, status) {
+    $http.get(window.client.origin + '/client').success(function () {
         $scope.client = true;
-    }).error(function (data, status, header, config) { 
-        $scope.client = false;     
+    }).error(function () { 
+        $scope.client = false;
     });
 
     function timeToMaintain() {
-        var sum = 0;
-
-        for (var i = 0; i < $scope.blockdata.length; i++) {
-            sum = sum + $scope.blockdata[i].value;
+        try {
+            var sum = 0;
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                sum = sum + $scope.blockdata[i].value;
+            }
+            return $scope.totalWorkingTime - sum;
+        } catch(err) {
+            console.log("timeToMaintain(): " + err);
+            return $scope.totalWorkingTime;
         }
-
-        return $scope.totalWorkingTime - sum;
     }
 
     $scope.calcMinutes = function (perc) {
@@ -40,10 +43,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
 
-    function getByExtId(block) {
+    function isSameTask(block, task) {
+        if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
+            (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
+             task.RAUFNR === block.RAUFNR &&
+             task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
+            return true;
+        }
+        return false;
+    }
+
+    function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if ((block.ZCPR_OBJGEXTID !== "" && $scope.blockdata[i].task.ZCPR_OBJGEXTID === block.ZCPR_OBJGEXTID) ||
-                (block.ZCPR_OBJGEXTID === "" && $scope.blockdata[i].task.TASKTYPE === block.TASKTYPE)) {
+            if (isSameTask(block, $scope.blockdata[i].task)) {
                 return $scope.blockdata[i];
             }
         }
@@ -56,98 +68,111 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var spaceWhichIsAdjustable = $scope.totalWorkingTime;
         var adjustableLength = 0;
         var i = 0;
-
-        for (i = 0; i < $scope.blockdata.length; i++) {
-            if ($scope.blockdata[i].value) {
-                $scope.blockdata[i].value = Math.round($scope.blockdata[i].value * 1000) / 1000;
-                if ($scope.blockdata[i].fixed) {
-                    spaceWhichIsAdjustable = spaceWhichIsAdjustable - $scope.blockdata[i].value;
-                } else {
-                    totalOfAdjustableTasks = totalOfAdjustableTasks + $scope.blockdata[i].value;
-                    adjustableLength++;
+        try {
+            for (i = 0; i < $scope.blockdata.length; i++) {
+                if ($scope.blockdata[i].value) {
+                    $scope.blockdata[i].value = Math.round($scope.blockdata[i].value * 1000) / 1000;
+                    if ($scope.blockdata[i].fixed) {
+                        spaceWhichIsAdjustable = spaceWhichIsAdjustable - $scope.blockdata[i].value;
+                    } else {
+                        totalOfAdjustableTasks = totalOfAdjustableTasks + $scope.blockdata[i].value;
+                        adjustableLength++;
+                    }
+                    totalOfAdjustableTasks = Math.round(totalOfAdjustableTasks * 1000) / 1000;
                 }
-                totalOfAdjustableTasks = Math.round(totalOfAdjustableTasks * 1000) / 1000;
             }
-        }
-        if (totalOfAdjustableTasks !== spaceWhichIsAdjustable) {
-            return;
-        }
-        for (i = 0; i < $scope.blockdata.length; i++) {
-            if ($scope.blockdata[i].value && !$scope.blockdata[i].fixed) {
-                $scope.blockdata[i].value = Math.round(spaceWhichIsAdjustable * (Math.floor(1000 / (adjustableLength + 1)) / 1000) * 1000) / 1000;
+            if (totalOfAdjustableTasks !== spaceWhichIsAdjustable) {
+                return;
             }
+            for (i = 0; i < $scope.blockdata.length; i++) {
+                if ($scope.blockdata[i].value && !$scope.blockdata[i].fixed) {
+                    $scope.blockdata[i].value = Math.round(spaceWhichIsAdjustable * (Math.floor(1000 / (adjustableLength + 1)) / 1000) * 1000) / 1000;
+                }
+            }
+        } catch(err) {
+            console.log("adjustBarValues(): " + err);
         }
     }
+    
     function addBlock(desc_s, val_i, block, fixed) {
+        try {
+            // Scale data which is read from backend BUT only if it is not OVERBOOKED
+            if (block.COUNTER && // already in backend
+                monthlyDataService.days[block.WORKDATE] &&
+                monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
+                monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
 
-        // Scale data which is read from backend BUT only if it is not OVERBOOKED
-        if (block.COUNTER && // already in backend
-            monthlyDataService.days[block.WORKDATE] &&
-            monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
-            monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
+                val_i = Math.round(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay * 1000) / 1000;
+            }
 
-            val_i = Math.round(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay * 1000) / 1000;
-        }
+            var existingBlock = getBlock(block);
+            if (existingBlock != null) {
+                if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
+                    adjustBarValues();
+                    existingBlock.value = Math.round(timeToMaintain() * 1000) / 1000;
+                    return true;
+                } else { // no need to add
+                    adjustBarValues();
+                    return false;
+                }
+            }
 
-        var existingBlock = getByExtId(block);
-        if (existingBlock != null) {
-            if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
-                adjustBarValues();
-                existingBlock.value = Math.round(timeToMaintain() * 1000) / 1000;
+            adjustBarValues();
+
+            if (val_i == null) {
+                val_i = 1;
+                if (val_i > timeToMaintain()) {
+                    val_i = Math.round(timeToMaintain() * 1000) / 1000;
+                }
+            }
+
+            if (val_i) { // val_i could be 0 e.g. in case of vacation or weekends or not selected
+                $scope.blockdata.push({
+                    desc: desc_s,
+                    value: val_i,
+                    task: block,
+                    fixed: fixed || false
+                });
                 return true;
-            } else { // no need to add
-                adjustBarValues();
+            } else {
                 return false;
             }
+        } catch(err) {
+            console.log("addBlock(): " + err);
+            return false;
         }
-
-        adjustBarValues();
-
-        if (val_i == null) {
-            val_i = 1;
-            if (val_i > timeToMaintain()) {
-                val_i = Math.round(timeToMaintain() * 1000) / 1000;
-            }
-        }
-
-        if (val_i) { // val_i could be 0 e.g. in case of vacation
-            $scope.blockdata.push({
-                desc: desc_s,
-                value: val_i,
-                task: block,
-                fixed: fixed || false
-            });
-        }
-
-        return true;
     }
 
-    function removeBlock(objgextid_s) {
-        var i = 0;
-        while (i < $scope.blockdata.length) {
-            if (objgextid_s === $scope.blockdata[i].task.ZCPR_OBJGEXTID) {
-                if ($scope.blockdata[i].task.COUNTER) {
-                    $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
-                } else {
-                    $scope.blockdata.splice(i,1);
+    function removeBlock(block) {
+        try {
+            var i = 0;
+            while (i < $scope.blockdata.length) {
+                if (isSameTask(block, $scope.blockdata[i].task)) {
+                    if ($scope.blockdata[i].task.COUNTER) {
+                        $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
+                    } else {
+                        $scope.blockdata.splice(i,1);
+                    }
+                }
+                i++;
+            }
+            // it is required to move the removed block to the beginning of the array
+            // otherwise it can be dragged again in the UI
+            var newBlockdata = [];
+            for (i = 0; i < $scope.blockdata.length; i++) {
+                if (!$scope.blockdata[i].value) {
+                    newBlockdata.push($scope.blockdata[i]);
                 }
             }
-            i++;
-        }
-        // it is required to move the removed block to the beginning of the array
-        // otherwise it can be dragged again in the UI
-        var newBlockdata = [];
-        for (i = 0; i < $scope.blockdata.length; i++) {
-            if (!$scope.blockdata[i].value) {
-                newBlockdata.push($scope.blockdata[i]);
+            for (i = 0; i < $scope.blockdata.length; i++) {
+                if ($scope.blockdata[i].value) {
+                    newBlockdata.push($scope.blockdata[i]);
+                }
             }
+            $scope.blockdata = newBlockdata;
+        } catch(err) {
+            console.log("removeBlock(): " + err);
         }
-        for (i = 0; i < $scope.blockdata.length; i++) {
-            if ($scope.blockdata[i].value) {
-                newBlockdata.push($scope.blockdata[i]);
-            }
-        }
-        $scope.blockdata = newBlockdata; 
     }
 
     function checkAndCorrectPartTimeInconsistancies(day) {
@@ -175,63 +200,75 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
         
     function displayCATSDataForDay(day) {
-        $scope.lastCatsAllocationDataForDay = day;
-        $scope.blockdata = [];
-        $scope.hintText = "";
-        if(day.targetTimeInPercentageOfDay) {
-            $scope.totalWorkingTime = 1;
-        } else {
-            $scope.totalWorkingTime = 0;
-        }
-
-        for (var i = 0; i < day.tasks.length; i++) {
-            var task = day.tasks[i];
-            var HoursOfWorkingDay = 8;
-            if (task.TASKTYPE === "VACA") {
-                addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
-            } else if (task.TASKTYPE === "ABSE") {
-                addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, true);
-            } else if (task.UNIT === "H") {
-                addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
+        try {
+            $scope.lastCatsAllocationDataForDay = day;
+            $scope.blockdata = [];
+            $scope.hintText = "";
+            if(day.targetTimeInPercentageOfDay) {
+                //$scope.hintText = "Allocation bar represents the data form the backend for the " + day.dayString;
+                $scope.totalWorkingTime = 1;
             } else {
-                addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
+                //$scope.hintText = "No maintenance possible for the " + day.dayString;
+                $scope.totalWorkingTime = 0;
             }
-        }
-        checkAndCorrectPartTimeInconsistancies(day);
-        if(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 0 &&
-           monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 1 ) {
-            $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
-        }
 
-        if(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay > monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay) {
-            var actualHours = Math.round(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay * 100 * 8) / 100;
-            var targetHours = Math.round(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay * 100 * 8) / 100;
-            $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
-            bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
-                actualHours + "'' but target hours are only '" +
-                targetHours + "'!");
+            for (var i = 0; i < day.tasks.length; i++) {
+                var task = day.tasks[i];
+                var HoursOfWorkingDay = 8;
+                if (task.TASKTYPE === "VACA") {
+                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
+                } else if (task.TASKTYPE === "ABSE") {
+                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, true);
+                } else if (task.UNIT === "H") {
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
+                } else {
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
+                }
+            }
+            checkAndCorrectPartTimeInconsistancies(day);
+            if(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 0 &&
+               monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 1 ) {
+                $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
+            }
+
+            if(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay > monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay) {
+                var actualHours = Math.round(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay * 100 * 8) / 100;
+                var targetHours = Math.round(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay * 100 * 8) / 100;
+                $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
+                bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
+                    actualHours + "'' but target hours are only '" +
+                    targetHours + "'!");
+            }
+        } catch(err) {
+            console.log("displayCATSDataForDay(): " + err);
         }
     }
 
     function loadCATSDataForDay(dayString) {
-        if(!dayString && monthlyDataService.lastSingleClickDayString){
-            dayString = monthlyDataService.lastSingleClickDayString;
-        }
-        else if (!dayString)
-        {
-            $scope.loaded = true;
-            return;
-        }
+        try {
+            if(!dayString && monthlyDataService.lastSingleClickDayString){
+                dayString = monthlyDataService.lastSingleClickDayString;
+            }
+            else if (!dayString)
+            {
+                $scope.loaded = true;
+                return;
+            }
 
-        var promise = monthlyDataService.getDataForDate(dayString);
-        promise.then(function() {
-            displayCATSDataForDay(monthlyDataService.days[dayString]);
+            var promise = monthlyDataService.getDataForDate(dayString);
+            promise.then(function() {
+                displayCATSDataForDay(monthlyDataService.days[dayString]);
+                $scope.loaded = true;
+            });
+        } catch(err) {
+            console.log("loadCATSDataForDay(): " + err);
             $scope.loaded = true;
-        });
+        }
     }
 
     loadCATSDataForDay();
-    $scope.handleProjectChecked = function (desc_s, val_i, task, fixed) {
+
+    $scope.handleProjectChecked = function (desc_s, val_i, task) {
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,
@@ -242,21 +279,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             UNIT: "T"
         };
-        return addBlock(desc_s, val_i, block, false);
+        var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
+        if (blockCouldBeAdded === false) {
+            if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
+                bridgeInBrowserNotification.addAlert('','Please select a day or multiple days in the calendar first');
+            } else {
+                bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day');
+            }
+        }
+        return blockCouldBeAdded;
     };
 
-    $scope.handleProjectUnchecked = function (objgextid_s) {
-        removeBlock(objgextid_s);
+    $scope.handleProjectUnchecked = function (task) {
+        removeBlock(task);
+    };
+
+    $scope.updateHintText = function(hintText){
+        $scope.hintText = hintText;
     };
 
     $scope.selectionCompleted = function() {
-        if($scope.selectedDates.length === 0) { // Nothing selected
-            $scope.blockdata = [];
-            $scope.totalWorkingTime = 0;
-        } else if($scope.selectedDates.length === 1) { // Single day
-            loadCATSDataForDay($scope.selectedDates[0]);
-        } else { // Range selected
-            $scope.totalWorkingTime = 1;
+        try {
+            if($scope.selectedDates.length === 0) { // Nothing selected
+                $scope.blockdata = [];
+                $scope.totalWorkingTime = 0;
+            } else if($scope.selectedDates.length === 1) { // Single day
+                loadCATSDataForDay($scope.selectedDates[0]);
+            } else { // Range selected
+                $scope.totalWorkingTime = 1;
+            }
+        } catch(err) {
+            console.log("selectionCompleted(): " + err);
         }
     };
 
@@ -274,28 +327,34 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     function checkPostReply(data) {
-        if (window.DOMParser) {
-            parser = new DOMParser();
-            xmlDoc = parser.parseFromString(data, "text/xml");
-        } else { // Internet Explorer
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async = false;
-            xmlDoc.loadXML(data);
-        }
-        var replyHasMessages = false;
-        for (var i = 0; i < 5; i++) {
-            var message = xmlDoc.getElementsByTagName("TEXT")[i];
-            if (message) {
-                replyHasMessages = true;
-                if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                    bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. Please use CAT2 transaction until the issue is fixed.");
-                } else {
-                    bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
+        try {
+            var parser;
+            var xmlDoc;
+            if (window.DOMParser) {
+                parser = new DOMParser();
+                xmlDoc = parser.parseFromString(data, "text/xml");
+            } else { // Internet Explorer
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async = false;
+                xmlDoc.loadXML(data);
+            }
+            var replyHasMessages = false;
+            for (var i = 0; i < 5; i++) {
+                var message = xmlDoc.getElementsByTagName("TEXT")[i];
+                if (message) {
+                    replyHasMessages = true;
+                    if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
+                        bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
+                    } else {
+                        bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
+                    }
                 }
             }
-        }
-        if (!replyHasMessages) {
-            bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
+            if (!replyHasMessages) {
+                bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
+            }
+        } catch(err) {
+            console.log("checkPostReply(): " + err);
         }
     }
 
@@ -399,31 +458,35 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             clearOldTasks = true;
         }
 
-        $scope.selectedDates.forEach(function(dateString){
-            container = prepareCATSData(dateString, container, clearOldTasks);
+        try {
+            $scope.selectedDates.forEach(function(dateString){
+                container = prepareCATSData(dateString, container, clearOldTasks);
 
-            var day = monthlyDataService.days[dateString];
-            if (weeks.indexOf(day.year + '.' + day.week) === -1) {
-                weeks.push(day.year + '.' + day.week);
-            }
-        });
-
-        if (container.BOOKINGS.length) {
-            monthlyDataService.reloadInProgress.value = true;
-            catsUtils.writeCATSData(container).then(function(data){
-            monthlyDataService.reloadInProgress.value = false;
-                checkPostReply(data);
-                $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
-                monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
-                    loadCATSDataForDay();
-                });
-            }, function(status){
-                bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
-                loadCATSDataForDay();
-                $scope.$emit("refreshApp");
+                var day = monthlyDataService.days[dateString];
+                if (weeks.indexOf(day.year + '.' + day.week) === -1) {
+                    weeks.push(day.year + '.' + day.week);
+                }
             });
-        } else {
-            bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
+
+            if (container.BOOKINGS.length) {
+                monthlyDataService.reloadInProgress.value = true;
+                catsUtils.writeCATSData(container).then(function(data){
+                monthlyDataService.reloadInProgress.value = false;
+                    checkPostReply(data);
+                    $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
+                    monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                        loadCATSDataForDay();
+                    });
+                }, function(status){
+                    bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+                    loadCATSDataForDay();
+                    $scope.$emit("refreshApp");
+                });
+            } else {
+                bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
+            }
+        } catch(err) {
+            console.log("saveTimesheet(): " + err);
         }
     };
 }

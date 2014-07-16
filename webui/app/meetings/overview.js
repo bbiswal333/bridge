@@ -20,6 +20,7 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
+			$scope.box.boxSize = 2;
 			var eventsRaw = {};
 
 			var today = new Date(new Date().toDateString());

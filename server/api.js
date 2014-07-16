@@ -6,7 +6,7 @@ var path 		= require('path');
 var npm_load	= require('./npm_load.js');
 var path		= require('path');
 
-exports.register = function(app, user, local, proxy, npm, eTag)
+exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 {
 	//get api modules	
 	var xml2js 	  	  = require("xml2js").parseString;
@@ -53,11 +53,11 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 			};
 		}
 
-		/*if (local)
+		if (local && sso_enable)
 		{
 			options.pfx = user.SSOCertificate;
 			options.passphrase = user.SSOCertificatePassphrase;
-		}*/
+		}
 
 		if (method.toLowerCase() == "post" && postData != undefined) {
 			options.headers = {
@@ -314,7 +314,9 @@ exports.register = function(app, user, local, proxy, npm, eTag)
 		}
 		else
 		{
-			response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+			response.header('Expires', '-1');
+			response.header('Cache-Control', 'private, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+			response.setHeader('Last-Modified', (new Date()).toUTCString());
 			response.removeHeader('Etag');
 		}
 		

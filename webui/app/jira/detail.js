@@ -2,9 +2,16 @@
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
 
         $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
+            
+            $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
+             if(JiraConfig.jira === 'issuemanagement')
+             {
+                    $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
+             }
+
             if (newVal != oldVal) { // this avoids the call of our change listener for the initial watch setup
-                $scope.config = JiraConfig;
-                JiraBox.getIssuesforQuery(JiraConfig.query);
+                $scope.config = JiraConfig;               
+                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
             }
         },true);
 
@@ -13,7 +20,7 @@
         $scope.data = {};
         $scope.data.filteredJiraData = [];
         $scope.data.jiraData = JiraBox.data;
-        $scope.data.status = {};
+        $scope.data.status = {};        
 
         $scope.$watch('data.jiraData', function()
         {

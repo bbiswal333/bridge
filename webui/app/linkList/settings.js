@@ -1,27 +1,28 @@
 angular.module('app.linklist').appLinkListSettings = 
-    ['app.linklist.configservice', '$scope', '$rootScope',  
-        function (appLinklistConfig, $scope, $rootScope) {
+    ['app.linklist.configservice', '$scope',  
+        function (appLinklistConfig, $scope) {
 
 	$scope.config  = appLinklistConfig;
 
 	$scope.addForm = [];
 	for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
 		$scope.addForm.push('');
-	};
+	}
 
 	$scope.currentConfigValues = {};
 
-	calculateIDsForSortable = function () {
-		for (var i=0; i<appLinklistConfig.data.listCollection.length; i++)
+	this.calculateIDsForSortable = function () {
+		for (var i = 0; i < appLinklistConfig.data.listCollection.length; i++)
 		{
 		    var currentList = appLinklistConfig.data.listCollection[i];
-			for (var j=0; j<currentList.length; j++)
+			for (var j = 0; j < currentList.length; j++)
 			{
 				currentList[j].id = 'ID' + i + j; // ID based on position
-			};
-		};
+			}
+		}
 	};
-	calculateIDsForSortable();
+
+	this.calculateIDsForSortable();
 
 	$scope.closeForm = function () {
 	    $scope.setBoxSize(appLinklistConfig.data.listCollection);
@@ -38,11 +39,11 @@ angular.module('app.linklist').appLinkListSettings =
         tolerance: "intersect",
         disabled: false,
 
-        receive: function(event, ui)
+        //receive: function(event, ui)
+        receive: function()
         {
-        	// cancel does not work properly
             //if (event.target.childElementCount >= 6) {
-                //ui.item.sortable.cancel();
+                //ui.item.sortable.cancel(); // cancel does not work properly
             //}
             $scope.setBoxSize(appLinklistConfig.data.listCollection);
     	}
@@ -60,16 +61,18 @@ angular.module('app.linklist').appLinkListSettings =
     $scope.addLinkList = function()
     {
         appLinklistConfig.data.listCollection.push([]);
+        $scope.setBoxSize(appLinklistConfig.data.listCollection);
     };
 
     $scope.removeLinkList = function(colNo)
     {
         appLinklistConfig.data.listCollection.splice(colNo, 1);
+        $scope.setBoxSize(appLinklistConfig.data.listCollection);
     };
 
     $scope.isLinkListEmpty = function(colNo)
     {
-        if (appLinklistConfig.data.listCollection[colNo].length == 0)
+        if (appLinklistConfig.data.listCollection[colNo].length === 0)
     	{
     		return true;
     	}
@@ -77,29 +80,32 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.deleteEntry = function(colNo,entry)
 	{
-	    linkList = appLinklistConfig.data.listCollection[colNo];
+	    var linkList = appLinklistConfig.data.listCollection[colNo];
 
 		if(linkList.length > 0)
 		{
-			for (var i=0; i<linkList.length; i++) 
+			for (var i = 0; i < linkList.length; i++) 
 			{
-				link = linkList[i];
+				var link = linkList[i];
 
 				if(!entry && !link) {
 				    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 					break;
 				}
-				if(link.type=="saplink")
+				if(link.type === "saplink")
 				{
-					if(entry && link && link.name == entry.name && link.sid == entry.sid && link.transaction == entry.transaction)
+					if(entry && link &&
+						link.name === entry.name &&
+						link.sid === entry.sid &&
+						link.transaction === entry.transaction)
 					{
 					    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 						break;
 					}
 				}
-				else if(link.type=="hyperlink")
+				else if(link.type === "hyperlink")
 				{
-					if(entry && link && link.name == entry.name && link.url == entry.url)
+					if(entry && link && link.name === entry.name && link.url === entry.url)
 					{
 					    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 						break;
@@ -107,36 +113,37 @@ angular.module('app.linklist').appLinkListSettings =
 				}
 			}
 		}
-		if(linkList.length == 0 && colNo != 0)
+		if(linkList.length === 0 && colNo !== 0)
 		{	
 			$scope.removeLinkList(colNo);
 		}
+        $scope.setBoxSize(appLinklistConfig.data.listCollection);
 	};
 
 	$scope.newEntry = function(colNo)
 	{
 	    if (appLinklistConfig.data.listCollection[colNo].length <= 6)
 		{
-			if($scope.addForm[colNo] == "web")
+			if($scope.addForm[colNo] === "web")
 			{
 				if(!$scope.currentConfigValues.url || !$scope.currentConfigValues.linkName) {
 					return;
-				};
-				if($scope.currentConfigValues.url.indexOf("http") == -1){
+				}
+				if($scope.currentConfigValues.url.indexOf("http") === -1){
                     $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
-                };
-				entry = {
+                }
+				var entry = {
 				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.linkName,
 					'name': $scope.currentConfigValues.linkName,
 					'url':  $scope.currentConfigValues.url,
 					'type': 'hyperlink'
-				}
+				};
 			}
-			else if($scope.addForm[colNo] == "gui")
+			else if($scope.addForm[colNo] === "gui")
 			{
 				if(!$scope.currentConfigValues.sapLinkSID || !$scope.currentConfigValues.sapLinkName) {
 					return;
-				};
+				}
 				entry = {
 				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName,
 					'name': $scope.currentConfigValues.sapLinkName,
@@ -144,13 +151,14 @@ angular.module('app.linklist').appLinkListSettings =
 					'transaction': $scope.currentConfigValues.sapLinkTransaction,
 					'parameters': $scope.currentConfigValues.sapLinkParameters,
 					'type': 'saplink'
-				}
+				};
 				entry.sapGuiFile = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,entry.parameters);
 			}
 			$scope.currentConfigValues = {};
 			$scope.setAddForm(colNo,'');
 			appLinklistConfig.data.listCollection[colNo].push(entry);
 		}
+        $scope.setBoxSize(appLinklistConfig.data.listCollection);
 	};
 
 	$scope.setAddForm = function(col,value)
@@ -160,23 +168,23 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.isAddFormPossible = function()
 	{
-		for (var i=0; i<$scope.addForm.length; i++)
+		for (var i = 0; i < $scope.addForm.length; i++)
 		{
-			if ($scope.addForm[i] != '')
+			if ($scope.addForm[i] !== '')
 			{
 				return false;
 			}
 		}
 		return true;
-	}
+	};
 
 	$scope.toggleAddForm = function(col)
 	{
-		if($scope.addForm[col] == '' || $scope.addForm[col] == undefined)
+		if($scope.addForm[col] === '' || $scope.addForm[col] === undefined)
 		{
 			$scope.addForm[col] = 'web';
 		}
-		else if($scope.addForm[col] != '')
+		else if($scope.addForm[col] !== '')
 		{
 			$scope.addForm[col] = '';
 		}
