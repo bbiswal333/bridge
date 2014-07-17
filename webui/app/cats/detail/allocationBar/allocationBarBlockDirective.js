@@ -70,7 +70,7 @@ function (colorUtils, blockCalculations, calUtils) {
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
                 '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' + 
-                    '<img class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
+                    '<img ng-hide="blockData.fixed" class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
                 '</div>' +
             '</div>' +
         '</div>'

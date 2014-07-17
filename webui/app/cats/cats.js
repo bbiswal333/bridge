@@ -94,14 +94,14 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     function _enrichTaskData(task){
       if (task &&
           !task.ZCPR_OBJGEXTID &&
-          !task.ZCPR_OBJGUID) {
+          !task.ZCPR_EXTID) {
         task.ZCPR_OBJGEXTID = task.TASKTYPE;
-        task.ZCPR_OBJGUID = task.TASKTYPE;
+        task.ZCPR_EXTID = "";
       } else if (task.record &&
           !task.record.ZCPR_OBJGEXTID &&
-          !task.record.ZCPR_OBJGUID) {
+          !task.record.ZCPR_EXTID) {
         task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
-        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
+        task.record.ZCPR_EXTID = "";
       }
       return task;
     }
@@ -138,6 +138,35 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           task.UNIT           = nodes[i].UNIT;
           task.projectDesc    = nodes[i].DISPTEXTW1;
           task.taskDesc       = nodes[i].DISPTEXTW2;
+          tasks.push(task);
+        }
+
+        callback_fn(tasks);
+      });
+    }
+
+    function _requestTasksFromTemplate (year, week, callback_fn) {
+      _getCatsAllocationDataForWeek(year, week).then(function(data) { // /zdevdb/GETWORKLIST
+        var tasks = [];
+        if (!data){
+          return;
+        }
+        var nodes = data.TIMESHEETS.RECORDS;
+        for (var i = 0; i < nodes.length; i++) {
+          var task = {};
+          task.RAUFNR         = nodes[i].RAUFNR;
+          task.TASKTYPE       = nodes[i].TASKTYPE;
+          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID || "";
+          task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
+          task.UNIT           = nodes[i].UNIT;
+          task.projectDesc    = nodes[i].DISPTEXTW1 || nodes[i].ZCPR_EXTID;
+          task.taskDesc       = nodes[i].DISPTEXTW2 || nodes[i].DESC;
+
+          if (task.TASKTYPE === 'ADMI' || task.TASKTYPE === 'EDUC') {
+            _enrichTaskData(task);
+          }
+          // task.data = nodes[i];
+
           tasks.push(task);
         }
 
@@ -211,6 +240,9 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       writeCATSData: function (container) {
         return _writeCATSData(container);
+      },
+      requestTasksFromTemplate: function(year, week, callback_fn) {
+        _requestTasksFromTemplate(year, week, callback_fn); 
       }
     };
   }

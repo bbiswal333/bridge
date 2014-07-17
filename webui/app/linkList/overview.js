@@ -15,7 +15,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             var configCopy = angular.copy(appLinklistConfig.data);
             configCopy.boxSize = $scope.box.boxSize;
             
-            if(configCopy.listCollection.length >= 1) {
+            if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
                     var linkList = configCopy.listCollection[i];
                             
@@ -48,7 +48,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
                 appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
                 appLinklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
-                $scope.appConfig = appLinklistConfig;
+                $scope.appConfig = appLinklistConfig.data;
             }
 
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
@@ -60,16 +60,18 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 setDefaultConfig();
             }
 
-            appLinklistConfig.data.listCollection = $scope.appConfig.listCollection;
-            for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
-                var linkList = appLinklistConfig.data.listCollection[i];
+            if($scope.appConfig) {
+                appLinklistConfig.data.listCollection = $scope.appConfig.listCollection;
+                for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
+                    var linkList = appLinklistConfig.data.listCollection[i];
 
-                for (var j = linkList.length - 1; j >= 0; j--) {
-                    var link = linkList[j];
-                    if (link.type === "saplink") {
-                        link.sapGuiFile = appLinklistConfig.generateBlob(link.name, link.sid, link.transaction, link.parameters);
-                    } else if (link.type === "hyperlink" && (link.url.indexOf("http") === -1)) {
-                        link.url = "http://" + link.url;
+                    for (var j = linkList.length - 1; j >= 0; j--) {
+                        var link = linkList[j];
+                        if (link.type === "saplink") {
+                            link.sapGuiFile = appLinklistConfig.generateBlob(link.name, link.sid, link.transaction, link.parameters);
+                        } else if (link.type === "hyperlink" && (link.url.indexOf("http") === -1)) {
+                            link.url = "http://" + link.url;
+                        }
                     }
                 }
             }

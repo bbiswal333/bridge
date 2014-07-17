@@ -530,3 +530,14 @@
         opacity: 0.6;
     }
 }
+
+.settings_input_row {
+    margin-top: 15px;
+}
+.settings_input_label {
+    font-size: 14px; 
+    line-height: 1.42857143; 
+    color: #555; 
+    padding-top: 6px;
+    text-align: right;
+}

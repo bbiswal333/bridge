@@ -39,8 +39,13 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
 
         if (!block)
             return null;
+<<<<<<< HEAD
 
         var blockId = block.task.ZCPR_OBJGEXTID || block.task.TASKTYPE;
+=======
+        }
+        var blockId = "" + block.task.ZCPR_OBJGEXTID + block.task.TASKTYPE + block.task.RAUFNR;
+>>>>>>> FETCH_HEAD
 
         if (!this.blockColors[blockId]) {
             this.blockColors[blockId] = this.colors[this.colorCounter % len];

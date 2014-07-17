@@ -24,14 +24,24 @@
         
         for (var j = 0; j < visible_apps.length; j++) 
         {
+            var appConfig = {};
+            try {
+                appConfig = getAppConfig(visible_apps[j]);
+            } catch(e) {
+                console.error("Failed to get the app-config: " + e.stack);
+            }
             apps.push({
                 metadata: {
                     "module_name": visible_apps[j].metadata.module_name
                 },
-                appConfig: visible_apps[j].scope ? (visible_apps[j].scope.box ? (visible_apps[j].scope.box.returnConfig ? visible_apps[j].scope.box.returnConfig() : visible_apps[j].appConfig) : {}) : {}
+                appConfig: appConfig
             });                        
         }
         return apps;
+    }
+
+    function getAppConfig(app) {
+        return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
     }
 
     this.persistInBackend = function (dataService) {
