@@ -7,7 +7,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
             "#8EB9DF",
             
            
-
+ 
 
             // "#16354A",
             // "#005997",
@@ -37,7 +37,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         var generated = null;
         var len = this.colors.length;
 
-        if (!block)
+        if (!block){
             return null;
         }
         var blockId = "" + block.task.ZCPR_OBJGEXTID + block.task.TASKTYPE + block.task.RAUFNR;
@@ -45,7 +45,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         if (!this.blockColors[blockId]) {
             this.blockColors[blockId] = this.colors[this.colorCounter % len];
             this.colorCounter++;
-        };
+        }
         return this.blockColors[blockId]; 
     }
 
