@@ -534,10 +534,16 @@
 .settings_input_row {
     margin-top: 15px;
 }
-.settings_input_label {
+.settings_input {
     font-size: 14px; 
     line-height: 1.42857143; 
     color: #555; 
     padding-top: 6px;
+}
+.settings_input_text {
+    color: #AAA;
+    padding-left: 10px
+}
+.settings_input_label {
     text-align: right;
 }

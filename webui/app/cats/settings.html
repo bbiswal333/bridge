@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-xs-12 col-md-6" style="margin-top:45px">
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input_label">Description</span>
+                		<span class="col-md-4 settings_input settings_input_label">Description</span>
                 		<div class="col-md-8">
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
@@ -29,47 +29,54 @@
                 	</div>
 
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input_label">Order</span>
+                		<span class="col-md-4 settings_input settings_input_label">Order</span>
                 		<div class="col-md-8">
-                			<!-- <div></div> -->
+                			<div class="settings_input settings_input_text">{{selectedTask.RAUFNR || "Order Number"}}</div>
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
 		                		ng-model="selectedTask.RAUFNR" 
 		                		class="form-control form ng-pristine ng-valid" 
-		                		placeholder="Order Number">
+		                		placeholder="Order Number"
+		                		ng-if="false">
 		            	</div>
                 	</div>
 
 		            <div class="row settings_input_row">
-                		<span class="col-md-4 settings_input_label">Project</span>
+                		<span class="col-md-4 settings_input settings_input_label">Project</span>
                 		<div class="col-md-8">    		
+                			<div class="settings_input settings_input_text">{{selectedTask.ZCPR_EXTID || "Project Id"}}</div>
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
 		                		ng-model="selectedTask.ZCPR_EXTID" 
 		                		class="form-control form ng-pristine ng-valid" 
-		                		placeholder="Project Id">
+		                		placeholder="Project Id"
+		                		ng-if="false">
                 		</div>
                 	</div>
 
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input_label">Task</span>
+                		<span class="col-md-4 settings_input settings_input_label">Task</span>
                 		<div class="col-md-8">	
+                			<div class="settings_input settings_input_text">{{selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
 		                		ng-model="selectedTask.ZCPR_OBJGEXTID" 
 		                		class="form-control form ng-pristine ng-valid" 
-		                		placeholder="Task Id">
+		                		placeholder="Task Id"
+		                		ng-if="false">
 		            	</div>
                 	</div>
 
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input_label">Type</span>
+                		<span class="col-md-4 settings_input settings_input_label">Type</span>
                 		<div class="col-md-8">	
+                			<div class="settings_input settings_input_text">{{selectedTask.TASKTYPE || "Task Type"}}</div>
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
 		                		ng-model="selectedTask.TASKTYPE" 
 		                		class="form-control form ng-pristine ng-valid" 
-		                		placeholder="Task Type">
+		                		placeholder="Task Type"
+		                		ng-if="false">
 		            	</div>
                 	</div>
                 		<!-- item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE; -->
