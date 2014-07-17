@@ -29,13 +29,21 @@ angular.module("app.cats")
 	            for (var i = 0; i < days.length; i++) {
 	                var dateStr = days[i].DATEFROM;
 	                var statusStr = days[i].STATUS;
+	                var time = parseDateToTime(dateStr);
+	                
 	                // special handling for overbooked days
 	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > days[i].STDAZ) {
 	                	statusStr = "OVERBOOKED";
 	                	days[i].STATUS = "OVERBOOKED";
 	                }
-
-	                var time = parseDateToTime(dateStr);
+	                if (days[i].STATUS === "R" && (time > new Date().getTime())) {
+	                	statusStr = "R_INTHEFUTURE";
+	                	days[i].STATUS = "R_INTHEFUTURE"
+	                }
+					if (days[i].STATUS === "Y" && (time > new Date().getTime())) {
+	                	statusStr = "Y_INTHEFUTURE_part_maint";
+	                	days[i].STATUS = "Y_INTHEFUTURE_part_maint"
+	                }
 	                if (time !== null) {
 	                    processed[time] = { state: statusStr };
 	                }
