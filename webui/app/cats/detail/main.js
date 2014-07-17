@@ -44,19 +44,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
 
-    function isSameTask(block, task) {
-        if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
-            (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
-             task.RAUFNR === block.RAUFNR &&
-             task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
-            return true;
-        }
-        return false;
-    }
+    // function isSameTask(block, task) {
+    //     if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
+    //         (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
+    //          task.RAUFNR === block.RAUFNR &&
+    //          task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if (isSameTask(block, $scope.blockdata[i].task)) {
+            if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
                 return $scope.blockdata[i];
             }
         }
@@ -148,7 +148,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             var i = 0;
             while (i < $scope.blockdata.length) {
-                if (isSameTask(block, $scope.blockdata[i].task)) {
+                if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
                     if ($scope.blockdata[i].task.COUNTER) {
                         $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
                     } else {

@@ -1,14 +1,14 @@
-angular.module("app.cats").service('app.cats.configService', function(){
+angular.module("app.cats").service('app.cats.configService', ["app.cats.data.catsUtils", function(catsUtils){
 	this.loaded = false;
 	this.catsItems = [];
 	this.favoriteItems = [];
 
 	this.updateTaskIfFavorite = function (task) {
 		this.favoriteItems.some(function(favItem){
-			if (task.ZCPR_OBJGEXTID === favItem.ZCPR_OBJGEXTID && task.RAUFNR === favItem.RAUFNR) {
+			if (catsUtils.isSameTask(task, favItem)) {
 				task.DESCR = favItem.DESCR;
 				task.TASKTYPE = favItem.TASKTYPE;
 			}
 		});
 	};
-});
+}]);
