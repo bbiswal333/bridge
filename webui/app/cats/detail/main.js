@@ -217,14 +217,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 var task = day.tasks[i];
                 configService.updateTaskIfFavorite(task);
                 var HoursOfWorkingDay = 8;
+
+                var isFixedTask = false;
+                if (task.TASKTYPE === "VACA" ||
+                    task.TASKTYPE === "ABSE" ||
+                    task.TASKTYPE === "COMP") {
+                    isFixedTask = true;
+                }
+
                 if (task.TASKTYPE === "VACA") {
-                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
+                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else if (task.TASKTYPE === "ABSE") {
-                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, true);
+                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
             checkAndCorrectPartTimeInconsistancies(day);
@@ -377,7 +385,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             monthlyDataService.days[workdate].tasks.forEach(function(task){
                 if (task.QUANTITY === 0 ||
                     task.TASKTYPE === "VACA" ||
-                    task.TASKTYPE === "ABSE") { 
+                    task.TASKTYPE === "ABSE" ||
+                    task.TASKTYPE === "COMP") { 
                     return null;
                 }
                 var taskDeletion = angular.copy(task);
