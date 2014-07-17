@@ -1,6 +1,12 @@
 <div style="width: 100%">
 	<p>
 		<form name="ConfigItemForm">
+
+			<div class="row">
+				<div class="col-xs-12 col-md-6" style="margin-left:4px">
+					Here you can select or deselct your favorite tasks.
+				</div>
+			</div>
 			<div class="row">
                 <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-6" >
                     <app.cats.maintenance-view.project-list data-blocks="favoriteTasks" 
@@ -16,7 +22,7 @@
                 		<div class="col-md-8">
 		                	<input type="text"
 		                		ng-disabled="selectedTask === null || selectedTask === undefined"
-		                		ng-model="selectedTask.name" 
+		                		ng-model="selectedTask.DESCR" 
 		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Task Description">
                 		</div>

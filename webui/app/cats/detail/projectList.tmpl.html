@@ -17,9 +17,9 @@
                             ng-class="{'btn_blue' : item.selected && !item.color}"
                             ng-style="item.color ? {'background':item.color, 'color':'white'} : ''" 
                             id="projectButton" 
-                            ng-click="toogleSelect($index);">{{item.name}}
+                            ng-click="toogleSelect($index);">{{item.DESCR}}
                         <br>
-                        <span style="font-size: 10px;">{{item.desc}}</span>
+                        <span style="font-size: 10px;">{{item.ZCPR_EXTID}}</span>
                     </button>
                 </div>
             </div>

@@ -9,7 +9,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
+  "app.cats.configService",
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -214,6 +215,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
+                configService.updateTaskIfFavorite(task);
                 var HoursOfWorkingDay = 8;
                 if (task.TASKTYPE === "VACA") {
                     addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
@@ -279,6 +281,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             UNIT: "T"
         };
+        configService.updateTaskIfFavorite(block);
+        
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {

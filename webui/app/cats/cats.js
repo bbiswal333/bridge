@@ -114,15 +114,15 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         tasks.push(_enrichTaskData({
             RAUFNR: "",
             TASKTYPE: "ADMI",
-            taskDesc: "ADMI",
-            projectDesc: "Administrative"
+            DESCR: "ADMI"
+            // projectDesc: "Administrative"
         }));
 
         tasks.push(_enrichTaskData({
             RAUFNR: "",
             TASKTYPE: "EDUC",
-            taskDesc: "EDUC",
-            projectDesc: "Personal education"
+            DESCR: "EDUC"
+            // projectDesc: "Personal education"
         }));
 
         if (!data){
@@ -137,7 +137,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.UNIT           = nodes[i].UNIT;
           task.projectDesc    = nodes[i].DISPTEXTW1;
-          task.taskDesc       = nodes[i].DISPTEXTW2;
+          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
           tasks.push(task);
         }
 
@@ -156,11 +156,11 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           var task = {};
           task.RAUFNR         = nodes[i].RAUFNR;
           task.TASKTYPE       = nodes[i].TASKTYPE;
-          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID || "";
+          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
           task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.UNIT           = nodes[i].UNIT;
-          task.projectDesc    = nodes[i].DISPTEXTW1 || nodes[i].ZCPR_EXTID;
-          task.taskDesc       = nodes[i].DISPTEXTW2 || nodes[i].DESC;
+          // task.projectDesc    = nodes[i].DISPTEXTW1 || nodes[i].ZCPR_EXTID;
+          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 
           if (task.TASKTYPE === 'ADMI' || task.TASKTYPE === 'EDUC') {
             _enrichTaskData(task);

@@ -42,7 +42,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
       if ($scope.items[indx].selected) {
         var ok = $scope.onProjectChecked({
-          desc_s: $scope.items[indx].name,
+          desc_s: $scope.items[indx].DESCR,
           val_i: null,
           task: $scope.items[indx],
           index: indx
@@ -97,12 +97,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       $scope.blocks.some(function(block){
 
         if (block.task) {
-          if (item.ZCPR_OBJGEXTID === block.task.ZCPR_OBJGEXTID && item.RAUFNR === block.task.RAUFNR && block.value !== 0){
+          if (item.ZCPR_OBJGEXTID === block.task.ZCPR_OBJGEXTID && item.RAUFNR === block.task.RAUFNR && item.ZCPR_EXTID === block.task.ZCPR_EXTID && block.value !== 0){
             found = true;
             color = colorUtils.getColorForBlock(block);    
           }
         } else {
-          if (item.ZCPR_OBJGEXTID === block.ZCPR_OBJGEXTID && item.RAUFNR === block.RAUFNR){
+          if (item.ZCPR_OBJGEXTID === block.ZCPR_OBJGEXTID && item.RAUFNR === block.RAUFNR && item.ZCPR_EXTID === block.ZCPR_EXTID){
             found = true;
             // color = "rgba(66,139,202,1)";    
           }
@@ -116,10 +116,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function createNewProjectItem (item) {
-      var newItem       = item;
-      newItem.id        = $scope.items.length;
-      newItem.name      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
-      newItem.desc      = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
+      var newItem        = item;
+      newItem.id         = $scope.items.length;
+      newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
+      newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
       
       markItemIfSelected(item);
 
@@ -176,6 +176,16 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         });
 
         getDataFromCatsTemplate();
+
+        var uniqBy = function(ary, key) {
+            var seen = {};
+            return ary.filter(function(elem) {
+                var k = key([elem.ZCPR_OBJGEXTID, elem.RAUFNR, elem.ZCPR_EXTID]);
+                return (seen[k] === 1) ? 0 : seen[k] = 1;
+            });
+        };
+
+        configService.catsItems = uniqBy(configService.catsItems, JSON.stringify);
 
         $timeout(function () {
           $scope.$broadcast('rebuild:me');
