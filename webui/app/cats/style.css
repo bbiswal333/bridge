@@ -260,7 +260,7 @@
 
 .selected_day{
     background: ;
-    border: 1px solid #c2b0e2;
+    border: 2px solid #c2b0e2;
     color: #707070!important;
     font-weight: 600;
 }
