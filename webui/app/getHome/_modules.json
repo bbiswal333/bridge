@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.gethome",
+		"title"					:	"Get Home",
+		"icon_css"				:	"fa fa-home",
+		"overview_directive"	:	"app.gethome",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}
