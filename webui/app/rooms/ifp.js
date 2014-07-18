@@ -1,7 +1,9 @@
 angular.module('app.rooms').service('ifpservice', [
   '$http',
-  function($http) {
+  "bridgeDataService",
+  function($http, dataService) {
 
+    var user = dataService.getUserInfo().BNAME;
     var ISP_ROOMS = "https://ifp.wdf.sap.corp/sap/bc/bridge/MY_ROOM_RESERVATIONS";
 
     function extractDates(reservation) {
@@ -13,10 +15,10 @@ angular.module('app.rooms').service('ifpservice', [
       reservation.VALIDTODATE = new Date(parseInt(m[1]),parseInt(m[2])-1,parseInt(m[3]),parseInt(m[4]),parseInt(m[5]));
     }
 
-    function _loadFromIsp(user, from, to, callback) {
+    function _loadFromIsp(from, to, callback) {
       $http({
         method: 'GET',
-        url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + from + '&to=' + to + '&user=' + user,
+        url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + from + '&to=' + to + '&user=' + user
      }).success(function(data){
         data.RESERVATIONS.forEach(extractDates);
         alert(JSON.stringify(data));
