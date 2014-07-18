@@ -42,7 +42,7 @@
 
 	<div class="row app-linkList-row">
 		<div class="col-xs-12" style="padding:0 0 0 0;">
-			<input type="text" class="form-control form" ng-model="newLocation.address" placeholder="Search for a location" />
+			<input type="text" class="form-control form" ng-model="newLocation.address" placeholder="Search for a location" typeahead="location as location.address.label for location in searchAddress($viewValue)"/>
 		</div>
 	</div>
 	<div class="row app-linkList-row">
