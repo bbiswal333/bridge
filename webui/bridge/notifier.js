@@ -4,8 +4,8 @@ angular.module("notifier", []).factory("notifier", function () {
   icons.push("../img/notifier_tick.png");      // Success
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
-  var notifications = [];
-
+  var notifications = JSON.parse(localStorage.getItem('notifcations')) || [];
+  
   var Notifier = function (text, body, icon, tag, duration) {
     var self = this;
     var n;
@@ -149,7 +149,9 @@ angular.module("notifier", []).factory("notifier", function () {
         callback: onCLick_fn,
         timestamp: new Date().getTime(),
         kindOf: kindOf_s,
+        state: 'new',
       });
+      localStorage.setItem('notifcations', JSON.stringify(notifications));
   }
 
   var instance = new Notifier();
