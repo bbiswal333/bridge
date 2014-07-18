@@ -1,33 +1,23 @@
 angular.module('bridge.app').
-	controller('notificationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
-	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
-	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-        $scope.dummyData = ["hello", "testA"];
-	    //$scope.apps = bridgeDataService.getProjects()[0].apps;
+	controller('notificationsController',['$rootScope', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
+	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
-		$scope.notifications = notifier.allNotifications();
+    //$scope.apps = bridgeDataService.getProjects()[0].apps;
 
-    	$scope.notificationSupported = notifier.getPermission();
+	$scope.notifications = notifier.allNotifications();
 
-    	$scope.clearNotifications = function() {
-    		notifier.clearNotifications();
-    		return false;
-    	}
+	$scope.onShowNotifications = function(){
+		// toDo: set all notifications to state: seen
+	};
 
-    	function areNotificationsSupported() {
-            $timeout(function () {
-                $scope.notificationSupported = notifier.getPermission();
-            }, 500);
-        }
+  	$scope.clearNotifications = function() {
+  		notifier.clearNotifications();
+  		return false;
+  	}
 
-      $scope.requestPermission = function(){
-      	notifier.requestPermission( areNotificationsSupported );
-      };
-
-	  $scope.testNotification = function(){
-	  	notifier.showSuccess("Test","Notification is working","Settings");
-
-	  };
+	$scope.testNotification = function(){
+		notifier.showSuccess("Test","Notification is working","Settings");
+	};
 
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
@@ -49,15 +39,27 @@ angular.module('bridge.app').
 		});
 	};
 
-			$scope.amountOfNewNotifications = function(){
-				return $filter('filter')(notifier.allNotifications(), {state:'new'}).length;
-			};
+	$scope.amountOfNewNotifications = function(){
+		return $filter('filter')(notifier.allNotifications(), {state:'new'}).length;
+	};
 
-			$scope.filterNewNotifications = function(item) {
-				return item.state == "new";
-			};
-			$scope.updateStatus = function(notification, state) {
-				notification.state = state;
-			};
+	$scope.filterNewNotifications = function newNotifications(item) {
+		return item.state == "new";
+	};
+	
+	$scope.updateStatus = function(notification, state) {
+		notification.state = state;
+	};
 
-}]);
+		}]).
+		filter('newNotification', function () {
+				return function (notifications) {
+
+					if (notifications) {
+						var result = [];
+						notifications.forEach(function(notification){
+							if (notification.state == "new") result.push(notification);
+						})
+						return result;
+					}
+		}});

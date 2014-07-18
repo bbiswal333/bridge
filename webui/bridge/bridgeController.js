@@ -16,7 +16,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.bridge_notifications_click = function () {
             $scope.sidePanel = 'view/bridgeNotifications.html';
-            if ($scope.sideView === "notifications" || !$scope.show_notifications) {
+            if ($scope.sideView === "notifications" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "notifications";
