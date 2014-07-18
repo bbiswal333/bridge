@@ -7,7 +7,7 @@
     <ResolveNames xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
                   xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
                   ReturnFullContactData="true">
-      <UnresolvedEntry>%ROOMID%</UnresolvedEntry>
+      <UnresolvedEntry><%= roomSearchString %></UnresolvedEntry>
     </ResolveNames>
   </soap:Body>
 </soap:Envelope>

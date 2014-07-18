@@ -1,6 +1,7 @@
 var path    = require('path');
 var fs      = require("fs");
 var xml2js  = require('xml2js').parseString;
+var _und 	= require('underscore')._;
 
 /*
     list of available fields to request from ews
@@ -17,6 +18,10 @@ exports.EWSRoom = function(desc, json) {
     
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
+			
+			var compiled = _und.template(data)
+			data = compiled({roomSearchString: roomSearchString});
+	
             console.log(data);
             if (typeof webkitClient !== 'undefined' && webkitClient)
             {                
