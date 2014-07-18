@@ -14,15 +14,13 @@
         <span class="settingsIcon icon-coffee"></span> <!--todo placeholder for actuall icon-->
       </div>
       <div class="content">
-        <h5 title="title">{{notification.title}}</h5>
+        <h5 title="title" ng-click="updateStatus(notification, 'read')">{{notification.title}}</h5>
         <p title="body">{{notification.body}}
         
         <br />
         <span class="timeAgo bold">{{getTimeAgo(notification.timestamp)}}</span>
         </p>
-        
       </div>
-
     </div>
   </div>
 
