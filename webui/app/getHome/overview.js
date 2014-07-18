@@ -1,5 +1,5 @@
 ﻿angular.module('app.getHome', []);
-angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', 'bridgeDataService', 'bridgeConfig', function (appGetHomeConfig, appGetHomeMap, bridgeDataService, bridgeConfig) {
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', 'bridgeDataService', 'bridgeConfig', '$location', function (appGetHomeConfig, appGetHomeMap, bridgeDataService, bridgeConfig, $location) {
 
 	var directiveController = ['$scope', function ($scope)
 	{
@@ -62,6 +62,10 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 				calculateRoute();
 			}
 		});
+
+		$scope.toDetail = function() {
+			$location.path("/detail/gethome/");
+		};
 
 		function calculateRoute() {
 			if (startCoord && destCoord) {
