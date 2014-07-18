@@ -107,7 +107,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 		// var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
 		var time = (hours > 0 ? hours + "h " : "") +
-					(minutes > 0 ? minutes + "min" : "");
+					(minutes > 0 ? minutes + "min" : "0min");
 					// (seconds > 0 ? seconds + "sec " : "");
 		return time;
 	};

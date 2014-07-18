@@ -78,9 +78,10 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 						});
 					}, function (result) {
 						$scope.$apply(function() {
+							console.log(result.percent);
 							$scope.time_style = result.percent > 30 ? "app-getHome-bad" :
 									result.percent > 10 ? "app-getHome-delayed" : "app-getHome-good";
-							$scope.delay_string = " (+" + appGetHomeMap.formatTime(result.delay) + ")";
+							$scope.delay_string = result.delay > 60 ? " (+" + appGetHomeMap.formatTime(result.delay) + ")" : "";
 						});
 				});
 			}
