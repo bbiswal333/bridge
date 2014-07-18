@@ -180,5 +180,9 @@ angular.module("notifier", []).factory("notifier", function () {
     allNotifications: function() {
       return notifications;
     },
+    clearNotifications: function() {
+      notifications.length = 0;
+      localStorage.clear();
+    }
   };  
 });
