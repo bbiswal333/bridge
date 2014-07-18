@@ -411,7 +411,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 			var ews = undefined;
 			try {
-				ews = new EWSRoom({type:"roomsearch", building:"MR KAR01"}, json);
+				ews = new EWSRoom(request.query.building, json);
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);

@@ -76,8 +76,8 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
             }
         });
     };
-    
-        function readSoapTemplate(callback_fn) {
+
+    function readSoapTemplate(callback_fn) {
         var readStream = fs.createReadStream(SOAP_TEMPLATE_FILE);
         var data = "";
 
@@ -90,6 +90,3 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
         });
     }
 };
-    /*
-    {type:"roomsearch", searchString:"" 
-    */
