@@ -1,0 +1,72 @@
+
+<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+  <div class="row">
+    <div class="mybox" ng-controller="app.rooms.detailController">
+          <p class="input-group">
+            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate"  datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+    </div>
+
+    <div class="mybox" ng-controller="app.rooms.detailController">
+      <input ng-model="hours" type="text" class="form form-control" style="width: 40px;" placeholder="hours">
+      <input ng-model="minutes" type="text" class="form form-control" style="width: 40px;" placeholder="{{minutes}}">
+      <input type="text" class="form form-control" style="width: 40px;" placeholder="1">
+    </div>
+  </div>
+
+  <div ng-controller="app.rooms.detailController" class="row">
+  <div style="margin-top: 5px; height: 110px; overflow: hidden;">
+      <div style="height: 110px; overflow-y: auto;">
+          <table cellpadding="2" class="meetings-table" >
+              <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
+                  <td style="border-right: 1px solid #0099CC; width: 200px;" id="eventId{{($index+1)}}">
+<!--                      <span ng-if="$first && !event.isCurrent" >
+                          <b>{{event.startRel}}</b>
+                      </span>
+                      <span ng-if="!$first && !event.isCurrent">
+                          {{event.startTime}}
+                          {{event.endTime}}
+                      </span>
+                      <span ng-if="event.isCurrent">
+                          now
+                          {{event.endTime}}
+                      </span>-->
+                      <b>{{event.room}}</b>
+                  </td>
+<!--                  <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
+                      <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
+                          <span ng-if="$first">
+                              <b>{{event.subject}}</b>
+                          </span>
+                          <span ng-if="!$first">
+                              {{event.subject}}
+                          </span>
+                      </div>
+                      {{event.location}}
+                  </td>-->
+                  <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                      <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
+                        <b> {{event.capacity}} </b>
+  <!--                        <span ng-if="$first">
+                              <b>{{event.subject}}</b><br>
+                              {{event.location}}
+                          </span>
+                          <span ng-if="!$first">
+                              {{event.subject}}<br>
+                              {{event.location}}
+                          </span> -->
+                      </div>
+                     
+                  </td>
+                  <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                    <input type="button" value="book"/>
+                  </td>
+              </tr>
+          </table>
+      </div>
+  </div>
+  </div>
+</div>

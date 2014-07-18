@@ -1,0 +1,14 @@
+
+.myrow {
+  width: 80%;
+  float: left;
+}
+
+.mybox {
+  float:left;
+}
+
+.mybox input{
+  float:left;
+  margin-left: 5px;
+}
