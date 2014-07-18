@@ -19,12 +19,11 @@
 
       </div>
       <div class="content">
-        <span title="title">{{notification.title}}</span>
+        <span title="title" ng-click="updateStatus(notification, 'read')">{{notification.title}}</span>
         <span title="body">{{notification.body}}</span>
         <span title="timestamp">{{jQuery.timeago(notification.timestamp);}}</span>
         <span title="state">{{notification.state}}</span> <!--todo remove-->
       </div>
-
     </div>
   </div>
 
