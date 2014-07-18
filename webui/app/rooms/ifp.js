@@ -1,7 +1,8 @@
 angular.module('app.rooms').service('ifpservice', [
   '$http',
   "bridgeDataService",
-  function($http, dataService) {
+  "lib.utils.calUtils",
+  function($http, dataService, calUtils) {
 
     var user = dataService.getUserInfo().BNAME;
     var ISP_ROOMS = "https://ifp.wdf.sap.corp/sap/bc/bridge/MY_ROOM_RESERVATIONS";
@@ -18,14 +19,25 @@ angular.module('app.rooms').service('ifpservice', [
     function _loadFromIsp(from, to, callback) {
       $http({
         method: 'GET',
-        url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + from + '&to=' + to + '&user=' + user
+        url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + _formatDateForQuery(from) + '&to=' + _formatDateForQuery(to) + '&user=' + user
      }).success(function(data){
         data.RESERVATIONS.forEach(extractDates);
-        alert(JSON.stringify(data));
+        //alert(JSON.stringify(data));
         callback(data);
       }).error(function(){
           alert("error");
       });
+    }
+
+    function _formatDateForQuery(date) {
+        var year = date.getFullYear();
+        var month = calUtils.useNDigits(date.getMonth()+1, 2);
+        var day = calUtils.useNDigits(date.getDate(), 2);
+        var hour = calUtils.useNDigits(date.getHours(), 2);
+        var minutes = calUtils.useNDigits(date.getMinutes(), 2);
+        var seconds = calUtils.useNDigits(date.getSeconds(), 2);
+
+        return year + month + day + hour + minutes + seconds;
     }
 
     return {
