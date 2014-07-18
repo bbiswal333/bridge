@@ -61,7 +61,7 @@ angular.module('bridge.app').
 		}]).
 		filter('newNotification', function () {
 				return function (notifications) {
-					debugger;
+
 					if (notifications) {
 						var result = [];
 						notifications.forEach(function(notification){
