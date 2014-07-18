@@ -33,6 +33,9 @@ module.exports = function(config) {
       './webui/app/meetings/overview.js',
       './webui/app/meetings/**/*.js',
 
+      './webui/app/rooms/overview.js',
+      './webui/app/rooms/**/*.js',
+
       './webui/app/lunchWalldorf/overview.js',
 
       './webui/app/githubMilestone/overview.js',
