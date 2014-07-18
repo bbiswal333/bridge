@@ -26,6 +26,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 
 				if ($scope.to && newValue.name === $scope.to.name) {
 					$scope.to = oldValue;
+					$scope.config.data.toLocation = oldValue.name;
 				}
 
 				$scope.config.data.fromLocation = newValue.name;
@@ -47,6 +48,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 
 				if ($scope.from && newValue.name === $scope.from.name) {
 					$scope.from = oldValue;
+					$scope.config.data.fromLocation = oldValue.name;
 				}
 
 				$scope.config.data.toLocation = newValue.name;
