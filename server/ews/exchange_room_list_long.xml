@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+      <h:ServerVersionInfo MajorVersion="14" MinorVersion="3" MajorBuildNumber="195" MinorBuildNumber="1" Version="Exchange2010_SP2" xmlns:h="http://schemas.microsoft.com/exchange/services/2006/types" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+    </s:Header>
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <m:ResolveNamesResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+        <m:ResponseMessages>
+          <m:ResolveNamesResponseMessage ResponseClass="Warning">
+            <m:MessageText>Multiple results were found.</m:MessageText>
+            <m:ResponseCode>ErrorNameResolutionMultipleResults</m:ResponseCode>
+            <m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>
+            <m:ResolutionSet TotalItemsInView="23" IncludesLastItemInRange="true">
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>MR WDF03 D1.12 (Internal)</t:Name>
+                  <t:EmailAddress>MR_TD_SOA_I@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MRR TD SOA I</t:DisplayName>
+                  <t:Culture>en-US</t:Culture>
+                  <t:CompanyName>SAP Germany</t:CompanyName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:MR_WDF03_D1.12@target.local</t:Entry>
+                    <t:Entry Key="EmailAddress2">smtp:MR_WDF03_D1.12@source.local</t:Entry>
+                    <t:Entry Key="EmailAddress3">X500:/o=SAP/ou=Europe1/cn=Resources/cn=MR_WDF03_D1.12</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:City>Walldorf</t:City>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="AssistantPhone">+49 6227 7-66222</t:Entry>
+                    <t:Entry Key="BusinessPhone">+49 6227 7-63838</t:Entry>
+                    <t:Entry Key="OtherTelephone">+49 6227 7-63838</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:OfficeLocation>WDF03 D1.12</t:OfficeLocation>
+                  <t:Surname>MRR TD SOA I</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>MR WDF03 G5.15 (internal 7)</t:Name>
+                  <t:EmailAddress>MR_WDF03_G5.15@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MRR WDF03 G5.15 (OS4T only / 7)</t:DisplayName>
+                  <t:Culture>en-US</t:Culture>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:MR_WDF03_G5.15@target.local</t:Entry>
+                    <t:Entry Key="EmailAddress2">smtp:MR_WDF03_G5.15@source.local</t:Entry>
+                    <t:Entry Key="EmailAddress3">X500:/o=SAP/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/cn=Recipients/cn=MR_WDF03_G5.15</t:Entry>
+                  </t:EmailAddresses>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Surname>MRR WDF03 G5.15 (OS4T only / 7)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001673</t:Name>
+                  <t:EmailAddress>VR000000001673@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 BE.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001673@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001673@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-48335</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,00,BE.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 BE.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001674</t:Name>
+                  <t:EmailAddress>VR000000001674@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 BE.02 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001674@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001674@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67951</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,00,BE.02</t:OfficeLocation>
+                  <t:Surname>MR WDF03 BE.02 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001675</t:Name>
+                  <t:EmailAddress>VR000000001675@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 BE.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001675@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001675@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67667</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,00,BE.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 BE.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001676</t:Name>
+                  <t:EmailAddress>VR000000001676@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 HE.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001676@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001676@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67957</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,00,HE.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 HE.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001677</t:Name>
+                  <t:EmailAddress>VR000000001677@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B1.01 (24)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001677@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001677@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-68535</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,01,B1.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B1.01 (24)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001678</t:Name>
+                  <t:EmailAddress>VR000000001678@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B1.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001678@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001678@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67607</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,01,B1.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B1.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001679</t:Name>
+                  <t:EmailAddress>VR000000001679@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H1.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001679@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001679@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-41818</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,01,H1.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H1.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001680</t:Name>
+                  <t:EmailAddress>VR000000001680@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H1.02 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001680@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001680@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67958</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,01,H1.02</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H1.02 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001681</t:Name>
+                  <t:EmailAddress>VR000000001681@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H1.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001681@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001681@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-61643</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,01,H1.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H1.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001682</t:Name>
+                  <t:EmailAddress>VR000000001682@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B2.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001682@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001682@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-46828</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,02,B2.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B2.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001683</t:Name>
+                  <t:EmailAddress>VR000000001683@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B2.02 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001683@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001683@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67953</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,02,B2.02</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B2.02 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001684</t:Name>
+                  <t:EmailAddress>VR000000001684@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B2.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001684@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001684@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-46860</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,02,B2.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B2.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001685</t:Name>
+                  <t:EmailAddress>VR000000001685@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H2.01 (24)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001685@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001685@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67959</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,02,H2.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H2.01 (24)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001686</t:Name>
+                  <t:EmailAddress>VR000000001686@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H2.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001686@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001686@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-46399</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,02,H2.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H2.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001687</t:Name>
+                  <t:EmailAddress>VR000000001687@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H3.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001687@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001687@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-61848</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,03,H3.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H3.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001688</t:Name>
+                  <t:EmailAddress>VR000000001688@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 H3.02 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001688@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001688@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67960</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,03,H3.02</t:OfficeLocation>
+                  <t:Surname>MR WDF03 H3.02 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001689</t:Name>
+                  <t:EmailAddress>VR000000001689@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B4.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001689@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001689@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-46874</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,04,B4.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B4.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001690</t:Name>
+                  <t:EmailAddress>VR000000001690@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B4.02 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001690@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001690@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67955</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,04,B4.02</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B4.02 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001691</t:Name>
+                  <t:EmailAddress>VR000000001691@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B4.03 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001691@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001691@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-43098</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,04,B4.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B4.03 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001692</t:Name>
+                  <t:EmailAddress>VR000000001692@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B5.01 (14)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001692@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001692@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-63095</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,05,B5.01</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B5.01 (14)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001693</t:Name>
+                  <t:EmailAddress>VR000000001693@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR WDF03 B5.03 (34)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001693@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001693@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Robert-Bosch-Strasse 30/34</t:Street>
+                      <t:City>Walldorf</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>69190</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-67956</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>WDF03,05,B5.03</t:OfficeLocation>
+                  <t:Surname>MR WDF03 B5.03 (34)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+            </m:ResolutionSet>
+          </m:ResolveNamesResponseMessage>
+        </m:ResponseMessages>
+      </m:ResolveNamesResponse>
+    </s:Body>
+  </s:Envelope>
+

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+      <h:ServerVersionInfo MajorVersion="14" MinorVersion="3" MajorBuildNumber="195" MinorBuildNumber="1" Version="Exchange2010_SP2" xmlns:h="http://schemas.microsoft.com/exchange/services/2006/types" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+    </s:Header>
+    <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <m:ResolveNamesResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+        <m:ResponseMessages>
+          <m:ResolveNamesResponseMessage ResponseClass="Warning">
+            <m:MessageText>Multiple results were found.</m:MessageText>
+            <m:ResponseCode>ErrorNameResolutionMultipleResults</m:ResponseCode>
+            <m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>
+            <m:ResolutionSet TotalItemsInView="6" IncludesLastItemInRange="true">
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001576</t:Name>
+                  <t:EmailAddress>VR000000001576@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR KAR01 KE.01 (08)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001576@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001576@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Vincenz-Prießnitz-Straße 1</t:Street>
+                      <t:City>Karlsruhe</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>76131</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-52695</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>KAR01,00,KE.01</t:OfficeLocation>
+                  <t:Surname>MR KAR01 KE.01 (08)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001577</t:Name>
+                  <t:EmailAddress>VR000000001577@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR KAR01 K1.01 (05)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001577@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001577@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Vincenz-Prießnitz-Straße 1</t:Street>
+                      <t:City>Karlsruhe</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>76131</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>KAR01,01,K1.01</t:OfficeLocation>
+                  <t:Surname>MR KAR01 K1.01 (05)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>VR000000001578</t:Name>
+                  <t:EmailAddress>VR000000001578@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Mailbox</t:MailboxType>
+                </t:Mailbox>
+                <t:Contact>
+                  <t:DisplayName>MR KAR01 R1.14 (20)</t:DisplayName>
+                  <t:EmailAddresses>
+                    <t:Entry Key="EmailAddress1">smtp:VR000000001578@global.corp.sap</t:Entry>
+                    <t:Entry Key="EmailAddress2">SMTP:VR000000001578@exchange.sap.corp</t:Entry>
+                  </t:EmailAddresses>
+                  <t:PhysicalAddresses>
+                    <t:Entry Key="Business">
+                      <t:Street>Vincenz-Prießnitz-Straße 1</t:Street>
+                      <t:City>Karlsruhe</t:City>
+                      <t:CountryOrRegion>Germany</t:CountryOrRegion>
+                      <t:PostalCode>76131</t:PostalCode>
+                    </t:Entry>
+                  </t:PhysicalAddresses>
+                  <t:PhoneNumbers>
+                    <t:Entry Key="BusinessPhone">49 6227 7-52696</t:Entry>
+                  </t:PhoneNumbers>
+                  <t:ContactSource>ActiveDirectory</t:ContactSource>
+                  <t:Department>GFM  Global Function</t:Department>
+                  <t:OfficeLocation>KAR01,00,R1.14</t:OfficeLocation>
+                  <t:Surname>MR KAR01 R1.14 (20)</t:Surname>
+                </t:Contact>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>MR KAR01 K1.01 (05) (VR000000001577@exchange.sap.corp)</t:Name>
+                  <t:EmailAddress>VR000000001577@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Contact</t:MailboxType>
+                  <t:ItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ2AADK9kY9yuMWS7FKPQvk0cuZAMAffEwEAAA=" ChangeKey="EQAAABYAAAApgenWJC/PR63Jtdul39ZkAACH5FGO" />
+                </t:Mailbox>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>MR KAR01 R1.14 (20) (VR000000001578@exchange.sap.corp)</t:Name>
+                  <t:EmailAddress>VR000000001578@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Contact</t:MailboxType>
+                  <t:ItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ2AADK9kY9yuMWS7FKPQvk0cuZAMAffEwDAAA=" ChangeKey="EQAAABYAAAApgenWJC/PR63Jtdul39ZkAACH5FGQ" />
+                </t:Mailbox>
+              </t:Resolution>
+              <t:Resolution>
+                <t:Mailbox>
+                  <t:Name>MR KAR01 KE.01 (08) (VR000000001576@exchange.sap.corp)</t:Name>
+                  <t:EmailAddress>VR000000001576@exchange.sap.corp</t:EmailAddress>
+                  <t:RoutingType>SMTP</t:RoutingType>
+                  <t:MailboxType>Contact</t:MailboxType>
+                  <t:ItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ2AADK9kY9yuMWS7FKPQvk0cuZAMAffEwCAAA=" ChangeKey="EQAAABYAAAApgenWJC/PR63Jtdul39ZkAACH5FGS" />
+                </t:Mailbox>
+              </t:Resolution>
+            </m:ResolutionSet>
+          </m:ResolveNamesResponseMessage>
+        </m:ResponseMessages>
+      </m:ResolveNamesResponse>
+    </s:Body>
+  </s:Envelope>

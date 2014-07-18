@@ -32,6 +32,8 @@ directive("app.rooms", [
                 var till = new Date();
                 till.setDate(till.getDate()+7);
 
+                $scope.tillDate = till;
+
                 ifpservice.loadFromIsp(today, till, function(data) {
                     $scope.rooms = [];
                     var i = 0;
@@ -63,6 +65,7 @@ directive("app.rooms", [
 			/* ====================================== */
 
 			$scope.events = [];
+            $scope.rooms  = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
 			var eventsRaw = {};
@@ -139,12 +142,7 @@ directive("app.rooms", [
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
 				}
-        // test code
-        /*
-        ifpservice.loadFromIsp("D040949", "20140718000000", "20140930000000", function(res) {
-         alert(JSON.stringify(res))
-       });
-        */
+
 				var dateForewsCall = new Date();
 				dateForewsCall.setDate(today.getDate() - 1);
 				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data, status) {
@@ -183,19 +181,13 @@ directive("app.rooms", [
 			};
 
 			$scope.hasEvents = function () {
-                return true;
-			    //return ($scope.events.length !== 0);
+                //return true;
+			    return ($scope.rooms.length !== 0);
 			};
 
 			$scope.getMeetingsLeftText = function () {
-				var cnt = 0;
-				for (var i = 0; i < $scope.events.length; i++) {
-					if ($scope.events[i].end.getTime() > new Date().getTime()) {
-						cnt++;
-					}
-				}
-
-				return cnt + " meeting" + (cnt === 1 ? "" : "s") + " left for today.";
+                var cnt = $scope.rooms.length;
+				return cnt + " booking" + (cnt === 1 ? "" : "s") + " till " + calUtils.getWeekdays()[$scope.tillDate.getDay() - 1].long + ", " + $scope.tillDate.getDate() + ". " + calUtils.getMonthName($scope.tillDate.getMonth()).long;
 			};
 
 			$scope.isLoading = function () {
