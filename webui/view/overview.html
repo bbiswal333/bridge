@@ -11,7 +11,7 @@
     <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);position:relative;top:48px;">
         <div class="settingsButton" title="Notifications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='notifcations', 'tab-inactive':sideView!='notifcations'}" ng-click="bridge_notifications_click()">
           <span class="icon-bell"></span>
-          <span ng-controller="notificationsController" class="badge" style="position: absolute; right: 2px; bottom: 2px; background: red; opacity: 0.9; border: darkred solid thin;">{{ newNotifications.length }}</span>
+          <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge" style="position: absolute; right: 2px; bottom: 2px; background: red; opacity: 0.9; border: darkred solid thin;">{{ (notifications | newNotification).length }}</span>
         </div>
         <div class="settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click()"><span class="icon-wrench"></span></div>
         <div class="settingsButton" title="Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="icon-heart"></span></div>
