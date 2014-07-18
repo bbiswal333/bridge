@@ -4,6 +4,7 @@ angular.module("notifier", []).factory("notifier", function () {
   icons.push("../img/notifier_tick.png");      // Success
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
+  var notifications = [];
 
   var Notifier = function (text, body, icon, tag, duration) {
     var self = this;
@@ -140,6 +141,14 @@ angular.module("notifier", []).factory("notifier", function () {
       var notifier = new Notifier(title_s, body_s, icons[icon_i], tag_s, DEFAULT_DURATION);
       notifier.onclick = onCLick_fn;
       notifier.show();
+      notifications.push({
+        title: title_s,
+        body: body_s,
+        icon: icon_i,
+        tag: tag_s,
+//        callback: onClick_fn
+
+      });
   }
 
   var instance = new Notifier();
@@ -164,6 +173,9 @@ angular.module("notifier", []).factory("notifier", function () {
     },
     getPermission: function () {
       return instance.getPermission();
-    }
+    },
+    allNotifications: function() {
+      return notifications;
+    },
   };  
 });
