@@ -9,16 +9,16 @@ angular.module('app.test').directive('app.test', function () {
             setTimeout(function(){
                 if (!(Math.random()+.5|0)) {
                     notifier.showSuccess("Test Results: ",
-                                    "1 of 143 passed.",
+                                    "143 of 143 passed.",
                                     $scope.$parent.module_name,
                                     function() {alert('Congratulations!')});
-                    $scope.results = '1 tests passed.';
+                    $scope.results = '143 tests passed.';
                 } else {
                     notifier.showError("Test Results: ",
-                                        "10 of 143 failed.",
+                                        "12 of 143 failed.",
                                         $scope.$parent.module_name,
                                         function() {alert(':-(')});
-                    $scope.results = '10 tests failed.';
+                    $scope.results = '12 tests failed.';
                 };
             }, 3000);
         };
