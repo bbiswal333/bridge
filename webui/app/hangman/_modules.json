@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.hangman",
+		"title"					:	"Hangman",
+		"icon_css"				:	"fa fa-child",
+		"overview_directive"	:	"app.hangman",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["style.css"]
+}
