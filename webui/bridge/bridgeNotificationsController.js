@@ -1,11 +1,13 @@
 angular.module('bridge.app').
-	controller('notificationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
-	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, notifier){
+	controller('notificationsController',['$rootScope', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
+	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
       $scope.dummyData = ["hello", "testA"];
 	    //$scope.apps = bridgeDataService.getProjects()[0].apps;
 
 			$scope.notifications = notifier.allNotifications();
+
+			$scope.newNotifications = $filter('newNotification')(notifier.allNotifications());
 
     	$scope.notificationSupported = notifier.getPermission();
 
@@ -47,8 +49,17 @@ angular.module('bridge.app').
 				return $filter('filter')(notifier.allNotifications(), {state:'new'}).length;
 			};
 
-			$scope.filterNewNotifications = function(item) {
+			$scope.filterNewNotifications = function newNotifications(item) {
 				return item.state == "new";
 			};
-
-}]);
+		}]).
+		filter('newNotification', function () {
+				return function (notifications) {
+					if (notifications) {
+						var result = [];
+						notifications.forEach(function(notification){
+							if (notification.state == "new") result.push(notification);
+						})
+						return result;
+					}
+		}});
