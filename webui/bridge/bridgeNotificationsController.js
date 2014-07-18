@@ -2,9 +2,9 @@ angular.module('bridge.app').
 	controller('notificationsController',['$rootScope', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
-    //$scope.apps = bridgeDataService.getProjects()[0].apps;
-
 	$scope.notifications = notifier.allNotifications();
+  
+  var apps = bridgeDataService.getProjects()[0].apps;
 
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
@@ -12,20 +12,59 @@ angular.module('bridge.app').
 		});
 	};
 
-  	$scope.clearNotifications = function() {
-  		notifier.clearNotifications();
-  		return false;
-  	}
+  $scope.clearNotifications = function() {
+  	notifier.clearNotifications();
+  	return false;
+  }
 
 	$scope.testNotification = function(){
 		notifier.showSuccess("Test","Notification is working","Settings");
 	};
 
-
-    
-    $scope.getTimeAgo = function(timeInMS){
-        return jQuery.timeago(timeInMS);
+  $scope.getNameOf = function(notification){
+    var module_name = notification.app;
+    if (!module_name) {
+        return '';
     }
+    for(var i = 0; i < apps.length; i++){
+        var app = apps[i];
+        if (app.metadata.module_name === module_name) {
+            return app.metadata.title;
+        }
+    }
+    throw new Error("module name is invalid!");
+  }
+  
+  $scope.getIconOf = function(notification){
+    var module_name = notification.app;
+    if (!module_name) {
+        switch(notification.kindOf){
+            case 'success':
+                return 'fa fa-check';
+                break;
+            case 'info':
+                return 'fa fa-info';
+                break;
+            case 'error':
+                return 'fa fa-times';
+                break;
+            default:
+                throw new Error ('Unknown State '+notification.kindOf)
+        }
+    }
+    for(var i = 0; i < apps.length; i++){
+        var app = apps[i];
+        if (app.metadata.module_name === module_name) {
+            return app.metadata.icon_css;
+        }
+    }
+    throw new Error("module name is invalid!");
+  }
+    
+  $scope.getTimeAgo = function(timeInMS){
+    return jQuery.timeago(timeInMS);
+  }
+   
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
 				url: "https://dynamic.xkcd.com/api-0/jsonp/comic?callback=?",

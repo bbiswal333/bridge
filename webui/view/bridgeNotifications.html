@@ -14,8 +14,8 @@
   <div class="allNotifications" ng-if="notifications.length > 0" ng-repeat="notification in notifications track by $index">
     <div class="notification notificationState-{{notification.state}} underline"> <!--todo use state instead of-->
       <div class="sender">
-        <span title="app">{{notification.app}}</span>
-        <span class="settingsIcon icon-coffee"></span> <!--todo placeholder for actuall icon-->
+        <span title="app">{{getNameOf(notification)}}</span>
+        <span class="settingsIcon {{getIconOf(notification)}}"></span> <!--todo placeholder for actuall icon-->
       </div>
       <div class="content">
         <h5 title="title" ng-click="updateStatus(notification, 'read')">{{notification.title}}</h5>

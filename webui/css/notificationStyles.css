@@ -31,7 +31,8 @@
   border-left-color: #68A1D4;
 }
 .notificationState-read{
-
+  border-left-style: solid;
+  border-left-color: white;
 }
 .notificationState-seen{
   border-left-style: solid;
