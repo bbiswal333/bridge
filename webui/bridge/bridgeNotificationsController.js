@@ -43,4 +43,12 @@ angular.module('bridge.app').
 				});
 			};
 
+			$scope.amountOfNewNotifications = function(){
+				return $filter('filter')(notifier.allNotifications(), {state:'new'}).length;
+			};
+
+			$scope.filterNewNotifications = function(item) {
+				return item.state == "new";
+			};
+
 }]);
