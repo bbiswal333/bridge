@@ -5,13 +5,13 @@ angular.module('app.getHome').service("app.getHome.configservice", function () {
 		locations: [ {
 			name : "Work",
 			address : "Dietmar-Hopp-Allee, Walldorf",
-			lat : "10",
-			alt : "48"
+			latitude : 49.30289,
+			longitude : 8.64298
 		}, {
 			name : "Home",
 			address : "Kaiserstraße, Karlsruhe",
-			lat : "9",
-			alt : "49"
+			latitude : 49.009079,
+			longitude : 8.4165401
 		} ]
 	};
 
