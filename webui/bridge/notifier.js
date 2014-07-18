@@ -149,6 +149,7 @@ angular.module("notifier", []).factory("notifier", function () {
         callback: onCLick_fn,
         timestamp: new Date().getTime(),
         kindOf: kindOf_s,
+        state: 'new',
       });
       localStorage.setItem('notifcations', JSON.stringify(notifications));
   }
