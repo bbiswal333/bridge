@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.rooms",
-		"title"					:	"Rooms",
+		"title"					:	"Room bookings",
 		"icon_css"				:	"fa fa-users",
 		"overview_directive"	:	"app.rooms",
 		"needs_client"			:	true,
