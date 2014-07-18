@@ -5,6 +5,8 @@ angular.module('bridge.app').
       $scope.dummyData = ["hello", "testA"];
 	    //$scope.apps = bridgeDataService.getProjects()[0].apps;
 
+			$scope.notifications = notifier.allNotifications();
+
     	$scope.notificationSupported = notifier.getPermission();
 
     	function areNotificationsSupported() {
@@ -20,5 +22,5 @@ angular.module('bridge.app').
         $scope.testNotification = function(){
         	notifier.showSuccess("Test","Notification is working","Settings");
         };
-
+				
 }]);
