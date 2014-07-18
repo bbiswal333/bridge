@@ -6,8 +6,12 @@
 <rect x="-28.719" y="6.219" fill="#FFFFFF" width="2" height="2"/>
 <rect x="-23.016" y="-0.203" fill="#FFFFFF" width="2" height="2"/>
 <rect x="-23.016" y="31.8" fill="#FFFFFF" width="2" height="2"/>
-<rect x="40.772" y="-0.016" fill="#A6D7F4" width="41.234" height="34"/>
+<rect x="40.772" y="-0.016" fill="#EDB0A7" width="41.234" height="34"/>
 <rect x="68.049" y="-10.692" fill="#FFFFFF" width="28.096" height="23.609"/>
-<polygon fill="#428BCA" points="68.049,-0.022 82.01,12.905 68.049,12.905 "/>
-<rect x="-14.458" y="-4.383" fill="#DFF5FF" width="55.406" height="42.738"/>
+<polygon fill="#707070" points="68.049,-0.022 82.01,12.905 68.049,12.905 "/>
+<rect x="-14.458" y="-4.383" fill="#D3E5DB" width="55.406" height="42.738"/>
+<rect x="66.5" y="-302.5" fill="#EDB0A7" width="523" height="101"/>
+<rect x="66.5" y="-185.5" fill="#F7E2D2" width="523" height="101"/>
+<rect x="90.5" y="-433.5" fill="#D3E5DB" width="523" height="101"/>
+<rect x="-505.5" y="-306.5" fill="#B3D0E9" width="523" height="101"/>
 </svg>

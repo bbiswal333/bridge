@@ -30,7 +30,8 @@ module.exports = function(config) {
 
       './webui/bridge/**/*.js',
 
-      './webui/app/meetings/*.js',
+      './webui/app/meetings/overview.js',
+      './webui/app/meetings/**/*.js',
 
       './webui/app/lunchWalldorf/overview.js',
 

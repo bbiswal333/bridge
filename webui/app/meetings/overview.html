@@ -5,7 +5,7 @@
         </div>
 		<div ng-if="hasEvents()">
             <div>
-                <b>{{getCurrentDate()}}</b><br />
+                <b>{{getCurrentDate()}}</b><br>
                 {{getMeetingsLeftText()}}
             </div>
             <div style="margin-top: 5px; height: 110px; overflow: hidden;">
@@ -25,7 +25,7 @@
                                     {{event.endTime}}
                                 </span>
                             </td>
-                            <td style="vertical-align: top; padding-left: 10px">
+                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
                                 <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b>
@@ -35,6 +35,18 @@
                                     </span>
                                 </div>
                                 {{event.location}}
+                            </td>
+                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
+                                    <span ng-if="$first">
+                                        <b>{{event.subject}}</b><br>
+                                        {{event.location}}
+                                    </span>
+                                    <span ng-if="!$first">
+                                        {{event.subject}}<br>
+                                        {{event.location}}
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     </table>

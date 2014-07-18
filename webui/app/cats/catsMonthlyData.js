@@ -24,113 +24,125 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.getMonthData = function(year, month){
-		var monthData = {};
-		var self = this;
-		monthData.weeks = [];
-		var deferred = $q.defer();
-		var promise = null;
-		var promises = [];
-	    var targetHoursCounter = 0;
+		try {
+			var monthData = {};
+			var self = this;
+			monthData.weeks = [];
+			var deferred = $q.defer();
+			var promise = null;
+			var promises = [];
+			var targetHoursCounter = 0;
 
-	    if (!this.months[month] && this.promiseForMonth[month]) {
-	    	return this.promiseForMonth[month];
-	    } 
-	    else if (this.months[month]) {
-	    	deferred.resolve();
-	    	return deferred.promise;
-	    }
+			if (!this.months[month] && this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
+			} 
+			else if (this.months[month]) {
+				deferred.resolve();
+				return deferred.promise;
+			}
 
-	    this.reloadInProgress.value = true;
+			this.reloadInProgress.value = true;
 
-		var weeks = this.getWeeksOfMonth(year, month);
-        for (var i = 0; i < weeks.length; i++) {
-        	promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
-        	promises.push(promise);
-        	promise.then(function(data){
-	        	if(data) {
-	        		var weekData = self.convertWeekData(data);
-		        	monthData.weeks.push(weekData);
-		        	targetHoursCounter = targetHoursCounter + weekData.hasTargetHoursForHowManyDays;
-	        	}
-        	});
-        }
+			var weeks = this.getWeeksOfMonth(year, month);
+			for (var i = 0; i < weeks.length; i++) {
+				promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
+				promises.push(promise);
+				promise.then(function(data){
+			    	if(data) {
+			    		var weekData = self.convertWeekData(data);
+			        	monthData.weeks.push(weekData);
+			        	targetHoursCounter = targetHoursCounter + weekData.hasTargetHoursForHowManyDays;
+			    	}
+				});
+			}
 
-        promise = $q.all(promises);
-        promise.then(function(){
-    		if(targetHoursCounter > 27 && targetHoursCounter === 7 * monthData.weeks.length) {
-    			monthData.hasTargetHours = true;
-    		} else {
-    			monthData.hasTargetHours = false;
-    		}
-    		
-	        self.months[month] = monthData;
-	        delete self.promiseForMonth[month];
-		    self.reloadInProgress.value = false;
-        });
+			promise = $q.all(promises);
+			promise.then(function(){
+				if(targetHoursCounter > 27 && targetHoursCounter === 7 * monthData.weeks.length) {
+					monthData.hasTargetHours = true;
+				} else {
+					monthData.hasTargetHours = false;
+				}
+				
+			    self.months[month] = monthData;
+			    delete self.promiseForMonth[month];
+			    self.reloadInProgress.value = false;
+			});
 
-        this.promiseForMonth[month] = promise;
-        return promise;
+			this.promiseForMonth[month] = promise;
+			return promise;
+		} catch(err) {
+			console.log("getMonthData(): " + err);
+		}
 	};
 
 	this.getDataForDate = function(date){
-		var deferred = $q.defer();
-		var unstringifiedDate = calenderUtils.parseDate(date);
-		var month = unstringifiedDate.getMonth();
-		var year = unstringifiedDate.getFullYear();
+		try {
+			var deferred = $q.defer();
+			var unstringifiedDate = calenderUtils.parseDate(date);
+			var month = unstringifiedDate.getMonth();
+			var year = unstringifiedDate.getFullYear();
 
-	    if (!this.days[date] && this.promiseForMonth[month]) {
-	    	return this.promiseForMonth[month];
-	    } 
-	    else if (!this.days[date]){
-	    	return this.getMonthData(year, month);
-	    }
-	    else if (this.days[date]) {
-	    	deferred.resolve();
-	    	return deferred.promise;
-	    }
+			if (!this.days[date] && this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
+			} 
+			else if (!this.days[date]){
+				return this.getMonthData(year, month);
+			}
+			else if (this.days[date]) {
+				deferred.resolve();
+				return deferred.promise;
+			}
+		} catch(err) {
+			console.log("getDataForDate(): " + err);
+		}
 	};
 
 	this.getWeeksOfMonth = function(year, month){
-		var day = new Date(year, month, 1);
-		var lastDayInMonth = 0;
-		if (month < 11) {
-			lastDayInMonth = new Date(year, month + 1, 1);
-		} else {
-			lastDayInMonth = new Date(year + 1,0, 1);
-		}
-		lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 );
+		try {
+			var day = new Date(year, month, 1);
+			var lastDayInMonth = 0;
+			if (month < 11) {
+				lastDayInMonth = new Date(year, month + 1, 1);
+			} else {
+				lastDayInMonth = new Date(year + 1,0, 1);
+			}
+			lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 );
 
-		var weeks = [];
-		var week  = calenderUtils.getWeekNumber(day);
+			var weeks = [];
+			var week  = calenderUtils.getWeekNumber(day);
 
-		if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
-			week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
-			weeks.push(angular.copy(week));
-			week = calenderUtils.getWeekNumber(day);
-			week.year = year;
-		} else {
-			weeks.push(angular.copy(week));
-		}
+			if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
+				week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
+				weeks.push(angular.copy(week));
+				week = calenderUtils.getWeekNumber(day);
+				week.year = year;
+			} else {
+				weeks.push(angular.copy(week));
+			}
 
-		day.setDate(day.getDate() + 7);
-		while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
-		      (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
-			week = calenderUtils.getWeekNumber(day);
-			weeks.push(angular.copy(week));
 			day.setDate(day.getDate() + 7);
+			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
+			      (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
+				week = calenderUtils.getWeekNumber(day);
+				weeks.push(angular.copy(week));
+				day.setDate(day.getDate() + 7);
+			}
+			return weeks;
+		} catch(err) {
+			console.log("getWeeksOfMonth(): " + err);
 		}
-		return weeks;
 	};
 
 	this.convertWeekData = function (backendData) {
-		var week = backendData.TIMESHEETS.WEEK.substring(0,2);
-		var year = backendData.TIMESHEETS.WEEK.substring(3,7);
-		var weekData = {};
-		weekData.year = year;
-		weekData.week = week;
-		weekData.hasTargetHoursForHowManyDays = 0;
-		weekData.days = [];
 		try{
+			var week = backendData.TIMESHEETS.WEEK.substring(0,2);
+			var year = backendData.TIMESHEETS.WEEK.substring(3,7);
+			var weekData = {};
+			weekData.year = year;
+			weekData.week = week;
+			weekData.hasTargetHoursForHowManyDays = 0;
+			weekData.days = [];
 			if(backendData.TIMESHEETS.RECORDS) {
 		        for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
 		            for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
@@ -183,35 +195,34 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		           	}
 		        }
 		    }
-	    } catch(exception) {
-	    	console.log("Exception in convertWeekData(): " + exception);
-	    	return null;
-	    }
+		} catch(err) {
+			console.log("convertWeekData(): " + err);
+		}
 		return weekData;
 	};
 
 	this.loadDataForSelectedWeeks = function(weeks){
-        var promises = [];
-        var self = this;
-
-		self.reloadInProgress.value = true;
-        weeks.forEach(function(week){
-        	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
-            promises.push(promise);
-        	promise.then(function(data){
-				self.reloadInProgress.value = false;
-	        	if(data) {
-	        		self.convertWeekData(data);
-	        	}
-        	});
-        });
-        return $q.all(promises);
-    };
+		var promises = [];
+		try {
+		    var self = this;
+			self.reloadInProgress.value = true;
+		    weeks.forEach(function(week){
+		    	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
+		        promises.push(promise);
+		    	promise.then(function(data){
+					self.reloadInProgress.value = false;
+		        	if(data) {
+		        		self.convertWeekData(data);
+		        	}
+		    	});
+		    });
+		} catch(err) {
+			console.log("loadDataForSelectedWeeks(): " + err);
+		}
+		return $q.all(promises);
+	};
 
 	this.getTasksForDate = function(workdate){
 		return this.days[workdate].tasks;
 	};
-
-	//this.getDataForCurrentMonth();
-
 }]);

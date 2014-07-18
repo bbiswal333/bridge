@@ -29,22 +29,31 @@ angular.module("app.cats")
 	            for (var i = 0; i < days.length; i++) {
 	                var dateStr = days[i].DATEFROM;
 	                var statusStr = days[i].STATUS;
+	                var time = parseDateToTime(dateStr);
+	                
 	                // special handling for overbooked days
 	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > days[i].STDAZ) {
 	                	statusStr = "OVERBOOKED";
 	                	days[i].STATUS = "OVERBOOKED";
 	                }
-
-	                var time = parseDateToTime(dateStr);
+	                if (days[i].STATUS === "R" && (time > new Date().getTime())) {
+	                	statusStr = "R_INTHEFUTURE";
+	                	days[i].STATUS = "R_INTHEFUTURE"
+	                }
+					if (days[i].STATUS === "Y" && (time > new Date().getTime())) {
+	                	statusStr = "Y_INTHEFUTURE_part_maint";
+	                	days[i].STATUS = "Y_INTHEFUTURE_part_maint"
+	                }
 	                if (time !== null) {
 	                    processed[time] = { state: statusStr };
 	                }
 	            }
 
 	            return processed;
-	        } catch (error) {
-	            return null;
-	        }
+			} catch(err) {
+				console.log("parseDateToTime(): " + err);
+				return null;
+			}
 	    }
 
 		function monthDiff(d1, d2) {
@@ -120,7 +129,9 @@ angular.module("app.cats")
 	        	var day = monthlyDataService.days[dayString];
 		        var containsFixedTask = false;
 		        day.tasks.forEach(function(task){
-		            if (task.TASKTYPE === "VACA" || task.TASKTYPE === "ABSE") {
+		            if (task.TASKTYPE === "VACA" ||
+		            	task.TASKTYPE === "ABSE" ||
+		            	task.TASKTYPE === "COMP") {
 		                containsFixedTask = true;
 		            }
 		        });
@@ -491,12 +502,16 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				// access single day to cause data load
-				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
-				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-				promise.then(function() {
+				if ($scope.maintainable) {
+					// access single day in the middle of the month to cause data load
+					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
+					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+					promise.then(function() {
+						reload();
+					});
+				} else {
 					reload();
-				});
+				}
 	        };
 
 	        $scope.canGoForward = function () {
@@ -523,12 +538,16 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				// access single day to cause data load
-				var date = new Date(monthlyDataService.year, monthlyDataService.month, 1);
-				var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-				promise.then(function() {
+				if ($scope.maintainable) {
+					// access single day in the middle of the month to cause data load
+					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
+					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
+					promise.then(function() {
+						reload();
+					});
+				} else {
 					reload();
-				});
+				}
 	        };
 
 	        $scope.reloadCalendar = function () {
@@ -583,7 +602,8 @@ angular.module("app.cats")
 					$scope.reloadAnimation = 'cats-fade-anim';
 				} else {
 					$scope.reloadAnimation = '';
-					if (monthlyDataService.lastSingleClickDayString && $scope.selectedDates.length <= 1) {
+					if (monthlyDataService.lastSingleClickDayString &&
+						(!$scope.selectedDates || $scope.selectedDates.length <= 1)) {
 						$scope.jump(monthlyDataService.lastSingleClickDayString, {});
 					}
 				}

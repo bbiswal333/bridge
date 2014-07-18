@@ -92,17 +92,17 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     function _enrichTaskData(task){
-      if (task &&
-          !task.ZCPR_OBJGEXTID &&
-          !task.ZCPR_OBJGUID) {
-        task.ZCPR_OBJGEXTID = task.TASKTYPE;
-        task.ZCPR_OBJGUID = task.TASKTYPE;
-      } else if (task.record &&
-          !task.record.ZCPR_OBJGEXTID &&
-          !task.record.ZCPR_OBJGUID) {
-        task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
-        task.record.ZCPR_OBJGUID = task.record.TASKTYPE;
-      }
+      // if (task &&
+      //     !task.ZCPR_OBJGEXTID &&
+      //     !task.ZCPR_EXTID) {
+      //   task.ZCPR_OBJGEXTID = task.TASKTYPE;
+      //   task.ZCPR_EXTID = "";
+      // } else if (task.record &&
+      //     !task.record.ZCPR_OBJGEXTID &&
+      //     !task.record.ZCPR_EXTID) {
+      //   task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
+      //   task.record.ZCPR_EXTID = "";
+      // }
       return task;
     }
 
@@ -111,19 +111,19 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         var tasks = [];
 
         //Add prefdefined tasks (ADMI & EDUC)
-        tasks.push(_enrichTaskData({
+        tasks.push({
             RAUFNR: "",
             TASKTYPE: "ADMI",
-            taskDesc: "ADMI",
-            projectDesc: "Administrative"
-        }));
+            DESCR: "ADMI"
+            // projectDesc: "Administrative"
+        });
 
-        tasks.push(_enrichTaskData({
+        tasks.push({
             RAUFNR: "",
             TASKTYPE: "EDUC",
-            taskDesc: "EDUC",
-            projectDesc: "Personal education"
-        }));
+            DESCR: "EDUC"
+            // projectDesc: "Personal education"
+        });
 
         if (!data){
           return;
@@ -137,7 +137,36 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.UNIT           = nodes[i].UNIT;
           task.projectDesc    = nodes[i].DISPTEXTW1;
-          task.taskDesc       = nodes[i].DISPTEXTW2;
+          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+          tasks.push(task);
+        }
+
+        callback_fn(tasks);
+      });
+    }
+
+    function _requestTasksFromTemplate (year, week, callback_fn) {
+      _getCatsAllocationDataForWeek(year, week).then(function(data) { // /zdevdb/GETWORKLIST
+        var tasks = [];
+        if (!data){
+          return;
+        }
+        var nodes = data.TIMESHEETS.RECORDS;
+        for (var i = 0; i < nodes.length; i++) {
+          var task = {};
+          task.RAUFNR         = nodes[i].RAUFNR;
+          task.TASKTYPE       = nodes[i].TASKTYPE;
+          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
+          task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
+          task.UNIT           = nodes[i].UNIT;
+          // task.projectDesc    = nodes[i].DISPTEXTW1 || nodes[i].ZCPR_EXTID;
+          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+
+          // if (task.TASKTYPE === 'ADMI' || task.TASKTYPE === 'EDUC') {
+          //   _enrichTaskData(task);
+          // }
+          // task.data = nodes[i];
+
           tasks.push(task);
         }
 
@@ -183,6 +212,16 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       return deferred.promise;
     }
 
+    function _isSameTask(task1, task2) {
+        if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
+            (!task1.ZCPR_OBJGEXTID &&
+             task2.RAUFNR === task1.RAUFNR &&
+             task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
+            return true;
+        }
+        return false;
+    }
+
     return {
       getCatsComplianceData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
         _getCatsComplianceData(callback_fn, forceUpdate_b);
@@ -211,6 +250,12 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       writeCATSData: function (container) {
         return _writeCATSData(container);
+      },
+      requestTasksFromTemplate: function(year, week, callback_fn) {
+        _requestTasksFromTemplate(year, week, callback_fn); 
+      },
+      isSameTask: function(task1, task2) {
+        return _isSameTask(task1, task2);
       }
     };
   }

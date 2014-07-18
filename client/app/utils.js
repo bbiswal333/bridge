@@ -10,7 +10,7 @@ function createTrayIcon() {
 
     // Create a tray icon
     tray = new gui.Tray({
-        title: 'Bridge',
+        title: '',
         icon: 'img/bridge-icon.png',
     });
 
