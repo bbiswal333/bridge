@@ -3,6 +3,7 @@ angular.module('app.getHome').directive('app.getHome', function () {
 
     var directiveController = ['$scope', function ($scope)
     {
+    	$scope.box.boxSize = "1";
         //put some stuff in here
 
         nokia.Settings.set("app_id", "BGFtzY6olMoTQcTu9MGp");
