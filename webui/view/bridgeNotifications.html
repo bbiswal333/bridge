@@ -5,14 +5,14 @@
 
 
 
-<div ng-controller="notificationsController" style="margin-right:15px;" >
-  
+<div ng-controller="notificationsController" style="margin-right:15px;" ng-init="onShowNotifications()">
+
   <div class="allNotifications" ng-if="notifications.length > 0" ng-repeat="notification in notifications">
     <div class="notification {{notification.state}} underline backgroundNew"> <!--todo use state instead of-->
       <div class="sender">
         <span title="app">{{notification.app}}</span>
         <span class=" settingsIcon icon-coffee"></span> <!--todo placeholder for actuall icon-->
-        
+
       </div>
       <div class="content">
         <span title="title">{{notification.title}}</span>
@@ -20,7 +20,7 @@
         <span title="timestamp">{{jQuery.timeago(notification.timestamp);}}</span>
         <span title="state">{{notification.state}}</span> <!--todo remove-->
       </div>
-    
+
     </div>
   </div>
 
