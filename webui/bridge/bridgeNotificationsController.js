@@ -30,6 +30,10 @@ angular.module('bridge.app').
 	  	notifier.showSuccess("Test","Notification is working","Settings");
 
 	  };
+    
+    $scope.getTimeAgo = function(timeInMS){
+        return jQuery.timeago(timeInMS);
+    }
 
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({

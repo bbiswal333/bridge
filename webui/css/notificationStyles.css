@@ -12,7 +12,7 @@
 
 .notification{
   
-  margin: 2px 0;
+  padding: 10px;
   
     /* flexbox setup */
 
@@ -20,32 +20,41 @@
   display:-webkit-flex;
 
   
-  -webkit-flex-direction: row;
-  flex-direction: row;
+  -webkit-flex-direction: column;
+  flex-direction: column;
 }
 
-.backgroundNew{
- background-color: #68A1D4;
+.notificationState-new{
+  border-left-style: solid;
+  border-left-color: #68A1D4;
 }
-.backgroundRead{
-  background-color: #8EB9DF;
+.notificationState-read{
+  border-left-style: solid;
+  border-left-color: #8EB9DF;
 }
-.backgroundSeen{
-  background-color: #B3D0E9;
+.notificationState-seen{
+  border-left-style: solid;
+  border-left-color: #B3D0E9;
 }
 
 .notification .sender{
-  border-right-style: solid;
-  border-width: thin;
-  padding-right: 5px;
   
   -webkit-flex: 1;
   flex: 1;
+  
+}
+
+.notification .sender .settingsIcon{
+  border-left-style: solid;
+  border-width: thin;
+  padding-left: 5px;
 }
 
 .notification .content{
-  padding-left: 5px;
   -webkit-flex: 3;
   flex: 3;
+}
 
+.notification .content .timeAgo{
+  font-size: smaller;
 }
