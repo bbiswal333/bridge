@@ -8,8 +8,11 @@ angular.module('bridge.app').
 
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
-			notification.state = "seen";
+			if (notification.state == "new") {
+				notification.state = "seen";	
+			};
 		});
+		notifier.store();
 	};
 
   	$scope.clearNotifications = function() {
