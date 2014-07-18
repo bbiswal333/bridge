@@ -23,7 +23,36 @@ directive("app.rooms", [
 
 			$scope.box.returnConfig = function(){
 	            return angular.copy($scope.configService);
-	        }; 
+	        };
+
+
+
+            $scope.loadMyReservations = function() {
+                var today = new Date();
+                var till = new Date();
+                till.setDate(till.getDate()+7);
+
+                ifpservice.loadFromIsp(today, till, function(data) {
+                    $scope.rooms = [];
+                    var i = 0;
+                    for(var index in data) {
+                        for(var index2 in data[index]) {
+                            var booking = data[index][index2];
+                            $scope.rooms[i] = [];
+                            $scope.rooms[i].isCurrent = false;
+                            $scope.rooms[i].subject = booking.SUBJECT;
+                            $scope.rooms[i].startTime = calUtils.useNDigits(booking.VALIDFROMDATE.getHours(), 2) + ":" + calUtils.useNDigits(booking.VALIDFROMDATE.getMinutes(), 2);
+                            $scope.rooms[i].startRel = calUtils.relativeTimeTo(new Date(), booking.VALIDFROMDATE, true);
+                            $scope.rooms[i].endRel = calUtils.relativeTimeTo(new Date(), booking.VALIDTODATE, true);
+                            $scope.rooms[i].endTime = calUtils.useNDigits(booking.VALIDTODATE.getHours(), 2) + ":" + calUtils.useNDigits(booking.VALIDTODATE.getMinutes(), 2);
+                            $scope.rooms[i].location= booking.OOIDEXT;
+                            i++;
+                        }
+                    }
+                });
+            };
+
+            $scope.loadMyReservations();
 		}];
 
 		var linkFn = function ($scope) {
@@ -150,11 +179,12 @@ directive("app.rooms", [
 		    }, true);
 
 			$scope.upComingEvents = function () {
-			    return $scope.events;
+			    return $scope.rooms;
 			};
 
 			$scope.hasEvents = function () {
-			    return ($scope.events.length !== 0);
+                return true;
+			    //return ($scope.events.length !== 0);
 			};
 
 			$scope.getMeetingsLeftText = function () {
@@ -207,7 +237,8 @@ directive("app.rooms", [
 			})();
 
 			loadFromExchange(false);
-		};
+
+        };
 
 		return {
 			restrict: "E",
