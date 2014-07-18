@@ -1,8 +1,8 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", 
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService) {            
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService) {
 
-        $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){  
+        $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
                 var paq = paq || [];
@@ -13,7 +13,15 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.getSidePane = function () {
             return $scope.sidePanel;
         };
-        
+
+        $scope.bridge_notifications_click = function () {
+            $scope.sidePanel = 'view/bridgeNotifications.html';
+            if ($scope.sideView === "notifications" || !$scope.show_notifications) {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "notifications";
+        };
+
         $scope.bridge_settings_click = function () {
             $scope.sidePanel = 'view/bridgeSettings.html';
             if ($scope.sideView === "settings" || !$scope.show_settings) {
@@ -48,18 +56,18 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sideView = "github";
         };
 
-        $scope.show_download = bridgeDownloadService.show_download;                    
+        $scope.show_download = bridgeDownloadService.show_download;
 
         $http.get(window.client.origin + '/client').success(function () {
             $scope.client = true;
-        }).error(function () { 
-            $scope.client = false;     
+        }).error(function () {
+            $scope.client = false;
         });
 
         if ($location.path() === "" || $location.path() === "/") {
             $scope.showLoadingAnimation = true;
         }
-                                           
+
         window.debug = {
             resetConfig: function()
                         {
@@ -71,7 +79,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
-            {              
+            {
 
               for (var i = 0; i < $scope.visible_apps.length; i++) {
                     for(var j = 0; j < $scope.apps.length; j++)
@@ -82,9 +90,9 @@ angular.module('bridge.app').controller('bridgeController',
                         }
                     }
               }
-              bridgeConfig.persistInBackend(bridgeDataService);                          
+              bridgeConfig.persistInBackend(bridgeDataService);
             }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;            
+            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
         };
 
         $scope.settings_click = function (boxId) {
@@ -139,47 +147,47 @@ angular.module('bridge.app').controller('bridgeController',
             if (!$scope.visible_apps) {
                 $scope.visible_apps = [];
             }
-            if ($scope.apps) 
-            {            
-                for (var i = 0; i < $scope.apps.length; i++) 
+            if ($scope.apps)
+            {
+                for (var i = 0; i < $scope.apps.length; i++)
                 {
                     var module_visible = false;
                     if ($scope.apps[i].show)
                     {
                         for(var j = 0; j < $scope.visible_apps.length; j++)
-                        {                            
+                        {
                             if( $scope.apps[i].module_name === $scope.visible_apps[j].module_name ){
                                 module_visible = true;
-                            }                         
-                        }    
+                            }
+                        }
                        if(!module_visible)
                         {
                             var push_app = $scope.apps[i];
                             if (push_app.order === undefined) {
                                 push_app.order = $scope.visible_apps.length;
                             }
-                            $scope.visible_apps.push(push_app);        
-                        }                                    
+                            $scope.visible_apps.push(push_app);
+                        }
                     }
                     else
                     {
                         var module_index = 0;
                         for(var k = 0; k < $scope.visible_apps.length; k++)
-                        {                            
+                        {
                             if( $scope.apps[i].module_name === $scope.visible_apps[k].module_name )
                             {
                                 module_visible = true;
-                                module_index = k;                                
-                            }                         
-                        }    
+                                module_index = k;
+                            }
+                        }
                        if(module_visible)
                         {
                             $scope.visible_apps.splice(module_index, 1);
-                        }       
+                        }
                     }
-                }  
-                
-                
+                }
+
+
                 $scope.visible_apps.sort(function (app1, app2){
                     if (app1.order < app2.order) {
                         return -1;
@@ -189,7 +197,7 @@ angular.module('bridge.app').controller('bridgeController',
                     }
                     return 0;
                 });
-                                 
+
             }
         }, true);
 
@@ -202,9 +210,9 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
-            $scope.apps = bridgeDataService.getAppMetadataForProject(0);            
+            $scope.apps = bridgeDataService.getAppMetadataForProject(0);
             $scope.configLoadingFinished = true;
-            $scope.showLoadingAnimation = false;   
+            $scope.showLoadingAnimation = false;
         });
     }
 ]);
@@ -235,22 +243,22 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
         if(app.routes !== undefined && Object.prototype.toString.call( app.routes ) === '[object Array]')
         {
             for(var j = 0; j < app.routes.length; j++)
-            {                                
-                $routeProvider.when(app.routes[j].route, 
+            {
+                $routeProvider.when(app.routes[j].route,
                     {
-                        templateUrl: 'view/detail.html', 
+                        templateUrl: 'view/detail.html',
                         controller: 'bridge.app.detailController',
                         info: app.routes[j],
                         app: bridgeLoaderServiceProvider.apps[i],
                         resolve: {
                             routeInfo: routeInfo,
                             appInfo: appInfo
-                        }                              
+                        }
                     });
             }
         }
     }
-    
+
     //If no valid URL has been entered redirect to main entry point
     $routeProvider.otherwise({
         redirectTo: "/"
@@ -261,7 +269,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
     $httpProvider.interceptors.push('bridge.app.httpInterceptor');
 
     //allow blob, tel, mailto links
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);  
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
 }]);
 
 angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService, bridgeInBrowserNotification) {
@@ -269,7 +277,7 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $loca
     //Event names must be distinct or browser will blow up!
     $rootScope.$on('bridgeConfigLoaded', function (event, args) {
         $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
-    });   
+    });
     $rootScope.$on("refreshApp", function (event, args) {
         $rootScope.$broadcast('refreshAppReceived', args);
     });
@@ -305,7 +313,7 @@ angular.module('bridge.app').filter("decodeIcon", function () {
 
 
 angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$rootScope', '$injector', '$location', '$timeout', function ($q, $rootScope, $injector, $location, $timeout) {
-  
+
     var $http;
     var bridgeDataService;
     var rProtocol = /^http|^https/i;
@@ -321,7 +329,7 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$root
         {
             $rootScope.showLoadingBar = false;
             response.config.timer = undefined;
-        }         
+        }
     }
 
     function rerouteCall(oConfig) {
@@ -365,22 +373,22 @@ angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$root
             if(config.url.indexOf("https://") !== -1)
             {
                 config.url = uncachifyUrl(config.url);
-            }        
+            }
 
             config.timer = $timeout(function()
-            {                 
-                $rootScope.showLoadingBar = true;               
-            }, 500, true); 
-            
+            {
+                $rootScope.showLoadingBar = true;
+            }, 500, true);
+
             return config || $q.when(config);
         },
         'response': function(response)
-        {            
-            checkResponse(response);   
+        {
+            checkResponse(response);
             return response || $q.when(response);
         },
-        'responseError': function (response) 
-        {            
+        'responseError': function (response)
+        {
             checkResponse(response);
             return $q.reject(response);
         }
