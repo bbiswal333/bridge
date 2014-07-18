@@ -5,6 +5,11 @@ angular.module('bridge.app').
     //$scope.apps = bridgeDataService.getProjects()[0].apps;
 
 	$scope.notifications = notifier.allNotifications();
+	$scope.sortorders=[{displayName:'time', attributeName: 'timestamp'},{displayName: 'prio', attributeName: 'kindOf'},{displayName:'tool asc', attributeName: '+app'},{displayName:'tool desc', attributeName: '-app'}];
+	$scope.$watch('sortorder', function() {
+		console.log("sortorder set");
+	});
+	$scope.sortorder=$scope.sortorders[0].attributeName;
 
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){

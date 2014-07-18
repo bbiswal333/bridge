@@ -7,7 +7,12 @@
   <div ng-if="notifications.length > 0">
     <ul class="notification-menu">
       <li><a id="clearNotifications" ng-click="clearNotifications()">Clear all</a></li>
-      <li>Sort by: <select></select></li>
+      <li>Sort by: 
+        <select ng-model="sortorder">
+            <option ng-repeat="value in sortorders" value="{{value.attributeName}}">{{value.displayName}}</option>
+        </select>
+        {{sortorder}}
+      </li>
     </ul>
 
   </div>
