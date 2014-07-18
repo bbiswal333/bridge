@@ -1,5 +1,5 @@
-﻿angular.module('app.gethome', []);
-angular.module('app.gethome').directive('app.gethome', function () {
+﻿angular.module('app.getHome', []);
+angular.module('app.getHome').directive('app.getHome', function () {
 
     var directiveController = ['$scope', function ($scope)
     {

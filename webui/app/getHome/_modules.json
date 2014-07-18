@@ -1,10 +1,10 @@
 {
 	"app":
 	{
-		"module_name"			:	"app.gethome",
+		"module_name"			:	"app.getHome",
 		"title"					:	"Get Home",
 		"icon_css"				:	"fa fa-home",
-		"overview_directive"	:	"app.gethome",
+		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false
 	},
 	"modules" : [],
