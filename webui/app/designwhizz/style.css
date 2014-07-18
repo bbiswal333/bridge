@@ -18,8 +18,9 @@
   position:relative;
   padding:5px 10px;
   margin:0 0 5px;
-  color:#707070;
-  background:#dff5ff;
+  /*color:#707070;*/
+  color:#FFF;
+  /*background:#dff5ff;*/
   font-size: 12px;
   border-left: 0px;
   /*
@@ -38,7 +39,7 @@
   border-right-width:30px;
   border-bottom-width:20px; 
   border-style:solid;
-  border-color:transparent #dff5ff;
+  border-color:transparent #418ac9; /*#dff5ff;*/
   display:block;
   width:0;
 }
