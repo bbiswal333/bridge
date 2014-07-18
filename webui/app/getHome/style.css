@@ -55,6 +55,9 @@
 	line-height: 65px;
 	font-weight: bold;
 }
+.app-getHome-time:hover {
+	cursor: pointer;
+}
 
 .app-getHome-good {
 	color: #4EA175;
@@ -66,4 +69,26 @@
 
 .app-getHome-bad {
 	color: #D53F26;
+}
+
+.app-getHome-detail {
+	height: 600px;
+}
+
+.app-getHome-detail-legend {
+	font-weight: bold;
+	text-align: center;
+	font-size: 2em;
+}
+
+.app-getHome-detail-legend span:first-of-type {
+	margin-right: 150px;
+}
+
+.app-getHome-detail-traffic {
+	color: rgb(93, 111, 182);
+}
+
+.app-getHome-detail-no-traffic {
+	color: rgb(206, 90, 187);
 }

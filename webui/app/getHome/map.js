@@ -110,6 +110,34 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 					(minutes > 0 ? minutes + "min" : "");
 					// (seconds > 0 ? seconds + "sec " : "");
 		return time;
-	}
+	};
+
+	this.displayMap = function (mapContainer) {
+
+		var map = new nokia.maps.map.Display(mapContainer, {
+				center: [53, 13],
+				zoomLevel: 3,
+				components: [new nokia.maps.map.component.Behavior()]
+			}),
+		 	trafficRoute = new nokia.maps.routing.component.RouteResultSet(
+				this.trafficEnabledRoutingManager.getRoutes()[0], {
+					color: "#a000a080"
+			}).container,
+			baseRoute = new nokia.maps.routing.component.RouteResultSet(
+				this.noTrafficRoutingManager.getRoutes()[0], {
+					color: "#0000f080"
+			}).container;
+
+		// Add a traffic overlay to map once it emits the "displayready" event.
+		map.addListener("displayready", function () {
+			map.overlays.add(map.TRAFFIC);
+			// Add the first route to the map (specifically to
+			// the map objects container):
+			map.objects.add(trafficRoute);
+			map.objects.add(baseRoute);
+			map.zoomTo(trafficRoute.getBoundingBox(), false, "default");
+		});
+
+	};
 
 });
