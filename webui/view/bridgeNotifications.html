@@ -7,7 +7,7 @@
 
   <div ng-if="notifications.length > 0" ng-repeat="notification in notifications track by $index">
     <div class="notification {{notification.state}}">
-      <span title="title">{{notification.title}}</span>
+      <span title="title" ng-click="updateStatus(notification, 'read')">{{notification.title}}</span>
       <span title="body">{{notification.body}}</span>
       <span title="date">{{jQuery.timeago(notification.date);}}</span>
     </div>

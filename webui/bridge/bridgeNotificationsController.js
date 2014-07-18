@@ -56,5 +56,8 @@ angular.module('bridge.app').
 			$scope.filterNewNotifications = function(item) {
 				return item.state == "new";
 			};
+			$scope.updateStatus = function(notification, state) {
+				notification.state = state;
+			};
 
 }]);
