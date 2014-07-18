@@ -5,9 +5,16 @@
 		"title"					:	"Get Home",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/get-home/",
+				"templateUrl"	:	"app/getHome/detail.html"
+			}
+		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js"],
+	"js_files" : ["overview.js", "detail.js"],
 	"css_files" : []
 }
