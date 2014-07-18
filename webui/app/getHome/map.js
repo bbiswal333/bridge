@@ -113,6 +113,11 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 	};
 
 	this.displayMap = function (mapContainer) {
+		if (!this.trafficEnabledRoutingManager.getRoutes().length > 0 ||
+				!this.noTrafficRoutingManager.getRoutes().length > 0) {
+			console.log("No route calculated yet");
+			return;
+		}
 
 		var map = new nokia.maps.map.Display(mapContainer, {
 				center: [53, 13],
@@ -138,6 +143,29 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 			map.zoomTo(trafficRoute.getBoundingBox(), false, "default");
 		});
 
+	};
+
+	this.getTimeWithTraffic = function () {
+		if (!this.trafficEnabledRoutingManager.getRoutes().length > 0 ||
+				!this.noTrafficRoutingManager.getRoutes().length > 0) {
+			console.log("No route calculated yet");
+			return;
+		}
+		return this.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime;
+	};
+
+	this.getTimeWithoutTraffic = function () {
+		if (!this.trafficEnabledRoutingManager.getRoutes().length > 0 ||
+				!this.noTrafficRoutingManager.getRoutes().length > 0) {
+			console.log("No route calculated yet");
+			return;
+		}
+		return this.noTrafficRoutingManager.getRoutes()[0].summary.baseTime;
+	};
+
+	this.routesCalculated = function () {
+		return this.trafficEnabledRoutingManager.getRoutes().length > 0 &&
+				this.noTrafficRoutingManager.getRoutes().length > 0;
 	};
 
 });
