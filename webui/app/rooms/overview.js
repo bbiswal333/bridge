@@ -7,7 +7,8 @@ directive("app.rooms", [
 	"$interval",
 	"app.rooms.configservice",
 	"notifier",
-	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+  "ifpservice",
+	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, ifpservice) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -109,7 +110,12 @@ directive("app.rooms", [
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
 				}
-
+        // test code
+        /*
+        ifpservice.loadFromIsp("D040949", "20140718000000", "20140930000000", function(res) {
+         alert(JSON.stringify(res))
+       });
+        */
 				var dateForewsCall = new Date();
 				dateForewsCall.setDate(today.getDate() - 1);
 				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data, status) {
