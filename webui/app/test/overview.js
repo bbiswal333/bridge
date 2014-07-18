@@ -6,6 +6,7 @@ angular.module('app.test').directive('app.test', function () {
         //put some stuff in here
         notifier.showInfo("Meetings", "You have new meetings", "MeetingsApp");
         console.log(notifier.allNotifications());
+        notifier.showInfo("Second", "Test", $scope.$parent.module_name, function() {alert(123)});
 
     }];
 

@@ -137,31 +137,32 @@ angular.module("notifier", []).factory("notifier", function () {
     }
   };
 
-  function showMsg(title_s, body_s, icon_i, tag_s, onCLick_fn) {
-      var notifier = new Notifier(title_s, body_s, icons[icon_i], tag_s, DEFAULT_DURATION);
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
+      var notifier = new Notifier(title_s, body_s, icons[icon_i], appIdentifier_s, DEFAULT_DURATION);
       notifier.onclick = onCLick_fn;
       notifier.show();
       notifications.push({
         title: title_s,
         body: body_s,
         icon: icon_i,
-        tag: tag_s,
-//        callback: onClick_fn
-
+        app: appIdentifier_s || "",
+        callback: onCLick_fn,
+        timestamp: new Date().getTime(),
+        kindOf: kindOf_s,
       });
   }
 
   var instance = new Notifier();
 
   return {
-    showInfo: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 0, onClick_fn);
+    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info");
     },
-    showSuccess: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 1, onClick_fn);
+    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success");
     },
-    showError: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 2, onClick_fn);
+    showError: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error");
     },
     chromePreCheckRequestNeeded: function () {
       return instance.chromePreCheckRequestNeeded();
