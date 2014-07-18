@@ -3,11 +3,8 @@
 	<span class=" settingsIcon icon-bell-alt" style="color:inherit!important;cursor:default!important;margin-right:0;;font-size: 18px;padding-top: 1px;"></span>
 </div>
 
-
-
-
 <div ng-controller="notificationsController" style="margin-right:15px;" ng-init="onShowNotifications()">
-  <div>
+  <div ng-if="notifications.length > 0">
     <a id="clearNotifications" ng-click="clearNotifications()">Clear all</a>
   </div>
   <div class="allNotifications" ng-if="notifications.length > 0" ng-repeat="notification in notifications track by $index">
