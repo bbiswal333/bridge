@@ -1,8 +1,8 @@
 <div>
-	<select class="app-getHome-location-dropdown" ng-model="from" ng-options="location.name for location in config.data.locations"></select>
+	<select class="app-getHome-location-dropdown from" ng-model="from" ng-options="location.name for location in config.data.locations"></select>
 
 	<div class="app-getHome-time arrowLine {{time_style}}" ng-click="toDetail()">{{traffic_time_string}}{{delay_string}}</div>
 	<div class="arrowHead"></div>
 	
-	<select class="app-getHome-location-dropdown" ng-model="to" ng-options="location.name for location in config.data.locations"></select>
+	<select class="app-getHome-location-dropdown to" ng-model="to" ng-options="location.name for location in config.data.locations"></select>
 </div>
