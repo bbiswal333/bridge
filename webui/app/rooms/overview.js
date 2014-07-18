@@ -47,7 +47,7 @@ directive("app.rooms", [
                             $scope.rooms[i].startRel = calUtils.relativeTimeTo(new Date(), booking.VALIDFROMDATE, true);
                             $scope.rooms[i].endRel = calUtils.relativeTimeTo(new Date(), booking.VALIDTODATE, true);
                             $scope.rooms[i].endTime = calUtils.useNDigits(booking.VALIDTODATE.getHours(), 2) + ":" + calUtils.useNDigits(booking.VALIDTODATE.getMinutes(), 2);
-                            $scope.rooms[i].location= booking.OOIDEXT;
+                            $scope.rooms[i].location= booking.BUILDING + ", " + booking.ROOM;
                             i++;
                         }
                     }
