@@ -4,7 +4,12 @@ angular.module('app.getHome').directive('app.getHome', function () {
     var directiveController = ['$scope', function ($scope)
     {
     	$scope.box.boxSize = "1";
-        //put some stuff in here
+        $scope.box.settingScreenData = {
+            templatePath: "getHome/settings.html",
+            controller: angular.module('app.getHome').appGetHomeSettings
+        };        
+        $scope.config = appGetHomeConfig;
+
 
         nokia.Settings.set("app_id", "BGFtzY6olMoTQcTu9MGp");
 		nokia.Settings.set("app_code", "pbI1l9jZBzUsw0pouKowHA");
