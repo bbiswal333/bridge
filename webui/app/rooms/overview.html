@@ -3,14 +3,14 @@
         <div ng-if="errMsg != null">
           {{errMsg}}
         </div>
-        <a href="#/detail/rooms/">Book Room</a>
-
-		<div ng-if="hasEvents()">
+      	<div ng-if="hasEvents()">
             <div>
-                <b>{{getCurrentDate()}}</b><br>
+                <b>{{getCurrentDate()}}</b>   <a href="#/detail/rooms/" style="margin-left:10px;">Book Room</a>
+
+                <br>
                 {{getMeetingsLeftText()}}
             </div>
-            <div style="margin-top: 5px; height: 110px; overflow: hidden;">
+          <div style="margin-top: 5px; height: 110px; overflow: hidden;">
                 <div style="height: 110px; overflow-y: auto;">
                     <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
