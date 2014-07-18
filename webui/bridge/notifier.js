@@ -141,7 +141,7 @@ angular.module("notifier", []).factory("notifier", function () {
       var notifier = new Notifier(title_s, body_s, icons[icon_i], appIdentifier_s, DEFAULT_DURATION);
       notifier.onclick = onCLick_fn;
       notifier.show();
-      notifications.push({
+      notifications.unshift({
         title: title_s,
         body: body_s,
         icon: icon_i,

@@ -3,9 +3,13 @@ angular.module('bridge.app').
 	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
 	$scope.notifications = notifier.allNotifications();
+	$scope.sortorders=[{displayName:'time', attributeName: 'timestamp'},{displayName: 'prio', attributeName: 'kindOf'},{displayName:'tool asc', attributeName: '+app'},{displayName:'tool desc', attributeName: '-app'}];
+	$scope.$watch('sortorder', function() {
+		console.log("sortorder set");
+	});
+	$scope.sortorder=$scope.sortorders[0].attributeName;
   
   var apps = bridgeDataService.getProjects()[0].apps;
-
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
 			if (notification.state == "new") {
