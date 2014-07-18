@@ -8,17 +8,17 @@ angular.module('app.test').directive('app.test', function () {
             $scope.results = 'Running...';
             setTimeout(function(){
                 if (!(Math.random()+.5|0)) {
-                    notifier.showSuccess("Test Results: ", 
-                                    "143 of 143 passed.", 
-                                    $scope.$parent.module_name, 
+                    notifier.showSuccess("Test Results: ",
+                                    "143 of 143 passed.",
+                                    $scope.$parent.module_name,
                                     function() {alert('Congratulations!')});
                     $scope.results = '143 tests passed.';
                 } else {
-                    notifier.showError("Test Results: ", 
-                                        "10 of 143 failed.", 
-                                        $scope.$parent.module_name, 
+                    notifier.showError("Test Results: ",
+                                        "12 of 143 failed.",
+                                        $scope.$parent.module_name,
                                         function() {alert(':-(')});
-                    $scope.results = '10 tests failed.';    
+                    $scope.results = '12 tests failed.';
                 };
             }, 3000);
         };

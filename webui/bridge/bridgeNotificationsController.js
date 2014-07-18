@@ -3,13 +3,12 @@ angular.module('bridge.app').
 	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
 	$scope.notifications = notifier.allNotifications();
-  
-  var apps = bridgeDataService.getProjects()[0].apps;
 
+  var apps = bridgeDataService.getProjects()[0].apps;
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
 			if (notification.state == "new") {
-				notification.state = "seen";	
+				notification.state = "seen";
 			};
 		});
 		notifier.store();
@@ -37,7 +36,7 @@ angular.module('bridge.app').
     }
     throw new Error("module name is invalid!");
   }
-  
+
   $scope.getIconOf = function(notification){
     var module_name = notification.app;
     if (!module_name) {
@@ -63,11 +62,11 @@ angular.module('bridge.app').
     }
     throw new Error("module name is invalid!");
   }
-    
+
   $scope.getTimeAgo = function(timeInMS){
     return jQuery.timeago(timeInMS);
   }
-   
+
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
 				url: "https://dynamic.xkcd.com/api-0/jsonp/comic?callback=?",
@@ -99,6 +98,15 @@ angular.module('bridge.app').
 	$scope.updateStatus = function(notification, state) {
 		notification.state = state;
 		notifier.store();
+		var divClass = "." + notification.app.replace(".", "-");
+		if (notification.app) {
+			$(divClass).animate({
+		          opacity: 0,
+		        }, 500 );
+			$(divClass).animate({
+		          opacity: 1.0,
+		        }, 500 );
+		};
 	};
 
 		}]).
