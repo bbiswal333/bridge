@@ -9,6 +9,6 @@
 		"default_hidden"		: 	true	
 	},
 	"modules" : [],
-	"js_files" : ["ews.js", "overview.js", "settings.js", "config.js"],
+	"js_files" : ["ews.js", "overview.js", "settings.js", "config.js", "ifp.js"],
 	"css_files" : []
 }
