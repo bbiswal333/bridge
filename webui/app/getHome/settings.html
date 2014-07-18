@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row select">
 <!-- LIST -->
 	<div class="col-md-4">
 
@@ -11,6 +11,12 @@
 			<div class="row app-getHome-settings-row" ng-repeat="location in config.data.locations track by location.name">
 				<div class="no-padd col-xs-4 bold">
 					<input type="text" class="form-control form" ng-model="location.name" placeholder="Name for the location" />
+				</div>
+				<div class="no-padd padd-left col-xs-8">
+					<div class="app-getHome-settings-address">{{location.address}}</div>
+					<div class="app-getHome-settings-editIcons">
+						<span ng-click="deleteLocation(location,$index)" style="margin-right:0;top:0px;padding-top:10px;cursor:pointer;" title="Delete this Location" class="fa fa-times"></span>
+					</div>
 				</div>
 			</div>
 		</div>

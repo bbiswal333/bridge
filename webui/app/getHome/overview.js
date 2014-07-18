@@ -39,7 +39,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					startCoord = new nokia.maps.geo.Coordinate(newValue.latitude, newValue.longitude);
 				}
 
-				calculateRoute();
+				recalculateRoute();
 			}
 		});
 
@@ -61,7 +61,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					destCoord = new nokia.maps.geo.Coordinate(newValue.latitude, newValue.longitude);
 				}
 
-				calculateRoute();
+				recalculateRoute();
 			}
 		});
 
@@ -69,7 +69,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			$location.path("/detail/gethome/");
 		};
 
-		function calculateRoute() {
+		function recalculateRoute() {
 			if (startCoord && destCoord) {
 				appGetHomeMap.calculateRoute(startCoord, destCoord,
 					function (trafficTimeSeconds) {
@@ -86,6 +86,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			}
 		}
 
+		setInterval(recalculateRoute, 30000);
 	}];
 
 	return {

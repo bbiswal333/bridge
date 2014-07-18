@@ -19,6 +19,10 @@ angular.module('app.getHome').appGetHomeSettings =
 		$scope.addMode = false;
 	};
 
+	$scope.deleteLocation = function (location, index) {
+		appGetHomeConfig.data.locations.splice(index, 1);
+	};
+
 	$scope.closeForm = function () {
 		$scope.$emit('closeSettingsScreen');
 	};
