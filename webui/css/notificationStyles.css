@@ -4,7 +4,7 @@
   display: flex;
   display:-webkit-flex;
 
-  
+
   -webkit-flex-direction: column;
   flex-direction: column;
 
@@ -12,17 +12,18 @@
 
 .notification{
   
-  padding: 5px;
   margin: 5px 0;
-  
+  padding: 0 5px;
+
+
     /* flexbox setup */
 
   display: flex;
   display:-webkit-flex;
-
   
   -webkit-flex-direction: column;
   flex-direction: column;
+
 }
 
 .notificationState-new{
@@ -39,7 +40,7 @@
 }
 
 .notification .sender{
-  
+
   -webkit-flex: 1;
   flex: 1;
   
@@ -56,6 +57,28 @@
   flex: 3;
 }
 
+
 .notification .content .timeAgo{
   font-size: smaller;
+}
+
+}
+
+ul.notification-menu{
+  margin-top:3px;
+  margin-bottom:3px;
+}
+ul.notification-menu li{
+  list-style: none;
+  display: inline-block;
+  padding:5px;
+  border-left: thin solid darkgrey;
+  border-right: thin solid darkgrey;
+}
+ul.notification-menu li:first-child{
+  border-left: none;
+}
+
+ul.notification-menu li:last-child{
+  border-right: none;
 }

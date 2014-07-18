@@ -20,12 +20,10 @@ angular.module('bridge.app').
 	};
 
 
-	  };
     
     $scope.getTimeAgo = function(timeInMS){
         return jQuery.timeago(timeInMS);
     }
-
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
 				url: "https://dynamic.xkcd.com/api-0/jsonp/comic?callback=?",
