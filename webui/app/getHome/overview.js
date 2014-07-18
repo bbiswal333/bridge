@@ -1,5 +1,5 @@
 ﻿angular.module('app.getHome', []);
-angular.module('app.getHome').directive('app.getHome', function () {
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', function (appGetHomeConfig) {
 
     var directiveController = ['$scope', function ($scope)
     {
@@ -163,4 +163,4 @@ angular.module('app.getHome').directive('app.getHome', function () {
         templateUrl: 'app/getHome/overview.html',
         controller: directiveController
     };
-});
+}]);
