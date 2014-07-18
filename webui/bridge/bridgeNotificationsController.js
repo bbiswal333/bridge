@@ -98,6 +98,14 @@ angular.module('bridge.app').
 	$scope.updateStatus = function(notification, state) {
 		notification.state = state;
 		notifier.store();
+		if (notification.app) {
+			$( "." + notification.app.replace(".", "-") ).animate({
+		          backgroundColor: "#f0a470",
+		        }, 750 );
+			$( "." + notification.app.replace(".", "-") ).animate({
+		          backgroundColor: "#fff",
+		        }, 750 );
+		};
 	};
 
 		}]).
