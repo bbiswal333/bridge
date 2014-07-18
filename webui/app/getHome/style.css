@@ -7,15 +7,17 @@
 
 .arrowLine {
 	margin-top: 10px;
-	padding-left: 15px;
-	background-image: url(img/arrowLine.png);
+	margin-left: 3px;
+	padding-left: 12px;
+	background-image: url(/img/arrowLine.png);
 	background-repeat: repeat-y;
 }
 
 .arrowHead {
-	padding-left: 15px;
+	padding-left: 12px;
 	margin-bottom: 10px;
-	background-image: url(img/arrowHead.png);
+	margin-left: 3px;
+	background-image: url(/img/arrowHead.png);
 	background-repeat: repeat-y;
 	height: 13px;
 }
@@ -28,6 +30,7 @@
 	font-size: 2rem;
 	height: 54px;
 	line-height: 65px;
+	font-weight: bold;
 }
 
 .app-getHome-good {
