@@ -43,6 +43,7 @@ directive("app.rooms", [
                             $scope.rooms[i] = [];
                             $scope.rooms[i].isCurrent = false;
                             $scope.rooms[i].subject = booking.SUBJECT;
+                            $scope.rooms[i].date = booking.VALIDFROMDATE.getDate() + "." + (booking.VALIDFROMDATE.getMonth() + 1) + ".";
                             $scope.rooms[i].startTime = calUtils.useNDigits(booking.VALIDFROMDATE.getHours(), 2) + ":" + calUtils.useNDigits(booking.VALIDFROMDATE.getMinutes(), 2);
                             $scope.rooms[i].startRel = calUtils.relativeTimeTo(new Date(), booking.VALIDFROMDATE, true);
                             $scope.rooms[i].endRel = calUtils.relativeTimeTo(new Date(), booking.VALIDTODATE, true);

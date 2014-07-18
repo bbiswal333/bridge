@@ -16,6 +16,7 @@
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
                                 <span>
+                                    <b>{{event.date}}</b>
                                     {{event.startTime}}
                                     {{event.endTime}}
                                 </span>
