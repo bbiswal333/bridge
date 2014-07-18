@@ -151,8 +151,12 @@ angular.module("notifier", []).factory("notifier", function () {
         kindOf: kindOf_s,
         state: 'new',
       });
-      localStorage.setItem('notifcations', JSON.stringify(notifications));
-  }
+      storeAllNotificationsInLocale();
+  };
+
+  function storeAllNotificationsInLocale() {
+    localStorage.setItem('notifcations', JSON.stringify(notifications));
+  };
 
   var instance = new Notifier();
 
@@ -183,6 +187,9 @@ angular.module("notifier", []).factory("notifier", function () {
     clearNotifications: function() {
       notifications.length = 0;
       localStorage.clear();
-    }
+    },
+    store: function() {
+      storeAllNotificationsInLocale();
+    },
   };  
 });
