@@ -7,7 +7,9 @@ angular.module('bridge.app').
 	$scope.notifications = notifier.allNotifications();
 
 	$scope.onShowNotifications = function(){
-		// toDo: set all notifications to state: seen
+		notifier.allNotifications().forEach(function(notification){
+			notification.state = "seen";
+		});
 	};
 
   	$scope.clearNotifications = function() {
@@ -46,7 +48,7 @@ angular.module('bridge.app').
 	$scope.filterNewNotifications = function newNotifications(item) {
 		return item.state == "new";
 	};
-	
+
 	$scope.updateStatus = function(notification, state) {
 		notification.state = state;
 	};
