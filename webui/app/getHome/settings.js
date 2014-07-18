@@ -4,15 +4,6 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	$scope.config  = appGetHomeConfig;
 
-	$scope.locations = [
-		{
-			"name": "Work"
-		},
-		{
-			"name": "Home"
-		}
-	];
-
 	$scope.closeForm = function () {
 		$scope.$emit('closeSettingsScreen');
 	};

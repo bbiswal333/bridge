@@ -6,9 +6,9 @@
 
         <!--- DISPLAY existing Locations -->
         <div ng-model="locations" class="app-getHome-getHome">
-            <div class="app-getHome-settings-row" style="min-height:45px;" ng-if="!locations[0]">
+            <div class="app-getHome-settings-row" style="min-height:45px;" ng-if="!config.data.locations[0]">
             </div>
-            <div class="row app-getHome-settings-row" ng-repeat="location in locations track by location.name">
+            <div class="row app-getHome-settings-row" ng-repeat="location in config.data.locations track by location.name">
                 <div class="no-padd col-xs-4 bold">
                     <input type="text" class="form-control form" ng-model="location.name" maxlength="20" placeholder="Name for the location" />
                 </div>
