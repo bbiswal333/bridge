@@ -12,6 +12,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var xml2js 	  	  = require("xml2js").parseString;
 	var iconv 	  	  = require("iconv-lite");
 	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
+    var EWSRoom       = require("./ews/ewsRoom.js").EWSRoom;
 	var wire          = require("./wire.js");
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
@@ -398,6 +399,41 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		});
 	}
 	
+    if( local )
+	{
+		app.get("/api/calRoomsSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+
+			var ews = undefined;
+			try {
+				ews = new EWSRoom({type:"roomsearch", building:"MR KAR01"}, json);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+
+			ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					response.send(res);
+				}
+			});
+
+		});
+	}
+    
 	app.get("/api/trafficLight" , function (request, response) {
 		/* 
 		traffic light command api parameters:
