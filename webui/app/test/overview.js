@@ -3,11 +3,25 @@ angular.module('app.test').directive('app.test', function () {
 
     var directiveController = ['$scope', 'notifier', function ($scope, notifier)
     {
-        //put some stuff in here
-        notifier.showInfo("Meetings", "You have new meetings", "MeetingsApp");
-        console.log(notifier.allNotifications());
-        notifier.showInfo("Second", "Test", $scope.$parent.module_name, function() {alert(123)});
-
+        $scope.results = 'Not run so far!';
+        $scope.runAllTests = function() {
+            $scope.results = 'Running...';
+            setTimeout(function(){
+                if (!(Math.random()+.5|0)) {
+                    notifier.showSuccess("Test Results: ", 
+                                    "143 of 143 passed.", 
+                                    $scope.$parent.module_name, 
+                                    function() {alert('Congratulations!')});
+                    $scope.results = '143 tests passed.';
+                } else {
+                    notifier.showError("Test Results: ", 
+                                        "10 of 143 failed.", 
+                                        $scope.$parent.module_name, 
+                                        function() {alert(':-(')});
+                    $scope.results = '10 tests failed.';    
+                };
+            }, 3000);
+        };
     }];
 
     return {
