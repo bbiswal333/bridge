@@ -4,3 +4,40 @@
 	margin-right: 0;
 	min-height: 45px;
 }
+
+.arrowLine {
+	margin-top: 10px;
+	padding-left: 15px;
+	background-image: url(img/arrowLine.png);
+	background-repeat: repeat-y;
+}
+
+.arrowHead {
+	padding-left: 15px;
+	margin-bottom: 10px;
+	background-image: url(img/arrowHead.png);
+	background-repeat: repeat-y;
+	height: 13px;
+}
+
+.app-getHome-location-dropdown {
+	font-size: 1.5rem;
+}
+
+.app-getHome-time {
+	font-size: 2rem;
+	height: 54px;
+	line-height: 65px;
+}
+
+.app-getHome-good {
+	color: #4EA175;
+}
+
+.app-getHome-delayed {
+	color: #E76F24;
+}
+
+.app-getHome-bad {
+	color: #D53F26;
+}

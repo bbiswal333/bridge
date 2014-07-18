@@ -25,10 +25,13 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			destCoord = new nokia.maps.geo.Coordinate($scope.to.latitude, $scope.to.longitude);
 
 		appGetHomeMap.calculateRoute(startCoord, destCoord,
-			function (trafficTimeString) {
-				$scope.traffic_time_string = trafficTimeString;
-			}, function (delayTimeString) {
-				$scope.delay_string = delayTimeString;
+			function (trafficTimeSeconds) {
+				$scope.traffic_time_string = appGetHomeMap.formatTime(trafficTimeSeconds);
+			}, function (result) {
+				$scope.time_style = result.percent > 30 ? "app-getHome-bad" :
+									result.percent > 10 ? "app-getHome-delayed" : "app-getHome-good";
+
+				$scope.delay_string = " (+" + appGetHomeMap.formatTime(result.delay) + ")";
 		});
 
 	}];

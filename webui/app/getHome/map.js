@@ -36,13 +36,9 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 			routeTrafficMode = routes[0].mode.trafficMode;
 
 			if (routeTrafficMode == "enabled"){
-				console.log("Traffic time: " + formatTime(routes[0].summary.trafficTime)
-				);
-				that.trafficTimeCallback(formatTime(routes[0].summary.trafficTime));
+				that.trafficTimeCallback(routes[0].summary.trafficTime);
 				calcDelay();
 			} else {
-				console.log("Base time: " + formatTime(routes[0].summary.baseTime)
-				);
 				calcDelay();
 			}
 		} else if (value == "failed") {
@@ -54,10 +50,13 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 	function calcDelay () {
 		if (that.trafficEnabledRoutingManager.getRoutes().length > 0 &&
 				that.noTrafficRoutingManager.getRoutes().length > 0) {
-			console.log("Traffic causes: " + formatTime(that.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime -
-				that.noTrafficRoutingManager.getRoutes()[0].summary.baseTime));
-			that.delayCallback("(+" + formatTime(that.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime -
-				that.noTrafficRoutingManager.getRoutes()[0].summary.baseTime) + ")");
+
+			var trafficTime = that.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime,
+				baseTime = that.noTrafficRoutingManager.getRoutes()[0].summary.baseTime,
+				delay = trafficTime - baseTime;
+
+
+			that.delayCallback({ delay: delay, percent: delay / baseTime * 100 });
 		}
 	}
 
@@ -101,14 +100,14 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 	};
 
 
-	function formatTime (iSeconds) {
+	this.formatTime = function (iSeconds) {
 		var sec_num = parseInt(iSeconds, 10);
 		var hours   = Math.floor(sec_num / 3600);
 		var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
 		// var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
 		var time = (hours > 0 ? hours + "h " : "") +
-					(minutes > 0 ? minutes + "min " : "");
+					(minutes > 0 ? minutes + "min" : "");
 					// (seconds > 0 ? seconds + "sec " : "");
 		return time;
 	}
