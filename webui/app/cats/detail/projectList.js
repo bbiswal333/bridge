@@ -148,7 +148,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     function getDataFromCatsTemplate () {
       if (additionalData === undefined) {
         var week = calenderUtils.getWeekNumber(new Date());
-        // additionalData = catsUtils.getCatsAllocationDataForWeek(week.year, week.weekNo);
         catsUtils.requestTasksFromTemplate(week.year, week.weekNo, function(data){
           additionalData = data;
           additionalData.forEach(function(task){

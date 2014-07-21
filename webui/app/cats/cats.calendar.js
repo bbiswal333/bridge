@@ -569,6 +569,9 @@ angular.module("app.cats")
 			var refreshInterval = null;
 
 			catsUtils.getCatsComplianceData(handleCatsData);
+			if ($scope.maintainable) {
+				monthlyDataService.getMonthData(monthlyDataService.year,monthlyDataService.month);
+			}
 
 			if ($scope.selectedDay) {
 			    while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {

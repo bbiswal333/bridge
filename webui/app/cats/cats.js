@@ -26,20 +26,20 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     function _requestCatsData(callback_fn) {
       _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
         if (data != null) {
-          data.CATSCHK.forEach(function(CATSCHKforDay){
-            // test test test
-            if (CATSCHKforDay.STDAZ && false) {
-              CATSCHKforDay.STDAZ = 7.55;
-              CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-              if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
-                if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
-                  CATSCHKforDay.STATUS = "Y";
-                } else {
-                  CATSCHKforDay.STATUS = "G";
-                }
-              }
-            }
-          });
+          // data.CATSCHK.forEach(function(CATSCHKforDay){
+          //   // test test test
+          //   if (CATSCHKforDay.STDAZ && false) {
+          //     CATSCHKforDay.STDAZ = 7.55;
+          //     CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+          //     if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
+          //       if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
+          //         CATSCHKforDay.STATUS = "Y";
+          //       } else {
+          //         CATSCHKforDay.STATUS = "G";
+          //       }
+          //     }
+          //   }
+          // });
           callback_fn(data.CATSCHK);
         } else {
           callback_fn();
