@@ -48,11 +48,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
 				promises.push(promise);
 				promise.then(function(data){
-			    	if(data) {
-			    		var weekData = self.convertWeekData(data);
-			        	monthData.weeks.push(weekData);
-			        	targetHoursCounter = targetHoursCounter + weekData.hasTargetHoursForHowManyDays;
-			    	}
+					if(data) {
+						var localPromise = self.convertWeekData(data);
+						promises.push(localPromise);
+						localPromise.then(function(weekData) {
+						monthData.weeks.push(weekData);
+						targetHoursCounter = targetHoursCounter + weekData.hasTargetHoursForHowManyDays;
+						});
+					}
 				});
 			}
 
@@ -134,8 +137,38 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		}
 	};
 
+	this.initializeDay = function (calWeekIndex, dayIndex, weekData) {
+		var promise = catsUtils.getTotalWorkingTimeForDay(this.calArray[calWeekIndex][dayIndex].dayString);
+		var that = this;
+		promise.then(function(targetHours) {
+			var day = null;
+			day = {};
+			var hoursOfWorkingDay = 8;
+			day.targetHours = targetHours;
+			// test test test
+			/*if(day.targetHours) {
+				day.targetHours = 7.55;
+			} else {
+				day.targetHours = 0;
+			}*/
+			day.targetTimeInPercentageOfDay = Math.round(day.targetHours / hoursOfWorkingDay * 1000) / 1000;
+			day.actualTimeInPercentageOfDay = 0; // to be calulated later
+			day.date = that.calArray[calWeekIndex][dayIndex].dayString;
+			day.dayString = that.calArray[calWeekIndex][dayIndex].dayString;
+			weekData.hasTargetHoursForHowManyDays++;
+			day.tasks = [];
+			day.year = weekData.year;
+			day.week = weekData.week;
+			weekData.days.push( day );
+			that.days[day.dayString] = day;
+		});
+		return promise;
+	};
+
 	this.convertWeekData = function (backendData) {
 		try{
+			var promises = [];
+			var deferred = $q.defer();
 			var week = backendData.TIMESHEETS.WEEK.substring(0,2);
 			var year = backendData.TIMESHEETS.WEEK.substring(3,7);
 			var weekData = {};
@@ -143,62 +176,71 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			weekData.week = week;
 			weekData.hasTargetHoursForHowManyDays = 0;
 			weekData.days = [];
-			if(backendData.TIMESHEETS.RECORDS) {
-		        for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
-		            for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
-		            	var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
-		            	if(ISPTaskIterator === 0) { // build the target array in the first place
-		            		var day = {};
-		            		var HoursOfWorkingDay = 8;
-							day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-		            		// test test test
-		            		/*if(day.targetHours) {
-			            		day.targetHours = 7.55;
-							} else {
-								day.targetHours = 0;
-							}*/
-		            		day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
-		            		day.actualTimeInPercentageOfDay = 0; // to be calulated later
-		            		day.date = ISPtask.DAYS[DayIterator].WORKDATE;
-		            		day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
-		            		weekData.hasTargetHoursForHowManyDays++;
-		            		day.tasks = [];
-		            		day.year = year;
-		            		day.week = week;
-		            		weekData.days.push( day );
-		            	}
-		            	if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
-		            		var task = {};
-		            		task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
-		            		task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
-		            		task.RAUFNR = ISPtask.RAUFNR;
-		            		task.TASKTYPE = ISPtask.TASKTYPE;
-		            		task.ZCPR_EXTID = ISPtask.ZCPR_EXTID;
-		            		task.ZCPR_OBJGEXTID = ISPtask.ZCPR_OBJGEXTID;
-		            		task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
-		            		task.UNIT = ISPtask.UNIT;
-		            		task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
-		            		task.DESCR = ISPtask.DESCR;
-		            		weekData.days[DayIterator].tasks.push( task );
-		            		catsUtils.enrichTaskData(task);
-		            		if (task.UNIT === 'H') {
-		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / HoursOfWorkingDay;
-		            		} else {
-		            			weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY;
-		            		}
-		            		weekData.days[DayIterator].actualTimeInPercentageOfDay = Math.round(weekData.days[DayIterator].actualTimeInPercentageOfDay * 1000) / 1000;
-		            	}
 
-		            	if (day) {
-		            		this.days[day.date] = day;
-		            	}
-		           	}
-		        }
-		    }
+			for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
+				if (week === this.calArray[calWeekIndex][0].weekNo + "") {
+					for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
+						promises.push(this.initializeDay(calWeekIndex, dayIndex, weekData));
+					}
+				}
+			}
+
+			var promise = $q.all(promises);
+			promise.then(function(){
+				if(backendData.TIMESHEETS.RECORDS) {
+			        for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
+			            for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
+			            	var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
+							// if(ISPTaskIterator === 0) { // build the target array in the first place
+							// 	var day = {};
+							var HoursOfWorkingDay = 8;
+							// 	day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
+							// 	// test test test
+							// 	/*if(day.targetHours) {
+							// 		day.targetHours = 7.55;
+							// 	} else {
+							// 		day.targetHours = 0;
+							// 	}*/
+							// 	day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
+							// 	day.actualTimeInPercentageOfDay = 0; // to be calulated later
+							// 	day.date = ISPtask.DAYS[DayIterator].WORKDATE;
+							// 	day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
+							// 	weekData.hasTargetHoursForHowManyDays++;
+							// 	day.tasks = [];
+							// 	day.year = year;
+							// 	day.week = week;
+							// 	weekData.days.push( day );
+							// }
+							if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
+								var task = {};
+								task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
+								task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
+								task.RAUFNR = ISPtask.RAUFNR;
+								task.TASKTYPE = ISPtask.TASKTYPE;
+								task.ZCPR_EXTID = ISPtask.ZCPR_EXTID;
+								task.ZCPR_OBJGEXTID = ISPtask.ZCPR_OBJGEXTID;
+								task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
+								task.UNIT = ISPtask.UNIT;
+								task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
+								task.DESCR = ISPtask.DESCR;
+								weekData.days[DayIterator].tasks.push( task );
+								catsUtils.enrichTaskData(task);
+								if (task.UNIT === 'H') {
+									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / HoursOfWorkingDay;
+								} else {
+									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY;
+								}
+								weekData.days[DayIterator].actualTimeInPercentageOfDay = Math.round(weekData.days[DayIterator].actualTimeInPercentageOfDay * 1000) / 1000;
+							}
+						}
+					}
+				}
+				deferred.resolve(weekData);
+			});
 		} catch(err) {
 			console.log("convertWeekData(): " + err);
 		}
-		return weekData;
+		return deferred.promise;
 	};
 
 	this.loadDataForSelectedWeeks = function(weeks){

@@ -1,7 +1,6 @@
 describe("The mini calendar shall display information about the current CATS compliance", function () {
   var catsUtils;
   var $httpBackend;
-  var $http;
 
   beforeEach(module("app.cats.data"));
   beforeEach(inject(function ($injector) {
@@ -24,8 +23,8 @@ describe("The mini calendar shall display information about the current CATS com
   });
 
   it ("should be possible to make an asynchronous test whether working hours on one day can be retrieved from CATS", function () {
-    var result1 = undefined;
-    var result2 = undefined;
+    var result1;
+    var result2;
     catsUtils.getTotalWorkingTimeForDay("2014-03-25", function (val) {
       result1 = val;
     });

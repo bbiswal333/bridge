@@ -38,11 +38,11 @@ angular.module("app.cats")
 	                }
 	                if (days[i].STATUS === "R" && (time > new Date().getTime())) {
 	                	statusStr = "R_INTHEFUTURE";
-	                	days[i].STATUS = "R_INTHEFUTURE"
+	                	days[i].STATUS = "R_INTHEFUTURE";
 	                }
 					if (days[i].STATUS === "Y" && (time > new Date().getTime())) {
 	                	statusStr = "Y_INTHEFUTURE_part_maint";
-	                	days[i].STATUS = "Y_INTHEFUTURE_part_maint"
+	                	days[i].STATUS = "Y_INTHEFUTURE_part_maint";
 	                }
 	                if (time !== null) {
 	                    processed[time] = { state: statusStr };
@@ -100,11 +100,11 @@ angular.module("app.cats")
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month);
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
-					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date($scope.year,$scope.month)));
+					monthlyDataService.calArray = $scope.calArray;
+					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)));
 				}
 				$scope.loading = false;
 			}
-
 			
 			function handleCatsData(data) {
 				if (data !== null && data !== undefined) {
@@ -502,16 +502,7 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				if ($scope.maintainable) {
-					// access single day in the middle of the month to cause data load
-					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
-					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-					promise.then(function() {
-						reload();
-					});
-				} else {
-					reload();
-				}
+				reload();
 	        };
 
 	        $scope.canGoForward = function () {
@@ -538,16 +529,7 @@ angular.module("app.cats")
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				if ($scope.maintainable) {
-					// access single day in the middle of the month to cause data load
-					var date = new Date(monthlyDataService.year, monthlyDataService.month, 15);
-					var promise = monthlyDataService.getDataForDate(calUtils.stringifyDate(date));
-					promise.then(function() {
-						reload();
-					});
-				} else {
-					reload();
-				}
+				reload();
 	        };
 
 	        $scope.reloadCalendar = function () {
@@ -569,9 +551,6 @@ angular.module("app.cats")
 			var refreshInterval = null;
 
 			catsUtils.getCatsComplianceData(handleCatsData);
-			if ($scope.maintainable) {
-				monthlyDataService.getMonthData(monthlyDataService.year,monthlyDataService.month);
-			}
 
 			if ($scope.selectedDay) {
 			    while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {

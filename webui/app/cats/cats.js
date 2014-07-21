@@ -48,14 +48,24 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     var _getCatsComplianceData = function(callback_fn, forceUpdate_b) {
+      var deferred = $q.defer(); // Trying to make it independent from callback function
+
       if (forceUpdate_b || catsDataCache == null) {
         _requestCatsData(function(data) {
           catsDataCache = data;
-          callback_fn(data);
+          if (callback_fn) {
+            callback_fn(data);
+          }
+          deferred.resolve(data);
         });
       } else {
-        callback_fn(catsDataCache);
+        if (callback_fn) {
+          callback_fn(catsDataCache);
+        }
+        deferred.resolve(catsDataCache);
       }
+
+      return deferred.promise;
     };
 
     var _getCatsAllocationDataForWeek = function (year, week) {
@@ -76,19 +86,19 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     };
 
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
-    function _getTotalWorkingTimeForDay(day_s, callback_fn) {
-      _getCatsComplianceData(function(data) {
+    function _getTotalWorkingTimeForDay(day_s) {
+      var deferred = $q.defer();
+      var promise = _getCatsComplianceData("",false);
+
+      promise.then(function(data) {
         for (var i = 0; i < data.length; i++) {
           if (data[i].DATEFROM ===  day_s) {
-            var HoursOfWorkingDay = 8;
-            var totalTimeInPercentOf8HourDay = Math.round(data[i].STDAZ / HoursOfWorkingDay * 1000) / 1000;
-          	callback_fn(totalTimeInPercentOf8HourDay);
-          	return;
-          } 
+            deferred.resolve(data[i].STDAZ);
+          }
         }
+      });
 
-        callback_fn(null);
-      }, false);
+      return deferred.promise;
     }
 
     function _enrichTaskData(task){
@@ -224,7 +234,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
     return {
       getCatsComplianceData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
-        _getCatsComplianceData(callback_fn, forceUpdate_b);
+        return _getCatsComplianceData(callback_fn, forceUpdate_b);
       },
       getDescForState: function(state_s) {
         return _getDescForState(state_s);
@@ -240,7 +250,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         }
       },
       getTotalWorkingTimeForDay: function (day_s, callback_fn) {
-      	_getTotalWorkingTimeForDay(day_s, callback_fn);
+      	return _getTotalWorkingTimeForDay(day_s, callback_fn);
       },
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);

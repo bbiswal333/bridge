@@ -127,7 +127,8 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 today: (thisDay.getFullYear() === today.getFullYear() && thisDay.getMonth() === today.getMonth() && thisDay.getDate() === today.getDate()),
                 data: additionalDataForThisDay,
                 dayString: self.stringifyDate(thisDay),
-                date: thisDay
+                date: thisDay,
+                weekNo: self.getWeekNumber(thisDay).weekNo
             };
 
             if ((i + 1) % 7 === 0) {
