@@ -137,9 +137,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		}
 	};
 
-	this.initializeDay = function (calWeekIndex, dayIndex, weekData) {
-		var promise = catsUtils.getTotalWorkingTimeForDay(this.calArray[calWeekIndex][dayIndex].dayString);
-		var that = this;
+	this.initializeDay = function (calWeekIndex, dayIndex, weekData, dayString) {
+		var promise = catsUtils.getTotalWorkingTimeForDay(dayString);
+		var self = this;
 		promise.then(function(targetHours) {
 			var day = null;
 			day = {};
@@ -153,14 +153,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			}*/
 			day.targetTimeInPercentageOfDay = Math.round(day.targetHours / hoursOfWorkingDay * 1000) / 1000;
 			day.actualTimeInPercentageOfDay = 0; // to be calulated later
-			day.date = that.calArray[calWeekIndex][dayIndex].dayString;
-			day.dayString = that.calArray[calWeekIndex][dayIndex].dayString;
+			day.date = dayString;
+			day.dayString = dayString;
 			weekData.hasTargetHoursForHowManyDays++;
 			day.tasks = [];
 			day.year = weekData.year;
 			day.week = weekData.week;
 			weekData.days.push( day );
-			that.days[day.dayString] = day;
+			self.days[day.dayString] = day;
 		});
 		return promise;
 	};
@@ -180,7 +180,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
 				if (week === this.calArray[calWeekIndex][0].weekNo + "") {
 					for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
-						promises.push(this.initializeDay(calWeekIndex, dayIndex, weekData));
+						promises.push(this.initializeDay(calWeekIndex, dayIndex, weekData, this.calArray[calWeekIndex][dayIndex].dayString));
 					}
 				}
 			}
@@ -191,26 +191,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			        for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
 			            for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
 			            	var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
-							// if(ISPTaskIterator === 0) { // build the target array in the first place
-							// 	var day = {};
-							var HoursOfWorkingDay = 8;
-							// 	day.targetHours = ISPtask.DAYS[DayIterator].TARGET;
-							// 	// test test test
-							// 	/*if(day.targetHours) {
-							// 		day.targetHours = 7.55;
-							// 	} else {
-							// 		day.targetHours = 0;
-							// 	}*/
-							// 	day.targetTimeInPercentageOfDay = Math.round(day.targetHours / HoursOfWorkingDay * 1000) / 1000;
-							// 	day.actualTimeInPercentageOfDay = 0; // to be calulated later
-							// 	day.date = ISPtask.DAYS[DayIterator].WORKDATE;
-							// 	day.dayString = ISPtask.DAYS[DayIterator].WORKDATE;
-							// 	weekData.hasTargetHoursForHowManyDays++;
-							// 	day.tasks = [];
-							// 	day.year = year;
-							// 	day.week = week;
-							// 	weekData.days.push( day );
-							// }
+							var hoursOfWorkingDay = 8;
 							if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
 								var task = {};
 								task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
@@ -226,7 +207,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 								weekData.days[DayIterator].tasks.push( task );
 								catsUtils.enrichTaskData(task);
 								if (task.UNIT === 'H') {
-									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / HoursOfWorkingDay;
+									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / hoursOfWorkingDay;
 								} else {
 									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY;
 								}
