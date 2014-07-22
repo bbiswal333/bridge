@@ -215,7 +215,6 @@
     background-position-y:50%;
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-    /*background-color:#FEE0A1;*/
     background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -265,11 +264,11 @@
     font-weight: 600;
 }
 .app-cats-stateY_TODAY { 
-    background-color:#FEE0A1;
-    /*background-image: url('/../../img/part_maint_TODAY_B.svg');
+    /*background-color:#FEE0A1;*/
+    background-image: url('/../../img/part_maint_TODAY_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;*/
+    background-position-x: 100%;
 }
 .app-cats-stateOVERBOOKED_TODAY { 
     /*background-color:#A7D0BA;*/
