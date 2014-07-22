@@ -1,0 +1,84 @@
+.allNotifications{
+  /* flexbox setup */
+
+  display: flex;
+  display:-webkit-flex;
+
+
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+}
+
+.notification{
+  
+  margin: 5px 0;
+  padding: 0 5px;
+
+
+    /* flexbox setup */
+
+  display: flex;
+  display:-webkit-flex;
+  
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+}
+
+.notificationState-new{
+  border-left-style: solid;
+  border-left-color: #68A1D4;
+}
+.notificationState-read{
+  border-left-style: solid;
+  border-left-color: white;
+}
+.notificationState-seen{
+  border-left-style: solid;
+  border-left-color: #B3D0E9;
+}
+
+.notification .sender{
+
+  -webkit-flex: 1;
+  flex: 1;
+  
+}
+
+.notification .sender .settingsIcon{
+  border-left-style: solid;
+  border-width: thin;
+  padding-left: 5px;
+}
+
+.notification .content{
+  -webkit-flex: 3;
+  flex: 3;
+}
+
+
+.notification .content .timeAgo{
+  font-size: smaller;
+}
+
+}
+
+ul.notification-menu{
+  margin-top:3px;
+  margin-bottom:3px;
+}
+ul.notification-menu li{
+  list-style: none;
+  display: inline-block;
+  padding:5px;
+  border-left: thin solid darkgrey;
+  border-right: thin solid darkgrey;
+}
+ul.notification-menu li:first-child{
+  border-left: none;
+}
+
+ul.notification-menu li:last-child{
+  border-right: none;
+}
