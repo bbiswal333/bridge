@@ -5,7 +5,8 @@
 		"title"					:	"Hangman",
 		"icon_css"				:	"fa fa-child",
 		"overview_directive"	:	"app.hangman",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"default_hidden"		: 	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],

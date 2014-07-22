@@ -3,7 +3,7 @@ angular.module('app.hangman').directive('app.hangman', function () {
 
     var directiveController = ['$scope', 'notifier', function ($scope, notifier)
     {
-        $scope.numNotifications = notifier.allNotifications().length;
+        $scope.notifications = notifier.allNotifications();
         
     }];
 
