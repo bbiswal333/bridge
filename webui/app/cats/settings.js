@@ -6,48 +6,54 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
 			catsConfigService.catsItems.push.apply(catsConfigService.catsItems, catsConfigService.favoriteItems);
 		}
 
+		catsConfigService.catsItems.forEach(function(catsItem){
+			catsItem.selected = false;
+			catsItem.color = null;
+		});		
+
 		catsConfigService.favoriteItems.forEach(function(favItem){
 			favItem.selected = true;
-			favItem.color = null;
 		});
 		
 		$scope.favoriteTasks = catsConfigService.favoriteItems;
-		$scope.currentConfigValues = catsConfigService.configItem;
 		
 		if ($scope.favoriteTasks.length > 0){
 			$scope.selectedTask = $scope.favoriteTasks[$scope.favoriteTasks.length - 1];
 		}
 	}
 
-	function getIndexOfFavoriteTask (task) {
-		var taskIndex = -1;
-		$scope.favoriteTasks.some(function(favTask, index){
-        	if (catsUtils.isSameTask(task, favTask)){
-        		taskIndex = index;
-        		return true;
-        	} 
-        });
-        return taskIndex;
-	}
+    function getIndexForId(list, id) {
+      var index = -1;
+      var foundIndex = index;
+      list.some(function(item) {
+        index++;
+        if (id === item.id) {
+        	foundIndex = index;
+          	return true;
+        }
+      });
+      return foundIndex;
+    }
 
-	$scope.handleProjectChecked = function (desc_s, val_i, task, index) {
+	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
+		var index = getIndexForId(catsConfigService.catsItems, id);
 		$scope.selectedTask = catsConfigService.catsItems[index];
 
-		if (getIndexOfFavoriteTask(task) < 0) {
+		if (getIndexForId($scope.favoriteTasks, id) < 0) {
 			$scope.favoriteTasks.push($scope.selectedTask);
 		}
 		return true;
 	};
 
 	$scope.handleProjectUnchecked = function (task) {
-		var index = getIndexOfFavoriteTask(task);
+		var index = getIndexForId($scope.favoriteTasks, task.id);
     	if (index >= 0) {
     		$scope.favoriteTasks.splice(index,1);
     		$scope.selectedTask = $scope.favoriteTasks[$scope.favoriteTasks.length - 1];
     	}
     };
 
-    $scope.save_click = function () {  
+    $scope.save_click = function () {
         $scope.$emit('closeSettingsScreen');
     };
 
