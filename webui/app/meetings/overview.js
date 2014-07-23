@@ -18,10 +18,8 @@ directive("app.meetings", [
 					id: $scope.boxId
 			};
 
-	        $scope.configService = meetingsConfigService;
-
 			$scope.box.returnConfig = function(){
-	            return angular.copy($scope.configService);
+	            return angular.copy(meetingsConfigService);
 	        }; 
 		}];
 
@@ -38,11 +36,12 @@ directive("app.meetings", [
 			var eventsRaw = {};
 			var today = new Date(new Date().toDateString());
 
-			
 			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
 			    meetingsConfigService.configItem = $scope.appConfig.configItem;
+			} else {
+				$scope.appConfig.configItem = meetingsConfigService.configItem;
 			}
-			$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+			$scope.box.boxSize = meetingsConfigService.configItem.boxSize;
 
 			function sortByStartTime(a, b) {
 			    if (a.start > b.start) {
@@ -140,7 +139,9 @@ directive("app.meetings", [
 			}
 
 		    $scope.$watch("appConfig.configItem.boxSize", function () {
-				$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+					$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+				}
 		    }, true);
 
 			$scope.upComingEvents = function () {
@@ -197,7 +198,7 @@ directive("app.meetings", [
 						parseExchangeData(eventsRaw);
 						i++;
 					}
-				}, 3000);
+				}, 30000);
 			})();
 
 			loadFromExchange(false);
