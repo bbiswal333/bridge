@@ -9,7 +9,7 @@ angular.module('bridge.app').
 		notifier.allNotifications().forEach(function(notification){
 			if (notification.state == "new") {
 				notification.state = "seen";
-			};
+			}
 		});
 		notifier.store();
 	};
@@ -17,7 +17,7 @@ angular.module('bridge.app').
   $scope.clearNotifications = function() {
   	notifier.clearNotifications();
   	return false;
-  }
+  };
 
 	$scope.testNotification = function(){
 		notifier.showSuccess("Test","Notification is working","Settings");
@@ -35,37 +35,31 @@ angular.module('bridge.app').
         }
     }
     throw new Error("module name is invalid!");
-  }
+  };
 
   $scope.getIconOf = function(notification){
     var module_name = notification.app;
-    if (!module_name) {
-        switch(notification.kindOf){
-            case 'success':
-                return 'fa fa-check';
-                break;
-            case 'info':
-                return 'fa fa-info';
-                break;
-            case 'error':
-                return 'fa fa-times';
-                break;
-            default:
-                throw new Error ('Unknown State '+notification.kindOf)
-        }
-    }
     for(var i = 0; i < apps.length; i++){
         var app = apps[i];
         if (app.metadata.module_name === module_name) {
             return app.metadata.icon_css;
         }
     }
-    throw new Error("module name is invalid!");
-  }
+	switch(notification.kindOf){
+	    case 'success':
+	        return 'fa fa-check';
+	    case 'info':
+	        return 'fa fa-info';
+	    case 'error':
+	        return 'fa fa-times';
+	    default:
+	        throw new Error ('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
+	}
+  };
 
   $scope.getTimeAgo = function(timeInMS){
     return jQuery.timeago(timeInMS);
-  }
+  };
 
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
@@ -92,7 +86,7 @@ angular.module('bridge.app').
 	};
 
 	$scope.filterNewNotifications = function newNotifications(item) {
-		return item.state == "new";
+		return item.state === "new";
 	};
 
 	$scope.updateStatus = function(notification, state) {
@@ -101,26 +95,28 @@ angular.module('bridge.app').
 		var divClass = "." + notification.app.replace(".", "-");
 		if (notification.app) {
 			$(divClass).animate({
-		          opacity: 0,
+		          opacity: 0
 		        }, 500 );
 			$(divClass).animate({
-		          opacity: 1.0,
+		          opacity: 1.0
 		        }, 500 );
-		};
+		}
 		if(notification.callback && typeof notification.callback === "function") {
 			notification.callback.call();
-		};
+		}
 	};
-
-		}]).
-		filter('newNotification', function () {
-				return function (notifications) {
-
-					if (notifications) {
-						var result = [];
-						notifications.forEach(function(notification){
-							if (notification.state == "new") result.push(notification);
-						})
-						return result;
-					}
-		}});
+}]).
+filter('newNotification', function (){
+	return function (notifications)
+	{
+		if (notifications) {
+			var result = [];
+			notifications.forEach(function(notification){
+				if (notification.state === "new") {
+					result.push(notification);
+				}
+			});
+			return result;
+		}
+	};
+});

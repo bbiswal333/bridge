@@ -104,10 +104,10 @@ directive("app.meetings", [
 			function loadFromExchange (withNotifications) {
 				$scope.loading = true;
 				$scope.errMsg = null;
-				var oldEventsRawLength = 0;
+				var oldEventsLength = 0;
 
 				if(withNotifications){
-					oldEventsRawLength = eventsRaw.length;
+					oldEventsLength = $scope.events.length;
 				}
 
 				var dateForewsCall = new Date();
@@ -121,12 +121,12 @@ directive("app.meetings", [
 							parseExchangeData(eventsRaw);
 						}
 						if(withNotifications){
-							if (eventsRaw.length > oldEventsRawLength) {
-								if (eventsRaw.length === oldEventsRawLength + 1) {
-									notifier.showInfo("Meetings", "You have a new meeting", "MeetingsApp");
+							if ($scope.events.length > oldEventsLength) {
+								if ($scope.events.length === oldEventsLength + 1) {
+									notifier.showInfo("Meetings", "You have a new meeting", "app.meetings");
 								}
 								else {
-									notifier.showInfo("Meetings", "You have new meetings", "MeetingsApp");
+									notifier.showInfo("Meetings", "You have new meetings", "app.meetings");
 								}
 							}
 						}
@@ -197,7 +197,7 @@ directive("app.meetings", [
 						parseExchangeData(eventsRaw);
 						i++;
 					}
-				}, 30000);
+				}, 3000);
 			})();
 
 			loadFromExchange(false);
