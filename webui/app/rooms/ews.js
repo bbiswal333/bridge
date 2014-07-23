@@ -1,9 +1,15 @@
 angular.module("app.rooms.ews", ["lib.utils"]).factory("app.rooms.ews.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
  		
-	// FIXME: this breaks CalDataSSO and the meeting widget !!!!
-	var EWS_BASE_URL = window.client.origin + "/api/CalRoomsSSO";
 
 	function _buildEWSUrl (dateFrom_o, days_i, searchString) {
+		
+		var EWS_BASE_URL 
+		if (searchString != undefined) {
+			EWS_BASE_URL = window.client.origin + "/api/CalRoomsSSO";
+		} else {
+			EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
+		}
+
 		function buildDateString (date_o) {
 			var year = date_o.getFullYear();
 			var month = calUtils.useNDigits(date_o.getMonth() + 1, 2);
@@ -21,7 +27,8 @@ angular.module("app.rooms.ews", ["lib.utils"]).factory("app.rooms.ews.ewsUtils",
 
 		var dateFrom_s = buildDateString(dateFrom_o);
 		var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
-
+		
+		
 		return EWS_BASE_URL + "?from=" + encodeForUrl(dateFrom_s) + "&to=" + encodeForUrl(dateTo_s) + "&format=json&searchString=" + encodeForUrl(searchString);
 	}
 
