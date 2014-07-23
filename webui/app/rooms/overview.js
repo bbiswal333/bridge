@@ -89,6 +89,7 @@ directive("app.rooms", [
 			}
 
 			function parseExchangeData(events) {
+				
 				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
 				$scope.events = [];
 
@@ -139,17 +140,21 @@ directive("app.rooms", [
 				$scope.loading = true;
 				$scope.errMsg = null;
 				var oldEventsRawLength = 0;
-
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
 				}
 
 				var dateForewsCall = new Date();
 				dateForewsCall.setDate(today.getDate() - 1);
-				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data, status) {
-
-					try{
+				// FIXME this needs to be fixed in order to only request "searchString"
+				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt, $scope.searchString)).success(function (data, status) {
+					
+					try{						
+						// FIXME Parsing of Returned Meeting Rooms still not implemented
 						eventsRaw = {};
+						roomData = [];
+						roomData = data["m:ResolveNamesResponse"]["m.ResponseMessages"][0]["m.ResolveNamesResponseMessage"][0]["m:ResolutionSet"][0]["t:Resolution"]
+						
 						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 						if (typeof eventsRaw !== "undefined") {
 							parseExchangeData(eventsRaw);
@@ -213,6 +218,10 @@ directive("app.rooms", [
 					$interval.cancel(refreshInterval);
 				}
 			});
+			
+			$scope.searchButton_click = function () {
+				loadFromExchange(false);
+			};
 
 			(function springGun() {
 				var i = 1;

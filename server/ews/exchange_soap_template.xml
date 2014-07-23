@@ -24,7 +24,7 @@
           <t:FieldURI FieldURI="calendar:IsAllDayEvent"/>
         </t:AdditionalProperties>
       </ItemShape>
-      <CalendarView StartDate="%DATEFROM%" EndDate="%DATETO%"></CalendarView>
+      <CalendarView StartDate="<%= dateFrom %>" EndDate="<%= dateTo %>"></CalendarView>
       <ParentFolderIds>
         <t:DistinguishedFolderId Id="calendar"/>
       </ParentFolderIds>
