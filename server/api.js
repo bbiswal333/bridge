@@ -12,7 +12,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var xml2js 	  	  = require("xml2js").parseString;
 	var iconv 	  	  = require("iconv-lite");
 	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
-    var EWSRoom       = require("./ews/ewsRoom.js").EWSRoom;
 	var wire          = require("./wire.js");
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
@@ -376,7 +375,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 			var ews = undefined;
 			try {
-				ews = new EWSClient(request.query.from, request.query.to, json);
+				ews = new EWSClient("caldata", request.query, json);
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);
@@ -397,10 +396,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			});
 
 		});
-	}
 	
-    if( local )
-	{
 		app.get("/api/calRoomsSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
@@ -411,7 +407,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 			var ews = undefined;
 			try {
-				ews = new EWSRoom(request.query.building, json);
+				ews = new EWSClient("calrooms", request.query, json);
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);

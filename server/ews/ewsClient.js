@@ -1,19 +1,34 @@
 var path    = require('path');
 var fs      = require("fs");
 var xml2js  = require('xml2js').parseString;
+var _und 	= require('underscore')._;
 
 /*
     list of available fields to request from ews
     http://msdn.microsoft.com/en-us/library/office/aa494315(v=exchg.150).aspx
 */
 
-exports.EWSClient = function(dateFrom, dateTo, json) {
+exports.EWSClient = function(clientType, query , json) {
     var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
-    var SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";    
-    var PLACEHOLDER_FROM = "%DATEFROM%";
-    var PLACEHOLDER_TO = "%DATETO%";    
+    var SOAP_TEMPLATE_FILE;
     var ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";    
     
+	var dateFrom, dateTo, searchString;
+	
+	if ( query.from != undefined ) {
+		dateFrom = query.from;
+		dateTo = query.to;
+		searchString = query.searchString;
+	}
+	
+	if (clientType == "caldata" ) {
+		SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";    
+	}
+	else  {
+		SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_roomsearch_template.xml";    
+		
+	}
+	
     if (dateFrom == undefined || dateTo == undefined) {
         throw new Error("dateFrom_s and dateTo_s must not be undefined.");
     }
@@ -28,9 +43,13 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
     
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
-            data = data.replace(PLACEHOLDER_FROM, dateFrom);
-            data = data.replace(PLACEHOLDER_TO, dateTo);
-            
+			
+			var compiled = _und.template(data)
+			data = compiled({dateFrom: dateFrom, dateTo: dateTo, searchString: searchString});
+						
+			var myresult;
+				  
+				  
             if (typeof webkitClient !== 'undefined' && webkitClient)
             {                
 
@@ -44,6 +63,7 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
                     success: 
                         function(data)
                         {                                        
+				
                             handleData(data.children[0].childNodes[1].innerHTML);
                         },
                     error: 
@@ -53,7 +73,7 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
                         }
                 });
 
-            }        
+            } 
 
             function handleData(ews_xml) {
                 if (json) {
@@ -89,4 +109,5 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
             callback_fn(data);
         });
     }
+
 };
