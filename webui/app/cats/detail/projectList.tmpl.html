@@ -11,7 +11,6 @@
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}">
             <div id="app-cats-project-selector-button-container" class="row">
-                <!-- <div  ng-repeat="item in items | filter:filter.val" class="app-cats-project-selector-buttonDiv animate-repeat" > -->
                 <div  ng-repeat="item in items | filter:filter.val" class="col-xs-6 col-md-12 col-lg-6 animate-repeat" >
                     <button class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"

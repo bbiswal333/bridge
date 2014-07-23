@@ -2,6 +2,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.data.cat
 	this.loaded = false;
 	this.catsItems = [];
 	this.favoriteItems = [];
+	this.selectedTask = null;
 
 	this.updateTaskIfFavorite = function (task) {
 		this.favoriteItems.some(function(favItem){
