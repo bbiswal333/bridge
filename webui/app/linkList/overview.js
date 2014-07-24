@@ -4,9 +4,11 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
 
     var directiveController = ['$scope', '$timeout', function ($scope) {   
          
+        $scope.boxSize = "1";
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
-            controller: angular.module('app.linklist').appLinkListSettings
+            controller: angular.module('app.linklist').appLinkListSettings,
+            id: $scope.boxId
         };        
         $scope.config = appLinklistConfig;
 
@@ -35,7 +37,6 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
         restrict: 'E',
         templateUrl: function() { return 'app/linkList/overview.html';},
         controller: directiveController,
-        //link: function ($scope, $element, $attrs, $modelCtrl) {
         link: function ($scope) {
 
             function setDefaultConfig()

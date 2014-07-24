@@ -25,7 +25,6 @@ angular.module('app.linklist').appLinkListSettings =
 	this.calculateIDsForSortable();
 
 	$scope.closeForm = function () {
-	    $scope.setBoxSize(appLinklistConfig.data.listCollection);
 		$scope.$emit('closeSettingsScreen');
 	};
 
@@ -37,37 +36,28 @@ angular.module('app.linklist').appLinkListSettings =
         delay: 250,
         scroll: false,
         tolerance: "intersect",
-        disabled: false,
-
-        //receive: function(event, ui)
-        receive: function()
-        {
-            //if (event.target.childElementCount >= 6) {
-                //ui.item.sortable.cancel(); // cancel does not work properly
-            //}
-            $scope.setBoxSize(appLinklistConfig.data.listCollection);
-    	}
+        disabled: false
     };
 
-    $scope.setBoxSize = function(listCollection)
+    $scope.setBoxSize = function() // !!! Is not working after Browser back button !!!
     {
-    	if(listCollection.length > 1) {
-	        $scope.boxScope.box.boxSize = 2;
+    	if(appLinklistConfig.data.listCollection.length > 1) {
+    		$scope.boxScope.box.boxSize = 2;
     	} else {
-	        $scope.boxScope.box.boxSize = 1;
+    		$scope.boxScope.box.boxSize = 1;
     	}
     };
 
     $scope.addLinkList = function()
     {
         appLinklistConfig.data.listCollection.push([]);
-        $scope.setBoxSize(appLinklistConfig.data.listCollection);
+		$scope.setBoxSize();
     };
 
     $scope.removeLinkList = function(colNo)
     {
         appLinklistConfig.data.listCollection.splice(colNo, 1);
-        $scope.setBoxSize(appLinklistConfig.data.listCollection);
+		$scope.setBoxSize();
     };
 
     $scope.isLinkListEmpty = function(colNo)
@@ -117,7 +107,6 @@ angular.module('app.linklist').appLinkListSettings =
 		{	
 			$scope.removeLinkList(colNo);
 		}
-        $scope.setBoxSize(appLinklistConfig.data.listCollection);
 	};
 
 	$scope.newEntry = function(colNo)
@@ -158,7 +147,6 @@ angular.module('app.linklist').appLinkListSettings =
 			$scope.setAddForm(colNo,'');
 			appLinklistConfig.data.listCollection[colNo].push(entry);
 		}
-        $scope.setBoxSize(appLinklistConfig.data.listCollection);
 	};
 
 	$scope.setAddForm = function(col,value)
@@ -189,4 +177,11 @@ angular.module('app.linklist').appLinkListSettings =
 			$scope.addForm[col] = '';
 		}
 	};
+
+	$scope.setBoxSize();
+
+	$scope.$watch("appLinklistConfig.data.listCollection", function () {
+		$scope.setBoxSize();
+	}, true);
+
 }];

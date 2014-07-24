@@ -11,7 +11,7 @@
                 <div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <div class="no-padd col-xs-4 bold">
 
-                        <input type="text" class="form-control form" ng-model="link.name" maxlength="20" placeholder="Name for the Link" />
+                        <input type="text" class="form-control form" ng-model="link.name" maxlength="32" placeholder="Name for the Link" />
                         <input ng-if="link.type=='saplink'" type="text" class="form-control form padd_bot" ng-model="link.transaction" placeholder="Transaction" />
                     </div>
                     <div class="no-padd padd-left col-xs-8">
