@@ -14,7 +14,7 @@
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"> &#xe1ed; </span>	
 		</div>
         
-		<div class="app-cats-calendar">
+		<div ng-class="{false:'app-cats-calendar',true:'app-cats-calendar-maintainable'}[maintainable]">
 			<div class="app-cats-week-labels row">
                 <div class="{{dayClass}}" ng-if="maintainable"> </div>
 				<div class="{{dayClass}}" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>

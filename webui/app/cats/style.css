@@ -112,6 +112,10 @@
 .app-cats-calendar {
     max-width: 800px;
 }
+.app-cats-calendar-maintainable {
+    max-width: 800px;
+    min-width: 460px;
+}
 .app-cats-week {
 	height: 15px;
 	margin-top: 2px;
