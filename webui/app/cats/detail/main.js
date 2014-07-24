@@ -215,7 +215,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                configService.updateTaskIfFavorite(task);
+                // configService.updateTaskIfFavorite(task);
                 var HoursOfWorkingDay = 8;
 
                 var isFixedTask = false;
@@ -289,7 +289,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             UNIT: "T"
         };
-        configService.updateTaskIfFavorite(block);
+        // configService.updateTaskIfFavorite(block);
         
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {

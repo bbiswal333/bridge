@@ -25,18 +25,16 @@ describe("The mini calendar shall display information about the current CATS com
   it ("should be possible to make an asynchronous test whether working hours on one day can be retrieved from CATS", function () {
     var result1;
     var result2;
-    catsUtils.getTotalWorkingTimeForDay("2014-03-25", function (val) {
-      result1 = val;
+    catsUtils.getTotalWorkingTimeForDay("2014-03-25").then(function (val) {
+		result1 = val;
+		expect(result1).toBe(1);
     });
     // January 6th is a public holidy, so working ours should be 0
-    catsUtils.getTotalWorkingTimeForDay("2014-01-06", function (val) {
-      result2 = val;
+    catsUtils.getTotalWorkingTimeForDay("2014-01-06").then(function (val) {
+		result2 = val;
+		expect(result2).toBe(0);
     });
-
     $httpBackend.flush();
-
-    expect(result1).toBe(1);
-    expect(result2).toBe(0);
   });
 
   xit ("should return an array containing tasks with value how many percent of the day has been spent on it", function () {

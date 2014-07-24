@@ -1,27 +1,6 @@
 angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", function ($scope, catsConfigService) {
 	
-	$scope.selectedTask = catsConfigService.selectedTask;	
-
-	function init () {
-		// if (!catsConfigService.loaded) {
-		// 	catsConfigService.catsItems.push.apply(catsConfigService.catsItems, catsConfigService.favoriteItems);
-		// }
-
-		// catsConfigService.catsItems.forEach(function(catsItem){
-		// 	catsItem.selected = false;
-		// 	catsItem.color = null;
-		// });		
-
-		// catsConfigService.favoriteItems.forEach(function(favItem){
-		// 	favItem.selected = true;
-		// });
-		
-		$scope.favoriteTasks = catsConfigService.favoriteItems;
-		
-		if ($scope.favoriteTasks.length > 0){
-			catsConfigService.selectedTask = $scope.favoriteTasks[$scope.favoriteTasks.length - 1];
-		}
-	}
+	$scope.configService = catsConfigService;	
 
     function getIndexForId(list, id) {
       var index = -1;
@@ -54,18 +33,18 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
     }
 
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
-		if (getIndexForId($scope.favoriteTasks, id) < 0) {
-			$scope.favoriteTasks.push(catsConfigService.selectedTask);
+		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
+			catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
 		}
 		sortFavoritesAccordingToCatsListSortOrder();
 		return true;
 	};
 
 	$scope.handleProjectUnchecked = function (task) {
-		var index = getIndexForId($scope.favoriteTasks, task.id);
+		var index = getIndexForId(catsConfigService.favoriteItems, task.id);
     	if (index >= 0) {
-    		$scope.favoriteTasks.splice(index,1);
-			catsConfigService.selectedTask = $scope.favoriteTasks[$scope.favoriteTasks.length - 1];
+    		catsConfigService.favoriteItems.splice(index,1);
+			catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
     	}
     };
 
@@ -73,5 +52,4 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
         $scope.$emit('closeSettingsScreen');
     };
 
-    init();
 }];

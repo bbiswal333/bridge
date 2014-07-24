@@ -12,55 +12,20 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       return (val_i >= min_i && val_i <= max_i);
     }
     
-    function _httpRequest(url, callback_fn) {
+    function _httpRequest(url) {
       var deferred = $q.defer();
 
       $http.get(url).success(function(data, status) {
         if (between(status, 200, 299)) {
-          if (callback_fn) {
-            callback_fn(data, status);
-          }
-          deferred.resolve(data);
+          deferred.resolve(data, status);
         }
       }).error(function(data, status) {
         console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
-        if (callback_fn) {
-          callback_fn(null, status);
-        }
-        deferred.resolve();
+        deferred.resolve(null, status);
       });
 
       return deferred.promise;
     }
-    
-    // function _requestCatsData() {
-    //   // var deferred = $q.defer();
-
-    //   return _httpRequest(CATS_COMPLIANCE_WEBSERVICE); // /zdevdb/MYCATSDATA
-    //   // _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
-    //   //   if (data != null) {
-    //   //     // data.CATSCHK.forEach(function(CATSCHKforDay){
-    //   //     //   // uncomment to be a part-time colleague test test test
-    //   //     //   if (CATSCHKforDay.STDAZ && false) {
-    //   //     //     CATSCHKforDay.STDAZ = 7.55;
-    //   //     //     CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-    //   //     //     if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
-    //   //     //       if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
-    //   //     //         CATSCHKforDay.STATUS = "Y";
-    //   //     //       } else {
-    //   //     //         CATSCHKforDay.STATUS = "G";
-    //   //     //       }
-    //   //     //     }
-    //   //     //   }
-    //   //     // });
-    //   //     deferred.resolve(data.CATSCHK);
-    //   //   } else {
-    //   //     deferred.resolve();
-    //   //   }
-    //   // });
-
-    //   // return deferred.promise;
-    // }
 
     var _getCatsComplianceData = function(forceUpdate_b) {
       var deferred = $q.defer();
@@ -68,6 +33,20 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       if (forceUpdate_b || catsDataCache == null) {
         _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
           catsDataCache = data.CATSCHK;
+          // data.CATSCHK.forEach(function(CATSCHKforDay){
+          //   // uncomment to be a part-time colleague test test test
+          //   if (CATSCHKforDay.STDAZ && false) {
+          //     CATSCHKforDay.STDAZ = 7.55;
+          //     CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+          //     if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
+          //       if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
+          //         CATSCHKforDay.STATUS = "Y";
+          //       } else {
+          //         CATSCHKforDay.STATUS = "G";
+          //       }
+          //     }
+          //   }
+          // });
           deferred.resolve(data.CATSCHK);
         });
       } else {
@@ -80,7 +59,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     var _getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
       
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week, function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week).then(function(data, status) { // /zdevdb/GETCATSDATA
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
@@ -112,9 +91,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     function _requestTasks(forceUpdate_b) {
       var deferred = $q.defer();
 
-      if (!forceUpdate_b && taskCache) {
-        deferred.resolve(taskCache);
-      } else {
+      if (forceUpdate_b || !taskCache) {
         _httpRequest(TASKS_WEBSERVICE).then(function(data) { // /zdevdb/GETWORKLIST
           var tasks = [];
 
@@ -149,31 +126,36 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           taskCache = tasks;
           deferred.resolve(taskCache);
         });
+      } else {
+        deferred.resolve(taskCache);
       }
 
       return deferred.promise;
     }
 
-    function _requestTasksFromTemplate (year, week, callback_fn) {
-      _getCatsAllocationDataForWeek(year, week).then(function(data) { // /zdevdb/GETWORKLIST
-        var tasks = [];
-        if (!data){
-          return;
-        }
-        var nodes = data.TIMESHEETS.RECORDS;
-        for (var i = 0; i < nodes.length; i++) {
-          var task = {};
-          task.RAUFNR         = nodes[i].RAUFNR;
-          task.TASKTYPE       = nodes[i].TASKTYPE;
-          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
-          task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
-          task.UNIT           = nodes[i].UNIT;
-          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-          tasks.push(task);
-        }
+    function _requestTasksFromTemplate (year, week) {
+      var deferred = $q.defer();
 
-        callback_fn(tasks);
+      _getCatsAllocationDataForWeek(year, week).then(function(data) {
+        var tasks = null;
+        if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
+          tasks = [];
+          var nodes = data.TIMESHEETS.RECORDS;
+          for (var i = 0; i < nodes.length; i++) {
+            var task = {};
+            task.RAUFNR         = nodes[i].RAUFNR;
+            task.TASKTYPE       = nodes[i].TASKTYPE;
+            task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
+            task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
+            task.UNIT           = nodes[i].UNIT;
+            task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+            tasks.push(task);
+          }
+        }
+        deferred.resolve(tasks);
       });
+
+      return deferred.promise;
     }
 
     function _getDescForState(state_s) {
@@ -234,8 +216,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       getTasks: function(forceUpdate_b) {
         return _requestTasks(forceUpdate_b);
       },
-      getTotalWorkingTimeForDay: function (day_s, callback_fn) {
-      	return _getTotalWorkingTimeForDay(day_s, callback_fn);
+      getTotalWorkingTimeForDay: function (day_s) {
+      	return _getTotalWorkingTimeForDay(day_s);
       },
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);
@@ -243,8 +225,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       writeCATSData: function (container) {
         return _writeCATSData(container);
       },
-      requestTasksFromTemplate: function(year, week, callback_fn) {
-        _requestTasksFromTemplate(year, week, callback_fn); 
+      requestTasksFromTemplate: function(year, week) {
+        return _requestTasksFromTemplate(year, week); 
       },
       isSameTask: function(task1, task2) {
         return _isSameTask(task1, task2);
