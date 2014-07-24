@@ -18,7 +18,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 	function setHeader(request, response)
 	{	
-		response.setHeader('Content-Type', 'text/plain');
 		var re = /^((https:\/\/)|(http:\/\/)|)([a-zA-Z0-9\.\-]*(\.sap\.corp|\.corp\.sap)|localhost)(:\d+)?($|\/)/;
 		if ( request.headers.origin != undefined && re.test(request.headers.origin))
 		{
@@ -31,6 +30,16 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	};
 
 	function callBackend(protocol, hostname, port, path, method, proxy, decode, callback, postData){
+
+		if( port === null && protocol === 'http:')
+		{
+			port = 80;
+		}
+
+		if( port === null && protocol === 'https:')
+		{
+			port = 443;
+		}
 
 		var options = 
 		{
@@ -74,6 +83,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		if( protocol == "http:")
 		{
 			req = http_req.request(options, function(res) {
+				res.setEncoding('binary');
+
+				var contentType = res.headers['content-type'];
 				if (decode != "none")
 				{ 
 					res.setEncoding('binary');
@@ -81,11 +93,11 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 				res.on('data', function(chunk) { data += chunk; });
 				res.on('end', function(){
 					if (decode == "none"){
-						callback( data );
+						callback( data, contentType );
 					}
 					else
 					{
-						callback( iconv.decode(data, decode).toString('utf-8') );
+						callback( iconv.decode(data, decode).toString('utf-8'), contentType);
 					}
 				});
 			});
@@ -94,11 +106,14 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		{
 
 			req = https_req.request(options, function(res) {
+				res.setEncoding('binary');
+
+				var contentType = res.headers['content-type'];
 			    res.on('data', function (chunk) {
 			        data += chunk;
 			    });
 			    res.on('end', function () {
-			        callback(data);
+			        callback(data, contentType);
 			    });
 			});
 		}
@@ -153,9 +168,14 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		}
 
 
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', proxy, decode, function (data) {
+		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', proxy, decode, function (data, contentType) {
 			response = setHeader( request, response );	
-			response.charset = 'UTF-8';
+			//console.log(contentType);
+			//response.setHeader('Content-Type', contentType);
+			response.set({ 'Content-Type': contentType + '; charset=UTF-8'});
+
+
+			//response.charset = 'UTF-8';
 			if (json) {
 				try {
 					xml2js(data, function (err, result) {
@@ -171,7 +191,8 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					response.send("Could not convert XML to JSON.");
 				}
 			}
-			else {
+			else 
+			{
 				response.send(data);
 			}
 		});
