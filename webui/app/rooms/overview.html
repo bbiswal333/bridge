@@ -8,7 +8,7 @@
                 <b>{{getCurrentDate()}}</b>   <a href="#/detail/rooms/" style="margin-left:10px;">Book Room</a>
 
                 <br>
-                {{getMeetingsLeftText()}}
+                {{getRoomsLeftText()}}
             </div>
           <div style="margin-top: 5px; height: 110px; overflow: hidden;">
                 <div style="height: 110px; overflow-y: auto;">
@@ -43,12 +43,41 @@
             </div>
 		</div>
 		<div ng-if="!hasEvents() && errMsg == null">
-			Hooray! You got no more meetings today!
+			Hey! You didn't book a room for the next days!
 		</div>
 	</div>	
 	<div>
 	<form ng-submit="searchButton_click()">
-		<input class="form-control form" type="text" placeholder="...search for rooms ..." ng-model="searchString" />
+		<input class="form-control form" type="text" placeholder="...search for rooms try e.g.: 'MR WDF03' ..." ng-model="searchString" />
 	</form>
+	                <div style="height: 110px; overflow-y: auto;">
+                    <table cellpadding="2" class="meetings-table" >
+                        <tr ng-repeat="foundRoom in getFoundRooms()" style="border-top: 1px solid #e5e5e5;">
+                            <td style="border-right: 1px solid #0099CC; width: 85px;" id="roomId{{($index+1)}}">
+                                <span>
+                                    <b>{{foundRoom.displayName}}</b>
+                                </span>
+                            </td>
+                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
+                                    <span>
+                                        <b>{{foundRoom.phoneNumber}}</b>
+                                    </span>
+                                </div>
+                                {{foundRoom.eMail}}
+                            </td>
+                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 216px">
+                                    <span>
+                                        <b>{{foundRoom.phoneNumber}}</b>
+                                    </span>
+                                	{{foundRoom.eMail}}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+	
 	</div>
 </div>

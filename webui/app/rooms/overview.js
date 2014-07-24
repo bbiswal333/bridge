@@ -88,52 +88,40 @@ directive("app.rooms", [
 			    }
 			}
 
-			function parseExchangeData(events) {
+			function parseExchangeDataRooms(fRooms) {
 				
-				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
-				$scope.events = [];
+				$scope.foundRooms = [];
 
-				if (typeof events === "undefined") {
+				if (typeof fRooms === "undefined") {
 					return;
 				}
 
-				for (var i = 0; i < events.length; i++) {
-					//ignore events, which are over already
-					if (dateFn(events[i]["t:End"][0]).getTime() <= new Date().getTime()) {
-						continue;
-					}
+				try {
+					for (var i = 0; i < fRooms.length; i++) {
+						var phoneNumber = "no Number defined"
+						if (typeof(fRooms[i]["t:Contact"][0]["t:PhoneNumbers"]) != "undefined") {
+							
+							var phones = fRooms[i]["t:Contact"][0]["t:PhoneNumbers"][0]["t:Entry"]
+							for (var j = 0; j < phones.length; j++) {
+								if ( phones[j].$["Key"] == "BusinessPhone" ) {
+									phoneNumber = phones[j]._ 
+									break;
+								} 
+							}
+						}
 
-					//ignore allday events
-					if ($scope.hideAllDayEvents && events[i]["t:IsAllDayEvent"][0] !== "false") {
-						continue;
-					}
-
-					var start = dateFn(events[i]["t:Start"][0]);
-					var end = dateFn(events[i]["t:End"][0]);
-
-					if (start.getDate() === today.getDate()) {
-						$scope.events.push({
-							subject: events[i]["t:Subject"][0],
-							start: start,
-							startRel: calUtils.relativeTimeTo(new Date(), start, true),
-							startTime: calUtils.useNDigits(start.getHours(), 2) + ":" + calUtils.useNDigits(start.getMinutes(), 2),
-							end: end,
-							endRel: calUtils.relativeTimeTo(new Date(), end, true),
-							endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
-							timeZone: events[i]["t:TimeZone"][0],
-							location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
-							getEventTime: function () {
-							    if ($scope.events.indexOf(this) === 0) {
-							        return "<b>" + this.startRel + "</b>";
-							    } else {
-							        return this.startTime + "<br />" + this.endTime;
-							    }
-							},
-							isCurrent: (start.getTime() < new Date().getTime())
+						$scope.foundRooms.push({
+							phoneNumber: phoneNumber,
+							displayName: fRooms[i]["t:Contact"][0]["t:DisplayName"][0],
+							eMail: fRooms[i]["t:Contact"][0]["t:EmailAddresses"][0]["t:Entry"][0]._
 						});
 					}
+				} catch (error) {
+						$scope.errMsg = "Error parsing Exchange Data";
+					console.log((error || $scope.errMsg));
 				}
-				$scope.events = $scope.events.sort(sortByStartTime);
+				console.log($scope.foundRooms);
+
 			}
 
 			function loadFromExchange (withNotifications) {
@@ -143,39 +131,25 @@ directive("app.rooms", [
 				if(withNotifications){
 					oldEventsRawLength = eventsRaw.length;
 				}
-
-				var dateForewsCall = new Date();
-				dateForewsCall.setDate(today.getDate() - 1);
-				// FIXME this needs to be fixed in order to only request "searchString"
-				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt, $scope.searchString)).success(function (data, status) {
+				
+				var url = ewsUtils.buildEWSUrl("0", "0", $scope.searchString);
+				$http.get(url).success(function (data, status) {
 					
 					try{						
-						// FIXME Parsing of Returned Meeting Rooms still not implemented
 						eventsRaw = {};
 						roomData = [];
-						roomData = data["m:ResolveNamesResponse"]["m.ResponseMessages"][0]["m.ResolveNamesResponseMessage"][0]["m:ResolutionSet"][0]["t:Resolution"]
-						
-						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
-						if (typeof eventsRaw !== "undefined") {
-							parseExchangeData(eventsRaw);
-						}
-						if(withNotifications){
-							if (eventsRaw.length > oldEventsRawLength) {
-								if (eventsRaw.length === oldEventsRawLength + 1) {
-									notifier.showInfo("Rooms", "You have a new meeting", "MeetingsApp");
-								}
-								else {
-									notifier.showInfo("Rooms", "You have new meetings", "MeetingsApp");
-								}
-							}
+						if (status == "200") {
+							roomData = data["m:ResolveNamesResponse"]["m:ResponseMessages"][0]["m:ResolveNamesResponseMessage"][0]["m:ResolutionSet"][0]["t:Resolution"]
+							parseExchangeDataRooms(roomData);
 						}
 	        			$scope.errMsg = null;
 					}catch(error){
-						$scope.errMsg = "Unable to connect to Exchange Server";
+						$scope.errMsg = "Unable to connect to Exchange Server or problem parsing the response.";
 						console.log((error || $scope.errMsg));
 					}
 					$scope.loading = false;
 				});
+				
 			}
 
 		    $scope.$watch("appConfig.configItem.boxSize", function () {
@@ -185,13 +159,17 @@ directive("app.rooms", [
 			$scope.upComingEvents = function () {
 			    return $scope.rooms;
 			};
+			
+			$scope.getFoundRooms = function () {
+				return $scope.foundRooms;
+			};
 
 			$scope.hasEvents = function () {
                 //return true;
 			    return ($scope.rooms.length !== 0);
 			};
 
-			$scope.getMeetingsLeftText = function () {
+			$scope.getRoomsLeftText = function () {
                 var cnt = $scope.rooms.length;
 				return cnt + " booking" + (cnt === 1 ? "" : "s") + " till " + calUtils.getWeekdays()[$scope.tillDate.getDay() - 1].long + ", " + $scope.tillDate.getDate() + ". " + calUtils.getMonthName($scope.tillDate.getMonth()).long;
 			};
@@ -222,21 +200,23 @@ directive("app.rooms", [
 			$scope.searchButton_click = function () {
 				loadFromExchange(false);
 			};
-
-			(function springGun() {
-				var i = 1;
-				//Full reload every 300 seconds, refresh of UI all 30 seconds
-				refreshInterval = $interval(function () {
-					if (i % 10 === 0) {
-						reload();
-						i = 1;
-					}
-					else {
-						parseExchangeData(eventsRaw);
-						i++;
-					}
-				}, 30000);
-			})();
+//
+// 		disable regular refresh on Room app
+//
+//			(function springGun() {
+//				var i = 1;
+//				//Full reload every 300 seconds, refresh of UI all 30 seconds
+//				refreshInterval = $interval(function () {
+//					if (i % 10 === 0) {
+//						reload();
+//						i = 1;
+//					}
+//					else {
+//						parseExchangeData(eventsRaw);
+//						i++;
+//					}
+//				}, 30000);
+//			})();
 
 			loadFromExchange(false);
 

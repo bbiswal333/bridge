@@ -10,26 +10,13 @@ angular.module("app.rooms.ews", ["lib.utils"]).factory("app.rooms.ews.ewsUtils",
 			EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
 		}
 
-		function buildDateString (date_o) {
-			var year = date_o.getFullYear();
-			var month = calUtils.useNDigits(date_o.getMonth() + 1, 2);
-			var day = calUtils.useNDigits(date_o.getDate(), 2);
-			var hour = calUtils.useNDigits(date_o.getHours(), 2);
-			var minute = calUtils.useNDigits(date_o.getMinutes(), 2);
-			var second = calUtils.useNDigits(date_o.getSeconds(), 2);
-
-			return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z"; 
-		}
 
 		function encodeForUrl (val_s) {
 			return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
 		}
-
-		var dateFrom_s = buildDateString(dateFrom_o);
-		var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
 		
 		
-		return EWS_BASE_URL + "?from=" + encodeForUrl(dateFrom_s) + "&to=" + encodeForUrl(dateTo_s) + "&format=json&searchString=" + encodeForUrl(searchString);
+		return EWS_BASE_URL + "?format=json&searchString=" + encodeForUrl(searchString);
 	}
 
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
