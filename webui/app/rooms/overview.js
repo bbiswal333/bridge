@@ -98,6 +98,9 @@ directive("app.rooms", [
 
 				try {
 					for (var i = 0; i < fRooms.length; i++) {
+						if (typeof fRooms[i]["t:Contact"] === "undefined") {
+							break;
+						}
 						var phoneNumber = "no Number defined"
 						if (typeof(fRooms[i]["t:Contact"][0]["t:PhoneNumbers"]) != "undefined") {
 							
