@@ -6,12 +6,12 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 	        $scope.box.boxSize = "2";
 	        $scope.configService = catsConfigService;
 
-			// $scope.box.settingsTitle = "Configure Work List";
-			// $scope.box.settingScreenData = {
-			//     templatePath: "cats/settings.html",
-			//     controller: angular.module('app.cats').catsSettings,
-			//     id: $scope.boxId
-			// };
+			$scope.box.settingsTitle = "Configure Work List";
+			$scope.box.settingScreenData = {
+			    templatePath: "cats/settings.html",
+			    controller: angular.module('app.cats').catsSettings,
+			    id: $scope.boxId
+			};
 
 	        $scope.getCatClass = function(){
 	        	$scope.catClass = Math.floor(Math.random() * 2);

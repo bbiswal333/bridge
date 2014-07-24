@@ -205,7 +205,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 								task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
 								task.DESCR = ISPtask.DESCR;
 								weekData.days[DayIterator].tasks.push( task );
-								catsUtils.enrichTaskData(task);
 								if (task.UNIT === 'H') {
 									weekData.days[DayIterator].actualTimeInPercentageOfDay += task.QUANTITY / hoursOfWorkingDay;
 								} else {

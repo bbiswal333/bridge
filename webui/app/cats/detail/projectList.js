@@ -1,6 +1,6 @@
 angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data", "app.cats.allocationBar.utils"]).
-  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils",  "lib.utils.calUtils", "app.cats.configService",
-    function (catsUtils, $timeout, colorUtils, calenderUtils, configService) {
+  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils",  "lib.utils.calUtils", "app.cats.configService", "$q",
+    function (catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -9,17 +9,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     var additionalData;
 
     var config = {};
-
-
-    function initProjectItems () {
-      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
-        $scope.items = angular.copy(configService.favoriteItems);
-      } else{
-        $scope.items = angular.copy(configService.catsItems);
-      }
-    }
-
-    initProjectItems();
 
     $scope.scrollbar = function(direction, autoResize) {
         config.direction = direction;
@@ -126,7 +115,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     function createNewProjectItem (item) {
       var newItem        = item;
-      newItem.id         = "ID" + item.ZCPR_OBJGEXTID + "RAUF" + item.RAUFNR + "TYPE" + item.TASKTYPE;
+      newItem.id         = item.ZCPR_OBJGEXTID || "" + item.RAUFNR || "" + item.TASKTYPE;
       newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
       // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
       
@@ -152,6 +141,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function getDataFromCatsTemplate () {
+      var deferred = $q.defer();
+
       if (additionalData === undefined) {
         var week = calenderUtils.getWeekNumber(new Date());
         catsUtils.requestTasksFromTemplate(week.year, week.weekNo, function(data){
@@ -159,17 +150,18 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           additionalData.forEach(function(task){
             createNewProjectItem(task);
           });
-
-          $timeout(function () {
-            $scope.$broadcast('rebuild:me');
-          }, 100);
+          // $timeout(function () {
+          //   $scope.$broadcast('rebuild:me');
+          // }, 100);
+          deferred.resolve();
         });
       }
+      return deferred.promise;
     }
 
-    function getCatsData () {
-      
-      catsUtils.getTasks(function (data) {
+    function getCatsData (callback_fn) {
+      var deferred = $q.defer(); 
+      catsUtils.getTasks(true).then(function (data) {
         if ($scope.blocks === undefined) {
           $scope.blocks = [];
         }
@@ -180,20 +172,20 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         getDataFromCatsTemplate();
 
         // if (!configService.loaded) {
-          // configService.favoriteItems.forEach(function(favItem){
-          //   var found = false;
-          //   configService.catsItems.some(function(catsItem){
-          //     if (catsUtils.isSameTask(favItem, catsItem)) {
-          //       // catsItem.DESCR = favItem.DESCR;
-          //       catsItem = favItem;
-          //       found = true;
-          //       return true;
-          //     }
-          //   });
-          //   if (!found) {
-          //     configService.catsItems.push(favItem);
-          //   }
-          // });
+          configService.favoriteItems.forEach(function(favItem){
+            var found = false;
+            configService.catsItems.some(function(catsItem){
+              if (catsUtils.isSameTask(favItem, catsItem)) {
+                // catsItem.DESCR = favItem.DESCR;
+                catsItem = favItem;
+                found = true;
+                return true;
+              }
+            });
+            if (!found) {
+              configService.catsItems.push(favItem);
+            }
+          });
         // }
 
         // var uniqBy = function(ary, key) {
@@ -205,39 +197,64 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         // };
 
         // configService.catsItems = uniqBy(configService.catsItems, JSON.stringify);
-
+        if (callback_fn) {
+          callback_fn();
+        }
+        configService.loaded = true;
         $timeout(function () {
           $scope.$broadcast('rebuild:me');
         }, 100);
       });
       $scope.loaded = true;
+      return deferred.promise;
+    }
+
+    function initProjectItems () {
+      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
+        $scope.items = angular.copy(configService.favoriteItems);
+      } else{
+        $scope.items = angular.copy(configService.catsItems);
+      }
+      // if ($scope.items.length === 0) {
+      //   getCatsData(function(){
+      //     initProjectItems();
+      //   });
+      // }
+    }
+
+    function markProjectItems() {
+      $scope.items.forEach(function(item){
+        markItemIfSelected(item);
+      });
     }
 
     function loadProjects () {
       if (!configService.loaded || $scope.forSettingsView) {
-
-        getCatsData();
-        initProjectItems();
-
-        configService.loaded = true;
-      } 
-      // else {
-        $scope.items.forEach(function(item){
-          markItemIfSelected(item);
+        getCatsData(function(){
+          initProjectItems();
+          markProjectItems();
         });
-        $timeout(function () {
-          $scope.$broadcast('rebuild:me');
-        }, 100);        
-      // } 
+      } else {
+        initProjectItems();
+      }
+
+      $timeout(function () {
+        $scope.$broadcast('rebuild:me');
+      }, 100);        
+
       $scope.loaded = true;
     }
 
+    loadProjects();
+
     $scope.$watch("blocks", function () {
-      loadProjects();
+      markProjectItems();
+      // loadProjects();
     }, true);
 
     $scope.$watch("items", function () {
-      loadProjects();
+      // loadProjects();
+      markProjectItems();
     }, true);  };
 
   return {

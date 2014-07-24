@@ -550,7 +550,7 @@ angular.module("app.cats")
 			
 			var refreshInterval = null;
 
-			catsUtils.getCatsComplianceData(handleCatsData);
+			catsUtils.getCatsComplianceData().then( handleCatsData );
 
 			if ($scope.selectedDay) {
 			    while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
@@ -575,7 +575,7 @@ angular.module("app.cats")
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
-			    catsUtils.getCatsComplianceData(handleCatsData, true); // force update
+			    catsUtils.getCatsComplianceData(true).then( handleCatsData ); // force update
 			});
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;

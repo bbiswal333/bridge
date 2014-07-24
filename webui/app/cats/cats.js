@@ -13,55 +13,64 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
     
     function _httpRequest(url, callback_fn) {
+      var deferred = $q.defer();
+
       $http.get(url).success(function(data, status) {
         if (between(status, 200, 299)) {
-          callback_fn(data);
+          if (callback_fn) {
+            callback_fn(data, status);
+          }
+          deferred.resolve(data);
         }
       }).error(function(data, status) {
         console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
-        callback_fn(null);
+        if (callback_fn) {
+          callback_fn(null, status);
+        }
+        deferred.resolve();
       });
+
+      return deferred.promise;
     }
     
-    function _requestCatsData(callback_fn) {
-      _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
-        if (data != null) {
-          // data.CATSCHK.forEach(function(CATSCHKforDay){
-          //   // test test test
-          //   if (CATSCHKforDay.STDAZ && false) {
-          //     CATSCHKforDay.STDAZ = 7.55;
-          //     CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-          //     if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
-          //       if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
-          //         CATSCHKforDay.STATUS = "Y";
-          //       } else {
-          //         CATSCHKforDay.STATUS = "G";
-          //       }
-          //     }
-          //   }
-          // });
-          callback_fn(data.CATSCHK);
-        } else {
-          callback_fn();
-        }
-      });
-    }
+    // function _requestCatsData() {
+    //   // var deferred = $q.defer();
 
-    var _getCatsComplianceData = function(callback_fn, forceUpdate_b) {
-      var deferred = $q.defer(); // Trying to make it independent from callback function
+    //   return _httpRequest(CATS_COMPLIANCE_WEBSERVICE); // /zdevdb/MYCATSDATA
+    //   // _httpRequest(CATS_COMPLIANCE_WEBSERVICE, function(data) { // /zdevdb/MYCATSDATA
+    //   //   if (data != null) {
+    //   //     // data.CATSCHK.forEach(function(CATSCHKforDay){
+    //   //     //   // uncomment to be a part-time colleague test test test
+    //   //     //   if (CATSCHKforDay.STDAZ && false) {
+    //   //     //     CATSCHKforDay.STDAZ = 7.55;
+    //   //     //     CATSCHKforDay.QUANTITYH = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+    //   //     //     if (CATSCHKforDay.STDAZ && CATSCHKforDay.QUANTITYH) {
+    //   //     //       if (CATSCHKforDay.STDAZ !== CATSCHKforDay.QUANTITYH) {
+    //   //     //         CATSCHKforDay.STATUS = "Y";
+    //   //     //       } else {
+    //   //     //         CATSCHKforDay.STATUS = "G";
+    //   //     //       }
+    //   //     //     }
+    //   //     //   }
+    //   //     // });
+    //   //     deferred.resolve(data.CATSCHK);
+    //   //   } else {
+    //   //     deferred.resolve();
+    //   //   }
+    //   // });
+
+    //   // return deferred.promise;
+    // }
+
+    var _getCatsComplianceData = function(forceUpdate_b) {
+      var deferred = $q.defer();
 
       if (forceUpdate_b || catsDataCache == null) {
-        _requestCatsData(function(data) {
-          catsDataCache = data;
-          if (callback_fn) {
-            callback_fn(data);
-          }
-          deferred.resolve(data);
+        _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
+          catsDataCache = data.CATSCHK;
+          deferred.resolve(data.CATSCHK);
         });
       } else {
-        if (callback_fn) {
-          callback_fn(catsDataCache);
-        }
         deferred.resolve(catsDataCache);
       }
 
@@ -88,9 +97,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
     function _getTotalWorkingTimeForDay(day_s) {
       var deferred = $q.defer();
-      var promise = _getCatsComplianceData("",false);
 
-      promise.then(function(data) {
+      _getCatsComplianceData(false).then(function(data) {
         for (var i = 0; i < data.length; i++) {
           if (data[i].DATEFROM ===  day_s) {
             deferred.resolve(data[i].STDAZ);
@@ -101,58 +109,49 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       return deferred.promise;
     }
 
-    function _enrichTaskData(task){
-      // if (task &&
-      //     !task.ZCPR_OBJGEXTID &&
-      //     !task.ZCPR_EXTID) {
-      //   task.ZCPR_OBJGEXTID = task.TASKTYPE;
-      //   task.ZCPR_EXTID = "";
-      // } else if (task.record &&
-      //     !task.record.ZCPR_OBJGEXTID &&
-      //     !task.record.ZCPR_EXTID) {
-      //   task.record.ZCPR_OBJGEXTID = task.record.TASKTYPE;
-      //   task.record.ZCPR_EXTID = "";
-      // }
-      return task;
-    }
+    function _requestTasks(forceUpdate_b) {
+      var deferred = $q.defer();
 
-    function _requestTasks(callback_fn) {
-      _httpRequest(TASKS_WEBSERVICE, function(data) { // /zdevdb/GETWORKLIST
-        var tasks = [];
+      if (!forceUpdate_b && taskCache) {
+        deferred.resolve(taskCache);
+      } else {
+        _httpRequest(TASKS_WEBSERVICE).then(function(data) { // /zdevdb/GETWORKLIST
+          var tasks = [];
 
-        //Add prefdefined tasks (ADMI & EDUC)
-        tasks.push({
-            RAUFNR: "",
-            TASKTYPE: "ADMI",
-            DESCR: "ADMI"
-            // projectDesc: "Administrative"
+          //Add prefdefined tasks (ADMI & EDUC)
+          tasks.push({
+              RAUFNR: "",
+              TASKTYPE: "ADMI",
+              DESCR: "Admin"
+          });
+
+          tasks.push({
+              RAUFNR: "",
+              TASKTYPE: "EDUC",
+              DESCR: "Education"
+          });
+
+          if (data && data.WORKLIST) {
+            var nodes = data.WORKLIST;
+            for (var i = 0; i < nodes.length; i++) {
+              var task = {};
+              task.RAUFNR         = nodes[i].RAUFNR;
+              task.TASKTYPE       = nodes[i].TASKTYPE;
+              task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
+              task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
+              task.UNIT           = nodes[i].UNIT;
+              task.projectDesc    = nodes[i].DISPTEXTW1;
+              task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+              tasks.push(task);
+            }
+          }
+
+          taskCache = tasks;
+          deferred.resolve(taskCache);
         });
+      }
 
-        tasks.push({
-            RAUFNR: "",
-            TASKTYPE: "EDUC",
-            DESCR: "EDUC"
-            // projectDesc: "Personal education"
-        });
-
-        if (!data){
-          return;
-        }
-        var nodes = data.WORKLIST;
-        for (var i = 0; i < nodes.length; i++) {
-          var task = {};
-          task.RAUFNR         = nodes[i].RAUFNR;
-          task.TASKTYPE       = nodes[i].TASKTYPE;
-          task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
-          task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
-          task.UNIT           = nodes[i].UNIT;
-          task.projectDesc    = nodes[i].DISPTEXTW1;
-          task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-          tasks.push(task);
-        }
-
-        callback_fn(tasks);
-      });
+      return deferred.promise;
     }
 
     function _requestTasksFromTemplate (year, week, callback_fn) {
@@ -169,14 +168,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
           task.ZCPR_EXTID     = nodes[i].ZCPR_EXTID;
           task.ZCPR_OBJGEXTID = nodes[i].ZCPR_OBJGEXTID;
           task.UNIT           = nodes[i].UNIT;
-          // task.projectDesc    = nodes[i].DISPTEXTW1 || nodes[i].ZCPR_EXTID;
           task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-
-          // if (task.TASKTYPE === 'ADMI' || task.TASKTYPE === 'EDUC') {
-          //   _enrichTaskData(task);
-          // }
-          // task.data = nodes[i];
-
           tasks.push(task);
         }
 
@@ -233,30 +225,20 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     return {
-      getCatsComplianceData: function(callback_fn, forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
-        return _getCatsComplianceData(callback_fn, forceUpdate_b);
+      getCatsComplianceData: function(forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
+        return _getCatsComplianceData(forceUpdate_b);
       },
       getDescForState: function(state_s) {
         return _getDescForState(state_s);
       },
-      getTasks: function(callback_fn, forceUpdate_b) {
-        if (forceUpdate_b || taskCache == null) {
-          _requestTasks(function(data) {
-            taskCache = data;
-            callback_fn(data);
-          });
-        } else {
-          callback_fn(taskCache);
-        }
+      getTasks: function(forceUpdate_b) {
+        return _requestTasks(forceUpdate_b);
       },
       getTotalWorkingTimeForDay: function (day_s, callback_fn) {
       	return _getTotalWorkingTimeForDay(day_s, callback_fn);
       },
       getCatsAllocationDataForWeek: function (year, week) {
         return _getCatsAllocationDataForWeek(year, week);
-      },
-      enrichTaskData: function(task){
-        return _enrichTaskData(task);
       },
       writeCATSData: function (container) {
         return _writeCATSData(container);

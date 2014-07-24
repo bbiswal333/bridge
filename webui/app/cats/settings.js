@@ -36,10 +36,28 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
       return foundIndex;
     }
 
+    function sortFavoritesAccordingToCatsListSortOrder() {
+    	if(catsConfigService.favoriteItems.length > 0 && catsConfigService.catsItems.length > 0) {
+    		var sortedFavoriteItems = [];
+    		catsConfigService.catsItems.forEach(function (catsItem) {
+    			catsConfigService.favoriteItems.some(function (favoriteItem) {
+    				if (catsItem.id === favoriteItem.id) {
+    					sortedFavoriteItems.push(favoriteItem);
+    					return true;
+    				}
+    			});
+    		});
+    		if (catsConfigService.favoriteItems.length === sortedFavoriteItems.length) {
+    			catsConfigService.favoriteItems = sortedFavoriteItems;
+    		}
+    	}
+    }
+
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
 		if (getIndexForId($scope.favoriteTasks, id) < 0) {
 			$scope.favoriteTasks.push(catsConfigService.selectedTask);
 		}
+		sortFavoritesAccordingToCatsListSortOrder();
 		return true;
 	};
 
