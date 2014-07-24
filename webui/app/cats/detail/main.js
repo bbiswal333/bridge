@@ -9,7 +9,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService) {
+  "app.cats.configService",
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -43,19 +44,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
 
-    function isSameTask(block, task) {
-        if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
-            (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
-             task.RAUFNR === block.RAUFNR &&
-             task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
-            return true;
-        }
-        return false;
-    }
+    // function isSameTask(block, task) {
+    //     if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
+    //         (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
+    //          task.RAUFNR === block.RAUFNR &&
+    //          task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
-            if (isSameTask(block, $scope.blockdata[i].task)) {
+            if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
                 return $scope.blockdata[i];
             }
         }
@@ -147,7 +148,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             var i = 0;
             while (i < $scope.blockdata.length) {
-                if (isSameTask(block, $scope.blockdata[i].task)) {
+                if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
                     if ($scope.blockdata[i].task.COUNTER) {
                         $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
                     } else {
@@ -214,15 +215,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
+                // configService.updateTaskIfFavorite(task);
                 var HoursOfWorkingDay = 8;
+
+                var isFixedTask = false;
+                if (task.TASKTYPE === "VACA" ||
+                    task.TASKTYPE === "ABSE" ||
+                    task.TASKTYPE === "COMP") {
+                    isFixedTask = true;
+                }
+
                 if (task.TASKTYPE === "VACA") {
-                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, true);
+                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else if (task.TASKTYPE === "ABSE") {
-                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, true);
+                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
                 } else {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
             checkAndCorrectPartTimeInconsistancies(day);
@@ -279,6 +289,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             UNIT: "T"
         };
+        // configService.updateTaskIfFavorite(block);
+        
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
@@ -373,7 +385,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             monthlyDataService.days[workdate].tasks.forEach(function(task){
                 if (task.QUANTITY === 0 ||
                     task.TASKTYPE === "VACA" ||
-                    task.TASKTYPE === "ABSE") { 
+                    task.TASKTYPE === "ABSE" ||
+                    task.TASKTYPE === "COMP") { 
                     return null;
                 }
                 var taskDeletion = angular.copy(task);

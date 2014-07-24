@@ -4,7 +4,8 @@ angular.module("notifier", []).factory("notifier", function () {
   icons.push("../img/notifier_tick.png");      // Success
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
-
+  var notifications = JSON.parse(localStorage.getItem('notifcations')) || [];
+  
   var Notifier = function (text, body, icon, tag, duration) {
     var self = this;
     var n;
@@ -136,23 +137,38 @@ angular.module("notifier", []).factory("notifier", function () {
     }
   };
 
-  function showMsg(title_s, body_s, icon_i, tag_s, onCLick_fn) {
-      var notifier = new Notifier(title_s, body_s, icons[icon_i], tag_s, DEFAULT_DURATION);
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
+      var notifier = new Notifier(title_s, body_s, icons[icon_i], appIdentifier_s, DEFAULT_DURATION);
       notifier.onclick = onCLick_fn;
       notifier.show();
-  }
+      notifications.unshift({
+        title: title_s,
+        body: body_s,
+        icon: icon_i,
+        app: appIdentifier_s || "",
+        callback: onCLick_fn,
+        timestamp: new Date().getTime(),
+        kindOf: kindOf_s,
+        state: 'new'
+      });
+      storeAllNotificationsInLocale();
+  };
+
+  function storeAllNotificationsInLocale() {
+    localStorage.setItem('notifcations', JSON.stringify(notifications));
+  };
 
   var instance = new Notifier();
 
   return {
-    showInfo: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 0, onClick_fn);
+    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info");
     },
-    showSuccess: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 1, onClick_fn);
+    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success");
     },
-    showError: function (title_s, body_s, tag_s, onClick_fn) {
-      showMsg(title_s, body_s, 2, onClick_fn);
+    showError: function (title_s, body_s, appIdentifier_s, onClick_fn) {
+      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error");
     },
     chromePreCheckRequestNeeded: function () {
       return instance.chromePreCheckRequestNeeded();
@@ -164,6 +180,16 @@ angular.module("notifier", []).factory("notifier", function () {
     },
     getPermission: function () {
       return instance.getPermission();
-    }
+    },
+    allNotifications: function() {
+      return notifications;
+    },
+    clearNotifications: function() {
+      notifications.length = 0;
+      localStorage.clear();
+    },
+    store: function() {
+      storeAllNotificationsInLocale();
+    },
   };  
 });

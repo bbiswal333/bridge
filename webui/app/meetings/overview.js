@@ -1,11 +1,28 @@
-angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).directive("app.meetings", [
+angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
+directive("app.meetings", [
 	"$timeout",
 	"$http",
 	"app.meetings.ews.ewsUtils",
 	"lib.utils.calUtils",
 	"$interval",
+	"app.meetings.configservice",
 	"notifier",
-	function ($timeout, $http, ewsUtils, calUtils, $interval, notifier) {
+	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+
+		var directiveController = ['$scope', function ($scope){
+
+			$scope.box.settingsTitle = "Configure box size";
+			$scope.box.settingScreenData = {
+				templatePath: "meetings/settings.html",
+					controller: angular.module('app.meetings').appMeetingsSettings,
+					id: $scope.boxId
+			};
+
+			$scope.box.returnConfig = function(){
+	            return angular.copy(meetingsConfigService);
+	        }; 
+		}];
+
 		var linkFn = function ($scope) {
 			/* ====================================== */
 			/* CONFIGURATION */
@@ -13,18 +30,18 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			$scope.hideAllDayEvents = true;
 			/* ====================================== */
 
-			$scope.boxTitle = "Meetings";
-			$scope.boxIcon = '&#xe823;';
-			$scope.boxIconClass = 'icon-meeting-o';
-			$scope.boxNeedsClient = true;
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
-			$scope.box.boxSize = 2;
 			var eventsRaw = {};
-
 			var today = new Date(new Date().toDateString());
-			
+
+			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+			    meetingsConfigService.configItem = $scope.appConfig.configItem;
+			} else {
+				$scope.appConfig.configItem = meetingsConfigService.configItem;
+			}
+			$scope.box.boxSize = meetingsConfigService.configItem.boxSize;
 
 			function sortByStartTime(a, b) {
 			    if (a.start > b.start) {
@@ -86,10 +103,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 			function loadFromExchange (withNotifications) {
 				$scope.loading = true;
 				$scope.errMsg = null;
-				var oldEventsRawLength = 0;
+				var oldEventsLength = 0;
 
 				if(withNotifications){
-					oldEventsRawLength = eventsRaw.length;
+					oldEventsLength = $scope.events.length;
 				}
 
 				var dateForewsCall = new Date();
@@ -103,12 +120,12 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 							parseExchangeData(eventsRaw);
 						}
 						if(withNotifications){
-							if (eventsRaw.length > oldEventsRawLength) {
-								if (eventsRaw.length === oldEventsRawLength + 1) {
-									notifier.showInfo("Meetings", "You have a new meeting", "MeetingsApp");
+							if ($scope.events.length > oldEventsLength) {
+								if ($scope.events.length === oldEventsLength + 1) {
+									notifier.showInfo("Meetings", "You have a new meeting", "app.meetings");
 								}
 								else {
-									notifier.showInfo("Meetings", "You have new meetings", "MeetingsApp");
+									notifier.showInfo("Meetings", "You have new meetings", "app.meetings");
 								}
 							}
 						}
@@ -120,6 +137,12 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 					$scope.loading = false;
 				});
 			}
+
+		    $scope.$watch("appConfig.configItem.boxSize", function () {
+				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+					$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+				}
+		    }, true);
 
 			$scope.upComingEvents = function () {
 			    return $scope.events;
@@ -183,9 +206,10 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).di
 
 		return {
 			restrict: "E",
+			controller: directiveController,
 			scope: false,
 			templateUrl: "app/meetings/overview.html",
 			replace: true,
-			link: linkFn
+	        link: linkFn 
 		};
 }]);

@@ -19,10 +19,12 @@
 
     <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
     <link href="css/bridge.css" rel="stylesheet" />
+    <link href="css/notificationStyles.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
     
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
+    <script src="lib/jquery.timeago.js"></script>
     
     <script src="lib/angular-1_2_13/angular.js"></script>
     <script src="lib/angular-1_2_13/angular-route.min.js"></script>
@@ -56,7 +58,17 @@
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
 
-    <script src="loader.js"></script>       
+    <script src="loader.js"></script>   
+
+    
+    <script type="text/javascript">
+        var SpritzSettings = {
+        clientId: "",
+        redirectUri: window.location.origin
+     };
+     </script>
+     <script id="spritzjs" src="//sdk.spritzinc.com/js/1.2/js/spritz.min.js"></script>
+
     <title>Bridge</title>
 </head>
 

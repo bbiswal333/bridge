@@ -715,16 +715,16 @@ input[type="checkbox"]:checked:after {
 }
 
 .prio_bg_1{
-    background-color:#428BCA;
+    background-color:#418AC9;
 }
 .prio_bg_2{
-    background-color:#6cb9e3;
+    background-color:#68A1D4;
 }
 .prio_bg_3{
-    background-color:#a4d8f9;
+    background-color:#8EB9DF;
 }
 .prio_bg_4{
-    background-color:#c4e8ff;
+    background-color:#B3D0E9;
 }
 .prio_box{ 
     width:100%; 

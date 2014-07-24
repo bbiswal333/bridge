@@ -1,6 +1,10 @@
 ﻿angular.
   module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', ["lib.utils.calUtils", "app.lunchWalldorf.dataProcessor", "app.lunchWalldorf.configservice", function (calUtils, dataProcessor, lunchConfigService) {
+  directive('app.lunchWalldorf', [
+    "lib.utils.calUtils",
+    "app.lunchWalldorf.dataProcessor",
+    "app.lunchWalldorf.configservice",
+    function (calUtils, dataProcessor, lunchConfigService) {
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxIcon = '&#xe824;';
@@ -14,7 +18,7 @@
             templatePath: "lunchWalldorf/settings.html",
                 controller: angular.module('app.lunchWalldorf').applunchWalldorfSettings,
                 id: $scope.boxId
-        };  
+        };
 
         $scope.portalLinkText = "Lunch menu in the portal";
         $scope.noDataString = "Data could not be loaded from webservice.";

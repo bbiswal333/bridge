@@ -18,26 +18,28 @@
 		</div>
 	</div>
 </div>
--->
 
+-->
 <div>
 	<a href="https://ifp.wdf.sap.corp/ccm" target="_blank"><div class="ccm-row">Planned capacity: {{clearCapacityData.zbsgrd_txt}}</div></a>
 	<div class="ccm-box">
 		<div class="ccm-head bold">Team</div>
 		<div class="ccm-content" ng-repeat="team in clearCapacityData.team_ass">
-			{{team.project_id}} ({{toPercent(team.capacity)}}%)
+			{{team.project_id}} <b>({{toPercent(team.capacity)}}%)</b>
 		</div>
 	</div>
 	<div class="ccm-box">
 		<div class="ccm-head bold">Activity</div>
 		<div class="ccm-content" ng-repeat="activity in clearCapacityData.act_ass">
-			{{activity.activity_cat_txt_level_1}} ({{toPercent(activity.capacity)}}%)
+			{{activity.activity_cat_txt_level_1}} <b>({{toPercent(activity.capacity)}}%)</b>
 		</div>
 	</div>
 	<div class="ccm-box">
 		<div class="ccm-head bold">Project</div>
 		<div class="ccm-content" ng-repeat="project in clearCapacityData.proj_ass">
-			{{project.project_id}} ({{toPercent(project.capacity)}}%)
+			{{project.project_id}} <b>({{toPercent(project.capacity)}}%)</b>
 		</div>
 	</div>
 </div>
+
+

@@ -112,6 +112,10 @@
 .app-cats-calendar {
     max-width: 800px;
 }
+.app-cats-calendar-maintainable {
+    max-width: 800px;
+    min-width: 460px;
+}
 .app-cats-week {
 	height: 15px;
 	margin-top: 2px;
@@ -142,6 +146,7 @@
 }
 .app-cats-day-text-big {
     font-size: 2em;
+    color: #707070;
 }
 .app-cats-day {
 	width: 13.5%;
@@ -199,10 +204,21 @@
 
 .app-cats-stateR { 
     /* Not maintained */
-    background: #a4d8f9;  
+    background: #EEB2A8;
+    /*background: #F5C099;*/
+
+}
+.app-cats-stateR_INTHEFUTURE {
+    background: #F3F2F2;
+}
+.app-cats-stateY_INTHEFUTURE_part_maint {
+    background-image: url('/../../img/part_maint_FUTURE.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 50%;
+    background-position-y:50%;
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-    background-color:#dff5ff;
     background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -210,9 +226,10 @@
     background-position-y:50%;
 }
 .app-cats-stateG { /* maintained */
-    background: #dff5ff;
+    background: #D3E6DC;
 }
 .app-cats-stateOVERBOOKED { /*overbooked*/
+    /*background: #A7D0BA;*/
     background-image: url('/../../img/over_booked.svg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -246,19 +263,19 @@
 
 .selected_day{
     background: ;
-    border: 2px solid #ffd07e;
+    border: 2px solid #c2b0e2;
     color: #707070!important;
     font-weight: 600;
 }
 .app-cats-stateY_TODAY { 
-    /*background-color:#dff5ff;*/
+    /*background-color:#FEE0A1;*/
     background-image: url('/../../img/part_maint_TODAY_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: 100%;
 }
 .app-cats-stateOVERBOOKED_TODAY { 
-    /*background-color:#dff5ff;*/
+    /*background-color:#A7D0BA;*/
     background-image: url('/../../img/over_booked_TODAY.svg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -520,10 +537,16 @@
 .settings_input_row {
     margin-top: 15px;
 }
-.settings_input_label {
+.settings_input {
     font-size: 14px; 
     line-height: 1.42857143; 
     color: #555; 
     padding-top: 6px;
+}
+.settings_input_text {
+    color: #AAA;
+    padding-left: 10px
+}
+.settings_input_label {
     text-align: right;
 }
