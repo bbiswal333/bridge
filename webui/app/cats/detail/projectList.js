@@ -178,28 +178,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         });
 
         getDataFromCatsTemplate().then( function() {
-          configService.favoriteItems.forEach(function(favItem){
-            var found = false;
-            configService.catsItems.some(function(catsItem){
-              if (catsUtils.isSameTask(favItem, catsItem)) {
-                // catsItem.DESCR = favItem.DESCR;
-                catsItem = favItem;
-                found = true;
-                return true;
-              }
-            });
-            if (!found) {
-              configService.catsItems.push(favItem);
-            }
-          });
-
           configService.loaded = true;
           $scope.loaded = true;
           deferred.resolve();
-
-          // $timeout(function () {
-          //   $scope.$broadcast('rebuild:me');
-          // }, 100);
         });
       });
       return deferred.promise;
@@ -212,6 +193,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         $scope.items = angular.copy(configService.catsItems);
       }
       getDescFromFavorites();
+
+      console.log("scope.items: ", $scope.items);
     }
 
     function markProjectItems() {

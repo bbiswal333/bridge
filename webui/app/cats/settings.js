@@ -36,7 +36,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
 		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
 			catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
 		}
-		sortFavoritesAccordingToCatsListSortOrder();
+		// sortFavoritesAccordingToCatsListSortOrder();
 		return true;
 	};
 
