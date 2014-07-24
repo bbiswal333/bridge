@@ -89,4 +89,3 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
         }
 
 }]);
-    
