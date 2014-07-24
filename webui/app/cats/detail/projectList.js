@@ -131,6 +131,11 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       newItem.id         = item.ZCPR_OBJGEXTID || "" + item.RAUFNR || "" + item.TASKTYPE;
       newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
       // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
+      return newItem;
+    }
+
+    function addNewProjectItem (item) {
+      var newItem = createNewProjectItem(item);
       
       markItemIfSelected(item);
 
@@ -159,7 +164,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       var week = calenderUtils.getWeekNumber(new Date());
       catsUtils.requestTasksFromTemplate(week.year, week.weekNo).then( function(data){
         data.forEach(function(task){
-          createNewProjectItem(task);
+          addNewProjectItem(task);
         });
         deferred.resolve();
       });
@@ -174,7 +179,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           $scope.blocks = [];
         }
         data.forEach(function(entry){
-          createNewProjectItem(entry);  
+          addNewProjectItem(entry);  
         });
 
         getDataFromCatsTemplate().then( function() {
@@ -193,8 +198,25 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         $scope.items = angular.copy(configService.catsItems);
       }
       getDescFromFavorites();
+    }
 
-      console.log("scope.items: ", $scope.items);
+    function addAdditionalItems () {
+      $scope.blocks.forEach(function(blockItem){
+        if (!blockItem.task) {
+          return;
+        }
+
+        var allreadyExists = false;
+        $scope.items.some(function(item){
+          if (catsUtils.isSameTask(blockItem.task, item)) {
+            allreadyExists = true;
+            return true;
+          }
+        });
+        if (!allreadyExists) {
+          $scope.items.push( createNewProjectItem(blockItem.task) );
+        }
+      });
     }
 
     function markProjectItems() {
@@ -223,8 +245,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     loadProjects();
 
     $scope.$watch("blocks", function () {
+      initProjectItems();
+      addAdditionalItems();
       markProjectItems();
-      // loadProjects();
     }, true);
 
     $scope.$watch("items", function () {
