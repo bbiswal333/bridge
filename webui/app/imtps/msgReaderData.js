@@ -1,4 +1,4 @@
-angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$interval', 'app.im.configservice', function ($http, $interval, configservice) {
+angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$interval', 'app.imtps.configservice' , 'trafficLightService' , function ($http, $interval, configservice , trafficLightService) {
     var gtpService = 'https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps';
     
     //buckets for the backend tickets
@@ -9,14 +9,14 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
     var that = this;
     
     this.loadByTestCaseName = function() {
-        $http.get( gtpService + '?testplans=' + configservice.tcQuery + '&sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+    	
+        $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
-
             data = new X2JS().xml_str2json(data);
-            that.backendTickets = data.abap.values;
+            that.backendTickets = data.abap.values["TC_MESSAGES"];
                         
             if( that.callbackCollection ){
-            	that.callbackCollection(this.backendTickets);	
+            	that.callbackCollection(that.backendTickets);	
             }
             
         }).error(function () {
@@ -30,10 +30,10 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
         ).success(function (data) {
 
             data = new X2JS().xml_str2json(data);
-            that.backendTickets = data.abap.values;
+            that.backendTickets = data.abap.values["TC_MESSAGES"];
                                     
             if( that.callbackCollection ){
-            	that.callbackCollection(this.backendTickets);	
+            	that.callbackCollection(that.backendTickets);	
             }
             
         }).error(function () {
@@ -43,13 +43,37 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
  
 
     this.loadTicketData = function () {
-    	if( configservice.tcQuery ){
+    	if( configservice.data.tcQuery ){
     		that.loadByTestCaseName();
     	}else{
     		that.loadByTesterWorklist();
     	}
-
+    	updateTrafficLight();
     };
+    
+	function updateTrafficLight() {
+		
+		var prioarray = [0,0,0,0];
+		angular.forEach(that.backendTickets["_-QBE_-S_MESSAGES"], function (n) {
+			if( n["MSG_PRIO"] == 1 ){
+				prioarray[0] = prioarray[0] + 1;
+			}else if( n["MSG_PRIO"] == 2 ){
+				prioarray[1] = prioarray[1] + 1;
+			}else if( n["MSG_PRIO"] == 3 ){
+				prioarray[2] = prioarray[2] + 1;
+			}else{
+				prioarray[3] = prioarray[3] + 1;
+			}					
+        });
+		
+		if( prioarray[0] ){
+			trafficLightService.red();
+		}else if( prioarray[1] ){
+			trafficLightService.yellow();
+		}else{
+			trafficLightService.green();
+		}
+	}
     
     this.initService = function (sucessCallback) {
     	that.callbackCollection = sucessCallback;

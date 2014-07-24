@@ -8,7 +8,7 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
         {
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined) 
             {
-                configservice.data = $scope.appConfig.data;
+            	appimtpsConfig.data = $scope.appConfig.data;
             }            
         }
     };
@@ -42,21 +42,10 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
         $scope.prioarray = [0,0,0,0];
         $scope.prionr = [1,2,3,4];
 		
-		var updateTrafficLight = function ($scope) {
-			if( $scope.prioarray[0] ){
-				$http.get('/api/trafficLight?color=r');
-			}else if( $scope.prioarray[1] ){
-				$http.get('/api/trafficLight?color=y');
-			}else{
-				$http.get('/api/trafficLight?color=g');
-			}
-		}
-		
 		msgReaderData.initService( function(messages){
-			if( messages && messages.length > 0 ){
-							
+			if( messages ){
+				$scope.prioarray = [0,0,0,0];
 				angular.forEach(messages["_-QBE_-S_MESSAGES"], function (n) {
-	            	console.log(n["MSG_PRIO"]);
 					if( n["MSG_PRIO"] == 1 ){
 						$scope.prioarray[0] = $scope.prioarray[0] + 1;
 					}else if( n["MSG_PRIO"] == 2 ){
@@ -67,8 +56,6 @@ angular.module('app.imtps').controller('app.imtps.directiveController', ['$scope
 						$scope.prioarray[3] = $scope.prioarray[3] + 1;
 					}					
 	            });
-			
-				updateTrafficLight($scope);
 			}
             if ( ($scope.prioarray[0] + $scope.prioarray[1] + $scope.prioarray[2] + $scope.prioarray[3]) == 0) {
                 $scope.lastElement="You have no internal messages to display!";
