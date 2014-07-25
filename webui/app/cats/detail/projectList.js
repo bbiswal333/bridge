@@ -6,6 +6,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.filter = {};
     $scope.filter.val = "";
     $scope.loaded = false;
+    var exitLoop = true;
+    var continueLoop = false;
 
     var config = {};
 
@@ -26,7 +28,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         $scope.items.some(function(item) {
           if (catsUtils.isSameTask(item, favoriteItem)) {
             item.DESCR = favoriteItem.DESCR;
-            return true;
+            return exitLoop;
           }
         });
       });
@@ -39,7 +41,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         index++;
         if (id === item.id) {
           foundIndex = index;
-          return true;
+          return exitLoop;
         }
       });
       return foundIndex;
@@ -140,16 +142,15 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       markItemIfSelected(item);
 
       var allreadyExists = false;
-      var fixedTasks = ['ABSE', 'VACA', 'COMP'];
+      // var fixedTasks = ['ABSE', 'VACA', 'COMP'];
 
+      if (catsUtils.isFixedTask(item)) { // don't add "fixed" tasks to favorites
+        return;
+      }
       configService.catsItems.some(function(oldItem){
-        if (fixedTasks.indexOf(item.TASKTYPE) >= 0) { // don't add "fixed" tasks to favorites
-          allreadyExists = true;
-          return true;
-        }
         if (catsUtils.isSameTask(item, oldItem)) {
           allreadyExists = true;
-          return true;
+          return exitLoop;
         }
       });
 
@@ -192,16 +193,20 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function addItemsFromBlocks () {
-      $scope.blocks.forEach(function(blockItem){
+      $scope.blocks.some(function(blockItem){
         if (!blockItem.task) {
-          return;
+          return exitLoop;
+        }
+
+        if (catsUtils.isFixedTask(blockItem.task)) {
+          return continueLoop;
         }
 
         var allreadyExists = false;
         $scope.items.some(function(item){
           if (catsUtils.isSameTask(blockItem.task, item)) {
             allreadyExists = true;
-            return true;
+            return exitLoop;
           }
         });
         if (!allreadyExists) {
@@ -222,7 +227,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         $scope.items.some(function(item){
           if (catsUtils.isSameTask(favoriteItem, item)) {
             allreadyExists = true;
-            return true;
+            return exitLoop;
           }
         });
         if (!allreadyExists) {

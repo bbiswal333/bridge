@@ -204,6 +204,15 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         return false;
     }
 
+    function _isFixedTask(task){
+      if (task.TASKTYPE === "VACA" ||
+          task.TASKTYPE === "ABSE" ||
+          task.TASKTYPE === "COMP") {
+        return true;
+      }
+      return false;
+    }
+
     return {
       getCatsComplianceData: function(forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
         return _getCatsComplianceData(forceUpdate_b);
@@ -228,7 +237,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       isSameTask: function(task1, task2) {
         return _isSameTask(task1, task2);
-      }
+      },
+      isFixedTask: _isFixedTask
     };
   }
 ]);
