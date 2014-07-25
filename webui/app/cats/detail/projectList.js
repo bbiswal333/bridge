@@ -191,15 +191,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       return deferred.promise;
     }
 
-    function initProjectItems () {
-      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
-        $scope.items = angular.copy(configService.favoriteItems);
-      } else{
-        $scope.items = angular.copy(configService.catsItems);
-      }
-      getDescFromFavorites();
-    }
-
     function addItemsFromBlocks () {
       $scope.blocks.forEach(function(blockItem){
         if (!blockItem.task) {
@@ -217,6 +208,37 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           $scope.items.push( createNewProjectItem(blockItem.task) );
         }
       });
+    }
+
+    function addItemsFromFavoriteList() {
+      var favoriteItems = angular.copy(configService.favoriteItems);
+      if (favoriteItems.length === 0) {
+        return;
+      }
+
+      favoriteItems.forEach(function(favoriteItem){
+        
+        var allreadyExists = false;
+        $scope.items.some(function(item){
+          if (catsUtils.isSameTask(favoriteItem, item)) {
+            allreadyExists = true;
+            return true;
+          }
+        });
+        if (!allreadyExists) {
+          $scope.items.push( createNewProjectItem(favoriteItem) );
+        }
+      });
+    }
+
+    function initProjectItems () {
+      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
+        $scope.items = angular.copy(configService.favoriteItems);
+      } else{
+        $scope.items = angular.copy(configService.catsItems);
+        addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
+      }
+      getDescFromFavorites();
     }
 
     function markProjectItems() {
