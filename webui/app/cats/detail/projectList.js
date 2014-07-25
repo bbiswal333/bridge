@@ -200,7 +200,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       getDescFromFavorites();
     }
 
-    function addAdditionalItems () {
+    function addItemsFromBlocks () {
       $scope.blocks.forEach(function(blockItem){
         if (!blockItem.task) {
           return;
@@ -246,12 +246,10 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     $scope.$watch("blocks", function () {
       initProjectItems();
-      addAdditionalItems();
-      markProjectItems();
+      addItemsFromBlocks();
     }, true);
 
     $scope.$watch("items", function () {
-      // loadProjects();
       markProjectItems();
     }, true);  };
 
