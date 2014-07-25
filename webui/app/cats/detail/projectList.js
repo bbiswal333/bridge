@@ -128,7 +128,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     function createNewProjectItem (item) {
       var newItem        = item;
-      newItem.id         = item.ZCPR_OBJGEXTID || "" + item.RAUFNR || "" + item.TASKTYPE;
+      newItem.id         = (item.ZCPR_OBJGEXTID || "") + (item.RAUFNR || "") + item.TASKTYPE;
       newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
       // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
       return newItem;
