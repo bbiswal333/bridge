@@ -247,6 +247,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.$watch("blocks", function () {
       initProjectItems();
       addItemsFromBlocks();
+      markProjectItems();
     }, true);
 
     $scope.$watch("items", function () {

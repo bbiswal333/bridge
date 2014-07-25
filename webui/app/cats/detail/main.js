@@ -10,7 +10,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService) {
+  "bridgeDataService",
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -25,6 +26,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }).error(function () { 
         $scope.client = false;
     });
+
+    var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
+
+    if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
+        configService.favoriteItems = persistedConfig.favoriteItems;
+    }
 
     function timeToMaintain() {
         try {
