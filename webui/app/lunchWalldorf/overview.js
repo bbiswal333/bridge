@@ -70,7 +70,16 @@
                 if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
                  {
                     lunchConfigService.configItem = $scope.appConfig.configItem;
-                 }            
+                } else {
+                    $scope.appConfig.configItem = lunchConfigService.configItem;
+                }
+                $scope.box.boxSize = lunchConfigService.configItem.boxSize;
+
+                $scope.$watch("appConfig.configItem.boxSize", function () {
+                    if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                        $scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+                    }
+                }, true);
              }
         };
 }]);
@@ -106,6 +115,26 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
         }
     };
 
+    this.getListAsSingleDish = function (dishes) {
+        var parsedDishes = {};
+        parsedDishes.title = [];
+
+        dishes.forEach(function(dish) {
+            if (!parsedDishes.title.en) {
+                parsedDishes.title.en = dish.title.en;
+            } else {
+                parsedDishes.title.en = parsedDishes.title.en + ", " + dish.title.en;
+            }
+            if (!parsedDishes.title.de) {
+                parsedDishes.title.de = dish.title.de;
+            } else {
+                parsedDishes.title.de = parsedDishes.title.de + ", " + dish.title.de;
+            }
+        });
+
+        return parsedDishes;
+    };
+
     this.getLunchMenu = function (data, date) 
     {                                
         date.setHours(0);
@@ -131,11 +160,13 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                     }
                     else if(date_menu[j].title.en === "Side dish")
                     {
-                        lunchMenu.sideDishes = date_menu[j].dishes;
+                        lunchMenu.sideDishes = [];
+                        lunchMenu.sideDishes.push( this.getListAsSingleDish(date_menu[j].dishes) );
                     }
                     else if(date_menu[j].title.en === "Dessert")
                     {
-                        lunchMenu.dessert = date_menu[j].dishes;
+                        lunchMenu.dessert = [];
+                        lunchMenu.dessert.push( this.getListAsSingleDish(date_menu[j].dishes) );
                     }
                     else
                     {
