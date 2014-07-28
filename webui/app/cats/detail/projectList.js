@@ -6,6 +6,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.filter = {};
     $scope.filter.val = "";
     $scope.loaded = false;
+    $scope.toEdit = -1;
     var exitLoop = true;
     var continueLoop = false;
 
@@ -17,10 +18,14 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         return config;
     };
 
-    $scope.onPressEnter = function(){
-      if (event.which === 13) {
-        document.getElementById("projectButton").focus();
-      }
+    // $scope.onPressEnter = function(event){
+    //   // if (event.which === 13) {
+    //   //   document.getElementById("projectButton").focus();
+    //   // }
+    //   event.stopPropagation();
+    // };
+    $scope.showEditButton = function(id) {
+      $scope.toEdit = id;
     };
 
     function getDescFromFavorites() {
@@ -46,6 +51,14 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       });
       return foundIndex;
     }
+
+    $scope.editTask = function(id) {
+      var index = getIndexForId(id);
+      if($scope.forSettingsView){
+        configService.selectedTask = $scope.items[index];
+        $scope.onProjectEdit({id: id});
+      }
+    };
 
     $scope.toogleSelect = function (id) {
       if (event.x === 0 && event.clientX === 0) { // must be a button pressed and cannot be a actual CLICK
@@ -75,7 +88,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           task: $scope.items[index]
         });
       }
-      document.getElementById("filterTextfield").focus();
+      // document.getElementById("filterTextfield").focus();
     };
 
     $scope.resetFilter = function () {
@@ -289,6 +302,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     scope: {
         onProjectChecked: "&onprojectchecked",
         onProjectUnchecked: "&onprojectunchecked",
+        onProjectEdit:"&onprojectedit",
         blocks: "=blocks",
         heightOfList: "@heightoflist",
         forSettingsView: "@forSettingsView"
