@@ -60,8 +60,10 @@ angular.module('bridge.app').controller('bridgeController',
 
         $http.get(window.client.origin + '/client').success(function () {
             $scope.client = true;
+        	window.client.available = true;
         }).error(function () {
             $scope.client = false;
+            window.client.available = false;
         });
 
         if ($location.path() === "" || $location.path() === "/") {

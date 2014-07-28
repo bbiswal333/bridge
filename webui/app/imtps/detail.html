@@ -1,24 +1,85 @@
-<div ng-controller="app.imtps.detailController">
-    <div class="panel panel-default">
-      <span style="float: right;" ><input type="text" style="height: 22px;" class="form-control" ng-model="search" placeholder="Search..." ></span>
-      <div class="panel-body">
-        <table ng-table class="table" ng-controller="app.imtps.detailController">
-            <tr ng-repeat="obj in tempobject | filter : search | orderBy : MSG_PRIO_TEXT" >
-                <td data-title="'Test Plan'" align="center">	{{obj.PLAN_TITLE}} 		</td>
-                <td data-title="'Test Package'" align="center">	{{obj.PACK_TITLE}} 		</td>
-                <td data-title="'Test Set'" align="center">		{{obj.TC_TITLE}} 		</td>
-                <td data-title="'Prio'" align="center">			{{obj.MSG_PRIO_TEXT}} 	</td>
-                <td data-title="'Component'" align="center">	{{obj.MSG_COMPONENT}} 	</td>        
-                <td data-title="'Status'" align="center">		{{obj.MSG_STATUS_TEXT}} </td>
-                <td data-title="'Processor'" align="center" >
-					<a href="" data-placement="right" data-title="{{obj.MSG_PROCESSOR_NAME}}" data-trigger="click" 
-					data-template="app/imtps/detail_popover.tpl.html" data-html="true" bs-popover>{{obj.MSG_PROCESSOR_NAME}}</a>
-				</td>
-                <td data-title="'Description'" align="center">
-                <a href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{obj.MSG_CSINSTA}}&mnumm={{obj.MSG_MNUMM}}&myear={{obj.MSG_MYEAR}}&sap-language=en#" target="_blank">{{obj.MSG_SHORT_TEXT}}</a></td>
-            </tr>
-        </table>
-      </div>
+<div ng-controller="app.imtps.detailController" style="box-sizing:border-box;">    
+    <div style="padding:30px;box-sizing:border-box;">                
+
+    	<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="float:left;margin-right:25px;" />			
+	
+        <div>
+        	<div infinitescroll>
+        	      
+	            <div class="row">
+		            <div class="box-title col-sm-3" ng-click="sort('PLAN_TITLE')">Test Plan
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PLAN_TITLE'"></i>
+		            </div>
+<!--		        	<div class="box-title col-sm-2" ng-click="sort('PACK_TITLE')">Test Package
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PACK_TITLE'"></i>
+		        	</div> -->
+		        	<!--<div class="box-title col-sm-1" ng-click="sort('TC_TITLE')">Test Set
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'TC_TITLE'"></i>
+		        	</div>-->
+		        	<div class="box-title col-sm-1" ng-click="sort('MSG_PRIO_TEXT')">Prio
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_PRIO_TEXT'"></i>
+		        	</div>
+<!--		        	<div class="box-title col-sm-1" ng-click="sort('MSG_COMPONENT')">Component
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_COMPONENT'"></i>
+		        	</div>  -->
+ 			        <div class="box-title col-sm-1" ng-click="sort('MSG_STATUS_TEXT')">Status
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_STATUS_TEXT'"></i>
+		        	</div>
+ 			        <div class="box-title col-sm-2" ng-click="sort('MSG_CREATED_BY_FULLNAME')">Created By
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_CREATED_BY_FULLNAME'"></i>
+		        	</div>
+ 	 			    <div class="box-title col-sm-2" ng-click="sort('MSG_PROCESSOR_NAME')">Processor
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_PROCESSOR_NAME'"></i>
+		        	</div>
+		        	
+	 			    <div class="box-title col-sm-3" ng-click="sort('MSG_SHORT_TEXT')">Description
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'MSG_SHORT_TEXT'"></i>
+		        	</div>
+		        </div>
+                		        
+	            <div ng-repeat="row in tempobject track by row.STATUS_ID | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+	            	<div class="cellText col-sm-3">{{row.PLAN_TITLE}}</div>
+	            	<!-- <div class="cellText col-sm-2">{{row.PACK_TITLE}}</div> -->
+	            	<!--<div class="cellText col-sm-1">{{row.TC_TITLE}}</div> -->
+	            	<div class="cellText col-sm-1">{{row.MSG_PRIO_TEXT}}</div>
+	            	<!-- <div class="cellText col-sm-1">{{row.MSG_COMPONENT}}</div>  -->
+	            	<div class="cellText col-sm-1">{{row.MSG_STATUS_TEXT}}</div>
+	            	
+	            	<div class="cellText col-sm-2">
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_CREATED_BY_UID}}?s=60x60" 
+		            		 class="im-reporter-img"
+		            		 ng-mouseenter="zoom($index, $event)"
+		            		 ng-if="row.MSG_CREATED_BY_UID"></img>
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_CREATED_BY_UID}}?s=100x100" 
+		            		 class="im-reporter-img-lrg"
+		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2, top: zoomImg.y - 50 + zoomImg.height/2}"
+		            		 ng-show="zoomIndex === $index"
+		            		 ng-mouseleave="zoom(-1)"></img>
+			            <a target="_blank" href="{{row.employee_created.url}}">{{row.MSG_CREATED_BY_FULLNAME}}</a>
+			            <a href="mailto:{{row.employee_created.mail}}"><p class="table-icon-small icon-mail"></p></a>
+			            <a href="tel:{{row.employee_created.tel}}"><p class="table-icon-small icon-phone"></p></a>
+        			</div>
+
+	            	<div class="cellText col-sm-2">
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_PROCESSOR_UID}}?s=60x60" 
+		            		 class="im-reporter-img"
+		            		 ng-mouseenter="zoom($index, $event)"
+		            		 ng-if="row.MSG_PROCESSOR_UID"></img>
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_PROCESSOR_UID}}?s=100x100" 
+		            		 class="im-reporter-img-lrg"
+		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2, top: zoomImg.y - 50 + zoomImg.height/2}"
+		            		 ng-show="zoomIndex === $index"
+		            		 ng-mouseleave="zoom(-1)"></img>
+			            <a target="_blank" href="{{row.employee_process.url}}">{{row.MSG_PROCESSOR_NAME}}</a>
+			            <a href="mailto:{{row.employee_process.mail}}"><p class="table-icon-small icon-mail"></p></a>
+			            <a href="tel:{{row.employee_process.tel}}"><p class="table-icon-small icon-phone"></p></a>
+        			</div>
+	            	<div class="cellText col-sm-3">
+        				<a target="_blank" href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{row.MSG_CSINSTA}}&mnumm={{row.MSG_MNUMM}}&myear={{row.MSG_MYEAR}}&sap-language=en#">{{row.MSG_SHORT_TEXT}}</a>
+	            	</div>
+	            </div>
+	        </div>
+
+        </div>        
     </div>
 </div>
-

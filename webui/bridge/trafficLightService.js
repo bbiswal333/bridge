@@ -1,16 +1,25 @@
 angular.module('bridge.service').service('trafficLightService', [ '$http', '$interval', function($http, $interval){
 	
+	function isClientOn(){
+		return window.client.available;
+	}
 	
 	this.red = function(){
-		$http.get('/api/trafficLight?color=r');
+		if( isClientOn() ){
+			$http.get( window.client.origin + '/api/trafficLight?color=r');
+		}
 	}
 	
 	this.yellow = function(){
-		$http.get('/api/trafficLight?color=y');
+		if( isClientOn() ){
+			$http.get(window.client.origin + '/api/trafficLight?color=y');
+		}
 	}
 	
 	this.green = function(){
-		$http.get('/api/trafficLight?color=g');
+		if( isClientOn() ){
+			$http.get(window.client.origin + '/api/trafficLight?color=g');
+		}
 	}
 	
 }]);

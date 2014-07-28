@@ -1,4 +1,5 @@
-angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$interval', 'app.imtps.configservice' , 'trafficLightService' , function ($http, $interval, configservice , trafficLightService) {
+angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$interval', 'app.imtps.configservice' , 'trafficLightService' , 
+                                                                function ($http, $interval, configservice , trafficLightService) {
     var gtpService = 'https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps';
     
     //buckets for the backend tickets
