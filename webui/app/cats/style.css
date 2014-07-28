@@ -550,3 +550,17 @@
 .settings_input_label {
     text-align: right;
 }
+
+.settings_task_edit_button {
+    position: absolute; 
+    height: 50px; 
+    width: 10%; 
+    right: 8px; 
+    margin: 4px 4px; 
+    
+    color: white; 
+    background: rgba(255, 255, 255, 0.2); 
+    
+    text-align: center; 
+    line-height: 3em;
+}

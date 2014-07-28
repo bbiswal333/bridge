@@ -39,25 +39,14 @@ angular.module('app.linklist').appLinkListSettings =
         disabled: false
     };
 
-    $scope.setBoxSize = function() // !!! Is not working after Browser back button !!!
-    {
-    	if(appLinklistConfig.data.listCollection.length > 1) {
-    		$scope.boxScope.box.boxSize = 2;
-    	} else {
-    		$scope.boxScope.box.boxSize = 1;
-    	}
-    };
-
     $scope.addLinkList = function()
     {
         appLinklistConfig.data.listCollection.push([]);
-		$scope.setBoxSize();
     };
 
     $scope.removeLinkList = function(colNo)
     {
         appLinklistConfig.data.listCollection.splice(colNo, 1);
-		$scope.setBoxSize();
     };
 
     $scope.isLinkListEmpty = function(colNo)
@@ -177,11 +166,4 @@ angular.module('app.linklist').appLinkListSettings =
 			$scope.addForm[col] = '';
 		}
 	};
-
-	$scope.setBoxSize();
-
-	$scope.$watch("appLinklistConfig.data.listCollection", function () {
-		$scope.setBoxSize();
-	}, true);
-
 }];

@@ -63,19 +63,12 @@ angular.module('bridge.app').
 
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
-				url: "https://dynamic.xkcd.com/api-0/jsonp/comic?callback=?",
+				url: "/api/get?proxy=true&url=http://dynamic.xkcd.com:80/api-0/jsonp/comic?callback=?",
 				dataType: "json",
 				jsonpCallback: "xkcddata",
 				success: function(data) {
 						$("#xkcdcontent").append(
-								$("<p>Just read the latest XKCD</p>"),
-								$("<img/>").attr({
-										src: data.img,
-										title: data.alt,
-										alt: data.title,
-										style: 'width:80%'
-								}),
-								$("<p><a href='http://xkcd.com'>xkcd</a></p>")
+								$("<p>Just read the latest <a target='_blank' href='http://xkcd.com'>xkcd</a></p>")
 						);
 				}
 		});

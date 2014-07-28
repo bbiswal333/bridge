@@ -198,12 +198,19 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
 
     function _isSameTask(task1, task2) {
         if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
-            (!task1.ZCPR_OBJGEXTID &&
-             task2.RAUFNR === task1.RAUFNR &&
-             task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
+            (!task1.ZCPR_OBJGEXTID && task2.RAUFNR === task1.RAUFNR && task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
             return true;
         }
         return false;
+    }
+
+    function _isFixedTask(task){
+      if (task.TASKTYPE === "VACA" ||
+          task.TASKTYPE === "ABSE" ||
+          task.TASKTYPE === "COMP") {
+        return true;
+      }
+      return false;
     }
 
     return {
@@ -230,7 +237,8 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       },
       isSameTask: function(task1, task2) {
         return _isSameTask(task1, task2);
-      }
+      },
+      isFixedTask: _isFixedTask
     };
   }
 ]);

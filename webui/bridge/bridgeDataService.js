@@ -147,6 +147,26 @@
         }
     }
 
+    function _getAppByModuleName(module_name) {
+        if (!that.configRawData) {
+            throw new Error("Bridge data not yet initialized");
+        }
+
+        for (var i = 0; i < _getProjects().length; i++) {
+            for (var a = 0; a < _getProjects()[i].apps.length; a++) {
+                if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
+                    return _getProjects()[i].apps[a];
+                }
+            }
+        }
+
+        throw new Error("App with module name " + module_name + " could not be found.");
+    }
+
+    function _getAppConfigByModuleName(module_name) {
+        return _getAppConfigById(_getAppByModuleName(module_name).metadata.id);
+    }
+
     function _getUserInfo() {
         return that.userInfo;
     }
@@ -189,6 +209,7 @@
         getAppMetadataForProject: _getAppMetadataForProject,
         getAppById: _getAppById,
         getAppConfigById: _getAppConfigById,
+        getAppConfigByModuleName: _getAppConfigByModuleName,
         toDefault: _toDefault,
         setClientMode: _setClientMode,
         getClientMode: _getClientMode

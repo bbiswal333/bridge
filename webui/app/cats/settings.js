@@ -15,22 +15,29 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
       return foundIndex;
     }
 
-    function sortFavoritesAccordingToCatsListSortOrder() {
-    	if(catsConfigService.favoriteItems.length > 0 && catsConfigService.catsItems.length > 0) {
-    		var sortedFavoriteItems = [];
-    		catsConfigService.catsItems.forEach(function (catsItem) {
-    			catsConfigService.favoriteItems.some(function (favoriteItem) {
-    				if (catsItem.id === favoriteItem.id) {
-    					sortedFavoriteItems.push(favoriteItem);
-    					return true;
-    				}
-    			});
-    		});
-    		if (catsConfigService.favoriteItems.length === sortedFavoriteItems.length) {
-    			catsConfigService.favoriteItems = sortedFavoriteItems;
-    		}
-    	}
-    }
+    // function sortFavoritesAccordingToCatsListSortOrder() {
+    // 	if(catsConfigService.favoriteItems.length > 0 && catsConfigService.catsItems.length > 0) {
+    // 		var sortedFavoriteItems = [];
+    // 		catsConfigService.catsItems.forEach(function (catsItem) {
+    // 			catsConfigService.favoriteItems.some(function (favoriteItem) {
+    // 				if (catsItem.id === favoriteItem.id) {
+    // 					sortedFavoriteItems.push(favoriteItem);
+    // 					return true;
+    // 				}
+    // 			});
+    // 		});
+    // 		if (catsConfigService.favoriteItems.length === sortedFavoriteItems.length) {
+    // 			catsConfigService.favoriteItems = sortedFavoriteItems;
+    // 		}
+    // 	}
+    // }
+    $scope.handleEditTask = function(id) {
+        var index = getIndexForId(catsConfigService.favoriteItems, id);
+        if (index >= 0) {
+            catsConfigService.favoriteItems.splice(index,1);
+        }
+        catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
+    };
 
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
 		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {

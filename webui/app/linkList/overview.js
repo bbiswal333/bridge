@@ -4,19 +4,16 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
 
     var directiveController = ['$scope', '$timeout', function ($scope) {   
          
-        $scope.boxSize = "1";
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
-            controller: angular.module('app.linklist').appLinkListSettings,
-            id: $scope.boxId
+            controller: angular.module('app.linklist').appLinkListSettings
         };        
         $scope.config = appLinklistConfig;
 
         $scope.box.returnConfig = function () {
 
             var configCopy = angular.copy(appLinklistConfig.data);
-            configCopy.boxSize = $scope.box.boxSize;
-            
+
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
                     var linkList = configCopy.listCollection[i];
@@ -49,12 +46,15 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
                 appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
                 appLinklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
+                appLinklistConfig.data.boxSize = 1;
                 $scope.appConfig = appLinklistConfig.data;
             }
 
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
-                if ($scope.appConfig.boxSize) {
-                    $scope.box.boxSize = $scope.appConfig.boxSize;
+                if($scope.appConfig.listCollection.length > 1) {
+                    $scope.box.boxSize = 2;
+                } else {
+                    $scope.box.boxSize = 1;
                 }
             }
             else {
@@ -65,7 +65,6 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 appLinklistConfig.data.listCollection = $scope.appConfig.listCollection;
                 for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
                     var linkList = appLinklistConfig.data.listCollection[i];
-
                     for (var j = linkList.length - 1; j >= 0; j--) {
                         var link = linkList[j];
                         if (link.type === "saplink") {
@@ -76,6 +75,14 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                     }
                 }
             }
+
+            $scope.$watch("appConfig.listCollection", function () {
+                if($scope.appConfig.listCollection.length > 1) {
+                    $scope.box.boxSize = 2;
+                } else {
+                    $scope.box.boxSize = 1;
+                }
+            }, true);
         }
     };
 }]);

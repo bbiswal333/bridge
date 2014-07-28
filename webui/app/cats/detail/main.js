@@ -10,7 +10,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService) {
+  "bridgeDataService",
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
 
     $scope.blockdata = [];
@@ -25,6 +26,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }).error(function () { 
         $scope.client = false;
     });
+
+    var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
+
+    if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
+        configService.favoriteItems = persistedConfig.favoriteItems;
+    }
 
     function timeToMaintain() {
         try {
@@ -199,6 +206,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
     }
+
+    function getDescFromFavorites(task) {
+        configService.favoriteItems.some(function(favoriteItem){
+            if (catsUtils.isSameTask(task, favoriteItem)) {
+                task.DESCR = favoriteItem.DESCR;
+                return true;
+            }
+        });
+    }
         
     function displayCATSDataForDay(day) {
         try {
@@ -215,15 +231,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                // configService.updateTaskIfFavorite(task);
+                getDescFromFavorites(task);
+
                 var HoursOfWorkingDay = 8;
 
-                var isFixedTask = false;
-                if (task.TASKTYPE === "VACA" ||
-                    task.TASKTYPE === "ABSE" ||
-                    task.TASKTYPE === "COMP") {
-                    isFixedTask = true;
-                }
+                var isFixedTask = catsUtils.isFixedTask(task);
 
                 if (task.TASKTYPE === "VACA") {
                     addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
