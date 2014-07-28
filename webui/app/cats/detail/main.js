@@ -206,6 +206,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         }
     }
+
+    function getDescFromFavorites(task) {
+        configService.favoriteItems.some(function(favoriteItem){
+            if (catsUtils.isSameTask(task, favoriteItem)) {
+                task.DESCR = favoriteItem.DESCR;
+                return true;
+            }
+        });
+    }
         
     function displayCATSDataForDay(day) {
         try {
@@ -222,7 +231,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                // configService.updateTaskIfFavorite(task);
+                getDescFromFavorites(task);
+
                 var HoursOfWorkingDay = 8;
 
                 var isFixedTask = catsUtils.isFixedTask(task);
