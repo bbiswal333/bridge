@@ -186,7 +186,7 @@ angular.module("notifier", []).factory("notifier", function () {
     },
     clearNotifications: function() {
       notifications.length = 0;
-      localStorage.clear();
+      localStorage.setItem('notifcations', JSON.stringify([]));
     },
     store: function() {
       storeAllNotificationsInLocale();

@@ -19,10 +19,6 @@ angular.module('bridge.app').
   	return false;
   };
 
-	$scope.testNotification = function(){
-		notifier.showSuccess("Test","Notification is working","Settings");
-	};
-
   $scope.getNameOf = function(notification){
     var module_name = notification.app;
     if (!module_name) {
