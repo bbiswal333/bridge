@@ -2,12 +2,12 @@ angular.module('app.linklist', ['ui.sortable']);
 
 angular.module('app.linklist').directive('app.linklist', ['app.linklist.configservice', function(appLinklistConfig) {
 
-    var directiveController = ['$scope', '$timeout', function ($scope) {   
+    var directiveController = ['$scope', '$timeout', function ($scope) {
          
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linklist').appLinkListSettings
-        };        
+        };
         $scope.config = appLinklistConfig;
 
         $scope.box.returnConfig = function () {
@@ -17,7 +17,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
                     var linkList = configCopy.listCollection[i];
-                            
+
                     for (var j = linkList.length - 1; j >= 0; j--){
                         delete linkList[j].$$hashKey;
                         delete linkList[j].editable;
@@ -61,8 +61,32 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 setDefaultConfig();
             }
 
+            function eventuallyRemoveDuplicates(listCollection) {
+                for (var a = listCollection.length - 1; a >= 0; a--) {
+                    var linkListForDuplicateSearch = listCollection[a];
+                    for (var b = linkListForDuplicateSearch.length - 1; b >= 0; b--) {
+                        var link1 = linkListForDuplicateSearch[b];
+                        for (var c = linkListForDuplicateSearch.length - 1; c >= 0; c--) {
+                            var link2 = linkListForDuplicateSearch[c];
+                            if (b !== c &&
+                                link1.type        === link2.type &&
+                                link1.name        === link2.name &&
+                                link1.url         === link2.url &&
+                                link1.sid         === link2.sid &&
+                                link1.transaction === link2.transaction) {
+                                linkListForDuplicateSearch.splice(b, 1);
+                            }
+                        }
+                    }
+                }
+                return listCollection;
+            }
+
             if($scope.appConfig) {
+
+                $scope.appConfig.listCollection = eventuallyRemoveDuplicates($scope.appConfig.listCollection);
                 appLinklistConfig.data.listCollection = $scope.appConfig.listCollection;
+
                 for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
                     var linkList = appLinklistConfig.data.listCollection[i];
                     for (var j = linkList.length - 1; j >= 0; j--) {

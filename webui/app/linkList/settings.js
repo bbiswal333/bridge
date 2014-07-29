@@ -68,7 +68,7 @@ angular.module('app.linklist').appLinkListSettings =
 				var link = linkList[i];
 
 				if(!entry && !link) {
-				    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
+					appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 					break;
 				}
 				if(link.type === "saplink")
@@ -86,7 +86,7 @@ angular.module('app.linklist').appLinkListSettings =
 				{
 					if(entry && link && link.name === entry.name && link.url === entry.url)
 					{
-					    appLinklistConfig.data.listCollection[colNo].splice(i, 1);
+						appLinklistConfig.data.listCollection[colNo].splice(i, 1);
 						break;
 					}
 				}
