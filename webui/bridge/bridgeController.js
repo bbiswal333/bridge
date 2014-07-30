@@ -96,7 +96,7 @@ angular.module('bridge.app').controller('bridgeController',
             if($scope.sortableOptions.disabled) {
                $scope.sortableOptionsCaption = "Activate";
             } else {
-                $scope.sortableOptionsCaption = "Deactivate";
+                $scope.sortableOptionsCaption = "Save";
         }
         };
 
