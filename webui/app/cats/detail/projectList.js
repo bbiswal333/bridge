@@ -18,12 +18,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         return config;
     };
 
-    // $scope.onPressEnter = function(event){
-    //   // if (event.which === 13) {
-    //   //   document.getElementById("projectButton").focus();
-    //   // }
-    //   event.stopPropagation();
-    // };
+    $scope.onPressEnter = function(event){
+      if (event.which === 13) {
+        document.getElementById("projectButton").focus();
+      }
+    };
+
     $scope.showEditButton = function(id) {
       $scope.toEdit = id;
     };
@@ -61,9 +61,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     };
 
     $scope.toogleSelect = function (id) {
-      // if (event.x === 0 && event.clientX === 0) { // must be a button pressed and cannot be a actual CLICK
-      //   return;
-      // }
       var index = getIndexForId(id);
       $scope.items[index].selected = !$scope.items[index].selected;
 
