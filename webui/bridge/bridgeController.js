@@ -134,12 +134,21 @@ angular.module('bridge.app').controller('bridgeController',
                 }
             });
 
+            //$scope.location = $location;
+            /*$scope.$watch(function() {
+                return $location.path();
+            }, function (newVal, oldVal) {
+                if (oldVal !== newVal) {
+                    $scope.modalInstance.close();
+                }
+            });*/
+
             // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            this.modalInstance.result.then(function () {
+            function onModalClosed() {
                 bridgeConfig.persistInBackend(bridgeDataService);
-            }, function () {
-                bridgeConfig.persistInBackend(bridgeDataService);
-            });
+                $scope.modalInstance = null;
+            }
+            this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
         $scope.apps = [];
@@ -202,7 +211,9 @@ angular.module('bridge.app').controller('bridgeController',
         }, true);
 
         $scope.$on('closeSettingsScreenRequested', function () {
-            $scope.modalInstance.close();
+            if ($scope.modalInstance) {
+                $scope.modalInstance.close();
+            }
         });
 
         $scope.$on('bridgeConfigLoadedReceived', function (event) {
@@ -282,6 +293,9 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $loca
         $rootScope.$broadcast('refreshAppReceived', args);
     });
     $rootScope.$on("closeSettingsScreen", function (event, args) {
+        $rootScope.$broadcast('closeSettingsScreenRequested', args);
+    });
+    $rootScope.$on("$locationChangeStart", function(event, args) {
         $rootScope.$broadcast('closeSettingsScreenRequested', args);
     });
 
