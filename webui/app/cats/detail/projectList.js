@@ -61,9 +61,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     };
 
     $scope.toogleSelect = function (id) {
-      if (event.x === 0 && event.clientX === 0) { // must be a button pressed and cannot be a actual CLICK
-        return;
-      }
+      // if (event.x === 0 && event.clientX === 0) { // must be a button pressed and cannot be a actual CLICK
+      //   return;
+      // }
       var index = getIndexForId(id);
       $scope.items[index].selected = !$scope.items[index].selected;
 
