@@ -1,8 +1,12 @@
-angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http', 'app.imtps.msgReaderData', 'employeeService', 'app.imtps.configservice',
-    function Controller($scope, $http, msgReaderData,employeeService, configservice) {
+angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http', 'app.imtps.msgReaderData', 'employeeService', 'app.imtps.configservice', '$routeParams' , 
+    function Controller($scope, $http, msgReaderData,employeeService, configservice, $routeParams) {
 
         $scope.$parent.titleExtension = " - IM Details";
        
+        if (configservice.isInitialized === false) {
+        	configservice.initialize($routeParams.appId);
+        }
+        
         msgReaderData.initService( function(messages){ 
 			if( messages ){
 				var arraytmp = [];

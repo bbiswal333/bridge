@@ -10,7 +10,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/imtps",
+				"route"			:	"/detail/imtps/:appId",
 				"templateUrl"	:	"app/imtps/detail.html"			
 			}
 		]
