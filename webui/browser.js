@@ -16,6 +16,7 @@ navigator.featuresAvailable = function () {
     addTest("csstransforms");
     addTest("cssgradients");
     addTest("geolocation");
+//    addTest("localstorage");
 
     for (var i = 0; i < window.feature_check.length; i++) {
         if (!window.feature_check[i].test) {

@@ -1,6 +1,6 @@
 angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", function ($scope, catsConfigService) {
 	
-	$scope.configService = catsConfigService;	
+	$scope.configService = catsConfigService;
 
     function getIndexForId(list, id) {
       var index = -1;
