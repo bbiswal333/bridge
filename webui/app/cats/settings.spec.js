@@ -5,18 +5,33 @@ var $controller = angular.module('app.cats').catsSettings;
 describe("Settings view of cats app", function () {
 	var config;
 	var favoriteItemsMock = JSON.parse('[{"id": "objgextid1raufnr1DEVL", "RAUFNR": "raufnr1", "TASKTYPE": "DEVL", "ZCPR_EXTID": "extid1", "ZCPR_OBJGEXTID": "objgextid1", "UNIT": "", "DESCR": "task1"}]');
+	var catsItemsMock = JSON.parse('[{"id": "objgextid2raufnr2DEVL", "RAUFNR": "raufnr2", "TASKTYPE": "DEVL", "ZCPR_EXTID": "extid2", "ZCPR_OBJGEXTID": "objgextid2", "UNIT": "", "DESCR": "task2"}]');
 	// var fovoriteItemsMock = JSON.parse('{"id": "", "RAUFNR": "", "TASKTYPE": "", "ZCPR_EXTID": "", "ZCPR_OBJGEXTID": "", "UNIT": "", "DESCR": ""}');
 	var $scope;
+	var bridgeInBrowserNotification;
 
 	beforeEach(angular.mock.module('app.cats'));
 	beforeEach(inject(function($rootScope) {
       $scope = $rootScope.$new();
       // $controller('MyController', {$scope: $scope});
     }));
-	beforeEach(inject(["app.cats.configService", function (_config_) {
+ //    beforeEach(function(){
+	//     module('moduleToMock');
+	//     module(function ($provide) {
+	//         $provide.value('yourService', serviceMock);
+	//     });
+	// });
+	beforeEach(inject(["app.cats.configService", "app.cats.data.catsUtils", function (_config_, _catsUtils_) {
 		config = _config_;
 		config.favoriteItems = angular.copy(favoriteItemsMock);
-      	angular.module('app.cats').catsSettings[2]($scope, config);
+		config.catsItems = angular.copy(catsItemsMock);
+		bridgeInBrowserNotification = {
+			allertCalled: false,
+            addAlert: function () {
+            	this.allertCalled = true;
+            }
+        };
+      	angular.module('app.cats').catsSettings[4]($scope, config, _catsUtils_, bridgeInBrowserNotification);
 	}]));
 
 	it("should have favorite items", function () {
@@ -73,7 +88,6 @@ describe("Settings view of cats app", function () {
 
 	it("should reset changes on cancel also for newly created and changed tasks", function(){	
 		$scope.createTask();
-		// debugger;
 		config.selectedTask.DESCR = "new title"; 
 		config.selectedTask.TASKTYPE = "MAIN"; 
 		$scope.saveNewTask();
@@ -97,6 +111,34 @@ describe("Settings view of cats app", function () {
 	it("should detect newly created task as changed", function(){	
 		$scope.createTask();
 		expect($scope.isUnchanged(config.selectedTask)).toBe(false);
+	});
+
+	it("should notify user if he creates allready existing task", function(){	
+		$scope.createTask();
+		$scope.saveNewTask();
+		expect(bridgeInBrowserNotification.allertCalled).toBe(false);
+
+		$scope.createTask();
+		config.selectedTask = angular.copy(favoriteItemsMock[0]);
+		$scope.saveNewTask();
+		expect(bridgeInBrowserNotification.allertCalled).toBe(true);
+	});
+
+	it("should notify user if he creates task with the same key values as any in catsItems or favoriteItems", function(){	
+		expect(bridgeInBrowserNotification.allertCalled).toBe(false);
+
+		$scope.createTask();
+		config.selectedTask.ZCPR_OBJGEXTID = "objgextid2";
+		$scope.saveNewTask();
+		expect(bridgeInBrowserNotification.allertCalled).toBe(true);
+	});
+
+	it("should not generate task id for created task on save if it is allready exists", function(){
+		$scope.createTask();
+		config.selectedTask.ZCPR_OBJGEXTID = "objgextid2";
+		$scope.saveNewTask();
+
+		expect(config.selectedTask.id).not.toBeDefined();
 	});
 
 	// it("should validate new tasks", function(){	

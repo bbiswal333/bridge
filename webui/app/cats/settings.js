@@ -1,4 +1,4 @@
-angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", function ($scope, catsConfigService) {
+angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.data.catsUtils", "bridgeInBrowserNotification", function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
 	
 	$scope.configService = catsConfigService;
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
@@ -15,7 +15,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
         });
         return foundIndex;
     }
-
     function addSelectedItemToFavorites() {
         catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
@@ -49,10 +48,27 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", f
         catsConfigService.selectedTask = newTask;
     };
 
+    function isInList(task, list){
+        var allreadyExists = false;
+
+        list.some(function(item){
+            if (catsUtils.isSameTask(item, task)) {
+                allreadyExists = true;
+            }
+            return allreadyExists;
+        });
+
+        return allreadyExists;
+    }
+
     $scope.saveNewTask = function(){
-        catsConfigService.selectedTask = catsConfigService.createNewItem(catsConfigService.selectedTask);
-        if (getIndexForId(catsConfigService.favoriteItems, catsConfigService.selectedTask.id) < 0) {
+        var allreadyExists = isInList(catsConfigService.selectedTask, catsConfigService.favoriteItems) || isInList(catsConfigService.selectedTask, catsConfigService.catsItems);
+        if (!allreadyExists) {
+            catsConfigService.selectedTask = catsConfigService.createNewItem(catsConfigService.selectedTask);
             addSelectedItemToFavorites();
+        } else
+        {
+            bridgeInBrowserNotification.addAlert('','No task could be created because there is allready another task in your worklist with the same key values!');
         }
     };
 
