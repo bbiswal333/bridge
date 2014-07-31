@@ -66,8 +66,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (!allreadyExists) {
             catsConfigService.selectedTask = catsConfigService.createNewItem(catsConfigService.selectedTask);
             addSelectedItemToFavorites();
-        } else
-        {
+        } else {
             bridgeInBrowserNotification.addAlert('','No task could be created because there is allready another task in your worklist with the same key values!');
         }
     };
