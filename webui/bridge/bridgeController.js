@@ -76,7 +76,6 @@ angular.module('bridge.app').controller('bridgeController',
                         }
         };
 
-
         $scope.toggleDragging = function(){
             if( !$scope.sortableOptions.disabled )
             {
@@ -93,6 +92,12 @@ angular.module('bridge.app').controller('bridgeController',
               bridgeConfig.persistInBackend(bridgeDataService);
             }
             $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
+
+            if($scope.sortableOptions.disabled) {
+               $scope.sortableOptionsCaption = "Activate";
+            } else {
+                $scope.sortableOptionsCaption = "Save";
+        }
         };
 
         $scope.settings_click = function (boxId) {
@@ -216,6 +221,8 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;
         });
+
+        $scope.sortableOptionsCaption = "Activate";
     }
 ]);
 
