@@ -1,5 +1,22 @@
 {
 	"modules" : ["bridge.service", "notifier", "lib.utils", "ngAnimate","ngRoute","ngSanitize","ui.bootstrap","mgcrea.ngStrap","ngTable","ngGrid","ui.sortable","nvd3ChartDirectives"],
-	"js_files" : ["bridgeController.js", "bridgeDetailController.js","bridgeNotificationsController.js", "bridgeSettingsController.js", "bridgeMainSettingsController.js", "bridgeDownloadController.js", "bridgeGithubController.js", "bridgeDataService.js", "bridgeConfigService.js", "bridgeInstanceService.js", "bridgeDownloadService.js", "notifier.js", "libUtils.js", "sortableService.js","bridgeInBrowserNotification.js"],
+	"js_files" : [
+		"bridgeController.js", 
+		"bridgeDetailController.js",
+		"bridgeNotificationsController.js", 
+		"diagnosis/corsTestPageController.js",
+		"bridgeSettingsController.js", 
+		"bridgeMainSettingsController.js", 
+		"bridgeDownloadController.js", 
+		"bridgeGithubController.js", 
+		"bridgeDataService.js", 
+		"bridgeConfigService.js", 
+		"bridgeInstanceService.js", 
+		"bridgeDownloadService.js", 
+		"notifier.js", 
+		"libUtils.js", 
+		"sortableService.js",
+		"bridgeInBrowserNotification.js"
+	],
 	"css_files" : []
 }

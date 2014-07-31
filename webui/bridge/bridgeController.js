@@ -268,6 +268,11 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
         }
     }
 
+    $routeProvider.when("/diagnosis", {
+        templateUrl: 'bridge/diagnosis/corsTestPage.html',
+        controller: 'bridge.app.corsTestPageController',
+    });
+
     //If no valid URL has been entered redirect to main entry point
     $routeProvider.otherwise({
         redirectTo: "/"
