@@ -37,7 +37,7 @@
 		        	</div>
 		        </div>
                 		        
-	            <div ng-repeat="row in tempobject track by row.STATUS_ID | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+	            <div ng-repeat="row in tempobject| filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
 	            	<div class="cellText col-sm-3">{{row.PLAN_TITLE}}</div>
 	            	<!-- <div class="cellText col-sm-2">{{row.PACK_TITLE}}</div> -->
 	            	<!--<div class="cellText col-sm-1">{{row.TC_TITLE}}</div> -->

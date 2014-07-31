@@ -83,6 +83,10 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
     	if( !that.loadTicketDataInterval ){
     		that.loadTicketDataInterval = $interval(this.loadTicketData, nInterval);
     		this.loadTicketData();
+    	}else{
+    		if( that.callbackCollection ){
+            	that.callbackCollection(that.backendTickets);	
+            }
     	}
     };
 }]);
