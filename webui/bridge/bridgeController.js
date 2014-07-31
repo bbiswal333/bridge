@@ -134,15 +134,6 @@ angular.module('bridge.app').controller('bridgeController',
                 }
             });
 
-            //$scope.location = $location;
-            /*$scope.$watch(function() {
-                return $location.path();
-            }, function (newVal, oldVal) {
-                if (oldVal !== newVal) {
-                    $scope.modalInstance.close();
-                }
-            });*/
-
             // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
             function onModalClosed() {
                 bridgeConfig.persistInBackend(bridgeDataService);
@@ -269,6 +260,11 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
             }
         }
     }
+
+    $routeProvider.when("/diagnosis", {
+        templateUrl: 'bridge/diagnosis/corsTestPage.html',
+        controller: 'bridge.app.corsTestPageController',
+    });
 
     //If no valid URL has been entered redirect to main entry point
     $routeProvider.otherwise({
