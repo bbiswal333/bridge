@@ -18,7 +18,7 @@
     function parseBackendTicket(backendTicket, category) {
         angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIO === prio.number.toString())
-            {                
+            {
                 var category_aa = "";
                 if(category !== "created_me")
                 {
@@ -33,7 +33,7 @@
                 {
                     prio[category]++;
                     that.backendTickets[category].push(backendTicket);
-                }            
+                }
                 prio.total++;
             }
         });

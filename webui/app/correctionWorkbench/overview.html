@@ -1,0 +1,30 @@
+﻿<div>
+	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
+		<div class="im-prio_container">	
+			<div ng-repeat="prio in prios" class="prio_col im-prio_col prio_bg_{{$index+1}}">
+			<a href="#/detail/correctionWorkbench/{{prios[$index].name}}" >
+				<div class="prio_box" style="color:white">
+					<p>{{prios[$index].name}}</p>
+				</div>
+				<div class="prio_content_box" style="color:white">
+					<p ng-if="prios[$index].selected<=99">{{prios[$index].selected}}</p>
+					<p ng-if="prios[$index].selected>=100">+99</p>
+				</div>
+			</a>	
+			</div>	
+		</div>
+		<div class="im-btn-container">
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.correctionRequestsForTesting];" ng-click="config.data.selection.correctionRequestsForTesting = !config.data.selection.correctionRequestsForTesting" 
+			style="width:35px;" title="Correction Requests for Testing">
+				<i class="fa fa-cube"></i>
+			</div>	
+			<div class="btn btn-default im-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.correctiveMeasures];" ng-click="config.data.selection.correctiveMeasures = !config.data.selection.correctiveMeasures"
+			style="width:35px;" title="Corrective Measures">
+				<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+			</div>	
+		</div>
+	</div>
+    <div ng-if="showNoMessages">
+        You have no internal messages to display!
+    </div>
+</div>
