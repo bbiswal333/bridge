@@ -1,0 +1,24 @@
+﻿<div style="margin-left: 10px">
+    <h2>HTTP Request Tester</h2>
+
+    <div>Enter the URL to test:</div>
+    <input style="width: 90%;" ng-model="url" />
+    <br />
+    <form>
+        <div>
+            <label class="checkbox">
+                <input type="checkbox" ng-model="withCredentials" id="credentials" style="margin-top: 0px"/> 
+                <span>withCredentials</span>
+            </label>
+        </div>
+
+        <br /><br />
+        <button ng-click="callService(url)">Go!</button>
+        <br />
+    </form>
+
+
+    <div>
+        {{testResult}}
+    </div>
+</div>
