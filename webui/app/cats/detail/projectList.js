@@ -256,7 +256,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
       }
       getDescFromFavorites();
-      $scope.loaded = true;
     }
 
     function markProjectItems() {
@@ -270,10 +269,13 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         getCatsData().then(function(){
           configService.loaded = true;
           initProjectItems();
+          addItemsFromBlocks();
           markProjectItems();
+          $scope.loaded = true;
         });
       } else {
         initProjectItems();
+        $scope.loaded = true;
       }
 
       $timeout(function () {
@@ -284,11 +286,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     loadProjects();
 
     $scope.$watch("blocks", function () {
-      // if (!$scope.forSettingsView) {
-        initProjectItems();
-        addItemsFromBlocks();
-        markProjectItems();
-      // }
+      initProjectItems();
+      addItemsFromBlocks();
+      markProjectItems();
     }, true);
 
     $scope.$watch("items", function () {

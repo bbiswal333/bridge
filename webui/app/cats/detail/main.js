@@ -503,9 +503,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                         loadCATSDataForDay();
                     });
                 }, function(status){
-                    bridgeInBrowserNotification.addAlert('info', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
-                    loadCATSDataForDay();
-                    $scope.$emit("refreshApp");
+                    bridgeInBrowserNotification.addAlert('', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+                    $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
+                    monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                        loadCATSDataForDay();
+                    });
                 });
             } else {
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
