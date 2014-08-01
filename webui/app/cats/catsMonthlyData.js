@@ -152,7 +152,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				day.targetHours = 0;
 			}*/
 			day.targetTimeInPercentageOfDay = Math.round(day.targetHours / hoursOfWorkingDay * 1000) / 1000;
-			day.actualTimeInPercentageOfDay = 0; // to be calulated later
+			day.actualTimeInPercentageOfDay = 0; // to be calulated only when tasks are added
 			day.date = dayString;
 			day.dayString = dayString;
 			weekData.hasTargetHoursForHowManyDays++;
@@ -177,6 +177,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			weekData.hasTargetHoursForHowManyDays = 0;
 			weekData.days = [];
 
+			// as we can not rely on getting any actual data for the week from the backend,
+			// we need to initialize each day with it's actual target hours from the data
+			// which we already have in the calendar array
 			for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
 				if (week === this.calArray[calWeekIndex][0].weekNo + "") {
 					for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
@@ -185,6 +188,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				}
 			}
 
+			// adding tasks which are already posted in the backend to each day
 			var promise = $q.all(promises);
 			promise.then(function(){
 				if(backendData.TIMESHEETS.RECORDS) {

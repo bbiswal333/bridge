@@ -75,6 +75,8 @@ directive("app.meetings", [
 					var start = dateFn(events[i]["t:Start"][0]);
 					var end = dateFn(events[i]["t:End"][0]);
 
+					var TESTdifference = ((start.getTime() - new Date().getTime()) / 1000 / 60);
+
 					if (start.getDate() === today.getDate()) {
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
@@ -93,7 +95,8 @@ directive("app.meetings", [
 							        return this.startTime + "<br />" + this.endTime;
 							    }
 							},
-							isCurrent: (start.getTime() < new Date().getTime())
+							isCurrent: (start.getTime() < new Date().getTime()),
+							isInTheNext30Minutes: (((start.getTime() - new Date().getTime()) / 1000 / 60) <= 30)
 						});
 					}
 				}

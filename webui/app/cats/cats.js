@@ -11,7 +11,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
     }
-    
+
     function _httpRequest(url) {
       var deferred = $q.defer();
 
@@ -210,7 +210,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
     }
 
     return {
-      getCatsComplianceData: function(forceUpdate_b) { //Returns either an object generated from json string or null in case Request wasn't successful. In the last case the method will internaly invoke a console.log()
+      getCatsComplianceData: function(forceUpdate_b) {
         return _getCatsComplianceData(forceUpdate_b);
       },
       getDescForState: function(state_s) {
@@ -229,7 +229,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         return _writeCATSData(container);
       },
       requestTasksFromTemplate: function(year, week) {
-        return _requestTasksFromTemplate(year, week); 
+        return _requestTasksFromTemplate(year, week);
       },
       isSameTask: function(task1, task2) {
         return _isSameTask(task1, task2);

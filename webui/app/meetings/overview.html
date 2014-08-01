@@ -13,10 +13,10 @@
                     <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
-                                <span ng-if="$first && !event.isCurrent" >
+                                <span ng-if="$first && event.isInTheNext30Minutes && !event.isCurrent" >
                                     <b>{{event.startRel}}</b>
                                 </span>
-                                <span ng-if="!$first && !event.isCurrent">
+                                <span ng-if="(!$first || !event.isInTheNext30Minutes) && !event.isCurrent">
                                     {{event.startTime}}
                                     {{event.endTime}}
                                 </span>
