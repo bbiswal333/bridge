@@ -78,28 +78,27 @@ angular.module('bridge.app').controller('bridgeController',
                         }
         };
 
-        $scope.toggleDragging = function(){
-            if( !$scope.sortableOptions.disabled )
-            {
-
-              for (var i = 0; i < $scope.visible_apps.length; i++) {
-                    for(var j = 0; j < $scope.apps.length; j++)
-                    {
-                        if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
-                        {
-                            $scope.apps[j].order = i;
-                        }
-                    }
-              }
-              bridgeConfig.persistInBackend(bridgeDataService);
-            }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
-
-            if($scope.sortableOptions.disabled) {
-               $scope.sortableOptionsCaption = "Activate";
+        $scope.toggleDragging = function() {
+            $scope.sortableOptions.disabled = !$scope.sortableOptions.disabled;
+            if ($scope.sortableOptions.disabled) {
+                $scope.sortableOptionsCaption = "Activate";
             } else {
-                $scope.sortableOptionsCaption = "Save";
-        }
+                $scope.sortableOptionsCaption = "Deactivate";
+            }
+
+        };
+
+        $scope.saveAppsSortable = function(){
+          for (var i = 0; i < $scope.visible_apps.length; i++) {
+                for(var j = 0; j < $scope.apps.length; j++)
+                {
+                    if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
+                    {
+                        $scope.apps[j].order = i;
+                    }
+                }
+          }
+          bridgeConfig.persistInBackend(bridgeDataService);
         };
 
         $scope.settings_click = function (boxId) {
@@ -217,14 +216,15 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.$on('bridgeConfigLoadedReceived', function (event) {
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
+            $scope.sortableOptions.disabled = true; // always allow sorting
+            $scope.sortableOptionsCaption = "Activate";
+            $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;
         });
-
-        $scope.sortableOptionsCaption = "Activate";
     }
 ]);
 

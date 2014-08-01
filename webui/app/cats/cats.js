@@ -187,18 +187,14 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
           deferred.resolve(data);
       }).error(function (data, status) {
-          if (status !== "404") { // ignore 404 issues, they are currently (16.05.14) caused by nodeJS v0.11.9 issues
-              deferred.reject(status);
-          } else {
-              deferred.resolve(data);
-          }
+          deferred.reject(status);
       });
       return deferred.promise;
     }
 
     function _isSameTask(task1, task2) {
         if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
-            (!task1.ZCPR_OBJGEXTID && task2.RAUFNR === task1.RAUFNR && task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
+            (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID && task2.RAUFNR === task1.RAUFNR && task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
             return true;
         }
         return false;

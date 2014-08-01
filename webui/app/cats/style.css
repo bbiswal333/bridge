@@ -564,3 +564,13 @@
     text-align: center; 
     line-height: 3em;
 }
+
+.settings_add_task_button {
+    margin-right: 0px;
+    float: right;
+}
+
+.settings_required_label_mark {
+    position: absolute;
+    right: 3px;
+}

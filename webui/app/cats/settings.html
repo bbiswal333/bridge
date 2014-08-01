@@ -32,52 +32,68 @@
                 	<div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label">Order</span>
                 		<div class="col-md-8">
-                			<div class="settings_input settings_input_text">{{configService.selectedTask.RAUFNR || "Order Number"}}</div>
+                			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.RAUFNR || "Order Number"}}</div>
 		                	<input type="text"
 		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 		                		ng-model="configService.selectedTask.RAUFNR" 
 		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Order Number"
-		                		ng-if="false">
+		                		ng-show="configService.selectedTask.custom">
 		            	</div>
                 	</div>
 
 		            <div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label">Project</span>
                 		<div class="col-md-8">    		
-                			<div class="settings_input settings_input_text">{{configService.selectedTask.ZCPR_EXTID || "Project Id"}}</div>
+                			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_EXTID || "Project Id"}}</div>
 		                	<input type="text"
 		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 		                		ng-model="configService.selectedTask.ZCPR_EXTID" 
 		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Project Id"
-		                		ng-if="false">
+		                		ng-show="configService.selectedTask.custom">
                 		</div>
                 	</div>
 
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input settings_input_label">Task</span>
+                		<span class="col-md-4 settings_input settings_input_label">Task
+                			<span class="settings_required_label_mark red-font" ng-show="!configService.selectedTask.TASKTYPE && configService.selectedTask.custom">*</span>
+                		</span>
                 		<div class="col-md-8">	
-                			<div class="settings_input settings_input_text">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
+                			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
 		                	<input type="text"
 		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 		                		ng-model="configService.selectedTask.ZCPR_OBJGEXTID" 
+		                		ng-required="!configService.selectedTask.TASKTYPE"
 		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Task Id"
-		                		ng-if="false">
+		                		ng-show="configService.selectedTask.custom">
 		            	</div>
                 	</div>
 
                 	<div class="row settings_input_row">
-                		<span class="col-md-4 settings_input settings_input_label">Type</span>
+                		<span class="col-md-4 settings_input settings_input_label">Type
+                			<span class="settings_required_label_mark red-font" ng-show="!configService.selectedTask.ZCPR_OBJGEXTID && configService.selectedTask.custom">*</span>
+                		</span>
                 		<div class="col-md-8">	
-                			<div class="settings_input settings_input_text">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
+                			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
 		                	<input type="text"
 		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.TASKTYPE" 
+		                		ng-model="configService.selectedTask.TASKTYPE"
+		                		ng-required="!configService.selectedTask.ZCPR_OBJGEXTID"
 		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Task Type"
-		                		ng-if="false">
+		                		ng-show="configService.selectedTask.custom">
+		            	</div>
+                	</div>
+
+                	<div class="row settings_input_row">
+                		<span class="col-md-4 settings_input settings_input_label"></span>
+                		<div class="col-md-8">	
+        					<div ng-show="!configService.selectedTask.custom" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
+                			<div ng-show="configService.selectedTask.custom && !configService.selectedTask.id" ng-disabled="ConfigItemForm.$invalid" class="btn btn-primary btn_blue settings_add_task_button" ng-click="saveNewTask()">Save</div>
+                			<div ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>
+                			
 		            	</div>
                 	</div>
                 		<!-- item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE; -->

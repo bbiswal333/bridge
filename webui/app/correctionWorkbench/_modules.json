@@ -1,0 +1,20 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.correctionWorkbench",
+		"title"					:	"Correction WB",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.correctionWorkbench",
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/correctionWorkbench/:category",
+				"templateUrl"	:	"app/correctionWorkbench/detail.html"			
+			}
+		]	
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "workbenchData.js", "detail.js"],
+	"css_files" : []
+}

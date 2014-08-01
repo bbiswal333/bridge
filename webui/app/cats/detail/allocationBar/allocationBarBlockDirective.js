@@ -64,7 +64,7 @@ function (colorUtils, blockCalculations, calUtils) {
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{blockData.desc}} {{getValueAsPercentage()}} %">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
                 '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} %</div>' +
             '</div>' +

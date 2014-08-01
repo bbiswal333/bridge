@@ -142,15 +142,16 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function createNewProjectItem (item) {
-      var newItem        = item;
-      newItem.id         = (item.ZCPR_OBJGEXTID || "") + (item.RAUFNR || "") + item.TASKTYPE;
-      newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
-      // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
-      return newItem;
+      return configService.createNewItem(item);
+      // var newItem        = item;
+      // newItem.id         = (item.ZCPR_OBJGEXTID || "") + (item.RAUFNR || "") + item.TASKTYPE;
+      // newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
+      // // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
+      // return newItem;
     }
 
     function addNewProjectItem (item) {
-      var newItem = createNewProjectItem(item);
+      var newItem = configService.createNewItem(item);
       
       markItemIfSelected(item);
 
@@ -255,7 +256,6 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
       }
       getDescFromFavorites();
-      $scope.loaded = true;
     }
 
     function markProjectItems() {
@@ -269,10 +269,13 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         getCatsData().then(function(){
           configService.loaded = true;
           initProjectItems();
+          addItemsFromBlocks();
           markProjectItems();
+          $scope.loaded = true;
         });
       } else {
         initProjectItems();
+        $scope.loaded = true;
       }
 
       $timeout(function () {
@@ -283,11 +286,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     loadProjects();
 
     $scope.$watch("blocks", function () {
-      if (!$scope.forSettingsView) {
-        initProjectItems();
-        addItemsFromBlocks();
-        markProjectItems();
-      }
+      initProjectItems();
+      addItemsFromBlocks();
+      markProjectItems();
     }, true);
 
     $scope.$watch("items", function () {

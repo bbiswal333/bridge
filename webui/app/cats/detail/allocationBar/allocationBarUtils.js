@@ -4,7 +4,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     this.colors = [
     
             "#418AC9",
-            "#8EB9DF",
+            "#8EB9DF"
             
            
  
@@ -34,7 +34,6 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     this.blockColors = {};
 
     this.getColorForBlock = function(block){
-        var generated = null;
         var len = this.colors.length;
 
         if (!block){
@@ -47,12 +46,12 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
             this.colorCounter++;
         }
         return this.blockColors[blockId]; 
-    }
+    };
 
     this.resetColorCounter = function () {
         this.blockColors = {};
         this.colorCounter = 0;
-    }
+    };
 })
 
 .service("app.cats.allocationBar.utils.blockCalculations", function () {
@@ -60,19 +59,18 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         var calcValue = value * parseInt(totalWidth, 10) / parseInt(totalValue, 10);
         calcValue = Math.round(calcValue * 1000) / 1000;
         return calcValue;
-    }
+    };
 
     this.getValueFromWidth = function(width, totalWidth, totalValue) {
         // round to full percentage points
         width = Math.round(width / totalWidth * 100) / 100 * totalWidth;
         return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
-    }
+    };
 
     this.calculateBlockMetrics = function(offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue, fixed) {
+        var newWidth = originalBlockWidth;
         if(!fixed) {
-            var newWidth = originalBlockWidth + offset;
-        } else {
-            var newWidth = originalBlockWidth;
+            newWidth = originalBlockWidth + offset;
         }
 
         // calculate potential new Value from the new width
@@ -92,7 +90,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
 
         return {
             newWidth: newWidth,
-            newValue: newValue,
-        }
-    }
+            newValue: newValue
+        };
+    };
 });
