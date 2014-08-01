@@ -1,10 +1,10 @@
-angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http','$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams', 'app.correctionWorkbench.configservice', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, workbenchData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
+angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http','$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, workbenchData, $routeParams, bridgeDataService, bridgeConfig) {
 
         $scope.$parent.titleExtension = " - Details";   
         $scope.filterText = '';
-        $scope.workbechItems = [];
-        $scope.prios = workbenchData.prios;
-        $scope.statusMap = {};  
+        $scope.categories = workbenchData.categories;
+        $scope.workbenchData = workbenchData.workbenchData;
+        $scope.categoryMap = {};  
         $scope.zoomIndex = -1;
         $scope.zoomImg = null;
 
@@ -12,37 +12,37 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
         function update_table()
         {
             $scope.tableData = [];
-            if($scope.workbechItems && $scope.workbechItems.length > 0)
-            {
-                if(!$scope.getStatusArray().length)
-                {
-                    var status_filter = $routeParams.prio.split('|'); 
 
-                    $scope.prios.forEach(function (prio){
-                        if(status_filter.indexOf(prio.name) > -1)
-                        {
-                            $scope.statusMap[prio.name] = {"active":true};
-                        }
-                        else
-                        {
-                            $scope.statusMap[prio.name] = {"active":false};
-                        }
-                    });
-                }                
-                $scope.workbechItems.forEach(function (workbechItem){
-                    if ($scope.statusMap[workbechItem.priority.__text].active) {
-                        $scope.tableData.push(workbechItem);
+            if(!$scope.getCategoryArray().length) {
+                var category_filter = $routeParams.category.split('|'); 
+
+                $scope.categories.forEach(function (category){
+                    if(category_filter.indexOf(category.name) > -1)
+                    {
+                        $scope.categoryMap[category.name] = {"active":true};
                     }
-                });                               
-            }                      
+                    else
+                    {
+                        $scope.categoryMap[category.name] = {"active":false};
+                    }
+                });
+            }
+
+            $scope.categories.forEach(function(category) {
+                if($scope.categoryMap[category.name] && $scope.categoryMap[category.name].active) {
+                    workbenchData.workbenchData[category.targetArray].forEach(function(workbenchItem) {
+                        $scope.tableData.push(workbenchItem);
+                    });
+                }
+            });
         }
 
-        $scope.$watch('workbechItems', function () 
+        $scope.$watch('categories', function () 
         {                        
             update_table();            
         }, true);
 
-        $scope.$watch('statusMap', function()
+        $scope.$watch('categoryMap', function()
         {
             update_table();
         }, true);
@@ -66,24 +66,15 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
 
         function enhanceAllMessages() 
         {
-            angular.forEach(workbenchData.workbenchData.correctionRequestsForTesting, function (workbenchItem) { enhanceMessage(workbenchItem); });
-            angular.forEach(workbenchData.workbenchData.correctiveMeasures, function (workbenchItem) { enhanceMessage(workbenchItem); });          
+            angular.forEach(workbenchData.workbenchData.correctionRequestsPlannedForTesting, function (workbenchItem) { enhanceMessage(workbenchItem); });
+            angular.forEach(workbenchData.workbenchData.correctionRequestsInProcess, function (workbenchItem) { enhanceMessage(workbenchItem); });  
+            angular.forEach(workbenchData.workbenchData.correctionRequestsTesting, function (workbenchItem) { enhanceMessage(workbenchItem); });
+            angular.forEach(workbenchData.workbenchData.correctionRequestsTestedOk, function (workbenchItem) { enhanceMessage(workbenchItem); });          
         }
 
-        $scope.getStatusArray = function(){
-            return Object.keys($scope.statusMap);
+        $scope.getCategoryArray = function(){
+            return Object.keys($scope.categoryMap);
         };
-
-        $scope.$watch('config', function() {      
-            if($scope.config !== undefined)
-            {
-                var selected_messages = [];                
-                if($scope.config.data.selection.correctionRequestsForTesting) { angular.forEach(workbenchData.workbenchData.correctionRequestsForTesting, function (workbenchItem) { selected_messages.push(workbenchItem); }); }
-                if($scope.config.data.selection.correctiveMeasures)     { angular.forEach(workbenchData.workbenchData.correctiveMeasures, function (workbenchItem) { selected_messages.push(workbenchItem); }); }                                     
-                $scope.workbechItems = selected_messages;
-                bridgeConfig.persistInBackend(bridgeDataService);                
-            }
-        },true);  
 
         $scope.zoom = function(index, event){
             $scope.zoomIndex = index;
@@ -96,11 +87,9 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
 
             promise.then(function success() {
                 enhanceAllMessages();
-                $scope.config = configservice;
             });
         } else {
             enhanceAllMessages();
-            $scope.config = configservice;
         }
 }]);
 

@@ -3,18 +3,7 @@
 
     	<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
         <div class="btn-group" style="height:32px;max-width:100%;">      	
-          <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">{{status}}</span>
-
-          <div style="position:absolute;right:0">
-          	<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.correctionRequestsForTesting];" ng-click="config.data.selection.correctionRequestsForTesting = !config.data.selection.correctionRequestsForTesting" 
-			style="width:35px;" title="Correction Requests for Testing">
-				<i class="fa fa-cube"></i>
-			</div>	
-			<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.correctiveMeasures];" ng-click="config.data.selection.correctiveMeasures = !config.data.selection.correctiveMeasures"
-			style="width:35px;" title="Corrective Measures">
-				<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
-			</div>	
-      	</div>
+          <span ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
       	</div>
         
 			
@@ -58,7 +47,7 @@
 			            <a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
         			</div>
 	            	<div class="cellText col-sm-4">
-        				<a target="_blank" href="{{row.ticket_url}}">{{row.shortText.__text}}</a>
+        				<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
 	            	</div>
 	            </div>
 	        </div>

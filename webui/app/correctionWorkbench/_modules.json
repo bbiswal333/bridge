@@ -9,7 +9,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/correctionWorkbench/:prio",
+				"route"			:	"/detail/correctionWorkbench/:category",
 				"templateUrl"	:	"app/correctionWorkbench/detail.html"			
 			}
 		]	
