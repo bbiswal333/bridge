@@ -10,6 +10,8 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
+        $scope.logMode = bridgeDataService.getLogMode();
+
         $scope.getSidePane = function () {
             return $scope.sidePanel;
         };
@@ -270,7 +272,7 @@ angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$loc
 
     $routeProvider.when("/diagnosis", {
         templateUrl: 'bridge/diagnosis/corsTestPage.html',
-        controller: 'bridge.app.corsTestPageController',
+        controller: 'bridge.diagnosis.corsTestPageController',
     });
 
     //If no valid URL has been entered redirect to main entry point

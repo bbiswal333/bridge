@@ -1,4 +1,4 @@
-﻿angular.module('bridge.app').controller('bridge.app.corsTestPageController', ["$scope", "$http", function ($scope, $http) {
+﻿angular.module('bridge.diagnosis').controller('bridge.diagnosis.corsTestPageController', ["$scope", "$http", function ($scope, $http) {
 
     $scope.withCredentials = true;
 
@@ -16,15 +16,3 @@
         });
     };
 }]);
-
-/*
-
-        $http({
-            method: 'GET',
-            url: "https://pgxmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARTIES_OF_REQ  eq 'D051804' and COMPLETED eq 'X'",
-            withCredentials: true
-        }).success(function (data) {
-            alert(data);
-        });
-
-        */

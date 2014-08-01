@@ -28,6 +28,8 @@ module.exports = function(config) {
       './webui/bridge/bridgeController.js',
       './webui/bridge/bridgeDataService.js',
 
+      './webui/bridge/diagnosis/logService.js',
+
       './webui/bridge/**/*.js',
 
       './webui/app/meetings/overview.js',
