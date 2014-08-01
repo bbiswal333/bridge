@@ -19,6 +19,7 @@
 
     <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
     <link href="css/bridge.css" rel="stylesheet" />
+    <link href="css/bridgeColors.css" rel="stylesheet" />
     <link href="css/notificationStyles.css" rel="stylesheet" />
     <link href="css/animation.css" rel="stylesheet" />
     
@@ -76,20 +77,16 @@
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: temporaryData.backgroundDayNight}[(temporaryData.backgroundDayNight == undefined)]" ng-cloak>
         <div class="sun" ng-class="{true: 'mainPageBackground', false: temporaryData.backgroundClass}[(temporaryData.backgroundClass == undefined)]">
             <div>
-                <div ng-if="!showLoadingBar" class="TitleBar"></div>
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
                 </div>
-                <!--<span class="headertext">
-                    <a href="/#"><img style="pointer-events:auto" src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></a>
-                </span>-->
             </div>
-            <!--<div id="menu">
-                <ul class="mainNav">
-                    <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
-                    
-                </ul>
-            </div>-->
+            <div ng-if="logMode" class="logAlertBar">
+                <span>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis:</span>
+                <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="">
+                <input class="btn btn-default btn_blue logAlertButton" type="button" value="Leave Log-Mode" ng-click="">
+                <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="">
+            </div>
             <div id="main-container" ng-view class="mainContainer">
             </div>
         </div>

@@ -1,9 +1,15 @@
 /*
-    This file is the equivalent to the (untested) loader.js. While loader js does the bootstrapping in the productive environment we do the same here for our testing. We cannot just execute the loader.js
-    in the testenvironment, because it relies on the list of available apps etc.
+    This file is the equivalent to the (untested) loader.js. While loader.js does the bootstrapping in the productive environment we do the same here for our testing. We cannot just execute the loader.js
+    in the test environment, because it relies on the list of available apps etc.
+    Basically we need to instantiate all modules etc. here that we instantiate in the loader.js in the productive environment.
 */
 
-angular.module('bridge.app', []);
+angular.module('bridge.app', [
+    "ngRoute",
+    "bridge.service",
+    "lib.utils"
+]);
+
 angular.module('bridge.service', []);
 angular.module('bridge.service').provider("bridge.service.loader", function () {
     this.apps = [{

@@ -21,12 +21,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
 
-    $http.get(window.client.origin + '/client').success(function () {
-        $scope.client = true;
-    }).error(function () { 
-        $scope.client = false;
-    });
-
     var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
 
     if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
