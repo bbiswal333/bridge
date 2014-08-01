@@ -75,8 +75,6 @@ directive("app.meetings", [
 					var start = dateFn(events[i]["t:Start"][0]);
 					var end = dateFn(events[i]["t:End"][0]);
 
-					var TESTdifference = ((start.getTime() - new Date().getTime()) / 1000 / 60);
-
 					if (start.getDate() === today.getDate()) {
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
