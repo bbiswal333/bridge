@@ -22,7 +22,6 @@
         var sEncodedUrl = "";
 
         if (oConfig.method === "GET") {
-            //oConfig.url = oConfig.url.replace(/\?/, "&");
             sEncodedUrl = encodeURIComponent(oConfig.url);
             sNewUrl = "https://localhost:1972/api/get?url=" + sEncodedUrl;
         } else {
@@ -43,20 +42,19 @@
     return {
         'request': function (config) {
             bridgeDataService = bridgeDataService || $injector.get('bridgeDataService');
-            // if we have an external call (starting with http/https) and we are in client mode, then route all calls via the client
-            if (bridgeDataService.getClientMode() === true && rProtocol.test(config.url)) {
+
+            if (rProtocol.test(config.url)) {
+                //IE wants to cache everything so all external https calls are uncached here
+                config.url = uncachifyUrl(config.url);
+
+                // if we have an external call (starting with http/https) and we are in client mode, then route all calls via the client,
                 // if the call already targets to localhost, don't modify it
-                if (!rLocalhost.test(config.url)) {
+                if (bridgeDataService.getClientMode() === true && !rLocalhost.test(config.url)) {
                     var sNewUrl = rerouteCall(config);
                     config.url = sNewUrl;
                 }
             }
-
-            //IE wants to cache everything so all external https calls are uncached here
-            if (config.url.indexOf("https://") !== -1) {
-                config.url = uncachifyUrl(config.url);
-            }
-
+            
             config.timer = $timeout(function () {
                 $rootScope.showLoadingBar = true;
             }, 500, true);
