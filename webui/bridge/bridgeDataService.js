@@ -4,6 +4,7 @@
     this.temporaryData = {};
     this.configRawData = null;
     this.clientMode = false;
+    this.logMode = false;
     var that = this;
 
     function isEmpty(obj) {
@@ -200,6 +201,14 @@
         return this.clientMode;
     }
 
+    function _setLogMode(bLogMode) {
+        this.logMode = bLogMode;
+    }
+
+    function _getLogMode() {
+        return this.logMode;
+    }
+
     return {
         initialize: _initialize,
         getBridgeSettings: _getBridgeSettings,
@@ -212,6 +221,8 @@
         getAppConfigByModuleName: _getAppConfigByModuleName,
         toDefault: _toDefault,
         setClientMode: _setClientMode,
-        getClientMode: _getClientMode
+        getClientMode: _getClientMode,
+        setLogMode: _setLogMode,
+        getLogMode: _getLogMode
     };
 }]);

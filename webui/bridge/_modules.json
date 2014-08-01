@@ -4,6 +4,7 @@
 		"bridgeController.js", 
 		"bridgeDetailController.js",
 		"bridgeNotificationsController.js", 
+        "bridgeHttpInterceptor.js",
 		"diagnosis/corsTestPageController.js",
 		"bridgeSettingsController.js", 
 		"bridgeMainSettingsController.js", 
