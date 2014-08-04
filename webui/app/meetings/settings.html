@@ -8,11 +8,13 @@
 		  				<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
 		  		</div>
 		  	</div>	
-		 	<div class="col-xs-12 form_head">Which SAP-Connect Dial-in you want to dial-into via the Meeting App?</div>
- 			<div class="col-xs-6" >
-	
- 					<input type="text" class="form-control form"  ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
-			</div>		  			 
+		  	<div class="row">
+			 	<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
+			 		Which SAP-Connect Dial-in you want to dial-into via the Meeting App?
+			 	</div>	
+		
+				<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
+			</div> 			 
 		</form>
 	</p>
 

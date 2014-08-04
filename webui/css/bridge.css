@@ -735,6 +735,9 @@ input[type="checkbox"]:checked:after {
 .meetings-table{
     font-size:0.9em;
 }
+.small-icon{
+    font-size: 1.4rem;
+}
 #detailContainer{
     text-align: left;
 }

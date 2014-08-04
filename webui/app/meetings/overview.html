@@ -34,10 +34,10 @@
                                         {{event.subject}} 
                                     </span>
 									<span ng-if="event.participantCode" >
-                                       	<a class="box-icon icon-phone" style="color:green; opacity: 0.8; font-size:115%" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="This button takes you to the SAP-connect meeting with Participant {{event.participantCode}}. The SAP-connect dial-string is automatically derived from your Exchange data, may contain wrong data"></a>  
+                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
                                     </span>
                                     <span ng-if="event.sapconnectUrl" >
-                                       	<a class="box-icon icon-users" style="color:green; opacity: 0.8; font-size:115%" href="{{event.sapconnectUrl}}" target="_blank" tooltip="The SAP-connect URL {{event.sapconnectUrl}} is automatically derived from your Exchange data, may contain wrong URL"></a>
+                                       	<a class="box-icon fa fa-users small-icon basic-blue-font-40" href="{{event.sapconnectUrl}}" target="_blank" tooltip="SAP Connect"></a>
                                     </span>
 
                                 </div>
