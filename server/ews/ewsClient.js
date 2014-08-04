@@ -1,36 +1,36 @@
 var path    = require('path');
 var fs      = require("fs");
 var xml2js  = require('xml2js').parseString;
+var _und 	= require('underscore')._;
 
 /*
     list of available fields to request from ews
     http://msdn.microsoft.com/en-us/library/office/aa494315(v=exchg.150).aspx
 */
 
-exports.EWSClient = function(dateFrom, dateTo, json) {
+exports.EWSClient = function(clientType, query2, json) {
     var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
-    var SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";    
-    var PLACEHOLDER_FROM = "%DATEFROM%";
-    var PLACEHOLDER_TO = "%DATETO%";    
+    var SOAP_TEMPLATE_FILE;
     var ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";    
     
-    if (dateFrom == undefined || dateTo == undefined) {
-        throw new Error("dateFrom_s and dateTo_s must not be undefined.");
-    }
+	// need to copy the value due to race condition
+	var query = clone(query2);
 
-    if (dateFrom == "" || dateTo == "") {
-        throw new Error("dateFrom_s and dateTo_s must not ne empty.");
-    }
+	if (typeof clientType == "undefined" ) {
+		throw new Error("Client-Type needs to be set");
+	}
+				
+	SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_"+clientType+"_template.xml";    
 
-    if (dateFrom.length != 20 || dateTo.length != 20) {
-        throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");
-    }
-    
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
-            data = data.replace(PLACEHOLDER_FROM, dateFrom);
-            data = data.replace(PLACEHOLDER_TO, dateTo);
-            
+			
+			var compiled = _und.template(data);
+			data = compiled(query);
+			
+			var myresult;
+				  
+				  
             if (typeof webkitClient !== 'undefined' && webkitClient)
             {                
 
@@ -44,16 +44,17 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
                     success: 
                         function(data)
                         {                                        
+				
                             handleData(data.children[0].childNodes[1].innerHTML);
                         },
                     error: 
                         function() {
                             console.log('6' + ERR_MSG_CONNECTION_TO_EXCHANGE);
-                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));                            
+                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
                         }
                 });
 
-            }        
+            } 
 
             function handleData(ews_xml) {
                 if (json) {
@@ -62,12 +63,12 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
                             if (err == undefined) {
                                 callback_fn(JSON.stringify(result));
                             } else {
-                                callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
+                                callback_fn(new Error("handleData cb => "+ERR_MSG_CONNECTION_TO_EXCHANGE));
                             }
                         });
                     } catch (err) {
                         var text = "Error parsing JSON. Please try again requesting XML."
-                        callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
+                        callback_fn(new Error("handleData catch => " + ERR_MSG_CONNECTION_TO_EXCHANGE));
                         console.log('3' + text);
                     }
                 } else {
@@ -89,4 +90,15 @@ exports.EWSClient = function(dateFrom, dateTo, json) {
             callback_fn(data);
         });
     }
+	//Clones an object
+	function clone(obj) {
+		if (null == obj || "object" != typeof obj) return obj;
+    	var copy = {} // obj.constructor();
+    	for (var attr in obj) {
+        	copy[attr] = obj[attr];
+		}
+    	return copy;
+}
+
+
 };

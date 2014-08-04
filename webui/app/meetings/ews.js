@@ -1,7 +1,7 @@
 angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
-	var EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
+	var EWS_BASE_URL
 
-	function _buildEWSUrl (dateFrom_o, days_i) {
+	function _buildEWSUrl (dateFrom_o, days_i, exchangeUid) {	
 		function buildDateString (date_o) {
 			var year = date_o.getFullYear();
 			var month = calUtils.useNDigits(date_o.getMonth() + 1, 2);
@@ -16,11 +16,17 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 		function encodeForUrl (val_s) {
 			return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
 		}
-
-		var dateFrom_s = buildDateString(dateFrom_o);
-		var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
-
-		return EWS_BASE_URL + "?from=" + encodeForUrl(dateFrom_s) + "&to=" + encodeForUrl(dateTo_s) + "&format=json";
+		
+		if (typeof exchangeUid == "undefined") {
+			var dateFrom_s = buildDateString(dateFrom_o);
+			var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
+			EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
+		
+			return EWS_BASE_URL + "?dateFrom=" + encodeForUrl(dateFrom_s) + "&dateTo=" + encodeForUrl(dateTo_s) + "&format=json";
+		} else {
+			EWS_BASE_URL = window.client.origin + "/api/CalGetItemSSO";
+			return EWS_BASE_URL + "?format=json&exchangeUid=" + encodeForUrl(exchangeUid);
+		}
 	}
 
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
@@ -44,8 +50,8 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 	}	
 
 	return {
-		buildEWSUrl: function(dateFrom_o, days_i) {
-			return _buildEWSUrl(dateFrom_o, days_i);
+		buildEWSUrl: function(dateFrom_o, days_i, exchangeUid) {
+			return _buildEWSUrl(dateFrom_o, days_i, exchangeUid);
 		},
 		parseEWSDateString: function (ewsDateStr_s, offsetUTC_i) {
 			return _parseEWSDateString(ewsDateStr_s, offsetUTC_i);		
