@@ -6,8 +6,10 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
 
-        $scope.getBuildImgUrl = function(jobName) {
-            return "http://mo-e7882d540.mo.sap.corp:49153/job/" + jobName + "/badge/icon";
+        var addBuildStatusUrls = function() {
+            for(var jobindex in $scope.jobs) {
+                $scope.jobs[jobindex].buildstatusurl = $scope.jenkinsConfig.url + "/job/" + $scope.jobs[jobindex].name + "/badge/icon";
+            }
         };
 
         var updateJenkins = function(url) {
@@ -17,6 +19,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
             $http({method: 'GET', url: url + "/api/json"}).
                 success(function(data) {
                     $scope.jobs = data.jobs;
+                    addBuildStatusUrls();
                 }).
                 error(function(data, status) {
                     console.log("Error retrieving " + url + ". Status: " + status);
@@ -26,7 +29,6 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
         var init = function() {
             updateJenkins("http://mo-e7882d540.mo.sap.corp:49153");
-
         };
 
         init();
