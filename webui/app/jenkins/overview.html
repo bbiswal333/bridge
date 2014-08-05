@@ -1,10 +1,14 @@
 ﻿Jenkins: <input type="text" ng-model="jenkinsConfig.url" ng-change="inputChanged()" size="40"/>
 
-<p>
+<div class="buildjobsgrid" ng-show="jobs">
 	Jobs:
 	<ul>
 		<li ng-repeat="job in jobs">
 			<a href="{{job.url}}">{{job.name}}</a> <img src="{{job.buildstatusurl}}"/>
 		</li>
 	</ul>
-</p>
+</div>
+
+<div class="error" ng-show="errormessage">
+	{{errormessage}}
+</div>

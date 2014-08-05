@@ -5,6 +5,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
+        $scope.errormessage = "";
 
         var addBuildStatusUrls = function() {
             for(var jobindex in $scope.jobs) {
@@ -19,9 +20,11 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
                     $scope.jobs = data.jobs;
+                    $scope.errormessage = "";
                     addBuildStatusUrls();
                 }).error(function(data, status) {
-                    console.log("Error retrieving " + url + ". Status: " + status);
+                    var msg = "Error retrieving data from " + url + ", got status: " + status;
+                    $scope.errormessage = msg;
                     $scope.jobs = [];
                 });
 
