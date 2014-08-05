@@ -3,9 +3,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	["$http", 
 	"$q", 
 	"lib.utils.calUtils", 
-	"app.cats.data.catsUtils", 
+	"app.cats.cat2BackendZDEVDB", 
 	
-	function($http, $q, calenderUtils, catsUtils){
+	function($http, $q, calenderUtils, catsBackend){
 
 	this.months = {};
 	this.days = {};
@@ -45,7 +45,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			var weeks = this.getWeeksOfMonth(year, month);
 			for (var i = 0; i < weeks.length; i++) {
-				promise = catsUtils.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
+				promise = catsBackend.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
 				promises.push(promise);
 				promise.then(function(data){
 					if(data) {
@@ -138,7 +138,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.initializeDay = function (calWeekIndex, dayIndex, weekData, dayString) {
-		var promise = catsUtils.getTotalWorkingTimeForDay(dayString);
+		var promise = catsBackend.getTotalWorkingTimeForDay(dayString);
 		var self = this;
 		promise.then(function(targetHours) {
 			var day = null;
@@ -233,7 +233,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		    var self = this;
 			self.reloadInProgress.value = true;
 		    weeks.forEach(function(week){
-		    	var promise = catsUtils.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
+		    	var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
 		        promises.push(promise);
 		    	promise.then(function(data){
 					self.reloadInProgress.value = false;

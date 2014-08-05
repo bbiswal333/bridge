@@ -21,7 +21,7 @@ describe("Settings view of cats app", function () {
 	//         $provide.value('yourService', serviceMock);
 	//     });
 	// });
-	beforeEach(inject(["app.cats.configService", "app.cats.data.catsUtils", function (_config_, _catsUtils_) {
+	beforeEach(inject(["app.cats.configService", "app.cats.catsUtils", function (_config_, _catsUtils_) {
 		config = _config_;
 		config.favoriteItems = angular.copy(favoriteItemsMock);
 		config.catsItems = angular.copy(catsItemsMock);

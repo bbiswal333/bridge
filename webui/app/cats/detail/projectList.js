@@ -1,6 +1,13 @@
-angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data", "app.cats.allocationBar.utils"]).
-  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils",  "lib.utils.calUtils", "app.cats.configService", "$q",
-    function (catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
+angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.dataModule", "app.cats.utilsModule", "app.cats.allocationBar.utils"]).
+  directive("app.cats.maintenanceView.projectList", [
+    "app.cats.cat2BackendZDEVDB",
+    "app.cats.catsUtils",
+    "$timeout",
+    "app.cats.allocationBar.utils.colorUtils", 
+    "lib.utils.calUtils",
+    "app.cats.configService",
+    "$q",
+    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -180,7 +187,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       var deferred = $q.defer();
 
       var week = calenderUtils.getWeekNumber(new Date());
-      catsUtils.requestTasksFromTemplate(week.year, week.weekNo).then( function(data){
+      catsBackend.requestTasksFromTemplate(week.year, week.weekNo).then( function(data){
         data.forEach(function(task){
           addNewProjectItem(task);
         });
@@ -192,7 +199,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     function getCatsData () {
       var deferred = $q.defer(); 
-      catsUtils.getTasks(true).then(function (data) {
+      catsBackend.requestTasksFromWorklist(true).then(function (data) {
         if ($scope.blocks === undefined) {
           $scope.blocks = [];
         }

@@ -1,14 +1,15 @@
 angular.module("app.cats")
 	.directive("app.cats.calendar", 
 		["lib.utils.calUtils", 
-		 "app.cats.data.catsUtils", 
+		 "app.cats.cat2BackendZDEVDB",
+		 "app.cats.catsUtils",
 		 "$interval", 
 		 "$location", 
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
 		 "$q",
-	function (calUtils, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q) {
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q) {
 		function processCatsData(cats_o) {
 	        function parseDateToTime(date_s) {
 	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -548,7 +549,7 @@ angular.module("app.cats")
 			
 			var refreshInterval = null;
 
-			catsUtils.getCatsComplianceData().then( handleCatsData );
+			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
 
 			if ($scope.selectedDay) {
 			    while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
@@ -567,13 +568,13 @@ angular.module("app.cats")
 
 			    refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
-			            catsUtils.getData(handleCatsData);
+						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
 			    }, 3 * 3600000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
-			    catsUtils.getCatsComplianceData(true).then( handleCatsData ); // force update
+				catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			});
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;

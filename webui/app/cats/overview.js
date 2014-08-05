@@ -1,4 +1,4 @@
-angular.module('app.cats', ["lib.utils", "app.cats.data", "ngRoute"]);
+angular.module('app.cats', ["lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ngRoute"]);
 
 angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 	function (catsConfigService) {

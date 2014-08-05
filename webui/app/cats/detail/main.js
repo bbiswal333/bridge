@@ -1,17 +1,18 @@
-angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.data", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
+angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
   "$scope",
   "$q",
   "$modal",
   "$routeParams",
   "$location",
   "lib.utils.calUtils",
-  "app.cats.data.catsUtils",
+  "app.cats.cat2BackendZDEVDB",
+  "app.cats.catsUtils",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -485,7 +486,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
-                catsUtils.writeCATSData(container).then(function(data){
+                catsBackend.writeCATSData(container).then(function(data){
                     monthlyDataService.reloadInProgress.value = false;
                     checkPostReply(data);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons

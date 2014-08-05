@@ -1,4 +1,5 @@
-angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.data.catsUtils", "bridgeInBrowserNotification", function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
+angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification",
+    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
 	
 	$scope.configService = catsConfigService;
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);

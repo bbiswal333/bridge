@@ -20,12 +20,15 @@
 		"app.cats.allocationBar.utils",
 		"app.cats.maintenanceView",
 		"app.cats.maintenanceView.projectList",
-		"app.cats.monthlyDataModule"
+		"app.cats.monthlyDataModule",
+		"app.cats.dataModule",
+		"app.cats.utilsModule"
 	],
 
 	"js_files" : [
 		"catsMonthlyData.js",
-		"cats.js",
+		"catsUtils.js",
+		"cat2BackendZDEVDB.js",
 		"overview.js",
 		"settings.js",
 		"config.js",
