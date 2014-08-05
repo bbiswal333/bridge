@@ -30,5 +30,3 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
 Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
-
-
