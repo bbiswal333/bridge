@@ -24,11 +24,19 @@ exports.EWSClient = function(clientType, query2, json) {
 
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
-			
-			var compiled = _und.template(data);
-			data = compiled(query);
-			
-			var myresult;
+            
+           var compiled = _und.template(data);
+           data = compiled(query);
+           try {
+               var compiled = _und.template(data);
+               data = compiled(query);
+           } catch (err) {
+               var text = "Error applying template. Please check if every needed variable is set.\n"+ err;
+               callback_fn(new Error(text + " " + ERR_MSG_CONNECTION_TO_EXCHANGE));
+               console.log('3' + text);
+           }
+            
+            var myresult;
 				  
 				  
             if (typeof webkitClient !== 'undefined' && webkitClient)
