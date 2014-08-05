@@ -5,12 +5,30 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
+        $scope.jobStatus = [];
 
         var addBuildStatusUrls = function() {
             for(var jobindex in $scope.jobs) {
                 $scope.jobs[jobindex].buildstatusurl = $scope.jenkinsConfig.url + "/job/" + $scope.jobs[jobindex].name + "/badge/icon";
             }
         };
+
+        var getStatus = function(){
+            
+            
+            for(var job in $scope.jobs) {
+                console.log($scope.jobs[job].url)
+                $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json" }).
+                success(function(data) {      
+                    $scope.jobStatus.push(data);
+                }).
+                error(function(data, status) {
+                    console.log("GET could not be done on job" + data.jobName);
+                });
+            }
+            
+            
+        }
 
         var updateJenkins = function(url) {
 
@@ -20,6 +38,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                 success(function(data) {
                     $scope.jobs = data.jobs;
                     addBuildStatusUrls();
+                    getStatus();
                 }).
                 error(function(data, status) {
                     console.log("Error retrieving " + url + ". Status: " + status);
@@ -28,7 +47,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         };
 
         var init = function() {
-            updateJenkins("http://mo-e7882d540.mo.sap.corp:49153");
+            updateJenkins("http://mo-e7882d540.mo.sap.corp:49153");          
         };
 
         init();

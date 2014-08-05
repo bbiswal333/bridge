@@ -4,7 +4,11 @@
 	Jobs:
 	<ul>
 		<li ng-repeat="job in jobs">
-			<a href="{{job.url}}">{{job.name}}</a> <img src="{{job.buildstatusurl}}"/> <button type="button" ng-click="triggerBuild(job)">Trigger new build</button>
+			<a href="{{job.url}}">{{job.name}}</a> <img src="{{job.buildstatusurl}}"/> 
+			<li ng-repeat="jobinfo in jobStatus">
+				Status : {{jobinfo.result}}
+				Last Build : {{jobinfo.id}}
+			</li>
 		</li>
 	</ul>
 </p>
