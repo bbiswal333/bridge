@@ -381,7 +381,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    var app_files = getFiles(app_path);	
 		    files = concatAttributes(files, app_files);
 
-
 		    if (typeof request.query.format == "undefined")
 		    {
 		    	response.setHeader('Content-Type', 'text/plain;');						    	   

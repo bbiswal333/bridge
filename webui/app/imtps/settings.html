@@ -1,13 +1,18 @@
 <div style="width: 100%">
 	<p>
-		<form name="ConfigItemForm">
+		<form name="ConfigItemForm">	
+			<div class="row" style="margin:25px 0 0 0;">
+				If test case name is not set, the messages assigned to your test cases in the Tester's Worklist are shown 
+			</div>
+			By Test Case Name (Accept Wildcards):
 			<div class="row">
-				<div class="col-xs-1"><b>Traffic Light Query</b></div>
+				<!-- <div class="col-xs-1"><b>By Test Case Name (Accept Wildcards)</b></div> -->
 				<div class="col-xs-6 has-feedback">
-					<input type="textarea" class="form form-control" ng-model="data.tlquery" placeholder="Traffic Light Query" autofocus/>
+					<input type="textarea" class="form form-control" ng-model="data.tcQuery" placeholder="Test Case Name" autofocus/>
 				</div>
 			</div>
-			<button class="btn btn-default" ng-click="save_click()">Save</button>
+			<div class="row"><br /></div>
+			<button class="btn btn-default" ng-click="save_click()">Save & Close</button>
 		</form>
 	</p>
 </div>

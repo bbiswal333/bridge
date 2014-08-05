@@ -1,30 +1,38 @@
-angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http',
-    function Controller($scope, $http) {
+angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http', 'app.imtps.msgReaderData', 'employeeService', 'app.imtps.configservice', '$routeParams' , 
+    function Controller($scope, $http, msgReaderData,employeeService, configservice, $routeParams) {
 
-        $scope.$parent.titleExtension = " - IM Details";   		
-	    $http.get('https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps?origin=' + location.origin 
-	   		
-	        ).success(function(data) {
-	        	
-	        	data = new X2JS().xml_str2json(data);
-                $scope.imData = data["abap"];
-                $scope.imData = $scope.imData["values"];	            
-	       	 	$scope.tempobject = [];
+        $scope.$parent.titleExtension = " - IM Details";
+       
+        if (configservice.isInitialized === false) {
+        	configservice.initialize($routeParams.appId);
+        }
+        
+        msgReaderData.initService( function(messages){ 
+			if( messages ){
+				var arraytmp = [];
+				$scope.tempobject = messages["_-QBE_-S_MESSAGES"];
+       	   		
+				angular.forEach(messages["_-QBE_-S_MESSAGES"], function (n) {
+					if( n.MSG_CREATED_BY_UID != '' ){
+						n.employee_created = employeeService.getData( n.MSG_CREATED_BY_UID );
+						n.employee_created.url = 'https://people.wdf.sap.corp/profiles/' + n.MSG_CREATED_BY_UID;    
+						n.employee_created.username = n.employee_created.VORNA + ' ' + n.employee_created.NACHN;
+						n.employee_created.mail = n.employee_created.SMTP_MAIL;
+						n.employee_created.tel = n.employee_created.TELNR;
+					}
+					
+					if( n.MSG_PROCESSOR_UID != ''){
+						n.employee_process = employeeService.getData( n.MSG_PROCESSOR_UID );
+						n.employee_process.url = 'https://people.wdf.sap.corp/profiles/' + n.MSG_PROCESSOR_UID;    
+						n.employee_process.username = n.employee_process.VORNA + ' ' + n.employee_process.NACHN;
+						n.employee_process.mail = n.employee_process.SMTP_MAIL;
+						n.employee_process.tel = n.employee_process.TELNR;
+					}
+            	});
+			}
 
-	       	   	if ($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"] !== "") {
-	       	   		_.each($scope.imData["TC_MESSAGES"]["_-QBE_-S_MESSAGES"], function (n) {
-	       	   			$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + n.SUSID + '&origin=' + location.origin).then(function (response) {
-	                        n.employee = response.data.DATA;
-	                        n.employee.TELNR = n.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                       		$scope.tempobject.push(n);
-	       	   			});
-                	});
-	       	   	}	            
-     
+		});
 
-	        }).error(function(data) {
-	            $scope.imData = [];	            
-	        });
-        } ] ) ;
+} ] ) ;
 
 

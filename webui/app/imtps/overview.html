@@ -1,7 +1,7 @@
-<div ng-controller="app.imtps.directiveController">
+<div>
 	<div style="width:175px; height:140px">
 		 <div class="prio_container">
-			<a href="#/detail/imtps" >
+			<a href="#/detail/imtps/{{id}}/" >
 			<div ng-repeat="prio in prioarray track by $index" class="prio_col prio_bg_{{$index+1}}">
 				<div class="prio_box">
 					<p>Prio {{$index+1}}</p>
