@@ -33,6 +33,19 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
         init();
 
+        $scope.triggerBuild = function(job) {
+
+            var buildUrl = $scope.jenkinsConfig.url + "/job/" + job.name + "/build";
+
+            $http({method: 'POST', url: buildUrl}).
+                success(function(data, status, headers, config) {
+                    console.log("Success! Data: " + data);
+                }).
+                error(function(data, status) {
+                    console.log("Error posting to trigger build. Status: " + status + ", data: " + data);
+                });
+        };
+
         $scope.inputChanged = function() {
             updateJenkins($scope.jenkinsConfig.url);
         };
