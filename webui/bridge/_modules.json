@@ -34,7 +34,7 @@
 		"libUtils.js", 
 		"sortableService.js",
 		"bridgeInBrowserNotification.js",
-		"trafficlightservice.js",
+		"trafficLightService.js",
 		"employeeService.js"
 	],
 	"css_files" : []
