@@ -4,7 +4,7 @@
 	Jobs:
 	<ul>
 		<li ng-repeat="job in jobs">
-			<a href="{{job.url}}">{{job.name}}</a> <img src="{{job.buildstatusurl}}"/> 
+			<a href="{{job.url}}">{{job.name}}</a> 
 			<li ng-repeat="jobinfo in jobStatus">
 				Status : {{jobinfo.result}}
 				Last Build : {{jobinfo.id}}

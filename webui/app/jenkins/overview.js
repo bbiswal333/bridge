@@ -8,28 +8,20 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         $scope.jobStatus = [];
         $scope.errormessage = "";
 
-        var addBuildStatusUrls = function() {
-            for(var jobindex in $scope.jobs) {
-                $scope.jobs[jobindex].buildstatusurl = $scope.jenkinsConfig.url + "/job/" + $scope.jobs[jobindex].name + "/badge/icon";
-            }
-        };
-
-        var getStatus = function(){
+        var getStatus = function() {
             
-            
-            for(var job in $scope.jobs) {
-                console.log($scope.jobs[job].url)
-                $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
-                success(function(data) {      
-                    $scope.jobStatus.push(data);
+            for(var jobindex2 in $scope.jobs) {
+                console.log($scope.jobs[jobindex2].url);
+                $http({ method: 'GET', url: $scope.jobs[jobindex2].url + "lastBuild/api/json", withCredentials: false }).
+                success(function(jobinfo) {      
+                    $scope.jobStatus.push(jobinfo);
                 }).
-                error(function(data, status) {
-                    console.log("GET could not be done on job" + data.jobName);
+                error(function(jobinfo, status) {
+                    console.log("GET could not be done on job" + jobinfo.jobName + ", status: " + status);
                 });
             }
             
-            
-        }
+        };
 
         var updateJenkins = function(url) {
 
@@ -39,7 +31,6 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                  .success(function (data) {
                     $scope.jobs = data.jobs;
                     $scope.errormessage = "";
-                    addBuildStatusUrls();
                     getStatus();
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
