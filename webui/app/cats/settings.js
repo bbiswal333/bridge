@@ -75,7 +75,9 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (index >= 0) {
             catsConfigService.favoriteItems.splice(index,1);
         }
-        catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
+        if (catsConfigService.selectedTask.id) {
+            catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
+        }
     };
 
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
@@ -96,4 +98,15 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     $scope.save_click = function () {
         $scope.$emit('closeSettingsScreen');
     };
+
+    $scope.clearFavoriteItems = function(){
+        var index = catsConfigService.favoriteItems.length;
+        while (index--) {
+            if (!catsUtils.isValid(catsConfigService.favoriteItems[index])) {
+                catsConfigService.favoriteItems.splice(index, 1);
+            }
+        }
+    };
+
+    $scope.clearFavoriteItems();
 }];

@@ -141,6 +141,14 @@ describe("Settings view of cats app", function () {
 		expect(config.selectedTask.id).not.toBeDefined();
 	});
 
+	it("should clear favoriteItems if there are invalid tasks", function(){	
+		config.favoriteItems.push(null);
+		$scope.clearFavoriteItems();
+		config.favoriteItems.forEach(function(favoriteItem){
+			expect(favoriteItem).not.toBe(null);
+		});
+	});
+
 	// it("should validate new tasks", function(){	
 	// 	$scope.createTask();
 	// 	$scope.keyPressed(); 
