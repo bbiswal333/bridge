@@ -158,6 +158,17 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
       return deferred.promise;
     }
 
+    function _writeCATSData(container){
+      var deferred = $q.defer();
+      // /zdevdb/WRITECATSDATA
+      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+          deferred.resolve(data);
+      }).error(function (data, status) {
+          deferred.reject(status);
+      });
+      return deferred.promise;
+    }
+
     function _getDescForState(state_s) {
       if (typeof state_s === "undefined") {
         return "";
@@ -180,18 +191,7 @@ angular.module("app.cats.data", ["lib.utils"]).factory("app.cats.data.catsUtils"
         return "Overbooked";
       }
     }
-
-    function _writeCATSData(container){
-      var deferred = $q.defer();
-      // /zdevdb/WRITECATSDATA
-      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
-          deferred.resolve(data);
-      }).error(function (data, status) {
-          deferred.reject(status);
-      });
-      return deferred.promise;
-    }
-
+    
     function _isSameTask(task1, task2) {
         if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
             (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID && task2.RAUFNR === task1.RAUFNR && task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination

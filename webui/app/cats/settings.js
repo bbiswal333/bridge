@@ -25,17 +25,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return angular.equals(item, favoriteItemsToRollBack[favoriteItemsToRollBackIndex]);
     };
 
-    // function isValid(task) {
-    //     if (task && (task.TASKTYPE || task.ZCPR_OBJGEXTID)) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // $scope.keyPressed = function(){
-    //     catsConfigService.selectedTask.valid = isValid(catsConfigService.selectedTask);
-    // };
-
     $scope.createTask = function() {
         var newTask = {};
         newTask.custom = true;
@@ -44,7 +33,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         newTask.ZCPR_OBJGEXTID = "";
         newTask.TASKTYPE = "";
         newTask.DESCR = "";
-        // catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         catsConfigService.selectedTask = newTask;
     };
 
@@ -57,7 +45,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             }
             return allreadyExists;
         });
-
         return allreadyExists;
     }
 
@@ -76,8 +63,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (!selectedId) {
             catsConfigService.selectedTask = null;
         } else {
-            // var index = getIndexForId(catsConfigService.favoriteItems, selectedId);
-            // catsConfigService.selectedTask = catsConfigService.favoriteItems[index];
             var index = getIndexForId(favoriteItemsToRollBack, selectedId);
             catsConfigService.selectedTask = angular.copy(favoriteItemsToRollBack[index]);
             $scope.handleEditTask(selectedId);
@@ -97,7 +82,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
 		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
 			addSelectedItemToFavorites();
 		}
-		// sortFavoritesAccordingToCatsListSortOrder();
 		return true;
 	};
 
@@ -112,5 +96,4 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     $scope.save_click = function () {
         $scope.$emit('closeSettingsScreen');
     };
-
 }];

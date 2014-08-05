@@ -129,9 +129,7 @@ angular.module("app.cats")
 	        	var day = monthlyDataService.days[dayString];
 		        var containsFixedTask = false;
 		        day.tasks.forEach(function(task){
-		            if (task.TASKTYPE === "VACA" ||
-		            	task.TASKTYPE === "ABSE" ||
-		            	task.TASKTYPE === "COMP") {
+		            if (catsUtils.isFixedTask(task)) {
 		                containsFixedTask = true;
 		            }
 		        });
