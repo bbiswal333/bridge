@@ -1,7 +1,7 @@
 # IFP Downtime - Bridge unavailable
 From August, 08th 2014, 4pm CET to August, 11th 2014, 4pm CET IFP system will be down due to its migration to HANA. This makes Bridge unavailable as well during this timeframe!
 
-[![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/job/Bridge-UnitTests/badge/icon)](http://mo-c97a0800b.mo.sap.corp:49153/job/Bridge-UnitTests/)
+[![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/badge/icon)](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/)
 
 # Bridge
 
