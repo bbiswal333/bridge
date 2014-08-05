@@ -13,10 +13,10 @@
                     <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
-                                <span ng-if="$first && !event.isCurrent" >
+                                <span ng-if="$first && event.isInTheNext30Minutes && !event.isCurrent" >
                                     <b>{{event.startRel}}</b>
                                 </span>
-                                <span ng-if="!$first && !event.isCurrent">
+                                <span ng-if="(!$first || !event.isInTheNext30Minutes) && !event.isCurrent">
                                     {{event.startTime}}
                                     {{event.endTime}}
                                 </span>
@@ -25,26 +25,42 @@
                                     {{event.endTime}}
                                 </span>
                             </td>
-                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
+                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px;padding-top:2px;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b>
                                     </span>
                                     <span ng-if="!$first">
-                                        {{event.subject}}
+                                        {{event.subject}} 
                                     </span>
+									<span ng-if="event.participantCode" >
+                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
+                                    </span>
+                                    <span ng-if="event.sapconnectUrl" >
+                                       	<a class="box-icon fa fa-users small-icon basic-blue-font-40" href="{{event.sapconnectUrl}}" target="_blank" tooltip="SAP connect"></a>
+                                    </span>
+
                                 </div>
                                 {{event.location}}
                             </td>
-                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px;padding-top:5px;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b><br>
                                         {{event.location}}
                                     </span>
                                     <span ng-if="!$first">
-                                        {{event.subject}}<br>
+                                        {{event.subject}}<br> 
                                         {{event.location}}
+                                    </span>
+                                    <span ng-if="event.participantCode" >
+                                       	Part.Code: {{event.participantCode}}
+                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" style="position: relative;
+    bottom: 5px;" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
+                                    </span>
+                                    <span ng-if="event.sapconnectUrl" >
+                                    	<a class="box-icon fa fa-users small-icon basic-blue-font-40" style="position: relative;
+    bottom: 5px;" href="{{event.sapconnectUrl}}" target="_blank" tooltip="SAP connect"></a>
                                     </span>
                                 </div>
                             </td>

@@ -13,6 +13,7 @@
     "gith": "1.0.4",
     "cli-color": "0.2.3",
     "htmlparser": "1.7.7",
-    "buildify":"0.4.0"   
+    "buildify":"0.4.0",
+    "underscore":"1.6.0"   
   }  
 }

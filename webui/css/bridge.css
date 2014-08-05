@@ -735,6 +735,7 @@ input[type="checkbox"]:checked:after {
 .meetings-table{
     font-size:0.9em;
 }
+
 #detailContainer{
     text-align: left;
 }
@@ -743,6 +744,11 @@ input[type="checkbox"]:checked:after {
 }
 .box-icon.fa{
     padding-top: 2px;
+}
+.small-icon{
+    font-size: 1.2rem;
+    padding-top: 0;
+    
 }
 .table-cell{
     border:2px solid white;

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" 
+               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" 
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2007_SP1" />
+  </soap:Header>
+  <soap:Body>
+    <m:CreateItem MessageDisposition="SendAndSaveCopy">
+      <m:SavedItemFolderId>
+        <t:DistinguishedFolderId Id="sentitems" />
+      </m:SavedItemFolderId>
+      <m:Items>
+        
+                 <t:MeetingCancellation>
+                <t:ItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfVsuAADItGL/rnEATphNHApMieshAAExI4pbAAA=" ChangeKey="DQAAABYAAAApgenWJC/PR63Jtdul39ZkAACgILsV" />
+                <t:ParentFolderId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgAuAAAAAADXIlUkcRIbRYPjIjd5QW+wAQD9LZwrDBnqSprlNzZ+2syDAAACfVsuAAA=" ChangeKey="AQAAAA==" />
+                <t:ItemClass>IPM.Schedule.Meeting.Canceled</t:ItemClass>
+                <t:Subject>Canceled: test</t:Subject>
+                <t:Sensitivity>Normal</t:Sensitivity>
+                <t:Body BodyType="HTML">&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;
+&lt;meta name="Generator" content="Microsoft Exchange Server"&gt;
+&lt;!-- converted from rtf --&gt;
+&lt;style&gt;&lt;!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --&gt;&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;font face="Calibri" size="2"&gt;&lt;span style="font-size:11pt;"&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;div&gt;&amp;nbsp;&lt;/div&gt;
+&lt;/span&gt;&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</t:Body>
+                <t:DateTimeReceived>2014-07-22T06:59:00Z</t:DateTimeReceived>
+                <t:Size>6064</t:Size>
+                <t:Importance>High</t:Importance>
+                <t:IsSubmitted>false</t:IsSubmitted>
+                <t:WebClientReadFormQueryString>?ae=Item&amp;a=Open&amp;t=IPM.Schedule.Meeting.Canceled&amp;id=RgAAAADXIlUkcRIbRYPjIjd5QW%2bwBwD9LZwrDBnqSprlNzZ%2b2syDAAACfVsuAADItGL%2frnEATphNHApMieshAAExI4pbAAAN&amp;exvsurl=1</t:WebClientReadFormQueryString>
+                <t:ConversationId Id="AAQkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgAQAHzHvMZynUT/mNxEmX414b0=" />
+                <t:Sender>
+                  <t:Mailbox>
+                    <t:Name>Sandfuchs, Thorsten</t:Name>
+                    <t:EmailAddress>thorsten.sandfuchs@sap.com</t:EmailAddress>
+                    <t:RoutingType>SMTP</t:RoutingType>
+                    <t:MailboxType>Mailbox</t:MailboxType>
+                  </t:Mailbox>
+                </t:Sender>
+                <t:ToRecipients>
+                  <t:Mailbox>
+                    <t:Name>MR KAR01 KE.01 (08)</t:Name>
+                    <t:EmailAddress>VR000000001576@exchange.sap.corp</t:EmailAddress>
+                    <t:RoutingType>SMTP</t:RoutingType>
+                    <t:MailboxType>Contact</t:MailboxType>
+                    <t:ItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ2AADK9kY9yuMWS7FKPQvk0cuZAMAffEwCAAA=" ChangeKey="EQAAAA==" />
+                  </t:Mailbox>
+                </t:ToRecipients>
+                <t:IsReadReceiptRequested>false</t:IsReadReceiptRequested>
+                <t:IsDeliveryReceiptRequested>false</t:IsDeliveryReceiptRequested>
+                <t:ConversationIndex>Ac+lejzAfMe8xnKdRP+Y3ESZfjXhvQAADTlw</t:ConversationIndex>
+                <t:ConversationTopic>test</t:ConversationTopic>
+                <t:From>
+                  <t:Mailbox>
+                    <t:Name>Sandfuchs, Thorsten</t:Name>
+                    <t:EmailAddress>thorsten.sandfuchs@sap.com</t:EmailAddress>
+                    <t:RoutingType>SMTP</t:RoutingType>
+                    <t:MailboxType>Mailbox</t:MailboxType>
+                  </t:Mailbox>
+                </t:From>
+                <t:InternetMessageId>&lt;2981E9D6242FCF47ADC9B5DBA5DFD664A020BB0A@DEWDFEMB11B.global.corp.sap&gt;</t:InternetMessageId>
+                <t:IsRead>true</t:IsRead>
+                <t:IsResponseRequested>true</t:IsResponseRequested>
+                <t:AssociatedCalendarItemId Id="AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ1AADItGL/rnEATphNHApMieshAAEvro6cAAA=" ChangeKey="DwAAABYAAAApgenWJC/PR63Jtdul39ZkAACgILsb" />
+                <t:IsDelegated>false</t:IsDelegated>
+                <t:IsOutOfDate>false</t:IsOutOfDate>
+                <t:ResponseType>NoResponseReceived</t:ResponseType>
+                <t:UID>040000008200E00074C5B7101A82E0080000000090D648FE8AA5CF0100000000000000001000000013E481EF479B8345B836076C98B4B9D6</t:UID>
+                <t:DateTimeStamp>2014-07-22T06:59:12Z</t:DateTimeStamp>
+              </t:MeetingCancellation>
+
+        <t:Message>
+          <t:Subject>Company Soccer Team</t:Subject>
+          <t:Body BodyType="HTML">Are you interested in joining?</t:Body>
+          <t:ToRecipients>
+            <t:Mailbox>
+              <t:EmailAddress>sadie@contoso.com </t:EmailAddress>
+              </t:Mailbox>
+          </t:ToRecipients>
+        </t:Message>
+      </m:Items>
+    </m:CreateItem>
+  </soap:Body>
+</soap:Envelope>

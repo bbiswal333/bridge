@@ -57,7 +57,7 @@
 
                 	<div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label">Task
-                			<span class="settings_required_label_mark red-font" ng-show="!configService.selectedTask.TASKTYPE && configService.selectedTask.custom">*</span>
+                			<span class="settings_required_label_mark red-font" ng-show="(!configService.selectedTask.TASKTYPE || configService.selectedTask.ZCPR_OBJGEXTID) && configService.selectedTask.custom">*</span>
                 		</span>
                 		<div class="col-md-8">	
                 			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>

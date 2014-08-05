@@ -29,6 +29,31 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		return response;
 	};
 
+	// FIXME - currently migrated from ews.js
+	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
+		var s = ewsDateStr_s;
+
+		//Check whether this string seems to be valid
+		if (s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/) === -1) {
+			return null;
+		}
+
+		var year = s.substr(0, 4);
+		var month = parseInt(s.substr(5, 2)) - 1;
+		var day = s.substr(8, 2);
+		var hour = s.substr(11, 2);
+		var minute = s.substr(14, 2);
+		var second = s.substr(17, 2);
+
+		var d = new Date(year, month, day, hour, minute, second);
+
+		return new Date(d.getTime() + (offsetUTC_i * 3600000)); //3600000 milliseconds are one hour
+	}	
+	
+	function parseEWSDateStringAutoTimeZone(ewsDateStr_s) {
+			return _parseEWSDateString(ewsDateStr_s, (new Date().getTimezoneOffset() / -60));			
+	}
+	
 	function callBackend(protocol, hostname, port, path, method, proxy, decode, callback, postData){
 
 		if( port === null && protocol === 'http:')
@@ -356,7 +381,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    var app_files = getFiles(app_path);	
 		    files = concatAttributes(files, app_files);
 
-
 		    if (typeof request.query.format == "undefined")
 		    {
 		    	response.setHeader('Content-Type', 'text/plain;');						    	   
@@ -396,7 +420,382 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 			var ews = undefined;
 			try {
-				ews = new EWSClient(request.query.from, request.query.to, json);
+				// we want to have business logic, iff at all in the api.js and not ewsclient.js
+				var dateFrom = request.query.dateFrom
+				var dateTo = request.query.dateTo
+				if (dateFrom == undefined || dateTo == undefined) {
+					throw new Error("dateFrom_s and dateTo_s must not be undefined.");
+				}
+				
+				if (dateFrom == "" || dateTo == "") {
+					throw new Error("dateFrom_s and dateTo_s must not ne empty.");
+				}
+				
+				if (dateFrom.length != 20 || dateTo.length != 20) {
+					throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");
+				}
+
+				ews = new EWSClient("calview", request.query, json);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+
+			ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					response.send(res);
+				}
+			});
+
+		});
+	
+		app.get("/api/calGetItemSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+
+			var ews = undefined;
+			try {
+				ews = new EWSClient("getitem", request.query, json);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+
+			ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					response.send(res);
+				}
+			});
+
+		});
+					
+		// delete booked Room
+		// Pseudocode:
+		// - First we need to termine, given the start and end time the echangeUid and 
+		//		the changeKey of the Calender Item in the users (and not the rooms) calendar
+		// - Then we get this item with all required, optional and resource-attendees
+		// - We compute an update-request which only keeps the attendees which are not 
+		//	  the room itself (termined by the Emailaddress of the query)
+		// - send this to exchange
+		//
+		// FIXME: this is currently very linear code and not really easy to read, but 
+		//		as proof of concept, this was needed :)
+		//		=> needs to be refactored
+		//		- Will potentially fail if the user has two appoints in his calendar
+		//		  with the same start/end time as the booking of the room. 
+		//		  As this is a common case, needs to be fixed prior to release
+		app.get("/api/calDeleteBookedRoomSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+
+			if (request.query.dateFrom == "" || request.query.dateTo == "" || request.query.eMail == "") {
+					throw new Error("dateFrom_s and dateTo_s and eMail must not be empty.");
+			}
+				
+			var ews = undefined;
+			try {
+				// first we need to get the corresponding meeting
+				ews = new EWSClient("calview", request.query, true);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+			
+			var events = {};
+			var eventsRaw = {};
+			var returnval = ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					//response.send(res);
+					var resj = JSON.parse(res);
+					var eventsRaw = resj["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];	
+					callme(request, response, eventsRaw);
+				}
+			});
+//		});
+			
+//		
+//		app.get("/api/calDeleteBookedRoomSSO2", function (request, response) {
+//			response = setHeader( request, response );	
+//			var json = function () {
+//				if (typeof request.query.format != "undefined") {
+//					return (request.query.format.toLowerCase() == "json") ? true : false;
+//				}
+//			}();
+//			callme(request, response)
+//		});
+		function callme (request, response, eventsRaw) {
+					// now we have calview in "res" and can perform the search for the right exchangeUid & all possible Attendees
+			var events = [];
+		
+			
+					for (var i = 0; i < eventsRaw.length; i++) {
+						
+						var exchangeUid = eventsRaw[i]["t:ItemId"][0]["$"]["Id"];
+						events.push({
+							start: parseEWSDateStringAutoTimeZone(eventsRaw[i]["t:Start"][0]),
+							end: parseEWSDateStringAutoTimeZone(eventsRaw[i]["t:End"][0]),
+							timeZone: eventsRaw[i]["t:TimeZone"][0],
+							exchangeUid: exchangeUid,
+							changeKey: eventsRaw[i]["t:ItemId"][0]["$"]["ChangeKey"]
+						});
+						
+						query = request.query;
+						query["exchangeUid"] = exchangeUid;
+						query["changeKey"] = eventsRaw[i]["t:ItemId"][0]["$"]["ChangeKey"];
+						var ews2 = undefined;
+						try {
+							// first we need to get the corresponding meeting
+							ews2 = new EWSClient("getitem", query, true);
+						} catch (e) {
+							var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+							console.log(ans);
+							response.send(ans);				
+							return;
+						}
+						
+						var itemsRaw = {};
+						ews2.doRequest(function (res) {
+							if (res instanceof Error) {
+								var ans = "EWS-request resulted in an error:\n" + res.toString();
+								console.log(ans);
+								response.send(ans);
+							}
+							else {
+								response.setHeader('Content-Type', 'application/json');
+								//response.send(res);
+								var resj = JSON.parse(res);
+								
+								// fixme - needs support of multiple items
+								var itemsRaw = resj["m:GetItemResponse"]["m:ResponseMessages"][0]["m:GetItemResponseMessage"][0]["m:Items"][0]["t:CalendarItem"][0];
+		
+								var breakout = true;
+								var attendeelist = {};
+								["t:RequiredAttendees", "t:OptionalAttendees", "t:Resources"].map(function (at) {
+									if ( typeof itemsRaw[at] != "undefined") {
+									attendeelist[at] = itemsRaw[at][0]["t:Attendee"].map(function(x) {
+										var h = {}; 
+										h["EmailAddress"]= x["t:Mailbox"][0]["t:EmailAddress"][0];
+										if (h["EmailAddress"] == request.query.eMail) {
+											breakout = false;
+										}
+										h["Name"]= x["t:Mailbox"][0]["t:Name"][0]; 
+										h["RoutingType"] = x["t:Mailbox"][0]["t:RoutingType"][0]; 
+										return h; 
+									});
+									}
+								});
+								if (breakout == true) {
+									return;
+								}
+								query["Attendeelist"] = attendeelist;
+								
+								// from here on we only have one item
+								
+								var ews3 = undefined;
+						try {
+							// first we need to get the corresponding meeting
+							ews3 = new EWSClient("updatedattendees", query, true);
+						} catch (e) {
+							var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+							console.log(ans);
+							response.send(ans);				
+							return;
+						}
+						
+						
+						ews3.doRequest(function (res) {
+							if (res instanceof Error) {
+								var ans = "EWS-request resulted in an error:\n" + res.toString();
+								console.log(ans);
+								response.send(ans);
+							} else {
+								if (json) response.setHeader('Content-Type', 'application/json');
+									response.send(res);
+							}
+						});
+							
+							}
+						});
+
+			
+					}
+		};
+		});
+
+		
+//		app.get("/api/calHelloWorldSSO", getEWSFunction("getitem", function(request, response, res) {
+//			response.send("alles klar");
+//		}));
+//			
+//	
+//			
+//			
+//		function getEWSFunction(clientType, businesslogicAfterRequest ){
+//				return function(request, response){
+//				response = setHeader( request, response );	
+//				var json = function () {
+//					if (typeof request.query.format != "undefined") {
+//						return (request.query.format.toLowerCase() == "json") ? true : false;
+//					}
+//				}();
+//
+//				if (request.query.dateFrom == "" || request.query.dateTo == "" || request.query.eMail == "") {
+//					throw new Error("dateFrom_s and dateTo_s and eMail must not be empty.");
+//				}
+//				
+//				var ews = undefined;
+//				try {
+//					ews = new EWSClient(clientType, request.query, true);
+//				} catch (e) {
+//					var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+//					console.log(ans);
+//					response.send(ans);				
+//					return;
+//				}
+//			
+//				var events = {};
+//				var eventsRaw = {};
+//				var returnval = ews.doRequest(function (res) {
+//					if (res instanceof Error) {
+//						var ans = "EWS-request resulted in an error:\n" + res.toString();
+//						console.log(ans);
+//						response.send(ans);
+//					} else {
+//						if (json) response.setHeader('Content-Type', 'application/json');
+//						
+//						businesslogicAfterReqeust(request, response, res);
+//						
+//					}
+//			
+//				});
+//			};
+//		};
+//
+//		// createmeetingcancelation
+//		//
+//		// ONLY POC
+		//
+		app.get("/api/calDelRoomSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+			var query = request.query;
+							
+			query["exchangeUid"] = "AAMkADgwNmFiNjZmLWNhMjAtNDM3NC1iNTQwLWRmZGM3M2FjNjIxNgBGAAAAAADXIlUkcRIbRYPjIjd5QW+wBwD9LZwrDBnqSprlNzZ+2syDAAACfSQ1AADItGL/rnEATphNHApMieshAAEvro7CAAA=";
+			query["changeKey"]="DwAAABQAAADv9Nm9wQSwRax8OlWgsMuLAAGBSg==";
+			
+						
+			var ews = undefined;
+			try {
+				ews = new EWSClient("deleteRoom", query, json);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+
+			ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					response.send(res);
+				}
+			});
+
+		});
+
+
+
+		// createmeetingcancelation
+		// This one works, but cancels the complete meeting and currently sends a 
+		// non-custumizable text about the weather to all attendees
+		//
+		// Works only if the changeKey is set on the query!
+		// FIXME: either decommit this functionallity 
+		app.get("/api/calCreatemeetingcancelationSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+
+			var ews = undefined;
+			try {
+				ews = new EWSClient("createmeetingcancelation", request.query, json);
+			} catch (e) {
+				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
+				console.log(ans);
+				response.send(ans);				
+				return;
+			}
+
+			ews.doRequest(function (res) {
+				if (res instanceof Error) {
+					var ans = "EWS-request resulted in an error:\n" + res.toString();
+					console.log(ans);
+					response.send(ans);
+				}
+				else {
+					if (json) response.setHeader('Content-Type', 'application/json');
+					response.send(res);
+				}
+			});
+
+		});
+
+		
+		app.get("/api/calRoomsSSO", function (request, response) {
+			response = setHeader( request, response );	
+			var json = function () {
+				if (typeof request.query.format != "undefined") {
+					return (request.query.format.toLowerCase() == "json") ? true : false;
+				}
+			}();
+
+			var ews = undefined;
+			try {
+				ews = new EWSClient("resolvenames", request.query, json);
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);
@@ -418,7 +817,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		});
 	}
-	
+    
 	app.get("/api/trafficLight" , function (request, response) {
 		/* 
 		traffic light command api parameters:

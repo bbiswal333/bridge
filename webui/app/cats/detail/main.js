@@ -1,18 +1,18 @@
-angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.data", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
+angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
   "$scope",
   "$q",
   "$modal",
   "$routeParams",
   "$location",
   "lib.utils.calUtils",
-  "app.cats.data.catsUtils",
+  "app.cats.cat2BackendZDEVDB",
+  "app.cats.catsUtils",
   "$http",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
-    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA";
+  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -389,10 +389,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         if (clearOldTasks) {
             monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY === 0 ||
-                    task.TASKTYPE === "VACA" ||
-                    task.TASKTYPE === "ABSE" ||
-                    task.TASKTYPE === "COMP") { 
+                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) { 
                     return null;
                 }
                 var taskDeletion = angular.copy(task);
@@ -489,15 +486,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
-                catsUtils.writeCATSData(container).then(function(data){
-                monthlyDataService.reloadInProgress.value = false;
+                catsBackend.writeCATSData(container).then(function(data){
+                    monthlyDataService.reloadInProgress.value = false;
                     checkPostReply(data);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
                 }, function(status){
-                    bridgeInBrowserNotification.addAlert('', "GET-Request to " + CATS_WRITE_WEBSERVICE + " failed. HTTP-Status: " + status + ".");
+                    bridgeInBrowserNotification.addAlert('', "POST-Request to write CATS data failed. HTTP-Status: " + status + ".");
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();

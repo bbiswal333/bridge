@@ -119,5 +119,3 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             $scope.config = configservice;
         }
 }]);
-
-

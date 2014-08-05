@@ -1,6 +1,13 @@
-angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data", "app.cats.allocationBar.utils"]).
-  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils",  "lib.utils.calUtils", "app.cats.configService", "$q",
-    function (catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
+angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.dataModule", "app.cats.utilsModule", "app.cats.allocationBar.utils"]).
+  directive("app.cats.maintenanceView.projectList", [
+    "app.cats.cat2BackendZDEVDB",
+    "app.cats.catsUtils",
+    "$timeout",
+    "app.cats.allocationBar.utils.colorUtils", 
+    "lib.utils.calUtils",
+    "app.cats.configService",
+    "$q",
+    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -123,6 +130,9 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       var found = false;
       var color = null;
       $scope.blocks.some(function(block){ // is allocation bar block or a favourite item
+        if (!block) {
+          return found;
+        }
 
         if (block.task) {
           if (catsUtils.isSameTask(item, block.task) && block.value !== 0){
@@ -177,7 +187,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       var deferred = $q.defer();
 
       var week = calenderUtils.getWeekNumber(new Date());
-      catsUtils.requestTasksFromTemplate(week.year, week.weekNo).then( function(data){
+      catsBackend.requestTasksFromTemplate(week.year, week.weekNo).then( function(data){
         data.forEach(function(task){
           addNewProjectItem(task);
         });
@@ -189,7 +199,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     function getCatsData () {
       var deferred = $q.defer(); 
-      catsUtils.getTasks(true).then(function (data) {
+      catsBackend.requestTasksFromWorklist(true).then(function (data) {
         if ($scope.blocks === undefined) {
           $scope.blocks = [];
         }
@@ -248,6 +258,15 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       });
     }
 
+    function validateItems(items){
+      var index = items.length;
+      while (index--) {
+          if (!catsUtils.isValid(items[index])) {
+            items.splice(index, 1);
+          }
+      }
+    }
+
     function initProjectItems () {
       if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
         $scope.items = angular.copy(configService.favoriteItems);
@@ -270,11 +289,15 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           configService.loaded = true;
           initProjectItems();
           addItemsFromBlocks();
+          validateItems($scope.items);
+
           markProjectItems();
           $scope.loaded = true;
         });
       } else {
         initProjectItems();
+        validateItems($scope.items);
+
         $scope.loaded = true;
       }
 
@@ -288,6 +311,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     $scope.$watch("blocks", function () {
       initProjectItems();
       addItemsFromBlocks();
+      validateItems($scope.items);
+      
       markProjectItems();
     }, true);
 

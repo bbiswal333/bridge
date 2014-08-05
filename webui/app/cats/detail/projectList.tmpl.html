@@ -12,7 +12,8 @@
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
-                <div  ng-repeat="item in items | filter:filter.val" class="col-xs-6 col-md-12 col-lg-6 animate-repeat">
+                <div ng-repeat="item in items | filter:filter.val"
+                     ng-class="{'col-xs-6 col-md-12 col-lg-6 animate-repeat' : items.length > 5,'' : items.length <= 5}">
                     <button type="button"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"

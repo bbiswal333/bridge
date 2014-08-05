@@ -21,7 +21,7 @@ describe("Settings view of cats app", function () {
 	//         $provide.value('yourService', serviceMock);
 	//     });
 	// });
-	beforeEach(inject(["app.cats.configService", "app.cats.data.catsUtils", function (_config_, _catsUtils_) {
+	beforeEach(inject(["app.cats.configService", "app.cats.catsUtils", function (_config_, _catsUtils_) {
 		config = _config_;
 		config.favoriteItems = angular.copy(favoriteItemsMock);
 		config.catsItems = angular.copy(catsItemsMock);
@@ -139,6 +139,14 @@ describe("Settings view of cats app", function () {
 		$scope.saveNewTask();
 
 		expect(config.selectedTask.id).not.toBeDefined();
+	});
+
+	it("should clear favoriteItems if there are invalid tasks", function(){	
+		config.favoriteItems.push(null);
+		$scope.clearFavoriteItems();
+		config.favoriteItems.forEach(function(favoriteItem){
+			expect(favoriteItem).not.toBe(null);
+		});
 	});
 
 	// it("should validate new tasks", function(){	

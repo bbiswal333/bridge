@@ -1,4 +1,5 @@
-angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.data.catsUtils", "bridgeInBrowserNotification", function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
+angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification",
+    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
 	
 	$scope.configService = catsConfigService;
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
@@ -25,17 +26,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return angular.equals(item, favoriteItemsToRollBack[favoriteItemsToRollBackIndex]);
     };
 
-    // function isValid(task) {
-    //     if (task && (task.TASKTYPE || task.ZCPR_OBJGEXTID)) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // $scope.keyPressed = function(){
-    //     catsConfigService.selectedTask.valid = isValid(catsConfigService.selectedTask);
-    // };
-
     $scope.createTask = function() {
         var newTask = {};
         newTask.custom = true;
@@ -44,7 +34,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         newTask.ZCPR_OBJGEXTID = "";
         newTask.TASKTYPE = "";
         newTask.DESCR = "";
-        // catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         catsConfigService.selectedTask = newTask;
     };
 
@@ -57,7 +46,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             }
             return allreadyExists;
         });
-
         return allreadyExists;
     }
 
@@ -76,8 +64,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (!selectedId) {
             catsConfigService.selectedTask = null;
         } else {
-            // var index = getIndexForId(catsConfigService.favoriteItems, selectedId);
-            // catsConfigService.selectedTask = catsConfigService.favoriteItems[index];
             var index = getIndexForId(favoriteItemsToRollBack, selectedId);
             catsConfigService.selectedTask = angular.copy(favoriteItemsToRollBack[index]);
             $scope.handleEditTask(selectedId);
@@ -90,14 +76,15 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (index >= 0) {
             catsConfigService.favoriteItems.splice(index,1);
         }
-        catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
+        if (catsConfigService.selectedTask.id) {
+            catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
+        }
     };
 
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
 		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
 			addSelectedItemToFavorites();
 		}
-		// sortFavoritesAccordingToCatsListSortOrder();
 		return true;
 	};
 
@@ -113,4 +100,14 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         $scope.$emit('closeSettingsScreen');
     };
 
+    $scope.clearFavoriteItems = function(){
+        var index = catsConfigService.favoriteItems.length;
+        while (index--) {
+            if (!catsUtils.isValid(catsConfigService.favoriteItems[index])) {
+                catsConfigService.favoriteItems.splice(index, 1);
+            }
+        }
+    };
+
+    $scope.clearFavoriteItems();
 }];
