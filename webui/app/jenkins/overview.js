@@ -6,6 +6,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
         $scope.jobStatus = [];
+        $scope.errormessage = "";
 
         var addBuildStatusUrls = function() {
             for(var jobindex in $scope.jobs) {
@@ -34,36 +35,23 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
             $scope.jenkinsConfig.url = url;
 
-            $http({method: 'GET', url: url + "/api/json"}).
-                success(function(data) {
+            $http.get(url + "/api/json", {withCredentials: false})
+                 .success(function (data) {
                     $scope.jobs = data.jobs;
+                    $scope.errormessage = "";
                     addBuildStatusUrls();
                     getStatus();
-                }).
-                error(function(data, status) {
-                    console.log("Error retrieving " + url + ". Status: " + status);
+                }).error(function(data, status) {
+                    var msg = "Error retrieving data from " + url + ", got status: " + status;
+                    $scope.errormessage = msg;
                     $scope.jobs = [];
-                });
-        };
+            });
 
         var init = function() {
-            updateJenkins("http://mo-e7882d540.mo.sap.corp:49153");          
+            updateJenkins("http://mo-c97a0800b.mo.sap.corp:49153");
         };
 
         init();
-
-        $scope.triggerBuild = function(job) {
-
-            var buildUrl = $scope.jenkinsConfig.url + "/job/" + job.name + "/build";
-
-            $http({method: 'POST', url: buildUrl}).
-                success(function(data, status, headers, config) {
-                    console.log("Success! Data: " + data);
-                }).
-                error(function(data, status) {
-                    console.log("Error posting to trigger build. Status: " + status + ", data: " + data);
-                });
-        };
 
         $scope.inputChanged = function() {
             updateJenkins($scope.jenkinsConfig.url);

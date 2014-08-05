@@ -9,5 +9,5 @@
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],
-	"css_files" : []
+	"css_files" : ["overview.css"]
 }
