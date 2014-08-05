@@ -19,7 +19,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
             
             for(var job in $scope.jobs) {
                 console.log($scope.jobs[job].url)
-                $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json" }).
+                $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {      
                     $scope.jobStatus.push(data);
                 }).
@@ -46,6 +46,8 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                     $scope.errormessage = msg;
                     $scope.jobs = [];
             });
+
+        };
 
         var init = function() {
             updateJenkins("http://mo-c97a0800b.mo.sap.corp:49153");
