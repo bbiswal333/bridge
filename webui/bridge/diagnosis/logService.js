@@ -1,6 +1,20 @@
-﻿angular.module('bridge.diagnosis', []).service('bridge.diagnosis.logService', [function () {
+﻿angular.module('bridge.diagnosis', ['bridge.service']).service('bridge.diagnosis.logService', ["bridgeDataService", function (bridgeDataService) {
 
     var sLogKey = "bridgeLog";
+
+    this.log = function (uObject) {
+        if (bridgeDataService.getLogMode() === true) {
+            if (angular.isObject(uObject)) {
+                if (uObject.hasOwnProperty("message") && uObject.hasOwnProperty("stack")) {
+                    this.addEntry("", uObject.message, uObject.stack);
+                } else {
+                    this.addEntry("", JSON.stringify(uObject), "");
+                }
+            } else {
+                this.addEntry("", uObject.toString(), "");
+            }
+        } 
+    };
 
     this.addEntry = function (sType, sMessage, sStackTrace) {
         var logEntries = this.getLog();
@@ -26,4 +40,5 @@
     this.clear = function () {
         sessionStorage.removeItem(sLogKey);
     };
+
 }]);

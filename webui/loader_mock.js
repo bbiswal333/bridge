@@ -7,7 +7,8 @@
 angular.module('bridge.app', [
     "ngRoute",
     "bridge.service",
-    "lib.utils"
+    "lib.utils",
+    "bridge.diagnosis"
 ]);
 
 angular.module('bridge.service', []);
@@ -17,7 +18,13 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
         module_name: "app.atc",
         needs_client: false,
         overview_directive: "app.atc",
-        routes: null,
+        routes:
+		[
+			{		
+			    "route"			:	"/detail/atc/:appId/:prio",
+			    "templateUrl"	:	"app/atc/detail.html"			
+			}
+		],
         title: "ATC Results"
     }, {
         icon_css: "icon-clock-o",

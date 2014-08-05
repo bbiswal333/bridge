@@ -15,6 +15,7 @@
         "nvd3ChartDirectives"
 	],
 	"js_files" : [
+        "bridgeModuleSetup.js",
 		"bridgeController.js", 
 		"bridgeDetailController.js",
 		"bridgeNotificationsController.js", 

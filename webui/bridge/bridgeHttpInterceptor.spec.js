@@ -87,4 +87,7 @@
 
         expect($rootScope.showLoadingBar).toBe(true);
     });
+
+    xit("should log all external calls if we are in logMode", function () {
+    });
 });

@@ -48,7 +48,7 @@
                 config.url = uncachifyUrl(config.url);
 
                 // if we have an external call (starting with http/https) and we are in client mode, then route all calls via the client,
-                // if the call already targets to localhost, don't modify it
+                // if the call already targets localhost, don't modify it
                 if (bridgeDataService.getClientMode() === true && !rLocalhost.test(config.url)) {
                     var sNewUrl = rerouteCall(config);
                     config.url = sNewUrl;

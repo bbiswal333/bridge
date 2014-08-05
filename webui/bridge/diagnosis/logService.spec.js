@@ -1,11 +1,15 @@
 ﻿describe("The log service", function () {
     var logService;
+    var bridgeDataService;
 
     beforeEach(function () {
         module("bridge.diagnosis");
+        module("bridge.service");
 
-        inject(["bridge.diagnosis.logService", function (_logService) {
+        inject(["bridge.diagnosis.logService", "bridgeDataService", function (_logService, _bridgeDataService) {
             logService = _logService;
+            bridgeDataService = _bridgeDataService;
+
             logService.clear();
         }]);
     });
@@ -34,5 +38,28 @@
         logService.clear();
         var log = logService.getLog();
         expect(log.length).toBe(0);
+    });
+
+    it("should be able to log any object", function () {
+        bridgeDataService.setLogMode(true);
+
+        logService.log("string");
+        expect(logService.getLog()[0].sMessage).toBe("string");
+
+        var oObject = { test: "message" };
+        logService.log(oObject);
+        expect(logService.getLog()[1].sMessage).toBe('{"test":"message"}');
+    });
+
+    it("should be able to log exception objects", function () {
+        bridgeDataService.setLogMode(true);
+
+        try {
+            IDoNotExist();
+        } catch (e) {
+            logService.log(e);
+            expect(logService.getLog()[0].sMessage).toBe('IDoNotExist is not defined');
+            expect(logService.getLog()[0].sStackTrace.indexOf("ReferenceError:")).not.toBe(-1);
+        }
     });
 });
