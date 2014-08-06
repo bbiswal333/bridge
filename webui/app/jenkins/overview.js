@@ -16,10 +16,11 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                     $scope.jobResult.push(data);
                 }).
                 error(function(data, status) {
-                    console.log("GET could not be done on job" + scope.jobs[jobindex].name);
+                    $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
+                    console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
                 });
             }
-        }
+        };
 
         var updateJenkins = function(url) {
 

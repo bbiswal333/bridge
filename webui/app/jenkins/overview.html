@@ -1,7 +1,7 @@
 ﻿Jenkins: <input type="text" ng-model="jenkinsConfig.url" ng-change="inputChanged()" size="40"/>
 
 <div class="buildjobsgrid" ng-show="jobs">
-	<br>
+	<br/>
 	<table class="table table-bordered">
 			<tr>
 			    <th>Job Name</th>
@@ -12,8 +12,8 @@
                 <td><a href="{{job.url}}">{{job.fullDisplayName}}</a></td>
                 <td>{{job.result}}</td>
                 <td>{{job.timestamp}}</td>
-            
-        </table>
+            </tr>
+	</table>
 </div>
 
 <div class="error" ng-show="errormessage">
