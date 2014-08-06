@@ -38,10 +38,8 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                     $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
                     success(function(result) {
                         data.jobHealthReport = result.healthReport;   
+                        $scope.jobResult.push(data);
                     });
-                    
-                    $scope.jobResult.push(data);
-                    console.log(data);
                 }).
                 error(function(data, status) {
                     $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
@@ -70,6 +68,8 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                 link += "health-20to39.png";
             }else if(jobWeatherReport[0].iconUrl === "health-80plus.png") {
                 link += "health-80plus.png";
+            }else if(jobWeatherReport[0].iconUrl === "health-00to19.png") {
+                link += "health-00to19.png";
             }
             return link;
         };
@@ -99,6 +99,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         init();
 
         $scope.inputChanged = function() {
+            $scope.jobResult = [];
             updateJenkins($scope.jenkinsConfig.url);
         };
 

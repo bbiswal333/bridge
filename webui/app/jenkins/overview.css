@@ -4,9 +4,20 @@
 }
 
 .buildstatuscell {
-	text-align: center;
+		text-align: center; 
+		width: 40px;
 }
 
- table {
-	margin-top: 5px;
+.style{
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+table {
+		margin-right: 5px;
+		margin-top: 5px;
+ }
+
+tr{
+ 	border-top: 1px solid #e5e5e5;
  }
