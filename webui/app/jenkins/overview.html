@@ -4,13 +4,13 @@
 	<br/>
 	<table class="table table-bordered">
 			<tr>
-			    <th>Job Name</th>
 			    <th>Status</th>
-			    <th>Last build timesatmp</th>
+			    <th>Job Name</th>
+			    <th>Last build</th>
 			</tr>
             <tr ng-repeat="job in jobResult">
+                <td class="buildstatuscell"><img src="{{getStatusIconLink(job.result)}}"/></td>
                 <td><a href="{{job.url}}">{{job.fullDisplayName}}</a></td>
-                <td>{{job.result}}</td>
                 <td>{{job.timestamp}}</td>
             </tr>
 	</table>
