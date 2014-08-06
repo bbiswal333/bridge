@@ -9,6 +9,14 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         $scope.jobInfo = [];
         $scope.errormessage = "";
 
+        $scope.box.settingsTitle = "Configure Jenkins URL";
+        // Settings Screen
+        $scope.box.settingScreenData = {
+            templatePath: "/jenkins/settings.html",
+            controller: angular.module('app.jenkins').appJenkinsSettings,
+            id: $scope.boxId
+            };
+
         var prefixZero = function(digit) {
             digit = (digit.toString().length === 1) ? "0" + digit : digit;
             return digit;
