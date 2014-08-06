@@ -5,23 +5,21 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
-        $scope.jobStatus = [];
+        $scope.jobResult = [];
         $scope.errormessage = "";
 
         var getStatus = function() {
             
-            for(var jobindex2 in $scope.jobs) {
-                console.log($scope.jobs[jobindex2].url);
-                $http({ method: 'GET', url: $scope.jobs[jobindex2].url + "lastBuild/api/json", withCredentials: false }).
-                success(function(jobinfo) {      
-                    $scope.jobStatus.push(jobinfo);
+            for(var job in $scope.jobs) {
+                $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
+                success(function(data) {
+                    $scope.jobResult.push(data);
                 }).
-                error(function(jobinfo, status) {
-                    console.log("GET could not be done on job" + jobinfo.jobName + ", status: " + status);
+                error(function(data, status) {
+                    console.log("GET could not be done on job" + scope.jobs[jobindex].name);
                 });
             }
-            
-        };
+        }
 
         var updateJenkins = function(url) {
 

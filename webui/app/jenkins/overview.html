@@ -1,16 +1,19 @@
 ﻿Jenkins: <input type="text" ng-model="jenkinsConfig.url" ng-change="inputChanged()" size="40"/>
 
 <div class="buildjobsgrid" ng-show="jobs">
-	Jobs:
-	<ul>
-		<li ng-repeat="job in jobs">
-			<a href="{{job.url}}">{{job.name}}</a> 
-			<li ng-repeat="jobinfo in jobStatus">
-				Status : {{jobinfo.result}}
-				Last Build : {{jobinfo.id}}
-			</li>
-		</li>
-	</ul>
+	<br>
+	<table class="table table-bordered">
+			<tr>
+			    <th>Job Name</th>
+			    <th>Status</th>
+			    <th>Last build timesatmp</th>
+			</tr>
+            <tr ng-repeat="job in jobResult">
+                <td><a href="{{job.url}}">{{job.fullDisplayName}}</a></td>
+                <td>{{job.result}}</td>
+                <td>{{job.timestamp}}</td>
+            
+        </table>
 </div>
 
 <div class="error" ng-show="errormessage">
