@@ -6,6 +6,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
         $scope.jobResult = [];
+        $scope.jobInfo = [];
         $scope.errormessage = "";
 
         var prefixZero = function(digit) {
@@ -28,8 +29,9 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         };
 
         var getStatus = function() {
-            
+
             for(var job in $scope.jobs) {
+                console.log($scope.jobs[job].url);
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
