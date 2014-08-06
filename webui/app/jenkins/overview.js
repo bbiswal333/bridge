@@ -40,6 +40,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                         data.jobHealthReport = result.healthReport;   
                         $scope.jobResult.push(data);
                     });
+                    $scope.jobResult.push(data);
                 }).
                 error(function(data, status) {
                     $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
@@ -61,6 +62,10 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         };
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {
+            if(jobWeatherReport === undefined) {
+                return "";
+            }
+
             var link = "/app/jenkins/icons/";
             if(jobWeatherReport[0].iconUrl === "health-40to59.png") {
                 link += "health-40to59.png";
