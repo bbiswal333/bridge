@@ -29,13 +29,17 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         };
 
         var getStatus = function() {
-
+            $scope.jobHealthReport = [];
             for(var job in $scope.jobs) {
-                console.log($scope.jobs[job].url);
+                
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
-                    data.weather = "cloudy";
+                    $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
+                    success(function(result) {
+                        data.jobHealthReport = result.healthReport;   
+                    });
+                    
                     $scope.jobResult.push(data);
                     console.log(data);
                 }).
@@ -54,6 +58,18 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                 link += "blue_16x16.png";
             } else {
                 link += "grey_16x16.png";
+            }
+            return link;
+        };
+
+        $scope.getWeatherIconLink = function(jobWeatherReport) {
+            var link = "/app/jenkins/icons/";
+            if(jobWeatherReport[0].iconUrl === "health-40to59.png") {
+                link += "health-40to59.png";
+            } else if(jobWeatherReport[0].iconUrl === "health-20to39.png") {
+                link += "health-20to39.png";
+            }else if(jobWeatherReport[0].iconUrl === "health-80plus.png") {
+                link += "health-80plus.png";
             }
             return link;
         };

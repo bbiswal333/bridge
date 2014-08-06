@@ -1,15 +1,16 @@
 ﻿Jenkins: <input type="text" ng-model="jenkinsConfig.url" ng-change="inputChanged()" size="40"/>
 
 <div class="buildjobsgrid" ng-show="jobs">
-	<br/>
-	<table class="table table-bordered">
+	<table class="table table-bordered table-condensed">
 			<tr>
 			    <th>Status</th>
+			    <th>Weather</th>
 			    <th>Job Name</th>
 			    <th>Last build</th>
 			</tr>
             <tr ng-repeat="job in jobResult">
                 <td class="buildstatuscell"><img src="{{getStatusIconLink(job.result)}}"/></td>
+                <td class="buildstatuscell"><img src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
                 <td><a href="{{job.url}}">{{job.fullDisplayName}}</a></td>
                 <td>{{job.timestamp}}</td>
             </tr>
