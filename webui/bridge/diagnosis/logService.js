@@ -2,16 +2,20 @@
 
     var sLogKey = "bridgeLog";
 
-    this.log = function (uObject) {
+    this.log = function (uObject, sType) {
+        if (sType === undefined) {
+            sType = "";
+        }
+
         if (bridgeDataService.getLogMode() === true) {
             if (angular.isObject(uObject)) {
                 if (uObject.hasOwnProperty("message") && uObject.hasOwnProperty("stack")) {
-                    this.addEntry("", uObject.message, uObject.stack);
+                    this.addEntry(sType, uObject.message, uObject.stack);
                 } else {
-                    this.addEntry("", JSON.stringify(uObject), "");
+                    this.addEntry(sType, JSON.stringify(uObject), printStackTrace());
                 }
             } else {
-                this.addEntry("", uObject.toString(), "");
+                this.addEntry(sType, uObject.toString(), printStackTrace());
             }
         } 
     };

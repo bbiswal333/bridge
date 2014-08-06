@@ -49,6 +49,7 @@
         var oObject = { test: "message" };
         logService.log(oObject);
         expect(logService.getLog()[1].sMessage).toBe('{"test":"message"}');
+        expect(logService.getLog()[1].sType).toBe('');
     });
 
     it("should be able to log exception objects", function () {
