@@ -35,7 +35,9 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
+                    data.weather = "cloudy";
                     $scope.jobResult.push(data);
+                    console.log(data);
                 }).
                 error(function(data, status) {
                     $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
