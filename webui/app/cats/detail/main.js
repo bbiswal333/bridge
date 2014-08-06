@@ -18,6 +18,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.loaded = false;
     $scope.width = 800;
     $scope.selectedDates = [];
+    $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
 
@@ -295,7 +296,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             UNIT: "T"
         };
-        // configService.updateTaskIfFavorite(block);
         
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {
@@ -321,6 +321,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if($scope.selectedDates.length === 0) { // Nothing selected
                 $scope.blockdata = [];
                 $scope.totalWorkingTime = 0;
+                $scope.totalSelectedHours = 0;
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
@@ -334,6 +335,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.handleSelectedDate = function(dayString){
         if($scope.selectedDates.indexOf(dayString) === -1) {
             $scope.selectedDates.push(dayString);
+            $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
         }
         return true;
     };
@@ -341,6 +343,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.handleDeselectedDate = function(dayString){
         var dateIndex = $scope.selectedDates.indexOf(dayString);
         $scope.selectedDates.splice(dateIndex, 1);
+        $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
         return true;
     };
 
@@ -462,9 +465,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         var selectedDates = $scope.selectedDates;
         $scope.selectedDates = [];
+        $scope.totalSelectedHours = 0;
+
         selectedDates.forEach(function(dateString){
             if($scope.selectedDates.indexOf(dateString) === -1) {
                 $scope.selectedDates.push(dateString);
+                $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dateString].targetHours;
             } else {
                 console.log("The selectedDates array had double entries! Please check selection functionality.");
             }

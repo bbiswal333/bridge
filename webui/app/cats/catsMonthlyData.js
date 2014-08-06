@@ -144,12 +144,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					var day = {};
 					var hoursOfWorkingDay = 8;
 					day.targetHours = this.getTargeHoursForDay(this.calArray[calWeekIndex][dayIndex].dayString);
-					// test test test
-					/*if(day.targetHours) {
-						day.targetHours = 7.55;
-					} else {
-						day.targetHours = 0;
-					}*/
+					// // test test test
+					// if(day.targetHours) {
+					// 	day.targetHours = 7.55;
+					// } else {
+					// 	day.targetHours = 0;
+					// }
 					day.targetTimeInPercentageOfDay = Math.round(day.targetHours / hoursOfWorkingDay * 1000) / 1000;
 					day.actualTimeInPercentageOfDay = 0; // to be calulated only when tasks are added
 					day.date = this.calArray[calWeekIndex][dayIndex].dayString;

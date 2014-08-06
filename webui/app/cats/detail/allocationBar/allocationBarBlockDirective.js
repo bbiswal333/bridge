@@ -6,6 +6,7 @@ function (colorUtils, blockCalculations, calUtils) {
         restrict: "E",
         scope: {
             blockData: "=",
+            selectedHours: "=",
             totalValue: "=",
             totalWidth: "=",
             getRemainingValue: "=",
@@ -26,9 +27,8 @@ function (colorUtils, blockCalculations, calUtils) {
                 return Math.round($scope.blockData.localValue / $scope.totalValue * 1000) / 10;
             };
 
-            // Do not show time due to part time and mixed part time/ full time maintenance
-            $scope.getTimeText = function () {
-                return "";// calUtils.getTimeInWords((8 * 60) * ($scope.getValueAsPercentage() / 100), true);
+            $scope.getValueAbsolute = function () {
+                return Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000;
             };
             $scope.setWidth = function(width) {
                 $scope.blockData.blockWidth = width;
@@ -64,9 +64,9 @@ function (colorUtils, blockCalculations, calUtils) {
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{blockData.desc}} {{getValueAsPercentage()}} %">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{blockData.desc}} {{getValueAsPercentage()}} %, {{getValueAbsolute()}} hours">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
-                '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} %</div>' +
+                '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} %, {{getValueAbsolute()}} hours</div>' +
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
                 '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' + 
