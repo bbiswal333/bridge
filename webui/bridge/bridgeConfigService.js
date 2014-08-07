@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeConfig', ['$http', 'bridge.service.loader', 'bridgeInstance', function ($http, bridgeLoaderServiceProvider, bridgeInstance) {
+﻿angular.module('bridge.service').service('bridgeConfig', ['$http', '$log', 'bridge.service.loader', 'bridgeInstance', function ($http, $log, bridgeLoaderServiceProvider, bridgeInstance) {
     function getAppsData(project) {
         var visible_apps = [];
         var apps = [];
@@ -28,7 +28,7 @@
             try {
                 appConfig = getAppConfig(visible_apps[j]);
             } catch(e) {
-                console.error("Failed to get the app-config: " + e.stack);
+                $log.error("Failed to get the app-config: " + e.stack);
             }
             apps.push({
                 metadata: {
@@ -60,9 +60,9 @@
         data: angular.toJson(configPayload),
             headers: { 'Content-Type': 'text/plain' }
         }).success(function () {
-            console.log("Config saved successfully");
+            $log.log("Config saved successfully");
         }).error(function () {
-            console.log("Error when saving config!");
+            $log.log("Error when saving config!");
         });
     };
 
@@ -71,10 +71,10 @@
                 url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
                 method: "GET"
             }).success(function (data) {
-                console.log("Config loaded successfully");
+                $log.log("Config loaded successfully");
                 deferred.resolve(data);
             }).error(function (data) {
-                console.log("Error when loading config!");
+                $log.log("Error when loading config!");
                 deferred.reject(data);
             });
 

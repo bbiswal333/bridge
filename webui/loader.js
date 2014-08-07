@@ -2,7 +2,7 @@
 
     //loader module with load service
     angular.module('loader', []);
-    angular.module('loader').factory('loadservice', ["$http", "$location", function ($http, $location) {
+    angular.module('loader').factory('loadservice', ["$http", "$location", "$log", function ($http, $location, $log) {
 
         return {
             load: function () {
@@ -107,7 +107,7 @@
                     }
 
                 }).error(function () {
-                    console.log("modules could not be loaded");
+                    $log.log("modules could not be loaded");
                 });
             }
         };

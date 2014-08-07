@@ -49,6 +49,7 @@
         var oObject = { test: "message" };
         logService.log(oObject);
         expect(logService.getLog()[1].sMessage).toBe('{"test":"message"}');
+        expect(logService.getLog()[1].sType).toBe('');
     });
 
     it("should be able to log exception objects", function () {
@@ -58,7 +59,7 @@
             IDoNotExist();
         } catch (e) {
             logService.log(e);
-            expect(logService.getLog()[0].sMessage).toBe('IDoNotExist is not defined');
+            expect(logService.getLog()[0].sMessage).not.toBe('');
             expect(logService.getLog()[0].sStackTrace.indexOf("ReferenceError:")).not.toBe(-1);
         }
     });

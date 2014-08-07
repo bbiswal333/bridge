@@ -35,6 +35,36 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         long: "Sunday"
     }];
 
+    var _weekdaysStartOnSunday = [{
+        short: "Su",
+        medium: "Sun",
+        long: "Sunday"
+    }, {
+        short: "Mo",
+        medium: "Mon",
+        long: "Monday"
+    }, {
+        short: "Tu",
+        medium: "Tue",
+        long: "Tuesday"
+    }, {
+        short: "We",
+        medium: "Wed",
+        long: "Wednesday"
+    }, {
+        short: "Th",
+        medium: "Thu",
+        long: "Thursday"
+    }, {
+        short: "Fr",
+        medium: "Fri",
+        long: "Friday"
+    }, {
+        short: "Sa",
+        medium: "Sat",
+        long: "Saturday"
+    }];
+
     var _months = [{
         short: "Jan",
         long: "January"
@@ -98,7 +128,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return null;
     };
 
-    this.buildCalendarArray = function(year_i, month_i) {
+    this.buildCalendarArray = function(year_i, month_i, startOnSunday_b) {
         var cal = [];
         var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
         var daysInLastMonth = 0;
@@ -106,10 +136,14 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
 
         cal[0] = [];
-        if (firstDayInMonth !== 0) {
-            daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+        if (startOnSunday_b) {
+            daysInLastMonth = firstDayInMonth;
         } else {
-            daysInLastMonth = 6;
+            if (firstDayInMonth !== 0) {
+                daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+            } else {
+                daysInLastMonth = 6;
+            }
         }
 
         var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
@@ -132,7 +166,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             };
 
             if ((i + 1) % 7 === 0) {
-                if (new Date(firstDateOfGridInMs + i * MILLISECS_DAY).getMonth() !== month_i) {
+                if (new Date(firstDateOfGridInMs + (i + 1) * MILLISECS_DAY).getMonth() !== month_i) {
                     stop = true;
                 } else {
                     cal[Math.floor((i + 1) / 7)] = [];
@@ -259,8 +293,12 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
-    this.getWeekdays = function() {
-        return angular.copy(_weekdays);
+    this.getWeekdays = function(startOnSunday_b) {
+        if (startOnSunday_b) {
+            return angular.copy(_weekdaysStartOnSunday);
+        } else {
+            return angular.copy(_weekdays);
+        }
     };
 
     this.getWeekday = function (day, format) {

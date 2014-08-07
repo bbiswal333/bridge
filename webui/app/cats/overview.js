@@ -29,9 +29,12 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 		    link: function ($scope) 
              {
                 if ($scope.appConfig && $scope.appConfig.favoriteItems && !catsConfigService.loaded) 
-                 {
-                    catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
-                 }            
+                {
+                	catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
+                }            
+                if ($scope.appConfig) {
+                    catsConfigService.sundayweekstart = $scope.appConfig.sundayweekstart;
+                } 
              }
 	    };
 }]);

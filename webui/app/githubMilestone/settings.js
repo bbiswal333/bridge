@@ -124,9 +124,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         //$scope.searchResults = [];
         if(copiedConfigItem.repo.html_url !== undefined && copiedConfigItem.repo.html_url !== null && copiedConfigItem.repo.html_url !== '')
         {
-             //console.log(copiedConfigItem.repo.html_url);
-        return parseInput(copiedConfigItem.repo.html_url);
-      
+            return parseInput(copiedConfigItem.repo.html_url);
         }
     };
 }];

@@ -29,7 +29,6 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
                 $scope.selectedEmployee.TELNR = $scope.selectedEmployee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');                    
 
                 $http.get('/bridge/employeeSearch/buildings.xml').then(function (response) {
-                //console.log(response.data);
                 var data = new X2JS().xml_str2json(response.data);            
                 for(var i = 0; i < data.items.item.length; i++)
                 {

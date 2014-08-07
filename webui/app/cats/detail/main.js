@@ -1,6 +1,7 @@
 angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
   "$scope",
   "$q",
+  "$log",
   "$modal",
   "$routeParams",
   "$location",
@@ -12,7 +13,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -28,6 +29,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         configService.favoriteItems = persistedConfig.favoriteItems;
     }
 
+    if (persistedConfig) {
+        configService.sundayweekstart = persistedConfig.sundayweekstart;
+        $scope.sundayweekstart = persistedConfig.sundayweekstart;
+    }
+
     function timeToMaintain() {
         try {
             var sum = 0;
@@ -36,25 +42,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             return $scope.totalWorkingTime - sum;
         } catch(err) {
-            console.log("timeToMaintain(): " + err);
+            $log.log("timeToMaintain(): " + err);
             return $scope.totalWorkingTime;
         }
     }
 
     $scope.calcMinutes = function (perc) {
-        console.log(perc);
+        $log.log(perc);
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
-
-    // function isSameTask(block, task) {
-    //     if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
-    //         (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
-    //          task.RAUFNR === block.RAUFNR &&
-    //          task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -93,7 +89,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
         } catch(err) {
-            console.log("adjustBarValues(): " + err);
+            $log.log("adjustBarValues(): " + err);
         }
     }
     
@@ -141,7 +137,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 return false;
             }
         } catch(err) {
-            console.log("addBlock(): " + err);
+            $log.log("addBlock(): " + err);
             return false;
         }
     }
@@ -174,7 +170,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             $scope.blockdata = newBlockdata;
         } catch(err) {
-            console.log("removeBlock(): " + err);
+            $log.log("removeBlock(): " + err);
         }
     }
 
@@ -257,7 +253,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     targetHours + "'!");
             }
         } catch(err) {
-            console.log("displayCATSDataForDay(): " + err);
+            $log.log("displayCATSDataForDay(): " + err);
         }
     }
 
@@ -278,7 +274,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 $scope.loaded = true;
             });
         } catch(err) {
-            console.log("loadCATSDataForDay(): " + err);
+            $log.log("loadCATSDataForDay(): " + err);
             $scope.loaded = true;
         }
     }
@@ -328,7 +324,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 $scope.totalWorkingTime = 1;
             }
         } catch(err) {
-            console.log("selectionCompleted(): " + err);
+            $log.log("selectionCompleted(): " + err);
         }
     };
 
@@ -375,7 +371,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
             }
         } catch(err) {
-            console.log("checkPostReply(): " + err);
+            $log.log("checkPostReply(): " + err);
         }
     }
 
@@ -472,7 +468,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 $scope.selectedDates.push(dateString);
                 $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dateString].targetHours;
             } else {
-                console.log("The selectedDates array had double entries! Please check selection functionality.");
+                $log.log("The selectedDates array had double entries! Please check selection functionality.");
             }
         });
 
@@ -510,7 +506,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
             }
         } catch(err) {
-            console.log("saveTimesheet(): " + err);
+            $log.log("saveTimesheet(): " + err);
         }
     };
 }

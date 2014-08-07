@@ -3,9 +3,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	["$http", 
 	"$q", 
 	"lib.utils.calUtils", 
-	"app.cats.cat2BackendZDEVDB", 
+	"app.cats.cat2BackendZDEVDB",
+    "$log",
 	
-	function($http, $q, calenderUtils, catsBackend){
+	function ($http, $q, calenderUtils, catsBackend, $log) {
 
 	var alreadyInitializedForMonth = {};
 	var staticCatsData4FourMonth = null;
@@ -59,7 +60,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			this.promiseForMonth[month] = promise;
 			return promise;
 		} catch(err) {
-			console.log("getMonthData(): " + err);
+		    $log.log("getMonthData(): " + err);
 		}
 	};
 
@@ -81,7 +82,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				return deferred.promise;
 			}
 		} catch(err) {
-			console.log("getDataForDate(): " + err);
+		    $log.log("getDataForDate(): " + err);
 		}
 	};
 
@@ -117,7 +118,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			}
 			return weeks;
 		} catch(err) {
-			console.log("getWeeksOfMonth(): " + err);
+		    $log.log("getWeeksOfMonth(): " + err);
 		}
 	};
 
@@ -197,7 +198,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				}
 			}
 		} catch(err) {
-			console.log("convertWeekData(): " + err);
+		    $log.log("convertWeekData(): " + err);
 		}
 	};
 
@@ -217,7 +218,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		    	});
 		    });
 		} catch(err) {
-			console.log("loadDataForSelectedWeeks(): " + err);
+		    $log.log("loadDataForSelectedWeeks(): " + err);
 		}
 		return $q.all(promises);
 	};

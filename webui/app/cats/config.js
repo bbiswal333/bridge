@@ -3,6 +3,7 @@ angular.module("app.cats").service('app.cats.configService', [function(){
 	this.catsItems = [];
 	this.favoriteItems = [];
 	this.selectedTask = null;
+	this.sundayweekstart = false;
 
 	this.createNewItem = function(task){
 		if (!task) {

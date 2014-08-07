@@ -1,6 +1,6 @@
 ﻿angular.module('bridge.box', ['bridge.service']);
 
-angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataService', 'bridge.service.bridgeDownload', function ($compile, bridgeDataService, bridgeDownload) {
+angular.module('bridge.box').directive('bridge.box', ['$compile', '$log', 'bridgeDataService', 'bridge.service.bridgeDownload', function ($compile, $log, bridgeDataService, bridgeDownload) {
 
     function directiveController($scope)
     {        
@@ -39,7 +39,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', 'bridgeDataSer
                 }
             }
             else {
-                console.error("Box has no id!");
+                $log.error("Box has no id!");
             }            
                 
             var boxContent = $element.find("#boxContent");

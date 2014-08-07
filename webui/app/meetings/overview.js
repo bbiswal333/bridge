@@ -2,12 +2,15 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
 directive("app.meetings", [
 	"$timeout",
 	"$http",
+    "$log",
 	"app.meetings.ews.ewsUtils",
 	"lib.utils.calUtils",
 	"$interval",
 	"app.meetings.configservice",
-	"notifier",'$http',
-	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, $http) {
+	"notifier",
+	'$http',
+	function ($timeout, $http, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, $http) {
+
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -152,7 +155,7 @@ directive("app.meetings", [
 
 					}catch(error){
 						$scope.errMsg = "Unable to connect to Exchange Server";
-						console.log((error || $scope.errMsg));
+						$log.log((error || $scope.errMsg));
 					}
 					$scope.loading = false;
 				});
@@ -223,7 +226,7 @@ directive("app.meetings", [
 	        			$scope.errMsg = null;
 					}catch(error){
 						$scope.errMsg = "Unable to load item details from Exchange Server";
-						console.log((error || $scope.errMsg));
+						$log.log((error || $scope.errMsg));
 					}
 					$scope.loading = false;
 				});

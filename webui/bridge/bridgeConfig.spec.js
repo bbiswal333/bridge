@@ -23,7 +23,6 @@
         promise.then(function () {
             expect(bridgeDataService.getBridgeSettings().someFlag).toBe(true);
         }, function () {
-            console.error("fuck");
         });
         $httpBackend.flush();
     });

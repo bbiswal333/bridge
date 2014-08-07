@@ -58,6 +58,7 @@
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.min.js"></script>
     <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
+    <script src="lib/stacktracejs-140806/stacktrace.js"></script>
 
     <script src="loader.js"></script>   
 
@@ -82,10 +83,11 @@
                 </div>
             </div>
             <div ng-if="logMode" class="logAlertBar">
-                <span>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis:</span>
-                <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="">
-                <input class="btn btn-default btn_blue logAlertButton" type="button" value="Leave Log-Mode" ng-click="">
-                <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="">
+                <div class="logAlertButtonGroup">
+                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
+                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
+                </div>
+                <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
             </div>
             <div id="main-container" ng-view class="mainContainer">
             </div>

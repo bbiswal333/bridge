@@ -1,11 +1,12 @@
 ﻿angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$rootScope', '$injector', '$location', '$timeout', function ($q, $rootScope, $injector, $location, $timeout) {
 
     var $http;
+    var logService;
     var bridgeDataService;
     var rProtocol = /^http|^https/i;
     var rLocalhost = /^https:\/\/localhost/i;
 
-    function checkResponse(response) {
+    function checkLoadingStatus(response) {
         $timeout.cancel(response.config.timer);
 
         // inject $http object manually, see: http://stackoverflow.com/questions/20647483/angularjs-injecting-service-into-a-http-interceptor-circular-dependency
@@ -39,11 +40,28 @@
         return resultUrl;
     }
 
+    function logResponse(response, sResponseType) {
+        if (rProtocol.test(response.config.url)) {
+            logService = logService || $injector.get("bridge.diagnosis.logService");
+
+            var logData = {
+                config: response.config,
+                data: response.data,
+                headers: response.headers(),
+                status: response.status
+            };
+
+            logService.log(logData, sResponseType);
+        }
+    }
+
     return {
         'request': function (config) {
             bridgeDataService = bridgeDataService || $injector.get('bridgeDataService');
 
             if (rProtocol.test(config.url)) {
+                var originalUrl = config.url;
+
                 //IE wants to cache everything so all external https calls are uncached here
                 config.url = uncachifyUrl(config.url);
 
@@ -52,6 +70,12 @@
                 if (bridgeDataService.getClientMode() === true && !rLocalhost.test(config.url)) {
                     var sNewUrl = rerouteCall(config);
                     config.url = sNewUrl;
+                }
+
+                if (bridgeDataService.getLogMode() === true) {
+                    logService = logService || $injector.get("bridge.diagnosis.logService");
+                    logService.log(originalUrl, "Original Request");
+                    logService.log(config, "Request");
                 }
             }
             
@@ -62,11 +86,15 @@
             return config || $q.when(config);
         },
         'response': function (response) {
-            checkResponse(response);
+            checkLoadingStatus(response);
+            logResponse(response, "Response");
+ 
             return response || $q.when(response);
         },
         'responseError': function (response) {
-            checkResponse(response);
+            checkLoadingStatus(response);
+            logResponse(response, "Response Error");
+
             return $q.reject(response);
         }
     };
