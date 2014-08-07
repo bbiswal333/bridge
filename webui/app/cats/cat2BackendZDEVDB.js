@@ -7,6 +7,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     var CAT2ComplinaceData4FourMonthCache = null;
     var tasksFromWorklistCache = null;
+    var CAT2AllocationDataForWeeks = [];
 
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
@@ -69,6 +70,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
           deferred.resolve(data);
         }
       });
+      CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
       return deferred.promise;
     };
 
@@ -132,8 +134,15 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     this.requestTasksFromTemplate = function(year, week) {
       var deferred = $q.defer();
+      var promise = {};
 
-      this.getCatsAllocationDataForWeek(year, week).then(function(data) {
+      if (CAT2AllocationDataForWeeks[year + "" + week]) { // Data does not need to be super current
+        promise = CAT2AllocationDataForWeeks[year + "" + week];
+      } else {
+        promise = this.getCatsAllocationDataForWeek(year, week);
+      }
+
+      promise.then(function(data) {
         var tasks = null;
         if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
           tasks = [];

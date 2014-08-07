@@ -28,6 +28,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         configService.favoriteItems = persistedConfig.favoriteItems;
     }
 
+    if (persistedConfig) {
+        configService.sundayweekstart = persistedConfig.sundayweekstart;
+        $scope.sundayweekstart = persistedConfig.sundayweekstart;
+    }
+
     function timeToMaintain() {
         try {
             var sum = 0;
@@ -45,16 +50,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         console.log(perc);
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
     };
-
-    // function isSameTask(block, task) {
-    //     if ((block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID !== "") || // OBJEXTID exists
-    //         (block.ZCPR_OBJGEXTID === task.ZCPR_OBJGEXTID && block.ZCPR_OBJGEXTID === "" &&
-    //          task.RAUFNR === block.RAUFNR &&
-    //          task.TASKTYPE === block.TASKTYPE && block.TASKTYPE !== "")) { // unique TASKTYPE RAUFNR combination
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
