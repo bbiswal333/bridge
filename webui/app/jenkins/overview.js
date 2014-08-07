@@ -1,5 +1,5 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', function () {
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
     var directiveController = ['$scope', '$http', function ($scope, $http) {
 
@@ -15,7 +15,7 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
             templatePath: "/jenkins/settings.html",
             controller: angular.module('app.jenkins').appJenkinsSettings,
             id: $scope.boxId
-            };
+        };
 
         var prefixZero = function(digit) {
             digit = (digit.toString().length === 1) ? "0" + digit : digit;
@@ -87,12 +87,15 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
             return link;
         };
 
-        var updateJenkins = function(url) {
+        $scope.updateJenkins = function(url) {
+
+            $scope.jobResult = [];
 
             $scope.jenkinsConfig.url = url;
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
+                    $scope.jobs = [];
                     $scope.jobs = data.jobs;
                     $scope.errormessage = "";
                     getStatus();
@@ -106,21 +109,43 @@ angular.module('app.jenkins').directive('app.jenkins', function () {
         };
 
         var init = function() {
-            updateJenkins("http://mo-c97a0800b.mo.sap.corp:49153");
+            $scope.jenkinsConfig.url = jenkinsConfigService.configItem.jenkinsUrl;
         };
 
         init();
 
-        $scope.inputChanged = function() {
-            $scope.jobResult = [];
-            updateJenkins($scope.jenkinsConfig.url);
-        };
+        $scope.box.returnConfig = function(){
+            return angular.copy($scope.configService);
+        }; 
 
-    }];
+    }]; // directiveController()
 
     return {
         restrict: 'E',
         templateUrl: 'app/jenkins/overview.html',
-        controller: directiveController
-    };
-});
+        controller: directiveController,
+        link: function ($scope) 
+             {
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                 {
+                    jenkinsConfigService.configItem = $scope.appConfig.configItem;
+                } else {
+                    $scope.appConfig.configItem = jenkinsConfigService.configItem;
+                }
+                $scope.box.boxSize = jenkinsConfigService.configItem.boxSize;
+
+                $scope.$watch("appConfig.configItem.boxSize", function () {
+                    if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                        $scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+                    }
+                }, true);
+
+                $scope.$watch("appConfig.configItem.jenkinsUrl", function () {
+                    if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                        $scope.updateJenkins($scope.appConfig.configItem.jenkinsUrl);
+                    }
+                }, true);
+
+             }
+        };
+}]);
