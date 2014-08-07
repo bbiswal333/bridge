@@ -89,17 +89,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 return "";
             }
 
-            var link = "/app/jenkins/icons/";
-            if(jobWeatherReport[0].iconUrl === "health-40to59.png") {
-                link += "health-40to59.png";
-            } else if(jobWeatherReport[0].iconUrl === "health-20to39.png") {
-                link += "health-20to39.png";
-            }else if(jobWeatherReport[0].iconUrl === "health-80plus.png") {
-                link += "health-80plus.png";
-            }else if(jobWeatherReport[0].iconUrl === "health-00to19.png") {
-                link += "health-00to19.png";
-            }
-            return link;
+            return "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl;
         };
 
         $scope.updateJenkins = function(url) {
