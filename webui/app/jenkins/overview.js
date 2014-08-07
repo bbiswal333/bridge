@@ -48,6 +48,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return statusColor;
         };
 
+        $scope.limitDisplayName = function(name, limit) {
+            if(name.length > limit) {
+                return name.substring(0,limit) + " ... ";
+            }
+            return name;
+        };
+
         var getStatus = function() {
             $scope.jobHealthReport = [];
             $scope.jobResult = [];
