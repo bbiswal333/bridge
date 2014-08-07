@@ -89,11 +89,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {
-            if(jobWeatherReport === undefined) {
-                return "";
-            }
-
-            return "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl;
+            return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
         };
 
         $scope.updateJenkins = function(url) {
