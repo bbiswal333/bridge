@@ -25,8 +25,6 @@ exports.EWSClient = function(clientType, query2, json) {
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
             
-           var compiled = _und.template(data);
-           data = compiled(query);
            try {
                var compiled = _und.template(data);
                data = compiled(query);
