@@ -1,5 +1,5 @@
-angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q",
-  function($http, $q) {
+angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log",
+  function($http, $q, $log) {
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
     var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
@@ -20,7 +20,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
           deferred.resolve(data, status);
         }
       }).error(function(data, status) {
-        console.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
+          $log.log("GET-Request to " + url + " failed. HTTP-Status: " + status + ".\nData provided by server: " + data);
         deferred.resolve(null, status);
       });
 
@@ -63,7 +63,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
-          console.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
+            $log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
           deferred.resolve();
         } else {
           deferred.resolve(data);

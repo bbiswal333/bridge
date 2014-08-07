@@ -9,7 +9,8 @@ angular.module("app.cats")
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
 		 "$q",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q) {
+         "$log",
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log) {
 		function processCatsData(cats_o) {
 	        function parseDateToTime(date_s) {
 	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -52,7 +53,7 @@ angular.module("app.cats")
 
 	            return processed;
 			} catch(err) {
-				console.log("parseDateToTime(): " + err);
+			    $log.log("parseDateToTime(): " + err);
 				return null;
 			}
 	    }
@@ -186,7 +187,7 @@ angular.module("app.cats")
 						nextElement = daysElements[daysElements.indexOf(currentElement) + 7];
 						break;
 					case 9:
-						console.log("tab");
+					    $log.log("tab");
 						nextElement = angular.element(document.querySelector( '#filter-bar input' ));
 						nextElement.focus();
 						return;

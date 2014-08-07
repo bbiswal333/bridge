@@ -104,7 +104,7 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $loca
     bridgeDataService.initialize(deferred).then(function () {
         $rootScope.$emit('bridgeConfigLoaded', {});
     }, function () { // promise rejected = config load failed
-        bridgeInBrowserNotification.setScope($rootScope);
-        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
+        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. During August 8th, 4pm and August 11th, 4pm, Bridge is not available due to the IFP on HANA migration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
+        //bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
     });
 });

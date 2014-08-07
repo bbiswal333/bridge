@@ -1,4 +1,4 @@
-angular.module("notifier", []).factory("notifier", function () {
+angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
   var icons = [];
   icons.push("../img/notifier_info.png");      // Info
   icons.push("../img/notifier_tick.png");      // Success
@@ -30,7 +30,7 @@ angular.module("notifier", []).factory("notifier", function () {
             callbackGranted_fn();
         }
         else if (Notification.permission === "default") {
-            console.log("seems like you need to activate once");
+            $log.log("seems like you need to activate once");
             callbackPermissionRequest_fn();
         }
         else if (Notification.permission !== "denied") {
@@ -192,4 +192,4 @@ angular.module("notifier", []).factory("notifier", function () {
       storeAllNotificationsInLocale();
     },
   };  
-});
+}]);

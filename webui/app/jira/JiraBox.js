@@ -73,8 +73,6 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
             });                                                                
 
         }).error(function(data, status, headers, config) {
-            console.log(status);
-            console.log(data);
             that.data = [];
         });        
 };
