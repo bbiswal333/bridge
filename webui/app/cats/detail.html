@@ -8,14 +8,15 @@
 
                 <div class="row">
                     <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
-                        <app.cats.calendar 
-                            class="app-cats-calendar" 
+                        <app.cats.calendar
+                            class="app-cats-calendar"
                             ondateselected="handleSelectedDate(dayString)"
                             ondatedeselected="handleDeselectedDate(dayString)"
                             selectioncompleted="selectionCompleted()"
-                            data-day-class="app-cats-day-details" 
-                            data-selected-dates="selectedDates" 
+                            data-day-class="app-cats-day-details"
+                            data-selected-dates="selectedDates"
                             data-maintainable="true"
+                            data-sundayweekstart="sundayweekstart"
                             loading="loading">
                         </app.cats.calendar>
                     </div> 
@@ -28,7 +29,16 @@
                 <div style="clear: both; width: 100%; float: none;"></div>        
 
                 <div id="app-cats-maintencance-allocation-div" >
-                    <app.cats.allocationbar data-width="{{width}}" data-height="80" data-blocks="blockdata" data-total-value="{{totalWorkingTime}}" data-text="hintText" onblockremoved="" handlervaluetodisplay="calcMinutes(perc);"></app.cats.allocationbar>
+                    <app.cats.allocationbar
+                        data-width="{{width}}"
+                        data-height="80"
+                        data-blocks="blockdata"
+                        data-total-value="{{totalWorkingTime}}"
+                        data-text="hintText"
+                        data-selected-hours="totalSelectedHours"
+                        onblockremoved=""
+                        handlervaluetodisplay="calcMinutes(perc);">
+                    </app.cats.allocationbar>
                 </div>
 
                 <div class="save_close_btn">

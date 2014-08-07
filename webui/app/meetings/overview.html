@@ -25,7 +25,7 @@
                                     {{event.endTime}}
                                 </span>
                             </td>
-                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px;padding-top:2px;">
+                            <td ng-if="box.boxSize == 1" style="padding-left: 10px;padding-top:2px;vertical-align:inherit;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b>
@@ -33,17 +33,20 @@
                                     <span ng-if="!$first">
                                         {{event.subject}} 
                                     </span>
+                                    
 									<span ng-if="event.participantCode" >
-                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
+                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in with Code: {{event.participantCode}}"></a>  
                                     </span>
                                     <span ng-if="event.sapconnectUrl" >
                                        	<a class="box-icon fa fa-users small-icon basic-blue-font-40" href="{{event.sapconnectUrl}}" target="_blank" tooltip="SAP connect"></a>
                                     </span>
 
                                 </div>
-                                {{event.location}}
+                                <span ng-if="!event.sapconnectUrl">
+                                    {{event.location}}
+                                </span>
                             </td>
-                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px;padding-top:5px;">
+                            <td ng-if="box.boxSize == 2" style="padding-left: 10px;vertical-align:inherit;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b><br>
@@ -53,7 +56,9 @@
                                         {{event.subject}}<br> 
                                         {{event.location}}
                                     </span>
+
                                     <span ng-if="event.participantCode" >
+                                        </br>
                                        	Part.Code: {{event.participantCode}}
                                        	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" style="position: relative;
     bottom: 5px;" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
