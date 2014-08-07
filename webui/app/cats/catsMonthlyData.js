@@ -211,7 +211,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		    	var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
 		        promises.push(promise);
 		    	promise.then(function(data){
-					self.reloadInProgress.value = false;
 		        	if(data) {
 		        		self.convertWeekData(data);
 		        	}

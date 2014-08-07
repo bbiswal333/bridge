@@ -126,6 +126,7 @@ angular.module("app.cats")
 					$scope.state = "CATS-Data could no be retrieved from system ISP";
 					$scope.hasError = true;
 				}
+                monthlyDataService.reloadInProgress.value = false;
 			}
 
 			function hasFixedTask (dayString){
