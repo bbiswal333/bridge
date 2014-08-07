@@ -42,8 +42,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 statusColor = "red";
             } else if(statusAsText === "SUCCESS") {
                 statusColor = "blue";
-            } else {
+            } else if(statusAsText === "UNSTABLE"){
                 statusColor = "yellow";
+            } else{
+                statusColor = "grey";
             }
             return statusColor;
         };
@@ -67,9 +69,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
                         success(function(result) {
                             data.jobHealthReport = result.healthReport;
-                            data.statusColor = $scope.getStatusColor(data.result);
+                            
                         });
-
+                    data.statusColor = $scope.getStatusColor(data.result);
                     $scope.jobResult.push(data);
 
                 }).
