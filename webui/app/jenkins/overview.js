@@ -36,6 +36,32 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
+        var hasJobWithThatName = function(arrayOfObjects, name) {
+            for(var index in arrayOfObjects) {
+                if(arrayOfObjects[index].name === name) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        var retrieveAndSetJobsByView = function(views) {
+
+            for(var viewIndex in views) {
+
+                $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
+                .success(function (viewData) {
+                    if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
+                       jenkinsConfigService.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
+                    }
+                }).error(function(data, status) {
+                    console.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
+                }); // GET
+
+            }
+
+        };
+
         $scope.getStatusColor = function(statusAsText) {
             var statusColor;
             if(statusAsText === "FAILURE") {
@@ -96,6 +122,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                  .success(function (data) {
                     $scope.jobs = data.jobs;
                     jenkinsConfigService.views = data.views;
+                    retrieveAndSetJobsByView(data.views);
                     $scope.errormessage = "";
                     getStatus();
                 }).error(function(data, status) {
@@ -107,12 +134,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             });
 
         };
-
-        var init = function() {
-            $scope.jenkinsConfig.url = jenkinsConfigService.configItem.jenkinsUrl;
-        };
-
-        init();
 
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);

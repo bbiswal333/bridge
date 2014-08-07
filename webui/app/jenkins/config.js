@@ -7,6 +7,6 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 	};
 
 	this.views = [];
-	this.jobsByView = {};
+	this.jobsByView = [];
 
 });

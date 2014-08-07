@@ -22,13 +22,12 @@
 		<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
         	<table class="table tableTransparentBorder" >
 				<tr ng-repeat="view in views">
-                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th><td>test</td>
+                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th><td>{{getJobNamesByView(view.name)}}</td>
                 </tr>
             	<tbody>
             	</tbody>
 			</table>
 	</p>
-
 
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
