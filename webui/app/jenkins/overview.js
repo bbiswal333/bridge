@@ -6,7 +6,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
         $scope.jobResult = [];
-        $scope.jobInfo = [];
+        $scope.jobHealthReport = [];
         $scope.errormessage = "";
 
         // Settings Screen
@@ -48,6 +48,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return statusColor;
         };
 
+
         $scope.limitDisplayName = function(name, limit) {
             if(name.length > limit) {
                 return name.substring(0,limit) + " ... ";
@@ -59,6 +60,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jobHealthReport = [];
             $scope.jobResult = [];
 
+            
             for(var job in $scope.jobs) {
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
@@ -82,6 +84,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 });
             }
         };
+
+        
 
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {

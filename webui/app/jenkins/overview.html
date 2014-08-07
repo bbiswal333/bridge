@@ -3,6 +3,7 @@
             <tr ng-repeat="job in jobResult" class="{{job.statusColor}}">
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
                 <td class="style"><a href="{{job.url}}">{{limitDisplayName(job.fullDisplayName, 30)}}</a></td>
+
                 <td class="style">{{job.timestamp}}</td>
             </tr>
 	</table>
