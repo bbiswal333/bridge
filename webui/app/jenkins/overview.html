@@ -1,4 +1,5 @@
-﻿<div class="buildjobsgrid" ng-show="jobs">
+﻿<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
+	<b>JOBS</b>
 	<table>
             <tr ng-repeat="job in jobResult" class="{{job.statusColor}}">
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>

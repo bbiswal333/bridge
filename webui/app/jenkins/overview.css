@@ -8,8 +8,22 @@
 		width: 40px;
 }
 
+.jobTable{
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;	
+}
+
+.jobTable table {
+		margin-right: 8px;
+	}
+
+.jobTable tr:not(:first-of-type) {
+		border-top: 1px solid #e5e5e5;
+	}
+
 .style{
-	padding-right: 10px;
+	padding-right: 8px;
 	padding-left: 10px;
 }
 
