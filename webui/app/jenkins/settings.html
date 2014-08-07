@@ -3,9 +3,11 @@
 		<form name="ConfigItemForm">
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Jenkins URL</div>
-				<div><input type="text" class="form form-control" value="{{currentConfigValues.jenkinsUrl}}" ng-model="currentConfigValues.jenkinsUrl"/></div>
+				<div style="width: 20%"><input type="text" class="form form-control" value="{{currentConfigValues.jenkinsUrl}}" ng-model="currentConfigValues.jenkinsUrl"/></div>
 			</div>
 			<br />
+
+			<!-- Resize Window
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
@@ -13,10 +15,23 @@
 						<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
 				</div>
 			</div>
+			-->
+
 		</form>
+
+		<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+        	<table class="table tableTransparentBorder" >
+				<tr ng-repeat="view in views">
+                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th><td>test</td>
+                </tr>
+            	<tbody>
+            	</tbody>
+			</table>
 	</p>
+
 
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
 	</div>
+
 </div>

@@ -1,8 +1,13 @@
 angular.module('app.jenkins').appJenkinsSettings =
-['$scope', "app.jenkins.configservice", function ($scope, jenkinsConfigService) {    
-	$scope.currentConfigValues = jenkinsConfigService.configItem;
+['$scope', "app.jenkins.configservice",
 
-    $scope.save_click = function () {  
-        $scope.$emit('closeSettingsScreen');
-    };
+	function ($scope, jenkinsConfigService) {    
+
+		$scope.currentConfigValues = jenkinsConfigService.configItem;
+		$scope.views = jenkinsConfigService.views;
+
+		$scope.save_click = function () {  
+			$scope.$emit('closeSettingsScreen');
+		};
+
 }];

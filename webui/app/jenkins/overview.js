@@ -50,10 +50,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
 
         $scope.limitDisplayName = function(name, limit) {
-            if(name.length > limit) {
-                return name.substring(0,limit) + " ... ";
-            }
-            return name;
+            return ((name.length > limit) ? name.substring(0,limit) + " ... " : name);
         };
 
         var getStatus = function() {
@@ -85,9 +82,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        
-
-
         $scope.getWeatherIconLink = function(jobWeatherReport) {
             return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
         };
@@ -99,12 +93,14 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
                     $scope.jobs = data.jobs;
+                    jenkinsConfigService.views = data.views;
                     $scope.errormessage = "";
                     getStatus();
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
                     $scope.errormessage = msg;
                     $scope.jobs = [];
+                    jenkinsConfigService.views = [];
                     $scope.jobResult = [];
             });
 
@@ -126,15 +122,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         restrict: 'E',
         templateUrl: 'app/jenkins/overview.html',
         controller: directiveController,
-        link: function ($scope) 
-             {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
-                 {
+        link: function ($scope) {
+
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                     jenkinsConfigService.configItem = $scope.appConfig.configItem;
                 } else {
                     $scope.appConfig.configItem = jenkinsConfigService.configItem;
                 }
-                $scope.box.boxSize = jenkinsConfigService.configItem.boxSize;
 
                 $scope.$watch("appConfig.configItem.boxSize", function () {
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {

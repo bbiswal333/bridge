@@ -5,4 +5,8 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		language : 'de',
 		boxSize : '2'
 	};
+
+	this.views = [];
+	this.jobsByView = {};
+
 });
