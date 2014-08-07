@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.jenkins",
 		"title"					:	"Jenkins",
-		"icon_css"				:	"fa fa-circle",
+		"icon_css"				:	"fa fa-star",
 		"overview_directive"	:	"app.jenkins",
 		"needs_client"			:	false
 	},

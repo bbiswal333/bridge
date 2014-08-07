@@ -36,19 +36,30 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
+        $scope.getStatusColor = function(statusAsText) {
+            if(statusAsText === "FAILURE") {
+                statusColor = "red";
+            } else if(statusAsText === "SUCCESS") {
+                statusColor = "blue";
+            } else {
+                statusColor = "yellow";
+            }
+            return statusColor;
+        };
+
         var getStatus = function() {
             $scope.jobHealthReport = [];
+
             for(var job in $scope.jobs) {
-                
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
-                    $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
-                    success(function(result) {
-                        data.jobHealthReport = result.healthReport;   
-                        $scope.jobResult.push(data);
-                    });
-                    $scope.jobResult.push(data);
+                        $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
+                        success(function(result) {
+                            data.jobHealthReport = result.healthReport;
+                            data.statusColor = $scope.getStatusColor(data.result);
+                            $scope.jobResult.push(data);          
+                        });
                 }).
                 error(function(data, status) {
                     $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
@@ -57,17 +68,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        $scope.getStatusIconLink = function(statusAsText) {
-            var link = "/app/jenkins/icons/";
-            if(statusAsText === "FAILURE") {
-                link += "red_16x16.png";
-            } else if(statusAsText === "SUCCESS") {
-                link += "blue_16x16.png";
-            } else {
-                link += "grey_16x16.png";
-            }
-            return link;
-        };
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {
             if(jobWeatherReport === undefined) {

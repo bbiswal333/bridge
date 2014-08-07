@@ -1,7 +1,6 @@
 ﻿<div class="buildjobsgrid" ng-show="jobs">
 	<table>
-            <tr ng-repeat="job in jobResult" class="ng-binding">
-                <td class="buildstatuscell"><img ng-src="{{getStatusIconLink(job.result)}}"/></td>
+            <tr ng-repeat="job in jobResult" class="{{job.statusColor}}">
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
                 <td class="style"><a href="{{job.url}}">{{job.fullDisplayName}}</a></td>
                 <td class="style">{{job.timestamp}}</td>

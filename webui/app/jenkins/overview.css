@@ -13,6 +13,18 @@
 	padding-left: 10px;
 }
 
+.red{
+ 	background-color: #F78181;
+ }
+
+ .blue{
+ 	background-color: #2ECCFA;
+ }
+
+ .yellow{
+ 	background-color:  #F2F5A9;
+ }
+
 table {
 		margin-right: 5px;
 		margin-top: 5px;
@@ -21,3 +33,4 @@ table {
 tr{
  	border-top: 1px solid #e5e5e5;
  }
+
