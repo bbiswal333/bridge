@@ -21,6 +21,8 @@ directive("app.meetings", [
 					id: $scope.boxId
 			};
 
+			$scope.client = window.client;
+
 			$scope.get_tel = function(dialIn, participantCode)
 			{
 				if(window.client.os === "win32")
