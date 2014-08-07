@@ -60,9 +60,11 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;
 
-        $http.get(window.client.origin + '/client').success(function () {
+        $http.get(window.client.origin + '/client').success(function (data) {
             $scope.client = true;
         	window.client.available = true;
+            window.client.os = data.os;
+
         }).error(function () {
             $scope.client = false;
             window.client.available = false;

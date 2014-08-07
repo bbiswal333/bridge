@@ -14,6 +14,16 @@
 			 	</div>	
 		
 				<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
+			</div> 	
+			<div class="row" ng-if="window.client.os === darwin">
+			 	<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
+			 		Lync for Mac does not support telephone links with participant codes. Shall we can overwrite your clipboard content as a workaround?
+			 	</div>	
+		
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+		  				<span ng-click="currentConfigValues.clipboard = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.clipboard];" style="margin-right:0;">Yes</span>
+		  				<span ng-click="currentConfigValues.clipboard = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[!currentConfigValues.clipboard];" style="margin-right:0;">No</span>
+		  		</div>
 			</div> 			 
 		</form>
 	</p>

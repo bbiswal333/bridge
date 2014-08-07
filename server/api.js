@@ -158,7 +158,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
 		response = setHeader( request, response );			
-		response.send('{"client":"true"}');
+		response.send('{"client":"true", "os": "' + process.platform + '"}');
 	});
 
 	//generic api call get
@@ -242,6 +242,17 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
                         }
                 });
 
+            }  
+            else response.send("no client");      
+	});
+
+
+	app.get('/api/client/copy', function(request, response)
+	{
+		if (typeof webkitClient !== 'undefined' && webkitClient)
+            {        
+            	webkitClient.gui.Clipboard.get().set(request.query.text);        
+            	response.send("done");      
             }  
             else response.send("no client");      
 	});

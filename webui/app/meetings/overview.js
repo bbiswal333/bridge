@@ -6,8 +6,8 @@ directive("app.meetings", [
 	"lib.utils.calUtils",
 	"$interval",
 	"app.meetings.configservice",
-	"notifier",
-	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+	"notifier",'$http',
+	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, $http) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -16,6 +16,26 @@ directive("app.meetings", [
 				templatePath: "meetings/settings.html",
 					controller: angular.module('app.meetings').appMeetingsSettings,
 					id: $scope.boxId
+			};
+
+			$scope.get_tel = function(dialIn, participantCode)
+			{
+				if(window.client.os === "win32")
+				{
+					return dialIn + 'x' + participantCode + '#';
+				}
+				else
+				{					
+					return dialIn;
+				}
+			};
+
+			$scope.click_tel = function(participantCode)
+			{
+				if(window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
+				{
+					$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + window.location.origin);	
+				}
 			};
 
 			$scope.box.returnConfig = function(){
