@@ -9,8 +9,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.jobInfo = [];
         $scope.errormessage = "";
 
-        $scope.box.settingsTitle = "Configure Jenkins URL";
         // Settings Screen
+        $scope.box.settingsTitle = "Configure Jenkins URL";
         $scope.box.settingScreenData = {
             templatePath: "/jenkins/settings.html",
             controller: angular.module('app.jenkins').appJenkinsSettings,
@@ -37,6 +37,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         $scope.getStatusColor = function(statusAsText) {
+            var statusColor;
             if(statusAsText === "FAILURE") {
                 statusColor = "red";
             } else if(statusAsText === "SUCCESS") {
@@ -49,21 +50,28 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var getStatus = function() {
             $scope.jobHealthReport = [];
+            $scope.jobResult = [];
 
             for(var job in $scope.jobs) {
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
+
                     data.timestamp = formatTimestamp(data.timestamp);
-                        $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
+
+                    $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
                         success(function(result) {
                             data.jobHealthReport = result.healthReport;
                             data.statusColor = $scope.getStatusColor(data.result);
-                            $scope.jobResult.push(data);          
                         });
+
+                    $scope.jobResult.push(data);
+
                 }).
                 error(function(data, status) {
+
                     $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
                     console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
+
                 });
             }
         };
@@ -89,13 +97,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         $scope.updateJenkins = function(url) {
 
-            $scope.jobResult = [];
-
             $scope.jenkinsConfig.url = url;
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
-                    $scope.jobs = [];
                     $scope.jobs = data.jobs;
                     $scope.errormessage = "";
                     getStatus();
