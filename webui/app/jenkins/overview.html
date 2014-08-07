@@ -2,12 +2,6 @@
 
 <div class="buildjobsgrid" ng-show="jobs">
 	<table>
- 			<!-- <tr>
-			    <th>Status</th>
-			    <th>Weather</th>
-			    <th>Job Name</th>
-			    <th>Last build</th>
-			</tr>  -->
             <tr ng-repeat="job in jobResult" class="ng-binding">
                 <td class="buildstatuscell"><img ng-src="{{getStatusIconLink(job.result)}}"/></td>
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
