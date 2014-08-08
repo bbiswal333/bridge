@@ -22,6 +22,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
+    $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions = 25; // 5 weeks
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
 
@@ -325,6 +326,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
+                if ($scope.selectedDates.length >= $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions) {
+                    bridgeInBrowserNotification.addAlert('','Due to legal restrictions it is only allowed to select/ maintain up to ' + $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions + ' days at once');
+                }
                 $scope.totalWorkingTime = 1;
             }
         } catch(err) {
@@ -334,8 +338,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleSelectedDate = function(dayString){
         if($scope.selectedDates.indexOf(dayString) === -1) {
-            $scope.selectedDates.push(dayString);
-            $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+            if ($scope.selectedDates.length >= $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions) {
+                return false;
+            } else {
+                $scope.selectedDates.push(dayString);
+                $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+            }
         }
         return true;
     };
