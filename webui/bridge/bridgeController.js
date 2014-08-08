@@ -14,7 +14,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.sendLog = function () {
             modalPromise = logService.showPreview();
             modalPromise.then(function resolved() {
-                logService.sendLog();
+                logService.sendLog(); 
             });
         };
         $scope.showLogModeWiki = function () {
