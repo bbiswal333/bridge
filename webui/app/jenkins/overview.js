@@ -48,6 +48,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             for(var viewIndex in views) {
 
+                // skip view "All" if there are views other than "All"
+                if ((views.length > 1) && (views[viewIndex].name === "All")) {
+                    continue;
+                }
+
                 $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
                 .success(function (viewData) {
                     if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
@@ -83,10 +88,24 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return name;
         };
 
+        var pushToJobResults = function(jobData) {
+            var isJobnamePresent = false;
+            for(var jobIndex in $scope.jobResult) {
+                if($scope.jobResult[jobIndex].fullDisplayName === jobData.fullDisplayName) {
+                    isJobnamePresent = true;
+                }
+            }
+            if(isJobnamePresent === false) {
+                $scope.jobResult.push(jobData);
+            }
+        };
+
         var getStatus = function() {
-             
+            $scope.jobHealthReport = [];
+            $scope.jobResult = [];
+   
             for(var job in $scope.jobs) {
-                debugger;
+
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
@@ -95,12 +114,14 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                         success(function(result) {
                             data.jobHealthReport = result.healthReport;    
                         });
-                    
-                    $scope.jobResult.push(data);
+
+                    data.statusColor = $scope.getStatusColor(data.result);
+                    pushToJobResults(data);
 
                 }).
                 error(function(data, status) {
-                    // $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
+
+                    pushToJobResults({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
                     console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
 
                 });
@@ -108,8 +129,15 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             
         };
 
-        
-
+        var removeViewAll = function(views) {
+            for(var viewIndex in views) {
+                // skip view "All" if there are views other than "All"
+                if ((views.length > 1) && (views[viewIndex].name === "All")) {
+                    views.splice(viewIndex, 1);
+                }
+            }
+            return views;
+        };
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {
             if(jobWeatherReport === undefined) {
@@ -122,11 +150,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.updateJenkins = function(url) {
 
             $scope.jenkinsConfig.url = url;
-            debugger;
+
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
                     $scope.jobs = data.jobs;
-                    jenkinsConfigService.views = data.views;
+                    jenkinsConfigService.views = removeViewAll(data.views);
                     retrieveAndSetJobsByView(data.views);
                     $scope.errormessage = "";
                     
