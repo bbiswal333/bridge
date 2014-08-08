@@ -35,7 +35,7 @@
                                     </span>
                                     
 									<span ng-if="event.participantCode" >
-                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in with Code: {{event.participantCode}}"></a>  
+                                       	<a ng-click="click_tel(event.participantCode)" class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{get_tel(box.sAPConnectPreferredDialin, event.participantCode)}}" tooltip="Dial in with Code: {{event.participantCode}}"></a>  
                                     </span>
                                     <span ng-if="event.sapconnectUrl" >
                                        	<a class="box-icon fa fa-users small-icon basic-blue-font-40" href="{{event.sapconnectUrl}}" target="_blank" tooltip="SAP connect"></a>
@@ -60,8 +60,8 @@
                                     <span ng-if="event.participantCode" >
                                         </br>
                                        	Part.Code: {{event.participantCode}}
-                                       	<a class="box-icon fa fa-phone small-icon basic-blue-font-40" style="position: relative;
-    bottom: 5px;" href="tel:{{box.sAPConnectPreferredDialin}}x{{event.participantCode}}" tooltip="Dial in"></a>  
+                                       	<a ng-click="click_tel(event.participantCode)" class="box-icon fa fa-phone small-icon basic-blue-font-40" style="position: relative;
+    bottom: 5px;" href="tel:{{get_tel(box.sAPConnectPreferredDialin, event.participantCode)}}" tooltip="Dial in"></a>  
                                     </span>
                                     <span ng-if="event.sapconnectUrl" >
                                     	<a class="box-icon fa fa-users small-icon basic-blue-font-40" style="position: relative;

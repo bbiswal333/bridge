@@ -69,34 +69,48 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
 
         function enhanceAllMessages() 
         {
-            angular.forEach(ticketData.backendTickets.sel_components, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.sel_components_aa, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.colleagues, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.colleagues_aa, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.assigned_me, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.assigned_me_aa, function (message) { enhanceMessage(message); });
-            angular.forEach(ticketData.backendTickets.created_me, function (message) { enhanceMessage(message); });            
+            ticketData.backendTickets.sel_components.forEach(enhanceMessage);
+            ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
+            ticketData.backendTickets.colleagues.forEach(enhanceMessage);
+            ticketData.backendTickets.colleagues_aa.forEach(enhanceMessage);
+            ticketData.backendTickets.assigned_me.forEach(enhanceMessage);
+            ticketData.backendTickets.assigned_me_aa.forEach(enhanceMessage);
+            ticketData.backendTickets.created_me.forEach(enhanceMessage);
         }
 
         $scope.getStatusArray = function(){
             return Object.keys($scope.statusMap);
         };
 
+        function addMessage(message){ 
+            var allreadyExists = false;
+            $scope.messages.some(function(item){
+                if (angular.equals(message, item)){
+                    allreadyExists = true;
+                }
+                return allreadyExists;
+            });
+
+            if (!allreadyExists){
+                $scope.messages.push(message); 
+            }
+        }
         $scope.$watch('config', function() {      
             if($scope.config !== undefined)
             {
                 var selected_messages = [];                
-                if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components, function (message) { selected_messages.push(message); }); }
-                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues, function (message) { selected_messages.push(message); }); }
-                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me, function (message) { selected_messages.push(message); }); }
-                if($scope.config.data.selection.created_me)     { angular.forEach(ticketData.backendTickets.created_me, function (message) { selected_messages.push(message); }); }
+                $scope.messages = selected_messages;
+                
+                if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components, addMessage); }
+                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues, addMessage); }
+                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me, addMessage); }
+                if($scope.config.data.selection.created_me)     { angular.forEach(ticketData.backendTickets.created_me, addMessage); }
                 if(!$scope.config.data.settings.ignore_author_action)
                 {
-                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components_aa, function (message) { selected_messages.push(message); }); }
-                    if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, function (message) { selected_messages.push(message); }); }
-                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, function (message) { selected_messages.push(message); }); }
+                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components_aa, addMessage); }
+                    if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, addMessage); }
+                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, addMessage); }
                 }                                            
-                $scope.messages = selected_messages;
                 bridgeConfig.persistInBackend(bridgeDataService);                
             }
         },true);  
@@ -105,8 +119,8 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             $scope.zoomIndex = index;
             if (event) {
                 $scope.zoomImg = event.currentTarget;
-            };
-        }
+            }
+        };
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 

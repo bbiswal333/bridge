@@ -100,6 +100,7 @@ angular.module("app.cats")
 			function reload() {
 			    $scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
+			    //console.log(JSON.stringify($scope.calArray));
 			    $scope.SundayweekstartOnReload = $scope.sundayweekstart;
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
@@ -126,6 +127,7 @@ angular.module("app.cats")
 					$scope.state = "CATS-Data could no be retrieved from system ISP";
 					$scope.hasError = true;
 				}
+                monthlyDataService.reloadInProgress.value = false;
 			}
 
 			function hasFixedTask (dayString){

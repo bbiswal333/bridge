@@ -188,10 +188,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return this.getTimeInWords(diffMin, short_b);
     };
 
-    this.getTimeInWords = function (minutes_i, short_b) {
-        var days = Math.floor(minutes_i / (24 * 60));
-        minutes_i = minutes_i - days * 24 * 60;
-
+    this.getTimeInWords = function (minutes_i, short_b, only_hours_and_minutes_b) {
+        if (!only_hours_and_minutes_b) {
+            var days = Math.floor(minutes_i / (24 * 60));
+            minutes_i = minutes_i - days * 24 * 60;
+        }
         var hours = Math.floor(minutes_i / 60);
         minutes_i = Math.round(minutes_i - hours * 60);
 

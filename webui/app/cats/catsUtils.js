@@ -1,9 +1,6 @@
 angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtils",
   function() {
     this.getDescForState = function(state_s) {
-      if (typeof state_s === "undefined") {
-        return "";
-      }
       state_s = state_s.toLowerCase();
       if (state_s === "r") {
         return "Not maintained";
@@ -20,6 +17,7 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       if (state_s === "overbooked") {
         return "Overbooked";
       }
+      return "";
     };
 
     this.isSameTask = function(task1, task2) {
