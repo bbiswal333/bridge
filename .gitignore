@@ -21,6 +21,7 @@ build/**/*
 node_modules/**/*
 client/webkit_download/**/*
 client/node_download/**/*
+.idea/
 *.sln
 *.log
 
