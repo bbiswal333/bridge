@@ -28,7 +28,7 @@ function (colorUtils, blockCalculations, calUtils) {
             };
 
             $scope.getValueAbsolute = function () {
-                return calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true);
+                return calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true, true);
             };
             $scope.setWidth = function(width) {
                 $scope.blockData.blockWidth = width;
