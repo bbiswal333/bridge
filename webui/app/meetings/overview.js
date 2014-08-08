@@ -156,7 +156,7 @@ directive("app.meetings", [
 						}
 
 					}catch(error){
-						$scope.errMsg = "Unable to connect to Exchange Server";
+						$scope.errMsg = "Unable to connect to Exchange Server. Restarting your Bridge client may solve the issue.";
 						$log.log((error || $scope.errMsg));
 					}
 					$scope.loading = false;
