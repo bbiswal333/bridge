@@ -12,7 +12,10 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.logMode = bridgeDataService.getLogMode();
         $scope.sendLog = function () {
-            logService.sendLog();
+            modalPromise = logService.showPreview();
+            modalPromise.then(function resolved() {
+                logService.sendLog();
+            });
         };
         $scope.showLogModeWiki = function () {
             $window.open("https://github.wdf.sap.corp/bridge/bridge/wiki/Log-Mode");

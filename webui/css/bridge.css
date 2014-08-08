@@ -804,7 +804,8 @@ h3{
 .logAlertBar {
     position: absolute;
     z-index: 1000;
-    width: 2000px;
+    /* width should be big enough to cover every screen*/
+    width: 4000px;
     line-height: 38px;
     background-color: red;
     color: black;

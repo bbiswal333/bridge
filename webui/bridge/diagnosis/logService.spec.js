@@ -1,14 +1,16 @@
 ﻿describe("The log service", function () {
     var logService;
     var bridgeDataService;
+    var $httpBackend;
 
     beforeEach(function () {
         module("bridge.diagnosis");
         module("bridge.service");
 
-        inject(["bridge.diagnosis.logService", "bridgeDataService", function (_logService, _bridgeDataService) {
+        inject(["$httpBackend", "bridge.diagnosis.logService", "bridgeDataService", function (_$httpBackend, _logService, _bridgeDataService) {
             logService = _logService;
             bridgeDataService = _bridgeDataService;
+            $httpBackend = _$httpBackend;
 
             logService.clear();
         }]);
@@ -62,5 +64,20 @@
             expect(logService.getLog()[0].sMessage).not.toBe('');
             expect(logService.getLog()[0].sStackTrace.indexOf("ReferenceError:")).not.toBe(-1);
         }
+    });
+
+    it("should send the log in HTML format to IF*", function () {
+        logService.addEntry("TestType", "TestMessage", "TestStacktrace");
+        logService.sendLog();
+
+        $httpBackend.expectPOST(/https:\/\/if.\.wdf\.sap\.corp\/sap\/bc\/bridge\/SEND_MAIL*./, function (data) {
+            if (data.indexOf("<html>") === 0 && data.indexOf("TestType") != -1 && data.indexOf("TestMessage") != -1 && data.indexOf("TestStacktrace") != -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }).respond(201, '');
+
+        $httpBackend.flush();
     });
 });
