@@ -100,7 +100,7 @@ angular.module("app.cats")
 			function reload() {
 			    $scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
-			    console.log(JSON.stringify($scope.calArray));
+			    //console.log(JSON.stringify($scope.calArray));
 			    $scope.SundayweekstartOnReload = $scope.sundayweekstart;
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
