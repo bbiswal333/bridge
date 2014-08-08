@@ -1,7 +1,7 @@
 angular.module('app.jenkins', []);
 angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
-    var directiveController = ['$scope', '$http', function ($scope, $http) {
+    var directiveController = ['$scope', '$http', "$q", function ($scope, $http) {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
@@ -105,7 +105,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jobResult = [];
    
             for(var job in $scope.jobs) {
-
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
                     data.timestamp = formatTimestamp(data.timestamp);
@@ -113,6 +112,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
                         success(function(result) {
                             data.jobHealthReport = result.healthReport;    
+                        }).
+                        error(function(result, status) {
+                            console.log("Could not GET job " + $scope.jobs[job].name + ", status: " + status);
+
                         });
 
                     data.statusColor = $scope.getStatusColor(data.result);
@@ -120,7 +123,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                 }).
                 error(function(data, status) {
-
                     pushToJobResults({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
                     console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
 
@@ -157,7 +159,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     jenkinsConfigService.views = removeViewAll(data.views);
                     retrieveAndSetJobsByView(data.views);
                     $scope.errormessage = "";
-                    
+
                     getStatus();
 
                 }).error(function(data, status) {
