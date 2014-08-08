@@ -75,7 +75,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return statusColor;
         };
 
-
         $scope.limitDisplayName = function(name, limit) {
             if(name.length > limit) {
                 return name.substring(0,limit) + " ... ";
@@ -128,7 +127,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var removeViewAll = function(views) {
             for(var viewIndex in views) {
-                // skip view "All" if there are views other than "All"
                 if ((views.length > 1) && (views[viewIndex].name === "All")) {
                     views.splice(viewIndex, 1);
                 }
@@ -137,11 +135,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         $scope.getWeatherIconLink = function(jobWeatherReport) {
-            if(jobWeatherReport === undefined) {
-                return "";
-            }
-
-            return "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl;
+            return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
         };
 
         $scope.updateJenkins = function(url) {
