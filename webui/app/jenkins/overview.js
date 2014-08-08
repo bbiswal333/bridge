@@ -48,11 +48,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             for(var viewIndex in views) {
 
-                // skip view "All" if there are views other than "All"
-                if ((views.length > 1) && (views[viewIndex].name === "All")) {
-                    continue;
-                }
-
                 $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
                 .success(function (viewData) {
                     if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
@@ -157,9 +152,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                  .success(function (data) {
                     $scope.jobs = data.jobs;
                     jenkinsConfigService.views = removeViewAll(data.views);
-                    retrieveAndSetJobsByView(data.views);
+                    retrieveAndSetJobsByView(removeViewAll(data.views));
                     $scope.errormessage = "";
-
                     getStatus();
 
                 }).error(function(data, status) {
