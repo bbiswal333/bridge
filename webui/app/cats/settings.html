@@ -95,8 +95,8 @@
 
                 	<div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label"></span>
-                		<div class="col-md-8">	
-        					<div ng-show="!configService.selectedTask.custom" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
+                		<div class="col-md-8">
+        					<div ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
                 			<div ng-show="configService.selectedTask.custom && !configService.selectedTask.id" ng-disabled="ConfigItemForm.$invalid" class="btn btn-primary btn_blue settings_add_task_button" ng-click="saveNewTask()">Save</div>
                 			<div ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>
                 			

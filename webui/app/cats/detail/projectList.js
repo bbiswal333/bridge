@@ -151,22 +151,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       item.color     = color;
     }
 
-    function createNewProjectItem (item) {
-      return configService.createNewItem(item);
-      // var newItem        = item;
-      // newItem.id         = (item.ZCPR_OBJGEXTID || "") + (item.RAUFNR || "") + item.TASKTYPE;
-      // newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
-      // // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
-      // return newItem;
-    }
-
     function addNewProjectItem (item) {
       var newItem = configService.createNewItem(item);
       
       markItemIfSelected(item);
 
       var allreadyExists = false;
-      // var fixedTasks = ['ABSE', 'VACA', 'COMP'];
 
       if (catsUtils.isFixedTask(item)) { // don't add "fixed" tasks to favorites
         return;
@@ -232,7 +222,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
           }
         });
         if (!allreadyExists) {
-          $scope.items.push( createNewProjectItem(blockItem.task) );
+          $scope.items.push( configService.createNewItem(blockItem.task) );
         }
       });
     }
@@ -244,16 +234,16 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
 
       favoriteItems.forEach(function(favoriteItem){
-        
         var allreadyExists = false;
         $scope.items.some(function(item){
           if (catsUtils.isSameTask(favoriteItem, item)) {
             allreadyExists = true;
+            // item = favoriteItem;
             return exitLoop;
           }
         });
         if (!allreadyExists) {
-          $scope.items.push( createNewProjectItem(favoriteItem) );
+          $scope.items.push( configService.createNewItem(favoriteItem) );
         }
       });
     }

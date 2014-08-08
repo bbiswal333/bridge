@@ -31,6 +31,7 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
              {
                 if ($scope.appConfig && $scope.appConfig.favoriteItems && !catsConfigService.loaded) 
                 {
+                	catsConfigService.recalculateTaskIDs($scope.appConfig.favoriteItems);
                 	catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
                 }            
                 if ($scope.appConfig) {

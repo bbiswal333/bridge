@@ -26,6 +26,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
 
     if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
+        configService.recalculateTaskIDs(persistedConfig.favoriteItems);
         configService.favoriteItems = persistedConfig.favoriteItems;
     }
 
