@@ -15,6 +15,20 @@
     this.isInitialized = { value: false };
     this.loadTicketDataInterval = null;
 
+    function addTicket(list, ticket){ 
+        var allreadyExists = false;
+        list.some(function(item){
+            if (angular.equals(ticket, item)){
+                allreadyExists = true;
+            }
+            return allreadyExists;
+        });
+
+        if (!allreadyExists){
+            list.push(ticket); 
+        }
+    }
+
     function parseBackendTicket(backendTicket, category) {
         angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIO === prio.number.toString())
@@ -34,16 +48,18 @@
                     prio[category]++;
                     that.backendTickets[category].push(backendTicket);
                 }
-                prio.total++;
+                
+                addTicket(prio.tickets, backendTicket);
+                prio.total = prio.tickets.length;
             }
         });
     }
 
     this.prios = [
-        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 },
-        { name: "High",         number: 2, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }, 
-        { name: "Medium",       number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }, 
-        { name: "Low",          number: 4, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0 }];    
+        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "High",         number: 2, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
+        { name: "Medium",       number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
+        { name: "Low",          number: 4, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];    
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
@@ -56,6 +72,7 @@
             prio.created_me = 0;
             prio.selected = 0;
             prio.total = 0;
+            prio.tickets = [];
         });
 
         that.backendTickets.sel_components.length = 0;
@@ -128,16 +145,48 @@
     this.updatePrioSelectionCounts = function () {
         angular.forEach(this.prios, function (prio) {
             prio.selected = 0;
-            if (configservice.data.selection.sel_components) { prio.selected = prio.selected + prio.sel_components; }
-            if (configservice.data.selection.colleagues) { prio.selected = prio.selected + prio.colleagues; }
-            if (configservice.data.selection.assigned_me) { prio.selected = prio.selected + prio.assigned_me; }
-            if (configservice.data.selection.created_me) { prio.selected = prio.selected + prio.created_me; }
+            var prioString = prio.number.toString();
+            var selectedTickets = [];
+            if (configservice.data.selection.sel_components) { that.backendTickets.sel_components.forEach(function(ticket){
+                if (ticket.PRIO === prioString){
+                    addTicket(selectedTickets,ticket);
+                }
+            });}
+            if (configservice.data.selection.colleagues) { that.backendTickets.colleagues.forEach(function(ticket){
+                if (ticket.PRIO === prioString){
+                    addTicket(selectedTickets,ticket);
+                }
+            });}
+            if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me.forEach(function(ticket){
+                if (ticket.PRIO === prioString){
+                    addTicket(selectedTickets,ticket);
+                }
+            });}
+            if (configservice.data.selection.created_me) { that.backendTickets.created_me.forEach(function(ticket){
+                if (ticket.PRIO === prioString){
+                    addTicket(selectedTickets,ticket);
+                }
+            });}
             if (!configservice.data.settings.ignore_author_action) {
-                if (configservice.data.selection.sel_components) { prio.selected = prio.selected + prio.sel_components_aa; }
-                if (configservice.data.selection.colleagues) { prio.selected = prio.selected + prio.colleagues_aa; }
-                if (configservice.data.selection.assigned_me) { prio.selected = prio.selected + prio.assigned_me_aa; }
+                if (configservice.data.selection.sel_components) { that.backendTickets.sel_components_aa.forEach(function(ticket){
+                    if (ticket.PRIO === prioString){
+                        addTicket(selectedTickets,ticket);
+                    }
+                });}
+                if (configservice.data.selection.colleagues) { that.backendTickets.colleagues_aa.forEach(function(ticket){
+                    if (ticket.PRIO === prioString){
+                        addTicket(selectedTickets,ticket);
+                    }
+                });}
+                if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me_aa.forEach(function(ticket){
+                    if (ticket.PRIO === prioString){
+                        addTicket(selectedTickets,ticket);
+                    }
+                });}
             }
+            prio.selected = selectedTickets.length;
         });
+
     };
 
     this.initialize = function () {
