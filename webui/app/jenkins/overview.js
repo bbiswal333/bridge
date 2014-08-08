@@ -105,6 +105,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                 });
             }
+            
         };
 
         
@@ -121,14 +122,16 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.updateJenkins = function(url) {
 
             $scope.jenkinsConfig.url = url;
-
+            debugger;
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
                     $scope.jobs = data.jobs;
                     jenkinsConfigService.views = data.views;
                     retrieveAndSetJobsByView(data.views);
                     $scope.errormessage = "";
+                    
                     getStatus();
+
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
                     $scope.errormessage = msg;
