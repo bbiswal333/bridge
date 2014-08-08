@@ -50,6 +50,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                 $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
                 .success(function (viewData) {
+                    // for the primary view, there is no special "view" page, but the start page
+                    if(views[viewIndex].url.indexOf("view") === -1) {
+                        viewData.name = views[viewIndex].name;
+                    }
                     if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
                        jenkinsConfigService.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
                     }
