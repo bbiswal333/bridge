@@ -3,7 +3,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + location.origin;
     var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + location.origin;    
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + location.origin + "&week=";
-    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + location.origin;
+    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + location.origin + "&catsprofile=";
 
     var CAT2ComplinaceData4FourMonthCache = null;
     var tasksFromWorklistCache = null;
@@ -163,10 +163,10 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       return deferred.promise;
     };
 
-    this.writeCATSData = function(container){
+    this.writeCATSData = function(container, profile){
       var deferred = $q.defer();
       // /zdevdb/WRITECATSDATA
-      $http.post(CATS_WRITE_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+      $http.post(CATS_WRITE_WEBSERVICE + profile, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
           deferred.resolve(data);
       }).error(function (data, status) {
           deferred.reject(status);

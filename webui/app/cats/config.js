@@ -4,6 +4,7 @@ angular.module("app.cats").service('app.cats.configService', [function(){
 	this.favoriteItems = [];
 	this.selectedTask = null;
 	this.sundayweekstart = false;
+	this.catsProfile = "DEV2002C";
 
 	this.getTaskID = function(task) {
 		if(task.ZCPR_OBJGEXTID) {

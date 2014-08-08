@@ -23,16 +23,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
 
-    var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
+    var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
 
-    if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
-        configService.recalculateTaskIDs(persistedConfig.favoriteItems);
-        configService.favoriteItems = persistedConfig.favoriteItems;
-    }
-
-    if (persistedConfig) {
-        configService.sundayweekstart = persistedConfig.sundayweekstart;
-        $scope.sundayweekstart = persistedConfig.sundayweekstart;
+    if (catsConfigService && !configService.loaded) {
+        if (catsConfigService.favoriteItems) {
+            configService.recalculateTaskIDs(catsConfigService.favoriteItems);
+            configService.favoriteItems = catsConfigService.favoriteItems;
+        }
+        if (catsConfigService.catsProfile) {
+            configService.catsProfile = catsConfigService.catsProfile;
+        }
+        if (catsConfigService.sundayweekstart) {
+            configService.sundayweekstart = catsConfigService.sundayweekstart;
+        }
     }
 
     function timeToMaintain() {
@@ -361,11 +364,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 var message = xmlDoc.getElementsByTagName("TEXT")[i];
                 if (message) {
                     replyHasMessages = true;
-                    if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                        bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
-                    } else {
+                    // if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
+                    //     bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
+                    // } else {
                         bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
-                    }
+                    // }
                 }
             }
             if (!replyHasMessages) {
@@ -489,7 +492,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
-                catsBackend.writeCATSData(container).then(function(data){
+                var catsProfile = configService.catsProfile;
+                if (!catsProfile) {
+                    catsProfile = "DEV2002C";
+                }
+                catsBackend.writeCATSData(container,catsProfile).then(function(data){
                     checkPostReply(data);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
