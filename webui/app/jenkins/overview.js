@@ -5,9 +5,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
-        $scope.jobResult = [];
-        $scope.jobHealthReport = [];
         $scope.errormessage = "";
+        $scope.jobResult = [];
 
         // Settings Screen
         $scope.box.settingsTitle = "Configure Jenkins URL";
@@ -78,40 +77,45 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
 
         $scope.limitDisplayName = function(name, limit) {
-            return ((name.length > limit) ? name.substring(0,limit) + " ... " : name);
+            if(name.length > limit) {
+                return name.substring(0,limit) + " ... ";
+            }
+            return name;
         };
 
         var getStatus = function() {
-            $scope.jobHealthReport = [];
-            $scope.jobResult = [];
-
-            
+             
             for(var job in $scope.jobs) {
+                debugger;
                 $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
                 success(function(data) {
-
                     data.timestamp = formatTimestamp(data.timestamp);
-
+                    data.statusColor = $scope.getStatusColor(data.result);
                     $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
                         success(function(result) {
-                            data.jobHealthReport = result.healthReport;
-                            
+                            data.jobHealthReport = result.healthReport;    
                         });
-                    data.statusColor = $scope.getStatusColor(data.result);
+                    
                     $scope.jobResult.push(data);
 
                 }).
                 error(function(data, status) {
-
-                    $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
+                    // $scope.jobResult.push({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
                     console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
 
                 });
             }
         };
 
+        
+
+
         $scope.getWeatherIconLink = function(jobWeatherReport) {
-            return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
+            if(jobWeatherReport === undefined) {
+                return "";
+            }
+
+            return "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl;
         };
 
         $scope.updateJenkins = function(url) {
@@ -129,7 +133,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
                     $scope.errormessage = msg;
                     $scope.jobs = [];
-                    jenkinsConfigService.views = [];
                     $scope.jobResult = [];
             });
 
@@ -145,13 +148,15 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         restrict: 'E',
         templateUrl: 'app/jenkins/overview.html',
         controller: directiveController,
-        link: function ($scope) {
-
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+        link: function ($scope) 
+             {
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                 {
                     jenkinsConfigService.configItem = $scope.appConfig.configItem;
                 } else {
                     $scope.appConfig.configItem = jenkinsConfigService.configItem;
                 }
+                $scope.box.boxSize = jenkinsConfigService.configItem.boxSize;
 
                 $scope.$watch("appConfig.configItem.boxSize", function () {
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
