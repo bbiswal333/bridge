@@ -1,5 +1,6 @@
-﻿angular.module('bridge.diagnosis', ['bridge.service'])
-.service('bridge.diagnosis.logService', ["$rootScope", "$http", "bridgeDataService", "bridgeInBrowserNotification", function ($rootScope, $http, bridgeDataService, bridgeInBrowserNotification) {
+﻿angular.module('bridge.diagnosis', ['bridge.service', 'ui.bootstrap'])
+.service(   'bridge.diagnosis.logService', ["$rootScope", "$http", "bridgeDataService", "bridgeInBrowserNotification", "$modal",
+            function ($rootScope, $http, bridgeDataService, bridgeInBrowserNotification, $modal) {
 
     var sLogKey = "bridgeLog";
 
@@ -10,6 +11,27 @@
         }
 
         return sStacktrace;
+    };
+
+    function transformLogToHTML(log) {
+        var sLog = "<html><body>";
+
+        for (var i = 0; i < log.length; i++) {
+            sLog += '<table style="border-collapse: collapse;">';
+            sLog += '<tr> <td style="border: 1px solid black;">Type</td> <td style="border: 1px solid black;">' + log[i].sType + '</td> </tr>';
+            sLog += '<tr> <td style="border: 1px solid black;">Message</td> <td style="border: 1px solid black;">' + log[i].sMessage + '</td> </tr>';
+            sLog += '<tr> <td style="border: 1px solid black;">Stacktrace</td> <td style="border: 1px solid black;">'
+
+            var aStacktrace = log[i].sStackTrace.split("\n");
+            for (var j = 0; j < aStacktrace.length; j++) {
+                sLog += aStacktrace[j] + "<br/>";
+            }
+
+            sLog += '</td> </tr>';
+            sLog += '</table><br/><br/>';
+        }
+
+        return sLog;
     };
 
     this.log = function (uObject, sType) {
@@ -55,22 +77,7 @@
 
     this.sendLog = function () {
         var log = this.getLog();
-        var sLog = "<html><body>";
-
-        for (var i = 0; i < log.length; i++){
-            sLog += '<table style="border-collapse: collapse;">';
-            sLog += '<tr> <td style="border: 1px solid black;">Type</td> <td style="border: 1px solid black;">'+ log[i].sType +'</td> </tr>';
-            sLog += '<tr> <td style="border: 1px solid black;">Message</td> <td style="border: 1px solid black;">'+ log[i].sMessage +'</td> </tr>';
-            sLog += '<tr> <td style="border: 1px solid black;">Stacktrace</td> <td style="border: 1px solid black;">'
-
-            var aStacktrace = log[i].sStackTrace.split("\n");
-            for (var j = 0; j < aStacktrace.length; j++) {
-                sLog += aStacktrace[j] + "<br/>";
-            }
-
-            sLog += '</td> </tr>';
-            sLog += '</table><br/><br/>';
-        }
+        var sLog = transformLogToHTML(log);
 
         $http.post("https://ifd.wdf.sap.corp/sap/bc/bridge/SEND_MAIL?origin=" + location.origin, sLog, {'headers':{'Content-Type':'text/plain'}}
         ).success(function () {
@@ -78,6 +85,23 @@
         }).error(function () {
             bridgeInBrowserNotification.addAlert("danger", "Error sending log.", 5);
         });
+    };
+
+    this.showPreview = function () {
+        var log = this.getLog();
+
+        var modalInstance = $modal.open({
+            templateUrl: 'bridge/diagnosis/mailPreview.html',
+            windowClass: 'settings-dialog',
+            controller: angular.module('bridge.diagnosis').mailPreviewController,
+            resolve: {
+                frameContent: function () {
+                    return transformLogToHTML(log);
+                },
+            }
+        });
+
+        return modalInstance.result;
     };
 
     this.clear = function () {

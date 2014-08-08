@@ -1,5 +1,4 @@
 {
-
 	"modules" : [
         "bridge.diagnosis",
         "bridge.service", 
@@ -23,6 +22,7 @@
         "bridgeHttpInterceptor.js",
         "diagnosis/logService.js",
 		"diagnosis/corsTestPageController.js",
+        "diagnosis/mailPreviewController.js",
 		"bridgeSettingsController.js", 
 		"bridgeMainSettingsController.js", 
 		"bridgeDownloadController.js", 
@@ -38,5 +38,8 @@
 		"trafficLightService.js",
 		"employeeService.js"
 	],
-	"css_files" : []
+	"css_files" : [
+        "diagnosis/diagnosis.css"
+
+	]
 }
