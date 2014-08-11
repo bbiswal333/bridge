@@ -19,10 +19,16 @@
 
 		</form>
 
-		<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
-        	<table class="table tableTransparentBorder" >
+		<div style="overflow-y: scroll; overflow-x: scroll; height: 85%; width: auto; padding-top: 10px">
+        	<table class="table tableTransparentBorder" style="width: auto; overflow-x: scroll">
 				<tr ng-repeat="view in views">
-                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th><td>{{getJobNamesByView(view.name)}}</td>
+                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th>
+          			<td>
+          				<div class="">
+        					<label ng-repeat="job in getJobNamesByView(view.name)" ng-model="checkboxJobs"class="btn btn-primary" btn-checkbox>{{job.name}}</label>
+    					</div>
+    				</td>
+                	<!-- <td><span ng-repeat="job in getJobNamesByView(view.name)">{{job.name}}</span></td> -->
                 </tr>
             	<tbody>
             	</tbody>
