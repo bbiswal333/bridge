@@ -98,37 +98,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        // var getStatus = function() {
-        //     $scope.jobHealthReport = [];
-        //     $scope.jobResult = [];
-   
-        //     for(var job in $scope.jobs) {
-        //         $http({ method: 'GET', url: $scope.jobs[job].url + "lastBuild/api/json", withCredentials: false }).
-        //         success(function(data) {
-        //             data.timestamp = formatTimestamp(data.timestamp);
-        //             data.statusColor = $scope.getStatusColor(data.result);
-        //             $http({ method: 'GET', url: $scope.jobs[job].url + "api/json", withCredentials: false }).
-        //                 success(function(result) {
-        //                     data.jobHealthReport = result.healthReport;    
-        //                 }).
-        //                 error(function(result, status) {
-        //                     console.log("Could not GET job " + $scope.jobs[job].name + ", status: " + status);
-
-        //                 });
-
-        //             data.statusColor = $scope.getStatusColor(data.result);
-        //             pushToJobResults(data);
-
-        //         }).
-        //         error(function(data, status) {
-        //             pushToJobResults({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
-        //             console.log("Could not GET last build info for job" + $scope.jobs[job].name + ", status: " + status);
-
-        //         });
-        //     }
-            
-        // };
-
          var getStatus = function(jobUrl) {
             $scope.jobHealthReport = [];
             $scope.jobResult = [];
@@ -151,7 +120,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             }).
             error(function(data, status) {
-                 // pushToJobResults({url: $scope.jobs[job].url, fullDisplayName: $scope.jobs[job].name, result: "UNKNOWN", timestamp: null});
                  console.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
 
             });
