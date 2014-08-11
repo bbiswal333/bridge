@@ -98,6 +98,20 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
+        var removeJobFromJobResults = function(jobname) {
+            for(var jobIndex in $scope.jobResult) {
+                if($scope.jobResult[jobIndex].name === jobname) {
+                    $scope.jobResult.splice(jobIndex, 1);
+                }
+            }
+        };
+
+        $scope.updateJobResultsByCheckbox = function(checkbox) {
+            for(var jobname in checkbox) {
+                removeJobFromJobResults(jobname);
+            }
+        };
+
          var getStatus = function(jobUrl) {
             $scope.jobHealthReport = [];
             $scope.jobResult = [];
@@ -108,7 +122,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 data.statusColor = $scope.getStatusColor(data.result);
                 $http({ method: 'GET', url: jobUrl + "api/json", withCredentials: false }).
                     success(function(result) {
-                        data.jobHealthReport = result.healthReport;    
+                        data.jobHealthReport = result.healthReport;
+                        data.name = result.name;    
                     }).
                     error(function(result, status) {
                          console.log("Could not GET job " + data.name + ", status: " + status);
@@ -193,6 +208,17 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $scope.appConfig.configItem.jenkinsUrl = $scope.appConfig.configItem.jenkinsUrl.replace(/\/$/, "");
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                         $scope.updateJenkins($scope.appConfig.configItem.jenkinsUrl);
+                    }
+                }, true);
+
+                $scope.$watch("appConfig.configItem.checkboxJobs", function () {
+
+                    if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                        
+                        console.log("checkbox changed ...");
+                        console.log($scope.appConfig.configItem.checkboxJobs);
+                        $scope.updateJobResultsByCheckbox($scope.appConfig.configItem.checkboxJobs);
+
                     }
                 }, true);
 

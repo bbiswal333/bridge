@@ -7,7 +7,7 @@ angular.module('app.jenkins').appJenkinsSettings =
 		$scope.views = jenkinsConfigService.views;
 		$scope.jobsByView = jenkinsConfigService.jobsByView;
 
-		$scope.checkboxJobs = {};
+		$scope.checkboxJobs = jenkinsConfigService.configItem.checkboxJobs;
 
 		$scope.save_click = function () {  
 			$scope.$emit('closeSettingsScreen');
