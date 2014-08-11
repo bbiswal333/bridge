@@ -177,12 +177,16 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
-                    $scope.jobs = data.jobs;
+                    $scope.jobs = data.jobs;         
                     jenkinsConfigService.views = removeViewAll(data.views);
                     retrieveAndSetJobsByView(removeViewAll(data.views));
                     $scope.errormessage = "";
+
                     for(var job in $scope.jobs) {
-                        getStatus($scope.jobs[job].url);
+                        if($scope.jobs[job].color !== "grey"){
+                           getStatus($scope.jobs[job].url); 
+                        }
+                        
                     }
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
