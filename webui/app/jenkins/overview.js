@@ -207,10 +207,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         restrict: 'E',
         templateUrl: 'app/jenkins/overview.html',
         controller: directiveController,
-        link: function ($scope) 
-             {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
-                 {
+        link: function ($scope) {
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                     jenkinsConfigService.configItem = $scope.appConfig.configItem;
                 } else {
                     $scope.appConfig.configItem = jenkinsConfigService.configItem;
