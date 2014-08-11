@@ -56,6 +56,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     }
                     if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
                        jenkinsConfigService.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
+                       for(var job in viewData.jobs) {
+                            jenkinsConfigService.configItem.checkboxJobs[viewData.jobs[job].name] = true; 
+                       }
+                       
                     }
                 }).error(function(data, status) {
                     console.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
@@ -106,9 +110,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        $scope.updateJobResultsByCheckbox = function(checkbox) {
+        $scope.updateJobsViewByCheckbox = function(checkbox) {
             for(var jobname in checkbox) {
-                removeJobFromJobResults(jobname);
+                if(checkbox[jobname] === false) {
+                   removeJobFromJobResults(jobname);
+                }
             }
         };
 
@@ -215,9 +221,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                         
-                        console.log("checkbox changed ...");
-                        console.log($scope.appConfig.configItem.checkboxJobs);
-                        $scope.updateJobResultsByCheckbox($scope.appConfig.configItem.checkboxJobs);
+                        $scope.updateJobsViewByCheckbox($scope.appConfig.configItem.checkboxJobs);
 
                     }
                 }, true);
