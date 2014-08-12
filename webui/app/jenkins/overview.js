@@ -55,16 +55,18 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 $http.get(viewUrl + "api/json", {withCredentials: false})
                 .success(function (viewData) {
                     
-                    // for the primary view, there is no special "view" page, but the start page
-                    if(viewUrl.indexOf("/view/") === -1) {
-                        viewData.name = views[viewIndex].name;
+                    // since the page for the primary view is the start page, there is no view name
+                    if(viewData.name === undefined) {
+                        viewData.name = $scope.primaryViewName;
                     }
 
                     if(!hasJobWithThatName(jenkinsConfigService.configItem.jobsByView, viewData.name)) {
-                       jenkinsConfigService.configItem.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
-                       for(var job in viewData.jobs) {
+
+                        jenkinsConfigService.configItem.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
+
+                        for(var job in viewData.jobs) {
                             jenkinsConfigService.configItem.checkboxJobs[viewData.jobs[job].name] = true; 
-                       }
+                        }
                        
                     }
                 }).error(function(data, status) {
