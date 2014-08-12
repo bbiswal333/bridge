@@ -4,8 +4,8 @@ angular.module('app.jenkins').appJenkinsSettings =
 	function ($scope, jenkinsConfigService) {    
 
 		$scope.currentConfigValues = jenkinsConfigService.configItem;
-		$scope.views = jenkinsConfigService.views;
-		$scope.jobsByView = jenkinsConfigService.jobsByView;
+		$scope.views = jenkinsConfigService.configItem.views;
+		$scope.jobsByView = jenkinsConfigService.configItem.jobsByView;
 
 		$scope.checkboxJobs = jenkinsConfigService.configItem.checkboxJobs;
 

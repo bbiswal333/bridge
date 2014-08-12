@@ -46,16 +46,22 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var retrieveAndSetJobsByView = function(views) {
 
+            var viewUrl;
+
             for(var viewIndex in views) {
 
-                $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
+                viewUrl = views[viewIndex].url;
+                
+                $http.get(viewUrl + "api/json", {withCredentials: false})
                 .success(function (viewData) {
+                    
                     // for the primary view, there is no special "view" page, but the start page
-                    if(views[viewIndex].url.indexOf("view") === -1) {
+                    if(viewUrl.indexOf("/view/") === -1) {
                         viewData.name = views[viewIndex].name;
                     }
-                    if(!hasJobWithThatName(jenkinsConfigService.jobsByView, viewData.name)) {
-                       jenkinsConfigService.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
+
+                    if(!hasJobWithThatName(jenkinsConfigService.configItem.jobsByView, viewData.name)) {
+                       jenkinsConfigService.configItem.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
                        for(var job in viewData.jobs) {
                             jenkinsConfigService.configItem.checkboxJobs[viewData.jobs[job].name] = true; 
                        }
@@ -160,8 +166,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
-                    $scope.jobs = data.jobs;         
-                    jenkinsConfigService.views = removeViewAll(data.views);
+                    $scope.jobs = data.jobs;
+                    $scope.primaryViewName = data.primaryView.name;
+                    jenkinsConfigService.configItem.views = removeViewAll(data.views);
                     retrieveAndSetJobsByView(removeViewAll(data.views));
                     $scope.errormessage = "";
 
@@ -176,6 +183,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $scope.errormessage = msg;
                     $scope.jobs = [];
                     $scope.jobResult = [];
+                    $scope.primaryViewName = "";
             });
 
         };

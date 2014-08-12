@@ -4,10 +4,9 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		jenkinsUrl : 'http://veecfseqos016:8080/jenkins/',
 		language : 'de',
 		boxSize : '2',
-		checkboxJobs: {}
+		checkboxJobs: {},
+		jobsByView: [],
+		views: []
 	};
-
-	this.views = [];
-	this.jobsByView = [];
 
 });
