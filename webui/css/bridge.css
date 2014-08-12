@@ -801,6 +801,21 @@ h3{
     text-transform:uppercase;
 }
 
+.testInstanceBar {
+    position: absolute;
+    z-index: 1000;
+    /* width should be big enough to cover every screen*/
+    width: 100%;
+    line-height: 40px;
+    background-color: #ff7777;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    overflow: hidden;
+    display: inline-block;
+}
+
 .logAlertBar {
     position: absolute;
     z-index: 1000;
