@@ -1,11 +1,11 @@
 ﻿<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
-	<b>JOBS</b>
 	<table>
-            <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" class="{{job.statusColor}}">
+            <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" >
+            	<td><div class="status-color {{job.statusColor}}"></div></td>
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
-                <td class="style"><a href="{{job.url}}">{{limitDisplayName(job.fullDisplayName, 30)}}</a></td>
+                <td style="width: 200px;"><a href="{{job.url}}">{{limitDisplayName(job.fullDisplayName, 26)}}</a></td>
 
-                <td class="style">{{job.timestamp}}</td>
+                <td style="">{{job.timestamp}}</td>
             </tr>
 	</table>
 </div>
