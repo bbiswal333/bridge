@@ -41,7 +41,7 @@
 
         $provide.decorator('$log', ["$delegate", "$injector", function ($delegate, $injector) {
             // decorate all the common logging methods
-            ['log', 'debug', 'info', 'warn', 'error'].forEach(function (logFunction, i) {
+            ['log', 'debug', 'info', 'warn', 'error'].forEach(function (logFunction) {
                 $delegate[logFunction] = docorateLogger($delegate[logFunction]);
                 $delegate[logFunction].logs = []; // needed for angularMocks, without this, unit test will fail
             });
@@ -61,7 +61,7 @@
 
         $routeProvider.when("/diagnosis", {
             templateUrl: 'bridge/diagnosis/corsTestPage.html',
-            controller: 'bridge.diagnosis.corsTestPageController',
+            controller: 'bridge.diagnosis.corsTestPageController'
         });
 
         //If no valid URL has been entered redirect to main entry point
@@ -104,7 +104,6 @@ angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $loca
     bridgeDataService.initialize(deferred).then(function () {
         $rootScope.$emit('bridgeConfigLoaded', {});
     }, function () { // promise rejected = config load failed
-        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. During August 8th, 4pm and August 11th, 4pm, Bridge is not available due to the IFP on HANA migration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
-        //bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
+        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
     });
 });
