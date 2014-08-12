@@ -25,19 +25,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions = 25; // 5 weeks
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
-
-    if (catsConfigService && !configService.loaded) {
-        if (catsConfigService.favoriteItems) {
-            configService.recalculateTaskIDs(catsConfigService.favoriteItems);
-            configService.favoriteItems = catsConfigService.favoriteItems;
-        }
-        if (catsConfigService.catsProfile) {
-            configService.catsProfile = catsConfigService.catsProfile;
-        }
-        if (catsConfigService.sundayweekstart) {
-            configService.sundayweekstart = catsConfigService.sundayweekstart;
-        }
-    }
+    configService.copyConfigIfLoaded(catsConfigService);
 
     function timeToMaintain() {
         try {
@@ -203,15 +191,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function getDescFromFavorites(task) {
-        configService.favoriteItems.some(function(favoriteItem){
-            if (catsUtils.isSameTask(task, favoriteItem)) {
-                task.DESCR = favoriteItem.DESCR;
-                return true;
-            }
-        });
-    }
-        
     function displayCATSDataForDay(day) {
         try {
             $scope.lastCatsAllocationDataForDay = day;
@@ -227,11 +206,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                getDescFromFavorites(task);
-
                 var HoursOfWorkingDay = 8;
-
                 var isFixedTask = catsUtils.isFixedTask(task);
+                configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
                     addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
@@ -295,6 +272,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             TASKTYPE: task.TASKTYPE,
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
+            ZZSUBTYPE: task.ZZSUBTYPE,
             UNIT: "T"
         };
         

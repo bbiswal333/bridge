@@ -28,20 +28,8 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
             controller: controller,
 		    templateUrl: "app/cats/overview.html",
 		    link: function ($scope) 
-             {
-                if ($scope.appConfig && !catsConfigService.loaded) 
-                {
-                	if ($scope.appConfig.favoriteItems) {
-	                	catsConfigService.recalculateTaskIDs($scope.appConfig.favoriteItems);
-	                	catsConfigService.favoriteItems = $scope.appConfig.favoriteItems;
-                	}
-                	if ($scope.appConfig.sundayweekstart) {
-	                    catsConfigService.sundayweekstart = $scope.appConfig.sundayweekstart;
-	                }
-                	if ($scope.appConfig.catsProfile) {
-	                    catsConfigService.catsProfile     = $scope.appConfig.catsProfile;
-	                }
-                } 
-             }
+			{
+				catsConfigService.copyConfigIfLoaded($scope.appConfig);
+            }
 	    };
 }]);

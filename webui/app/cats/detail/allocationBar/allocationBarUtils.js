@@ -2,34 +2,8 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     this.colorCounter = 0;
 
     this.colors = [
-    
-            "#418AC9",
-            "#8EB9DF"
-            
-           
- 
-
-            // "#16354A",
-            // "#005997",
-            // "#0077CA",
-            // "#3F96D3",
-            // "#6BB9F0",
-           // "#2574A9",
-           // "#5C97BF",
-           // // "#6BB9F0",
-           // "#52B3D9",
-           // "#22A7F0",
-           // "#3498db",
-           // // "#4b77be",
-           // "#89c4f4",
-           // // "#3a539b",
-           // "#67809f",
-           // "#18334a",
-           // "#2d5f8a",
-           // "#428bca",
-           // "#3a79b0",
-           // "#4694d7",
-
+      "#418AC9",
+      "#8EB9DF"
     ];
     this.blockColors = {};
 
@@ -39,7 +13,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
         if (!block){
             return null;
         }
-        var blockId = "" + block.task.ZCPR_OBJGEXTID + block.task.TASKTYPE + block.task.RAUFNR;
+        var blockId = "" + block.task.ZCPR_OBJGEXTID + block.task.TASKTYPE + block.task.RAUFNR + block.task.ZZSUBTYPE;
 
         if (!this.blockColors[blockId]) {
             this.blockColors[blockId] = this.colors[this.colorCounter % len];

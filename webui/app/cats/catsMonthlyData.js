@@ -182,6 +182,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.TASKTYPE = ISPtask.TASKTYPE;
 							task.ZCPR_EXTID = ISPtask.ZCPR_EXTID;
 							task.ZCPR_OBJGEXTID = ISPtask.ZCPR_OBJGEXTID;
+							task.ZZSUBTYPE = (ISPtask.ZZSUBTYPE || "");
 							task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
 							task.UNIT = ISPtask.UNIT;
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);

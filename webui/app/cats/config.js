@@ -1,35 +1,113 @@
-angular.module("app.cats").service('app.cats.configService', [function(){
+angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtils", function(catsUtils){
 	this.loaded = false;
 	this.catsItems = [];
 	this.favoriteItems = [];
+	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
 	this.sundayweekstart = false;
 	this.catsProfile = "DEV2002C";
 
-	this.getTaskID = function(task) {
+    function getIndex (tasks, task) {
+        var index = -1;
+        var foundIndex = index;
+        tasks.some(function(taskInTasks) {
+            index++;
+            if (catsUtils.isSameTask(taskInTasks, task)) {
+            	foundIndex = index;
+              	return true;
+            }
+        });
+        return foundIndex;
+    }
+
+    this.copyConfigIfLoaded = function (catsConfigService) {
+		if (!this.loaded) {
+			if (catsConfigService.favoriteItems) {
+			    this.recalculateTaskIDs(catsConfigService.favoriteItems);
+			    this.favoriteItems = catsConfigService.favoriteItems;
+			}
+			if (catsConfigService.lastUsedDescriptions) {
+			    this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
+			}
+			if (catsConfigService.catsProfile) {
+			    this.catsProfile = catsConfigService.catsProfile;
+			}
+			if (catsConfigService.sundayweekstart) {
+			    this.sundayweekstart = catsConfigService.sundayweekstart;
+			}
+		}
+	};
+
+	this.getTaskID = function (task) {
 		if(task.ZCPR_OBJGEXTID) {
 			return task.ZCPR_OBJGEXTID;
 		} else {
-			return (task.RAUFNR || "") + task.TASKTYPE;
+			return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
 		}
 	};
 
-	this.createNewItem = function(task){
+	this.enhanceTask = function (task){
 		if (!task) {
 			return task;
 		}
-		var newItem   = task;
-		newItem.DESCR = task.taskDesc || task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || task.TASKTYPE;
-		if (!newItem.id) {
-			newItem.id = this.getTaskID(task);
+		var enhancedTask = task;
+
+		if (task.ZZSUBTYPE) {
+			var tasktypeWithZzsubtype = (task.TASKTYPE || "") + " " + task.ZZSUBTYPE;
+		} else {
+			tasktypeWithZzsubtype = (task.TASKTYPE || "");
 		}
-		return newItem;
+
+		enhancedTask.DESCR = task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || tasktypeWithZzsubtype;
+		enhancedTask.subDescription = task.ZCPR_EXTID || "";
+		if (!enhancedTask.subDescription) {
+			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
+				enhancedTask.subDescription = tasktypeWithZzsubtype || "";
+			}
+		}
+		if (!enhancedTask.id) {
+			enhancedTask.id = this.getTaskID(task);
+		}
+
+		return enhancedTask;
 	};
 
-	this.recalculateTaskIDs = function(tasks) {
+	this.recalculateTaskIDs = function (tasks) {
 		var that = this;
 		tasks.forEach(function(task) {
 			task.id = that.getTaskID(task);
+		});
+	};
+
+	this.updateLastUsedDescriptions = function (task, onlyAddDoNotUpdate) {
+		if (task.DESCR === "") {
+			return;
+		}
+        var index = getIndex(this.lastUsedDescriptions, task);
+        if (index >= 0) {
+        	if (onlyAddDoNotUpdate) {
+        		return;
+        	} else {
+	            this.lastUsedDescriptions.splice(index,1);
+	        }
+        }
+        if (task.id) {
+            this.lastUsedDescriptions.push(task);
+        }
+	};
+
+    this.updateDescription = function (task) {
+		this.lastUsedDescriptions.some(function(lastUsedDescription){
+			if (catsUtils.isSameTask(task, lastUsedDescription)) {
+				task.DESCR = lastUsedDescription.DESCR;
+				return true;
+			}
+		});
+		this.favoriteItems.some(function(favoriteItem){
+			if (catsUtils.isSameTask(task, favoriteItem)) {
+				task.DESCR = favoriteItem.DESCR;
+				return true;
+			}
 		});
 	};
 }]);

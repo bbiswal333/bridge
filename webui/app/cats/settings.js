@@ -16,7 +16,9 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         });
         return foundIndex;
     }
+    
     function addSelectedItemToFavorites() {
+        catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
         catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
     }
@@ -32,9 +34,11 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         newTask.RAUFNR = "";
         newTask.ZCPR_EXTID = "";
         newTask.ZCPR_OBJGEXTID = "";
+        newTask.ZZSUBTYPE = "";
         newTask.TASKTYPE = "";
         newTask.DESCR = "";
         catsConfigService.selectedTask = newTask;
+        $scope.selectedTask = catsConfigService.selectedTask;
     };
 
     function isInList(task, list){
@@ -52,7 +56,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     $scope.saveNewTask = function(){
         var allreadyExists = isInList(catsConfigService.selectedTask, catsConfigService.favoriteItems) || isInList(catsConfigService.selectedTask, catsConfigService.catsItems);
         if (!allreadyExists) {
-            catsConfigService.selectedTask = catsConfigService.createNewItem(catsConfigService.selectedTask);
+            catsConfigService.selectedTask = catsConfigService.enhanceTask(catsConfigService.selectedTask);
             addSelectedItemToFavorites();
         } else {
             bridgeInBrowserNotification.addAlert('','No task could be created because there is allready another task in your worklist with the same key values!');
@@ -72,6 +76,8 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     };
 
     $scope.handleEditTask = function(id) {
+        catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
+
         var index = getIndexForId(catsConfigService.favoriteItems, id);
         if (index >= 0) {
             catsConfigService.favoriteItems.splice(index,1);
@@ -79,12 +85,14 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (catsConfigService.selectedTask.id) {
             catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         }
+        $scope.selectedTask = catsConfigService.selectedTask;
     };
 
 	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
 		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
 			addSelectedItemToFavorites();
 		}
+        $scope.selectedTask = catsConfigService.selectedTask;
 		return true;
 	};
 
@@ -110,4 +118,15 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     };
 
     $scope.clearFavoriteItems();
+    $scope.$watch("selectedTask.DESCR", function() {
+        if ($scope.selectedTask.DESCR === "") {
+            catsConfigService.catsItems.some(function(catsItem){
+                if (catsUtils.isSameTask($scope.selectedTask, catsItem)) {
+                    $scope.selectedTask.DESCR = catsItem.DESCR;
+                    return true;
+                }
+            });
+        }
+    });
+
 }];
