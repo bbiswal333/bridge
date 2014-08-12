@@ -77,20 +77,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
-        $scope.getStatusColor = function(statusAsText) {
-            var statusColor;
-            if(statusAsText === "FAILURE") {
-                statusColor = "red";
-            } else if(statusAsText === "SUCCESS") {
-                statusColor = "blue";
-            } else if(statusAsText === "UNSTABLE"){
-                statusColor = "yellow";
-            } else{
-                statusColor = "grey";
-            }
-            return statusColor;
-        };
-
         $scope.limitDisplayName = function(name, limit) {
             if(name.length > limit) {
                 return name.substring(0,limit) + " ... ";
@@ -118,14 +104,17 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-         var getStatus = function(jobUrl) {
+         var getStatus = function(job) {
+            var jobUrl = job.url;
             $scope.jobHealthReport = [];
             $scope.jobResult = [];
 
             $http({ method: 'GET', url: jobUrl + "lastBuild/api/json", withCredentials: false }).
             success(function(data) {
+
                 data.timestamp = formatTimestamp(data.timestamp);
-                data.statusColor = $scope.getStatusColor(data.result);
+                data.statusColor = job.color;
+
                 $http({ method: 'GET', url: jobUrl + "api/json", withCredentials: false }).
                     success(function(result) {
                         data.jobHealthReport = result.healthReport;
@@ -137,7 +126,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                     });
 
-                data.statusColor = $scope.getStatusColor(data.result);
                 pushToJobResults(data);
 
             }).
@@ -174,9 +162,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     retrieveAndSetJobsByView(removeViewAll(data.views));
                     $scope.errormessage = "";
 
-                    for(var job in $scope.jobs) {
-                        if($scope.jobs[job].color !== "grey"){
-                           getStatus($scope.jobs[job].url); 
+                    for(var jobIndex in $scope.jobs) {
+                        if($scope.jobs[jobIndex].color !== "grey"){
+                           getStatus($scope.jobs[jobIndex]); 
                         }
                         
                     }
