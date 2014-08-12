@@ -104,7 +104,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        var setHealthReportToJob = function(job) {
+        var getAndSetHealthReportToJob = function(job) {
+
+            if(job.color === "grey") {
+                return;
+            }
 
             $http({ method: 'GET', url: job.url + "api/json", withCredentials: false }).
                 success(function(result) {
@@ -123,31 +127,41 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
-         var getLatestBuildInfoAndAddJobToModel = function(job) {
-            var jobUrl = job.url;
-            $scope.jobHealthReport = [];
-            $scope.jobResult = [];
+        var getAndSetTimestampForLastBuild = function(job) {
 
-            var jobInfoWithLatestBuild = {};
-            jobInfoWithLatestBuild.name = job.name;
-            jobInfoWithLatestBuild.statusColor = job.color;
-            jobInfoWithLatestBuild.url = job.url;
-            jobInfoWithLatestBuild.isChecked = true;
+            if(job.color === "grey") {
+                return;
+            }
 
-            setHealthReportToJob(job);
-
-            $http({ method: 'GET', url: jobUrl + "lastBuild/api/json", withCredentials: false }).
+            $http({ method: 'GET', url: job.url + "lastBuild/api/json", withCredentials: false }).
             success(function(latestBuildData) {
 
-                jobInfoWithLatestBuild.timestamp = formatTimestamp(latestBuildData.timestamp);
-
-                pushToJobResults(jobInfoWithLatestBuild);
+                for(var jobIndex in $scope.jobResult) {
+                        if($scope.jobResult[jobIndex].name === job.name) {
+                            $scope.jobResult[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
+                        }
+                    }
                 
             }).
             error(function(data, status) {
                  console.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
 
             });
+
+        };
+
+        var getLatestBuildInfoAndAddJobToModel = function(job) {
+            
+            var jobInfoWithLatestBuild = {};
+            jobInfoWithLatestBuild.name = job.name;
+            jobInfoWithLatestBuild.statusColor = job.color;
+            jobInfoWithLatestBuild.url = job.url;
+            jobInfoWithLatestBuild.isChecked = true;
+
+            pushToJobResults(jobInfoWithLatestBuild);
+
+            getAndSetHealthReportToJob(job);
+            getAndSetTimestampForLastBuild(job);
 
         };
 
@@ -168,6 +182,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.checkboxJobs = {};
+            $scope.jobResult = [];
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (jobsOverviewData) {
@@ -179,10 +194,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $scope.errormessage = "";
 
                     for(var jobIndex in $scope.jobs) {
-                        if($scope.jobs[jobIndex].color !== "grey"){
-                           getLatestBuildInfoAndAddJobToModel($scope.jobs[jobIndex]); 
-                        }
-                        
+
+                        getLatestBuildInfoAndAddJobToModel($scope.jobs[jobIndex]); 
+
                     }
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
