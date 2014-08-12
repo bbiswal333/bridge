@@ -21,6 +21,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
         catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
+        $scope.selectedTask = catsConfigService.selectedTask;
     }
 
     $scope.isUnchanged = function(item){
@@ -72,7 +73,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             catsConfigService.selectedTask = angular.copy(favoriteItemsToRollBack[index]);
             $scope.handleEditTask(selectedId);
         }
-
     };
 
     $scope.handleEditTask = function(id) {
@@ -102,6 +102,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     		catsConfigService.favoriteItems.splice(index,1);
 			catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
     	}
+        $scope.selectedTask = catsConfigService.selectedTask;
     };
 
     $scope.save_click = function () {
@@ -118,6 +119,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     };
 
     $scope.clearFavoriteItems();
+    $scope.selectedTask = catsConfigService.selectedTask;
     $scope.$watch("selectedTask.DESCR", function() {
         if ($scope.selectedTask.DESCR === "") {
             catsConfigService.catsItems.some(function(catsItem){
@@ -128,5 +130,4 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             });
         }
     });
-
 }];
