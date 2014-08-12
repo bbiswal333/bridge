@@ -1,7 +1,7 @@
 ﻿<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
 	<b>JOBS</b>
 	<table>
-            <tr ng-repeat="job in jobResult" class="{{job.statusColor}}">
+            <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" class="{{job.statusColor}}">
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
                 <td class="style"><a href="{{job.url}}">{{limitDisplayName(job.fullDisplayName, 30)}}</a></td>
 

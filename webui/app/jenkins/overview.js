@@ -102,19 +102,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
-        var removeJobFromJobResults = function(jobname) {
-            for(var jobIndex in $scope.jobResult) {
-                if($scope.jobResult[jobIndex].name === jobname) {
-                    $scope.jobResult.splice(jobIndex, 1);
-                }
-            }
-        };
-
         $scope.updateJobsViewByCheckbox = function(checkbox) {
-            for(var jobname in checkbox) {
-                if(checkbox[jobname] === false) {
-                   removeJobFromJobResults(jobname);
-                }
+            var jobname;
+            for(var jobIndex in $scope.jobResult) {
+                jobname = $scope.jobResult[jobIndex].name;
+                $scope.jobResult[jobIndex].isChecked = checkbox[jobname];
             }
         };
 
@@ -129,7 +121,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 $http({ method: 'GET', url: jobUrl + "api/json", withCredentials: false }).
                     success(function(result) {
                         data.jobHealthReport = result.healthReport;
-                        data.name = result.name;    
+                        data.name = result.name;
+                        data.isChecked = true;
                     }).
                     error(function(result, status) {
                          console.log("Could not GET job " + data.name + ", status: " + status);
@@ -163,6 +156,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.updateJenkins = function(url) {
 
             $scope.jenkinsConfig.url = url;
+            jenkinsConfigService.configItem.checkboxJobs = {};
 
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (data) {
@@ -220,7 +214,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 $scope.$watch("appConfig.configItem.checkboxJobs", function () {
 
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-                        
                         $scope.updateJobsViewByCheckbox($scope.appConfig.configItem.checkboxJobs);
 
                     }
