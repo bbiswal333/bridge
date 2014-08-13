@@ -804,16 +804,13 @@ h3{
 .testInstanceBar {
     position: absolute;
     z-index: 1000;
-    /* width should be big enough to cover every screen*/
-    width: 100%;
-    line-height: 40px;
-    background-color: #dd6551;
-    color: black;
+    width: 50%;
+    line-height: 25px;
+    background-color: #D53F26;
+    color: white;
     font-weight: bold;
-    font-size: 16px;
     text-align: center;
-    overflow: hidden;
-    display: inline-block;
+    left: 25%;
 }
 
 .logAlertBar {
