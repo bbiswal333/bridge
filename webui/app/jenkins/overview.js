@@ -1,7 +1,7 @@
 angular.module('app.jenkins', []);
 angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
-    var directiveController = ['$scope', '$http', "$q", function ($scope, $http) {
+    var directiveController = ['$scope', '$http', "$q", "$modal", function ($scope, $http, $modal) {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
@@ -78,6 +78,31 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
 
         };
+
+        $scope.detailJobViewMoal = function(jobUrl){
+            // var modalInstance = $modal.open({
+            //   templateUrl: 'detailJobView.html',
+            //   controller: directiveController,
+            //   size: size,
+            //   resolve: {
+            //     items: function () {
+            //       return $scope.items;
+            //     }
+            //   }
+            // });
+
+            // modalInstance.result.then(function (selectedItem) {
+            //   $scope.selected = selectedItem;
+            // }, function () {
+            //   $log.info('Modal dismissed at: ' + new Date());
+            // });
+        };
+
+        $scope.detailJobView = function(jobUrl){
+            $scope.detailJobViewMoal(jobUrl);
+            
+        };
+
 
         $scope.limitDisplayName = function(name, limit) {
             if(name.toString().length > limit) {
