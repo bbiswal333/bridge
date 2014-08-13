@@ -154,11 +154,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var getLatestBuildInfoAndAddJobToModel = function(job) {
             
-            var jobInfoWithLatestBuild = {};
-            jobInfoWithLatestBuild.name = job.name;
-            jobInfoWithLatestBuild.statusColor = job.color;
-            jobInfoWithLatestBuild.url = job.url;
-            jobInfoWithLatestBuild.isChecked = true;
+            var jobInfoWithLatestBuild = {name: job.name, statusColor: job.color, url: job.url, isChecked: true};
 
             pushToJobResults(jobInfoWithLatestBuild);
 
@@ -180,6 +176,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
         };
 
+        var clearJobsViewAndSetErrorMsg = function(msg) {
+            $scope.errormessage = msg;
+            $scope.jobs = [];
+            $scope.jobResult = [];
+            $scope.primaryViewName = "";
+        };
+
         $scope.updateJenkins = function(url) {
 
             $scope.jenkinsConfig.url = url;
@@ -192,20 +195,17 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                     $scope.jobs = jobsOverviewData.jobs;
                     $scope.primaryViewName = jobsOverviewData.primaryView.name;
+                    $scope.errormessage = "";
+
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
                     retrieveAndSetJobsByView(removeViewAll(jobsOverviewData.views));
-                    $scope.errormessage = "";
 
                     for(var jobIndex in $scope.jobs) {
                         getLatestBuildInfoAndAddJobToModel($scope.jobs[jobIndex]); 
                     }
 
                 }).error(function(data, status) {
-                    var msg = "Error retrieving data from " + url + ", got status: " + status;
-                    $scope.errormessage = msg;
-                    $scope.jobs = [];
-                    $scope.jobResult = [];
-                    $scope.primaryViewName = "";
+                    clearJobsViewAndSetErrorMsg("Error retrieving data from " + url + ", got status: " + status);
             });
 
         };

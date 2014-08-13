@@ -14,16 +14,23 @@ angular.module('app.jenkins').appJenkinsSettings =
 			$scope.$emit('closeSettingsScreen');
 		};
 
+		var viewIsChecked = function(viewname) {
+			return (($scope.checkboxViews[viewname] === true) ? true : false);
+		};
+
 		$scope.getJobsByView = function(viewname) {
 
-			var jobs = {};
-			for(var jobsbyviewindex in $scope.jobsByView) {
-					if($scope.jobsByView[jobsbyviewindex].name === viewname) {
-						jobs = $scope.jobsByView[jobsbyviewindex].jobs;
+			var jobsByGivenView = {};
+
+			for(var viewIndex in $scope.jobsByView) {
+
+					if($scope.jobsByView[viewIndex].name === viewname && viewIsChecked(viewname)) {
+						jobsByGivenView = $scope.jobsByView[viewIndex].jobs;
 					}
+
 			}
 			
-			return jobs;
+			return jobsByGivenView;
 
 		};
 
