@@ -29,21 +29,10 @@
 			</div>
 		</div>
 
-		<div style="overflow-y: scroll; overflow-x: scroll; height: 85%; width: auto; padding-top: 10px; text-align:left;">
-        	<table class="table" style="width: auto; overflow-x: scroll">
+		<div style="overflow-y: scroll; height: 400px; width: 65%; padding-top: 10px; text-align:left;">
         	
-				<tr ng-repeat="view in currentConfigValues.views">
-                	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th>
-          			<td>
-          				<div class="">
-        					<label ng-repeat="job in getJobsByView(view.name) | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" btn-checkbox>{{job.name}}</label>
-    					</div>
-    				</td>
-                </tr>
+			<label ng-repeat="job in getAllJobsOfCheckedViews() | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px" btn-checkbox>{{job.name}}</label>
 
-            	<tbody>
-            	</tbody>
-			</table>
 		</div>
 	</p>
 
