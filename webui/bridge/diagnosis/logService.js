@@ -11,7 +11,7 @@
         }
 
         return sStacktrace;
-    };
+    }
 
     function transformLogToHTML(log) {
         var sLog = "<html><body>";
@@ -20,7 +20,7 @@
             sLog += '<table style="border-collapse: collapse;">';
             sLog += '<tr> <td style="border: 1px solid black;">Type</td> <td style="border: 1px solid black;">' + log[i].sType + '</td> </tr>';
             sLog += '<tr> <td style="border: 1px solid black;">Message</td> <td style="border: 1px solid black;">' + log[i].sMessage + '</td> </tr>';
-            sLog += '<tr> <td style="border: 1px solid black;">Stacktrace</td> <td style="border: 1px solid black;">'
+            sLog += '<tr> <td style="border: 1px solid black;">Stacktrace</td> <td style="border: 1px solid black;">';
 
             var aStacktrace = log[i].sStackTrace.split("\n");
             for (var j = 0; j < aStacktrace.length; j++) {
@@ -32,7 +32,7 @@
         }
 
         return sLog;
-    };
+    }
 
     this.log = function (uObject, sType) {
         Error.stackTraceLimit = 25;
@@ -79,7 +79,7 @@
         var log = this.getLog();
         var sLog = transformLogToHTML(log);
 
-        $http.post("https://ifd.wdf.sap.corp/sap/bc/bridge/SEND_MAIL?origin=" + location.origin, sLog, {'headers':{'Content-Type':'text/plain'}}
+        $http.post("https://ifp.wdf.sap.corp/sap/bc/bridge/SEND_MAIL?origin=" + location.origin, sLog, {'headers':{'Content-Type':'text/plain'}}
         ).success(function () {
             bridgeInBrowserNotification.addAlert("success", "Log sent successfully.", 5);
         }).error(function () {
@@ -97,7 +97,7 @@
             resolve: {
                 frameContent: function () {
                     return transformLogToHTML(log);
-                },
+                }
             }
         });
 
