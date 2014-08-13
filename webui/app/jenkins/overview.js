@@ -44,15 +44,20 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return false;
         };
 
+        var initializeCheckboxes = function(dataForASingleView) {
+
+            for(var job in dataForASingleView.jobs) {
+                jenkinsConfigService.configItem.checkboxJobs[dataForASingleView.jobs[job].name] = true; 
+            }
+            jenkinsConfigService.configItem.checkboxViews[dataForASingleView.name] = true;
+
+        };
+
         var retrieveAndSetJobsByView = function(views) {
 
-            var viewUrl;
-
             for(var viewIndex in views) {
-
-                viewUrl = views[viewIndex].url;
-                
-                $http.get(viewUrl + "api/json", {withCredentials: false})
+              
+                $http.get(views[viewIndex].url + "api/json", {withCredentials: false})
                 .success(function (viewData) {
                     
                     // since the page for the primary view is the start page, there is no view name
@@ -63,10 +68,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     if(!hasJobWithThatName(jenkinsConfigService.configItem.jobsByView, viewData.name)) {
 
                         jenkinsConfigService.configItem.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
-
-                        for(var job in viewData.jobs) {
-                            jenkinsConfigService.configItem.checkboxJobs[viewData.jobs[job].name] = true; 
-                        }
+                        initializeCheckboxes(viewData);
                        
                     }
                 }).error(function(data, status) {
@@ -182,6 +184,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.checkboxJobs = {};
+            jenkinsConfigService.configItem.checkboxViews = {};
             $scope.jobResult = [];
 
             $http.get(url + "/api/json", {withCredentials: false})
@@ -194,10 +197,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $scope.errormessage = "";
 
                     for(var jobIndex in $scope.jobs) {
-
                         getLatestBuildInfoAndAddJobToModel($scope.jobs[jobIndex]); 
-
                     }
+
                 }).error(function(data, status) {
                     var msg = "Error retrieving data from " + url + ", got status: " + status;
                     $scope.errormessage = msg;

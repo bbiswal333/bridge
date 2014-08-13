@@ -5,6 +5,7 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		language : 'de',
 		boxSize : '2',
 		checkboxJobs: {},
+		checkBoxViews: {},
 		jobsByView: [],
 		views: []
 	};

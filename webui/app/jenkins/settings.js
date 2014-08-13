@@ -8,12 +8,13 @@ angular.module('app.jenkins').appJenkinsSettings =
 		$scope.jobsByView = jenkinsConfigService.configItem.jobsByView;
 
 		$scope.checkboxJobs = jenkinsConfigService.configItem.checkboxJobs;
+		$scope.checkboxViews = jenkinsConfigService.configItem.checkboxViews;
 
 		$scope.save_click = function () {  
 			$scope.$emit('closeSettingsScreen');
 		};
 
-		$scope.getJobNamesByView = function(viewname) {
+		$scope.getJobsByView = function(viewname) {
 
 			var jobs = {};
 			for(var jobsbyviewindex in $scope.jobsByView) {

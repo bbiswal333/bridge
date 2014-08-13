@@ -19,17 +19,28 @@
 
 		</form>
 
+		<div class="row">
+			<div class="col-xs-2 form_head" style="float:none;">Filter</div>
+			<div style="width: 15%; float:left">
+				<input type="text" class="form form-control" ng-model="filterTextJobs" placeholder="Filter job ..."/>
+			</div>
+			<div style="width: 75%; float:left; margin-left: 5%">
+				<label ng-repeat="view in currentConfigValues.views" ng-model="checkboxViews[view.name]" class="btn btn-primary" btn-checkbox>{{view.name}}</label>
+			</div>
+		</div>
+
 		<div style="overflow-y: scroll; overflow-x: scroll; height: 85%; width: auto; padding-top: 10px; text-align:left;">
         	<table class="table" style="width: auto; overflow-x: scroll">
+        	
 				<tr ng-repeat="view in currentConfigValues.views">
                 	<th style="background-color: #ECECEC; width: 10%">{{view.name}}</th>
           			<td>
           				<div class="">
-        					<label ng-repeat="job in getJobNamesByView(view.name)" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" btn-checkbox>{{job.name}}</label>
+        					<label ng-repeat="job in getJobsByView(view.name) | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" btn-checkbox>{{job.name}}</label>
     					</div>
     				</td>
-                	<!-- <td><span ng-repeat="job in getJobNamesByView(view.name)">{{job.name}}</span></td> -->
                 </tr>
+
             	<tbody>
             	</tbody>
 			</table>
