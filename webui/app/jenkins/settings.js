@@ -34,4 +34,11 @@ angular.module('app.jenkins').appJenkinsSettings =
 
 		};
 
+		$scope.limitDisplayName = function(name, limit) {
+            if(name.toString().length > limit) {
+                return name.toString().substring(0,limit) + " ... ";
+            }
+            return name;
+        };
+
 }];

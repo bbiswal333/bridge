@@ -29,9 +29,9 @@
 			</div>
 		</div>
 
-		<div style="overflow-y: scroll; height: 400px; width: 65%; padding-top: 10px; text-align:left;">
+		<div style="overflow-y: scroll; overflow-x: hidden; height: 400px; width: 70%; padding-top: 10px;">
         	
-			<label ng-repeat="job in getAllJobsOfCheckedViews() | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px" btn-checkbox>{{job.name}}</label>
+			<label ng-repeat="job in getAllJobsOfCheckedViews() | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px; width: 150px" title="{{job.name}}" btn-checkbox>{{limitDisplayName(job.name, 15)}}</label>
 
 		</div>
 	</p>
