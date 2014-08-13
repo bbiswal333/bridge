@@ -1,9 +1,24 @@
-<div class="underline" style="margin-right:15px;">
-	  <h4 class="box-title">Notifications</h4>
-	<span class=" settingsIcon icon-bell-alt" style="color:inherit!important;cursor:default!important;margin-right:0;;font-size: 18px;padding-top: 1px;"></span>
-</div>
-
 <div ng-controller="notificationsController" style="margin-right:15px;" ng-init="onShowNotifications()">
+
+    <div class="underline" style="margin-right:15px;">
+        <h4 class="box-title">Notification Popups</h4>
+    </div>
+
+    <div ng-if="notificationPopupPermission === undefined">
+        Your browser does not support Notification Popups.
+    </div>
+    <div ng-if="notificationPopupPermission !== undefined">
+        <button class="btn btn-default activateNotificationButton" ng-class="{'btn_blue': notificationPopupPermission}" ng-click="requestNotificationPermission()">
+            {{notificationPopupPermissisonButton}}
+        </button>
+    </div>
+    <br/>
+
+    <div class="underline" style="margin-right:15px;">
+        <h4 class="box-title">Notifications</h4>
+        <span class=" settingsIcon icon-bell-alt" style="color:inherit!important;cursor:default!important;margin-right:0;;font-size: 18px;padding-top: 1px;"></span>
+    </div>
+
   <div ng-if="notifications.length > 0">
     <ul class="notification-menu">
       <li><a id="clearNotifications" ng-click="clearNotifications()">Clear all</a></li>
@@ -18,11 +33,10 @@
       </div>
       <div class="content">
         <h5 title="title">{{notification.title}}</h5>
-        <p title="body">{{notification.body}}
-
-        <br />
-        <span class="timeAgo bold">{{getTimeAgo(notification.timestamp)}}</span>
+        <p title="body" class="notification-content-body">
+            {{notification.body}}
         </p>
+        <span class="timeAgo bold">{{getTimeAgo(notification.timestamp)}}</span>
       </div>
     </div>
   </div>

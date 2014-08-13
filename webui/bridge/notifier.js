@@ -49,7 +49,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     }
 
     this.onNotificationsNotSupported = function () {
-      alert("Your browser does not support the Notification API");
+      //alert("Your browser does not support the Notification API");
     };
     this.onNotificationsDenied = function () {
       alert("You did not allow notifications!");
@@ -99,6 +99,8 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
         n.close();
       }
     };
+
+    this.permissionCallback = function () {}
 
     this.getInstance = function () {
       return n;
@@ -190,6 +192,6 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     },
     store: function() {
       storeAllNotificationsInLocale();
-    },
+    }
   };  
 }]);

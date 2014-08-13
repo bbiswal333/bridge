@@ -7,7 +7,7 @@ angular.module('app.test').directive('app.test', function () {
             notifier.showInfo("This is just a test",
                             "As the title says: nothing to do here :-)",
                             $scope.$parent.module_name,
-                            function() {alert('Congratulations!')});
+                            function() {alert('Congratulations!');});
         };
     }];
 

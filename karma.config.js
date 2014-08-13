@@ -56,6 +56,10 @@ module.exports = function(config) {
 
       './webui/app/cats/overview.js',
       './webui/app/cats/**/*.js',
+
+      './webui/app/correctionWorkbench/overview.js',
+      './webui/app/correctionWorkbench/**/*.js',
+
       '**/*.spec.js'
     ],
 

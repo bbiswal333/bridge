@@ -2,12 +2,27 @@ angular.module('bridge.app').
 	controller('notificationsController',['$rootScope', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
-	$scope.notifications = notifier.allNotifications();
+        $scope.notifications = notifier.allNotifications();
+        $scope.notificationPopupPermission = notifier.getPermission();
+
+        if($scope.notificationPopupPermission === true) {
+            $scope.notificationPopupPermissisonButton = 'Active';
+        } else if ($scope.notificationPopupPermission === false){
+            $scope.notificationPopupPermissisonButton = 'Denied';
+        } else if ($scope.notificationPopupPermission === 'pleaseAsk'){
+            $scope.notificationPopupPermissisonButton = 'Click to Activate';
+        }
+
+        $scope.requestNotificationPermission = function(){
+            if ($scope.notificationPopupPermission === 'pleaseAsk') {
+                notifier.requestPermission();
+            }
+        };
 
   var apps = bridgeDataService.getProjects()[0].apps;
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
-			if (notification.state == "new") {
+			if (notification.state === "new") {
 				notification.state = "seen";
 			}
 		});
@@ -62,7 +77,7 @@ angular.module('bridge.app').
 				url: "/api/get?proxy=true&url=http://dynamic.xkcd.com:80/api-0/jsonp/comic?callback=?",
 				dataType: "json",
 				jsonpCallback: "xkcddata",
-				success: function(data) {
+				success: function() {
 						$("#xkcdcontent").append(
 								$("<p>Just read the latest <a target='_blank' href='http://xkcd.com'>xkcd</a></p>")
 						);

@@ -9,7 +9,7 @@
         "angular": true,
         "location": true,
         "Modernizr": true,
-        "console": true,
+        "printStackTrace": true,
         "X2JS": true,
 		"$": true,
 		"describe": true,
