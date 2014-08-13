@@ -121,7 +121,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     $scope.clearFavoriteItems();
     $scope.selectedTask = catsConfigService.selectedTask;
     $scope.$watch("selectedTask.DESCR", function() {
-        if ($scope.selectedTask.DESCR === "") {
+        if ($scope.selectedTask && $scope.selectedTask.DESCR === "") {
             catsConfigService.catsItems.some(function(catsItem){
                 if (catsUtils.isSameTask($scope.selectedTask, catsItem)) {
                     $scope.selectedTask.DESCR = catsItem.DESCR;
