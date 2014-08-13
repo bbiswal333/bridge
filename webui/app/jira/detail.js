@@ -1,4 +1,4 @@
-﻿angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
+angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
 
         $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
@@ -8,6 +8,10 @@
              {
                     $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
              }
+			if(JiraConfig.jira === 'jtrack')
+			{
+				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
+			}
 
             if (newVal != oldVal) { // this avoids the call of our change listener for the initial watch setup
                 $scope.config = JiraConfig;               
