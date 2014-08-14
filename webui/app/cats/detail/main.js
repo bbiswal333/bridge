@@ -206,16 +206,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                var HoursOfWorkingDay = 8;
                 var isFixedTask = catsUtils.isFixedTask(task);
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
+                    addBlock("Vacation", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else if (task.TASKTYPE === "ABSE") {
-                    addBlock("Absence", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
+                    addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
+                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else {
                     addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
