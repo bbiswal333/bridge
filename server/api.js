@@ -362,7 +362,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		var getResponse = true;		
 		if(eTag !== undefined)
 		{
-			//response.setHeader('Cache-Control', 'public, max-age=2592000');	// 30 days		
+			response.setHeader('Cache-Control', 'public, max-age=2592000');	// 30 days		
 			response.setHeader('ETag', eTag);		
 			if( request.headers['if-none-match'] == eTag)
 			{
@@ -371,15 +371,11 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		}
 		else
 		{
-			//response.header('Expires', '-1');
-			//response.header('Cache-Control', 'private, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+			response.header('Expires', '-1');
+			response.header('Cache-Control', 'private, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 			response.setHeader('Last-Modified', (new Date()).toUTCString());
 			response.removeHeader('Etag');
-		}
-
-		response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-		response.setHeader('Pragma', 'no-cache');
-		response.setHeader('Expires', '-1');
+		}	
 		
 		//console.log(eTag);
 		//console.log(request.headers['if-none-match']);		
