@@ -123,6 +123,18 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }
         };
 
+        $scope.noJobSelected = function() {
+            
+            for(var checkedIndex in jenkinsConfigService.configItem.checkboxJobs) {
+                if(jenkinsConfigService.configItem.checkboxJobs[checkedIndex] === true) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        };
+
         $scope.updateJobsViewByCheckbox = function(checkbox) {
             var jobname;
             for(var jobIndex in $scope.jobResult) {

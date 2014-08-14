@@ -1,4 +1,10 @@
-﻿<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
+﻿
+<div ng-if="noJobSelected()">
+	No jobs selected.
+</div>
+
+<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
+
 	<table>
             <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" >
             	<td><div class="status-color {{job.statusColor}}"></div></td>

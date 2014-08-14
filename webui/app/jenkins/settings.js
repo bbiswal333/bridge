@@ -4,11 +4,6 @@ angular.module('app.jenkins').appJenkinsSettings =
 	function ($scope, jenkinsConfigService) {    
 
 		$scope.currentConfigValues = jenkinsConfigService.configItem;
-		$scope.views = jenkinsConfigService.configItem.views;
-		$scope.jobsByView = jenkinsConfigService.configItem.jobsByView;
-
-		$scope.checkboxJobs = jenkinsConfigService.configItem.checkboxJobs;
-		$scope.checkboxViews = jenkinsConfigService.configItem.checkboxViews;
 
 		$scope.save_click = function () {  
 			$scope.$emit('closeSettingsScreen');
