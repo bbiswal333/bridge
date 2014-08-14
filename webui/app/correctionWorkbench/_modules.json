@@ -9,7 +9,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/correctionWorkbench/:category",
+				"route"			:	"/detail/correctionWorkbench/:category/:calledFromNotification",
 				"templateUrl"	:	"app/correctionWorkbench/detail.html"			
 			}
 		]	

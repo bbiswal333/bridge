@@ -8,6 +8,7 @@
   -webkit-flex-direction: column;
   flex-direction: column;
 
+    cursor: pointer;
 }
 
 .notification{

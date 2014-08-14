@@ -1,4 +1,5 @@
-angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http','$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, workbenchData, $routeParams, bridgeDataService, bridgeConfig) {
+angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http','$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams',
+        function Controller($scope, $http, $templateCache, workbenchData, $routeParams) {
 
         $scope.$parent.titleExtension = " - Details";   
         $scope.filterText = '';
@@ -7,6 +8,7 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
         $scope.categoryMap = {};  
         $scope.zoomIndex = -1;
         $scope.zoomImg = null;
+        $scope.detailForNotifications = ($routeParams.calledFromNotification === 'true');
 
 
         function update_table()
@@ -28,13 +30,19 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
                 });
             }
 
-            $scope.categories.forEach(function(category) {
-                if($scope.categoryMap[category.name] && $scope.categoryMap[category.name].active) {
-                    workbenchData.workbenchData[category.targetArray].forEach(function(workbenchItem) {
-                        $scope.tableData.push(workbenchItem);
-                    });
-                }
-            });
+            if ($scope.detailForNotifications === false) {
+                $scope.categories.forEach(function (category) {
+                    if ($scope.categoryMap[category.name] && $scope.categoryMap[category.name].active) {
+                        workbenchData.workbenchData[category.targetArray].forEach(function (workbenchItem) {
+                            $scope.tableData.push(workbenchItem);
+                        });
+                    }
+                });
+            } else {
+                workbenchData.correctionRequestsFromNotifications.forEach(function (workbenchItem) {
+                    $scope.tableData.push(workbenchItem);
+                });
+            }
         }
 
         $scope.$watch('categories', function () 
@@ -69,7 +77,8 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
             angular.forEach(workbenchData.workbenchData.correctionRequestsPlannedForTesting, function (workbenchItem) { enhanceMessage(workbenchItem); });
             angular.forEach(workbenchData.workbenchData.correctionRequestsInProcess, function (workbenchItem) { enhanceMessage(workbenchItem); });  
             angular.forEach(workbenchData.workbenchData.correctionRequestsTesting, function (workbenchItem) { enhanceMessage(workbenchItem); });
-            angular.forEach(workbenchData.workbenchData.correctionRequestsTestedOk, function (workbenchItem) { enhanceMessage(workbenchItem); });          
+            angular.forEach(workbenchData.workbenchData.correctionRequestsTestedOk, function (workbenchItem) { enhanceMessage(workbenchItem); });
+            angular.forEach(workbenchData.workbenchData.correctionRequestsFromNotifications, function (workbenchItem) { enhanceMessage(workbenchItem); });
         }
 
         $scope.getCategoryArray = function(){
@@ -80,8 +89,8 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
             $scope.zoomIndex = index;
             if (event) {
                 $scope.zoomImg = event.currentTarget;
-            };
-        }
+            }
+        };
         if (workbenchData.isInitialized.value === false) {
             var promise = workbenchData.initialize();
 

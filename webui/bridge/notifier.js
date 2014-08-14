@@ -6,18 +6,29 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
   var DEFAULT_DURATION = 5000;
   var notifications = JSON.parse(localStorage.getItem('notifcations')) || [];
   
-  var Notifier = function (text, body, icon, tag, duration) {
+  //var Notifier = function (text, body, icon, tag, duration) {
+  var Notifier = function(notification){
     var self = this;
     var n;
 
-    this.text = text;
-    this.body = (body || "");
-    this.icon = (icon || "");
-    this.tag = (tag || "");
-    this.duration = (duration || -1);
+      if (notification) {
+          this.notification = notification;
+          this.text = notification.title;
+          this.body = (notification.body || "");
+          this.icon = (icons[notification.icon] || "");
+          this.tag = (notification.app || "");
+          this.duration = (notification.duration || -1);
+          this.onclick = notification.callback;
+      }else {
+          this.text = "";
+          this.body = "";
+          this.icon = "";
+          this.tag = "";
+          this.duration = -1;
+          this.onclick = undefined;
+      }
 
     this.onshow = undefined;
-    this.onclick = undefined;
     this.onclose = undefined;
     this.onerror = undefined;
     this.permissionCallback = undefined;
@@ -66,7 +77,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
             if (typeof self.onshow !== "undefined") {
                 self.onshow(n.tag);
             }
-            if (duration >= 0) {
+            if (self.duration >= 0) {
                 setTimeout(function () {
                     self.close();
                 }, self.duration);
@@ -74,7 +85,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
         };
         n.onclick = function () {
             if (typeof self.onclick !== "undefined") {
-                self.onclick(n.tag);
+                self.onclick(self.notification);
             }
         };
         n.onclose = function () {
@@ -100,7 +111,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
       }
     };
 
-    this.permissionCallback = function () {}
+    this.permissionCallback = function () {};
 
     this.getInstance = function () {
       return n;
@@ -139,26 +150,32 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     }
   };
 
-  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
-      var notifier = new Notifier(title_s, body_s, icons[icon_i], appIdentifier_s, DEFAULT_DURATION);
-      notifier.onclick = onCLick_fn;
-      notifier.show();
-      notifications.unshift({
-        title: title_s,
-        body: body_s,
-        icon: icon_i,
-        app: appIdentifier_s || "",
-        callback: onCLick_fn,
-        timestamp: new Date().getTime(),
-        kindOf: kindOf_s,
-        state: 'new'
-      });
-      storeAllNotificationsInLocale();
-  };
+    function storeAllNotificationsInLocale() {
+        localStorage.setItem('notifcations', JSON.stringify(notifications));
+    }
 
-  function storeAllNotificationsInLocale() {
-    localStorage.setItem('notifcations', JSON.stringify(notifications));
-  };
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
+      var notification = {
+          title: title_s,
+          body: body_s,
+          icon: icon_i,
+          app: appIdentifier_s || "",
+          callback: function(notification) {
+              notification.state = 'read';
+              onCLick_fn(notification.app);
+          },
+          timestamp: new Date().getTime(),
+          kindOf: kindOf_s,
+          state: 'new',
+          duration: DEFAULT_DURATION
+      };
+
+      var notifier = new Notifier(notification);
+      notifier.show();
+
+      notifications.unshift(notification);
+      storeAllNotificationsInLocale();
+  }
 
   var instance = new Notifier();
 

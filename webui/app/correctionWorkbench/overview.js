@@ -1,8 +1,8 @@
-﻿angular.module('app.correctionWorkbench', []);
+﻿angular.module('app.correctionWorkbench', ['notifier']);
 
 angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [function () {
-    var directiveController = ['$scope', 'notifier', 'app.correctionWorkbench.workbenchData','bridgeDataService', 'bridgeConfig',
-                                function ($scope, notifier, workbenchData, bridgeDataService, bridgeConfig)
+    var directiveController = ['$scope', 'notifier', 'app.correctionWorkbench.workbenchData',
+                                function ($scope, notifier, workbenchData)
     {
         $scope.box.boxSize = 1;
 
@@ -24,7 +24,7 @@ angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [
 
 
         if (workbenchData.isInitialized.value === false) {
-            var initPromise = workbenchData.initialize();
+            var initPromise = workbenchData.initialize($scope.module_name);
             initPromise.then(function success() {
                 setNoMessagesFlag();
             });

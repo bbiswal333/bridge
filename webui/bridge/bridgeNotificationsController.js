@@ -106,7 +106,7 @@ angular.module('bridge.app').
 		        }, 500 );
 		}
 		if(notification.callback && typeof notification.callback === "function") {
-			notification.callback.call();
+			notification.callback(notification);
 		}
 	};
 }]).
