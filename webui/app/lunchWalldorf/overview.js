@@ -239,15 +239,16 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
                 portalLink:  "http://www.casinocatering.de/speiseplan/max-rubner-institut",
                 portalLinkText: "Lunch menu online",
                // portalBackend: '/api/get?proxy=false&url=' + encodeURI('http://deqkalvm294.qkal.sap.corp:8080/bfe.json')
-                portalBackend: 'http://deqkalvm294.qkal.sap.corp:8080/bfe.json'
+                portalBackend: 'https://deqkalvm294.qkal.sap.corp/bfe.json'
             }
         };
     this.isValidBackend = function(backend) {
         return typeof configBackend[backend] != "undefined";
-    }
+    };
+
     this.getDefaultBackend = function() {
         return configBackend.WDF;   
-    }
+    };
     
     this.getBackendMetadata = function() {
         
