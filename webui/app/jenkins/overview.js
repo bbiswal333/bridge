@@ -47,7 +47,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         var initializeCheckboxes = function(dataForASingleView) {
 
             for(var job in dataForASingleView.jobs) {
-                jenkinsConfigService.configItem.checkboxJobs[dataForASingleView.jobs[job].name] = true; 
+                jenkinsConfigService.configItem.checkboxJobs[dataForASingleView.jobs[job].name] = false; 
             }
             jenkinsConfigService.configItem.checkboxViews[dataForASingleView.name] = true;
 
@@ -179,7 +179,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var getLatestBuildInfoAndAddJobToModel = function(job) {
             
-            var jobInfoWithLatestBuild = {name: job.name, statusColor: job.color, url: job.url, isChecked: true};
+            var jobInfoWithLatestBuild = {name: job.name, statusColor: job.color, url: job.url};
 
             pushToJobResults(jobInfoWithLatestBuild);
 
@@ -213,6 +213,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.checkboxJobs = {};
             jenkinsConfigService.configItem.checkboxViews = {};
+            jenkinsConfigService.configItem.jobsByView = [];
             $scope.jobResult = [];
 
             $http.get(url + "/api/json", {withCredentials: false})
@@ -223,6 +224,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     $scope.errormessage = "";
 
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
+                    jenkinsConfigService.configItem.jobs = jobsOverviewData.jobs;
                     retrieveAndSetJobsByView(removeViewAll(jobsOverviewData.views));
 
                     for(var jobIndex in $scope.jobs) {

@@ -15,22 +15,24 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		var viewIsChecked = function(viewname) {
-			return (($scope.checkboxViews[viewname] === true) ? true : false);
+			return ((jenkinsConfigService.configItem.checkboxViews[viewname] === true) ? true : false);
 		};
 
-		$scope.getAllJobsOfCheckedViews = function() {
+		$scope.getJobsOfCheckedViews = function(jobsByView) {
 
-			var allJobs = [];
+			var jobsOfCheckedViews = [];
 
-			for(var viewIndex in $scope.jobsByView) {
+			for(var viewNameIndex in jobsByView) {
 
-				if(viewIsChecked($scope.jobsByView[viewIndex].name)) {
-					allJobs = allJobs.concat($scope.jobsByView[viewIndex].jobs);
+				if(viewIsChecked(jobsByView[viewNameIndex].name)) {
+
+					jobsOfCheckedViews = jobsOfCheckedViews.concat(jobsByView[viewNameIndex].jobs);
+
 				}
-				
+
 			}
 
-			return allJobs;
+			return jobsOfCheckedViews;
 
 		};
 

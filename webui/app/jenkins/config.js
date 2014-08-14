@@ -7,6 +7,7 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		checkboxJobs: {},
 		checkBoxViews: {},
 		jobsByView: [],
+		jobs: [],
 		views: []
 	};
 

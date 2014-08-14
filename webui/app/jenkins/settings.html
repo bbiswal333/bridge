@@ -25,13 +25,13 @@
 				<input type="text" class="form form-control" ng-model="filterTextJobs" placeholder="Filter job ..."/>
 			</div>
 			<div style="width: 75%; float:left; margin-left: 5%">
-				<label ng-repeat="view in currentConfigValues.views" ng-model="checkboxViews[view.name]" class="btn btn-primary" btn-checkbox>{{view.name}}</label>
+				<label ng-repeat="view in currentConfigValues.views" ng-model="currentConfigValues.checkboxViews[view.name]" class="btn btn-primary" btn-checkbox>{{view.name}}</label>
 			</div>
 		</div>
 
 		<div style="overflow-y: scroll; overflow-x: hidden; height: 400px; width: 70%; padding-top: 10px;">
         	
-			<label ng-repeat="job in getAllJobsOfCheckedViews() | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px; width: 150px" title="{{job.name}}" btn-checkbox>{{limitDisplayName(job.name, 15)}}</label>
+			<label ng-repeat="job in getJobsOfCheckedViews(currentConfigValues.jobsByView) | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px; width: 150px" title="{{job.name}}" btn-checkbox>{{limitDisplayName(job.name, 15)}}</label>
 
 		</div>
 	</p>
