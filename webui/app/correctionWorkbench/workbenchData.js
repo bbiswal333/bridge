@@ -143,8 +143,8 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
 
 	this.initialize = function (sAppIdentifier) {
         this.sAppIdentifier = sAppIdentifier;
-        //this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 60000 * 10);
-        this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 1000 * 10);
+        this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 60000 * 10);
+        //this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 1000 * 10);
         var loadWorkbenchPromise = this.loadWorkbenchData();
         loadWorkbenchPromise.then(function success() {
             that.isInitialized.value = true;

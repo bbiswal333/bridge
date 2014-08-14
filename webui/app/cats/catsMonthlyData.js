@@ -133,6 +133,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		return targetHours;
 	};
 
+	this.getTasksForDate = function(dayString){
+		return this.days[dayString].tasks;
+	};
+
 	this.initializeDaysForWeek = function (weekString) {
 		var year = weekString.substring(3,7);
 		var week = weekString.substring(0,2);
@@ -221,9 +225,5 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		    $log.log("loadDataForSelectedWeeks(): " + err);
 		}
 		return $q.all(promises);
-	};
-
-	this.getTasksForDate = function(workdate){
-		return this.days[workdate].tasks;
 	};
 }]);

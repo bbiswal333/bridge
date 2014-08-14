@@ -64,12 +64,12 @@ angular.module('bridge.app').
 	    case 'error':
 	        return 'fa fa-times';
 	    default:
-	        throw new Error ('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
+	        throw new Error('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
 	}
   };
 
   $scope.getTimeAgo = function(timeInMS){
-    return jQuery.timeago(timeInMS);
+    return $.timeago(timeInMS);
   };
 
 	$scope.retrieve_xkdc_entry = function(){
