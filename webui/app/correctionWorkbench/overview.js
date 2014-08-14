@@ -10,6 +10,12 @@ angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [
         $scope.showNoMessages = false;
         $scope.dataInitialized = workbenchData.isInitialized;
 
+        $scope.box.returnConfig = function(){
+            return {
+                lastDataUpdate: workbenchData.lastDataUpdate
+            };
+        };
+
         function setNoMessagesFlag() {
             if (workbenchData.isInitialized.value === true && ($scope.categories[0].total + $scope.categories[1].total + $scope.categories[2].total + $scope.categories[3].total) === 0) {
                 $scope.showNoMessages = true;

@@ -58,7 +58,7 @@
             // angular cannot do synchronious requests, so use jQuery here
             $.ajax(
                 {
-                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                    url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
                     type: "POST",
                     data: angular.toJson(configPayload),
                     async: false,
@@ -68,7 +68,7 @@
                 });
         } else {
             $http({
-                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
                 method: "POST",
                 data: angular.toJson(configPayload),
                 headers: { 'Content-Type': 'text/plain' }

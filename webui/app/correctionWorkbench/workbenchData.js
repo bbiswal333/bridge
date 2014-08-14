@@ -1,5 +1,6 @@
 angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData', ['$http', '$q', '$interval', '$location', 'notifier', function ($http, $q, $interval, $location, notifier) {
 	var that = this;
+    this.lastDataUpdate = null;
     this.sAppIdentifier = "";
 	this.isInitialized = { value: false };
     this.correctionRequestsFromNotifications = [];
@@ -84,7 +85,12 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
 
         var pAllRequestsFinished = $q.all([deferredRequestOnMy.promise, deferredRequestForTesting.promise]);
         pAllRequestsFinished.then(function success() {
-            that.compareData(that.workbenchData, that.lastWorkbenchData);
+            if (that.lastWorkbenchData !== null) {
+                that.compareData(that.workbenchData, that.lastWorkbenchData);
+            } else {
+                //that.notifyOfflineChanges
+            }
+            that.lastDataUpdate = new Date();
             that.lastWorkbenchData = angular.copy(that.workbenchData);
         });
 
@@ -108,25 +114,24 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
     };
 
     this.compareData = function(newWorkbenchData, oldWorkbenchData){
-        if (oldWorkbenchData !== null) {
-            angular.forEach(that.categories, function (category) {
-                angular.forEach(newWorkbenchData[category.targetArray], function (correctionRequest) {
-                    var foundCorrectionRequest = that.findCorrectionRequest(correctionRequest._id, oldWorkbenchData);
 
-                    var notifierClickCallback = function () {
-                        that.correctionRequestsFromNotifications.length = 0;
-                        that.correctionRequestsFromNotifications.push(correctionRequest);
-                        $location.path("/detail/correctionWorkbench/null/true");
-                    };
-                    if (foundCorrectionRequest === null) {
-                        notifier.showInfo('New Correction Request', 'There is a new Correction Request "' + correctionRequest.shortText + '"', that.sAppIdentifier, notifierClickCallback);
-                    } else if (new Date(correctionRequest.changeDateTime) > new Date(foundCorrectionRequest.changeDateTime)) {
-                        notifier.showInfo('Correction Request Changed', 'The Correction Request "' + correctionRequest.shortText + '" changed', that.sAppIdentifier, notifierClickCallback);
-                    }
+        angular.forEach(that.categories, function (category) {
+            angular.forEach(newWorkbenchData[category.targetArray], function (correctionRequest) {
+                var foundCorrectionRequest = that.findCorrectionRequest(correctionRequest._id, oldWorkbenchData);
 
-                });
+                var notifierClickCallback = function () {
+                    that.correctionRequestsFromNotifications.length = 0;
+                    that.correctionRequestsFromNotifications.push(correctionRequest);
+                    $location.path("/detail/correctionWorkbench/null/true");
+                };
+                if (foundCorrectionRequest === null) {
+                    notifier.showInfo('New Correction Request', 'There is a new Correction Request "' + correctionRequest.shortText + '"', that.sAppIdentifier, notifierClickCallback);
+                } else if (new Date(correctionRequest.changeDateTime) > new Date(foundCorrectionRequest.changeDateTime)) {
+                    notifier.showInfo('Correction Request Changed', 'The Correction Request "' + correctionRequest.shortText + '" changed', that.sAppIdentifier, notifierClickCallback);
+                }
+
             });
-        }
+        });
     };
 
     this.findCorrectionRequest = function(id, workbenchData){
@@ -143,8 +148,8 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
 
 	this.initialize = function (sAppIdentifier) {
         this.sAppIdentifier = sAppIdentifier;
-        this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 60000 * 10);
-        //this.loadWorkbenchDataInterval = $interval(this.loadWorkbenchData, 1000 * 10);
+        $interval(this.loadWorkbenchData, 60000 * 10);
+        //$interval(this.loadWorkbenchData, 1000 * 10);
         var loadWorkbenchPromise = this.loadWorkbenchData();
         loadWorkbenchPromise.then(function success() {
             that.isInitialized.value = true;
