@@ -44,7 +44,7 @@
         return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
     }
 
-    this.persistInBackend = function (dataService) {
+    this.persistInBackend = function (dataService, doSynchronious) {
         var configPayload = {projects: []};
         var projects = dataService.getProjects();
         for (var i = 0; i < projects.length; i++) {
@@ -54,16 +54,30 @@
         configPayload.bridgeSettings = dataService.getBridgeSettings();
         delete configPayload.bridgeSettings.local;
 
-        $http({
-            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
-            method: "POST",
-        data: angular.toJson(configPayload),
-            headers: { 'Content-Type': 'text/plain' }
-        }).success(function () {
-            $log.log("Config saved successfully");
-        }).error(function () {
-            $log.log("Error when saving config!");
-        });
+        if (doSynchronious === true){
+            // angular cannot do synchronious requests, so use jQuery here
+            $.ajax(
+                {
+                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                    type: "POST",
+                    data: angular.toJson(configPayload),
+                    async: false,
+                    headers: { 'Content-Type': 'text/plain' },
+                    success:function(data){},
+                    error:function(jqXhr, textStatus, errorThrown){}
+                });
+        } else {
+            $http({
+                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                method: "POST",
+                data: angular.toJson(configPayload),
+                headers: { 'Content-Type': 'text/plain' }
+            }).success(function () {
+                $log.log("Config saved successfully");
+            }).error(function () {
+                $log.log("Error when saving config!");
+            });
+        }
     };
 
     this.loadFromBackend = function (deferred) {

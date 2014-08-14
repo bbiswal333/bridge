@@ -10,6 +10,10 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
+        $window.onbeforeunload = function(){
+            bridgeConfig.persistInBackend(bridgeDataService, true);
+        };
+
         $scope.logMode = bridgeDataService.getLogMode();
         $scope.sendLog = function () {
             modalPromise = logService.showPreview();

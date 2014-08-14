@@ -69,7 +69,7 @@ angular.module('bridge.app').
   };
 
   $scope.getTimeAgo = function(timeInMS){
-    return jQuery.timeago(timeInMS);
+    return $.timeago(timeInMS);
   };
 
 	$scope.retrieve_xkdc_entry = function(){
