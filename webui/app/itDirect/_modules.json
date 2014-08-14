@@ -1,0 +1,20 @@
+{
+    "xapp":
+    {
+        "module_name"			:	"app.itdirect",
+        "title"					:	"IT Direct Tickets",
+        "icon_css"				:	"icon-comment",
+        "overview_directive"	:	"app.itdirect",
+        "needs_client"			:	false,
+        "xroutes"		:
+            [
+                {
+                    "route"			:	"/detail/im/:prio",
+                    "templateUrl"	:	"app/im/detail.html"
+                }
+            ]
+    },
+    "modules" : [],
+    "js_files" : ["overview.js"],
+    "css_files" : []
+}
