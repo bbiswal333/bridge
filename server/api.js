@@ -25,7 +25,11 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept' );
 			response.setHeader('Access-Control-Allow-Credentials', 'true' );
 			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-		}    		
+		}    
+
+		response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+		response.setHeader('Pragma', 'no-cache');
+		response.setHeader('Expires', '0');
 		return response;
 	};
 
