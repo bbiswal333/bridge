@@ -1,0 +1,43 @@
+<div style="width: 100%">
+	<p>
+		<form name="ConfigItemForm">
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Jenkins URL</div>
+				<div style="width: 20%"><input type="text" class="form form-control" value="{{currentConfigValues.jenkinsUrl}}" ng-model="currentConfigValues.jenkinsUrl"/></div>
+			</div>
+			<br />
+
+			<!-- Resize Window
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+						<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
+						<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
+				</div>
+			</div>
+			-->
+
+		</form>
+
+		<div class="row">
+			<div class="col-xs-2 form_head" style="float:none;">Filter</div>
+			<div style="width: 15%; float:left">
+				<input type="text" class="form form-control" ng-model="filterTextJobs" placeholder="Filter job ..."/>
+			</div>
+			<div style="width: 75%; float:left; margin-left: 5%">
+				<label ng-repeat="view in currentConfigValues.views" ng-model="currentConfigValues.checkboxViews[view.name]" class="btn btn-primary" btn-checkbox>{{view.name}}</label>
+			</div>
+		</div>
+
+		<div style="overflow-y: scroll; overflow-x: hidden; height: 400px; width: 70%; padding-top: 10px;">
+        	
+			<label ng-repeat="job in getJobsOfCheckedViews(currentConfigValues.jobsByView) | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px; width: 150px" title="{{job.name}}" btn-checkbox>{{limitDisplayName(job.name, 15)}}</label>
+
+		</div>
+	</p>
+
+	<div class="row" >
+		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+	</div>
+
+</div>

@@ -1,0 +1,56 @@
+.error {
+	padding: 15px;
+	color: red;
+}
+
+.buildstatuscell {
+		text-align: center; 
+		width: 40px;
+}
+
+.jobTable{
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;	
+}
+
+.jobTable table {
+		margin-right: 8px;
+	}
+
+.jobTable tr:not(:first-of-type) {
+		border-top: 1px solid #e5e5e5;
+	}
+
+.style{
+	padding-right: 8px;
+	padding-left: 10px;
+}
+
+.red{
+ 	background-color: #F78181;
+ }
+
+ .blue{
+ 	background-color: #2ECCFA;
+ }
+
+ .yellow{
+ 	background-color:  #F2F5A9;
+ }
+
+ .{
+ 	background-color:  #A4A4A4;
+ }
+
+table {
+		margin-right: 5px;
+		margin-top: 5px;
+ }
+
+
+.status-color{
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+}

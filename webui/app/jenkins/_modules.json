@@ -1,0 +1,13 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.jenkins",
+		"title"					:	"Jenkins",
+		"icon_css"				:	"fa fa-star",
+		"overview_directive"	:	"app.jenkins",
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js"],
+	"css_files" : ["overview.css"]
+}
