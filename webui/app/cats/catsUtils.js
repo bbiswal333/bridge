@@ -26,7 +26,10 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       }
 
       if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
-          (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID && task2.RAUFNR === task1.RAUFNR && task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
+          (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID &&
+           task2.RAUFNR === task1.RAUFNR &&
+           task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE &&
+           task1.ZZSUBTYPE === task2.ZZSUBTYPE)) { // unique TASKTYPE RAUFNR SUBTYPE combination
           return true;
       }
       return false;

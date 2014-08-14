@@ -2,6 +2,13 @@
 	<p>
 		<form name="ConfigItemForm">
 			<!--<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select CAT2 data entry profile</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<span ng-click="configService.catsProfile = 'DEV2002C'" ng-class="{true: 'btn btn_blue',false: 'btn '}[configService.catsProfile === 'DEV2002C' || !configService.catsProfile];" style="margin-right:0;">Development (DEV2002C)</span>
+					<span ng-click="configService.catsProfile = 'SUP2007C'" ng-class="{true: 'btn btn_blue', false: 'btn'}[configService.catsProfile === 'SUP2007C'];" style="margin-right:0;">Service and Support (SUP2007C)</span>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select week start</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
 						<span ng-click="configService.sundayweekstart = false" ng-class="{true: 'btn btn_blue',false: 'btn '}[configService.sundayweekstart === false || !configService.sundayweekstart];" style="margin-right:0;">Monday</span>
@@ -95,14 +102,13 @@
 
                 	<div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label"></span>
-                		<div class="col-md-8">	
-        					<div ng-show="!configService.selectedTask.custom" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
+                		<div class="col-md-8">
+        					<div ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
                 			<div ng-show="configService.selectedTask.custom && !configService.selectedTask.id" ng-disabled="ConfigItemForm.$invalid" class="btn btn-primary btn_blue settings_add_task_button" ng-click="saveNewTask()">Save</div>
                 			<div ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>
                 			
 		            	</div>
                 	</div>
-                		<!-- item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE; -->
                 </div>
 		  	</div>
 		</form>

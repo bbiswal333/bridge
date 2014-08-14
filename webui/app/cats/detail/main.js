@@ -22,17 +22,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
+    $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions = 25; // 5 weeks
 
-    var persistedConfig = bridgeDataService.getAppConfigByModuleName('app.cats');
-
-    if (persistedConfig && persistedConfig.favoriteItems && !configService.loaded) {
-        configService.favoriteItems = persistedConfig.favoriteItems;
-    }
-
-    if (persistedConfig) {
-        configService.sundayweekstart = persistedConfig.sundayweekstart;
-        $scope.sundayweekstart = persistedConfig.sundayweekstart;
-    }
+    var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
+    configService.copyConfigIfLoaded(catsConfigService);
 
     function timeToMaintain() {
         try {
@@ -198,15 +191,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function getDescFromFavorites(task) {
-        configService.favoriteItems.some(function(favoriteItem){
-            if (catsUtils.isSameTask(task, favoriteItem)) {
-                task.DESCR = favoriteItem.DESCR;
-                return true;
-            }
-        });
-    }
-        
     function displayCATSDataForDay(day) {
         try {
             $scope.lastCatsAllocationDataForDay = day;
@@ -222,11 +206,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
-                getDescFromFavorites(task);
-
                 var HoursOfWorkingDay = 8;
-
                 var isFixedTask = catsUtils.isFixedTask(task);
+                configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
                     addBlock("Vacation", task.QUANTITY / HoursOfWorkingDay, task, isFixedTask);
@@ -290,6 +272,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             TASKTYPE: task.TASKTYPE,
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
+            ZZSUBTYPE: task.ZZSUBTYPE,
             UNIT: "T"
         };
         
@@ -321,6 +304,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
+                if ($scope.selectedDates.length >= $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions) {
+                    bridgeInBrowserNotification.addAlert('','Due to legal restrictions it is only allowed to select/ maintain up to ' + $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions + ' days at once');
+                }
                 $scope.totalWorkingTime = 1;
             }
         } catch(err) {
@@ -330,8 +316,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleSelectedDate = function(dayString){
         if($scope.selectedDates.indexOf(dayString) === -1) {
-            $scope.selectedDates.push(dayString);
-            $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+            if ($scope.selectedDates.length >= $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions) {
+                return false;
+            } else {
+                $scope.selectedDates.push(dayString);
+                $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+            }
         }
         return true;
     };
@@ -360,11 +350,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 var message = xmlDoc.getElementsByTagName("TEXT")[i];
                 if (message) {
                     replyHasMessages = true;
-                    if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                        bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
-                    } else {
+                    // if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
+                    //     bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
+                    // } else {
                         bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
-                    }
+                    // }
                 }
             }
             if (!replyHasMessages) {
@@ -488,7 +478,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
-                catsBackend.writeCATSData(container).then(function(data){
+                var catsProfile = configService.catsProfile;
+                if (!catsProfile) {
+                    catsProfile = "DEV2002C";
+                }
+                catsBackend.writeCATSData(container,catsProfile).then(function(data){
                     checkPostReply(data);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){

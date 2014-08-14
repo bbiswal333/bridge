@@ -801,6 +801,18 @@ h3{
     text-transform:uppercase;
 }
 
+.testInstanceBar {
+    position: absolute;
+    z-index: 1000;
+    width: 50%;
+    line-height: 25px;
+    background-color: #D53F26;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    left: 25%;
+}
+
 .logAlertBar {
     position: absolute;
     z-index: 1000;

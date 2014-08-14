@@ -74,9 +74,10 @@
     <title>Bridge</title>
 </head>
 
-<body class="noselect" style="overflow:auto">    
+<body class="noselect" style="overflow:auto">
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: temporaryData.backgroundDayNight}[(temporaryData.backgroundDayNight == undefined)]" ng-cloak>
         <div class="sun" ng-class="{true: 'mainPageBackground', false: temporaryData.backgroundClass}[(temporaryData.backgroundClass == undefined)]">
+        <div ng-if="isTestInstance" class="testInstanceBar" style="align: center">This is the test instance of Bridge. For productive use of Bridge please click <a href="https://bridge.mo.sap.corp">HERE</a></div>
             <div>
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>

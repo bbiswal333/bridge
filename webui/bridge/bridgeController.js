@@ -235,6 +235,9 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
+            if ($location.$$host === 'bridge-master.mo.sap.corp') {
+                $scope.isTestInstance = true;
+            }
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;
         });
