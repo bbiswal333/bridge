@@ -30,7 +30,7 @@ angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [
 
 
         if (workbenchData.isInitialized.value === false) {
-            var initPromise = workbenchData.initialize($scope.module_name);
+            var initPromise = workbenchData.initialize($scope.module_name, new Date($scope.appConfig.lastDataUpdate));
             initPromise.then(function success() {
                 setNoMessagesFlag();
             });
