@@ -1,7 +1,7 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", function (jenkinsConfigService, $location) {
 
-    var directiveController = ['$scope', '$http', "$q", "$modal", function ($scope, $http, $modal) {
+    var directiveController = ['$scope', '$http',"$q", "$modal", function ($scope, $http) {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
@@ -79,29 +79,16 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
-        $scope.detailJobViewMoal = function(jobUrl){
-            // var modalInstance = $modal.open({
-            //   templateUrl: 'detailJobView.html',
-            //   controller: directiveController,
-            //   size: size,
-            //   resolve: {
-            //     items: function () {
-            //       return $scope.items;
-            //     }
-            //   }
-            // });
-
-            // modalInstance.result.then(function (selectedItem) {
-            //   $scope.selected = selectedItem;
-            // }, function () {
-            //   $log.info('Modal dismissed at: ' + new Date());
-            // });
-        };
-
         $scope.detailJobView = function(jobUrl){
-            $scope.detailJobViewMoal(jobUrl);
+            console.log($scope.jobResult);
+            getJobDependancy(jobUrl);
+            $location.path("/detail/job/");
             
         };
+
+        var getJobDependancy = function(){
+
+        }
 
 
         $scope.limitDisplayName = function(name, limit) {
@@ -155,6 +142,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     for(var jobIndex in $scope.jobResult) {
                         if($scope.jobResult[jobIndex].name === job.name) {
                             $scope.jobResult[jobIndex].jobHealthReport = result.healthReport;
+                            $scope.jobResult[jobIndex].downstream = result.dow
                         }
                     }
 
@@ -189,9 +177,14 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
+        var getStatusColor = function(color){
+            return "status" + color;
+        };
+
         var getLatestBuildInfoAndAddJobToModel = function(job) {
             
-            var jobInfoWithLatestBuild = {name: job.name, statusColor: job.color, url: job.url};
+
+            var jobInfoWithLatestBuild = {name: job.name, statusColor: getStatusColor(job.color), url: job.url, isChecked: true};
 
             pushToJobResults(jobInfoWithLatestBuild);
 
