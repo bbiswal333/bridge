@@ -345,11 +345,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         } else {
             jan4WeekDay = 6;
         }
-        //console.log("-> " +  date_o);
+        //$log.log("-> " +  date_o);
         var monInFirstWeek = new Date(jan4Week.getTime() - (jan4WeekDay * MILLISECS_DAY));
-        //console.log(monInFirstWeek);
+        //$log.log(monInFirstWeek);
         var daysSinceFirstMon = Math.round((date_o.getTime() - monInFirstWeek.getTime()) / MILLISECS_DAY);
-        //console.log(daysSinceFirstMon);
+        //$log.log(daysSinceFirstMon);
         res.weekNo = 1 + Math.floor(daysSinceFirstMon / 7);
 
         var monInSelectedWeek = new Date(date_o.getTime() - ((date_o.getDay() !== 0) ? date_o.getDay() - 1 : 6)  * MILLISECS_DAY);

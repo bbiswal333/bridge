@@ -1,7 +1,7 @@
 angular.module('app.jenkins', []);
 angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
-    var directiveController = ['$scope', '$http', "$q", "$modal", function ($scope, $http, $modal) {
+    var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
         $scope.box.boxSize = '2'; 
         $scope.jenkinsConfig = {url: ""};
@@ -72,7 +72,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                        
                     }
                 }).error(function(data, status) {
-                    console.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
+                    $log.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
                 }); // GET
 
             }
@@ -160,7 +160,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             }).
                 error(function(result, status) {
-                     console.log("Could not GET job " + job.name + ", status: " + status);
+                     $log.log("Could not GET job " + job.name + ", status: " + status);
 
             });
 
@@ -183,7 +183,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 
             }).
             error(function(data, status) {
-                 console.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
+                 $log.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
 
             });
 
