@@ -60,10 +60,10 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     }
 
     this.onNotificationsNotSupported = function () {
-      //alert("Your browser does not support the Notification API");
+      $log.log("Your browser does not support the Notification API");
     };
     this.onNotificationsDenied = function () {
-      alert("You did not allow notifications!");
+        $log.log("You did not allow notifications!");
     };
 
     this.show = function (){
