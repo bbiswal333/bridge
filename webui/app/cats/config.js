@@ -52,17 +52,16 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		}
 		var enhancedTask = task;
 
+		var taskTypeToDisplay = (task.TASKTYPE || "");
 		if (task.ZZSUBTYPE) {
-			var tasktypeWithZzsubtype = (task.TASKTYPE || "") + " " + task.ZZSUBTYPE;
-		} else {
-			tasktypeWithZzsubtype = (task.TASKTYPE || "");
+			taskTypeToDisplay = (task.TASKTYPE || "") + " " + task.ZZSUBTYPE;
 		}
 
-		enhancedTask.DESCR = task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || tasktypeWithZzsubtype;
+		enhancedTask.DESCR = task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || taskTypeToDisplay;
 		enhancedTask.subDescription = task.ZCPR_EXTID || "";
 		if (!enhancedTask.subDescription) {
 			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
-				enhancedTask.subDescription = tasktypeWithZzsubtype || "";
+				enhancedTask.subDescription = taskTypeToDisplay || "";
 			}
 		}
 		if (!enhancedTask.id) {

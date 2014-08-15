@@ -34,7 +34,8 @@ angular.module("app.cats")
 	                var time = parseDateToTime(dateStr);
 	                
 	                // special handling for overbooked days
-	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > days[i].STDAZ) {
+
+	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
 	                	statusStr = "OVERBOOKED";
 	                	days[i].STATUS = "OVERBOOKED";
 	                }
