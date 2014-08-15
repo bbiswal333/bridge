@@ -40,6 +40,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    function addToTotalSelectedHours(dayString) {
+        $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+    }
+
+    function substractFromTotalSelectedHours(dayString) {
+        $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
+    }
+
     $scope.calcMinutes = function (perc) {
         $log.log(perc);
         return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
@@ -168,10 +176,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     function checkAndCorrectPartTimeInconsistancies(day) {
-        if (monthlyDataService.days[day.dayString] &&
-            monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay &&
-            monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay ===
-            monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay) {
+        if (day &&
+            day.targetTimeInPercentageOfDay &&
+            day.targetTimeInPercentageOfDay ===
+            day.actualTimeInPercentageOfDay) {
 
             // adjust slight deviations in QUANTITY when posting part time
             var totalBlockValue = 0;
@@ -187,6 +195,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if((blockDif > 0 && blockDif < 0.03) ||
                (blockDif < 0 && blockDif > -0.03)) {
                 biggestBlock.value -= blockDif;
+                biggestBlock.value = Math.round(biggestBlock.value * 1000) / 1000;
             }
         }
     }
@@ -214,20 +223,20 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 } else if (task.TASKTYPE === "ABSE") {
                     addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
+                    addBlock(task.DESCR || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
                 } else {
                     addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
             checkAndCorrectPartTimeInconsistancies(day);
-            if(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 0 &&
-               monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay !== 1 ) {
+            if(day.targetTimeInPercentageOfDay !== 0 &&
+               day.targetTimeInPercentageOfDay !== 1 ) {
                 $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
             }
 
-            if(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay > monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay) {
-                var actualHours = Math.round(monthlyDataService.days[day.dayString].actualTimeInPercentageOfDay * 100 * 8) / 100;
-                var targetHours = Math.round(monthlyDataService.days[day.dayString].targetTimeInPercentageOfDay * 100 * 8) / 100;
+            if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+                var actualHours = Math.round(day.actualTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
+                var targetHours = Math.round(day.targetTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
                 $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
                 bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
                     actualHours + "'' but target hours are only '" +
@@ -319,7 +328,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 return false;
             } else {
                 $scope.selectedDates.push(dayString);
-                $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
+                addToTotalSelectedHours(dayString);
             }
         }
         return true;
@@ -328,7 +337,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.handleDeselectedDate = function(dayString){
         var dateIndex = $scope.selectedDates.indexOf(dayString);
         $scope.selectedDates.splice(dateIndex, 1);
-        $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
+        substractFromTotalSelectedHours(dayString);
         return true;
     };
 
@@ -434,6 +443,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         if((bookingDif > 0 && bookingDif < 0.03) ||
            (bookingDif < 0 && bookingDif > -0.03)) {
             biggestBooking.QUANTITY -= bookingDif;
+            biggestBooking.QUANTITY = Math.round(biggestBooking.QUANTITY * 1000) / 1000;
         }
 
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
@@ -452,10 +462,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.selectedDates = [];
         $scope.totalSelectedHours = 0;
 
-        selectedDates.forEach(function(dateString){
-            if($scope.selectedDates.indexOf(dateString) === -1) {
-                $scope.selectedDates.push(dateString);
-                $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dateString].targetHours;
+        selectedDates.forEach(function(dayString){
+            if($scope.selectedDates.indexOf(dayString) === -1) {
+                $scope.selectedDates.push(dayString);
+                addToTotalSelectedHours(dayString);
             } else {
                 $log.log("The selectedDates array had double entries! Please check selection functionality.");
             }
@@ -466,10 +476,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
 
         try {
-            $scope.selectedDates.forEach(function(dateString){
-                container = prepareCATSData(dateString, container, clearOldTasks);
+            $scope.selectedDates.forEach(function(dayString){
+                container = prepareCATSData(dayString, container, clearOldTasks);
 
-                var day = monthlyDataService.days[dateString];
+                var day = monthlyDataService.days[dayString];
                 if (weeks.indexOf(day.year + '.' + day.week) === -1) {
                     weeks.push(day.year + '.' + day.week);
                 }

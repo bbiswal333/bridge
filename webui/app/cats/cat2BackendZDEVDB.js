@@ -34,8 +34,10 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       if (forceUpdate_b || CAT2ComplinaceData4FourMonthCache == null) {
         _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
           CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
+
+          // ////////////////////////////////////////////////////////
+          // // test test test: uncomment to be a part-time colleague
           // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
-          //   // test test test: uncomment to be a part-time colleague
           //   CATSCHKforDay.CONVERT_H_T = 7.9;
           //   if (CATSCHKforDay.STDAZ) {
           //     CATSCHKforDay.STDAZ = 7.55;
@@ -50,6 +52,8 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
           //     }
           //   }
           // });
+          // ////////////////////////////////////////////////////////
+
           deferred.resolve(CAT2ComplinaceData4FourMonthCache);
         });
       } else {
