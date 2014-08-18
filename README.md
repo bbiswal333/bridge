@@ -1,6 +1,4 @@
-[![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/badge/icon)](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/)
-
-.
+[![Build Status](https://bridge-ci.mo.sap.corp/buildStatus/icon?job=Bridge Push)](https://bridge-ci.mo.sap.corp/job/Bridge%20Push/)
 
 # Bridge
 
