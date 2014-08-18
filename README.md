@@ -1,4 +1,4 @@
-[![Build Status](https://bridge-ci.mo.sap.corp/buildStatus/icon?job=Bridge Push)](https://bridge-ci.mo.sap.corp/job/Bridge%20Push/)
+[![Build Status](https://bridge-ci.mo.sap.corp/buildStatus/icon?job=BridgePush)](https://bridge-ci.mo.sap.corp/job/Bridge%20Push/)
 
 # Bridge
 
