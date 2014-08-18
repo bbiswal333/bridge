@@ -183,9 +183,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var getLatestBuildInfoAndAddJobToModel = function(job) {
             
-
-            var jobInfoWithLatestBuild = {name: job.name, statusColor: getStatusColor(job.color), url: job.url, isChecked: true};
-
+            if(job.color === 'grey'){
+                var jobInfoWithLatestBuild = {name: job.name, statusColor: getStatusColor(job.color), url: job.url, isChecked: true};        
+            }else{
+                var jobInfoWithLatestBuild = {name: job.name, statusColor: getStatusColor(job.color), url: job.url + "lastBuild", isChecked: true}; 
+            }
             pushToJobResults(jobInfoWithLatestBuild);
 
             getAndSetHealthReportToJob(job);
