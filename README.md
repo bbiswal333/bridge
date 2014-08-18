@@ -1,5 +1,7 @@
 [![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/badge/icon)](http://mo-c97a0800b.mo.sap.corp:49153/job/BridgePush/)
 
+..
+
 # Bridge
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
