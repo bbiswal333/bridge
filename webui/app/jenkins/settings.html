@@ -4,23 +4,26 @@
 
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
-                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Jenkins URL..." autofocus/>
+                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.jenkinsUrl" placeholder="Jenkins URL..." autofocus/>
                  
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
-                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="View..."/>
+                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.selectedView" placeholder="View..."
+					typeahead="view.name for view in currentConfigValues.views | filter:$viewValue | limitTo:8" typeahead-editable="false"/>
                 
             </div>
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">Job</span>
-                <input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="Job..."/>
+                <input type="text" class="form-control form"  ng-model="currentConfigValues.selectedJob" placeholder="Job..."
+                typeahead="job.name for job in getJobsByView(currentConfigValues.selectedView) | filter:$viewValue | limitTo:8"
+                typeahead-editable="false"/>
             </div>  
 
             <div class="row" style="margin:25px 0 0 0;">
-                <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
+                <button type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()">Add New Selection</button>
             </div>
 
     	</form>
@@ -38,8 +41,8 @@
             <tbody>
                 <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
                     <td data-title="'Source System'">{{configItem.jenkinsUrl}}</td>
-                    <td data-title="'View'">{{configItem.view}}</td>
-                    <td data-title="'Job'">{{configItem.job}}</td>
+                    <td data-title="'View'">{{configItem.selectedView}}</td>
+                    <td data-title="'Job'">{{configItem.selectedJob}}</td>
                     <td data-title="'Functions'">
                         <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
                     </td>
