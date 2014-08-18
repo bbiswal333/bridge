@@ -9,26 +9,12 @@ angular.module('app.jenkins').appJenkinsSettings =
 			$scope.$emit('closeSettingsScreen');
 		};
 
-		var viewIsChecked = function(viewname) {
-			return ((jenkinsConfigService.configItem.checkboxViews[viewname] === true) ? true : false);
-		};
-
-		$scope.getJobsOfCheckedViews = function(jobsByView) {
-
-			var jobsOfCheckedViews = [];
-
-			for(var viewNameIndex in jobsByView) {
-
-				if(viewIsChecked(jobsByView[viewNameIndex].name)) {
-
-					jobsOfCheckedViews = jobsOfCheckedViews.concat(jobsByView[viewNameIndex].jobs);
-
-				}
-
+		$scope.add_click = function () {
+			if (!$scope.currentConfigValues.isEmpty()) {
+				var copiedConfigItem = angular.copy($scope.currentConfigValues);
+				$scope.currentConfigValues.clear();
+				$scope.config.addConfigItem(copiedConfigItem);
 			}
-
-			return jobsOfCheckedViews;
-
 		};
 
 		$scope.limitDisplayName = function(name, limit) {
