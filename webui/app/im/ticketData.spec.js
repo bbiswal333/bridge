@@ -56,6 +56,7 @@
     it("should set the initialized flag and get the data from the backend", function (done) {
         deferred = $q.defer();
 
+        expect(angular.isFunction(imTicketData.loadTicketData)).toBe(true);
         imTicketData.loadTicketData = loadDataMock;
 
         var initializePromise = imTicketData.initialize();

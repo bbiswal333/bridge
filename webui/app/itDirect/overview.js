@@ -1,4 +1,4 @@
-angular.module('app.itdirect', ['ngTable']);
+angular.module('app.itdirect', ['bridge.service', 'ngTable']);
 
 angular.module('app.itdirect').directive('app.itdirect', [function ()
 {
