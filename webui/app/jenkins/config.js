@@ -2,8 +2,6 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 
 	this.configItem = {
 		jenkinsUrl : 'http://veecfseqos016:8080/jenkins/',
-		selectedView: '',
-		selectedJob: '',
 		language : 'de',
 		boxSize : '2',
 		checkboxJobs: {},
@@ -11,29 +9,6 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		jobsByView: [],
 		jobs: [],
 		views: []
-	};
-
-	this.configItems = [];
-
-	this.addConfigItem = function(item){
-		this.configItems.push(item);
-	};
-
-	this.clear = function() {
-		this.configItem.selectedView = "";
-		this.configItem.selectedJob = "";
-	};
-
-	this.getConfigItems = function() {
-		return this.configItems;
-	};
-
-	this.isEmpty = function () {
-		if (this.jenkinsUrl === "" && this.selectedView === "" && this.selectedJob === "") {
-			return true;
-		} else {
-			return false;
-		}
 	};
 
 });
