@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.jenkins",
-		"title"					:	"Job Dependancy",
+		"title"					:	"Jenkins,
 		"icon_css"				:	"fa fa-star",
 		"overview_directive"	:	"app.jenkins",
 		"needs_client"			:	false,
