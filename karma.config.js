@@ -60,6 +60,9 @@ module.exports = function(config) {
       './webui/app/correctionWorkbench/overview.js',
       './webui/app/correctionWorkbench/**/*.js',
 
+      './webui/app/itDirect/overview.js',
+      './webui/app/itDirect/**/*.js',
+
       '**/*.spec.js'
     ],
 

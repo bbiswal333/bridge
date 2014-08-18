@@ -2,10 +2,17 @@
 	"app":
 	{
 		"module_name"			:	"app.jenkins",
-		"title"					:	"Jenkins",
+		"title"					:	"Job Dependancy",
 		"icon_css"				:	"fa fa-star",
 		"overview_directive"	:	"app.jenkins",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/job/",
+				"templateUrl"	:	"app/jenkins/detailJobView.html"			
+			}
+		]	
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "settings.js"],
