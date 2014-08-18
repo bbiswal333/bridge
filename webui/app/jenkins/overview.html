@@ -9,7 +9,8 @@
             <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" >
             	<td><div class="status-color {{job.statusColor}}"></div></td>
                 <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
-                <td style="width: 200px; color: #204A87; cursor: pointer;" ng-click="detailJobView(job.url)">{{limitDisplayName(job.name, 26)}}</td>
+                <!-- <td class="jobName" ng-click="detailJobView(job.url)">{{limitDisplayName(job.name, 26)}}</td> -->
+                <td style="width: 200px;"><a href="{{job.url}}">{{limitDisplayName(job.name, 26)}}</a></td>
 
                 <td style="">{{job.timestamp}}</td>
             </tr>

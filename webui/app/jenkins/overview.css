@@ -27,16 +27,24 @@
 	padding-left: 10px;
 }
 
-.red{
- 	background-color: #F78181;
+.statusred{
+ 	background-color: #E00000;
  }
 
- .blue{
+ .statusblue{
  	background-color: #2ECCFA;
  }
 
- .yellow{
+ .statusyellow{
+ 	background-color:  #FFFF00;
+ }
+
+ .statusyellow{
  	background-color:  #F2F5A9;
+ }
+
+ .statusgrey{
+ 	background-color:  #686868;
  }
 
  .{
@@ -46,6 +54,12 @@
 table {
 		margin-right: 5px;
 		margin-top: 5px;
+ }
+
+ .jobName{
+ 	width: 200px; 
+ 	color: #204A87; 
+ 	cursor: pointer;
  }
 
 
