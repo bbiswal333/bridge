@@ -6,6 +6,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.box.boxSize = '2'; 
         $scope.jobsToDisplay = [];
         $scope.jenkinsConfig = {};
+        $scope.configService = jenkinsConfigService;
 
         // Settings Screen
         $scope.box.settingsTitle = "Configure Jenkins URL";
@@ -13,6 +14,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             templatePath: "/jenkins/settings.html",
             controller: angular.module('app.jenkins').appJenkinsSettings,
             id: $scope.boxId
+        };
+
+        $scope.box.returnConfig = function() {
+            return angular.copy($scope.configService);
         };
 
         var formatTimestamp = function(timestamp) {
@@ -71,35 +76,44 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return name;
         };
 
+        var setLastBuildInfoNA = function(job) {
+            for(var jobIndex in $scope.jobsToDisplay) {
+                        if($scope.jobsToDisplay[jobIndex].name === job.name) {
+                            $scope.jobsToDisplay[jobIndex].timestamp = "N/A";
+                            $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name;
+                        }
+                }
+        };
+
         var getAndSetTimestampForLastBuild = function(job) {
 
             if(job.color === "grey") {
-                return;
+
+                setLastBuildInfoNA(job);
+
+            } else {
+
+                $http({ method: 'GET', url: job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json", withCredentials: false }).
+                success(function(latestBuildData) {
+
+                    for(var jobIndex in $scope.jobsToDisplay) {
+                            if($scope.jobsToDisplay[jobIndex].name === job.name) {
+                                $scope.jobsToDisplay[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
+                                $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
+                            }
+                    }
+                    
+                }).
+                error(function(data, status) {
+                     $log.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
+
+                });
+
             }
-
-            $http({ method: 'GET', url: job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json", withCredentials: false }).
-            success(function(latestBuildData) {
-
-                for(var jobIndex in $scope.jobsToDisplay) {
-                        if($scope.jobsToDisplay[jobIndex].name === job.name) {
-                            $scope.jobsToDisplay[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
-                            $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
-                        }
-                }
-                
-            }).
-            error(function(data, status) {
-                 $log.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
-
-            });
 
         };
 
         var getAndSetHealthReportAndColorToJob = function(job) {
-
-            if(job.color === "grey") {
-                return;
-            }
 
             $http({ method: 'GET', url: job.url + "/api/json", withCredentials: false }).
                 success(function(result) {
@@ -107,7 +121,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     for(var jobIndex in $scope.jobsToDisplay) {
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].jobHealthReport = result.healthReport;
-                            $scope.jobsToDisplay[jobIndex].color = result.color;
+                            $scope.jobsToDisplay[jobIndex].color = (result.color === "notbuilt") ? "grey" : result.color;
                             $scope.jobsToDisplay[jobIndex].statusColor = "status" + result.color;
                         }
                     }
@@ -117,6 +131,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                      $log.log("Could not GET job " + job.name + ", status: " + status);
 
             });
+
+            getAndSetTimestampForLastBuild(job);
 
         };
 
@@ -129,7 +145,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 $scope.jobsToDisplay[jobIndex].name = $scope.jobsToDisplay[jobIndex].selectedJob;
                 $scope.jobsToDisplay[jobIndex].url = $scope.jobsToDisplay[jobIndex].jenkinsUrl + "/job/" + $scope.jobsToDisplay[jobIndex].name;
 
-                getAndSetTimestampForLastBuild($scope.jobsToDisplay[jobIndex]);
                 getAndSetHealthReportAndColorToJob($scope.jobsToDisplay[jobIndex]);
 
             }
@@ -155,8 +170,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return views;
         };
 
-        $scope.getWeatherIconLink = function(jobWeatherReport) {
-            return ((jobWeatherReport === undefined) ? "" : "/app/jenkins/icons/" + jobWeatherReport[0].iconUrl);
+        $scope.getWeatherIconLink = function(job) {
+            return ((job.jobHealthReport === undefined) ? "" : "/app/jenkins/icons/" + job.jobHealthReport[0].iconUrl);
         };
 
         var clearJobsViewAndSetErrorMsg = function(msg) {
