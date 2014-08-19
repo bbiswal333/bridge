@@ -158,7 +158,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
 		response = setHeader( request, response );			
-		response.send('{"client":"true", "os": "' + process.platform + '"}');
+		response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.version + '"}');
 	});
 
 	//generic api call get

@@ -38,6 +38,13 @@ angular.module('bridge.app').downloadController = function ($scope, $modalInstan
     	$scope.download_url = "https://github.wdf.sap.corp/pages/bridge/bridge-client/bridge-win.zip";
     }
 
+    if(window.client !== undefined && window.client.outdated === true)
+    {
+        $scope.client_outdated = true;
+        $scope.has_version = window.client.has_version;
+        $scope.needs_version = window.client.needs_version;
+    }
+
     $scope.download = function () {
         $modalInstance.close();
         window.location.href = $scope.download_url;

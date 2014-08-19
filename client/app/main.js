@@ -36,36 +36,46 @@ if (gui.App.manifest.bridge_tag == "local") {
     }
 }
 else {
-    callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) {
-        //parse response from github server
-        var gitTags = JSON.parse(data);
-
-        //tags can be entered in package.json for testing
-        if (gui.App.manifest.bridge_tag) {
-            latest_tag = gui.App.manifest.bridge_tag;
-            needs_update = true;
-            test_update = true;
+    callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) 
+    {
+        //check if github is not reachable
+        if(data === undefined)
+        {
+            needs_update = false;            
         }
-        else {
-            //expecting format vX.Y for version
-            for (var i = 0; i < gitTags.length; i++) {
-                if (gitTags[i].name[1] > latest_tag[1] || (gitTags[i].name[1] == latest_tag[1] && parseInt(gitTags[i].name.substring(3)) > parseInt(latest_tag.substring(3)))) {
-                    latest_tag = gitTags[i].name;
-                }
+
+        else
+        {
+            //parse response from github server
+            var gitTags = JSON.parse(data);
+
+            //tags can be entered in package.json for testing
+            if (gui.App.manifest.bridge_tag) {
+                latest_tag = gui.App.manifest.bridge_tag;
+                needs_update = true;
+                test_update = true;
             }
-            console.log("Bridge Version on Server: " + latest_tag);
+            else {
+                //expecting format vX.Y for version
+                for (var i = 0; i < gitTags.length; i++) {
+                    if (gitTags[i].name[1] > latest_tag[1] || (gitTags[i].name[1] == latest_tag[1] && parseInt(gitTags[i].name.substring(3)) > parseInt(latest_tag.substring(3)))) {
+                        latest_tag = gitTags[i].name;
+                    }
+                }
+                console.log("Bridge Version on Server: " + latest_tag);
 
-            try {
-                metaData = require(settings_filename);
+                try {
+                    metaData = require(settings_filename);
 
-                console.log("Bridge Version locally: " + metaData.local_tag);
-                if (latest_tag[1] > metaData.local_tag[1] || (latest_tag[1] == metaData.local_tag[1] && parseInt(latest_tag.substring(3)) > parseInt(metaData.local_tag.substring(3)))) {
+                    console.log("Bridge Version locally: " + metaData.local_tag);
+                    if (latest_tag[1] > metaData.local_tag[1] || (latest_tag[1] == metaData.local_tag[1] && parseInt(latest_tag.substring(3)) > parseInt(metaData.local_tag.substring(3)))) {
+                        needs_update = true;
+                    }
+
+                } catch (err) {
+                    console.log("No local Bridge Version found.");
                     needs_update = true;
                 }
-
-            } catch (err) {
-                console.log("No local Bridge Version found.");
-                needs_update = true;
             }
         }
 
