@@ -15,26 +15,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             id: $scope.boxId
         };
 
-
-        var prefixZero = function(digit) {
-            digit = (digit.toString().length === 1) ? "0" + digit : digit;
-            return digit;
-        };
-
         var formatTimestamp = function(timestamp) {
-            // var dt = new Date(timestamp);
-
             return $.timeago(timestamp);
-
-
-            // var day = prefixZero(dt.getDate());
-            // var month = prefixZero(dt.getMonth() + 1);
-            // var year = dt.getFullYear();
-            // var hours = prefixZero(dt.getHours());
-            // var minutes = prefixZero(dt.getMinutes());
-            
-            // return day + "/" + month + "/" + year + " " + hours + ":" + minutes;
-
         };
 
         var hasJobWithThatName = function(arrayOfObjects, name) {
@@ -92,7 +74,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         var getAndSetTimestampForLastBuild = function(job) {
 
             if(job.color === "grey") {
-                $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name;
                 return;
             }
 
