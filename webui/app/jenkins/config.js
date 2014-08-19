@@ -1,7 +1,7 @@
 angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 
 	this.configItem = {
-		jenkinsUrl : 'https://bridge-ci.mo.sap.corp',
+		jenkinsUrl : '',
 		selectedView: '',
 		selectedJob: '',
 		language : 'de',
