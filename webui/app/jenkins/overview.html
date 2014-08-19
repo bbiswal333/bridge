@@ -7,7 +7,7 @@
 
 	<table>
             <tr ng-repeat="job in jobsToDisplay" >
-            	<td><div class="status-color {{job.statusColor}}"></div></td>
+            	<td><div class="status-color {{job.color}}"></div></td>
                 <td class="buildstatuscell"><img ng-if="job.color !== 'grey'" ng-src="{{getWeatherIconLink(job)}}"/></td>
                 <td style="width: 200px;"><a target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 26)}}</a></td>
 
