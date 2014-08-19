@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.correctionWorkbench",
-		"title"					:	"Correction WB",
+		"title"					:	"Java CWB",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.correctionWorkbench",
 		"needs_client"			:	false,
