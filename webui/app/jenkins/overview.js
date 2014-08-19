@@ -184,6 +184,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         $scope.updateJenkinsData = function(url) {
 
+            if(url.length === 0) {
+                return;
+            }
+
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.jobsByView = [];
 
