@@ -93,7 +93,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 return;
             }
 
-            $http({ method: 'GET', url: job.jenkinsUrl + "/job/" + job.selectedJob + "/lastBuild/api/json", withCredentials: false }).
+            $http({ method: 'GET', url: job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json", withCredentials: false }).
             success(function(latestBuildData) {
 
                 for(var jobIndex in $scope.jobsToDisplay) {
@@ -179,9 +179,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jobs = [];
             $scope.jobsToDisplay = [];
             $scope.primaryViewName = "";
+            jenkinsConfigService.couldReachJenkinsUrl = false;
         };
 
-        $scope.updateJenkins = function(url) {
+        $scope.updateJenkinsData = function(url) {
 
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.jobsByView = [];
@@ -195,6 +196,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
                     jenkinsConfigService.configItem.jobs = jobsOverviewData.jobs;
+                    jenkinsConfigService.couldReachJenkinsUrl = true;
                     retrieveAndSetJobsByView(removeViewAll(jobsOverviewData.views));
 
                 }).error(function(data, status) {
@@ -218,9 +220,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                     jenkinsConfigService.configItem = $scope.appConfig.configItem;
                     jenkinsConfigService.configItems = $scope.appConfig.configItems;
+                    jenkinsConfigService.couldReachJenkinsUrl = $scope.appConfig.couldReachJenkinsUrl;
                 } else {
                     $scope.appConfig.configItem = jenkinsConfigService.configItem;
                     $scope.appConfig.configItems = jenkinsConfigService.configItems;
+                    $scope.appConfig.couldReachJenkinsUrl = jenkinsConfigService.couldReachJenkinsUrl;
                 }
 
                 $scope.box.boxSize = jenkinsConfigService.configItem.boxSize;
@@ -234,7 +238,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 $scope.$watch("appConfig.configItem.jenkinsUrl", function () {
                     $scope.appConfig.configItem.jenkinsUrl = $scope.appConfig.configItem.jenkinsUrl.replace(/\/$/, "");
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-                        $scope.updateJenkins($scope.appConfig.configItem.jenkinsUrl);
+                        $scope.updateJenkinsData($scope.appConfig.configItem.jenkinsUrl);
                     }
                 }, true);
 

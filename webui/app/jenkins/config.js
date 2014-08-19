@@ -15,6 +15,8 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 
 	this.configItems = [];
 
+	this.couldReachJenkinsUrl = false;
+
 	this.addConfigItem = function(item){
 		this.configItems.push(item);
 	};
