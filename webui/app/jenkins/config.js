@@ -22,8 +22,12 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		this.configItems.push(item);
 	};
 
-	this.clear = function() {
+	this.clearViewAndJob = function() {
 		this.configItem.selectedView = "";
+		this.configItem.selectedJob = "";
+	};
+
+	this.clearView = function() {
 		this.configItem.selectedJob = "";
 	};
 

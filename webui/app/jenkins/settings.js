@@ -19,7 +19,7 @@ angular.module('app.jenkins').appJenkinsSettings =
 		$scope.add_click = function() {
 			if (!$scope.config.isEmpty()) {
 				var copiedConfigItem = angular.copy($scope.currentConfigValues);
-				$scope.config.clear();
+				$scope.config.clearView();
 				jenkinsConfigService.addConfigItem(copiedConfigItem);
 			}
 		};

@@ -4,9 +4,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
         $scope.box.boxSize = '2'; 
-        $scope.jenkinsConfig = {url: ""};
-        $scope.errormessage = "";
         $scope.jobsToDisplay = [];
+        $scope.jenkinsConfig = {};
 
         // Settings Screen
         $scope.box.settingsTitle = "Configure Jenkins URL";
@@ -180,10 +179,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         var clearJobsViewAndSetErrorMsg = function(msg) {
-            $scope.errormessage = msg;
-            $scope.jobs = [];
-            $scope.jobsToDisplay = [];
             $scope.primaryViewName = "";
+            jenkinsConfigService.configItem.selectedJob = "";
+            jenkinsConfigService.configItem.selectedView = "";
             jenkinsConfigService.couldReachJenkinsUrl = false;
             jenkinsConfigService.lastErrorMsg = msg;
         };
@@ -196,9 +194,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $http.get(url + "/api/json", {withCredentials: false})
                  .success(function (jobsOverviewData) {
 
-                    $scope.jobs = jobsOverviewData.jobs;
                     $scope.primaryViewName = jobsOverviewData.primaryView.name;
-                    $scope.errormessage = "";
 
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
                     jenkinsConfigService.configItem.jobs = jobsOverviewData.jobs;
