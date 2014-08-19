@@ -19,6 +19,13 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
       jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
     }
 
+    // https://jtrack/rest/api/latest/search?jql=
+    if(jira_instance === 'jtrack')
+    {
+        jira_url = 'https://jtrack.wdf.sap.corp/rest/api/latest/search?jql=';
+        // jira_url = window.client.origin + '/api/get?proxy=true&url=' + encodeURI(jira_url);
+    }
+
     this.http.get(jira_url + sQuery
         ).success(function (data, status, headers, config) {
 

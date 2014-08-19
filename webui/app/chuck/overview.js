@@ -11,7 +11,7 @@ angular.module('app.chuck').directive('app.chuck', ['$http', '$interval', functi
     		joke = joke.replace(/&quot;/ig,'"');
     		if(joke.length > 110)
     		{
-    			$scope.quote = joke.substring(0,108) + '..';
+    			$scope.quote = joke.substring(0,108) + '...';
     		}
     		else
     		{
