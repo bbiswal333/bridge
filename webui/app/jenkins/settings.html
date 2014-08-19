@@ -24,7 +24,7 @@
             </div>  
 
             <div class="row" style="margin:25px 0 0 0;">
-                <button type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()">Add New Selection</button>
+                <input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="!config.couldReachJenkinsUrl || currentConfigValues.selectedView === '' || currentConfigValues.selectedJob === ''" value="Add New Selection" />
             </div>
 
     	</form>
