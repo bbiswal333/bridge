@@ -122,7 +122,16 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].jobHealthReport = result.healthReport;
                             $scope.jobsToDisplay[jobIndex].color = (result.color === "notbuilt") ? "grey" : result.color;
-                            $scope.jobsToDisplay[jobIndex].statusColor = "status" + result.color;
+                            if(result.color === "red"){
+                                $scope.jobsToDisplay[jobIndex].statusIcon = "fa-times";
+                            }else if(result.color === "yellow"){
+                                $scope.jobsToDisplay[jobIndex].statusIcon = "fa-circle";
+                            }else if(result.color === "blue"){
+                                $scope.jobsToDisplay[jobIndex].statusIcon = "fa-check";
+                            }else{
+                                $scope.jobsToDisplay[jobIndex].statusIcon = "fa-question";
+                            }
+                            
                         }
                     }
 
