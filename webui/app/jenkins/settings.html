@@ -5,25 +5,26 @@
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
                  <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.jenkinsUrl" placeholder="Jenkins URL..." autofocus/>
-                 
+                 <span style="color: green" ng-if="config.couldReachJenkinsUrl">Loaded successfully.</span>
+                 <span style="color: red" ng-if="currentConfigValues.jenkinsUrl.length > 0 && !config.couldReachJenkinsUrl">{{config.lastErrorMsg}}</span>
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.selectedView" placeholder="View..."
-					typeahead="view.name for view in currentConfigValues.views | filter:$viewValue | limitTo:8" typeahead-editable="false"/>
-                
+					typeahead="view.name for view in currentConfigValues.views | filter:$viewValue | limitTo:8" typeahead-editable="false"
+                    ng-disabled="!config.couldReachJenkinsUrl" />
             </div>
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">Job</span>
                 <input type="text" class="form-control form"  ng-model="currentConfigValues.selectedJob" placeholder="Job..."
                 typeahead="job.name for job in getJobsByView(currentConfigValues.selectedView) | filter:$viewValue | limitTo:8"
-                typeahead-editable="false"/>
+                typeahead-editable="false" ng-disabled="!config.couldReachJenkinsUrl"/>
             </div>  
 
             <div class="row" style="margin:25px 0 0 0;">
-                <button type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()">Add New Selection</button>
+                <input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="!config.couldReachJenkinsUrl || currentConfigValues.selectedView === '' || currentConfigValues.selectedJob === ''" value="Add New Selection" />
             </div>
 
     	</form>
