@@ -48,11 +48,11 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
             var getGroup = function(task) {
               var group = '';
 
-              if (task.parentKey !== null) {
+              if (task.parentKey !== null && task.parentKey !== undefined) {
                 group += task.parentKey;
               }
 
-              if (task.component !== null) {
+              if (task.component !== null && task.component !== undefined) {
                 for (var i = 0; i < task.components.length; ++i) {
                   group += task.components[i].id;
                 }
