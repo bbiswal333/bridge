@@ -8,10 +8,13 @@ angular.module('app.chuck').directive('app.chuck', ['$http', '$interval', functi
     	$scope.updateQuote = function()
     	{
     		var joke = $scope.data[Math.floor(Math.random() * $scope.data.length)].joke;
-    		joke = joke.replace(/&quot;/ig,'"');
-    		if(joke.length > 110)
+    		//joke = joke.replace(/&quot;/ig,'"');
+            
+            var joke = $('<div/>').html(joke).text();
+    		
+            if(joke.length > 160)
     		{
-    			$scope.quote = joke.substring(0,108) + '...';
+    			$scope.quote = joke.substring(0,158) + '...';
     		}
     		else
     		{
