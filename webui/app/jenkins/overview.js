@@ -221,7 +221,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 }, true);
 
                 $scope.$watch("appConfig.configItem.jenkinsUrl", function () {
-                    $scope.appConfig.configItem.jenkinsUrl = $scope.appConfig.configItem.jenkinsUrl.replace(/\/$/, "");
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                         $scope.updateJenkinsData($scope.appConfig.configItem.jenkinsUrl);
                     }
