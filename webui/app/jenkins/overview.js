@@ -180,6 +180,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jobsToDisplay = [];
             $scope.primaryViewName = "";
             jenkinsConfigService.couldReachJenkinsUrl = false;
+            jenkinsConfigService.lastErrorMsg = msg;
         };
 
         $scope.updateJenkinsData = function(url) {
@@ -200,7 +201,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     retrieveAndSetJobsByView(removeViewAll(jobsOverviewData.views));
 
                 }).error(function(data, status) {
-                    clearJobsViewAndSetErrorMsg("Error retrieving data from " + url + ", got status: " + status);
+                    clearJobsViewAndSetErrorMsg("Error retrieving data, got status: " + status);
             });
 
         };
@@ -221,10 +222,12 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     jenkinsConfigService.configItem = $scope.appConfig.configItem;
                     jenkinsConfigService.configItems = $scope.appConfig.configItems;
                     jenkinsConfigService.couldReachJenkinsUrl = $scope.appConfig.couldReachJenkinsUrl;
+                    jenkinsConfigService.lastErrorMsg = $scope.appConfig.lastErrorMsg;
                 } else {
                     $scope.appConfig.configItem = jenkinsConfigService.configItem;
                     $scope.appConfig.configItems = jenkinsConfigService.configItems;
                     $scope.appConfig.couldReachJenkinsUrl = jenkinsConfigService.couldReachJenkinsUrl;
+                    $scope.appConfig.lastErrorMsg = jenkinsConfigService.lastErrorMsg;
                 }
 
                 $scope.box.boxSize = jenkinsConfigService.configItem.boxSize;

@@ -5,7 +5,8 @@
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
                  <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.jenkinsUrl" placeholder="Jenkins URL..." autofocus/>
-                 <span>{{config.couldReachJenkinsUrl}}</span>
+                 <span style="color: green" ng-if="config.couldReachJenkinsUrl">Loaded successfully.</span>
+                 <span style="color: red" ng-if="!config.couldReachJenkinsUrl">{{config.lastErrorMsg}}</span>
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
