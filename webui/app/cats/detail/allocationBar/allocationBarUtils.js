@@ -20,6 +20,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
     ];
 
     this.blockColors = {};
+    this.colors = this.basicBlue;
 
     this.setColorScheme = function(scheme) {
         if (scheme === 'colorful') {
