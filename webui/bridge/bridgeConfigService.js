@@ -58,7 +58,7 @@
             // angular cannot do synchronious requests, so use jQuery here
             $.ajax(
                 {
-                    url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
                     type: "POST",
                     data: angular.toJson(configPayload),
                     async: false,

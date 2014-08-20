@@ -40,8 +40,7 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             id: $scope.boxId
         };          
 
-        $scope.box.returnConfig = function()
-        {
+        $scope.box.returnConfig = function() {
             return configservice;
         };
 
@@ -74,8 +73,6 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
                 }
             }
         },true);  
-
-
 
         if (ticketData.isInitialized.value === false) {
             var initPromise = ticketData.initialize();

@@ -1,3 +1,27 @@
 <div>
- it Direct
+    <div style="height:140px">
+        <div class="app-itdirect-prio_container">
+            <div ng-repeat="prio in prios" class="prio_col app-itdirect-prio_col prio_bg_{{$index+1}}">
+                <a href="#/detail/im/{{prios[$index].key}}" >
+                    <div class="prio_box" style="color:white">
+                        <p>{{prios[$index].description}}</p>
+                    </div>
+                    <div class="prio_content_box" style="color:white">
+                        <p ng-if="getTicketCountForPrio(prios[$index].key) <= 99">{{getTicketCountForPrio(prios[$index].key)}}</p>
+                        <p ng-if="getTicketCountForPrio(prios[$index].key) >= 100">+99</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="app-itdirect-btn-container">
+            <div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bPartieOfRequestSelected];" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected"
+                 style="width:35px;" title="With your involvement">
+                <i class="fa fa-1.5x fa-crosshairs"></i>
+            </div>
+            <div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bSavedSearchSelected];" ng-click="config.bSavedSearchSelected = !config.bSavedSearchSelected"
+                 style="width:35px;" title="From Your Saved Search">
+                <i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+            </div>
+        </div>
+    </div>
 </div>
