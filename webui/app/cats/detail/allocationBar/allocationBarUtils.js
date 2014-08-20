@@ -3,8 +3,15 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
 
     this.colors = [
       "#418AC9",
-      "#8EB9DF"
+      "#8EB9DF"/*,
+      "#FCB517",
+      "#FCD274",
+      "#8561C5",
+      "#C2B0E2",
+      "#E76F24",
+      "#F0A470"*/
     ];
+
     this.blockColors = {};
 
     this.getColorForBlock = function(block){
