@@ -6,6 +6,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.selectedTask = null;
 	this.sundayweekstart = false;
 	this.catsProfile = "DEV2002C";
+	this.colorScheme = "basicBlue";
 
     function getIndex (tasks, task) {
         var index = -1;
@@ -23,17 +24,20 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
     this.copyConfigIfLoaded = function (catsConfigService) {
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
-			    this.recalculateTaskIDs(catsConfigService.favoriteItems);
-			    this.favoriteItems = catsConfigService.favoriteItems;
+				this.recalculateTaskIDs(catsConfigService.favoriteItems);
+				this.favoriteItems = catsConfigService.favoriteItems;
 			}
 			if (catsConfigService.lastUsedDescriptions) {
-			    this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
+				this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
 			}
 			if (catsConfigService.catsProfile) {
-			    this.catsProfile = catsConfigService.catsProfile;
+				this.catsProfile = catsConfigService.catsProfile;
 			}
 			if (catsConfigService.sundayweekstart) {
-			    this.sundayweekstart = catsConfigService.sundayweekstart;
+				this.sundayweekstart = catsConfigService.sundayweekstart;
+			}
+			if (catsConfigService.colorScheme) {
+				this.colorScheme = catsConfigService.colorScheme;
 			}
 		}
 	};

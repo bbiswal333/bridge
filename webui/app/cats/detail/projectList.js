@@ -252,6 +252,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function initProjectItems () {
+      colorUtils.setColorScheme(configService.colorScheme);
       if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
         $scope.items = angular.copy(configService.favoriteItems);
       } else{
