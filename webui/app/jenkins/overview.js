@@ -1,5 +1,5 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", function (jenkinsConfigService, $location) {
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", "$interval", function (jenkinsConfigService, $location, $interval) {
 
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
@@ -16,8 +16,14 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             id: $scope.boxId
         };
 
+
+
         $scope.box.returnConfig = function() {
             return angular.copy($scope.configService);
+        };
+
+        this.initialize = function () {
+            $interval(this.jobsToDisplay, 60000 * 10);
         };
 
         var formatTimestamp = function(timestamp) {
@@ -76,19 +82,31 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return name;
         };
 
+        var getStatusInfo = function(status){
+            if(status === "SUCCESS"){
+                return "Success";
+            }else if(status === "UNSTABLE"){
+                return "Unstable";
+            }else if(status === "FAILURE"){
+                return "Failed";
+            }
+        }
+
         var setLastBuildInfoNA = function(job) {
             for(var jobIndex in $scope.jobsToDisplay) {
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].timestamp = "Unknown";
                             $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name;
-                            $scope.jobsToDisplay[jobIndex].statusInfo = "UNKNOWN";
+                            $scope.jobsToDisplay[jobIndex].statusInfo = "Unknown";
+                            $scope.jobsToDisplay[jobIndex].lastBuild = 0000000000000;
+                            console.log($scope.jobsToDisplay[jobIndex].lastBuild);
                         }
                 }
         };
 
         var getAndSetTimestampForLastBuild = function(job) {
 
-            if(job.color === "grey") {
+            if(job.color === "grey" || job.color == undefined) {
 
                 setLastBuildInfoNA(job);
 
@@ -102,7 +120,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                                 $scope.jobsToDisplay[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
                                 $scope.jobsToDisplay[jobIndex].lastBuild = latestBuildData.timestamp;
                                 $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
-                                $scope.jobsToDisplay[jobIndex].statusInfo = latestBuildData.result;
+                                
+                                $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
                             }
                     }
                     
