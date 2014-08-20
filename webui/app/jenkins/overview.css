@@ -23,28 +23,28 @@
 	}
 
 .style{
-	padding-right: 8px;
-	padding-left: 10px;
+	padding-right: 5px;
+	padding-left: 20px;
+}
+
+a.tooltip{
+	position: left;
 }
 
 .statusred{
- 	background-color: #E00000;
+ 	color: #D53F26;
  }
 
  .statusblue{
- 	background-color: #2ECCFA;
+ 	color: #418AC9;
  }
 
  .statusyellow{
- 	background-color:  #FFFF00;
- }
-
- .statusyellow{
- 	background-color:  #F2F5A9;
+ 	color:  #FCB517;
  }
 
  .statusgrey{
- 	background-color:  #686868;
+ 	color:  #707070;
  }
 
  .{

@@ -79,8 +79,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         var setLastBuildInfoNA = function(job) {
             for(var jobIndex in $scope.jobsToDisplay) {
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
-                            $scope.jobsToDisplay[jobIndex].timestamp = "N/A";
+                            $scope.jobsToDisplay[jobIndex].timestamp = "Unknown";
                             $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name;
+                            $scope.jobsToDisplay[jobIndex].statusInfo = "UNKNOWN";
                         }
                 }
         };
@@ -99,7 +100,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     for(var jobIndex in $scope.jobsToDisplay) {
                             if($scope.jobsToDisplay[jobIndex].name === job.name) {
                                 $scope.jobsToDisplay[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
+                                $scope.jobsToDisplay[jobIndex].lastBuild = latestBuildData.timestamp;
                                 $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
+                                $scope.jobsToDisplay[jobIndex].statusInfo = latestBuildData.result;
                             }
                     }
                     
@@ -122,11 +125,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].jobHealthReport = result.healthReport;
                             $scope.jobsToDisplay[jobIndex].color = (result.color === "notbuilt") ? "grey" : result.color;
+                            $scope.jobsToDisplay[jobIndex].statusColor = "status" + result.color;
+                            // $scope.jobsToDisplay[jobIndex].statusInfo = result.result;
                             if(result.color === "red"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-times";
                             }else if(result.color === "yellow"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-circle";
-                            }else if(result.color === "blue"){
+                            }else if(result.color === "blue" || result.color === "green"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-check";
                             }else{
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-question";
@@ -179,9 +184,25 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return views;
         };
 
-        $scope.getWeatherIconLink = function(job) {
-            return ((job.jobHealthReport === undefined) ? "" : "/app/jenkins/icons/" + job.jobHealthReport[0].iconUrl);
-        };
+        // $scope.getWeatherIconLink = function(job) {
+        //     if(job.jobHealthReport[0].iconUrl === "health-60to79.png")
+        //     {
+        //         return "fa-rotate-315";
+        //     }else if(job.jobHealthReport[0].iconUrl === "health-80plus.png")
+        //     {
+        //         return "fa-rotate-270";
+        //     }else if(job.jobHealthReport[0].iconUrl === "health-40to59.png")
+        //     {   
+        //         return "fa-rotate-360";
+        //     }else if(job.jobHealthReport[0].iconUrl === "health-20to39.png")
+        //     {
+        //         return "fa-rotate-45";
+        //     }else if(job.jobHealthReport[0].iconUrl === "health-00to19.png")
+        //     {
+        //         return "fa-rotate-90";
+        //     }
+        //     // return ((job.jobHealthReport === undefined) ? "" : "/app/jenkins/icons/" + job.jobHealthReport[0].iconUrl);
+        // };
 
         var clearJobsViewAndSetErrorMsg = function(msg) {
             $scope.primaryViewName = "";
