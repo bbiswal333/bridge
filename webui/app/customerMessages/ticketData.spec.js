@@ -26,7 +26,7 @@
     });
 
     it("should increase the ticket counter according to the backend data", function () { 
-        $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPO1pbg==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[0].total).toBe(0);
@@ -36,7 +36,7 @@
     });
 
     it("should reset the priorities in the data structure", function () {
-        $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPO1pbg==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[2].total).toBe(2);
@@ -52,7 +52,7 @@
     });
 
     it("should update correct count for selection", function(){	
-    	$httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPO1pbg==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+    	$httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
             expect(configService.data.selection).toBeDefined();
             
@@ -96,7 +96,7 @@
     describe("in handling of duplicted messages", function () {
 
         beforeEach(function () {
-            $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPO1pbg==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockDataWithDuplicates);
+            $httpBackend.whenGET('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockDataWithDuplicates);
         });
         afterEach(function(){
             $httpBackend.flush();
