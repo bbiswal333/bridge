@@ -284,7 +284,7 @@ directive("app.meetings", [
 				}
 			});
 
-			(function springGun() {
+			(function reloader() {
 				var i = 1;
 				//Full reload every 300 seconds, refresh of UI all 30 seconds
 				refreshInterval = $interval(function () {
@@ -296,7 +296,7 @@ directive("app.meetings", [
 						parseExchangeData(true, eventsRaw);
 						i++;
 					}
-				}, 30000);
+				}, 30 * 1000);
 			})();
 
 			loadFromExchange(false);
