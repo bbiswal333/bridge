@@ -17,14 +17,20 @@
         return true;
     }
 
-    //TODO: this extra call should be integrated with the config, projects, etc
     function _fetchUserInfo() {
+        var defer = $q.defer();
+
         $http({
             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
             method: "GET"
         }).success(function (data) {
             that.userInfo = data.USERINFO;
+            defer.resolve();
+        }).error(function(){
+            defer.reject();
         });
+
+        return defer.promise;
     }
 
     function parseApps(project) {
@@ -90,11 +96,14 @@
 
     function _initialize(deferredIn) {
         var deferred = $q.defer();
-        var promise = bridgeConfig.loadFromBackend(deferred);
-        promise.then(function (config) {
-            that.configRawData = config;
 
-            _fetchUserInfo();
+        var configPromise = bridgeConfig.loadFromBackend(deferred);
+        var userInfoPromise = _fetchUserInfo();
+
+        var allPromises = $q.all([configPromise, userInfoPromise]);
+        allPromises.then(function (data) {
+            var config = data[0];
+            that.configRawData = config;
 
             // if the config is not an object, then the user has no configuration stored in the backend
             if (angular.isObject(config) && !isEmpty(config)) {
