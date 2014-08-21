@@ -97,7 +97,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].timestamp = "unknown";
                             $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name;
-                            $scope.jobsToDisplay[jobIndex].statusInfo = "unknown";
+                            $scope.jobsToDisplay[jobIndex].statusInfo = "Unknown";
                             $scope.jobsToDisplay[jobIndex].lastBuild = 0000000000000;
                             console.log($scope.jobsToDisplay[jobIndex].lastBuild);
                         }
