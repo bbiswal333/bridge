@@ -19,14 +19,14 @@
 		"it": true,
 		"expect": true,
 		"alert": true,
-        "Notification":  true      
+        "Notification":  true,
+        "_": true
     },
     "rules": 
     {        
         "quotes": 0,
         "strict": 0,
         "camelcase": 0,
-		"no-alert": 0,
         "no-underscore-dangle": 0
     }
 }
