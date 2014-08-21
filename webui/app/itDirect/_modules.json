@@ -6,15 +6,15 @@
         "icon_css"				:	"icon-comment",
         "overview_directive"	:	"app.itdirect",
         "needs_client"			:	false,
-        "xroutes"		:
+        "routes"		:
             [
                 {
-                    "route"			:	"/detail/im/:prio",
-                    "templateUrl"	:	"app/im/detail.html"
+                    "route"			:	"/detail/itdirect/:appId/:prio",
+                    "templateUrl"	:	"app/itdirect/detail.html"
                 }
             ]
     },
     "modules" : [],
-    "js_files" : ["overview.js", "ticketData.js", "config.js"],
+    "js_files" : ["overview.js", "ticketData.js", "config.js", "detail.js"],
     "css_files" : ["style.css"]
 }

@@ -4,13 +4,13 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$http", "$q"
     var that = this;
     this.isInitialized = {value: false};
     this.prios = [{
-        key: "1", description: "Very High"
+        key: "1", description: "Very High", active: false
     },{
-        key: "2", description: "High"
+        key: "2", description: "High", active: false
     },{
-        key: "3", description: "Medium"
+        key: "3", description: "Medium", active: false
     },{
-        key: "4", description: "Low"
+        key: "4", description: "Low", active: false
     }];
 
     this.tickets = {};
@@ -62,6 +62,16 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$http", "$q"
         }
 
         return $q.all(promiseArray);
+    };
+
+    this.activatePrio = function(sPrioKey){
+        angular.forEach(that.prios, function(prio){
+            // reset all prios first
+            prio.active = false;
+            if (prio.key === sPrioKey){
+               prio.active = true;
+            }
+        });
     };
 
     this.initialize = function () {

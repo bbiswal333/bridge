@@ -2,9 +2,10 @@ angular.module('app.itdirect', ['bridge.service', 'ngTable']);
 
 angular.module('app.itdirect').directive('app.itdirect', function ()
 {
-    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeConfig", function($scope, config, ticketData, bridgeConfig){
-        config.initialize($scope.appConfig);
-
+    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeDataService", "bridgeConfig", function($scope, config, ticketData, bridgeDataService, bridgeConfig){
+        if (config.isInitialized === false) {
+            config.initialize($scope.appConfig);
+        }
         if (ticketData.isInitialized.value === false) {
             ticketData.initialize();
         }

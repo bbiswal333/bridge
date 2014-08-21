@@ -1,4 +1,6 @@
 angular.module("app.itdirect").service("app.itdirect.config", function(){
+    this.isInitialized = false;
+
     this.oIncludeSavedSearch = false;
     this.sSavedSearchToInclude = "";
 
@@ -7,6 +9,8 @@ angular.module("app.itdirect").service("app.itdirect.config", function(){
 
     this.initialize = function(oConfigFromBackend){
         var property;
+
+        this.isInitialized = true;
 
         for (property in oConfigFromBackend){
             this[property] = oConfigFromBackend[property];

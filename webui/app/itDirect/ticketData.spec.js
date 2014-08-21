@@ -79,4 +79,12 @@ describe("IT Direct ticket data", function(){
         expect(ticketData.tickets.savedSearch.length).toBe(6);
     });
 
+    it("should activate a priority", function(){
+       ticketData.activatePrio("2");
+
+        expect(ticketData.prios[0].active).toBe(false);
+        expect(ticketData.prios[1].active).toBe(true);
+        expect(ticketData.prios[2].active).toBe(false);
+        expect(ticketData.prios[3].active).toBe(false);
+    });
 });
