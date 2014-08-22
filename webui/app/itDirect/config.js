@@ -5,8 +5,8 @@ angular.module("app.itdirect").service("app.itdirect.config", function(){
     this.bIncludeSavedSearch = false;
     this.sSavedSearchToInclude = "";
 
-    this.bPartieOfRequestSelected = false;
-    this.bSavedSearchSelected = false;
+    this.bPartieOfRequestSelected = true;
+    this.bSavedSearchSelected = true;
 
     this.initialize = function(oConfigFromBackend){
         var property;

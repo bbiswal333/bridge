@@ -14,4 +14,8 @@ angular.module('app.itdirect')
                     });
                  });
             });
+
+        $scope.save_click = function () {
+            $scope.$emit('closeSettingsScreen');
+        };
 }]);
