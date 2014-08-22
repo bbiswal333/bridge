@@ -7,7 +7,9 @@ angular.module('app.transport').controller('app.transport.detailController', ['$
         	// configservice.initialize($routeParams.appId);
         // }
 		
-		$scope.url = "https://ifp.wdf.sap.corp/sap/bc/devdb/MYTRANSPORTS?origin=https://localhost:8000";
+		$scope.url = "https://ifp.wdf.sap.corp/sap/bc/devdb/MYTRANSPORTS?origin=' + location.origin ";
+		//$scope.url = "https://ifp.wdf.sap.corp/sap/bc/devdb/MYTRANSPORTS?origin=https://localhost:8000"; to test locally
+		
 		$scope.transports = {};
 		$scope.handleTransports = function() {
 			$http.get($scope.url)
