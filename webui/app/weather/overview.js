@@ -1,5 +1,5 @@
-﻿angular.module('app.weather', ["lib.utils"]);
-angular.module('app.weather').directive('app.weather', ['app.weather.configservice',function (weatherconfig) {
+﻿angular.module('app.weather', ["lib.utils","bridge.service"]);
+angular.module('app.weather').directive('app.weather', ['app.weather.configservice', 'bridgeDataService', 'bridgeConfig', function (weatherconfig, bridgeDataService, bridgeConfig) {
 
     var directiveController = ['$scope', '$http', '$interval', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, $interval, bridgeDataService, calUtils) 
     {
@@ -207,6 +207,10 @@ return {
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
             {
                 weatherconfig.configItem = $scope.appConfig.configItem;
+            }
+            else
+            {
+                weatherconfig.init().then( function(){ bridgeConfig.persistInBackend(bridgeDataService); } );                
             }
         }
     };

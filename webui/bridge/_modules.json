@@ -36,7 +36,8 @@
 		"sortableService.js",
 		"bridgeInBrowserNotification.js",
 		"trafficLightService.js",
-		"employeeService.js"
+		"employeeService.js",
+		"bridgeBuildingSearchService.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css"
