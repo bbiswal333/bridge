@@ -353,19 +353,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 xmlDoc.async = false;
                 xmlDoc.loadXML(data);
             }
-            var replyHasMessages = false;
-            for (var i = 0; i < 5; i++) {
+            var replyMessages = [];
+            var weAreDone = false;
+            var alertDuration = 5;
+            for (var i = 0; weAreDone === false; i++) {
                 var message = xmlDoc.getElementsByTagName("TEXT")[i];
                 if (message) {
-                    replyHasMessages = true;
-                    // if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                    //     bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
-                    // } else {
-                        bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
-                    // }
+                    if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
+                        replyMessages.push(message.childNodes[0].nodeValue);
+                        bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
+                        if (replyMessages.length >= 5) {
+                            weAreDone = true;
+                        }
+                    }
+                } else {
+                    weAreDone = true;
                 }
             }
-            if (!replyHasMessages) {
+            if (!replyMessages.length) {
                 bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
             }
         } catch(err) {
