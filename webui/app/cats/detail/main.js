@@ -356,18 +356,26 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var replyMessages = [];
             var weAreDone = false;
             var alertDuration = 5;
+            var maxMessageCount = 5;
             for (var i = 0; weAreDone === false; i++) {
                 var message = xmlDoc.getElementsByTagName("TEXT")[i];
                 if (message) {
                     if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
                         replyMessages.push(message.childNodes[0].nodeValue);
-                        bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
-                        if (replyMessages.length >= 5) {
-                            weAreDone = true;
+                        if (replyMessages.length <= maxMessageCount) {
+                            bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
                         }
                     }
                 } else {
                     weAreDone = true;
+                }
+            }
+            if (replyMessages.length > maxMessageCount) {
+                var additionalMessagesCount = replyMessages.length - maxMessageCount;
+                if (additionalMessagesCount === 1) {
+                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.',alertDuration);
+                } else {
+                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.',alertDuration);
                 }
             }
             if (!replyMessages.length) {
