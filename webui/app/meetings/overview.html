@@ -1,15 +1,17 @@
 <div >
-	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
+	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px">
         <div ng-if="errMsg != null">
           {{errMsg}}
         </div>
 		<div ng-if="hasEvents()">
-            <div>
+            <div ng-if="box.boxSize == 1">
                 <b>{{getCurrentDate()}}</b><br>
-                {{getMeetingsLeftText()}}
             </div>
-            <div style="margin-top: 5px; height: 110px; overflow: hidden;">
-                <div style="height: 110px; overflow-y: auto;">
+            <div ng-if="box.boxSize == 2">
+                <b>{{getCurrentDate()}}</b>{{getMeetingsLeftText()}}<br>
+            </div>
+            <div style="margin-top: 3px; height: 125px; overflow: hidden;">
+                <div style="height: 125px; overflow-y: auto;">
                     <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">

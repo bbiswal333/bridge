@@ -49,6 +49,9 @@ module.exports = function(config) {
       './webui/app/im/overview.js',
       './webui/app/im/*.js',
 
+      './webui/app/customerMessages/overview.js',
+      './webui/app/customerMessages/*.js',
+
       './webui/app/employeeSearch/*.js',
 
       './webui/app/atc/overview.js',

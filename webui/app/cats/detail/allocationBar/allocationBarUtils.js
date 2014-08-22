@@ -1,11 +1,34 @@
 angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationBar.utils.colorUtils", function () {
     this.colorCounter = 0;
 
-    this.colors = [
+    this.basicBlue = [
       "#418AC9",
       "#8EB9DF"
     ];
+
+    this.colorful = [
+      "#418AC9",
+      "#8EB9DF",
+      "#FCB517",
+      "#FCD274",
+      "#8561C5",
+      "#C2B0E2",
+      "#E76F24",
+      "#F0A470",
+      "#4EA175",
+      "#A7D0BA"
+    ];
+
     this.blockColors = {};
+    this.colors = this.basicBlue;
+
+    this.setColorScheme = function(scheme) {
+        if (scheme === 'colorful') {
+            this.colors = this.colorful;
+        } else {
+            this.colors = this.basicBlue;
+        }
+    };
 
     this.getColorForBlock = function(block){
         var len = this.colors.length;
@@ -19,7 +42,7 @@ angular.module("app.cats.allocationBar.utils", []).service("app.cats.allocationB
             this.blockColors[blockId] = this.colors[this.colorCounter % len];
             this.colorCounter++;
         }
-        return this.blockColors[blockId]; 
+        return this.blockColors[blockId];
     };
 
     this.resetColorCounter = function () {

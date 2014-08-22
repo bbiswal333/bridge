@@ -23,6 +23,16 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.dragBarWidth = 5;
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
+            $scope.getDescription = function () {
+                if ($scope.blockData.task.ZCPR_EXTID) {
+                    return $scope.blockData.desc + " (" + $scope.blockData.task.ZCPR_EXTID + ")";
+                } else if ($scope.blockData.task.TASKTYPE) {
+                    return $scope.blockData.desc + " (" + $scope.blockData.task.TASKTYPE + ")";
+                } else {
+                    return $scope.blockData.desc;
+                }
+            };
+
             $scope.getValueAsPercentage = function () {
                 return Math.round($scope.blockData.localValue / $scope.totalValue * 1000) / 10;
             };
@@ -64,7 +74,7 @@ function (colorUtils, blockCalculations, calUtils) {
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{blockData.desc}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
                 '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +
             '</div>' +

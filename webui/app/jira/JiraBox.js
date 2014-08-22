@@ -19,6 +19,13 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
       jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
     }
 
+    // https://jtrack/rest/api/latest/search?jql=
+    if(jira_instance === 'jtrack')
+    {
+        jira_url = 'https://jtrack.wdf.sap.corp/rest/api/latest/search?jql=';
+        // jira_url = window.client.origin + '/api/get?proxy=true&url=' + encodeURI(jira_url);
+    }
+
     this.http.get(jira_url + sQuery
         ).success(function (data, status, headers, config) {
 
@@ -48,11 +55,11 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
             var getGroup = function(task) {
               var group = '';
 
-              if (task.parentKey !== null) {
+              if (task.parentKey !== null && task.parentKey !== undefined) {
                 group += task.parentKey;
               }
 
-              if (task.component !== null) {
+              if (task.component !== null && task.component !== undefined) {
                 for (var i = 0; i < task.components.length; ++i) {
                   group += task.components[i].id;
                 }

@@ -38,6 +38,6 @@
         }
     };
 
-    // set up the refresh interval for the data loading
-    $interval(this.loadOverviewData, 60000 * 5);
+    // refresh interval
+    $interval(this.loadOverviewData, 1000 * 60 * 5);
 }]);

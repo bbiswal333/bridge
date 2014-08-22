@@ -5,7 +5,7 @@
     "app.lunchWalldorf.dataProcessor",
     "app.lunchWalldorf.configservice",
     function (calUtils, dataProcessor, lunchConfigService) {
-    var directiveController = ['$scope', '$http', function ($scope, $http) {
+    var directiveController = ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
         
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
@@ -25,40 +25,44 @@
 
         $scope.configService = lunchConfigService;
 
-        // proceed to next potential lunch-relevant day
-        var date = dataProcessor.getDateToDisplay(new Date());
-        while (!dataProcessor.isRegularWeekDay(date)) {
-            date.setDate( date.getDate() + 1 );
-        }
-
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
         };    
 
-        $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
-        ).success(function(data) {            
-            // evaluate menu
-            $scope.lunch = dataProcessor.getLunchMenu(data, date);
-            if($scope.lunch){
-                $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                $scope.contentLoaded = true;                
-            } else {
-                // move on to next date
+        function loadAndDisplayLunchMenu() {
+            // proceed to next potential lunch-relevant day
+            var date = dataProcessor.getDateToDisplay(new Date());
+            while (!dataProcessor.isRegularWeekDay(date)) {
                 date.setDate( date.getDate() + 1 );
-                while (!dataProcessor.isRegularWeekDay(date)) {
-                    date.setDate( date.getDate() + 1 );
-                }
+            }
+
+            $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
+            ).success(function(data) {            
                 // evaluate menu
                 $scope.lunch = dataProcessor.getLunchMenu(data, date);
                 if($scope.lunch){
                     $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                    $scope.contentLoaded = true;                    
+                    $scope.contentLoaded = true;                
                 } else {
-                    $scope.contentLoaded = false;                    
+                    // move on to next date
+                    date.setDate( date.getDate() + 1 );
+                    while (!dataProcessor.isRegularWeekDay(date)) {
+                        date.setDate( date.getDate() + 1 );
+                    }
+                    // evaluate menu
+                    $scope.lunch = dataProcessor.getLunchMenu(data, date);
+                    if($scope.lunch){
+                        $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
+                        $scope.contentLoaded = true;                    
+                    } else {
+                        $scope.contentLoaded = false;                    
+                    }
                 }
-            }
-        }).error(function() {            
-        });
+            }).error(function() {            
+            });
+        }
+        loadAndDisplayLunchMenu();
+        $interval(loadAndDisplayLunchMenu, 1000 * 60 * 5);
     }];
 
     return {

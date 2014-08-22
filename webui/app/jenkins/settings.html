@@ -1,40 +1,56 @@
 <div style="width: 100%">
-	<p>
-		<form name="ConfigItemForm">
-			<div class="row">
-				<div class="col-xs-2 form_head" style="float:none;">Jenkins URL</div>
-				<div style="width: 20%"><input type="text" class="form form-control" value="{{currentConfigValues.jenkinsUrl}}" ng-model="currentConfigValues.jenkinsUrl"/></div>
-			</div>
-			<br />
 
-			<!-- Resize Window
-			<div class="row">
-				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
-				<div class="btn-group" style="margin-left:15px;margin-top:10px">
-						<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
-						<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
-				</div>
-			</div>
-			-->
+		<form name="newConfigItemForm" class="atc_input">
 
-		</form>
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
+                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.jenkinsUrl" placeholder="Jenkins URL..." autofocus/>
+                 <span style="color: green" ng-if="config.couldReachJenkinsUrl">Loaded successfully.</span>
+                 <span style="color: red" ng-if="currentConfigValues.jenkinsUrl.length > 0 && !config.couldReachJenkinsUrl">{{config.lastErrorMsg}}</span>
+            </div>  
+           
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
+                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.selectedView" placeholder="View..."
+					typeahead="view.name for view in currentConfigValues.views | filter:$viewValue | limitTo:8" typeahead-editable="false"
+                    ng-disabled="!config.couldReachJenkinsUrl" />
+            </div>
+            
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head">Job</span>
+                <input type="text" class="form-control form"  ng-model="currentConfigValues.selectedJob" placeholder="Job..."
+                typeahead="job.name for job in getJobsByView(currentConfigValues.selectedView) | filter:$viewValue | limitTo:8"
+                typeahead-editable="false" ng-disabled="!config.couldReachJenkinsUrl"/>
+            </div>  
 
-		<div class="row">
-			<div class="col-xs-2 form_head" style="float:none;">Filter</div>
-			<div style="width: 15%; float:left">
-				<input type="text" class="form form-control" ng-model="filterTextJobs" placeholder="Filter job ..."/>
-			</div>
-			<div style="width: 75%; float:left; margin-left: 5%">
-				<label ng-repeat="view in currentConfigValues.views" ng-model="currentConfigValues.checkboxViews[view.name]" class="btn btn-primary" btn-checkbox>{{view.name}}</label>
-			</div>
-		</div>
+            <div class="row" style="margin:25px 0 0 0;">
+                <input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="!config.couldReachJenkinsUrl || currentConfigValues.selectedView === '' || currentConfigValues.selectedJob === ''" value="Add New Selection" />
+            </div>
 
-		<div style="overflow-y: scroll; overflow-x: hidden; height: 400px; width: 70%; padding-top: 10px;">
-        	
-			<label ng-repeat="job in getJobsOfCheckedViews(currentConfigValues.jobsByView) | filter:filterTextJobs" ng-model="currentConfigValues.checkboxJobs[job.name]" class="btn btn-primary" style="margin: 5px; width: 150px" title="{{job.name}}" btn-checkbox>{{limitDisplayName(job.name, 15)}}</label>
+    	</form>
 
-		</div>
-	</p>
+    	<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+        <table ng-table="tableParams" class="table tableTransparentBorder" >
+            <thead style="background-color: #ECECEC;">
+                <tr>
+                    <th>Source System</th>
+                    <th>View</th>
+                    <th>Job</th>
+                    <th>Functions</th> <!-- Empty Head for functions -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
+                    <td data-title="'Source System'">{{configItem.jenkinsUrl}}</td>
+                    <td data-title="'View'">{{configItem.selectedView}}</td>
+                    <td data-title="'Job'">{{configItem.selectedJob}}</td>
+                    <td data-title="'Functions'">
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>

@@ -4,7 +4,6 @@ var url 		= require('url');
 var fs          = require('fs');
 var path 		= require('path');
 var npm_load	= require('./npm_load.js');
-var path		= require('path');
 
 exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 {
@@ -12,14 +11,13 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var xml2js 	  	  = require("xml2js").parseString;
 	var iconv 	  	  = require("iconv-lite");
 	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
-	var wire          = require("./wire.js");
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
 
 	function setHeader(request, response)
-	{	
-		var re = /^((https:\/\/)|(http:\/\/)|)([a-zA-Z0-9\.\-]*(\.sap\.corp|\.corp\.sap)|localhost)(:\d+)?($|\/)/;
-		if ( request.headers.origin != undefined && re.test(request.headers.origin))
+	{
+		var originPattern = /^(https:\/\/)(bridge\.mo\.sap\.corp|bridge-master\.mo\.sap\.corp|localhost)(:\d+)?($|\/)/;
+		if ( request.headers.origin !== undefined && originPattern.test(request.headers.origin))
 		{
 			response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
 			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept' );
@@ -27,7 +25,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
 		}    	
 		return response;
-	};
+	}
 
 	// FIXME - currently migrated from ews.js
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
@@ -93,10 +91,10 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			options.passphrase = user.SSOCertificatePassphrase;
 		}
 
-		if (method.toLowerCase() == "post" && postData != undefined) {
+		if (method.toLowerCase() === "post" && postData !== undefined) {
 			options.headers = {
 				'Content-Type': 'text/xml; charset=UTF-8',
-				'Content-Length': (postData != undefined ? postData.length : 0)
+				'Content-Length': (postData !== undefined ? postData.length : 0)
 			};
 		}
 
@@ -105,19 +103,19 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		var req = {};
 
-		if( protocol == "http:")
+		if( protocol === "http:")
 		{
 			req = http_req.request(options, function(res) {
 				res.setEncoding('binary');
 
 				var contentType = res.headers['content-type'];
-				if (decode != "none")
+				if (decode !== "none")
 				{ 
 					res.setEncoding('binary');
 				}
 				res.on('data', function(chunk) { data += chunk; });
 				res.on('end', function(){
-					if (decode == "none"){
+					if (decode === "none"){
 						callback( data, contentType );
 					}
 					else
@@ -144,7 +142,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		}
 		
 
-		if (method.toLowerCase() == "post" && postData != undefined) 
+		if (method.toLowerCase() === "post" && postData !== undefined) 
 		{			
 			req.write(postData);
 		}
@@ -153,12 +151,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		req.on('error', function (e) {
 		    console.error(e);
 		});
-	};
+	}
 
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
 		response = setHeader( request, response );			
-		response.send('{"client":"true", "os": "' + process.platform + '"}');
+		response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.version + '"}');
 	});
 
 	//generic api call get
@@ -166,20 +164,20 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		var json = false;
 		var proxy = false;
 
-		if (typeof request.query.url == "undefined" || request.query.url == "")
+		if (typeof request.query.url === "undefined" || request.query.url === "")
 		{
 			response = setHeader( request, response );	
 			response.send("Paramter url needs to be set!");
 			return;
 		}
 
-		if (typeof request.query.json != "undefined" && request.query.json == "true")
+		if (typeof request.query.json !== "undefined" && request.query.json === "true")
 		{
 			json = true;
 			response.setHeader('Content-Type', 'application/json');
 		}
 
-		if (typeof request.query.proxy != "undefined" && request.query.proxy == "true")
+		if (typeof request.query.proxy !== "undefined" && request.query.proxy === "true")
 		{
 			proxy = true;
 		}
@@ -187,7 +185,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		var service_url = url.parse(request.query.url);	
 
 		var decode = "none";
-		if(typeof request.query.decode != "undefined")
+		if(typeof request.query.decode !== "undefined")
 		{				
 			decode = request.query.decode;
 		}
@@ -204,7 +202,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			if (json) {
 				try {
 					xml2js(data, function (err, result) {
-						if (err == undefined) {
+						if (err === undefined) {
 							response.send(JSON.stringify(result));
 						}
 						else {
@@ -265,7 +263,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	});
 
 	app.post("/api/post", function (request, response) {
-		if (typeof request.query.url == "undefined" || request.query.url == "")
+		if (typeof request.query.url === "undefined" || request.query.url === "")
 		{
 			response = setHeader( request, response );	
 			response.send("Paramter url needs to be set!");
@@ -306,7 +304,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			}
 		}	
 		return array;
-	}
+	};
 
 	var getFiles = function(dir, files)
 	{		
@@ -323,7 +321,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    }
 		    else
 		    {
-		    	if (path.basename(name) == '_modules.json')
+		    	if (path.basename(name) === '_modules.json')
 		    	{
 		    		try
 		    		{
@@ -332,7 +330,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 			    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
 			    		{
-			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) == "_files" )
+			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
 			    			{								
 			    				for (var i = 0; i < value.length; i++)
 			    				{
@@ -340,8 +338,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 									value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
 								}
 								return value;
-			    			}	
-			    			else return value;		    			
+			    			} else {
+			    				return value;
+			    			}
 			    		});	    				   
 			    	}
 			    	catch(e)
@@ -352,7 +351,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    }
 		}	    
 		return out_files;
-	}
+	};
 
 	app.get("/api/modules", function (request, response) 
 	{
@@ -364,7 +363,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		{
 			response.setHeader('Cache-Control', 'no-cache, max-age=2592000');	// 30 days		
 			response.setHeader('ETag', eTag);		
-			if( request.headers['if-none-match'] == eTag)
+			if( request.headers['if-none-match'] === eTag)
 			{
 				getResponse = false;
 			}
@@ -392,19 +391,19 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    var app_files = getFiles(app_path);	
 		    files = concatAttributes(files, app_files);
 
-		    if (typeof request.query.format == "undefined")
+		    if (typeof request.query.format === "undefined")
 		    {
 		    	response.setHeader('Content-Type', 'text/plain;');						    	   
 				response.send(JSON.stringify(files));		
 			}
-			else if( request.query.format == "js")
+			else if( request.query.format === "js")
 			{
 				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
 				buildify.concat(files.js_files);		
 				response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
 				response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
 			}
-			else if( request.query.format == "css")
+			else if( request.query.format === "css")
 			{
 				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
 				buildify.concat(files.css_files);				
@@ -424,25 +423,25 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calDataSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 
-			var ews = undefined;
+			var ews;
 			try {
 				// we want to have business logic, iff at all in the api.js and not ewsclient.js
-				var dateFrom = request.query.dateFrom
-				var dateTo = request.query.dateTo
-				if (dateFrom == undefined || dateTo == undefined) {
+				var dateFrom = request.query.dateFrom;
+				var dateTo = request.query.dateTo;
+				if (dateFrom === undefined || dateTo === undefined) {
 					throw new Error("dateFrom_s and dateTo_s must not be undefined.");
 				}
 				
-				if (dateFrom == "" || dateTo == "") {
+				if (dateFrom === "" || dateTo === "") {
 					throw new Error("dateFrom_s and dateTo_s must not ne empty.");
 				}
 				
-				if (dateFrom.length != 20 || dateTo.length != 20) {
+				if (dateFrom.length !== 20 || dateTo.length !== 20) {
 					throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");
 				}
 
@@ -461,7 +460,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					response.send(ans);
 				}
 				else {
-					if (json) response.setHeader('Content-Type', 'application/json');
+					if (json) {
+						response.setHeader('Content-Type', 'application/json');
+					}
 					response.send(res);
 				}
 			});
@@ -471,12 +472,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calGetItemSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 
-			var ews = undefined;
+			var ews;
 			try {
 				ews = new EWSClient("getitem", request.query, json);
 			} catch (e) {
@@ -493,7 +494,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					response.send(ans);
 				}
 				else {
-					if (json) response.setHeader('Content-Type', 'application/json');
+					if (json) {
+						response.setHeader('Content-Type', 'application/json');
+					}
 					response.send(res);
 				}
 			});
@@ -518,16 +521,16 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calDeleteBookedRoomSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 
-			if (request.query.dateFrom == "" || request.query.dateTo == "" || request.query.eMail == "") {
+			if (request.query.dateFrom === "" || request.query.dateTo === "" || request.query.eMail === "") {
 					throw new Error("dateFrom_s and dateTo_s and eMail must not be empty.");
 			}
 				
-			var ews = undefined;
+			var ews;
 			try {
 				// first we need to get the corresponding meeting
 				ews = new EWSClient("calview", request.query, true);
@@ -547,7 +550,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					response.send(ans);
 				}
 				else {
-					if (json) response.setHeader('Content-Type', 'application/json');
+					if (json) {
+						response.setHeader('Content-Type', 'application/json');
+					}
 					//response.send(res);
 					var resj = JSON.parse(res);
 					var eventsRaw = resj["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];	
@@ -627,7 +632,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 									});
 									}
 								});
-								if (breakout == true) {
+								if (breakout === true) {
 									return;
 								}
 								query["Attendeelist"] = attendeelist;
@@ -721,8 +726,8 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calDelRoomSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 			var query = request.query;
@@ -766,8 +771,8 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calCreatemeetingcancelationSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 
@@ -799,8 +804,8 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		app.get("/api/calRoomsSSO", function (request, response) {
 			response = setHeader( request, response );	
 			var json = function () {
-				if (typeof request.query.format != "undefined") {
-					return (request.query.format.toLowerCase() == "json") ? true : false;
+				if (typeof request.query.format !== "undefined") {
+					return (request.query.format.toLowerCase() === "json") ? true : false;
 				}
 			}();
 
@@ -846,7 +851,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		var colorOn = request.query.color;	
 		
 		var l_err = '';
-		if(process.platform == "win32") {
+		if(process.platform === "win32") {
 			var child = execFile('USBswitchCmd.exe', [ colorOn ] , { cwd: pathTrafLight } , function( error, stdout, stderr) {
 				// callback function for switch
 			   if ( error ) {

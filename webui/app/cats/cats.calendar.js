@@ -567,14 +567,14 @@ angular.module("app.cats")
 			    }
 			});
 
-			(function springGun() {
+			(function reloader() {
 			    var dateLastRun = new Date().getDate();
 
 			    refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
-			    }, 3 * 3600000);
+			    }, 3 * 60 * 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {

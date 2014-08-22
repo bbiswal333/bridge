@@ -79,8 +79,13 @@ directive("app.meetings", [
 			    }
 			}
 
-			function parseExchangeData(events) {
+			function parseExchangeData(withNotifications ,events) {
 				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
+				var oldEventsLength = 0;
+
+				if(withNotifications){
+					oldEventsLength = $scope.events.length;
+				}
 				$scope.events = [];
 
 				if (typeof events === "undefined") {
@@ -103,7 +108,7 @@ directive("app.meetings", [
 
 					if (start.getDate() === today.getDate()) {
 						
-						loadFromExchangeGI(false, events[i]["t:ItemId"][0]["$"]["Id"]);
+						loadFromExchangeGI(events[i]["t:ItemId"][0]["$"]["Id"]);
 						
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
@@ -130,17 +135,24 @@ directive("app.meetings", [
 						
 					}
 				}
+
+				if(withNotifications){
+					if ($scope.events.length > oldEventsLength) {
+						if ($scope.events.length === oldEventsLength + 1) {
+							notifier.showInfo("Meetings", "You have a new meeting", "app.meetings");
+						}
+						else {
+							notifier.showInfo("Meetings", "You have new meetings", "app.meetings");
+						}
+					}
+				}
+
 				$scope.events = $scope.events.sort(sortByStartTime);
 			}
 
 			function loadFromExchange (withNotifications) {
 				$scope.loading = true;
 				$scope.errMsg = null;
-				var oldEventsLength = 0;
-
-				if(withNotifications){
-					oldEventsLength = $scope.events.length;
-				}
 
 				var dateForewsCall = new Date();
 				dateForewsCall.setDate(today.getDate() - 1);
@@ -152,24 +164,20 @@ directive("app.meetings", [
 						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 
 						if (typeof eventsRaw !== "undefined") {
-							parseExchangeData(eventsRaw);
+							parseExchangeData(withNotifications, eventsRaw);
 						}
 
 					}catch(error){
-						$scope.errMsg = "Unable to connect to Exchange Server. Restarting your Bridge client may solve the issue.";
+						$scope.errMsg = "Unable to connect to Exchange Server. (Re-)starting your Bridge client may solve the issue.";
 						$log.log((error || $scope.errMsg));
 					}
 					$scope.loading = false;
 				});
 			}
-			function loadFromExchangeGI (withNotifications, exchangeUid) {
+
+			function loadFromExchangeGI (exchangeUid) {
 				$scope.loading = true;
 				$scope.errMsg = null;
-				var oldEventsRawLength = 0;
-
-				if(withNotifications){
-					oldEventsRawLength = eventsRaw.length;
-				}
 
 				$http.get(ewsUtils.buildEWSUrl(undefined, undefined, exchangeUid)).success(function (data, status) {
 
@@ -180,32 +188,32 @@ directive("app.meetings", [
 							
 							for (var i = 0; i < $scope.events.length; i++) {
 								if ($scope.events[i].exchangeUid == exchangeUid) {
-									$scope.events[i]["body"] = body
+									$scope.events[i]["body"] = body;
 									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
 									//
 									// first get rid of the newlines in order to allow more proper participant code parsing 
 									// New approach: try to fix the participant code to the "last" 10-digit number in the body
 									//
-									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i)
+									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
 									
-									var sapconnecturl 
+									var sapconnecturl;
 									
-									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i)
+									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i);
 									if ( sapconnecturl == null) {
-										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i)
+										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
 									}
 									
 									
-									var useTheNormalSAPConnectDialIn = true
+									var useTheNormalSAPConnectDialIn = true;
 									// A bit hacky
 									// For sapemeavent we would need different dial-in number in Frankfurt and around the word,
 									// for this first prototype we need to ignore participant code
 									if ( sapconnecturl == null) {
-										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i)
-										useTheNormalSAPConnectDialIn = false
+										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i);
+										useTheNormalSAPConnectDialIn = false;
 									}
 									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
-										$scope.events[i]["participantCode"] = partcode[1].replace(/\s/g,"")
+										$scope.events[i]["participantCode"] = partcode[1].replace(/\s/g,"");
 									}
 									if ( sapconnecturl != null) {
 										$scope.events[i]["sapconnectUrl"] = sapconnecturl[0];
@@ -215,20 +223,9 @@ directive("app.meetings", [
 							
 
 						}
-						if(withNotifications){
-							if ($scope.events.length > oldEventsLength) {
-								if ($scope.events.length === oldEventsLength + 1) {
-									notifier.showInfo("Meetings", "You have a new meeting", "app.meetings");
-								}
-								else {
-									notifier.showInfo("Meetings", "You have new meetings", "app.meetings");
-								}
-							}
-						}
 	        			$scope.errMsg = null;
 					}catch(error){
-						$scope.errMsg = "Unable to load item details from Exchange Server";
-						$log.log((error || $scope.errMsg));
+						$log.log((error || "Unable to load item details from Exchange Server"));
 					}
 					$scope.loading = false;
 				});
@@ -261,8 +258,7 @@ directive("app.meetings", [
 						cnt++;
 					}
 				}
-
-				return cnt + " meeting" + (cnt === 1 ? "" : "s") + " left for today.";
+				return "  (" + cnt + " more meeting" + (cnt === 1 ? "" : "s") + ")";
 			};
 
 			$scope.isLoading = function () {
@@ -288,7 +284,7 @@ directive("app.meetings", [
 				}
 			});
 
-			(function springGun() {
+			(function reloader() {
 				var i = 1;
 				//Full reload every 300 seconds, refresh of UI all 30 seconds
 				refreshInterval = $interval(function () {
@@ -297,10 +293,10 @@ directive("app.meetings", [
 						i = 1;
 					}
 					else {
-						parseExchangeData(eventsRaw);
+						parseExchangeData(true, eventsRaw);
 						i++;
 					}
-				}, 30000);
+				}, 30 * 1000);
 			})();
 
 			loadFromExchange(false);

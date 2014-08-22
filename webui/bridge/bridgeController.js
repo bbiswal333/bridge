@@ -73,14 +73,84 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;
 
-        $http.get(window.client.origin + '/client').success(function (data) {
-            $scope.client = true;
-        	window.client.available = true;
+        function parseVersionString(str) 
+        {
+            if (typeof(str) !== 'string') { return false; }
+            var x = str.split('.');
+            // parse from string or default to 0 if can't parse
+            var maj = parseInt(x[0]) || 0;
+            var min = parseInt(x[1]) || 0;
+            var pat = parseInt(x[2]) || 0;
+            return {
+                major: maj,
+                minor: min,
+                patch: pat
+            };
+        }
+
+        function needsUpdate(needed_version, current_version)
+        {
+            var minimum = parseVersionString(needed_version);
+            var running = parseVersionString(current_version);
+            if (running.major !== minimum.major)
+            {
+                return (running.major < minimum.major);
+            }
+            else 
+            {
+                if (running.minor !== minimum.minor)
+                {
+                    return (running.minor < minimum.minor);
+                }
+                else 
+                {
+                    if (running.patch !== minimum.patch)
+                    {
+                        return (running.patch < minimum.patch);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        $http.get(window.client.origin + '/client').success(function (data) 
+        {
+            //version which is needed by the application
+            var needs_version = "0.9.0";
+            var has_version = "0.0.1";
+            if(data.version !== undefined)
+            {
+                has_version = data.version;    
+            }
+
+            //set global window attributes
+            window.client.has_version = has_version;
+            window.client.needs_version = needs_version;
             window.client.os = data.os;
 
-        }).error(function () {
-            $scope.client = false;
+            if(!needsUpdate(needs_version, has_version))
+            {               
+        	   window.client.available = true;               
+               window.client.outdated = false;
+            }
+            else
+            {                
+                window.client.available = false;                
+                window.client.outdated = true;
+                $scope.client_update = true;                
+            }
+
+            $scope.client = window.client.available;
+            $log.log(window.client);
+
+        }).error(function () {            
             window.client.available = false;
+            $scope.client = window.client.available;
+            $scope.client_update = false;
+            $log.log(window.client);
         });
 
         if ($location.path() === "" || $location.path() === "/") {

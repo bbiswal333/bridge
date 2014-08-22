@@ -1,7 +1,7 @@
 ﻿angular.module('app.weather', ["lib.utils"]);
 angular.module('app.weather').directive('app.weather', ['app.weather.configservice',function (weatherconfig) {
 
-    var directiveController = ['$scope', '$http', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, bridgeDataService, calUtils) 
+    var directiveController = ['$scope', '$http', '$interval', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, $interval, bridgeDataService, calUtils) 
     {
     	$scope.box.boxSize = "1"; 
         $scope.box.settingsTitle = "Configure temparature scale and location";
@@ -13,7 +13,24 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
         $scope.configService = weatherconfig;
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
-        };  
+        };
+
+        function loadData() {
+            if($scope.configService.configItem.location !== undefined && $scope.configService.configItem.location.name !== undefined)
+            {
+                $scope.city_name = $scope.configService.configItem.location.name;
+                $scope.fahrenheit = $scope.configService.configItem.fahrenheit;
+                $scope.setPosition($scope.configService.configItem.location);
+                $scope.getWeather();
+                $scope.getForcast();
+            }
+        }
+
+        $scope.$watch('configService', function () 
+        {
+            loadData();
+        }, true);
+        $interval(loadData, 1000 * 60 * 5);
 
         $scope.getCurrentDate = function (days)
         {
@@ -43,51 +60,12 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             bridgeDataService.getTemporaryData().backgroundClass = "night";
            
         }
+
         if ($scope.hh >= 8 && $scope.hh <= 17 ){
-            bridgeDataService.getTemporaryData().backgroundDayNight = "day";
-            
+            bridgeDataService.getTemporaryData().backgroundDayNight = "day";    
         }
 
-        $scope.$watch('configService', function () 
-        {                        
-            if($scope.configService.configItem.location !== undefined && $scope.configService.configItem.location.name !== undefined)
-            {
-                $scope.city_name = $scope.configService.configItem.location.name;
-                $scope.fahrenheit = $scope.configService.configItem.fahrenheit;
-                $scope.get_weather($scope.configService.configItem.location);
-            }
-
-        }, true);    
-        
-         $scope.get_weather = function(position) {
-          $scope.latitude = position.latitude;
-          $scope.longitude = position.longitude;          
-
-          var weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
-          var forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=4&mode=json');
-
-          $http.get(weatherDataURL).success(function (weatherDataJSON) {
-                        
-            if($scope.fahrenheit){
-                $scope.temperature = (((weatherDataJSON.main.temp - 273)  * 1.8) + 32).toFixed(0);
-            }
-            if(!$scope.fahrenheit){
-                $scope.temperature = (weatherDataJSON.main.temp - 273).toFixed(0);
-            }
-
-            var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
-            bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
-            
-            $scope.city = weatherDataJSON.name; 
-            $scope.city_id = weatherDataJSON.id;
-
-            $scope.des = weatherData.description;
-            
-             
-
-          });
-   
-          function checkWeatherConditionClouds (clouds){
+        function checkWeatherConditionClouds (clouds){
             if(clouds !== undefined){
                 if (clouds === 0){
                     return "sun";
@@ -102,9 +80,9 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             else {
                 return null;
             }
-            
-          }
-          function checkWeatherConditionRain(rain){
+        }
+        
+        function checkWeatherConditionRain(rain){
             if(rain !== undefined) {            
                 if (rain['3h'] > 0){
                     return  "rain";
@@ -116,9 +94,9 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             else {
                     return null;
                 } 
-          }
+        }
 
-          function parseWeatherData(rain,clouds){
+        function parseWeatherData(rain,clouds){
             var weatherData = {
                 rain: checkWeatherConditionRain(rain),
                 clouds: checkWeatherConditionClouds(clouds)
@@ -145,68 +123,91 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
                 weatherData.icon = 'wi wi-rain';
             }
             return weatherData;
-           }
+        }
 
-        $http.get(forecastDataURL).success(function (forecastData) {
-            //next days
-            $scope.forecastDays = [];
-
-            function maximalPossibleEntries(list, maxItems) {
-                return list.length > maxItems ? maxItems : list.length;
-            }
-
-            for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++){
-                var weatherData = parseWeatherData(forecastData.list[i].rain,forecastData.list[i].clouds);
-
-                if($scope.fahrenheit)
-                {
-                    $scope.forecastDays[i] = {
-                        temperatureMin: (((forecastData.list[i].temp.min - 273)  * 1.8) + 32).toFixed(0),
-                        temperatureMax: (((forecastData.list[i].temp.max - 273)  * 1.8) + 32).toFixed(0),
-                        rain: weatherData.rain,
-                        clouds: weatherData.clouds,
-                        weatherIco : weatherData.icon
-                    };     
-                }
-                if(!$scope.fahrenheit){                    
-                    $scope.forecastDays[i] = {
-                        temperatureMin: (forecastData.list[i].temp.min - 273).toFixed(0),
-                        temperatureMax: (forecastData.list[i].temp.max - 273).toFixed(0),
-                        rain: weatherData.rain,
-                        clouds: weatherData.clouds,
-                        weatherIco : weatherData.icon
-                    };     
-                }
-                
-            }
-          });
-
-        
-
+        $scope.setPosition = function(position) {
+            $scope.latitude = position.latitude;
+            $scope.longitude = position.longitude;
         };
 
-        //start whole weathermagic
-        //$scope.get_location();          
-    }];
+        $scope.getWeather = function() {
 
-    return {
-        restrict: 'E',
-        templateUrl: 'app/weather/overview.html',
-        controller: directiveController,
-        link: function ($scope) 
-             {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
-                 {
-                    weatherconfig.configItem = $scope.appConfig.configItem;
-                 }            
-             }
+            var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude;
+            weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(weatherDataURL);
+
+            $http.get(weatherDataURL).success(function (weatherDataJSON) {
+                        
+            if($scope.fahrenheit){
+                $scope.temperature = (((weatherDataJSON.main.temp - 273)  * 1.8) + 32).toFixed(0);
+            }
+            if(!$scope.fahrenheit){
+                $scope.temperature = (weatherDataJSON.main.temp - 273).toFixed(0);
+            }
+
+            var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
+            bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
+
+            $scope.city = weatherDataJSON.name; 
+            $scope.city_id = weatherDataJSON.id;
+
+            $scope.des = weatherData.description;
+        });
+
+        $scope.getForcast = function() {
+
+            var forecastDataURL = 'http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=5&mode=json';
+            forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(forecastDataURL);
+
+            $http.get(forecastDataURL).success(function (forecastData) {
+                forecastData.list.splice(0,1); // remove today
+                //next days
+                $scope.forecastDays = [];
+
+                function maximalPossibleEntries(list, maxItems) {
+                    return list.length > maxItems ? maxItems : list.length;
+                }
+
+                for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++){
+                    var weatherData = parseWeatherData(forecastData.list[i].rain,forecastData.list[i].clouds);
+
+                    if($scope.fahrenheit)
+                    {
+                        $scope.forecastDays[i] = {
+                            temperatureMin: (((forecastData.list[i].temp.min - 273)  * 1.8) + 32).toFixed(0),
+                            temperatureMax: (((forecastData.list[i].temp.max - 273)  * 1.8) + 32).toFixed(0),
+                            rain: weatherData.rain,
+                            clouds: weatherData.clouds,
+                            weatherIco : weatherData.icon
+                        };
+                    }
+
+                    if(!$scope.fahrenheit){
+                        $scope.forecastDays[i] = {
+                            temperatureMin: (forecastData.list[i].temp.min - 273).toFixed(0),
+                            temperatureMax: (forecastData.list[i].temp.max - 273).toFixed(0),
+                            rain: weatherData.rain,
+                            clouds: weatherData.clouds,
+                            weatherIco : weatherData.icon
+                        };     
+                    }
+                }
+            });
+        };
+    };
+    //start whole weathermagic
+    //$scope.get_location();
+}];
+
+return {
+    restrict: 'E',
+    templateUrl: 'app/weather/overview.html',
+    controller: directiveController,
+    link: function ($scope) 
+        {
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+            {
+                weatherconfig.configItem = $scope.appConfig.configItem;
+            }
+        }
     };
 }]);
-
-
-
-   
-
-            
-
-  

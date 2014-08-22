@@ -4,7 +4,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', '$log', 'bridg
 
     function directiveController($scope)
     {        
-        $scope.show_download = bridgeDownload.show_download;                    
+        $scope.show_download = bridgeDownload.show_download;  
     }
 
     function snake_case(name){
@@ -31,7 +31,7 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', '$log', 'bridg
                     }
                 }                
                 $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
-                $scope.box.needs_client = $scope.needs_client;                
+                $scope.box.needs_client = $scope.needs_client;                             
 
                 if (!bridgeDataService.getAppById($attrs.id).scope) 
                 {                    
@@ -40,7 +40,12 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', '$log', 'bridg
             }
             else {
                 $log.error("Box has no id!");
-            }            
+            }   
+
+            if(window.client !== undefined)
+            {
+                $scope.client_update = window.client.outdated;                  
+            }         
                 
             var boxContent = $element.find("#boxContent");
             boxContent.attr("ng-if", "!(needs_client && !client)");

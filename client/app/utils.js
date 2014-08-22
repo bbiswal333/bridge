@@ -34,6 +34,16 @@ function createTrayIcon() {
     });
     menu.append(item);
 
+    item = new gui.MenuItem({
+        label: "Show/ Hide In Task Bar",
+        click: function () {
+            var win = gui.Window.get();
+            global.webkitClient.showInTaskbar = !global.webkitClient.showInTaskbar;
+            win.setShowInTaskbar(global.webkitClient.showInTaskbar);
+        }
+    });
+    menu.append(item);
+
     tray.menu = menu;
 }
 
@@ -61,6 +71,7 @@ function callBackend(hostname, port, path, method, callback) {
     req.end();
     req.on('error', function (e) {
         console.error(e);
+        callback();
     });
 }
 

@@ -3,20 +3,17 @@
 	No jobs selected.
 </div>
 
-<div class="jobTable" ng-show="jobs" style="overflow-y: auto">
-
+<div class="jobTable" style="overflow-y: auto">
 	<table>
-            <tr ng-repeat="job in jobResult | filter:{ isChecked: true }" >
-            	<td><div class="status-color {{job.statusColor}}"></div></td>
-                <td class="buildstatuscell"><img ng-src="{{getWeatherIconLink(job.jobHealthReport)}}"/></td>
-                <!-- <td class="jobName" ng-click="detailJobView(job.url)">{{limitDisplayName(job.name, 26)}}</td> -->
-                <td style="width: 200px;"><a href="{{job.url}}">{{limitDisplayName(job.name, 26)}}</a></td>
+            <tr ng-repeat="job in jobsToDisplay | orderBy:'-lastBuild'">
+            	<td><a tooltip="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
+                <!-- <td class="buildstatuscell">
+                	<!-- <img ng-if="job.color !== 'grey'" ng-src="{{getWeatherIconLink(job)}}"/> -->
+                	<!-- <a ng-if="job.color !== 'grey'" class="fa fa-long-arrow-right {{getWeatherIconLink(job)}}"></a> -->
+                <!-- </td>  -->
+                <td class="style" style="width: 260px;"><a target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 35)}}</a></td>
 
                 <td style="">{{job.timestamp}}</td>
             </tr>
 	</table>
-</div>
-
-<div class="error" ng-show="errormessage">
-	{{errormessage}}
 </div>

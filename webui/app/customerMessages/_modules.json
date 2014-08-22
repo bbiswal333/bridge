@@ -1,0 +1,20 @@
+{
+	"app":
+	{
+		// "module_name"			:	"app.customerMessages",
+		"title"					:	"Customer Msg",
+		"icon_css"				:	"icon-comment",
+		"overview_directive"	:	"app.customerMessages",
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/customerMessages/:prio",
+				"templateUrl"	:	"app/customerMessages/detail.html"			
+			}
+		]	
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js"],
+	"css_files" : ["style.css"]
+}

@@ -1,0 +1,12 @@
+
+
+
+
+
+
+
+
+.quote-bubble + p {
+margin: 0px -10px 1em 60px;
+/*font-style: italic;*/
+}
