@@ -38,7 +38,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$http", "$q"
             });
         promiseArray.push(deferAssignedToMe.promise);
 
-        if (itdirectConfig.bIncludeSavedSearch === true) {
+        if (itdirectConfig.bIncludeSavedSearch === true && itdirectConfig.sSavedSearchToInclude !== "") {
             var deferSavedSearch = $q.defer();
 
             $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARAMETER_KEY eq '" + itdirectConfig.sSavedSearchToInclude + "'&$format=json")
