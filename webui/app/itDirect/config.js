@@ -1,5 +1,6 @@
 angular.module("app.itdirect").service("app.itdirect.config", function(){
     this.isInitialized = false;
+    this.lastDataUpdate = null;
 
     this.bIncludeSavedSearch = false;
     this.sSavedSearchToInclude = "";
@@ -15,6 +16,8 @@ angular.module("app.itdirect").service("app.itdirect.config", function(){
         for (property in oConfigFromBackend){
             this[property] = oConfigFromBackend[property];
         }
+
+        this.lastDataUpdate = new Date(this.lastDataUpdate);
     };
 
 });

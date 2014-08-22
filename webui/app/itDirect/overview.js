@@ -23,12 +23,14 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
         $scope.prios = ticketData.prios;
 
         $scope.$watch('config', function (newVal, oldVal) {
-            if($scope.config !== undefined && newVal !== oldVal)
-            {
+            if($scope.config !== undefined && newVal !== oldVal){
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                 if (oldVal !== undefined) {
                     bridgeConfig.persistInBackend(bridgeDataService);
-                    ticketData.loadTicketData();
+                    // do not reload data the data if only the time of the data update changed
+                    if (oldVal.lastDataUpdate !== null && oldVal.lastDataUpdate.getTime() === newVal.lastDataUpdate.getTime()) {
+                        ticketData.loadTicketData();
+                    }
                 }
             }
         },true);

@@ -15,5 +15,6 @@ describe("IT Direct config", function(){
         expect(config.isInitialized).toBe(true);
         expect(config.bIncludeSavedSearch).toBe(true);
         expect(config.sSavedSearchToInclude).toBe("IamAFakeSearchKey");
+        //expect(config.lastDataUpdate).toBe(new Date(1408700044615));
     });
 });

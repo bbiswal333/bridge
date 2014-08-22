@@ -56,7 +56,12 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$http", "$q"
             promiseArray.push(deferSavedSearch.promise);
         }
 
-        return $q.all(promiseArray);
+        var pAllRequestsFinished = $q.all(promiseArray);
+        pAllRequestsFinished.then(function(){
+            itdirectConfig.lastDataUpdate = new Date();
+        });
+
+        return pAllRequestsFinished;
     };
 
     this.activatePrio = function(sPrioKey){
