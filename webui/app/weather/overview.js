@@ -20,7 +20,8 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             {
                 $scope.city_name = $scope.configService.configItem.location.name;
                 $scope.fahrenheit = $scope.configService.configItem.fahrenheit;
-                $scope.get_weather($scope.configService.configItem.location);
+                $scope.setPosition($scope.configService.configItem.location);
+                $scope.getWeather();
                 $scope.getForcast();
             }
         }
@@ -124,12 +125,15 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             return weatherData;
         }
 
-        $scope.get_weather = function(position) {
+        $scope.setPosition = function(position) {
             $scope.latitude = position.latitude;
-            $scope.longitude = position.longitude;          
+            $scope.longitude = position.longitude;
+        };
 
-            var weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude);
-            var forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent('http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=4&mode=json');
+        $scope.getWeather = function() {
+
+            var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + $scope.latitude + '&lon=' + $scope.longitude;
+            weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(weatherDataURL);
 
             $http.get(weatherDataURL).success(function (weatherDataJSON) {
                         
@@ -150,7 +154,12 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
         });
 
         $scope.getForcast = function() {
+
+            var forecastDataURL = 'http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + $scope.latitude + '&lon=' + $scope.longitude + '&cnt=5&mode=json';
+            forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(forecastDataURL);
+
             $http.get(forecastDataURL).success(function (forecastData) {
+                forecastData.list.splice(0,1); // remove today
                 //next days
                 $scope.forecastDays = [];
 

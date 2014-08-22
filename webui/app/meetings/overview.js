@@ -258,7 +258,7 @@ directive("app.meetings", [
 						cnt++;
 					}
 				}
-				return "(" + cnt + " more meeting" + (cnt === 1 ? "" : "s") + ")";
+				return "  (" + cnt + " more meeting" + (cnt === 1 ? "" : "s") + ")";
 			};
 
 			$scope.isLoading = function () {
