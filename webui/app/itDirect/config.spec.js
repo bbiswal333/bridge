@@ -10,10 +10,10 @@ describe("IT Direct config", function(){
     });
 
     it("should initialize its config from the backend data", function(){
-        config.initialize({oIncludeSavedSearch: {value: true}, sSavedSearchToInclude: "IamAFakeSearchKey"});
+        config.initialize({bIncludeSavedSearch: true, sSavedSearchToInclude: "IamAFakeSearchKey"});
 
         expect(config.isInitialized).toBe(true);
-        expect(config.oIncludeSavedSearch.value).toBe(true);
+        expect(config.bIncludeSavedSearch).toBe(true);
         expect(config.sSavedSearchToInclude).toBe("IamAFakeSearchKey");
     });
 });

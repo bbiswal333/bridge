@@ -20,25 +20,25 @@
         <div>
             <div infinitescroll>
                 <div class="row">
-                    <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESC.__text')">Priority
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESC.__text'"></i>
+                    <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESC')">Priority
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESC'"></i>
                     </div>
-                    <div class="box-title col-sm-2" ng-click="sort('CAT_ID.__text')">Component
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CAT_ID.__text'"></i>
+                    <div class="box-title col-sm-2" ng-click="sort('CAT_ID')">Component
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CAT_ID'"></i>
                     </div>
-                    <div class="box-title col-sm-2" ng-click="sort('USER_STATUS_TEXT.__text')">Status
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'USER_STATUS_TEXT.__text'"></i>
+                    <div class="box-title col-sm-2" ng-click="sort('USER_STATUS_TEXT')">Status
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'USER_STATUS_TEXT'"></i>
                     </div>
-                    <div class="box-title col-sm-4" ng-click="sort('DESCRIPTION.__text')">Description
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION.__text'"></i>
+                    <div class="box-title col-sm-4" ng-click="sort('DESCRIPTION')">Description
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
                     </div>
                 </div>
                 <div ng-repeat="row in tickets | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit" class="row" ng-class="zebraCell($index)">
-                    <div class="cellText col-sm-1">{{row.PRIORITY_DESC.__text}}</div>
-                    <div class="cellText col-sm-2">{{row.CAT_ID.__text}}</div>
-                    <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT.__text}}</div>
+                    <div class="cellText col-sm-1">{{row.PRIORITY_DESC}}</div>
+                    <div class="cellText col-sm-2">{{row.CAT_ID}}</div>
+                    <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT}}</div>
                     <div class="cellText col-sm-4">
-                        <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION.__text}}</a>
+                        <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
                     </div>
                 </div>
             </div>

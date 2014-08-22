@@ -1,6 +1,7 @@
 angular.module('app.itdirect')
     .controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", function($scope, $routeParams, bridgeDataService, ticketData, config){
 
+    var that = this;
     $scope.prios = ticketData.prios;
     $scope.config = config;
     $scope.tickets = [];
@@ -34,14 +35,14 @@ angular.module('app.itdirect')
         return bTicketPriorityMatches && bCategoryMatches && bTicketContainsFilterString;
     };
 
-    function containsTicket(sGuid){
-        for (var i = 0; i < $scope.tickets.length; i++){
-            if ($scope.tickets[i].GUID.toString() === sGuid){
-                return true;
-            }
+    this.containsTicket = function(sGuid){
+        var foundTicket = _.find($scope.tickets, { "GUID": sGuid });
+        if (foundTicket === undefined){
+            return false;
+        } else {
+            return true;
         }
-        return false;
-    }
+    };
 
     function enhanceAllTickets(){
         var sTicketCategory = "";
@@ -49,7 +50,7 @@ angular.module('app.itdirect')
             ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&SAPROLE=ZITSERVREQU&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
             ticket.bridgeCategory = sTicketCategory;
 
-            if (!containsTicket(ticket.GUID.toString())){
+            if (!that.containsTicket(ticket.GUID.toString())){
                 $scope.tickets.push(ticket);
             }
         }

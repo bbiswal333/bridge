@@ -1,7 +1,7 @@
 angular.module("app.itdirect").service("app.itdirect.config", function(){
     this.isInitialized = false;
 
-    this.oIncludeSavedSearch = false;
+    this.bIncludeSavedSearch = false;
     this.sSavedSearchToInclude = "";
 
     this.bPartieOfRequestSelected = false;
