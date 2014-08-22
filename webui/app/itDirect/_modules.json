@@ -9,8 +9,8 @@
         "routes"		:
             [
                 {
-                    "route"			:	"/detail/itdirect/:appId/:prio",
-                    "templateUrl"	:	"app/itdirect/detail.html"
+                    "route"			:	"/detail/itDirect/:appId/:prio",
+                    "templateUrl"	:	"app/itDirect/detail.html"
                 }
             ]
     },

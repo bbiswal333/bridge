@@ -57,7 +57,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
 
     return {
         restrict: 'E',
-        templateUrl: 'app/itdirect/overview.html',
+        templateUrl: 'app/itDirect/overview.html',
         controller: directiveController
     };
 });
