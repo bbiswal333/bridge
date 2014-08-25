@@ -27,7 +27,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
         $scope.$watch('data.jiraData', function()
         {
-            var status_filter = $routeParams['status'].split('|');
+            var status_filter = $routeParams.status.split('|');
         	if($scope.data && $scope.data.jiraData)
         	{
 	        	//get status values and selected ones
@@ -77,7 +77,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
         $scope.$parent.titleExtension = " - Jira Details";
 
         if (JiraConfig.isInitialized === false) {
-            JiraConfig.initialize($routeParams['appId']);
+            JiraConfig.initialize($routeParams.appId);
             JiraBox.getIssuesforQuery(JiraConfig.query);
         }
 }]);

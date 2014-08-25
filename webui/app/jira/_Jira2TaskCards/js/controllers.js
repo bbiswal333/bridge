@@ -1,5 +1,3 @@
-'use strict';
-
 var app = angular.module('myApp', []);
 
 app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {

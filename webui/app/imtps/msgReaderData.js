@@ -15,7 +15,7 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
         $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             data = new X2JS().xml_str2json(data);
-            that.backendTickets = data.abap.values["TC_MESSAGES"];
+            that.backendTickets = data.abap.values.TC_MESSAGES;
                         
             if( that.callbackCollection ){
             	that.callbackCollection(that.backendTickets);	
@@ -32,7 +32,7 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
         ).success(function (data) {
 
             data = new X2JS().xml_str2json(data);
-            that.backendTickets = data.abap.values["TC_MESSAGES"];
+            that.backendTickets = data.abap.values.TC_MESSAGES;
                                     
             if( that.callbackCollection ){
             	that.callbackCollection(that.backendTickets);	
@@ -47,11 +47,11 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
 		
 		var prioarray = [0,0,0,0];
 		angular.forEach(that.backendTickets["_-QBE_-S_MESSAGES"], function (n) {
-			if( n["MSG_PRIO"] === 1 ){
+			if( n.MSG_PRIO === 1 ){
 				prioarray[0] = prioarray[0] + 1;
-			}else if( n["MSG_PRIO"] === 2 ){
+			}else if( n.MSG_PRIO === 2 ){
 				prioarray[1] = prioarray[1] + 1;
-			}else if( n["MSG_PRIO"] === 3 ){
+			}else if( n.MSG_PRIO === 3 ){
 				prioarray[2] = prioarray[2] + 1;
 			}else{
 				prioarray[3] = prioarray[3] + 1;

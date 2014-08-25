@@ -106,7 +106,7 @@ directive("app.meetings", [
 
 					if (start.getDate() === today.getDate()) {
 						
-						loadFromExchangeGI(events[i]["t:ItemId"][0]["$"]["Id"]);
+						loadFromExchangeGI(events[i]["t:ItemId"][0].$.Id);
 						
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
@@ -127,8 +127,8 @@ directive("app.meetings", [
 							},
 							isCurrent: (start.getTime() < new Date().getTime()),
 							isInTheNext30Minutes: (((start.getTime() - new Date().getTime()) / 1000 / 60) <= 30),
-							exchangeUid: events[i]["t:ItemId"][0]["$"]["Id"],
-							changeKey: events[i]["t:ItemId"][0]["$"]["ChangeKey"]												
+							exchangeUid: events[i]["t:ItemId"][0].$.Id,
+							changeKey: events[i]["t:ItemId"][0].$.ChangeKey
 						});
 						
 					}
@@ -186,7 +186,7 @@ directive("app.meetings", [
 							
 							for (var i = 0; i < $scope.events.length; i++) {
 								if ($scope.events[i].exchangeUid === exchangeUid) {
-									$scope.events[i]["body"] = body;
+									$scope.events[i].body = body;
 									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
 									//
 									// first get rid of the newlines in order to allow more proper participant code parsing 
@@ -211,10 +211,10 @@ directive("app.meetings", [
 										useTheNormalSAPConnectDialIn = false;
 									}
 									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
-										$scope.events[i]["participantCode"] = partcode[1].replace(/\s/g,"");
+										$scope.events[i].participantCode = partcode[1].replace(/\s/g,"");
 									}
 									if ( sapconnecturl != null) {
-										$scope.events[i]["sapconnectUrl"] = sapconnecturl[0];
+										$scope.events[i].sapconnectUrl = sapconnecturl[0];
 									}
 								}
 							}
