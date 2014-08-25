@@ -40,13 +40,6 @@
         }
 
         $provide.decorator('$log', ["$delegate", "$injector", function ($delegate, $injector) {
-            // decorate all the common logging methods
-            ['log', 'debug', 'info', 'warn', 'error'].forEach(function (logFunction) {
-                $delegate[logFunction] = docorateLogger($delegate[logFunction]);
-                $delegate[logFunction].logs = []; // needed for angularMocks, without this, unit test will fail
-            });
-            return $delegate;
-
             function docorateLogger(originalFn) {
                 return function () {
                     // https://shifteleven.com/articles/2007/06/28/array-like-objects-in-javascript/
@@ -57,6 +50,13 @@
                     originalFn.apply(null, args);
                 };
             }
+
+            // decorate all the common logging methods
+            ['log', 'debug', 'info', 'warn', 'error'].forEach(function (logFunction) {
+                $delegate[logFunction] = docorateLogger($delegate[logFunction]);
+                $delegate[logFunction].logs = []; // needed for angularMocks, without this, unit test will fail
+            });
+            return $delegate;
         }]);
 
         $routeProvider.when("/diagnosis", {

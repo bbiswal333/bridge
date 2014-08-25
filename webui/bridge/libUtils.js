@@ -373,12 +373,13 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getUTC = function (year, month, date) {
+        var returnDate = new Date(Date.UTC(year, month, date)); 
         if (!arguments || arguments.length === 0) {
             var today = new Date();
-            return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())); 
+            return returnDate;
         }
-
-        return new Date(Date.UTC(year, month, date));
+        return returnDate;
     };
 
     this.substractMonths = function (date, months) {
