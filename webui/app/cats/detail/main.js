@@ -348,8 +348,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (window.DOMParser) {
                 parser = new DOMParser();
                 xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer
+            } else { // Internet Explorer                
+                /*eslint-disable no-undef*/
                 xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                /*eslint-enable no-undef*/
                 xmlDoc.async = false;
                 xmlDoc.loadXML(data);
             }
