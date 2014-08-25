@@ -57,4 +57,3 @@ angular.module('bridge.employeeSearch').directive('bridge.employeeSearch', funct
         }
     };
 });
-

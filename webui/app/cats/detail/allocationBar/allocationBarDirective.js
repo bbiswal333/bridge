@@ -49,10 +49,6 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                 block.blockWidth = Math.round(blockMetrics.newWidth * 1000) / 1000;
                 block.localValue = Math.round(blockMetrics.newValue * 1000) / 1000;
 
-                if(block.localValue !== changeValue) {
-                    // change Hint Text
-                }
-
                 if(!nextBlock) {
                     return;
                 }
