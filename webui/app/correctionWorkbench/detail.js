@@ -91,7 +91,7 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
                 $scope.zoomImg = event.currentTarget;
             }
         };
-        if (workbenchData.isInitialized.value === false) {
+        if (workbenchData.isInitialized.value === false && $scope.detailForNotifications === false) {
             var promise = workbenchData.initialize();
 
             promise.then(function success() {
