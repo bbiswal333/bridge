@@ -8,6 +8,7 @@
     "test": "karma start karma.config.js -stealth --single-run",
     "lint": "eslint webui"
   },
+  "precommit":["test", "lint"],
   "devDependencies": {
     "grunt": "~0.4.4",
     "eslint-grunt": "0.6.1",
