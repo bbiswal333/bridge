@@ -1,5 +1,5 @@
 var IJiraBox = {
-        getIssuesforQuery : function(query) { throw "Not Implemented"; },
+        getIssuesforQuery : function() { throw "Not Implemented"; }
 };
 
 var JiraBox = function(http){
@@ -27,7 +27,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
     }
 
     this.http.get(jira_url + sQuery
-        ).success(function (data, status, headers, config) {
+        ).success(function (data) {
 
             that.data.length = 0;        
 
@@ -40,15 +40,15 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
                 parentKey:      (issue.fields.parent !== undefined ? issue.fields.parent.key : null),
                 parentSummary:  (issue.fields.parent !== undefined ? issue.fields.parent.fields.summary : null),
                 effortEstimate: issue.fields.customfield_10005,
-                status:         issue.fields.status.name, 
+                status:         issue.fields.status.name
               });   
             });
 
             that.data.sort(function (a,b) {
-              if (a.parentKey < b.parentKey) return -1;
-              if (a.parentKey > b.parentKey) return 1;
-              if (a.key < b.key) return -1;
-              if (a.key > b.key) return 1;
+              if (a.parentKey < b.parentKey) { return -1; }
+              if (a.parentKey > b.parentKey) { return 1; }
+              if (a.key < b.key) { return -1; }
+              if (a.key > b.key) { return 1; }
               return 0;
             });
 
@@ -71,7 +71,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
             var group      = null;
             var colorIndex = 0;
             angular.forEach(that.data, function(task) {
-              if (getGroup(task) != group) {
+              if (getGroup(task) !== group) {
                   ++colorIndex;
                   group = getGroup(task);
               }
@@ -79,7 +79,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
               task.colorClass = 'taskColor_' + colorIndex;
             });                                                                
 
-        }).error(function(data, status, headers, config) {
+        }).error(function() {
             that.data = [];
         });        
 };

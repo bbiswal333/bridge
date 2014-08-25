@@ -8,9 +8,7 @@ directive("app.meetings", [
 	"$interval",
 	"app.meetings.configservice",
 	"notifier",
-	'$http',
-	function ($timeout, $http, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, $http) {
-
+	function ($timeout, $http, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -156,7 +154,7 @@ directive("app.meetings", [
 
 				var dateForewsCall = new Date();
 				dateForewsCall.setDate(today.getDate() - 1);
-				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data, status) {
+				$http.get(ewsUtils.buildEWSUrl(dateForewsCall, $scope.dayCnt)).success(function (data) {
 
 					try{
 						eventsRaw = {};
@@ -179,7 +177,7 @@ directive("app.meetings", [
 				$scope.loading = true;
 				$scope.errMsg = null;
 
-				$http.get(ewsUtils.buildEWSUrl(undefined, undefined, exchangeUid)).success(function (data, status) {
+				$http.get(ewsUtils.buildEWSUrl(undefined, undefined, exchangeUid)).success(function (data) {
 
 					try{
 						var body;
@@ -187,7 +185,7 @@ directive("app.meetings", [
 						if (typeof body !== "undefined") {
 							
 							for (var i = 0; i < $scope.events.length; i++) {
-								if ($scope.events[i].exchangeUid == exchangeUid) {
+								if ($scope.events[i].exchangeUid === exchangeUid) {
 									$scope.events[i]["body"] = body;
 									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
 									//
