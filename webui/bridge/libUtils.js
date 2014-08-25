@@ -373,6 +373,8 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getUTC = function (year, month, date) {
+        //Date.UTC is a function and not a constructor, cannot be changed here
+        /*eslint-disable new-cap*/
         var returnDate = new Date(Date.UTC(year, month, date)); 
         if (!arguments || arguments.length === 0) {
             var today = new Date();
@@ -380,6 +382,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             return returnDate;
         }
         return returnDate;
+        /*eslint-enable new-cap*/
     };
 
     this.substractMonths = function (date, months) {
