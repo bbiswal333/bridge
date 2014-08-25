@@ -16,6 +16,7 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 	this.configItems = [];
 
 	this.couldReachJenkinsUrl = false;
+	this.isPending = false;
 	this.lastErrorMsg = "";
 
 	this.addConfigItem = function(item){
