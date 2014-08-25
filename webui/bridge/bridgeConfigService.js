@@ -1,4 +1,9 @@
 ﻿angular.module('bridge.service').service('bridgeConfig', ['$http', '$log', 'bridge.service.loader', 'bridgeInstance', function ($http, $log, bridgeLoaderServiceProvider, bridgeInstance) {
+
+    function getAppConfig(app) {
+        return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
+    }
+
     function getAppsData(project) {
         var visible_apps = [];
         var apps = [];
@@ -40,10 +45,6 @@
         return apps;
     }
 
-    function getAppConfig(app) {
-        return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
-    }
-
     this.persistInBackend = function (dataService, doSynchronious) {
         var configPayload = {projects: []};
         var projects = dataService.getProjects();
@@ -63,8 +64,8 @@
                     data: angular.toJson(configPayload),
                     async: false,
                     headers: { 'Content-Type': 'text/plain' },
-                    success:function(data){},
-                    error:function(jqXhr, textStatus, errorThrown){}
+                    success:function(){},
+                    error:function(){}
                 });
         } else {
             $http({

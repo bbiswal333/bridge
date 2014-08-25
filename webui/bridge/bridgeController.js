@@ -16,7 +16,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.logMode = bridgeDataService.getLogMode();
         $scope.sendLog = function () {
-            modalPromise = logService.showPreview();
+            var modalPromise = logService.showPreview();
             modalPromise.then(function resolved() {
                 logService.sendLog(); 
             });
@@ -300,7 +300,7 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
-        $scope.$on('bridgeConfigLoadedReceived', function (event) {
+        $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.sortableOptions.disabled = true; // always allow sorting
