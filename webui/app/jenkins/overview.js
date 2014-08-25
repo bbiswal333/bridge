@@ -229,7 +229,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             jenkinsConfigService.configItem.selectedJob = "";
             jenkinsConfigService.configItem.selectedView = "";
             jenkinsConfigService.couldReachJenkinsUrl = false;
-            jenkinsConfigService.isPending = false;
             jenkinsConfigService.lastErrorMsg = msg;
         };
 
@@ -242,8 +241,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             $scope.jenkinsConfig.url = url;
             jenkinsConfigService.configItem.jobsByView = [];
 
-            jenkinsConfigService.isPending = true;
-
             $http.get('/api/get?url=' + encodeURIComponent(url + "/api/json"), {withCredentials: false})
                  .success(function (jobsOverviewData) {
 
@@ -252,7 +249,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
                     jenkinsConfigService.configItem.jobs = jobsOverviewData.jobs;
                     jenkinsConfigService.couldReachJenkinsUrl = true;
-                    jenkinsConfigService.isPending = false;
                     retrieveAndSetJobsByView(removeViewAll(jobsOverviewData.views));
 
                 }).error(function(data, status) {
