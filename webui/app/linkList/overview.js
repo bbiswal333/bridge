@@ -100,6 +100,10 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 }
             }
 
+            $scope.openBlob = function(sapGuiFile){
+                saveAs(sapGuiFile.blob, "systemlink.sap");
+            };
+
             $scope.$watch("appConfig.listCollection", function () {
                 if($scope.appConfig.listCollection.length > 1) {
                     $scope.box.boxSize = 2;

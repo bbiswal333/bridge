@@ -20,7 +20,8 @@
 		"expect": true,
 		"alert": true,
         "Notification":  true,
-        "_": true
+        "_": true,
+        "saveAs": true,
     },
     "rules": 
     {        

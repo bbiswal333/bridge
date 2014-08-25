@@ -18,6 +18,7 @@ angular.module('app.linklist').service("app.linklist.configservice", function ()
         saplink.objectURL = window.URL.createObjectURL(blob);
         saplink.name = name;
         saplink.download = saplink.name + ".sap";
+        saplink.blob = blob;
         return saplink; 
     };
 });
