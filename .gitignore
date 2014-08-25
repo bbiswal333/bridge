@@ -9,6 +9,7 @@ lib-cov
 *.suo
 setup.exe
 test-results.xml
+checkstyle.xml
 
 pids
 logs
