@@ -89,7 +89,5 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
       error(function() {
         $scope.statusMessage = 'Error accessing JIRA';
       });
-
   };
-
 }]);
