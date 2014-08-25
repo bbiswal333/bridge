@@ -14,6 +14,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
 
+	this.executeWhenDone = function(promise)
+	{
+		var that = this;
+		promise.then(function(data) {
+			that.convertWeekData(data);
+		});
+	};
+
 	this.getMonthData = function(year, month){
 		try {
 			var self = this;
@@ -45,9 +53,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			for (var i = 0; i < weeks.length; i++) {
 				promise = catsBackend.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
 				promises.push(promise);
-				promise.then(function(data){
-					self.convertWeekData(data);
-				});
+				this.executeWhenDone(promise);
 			}
 
 			promise = $q.all(promises);
