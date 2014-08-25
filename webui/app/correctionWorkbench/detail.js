@@ -101,5 +101,3 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
             enhanceAllMessages();
         }
 }]);
-
-

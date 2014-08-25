@@ -5,15 +5,13 @@ angular.module('app.clearCapacity').directive('app.clearCapacity', function () {
         $scope.box.boxSize = "2";
 
 		$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CLEAR_CAPA_DATA?origin=" + location.origin)
-		.success(function(data, status) {
+		.success(function(data) {
 			$scope.clearCapacityData = data;
-		}).error(function(data, status) {
-			//TODO: Fail hard
 		});
 
 		$scope.toPercent = function(assignment) {
 			return parseFloat(assignment.replace(',', '.')) * 100;
-		}
+		};
     }];
 
     return {
@@ -23,6 +21,3 @@ angular.module('app.clearCapacity').directive('app.clearCapacity', function () {
     };
   
 });
-
-
-

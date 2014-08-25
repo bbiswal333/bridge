@@ -10,7 +10,7 @@ angular.module('app.chuck').directive('app.chuck', ['$http', '$interval', functi
     		var joke = $scope.data[Math.floor(Math.random() * $scope.data.length)].joke;
     		//joke = joke.replace(/&quot;/ig,'"');
             
-            var joke = $('<div/>').html(joke).text();
+            joke = $('<div/>').html(joke).text();
     		
             if(joke.length > 160)
     		{
