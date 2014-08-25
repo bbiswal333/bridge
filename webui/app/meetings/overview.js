@@ -77,6 +77,63 @@ directive("app.meetings", [
 			    }
 			}
 
+			
+			function loadFromExchangeGI (exchangeUid) {
+				$scope.loading = true;
+				$scope.errMsg = null;
+
+				$http.get(ewsUtils.buildEWSUrl(undefined, undefined, exchangeUid)).success(function (data) {
+
+					try{
+						var body;
+						body = data["m:GetItemResponse"]["m:ResponseMessages"][0]["m:GetItemResponseMessage"][0]["m:Items"][0]["t:CalendarItem"][0]["t:Body"][0]._;
+						if (typeof body !== "undefined") {
+							
+							for (var i = 0; i < $scope.events.length; i++) {
+								if ($scope.events[i].exchangeUid === exchangeUid) {
+									$scope.events[i].body = body;
+									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
+									//
+									// first get rid of the newlines in order to allow more proper participant code parsing 
+									// New approach: try to fix the participant code to the "last" 10-digit number in the body
+									//
+									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
+									
+									var sapconnecturl;
+									
+									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i);
+									if ( sapconnecturl == null) {
+										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
+									}
+									
+									
+									var useTheNormalSAPConnectDialIn = true;
+									// A bit hacky
+									// For sapemeavent we would need different dial-in number in Frankfurt and around the word,
+									// for this first prototype we need to ignore participant code
+									if ( sapconnecturl == null) {
+										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i);
+										useTheNormalSAPConnectDialIn = false;
+									}
+									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
+										$scope.events[i].participantCode = partcode[1].replace(/\s/g,"");
+									}
+									if ( sapconnecturl != null) {
+										$scope.events[i].sapconnectUrl = sapconnecturl[0];
+									}
+								}
+							}
+							
+
+						}
+	        			$scope.errMsg = null;
+					}catch(error){
+						$log.log((error || "Unable to load item details from Exchange Server"));
+					}
+					$scope.loading = false;
+				});
+			}
+
 			function parseExchangeData(withNotifications ,events) {
 				var dateFn = ewsUtils.parseEWSDateStringAutoTimeZone;
 				var oldEventsLength = 0;
@@ -172,63 +229,6 @@ directive("app.meetings", [
 					$scope.loading = false;
 				});
 			}
-
-			function loadFromExchangeGI (exchangeUid) {
-				$scope.loading = true;
-				$scope.errMsg = null;
-
-				$http.get(ewsUtils.buildEWSUrl(undefined, undefined, exchangeUid)).success(function (data) {
-
-					try{
-						var body;
-						body = data["m:GetItemResponse"]["m:ResponseMessages"][0]["m:GetItemResponseMessage"][0]["m:Items"][0]["t:CalendarItem"][0]["t:Body"][0]._;
-						if (typeof body !== "undefined") {
-							
-							for (var i = 0; i < $scope.events.length; i++) {
-								if ($scope.events[i].exchangeUid === exchangeUid) {
-									$scope.events[i].body = body;
-									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
-									//
-									// first get rid of the newlines in order to allow more proper participant code parsing 
-									// New approach: try to fix the participant code to the "last" 10-digit number in the body
-									//
-									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
-									
-									var sapconnecturl;
-									
-									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i);
-									if ( sapconnecturl == null) {
-										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
-									}
-									
-									
-									var useTheNormalSAPConnectDialIn = true;
-									// A bit hacky
-									// For sapemeavent we would need different dial-in number in Frankfurt and around the word,
-									// for this first prototype we need to ignore participant code
-									if ( sapconnecturl == null) {
-										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i);
-										useTheNormalSAPConnectDialIn = false;
-									}
-									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
-										$scope.events[i].participantCode = partcode[1].replace(/\s/g,"");
-									}
-									if ( sapconnecturl != null) {
-										$scope.events[i].sapconnectUrl = sapconnecturl[0];
-									}
-								}
-							}
-							
-
-						}
-	        			$scope.errMsg = null;
-					}catch(error){
-						$log.log((error || "Unable to load item details from Exchange Server"));
-					}
-					$scope.loading = false;
-				});
-			}
-
 			
 		    $scope.$watch("appConfig.configItem.boxSize", function () {
 				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
