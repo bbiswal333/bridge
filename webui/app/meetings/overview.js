@@ -77,7 +77,7 @@ directive("app.meetings", [
 			    }
 			}
 
-			
+
 			function loadFromExchangeGI (exchangeUid) {
 				$scope.loading = true;
 				$scope.errMsg = null;
@@ -175,13 +175,6 @@ directive("app.meetings", [
 							endTime: calUtils.useNDigits(end.getHours(), 2) + ":" + calUtils.useNDigits(end.getMinutes(), 2),
 							timeZone: events[i]["t:TimeZone"][0],
 							location: events[i]["t:Location"] ? events[i]["t:Location"][0] : "",
-							getEventTime: function () {
-							    if ($scope.events.indexOf(this) === 0) {
-							        return "<b>" + this.startRel + "</b>";
-							    } else {
-							        return this.startTime + "<br />" + this.endTime;
-							    }
-							},
 							isCurrent: (start.getTime() < new Date().getTime()),
 							isInTheNext30Minutes: (((start.getTime() - new Date().getTime()) / 1000 / 60) <= 30),
 							exchangeUid: events[i]["t:ItemId"][0].$.Id,
