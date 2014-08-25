@@ -56,4 +56,3 @@ angular.module('bridge.box').directive('bridge.box', ['$compile', '$log', 'bridg
         }
     };
 }]);
-

@@ -136,8 +136,3 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
         }
     };
 }]);
-
-
-
-
-

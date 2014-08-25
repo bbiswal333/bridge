@@ -2,13 +2,12 @@ angular.module('app.employeeSearch', ['bridge.employeeSearch']);
 
 angular.module('app.employeeSearch').directive('app.employeeSearch', function ($modal, $http, $window) {
 
-
-    var directiveController = ['$scope', function ($scope) {        
+    var directiveController = ['$scope', function ($scope) {
         $scope.box.boxSize = "2"; 
 
 	    $scope.copyClipboard = function(text)
 		{
-			$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(text));		
+			$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(text));
 		};
 
 		$scope.$watch('selectedEmployee', function () {
@@ -16,11 +15,7 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
             {
             	$window.location.href = '#/tetris';
             }
-        }, true);  
-
-            
-            
-            
+        }, true);
     }];
 
     return {
@@ -28,8 +23,4 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
         templateUrl: 'app/employeeSearch/overview.html',
         controller: directiveController
     };
-  
 });
-
-
-
