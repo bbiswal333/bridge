@@ -5,7 +5,8 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "karma start karma.config.js -stealth --single-run"
+    "test": "karma start karma.config.js -stealth --single-run",
+    "lint": "eslint webui"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
