@@ -1,4 +1,4 @@
-angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData', ['$http', '$q', '$interval', '$location', 'notifier', function ($http, $q, $interval, $location, notifier) {
+angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData', ['$rootScope', '$http', '$q', '$interval', '$location', 'notifier', function ($rootScope, $http, $q, $interval, $location, notifier) {
 	var that = this;
     this.lastDataUpdate = null;
     this.lastDataUpdateFromConfig = null;
@@ -20,7 +20,9 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
     ];
 
     function notifierClickCallback() {
-        $location.path("/detail/correctionWorkbench/null/true");
+        $rootScope.$apply(function(){
+            $location.path("/detail/correctionWorkbench/null/true");
+        });
     }
 
     function parseBackendData(backendData, source) {

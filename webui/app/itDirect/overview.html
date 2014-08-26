@@ -2,7 +2,7 @@
     <div style="height:140px">
         <div class="app-itdirect-prio_container">
             <div ng-repeat="prio in prios" class="prio_col app-itdirect-prio_col prio_bg_{{$index+1}}">
-                <a href="#/detail/itdirect/{{id}}/{{prios[$index].key}}" >
+                <a href="#/detail/itdirect/{{id}}/{{prios[$index].key/false}}" >
                     <div class="prio_box" style="color:white">
                         <p>{{prios[$index].description}}</p>
                     </div>

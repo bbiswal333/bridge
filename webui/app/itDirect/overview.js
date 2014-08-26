@@ -7,7 +7,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
             config.initialize($scope.appConfig);
         }
         if (ticketData.isInitialized.value === false) {
-            ticketData.initialize();
+            ticketData.initialize($scope.module_name);
         }
 
         $scope.box.settingScreenData = {

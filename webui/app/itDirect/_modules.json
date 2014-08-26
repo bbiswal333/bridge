@@ -9,7 +9,7 @@
         "routes"		:
             [
                 {
-                    "route"			:	"/detail/itdirect/:appId/:prio",
+                    "route"			:	"/detail/itdirect/:appId/:prio/:calledFromNotifications",
                     "templateUrl"	:	"app/itDirect/detail.html"
                 }
             ]
