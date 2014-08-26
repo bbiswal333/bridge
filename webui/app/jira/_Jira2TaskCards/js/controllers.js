@@ -1,6 +1,3 @@
-'use strict';
-
-
 var app = angular.module('myApp', []);
 
 app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
@@ -35,7 +32,7 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
   $scope.fireButtonClicked = function() {
     $scope.statusMessage = 'Accessing JIRA...';
 
-    $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data, status, headers, config) {
+    $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data) {
         $scope.tasks = [];
         
         angular.forEach(data.issues, function(issue) {
@@ -51,10 +48,10 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
         });
 
         $scope.tasks.sort(function (a,b) {
-          if (a.parentKey < b.parentKey) return -1;
-          if (a.parentKey > b.parentKey) return 1;
-          if (a.key < b.key) return -1;
-          if (a.key > b.key) return 1;
+          if (a.parentKey < b.parentKey) { return -1; }
+          if (a.parentKey > b.parentKey) { return 1; }
+          if (a.key < b.key) { return -1; }
+          if (a.key > b.key) { return 1; }
           return 0;
         });
 
@@ -72,12 +69,12 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
           }
 
           return group;
-        }
+        };
 
         var group      = null;
         var colorIndex = 0;
         angular.forEach($scope.tasks, function(task) {
-          if (getGroup(task) != group) {
+          if (getGroup(task) !== group) {
               ++colorIndex;
               group = getGroup(task);
           }
@@ -87,10 +84,8 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
 
         $scope.statusMessage = 'Retrieved ' + $scope.tasks.length + ' tasks';
       }).
-      error(function(data, status, headers, config) {
+      error(function() {
         $scope.statusMessage = 'Error accessing JIRA';
       });
-
   };
-
 }]);

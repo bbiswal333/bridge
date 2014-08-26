@@ -17,11 +17,47 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return foundIndex;
     }
     
+    function sortFavoriteItemsAccordingToCatsItems() {
+        var favoriteItemsThatAreNoCatsItems = [];
+        var checkFound;
+        catsConfigService.favoriteItems.forEach(function(favoriteItem) {
+            checkFound = false;
+            catsConfigService.catsItems.some(function(catsItem) {
+                if (catsUtils.isSameTask(favoriteItem, catsItem)) {
+                    checkFound = true;
+                    return true;
+                }
+            });
+            if (checkFound === false) {
+                favoriteItemsThatAreNoCatsItems.push(favoriteItem);
+                return true;
+            }
+        });
+        // copy
+        var newFavoriteItems = [];
+        catsConfigService.catsItems.forEach(function(catsItem) {
+            catsConfigService.favoriteItems.some(function(favoriteItem) {
+                if (catsUtils.isSameTask(catsItem, favoriteItem)) {
+                    newFavoriteItems.push(favoriteItem);
+                }
+            });
+        });
+        favoriteItemsThatAreNoCatsItems.forEach(function(favoriteItemThatIsNoCatsItem) {
+            newFavoriteItems.push(favoriteItemThatIsNoCatsItem);
+        });
+        // verify
+        if (catsConfigService.favoriteItems.length === newFavoriteItems.length) {
+            catsConfigService.favoriteItems = newFavoriteItems;
+        }
+
+    }
+
     function addSelectedItemToFavorites() {
         catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
         catsConfigService.favoriteItems.push(catsConfigService.selectedTask);
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
         $scope.selectedTask = catsConfigService.selectedTask;
+        sortFavoriteItemsAccordingToCatsItems();
     }
 
     $scope.isUnchanged = function(item){

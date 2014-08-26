@@ -3,11 +3,15 @@ angular.module('app.test').directive('app.test', function () {
 
     var directiveController = ['$scope', 'notifier', function ($scope, notifier)
     {
-        $scope.testNotification = function() {
+        $scope.testNotification = function() 
+        {
+            
+            /*eslint-disable no-alert */
             notifier.showInfo("This is just a test",
                             "As the title says: nothing to do here :-)",
                             $scope.$parent.module_name,
                             function() {alert('Congratulations!');});
+            /*eslint-enable no-alert */            
         };
     }];
 

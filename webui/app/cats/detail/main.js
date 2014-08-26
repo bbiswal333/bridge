@@ -348,24 +348,39 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (window.DOMParser) {
                 parser = new DOMParser();
                 xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer
+            } else { // Internet Explorer                
+                /*eslint-disable no-undef*/
                 xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                /*eslint-enable no-undef*/
                 xmlDoc.async = false;
                 xmlDoc.loadXML(data);
             }
-            var replyHasMessages = false;
-            for (var i = 0; i < 5; i++) {
+            var replyMessages = [];
+            var weAreDone = false;
+            var alertDuration = 5;
+            var maxMessageCount = 5;
+            for (var i = 0; weAreDone === false; i++) {
                 var message = xmlDoc.getElementsByTagName("TEXT")[i];
                 if (message) {
-                    replyHasMessages = true;
-                    // if (message.childNodes[0].nodeValue === "You are not authorized to perform cross-company CO postings") {
-                    //     bridgeInBrowserNotification.addAlert('danger', "Some of the tasks can not be posted in Bridge. The issue will be fixed soon - please stay tuned.");
-                    // } else {
-                        bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue);
-                    // }
+                    if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
+                        replyMessages.push(message.childNodes[0].nodeValue);
+                        if (replyMessages.length <= maxMessageCount) {
+                            bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
+                        }
+                    }
+                } else {
+                    weAreDone = true;
                 }
             }
-            if (!replyHasMessages) {
+            if (replyMessages.length > maxMessageCount) {
+                var additionalMessagesCount = replyMessages.length - maxMessageCount;
+                if (additionalMessagesCount === 1) {
+                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.',alertDuration);
+                } else {
+                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.',alertDuration);
+                }
+            }
+            if (!replyMessages.length) {
                 bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
             }
         } catch(err) {
@@ -487,6 +502,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
+                $scope.reloadInProgress = monthlyDataService.reloadInProgress;
                 var catsProfile = configService.catsProfile;
                 if (!catsProfile) {
                     catsProfile = "DEV2002C";

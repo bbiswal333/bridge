@@ -9,9 +9,9 @@
             method: 'GET',
             url: url,
             withCredentials: $scope.withCredentials
-        }).success(function (data) {
+        }).success(function () {
             $scope.testResult = "Success!";
-        }).error(function (data) {
+        }).error(function () {
             $scope.testResult = "Failure! Check debug console for details.";
         });
     };

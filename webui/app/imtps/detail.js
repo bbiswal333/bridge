@@ -1,5 +1,5 @@
-angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http', 'app.imtps.msgReaderData', 'employeeService', 'app.imtps.configservice', '$routeParams' , 
-    function Controller($scope, $http, msgReaderData,employeeService, configservice, $routeParams) {
+angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', '$http', 'app.imtps.msgReaderData', 'employeeService', 'app.imtps.configservice', '$routeParams' ,
+	function Controller($scope, $http, msgReaderData,employeeService, configservice, $routeParams) {
 
         $scope.$parent.titleExtension = " - IM Details";
        
@@ -9,11 +9,10 @@ angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', 
         
         msgReaderData.initService( function(messages){ 
 			if( messages ){
-				var arraytmp = [];
 				$scope.tempobject = messages["_-QBE_-S_MESSAGES"];
        	   		
 				angular.forEach(messages["_-QBE_-S_MESSAGES"], function (n) {
-					if( n.MSG_CREATED_BY_UID != '' ){
+					if( n.MSG_CREATED_BY_UID !== '' ){
 						n.employee_created = employeeService.getData( n.MSG_CREATED_BY_UID );
 						n.employee_created.url = 'https://people.wdf.sap.corp/profiles/' + n.MSG_CREATED_BY_UID;    
 						n.employee_created.username = n.employee_created.VORNA + ' ' + n.employee_created.NACHN;
@@ -21,7 +20,7 @@ angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', 
 						n.employee_created.tel = n.employee_created.TELNR;
 					}
 					
-					if( n.MSG_PROCESSOR_UID != ''){
+					if( n.MSG_PROCESSOR_UID !== ''){
 						n.employee_process = employeeService.getData( n.MSG_PROCESSOR_UID );
 						n.employee_process.url = 'https://people.wdf.sap.corp/profiles/' + n.MSG_PROCESSOR_UID;    
 						n.employee_process.username = n.employee_process.VORNA + ' ' + n.employee_process.NACHN;
@@ -30,9 +29,5 @@ angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', 
 					}
             	});
 			}
-
 		});
-
-} ] ) ;
-
-
+}]);

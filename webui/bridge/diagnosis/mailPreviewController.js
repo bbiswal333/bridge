@@ -10,8 +10,8 @@
     };
 };
 
-angular.module('bridge.diagnosis').directive('frame', function ($compile) {
-    return function ($scope, $element) {
+angular.module('bridge.diagnosis').directive('frame', function () {
+    return function ($scope) {
         angular.element("#previewIFrame")[0].contentWindow.document.write($scope.frameContent);
     };
 });

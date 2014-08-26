@@ -317,7 +317,8 @@
 }
 .allocation-bar-block {
     height:60px;
-    float:left
+    float:left;
+    color:#ffffff;
 }
 .allocation-bar-dragBar-image {
     height: 80px;

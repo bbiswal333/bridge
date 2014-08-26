@@ -1,5 +1,5 @@
 angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
-	var EWS_BASE_URL
+	var EWS_BASE_URL;
 
 	function _buildEWSUrl (dateFrom_o, days_i, exchangeUid) {	
 		function buildDateString (date_o) {
@@ -17,7 +17,7 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 			return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
 		}
 		
-		if (typeof exchangeUid == "undefined") {
+		if (typeof exchangeUid === "undefined") {
 			var dateFrom_s = buildDateString(dateFrom_o);
 			var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
 			EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";

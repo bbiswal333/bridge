@@ -69,7 +69,8 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         $scope.$watch('jiraData', function () {
 
             var jiraStatus = {};
-            for (var i = 0; i < $scope.jiraData.length; i++)
+            var i = 0;
+            for (i = 0; i < $scope.jiraData.length; i++)
             {
                 if (!jiraStatus[$scope.jiraData[i].status])
                 {
@@ -105,7 +106,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             {                
                 var others_count = 0;
                 var others_filter = '';
-                for (var i = 4; i < $scope.jiraChartData.length; i++)
+                for (i = 4; i < $scope.jiraChartData.length; i++)
                 {
                     others_count = others_count + $scope.jiraChartData[i].count;
                     if(others_filter === "")

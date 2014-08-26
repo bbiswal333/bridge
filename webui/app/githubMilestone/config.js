@@ -5,7 +5,7 @@ angular.module('app.githubMilestone').factory("app.githubMilestone.configservice
 					name:"bridge",
 					full_name: "bridge/bridge", 
 					html_url: "https://github.wdf.sap.corp/bridge/bridge",
-					api_url: "https://github.wdf.sap.corp/api/v3/bridge/bridge",
+					api_url: "https://github.wdf.sap.corp/api/v3/bridge/bridge"
 			},	
 
 		milestoneDuration: 7, 	
