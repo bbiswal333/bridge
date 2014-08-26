@@ -1,0 +1,81 @@
+<div ng-if="configService.configItem.showProgramOverview">
+    <div class="col-xs-6 input-group add-on right-inner-addon-home">
+        <input id="searchProgram"
+               class="form-control form"
+               ng-model="$parent.searchString"
+               style="width:390px"
+               type="text" placeholder="Search for Programs..."
+               typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
+               typeahead-min-length="3"
+               typeahead-wait-ms="200"
+               typeahead-on-select="onSelect($item)"/>
+    </div>
+        <div ng-if="showGrid && programLeads.length<=1 " ng-repeat="programLead in programLeads">
+            <div class="sirius-boxLeft">
+                <span class="image_rounded_shadow_sirius_program img "><img ng-src="https://avatars.wdf.sap.corp/avatar/{{programLead.BNAME}}?s=25x25"></img></span>
+            </div>
+            <div class="sirius-boxRight">
+                <span>Program Lead: {{programLead.DISPLAY_TEXT}}</span>
+                <a ng-show="programLead.TELNR_DEF!='DUMMY'" href="tel:{{programLead.TELNR_DEF}}">
+                    <i class="sirius-icon-small icon-phone"
+                       popover="Call: {{programLead.TELNR_DEF}}"
+                       popover-trigger="mouseenter"
+                       popover-placement="top"
+                       popover-append-to-body="true">
+                    </i>
+                </a>
+                <a  ng-show="programLead.SMTP_MAIL!='DUMMY'"  href="mailto:{{programLead.SMTP_MAIL}}">
+                    <i class="sirius-icon-small icon-mail"
+                       popover="Email: {{programLead.SMTP_MAIL}}"
+                       popover-trigger="mouseenter"
+                       popovertopacement="top"
+                       popover-append-to-body="true">
+                    </i>
+                </a>
+            </div>
+        </div>
+        <div ng-if="showGrid && programLeads.length>1">
+            <div class="programLeads"
+                 sirius-ellipsis
+                 popover="{{programLeadsString}}"
+                 popover-trigger="mouseenter"
+                 popover-placement="top"
+                 popover-append-to-body="true">{{programLeadsString}}
+            </div>
+            </div>
+        <div ng-if="showGrid">
+            <div class="col-xs-12 whiteBackgr">
+                <div class="boxProgOverview">
+                    <div class="programItemInProgOverview col-md-9 col-md-offset-3">
+                        <div class="cardheader-gapfiller"></div>
+                        <div class="cardheader2">
+                            <img src="img/ecke_grau.png">
+                        </div>
+                        <p class="programPanelHdr pseudoTileContent">Program Status</p>
+                        <div class="programItemContent" ng-class="program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS"> <i ng-class="getTrafficLightStatusCssClass(program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS)" style="margin-right: 5px"></i>
+                            {{program.WORKING_STATE.TRAFFIC_LIGHT_STATUS}}
+                        </div>
+                    </div>
+                </div>
+                <div class="boxProgOverview">
+                    <div class="programItemInProgOverview col-md-9 col-md-offset-3">
+                        <div class="cardheader-gapfiller"></div>
+                        <div class="cardheader2">
+                            <img src="img/ecke_grau.png">
+                        </div>
+                        <p class="programPanelHdr pseudoTileContent">Key Message</p>
+                        <div class="programItemContent"
+                             sirius-ellipsis
+                             popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
+                             popover-trigger="mouseenter"
+                             popover-placement="top"
+                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

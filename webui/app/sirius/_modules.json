@@ -1,0 +1,14 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.sirius",
+		"title"					:	"Sirius ",
+		"icon_css"				:	"sirius-icon",
+		"overview_directive"	:	"app.sirius",
+        "needs_client"			:	false,
+        "default_hidden"		: 	false
+    },
+	"modules" : [],
+	"js_files" : ["siriusDirectives.js", "overview.js","settings.js","config.js","siriusUtils.js","taskfiltersconstants.js","lodash.js"],
+	"css_files" : ["style.css"]
+}
