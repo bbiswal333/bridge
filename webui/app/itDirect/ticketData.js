@@ -113,7 +113,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope",
                         notifier.showInfo('IT Direct Ticket Changed', 'The IT Direct Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
                     }
                 });
-            };
+            }
         };
 
         this.notifyOfflineChanges = function(tickets, lastDataUpdateFromConfig){
