@@ -1,6 +1,4 @@
-**Unit Tests** [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/)
-
-**ES Lint** [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecks/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
+**Unit Tests** [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) | **ES Lint** [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecks/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
 # Bridge
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
