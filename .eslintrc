@@ -1,13 +1,12 @@
 {
 	"env": 
     {
-        "browser": true,
+        "browser": false,
         "node": false
     },
     "globals": 
 	{
         "angular": true,
-        "location": true,
         "Modernizr": true,
         "printStackTrace": true,
         "X2JS": true,
@@ -18,7 +17,6 @@
 		"inject": true,
 		"it": true,
 		"expect": true,
-		"alert": true,
         "Notification":  true,
         "_": true,
         "saveAs": true,
