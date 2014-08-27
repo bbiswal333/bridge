@@ -1,5 +1,5 @@
-angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http','$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams',
-        function Controller($scope, $http, $templateCache, workbenchData, $routeParams) {
+angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http', '$window', '$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams',
+        function Controller($scope, $http, $window, $templateCache, workbenchData, $routeParams) {
 
         $scope.$parent.titleExtension = " - Details";   
         $scope.filterText = '';
@@ -60,7 +60,7 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
         {
             if(workbenchItem.reporter._alternateId !== "")
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + workbenchItem.reporter._alternateId + '&origin=' + location.origin).then(function (response) {
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + workbenchItem.reporter._alternateId + '&origin=' + $window.location.origin).then(function (response) {
                     workbenchItem.reporterEnhanced = response.data.DATA;
                     if(workbenchItem.reporterEnhanced.BNAME !== "")
                     {

@@ -2,7 +2,7 @@
 
     //loader module with load service
     angular.module('loader', []);
-    angular.module('loader').factory('loadservice', ["$http", "$location", "$log", function ($http, $location, $log) {
+    angular.module('loader').factory('loadservice', ["$http", "$location", "$log", "$window", function ($http, $location, $log, $window) {
 
         return {
             load: function () {
@@ -38,13 +38,13 @@
                             return;
                         }
 
-                        angular.bootstrap(document, ['bridge.app']);
+                        angular.bootstrap($window.document, ['bridge.app']);
                     };
 
                     function load_scripts(array, callback) {
 
                         function loader(src, handler) {
-                            var script = document.createElement("script");
+                            var script = $window.document.createElement("script");
 
                             script.src = src;
                             script.onload = script.onreadystatechange = function () {
@@ -52,16 +52,16 @@
                                 if (script.readyState === undefined || script.readyState === 'loaded' || script.readyState === 'complete') {
                                     script.onreadystatechange = script.onload = null;
                                     // in IE 10 we need a delayed loading of the next resource, otherwise the execution order is messed up and we get angular injector errors ('module not found...')
-                                    if (/MSIE ([0-9]+\.\d+);/.test(navigator.userAgent)) {
-                                        window.setTimeout(function () { handler(); }, 8, this);
+                                    if (/MSIE ([0-9]+\.\d+);/.test($window.navigator.userAgent)) {
+                                        $window.setTimeout(function () { handler(); }, 8, this);
                                     } else {
                                         handler();
                                     }
                                 }
                             };
 
-                            var head = document.getElementsByTagName("head")[0];
-                            (head || document.body).appendChild(script);
+                            var head = $window.document.getElementsByTagName("head")[0];
+                            (head || $window.document.body).appendChild(script);
                         }
                         var loadNextScript = function () {
                             if (array.length !== 0) {
@@ -77,12 +77,12 @@
 
                     function load_styles(array, callback) {
                         var loader = function (src, handler) {
-                            var style = document.createElement("link");
+                            var style = $window.document.createElement("link");
                             style.rel = "stylesheet";
                             style.type = "text/css";
                             style.href = src;
-                            var head = document.getElementsByTagName("head")[0];
-                            (head || document.body).appendChild(style);
+                            var head = $window.document.getElementsByTagName("head")[0];
+                            (head || $window.document.body).appendChild(style);
                             handler();
                         };
                         function loadNextStyle() {

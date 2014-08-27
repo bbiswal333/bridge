@@ -10,7 +10,8 @@ angular.module("app.cats")
 		 "bridgeInBrowserNotification",
 		 "$q",
          "$log",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log) {
+         "$window",
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log, $window) {
 		function processCatsData(cats_o) {
 	        function parseDateToTime(date_s) {
 	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -191,7 +192,7 @@ angular.module("app.cats")
 						break;
 					case 9:
 					    $log.log("tab");
-						nextElement = angular.element(document.querySelector( '#filter-bar input' ));
+						nextElement = angular.element($window.document.querySelector( '#filter-bar input' ));
 						nextElement.focus();
 						return;
 					default:
@@ -199,7 +200,7 @@ angular.module("app.cats")
 				}
 				
 				if (nextElement){
-					setTimeout(function() { nextElement.focus(); }, 100);					
+					$window.setTimeout(function() { nextElement.focus(); }, 100);					
 				}
 
 				if (originDate.getMonth() === targetDate.getMonth()) {

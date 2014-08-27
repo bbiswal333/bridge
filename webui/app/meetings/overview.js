@@ -2,13 +2,14 @@ angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
 directive("app.meetings", [
 	"$timeout",
 	"$http",
+	"$window",
     "$log",
 	"app.meetings.ews.ewsUtils",
 	"lib.utils.calUtils",
 	"$interval",
 	"app.meetings.configservice",
 	"notifier",
-	function ($timeout, $http, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+	function ($timeout, $http, $window, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -19,11 +20,11 @@ directive("app.meetings", [
 					id: $scope.boxId
 			};
 
-			$scope.client = window.client;
+			$scope.client = $window.client;
 
 			$scope.get_tel = function(dialIn, participantCode)
 			{
-				if(window.client.os === "win32")
+				if($window.client.os === "win32")
 				{
 					return dialIn + 'x' + participantCode + '#';
 				}
@@ -35,9 +36,9 @@ directive("app.meetings", [
 
 			$scope.click_tel = function(participantCode)
 			{
-				if(window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
+				if($window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
 				{
-					$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + window.location.origin);	
+					$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + $window.location.origin);	
 				}
 			};
 

@@ -1,4 +1,6 @@
-angular.module('app.im').controller('app.im.detailController', ['$scope', '$http','$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
+angular.module('app.im').controller('app.im.detailController',
+    ['$scope', '$http', '$window', '$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
 
         $scope.$parent.titleExtension = " - IM Details";   
         $scope.filterText = '';
@@ -53,7 +55,7 @@ angular.module('app.im').controller('app.im.detailController', ['$scope', '$http
             message.ticket_url = 'https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta=' + message.CSINSTA + '&mnumm=' + message.MNUMM + '&myear=' + message.MYEAR + '&sap-language=en#';
             if(message.SUSID !== "")
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + location.origin).then(function (response) {
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.SUSID + '&origin=' + $window.location.origin).then(function (response) {
                     message.employee = response.data.DATA;
                     if(message.employee.BNAME !== "")
                     {

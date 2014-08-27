@@ -1,4 +1,6 @@
-angular.module('app.customerMessages').controller('app.customerMessages.detailController', ['$scope', '$http','$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', function Controller($scope, $http, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
+angular.module('app.customerMessages').controller('app.customerMessages.detailController',
+    ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
 
         $scope.$parent.titleExtension = " - Customer Messages Details";   
         $scope.filterText = '';
@@ -52,7 +54,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         {
             if(message.PROCESSOR)
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + location.origin).then(function (response) {
+                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
                     message.employee = response.data.DATA;
                     if(message.employee.BNAME)
                     {

@@ -319,12 +319,12 @@ angular.module('bridge.app').controller('bridgeController',
     }
 ]);
 
-angular.module('bridge.app').filter("decodeIcon", function () {
+angular.module('bridge.app').filter("decodeIcon", function ($window) {
     return function (str) {
         if (str === undefined) {
             return "";
         }
-        var el = document.createElement("div");
+        var el = $window.document.createElement("div");
         el.innerHTML = str;
         str = el.innerText || el.textContent;
         return str;

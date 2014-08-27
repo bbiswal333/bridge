@@ -1,4 +1,6 @@
-﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', 'app.im.configservice', function ($http, $q, $interval, configservice) {
+﻿angular.module('app.im').service('app.im.ticketData',
+    ['$http', '$window', '$q', '$interval', 'app.im.configservice',
+    function ($http, $window, $q, $interval, configservice) {
     var that = this;
 
     //buckets for the backend tickets
@@ -88,7 +90,7 @@
         var deferred = $q.defer();
 
         //this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             that.resetData();
 

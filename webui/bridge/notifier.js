@@ -78,7 +78,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
                 self.onshow(n.tag);
             }
             if (self.duration >= 0) {
-                setTimeout(function () {
+                $window.setTimeout(function () {
                     self.close();
                 }, self.duration);
             }

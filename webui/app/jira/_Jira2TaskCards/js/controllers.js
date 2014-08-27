@@ -1,6 +1,6 @@
 var app = angular.module('myApp', []);
 
-app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
+app.controller('MyCtrl1', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   $scope.layouts = [
     { name: '1 x 1', css: 'layout-1by1.css' },
@@ -26,7 +26,7 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
   $scope.statusMessage = 'Waiting for input';
 
   $scope.printButtonClicked = function() {
-    window.print();
+    $window.print();
   };
 
   $scope.fireButtonClicked = function() {
