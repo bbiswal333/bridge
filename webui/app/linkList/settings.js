@@ -130,7 +130,6 @@ angular.module('app.linklist').appLinkListSettings =
 					'parameters': $scope.currentConfigValues.sapLinkParameters,
 					'type': 'saplink'
 				};
-				entry.sapGuiFile = appLinklistConfig.generateBlob(entry.name, entry.sid, entry.transaction,entry.parameters);
 			}
 			$scope.currentConfigValues = {};
 			$scope.setAddForm(colNo,'');
