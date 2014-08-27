@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', '$window', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http, $window) {
     this.projects = [];
     this.bridgeSettings = {};
     this.temporaryData = {};
@@ -21,7 +21,7 @@
         var defer = $q.defer();
 
         $http({
-            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
+            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
             method: "GET"
         }).success(function (data) {
             that.userInfo = data.USERINFO;
