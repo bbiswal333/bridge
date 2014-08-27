@@ -9,7 +9,7 @@ angular.module("app.transport.data", [])
 
 		this.loadData = function() {
 			var deferred = $q.defer();
-			var url = 'https://ifp.wdf.sap.corp/sap/bc/devdb/MYTRANSPORTS?origin=' + location.origin;
+			var url = 'https://ifp.wdf.sap.corp/sap/bc/devdb/MYTRANSPORTS?user=D052766&origin=' + location.origin;
 			var that = this;
 			$http.get(url).success(function(data){
 				var JSONdata = new X2JS().xml_str2json(data);

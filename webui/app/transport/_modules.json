@@ -10,7 +10,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/transport/:appId",
+				"route"			:	"/detail/transport/:transportStatus",
 				"templateUrl"	:	"app/transport/detail.html"			
 			}
 		]
