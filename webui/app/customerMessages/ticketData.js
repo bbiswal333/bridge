@@ -1,4 +1,6 @@
-﻿angular.module('app.customerMessages').service('app.customerMessages.ticketData', ['$http', '$q', '$interval', 'app.customerMessages.configservice', function ($http, $q, $interval, configservice) {
+﻿angular.module('app.customerMessages').service('app.customerMessages.ticketData',
+    ['$http', '$q', '$interval', '$window', 'app.customerMessages.configservice',
+    function ($http, $q, $interval, $window, configservice) {
     var that = this;
 
     //buckets for the backend tickets
@@ -97,7 +99,7 @@
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin, {withCredentials:true}
+        $http.get('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + $window.location.origin, {withCredentials:true}
         ).success(function (data) {
             // data = testData;
             that.resetData();

@@ -1,4 +1,4 @@
-angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsUtils", ["lib.utils.calUtils", function (calUtils) {
+angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsUtils", ["lib.utils.calUtils", "$window", function (calUtils, $window) {
 	var EWS_BASE_URL;
 
 	function _buildEWSUrl (dateFrom_o, days_i, exchangeUid) {	
@@ -20,11 +20,11 @@ angular.module("app.meetings.ews", ["lib.utils"]).factory("app.meetings.ews.ewsU
 		if (typeof exchangeUid === "undefined") {
 			var dateFrom_s = buildDateString(dateFrom_o);
 			var dateTo_s = buildDateString(new Date(dateFrom_o.getTime() + (days_i * 86400000))); //Adds days by multiplying the milliseconds of one day
-			EWS_BASE_URL = window.client.origin + "/api/CalDataSSO";
+			EWS_BASE_URL = $window.client.origin + "/api/CalDataSSO";
 		
 			return EWS_BASE_URL + "?dateFrom=" + encodeForUrl(dateFrom_s) + "&dateTo=" + encodeForUrl(dateTo_s) + "&format=json";
 		} else {
-			EWS_BASE_URL = window.client.origin + "/api/CalGetItemSSO";
+			EWS_BASE_URL = $window.client.origin + "/api/CalGetItemSSO";
 			return EWS_BASE_URL + "?format=json&exchangeUid=" + encodeForUrl(exchangeUid);
 		}
 	}

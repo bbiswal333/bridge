@@ -1,4 +1,4 @@
-﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$interval", "app.atc.configservice", function ($http, $interval, atcConfig) {
+﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$interval", "$window", "app.atc.configservice", function ($http, $interval, $window, atcConfig) {
     var that = this;
 
     this.data = {
@@ -12,7 +12,7 @@
 
     this.getResultForConfig = function (config) {            
         var that = this;
-        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin=' + location.origin)
+        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin=' + $window.location.origin)
         .success(function (data) {
 
             that.data = {
@@ -26,7 +26,7 @@
 
     this.getDetailsForConfig = function (config) {
         var that = this;
-        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + location.origin)
+        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
         .success(function (data) {
             that.detailsData = data.DATA;
         });

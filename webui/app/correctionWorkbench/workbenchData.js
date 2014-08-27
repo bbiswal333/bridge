@@ -1,4 +1,6 @@
-angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData', ['$rootScope', '$http', '$q', '$interval', '$location', 'notifier', function ($rootScope, $http, $q, $interval, $location, notifier) {
+angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData',
+    ['$rootScope', '$http', '$q', '$interval', '$location', 'notifier', '$window',
+    function ($rootScope, $http, $q, $interval, $location, notifier, $window) {
 	var that = this;
     this.lastDataUpdate = null;
     this.lastDataUpdateFromConfig = null;
@@ -46,7 +48,7 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
         var deferredRequestOnMy = $q.defer();
         var deferredRequestForTesting = $q.defer();
 
-        $http.post('https://css.wdf.sap.corp/sap(bD1lbiZjPTAwMQ==)/bc/bsp/spn/jcwb_srv/find_correction_requests?sap-language=EN&origin=' + location.origin,
+        $http.post('https://css.wdf.sap.corp/sap(bD1lbiZjPTAwMQ==)/bc/bsp/spn/jcwb_srv/find_correction_requests?sap-language=EN&origin=' + $window.location.origin,
                    '<request withDetails="common"><query id="STD_MY_OPEN_CR" queryDefinitionId="STD_MY_OPEN_CR"><conditions/></query><query id="STD_PLANNED_FOR_TESTING_CR" queryDefinitionId="STD_PLANNED_FOR_TESTING_CR"><conditions/></query></request>',
                    {withCredentials: false, headers: {'Content-Type': 'text/plain'}}
         ).success(function (data) {
@@ -70,7 +72,7 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
             deferredRequestOnMy.reject();
         });
 
-        $http.post('https://css.wdf.sap.corp/sap(bD1lbiZjPTAwMQ==)/bc/bsp/spn/jcwb_srv/find_correction_requests?sap-language=EN&origin=' + location.origin,
+        $http.post('https://css.wdf.sap.corp/sap(bD1lbiZjPTAwMQ==)/bc/bsp/spn/jcwb_srv/find_correction_requests?sap-language=EN&origin=' + $window.location.origin,
                    '<request withDetails="common"><query id="STD_PLANNED_FOR_TESTING_CR" queryDefinitionId="STD_PLANNED_FOR_TESTING_CR"><conditions/></query></request>',
                    {withCredentials: false, headers: {'Content-Type': 'text/plain'}}
         ).success(function (data) {

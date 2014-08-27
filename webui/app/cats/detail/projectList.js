@@ -7,7 +7,8 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     "lib.utils.calUtils",
     "app.cats.configService",
     "$q",
-    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
+    "$window",
+    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q, $window) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -27,7 +28,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     $scope.onPressEnter = function(event){
       if (event.which === 13) {
-        document.getElementById("projectButton").focus();
+        $window.document.getElementById("projectButton").focus();
       }
     };
 

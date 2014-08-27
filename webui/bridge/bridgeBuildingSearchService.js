@@ -1,4 +1,4 @@
-angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q', '$filter', function ($http, $q, $filter)
+angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q', '$filter', '$window', function ($http, $q, $filter, $window)
 {	
 	//data buffer
 	var buffer_data = {};
@@ -34,7 +34,7 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 	            		//add building
 	            		var building = {};
 
-	            		var parser = document.createElement('a');
+	            		var parser = $window.document.createElement('a');
 						parser.href = data.items.item[i].geolinkB; 					
 						var query = parser.search.substring(1);						
     					var vars = query.split('&');

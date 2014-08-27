@@ -1,6 +1,6 @@
 ﻿angular.module('bridge.diagnosis', ['bridge.service', 'ui.bootstrap'])
-.service(   'bridge.diagnosis.logService', ["$rootScope", "$http", "bridgeDataService", "bridgeInBrowserNotification", "$modal",
-            function ($rootScope, $http, bridgeDataService, bridgeInBrowserNotification, $modal) {
+.service(   'bridge.diagnosis.logService', ["$rootScope", "$http", "bridgeDataService", "bridgeInBrowserNotification", "$modal", "$window",
+            function ($rootScope, $http, bridgeDataService, bridgeInBrowserNotification, $modal, $window) {
 
     var sLogKey = "bridgeLog";
 
@@ -62,11 +62,11 @@
             sMessage: sMessage,
             sStackTrace: sStackTrace
         });
-        sessionStorage.setItem(sLogKey, JSON.stringify(logEntries));
+        $window.sessionStorage.setItem(sLogKey, JSON.stringify(logEntries));
     };
 
     this.getLog = function () {
-        var logEntries = JSON.parse(sessionStorage.getItem(sLogKey));
+        var logEntries = JSON.parse($window.sessionStorage.getItem(sLogKey));
 
         if (logEntries == null) { // no logEntries available so far
             logEntries = [];
@@ -79,7 +79,7 @@
         var log = this.getLog();
         var sLog = transformLogToHTML(log);
 
-        $http.post("https://ifp.wdf.sap.corp/sap/bc/bridge/SEND_MAIL?origin=" + location.origin, sLog, {'headers':{'Content-Type':'text/plain'}}
+        $http.post("https://ifp.wdf.sap.corp/sap/bc/bridge/SEND_MAIL?origin=" + $window.location.origin, sLog, {'headers':{'Content-Type':'text/plain'}}
         ).success(function () {
             bridgeInBrowserNotification.addAlert("success", "Log sent successfully.", 5);
         }).error(function () {
@@ -105,7 +105,7 @@
     };
 
     this.clear = function () {
-        sessionStorage.removeItem(sLogKey);
+        $window.sessionStorage.removeItem(sLogKey);
     };
 
 }]);

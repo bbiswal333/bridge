@@ -1,5 +1,7 @@
-angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$interval', 'app.imtps.configservice' , 'trafficLightService' , 
-                                                                function ($http, $interval, configservice , trafficLightService) {
+angular.module('app.imtps').service('app.imtps.msgReaderData',
+    ['$http', '$window', '$interval', 'app.imtps.configservice' , 'trafficLightService' , 
+    function ($http, $window, $interval, configservice , trafficLightService) {
+
     var gtpService = 'https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps';
     var nInterval  = 60 * 5 * 1000; 
     
@@ -12,7 +14,7 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
     
     this.loadByTestCaseName = function() {
     	
-        $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             data = new X2JS().xml_str2json(data);
             that.backendTickets = data.abap.values.TC_MESSAGES;
@@ -28,7 +30,7 @@ angular.module('app.imtps').service('app.imtps.msgReaderData', ['$http', '$inter
     
     this.loadByTesterWorklist = function() {
         //this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-        $http.get( gtpService + '?sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        $http.get( gtpService + '?sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
 
             data = new X2JS().xml_str2json(data);

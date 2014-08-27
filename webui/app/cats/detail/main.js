@@ -9,11 +9,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.cat2BackendZDEVDB",
   "app.cats.catsUtils",
   "$http",
+  "$window",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -345,8 +346,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             var parser;
             var xmlDoc;
-            if (window.DOMParser) {
-                parser = new DOMParser();
+            if ($window.DOMParser) {
+                parser = new $window.DOMParser();
                 xmlDoc = parser.parseFromString(data, "text/xml");
             } else { // Internet Explorer                
                 /*eslint-disable no-undef*/

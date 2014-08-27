@@ -7,7 +7,7 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
 
 	    $scope.copyClipboard = function(text)
 		{
-			$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(text));
+			$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(text));
 		};
 
 		$scope.$watch('selectedEmployee', function () {

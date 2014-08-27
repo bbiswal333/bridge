@@ -23,9 +23,9 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
 }]);
 
 
-angular.module('bridge.app').directive("infinitescroll", [function () {
+angular.module('bridge.app').directive("infinitescroll", [function ($window) {
     return function (scope, elm) {
-        var container = angular.element(document.querySelector('#scrollContainer'));
+        var container = angular.element($window.document.querySelector('#scrollContainer'));
         var cont = container[0];
 
         container.bind("scroll", function () {
