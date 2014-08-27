@@ -20,8 +20,10 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
     ];
 
     function notifierClickCallback() {
-        $rootScope.$apply(function(){
-            $location.path("/detail/correctionWorkbench/null/true");
+        _.defer(function() {
+            $rootScope.$apply(function () {
+                $location.path("/detail/correctionWorkbench/null/true");
+            });
         });
     }
 

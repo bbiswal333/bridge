@@ -16,6 +16,6 @@ angular.module('app.itdirect')
             });
 
         $scope.save_click = function () {
-            $scope.$emit('closeSettingsScreen');
+            $scope.$emit('closeSettingsScreen', {app: 'itdirect'});
         };
 }]);
