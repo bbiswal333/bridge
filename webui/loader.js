@@ -115,7 +115,9 @@
     }]);
 
     //when document is ready, run loader module, load service and remove loader module
+/*eslint-disable no-undef */
     var loadingContainer = document.createElement('div');
+/*eslint-enable no-undef */
 
     angular.module('loader').run(function (loadservice) {
         loadservice.load();
@@ -123,7 +125,9 @@
         $(loadingContainer).remove();
     });
 
+/*eslint-disable no-undef */
     angular.element(document).ready(function () {
+/*eslint-enable no-undef */
         angular.bootstrap(loadingContainer, ['loader']);
     });
 })();
