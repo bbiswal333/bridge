@@ -15,7 +15,7 @@ angular.module('app.transport').controller('app.transport.detailController',['$s
                 }
                 if (aTransports !== undefined) {
                     for (var i = 0; i < aTransports.length; i++) {
-                        $scope.transports[i] = { "trkorr": aTransports[i].TRKORR, "checksystem": aTransports[i].CHECKSYSTEM, "chkdate": aTransports[i].CHKDATE, "text": aTransports[i].TEXT};
+                        $scope.transports[i] = { "trkorr": aTransports[i].TRKORR, "checksystem": aTransports[i].CHECKSYSTEM, "checkclient": aTransports[i].CHECKCLIENT, "chkdate": aTransports[i].CHKDATE, "text": aTransports[i].TEXT};
                     }
                 }
 			});
