@@ -19,54 +19,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser (*.spec.js is redundant)
     files: [
-      './webui/lib/jQuery-2_1_0/jquery.min.js',
-      './webui/lib/angular-1_2_13/angular.min.js',
-      './webui/lib/**/*.js',
+        './webui/lib/jQuery-2_1_0/jquery.min.js',
+        './webui/lib/angular-1_2_13/angular.min.js',
+        './webui/lib/**/*.js',
 
-      './webui/loader_mock.js',
+        './webui/loader_mock.js',
 
-      './webui/bridge/bridgeController.js',
-      './webui/bridge/bridgeDataService.js',
+        // note all files that create angular modules here. They need to be loaded first
+        './webui/bridge/bridgeController.js',
+        './webui/bridge/bridgeDataService.js',
+        './webui/bridge/libUtils.js',
+        './webui/bridge/diagnosis/logService.js',
 
-      './webui/bridge/diagnosis/logService.js',
+        './webui/app/**/overview.js',
 
-      './webui/bridge/**/*.js',
-
-      './webui/app/meetings/overview.js',
-      './webui/app/meetings/**/*.js',
-
-      './webui/app/lunchWalldorf/overview.js',
-
-      './webui/app/githubMilestone/overview.js',
-      './webui/app/githubMilestone/config.js',
-      './webui/app/githubMilestone/settings.js',
-
-      './webui/app/test/overview.js',
-
-      './webui/app/jira/overview.js',
-      './webui/app/jira/*.js',
-
-      './webui/app/im/overview.js',
-      './webui/app/im/*.js',
-
-      './webui/app/customerMessages/overview.js',
-      './webui/app/customerMessages/*.js',
-
-      './webui/app/employeeSearch/*.js',
-
-      './webui/app/atc/overview.js',
-      './webui/app/atc/*.js',
-
-      './webui/app/cats/overview.js',
-      './webui/app/cats/**/*.js',
-
-      './webui/app/correctionWorkbench/overview.js',
-      './webui/app/correctionWorkbench/**/*.js',
-
-      './webui/app/itDirect/overview.js',
-      './webui/app/itDirect/**/*.js',
-
-      '**/*.spec.js'
+        './webui/**/*.js',
+        '**/*.spec.js'
     ],
 
     // list of files to exclude
