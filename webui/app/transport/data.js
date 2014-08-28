@@ -1,6 +1,6 @@
 angular.module("app.transport.data", [])
-	.service("app.transport.dataService", ["$http", "$q",
-	function ($http, $q) {
+	.service("app.transport.dataService", ["$http", "$q", "$window",
+	function ($http, $q, $window) {
 
 		this.data = {};
 		this.data.transportData = {};

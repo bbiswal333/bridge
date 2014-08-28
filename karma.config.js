@@ -78,8 +78,15 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress','dots','junit'],
+    reporters: ['progress','dots','junit','coverage'],
 
+    preprocessors: {
+      // source files, that you wanna generate coverage for
+      // do not include tests or libraries
+      // (these files will be instrumented by Istanbul)
+      './webui/!(*.spec).js': ['coverage'],
+      './webui/!(lib)/**/!(*.spec).js': ['coverage']
+    },
     
     junitReporter: {
       outputFile: 'test-results.xml'

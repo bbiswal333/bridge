@@ -1,5 +1,4 @@
-﻿angular.module('bridge.diagnosis').mailPreviewController = function ($scope, $modalInstance, frameContent) {
-    //$scope.frameContent = "<html><body><h1>test</h1></body></html>";
+﻿angular.module('bridge.diagnosis').mailPreviewController = ["$scope", "$modalInstance", "frameContent", function ($scope, $modalInstance, frameContent) {
     $scope.frameContent = frameContent;
 
     $scope.send_click = function () {
@@ -8,7 +7,7 @@
     $scope.cancel_click = function () {
         $modalInstance.dismiss();
     };
-};
+}];
 
 angular.module('bridge.diagnosis').directive('frame', function () {
     return function ($scope) {
