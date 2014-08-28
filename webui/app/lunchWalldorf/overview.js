@@ -1,6 +1,5 @@
 angular.
-  module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', [
+  module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', [
     "lib.utils.calUtils",
     "bridgeDataService",
     "app.lunchWalldorf.dataProcessor",
@@ -8,22 +7,19 @@ angular.
     "app.lunchWalldorf.backendData",
     function (calUtils, bridgeDataService, dataProcessor, lunchConfigService, lunchBackendData) {
     var directiveController = ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
-
-
-    var directiveController = ['$scope', function ($scope) {
         
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
 
-        if (typeof $scope.userInfo == "undefined") {
+        if (typeof $scope.userInfo === "undefined") {
             $scope.userInfo = {};
         }
 
         // default to WDF01
         $scope.userInfo.building = "WDF01";
-        if (typeof bridgeDataService.getUserInfo() != "undefined") {
+        if (typeof bridgeDataService.getUserInfo() !== "undefined") {
             $scope.userInfo.building = bridgeDataService.getUserInfo().BUILDING;
         }
 
@@ -35,11 +31,9 @@ angular.
                 scope: {
                     userInfo: "="
                 }
-        };
-        var self = this;
+        };        
         
         $scope.noDataString = "Data could not be loaded from webservice.";
-
         $scope.configService = lunchConfigService;
 
         // proceed to next potential lunch-relevant day
@@ -92,8 +86,8 @@ angular.
             $scope.portalLinkText = lunchBackendData.getBackendMetadata().portalLinkText;
         };
         
-        $scope.refreshBackend($scope.chosenbackend, $scope.date);
-
+        $scope.refreshBackend();
+        $interval($scope.refreshBackend(), 1000 * 60 * 5);
 
     }];
 
