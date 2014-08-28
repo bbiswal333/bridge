@@ -2,7 +2,7 @@
     "app":
     {
         "module_name"			:	"app.itdirect",
-        "title"					:	"IT Tickets",
+        "title"					:	"IT Direct",
         "icon_css"				:	"icon-comment",
         "overview_directive"	:	"app.itdirect",
         "needs_client"			:	false,

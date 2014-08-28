@@ -1,10 +1,10 @@
 {
 	"app":
 	{
-		"module_name"			:	"app.lunchWalldorf",
-		"title"					:	"Lunch",
-		"icon_css"				:	"icon-meal",
-		"overview_directive"	:	"app.lunchWalldorf",
+		"module_name"			:	"app.playbook",
+		"title"					:	"Playbook",
+		"icon_css"				:	"playbook-icon",
+		"overview_directive"	:	"app.playbook",
 		"needs_client"			:	false
 	},
 	"modules" : [],
