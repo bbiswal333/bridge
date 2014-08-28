@@ -27,14 +27,15 @@
                     </div>
                 </div>
 
-                <div id="calendarDay"
-                     class="{{dayClass}}" 
-                     title="{{getDescForState(day.data.state)}}" 
-                     ng-repeat="day in week" 
-                     ng-if="day.data != null" 
-                     ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}" 
-                     ng-click="jump(day.dayString, $event);" 
-                     ng-keyup="navigate(day.dayString, $event);" 
+                <div ng-if="!maintainable"
+                     id="calendarDay"
+                     class="{{dayClass}}"
+                     title="Click to maintain!"
+                     ng-repeat="day in week"
+                     ng-if="day.data != null"
+                     ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}"
+                     ng-click="jump(day.dayString, $event);"
+                     ng-keyup="navigate(day.dayString, $event);"
                      tabindex="1"
                      style="outline: 0">
 
@@ -51,6 +52,33 @@
                               'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
                 </div>
+
+                <div ng-if="maintainable"
+                     id="calendarDay"
+                     class="{{dayClass}}"
+                     title="{{getDescForState(day.data.state)}}"
+                     ng-repeat="day in week"
+                     ng-if="day.data != null"
+                     ng-class="{'app-cats-notInMonth': !day.inMonth, 'clickable': reloadAnimation == ''}"
+                     ng-click="jump(day.dayString, $event);"
+                     ng-keyup="navigate(day.dayString, $event);"
+                     tabindex="1"
+                     style="outline: 0">
+
+                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
+                         'app-cats-day-inner-small': !maintainable,
+                         'app-cats-day-inner-big': maintainable,
+                         'app-cats-today': day.today,
+                         'selected_day': isSelected(day.dayString)}"
+                         ng-style="{'background-size': !maintainable && day.today && 'cover'}">
+
+                        <span ng-class="{
+                              'bold': isSelected(day.dayString),
+                              'app-cats-day-text-small': !maintainable,
+                              'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
+                    </div>
+                </div>
+
                 <div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="No data available in CATS for this date.">
                     <span>{{day.dayNr}}</span>
                 </div>				

@@ -3,7 +3,7 @@
 	{
 		"module_name"			:	"app.cats",
 		"title"					:	"CAT2 Maintenance",
-		"icon_css"				:	"fa fa-star",
+		"icon_css"				:	"fa fa-calendar",
 		"overview_directive"	:	"app.cats",
 		"needs_client"			:	false,
 		"routes"		:
