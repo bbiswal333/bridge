@@ -20,11 +20,11 @@ if (iPercentage > 94){
     color = "red";
 }
 
-var pictureUrl = "http://img.shields.io/badge/coverage-"
+var pictureUrl = "http://img.shields.io/badge/coverage-";
 pictureUrl += percentage + '%-' + color + ".svg";
 
 var download = function(uri, filename, callback){
-    request.head(uri, function(err, res, body){
+    request.head(uri, function(){
 
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });

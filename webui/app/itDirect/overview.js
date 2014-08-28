@@ -20,7 +20,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
         };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){
-           if (args.app === 'itdirect'){
+           if (args !== undefined && args.app === 'itdirect'){
                ticketData.loadTicketData();
            }
         });
