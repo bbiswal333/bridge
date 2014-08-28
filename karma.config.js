@@ -55,6 +55,14 @@ module.exports = function(config) {
       './webui/!(*.spec).js': ['coverage'],
       './webui/!(lib)/**/!(*.spec).js': ['coverage']
     },
+
+    // optionally, configure the reporter
+    coverageReporter: {
+        type : 'text-summary',
+        dir : 'coverage',
+        subdir: 'results',
+        file : 'coverage.txt'
+    },
     
     junitReporter: {
       outputFile: 'test-results.xml'
