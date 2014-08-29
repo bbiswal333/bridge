@@ -64,13 +64,15 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             return listCollection;
         }
 
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
-
-            appLinklistConfig.data = angular.copy($scope.appConfig);
-            appLinklistConfig.data.listCollection = eventuallyRemoveDuplicates(appLinklistConfig.data.listCollection);
-        }
-        else {
-            setDefaultConfig();
+        if (appLinklistConfig.isInitialized === false) {
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
+                appLinklistConfig.data = angular.copy($scope.appConfig);
+                appLinklistConfig.data.listCollection = eventuallyRemoveDuplicates(appLinklistConfig.data.listCollection);
+            }
+            else {
+                setDefaultConfig();
+            }
+            appLinklistConfig.isInitialized = true;
         }
 
         $scope.openBlob = function(link){

@@ -5,4 +5,6 @@ angular.module('app.linklist').service("app.linklist.configservice", function ()
         listCollection: []
     };
 
+    this.isInitialized = false;
+
 });

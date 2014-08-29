@@ -1,4 +1,4 @@
-angular.module('bridge.app').controller('bridge.app.detailController', ['$scope', '$routeParams','routeInfo', 'appInfo', function ($scope, $routeParams, routeInfo, appInfo) {		
+angular.module('bridge.app').controller('bridge.app.detailController', ['$scope', '$routeParams','routeInfo', 'appInfo', function ($scope, $routeParams, routeInfo, appInfo) {
 	$scope.detailScreen = {};
     $scope.detailScreen.htmlPage = routeInfo.templateUrl;
     $scope.detailScreen.route = routeInfo.route;
@@ -23,7 +23,7 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
 }]);
 
 
-angular.module('bridge.app').directive("infinitescroll", [function ($window) {
+angular.module('bridge.app').directive("infinitescroll", ["$window", function ($window) {
     return function (scope, elm) {
         var container = angular.element($window.document.querySelector('#scrollContainer'));
         var cont = container[0];
