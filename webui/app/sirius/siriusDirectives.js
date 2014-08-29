@@ -9,24 +9,6 @@
 //angular.module("app.sirius", []);
 
 var directives = angular.module('app.sirius.siriusDirectives', [])
-    .directive('siriusResize', ['$window', function ($window) {
-        return function (scope, element, attrs) {
-            var w = angular.element($window);
-            scope.getWindowDimensions = function() {
-                return {
-                    'h': w.height(),
-                    'w': w.width()
-                }
-            };
-            scope.$watch(scope.getWindowDimensions, function(newValue, oldValue) {
-                scope.$eval(attrs.siriusResize);
-            }, true);
-
-            w.bind('resize', function() {
-                scope.$apply();
-            });
-        };
-    }])
     .directive('siriusEllipsis', ['$compile', '$timeout', function($compile, $timeout) {
         // For this directive to work, the element need the display style "block" in Chrome
         return {
@@ -109,12 +91,18 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
 
                 $scope.selectAll = function () {
                     // Copy everything from the options to the model
-                    $scope.model = $scope.options.slice();
+                    if ($scope.options instanceof Array && $scope.model instanceof Array) {
+                        $scope.options.forEach(function(value) {
+                            if (!_.contains($scope.model,value)) {
+                                $scope.model.push(value);
+                            }
+                        });
+                    }
                 };
 
                 $scope.deselectAll = function () {
                     // Reset all entries in the model
-                    $scope.model = [];
+                    _.remove($scope.model, function() {return true})
                 };
 
                 $scope.selectItem = function (event) {

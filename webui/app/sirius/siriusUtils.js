@@ -17,6 +17,23 @@ var siriusUtils = function () {
         this.WORKING_STATE = null;
         this.LOAD_STATE = null;
     };
+
+    this.createDate = function (dateString) {
+        var date;
+        if (dateString === '0000-00-00' ) {
+            return date = null;
+        } else {
+            try {
+                date = new Date(dateString);
+                date=date.getDay()+"."+date.getMonth()+"."+date.getFullYear();
+
+            } catch (e) {
+                date = null;
+            }
+        }
+        return date;
+    };
+
     return this;
 
 

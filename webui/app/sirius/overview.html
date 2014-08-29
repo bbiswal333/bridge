@@ -1,81 +1,126 @@
+<div class="gridDiv" ng-if="!configService.configItem.showProgramOverview">
+    <div >
+        <div ng-if="emptyTask">
+            <p>This delivery contains no tasks as it is in processing status New</p>
+        </div>
+        <div ng-if="emptyTask!=true">
+        <table style="width: 100%" >
+            <thead class="table-header" style="position: relative;">
+            <tr >
+                <th style="width: 60%">Name</th>
+                <th style="width: 20%">Status</th>
+                <th style="width: 20%">Due Date</th>
+            </tr>
+            </thead>
+                <tr ng-repeat="task in filteredTask">
+                    <th>
+                        {{ task.WORKING_STATE.TASK_NAME }}
+                    </th>
+                    <th>
+                        {{ task.WORKING_STATE.TASK_STATUS }}
+                    </th>
+                    <th>
+                        {{ task.WORKING_STATE.PLANFINISH }}
+                    </th>
+
+
+                </tr>
+        </table>
+        </div>
+    </div>
+</div>
 <div ng-if="configService.configItem.showProgramOverview">
-    <div class="col-xs-6 input-group add-on right-inner-addon-home">
+    <div class="col-xs-6 input-group add-on right-inner-addon-home" style="width: 95%;float:left">
         <input id="searchProgram"
                class="form-control form"
                ng-model="$parent.searchString"
-               style="width:390px"
+               style="width:365px"
                type="text" placeholder="Search for Programs..."
                typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
                typeahead-min-length="3"
                typeahead-wait-ms="200"
                typeahead-on-select="onSelect($item)"/>
     </div>
-        <div ng-if="showGrid && programLeads.length<=1 " ng-repeat="programLead in programLeads">
-            <div class="sirius-boxLeft">
-                <span class="image_rounded_shadow_sirius_program img "><img ng-src="https://avatars.wdf.sap.corp/avatar/{{programLead.BNAME}}?s=25x25"></img></span>
-            </div>
-            <div class="sirius-boxRight">
-                <span>Program Lead: {{programLead.DISPLAY_TEXT}}</span>
-                <a ng-show="programLead.TELNR_DEF!='DUMMY'" href="tel:{{programLead.TELNR_DEF}}">
-                    <i class="sirius-icon-small icon-phone"
-                       popover="Call: {{programLead.TELNR_DEF}}"
-                       popover-trigger="mouseenter"
-                       popover-placement="top"
-                       popover-append-to-body="true">
-                    </i>
-                </a>
-                <a  ng-show="programLead.SMTP_MAIL!='DUMMY'"  href="mailto:{{programLead.SMTP_MAIL}}">
-                    <i class="sirius-icon-small icon-mail"
-                       popover="Email: {{programLead.SMTP_MAIL}}"
-                       popover-trigger="mouseenter"
-                       popovertopacement="top"
-                       popover-append-to-body="true">
-                    </i>
-                </a>
-            </div>
+    <a ng-if="showGrid" style="width: 5%;float: right" href=https://ifd.wdf.sap.corp/prs#/home/program/{{ProgramGUIDSirius}}" target="_blank">
+        <i style="font-size:15px;margin-top:5px" class="fa fa-external-link"
+           popover="Go to the sirius Tool"
+           popover-trigger="mouseenter"
+           popovertopacement="top"
+           popover-append-to-body="true">
+        </i>
+    </a>
+
+    <div ng-if="showGrid && programLeads.length<=1 " ng-repeat="programLead in programLeads">
+        <div class="sirius-boxLeft">
+            <span class="image_rounded_shadow_sirius_program img "><img
+                    ng-src="https://avatars.wdf.sap.corp/avatar/{{programLead.BNAME}}?s=25x25"></img></span>
         </div>
-        <div ng-if="showGrid && programLeads.length>1">
-            <div class="programLeads"
-                 sirius-ellipsis
-                 popover="{{programLeadsString}}"
-                 popover-trigger="mouseenter"
-                 popover-placement="top"
-                 popover-append-to-body="true">{{programLeadsString}}
-            </div>
-            </div>
-        <div ng-if="showGrid">
-            <div class="col-xs-12 whiteBackgr">
-                <div class="boxProgOverview">
-                    <div class="programItemInProgOverview col-md-9 col-md-offset-3">
-                        <div class="cardheader-gapfiller"></div>
-                        <div class="cardheader2">
-                            <img src="img/ecke_grau.png">
-                        </div>
-                        <p class="programPanelHdr pseudoTileContent">Program Status</p>
-                        <div class="programItemContent" ng-class="program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS"> <i ng-class="getTrafficLightStatusCssClass(program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS)" style="margin-right: 5px"></i>
-                            {{program.WORKING_STATE.TRAFFIC_LIGHT_STATUS}}
-                        </div>
+        <div class="sirius-boxRight">
+            <span>Program Lead: {{programLead.DISPLAY_TEXT}}</span>
+            <a ng-show="programLead.TELNR_DEF!='DUMMY'" href="tel:{{programLead.TELNR_DEF}}">
+                <i class="sirius-icon-small icon-phone"
+                   popover="Call: {{programLead.TELNR_DEF}}"
+                   popover-trigger="mouseenter"
+                   popover-placement="top"
+                   popover-append-to-body="true">
+                </i>
+            </a>
+            <a ng-show="programLead.SMTP_MAIL!='DUMMY'" href="mailto:{{programLead.SMTP_MAIL}}">
+                <i class="sirius-icon-small icon-mail"
+                   popover="Email: {{programLead.SMTP_MAIL}}"
+                   popover-trigger="mouseenter"
+                   popovertopacement="top"
+                   popover-append-to-body="true">
+                </i>
+            </a>
+        </div>
+    </div>
+    <div ng-if="showGrid && programLeads.length>1">
+        <div class="programLeads"
+             sirius-ellipsis
+             popover="{{programLeadsString}}"
+             popover-trigger="mouseenter"
+             popover-placement="top"
+             popover-append-to-body="true">{{programLeadsString}}
+        </div>
+    </div>
+    <div ng-if="showGrid">
+        <div class="col-xs-12 whiteBackgr">
+            <div class="boxProgOverview">
+                <div class="programItemInProgOverview col-md-9 col-md-offset-3">
+                    <div class="cardheader-gapfiller"></div>
+                    <div class="cardheader2">
+                        <img src="../../app/sirius/img/ecke_grau.png">
+                    </div>
+                    <p class="programPanelHdr pseudoTileContent">Program Status</p>
+
+                    <div class="programItemContent" ng-class="program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS"><i
+                            ng-class="getTrafficLightStatusCssClass(program.WORKING_STATE.TRAFFIC_LIGHT_STATUS_CSS_CLASS)"
+                            style="margin-right: 5px"></i>
+                        {{program.WORKING_STATE.TRAFFIC_LIGHT_STATUS}}
                     </div>
                 </div>
-                <div class="boxProgOverview">
-                    <div class="programItemInProgOverview col-md-9 col-md-offset-3">
-                        <div class="cardheader-gapfiller"></div>
-                        <div class="cardheader2">
-                            <img src="img/ecke_grau.png">
-                        </div>
-                        <p class="programPanelHdr pseudoTileContent">Key Message</p>
-                        <div class="programItemContent"
-                             sirius-ellipsis
-                             popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
-                             popover-trigger="mouseenter"
-                             popover-placement="top"
-                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE}}
-                        </div>
+            </div>
+            <div class="boxProgOverview">
+                <div class="programItemInProgOverview col-md-9 col-md-offset-3">
+                    <div class="cardheader-gapfiller"></div>
+                    <div class="cardheader2">
+                        <img src="../../app/sirius/img/ecke_grau.png">
+                    </div>
+                    <p class="programPanelHdr pseudoTileContent">Key Message</p>
+
+                    <div class="programItemContent"
+                         sirius-ellipsis
+                         popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
+                         popover-trigger="mouseenter"
+                         popover-placement="top"
+                         popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 

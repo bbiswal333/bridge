@@ -13,15 +13,4 @@ var _this=this;
         selectedUserInAssignedToDropDown:''
     };
 
-    this.getAllTasks=function(programGUID,deliveryID){
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID + '/delivery/'+deliveryID+'/task?sap-language=en').then(function (response) {
-            _this.tasks.programGUID=programGUID;
-            _this.tasks.deliveryID=deliveryID;
-            _this.tasks.content=response.data;
-            return response.data;
-        })
-
-    };
-
-
 });

@@ -1,19 +1,22 @@
 var app = angular.module("app.sirius", ["app.sirius.siriusDirectives"])
     .filter('oldProgramSign', [function () {
-    return function (isOldProgram) {
-        return (isOldProgram === 'X') ? "(from Program Repository)" : "";
-    };
+        return function (isOldProgram) {
+            return (isOldProgram === 'X') ? "(from Program Repository)" : "";
+        };
 }]);
-app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriusConfigService,$filter) {
+app.directive("app.sirius",["app.sirius.configservice","app.sirius.taskFilterConstants",'$filter',function (siriusConfigService,taskFilterConstants,$filter) {
 
     var directiveController = ['$scope','$http',function ($scope,$http)
     {
-
-        var _init = function () {
+       var _init = function () {
+            $scope.tasks = [];
             $scope.showGrid = false;
             $scope.program = new siriusUtils.SiriusObject();
             $scope.programLeads=[];
             $scope.programLeadsString="";
+           _setConfigService($scope);
+            $scope.configService = siriusConfigService;
+            $scope.getTasks();
         };
 
         $scope.box.settingsTitle = "Configure Program and Delivery Detail";
@@ -22,11 +25,12 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
             controller: angular.module('app.sirius').appSiriusSettings,
             id: $scope.boxId
         };
-        $scope.configService = siriusConfigService;
-
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
         };
+        $scope.$on('reloadTasks', function () {
+            $scope.getTasks();
+        });
 
         // Search as-you-type on type ahead
         $scope.startSearchAsYouType = function () {
@@ -52,7 +56,7 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
             }
         });
 
-       //get data for program details
+        //get data for program details
         $scope.onSelect = function ($item) {
             _viewSettings($item)
             _loadProgramLeadData($item);
@@ -69,6 +73,68 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
             return "noCssClassFound";
         };
 
+        //call the method for get Tasks from Backend
+        //filter the task. If no filter set, get all tasks
+        $scope.getTasks = function() {
+            $scope.emptyTask=false;
+            if($scope.configService.tasks.programGUID && $scope.configService.tasks.deliveryID){
+                $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/'+$scope.configService.tasks.programGUID+'/delivery/'+$scope.configService.tasks.deliveryID+'/task?sap-language=en').
+                    then(function (response) {
+                        if(response.data.data.length==0){
+                        $scope.emptyTask=true;
+                        }
+
+                        $scope.filteredTask = [];
+                        $scope.tasks = response.data.data;
+                        $scope.tasks.forEach(function (task) {
+                            _mapStatus(task);
+                            _dateFormat(task);
+                            if ($scope.configService.tasks.selectedStatus.length === 0) {
+                                $scope.filteredTask = $scope.tasks;
+                            }
+                            else {
+                                _filterTasks(task);
+                            }
+                        });
+                    });
+            };
+        };
+
+        //map the Task-status from Backend to display on Front end
+        var _mapStatus=function(task){
+                switch (task.WORKING_STATE.TASK_STATUS) {
+                    case taskFilterConstants.OPEN_STATUS():
+                        task.WORKING_STATE.TASK_STATUS="Open"
+                        break;
+                    case taskFilterConstants.IN_PROCESS_STATUS():
+                        task.WORKING_STATE.TASK_STATUS="In Process"
+                        break;
+                    case taskFilterConstants.NOT_APPLICABLE_STATUS():
+                        task.WORKING_STATE.TASK_STATUS="Not Applicable"
+                        break;
+                    case taskFilterConstants.COMPLETED_STATUS():
+                        task.WORKING_STATE.TASK_STATUS="Completed"
+                        break;
+                    case taskFilterConstants.CRITICAL_STATUS():
+                        task.WORKING_STATE.TASK_STATUS="Critical"
+                        break;
+            };
+        };
+
+        //Date Format for show due date
+        var _dateFormat=function(task){
+            task.WORKING_STATE.PLANFINISH=siriusUtils.createDate(task.WORKING_STATE.PLANFINISH);
+        };
+
+        //filtered the tasks
+        var _filterTasks=function(task){
+            for(var i= 0; i<$scope.configService.tasks.selectedStatus.length;i++){
+                if($scope.configService.tasks.selectedStatus[i]===task.WORKING_STATE.TASK_STATUS){
+                    $scope.filteredTask.push(task);
+                };
+            };
+        };
+
         // differentiate between old and new program.
         // If old program true,then show link
         // else show program lead and program details
@@ -81,9 +147,10 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
                 $scope.showGrid=true;
             }
         };
+
         // get data of program lead
         var _loadProgramLeadData=function($item) {
-
+            $scope.ProgramGUIDSirius=$item.GUID;
             return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/role?sap-language=en&roleType=PROGRAM_LEAD').then(function (response) {
                var programLeads = [];
                 $scope.programLeads=[];
@@ -92,8 +159,6 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
                programLeads.forEach(function (programLead) {
                        _getUser4UI(programLead.LOAD_STATE.USER_ID);
                    });
-
-
             });
         };
 
@@ -112,12 +177,10 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
 
         // get data of program lead
         var _loadProgramDetailsData=function($item){
-
             if(!$item.IS_OLD_PROGRAM) {
                 return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '?sap-language=en').then(function (response) {
                     $scope.program.WORKING_STATE = response.data.data.WORKING_STATE;
                     var a = $scope.program.WORKING_STATE.KEY_MESSAGE;
-
                 }).then(function () {
                     switch ($scope.program.WORKING_STATE.TRAFFIC_LIGHT_STATUS) {
                         case "":
@@ -163,6 +226,17 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
         _init();
     }];
 
+    //get the settings and set it in siriusConfigService
+    var _setConfigService=function($scope){
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks)
+        {
+            siriusConfigService.tasks = $scope.appConfig.tasks;
+
+        } else {
+            $scope.appConfig.tasks = siriusConfigService.tasks;
+        }
+    };
+
     return {
         restrict: 'E',
         templateUrl: 'app/sirius/overview.html',
@@ -176,14 +250,7 @@ app.directive("app.sirius",["app.sirius.configservice",'$filter',function (siriu
             } else {
                 $scope.appConfig.configItem = siriusConfigService.configItem;
             }
-
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks)
-            {
-                siriusConfigService.tasks = $scope.appConfig.tasks;
-
-            } else {
-                $scope.appConfig.tasks = siriusConfigService.tasks;
-            }
+            _setConfigService($scope);
 
             $scope.box.boxSize = siriusConfigService.configItem.boxSize;
         }

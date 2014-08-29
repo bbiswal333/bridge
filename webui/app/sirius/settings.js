@@ -1,7 +1,25 @@
 angular.module('app.sirius').appSiriusSettings =
-['$scope', "app.sirius.configservice","app.sirius.taskFilterConstants","$http", function ($scope, siriusConfigService,taskFilterConstants,$http) {
+['$scope', '$rootScope', "app.sirius.configservice","app.sirius.taskFilterConstants","$http", function ($scope, $rootScope, siriusConfigService, taskFilterConstants, $http) {
 
-    $scope.siriusConfigService=siriusConfigService;
+    var _init = function() {
+        _loadTaskSettings();
+    };
+
+    var _loadTask = function() {
+
+        for (var i = 0; i < $scope.deliveries.length; i++) {
+            if ($scope.deliveries[i].WORKING_STATE.GUID == $scope.siriusConfigService.tasks.deliveryID) {
+                $scope.getTasks($scope.deliveries[i]);
+            }
+        }
+    };
+
+    var _loadTaskSettings = function() {
+        $scope.siriusConfigService=siriusConfigService;
+        _loadProgram($scope.siriusConfigService.tasks.programGUID, _loadTask);
+        $scope.selectedStatus=$scope.siriusConfigService.tasks.selectedStatus;
+    };
+
 	$scope.currentConfigValues = siriusConfigService.configItem;
     $scope.showDelivery=false;
     $scope.programGUID="";
@@ -32,7 +50,11 @@ angular.module('app.sirius').appSiriusSettings =
     $scope.save_click = function () {
         $scope.siriusConfigService.tasks.selectedStatus=$scope.selectedStatus;
         $scope.siriusConfigService.tasks.selectedUserInAssignedToDropDown=$scope.selectedUserInAssignedToDropDown;
+
         $scope.$emit('closeSettingsScreen');
+        if (!$scope.currentConfigValues.showProgramOverview) {
+            $rootScope.$broadcast('reloadTasks');
+        }
     };
 
     // Search as-you-type on type ahead
@@ -42,6 +64,18 @@ angular.module('app.sirius').appSiriusSettings =
             var programs = [];
             programs = response.data.data;
             return programs;
+        });
+    };
+
+    //load Program with given Program ID
+    var _loadProgram = function (programGUID, doAfterLoad) {
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID+'?sap-language=en').then(function (response) {
+            var program = [];
+            program.GUID = response.data.data.WORKING_STATE.GUID;
+            $scope.SettingsProgramName=response.data.data.WORKING_STATE.PROGRAM_NAME;
+
+            $scope.onSelect(program, doAfterLoad);
+            return response.data.data;
         });
     };
 
@@ -56,9 +90,9 @@ angular.module('app.sirius').appSiriusSettings =
     }, true);
 
     //get Deliveries
-    $scope.onSelect = function ($item) {
+    $scope.onSelect = function ($item, doAfterLoad) {
         _getOwnUser();
-        _getDeliveries($item);
+        _getDeliveries($item, doAfterLoad);
     };
 
     $scope.statusMap = {
@@ -74,9 +108,8 @@ angular.module('app.sirius').appSiriusSettings =
         $scope.statusDropDown.push(item);
     }
 
-    // set Delivery Name to show in the Dropbox
+    //get the Taks for given delivery
     $scope.getTasks = function(item) {
-        _resetFilter();
         $scope.firstdelivery= item.WORKING_STATE;
         return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.programGUID + '/delivery/'+item.WORKING_STATE.GUID+'/task?sap-language=en').
             then(function (response) {
@@ -144,7 +177,7 @@ angular.module('app.sirius').appSiriusSettings =
         }
     };
 
-    var _getDeliveries=function($item) {
+    var _getDeliveries=function($item, doAfterLoad) {
         return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/delivery?sap-language=en').then(function (response) {
             $scope.programGUID=$item.GUID;
             $scope.deliveries = response.data.data;
@@ -154,6 +187,10 @@ angular.module('app.sirius').appSiriusSettings =
             if($scope.deliveries.length==0){
                 $scope.firstdelivery=_noDelivery().WORKING_STATE;
                 };
+
+            if (doAfterLoad) {
+                doAfterLoad();
+            }
         });
     };
 
@@ -180,9 +217,10 @@ angular.module('app.sirius').appSiriusSettings =
         };
         return noDelivery;
     };
+    _init();
 
     //reset Filter ( reset selected user and selected status)
-    var _resetFilter=function(){
+    $scope.resetFilter=function(){
         $scope.tasks="";
         $scope.deliveryID="";
         $scope.assignedToUsers = [];
