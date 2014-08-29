@@ -24,10 +24,14 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getDescription = function () {
-                if ($scope.blockData.task.ZCPR_EXTID) {
-                    return $scope.blockData.desc + " (" + $scope.blockData.task.ZCPR_EXTID + ")";
-                } else if ($scope.blockData.task.TASKTYPE) {
-                    return $scope.blockData.desc + " (" + $scope.blockData.task.TASKTYPE + ")";
+                if ($scope.blockData.task.ZCPR_EXTID && $scope.blockData.task.RAUFNR) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID + ",\n" + $scope.blockData.task.RAUFNR;
+                } else if ($scope.blockData.task.ZCPR_EXTID) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID;
+                } else if ($scope.blockData.task.RAUFNR && $scope.blockData.desc !== $scope.blockData.task.RAUFNR) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.RAUFNR;
+                } else if ($scope.blockData.task.TASKTYPE && $scope.blockData.desc !== $scope.blockData.task.TASKTYPE) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.TASKTYPE;
                 } else {
                     return $scope.blockData.desc;
                 }
