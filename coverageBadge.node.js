@@ -1,7 +1,15 @@
 var fs = require('fs'),
     request = require('request');
 
-var array = fs.readFileSync('./coverage/results/coverage.txt').toString().split("\n");
+function getDirectories() {
+    return fs.readdirSync('./coverage').filter(function (file) {
+        return fs.statSync('./coverage/' + file).isDirectory();
+    });
+}
+
+var resultDirectory = getDirectories()[0];
+
+var array = fs.readFileSync('./coverage/' + resultDirectory + '/coverage.txt').toString().split("\n");
 for(var i in array) {
     var percentage;
     if (array[i].indexOf("Statements") !== -1) {
@@ -23,13 +31,13 @@ if (iPercentage > 94){
 var pictureUrl = "http://img.shields.io/badge/coverage-";
 pictureUrl += percentage + '%-' + color + ".svg";
 
-var download = function(uri, filename, callback){
+function download(uri, filename, callback){
     request.head(uri, function(){
-
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
-};
+}
+
 
 download(pictureUrl, "./coverage/coverage.svg", function() {
-    console.log("coverage picture created!")
+    console.log("coverage picture created!");
 });
