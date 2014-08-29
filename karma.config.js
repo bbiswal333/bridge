@@ -57,9 +57,6 @@ module.exports = function(config) {
     },
 
     // optionally, configure the reporter
-    // we need to use karma coverage 0.1.2 due to https://github.com/karma-runner/karma-coverage/issues/49
-    // in this version we cannot use subdir
-    // subdir: 'results',
     coverageReporter: {
         type : 'text-summary',
         dir : 'coverage',
