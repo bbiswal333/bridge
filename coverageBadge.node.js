@@ -1,13 +1,7 @@
 var fs = require('fs'),
     request = require('request');
 
-function getDirectories() {
-    return fs.readdirSync('./coverage').filter(function (file) {
-        return fs.statSync('./coverage/' + file).isDirectory();
-    });
-}
-
-var resultDirectory = getDirectories()[0];
+var resultDirectory = "results";
 
 var array = fs.readFileSync('./coverage/' + resultDirectory + '/coverage.txt').toString().split("\n");
 for(var i in array) {

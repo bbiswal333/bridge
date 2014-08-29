@@ -60,6 +60,7 @@ module.exports = function(config) {
     coverageReporter: {
         type : 'text-summary',
         dir : 'coverage',
+        subdir: 'results',
         file : 'coverage.txt'
     },
     
