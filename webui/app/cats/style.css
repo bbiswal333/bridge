@@ -258,12 +258,12 @@
 }
 .selected_day span{
     position: relative;
-    top: -2px;
+    top: -3px;
 }
 
 .selected_day{
     background: ;
-    border: 2px solid #c2b0e2;
+    border: 3px solid #707070;
     color: #707070!important;
     font-weight: 600;
 }
