@@ -2,6 +2,7 @@
 // Generated on Tue Jan 28 2014 15:40:23 GMT+0100 (W. Europe Standard Time)
 module.exports = function(config) {
   var stealthMode = false;
+  console.log("\nDon't worry about tests, Chuck Norris's test cases cover your code too.\n");
   if (typeof process.argv[4] != "undefined" && process.argv[4] == "-stealth") {
     console.log("Running in stealth mode");
     stealthMode = true;
