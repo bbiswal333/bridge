@@ -6,6 +6,7 @@
 		"icon_css"				:	"fa fa-child",
 		"overview_directive"	:	"app.hangman",
 		"needs_client"			:	false,
+		"beta"					:	true,
 		"default_hidden"		: 	true
 	},
 	"modules" : [],
