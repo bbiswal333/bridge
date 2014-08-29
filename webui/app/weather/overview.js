@@ -159,8 +159,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(forecastDataURL);
 
             $http.get(forecastDataURL).success(function (forecastData) {
-                forecastData.list.splice(0,1); // remove today
-                //next days
+                // days starting from <today>
                 $scope.forecastDays = [];
 
                 function maximalPossibleEntries(list, maxItems) {
