@@ -3,31 +3,28 @@
 		<form name="ConfigItemForm">
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
-		  		<div class="btn-group" style="margin-left:15px;margin-top:10px">
-		  				<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
-		  				<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
-		  		</div>
-		  	</div>	
-		  	<div class="row">
-			 	<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
-			 		Which SAP-Connect Dial-in you want to dial-into via the Meeting App?
-			 	</div>	
-		
-				<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
-			</div> 	
-			<div class="row" ng-if="client.os === 'darwin'">
-			 	<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
-			 		Lync for Mac does not support telephone links with participant codes. Shall we can overwrite your clipboard content as a workaround?
-			 	</div>	
-		
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
-		  				<span ng-click="currentConfigValues.clipboard = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.clipboard];" style="margin-right:0;">Yes</span>
-		  				<span ng-click="currentConfigValues.clipboard = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[!currentConfigValues.clipboard];" style="margin-right:0;">No</span>
-		  		</div>
-			</div> 			 
+					<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
+					<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
+					Which SAP-Connect Dial-in you want to dial-into via the Meeting App?
+				</div>
+				<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
+			</div>
+			<div class="row" ng-if="client.os === 'darwin'">
+				<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
+					Lync for Mac does not support telephone links with participant codes. Shall we can overwrite your clipboard content as a workaround?
+				</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<span ng-click="currentConfigValues.clipboard = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.clipboard];" style="margin-right:0;">Yes</span>
+					<span ng-click="currentConfigValues.clipboard = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[!currentConfigValues.clipboard];" style="margin-right:0;">No</span>
+				</div>
+			</div>
 		</form>
 	</p>
-
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
 	</div>
