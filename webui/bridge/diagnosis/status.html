@@ -1,0 +1,23 @@
+<div id="scrollContainer" style="height:100%;overflow:scroll;">
+	<div class="centeredContent innerbox" style="width:90%; min-width:900px">
+	    <div class="box-heading">
+	        <div class="box-heading-content">        	
+	            <h6 class="box-title">Status Page</h6>            
+	        </div>
+    	</div>
+
+		<div id="detailContainer" style="width:100%;height:100%">
+			<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+      			<h3>latest release <a target="_blank" href="https://github.wdf.sap.corp/bridge/bridge/releases/tag/{{status.tag}}"><b>{{status.tag}}</b></a>, since then there are <a target="_blank" href="{{status.html_url}}" ><b>[{{status.ahead_by}}] new commits to be merged</b></a></h3>
+
+
+      			<div ng-repeat="commit in status.commits">
+      			
+
+	            	<div><b>{{status.commits.length - $index}}.</b> <img ng-src="https://avatars.wdf.sap.corp/avatar/{{commit.author.login}}?s=50x50" class="im-reporter-img" ng-mouseenter="zoom($index, $event)" ng-if="commit.author.login"></img> {{commit.author.login}}: <a target="_blank" href="{{commit.html_url}}">{{commit.commit.message}}</a></div>
+	            	<br />
+	           	</div>
+    		</div>			
+		</div>
+	</div>
+</div>

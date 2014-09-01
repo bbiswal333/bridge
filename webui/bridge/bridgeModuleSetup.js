@@ -64,6 +64,11 @@
             controller: 'bridge.diagnosis.corsTestPageController'
         });
 
+        $routeProvider.when("/status", {
+            templateUrl: 'bridge/diagnosis/status.html',
+            controller: 'bridge.diagnosis.statusController'
+        });
+
         //If no valid URL has been entered redirect to main entry point
         $routeProvider.otherwise({
             redirectTo: "/"
