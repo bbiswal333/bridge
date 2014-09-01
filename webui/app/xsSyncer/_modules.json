@@ -1,0 +1,15 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.xsSyncer",
+		"title"					:	"XS Syncer",
+		"beta"					: 	true,
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.xsSyncer",
+		"needs_client"			:	true
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "dataService.js", "settings.js"],
+	"css_files" : ["styles.css"],
+	"nodeModules" : ["server/server.server.js"]
+}

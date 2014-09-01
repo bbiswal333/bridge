@@ -42,7 +42,8 @@ module.exports = function(config) {
     exclude: [
       "./webui/Test/**/*",
       "./server/**/*",
-      "./client/**/*"
+      "./client/**/*",
+      "./webui/**/*.node.js"
     ],
 
     // test results reporter to use

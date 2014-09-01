@@ -302,22 +302,31 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					array[attribute] = array[attribute].concat(value); 				
 				}
 			}
-		}	
+		}
 		return array;
 	};
 
-	var getFiles = function(dir, files)
+	var loadAppNodeModules = function() {
+		findModuleFiles(path.join(__dirname, '../webui/app'), function(modulePath, module) {
+			if(module.nodeModules) {
+				for(var i = 0; i < module.nodeModules.length; i++) {
+					var filename = path.relative(path.join(__dirname, '../webui'), path.join(path.dirname(modulePath), module.nodeModules[i]));
+					require("../webui/" + filename)(app);
+				}
+			}
+		});
+	};
+
+	var findModuleFiles = function(dir, moduleHandler)
 	{		
-		    
-		var files = fs.readdirSync(dir);	    
-		var out_files = {};
+		var files = fs.readdirSync(dir);
 		    
 		for (var i = 0; i < files.length; i++){	    
 		    var name = path.join(dir, '/', files[i]);			    		    
 
 		    if (fs.statSync(name).isDirectory())
 		    {		    	
-		    	out_files = concatAttributes(out_files, getFiles(name));		    	    
+		    	findModuleFiles(name, moduleHandler);		    	    
 		    }
 		    else
 		    {
@@ -328,20 +337,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		    			delete require.cache[require.resolve(name)];
 			    		var module = require(name);
 
-			    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
-			    		{
-			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
-			    			{								
-			    				for (var i = 0; i < value.length; i++)
-			    				{
-									var filename = path.join(path.dirname(name), value[i]);	
-									value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
-								}
-								return value;
-			    			} else {
-			    				return value;
-			    			}
-			    		});	    				   
+						moduleHandler(name, module);	    				   
 			    	}
 			    	catch(e)
 			    	{
@@ -349,9 +345,34 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			    	}
 		    	}		        
 		    }
-		}	    
+		}
+	};
+
+	var getFiles = function(dir)
+	{
+		var out_files = {};
+		findModuleFiles(dir, function(modulePath, module) {
+			out_files = concatAttributes(out_files, module, function(attribute_name, value)
+			    		{
+			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
+			    			{								
+			    				for (var i = 0; i < value.length; i++)
+			    				{
+									var filename = path.join(path.dirname(modulePath), value[i]);	
+									value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
+								}
+								return value;
+			    			} else {
+			    				return value;
+			    			}
+			    		});
+		});
+		console.log("Printing out files now:\r\n\r\n");
+		console.log(out_files);
 		return out_files;
 	};
+
+	loadAppNodeModules();
 
 	app.get("/api/modules", function (request, response) 
 	{
@@ -866,4 +887,16 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		response = setHeader( request, response );			
 		response.send('{"msg":"' + l_err + '"}');
 	});
+
+/*
+	app.get("/api/installModule", function(request, response) {
+		if (typeof request.query.npmModule === "undefined" || request.query.npmModule === "")
+		{
+			response = setHeader( request, response );	
+			response.send({success: false, message: "Please specify an npm-module to be installed."});
+			return;
+		}
+
+		webkitClient.installNpmModule(request.query.npmModule, function(success, message) { response.send({success: success, message: message}); });
+	});*/
 }
