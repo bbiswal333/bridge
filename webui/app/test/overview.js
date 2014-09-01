@@ -1,4 +1,4 @@
-﻿angular.module('app.test', []);
+﻿angular.module('app.test', ['app.test.data']);
 angular.module('app.test').directive('app.test', ["app.test.configservice", function (configService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {

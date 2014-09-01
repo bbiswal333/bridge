@@ -5,9 +5,16 @@
 		"title"					:	"Test App",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.test",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/test/",
+				"templateUrl"	:	"app/test/detail.html"
+			}
+		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js","config.js","settings.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
 	"css_files" : []
 }

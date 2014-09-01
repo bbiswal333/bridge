@@ -7,12 +7,12 @@
 		"overview_directive"	:	"app.transport",
 		"needs_client"			:	false,
 		"beta"					:	true,
-		"default_hidden"		: 	true,
-		"routes"		:
+		"default_hidden"		:	true,
+		"routes"				:
 		[
 			{
 				"route"			:	"/detail/transport/:transportStatus",
-				"templateUrl"	:	"app/transport/detail.html"			
+				"templateUrl"	:	"app/transport/detail.html"
 			}
 		]
 	},
