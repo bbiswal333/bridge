@@ -45,6 +45,12 @@ module.exports = function(app) {
 			}
 		}
 	});
+	app.options("/api/xsSyncer/start", function(request, response){
+		response = cors( request, response );	
+		response.send();
+		return;
+	});
+
 	app.get("/api/xsSyncer/stop", function(request, response) {
 		cors(request, response);
 
@@ -79,5 +85,11 @@ module.exports = function(app) {
 		}
 
 		response.send({error: false, message: "Config saved"});
+	});
+
+	app.options("/api/xsSyncer/setConfig", function(request, response){
+		response = cors( request, response );	
+		response.send();
+		return;
 	});
 };
