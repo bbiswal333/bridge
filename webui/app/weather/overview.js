@@ -35,7 +35,11 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
         $scope.getCurrentDate = function (days)
         {
             var date = new Date();
-            return calUtils.getWeekdays()[(date.getDay() - 1 + days) % 7].medium;
+            var dayInWeek = (date.getDay() - 1 + days);
+            if (dayInWeek === -1) { // Sunday
+                dayInWeek = 6;
+            }
+            return calUtils.getWeekdays()[dayInWeek % 7].medium;
         };
         
         //get current date

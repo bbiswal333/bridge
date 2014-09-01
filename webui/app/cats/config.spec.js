@@ -72,7 +72,7 @@ describe("CAT2 config service", function () {
 		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('DEVL');
 		taskA.DESCR = '';
 		taskA.ZCPR_EXTID = 'Software Eng';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng');
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng (RAUF)');
 	});
 
 	it("should be possible to add a last used description", function () {

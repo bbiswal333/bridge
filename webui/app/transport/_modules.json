@@ -2,10 +2,11 @@
 	"app":
 	{
 		"module_name"			:	"app.transport",
-		"title"					:	"Trans. Requests",
+		"title"					:	"Transports",
 		"icon_css"				:	"fa fa-suitcase",
 		"overview_directive"	:	"app.transport",
 		"needs_client"			:	false,
+		"beta"					:	true,
 		"default_hidden"		: 	true,
 		"routes"		:
 		[

@@ -6,6 +6,7 @@
 		"icon_css"				:	"fa fa-user",
 		"overview_directive"	:	"app.clearCapacity",
 		"needs_client"			:	false,
+		"beta"					:	true,
 		"default_hidden"		: 	true
 
 	},

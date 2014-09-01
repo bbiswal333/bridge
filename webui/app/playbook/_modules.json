@@ -5,6 +5,7 @@
 		"title"					:	"Playbook",
 		"icon_css"				:	"playbook-icon",
 		"overview_directive"	:	"app.playbook",
+		"beta"					:	true,
 		"needs_client"			:	false
 	},
 	"modules" : [],

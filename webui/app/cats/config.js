@@ -22,10 +22,14 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
     }
 
     this.copyConfigIfLoaded = function (catsConfigService) {
+    	var that = this;
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
 				this.favoriteItems = catsConfigService.favoriteItems;
+				this.favoriteItems.forEach(function(favoriteItem) {
+					that.enhanceTask(favoriteItem);
+				});
 			}
 			if (catsConfigService.lastUsedDescriptions) {
 				this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
@@ -62,7 +66,12 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		}
 
 		enhancedTask.DESCR = task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || taskTypeToDisplay;
-		enhancedTask.subDescription = task.ZCPR_EXTID || "";
+
+		enhancedTask.subDescription = "";
+
+		if (task.ZCPR_EXTID) {
+			enhancedTask.subDescription = task.ZCPR_EXTID + " (" + task.RAUFNR + ")" || "";
+		}
 		if (!enhancedTask.subDescription) {
 			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
 				enhancedTask.subDescription = taskTypeToDisplay || "";
