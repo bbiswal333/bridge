@@ -224,11 +224,11 @@ directive("app.meetings", [
 				});
 			}
 			
-		    $scope.$watch("appConfig.configItem.boxSize", function () {
+			$scope.$watch("appConfig.configItem.boxSize", function () {
 				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
 					$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
 				}
-		    }, true);
+			}, true);
 
 		    $scope.$watch("appConfig.configItem.sAPConnectPreferredDialin", function () {
 				$scope.box.sAPConnectPreferredDialin =  $scope.appConfig.configItem.sAPConnectPreferredDialin;
