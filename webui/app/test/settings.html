@@ -1,11 +1,11 @@
 <div style="width: 100%">
 	<p>
-		<form name="ConfigItemForm">
+		<form name="form">
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
-					<span ng-click="configItem.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[configItem.boxSize === '1' || !configItem.boxSize];" style="margin-right:0;">Small</span>
-					<span ng-click="configItem.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[configItem.boxSize === '2'];" style="margin-right:0;">Large</span>
+					<span ng-click="values.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[values.boxSize === '1' || !values.boxSize];" style="margin-right:0;">Small</span>
+					<span ng-click="values.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.boxSize === '2'];" style="margin-right:0;">Large</span>
 				</div>
 			</div>
 		</form>

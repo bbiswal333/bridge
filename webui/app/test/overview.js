@@ -1,9 +1,9 @@
 ﻿angular.module('app.test', []);
 angular.module('app.test').directive('app.test', ["app.test.configservice", function (configService) {
 
-	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier)
-	{
+	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
+		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure Test App";
 		$scope.box.settingScreenData = {
 			templatePath: "test/settings.html",
@@ -11,32 +11,28 @@ angular.module('app.test').directive('app.test', ["app.test.configservice", func
 				id: $scope.boxId
 		};
 
+		// Bridge framework function to enable saving the config
 		$scope.box.returnConfig = function(){
 			return angular.copy(configService);
 		};
 
-
+		// Example function for notifications
 		$scope.testNotification = function() {
-			/*eslint-disable no-alert */
 			notifier.showInfo("This is just a test",
 				"As the title says: nothing to do here :-)",
 				$scope.$parent.module_name,
-				function() {$window.alert('Congratulations!');});
-			/*eslint-enable no-alert */
+				function() {});
 		};
 	}];
 
 	var linkFn = function ($scope) {
-		if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-			configService.configItem = $scope.appConfig.configItem;
-		} else {
-			$scope.appConfig.configItem = configService.configItem;
-		}
-		$scope.box.boxSize = configService.configItem.boxSize;
-		$scope.$watch("appConfig.configItem.boxSize", function () {
-			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-				$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
-			}
+
+		// get own instance of config service, $scope.appConfig contains the configuration from the backend
+		configService.initialize($scope.appConfig);
+
+		// watch on any changes in the settings screen
+		$scope.$watch("appConfig.values.boxSize", function () {
+			$scope.box.boxSize = $scope.appConfig.values.boxSize;
 		}, true);
 	};
 
