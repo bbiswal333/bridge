@@ -57,7 +57,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
             function addAndEnhanceTicket(ticket) {
-                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&SAPROLE=ZITSERVREQU&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
+                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
                 ticket.bridgeCategory = sTicketCategory;
 
                 if (!that.containsTicket(ticket.GUID.toString())){

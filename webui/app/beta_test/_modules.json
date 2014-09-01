@@ -1,0 +1,16 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.betatest",
+		"title"					:	"Beta Test",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.betatest",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"beta_users"			:	["D050049","D049677","D051804","D049583","D055406","D062131","D062412","D055469","D048370","I837824"]
+
+	},	
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}

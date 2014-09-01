@@ -5,7 +5,9 @@
 		"title"					:	"Chuck Norris",
 		"icon_css"				:	"fa fa-bomb",
 		"overview_directive"	:	"app.chuck",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"default_hidden"		: 	true,
+		"beta"					:	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],

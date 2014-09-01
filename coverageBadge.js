@@ -16,7 +16,7 @@ var iPercentage = parseInt(percentage);
 var color;
 if (iPercentage > 94){
     color = "green";
-} else if (iPercentage > 60) {
+} else if (iPercentage > 59) {
     color = "yellow";
 } else {
     color = "red";
@@ -30,7 +30,6 @@ function download(uri, filename, callback){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
 }
-
 
 download(pictureUrl, "./coverage/coverage.svg", function() {
     console.log("coverage picture created!");

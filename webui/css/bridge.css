@@ -392,7 +392,7 @@ img {
 .settingsIcon {
     font-family:'SAP-icons';
     font-size: 20px;
-    margin-right: 10px;
+    margin-right: 0px;
     float: right;
 }
 .settingsIcon:hover {
@@ -833,4 +833,57 @@ h3{
 
 .logAlertButtonGroup {
     float: left;
+}
+
+/* ============= *\
+|   CHECKBOXES    |
+\* ============= */
+
+.input {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.input:before {
+  content: '';
+  display: block;
+  position: absolute;
+}
+
+.input-radio {
+  padding-left: 18px;
+}
+.input-radio:before {
+  top: 3px;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #418AC9;
+}
+
+.input-checkbox {
+  padding-left: 20px;
+}
+.input-checkbox:before {
+  top: 2px;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #418AC9;
+}
+
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]:checked + label:before {
+  background: #418AC9;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+input[type="checkbox"]:checked + label:before {
+  background: #418AC9;
 }
