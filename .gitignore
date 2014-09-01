@@ -11,6 +11,7 @@ setup.exe
 test-results.xml
 checkstyle.xml
 eslint.svg
+prodstatus.svg
 
 pids
 logs
