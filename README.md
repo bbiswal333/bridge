@@ -1,4 +1,4 @@
-[![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecks/ws/eslint.svg)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
+[![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecksBadge/ws/eslint.svg)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
 [![Coverage](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/coverage.svg)](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/results/coverage.txt)
 # Bridge
 
