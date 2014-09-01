@@ -2,9 +2,12 @@
 var child;
 var configPath = __dirname + "/config.json";
 var fs = require('fs');
+var cors = require('../../../../server/cors.js');
 
 module.exports = function(app) {
 	app.post("/api/xsSyncer/start", function(request, response) {
+		cors(request, response);
+
 		if(child) {
 			response.send({error: true, message: "already running"});
 			return;
@@ -43,6 +46,8 @@ module.exports = function(app) {
 		}
 	});
 	app.get("/api/xsSyncer/stop", function(request, response) {
+		cors(request, response);
+
 		if(child) {
 			child.kill();
 			child = null;
@@ -53,6 +58,8 @@ module.exports = function(app) {
 	});
 
 	app.get("/api/xsSyncer/getConfig", function(request, response) {
+		cors(request, response);
+
 		if(!fs.existsSync(configPath)) {
 			response.send({error: true, message: "No config exists. Please configure xs-syncer first."});
 			return;
@@ -62,6 +69,8 @@ module.exports = function(app) {
 	});
 
 	app.post("/api/xsSyncer/setConfig", function(request, response) {
+		cors(request, response);
+
 		try {
 			fs.writeFileSync(configPath, JSON.stringify(request.body));
 		} catch(e) {

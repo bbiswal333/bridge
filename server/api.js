@@ -3,6 +3,7 @@ var http_req	= require('http');
 var url 		= require('url');
 var fs          = require('fs');
 var path 		= require('path');
+var setHeader	= require('./cors.js');
 var npm_load	= require('./npm_load.js');
 
 exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
@@ -13,19 +14,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
-
-	function setHeader(request, response)
-	{
-		var originPattern = /^(https:\/\/)(bridge\.mo\.sap\.corp|bridge-master\.mo\.sap\.corp|localhost)(:\d+)?($|\/)/;
-		if ( request.headers.origin !== undefined && originPattern.test(request.headers.origin))
-		{
-			response.setHeader('Access-Control-Allow-Origin', request.headers.origin);
-			response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept' );
-			response.setHeader('Access-Control-Allow-Credentials', 'true' );
-			response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS' );
-		}    	
-		return response;
-	}
 
 	// FIXME - currently migrated from ews.js
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
@@ -309,7 +297,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var loadAppNodeModules = function() {
 		findModuleFiles(path.join(__dirname, '../webui/app'), function(modulePath, module) {
 			if(module.nodeModules) {
-				console.log("found one:" + module);
+				console.log("found one module:" + modulePath);
 				for(var i = 0; i < module.nodeModules.length; i++) {
 					require(path.join(path.dirname(modulePath), module.nodeModules[i]))(app);
 				}
