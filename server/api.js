@@ -309,9 +309,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var loadAppNodeModules = function() {
 		findModuleFiles(path.join(__dirname, '../webui/app'), function(modulePath, module) {
 			if(module.nodeModules) {
+				console.log("found one:" + module);
 				for(var i = 0; i < module.nodeModules.length; i++) {
-					var filename = path.relative(path.join(__dirname, '../webui'), path.join(path.dirname(modulePath), module.nodeModules[i]));
-					require("../webui/" + filename)(app);
+					require(path.join(path.dirname(modulePath), module.nodeModules[i]))(app);
 				}
 			}
 		});
