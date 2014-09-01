@@ -7,12 +7,13 @@
         return {
             load: function () {
                 $http.get('/api/modules').success(function (data)
-                {
+                {                    
 
                     function fetchUserInfo(callback) 
                     {            
                         $http({
                             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
+                            withCredentials: "true",
                             method: "GET"
                         }).success(function (data) {
                             callback(data.USERINFO.BNAME);                                    
