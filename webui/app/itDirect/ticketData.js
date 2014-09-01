@@ -66,9 +66,6 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope",
             var pAllRequestsFinished = $q.all(promiseArray);
             pAllRequestsFinished.then(function(){
 
-                that.ticketsFromNotifications.assigned_me.length = 0;
-                that.ticketsFromNotifications.savedSearch.length = 0;
-
                 if (that.lastTickets !== null) {
                     that.notifyChanges(that.tickets, that.lastTickets);
                 } else if (itdirectConfig.lastDataUpdate !== null){
@@ -92,6 +89,10 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope",
         }
 
         this.notifyChanges = function(newTicketData, oldTicketData){
+            var bNewNotifications = false;
+            var ticketsToNotify = {};
+            ticketsToNotify.assigned_me = [];
+            ticketsToNotify.savedSearch = [];
 
             for (var newTicketsCategory in newTicketData){
                 angular.forEach(newTicketData[newTicketsCategory], function(ticket){
@@ -104,31 +105,41 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope",
                     }
 
                     if (foundTicket === undefined) {
-                        that.ticketsFromNotifications[newTicketsCategory].push(ticket);
+                        bNewNotifications = true;
+                        ticketsToNotify[newTicketsCategory].push(ticket);
                         notifier.showInfo('New IT Direct Ticket', 'There is a new IT Direct Ticket "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
                     } else if (formatter.getDateFromAbapTimeString(ticket.CHANGED_AT) > formatter.getDateFromAbapTimeString(foundTicket.CHANGED_AT)) {
-                        that.ticketsFromNotifications[newTicketsCategory].push(ticket);
+                        bNewNotifications = true;
+                        ticketsToNotify[newTicketsCategory].push(ticket);
                         notifier.showInfo('IT Direct Ticket Changed', 'The IT Direct Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
                     }
                 });
             }
+
+            if (bNewNotifications === true) {
+                that.ticketsFromNotifications = ticketsToNotify;
+            }
         };
 
         this.notifyOfflineChanges = function(tickets, lastDataUpdateFromConfig){
-            var foundTicket;
+            var foundTickets;
             var bShowNotification = false;
+            var ticketsToNotify = {};
+            ticketsToNotify.assigned_me = [];
+            ticketsToNotify.savedSearch = [];
 
             for (var category in tickets) {
-                foundTicket = _.find(tickets[category], function(ticket){
+                foundTickets = _.where(tickets[category], function(ticket){
                     return formatter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
                 });
-                if (foundTicket !== undefined){
-                    that.ticketsFromNotifications[category].push(foundTicket);
+                if (foundTickets.length > 0){
+                    ticketsToNotify[category] = foundTickets;
                     bShowNotification = true;
                 }
             }
 
             if (bShowNotification){
+                that.ticketsFromNotifications = ticketsToNotify;
                 notifier.showInfo('IT Direct Tickets Changed', 'Some of your IT Direct Tickets changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
             }
         };

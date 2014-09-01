@@ -146,6 +146,8 @@ describe("IT Direct ticket data", function(){
         $httpBackend.flush();
 
         expect(sNotificationText.indexOf("The IT Direct Ticket")).not.toBe(-1);
+        expect(ticketData.ticketsFromNotifications.assigned_me.length).toBe(1);
+        expect(ticketData.ticketsFromNotifications.assigned_me[0].GUID).toBe("0050569B03091EE288D4E625FF26152B");
     });
 
     it("should notify me about a ticket that changed while I was offline", function(){
@@ -158,6 +160,8 @@ describe("IT Direct ticket data", function(){
         $httpBackend.flush();
 
         expect(sNotificationText.indexOf("since your last visit")).not.toBe(-1);
+        expect(ticketData.ticketsFromNotifications.assigned_me.length).toBe(5);
+        expect(ticketData.ticketsFromNotifications.savedSearch.length).toBe(0);
     });
 
     it("should not throw a notification", function(){
@@ -170,5 +174,26 @@ describe("IT Direct ticket data", function(){
         $httpBackend.flush();
 
         expect(sNotificationText).toBe("");
+        expect(ticketData.ticketsFromNotifications.assigned_me.length).toBe(0);
+        expect(ticketData.ticketsFromNotifications.savedSearch.length).toBe(0);
+    });
+
+    it("should keep the ticketsFromNotifications even if there are newer data loads without notifications", function(){
+        itdirectConfig.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+
+        $httpBackend.whenGET(/https:\/\/pgpmain\.wdf\.sap\.corp\/sap\/opu\/odata\/sap\/ZMOB_INCIDENT;v\=2\/TicketCollection\?\$filter\=PROCESS_TYPE eq 'ZINC,ZSER' and PARTIES_OF_REQ eq.*/)
+            .respond(mockDataAssignedToMe);
+
+        ticketData.loadTicketData();
+        $httpBackend.flush();
+
+        expect(ticketData.ticketsFromNotifications.assigned_me.length).toBe(5);
+        expect(ticketData.ticketsFromNotifications.savedSearch.length).toBe(0);
+
+        ticketData.loadTicketData();
+        $httpBackend.flush();
+
+        expect(ticketData.ticketsFromNotifications.assigned_me.length).toBe(5);
+        expect(ticketData.ticketsFromNotifications.savedSearch.length).toBe(0);
     });
 });
