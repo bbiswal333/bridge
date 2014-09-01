@@ -1,1 +1,0 @@
-{"serverPort":8090,"usePolling":true,"liveReload":false,"hanaInstance":{"workspaceId":"","ssl":true,"target":"ld8633.wdf.sap.corp:4308","user":"D049677","password":""},"synchronizationSettings":[{"localPath":"/Users/d049677/XSDevelopment/SIT/syncerDev","remotePath":"/playground/syncerDev"}]}
