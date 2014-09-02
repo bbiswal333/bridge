@@ -29,8 +29,7 @@ function loadnpm(proxy, npm, callback)
     exec(set_proxy + 'cd "' + server_path + '" && ' + npm + ' install', function (error, stdout, stderr) {
         console.log(stderr);        
         callback();     
-    });
-    
+    });    
 }
 
 
