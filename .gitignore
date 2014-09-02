@@ -10,8 +10,7 @@ lib-cov
 setup.exe
 test-results.xml
 checkstyle.xml
-eslint.svg
-prodstatus.svg
+badge/*.svg
 
 pids
 logs

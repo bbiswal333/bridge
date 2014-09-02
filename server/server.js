@@ -34,6 +34,7 @@ exports.run = function(npm, port)
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
+		app.use('/badge', express.static(path.join(__dirname, '../badge')));
 		app.use(express.bodyParser());
 	    
 		var options = {
@@ -80,7 +81,7 @@ exports.run = function(npm, port)
 				}
 			}
 
-			helper.wrappedExec(set_proxy + 'node ' + path.join(__dirname, './../prodStatusBadge'), function (error, stdout, stderr) {
+			helper.wrappedExec(set_proxy + 'node ' + path.join(__dirname, './../badge/prodStatusBadge'), function (error, stdout, stderr) {
 				console.log('..status badge updated');			
 			});
 		}

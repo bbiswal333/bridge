@@ -1,6 +1,7 @@
 var https   = require('https');
 var fs      = require('fs');
 var request = require('request');
+var path    = require('path');
 
 function callBackend(hostname, port, path, method, callback) {
     var options = {
@@ -82,7 +83,7 @@ callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET
                 });
             }
 
-            download(pictureUrl, "./prodstatus.svg", function() {
+            download(pictureUrl, path.join(__dirname, "./prodstatus.svg"), function() {
                 console.log("prodstatus picture created!");
             });
 

@@ -1,9 +1,10 @@
 var fs      = require('fs');
 var request = require('request');
 var xml2js  = require("xml2js").Parser();
+var path    = require('path');
 
 
-var xml = fs.readFileSync('checkstyle.xml').toString();
+var xml = fs.readFileSync(path.join( __dirname ,'../' + 'checkstyle.xml')).toString();
 
 try {
     xml2js.parseString(xml, function (err, result) {                
@@ -45,7 +46,7 @@ try {
                 });
             }
 
-            download(pictureUrl, "./eslint.svg", function() {
+            download(pictureUrl, path.join(__dirname, "./eslint.svg"), function() {
                 console.log("coverage picture created!");
             });
 

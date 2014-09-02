@@ -1,9 +1,10 @@
-var fs = require('fs'),
-    request = require('request');
+var fs      = require('fs');
+var request = require('request');
+var path    = require('path');
 
 var resultDirectory = "results";
 
-var array = fs.readFileSync('./coverage/' + resultDirectory + '/coverage.txt').toString().split("\n");
+var array = fs.readFileSync(path.join( __dirname ,'../coverage/' + resultDirectory + '/coverage.txt')).toString().split("\n");
 for(var i in array) {
     var percentage;
     if (array[i].indexOf("Statements") !== -1) {
@@ -31,6 +32,6 @@ function download(uri, filename, callback){
     });
 }
 
-download(pictureUrl, "./coverage/coverage.svg", function() {
+download(pictureUrl, path.join(__dirname, "./coverage.svg"), function() {
     console.log("coverage picture created!");
 });
