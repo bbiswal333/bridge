@@ -65,6 +65,24 @@ exports.run = function(npm, port)
 			helper.wrappedExec('forever restart updater', function (error, stdout, stderr) {
 				console.log('..restarted updater');			
 			});
+
+			var set_proxy = '';
+
+			if( proxy )
+			{				
+				if(process.platform == "win32") 
+				{
+					set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";	
+				}
+				else 
+				{
+					set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
+				}
+			}
+
+			helper.wrappedExec(set_proxy + 'node ' + path.join(__dirname, './../prodStatusBadge'), function (error, stdout, stderr) {
+				console.log('..status badge updated');			
+			});
 		}
 	}
 	

@@ -147,6 +147,10 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.version + '"}');
 	});
 
+	app.get('/api/status', function(request, response) {
+
+	});
+
 	//generic api call get
 	app.get('/api/get', function(request, response) {
 		var json = false;
