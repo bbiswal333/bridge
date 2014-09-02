@@ -34,6 +34,41 @@ angular.module('app.jenkins').appJenkinsSettings =
             }
         }
 
+        function isInArrayByName(nameString, candidateObjects) {
+            for(var i = 0; i < candidateObjects.length; i++) {
+                if(candidateObjects[i].name === nameString) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        $scope.isSelectedViewValid = function() {
+            var selectedViewString = $scope.currentConfigValues.selectedView;
+            var allViewObjects = $scope.currentConfigValues.views;
+
+            return isInArrayByName(selectedViewString, allViewObjects);
+        };
+
+        $scope.isSelectedJobValidOrEmpty = function() {
+            var selectedJobString = $scope.currentConfigValues.selectedJob;
+            if(selectedJobString === "") {
+                return true;
+            }
+
+            var selectedViewString = $scope.currentConfigValues.selectedView;
+            var allJobs = $scope.getJobsByView(selectedViewString);
+            return isInArrayByName(selectedJobString, allJobs);
+        };
+
+        function isAddButtonEnabled() {
+            return $scope.config.couldReachJenkinsUrl && $scope.isSelectedViewValid() && $scope.isSelectedJobValidOrEmpty();
+        }
+
+        $scope.isAddButtonDisabled = function() {
+            return !isAddButtonEnabled();
+        };
+
         $scope.add_click = function() {
             if (!$scope.config.isEmpty()) {
                 var copiedConfigItem = angular.copy($scope.currentConfigValues);
