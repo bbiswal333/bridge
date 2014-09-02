@@ -4,20 +4,10 @@ var fs      = require('fs');
 var path    = require('path');
 var exec    = require('child_process').exec;
 
-function loadnpm(proxy, npm, callback)
+function loadnpm(callback)
 {   
     var server_path = path.join(__dirname, '/');    
-    var set_proxy = "";
-
-    if( proxy )
-    {
-        if(process.platform == "win32") {
-            set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
-        }
-        else {
-            set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
-        }
-    }
+    var  set_proxy = "npm config set http-proxy http://proxy:8080/ && npm config set proxy http://proxy:8080";        
 
     var server_modules = path.join(server_path, '/node_modules');
     if(!fs.existsSync(server_modules))
@@ -25,7 +15,7 @@ function loadnpm(proxy, npm, callback)
         fs.mkdirSync(server_modules);
     }
     
-    exec(set_proxy + 'cd "' + server_path + '" && ' + npm + ' install', function (error, stdout, stderr) {
+    exec(set_proxy + 'cd "' + server_path + '" && npm install', function (error, stdout, stderr) {
         console.log(stderr);        
         callback();     
     });    
@@ -61,7 +51,7 @@ function callBackend(hostname, port, path, method, callback) {
 }
 
 
-loadnpm(true,'npm', function()
+loadnpm(function()
 {
 
     var request = require('request');
