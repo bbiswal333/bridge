@@ -1,9 +1,8 @@
+
 var https   = require('https');
 var fs      = require('fs');
-var request = require('request');
 var path    = require('path');
 var exec    = require('child_process').exec;
-
 
 function loadnpm(proxy, npm, callback)
 {   
@@ -64,6 +63,9 @@ function callBackend(hostname, port, path, method, callback) {
 
 loadnpm(true,'npm', function()
 {
+
+    var request = require('request');
+
     callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) 
     {
 
