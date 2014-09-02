@@ -1,4 +1,4 @@
-angular.module('app.test').service("app.test.configservice", function () {
+angular.module('app.test').service("app.test.configService", function () {
 
 	this.values = {
 		boxSize : '1'

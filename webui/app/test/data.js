@@ -1,13 +1,17 @@
-angular.module("app.test.data", [])
-	.service("app.test.dataService",
-	function () {
+angular.module("app.test.data", []).service("app.test.dataService", function () {
 
-	this.data = {};
-	this.data.number = 0;
-	this.data.text = "Welcome text from DataService";
+	var text = "Welcome text from DataService";
+	var reloadCounter = 0;
+
+	this.reload = function() {
+		reloadCounter += 1;
+	};
 
 	this.getText = function() {
-		this.data.number += 1;
-		return this.data.text + ' ' + this.data.number;
+		return text + ', data was reloaded ' + reloadCounter + ' time(s)';
+	};
+
+	this.getReloadCounter = function() {
+		return reloadCounter;
 	};
 });

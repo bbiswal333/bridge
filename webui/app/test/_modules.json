@@ -6,6 +6,8 @@
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.test",
 		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		: 	false,
 		"routes"				:
 		[
 			{
