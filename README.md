@@ -1,5 +1,8 @@
 [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecksBadge/ws/eslint.svg)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
 [![Coverage](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/coverage.svg)](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/results/coverage.txt)
+[![Commits Behind](https://bridge-ci.mo.sap.corp/job/BridgePushBadge/ws/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
+
+
 # Bridge
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
