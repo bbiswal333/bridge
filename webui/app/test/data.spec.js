@@ -7,9 +7,9 @@ describe("Testing test.app data service", function () {
 	}]));	
 
 	it ("Should return the welcome text", function () {
-		expect(dataService.getText()).toBe("Welcome text from DataService, data was reloaded 0 time(s)");
+		expect(dataService.getText()).toBe("Text from DataService, app was refreshed 0 time(s).");
 		dataService.reload();
-		expect(dataService.getText()).toBe("Welcome text from DataService, data was reloaded 1 time(s)");
+		expect(dataService.getText()).toBe("Text from DataService, app was refreshed 1 time(s).");
 	});
 
 	it ("Should return the times of reload", function () {

@@ -24,7 +24,7 @@ angular.module('app.test').directive('app.test', ['$interval', 'app.test.configS
 			$interval.cancel(intervalPromise);
 			intervalPromise = undefined;
 		}
-		intervalPromise = $interval($scope.getData, 1000 * 5);
+		intervalPromise = $interval($scope.getData, 1000 * 60);
 
 		// Bridge framework function to enable saving the config
 		$scope.box.returnConfig = function(){
