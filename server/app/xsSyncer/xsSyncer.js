@@ -22,5 +22,5 @@ try {
 		output: require(path.join(__dirname, "./xs-syncer/lib/messageOutput/socketOutput.js")).createInstance(options)
 	});
 } catch(e) {
-	console.log(e);
+	console.error(e);
 }
