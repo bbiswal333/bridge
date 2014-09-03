@@ -18,6 +18,5 @@ try {
 		output: require(path.join(__dirname, "./xs-syncer/lib/messageOutput/socketOutput.js")).createInstance(options)
 	});
 } catch(e) {
-	//TODO think about some clever error handling here
-	//console.log(e);
+	console.log(e);
 }

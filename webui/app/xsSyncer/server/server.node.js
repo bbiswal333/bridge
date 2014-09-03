@@ -34,7 +34,15 @@ module.exports = function(app) {
 			Refer to this issue: https://github.com/rogerwang/node-webkit/issues/213
 			*/
 
-			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.node.js"));
+			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.node.js"),
+			function (error, stdout, stderr) {
+				console.log('stdout: ' + stdout);
+			    console.log('stderr: ' + stderr);
+			    if (error !== null) {
+			    	console.log('exec error:');
+			    	console.log(error);
+			    }
+			});
 		} catch(e) {
 			exception = e;
 		} finally {
