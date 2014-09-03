@@ -1,9 +1,13 @@
 /*global require, __dirname*/
 var fs = require('fs');
+var path = require('path');
+
+function getUserHome() {
+  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+}
+var configPath = path.join(getUserHome(), "xsSyncerConfig.json");
 
 try {
-	var path = require('path');
-
 	var options = {
 		https: true,
 		options: {
@@ -14,7 +18,7 @@ try {
 
 	require(path.join(__dirname, './xs-syncer/lib/app.js'))({
 		dontask: true,
-		settings: JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8')),
+		settings: JSON.parse(fs.readFileSync(configPath, 'utf8')),
 		output: require(path.join(__dirname, "./xs-syncer/lib/messageOutput/socketOutput.js")).createInstance(options)
 	});
 } catch(e) {
