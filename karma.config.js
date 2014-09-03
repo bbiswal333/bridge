@@ -43,7 +43,8 @@ module.exports = function(config) {
       "./webui/Test/**/*",
       "./server/**/*",
       "./client/**/*",
-      "./webui/**/*.node.js"
+      "./webui/**/*.node.js",
+      "./webui/app/xsSyncer/server/**/*"
     ],
 
     // test results reporter to use
