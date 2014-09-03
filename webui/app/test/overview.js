@@ -1,7 +1,5 @@
 ﻿angular.module('app.test', ['app.test.data']);
-angular.module('app.test').directive('app.test', ['$interval', 'app.test.configService', 'app.test.dataService', function ($interval, configService, dataService) {
-
-	var intervalPromise;
+angular.module('app.test').directive('app.test', ['app.test.configService', 'app.test.dataService', function (configService, dataService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
@@ -20,16 +18,13 @@ angular.module('app.test').directive('app.test', ['$interval', 'app.test.configS
 			$scope.many = dataService.getReloadCounter();
 		};
 
-		if (angular.isDefined(intervalPromise)) {
-			$interval.cancel(intervalPromise);
-			intervalPromise = undefined;
-		}
-		intervalPromise = $interval($scope.getData, 1000 * 60);
-
 		// Bridge framework function to enable saving the config
 		$scope.box.returnConfig = function(){
 			return angular.copy(configService);
 		};
+
+		// Bridge framework function to take care of refresh
+		$scope.box.reloadApp($scope.getData,60);
 
 		// Example function for notifications
 		$scope.testNotification = function() {

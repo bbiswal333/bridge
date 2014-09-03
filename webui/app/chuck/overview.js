@@ -1,15 +1,12 @@
 angular.module('app.chuck', []);
-angular.module('app.chuck').directive('app.chuck', ['$http', '$interval', function ($http, $interval) 
+angular.module('app.chuck').directive('app.chuck', ['$http', function ($http) 
 {
-
     var directiveController = ['$scope', function ($scope) 
     {	
 
     	$scope.updateQuote = function()
     	{
     		var joke = $scope.data[Math.floor(Math.random() * $scope.data.length)].joke;
-    		//joke = joke.replace(/&quot;/ig,'"');
-            
             joke = $('<div/>').html(joke).text();
     		
             if(joke.length > 160)
@@ -21,14 +18,13 @@ angular.module('app.chuck').directive('app.chuck', ['$http', '$interval', functi
     			$scope.quote = joke;
     		}
     		$scope.longquote = joke;
-
     	};
 
     	$http.get('app/chuck/quotes.json').then(function(response) 
     	{
         	$scope.data = response.data.value;
         	$scope.updateQuote();
-        	$interval($scope.updateQuote(), 60000 * 60);        	        
+            $scope.box.reloadApp($scope.updateQuote, 60 * 10);
         });
 
      }];

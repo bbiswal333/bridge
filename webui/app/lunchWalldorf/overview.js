@@ -6,7 +6,7 @@ angular.
     "app.lunchWalldorf.configservice",
     "app.lunchWalldorf.backendData",
     function (calUtils, bridgeDataService, dataProcessor, lunchConfigService, lunchBackendData) {
-    var directiveController = ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
+    var directiveController = ['$scope', '$http', function ($scope, $http) {
         
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
@@ -87,8 +87,7 @@ angular.
         };
         
         $scope.refreshBackend();
-        $interval($scope.refreshBackend(), 1000 * 60 * 5);
-
+        $scope.box.reloadApp($scope.refreshBackend, 60 * 10);
     }];
 
     return {
