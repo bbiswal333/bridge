@@ -26,9 +26,11 @@ module.exports = function(app) {
 		var exception;
 		try {
 			var path = require('path');
-			var nodePath =   path.join(path.dirname(process.execPath), '../../../../Resources/app.nw/node/bin/node');
-			if (process.platform === 'win32') {
-				nodePath += ".exe";
+			var nodePath;
+			if(process.platform === "win32") {
+				nodePath =   path.join(path.dirname(process.execPath), '../../../../../node/node.exe');
+			else {
+				nodePath =   path.join(path.dirname(process.execPath), '../../../../Resources/app.nw/node/bin/node');
 			}
 
 			/*
