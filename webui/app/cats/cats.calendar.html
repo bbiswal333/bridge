@@ -39,11 +39,11 @@
                      tabindex="1"
                      style="outline: 0">
 
-                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
+                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
-                         'selected_day': isSelected(day.dayString)}"
+                         'selected_day': isSelected(day.dayString)} "
                          ng-style="{'background-size': !maintainable && day.today && 'cover'}">
 
                         <span ng-class="{
@@ -65,7 +65,7 @@
                      tabindex="1"
                      style="outline: 0">
 
-                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}}" ng-class="{
+                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,

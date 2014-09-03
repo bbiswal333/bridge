@@ -1,5 +1,5 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", "$interval", function (jenkinsConfigService, $location, $interval) {
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
@@ -16,14 +16,12 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             id: $scope.boxId
         };
 
-
-
         $scope.box.returnConfig = function() {
             return angular.copy($scope.configService);
         };
 
         this.initialize = function () {
-            $interval(this.jobsToDisplay, 60000 * 10);
+            $scope.box.reloadApp(this.jobsToDisplay, 60 * 10);
         };
 
         var formatTimestamp = function(timestamp) {

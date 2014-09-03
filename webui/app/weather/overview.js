@@ -1,7 +1,7 @@
 ﻿angular.module('app.weather', ["lib.utils","bridge.service"]);
 angular.module('app.weather').directive('app.weather', ['app.weather.configservice', 'bridgeDataService', 'bridgeConfig', function (weatherconfig, bridgeDataService, bridgeConfig) {
 
-    var directiveController = ['$scope', '$http', '$interval', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, $interval, bridgeDataService, calUtils) 
+    var directiveController = ['$scope', '$http', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, bridgeDataService, calUtils) 
     {
     	$scope.box.boxSize = "1"; 
         $scope.box.settingsTitle = "Configure temparature scale and location";
@@ -30,7 +30,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
         {
             loadData();
         }, true);
-        $interval(loadData, 1000 * 60 * 5);
+        $scope.box.reloadApp(loadData, 60 * 5);
 
         $scope.getCurrentDate = function (days)
         {

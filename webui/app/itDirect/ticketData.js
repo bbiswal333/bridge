@@ -1,5 +1,6 @@
-angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope","$http", "$q", "$interval", "$location", "bridgeDataService", "app.itdirect.config", "notifier", "app.itdirect.formatter",
-    function($rootScope, $http, $q, $interval, $location, bridgeDataService, itdirectConfig, notifier, formatter){
+angular.module("app.itdirect").service("app.itdirect.ticketData",
+    ["$rootScope","$http", "$q", "$location", "bridgeDataService", "app.itdirect.config", "notifier", "app.itdirect.formatter",
+    function($rootScope, $http, $q, $location, bridgeDataService, itdirectConfig, notifier, formatter){
 
         var that = this;
         this.isInitialized = {value: false};
@@ -161,7 +162,6 @@ angular.module("app.itdirect").service("app.itdirect.ticketData", ["$rootScope",
         };
 
         this.initialize = function (sAppIdentifier) {
-            $interval(this.loadTicketData, 60000 * 10);
             this.sAppIdentifier = sAppIdentifier;
 
             var loadTicketPromise = this.loadTicketData();

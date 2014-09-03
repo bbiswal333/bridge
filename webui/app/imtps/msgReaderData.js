@@ -1,14 +1,12 @@
 angular.module('app.imtps').service('app.imtps.msgReaderData',
-    ['$http', '$window', '$interval', 'app.imtps.configservice' , 'trafficLightService' , 
-    function ($http, $window, $interval, configservice , trafficLightService) {
+    ['$http', '$window', 'app.imtps.configservice' , 'trafficLightService' , 
+    function ($http, $window, configservice , trafficLightService) {
 
     var gtpService = 'https://gtpmain.wdf.sap.corp/sap/bc/devdb/msgsfrommytps';
-    var nInterval  = 60 * 5 * 1000; 
     
     //buckets for the backend tickets
     this.backendTickets = {};
-    
-    this.loadTicketDataInterval = null;
+
     this.callbackCollection = null;
     var that = this;
     
@@ -81,7 +79,6 @@ angular.module('app.imtps').service('app.imtps.msgReaderData',
     this.initService = function (sucessCallback) {
     	that.callbackCollection = sucessCallback;
     	if( !that.loadTicketDataInterval ){
-    		that.loadTicketDataInterval = $interval(this.loadTicketData, nInterval);
     		this.loadTicketData();
     	}else{
     		if( that.callbackCollection ){

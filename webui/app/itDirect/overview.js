@@ -2,7 +2,8 @@ angular.module('app.itdirect', ['bridge.service', 'ngTable']);
 
 angular.module('app.itdirect').directive('app.itdirect', function ()
 {
-    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeDataService", "bridgeConfig", function($scope, config, ticketData, bridgeDataService, bridgeConfig){
+    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeDataService", "bridgeConfig",
+    function($scope, config, ticketData, bridgeDataService, bridgeConfig){
         if (config.isInitialized === false) {
             config.initialize($scope.appConfig);
         }
@@ -55,6 +56,8 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
 
             return count;
         };
+
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
     }];
 
     return {

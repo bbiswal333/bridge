@@ -552,8 +552,7 @@ angular.module("app.cats")
 				}
 			};
 			
-			var refreshInterval = null;
-
+			monthlyDataService.reloadInProgress.value = true;
 			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
 
 			if ($scope.selectedDay) {
@@ -562,6 +561,7 @@ angular.module("app.cats")
 			    }
 			}
 
+			var refreshInterval = null;
 			$scope.$on("$destroy", function () {
 			    if (refreshInterval !== null) {
 			        $interval.cancel(refreshInterval);
@@ -571,14 +571,17 @@ angular.module("app.cats")
 			(function reloader() {
 			    var dateLastRun = new Date().getDate();
 
-			    refreshInterval = $interval(function () {
+				refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
+					    dateLastRun = new Date().getDate();
+						monthlyDataService.reloadInProgress.value = true;
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
-			    }, 3 * 60 * 60 * 1000);
+				}, 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
+				monthlyDataService.reloadInProgress.value = true;
 				catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			});
 

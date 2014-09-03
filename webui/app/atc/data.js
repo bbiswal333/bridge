@@ -1,4 +1,4 @@
-﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$interval", "$window", "app.atc.configservice", function ($http, $interval, $window, atcConfig) {
+﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$window", "app.atc.configservice", function ($http, $window, atcConfig) {
     var that = this;
 
     this.data = {
@@ -37,7 +37,4 @@
             that.getResultForConfig(atcConfig);
         }
     };
-
-    // refresh interval
-    $interval(this.loadOverviewData, 1000 * 60 * 5);
 }]);

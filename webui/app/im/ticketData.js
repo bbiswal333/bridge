@@ -1,6 +1,6 @@
 ﻿angular.module('app.im').service('app.im.ticketData',
-    ['$http', '$window', '$q', '$interval', 'app.im.configservice',
-    function ($http, $window, $q, $interval, configservice) {
+    ['$http', '$window', '$q', 'app.im.configservice',
+    function ($http, $window, $q, configservice) {
     var that = this;
 
     //buckets for the backend tickets
@@ -15,7 +15,6 @@
     
     // make an object so that we can have it referenced in the scope
     this.isInitialized = { value: false };
-    this.loadTicketDataInterval = null;
 
     function addTicket(list, ticket){ 
         var allreadyExists = false;
@@ -192,8 +191,6 @@
     };
 
     this.initialize = function () {
-        this.loadTicketDataInterval = $interval(this.loadTicketData, 60000 * 10);
-
         var loadTicketPromise = this.loadTicketData();
         loadTicketPromise.then(function success() {
             that.isInitialized.value = true;
