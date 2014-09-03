@@ -12,10 +12,10 @@ try {
 		}
 	};
 
-	require('../../../../server/xs-syncer/app.js')({
+	require(path.join(__dirname, './xs-syncer/lib/app.js'))({
 		dontask: true,
 		settings: JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8')),
-		output: require("../../../../server/xs-syncer/messageOutput/socketOutput.js").createInstance(options)
+		output: require(path.join(__dirname, "./xs-syncer/lib/messageOutput/socketOutput.js")).createInstance(options)
 	});
 } catch(e) {
 	//TODO think about some clever error handling here

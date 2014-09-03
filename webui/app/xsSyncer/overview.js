@@ -101,7 +101,7 @@ angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
             ).success(function (response) {
                 $scope.dataService.restartNeeded = false;
                 if(response.error) {
-                    window.alert(response.error.message);
+                    window.alert(response.message);
                 }
             }).error(function () {
                 

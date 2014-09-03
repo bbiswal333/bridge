@@ -299,42 +299,52 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	};
 
 	var loadAppNodeModules = function() {
-		findModuleFiles(path.join(__dirname, '../webui/app'), function(modulePath, module) {
-			if(module.nodeModules) {
-				console.log("found one module:" + modulePath);
-				for(var i = 0; i < module.nodeModules.length; i++) {
-					require(path.join(path.dirname(modulePath), module.nodeModules[i]))(app);
+		var npm;
+		if (process.platform == "win32") {
+            npm = "../../../node/npm";
+        } else {
+            npm = "../../../../Resources/app.nw/node/bin/npm";
+        }
+		findFilesByName(path.join(__dirname, '../webui/app'), '_modules.json', function(modulePath) {
+			try
+    		{
+    			delete require.cache[require.resolve(modulePath)];
+	    		var module = require(modulePath);
+				if(module.nodeModules) {
+					if(webkitClient) {
+						findFilesByName(path.dirname(modulePath), 'package.json', function(packagePath, content) {
+							console.log("running npm install in folder: " + path.dirname(packagePath));
+							console.log("cd " + path.dirname(packagePath) + " && " + path.join(path.dirname(process.execPath), npm) + " install");
+							require('child_process').exec("cd " + path.dirname(packagePath) + " && " + path.join(path.dirname(process.execPath), npm) + " install");
+						});
+					}
+					console.log("found one module:" + modulePath);
+					for(var i = 0; i < module.nodeModules.length; i++) {
+						require(path.join(path.dirname(modulePath), module.nodeModules[i]))(app);
+					}
 				}
+			} catch(e) {
+				console.log(e);
 			}
 		});
 	};
 
-	var findModuleFiles = function(dir, moduleHandler)
+	var findFilesByName = function(dir, filename, moduleHandler)
 	{		
 		var files = fs.readdirSync(dir);
 		    
 		for (var i = 0; i < files.length; i++){	    
 		    var name = path.join(dir, '/', files[i]);			    		    
 
-		    if (fs.statSync(name).isDirectory())
+		    if (fs.statSync(name).isDirectory() && path.basename(name) !== "node_modules")
 		    {		    	
-		    	findModuleFiles(name, moduleHandler);		    	    
+		    	findFilesByName(name, filename, moduleHandler);		    	    
 		    }
 		    else
 		    {
-		    	if (path.basename(name) === '_modules.json')
+		    	if (path.basename(name) === filename)
 		    	{
-		    		try
-		    		{
-		    			delete require.cache[require.resolve(name)];
-			    		var module = require(name);
-
-						moduleHandler(name, module);	    				   
-			    	}
-			    	catch(e)
-			    	{
-			    		console.log(e);
-			    	}
+		    		moduleHandler(name);
 		    	}		        
 		    }
 		}
@@ -343,21 +353,30 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var getFiles = function(dir)
 	{
 		var out_files = {};
-		findModuleFiles(dir, function(modulePath, module) {
-			out_files = concatAttributes(out_files, module, function(attribute_name, value)
-			    		{
-			    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
-			    			{								
-			    				for (var i = 0; i < value.length; i++)
-			    				{
-									var filename = path.join(path.dirname(modulePath), value[i]);	
-									value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
-								}
-								return value;
-			    			} else {
-			    				return value;
-			    			}
-			    		});
+		findFilesByName(dir, '_modules.json', function(modulePath) {
+			try
+    		{
+    			delete require.cache[require.resolve(modulePath)];
+	    		var module = require(modulePath);
+	    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
+	    		{
+	    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
+	    			{								
+	    				for (var i = 0; i < value.length; i++)
+	    				{
+							var filename = path.join(path.dirname(modulePath), value[i]);	
+							value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
+						}
+						return value;
+	    			} else {
+	    				return value;
+	    			}
+	    		});
+	    	}
+	    	catch(e)
+	    	{
+	    		console.log(e);
+	    	}
 		});
 		console.log("Printing out files now:\r\n\r\n");
 		console.log(out_files);

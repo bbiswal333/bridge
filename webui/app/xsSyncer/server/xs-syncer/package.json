@@ -1,0 +1,46 @@
+{
+  "name": "xs-syncer",
+  "version": "0.0.1",
+  "description": "XS-Syncer simplifies your xs-engine development. Features:",
+  "main": "lib/app.js",
+  "scripts": {
+    "test": "mocha -t 6000 -R list"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.wdf.sap.corp/icp/xs-syncer.git"
+  },
+  "author": {
+    "name": "Valentin Flunkert, Ole Lilienthal"
+  },
+  "bin": {
+    "xssyncer": "xssyncer"
+  },
+  "dependencies": {
+    "request": "~2.34.0",
+    "async": "~0.2.10",
+    "graceful-chokidar": "~0.1.0",
+    "http-proxy": "~1.0.3",
+    "jayschema": "~0.2.6",
+    "express": "~3.5.1",
+    "express-handlebars": "1.0.1",
+    "optimist": "~0.6.1",
+    "tiny-lr": "0.0.5",
+    "underscore": "~1.6.0",
+    "socket.io": "1.0.6",
+    "mime": "1.2.11",
+    "growing-file": "0.1.3",
+    "randomstring": "1.0.3"
+  },
+  "devDependencies": {
+    "chai": "~1.9.0",
+    "mocha": "~1.17.1",
+    "glob": "~3.2.9"
+  },
+  "readme": "# xs-syncer\n\nXS-Syncer simplifies your xs-engine development. Features:\n\n- Save a local file and it is synchronized to the xs-repository\n- It is not activated, but thanks to HANA's inactive execution you can still run it \n- You can let xs-syncer refresh your browser tab after a change has been uploaded\n- Thanks to inactive workspaces multiple users can work on the same HANA instance without interference\n\nThe tool consists of two parts:\n\n1. A synchronizer that uploads changed files to your repository\n2. A proxy that enables seamless working with inactive workspaces\n\n## Demo\n\n(click to enlarge)\n![Screen Cast](https://github.wdf.sap.corp/icp/xs-syncer/raw/master/screen_cast.gif)\n\n## Installation \n\nTested on OS X and windows\n\n1. [Install node.js](http://nodejs.org/download/) on your local development machine\n2. run `npm install git+https://git@github.wdf.sap.corp/icp/xs-syncer.git` which installs xssyncer in a local path (on windows this works e.g. in [Git-bash](http://git-scm.com/downloads))\n3. Install the [REST-API Delivery Unit](https://nexus.wdf.sap.corp:8443/nexus/content/repositories/hana.content/sap/hana/xs/dt/base/HANA_DT_BASE/1.0.9/HANA_DT_BASE-1.0.9.tgz) on your HANA instance\n\nFor inactive execution to work, the developer mode has to be activated for your\nHANA instance ([see this gist](https://github.wdf.sap.corp/gist/d059683/157)). \n\n## Usage\n\n1. Setup your config file (see below)\n2. Start the syncer with `xssyncer --conf <config-file>`\n3. Open the html-page or xsjs-endpoint in the browser via the local proxy `http://localhost:<serverPort>/...`,\n   where `serverPort` and the url can be configured in the config file.\n\nNote: There has to be an active `.xsaccess` and `.xsapp` in the repository and you cannot use\nxs-syncer with `authentication : null` in the `.xsaccess` file, because inactive execution \nonly works with an authenticated user.\n\n### Workspaces\n\nThe `workspaceId` that you specify in the config corresponds to a hana\nworkspace name. There is one special workspace `''` (the empty string), which\nis the workspace that is used by the WEB-IDE.  It is convenient, to also use this\nworkspaceId, because you will be able to see the files that xs-syncer has uploaded\nin the web-ide.  If multiple users work on the same HANA, they can all use this\nworkspace as long as they work under different user names.\n\n## Livereload\n\nxs-syncer can trigger a browser refresh when files have changed. To use this feature you need to install the\nlivereload plugin for your browser:\n\n[http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-](http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-)\n\nand set `liveReload` to `true` in your config (see `config.json.sample`).\n\n## Configuration samples\n\nThe configuration consists of two main parts in order to configure the\nsynchronization and the proxy feature. See `config.json.sample` for a\nminimal example.\n\n1. The synchronization settings define which local directories should be\n   synchronized automatically with which remote package in the HANA XS-Engine.\n   All you have to specify is a local path and a remote path.  `localPath` can\n   be an absolute path or a path relative to the config file.\n\n    ```\n    \"synchronizationSettings\": [\n        {\n            \"localPath\"     : \"target/ui5\",\n            \"remotePath\"    : \"/testi\"\n        }\n    ]\n    ```\n\n2. When a request is submitted to the proxy the proxy settings are checked in\n   order if the requested url matches the url from the settings. You can\n   specify either to use a local path to serve the request or a remote path to\n   forward the request to the specified HANA instance. Using the `fileTypes`\n   attributes you can control to which filetypes you want to restrict this\n   rule. This allows you to serve static files from your local filesystem while\n   executing for instance xsjs files on the HANA instance, even when they are\n   located under the same url.\n\n    ```\n    \"proxySettings\" : [\n        {\n            \"url\"         : \"/local/ui5\",\n            \"localPath\"   : \"target/ui5\",\n            \"fileTypes\"   : [\"html\", \"js\", \"css\", \"jpg\", \"png\"]\n        },\n        {\n            \"url\"         : \"/someurl\",\n            \"remotePath\"  : \"/sap/somepackage/\"\n        },\n        {\n            \"url\"         : \"/someotherurl\",\n            \"remotePath\"  : \"/sap/someotherpackage\",\n            \"target\"      : \"anotherhost.sap.corp:8000\"\n        },\n        {\n            \"url\"         : \"\",\n            \"remotePath\"  : \"/\"\n        }\n    ]\n    ```\n\n## Possible issues and solutions\n\n### When I change a file it is not synchronized to the repository.\n\nIf you don't see a message `FileSyncWatcher ...` in your terminal after you\nchange a file in one of the synchronization `localPath`, you may have to switch\non the `usePolling` option in your config. Switching this option on may,\nhowever, lead to higher cpu loads especially if you are syncing a large\nrepository.\n\n### npm fails to download the dependencies\n\nOne possible reason is that you are behind the SAP proxy. \nSolution: Tell npm about the proxy configuration\n\n```\nnpm config set proxy http://proxy.wdf.sap.corp:8080\nnpm config set https-proxy http://proxy.wdf.sap.corp:8080\n```\n\n\n\n",
+  "readmeFilename": "README.md",
+  "_id": "xs-syncer@0.0.1",
+  "_shasum": "3811840f6ef98f81865f1733bdafb5a34db503bd",
+  "_resolved": "git+https://git@github.wdf.sap.corp/icp/xs-syncer.git#2591a6c69035fa521038266272774fd01d14d812",
+  "_from": "git+https://git@github.wdf.sap.corp/icp/xs-syncer.git"
+}

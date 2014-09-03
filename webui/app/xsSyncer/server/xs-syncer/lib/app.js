@@ -76,7 +76,7 @@ function main(argv) {
         }
 
         if(settings.hanaInstance.ssl) {
-            require('./node-sso/sso.js').execute(function(sso) {
+            require('../node-sso/sso.js').execute(function(sso) {
                 settings.hanaInstance.ssl = sso;
                 xsRepo = repo(settings.hanaInstance, null, output);
                 startFileWatcher();
