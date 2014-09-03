@@ -103,7 +103,6 @@
         var allPromises = $q.all([configPromise, userInfoPromise]);
         allPromises.then(function (data) {
             var config = data[0];
-            that.configRawData = config;
 
             // if the config is not an object, then the user has no configuration stored in the backend
             if (angular.isObject(config) && !isEmpty(config)) {
@@ -121,18 +120,10 @@
     }
 
     function _getProjects() {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
-        }
-
         return that.projects;
     }
 
     function _getAppById(id) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
-        }
-
         for (var i = 0; i < _getProjects().length; i++) {
             for (var a = 0; a < _getProjects()[i].apps.length; a++) {
                 if (_getProjects()[i].apps[a].metadata.id.toString() === id.toString()) {
@@ -145,10 +136,6 @@
     }
 
     function _getAppConfigById(id) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
-        }
-
         var app = _getAppById(id);
         if (app.appConfig) {
             return app.appConfig;
@@ -158,10 +145,6 @@
     }
 
     function _getAppByModuleName(module_name) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
-        }
-
         for (var i = 0; i < _getProjects().length; i++) {
             for (var a = 0; a < _getProjects()[i].apps.length; a++) {
                 if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
