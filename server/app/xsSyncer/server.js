@@ -2,7 +2,7 @@
 var child;
 var fs = require('fs');
 var path = require('path');
-var cors = require('../../../../server/cors.js');
+var cors = require('../../cors.js');
 
 module.exports = function(app) {
 	function getUserHome() {
@@ -39,7 +39,7 @@ module.exports = function(app) {
 			Refer to this issue: https://github.com/rogerwang/node-webkit/issues/213
 			*/
 
-			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.node.js"),
+			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.js"),
 			function (error, stdout, stderr) {
 			    if (error !== null) {
 			    	child = null;

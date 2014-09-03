@@ -11,8 +11,8 @@ try {
 	var options = {
 		https: true,
 		options: {
-		    key: fs.readFileSync(path.join(__dirname, '../../../../server/bridge.key')),
-		    cert: fs.readFileSync(path.join(__dirname, '../../../../server/bridge.crt'))
+		    key: fs.readFileSync(path.join(__dirname, '../../bridge.key')),
+		    cert: fs.readFileSync(path.join(__dirname, '../../bridge.crt'))
 		}
 	};
 

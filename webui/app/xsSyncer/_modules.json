@@ -12,5 +12,5 @@
 	"modules" : [],
 	"js_files" : ["overview.js", "dataService.js", "settings.js"],
 	"css_files" : ["styles.css"],
-	"nodeModules" : ["server/server.node.js"]
+	"nodeModules" : ["server.js"]
 }
