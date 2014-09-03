@@ -298,10 +298,25 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		return array;
 	};
 
+	function getProxyCommands() {
+		var set_proxy = "";
+
+		if( proxy )
+		{
+			if(process.platform == "win32") {
+				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080";
+			}
+			else {
+				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080";
+			}
+		}
+		return set_proxy;
+	}
+
 	var loadAppNodeModules = function() {
 		var npm;
 		if (process.platform == "win32") {
-            npm = "../../../node/npm";
+            npm = "node/npm";
         } else {
             npm = "../../../../Resources/app.nw/node/bin/npm";
         }
@@ -312,15 +327,15 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	    		var module = require(modulePath);
 				if(module.nodeModules) {
 					if(webkitClient) {
-						findFilesByName(path.dirname(modulePath), 'package.json', function(packagePath, content) {
+						findFilesByName(path.join(modulePath, '../../../../server/app', path.basename(path.dirname(modulePath))), 'package.json', function(packagePath, content) {
 							console.log("running npm install in folder: " + path.dirname(packagePath));
-							console.log("cd " + path.dirname(packagePath) + " && " + path.join(path.dirname(process.execPath), npm) + " install");
-							require('child_process').exec("cd " + path.dirname(packagePath) + " && " + path.join(path.dirname(process.execPath), npm) + " install");
+							console.log("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
+							require('child_process').exec("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
 						});
 					}
 					console.log("found one module:" + modulePath);
 					for(var i = 0; i < module.nodeModules.length; i++) {
-						require(path.join(path.dirname(modulePath), module.nodeModules[i]))(app);
+						require(path.join(modulePath, '../../../../server/app', path.basename(path.dirname(modulePath)), module.nodeModules[i]))(app);
 					}
 				}
 			} catch(e) {
@@ -378,8 +393,6 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	    		console.log(e);
 	    	}
 		});
-		console.log("Printing out files now:\r\n\r\n");
-		console.log(out_files);
 		return out_files;
 	};
 

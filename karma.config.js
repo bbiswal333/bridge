@@ -42,9 +42,7 @@ module.exports = function(config) {
     exclude: [
       "./webui/Test/**/*",
       "./server/**/*",
-      "./client/**/*",
-      "./webui/**/*.node.js",
-      "./webui/app/xsSyncer/server/**/*"
+      "./client/**/*"
     ],
 
     // test results reporter to use

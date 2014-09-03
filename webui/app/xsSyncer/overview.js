@@ -1,8 +1,8 @@
-﻿/*global io, window*/
+﻿/*global io*/
 angular.module('app.xsSyncer', []);
 angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
 
-    var directiveController = ['$scope', '$http', '$window', 'app.xsSyncer.dataService', function ($scope, $http, $window, dataService)
+    var directiveController = ['$scope', '$http', 'app.xsSyncer.dataService','$window', '$log', function ($scope, $http, dataService, $window, $log)
     {
         $scope.box.boxSize = 2;
 
@@ -101,7 +101,7 @@ angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
             ).success(function (response) {
                 $scope.dataService.restartNeeded = false;
                 if(response.error) {
-                    window.alert(response.message);
+                    $log(response.message);
                 }
             }).error(function () {
                 

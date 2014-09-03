@@ -1,10 +1,15 @@
 /*global __dirname, require, process*/
 var child;
-var configPath = __dirname + "/config.json";
 var fs = require('fs');
-var cors = require('../../../../server/cors.js');
+var path = require('path');
+var cors = require('../../cors.js');
 
 module.exports = function(app) {
+	function getUserHome() {
+	  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+	}
+	var configPath = path.join(getUserHome(), "xsSyncerConfig.json");
+
 	app.post("/api/xsSyncer/start", function(request, response) {
 		cors(request, response);
 
@@ -21,9 +26,12 @@ module.exports = function(app) {
 		var exception;
 		try {
 			var path = require('path');
-			var nodePath =   path.join(path.dirname(process.execPath), '../../../../Resources/app.nw/node/bin/node');
-			if (process.platform === 'win32') {
-				nodePath += ".exe";
+			var nodePath;
+			if(process.platform === "win32") {
+				nodePath =   path.join(path.dirname(process.execPath), 'node/node.exe');
+			}
+			else {
+				nodePath =   path.join(path.dirname(process.execPath), '../../../../Resources/app.nw/node/bin/node');
 			}
 
 			/*
@@ -34,11 +42,10 @@ module.exports = function(app) {
 			Refer to this issue: https://github.com/rogerwang/node-webkit/issues/213
 			*/
 
-			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.node.js"),
+			child = require("child_process").exec(nodePath + " " + path.join(__dirname, "xsSyncer.js"),
 			function (error, stdout, stderr) {
-				console.log('stdout: ' + stdout);
-			    console.log('stderr: ' + stderr);
 			    if (error !== null) {
+			    	child = null;
 			    	console.log('exec error:');
 			    	console.log(error);
 			    }
