@@ -38,7 +38,9 @@
 		"trafficLightService.js",
 		"employeeService.js",
 		"bridgeBuildingSearchService.js",
-		"diagnosis/statusController.js"
+		"diagnosis/statusController.js",
+		"controls/checkbox.js",
+		"controls/radio.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css"
