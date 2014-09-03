@@ -82,8 +82,8 @@ angular.
                     }
                 }
             });
-            $scope.portalLink = lunchBackendData.getBackendMetadata().portalLink;
-            $scope.portalLinkText = lunchBackendData.getBackendMetadata().portalLinkText;
+            $scope.portalLink = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLink;
+            $scope.portalLinkText = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLinkText;
         };
         
         $scope.refreshBackend();
@@ -222,59 +222,3 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
         }
     };
 });
-
-angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ "$http", "$q", function($http, $q){
-    
-    var configBackend = 
-        { 
-            "WDF": {
-                portalLink:  "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df",
-                portalLinkText: "Lunch menu in the portal",
-    
-                portalBackend: '/api/get?proxy=true&url=' +         encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
-            },
-            "KAR": {
-                portalLink:  "http://www.casinocatering.de/speiseplan/max-rubner-institut",
-                portalLinkText: "Lunch menu online",
-               // portalBackend: '/api/get?proxy=false&url=' + encodeURI('http://deqkalvm294.qkal.sap.corp:8080/bfe.json')
-                portalBackend: 'https://deqkalvm294.qkal.sap.corp/bfe.json'
-            }
-        };
-    this.isValidBackend = function(backend) {
-        return typeof configBackend[backend] !== "undefined";
-    };
-
-    this.getDefaultBackend = function() {
-        return configBackend.WDF;   
-    };
-    
-    this.getBackendMetadata = function() {
-        
-        if (! this.isValidBackend(this.chosenbackend) ) {
-            this.getDefaultBackend();
-        }
-        return configBackend[this.chosenbackend];
-    };
-        
-    this.getLunchData = function(chosenbackend) {
-        var deferred = $q.defer();
-        
-        this.chosenbackend = chosenbackend;
-        
-        if (! this.isValidBackend(chosenbackend)) {
-            this.getDefaultBackend();
-        }
-        
-        $http.get(configBackend[this.chosenbackend].portalBackend).then(function (data) {
-            if (data.status !== 200 && data.status !== 304 ) {
-                deferred.reject(data);
-            } else {
-                deferred.resolve(data.data);
-            } 
-        }); 
-        
-        return deferred.promise;
-    };
-
-
-}]);
