@@ -14,7 +14,7 @@
 			}
 		],
 		"beta"					: true,
-		"beta_users"			: ["D055406","D050049","D051804","D025786"]	
+		"beta_users"			: ["D055406","D050049","D051804","D025786", "D041846", "I069022", "D025435", "I810014", "I074043" ,"I813312", "D055517", "D035514", "I805427", "I067985"]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js"],
