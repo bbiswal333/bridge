@@ -28,7 +28,8 @@ angular.module('app.customerMessages').directive('app.customerMessages', ['app.c
     };
 }]);
 
-angular.module('app.customerMessages').controller('app.customerMessages.directiveController', ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig',
+angular.module('app.customerMessages').controller('app.customerMessages.directiveController',
+    ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig) {
 
         $scope.box.boxSize = "1";      
@@ -73,8 +74,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             }
         },true);  
 
-
-
         if (ticketData.isInitialized.value === false) {
             var initPromise = ticketData.initialize();
             initPromise.then(function success() {
@@ -86,4 +85,5 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             $scope.config = configservice;
         }
 
+        $scope.box.reloadApp(ticketData, 60 * 5);
 }]);

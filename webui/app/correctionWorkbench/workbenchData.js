@@ -1,6 +1,6 @@
 angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workbenchData',
-    ['$rootScope', '$http', '$q', '$interval', '$location', 'notifier', '$window',
-    function ($rootScope, $http, $q, $interval, $location, notifier, $window) {
+    ['$rootScope', '$http', '$q', '$location', 'notifier', '$window',
+    function ($rootScope, $http, $q, $location, notifier, $window) {
 	var that = this;
     this.lastDataUpdate = null;
     this.lastDataUpdateFromConfig = null;
@@ -175,7 +175,6 @@ angular.module('app.correctionWorkbench').service('app.correctionWorkbench.workb
 	this.initialize = function (sAppIdentifier, lastDataUpdateFromConfig) {
         this.sAppIdentifier = sAppIdentifier;
         this.lastDataUpdateFromConfig = lastDataUpdateFromConfig;
-        $interval(this.loadWorkbenchData, 60000 * 10);
 
         var loadWorkbenchPromise = this.loadWorkbenchData();
         loadWorkbenchPromise.then(function success() {

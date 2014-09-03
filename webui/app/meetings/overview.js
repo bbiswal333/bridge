@@ -1,15 +1,7 @@
 angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
 directive("app.meetings", [
-	"$timeout",
-	"$http",
-	"$window",
-    "$log",
-	"app.meetings.ews.ewsUtils",
-	"lib.utils.calUtils",
-	"$interval",
-	"app.meetings.configservice",
-	"notifier",
-	function ($timeout, $http, $window, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+	"$timeout",	"$http", "$window", "$log", "app.meetings.ews.ewsUtils", "lib.utils.calUtils", "app.meetings.configservice", "notifier",
+	function ($timeout, $http, $window, $log, ewsUtils, calUtils, meetingsConfigService, notifier) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -106,8 +98,7 @@ directive("app.meetings", [
 									if ( sapconnecturl == null) {
 										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
 									}
-									
-									
+
 									var useTheNormalSAPConnectDialIn = true;
 									// A bit hacky
 									// For sapemeavent we would need different dial-in number in Frankfurt and around the word,
@@ -124,8 +115,6 @@ directive("app.meetings", [
 									}
 								}
 							}
-							
-
 						}
 	        			$scope.errMsg = null;
 					}catch(error){
@@ -268,28 +257,19 @@ directive("app.meetings", [
 			    return calUtils.getWeekdays()[date.getDay() - 1].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
 			};
 
-			var refreshInterval = null;
-
-			$scope.$on("$destroy", function(){
-				if (refreshInterval != null) {
-					$interval.cancel(refreshInterval);
+			var reloadCount = 1;
+			function reloader() {
+				//Full reload every 300 seconds, refresh of UI every 30 seconds
+				if (reloadCount % 10 === 0) {
+					reload();
+					reloadCount = 1;
 				}
-			});
-
-			(function reloader() {
-				var i = 1;
-				//Full reload every 300 seconds, refresh of UI all 30 seconds
-				refreshInterval = $interval(function () {
-					if (i % 10 === 0) {
-						reload();
-						i = 1;
-					}
-					else {
-						parseExchangeData(true, eventsRaw);
-						i++;
-					}
-				}, 30 * 1000);
-			})();
+				else {
+					parseExchangeData(true, eventsRaw);
+					reloadCount++;
+				}
+			}
+			$scope.box.reloadApp(reloader, 30);
 
 			loadFromExchange(false);
 		};

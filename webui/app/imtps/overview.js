@@ -16,6 +16,8 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
 	        {
 	            return configService;
 	        };
+
+            $scope.box.reloadApp(msgReaderData.loadTicketData, 60 * 5);
 	        
 	        $scope.$watch('config', function (newVal, oldVal) {
 	            if($scope.config !== undefined && newVal !== oldVal)

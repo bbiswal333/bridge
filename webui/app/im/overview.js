@@ -85,4 +85,5 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             $scope.config = configservice;
         }
 
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
 }]);

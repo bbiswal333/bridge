@@ -53,8 +53,8 @@ angular.module('bridge.box').directive('bridge.box',
                 if(angular.isFunction(callback_fn)) {
                     if (!angular.isNumber(reloadIntervalInSeconds)) {
                         reloadIntervalInSeconds = 60 * 5;
-                    } else if (reloadIntervalInSeconds < 5) {
-                        $scope.reloadIntervalInSeconds = 5;
+                    } else if (reloadIntervalInSeconds < 3) {
+                        reloadIntervalInSeconds = 3;
                     } else if (reloadIntervalInSeconds > 60 * 60 * 3) {
                         reloadIntervalInSeconds = 60 * 60 * 3;
                     }

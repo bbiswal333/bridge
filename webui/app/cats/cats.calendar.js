@@ -575,7 +575,7 @@ angular.module("app.cats")
 			        if (dateLastRun !== new Date().getDate()) {
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
-			    }, 3 * 60 * 60 * 1000);
+			    }, 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
