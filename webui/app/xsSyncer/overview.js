@@ -1,8 +1,8 @@
-﻿/*global io, window*/
-angular.module('app.xsSyncer', []);
+﻿/*global io*/
+angular.module('app.xsSyncer');
 angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
 
-    var directiveController = ['$scope', '$http', '$window', 'app.xsSyncer.dataService', '$log', function ($scope, $http, $window, dataService, $log)
+    var directiveController = ['$scope', '$http', 'app.xsSyncer.dataService','$window', '$log', function ($scope, $http, dataService, $window, $log)
     {
         $scope.box.boxSize = 2;
 
