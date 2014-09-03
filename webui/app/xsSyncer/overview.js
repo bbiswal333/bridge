@@ -1,5 +1,5 @@
 ﻿/*global io*/
-angular.module('app.xsSyncer');
+angular.module('app.xsSyncer', []);
 angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
 
     var directiveController = ['$scope', '$http', 'app.xsSyncer.dataService','$window', '$log', function ($scope, $http, dataService, $window, $log)
