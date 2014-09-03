@@ -301,7 +301,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var loadAppNodeModules = function() {
 		var npm;
 		if (process.platform == "win32") {
-            npm = "../../../node/npm";
+            npm = "node/npm";
         } else {
             npm = "../../../../Resources/app.nw/node/bin/npm";
         }
