@@ -304,10 +304,10 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		if( proxy )
 		{
 			if(process.platform == "win32") {
-				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080 && ";
+				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080";
 			}
 			else {
-				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080 && ";
+				set_proxy = "export http_proxy http_proxy=http://proxy:8080 && export https_proxy=http://proxy:8080";
 			}
 		}
 		return set_proxy;
