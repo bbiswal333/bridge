@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.customerMessages",
-		"title"					:	"Customer Msg",
+		"title"					:	"Cust. Msg",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.customerMessages",
 		"needs_client"			:	false,
@@ -14,7 +14,7 @@
 			}
 		],
 		"beta"					: true,
-		"beta_users"			: ["D055406"]	
+		"beta_users"			: ["D055406","D050049","D051804","D025786"]	
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js"],

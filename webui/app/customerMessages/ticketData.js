@@ -99,7 +99,7 @@
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
-        $http.get('https://bcdmain.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbiZpPTE==)/bc/devdb/customer_incid?sap-client=001&origin=' + $window.location.origin, {withCredentials:true}
+        $http.get('https://bcpmain.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + $window.location.origin, {withCredentials:true}
         ).success(function (data) {
             // data = testData;
             that.resetData();
