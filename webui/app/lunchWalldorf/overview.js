@@ -6,7 +6,7 @@ angular.
     "app.lunchWalldorf.configservice",
     "app.lunchWalldorf.backendData",
     function (calUtils, bridgeDataService, dataProcessor, lunchConfigService, lunchBackendData) {
-    var directiveController = ['$scope', '$http', function ($scope, $http) {
+    var directiveController = ['$scope', function ($scope) {
         
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
