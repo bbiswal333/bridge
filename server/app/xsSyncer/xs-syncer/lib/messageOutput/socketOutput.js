@@ -17,8 +17,12 @@ var SocketOutput = (function() {
             serverOptions = options.options;
         }
         var server = http.createServer(serverOptions, app);
-        var io = require('socket.io')(server, {"origins": "*:*", "transports": ['polling', 'websocket']});
+        var io = require('socket.io').listen(server, {origins: '*:*'});
         server.listen(10291);
+
+        io.configure(function () {
+            io.set('transports', ['polling', 'websocket']);
+        });
 
         function flushHistory() {
             for(var i = 0; i < history.length; i++) {
