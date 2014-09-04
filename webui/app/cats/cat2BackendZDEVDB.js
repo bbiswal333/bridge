@@ -33,28 +33,30 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
       if (forceUpdate_b || CAT2ComplinaceData4FourMonthCache == null) {
         _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
-          CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
-
-          // ////////////////////////////////////////////////////////
-          // // test test test: uncomment to be a part-time colleague
-          // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
-          //   CATSCHKforDay.CONVERT_H_T = 7.9;
-          //   if (CATSCHKforDay.STDAZ) {
-          //     CATSCHKforDay.STDAZ = 7.55;
-          //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-          //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
-          //     if (STADZRounded && QUANTITYHRounded) {
-          //       if (STADZRounded === QUANTITYHRounded) {
-          //         CATSCHKforDay.STATUS = "G"; // maintained
-          //       } else {
-          //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-          //       }
-          //     }
-          //   }
-          // });
-          // ////////////////////////////////////////////////////////
-
-          deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+          if (data && data.CATSCHK) {
+            // ////////////////////////////////////////////////////////
+            // // test test test: uncomment to be a part-time colleague
+            // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
+            //   CATSCHKforDay.CONVERT_H_T = 7.9;
+            //   if (CATSCHKforDay.STDAZ) {
+            //     CATSCHKforDay.STDAZ = 7.55;
+            //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+            //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+            //     if (STADZRounded && QUANTITYHRounded) {
+            //       if (STADZRounded === QUANTITYHRounded) {
+            //         CATSCHKforDay.STATUS = "G"; // maintained
+            //       } else {
+            //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+            //       }
+            //     }
+            //   }
+            // });
+            // ////////////////////////////////////////////////////////
+            CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
+            deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+          } else {
+            deferred.resolve();
+          }
         });
       } else {
         deferred.resolve(CAT2ComplinaceData4FourMonthCache);
