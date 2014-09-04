@@ -34,7 +34,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 $scope.messages.forEach(function (message){
 
 
-                    var priority= message.PRIORITY_DESCR.split(" ");                    
+                    var priority = message.PRIORITY_DESCR.split(" ");                    
                     message.PRIORITY_DESCR = priority[priority.length - 1];
                     if ($scope.statusMap[message.PRIORITY_DESCR].active) {
                         $scope.tableData.push(message);
