@@ -1,6 +1,8 @@
-"use strict";
-
+/* global window */
 describe("nextEventBoxDirective ewsHelperUtils test", function () {
+
+	"use strict";
+
 	window.client = {};
 	window.client.origin = 'localhost:8000';
 	var ewsHelperUtils;
@@ -10,13 +12,17 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 		ewsHelperUtils = _ewsUtils_;
 	}]));
 
+	function encodeForUrl(val_s) {
+		return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
+	}
+
 	it("should contain a method 'buildEWSUrl'", function () {
 		expect(ewsHelperUtils.buildEWSUrl).toBeDefined();
 	});
 
 	it("should correctly strech numbers to use n digits", function () {
 		function useNDigits (val_i, n_i) {
-			var str = new String(val_i);
+			var str = val_i.toString();
 
 			for (var i = str.length; i < n_i; i++) {
 				str = "0" + str;
@@ -52,8 +58,6 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 		expect(url).toMatch(expectation);
 	});
 
-
-
 	it("should be tested by a working test, so test RegEx first", function () {
 		expect("2014-02-28T00:00:00Z").toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/);
 	});
@@ -78,7 +82,3 @@ describe("nextEventBoxDirective ewsHelperUtils test", function () {
 		expect(ewsHelperUtils.parseEWSDateStringAutoTimeZone("2014-01-10T12:09:44Z").getTime()).toEqual(expected);
 	});
 });
-
-function encodeForUrl(val_s) {
-	return encodeURIComponent(val_s).replace(/'/g,"%27").replace(/"/g,"%22");
-}

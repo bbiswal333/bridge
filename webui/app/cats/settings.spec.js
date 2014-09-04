@@ -1,5 +1,5 @@
-var $injector = angular.injector(['app.cats', 'ng']);
-var $controller = angular.module('app.cats').catsSettings;
+//var $injector = angular.injector(['app.cats', 'ng']);
+//var $controller = angular.module('app.cats').catsSettings;
   // $scope = $injector.get('$rootScope');
 
 describe("Settings view of cats app", function () {
@@ -161,4 +161,3 @@ describe("Settings view of cats app", function () {
 	// 	expect(config.selectedTask.valid).toBe(true);
 	// });
 });
-

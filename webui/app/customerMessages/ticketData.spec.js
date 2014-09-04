@@ -1,4 +1,5 @@
-﻿describe("Ticket Data Service for Customer Messages", function () {
+﻿/* global location */
+describe("Ticket Data Service for Customer Messages", function () {
 
     var $httpBackend;
     var $q;

@@ -6,50 +6,50 @@ describe("This suite tests various date operations", function () {
 		 dataProcessor = _dataProcessor_;
 	}]));	
 
-	it ("A date is beeing returned", function () {
+	it("A date is beeing returned", function () {
 		expect(dataProcessor.getDateToDisplay(new Date())).toBeDefined();
 	});
 
-	it ("Monday before 2pm returns Monday's date object", function () {
+	it("Monday before 2pm returns Monday's date object", function () {
 		expect(
-			dataProcessor.getDateToDisplay(new Date(2014,02,24,10)).getDay()).toBe(
-			new Date(2014,02,24,10).getDay());
+			dataProcessor.getDateToDisplay(new Date(2014,2,24,10)).getDay()).toBe(
+			new Date(2014,2,24,10).getDay());
 	});
 
-	it ("Monday after 2pm returns Tuesday's date object", function () {
+	it("Monday after 2pm returns Tuesday's date object", function () {
 		expect(
-			dataProcessor.getDateToDisplay(new Date(2014,02,24,14)).getDay()).toBe(
-			new Date(2014,02,25,14).getDay());
+			dataProcessor.getDateToDisplay(new Date(2014,2,24,14)).getDay()).toBe(
+			new Date(2014,2,25,14).getDay());
 	});
 
-	it ("Thursday after 2pm returns Friday's date object", function () {
+	it("Thursday after 2pm returns Friday's date object", function () {
 		expect(
-			dataProcessor.getDateToDisplay(new Date(2014,02,27,14)).getDay()).toBe(
-			new Date(2014,02,28,14).getDay());
+			dataProcessor.getDateToDisplay(new Date(2014,2,27,14)).getDay()).toBe(
+			new Date(2014,2,28,14).getDay());
 	});
 
-	it ("Friday before 2pm returns Friday's date object", function () {
+	it("Friday before 2pm returns Friday's date object", function () {
 		expect(
-			dataProcessor.getDateToDisplay(new Date(2014,02,28,10)).getDay()).toBe(
-			new Date(2014,02,28,10).getDay());
+			dataProcessor.getDateToDisplay(new Date(2014,2,28,10)).getDay()).toBe(
+			new Date(2014,2,28,10).getDay());
 	});
 
-	it ("Friday after 2pm returns null date object", function () {
+	it("Friday after 2pm returns null date object", function () {
 		expect(
-			dataProcessor.getDateToDisplay(new Date(2014,02,28,14)).getDay()).toBe(
-			new Date(2014,02,28,14).getDay());
+			dataProcessor.getDateToDisplay(new Date(2014,2,28,14)).getDay()).toBe(
+			new Date(2014,2,28,14).getDay());
 	});
 
-	it ("Should set valid date flag to true for Friday", function(){
-		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,28))).toBe(true);
+	it("Should set valid date flag to true for Friday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,2,28))).toBe(true);
 	});
-	it ("Should set valid date flag to false for Saturday", function(){
-		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,29))).toBe(false);
+	it("Should set valid date flag to false for Saturday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,2,29))).toBe(false);
 	});
-	it ("Should set valid date flag to false for Sunday", function(){
-		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,30))).toBe(false);
+	it("Should set valid date flag to false for Sunday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,2,30))).toBe(false);
 	});
-	it ("Should set valid date flag to true for Monday", function(){
-		expect(dataProcessor.isRegularWeekDay(new Date(2014,02,31))).toBe(true);
+	it("Should set valid date flag to true for Monday", function(){
+		expect(dataProcessor.isRegularWeekDay(new Date(2014,2,31))).toBe(true);
 	});
 });

@@ -15,7 +15,7 @@ describe("The detail controller", function () {
 
     }));
 
-	it ("should set the text from the data service", function () {
+	it("should set the text from the data service", function () {
 		expect(scope.text).toBe(dataService.getText());
 	});
 
