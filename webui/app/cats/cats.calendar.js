@@ -552,7 +552,6 @@ angular.module("app.cats")
 				}
 			};
 			
-			monthlyDataService.reloadInProgress.value = true;
 			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
 
 			if ($scope.selectedDay) {
@@ -574,7 +573,6 @@ angular.module("app.cats")
 				refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
 					    dateLastRun = new Date().getDate();
-						monthlyDataService.reloadInProgress.value = true;
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
 				}, 60 * 1000);
