@@ -18,6 +18,8 @@
 		"inject": true,
 		"it": true,
 		"expect": true,
+        "spyOn": true,
+        "jasmine": true,
         "Notification":  true,
         "_": true,
         "saveAs": true,
