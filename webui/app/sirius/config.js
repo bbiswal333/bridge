@@ -1,4 +1,4 @@
-angular.module('app.sirius').service("app.sirius.configservice", function ($http) {
+angular.module('app.sirius').service("app.sirius.configservice", function () {
 var _this=this;
 	this.configItem = {
 		boxSize : '2',

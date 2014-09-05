@@ -39,14 +39,6 @@ angular.module('app.sirius').appSiriusSettings =
         "Critical": "taskStatusCritical"
     };
 
-    $scope.$watch('selectedStatus', function(newVals, oldVals) {
-        $scope.selectedStatus;
-    }, true);
-
-    $scope.$watch('selectedUserInAssignedToDropDown', function(newVals, oldVals) {
-        $scope.selectedUserInAssignedToDropDown;
-    }, true);
-
     $scope.save_click = function () {
         $scope.siriusConfigService.tasks.selectedStatus=$scope.selectedStatus;
         $scope.siriusConfigService.tasks.selectedUserInAssignedToDropDown=$scope.selectedUserInAssignedToDropDown;
@@ -61,9 +53,7 @@ angular.module('app.sirius').appSiriusSettings =
     $scope.startSearchAsYouType = function () {
         var searchString = $scope.searchString;
         return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program?maxHits=50&excludeOldPrograms=X&query=' + searchString + '&sap-language=en').then(function (response) {
-            var programs = [];
-            programs = response.data.data;
-            return programs;
+            return response.data.data;
         });
     };
 
@@ -85,9 +75,6 @@ angular.module('app.sirius').appSiriusSettings =
             $scope.showDelivery = false;
         }
     });
-
-    $scope.$watch('selectedStatus', function(newVals, oldVals) {
-    }, true);
 
     //get Deliveries
     $scope.onSelect = function ($item, doAfterLoad) {
@@ -196,26 +183,12 @@ angular.module('app.sirius').appSiriusSettings =
 
     //create dummy Delivery for the first Entry
     var _dummyDelivery=function(){
-        var dummyDeliveryResponse=
-        {
-            "WORKING_STATE":
-            {
-                "DELIVERY_NAME":"Choose a Delivery"
-            }
-        };
-        return dummyDeliveryResponse;
+        return { "WORKING_STATE": { "DELIVERY_NAME":"Choose a Delivery" } };
     };
 
     //create entry for "no founding delivery"
     var _noDelivery=function(){
-        var noDelivery=
-        {
-            "WORKING_STATE":
-            {
-                "DELIVERY_NAME":"No delivery maintained yet"
-            }
-        };
-        return noDelivery;
+        return { "WORKING_STATE": { "DELIVERY_NAME":"No delivery maintained yet" } };
     };
     _init();
 
@@ -226,6 +199,5 @@ angular.module('app.sirius').appSiriusSettings =
         $scope.assignedToUsers = [];
         $scope.selectedUserInAssignedToDropDown = [];
         $scope.selectedStatus = [];
-
     };
 }];

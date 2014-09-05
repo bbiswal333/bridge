@@ -9,6 +9,6 @@
         "default_hidden"		: 	false
     },
 	"modules" : [],
-	"js_files" : ["siriusDirectives.js", "overview.js","settings.js","config.js","siriusUtils.js","taskfiltersConstants.js","lodash.js"],
+	"js_files" : ["siriusDirectives.js", "overview.js","settings.js","config.js","siriusUtils.js","taskfiltersConstants.js","lodash.min.js"],
 	"css_files" : ["style.css"]
 }

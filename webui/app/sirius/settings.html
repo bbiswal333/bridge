@@ -21,36 +21,38 @@
 
         <div class="row">
             <div  ng-if="!currentConfigValues.showProgramOverview" class="col-xs-12 col-md-6" style="margin-left:4px">
-            <table>
-                <th>
-                    <input id="searchProgram"
-                       class="form-control form "
-                       ng-model="$parent.$parent.searchString"
-                       style="width:390px"
-                       type="text" placeholder={{SettingsProgramName}}
-                       typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
-                       typeahead-min-length="3"
-                       typeahead-wait-ms="200"
-                       typeahead-on-select="onSelect($item);resetFilter()"/>
-                </th>
-                <th>
-                    <div  class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">
-                        <button type="button" class="btn btn-default dropdown-toggle"style="text-align:left;width:375px;">
-                            <i class="fa fa-caret-down" style="float:right;margin-top:4px;"></i>
-                            {{firstdelivery.DELIVERY_NAME}}
-                        </button>
-                        <ul class="dropdown-menu siriusDropDownBox " role="menu" ng-if="deliveries.length>0">
-                            <li ng-repeat="delivery in deliveries" ng-click="getTasks(delivery);">
-                                <a>{{delivery.LOAD_STATE.DELIVERY_NAME}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </th>
-            </table>
+                <table>
+                    <tr>
+                        <th>
+                            <input id="searchProgram"
+                               class="form-control form "
+                               ng-model="$parent.$parent.searchString"
+                               style="width:390px"
+                               type="text" placeholder={{SettingsProgramName}}
+                               typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
+                               typeahead-min-length="3"
+                               typeahead-wait-ms="200"
+                               typeahead-on-select="onSelect($item);resetFilter()"/>
+                        </th>
+                        <th>
+                            <div class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">
+                                <button type="button" class="btn btn-default dropdown-toggle"style="text-align:left;width:375px;">
+                                    <i class="fa fa-caret-down" style="float:right;margin-top:4px;"></i>
+                                    {{firstdelivery.DELIVERY_NAME}}
+                                </button>
+                                <ul class="dropdown-menu siriusDropDownBox " role="menu" ng-if="deliveries.length>0">
+                                    <li ng-repeat="delivery in deliveries" ng-click="getTasks(delivery);">
+                                        <a>{{delivery.LOAD_STATE.DELIVERY_NAME}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
             </div>
         </div>
 
-        <div class="row" class="col-xs-12 col-md-6" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
+        <div class="row col-xs-12 col-md-6" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
             <div class="btn-group">
                 <p style="margin-top: 5px">Filtered by:</p>
                 <multiselect-dropdown style="margin-left:10px;width: 200px;" options="assignedToUsers"
