@@ -114,6 +114,8 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.$watch('config', function() {
                 $scope.getData();
             },true);
+
+            $scope.box.reloadApp($scope.getData, 60 * 5);
         }];
 
     return {
