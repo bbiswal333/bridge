@@ -665,8 +665,7 @@ input[type="checkbox"]:checked:after {
     position: absolute;
     top: 0px;
     bottom: 0px;
-    background-color: rgba(0,0,0,0);
-    transition: ease background-color 0.5s;
+   
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
@@ -1118,7 +1117,6 @@ span .fa-stack{
 }
 .news-header{
     position: relative;
-    top: -200px;
     left: 300px;
     width: 70%;
 }
@@ -1143,8 +1141,14 @@ span .fa-stack{
     width: 100px;
     text-align: center;
     position: relative;
-    right: -700px;
-    top: -60px;
+    right: -1040px;
+    top: -300px;
+}
+.news-headline{
+    position: relative;
+    top: -240px;
+    width: 1000px;
+    left: 170px;
 }
 .news-navi i{
     padding-left: 10px;
