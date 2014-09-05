@@ -61,7 +61,7 @@
 		            		 ng-if="row.PROCESSOR"></img>
 		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=100x100" 
 		            		 class="cm-reporter-img-lrg"
-		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2, top: zoomImg.y - 50 + zoomImg.height/2}"
+		            		 style="{{zoomedStyle}}"
 		            		 ng-show="zoomIndex === $index"
 		            		 ng-mouseleave="zoom(-1)"></img>
 			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
