@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, logService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -74,6 +74,16 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sideView = "github";
             $scope.stopDragging();
         };
+
+        $scope.bridge_news_click = function () {
+            $scope.sidePanel = 'view/bridgeNews.html';
+            if ($scope.sideView === "news" || !$scope.show_settings) {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "news";
+        };
+
+        $scope.show_news = bridgeNewsService.show_news;
 
         $scope.show_download = bridgeDownloadService.show_download;
 
