@@ -13,19 +13,17 @@
             </tr>
             </thead>
                 <tr ng-repeat="task in filteredTask">
-                    <th>
+                    <td>
                         {{ task.WORKING_STATE.TASK_NAME }}
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {{ task.WORKING_STATE.TASK_STATUS }}
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {{ task.WORKING_STATE.PLANFINISH }}
-                    </th>
-
-
+                    </td>
                 </tr>
-        </table>
+            </table>
         </div>
     </div>
 </div>
@@ -52,8 +50,7 @@
 
     <div ng-if="showGrid && programLeads.length<=1 " ng-repeat="programLead in programLeads">
         <div class="sirius-boxLeft">
-            <span class="image_rounded_shadow_sirius_program img "><img
-                    ng-src="https://avatars.wdf.sap.corp/avatar/{{programLead.BNAME}}?s=25x25"></img></span>
+            <span class="image_rounded_shadow_sirius_program img "><img ng-src="https://avatars.wdf.sap.corp/avatar/{{programLead.BNAME}}?s=25x25"></img></span>
         </div>
         <div class="sirius-boxRight">
             <span>Program Lead: {{programLead.DISPLAY_TEXT}}</span>
