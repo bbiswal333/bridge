@@ -19,7 +19,7 @@ angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
         var socket;
 
         function connectToSocket() {
-            socket = io.connect('https://localhost:10291', {transports: ['websocket', 'xhr-polling'], 'reconnect': true});
+            socket = io.connect('https://localhost:10291', {transports: ['websocket'], 'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': Infinity, 'reconnection limit': 100});
             socket.on('connect_error', function() {
                 $scope.$apply(function() {
                     $scope.socketConnected = false;
@@ -103,7 +103,7 @@ angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
                 if(response.error) {
                     $log(response.message);
                 }
-                for(var prop in io.sockets) { io.sockets[prop].reconnect(); }
+                for(var prop in io.sockets) { io.sockets[prop].connect(); io.sockets[prop].reconnect(); }
             }).error(function () {
                 
             });
