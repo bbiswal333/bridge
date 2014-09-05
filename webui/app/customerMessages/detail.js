@@ -14,6 +14,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         function update_table()
         {
             $scope.tableData = [];
+            var statusNumberMap = {};
             if($scope.messages && $scope.messages.length > 0)
             {
                 if(!$scope.getStatusArray().length)
@@ -30,12 +31,14 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                             $scope.statusMap[prio.name] = {"active":false};
                         }
                     });
-                }                
+                }
+                
+                $scope.prios.forEach(function(prio){
+                    statusNumberMap[prio.number] = prio.name;
+                });
+
                 $scope.messages.forEach(function (message){
-
-
-                    var priority = message.PRIORITY_DESCR.split(" ");                    
-                    message.PRIORITY_DESCR = priority[priority.length - 1];
+                    message.PRIORITY_DESCR = statusNumberMap[message.PRIORITY_KEY];
                     if ($scope.statusMap[message.PRIORITY_DESCR].active) {
                         $scope.tableData.push(message);
                     }
