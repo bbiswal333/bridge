@@ -4,10 +4,10 @@ angular.module('bridge.app')
       restrict: 'E',
       template: '<label ng-class="{\'checkbox checked\': isChecked, \'checkbox\': !isChecked}" >' + 
                   '<span class="icons">' + 
-                    '<span class="fa-stack">'+
+                    '<span class="fa-stack">' +
                       '<span class="  fa fa-stop second-icon"></span>' +
                       '<span class="  fa fa-check second-icon fa-inverse "></span>' +
-                    '</span>'+
+                    '</span>' +
                     '<span class=" fa fa-stop first-icon"></span>' +
                     
                   '</span>' +
