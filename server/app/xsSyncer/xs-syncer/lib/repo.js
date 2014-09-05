@@ -386,6 +386,7 @@ Repo.prototype.putFile = function (filePath, remoteFilePath, workspaceId, cb) {
 };
 
 Repo.prototype.unlinkFile = function (filePath, remoteFilePath, workspaceId, cb) {
+    var self = this;
     var query = {
         method: 'DELETE',
         path: remoteFilePath,
