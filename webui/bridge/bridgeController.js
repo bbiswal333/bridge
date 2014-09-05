@@ -35,6 +35,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "notifications";
+            $scope.stopDragging();
         };
 
         $scope.bridge_settings_click = function () {
@@ -52,6 +53,7 @@ angular.module('bridge.app').controller('bridgeController',
             if ($scope.show_settings === true) {
                 $scope.show_settings = false;
                 bridgeConfig.persistInBackend(bridgeDataService);
+                $scope.stopDragging();
             }
         };
 
@@ -61,6 +63,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "feedback";
+            $scope.stopDragging();
         };
 
         $scope.bridge_github_click = function () {
@@ -69,6 +72,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "github";
+            $scope.stopDragging();
         };
 
         $scope.show_download = bridgeDownloadService.show_download;
@@ -166,14 +170,27 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.toggleDragging = function() {
+
             $scope.sortableOptions.disabled = !$scope.sortableOptions.disabled;
             if ($scope.sortableOptions.disabled) {
+
                 $scope.sortableOptionsCaption = "Activate";
+                $('.mainContainer').removeClass("darken");
+                $scope.shaking = false;
             } else {
                 $scope.sortableOptionsCaption = "Deactivate";
+                $('.mainContainer').addClass("darken");
+                $scope.shaking = true;
             }
 
+
         };
+        $scope.stopDragging = function(){
+            $scope.sortableOptions.disabled = true;
+            $('.mainContainer').removeClass("darken");
+            $scope.shaking = false;
+        };
+  
 
         $scope.saveAppsSortable = function(){
           for (var i = 0; i < $scope.visible_apps.length; i++) {

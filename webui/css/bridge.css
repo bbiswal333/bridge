@@ -665,6 +665,8 @@ input[type="checkbox"]:checked:after {
     position: absolute;
     top: 0px;
     bottom: 0px;
+    background-color: rgba(0,0,0,0);
+    transition: ease background-color 0.5s;
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
@@ -1052,6 +1054,16 @@ input[type="checkbox"]:checked + label:before {
 label{
     font-weight: 500;
 }
+span .fa-stack{
+    line-height: 1em;
+}
+.fa-stack span:last-child{
+    font-size:13px;
+    padding-left: 2px;
+}
+.checkbox.checked span .fa-inverse {
+    color: #fff;
+}
 /* ============= *\
 |  HOVEREFFECTS   |
 \* ============= */
@@ -1136,4 +1148,55 @@ label{
 }
 .news-navi i{
     padding-left: 10px;
+}
+
+/* ============= *\
+|      SHAKE      |
+\* ============= */
+
+
+@-webkit-keyframes shake {
+    0% { -webkit-transform: rotate(0deg); }
+    10% { -webkit-transform:  rotate(-1deg); }
+    20% { -webkit-transform:  rotate(0deg); }
+    30% { -webkit-transform: rotate(-1deg); }
+    40% { -webkit-transform:  rotate(0deg); }
+    50% { -webkit-transform:  rotate(-1deg); }
+    60% { -webkit-transform:  rotate(0deg); }
+    70% { -webkit-transform: rotate(-1deg); }
+    80% { -webkit-transform:  rotate(0deg); }
+    90% { -webkit-transform: rotate(1deg); }
+    100% { -webkit-transform:  rotate(0deg); }
+}
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    10% { transform:  rotate(-1deg); }
+    20% { transform:  rotate(0deg); }
+    30% { transform: rotate(-1deg); }
+    40% { transform:  rotate(0deg); }
+    50% { transform:  rotate(-1deg); }
+    60% { transform:  rotate(0deg); }
+    70% { transform: rotate(-1deg); }
+    80% { transform:  rotate(0deg); }
+    90% { transform: rotate(1deg); }
+    100% { transform:  rotate(0deg); }
+}
+.shake {
+
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 1s;
+    -webkit-transform-origin:50% 50%;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+
+    animation-name: shake;
+    animation-duration: 1s;
+    transform-origin:50% 50%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.darken{
+    transition:ease all 1s;
+    background-color: rgba(0,0,0,0.3);
 }

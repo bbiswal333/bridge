@@ -58,7 +58,15 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
 
 
         function enhanceMessage(message) 
-        {
+        {   
+            if (!message.PROCESSOR && message.PROCESSOR_ID) {
+                message.PROCESSOR = message.PROCESSOR_ID;
+            }
+
+            var username = message.PROCESSOR_NAME.split(" /");                    
+            message.PROCESSOR_NAME = username[0];
+
+
             if(message.PROCESSOR)
             {
                 $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
