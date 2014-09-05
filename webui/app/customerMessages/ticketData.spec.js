@@ -27,7 +27,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should increase the ticket counter according to the backend data", function () { 
-        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[0].total).toBe(0);
@@ -37,7 +37,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should reset the priorities in the data structure", function () {
-        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[2].total).toBe(2);
@@ -53,7 +53,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should update correct count for selection", function(){	
-    	$httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockData);
+    	$httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
             expect(configService.data.selection).toBeDefined();
             
@@ -97,7 +97,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     describe("in handling of duplicted messages", function () {
 
         beforeEach(function () {
-            $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + location.origin).respond(mockDataWithDuplicates);
+            $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockDataWithDuplicates);
         });
         afterEach(function(){
             $httpBackend.flush();
