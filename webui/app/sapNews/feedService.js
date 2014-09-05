@@ -1,5 +1,5 @@
 angular.module('app.sapNews').service('app.sapNews.feedService', ['$q', '$http', function($q, $http){
-	this.feedUrl = 'https://blogs.wdf.sap.corp/sapnews_en/feed/?lang=en&origin=' + location.origin;
+	this.feedUrl = 'https://blogs-dev.wdf.sap.corp/sapnews_en/feed/?lang=en&origin=' + location.origin;
 	this.newsFeed = {};
 
 	this.getNews = function(){
