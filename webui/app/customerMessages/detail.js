@@ -8,7 +8,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};  
         $scope.zoomIndex = -1;
-        $scope.zoomedStyle = {};
+        $scope.zoomedStyle = "";
 
 
         function update_table()

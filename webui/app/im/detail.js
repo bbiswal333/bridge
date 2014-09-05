@@ -1,6 +1,6 @@
 angular.module('app.im').controller('app.im.detailController',
-    ['$scope', '$http', '$window', '$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
+    ['$scope', '$http', '$window', '$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig', '$window',
+    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, window) {
 
         $scope.$parent.titleExtension = " - IM Details";   
         $scope.filterText = '';
@@ -8,7 +8,7 @@ angular.module('app.im').controller('app.im.detailController',
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};  
         $scope.zoomIndex = -1;
-        $scope.zoomImg = null;
+        $scope.zoomedStyle = "";
 
 
         function update_table()
@@ -117,12 +117,26 @@ angular.module('app.im').controller('app.im.detailController',
             }
         },true);  
 
+        function getOffset(element) {
+            var rect = element.getBoundingClientRect();
+            var top  = rect.top + $(window).scrollTop();
+            var left = rect.left + $(window).scrollLeft();
+            return { top: Math.round(top), left: Math.round(left) };
+        }
+
         $scope.zoom = function(index, event){
+            var zoomImg = null;
+
             $scope.zoomIndex = index;
             if (event) {
-                $scope.zoomImg = event.currentTarget;
+                zoomImg = event.currentTarget;
+                var imgOffset = getOffset(zoomImg);
+                var left = imgOffset.left - 50 + (zoomImg.width / 2);
+                var top = imgOffset.top - 50 + (zoomImg.height / 2);
+                $scope.zoomedStyle = 'left:' + left + 'px; top:' + top + 'px;';
             }
         };
+
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
