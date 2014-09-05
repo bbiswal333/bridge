@@ -12,13 +12,13 @@ describe("Feed Service of SAP news", function () {
 	    feedService = $injector.get("app.sapNews.feedService");
 		
 		// $http.when('GET', /https:\/\/isp\.wdf\.sap\.corp\/sap\/bc\/zdevdb\/MYCATSDATA\?format=json\&origin=.*/).
-		$http.when('GET', /https:\/\/blogs\.wdf\.sap\.corp\/sapnews_en\/feed\/\?lang=en/).
+		$http.when('GET', /https:\/\/blogs-dev\.wdf\.sap\.corp\/sapnews_en\/feed\/\?lang=en/).
 	    respond(rssMockData);
 	}));
 	
 
 	it("should contain link to sap news feed", function(){	
-		var expectation = new RegExp("https:\/\/blogs\.wdf\.sap\.corp\/sapnews_en\/feed.*");
+		var expectation = new RegExp("https:\/\/blogs-dev\.wdf\.sap\.corp\/sapnews_en\/feed.*");
 
 		expect(feedService.feedUrl).toMatch(expectation);
 	});	
