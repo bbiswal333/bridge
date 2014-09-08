@@ -118,7 +118,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
     };
 
     this.getPermission = function () {
-     if (typeof $window.Notification === "undefined") { 
+     if (typeof $window.Notification === "undefined") {
         return undefined;
       }
       else if (Notification.permission === "granted") {

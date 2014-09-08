@@ -2,11 +2,11 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
     ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', '$window',
     function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, window) {
 
-        $scope.$parent.titleExtension = " - Customer Messages Details";   
+        $scope.$parent.titleExtension = " - Customer Messages Details";
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
-        $scope.statusMap = {};  
+        $scope.statusMap = {};
         $scope.zoomIndex = -1;
         $scope.zoomedStyle = "";
 
@@ -19,7 +19,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             {
                 if(!$scope.getStatusArray().length)
                 {
-                    var status_filter = $routeParams.prio.split('|'); 
+                    var status_filter = $routeParams.prio.split('|');
 
                     $scope.prios.forEach(function (prio){
                         if(status_filter.indexOf(prio.name) > -1)
@@ -32,7 +32,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                         }
                     });
                 }
-                
+
                 $scope.prios.forEach(function(prio){
                     statusNumberMap[prio.number] = prio.name;
                 });
@@ -42,13 +42,13 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                     if ($scope.statusMap[message.PRIORITY_DESCR].active) {
                         $scope.tableData.push(message);
                     }
-                });                               
-            }                      
+                });
+            }
         }
 
-        $scope.$watch('messages', function () 
-        {                        
-            update_table();            
+        $scope.$watch('messages', function ()
+        {
+            update_table();
         }, true);
 
         $scope.$watch('statusMap', function()
@@ -57,13 +57,13 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         }, true);
 
 
-        function enhanceMessage(message) 
-        {   
+        function enhanceMessage(message)
+        {
             if (!message.PROCESSOR && message.PROCESSOR_ID) {
                 message.PROCESSOR = message.PROCESSOR_ID;
             }
 
-            var username = message.PROCESSOR_NAME.split(" /");                    
+            var username = message.PROCESSOR_NAME.split(" /");
             message.PROCESSOR_NAME = username[0];
 
 
@@ -74,7 +74,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                     if(message.employee.BNAME)
                     {
                         message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.PROCESSOR;    
+                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.PROCESSOR;
                         message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
                         message.mail = message.employee.SMTP_MAIL;
                         message.tel = message.employee.TELNR;
@@ -86,7 +86,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             }
         }
 
-        function enhanceAllMessages() 
+        function enhanceAllMessages()
         {
             ticketData.backendTickets.sel_components.forEach(enhanceMessage);
             ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
@@ -101,7 +101,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             return Object.keys($scope.statusMap);
         };
 
-        function addMessage(message){ 
+        function addMessage(message){
             var allreadyExists = false;
             $scope.messages.some(function(item){
                 if (angular.equals(message, item)){
@@ -111,15 +111,15 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             });
 
             if (!allreadyExists){
-                $scope.messages.push(message); 
+                $scope.messages.push(message);
             }
         }
-        $scope.$watch('config', function() {      
+        $scope.$watch('config', function() {
             if($scope.config !== undefined)
             {
-                var selected_messages = [];                
+                var selected_messages = [];
                 $scope.messages = selected_messages;
-                
+
                 if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components, addMessage); }
                 if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues, addMessage); }
                 if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me, addMessage); }
@@ -129,10 +129,10 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                     if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components_aa, addMessage); }
                     if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, addMessage); }
                     if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, addMessage); }
-                }                                            
-                bridgeConfig.persistInBackend(bridgeDataService);                
+                }
+                bridgeConfig.persistInBackend(bridgeDataService);
             }
-        },true);  
+        },true);
 
         function getOffset(element) {
             var rect = element.getBoundingClientRect();

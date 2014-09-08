@@ -1,5 +1,5 @@
 angular.module('bridge.app').downloadController = function ($scope, $modalInstance, $window) {
-    
+
     function getOS()
     {
     	var OSName = "Unknown";
