@@ -29,3 +29,17 @@
 .ccm-content {
 	opacity: 0.8;
 }
+
+.ccm-projectid {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.ccm-percentage {
+	vertical-align: top;
+	font-weight: bold;
+	display: inline-block;
+}
