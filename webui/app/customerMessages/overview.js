@@ -10,6 +10,8 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     config.data.settings.ignore_author_action = true;
     config.data.selection.sel_components = true;
     config.data.selection.assigned_me = false;
+    config.lastDataUpdate = null;
+
     return config;
 });
 
@@ -23,7 +25,8 @@ angular.module('app.customerMessages').directive('app.customerMessages', ['app.c
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined)
             {
                 configservice.data = $scope.appConfig.data;
-            }
+                configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
+            }            
         }
     };
 }]);
