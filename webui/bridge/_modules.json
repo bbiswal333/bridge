@@ -42,7 +42,8 @@
 		"bridgeBuildingSearchService.js",
 		"diagnosis/statusController.js",
 		"controls/checkbox.js",
-		"controls/radio.js"
+		"controls/radio.js",
+		"news/newspreview.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css"
