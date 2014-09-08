@@ -40,7 +40,7 @@
             var orderedData = params.sorting() ?
                     $filter('orderBy')($scope.config.configItems, params.orderBy()) :
                     $scope.config.configItems;
-                
+
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     });

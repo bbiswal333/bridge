@@ -3,7 +3,7 @@ angular.module('app.linklist', ['ui.sortable']);
 angular.module('app.linklist').directive('app.linklist', ['app.linklist.configservice', '$window', function(appLinklistConfig, $window) {
 
     var directiveController = ['$scope', '$timeout', function ($scope) {
-         
+
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linklist').appLinkListSettings
@@ -15,7 +15,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             var configCopy = angular.copy(appLinklistConfig.data);
 
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
-                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
+                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
                     var linkList = configCopy.listCollection[i];
 
                     for (var j = linkList.length - 1; j >= 0; j--){

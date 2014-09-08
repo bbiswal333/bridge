@@ -1,5 +1,5 @@
 angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q', '$filter', '$window', function ($http, $q, $filter, $window)
-{	
+{
 	//data buffer
 	var buffer_data = {};
 	buffer_data.initialized = false;
@@ -7,9 +7,9 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 	buffer_data.buildings = [];
 
 
-	function arrayObjectIndexOf(myArray, searchTerm, property) 
+	function arrayObjectIndexOf(myArray, searchTerm, property)
 	{
-		for(var k = 0, len = myArray.length; k < len; k++) 
+		for(var k = 0, len = myArray.length; k < len; k++)
 		{
 			if (myArray[k][property] === searchTerm){ return k; }
 		}
@@ -22,12 +22,12 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 		var deferred = $q.defer();
 		if(!buffer_data.initialized)
 		{
-			$http.get('/bridge/employeeSearch/buildings.xml').then(function (response) 
-			{         		
-        		var data = new X2JS().xml_str2json(response.data);            
+			$http.get('/bridge/employeeSearch/buildings.xml').then(function (response)
+			{
+        		var data = new X2JS().xml_str2json(response.data);
 	            for(var i = 0; i < data.items.item.length; i++)
 	            {
-	            		            	
+
 	            	if(data.items.item[i].geolinkB !== undefined)
 	            	{
 
@@ -35,13 +35,13 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 	            		var building = {};
 
 	            		var parser = $window.document.createElement('a');
-						parser.href = data.items.item[i].geolinkB; 					
-						var query = parser.search.substring(1);						
+						parser.href = data.items.item[i].geolinkB;
+						var query = parser.search.substring(1);
     					var vars = query.split('&');
-    					for (var j = 0; j < vars.length; j++) 
+    					for (var j = 0; j < vars.length; j++)
     					{
         					var pair = vars[j].split('=');
-        					if (decodeURIComponent(pair[0]) === "q") 
+        					if (decodeURIComponent(pair[0]) === "q")
         					{
             					var latlong = decodeURIComponent(pair[1]);
             					var position = latlong.split(' ');
@@ -49,10 +49,10 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
             					building.longitude = position[1].replace(/[^\d.-]/g, '');
         					}
     					}
-	            	
+
 	            		building.name = data.items.item[i].city;
-	            		building.id = data.items.item[i].objidshort;	            		
-	  					buffer_data.buildings.push(building);	
+	            		building.id = data.items.item[i].objidshort;
+	  					buffer_data.buildings.push(building);
 
 	  					//add location
 		            	if(arrayObjectIndexOf(buffer_data.locations, data.items.item[i].city, "name") === -1)
@@ -62,14 +62,14 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 		            		location.latitude = building.latitude;
 		            		location.longitude = building.longitude;
 		            		location.name = building.name;
-		            		buffer_data.locations.push(location);			            					            
+		            		buffer_data.locations.push(location);
 						}
-					}					
+					}
 				}
 				buffer_data.initialized = true;
 				deferred.resolve(buffer_data);
 			});
-		}	
+		}
 		else
 		{
 			deferred.resolve(buffer_data);
@@ -77,7 +77,7 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 		return deferred.promise;
 	}
 
-	return {    
+	return {
     	searchLocation: function(searchString, numberOfResults)
 		{
 
@@ -91,33 +91,30 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 
 			load_data().then(function()
 			{
-				deferred.resolve($filter('filter')(buffer_data.locations, searchString).slice(0,number_of_results));			
-			});		
+				deferred.resolve($filter('filter')(buffer_data.locations, searchString).slice(0,number_of_results));
+			});
 
-			return deferred.promise;	
+			return deferred.promise;
 		},
 
 		searchLocationbyBuilding: function(buildingSearch)
 		{
-			var deferred = $q.defer();			
+			var deferred = $q.defer();
 
 			load_data().then(function()
 			{
 				var building = _.find(buffer_data.buildings, { "id":  buildingSearch });
 				if(building !== undefined)
 				{
-					deferred.resolve(_.find(buffer_data.locations, { "name":  building.name }));				
+					deferred.resolve(_.find(buffer_data.locations, { "name":  building.name }));
 				}
 				else
 				{
 					deferred.resolve();
 				}
-			});		
+			});
 
-			return deferred.promise;	
-
+			return deferred.promise;
 		}
-
-
     };
 }]);

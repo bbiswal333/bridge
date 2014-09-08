@@ -94,7 +94,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $log.log("adjustBarValues(): " + err);
         }
     }
-    
+
     function addBlock(desc_s, val_i, block, fixed) {
         try {
             // Scale data which is read from backend BUT only if it is not OVERBOOKED
@@ -284,7 +284,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZZSUBTYPE: task.ZZSUBTYPE,
             UNIT: "T"
         };
-        
+
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
@@ -349,7 +349,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if ($window.DOMParser) {
                 parser = new $window.DOMParser();
                 xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer                
+            } else { // Internet Explorer
                 /*eslint-disable no-undef*/
                 xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
                 /*eslint-enable no-undef*/
@@ -406,7 +406,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         if (clearOldTasks) {
             monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) { 
+                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) {
                     return null;
                 }
                 var taskDeletion = angular.copy(task);
@@ -427,7 +427,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
                 continue;
             }
-            
+
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
             }

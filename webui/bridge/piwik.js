@@ -1,4 +1,4 @@
-var _paq = _paq || []; 
+var _paq = _paq || [];
 (function () {
 /*eslint-disable no-undef */
     var destination = ((document.location.protocol === "https:") ? "https://tracking.mo.sap.corp/piwik/" : "http://tracking.mo.sap.corp/piwik/");
@@ -11,7 +11,7 @@ var _paq = _paq || [];
 /*eslint-disable no-undef */
     if( document.location.hostname === "bridge.mo.sap.corp"){
 /*eslint-enable no-undef */
-      _paq.push(['setSiteId', 8]); 
+      _paq.push(['setSiteId', 8]);
     }
 
     _paq.push(['setTrackerUrl', destination + 'piwik.php']);

@@ -1,5 +1,5 @@
 angular.module('bridge.app').downloadController = function ($scope, $modalInstance, $window) {
-    
+
     function getOS()
     {
     	var OSName = "Unknown";
@@ -50,7 +50,7 @@ angular.module('bridge.app').downloadController = function ($scope, $modalInstan
         $window.location.href = $scope.download_url;
     };
 
-    $scope.close = function () {    
-    	$modalInstance.close();      	
+    $scope.close = function () {
+    	$modalInstance.close();
   };
 };

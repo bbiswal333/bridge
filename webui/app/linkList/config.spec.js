@@ -24,7 +24,7 @@ describe("The linklist config service", function() {
 
         expect(configService.data.version).toBeDefined();
         expect(configService.data.listCollection).toBeDefined();
-        
+
     });
 
 });

@@ -1,9 +1,9 @@
-angular.module('app.weather').service("app.weather.configservice", ['bridgeDataService', 'bridgeBuildingSearch', '$q', function (bridgeDataService, bridgeBuildingSearch, $q) 
+angular.module('app.weather').service("app.weather.configservice", ['bridgeDataService', 'bridgeBuildingSearch', '$q', function (bridgeDataService, bridgeBuildingSearch, $q)
 {
 	var that = this;
 
 	//default value
-	this.configItem = 
+	this.configItem =
 	{
 		fahrenheit : false,
 		location:
@@ -19,7 +19,7 @@ angular.module('app.weather').service("app.weather.configservice", ['bridgeDataS
 	{
 		var deferred = $q.defer();
 		var building = "WDF01";
-		if (typeof bridgeDataService.getUserInfo() !== "undefined") 
+		if (typeof bridgeDataService.getUserInfo() !== "undefined")
 		{
 			building = bridgeDataService.getUserInfo().BUILDING;
 		}
@@ -27,7 +27,7 @@ angular.module('app.weather').service("app.weather.configservice", ['bridgeDataS
 		{
 			if(result !== undefined)
 			{
-				that.configItem.location = result;			
+				that.configItem.location = result;
 			}
 			deferred.resolve();
 		});

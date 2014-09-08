@@ -105,7 +105,7 @@ angular.module('app.xsSyncer').directive('app.xsSyncer', function () {
                 }
                 for(var prop in io.sockets) { io.sockets[prop].connect(); io.sockets[prop].reconnect(); }
             }).error(function () {
-                
+
             });
         };
 

@@ -36,10 +36,14 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$modal',
             	});
       		});       
             
-	
+
         }
        
 
     };
+
     
 }]);
+
+
+

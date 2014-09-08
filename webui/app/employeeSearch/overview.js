@@ -3,7 +3,7 @@ angular.module('app.employeeSearch', ['bridge.employeeSearch']);
 angular.module('app.employeeSearch').directive('app.employeeSearch', function ($modal, $http, $window) {
 
     var directiveController = ['$scope', function ($scope) {
-        $scope.box.boxSize = "2"; 
+        $scope.box.boxSize = "2";
 
 	    $scope.copyClipboard = function(text)
 		{

@@ -1,9 +1,9 @@
 angular.module('bridge.service').service('employeeService', [ '$http', '$window', function($http, $window){
 	var buffer = [];
 	var url = 'https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON';
-	
+
 	this.getData = function(user){
-	
+
 		if( buffer[user] ){
 			return buffer[user];
 		}else{

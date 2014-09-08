@@ -1,9 +1,9 @@
 ﻿angular.module('app.weather', ["lib.utils","bridge.service"]);
 angular.module('app.weather').directive('app.weather', ['app.weather.configservice', 'bridgeDataService', 'bridgeConfig', function (weatherconfig, bridgeDataService, bridgeConfig) {
 
-    var directiveController = ['$scope', '$http', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, bridgeDataService, calUtils) 
+    var directiveController = ['$scope', '$http', 'bridgeDataService', 'lib.utils.calUtils', function ($scope, $http, bridgeDataService, calUtils)
     {
-    	$scope.box.boxSize = "1"; 
+    	$scope.box.boxSize = "1";
         $scope.box.settingsTitle = "Configure temparature scale and location";
         $scope.box.settingScreenData = {
             templatePath: "weather/settings.html",
@@ -26,7 +26,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             }
         }
 
-        $scope.$watch('configService', function () 
+        $scope.$watch('configService', function ()
         {
             loadData();
         }, true);
@@ -41,7 +41,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             }
             return calUtils.getWeekdays()[dayInWeek % 7].medium;
         };
-        
+
         //get current date
         $scope.today = $scope.dd + ' ' + $scope.mm;
         $scope.today = new Date();
@@ -49,24 +49,23 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
         $scope.mm = $scope.today.getMonth() + 1; //January is 0
         $scope.hh = $scope.today.getHours();
 
-        if ($scope.dd < 10) 
+        if ($scope.dd < 10)
         {
             $scope.dd = '0' + $scope.dd;
-        } 
+        }
 
-        if ($scope.mm < 10) 
+        if ($scope.mm < 10)
         {
             $scope.mm = '0' + $scope.mm;
         }
-        
+
         if ($scope.hh >= 18 || $scope.hh <= 7){
             bridgeDataService.getTemporaryData().backgroundDayNight = "night";
             bridgeDataService.getTemporaryData().backgroundClass = "night";
-           
         }
 
         if ($scope.hh >= 8 && $scope.hh <= 17 ){
-            bridgeDataService.getTemporaryData().backgroundDayNight = "day";    
+            bridgeDataService.getTemporaryData().backgroundDayNight = "day";
         }
 
         function checkWeatherConditionClouds (clouds){
@@ -85,19 +84,19 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
                 return null;
             }
         }
-        
+
         function checkWeatherConditionRain(rain){
-            if(rain !== undefined) {            
+            if(rain !== undefined) {
                 if (rain['3h'] > 0){
                     return  "rain";
                 }
                 else {
                     return null;
-                }            
+                }
             }
             else {
                     return null;
-                } 
+                }
         }
 
         function parseWeatherData(rain,clouds){
@@ -140,7 +139,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(weatherDataURL);
 
             $http.get(weatherDataURL).success(function (weatherDataJSON) {
-                        
+
             if($scope.fahrenheit){
                 $scope.temperature = (((weatherDataJSON.main.temp - 273)  * 1.8) + 32).toFixed(0);
             }
@@ -151,7 +150,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
             var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
             bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
 
-            $scope.city = weatherDataJSON.name; 
+            $scope.city = weatherDataJSON.name;
             $scope.city_id = weatherDataJSON.id;
 
             $scope.des = weatherData.description;
@@ -191,7 +190,7 @@ angular.module('app.weather').directive('app.weather', ['app.weather.configservi
                             rain: weatherData.rain,
                             clouds: weatherData.clouds,
                             weatherIco : weatherData.icon
-                        };     
+                        };
                     }
                 }
             });
@@ -205,15 +204,15 @@ return {
     restrict: 'E',
     templateUrl: 'app/weather/overview.html',
     controller: directiveController,
-    link: function ($scope) 
+    link: function ($scope)
         {
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem)
             {
                 weatherconfig.configItem = $scope.appConfig.configItem;
             }
             else
             {
-                weatherconfig.init().then( function(){ bridgeConfig.persistInBackend(bridgeDataService); } );                
+                weatherconfig.init().then( function(){ bridgeConfig.persistInBackend(bridgeDataService); } );
             }
         }
     };

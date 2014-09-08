@@ -4,7 +4,7 @@ describe("Testing test.app data service", function () {
 	beforeEach(module("app.test.data"));
 	beforeEach(inject(["app.test.dataService", function (_dataService_) {
 		 dataService = _dataService_;
-	}]));	
+	}]));
 
 	it("Should return the welcome text", function () {
 		expect(dataService.getText()).toBe("Text from DataService, app was refreshed 0 time(s).");

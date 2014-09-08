@@ -28,8 +28,8 @@
             }
             return 0;
         });
-        
-        for (var j = 0; j < visible_apps.length; j++) 
+
+        for (var j = 0; j < visible_apps.length; j++)
         {
             var appConfig = {};
             try {
@@ -42,7 +42,7 @@
                     "module_name": visible_apps[j].metadata.module_name
                 },
                 appConfig: appConfig
-            });                        
+            });
         }
         return apps;
     }

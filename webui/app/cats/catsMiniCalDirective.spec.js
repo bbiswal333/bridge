@@ -83,7 +83,7 @@ describe("The mini calendar shall display information about the current CATS com
 		var sa = calUtils.buildCalendarArray(2013, 5);
 		var su = calUtils.buildCalendarArray(2013, 8);
 
-		expect(mo[0][0].dayNr).toBe(1); 
+		expect(mo[0][0].dayNr).toBe(1);
 		expect(tu[0][0].dayNr).toBe(30);
 		expect(we[0][0].dayNr).toBe(30);
 		expect(th[0][0].dayNr).toBe(28);
@@ -101,7 +101,7 @@ describe("The mini calendar shall display information about the current CATS com
 		var sa = calUtils.buildCalendarArray(2013, 5, true);
 		var su = calUtils.buildCalendarArray(2013, 8, true);
 
-		expect(mo[0][0].dayNr).toBe(31); 
+		expect(mo[0][0].dayNr).toBe(31);
 		expect(tu[0][0].dayNr).toBe(29);
 		expect(we[0][0].dayNr).toBe(29);
 		expect(th[0][0].dayNr).toBe(27);

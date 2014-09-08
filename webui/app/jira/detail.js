@@ -14,7 +14,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 			}
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
-                $scope.config = JiraConfig;               
+                $scope.config = JiraConfig;
                 JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
             }
         },true);
@@ -23,7 +23,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
         $scope.data = {};
         $scope.data.filteredJiraData = [];
         $scope.data.jiraData = JiraBox.data;
-        $scope.data.status = {};        
+        $scope.data.status = {};
 
         $scope.$watch('data.jiraData', function()
         {
@@ -43,7 +43,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 	        	}
 
                 all_status.sort();
-                
+
                 for(i = 0; i < all_status.length; i++ )
                 {
                     if(status_filter.indexOf(all_status[i]) > -1) {
@@ -51,7 +51,7 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
                     } else {
                         status[all_status[i]] = {"active":false};
                     }
-                }  
+                }
                 $scope.data.status = status;
         	}
         },true);

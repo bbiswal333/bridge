@@ -1,11 +1,11 @@
 angular.module('bridge.service').service('bridge.service.bridgeDownload', function ($modal) {
-    return {    
+    return {
         show_download: function()
-        {            
+        {
             $modal.open({
                 templateUrl: 'view/download.html',
                 windowClass: 'download-dialog',
-                controller: angular.module('bridge.app').downloadController        
+                controller: angular.module('bridge.app').downloadController
             });
         }
     };

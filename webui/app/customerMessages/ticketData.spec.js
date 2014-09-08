@@ -26,7 +26,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         }]);
     });
 
-    it("should increase the ticket counter according to the backend data", function () { 
+    it("should increase the ticket counter according to the backend data", function () {
         $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
@@ -52,11 +52,11 @@ describe("Ticket Data Service for Customer Messages", function () {
         expect(cmTicketData.prios[3].tickets.length).toBe(0);
     });
 
-    it("should update correct count for selection", function(){	
+    it("should update correct count for selection", function(){
     	$httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
             expect(configService.data.selection).toBeDefined();
-            
+
             configService.data.selection.sel_components = true;
             cmTicketData.updatePrioSelectionCounts();
             expect(cmTicketData.prios[1].selected).toBe(0);
@@ -66,7 +66,7 @@ describe("Ticket Data Service for Customer Messages", function () {
             cmTicketData.updatePrioSelectionCounts();
             expect(cmTicketData.prios[1].selected).toBe(1);
             expect(cmTicketData.prios[2].selected).toBe(2);
-        }); 
+        });
         $httpBackend.flush();
     });
 
@@ -103,7 +103,7 @@ describe("Ticket Data Service for Customer Messages", function () {
             $httpBackend.flush();
         });
 
-        it("should reflect correct number in prios total", function(){    
+        it("should reflect correct number in prios total", function(){
             cmTicketData.loadTicketData().then(function(){
                 expect(cmTicketData.prios[2].total).toBe(2);
             });
@@ -117,12 +117,12 @@ describe("Ticket Data Service for Customer Messages", function () {
                 cmTicketData.updatePrioSelectionCounts();
                 expect(cmTicketData.prios[1].selected).toBe(0);
                 expect(cmTicketData.prios[2].selected).toBe(2);
-                
+
                 configService.data.selection.assigned_me = true;
                 cmTicketData.updatePrioSelectionCounts();
                 expect(cmTicketData.prios[1].selected).toBe(1);
                 expect(cmTicketData.prios[2].selected).toBe(2);
-            }); 
+            });
         });
     });
 });

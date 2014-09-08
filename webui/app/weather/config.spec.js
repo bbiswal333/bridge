@@ -14,7 +14,7 @@ describe("The weather app config service", function () {
 	});
 
 	it("should try to call the bridgeDataService to get the user's building", function () {
-		
+
 		spyOn(bridgeDataService, 'getUserInfo');
 		configService.init();
 		expect(bridgeDataService.getUserInfo).toHaveBeenCalled();

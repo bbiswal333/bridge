@@ -27,7 +27,7 @@ angular.module('bridge.box').directive('bridge.box',
                 //get app metadata and app config
                 var metadata = bridgeDataService.getAppById($attrs.id).metadata;
                 for (var attribute in metadata) {
-                    if (metadata.hasOwnProperty(attribute)) 
+                    if (metadata.hasOwnProperty(attribute))
                     {
                         $scope[attribute] = metadata[attribute];
                     }
@@ -70,7 +70,7 @@ angular.module('bridge.box').directive('bridge.box',
             var boxContent = $element.find("#boxContent");
             boxContent.attr("ng-if", "!(needs_client && !client)");
             var newElement = "<" + snake_case($attrs.content) + "/>";
-            boxContent.append(newElement);  
+            boxContent.append(newElement);
             var box = $element.find("#innerbox");
             box = $compile(box)($scope);
         }

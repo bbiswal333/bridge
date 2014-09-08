@@ -1,5 +1,5 @@
 // describe("The githubMilestone app should display a comparision between closed issues and past time", function () {
-	
+
 // 	/* Workaround */,
 // 	var githubSettings;
 
@@ -13,7 +13,7 @@
 // 		expect(githubSettings.appGithubMilestoneSettings).toBeDefined();
 // 	});
 
-// 	iit("should call the search_repo method", function () {	
+// 	iit("should call the search_repo method", function () {
 // 		var settings = githubSettings.appGithubMilestoneSettings();
 // 		dump(settings.$scope.error );
 // /*
