@@ -5,7 +5,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
   var notifications = JSON.parse($window.localStorage.getItem('notifcations')) || [];
-  
+
   //var Notifier = function (text, body, icon, tag, duration) {
   var Notifier = function(notification){
     var self = this;
@@ -139,7 +139,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   //Also see here: http://stackoverflow.com/questions/5040107/webkit-notifications-requestpermission-function-doesnt-work
   Notifier.prototype.chromePreCheckRequestNeeded = function () {
     if (typeof $window.Notification !== "undefined") {
-      return (Notification.permission === "default");  
+      return (Notification.permission === "default");
     }
     return false;
   };
@@ -210,5 +210,5 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
     store: function() {
       storeAllNotificationsInLocale();
     }
-  };  
+  };
 }]);

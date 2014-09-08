@@ -18,7 +18,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.sendLog = function () {
             var modalPromise = logService.showPreview();
             modalPromise.then(function resolved() {
-                logService.sendLog(); 
+                logService.sendLog();
             });
         };
         $scope.showLogModeWiki = function () {
@@ -87,7 +87,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.show_download = bridgeDownloadService.show_download;
 
-        function parseVersionString(str) 
+        function parseVersionString(str)
         {
             if (typeof(str) !== 'string') { return false; }
             var x = str.split('.');
@@ -110,13 +110,13 @@ angular.module('bridge.app').controller('bridgeController',
             {
                 return (running.major < minimum.major);
             }
-            else 
+            else
             {
                 if (running.minor !== minimum.minor)
                 {
                     return (running.minor < minimum.minor);
                 }
-                else 
+                else
                 {
                     if (running.patch !== minimum.patch)
                     {
@@ -130,14 +130,14 @@ angular.module('bridge.app').controller('bridgeController',
             }
         }
 
-        $http.get($window.client.origin + '/client').success(function (data) 
+        $http.get($window.client.origin + '/client').success(function (data)
         {
             //version which is needed by the application
             var needs_version = "0.9.0";
             var has_version = "0.0.1";
             if(data.version !== undefined)
             {
-                has_version = data.version;    
+                has_version = data.version;
             }
 
             //set global window attributes
@@ -146,21 +146,21 @@ angular.module('bridge.app').controller('bridgeController',
             $window.client.os = data.os;
 
             if(!needsUpdate(needs_version, has_version))
-            {               
-        	   $window.client.available = true;               
+            {
+        	   $window.client.available = true;
                $window.client.outdated = false;
             }
             else
-            {                
-                $window.client.available = false;                
+            {
+                $window.client.available = false;
                 $window.client.outdated = true;
-                $scope.client_update = true;                
+                $scope.client_update = true;
             }
 
             $scope.client = $window.client.available;
             $log.log($window.client);
 
-        }).error(function () {            
+        }).error(function () {
             $window.client.available = false;
             $scope.client = $window.client.available;
             $scope.client_update = false;
@@ -200,7 +200,7 @@ angular.module('bridge.app').controller('bridgeController',
             $('.mainContainer').removeClass("darken");
             $scope.shaking = false;
         };
-  
+
 
         $scope.saveAppsSortable = function(){
           for (var i = 0; i < $scope.visible_apps.length; i++) {

@@ -133,7 +133,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
         var daysInLastMonth = 0;
         var today = new Date(); //Needed as a workaround for strange behaviour of javascript
-        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
+        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)
 
         cal[0] = [];
         if (startOnSunday_b) {
@@ -220,7 +220,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             res += minutes_i + ((minutes_i === 1) ? " minute" : " minutes");
         }
 
-        return res;       
+        return res;
     };
 
     this.useNDigits = function(val_i, n_i) {
@@ -375,10 +375,10 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     this.getUTC = function (year, month, date) {
         //Date.UTC is a function and not a constructor, cannot be changed here
         /*eslint-disable new-cap*/
-        var returnDate = new Date(Date.UTC(year, month, date)); 
+        var returnDate = new Date(Date.UTC(year, month, date));
         if (!arguments || arguments.length === 0) {
             var today = new Date();
-            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())); 
+            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
             return returnDate;
         }
         return returnDate;

@@ -7,18 +7,18 @@
         return {
             load: function () {
                 $http.get('/api/modules').success(function (data)
-                {                    
+                {
 
-                    function fetchUserInfo(callback) 
-                    {            
+                    function fetchUserInfo(callback)
+                    {
                         $http({
                             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
                             withCredentials: "true",
                             method: "GET"
                         }).success(function (data) {
-                            callback(data.USERINFO.BNAME);                                    
+                            callback(data.USERINFO.BNAME);
                         }).error(function(){
-                            
+
                         });
                     }
 
@@ -30,11 +30,11 @@
                         var apps = [];
 
                         for (var i = 0; i < data.app.length; i++) {
-                            if (data.app[i].hasOwnProperty('module_name') && data.app[i].module_name !== undefined) 
+                            if (data.app[i].hasOwnProperty('module_name') && data.app[i].module_name !== undefined)
                             {
 
                                 //either not a beta app, or current user in list of beta users
-                                if(data.app[i].hasOwnProperty('beta_users') === false)                                
+                                if(data.app[i].hasOwnProperty('beta_users') === false)
                                 {
                                     modules.push(data.app[i].module_name);
                                     apps.push(data.app[i]);
@@ -156,7 +156,7 @@
     /*eslint-enable no-undef */
 
     angular.module('loader').run(function (loadservice) {
-        loadservice.load();                
+        loadservice.load();
         //loadservice.load();
         // element.remove does not work in IE10, use jQuery remove instead
         $(loadingContainer).remove();

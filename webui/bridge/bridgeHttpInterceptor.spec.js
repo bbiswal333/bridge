@@ -6,7 +6,7 @@ describe("The bridge http interceptor", function () {
     var $http;
 
     beforeEach(function () {
-        
+
         // mock away the bridgeDataService
         angular.module("mock.app", []).service("bridgeDataService", function () {
             this.clientModeActive = false;

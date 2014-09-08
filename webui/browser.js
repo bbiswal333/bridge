@@ -43,7 +43,7 @@ window.client.hostname = "localhost";
 window.client.port = 1972;
 
 //set location and client origins
-if (!window.location.origin) 
+if (!window.location.origin)
 {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }
