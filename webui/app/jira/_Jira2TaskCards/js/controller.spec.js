@@ -25,7 +25,7 @@
 		expect(scope.layouts.length).toBe(3);
 		expect(scope.layout).toBeDefined();
     });
-	
+
     it("should call window.print when clicking the print button", function(){
         spyOn($window, "print");
         scope.printButtonClicked();

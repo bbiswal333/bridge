@@ -20,5 +20,5 @@ angular.module('app.clearCapacity').directive('app.clearCapacity', function () {
         templateUrl: 'app/clearCapacity/overview.html',
         controller: directiveController
     };
-  
+
 });

@@ -22,7 +22,7 @@
         var element = $compile('<bridge.employee-search selected-employee="selectedEmployee" placeholder="\'Name...\'" required="false"></bridge.employee-seearch>')($rootScope);
         $httpBackend.flush();
         $rootScope.$digest();
-        
+
         var directiveScope = element.isolateScope();
         var promise = directiveScope.doSearch("Schueler");
         promise.then(function success(data) {

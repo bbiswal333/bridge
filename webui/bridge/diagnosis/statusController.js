@@ -14,7 +14,7 @@ angular.module('bridge.diagnosis').controller('bridge.diagnosis.statusController
                     latest_tag = gitTags[i].name;
                 }
             }
-            return callback(latest_tag);                        
+            return callback(latest_tag);
         });
 
     };
@@ -28,11 +28,11 @@ angular.module('bridge.diagnosis').controller('bridge.diagnosis.statusController
             result.html_url = data.html_url;
             result.ahead_by = data.ahead_by;
             result.commits = data.commits;
-                        
+
             $scope.status = result;
         });
 
     };
 
-    getLatestTag(compareTagMaster);      
+    getLatestTag(compareTagMaster);
 }]);

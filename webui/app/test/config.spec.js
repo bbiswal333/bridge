@@ -4,7 +4,7 @@ describe("Testing test.app config service", function () {
 	beforeEach(module("app.test"));
 	beforeEach(inject(["app.test.configService", function (_configService_) {
 		 configService = _configService_;
-	}]));	
+	}]));
 
 	it("Should return the default config", function () {
 		expect(configService.values.boxSize).toBe('1');

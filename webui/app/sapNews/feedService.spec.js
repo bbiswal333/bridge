@@ -4,33 +4,33 @@ var rssMockData = '<rss xmlns:content="http://purl.org/rss/1.0/modules/content/"
 describe("Feed Service of SAP news", function () {
 	var feedService;
 	var $http;
-  
+
 
 	beforeEach(module("app.sapNews"));
 	beforeEach(inject(function ($injector) {
 	    $http = $injector.get("$httpBackend");
 	    feedService = $injector.get("app.sapNews.feedService");
-		
+
 		// $http.when('GET', /https:\/\/isp\.wdf\.sap\.corp\/sap\/bc\/zdevdb\/MYCATSDATA\?format=json\&origin=.*/).
 		$http.when('GET', /https:\/\/blogs-dev\.wdf\.sap\.corp\/sapnews_en\/feed\/\?lang=en/).
 	    respond(rssMockData);
 	}));
-	
 
-	it("should contain link to sap news feed", function(){	
+
+	it("should contain link to sap news feed", function(){
 		var expectation = new RegExp("https:\/\/blogs-dev\.wdf\.sap\.corp\/sapnews_en\/feed.*");
 
 		expect(feedService.feedUrl).toMatch(expectation);
-	});	
+	});
 
-	it("should call sap news feed", function(){	
+	it("should call sap news feed", function(){
 		feedService.getNews().then(function(data){
 			expect(data).toBeDefined();
 		});
 		$http.flush();
 	});
 
-	it("should convert xml to json", function(){	
+	it("should convert xml to json", function(){
 		feedService.getNews().then(function(){
 			expect(feedService.newsFeed.channel).toBeDefined();
 			expect(feedService.newsFeed.channel.item).toBeDefined();

@@ -1,5 +1,5 @@
-angular.module('app.linklist').appLinkListSettings = 
-    ['app.linklist.configservice', '$scope',  
+angular.module('app.linklist').appLinkListSettings =
+    ['app.linklist.configservice', '$scope',
         function (appLinklistConfig, $scope) {
 
 	$scope.config  = appLinklistConfig;
@@ -63,7 +63,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 		if(linkList.length > 0)
 		{
-			for (var i = 0; i < linkList.length; i++) 
+			for (var i = 0; i < linkList.length; i++)
 			{
 				var link = linkList[i];
 
@@ -93,7 +93,7 @@ angular.module('app.linklist').appLinkListSettings =
 			}
 		}
 		if(linkList.length === 0 && colNo !== 0)
-		{	
+		{
 			$scope.removeLinkList(colNo);
 		}
 	};

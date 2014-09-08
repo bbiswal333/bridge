@@ -51,7 +51,7 @@
             } else {
                 this.addEntry(sType, uObject.toString(), stackTraceToString(printStackTrace()));
             }
-        } 
+        }
     };
 
     this.addEntry = function (sType, sMessage, sStackTrace) {

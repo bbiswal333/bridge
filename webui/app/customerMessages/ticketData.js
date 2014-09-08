@@ -12,11 +12,11 @@
     this.backendTickets.assigned_me = [];
     this.backendTickets.assigned_me_aa = [];
     this.backendTickets.created_me = [];
-    
+
     // make an object so that we can have it referenced in the scope
     this.isInitialized = { value: false };
 
-    function addTicket(list, ticket){ 
+    function addTicket(list, ticket){
         var allreadyExists = false;
         list.some(function(item){
             if (angular.equals(ticket, item)){
@@ -26,7 +26,7 @@
         });
 
         if (!allreadyExists){
-            list.push(ticket); 
+            list.push(ticket);
         }
     }
 
@@ -49,7 +49,7 @@
                     prio[category]++;
                     that.backendTickets[category].push(backendTicket);
                 }
-                
+
                 addTicket(prio.tickets, backendTicket);
                 prio.total = prio.tickets.length;
             }
@@ -58,9 +58,9 @@
 
     this.prios = [
         { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];    
+        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
@@ -88,12 +88,12 @@
     function addCData(tagName, xml){
         var regOpen = new RegExp("<" + tagName + ">","g");
         var regClose = new RegExp("<\/" + tagName + ">","g");
-        
+
         xml = xml.replace(regOpen,"<" + tagName + "><![CDATA[");
         xml = xml.replace(regClose,"]]></" + tagName + ">");
         // console.log(xml);
         return xml;
-    }    
+    }
 
     this.loadTicketData = function () {
         var deferred = $q.defer();

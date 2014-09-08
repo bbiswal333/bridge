@@ -1,13 +1,13 @@
-angular.module('app.xsSyncer').service("app.xsSyncer.dataService", ['bridgeDataService', '$http', '$window', function (bridgeDataService, $http, $window) 
+angular.module('app.xsSyncer').service("app.xsSyncer.dataService", ['bridgeDataService', '$http', '$window', function (bridgeDataService, $http, $window)
 {
     var data = {noConfig: true};
     function _setConfig(config) {
         data.config = config;
-        
+
         if(data.noConfig) {
             data.proxy = 'http://localhost:' + data.config.serverPort;
         }
-        
+
         $http.post($window.client.origin + '/api/xsSyncer/setConfig?origin=' + $window.location.origin, config, {'headers':{'Content-Type':'application/json'}}
             ).success(function () {
                 data.noConfig = false;
