@@ -7,7 +7,7 @@ angular.
     "app.lunchWalldorf.backendData",
     function (calUtils, bridgeDataService, dataProcessor, lunchConfigService, lunchBackendData) {
     var directiveController = ['$scope', function ($scope) {
-        
+
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
@@ -31,8 +31,8 @@ angular.
                 scope: {
                     userInfo: "="
                 }
-        };        
-        
+        };
+
         $scope.noDataString = "Data could not be loaded from webservice.";
         $scope.configService = lunchConfigService;
 
@@ -45,14 +45,12 @@ angular.
 
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
-        };    
-
+        };
 
         $scope.chosenbackend = $scope.configService.chosenbackend;
 
- 
         $scope.refreshBackend = function () {
-            
+
             // default back to user building if no Backend selected - if not to WDF
             if ( ! lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
                 $scope.chosenbackend = $scope.userInfo.building.substring(0,3);
@@ -85,7 +83,7 @@ angular.
             $scope.portalLink = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLink;
             $scope.portalLinkText = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLinkText;
         };
-        
+
         $scope.refreshBackend();
         $scope.box.reloadApp($scope.refreshBackend, 60 * 10);
     }];
@@ -94,9 +92,9 @@ angular.
         restrict: 'E',
         templateUrl: 'app/lunchWalldorf/overview.html',
         controller: directiveController,
-        link: function ($scope) 
+        link: function ($scope)
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem)
                  {
                     lunchConfigService.configItem = $scope.appConfig.configItem;
                 } else {
@@ -104,7 +102,7 @@ angular.
                 }
                 $scope.box.boxSize = lunchConfigService.configItem.boxSize;
                 $scope.chosenbackend = lunchConfigService.configItem.chosenbackend;
-                 
+
                 $scope.$watch("appConfig.configItem.boxSize", function () {
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                         $scope.box.boxSize = $scope.appConfig.configItem.boxSize;
@@ -171,19 +169,19 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
         return parsedDishes;
     };
 
-    this.getLunchMenu = function (data, date) 
-    {                                
+    this.getLunchMenu = function (data, date)
+    {
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
-        date.setMilliseconds(0);        
-        date = Math.floor(date.getTime() / 1000);        
-        
-        for(var i = 0; i < data.menu.length; i++)
-        {                    
-            var diff = ((data.menu[i].date - date) / 60 / 60);              
+        date.setMilliseconds(0);
+        date = Math.floor(date.getTime() / 1000);
 
-            // the KAR backend is a bit out of sync, therefore we need 
+        for(var i = 0; i < data.menu.length; i++)
+        {
+            var diff = ((data.menu[i].date - date) / 60 / 60);
+
+            // the KAR backend is a bit out of sync, therefore we need
             // a bit of tweaking here and can't compare to 0 any more
             if(diff < 10 && diff > -10)
             {
@@ -212,7 +210,7 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                         {
                             lunchMenu.mainCourse = [];
                         }
-                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );   
+                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );
                     }
 
                 }

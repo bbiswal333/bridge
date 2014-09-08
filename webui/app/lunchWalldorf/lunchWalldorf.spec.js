@@ -4,7 +4,7 @@ describe("This suite tests various date operations", function () {
 	beforeEach(module("app.lunchWalldorf"));
 	beforeEach(inject(["app.lunchWalldorf.dataProcessor", function (_dataProcessor_) {
 		 dataProcessor = _dataProcessor_;
-	}]));	
+	}]));
 
 	it("A date is beeing returned", function () {
 		expect(dataProcessor.getDateToDisplay(new Date())).toBeDefined();

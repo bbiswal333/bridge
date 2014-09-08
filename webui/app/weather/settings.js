@@ -1,4 +1,4 @@
-angular.module('app.weather').appWeatherSettings = ['$scope', '$http','$filter','$q', 'app.weather.configservice', 'bridgeBuildingSearch', function ($scope, $http, $filter, $q, weatherConfigService, bridgeBuildingSearch) 
+angular.module('app.weather').appWeatherSettings = ['$scope', '$http','$filter','$q', 'app.weather.configservice', 'bridgeBuildingSearch', function ($scope, $http, $filter, $q, weatherConfigService, bridgeBuildingSearch)
 {
 	$scope.currentConfigValues = weatherConfigService.configItem;
 
@@ -7,10 +7,10 @@ angular.module('app.weather').appWeatherSettings = ['$scope', '$http','$filter',
 		return bridgeBuildingSearch.searchLocation(searchString);
 	};
 
-	$scope.save_click = function () 
+	$scope.save_click = function ()
 	{
 		weatherConfigService.configItem = $scope.currentConfigValues;
         $scope.$emit('closeSettingsScreen');
     };
-    
+
 }];

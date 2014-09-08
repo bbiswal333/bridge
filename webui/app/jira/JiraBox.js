@@ -13,7 +13,7 @@ JiraBox.prototype = Object.create(IJiraBox);
 JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
     var that = this;
     var jira_url = 'https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=';
-    
+
     if(jira_instance === 'issuemanagement')
     {
       jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
@@ -29,7 +29,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
     this.http.get(jira_url + sQuery
         ).success(function (data) {
 
-            that.data.length = 0;        
+            that.data.length = 0;
 
             angular.forEach(data.issues, function(issue) {
               that.data.push({
@@ -41,7 +41,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
                 parentSummary:  (issue.fields.parent !== undefined ? issue.fields.parent.fields.summary : null),
                 effortEstimate: issue.fields.customfield_10005,
                 status:         issue.fields.status.name
-              });   
+              });
             });
 
             that.data.sort(function (a,b) {
@@ -77,11 +77,11 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
               }
 
               task.colorClass = 'taskColor_' + colorIndex;
-            });                                                                
+            });
 
         }).error(function() {
             that.data = [];
-        });        
+        });
 };
 
 angular.module('app.jira').factory('JiraBox', ['$http',
