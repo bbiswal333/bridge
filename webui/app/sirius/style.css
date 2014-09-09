@@ -289,3 +289,6 @@
     overflow:auto;
 }
 
+.disabled {
+    background: transparent;
+}
