@@ -1,27 +1,30 @@
 {
 	"env": 
     {
-        "browser": true,
+        "browser": false,
         "node": false
     },
     "globals": 
 	{
         "angular": true,
-        "location": true,
         "Modernizr": true,
         "printStackTrace": true,
         "X2JS": true,
 		"$": true,
 		"describe": true,
 		"beforeEach": true,
+        "afterEach": true,
 		"module": true,
 		"inject": true,
 		"it": true,
 		"expect": true,
-		"alert": true,
+        "spyOn": true,
+        "jasmine": true,
         "Notification":  true,
         "_": true,
         "saveAs": true,
+        "location": true,
+        "sessionStorage": true
     },
     "rules": 
     {        

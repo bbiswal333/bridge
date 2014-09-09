@@ -72,7 +72,7 @@ describe("CAT2 config service", function () {
 		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('DEVL');
 		taskA.DESCR = '';
 		taskA.ZCPR_EXTID = 'Software Eng';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng');
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng (RAUF)');
 	});
 
 	it("should be possible to add a last used description", function () {
@@ -108,9 +108,9 @@ describe("CAT2 config service", function () {
 		catsConfig.updateLastUsedDescriptions(taskA);
 		var taskB = {};
 		taskB.TASKTYPE = 'MAIN';
-		expect(taskB.DESCR).toBeUndefined();	
+		expect(taskB.DESCR).toBeUndefined();
 		catsConfig.updateDescription(taskB);
-		expect(taskB.DESCR).toEqual('Fancy description');	
+		expect(taskB.DESCR).toEqual('Fancy description');
 	});
 
 	it("should not be possible to have an empty description in the last used descritpions", function () {

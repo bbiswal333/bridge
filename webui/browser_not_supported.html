@@ -21,6 +21,7 @@
             If you would like to use bridge, please use an <b>updated version</b> of a browser supporting the following features to enjoy a rich user experience.<br /><br />
 
     <script type='text/javascript'>
+/*eslint-disable no-undef */
         _paq.push(['trackPageView', "browser_not_supported"]);
         var luckilyNoTestFailed = true;
         for (var i = 0; i < window.feature_check.length; i++) {
@@ -36,8 +37,9 @@
         }
         if (luckilyNoTestFailed === true) {
             document.location.href = '../';
+/*eslint-enable no-undef */
         }
-    </script>
+</script>
 
     <br /><br />
 

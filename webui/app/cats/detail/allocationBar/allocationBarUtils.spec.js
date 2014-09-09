@@ -19,7 +19,7 @@
     it("should calculate new value depending on the current width", function () {
         var newValue = blockCalculations.getValueFromWidth(25, 50, 8);
 
-        expect(newValue).toBe(4); 
+        expect(newValue).toBe(4);
     });
 
     // calculateBlockMetrics Signature: offset, originalBlockWidth, totalWidth, currentValue, remainingValue, totalValue
@@ -102,14 +102,14 @@ describe("Test the color utils for the allocation bar", function () {
 
     it("should reset both colorCounter AND remebered colors on reset function", function(){
         var block1 = {'task':{'TASKTYPE':'ABC','RAUFNR':'ABC','ZCPR_OBJGEXTID':'ABC', 'ZZSUBTYPE':''}};
-        
+
         colorUtils.getColorForBlock(block1);
 
-        expect(colorUtils.blockColors['ABCABCABC']).toBeDefined();  
+        expect(colorUtils.blockColors.ABCABCABC).toBeDefined();
         expect(colorUtils.colorCounter).toBe(1);
 
-        colorUtils.resetColorCounter();  
-        expect(colorUtils.blockColors['ABCABCABC']).toBeUndefined();  
+        colorUtils.resetColorCounter();
+        expect(colorUtils.blockColors.ABCABCABC).toBeUndefined();
         expect(colorUtils.colorCounter).toBe(0);
 
     });

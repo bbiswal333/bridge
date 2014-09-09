@@ -1,7 +1,7 @@
 /**
  * Handles opening of and synchronization with the reveal.js
  * notes window.
- */
+ /
 var RevealNotes = (function() {
 
 	function openNotes() {
@@ -20,7 +20,7 @@ var RevealNotes = (function() {
 
 		/**
 		 * Posts the current slide data to the notes window
-		 */
+		 /
 		function post() {
 			var slideElement = Reveal.getCurrentSlide(),
 				slideIndices = Reveal.getIndices(),
@@ -76,3 +76,4 @@ var RevealNotes = (function() {
 
 	return { open: openNotes };
 })();
+*/

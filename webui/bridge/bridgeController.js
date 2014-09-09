@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, logService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -18,7 +18,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.sendLog = function () {
             var modalPromise = logService.showPreview();
             modalPromise.then(function resolved() {
-                logService.sendLog(); 
+                logService.sendLog();
             });
         };
         $scope.showLogModeWiki = function () {
@@ -35,6 +35,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "notifications";
+            $scope.stopDragging();
         };
 
         $scope.bridge_settings_click = function () {
@@ -52,6 +53,7 @@ angular.module('bridge.app').controller('bridgeController',
             if ($scope.show_settings === true) {
                 $scope.show_settings = false;
                 bridgeConfig.persistInBackend(bridgeDataService);
+                $scope.stopDragging();
             }
         };
 
@@ -61,6 +63,7 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "feedback";
+            $scope.stopDragging();
         };
 
         $scope.bridge_github_click = function () {
@@ -69,11 +72,22 @@ angular.module('bridge.app').controller('bridgeController',
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "github";
+            $scope.stopDragging();
         };
+
+        $scope.bridge_news_click = function () {
+            $scope.sidePanel = 'view/bridgeNews.html';
+            if ($scope.sideView === "news" || !$scope.show_settings) {
+                $scope.show_settings = !$scope.show_settings;
+            }
+            $scope.sideView = "news";
+        };
+
+        $scope.show_news = bridgeNewsService.show_news;
 
         $scope.show_download = bridgeDownloadService.show_download;
 
-        function parseVersionString(str) 
+        function parseVersionString(str)
         {
             if (typeof(str) !== 'string') { return false; }
             var x = str.split('.');
@@ -96,13 +110,13 @@ angular.module('bridge.app').controller('bridgeController',
             {
                 return (running.major < minimum.major);
             }
-            else 
+            else
             {
                 if (running.minor !== minimum.minor)
                 {
                     return (running.minor < minimum.minor);
                 }
-                else 
+                else
                 {
                     if (running.patch !== minimum.patch)
                     {
@@ -116,48 +130,48 @@ angular.module('bridge.app').controller('bridgeController',
             }
         }
 
-        $http.get(window.client.origin + '/client').success(function (data) 
+        $http.get($window.client.origin + '/client').success(function (data)
         {
             //version which is needed by the application
             var needs_version = "0.9.0";
             var has_version = "0.0.1";
             if(data.version !== undefined)
             {
-                has_version = data.version;    
+                has_version = data.version;
             }
 
             //set global window attributes
-            window.client.has_version = has_version;
-            window.client.needs_version = needs_version;
-            window.client.os = data.os;
+            $window.client.has_version = has_version;
+            $window.client.needs_version = needs_version;
+            $window.client.os = data.os;
 
             if(!needsUpdate(needs_version, has_version))
-            {               
-        	   window.client.available = true;               
-               window.client.outdated = false;
+            {
+        	   $window.client.available = true;
+               $window.client.outdated = false;
             }
             else
-            {                
-                window.client.available = false;                
-                window.client.outdated = true;
-                $scope.client_update = true;                
+            {
+                $window.client.available = false;
+                $window.client.outdated = true;
+                $scope.client_update = true;
             }
 
-            $scope.client = window.client.available;
-            $log.log(window.client);
+            $scope.client = $window.client.available;
+            $log.log($window.client);
 
-        }).error(function () {            
-            window.client.available = false;
-            $scope.client = window.client.available;
+        }).error(function () {
+            $window.client.available = false;
+            $scope.client = $window.client.available;
             $scope.client_update = false;
-            $log.log(window.client);
+            $log.log($window.client);
         });
 
         if ($location.path() === "" || $location.path() === "/") {
             $scope.showLoadingAnimation = true;
         }
 
-        window.debug = {
+        $window.debug = {
             resetConfig: function()
                         {
                 bridgeDataService.toDefault();
@@ -166,14 +180,27 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.toggleDragging = function() {
+
             $scope.sortableOptions.disabled = !$scope.sortableOptions.disabled;
             if ($scope.sortableOptions.disabled) {
+
                 $scope.sortableOptionsCaption = "Activate";
+                $('.mainContainer').removeClass("darken");
+                $scope.shaking = false;
             } else {
                 $scope.sortableOptionsCaption = "Deactivate";
+                $('.mainContainer').addClass("darken");
+                $scope.shaking = true;
             }
 
+
         };
+        $scope.stopDragging = function(){
+            $scope.sortableOptions.disabled = true;
+            $('.mainContainer').removeClass("darken");
+            $scope.shaking = false;
+        };
+
 
         $scope.saveAppsSortable = function(){
           for (var i = 0; i < $scope.visible_apps.length; i++) {
@@ -194,14 +221,14 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.overview_click = function () {
             $location.path('/');
-            document.getElementById('overview-button').classList.add('selected');
+            $window.document.getElementById('overview-button').classList.add('selected');
             //document.getElementById('projects-button').classList.remove('selected');
         };
 
         $scope.projects_click = function () {
             $location.path('/projects');
-            document.getElementById('overview-button').classList.remove('selected');
-            document.getElementById('projects-button').classList.add('selected');
+            $window.document.getElementById('overview-button').classList.remove('selected');
+            $window.document.getElementById('projects-button').classList.add('selected');
         };
 
         $scope.showSettingsModal = function (appId) {
@@ -319,12 +346,12 @@ angular.module('bridge.app').controller('bridgeController',
     }
 ]);
 
-angular.module('bridge.app').filter("decodeIcon", function () {
+angular.module('bridge.app').filter("decodeIcon", function ($window) {
     return function (str) {
         if (str === undefined) {
             return "";
         }
-        var el = document.createElement("div");
+        var el = $window.document.createElement("div");
         el.innerHTML = str;
         str = el.innerText || el.textContent;
         return str;

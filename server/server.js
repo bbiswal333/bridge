@@ -9,7 +9,7 @@ var api			= require('./api.js');
 var helper		= require('./helper.js');
 
 exports.run = function(npm, port)
-{	
+{
 	var proxy       = param.get("proxy", true);
 	var local       = param.get("local", true);
 	var cache 	    = param.get("cache", false);
@@ -34,6 +34,7 @@ exports.run = function(npm, port)
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
+		app.use('/badge', express.static(path.join(__dirname, '../badge')));
 		app.use(express.bodyParser());
 	    
 		var options = {
@@ -64,6 +65,10 @@ exports.run = function(npm, port)
 		{
 			helper.wrappedExec('forever restart updater', function (error, stdout, stderr) {
 				console.log('..restarted updater');			
+			});
+
+			helper.wrappedExec('node ' + path.join(__dirname, './../badge/prodStatusBadge'), function (error, stdout, stderr) {
+				console.log('..status badge updated');			
 			});
 		}
 	}

@@ -1,11 +1,11 @@
 angular.module("app.cats.monthlyDataModule", ["lib.utils"])
-.service("app.cats.monthlyData", 
-	["$http", 
-	"$q", 
-	"lib.utils.calUtils", 
+.service("app.cats.monthlyData",
+	["$http",
+	"$q",
+	"lib.utils.calUtils",
 	"app.cats.cat2BackendZDEVDB",
     "$log",
-	
+
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
 	var alreadyInitializedForMonth = {};
@@ -32,7 +32,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			// already done or buffered?
 			if (!alreadyInitializedForMonth[month] && this.promiseForMonth[month]) {
 				return this.promiseForMonth[month]; // return promise which is yet to be resolved
-			} 
+			}
 			else if (alreadyInitializedForMonth[month]) {
 				deferred.resolve();
 				return deferred.promise; // data already present so simply return a resolved promise
@@ -79,7 +79,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			if (!this.days[date] && this.promiseForMonth[month]) {
 				return this.promiseForMonth[month];
-			} 
+			}
 			else if (!this.days[date]){
 				return this.getMonthData(year, month);
 			}

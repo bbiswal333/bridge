@@ -30,14 +30,20 @@
 		"bridgeDataService.js", 
 		"bridgeConfigService.js", 
 		"bridgeInstanceService.js", 
-		"bridgeDownloadService.js", 
+		"bridgeDownloadService.js",
+		"bridgeNewsController.js",
+		"bridgeNewsService.js",
 		"notifier.js", 
 		"libUtils.js", 
 		"sortableService.js",
 		"bridgeInBrowserNotification.js",
 		"trafficLightService.js",
 		"employeeService.js",
-		"bridgeBuildingSearchService.js"
+		"bridgeBuildingSearchService.js",
+		"diagnosis/statusController.js",
+		"controls/checkbox.js",
+		"controls/radio.js",
+		"news/newspreview.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css"

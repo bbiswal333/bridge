@@ -3,11 +3,12 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     "app.cats.cat2BackendZDEVDB",
     "app.cats.catsUtils",
     "$timeout",
-    "app.cats.allocationBar.utils.colorUtils", 
+    "app.cats.allocationBar.utils.colorUtils",
     "lib.utils.calUtils",
     "app.cats.configService",
     "$q",
-    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q) {
+    "$window",
+    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q, $window) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
@@ -27,7 +28,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     $scope.onPressEnter = function(event){
       if (event.which === 13) {
-        document.getElementById("projectButton").focus();
+        $window.document.getElementById("projectButton").focus();
       }
     };
 
@@ -64,7 +65,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         if($scope.forSettingsView){
           configService.selectedTask = $scope.items[index];
         }
-        
+
         var ok = $scope.onProjectChecked({
           desc_s: $scope.items[index].DESCR,
           val_i: null,
@@ -126,7 +127,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         if (block.task) {
           if (catsUtils.isSameTask(item, block.task) && block.value !== 0){
             found = true;
-            color = colorUtils.getColorForBlock(block);    
+            color = colorUtils.getColorForBlock(block);
           }
         } else {
           if (catsUtils.isSameTask(item, block)){
@@ -142,7 +143,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
     function addNewProjectItem (item) {
       var newItem = configService.enhanceTask(item);
-      
+
       markItemIfSelected(item);
 
       var allreadyExists = false;
@@ -180,14 +181,14 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     }
 
     function getCatsData () {
-      var deferred = $q.defer(); 
+      var deferred = $q.defer();
       catsBackend.requestTasksFromWorklist(true, configService.catsProfile).then(function (dataFromWorklist) {
         if ($scope.blocks === undefined) {
           $scope.blocks = [];
         }
 
         dataFromWorklist.forEach(function(entry){
-          addNewProjectItem(entry);  
+          addNewProjectItem(entry);
           configService.updateLastUsedDescriptions(entry,true);
         });
 
@@ -290,7 +291,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
 
       $timeout(function () {
         $scope.$broadcast('rebuild:me');
-      }, 100);        
+      }, 100);
     }
 
     loadProjects();
@@ -299,7 +300,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       initProjectItems();
       addItemsFromBlocks();
       validateItems($scope.items);
-      
+
       markProjectItems();
     }, true);
 

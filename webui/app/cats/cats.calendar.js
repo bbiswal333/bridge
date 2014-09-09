@@ -1,16 +1,17 @@
 angular.module("app.cats")
-	.directive("app.cats.calendar", 
-		["lib.utils.calUtils", 
+	.directive("app.cats.calendar",
+		["lib.utils.calUtils",
 		 "app.cats.cat2BackendZDEVDB",
 		 "app.cats.catsUtils",
-		 "$interval", 
-		 "$location", 
+		 "$interval",
+		 "$location",
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
 		 "$q",
          "$log",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log) {
+         "$window",
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log, $window) {
 		function processCatsData(cats_o) {
 	        function parseDateToTime(date_s) {
 	            if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -32,7 +33,7 @@ angular.module("app.cats")
 	                var dateStr = days[i].DATEFROM;
 	                var statusStr = days[i].STATUS;
 	                var time = parseDateToTime(dateStr);
-	                
+
 	                // special handling for overbooked days
 
 	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
@@ -82,9 +83,9 @@ angular.module("app.cats")
 			}
 			$scope.currentMonth = "";
 			$scope.calArray = [];
-			$scope.state = "";
 			$scope.loading = true;
 			$scope.hasError = false;
+			$scope.state = "";
 			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
@@ -109,14 +110,16 @@ angular.module("app.cats")
 				}
 				$scope.loading = false;
 			}
-			
+
 			function handleCatsData(data) {
 				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
 					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
 						reload();
+
 						$scope.state = "CATS-Data received and processed";
+						$scope.hasError = false;
 					}
 					else {
 						$scope.state = "CATS-Data received from ISP but during processing an error occurred";
@@ -191,15 +194,15 @@ angular.module("app.cats")
 						break;
 					case 9:
 					    $log.log("tab");
-						nextElement = angular.element(document.querySelector( '#filter-bar input' ));
+						nextElement = angular.element($window.document.querySelector( '#filter-bar input' ));
 						nextElement.focus();
 						return;
 					default:
 						return;
 				}
-				
+
 				if (nextElement){
-					setTimeout(function() { nextElement.focus(); }, 100);					
+					$window.setTimeout(function() { nextElement.focus(); }, 100);
 				}
 
 				if (originDate.getMonth() === targetDate.getMonth()) {
@@ -231,7 +234,7 @@ angular.module("app.cats")
 				});
 				return deferred.promise;
 			}
-			
+
 			$scope.selectSingleDay = function (dayString, toggle) {
 				if (dayString && !hasFixedTask(dayString)) {
 					if (toggle && $scope.isSelected(dayString)){
@@ -363,7 +366,7 @@ angular.module("app.cats")
 							if (calDay.inMonth) {
 								calArrayForMonth.push(calDay);
 							}
-						});	
+						});
 					});
 				return $scope.rangeIsSelected(calArrayForMonth);
 			};
@@ -425,7 +428,7 @@ angular.module("app.cats")
 					// togle complete month
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
-					
+
 					// load data, in case it is not yet done
 					promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
 					promise.then(function() {
@@ -461,7 +464,7 @@ angular.module("app.cats")
 					if (!hasFixedTask(dayString)) {
 						setRangeDays(dayString, null);
 						clearSelectionFromDaysWithFixedTasks();
-					} 
+					}
 					else{
 						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
 					}
@@ -472,7 +475,7 @@ angular.module("app.cats")
 					}
 					promises = selectRange(collectRange(dayString));
 				}
-				
+
 				promise = $q.all(promises);
 				promise.then(function(){
 					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
@@ -550,8 +553,6 @@ angular.module("app.cats")
 					return calDay.data.state;
 				}
 			};
-			
-			var refreshInterval = null;
 
 			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
 
@@ -561,6 +562,7 @@ angular.module("app.cats")
 			    }
 			}
 
+			var refreshInterval = null;
 			$scope.$on("$destroy", function () {
 			    if (refreshInterval !== null) {
 			        $interval.cancel(refreshInterval);
@@ -570,14 +572,16 @@ angular.module("app.cats")
 			(function reloader() {
 			    var dateLastRun = new Date().getDate();
 
-			    refreshInterval = $interval(function () {
+				refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
+					    dateLastRun = new Date().getDate();
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
-			    }, 3 * 60 * 60 * 1000);
+				}, 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
+				monthlyDataService.reloadInProgress.value = true;
 				catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			});
 

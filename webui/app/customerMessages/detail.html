@@ -56,19 +56,19 @@
 	            	<div class="cellText col-sm-2">{{row.STATUS_DESCR}}</div>
 	            	<div class="cellText col-sm-3">
 		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=60x60" 
-		            		 class="im-reporter-img"
+		            		 class="cm-reporter-img"
 		            		 ng-mouseenter="zoom($index, $event)"
 		            		 ng-if="row.PROCESSOR"></img>
 		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=100x100" 
-		            		 class="im-reporter-img-lrg"
-		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2, top: zoomImg.y - 50 + zoomImg.height/2}"
+		            		 class="cm-reporter-img-lrg"
+		            		 style="{{zoomedStyle}}"
 		            		 ng-show="zoomIndex === $index"
 		            		 ng-mouseleave="zoom(-1)"></img>
-			            <a target="_blank" href="{{row.url}}">{{row.PROCESSOR_NAME}}</a>
 			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
 			            <a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+		            	<a class="trunctedText" target="_blank" href="{{row.url}}">{{row.PROCESSOR_NAME}}</a>
         			</div>
-	            	<div class="cellText col-sm-4">
+	            	<div class="cellText trunctedText col-sm-4">
         				<a target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
 	            	</div>
 	            </div>

@@ -1,14 +1,7 @@
 angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
 directive("app.meetings", [
-	"$timeout",
-	"$http",
-    "$log",
-	"app.meetings.ews.ewsUtils",
-	"lib.utils.calUtils",
-	"$interval",
-	"app.meetings.configservice",
-	"notifier",
-	function ($timeout, $http, $log, ewsUtils, calUtils, $interval, meetingsConfigService, notifier) {
+	"$timeout",	"$http", "$window", "$log", "app.meetings.ews.ewsUtils", "lib.utils.calUtils", "app.meetings.configservice", "notifier",
+	function ($timeout, $http, $window, $log, ewsUtils, calUtils, meetingsConfigService, notifier) {
 
 		var directiveController = ['$scope', function ($scope){
 
@@ -19,31 +12,31 @@ directive("app.meetings", [
 					id: $scope.boxId
 			};
 
-			$scope.client = window.client;
+			$scope.client = $window.client;
 
 			$scope.get_tel = function(dialIn, participantCode)
 			{
-				if(window.client.os === "win32")
+				if($window.client.os === "win32")
 				{
 					return dialIn + 'x' + participantCode + '#';
 				}
 				else
-				{					
+				{
 					return dialIn;
 				}
 			};
 
 			$scope.click_tel = function(participantCode)
 			{
-				if(window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
+				if($window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
 				{
-					$http.get(window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + window.location.origin);	
+					$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + $window.location.origin);
 				}
 			};
 
 			$scope.box.returnConfig = function(){
 	            return angular.copy(meetingsConfigService);
-	        }; 
+	        };
 		}];
 
 		var linkFn = function ($scope) {
@@ -52,7 +45,7 @@ directive("app.meetings", [
 			$scope.dayCnt = 2; // Because of time Zone issues
 			$scope.hideAllDayEvents = true;
 			/* ====================================== */
-			
+
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
@@ -88,25 +81,24 @@ directive("app.meetings", [
 						var body;
 						body = data["m:GetItemResponse"]["m:ResponseMessages"][0]["m:GetItemResponseMessage"][0]["m:Items"][0]["t:CalendarItem"][0]["t:Body"][0]._;
 						if (typeof body !== "undefined") {
-							
+
 							for (var i = 0; i < $scope.events.length; i++) {
 								if ($scope.events[i].exchangeUid === exchangeUid) {
 									$scope.events[i].body = body;
 									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
 									//
-									// first get rid of the newlines in order to allow more proper participant code parsing 
+									// first get rid of the newlines in order to allow more proper participant code parsing
 									// New approach: try to fix the participant code to the "last" 10-digit number in the body
 									//
 									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
-									
+
 									var sapconnecturl;
-									
+
 									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i);
 									if ( sapconnecturl == null) {
 										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
 									}
-									
-									
+
 									var useTheNormalSAPConnectDialIn = true;
 									// A bit hacky
 									// For sapemeavent we would need different dial-in number in Frankfurt and around the word,
@@ -123,8 +115,6 @@ directive("app.meetings", [
 									}
 								}
 							}
-							
-
 						}
 	        			$scope.errMsg = null;
 					}catch(error){
@@ -162,9 +152,9 @@ directive("app.meetings", [
 					var end = dateFn(events[i]["t:End"][0]);
 
 					if (start.getDate() === today.getDate()) {
-						
+
 						loadFromExchangeGI(events[i]["t:ItemId"][0].$.Id);
-						
+
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
 							start: start,
@@ -180,7 +170,6 @@ directive("app.meetings", [
 							exchangeUid: events[i]["t:ItemId"][0].$.Id,
 							changeKey: events[i]["t:ItemId"][0].$.ChangeKey
 						});
-						
 					}
 				}
 
@@ -208,7 +197,6 @@ directive("app.meetings", [
 
 					try{
 						eventsRaw = {};
-						
 						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 
 						if (typeof eventsRaw !== "undefined") {
@@ -222,18 +210,17 @@ directive("app.meetings", [
 					$scope.loading = false;
 				});
 			}
-			
-		    $scope.$watch("appConfig.configItem.boxSize", function () {
+
+			$scope.$watch("appConfig.configItem.boxSize", function () {
 				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
 					$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
 				}
-		    }, true);
+			}, true);
 
 		    $scope.$watch("appConfig.configItem.sAPConnectPreferredDialin", function () {
 				$scope.box.sAPConnectPreferredDialin =  $scope.appConfig.configItem.sAPConnectPreferredDialin;
 		    }, true);
 
-			
 			$scope.upComingEvents = function () {
 			    return $scope.events;
 			};
@@ -267,28 +254,19 @@ directive("app.meetings", [
 			    return calUtils.getWeekdays()[date.getDay() - 1].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
 			};
 
-			var refreshInterval = null;
-
-			$scope.$on("$destroy", function(){
-				if (refreshInterval != null) {
-					$interval.cancel(refreshInterval);
+			var reloadCount = 1;
+			function reloader() {
+				//Full reload every 300 seconds, refresh of UI every 30 seconds
+				if (reloadCount % 10 === 0) {
+					reload();
+					reloadCount = 1;
 				}
-			});
-
-			(function reloader() {
-				var i = 1;
-				//Full reload every 300 seconds, refresh of UI all 30 seconds
-				refreshInterval = $interval(function () {
-					if (i % 10 === 0) {
-						reload();
-						i = 1;
-					}
-					else {
-						parseExchangeData(true, eventsRaw);
-						i++;
-					}
-				}, 30 * 1000);
-			})();
+				else {
+					parseExchangeData(true, eventsRaw);
+					reloadCount++;
+				}
+			}
+			$scope.box.reloadApp(reloader, 30);
 
 			loadFromExchange(false);
 		};
@@ -299,6 +277,6 @@ directive("app.meetings", [
 			scope: false,
 			templateUrl: "app/meetings/overview.html",
 			replace: true,
-	        link: linkFn 
+	        link: linkFn
 		};
 }]);

@@ -1,11 +1,11 @@
-angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
+angular.module("notifier", []).factory("notifier", ["$log", "$window", function ($log, $window) {
   var icons = [];
   icons.push("../img/notifier_info.png");      // Info
   icons.push("../img/notifier_tick.png");      // Success
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
-  var notifications = JSON.parse(localStorage.getItem('notifcations')) || [];
-  
+  var notifications = JSON.parse($window.localStorage.getItem('notifcations')) || [];
+
   //var Notifier = function (text, body, icon, tag, duration) {
   var Notifier = function(notification){
     var self = this;
@@ -34,7 +34,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     this.permissionCallback = undefined;
 
     function checkPermission(callbackGranted_fn, callbackDenied_fn, callbackNoSupport_fn, callbackPermissionRequest_fn) {
-        if (typeof window.Notification === "undefined") {
+        if (typeof $window.Notification === "undefined") {
             callbackNoSupport_fn();
         }
         else if (Notification.permission === "granted") {
@@ -78,7 +78,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
                 self.onshow(n.tag);
             }
             if (self.duration >= 0) {
-                setTimeout(function () {
+                $window.setTimeout(function () {
                     self.close();
                 }, self.duration);
             }
@@ -118,7 +118,7 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     };
 
     this.getPermission = function () {
-     if (typeof window.Notification === "undefined") { 
+     if (typeof $window.Notification === "undefined") {
         return undefined;
       }
       else if (Notification.permission === "granted") {
@@ -138,20 +138,20 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
   //we need to display a screen where the user can explicitly take an action (press a button etc.) calling the requestPermission()-Method
   //Also see here: http://stackoverflow.com/questions/5040107/webkit-notifications-requestpermission-function-doesnt-work
   Notifier.prototype.chromePreCheckRequestNeeded = function () {
-    if (typeof window.Notification !== "undefined") {
-      return (Notification.permission === "default");  
+    if (typeof $window.Notification !== "undefined") {
+      return (Notification.permission === "default");
     }
     return false;
   };
 
   Notifier.prototype.requestPermission = function (callback_fn) {
-    if (typeof window.Notification !== "undefined") {
+    if (typeof $window.Notification !== "undefined") {
       Notification.requestPermission(callback_fn);
     }
   };
 
     function storeAllNotificationsInLocale() {
-        localStorage.setItem('notifcations', JSON.stringify(notifications));
+        $window.localStorage.setItem('notifcations', JSON.stringify(notifications));
     }
 
   function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
@@ -205,10 +205,10 @@ angular.module("notifier", []).factory("notifier", ["$log", function ($log) {
     },
     clearNotifications: function() {
       notifications.length = 0;
-      localStorage.setItem('notifcations', JSON.stringify([]));
+      $window.localStorage.setItem('notifcations', JSON.stringify([]));
     },
     store: function() {
       storeAllNotificationsInLocale();
     }
-  };  
+  };
 }]);

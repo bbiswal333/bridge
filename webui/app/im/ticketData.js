@@ -1,4 +1,6 @@
-﻿angular.module('app.im').service('app.im.ticketData', ['$http', '$q', '$interval', 'app.im.configservice', function ($http, $q, $interval, configservice) {
+﻿angular.module('app.im').service('app.im.ticketData',
+    ['$http', '$window', '$q', 'app.im.configservice',
+    function ($http, $window, $q, configservice) {
     var that = this;
 
     //buckets for the backend tickets
@@ -10,12 +12,11 @@
     this.backendTickets.assigned_me = [];
     this.backendTickets.assigned_me_aa = [];
     this.backendTickets.created_me = [];
-    
+
     // make an object so that we can have it referenced in the scope
     this.isInitialized = { value: false };
-    this.loadTicketDataInterval = null;
 
-    function addTicket(list, ticket){ 
+    function addTicket(list, ticket){
         var allreadyExists = false;
         list.some(function(item){
             if (angular.equals(ticket, item)){
@@ -25,7 +26,7 @@
         });
 
         if (!allreadyExists){
-            list.push(ticket); 
+            list.push(ticket);
         }
     }
 
@@ -48,7 +49,7 @@
                     prio[category]++;
                     that.backendTickets[category].push(backendTicket);
                 }
-                
+
                 addTicket(prio.tickets, backendTicket);
                 prio.total = prio.tickets.length;
             }
@@ -57,9 +58,9 @@
 
     this.prios = [
         { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "High",         number: 2, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Medium",       number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Low",          number: 4, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];    
+        { name: "High",         number: 2, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Medium",       number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Low",          number: 4, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
@@ -82,13 +83,13 @@
         that.backendTickets.assigned_me.length = 0;
         that.backendTickets.assigned_me_aa.length = 0;
         that.backendTickets.created_me.length = 0;
-    };    
+    };
 
     this.loadTicketData = function () {
         var deferred = $q.defer();
 
         //this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        $http.get('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
         ).success(function (data) {
             that.resetData();
 
@@ -190,8 +191,6 @@
     };
 
     this.initialize = function () {
-        this.loadTicketDataInterval = $interval(this.loadTicketData, 60000 * 10);
-
         var loadTicketPromise = this.loadTicketData();
         loadTicketPromise.then(function success() {
             that.isInitialized.value = true;

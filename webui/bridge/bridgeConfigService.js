@@ -1,4 +1,6 @@
-﻿angular.module('bridge.service').service('bridgeConfig', ['$http', '$log', 'bridge.service.loader', 'bridgeInstance', function ($http, $log, bridgeLoaderServiceProvider, bridgeInstance) {
+﻿angular.module('bridge.service').service('bridgeConfig',
+    ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance',
+    function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance) {
 
     function getAppConfig(app) {
         return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
@@ -26,8 +28,8 @@
             }
             return 0;
         });
-        
-        for (var j = 0; j < visible_apps.length; j++) 
+
+        for (var j = 0; j < visible_apps.length; j++)
         {
             var appConfig = {};
             try {
@@ -40,7 +42,7 @@
                     "module_name": visible_apps[j].metadata.module_name
                 },
                 appConfig: appConfig
-            });                        
+            });
         }
         return apps;
     }
@@ -59,7 +61,7 @@
             // angular cannot do synchronious requests, so use jQuery here
             $.ajax(
                 {
-                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                     type: "POST",
                     data: angular.toJson(configPayload),
                     async: false,
@@ -69,7 +71,7 @@
                 });
         } else {
             $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
                 data: angular.toJson(configPayload),
                 headers: { 'Content-Type': 'text/plain' }
@@ -83,7 +85,7 @@
 
     this.loadFromBackend = function (deferred) {
             $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent(location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "GET"
             }).success(function (data) {
                 $log.log("Config loaded successfully");

@@ -20,24 +20,32 @@
 </div>
 
 -->
-<div>
-	<a href="https://ifp.wdf.sap.corp/ccm" target="_blank"><div class="ccm-row">Planned capacity: {{clearCapacityData.zbsgrd_txt}}</div></a>
-	<div class="ccm-box">
-		<div class="ccm-head bold">Team</div>
-		<div class="ccm-content" ng-repeat="team in clearCapacityData.team_ass">
-			{{team.project_id}} <b>({{toPercent(team.capacity)}}%)</b>
+<div style="overflow-y: auto; height: 145px">
+	<div class="ccm-row">
+		<a href="https://ifp.wdf.sap.corp/ccm" target="_blank">Planned capacity: {{clearCapacityData.zbsgrd_txt}}</a><br />
+		Not what you're working on? Please contact your <a href="https://people.wdf.sap.corp/profiles/{{userInfo.MGR_ID}}">manager</a>.
+	</div>
+	
+	<div class="ccm-row">
+		<div class="ccm-box">
+			<i class="fa fa-users"></i><div class="ccm-head bold">Team</div>
+			<div class="ccm-content" ng-repeat="team in clearCapacityData.team_ass">
+				<div class="ccm-projectid" style="max-width: 135px;" title="{{team.project_id}}">{{team.project_id}}</div> <div class="ccm-percentage">({{toPercent(team.capacity)}}%)</div>
+			</div>
+		</div>
+		<div class="ccm-box">
+			<i class="fa fa-paper-plane"></i><div class="ccm-head bold">Project</div>
+			<div class="ccm-content" ng-repeat="project in clearCapacityData.proj_ass">
+				<div class="ccm-projectid" style="max-width: 175px" title="{{project.project_id}}">{{project.project_id}}</div>
+			</div>
 		</div>
 	</div>
-	<div class="ccm-box">
-		<div class="ccm-head bold">Activity</div>
-		<div class="ccm-content" ng-repeat="activity in clearCapacityData.act_ass">
-			{{activity.activity_cat_txt_level_1}} <b>({{toPercent(activity.capacity)}}%)</b>
-		</div>
-	</div>
-	<div class="ccm-box">
-		<div class="ccm-head bold">Project</div>
-		<div class="ccm-content" ng-repeat="project in clearCapacityData.proj_ass">
-			{{project.project_id}} <b>({{toPercent(project.capacity)}}%)</b>
+	<div class="ccm-row">
+		<div class="ccm-box" style="margin-top: 9px; width: 100%">
+			<i class="fa fa-laptop"></i><div class="ccm-head bold">Activity</div>
+			<div class="ccm-content" ng-repeat="activity in clearCapacityData.act_ass">
+				{{activity.activity_cat_txt_level_1}} <b>({{toPercent(activity.capacity)}}%)</b>
+			</div>
 		</div>
 	</div>
 </div>

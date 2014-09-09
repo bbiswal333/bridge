@@ -1,7 +1,7 @@
 angular.module('app.designwhizz', []);
 angular.module('app.designwhizz').directive('app.designwhizz', function () {
 
-    var directiveController = ['$scope', function ($scope) 
+    var directiveController = ['$scope', '$window', function ($scope, $window)
     {	// load quotes
 		var messages;
 		$.ajax({
@@ -10,11 +10,11 @@ angular.module('app.designwhizz').directive('app.designwhizz', function () {
 		  messages = data.Messages;
 		  $scope.updateQuote();
 		  // change periodically
-		  window.setInterval(function() {
+		  $window.setInterval(function() {
 			$scope.updateQuote();
 			},1000 * 60 * 60); // 1h
 		}
-		});	
+		});
         $scope.updateQuote = function() {
 			var q = $scope.randomQuote();
 			$('#quote').text(q.quote);
@@ -32,17 +32,17 @@ angular.module('app.designwhizz').directive('app.designwhizz', function () {
 		$('#newQuote').click(function() {
 			$scope.updateQuote();
 			return false;
-		});		
+		});
 		$('.designwhizz-icon').click(function() {
-			window.open('https://go.sap.corp/w');
+			$window.open('https://go.sap.corp/w');
 			return false;
-		});	
+		});
 		$('#author').click(function() {
-			window.open('https://google.com/#q=' + $('#quote').text());
+			$window.open('https://google.com/#q=' + $('#quote').text());
 			return false;
-		});	
+		});
 		$('#quote').click(function() {
-			window.open('https://google.com/#q=' + $('#quote').text());
+			$window.open('https://google.com/#q=' + $('#quote').text());
 			return false;
 		});
     }];

@@ -2,7 +2,7 @@
     "app":
     {
         "module_name"			:	"app.itdirect",
-        "title"					:	"IT Tickets",
+        "title"					:	"IT Direct",
         "icon_css"				:	"icon-comment",
         "overview_directive"	:	"app.itdirect",
         "needs_client"			:	false,
@@ -15,6 +15,6 @@
             ]
     },
     "modules" : [],
-    "js_files" : ["overview.js", "ticketData.js", "config.js", "detail.js", "settings.js"],
+    "js_files" : ["overview.js", "ticketData.js", "config.js", "detail.js", "settings.js", "formatter.js"],
     "css_files" : ["style.css"]
 }

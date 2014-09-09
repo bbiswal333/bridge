@@ -1,6 +1,5 @@
 ﻿describe("The bridge config", function () {
     var $route;
-    var $rootScope;
     var $q;
     var $log;
     var bridgeDataService;
@@ -11,9 +10,8 @@
 
         sessionStorage.clear();
 
-        inject(["$route", "$rootScope", "$q", "$log", "bridgeDataService", function (_$route, _$rootScope, _$q, _$log, _bridgeDataService) {
+        inject(["$route", "$q", "$log", "bridgeDataService", function (_$route, _$q, _$log, _bridgeDataService) {
             $route = _$route;
-            $rootScope = _$rootScope;
             $q = _$q;
             $log = _$log;
             bridgeDataService = _bridgeDataService;

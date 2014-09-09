@@ -1,12 +1,16 @@
 <div class="app-linkList-container" style="overflow-y: auto">
 	<div ng-repeat="linklist in config.data.listCollection">
 
-		<div class="col-xs-{{12/config.data.listCollection.length}}" ng-class="{'no-padd':{{$index+1}}==1 && {{config.data.listCollection.length}}==1,'padd-right':{{$index+1}}==1 && {{config.data.listCollection.length}}>=2,'padd-left':{{$index+1}}==2 && {{config.data.listCollection.length}}==2,'padd-both':{{$index+1}}==2 && {{config.data.listCollection.length}}==3,'padd-left2':{{$index+1}}==3 && {{config.data.listCollection.length}}==3}">
+		<div class="col-xs-{{12/config.data.listCollection.length}}"
+             ng-class="{'no-padd': $index + 1 == 1 && config.data.listCollection.length ==1,
+		                'padd-right': $index + 1 == 1 && config.data.listCollection.length >= 2,
+		                'padd-left': $index + 1 == 2 && config.data.listCollection.length == 2,
+		                'padd-both': $index + 1 == 2 && config.data.listCollection.length == 3,
+		                'padd-left2': $index + 1 == 3 && config.data.listCollection.length == 3 }">
 			<div class="app-linklist-categoryBar app-linklist-categoryBar-{{$index+1}}"></div>
 			<div class="app-linkList-link" ng-repeat="link in linklist">
 				<a ng-if="link.type == 'hyperlink'" href="{{link.url}}" target="_blank">{{link.name}}</a>
-				<!--<a ng-if="link.type == 'saplink'" ng-href="{{link.sapGuiFile.objectURL}}" download="{{link.sapGuiFile.download}}">{{saplink.sapGuiFile.objectURL}} {{link.name}}</a>-->
-                <a ng-if="link.type == 'saplink'" style="cursor: pointer;" ng-click="openBlob(link.sapGuiFile)">{{saplink.sapGuiFile.objectURL}} {{link.name}}</a>
+                <a ng-if="link.type == 'saplink'" style="cursor: pointer;" ng-click="openBlob(link)">{{link.name}}</a>
 			</div>
 		</div>
 	</div>

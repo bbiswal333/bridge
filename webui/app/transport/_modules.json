@@ -2,20 +2,21 @@
 	"app":
 	{
 		"module_name"			:	"app.transport",
-		"title"					:	"Transp Requests",
-		"icon_css"				:	"fa fa-circle",
+		"title"					:	"Transports",
+		"icon_css"				:	"fa fa-suitcase",
 		"overview_directive"	:	"app.transport",
 		"needs_client"			:	false,
-		"default_hidden"		: 	true,
-		"routes"		:
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"routes"				:
 		[
 			{
-				"route"			:	"/detail/transport/:appId",
-				"templateUrl"	:	"app/transport/detail.html"			
+				"route"			:	"/detail/transport/:transportStatus",
+				"templateUrl"	:	"app/transport/detail.html"
 			}
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js"],
+	"js_files" : ["overview.js", "detail.js", "data.js"],
 	"css_files" : []
 }

@@ -2,7 +2,8 @@ angular.module('app.itdirect', ['bridge.service', 'ngTable']);
 
 angular.module('app.itdirect').directive('app.itdirect', function ()
 {
-    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeDataService", "bridgeConfig", function($scope, config, ticketData, bridgeDataService, bridgeConfig){
+    var directiveController = ["$scope", "app.itdirect.config", "app.itdirect.ticketData", "bridgeDataService", "bridgeConfig",
+    function($scope, config, ticketData, bridgeDataService, bridgeConfig){
         if (config.isInitialized === false) {
             config.initialize($scope.appConfig);
         }
@@ -19,6 +20,12 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
             return config;
         };
 
+        $scope.$on('closeSettingsScreenRequested', function(event, args){
+           if (args !== undefined && args.app === 'itdirect'){
+               ticketData.loadTicketData();
+           }
+        });
+
         $scope.config = config;
         $scope.prios = ticketData.prios;
 
@@ -27,10 +34,6 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                 if (oldVal !== undefined) {
                     bridgeConfig.persistInBackend(bridgeDataService);
-                    // do not reload data the data if only the time of the data update changed
-                    if (oldVal.lastDataUpdate !== null && oldVal.lastDataUpdate.getTime() === newVal.lastDataUpdate.getTime()) {
-                        ticketData.loadTicketData();
-                    }
                 }
             }
         },true);
@@ -53,6 +56,8 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
 
             return count;
         };
+
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
     }];
 
     return {

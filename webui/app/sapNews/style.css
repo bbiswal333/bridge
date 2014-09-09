@@ -1,0 +1,9 @@
+.app-sapnews-container{
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;
+}
+
+.app-sapnews-container li{
+	margin-left: -20px;
+}

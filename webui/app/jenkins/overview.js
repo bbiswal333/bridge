@@ -1,9 +1,9 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", "$interval", function (jenkinsConfigService, $location, $interval) {
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
-        $scope.box.boxSize = '2'; 
+        $scope.box.boxSize = '2';
         $scope.jobsToDisplay = [];
         $scope.jenkinsConfig = {};
         $scope.configService = jenkinsConfigService;
@@ -16,14 +16,12 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             id: $scope.boxId
         };
 
-
-
         $scope.box.returnConfig = function() {
             return angular.copy($scope.configService);
         };
 
         this.initialize = function () {
-            $interval(this.jobsToDisplay, 60000 * 10);
+            $scope.box.reloadApp(this.jobsToDisplay, 60 * 10);
         };
 
         var formatTimestamp = function(timestamp) {
@@ -42,10 +40,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         var retrieveAndSetJobsByView = function(views) {
 
             for(var viewIndex in views) {
-              
+
                 $http.get('/api/get?url=' + encodeURIComponent(views[viewIndex].url + "api/json"), {withCredentials: false})
                 .success(function (viewData) {
-                    
+
                     // since the page for the primary view is the start page, there is no view name
                     if(viewData.name === undefined) {
                         viewData.name = $scope.primaryViewName;
@@ -54,7 +52,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                     if(!hasJobWithThatName(jenkinsConfigService.configItem.jobsByView, viewData.name)) {
 
                         jenkinsConfigService.configItem.jobsByView.push({"name": viewData.name, "jobs": viewData.jobs});
-                       
+
                     }
                 }).error(function(data, status) {
                     $log.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
@@ -68,7 +66,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         //     console.log($scope.jobResult);
         //     getJobDependancy(jobUrl);
         //     $location.path("/detail/job/");
-            
+
         // };
 
         // var getJobDependancy = function(){
@@ -121,11 +119,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                                 $scope.jobsToDisplay[jobIndex].timestamp = formatTimestamp(latestBuildData.timestamp);
                                 $scope.jobsToDisplay[jobIndex].lastBuild = latestBuildData.timestamp;
                                 $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
-                                
+
                                 $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
                             }
                     }
-                    
+
                 }).
                 error(function(data, status) {
                      $log.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
@@ -156,7 +154,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                             }else{
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-question";
                             }
-                            
+
                         }
                     }
 
@@ -186,13 +184,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         $scope.noJobSelected = function() {
-            
+
             if($scope.jobsToDisplay.length === 0) {
                     return true;
             } else {
                 return false;
             }
-            
+
         };
 
         var removeViewAll = function(views) {
@@ -212,7 +210,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         //     {
         //         return "fa-rotate-270";
         //     }else if(job.jobHealthReport[0].iconUrl === "health-40to59.png")
-        //     {   
+        //     {
         //         return "fa-rotate-360";
         //     }else if(job.jobHealthReport[0].iconUrl === "health-20to39.png")
         //     {
@@ -259,7 +257,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
-        }; 
+        };
 
     }]; // directiveController()
 
@@ -296,9 +294,9 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 }, true);
 
                 $scope.$watch("appConfig.configItems", function () {
-                    
+
                     $scope.updateJobsView($scope.appConfig.configItems);
-                    
+
                 }, true);
 
              }

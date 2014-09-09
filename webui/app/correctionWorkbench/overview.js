@@ -35,6 +35,8 @@ angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [
                 setNoMessagesFlag();
             });
         }
+
+        $scope.box.reloadApp(workbenchData.loadWorkbenchData, 60 * 5);
     }];
 
     return {

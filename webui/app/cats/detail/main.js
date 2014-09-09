@@ -9,11 +9,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.cat2BackendZDEVDB",
   "app.cats.catsUtils",
   "$http",
+  "$window",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -93,7 +94,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $log.log("adjustBarValues(): " + err);
         }
     }
-    
+
     function addBlock(desc_s, val_i, block, fixed) {
         try {
             // Scale data which is read from backend BUT only if it is not OVERBOOKED
@@ -283,11 +284,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZZSUBTYPE: task.ZZSUBTYPE,
             UNIT: "T"
         };
-        
+
         var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
-                bridgeInBrowserNotification.addAlert('','Please select a day or multiple days in the calendar first');
+                bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first');
             } else {
                 bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day');
             }
@@ -345,10 +346,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             var parser;
             var xmlDoc;
-            if (window.DOMParser) {
-                parser = new DOMParser();
+            if ($window.DOMParser) {
+                parser = new $window.DOMParser();
                 xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer                
+            } else { // Internet Explorer
                 /*eslint-disable no-undef*/
                 xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
                 /*eslint-enable no-undef*/
@@ -365,7 +366,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
                         replyMessages.push(message.childNodes[0].nodeValue);
                         if (replyMessages.length <= maxMessageCount) {
-                            bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
+                            if(message.childNodes[0].nodeValue.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
+                                bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user',alertDuration);
+                            } else {
+                                bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
+                            }
                         }
                     }
                 } else {
@@ -401,7 +406,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         if (clearOldTasks) {
             monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) { 
+                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) {
                     return null;
                 }
                 var taskDeletion = angular.copy(task);
@@ -422,7 +427,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
                 continue;
             }
-            
+
             if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
                 booking.ZCPR_OBJGEXTID = null;
             }

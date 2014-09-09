@@ -27,7 +27,7 @@
         }]);
     });
 
-    it("should increase the ticket counter according to the backend data", function () { 
+    it("should increase the ticket counter according to the backend data", function () {
         $httpBackend.whenGET('https://css.wdf.sap.corp:443/sap/bc/devdb/MYINTERNALMESS?sap-language=en&origin=' + location.origin).respond(mockData);
         imTicketData.loadTicketData();
         $httpBackend.flush();
@@ -88,7 +88,7 @@
             $httpBackend.flush();
         });
 
-        it("should reflect correct number in prios total", function(){    
+        it("should reflect correct number in prios total", function(){
             imTicketData.loadTicketData().then(function(){
                 expect(imTicketData.prios[1].total).toBe(1);
             });
@@ -97,7 +97,7 @@
         it("should update correct count for selection", function(){
             imTicketData.loadTicketData().then(function(){
                 expect(configService.data.selection).toBeDefined();
-                
+
                 configService.data.selection.colleagues = true;
                 imTicketData.updatePrioSelectionCounts();
                 expect(imTicketData.prios[0].selected).toBe(0);
@@ -107,7 +107,7 @@
                 imTicketData.updatePrioSelectionCounts();
                 expect(imTicketData.prios[0].selected).toBe(0);
                 expect(imTicketData.prios[1].selected).toBe(1);
-            }); 
+            });
         });
     });
 });

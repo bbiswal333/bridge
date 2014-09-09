@@ -1,34 +1,34 @@
-angular.module('app.itdirect')
-    .controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", function($scope, $routeParams, bridgeDataService, ticketData, config){
+angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "app.itdirect.formatter",
+    function($scope, $routeParams, bridgeDataService, ticketData, config, formatter){
 
-    var that = this;
-    $scope.prios = ticketData.prios;
-    $scope.config = config;
-    $scope.tickets = [];
-    $scope.detailForNotifications = ($routeParams.calledFromNotifications === 'true');
+        var that = this;
+        $scope.prios = ticketData.prios;
+        $scope.config = config;
+        $scope.tickets = [];
+        $scope.detailForNotifications = ($routeParams.calledFromNotifications === 'true');
 
-    $scope.filterTable = function(oTicket){
-        var bTicketPriorityMatches = false;
-        angular.forEach($scope.prios, function(prio){
-           if (prio.active === true && oTicket.PRIORITY.toString() === prio.key){
-               bTicketPriorityMatches = true;
-           }
-        });
+        $scope.filterTable = function(oTicket){
+            var bTicketPriorityMatches = false;
+            angular.forEach($scope.prios, function(prio){
+               if (prio.active === true && oTicket.PRIORITY.toString() === prio.key){
+                   bTicketPriorityMatches = true;
+               }
+            });
 
-        // leave out check for category if we come from notifications
-        var bCategoryMatches = false;
-        if ($scope.detailForNotifications === false) {
-            if (config.bPartieOfRequestSelected === true && oTicket.bridgeCategory === "assigned_me" ||
-                config.bSavedSearchSelected === true && oTicket.bridgeCategory === "savedSearch") {
+            // leave out check for category if we come from notifications
+            var bCategoryMatches = false;
+            if ($scope.detailForNotifications === false) {
+                if (config.bPartieOfRequestSelected === true && oTicket.bridgeCategory === "assigned_me" ||
+                    config.bSavedSearchSelected === true && oTicket.bridgeCategory === "savedSearch") {
+                    bCategoryMatches = true;
+                }
+            } else {
                 bCategoryMatches = true;
             }
-        } else {
-            bCategoryMatches = true;
-        }
 
-        var bTicketContainsFilterString = false;
-        if ($scope.filterText === "" || $scope.filterText === undefined){
-                bTicketContainsFilterString = true;
+            var bTicketContainsFilterString = false;
+            if ($scope.filterText === "" || $scope.filterText === undefined){
+                    bTicketContainsFilterString = true;
             } else {
                 var property;
                 for (property in oTicket){
@@ -39,6 +39,10 @@ angular.module('app.itdirect')
             }
 
             return bTicketPriorityMatches && bCategoryMatches && bTicketContainsFilterString;
+        };
+
+        $scope.getFormattedDate = function(sAbapDate){
+            return formatter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
         };
 
         this.containsTicket = function(sGuid){
@@ -53,7 +57,7 @@ angular.module('app.itdirect')
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
             function addAndEnhanceTicket(ticket) {
-                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&SAPROLE=ZITSERVREQU&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
+                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
                 ticket.bridgeCategory = sTicketCategory;
 
                 if (!that.containsTicket(ticket.GUID.toString())){

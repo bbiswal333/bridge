@@ -1,0 +1,14 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.playbook",
+		"title"					:	"Playbook",
+		"icon_css"				:	"playbook-icon",
+		"overview_directive"	:	"app.playbook",
+		"beta"					:	true,
+		"needs_client"			:	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js","settings.js","config.js"],
+	"css_files" : ["style.css"]
+}

@@ -29,6 +29,9 @@
                     <div class="box-title col-sm-2" ng-click="sort('USER_STATUS_TEXT')">Status
                         <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'USER_STATUS_TEXT'"></i>
                     </div>
+                    <div class="box-title col-sm-2" ng-click="sort('CREATED_AT')">Creation
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CREATED_AT'"></i>
+                    </div>
                     <div class="box-title col-sm-4" ng-click="sort('DESCRIPTION')">Description
                         <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
                     </div>
@@ -37,6 +40,7 @@
                     <div class="cellText col-sm-1">{{row.PRIORITY_DESC}}</div>
                     <div class="cellText col-sm-2">{{row.CAT_ID}}</div>
                     <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT}}</div>
+                    <div class="cellText col-sm-2">{{getFormattedDate(row.CREATED_AT)}}</div>
                     <div class="cellText col-sm-4">
                         <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
                     </div>

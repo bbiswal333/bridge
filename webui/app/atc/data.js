@@ -1,4 +1,4 @@
-﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$interval", "app.atc.configservice", function ($http, $interval, atcConfig) {
+﻿angular.module('app.atc').service('app.atc.dataservice', ["$http", "$window", "app.atc.configservice", function ($http, $window, atcConfig) {
     var that = this;
 
     this.data = {
@@ -10,9 +10,9 @@
 
     this.detailsData = [];
 
-    this.getResultForConfig = function (config) {            
+    this.getResultForConfig = function (config) {
         var that = this;
-        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin=' + location.origin)
+        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin=' + $window.location.origin)
         .success(function (data) {
 
             that.data = {
@@ -20,13 +20,13 @@
                 prio2: data.PRIOS.PRIO2,
                 prio3: data.PRIOS.PRIO3,
                 prio4: data.PRIOS.PRIO4
-            };                
+            };
         });
     };
 
     this.getDetailsForConfig = function (config) {
         var that = this;
-        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + location.origin)
+        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
         .success(function (data) {
             that.detailsData = data.DATA;
         });
@@ -37,7 +37,4 @@
             that.getResultForConfig(atcConfig);
         }
     };
-
-    // refresh interval
-    $interval(this.loadOverviewData, 1000 * 60 * 5);
 }]);

@@ -1,0 +1,15 @@
+{
+	"app":
+	{
+		"module_name"			:	"app.simple",
+		"title"					:	"Simple App",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.simple",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		: 	false
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}

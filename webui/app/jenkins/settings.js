@@ -1,12 +1,12 @@
 angular.module('app.jenkins').appJenkinsSettings =
 ['$filter', 'ngTableParams', '$scope', "app.jenkins.configservice",
 
-	function ($filter, ngTableParams, $scope, jenkinsConfigService) {    
+	function ($filter, ngTableParams, $scope, jenkinsConfigService) {
 
 		$scope.config = jenkinsConfigService;
 		$scope.currentConfigValues = jenkinsConfigService.configItem;
 
-		$scope.save_click = function() {  
+		$scope.save_click = function() {
 			$scope.$emit('closeSettingsScreen');
 		};
 
@@ -16,13 +16,66 @@ angular.module('app.jenkins').appJenkinsSettings =
 			}
 		}, true);
 
-		$scope.add_click = function() {
-			if (!$scope.config.isEmpty()) {
-				var copiedConfigItem = angular.copy($scope.currentConfigValues);
-				$scope.config.clearView();
-				jenkinsConfigService.addConfigItem(copiedConfigItem);
-			}
-		};
+
+        function addAllJobsOfSelectedView(copiedConfigItem) {
+            var jobs = $scope.getJobsByView(copiedConfigItem.selectedView);
+            for (var i = 0; i < jobs.length; i++) {
+                copiedConfigItem = angular.copy(copiedConfigItem);
+                copiedConfigItem.selectedJob = jobs[i].name;
+                jenkinsConfigService.addConfigItem(copiedConfigItem);
+            }
+        }
+
+        function addConfigItem(copiedConfigItem) {
+            if (copiedConfigItem.selectedJob === '') {
+                addAllJobsOfSelectedView(copiedConfigItem);
+            } else {
+                jenkinsConfigService.addConfigItem(copiedConfigItem);
+            }
+        }
+
+        function isInArrayByName(nameString, candidateObjects) {
+            for(var i = 0; i < candidateObjects.length; i++) {
+                if(candidateObjects[i].name === nameString) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        $scope.isSelectedViewValid = function() {
+            var selectedViewString = $scope.currentConfigValues.selectedView;
+            var allViewObjects = $scope.currentConfigValues.views;
+
+            return isInArrayByName(selectedViewString, allViewObjects);
+        };
+
+        $scope.isSelectedJobValidOrEmpty = function() {
+            var selectedJobString = $scope.currentConfigValues.selectedJob;
+            if(selectedJobString === "") {
+                return true;
+            }
+
+            var selectedViewString = $scope.currentConfigValues.selectedView;
+            var allJobs = $scope.getJobsByView(selectedViewString);
+            return isInArrayByName(selectedJobString, allJobs);
+        };
+
+        function isAddButtonEnabled() {
+            return $scope.config.couldReachJenkinsUrl && $scope.isSelectedViewValid() && $scope.isSelectedJobValidOrEmpty();
+        }
+
+        $scope.isAddButtonDisabled = function() {
+            return !isAddButtonEnabled();
+        };
+
+        $scope.add_click = function() {
+            if (!$scope.config.isEmpty()) {
+                var copiedConfigItem = angular.copy($scope.currentConfigValues);
+                $scope.config.clearView();
+                addConfigItem(copiedConfigItem);
+            }
+        };
 
 		$scope.remove_click = function (configItem) {
 			var index = $scope.config.configItems.indexOf(configItem);
@@ -55,15 +108,11 @@ angular.module('app.jenkins').appJenkinsSettings =
 			for(var viewNameIndex in jenkinsConfigService.configItem.jobsByView) {
 
 				if(jenkinsConfigService.configItem.jobsByView[viewNameIndex].name === viewname) {
-
 					jobsByView = jobsByView.concat(jenkinsConfigService.configItem.jobsByView[viewNameIndex].jobs);
-
-				}
-
+                }
 			}
 
 			return jobsByView;
-
 		};
 
 		$scope.limitDisplayName = function(name, limit) {

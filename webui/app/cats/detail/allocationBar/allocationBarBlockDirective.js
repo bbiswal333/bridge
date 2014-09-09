@@ -24,10 +24,14 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getDescription = function () {
-                if ($scope.blockData.task.ZCPR_EXTID) {
-                    return $scope.blockData.desc + " (" + $scope.blockData.task.ZCPR_EXTID + ")";
-                } else if ($scope.blockData.task.TASKTYPE) {
-                    return $scope.blockData.desc + " (" + $scope.blockData.task.TASKTYPE + ")";
+                if ($scope.blockData.task.ZCPR_EXTID && $scope.blockData.task.RAUFNR) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID + ",\n" + $scope.blockData.task.RAUFNR;
+                } else if ($scope.blockData.task.ZCPR_EXTID) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID;
+                } else if ($scope.blockData.task.RAUFNR && $scope.blockData.desc !== $scope.blockData.task.RAUFNR) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.RAUFNR;
+                } else if ($scope.blockData.task.TASKTYPE && $scope.blockData.desc !== $scope.blockData.task.TASKTYPE) {
+                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.TASKTYPE;
                 } else {
                     return $scope.blockData.desc;
                 }
@@ -75,12 +79,12 @@ function (colorUtils, blockCalculations, calUtils) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
 //            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover-placement="top" popover-trigger="mouseenter" popover-popup-delay="1500">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
                 '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
                 '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
-                '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' + 
+                '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' +
                     '<img ng-hide="blockData.fixed" class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
                 '</div>' +
             '</div>' +

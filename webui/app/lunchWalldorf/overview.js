@@ -1,89 +1,119 @@
-﻿angular.
-  module('app.lunchWalldorf', ["lib.utils"]).
-  directive('app.lunchWalldorf', [
+angular.
+  module('app.lunchWalldorf', ["lib.utils"]).directive('app.lunchWalldorf', [
     "lib.utils.calUtils",
+    "bridgeDataService",
     "app.lunchWalldorf.dataProcessor",
     "app.lunchWalldorf.configservice",
-    function (calUtils, dataProcessor, lunchConfigService) {
-    var directiveController = ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
-        
+    "app.lunchWalldorf.backendData",
+    function (calUtils, bridgeDataService, dataProcessor, lunchConfigService, lunchBackendData) {
+    var directiveController = ['$scope', function ($scope) {
+
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
-        $scope.portalLink = "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df";        
+
+        if (typeof $scope.userInfo === "undefined") {
+            $scope.userInfo = {};
+        }
+
+        // default to WDF01
+        $scope.userInfo.building = "WDF01";
+        if (typeof bridgeDataService.getUserInfo() !== "undefined") {
+            $scope.userInfo.building = bridgeDataService.getUserInfo().BUILDING;
+        }
 
         $scope.box.settingsTitle = "Configure language";
         $scope.box.settingScreenData = {
             templatePath: "lunchWalldorf/settings.html",
                 controller: angular.module('app.lunchWalldorf').applunchWalldorfSettings,
-                id: $scope.boxId
+                id: $scope.boxId,
+                scope: {
+                    userInfo: "="
+                }
         };
 
-        $scope.portalLinkText = "Lunch menu in the portal";
         $scope.noDataString = "Data could not be loaded from webservice.";
-
         $scope.configService = lunchConfigService;
+
+        // proceed to next potential lunch-relevant day
+        var date = dataProcessor.getDateToDisplay(new Date());
+        while (!dataProcessor.isRegularWeekDay(date)) {
+            date.setDate( date.getDate() + 1 );
+        }
+        $scope.date = date;
 
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
-        };    
+        };
 
-        function loadAndDisplayLunchMenu() {
-            // proceed to next potential lunch-relevant day
-            var date = dataProcessor.getDateToDisplay(new Date());
-            while (!dataProcessor.isRegularWeekDay(date)) {
-                date.setDate( date.getDate() + 1 );
+        $scope.chosenbackend = $scope.configService.chosenbackend;
+
+        $scope.refreshBackend = function () {
+
+            // default back to user building if no Backend selected - if not to WDF
+            if ( ! lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
+                $scope.chosenbackend = $scope.userInfo.building.substring(0,3);
+                if ( ! lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
+                    $scope.chosenbackend = lunchBackendData.getDefaultBackend();
+                }
             }
 
-            $http.get('/api/get?proxy=true&url=' + encodeURI('http://app.sap.eurest.de:80/mobileajax/data/35785f54c4f0fddea47b6d553e41e987/all.json')
-            ).success(function(data) {            
-                // evaluate menu
-                $scope.lunch = dataProcessor.getLunchMenu(data, date);
-                if($scope.lunch){
-                    $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                    $scope.contentLoaded = true;                
+            lunchBackendData.getLunchData($scope.chosenbackend).then( function (data) {
+                $scope.lunch = dataProcessor.getLunchMenu(data, $scope.date);
+                if ($scope.lunch) {
+                    $scope.screendate = calUtils.getWeekdays()[dataProcessor.getDay($scope.date)].long + ", " + $scope.date.getDate() + ". " + calUtils.getMonthName($scope.date.getMonth()).long;
+                    $scope.contentLoaded = true;
                 } else {
                     // move on to next date
-                    date.setDate( date.getDate() + 1 );
-                    while (!dataProcessor.isRegularWeekDay(date)) {
-                        date.setDate( date.getDate() + 1 );
+                    $scope.date.setDate($scope.date.getDate() + 1);
+                    while (!dataProcessor.isRegularWeekDay($scope.date)) {
+                        $scope.date.setDate($scope.date.getDate() + 1);
                     }
                     // evaluate menu
-                    $scope.lunch = dataProcessor.getLunchMenu(data, date);
-                    if($scope.lunch){
-                        $scope.date = calUtils.getWeekdays()[dataProcessor.getDay(date)].long + ", " + date.getDate() + ". " + calUtils.getMonthName(date.getMonth()).long;
-                        $scope.contentLoaded = true;                    
+                    $scope.lunch = dataProcessor.getLunchMenu(data, $scope.date);
+                    if ($scope.lunch) {
+                        $scope.screendate = calUtils.getWeekdays()[dataProcessor.getDay($scope.date)].long + ", " + $scope.date.getDate() + ". " + calUtils.getMonthName($scope.date.getMonth()).long;
+                        $scope.contentLoaded = true;
                     } else {
-                        $scope.contentLoaded = false;                    
+                        $scope.contentLoaded = false;
                     }
                 }
-            }).error(function() {            
             });
-        }
-        loadAndDisplayLunchMenu();
-        $interval(loadAndDisplayLunchMenu, 1000 * 60 * 5);
+            $scope.portalLink = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLink;
+            $scope.portalLinkText = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLinkText;
+        };
+
+        $scope.refreshBackend();
+        $scope.box.reloadApp($scope.refreshBackend, 60 * 10);
     }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/lunchWalldorf/overview.html',
         controller: directiveController,
-        link: function ($scope) 
+        link: function ($scope)
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem)
                  {
                     lunchConfigService.configItem = $scope.appConfig.configItem;
                 } else {
                     $scope.appConfig.configItem = lunchConfigService.configItem;
                 }
                 $scope.box.boxSize = lunchConfigService.configItem.boxSize;
+                $scope.chosenbackend = lunchConfigService.configItem.chosenbackend;
 
                 $scope.$watch("appConfig.configItem.boxSize", function () {
                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
                         $scope.box.boxSize = $scope.appConfig.configItem.boxSize;
                     }
                 }, true);
+                 $scope.$watch("appConfig.configItem.chosenbackend", function () {
+                     if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                         $scope.chosenbackend = lunchConfigService.configItem.chosenbackend;
+                         $scope.refreshBackend($scope.chosenbackend, $scope.date);
+                     }
+                 }, true);
              }
         };
 }]);
@@ -139,19 +169,21 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
         return parsedDishes;
     };
 
-    this.getLunchMenu = function (data, date) 
-    {                                
+    this.getLunchMenu = function (data, date)
+    {
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
-        date.setMilliseconds(0);        
-        date = Math.floor(date.getTime() / 1000);        
+        date.setMilliseconds(0);
+        date = Math.floor(date.getTime() / 1000);
 
         for(var i = 0; i < data.menu.length; i++)
-        {                    
-            var diff = ((data.menu[i].date - date) / 60 / 60);              
+        {
+            var diff = ((data.menu[i].date - date) / 60 / 60);
 
-            if(diff === 0)
+            // the KAR backend is a bit out of sync, therefore we need
+            // a bit of tweaking here and can't compare to 0 any more
+            if(diff < 10 && diff > -10)
             {
                 var lunchMenu = {};
                 var date_menu = data.menu[i].counters;
@@ -178,7 +210,7 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                         {
                             lunchMenu.mainCourse = [];
                         }
-                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );   
+                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );
                     }
 
                 }

@@ -10,6 +10,7 @@ lib-cov
 setup.exe
 test-results.xml
 checkstyle.xml
+badge/*.svg
 
 pids
 logs
@@ -205,6 +206,7 @@ $RECYCLE.BIN/
 
 *.sln
 *.pem
+!SAPNetCA.pem
 
 # =========================
 # Ignore cURL
@@ -221,3 +223,7 @@ webui/Test_Modules.html
 # =========================
 ./spec
 
+#==========================
+# CoverageResults
+#==========================
+coverage/**/*
