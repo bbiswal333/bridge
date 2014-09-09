@@ -117,6 +117,7 @@ angular.module("app.cats")
 					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
 						reload();
+
 						$scope.state = "CATS-Data received and processed";
 						$scope.hasError = false;
 					}
