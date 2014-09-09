@@ -7,10 +7,10 @@
 var siriusUtils = function () {
 
     this.adjustURLForRunningEnvironment=function(){
-        return 'https://ifq.wdf.sap.corp/zprs/json';
+        return 'https://ifd.wdf.sap.corp/zprs/json';
     };
     this.OLD_PR_URL=function(){
-        return 'https://ifq.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
+        return 'https://ifd.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
     };
 
     this.SiriusObject = function () {
