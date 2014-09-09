@@ -88,5 +88,5 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             $scope.config = configservice;
         }
 
-        $scope.box.reloadApp(ticketData, 60 * 10);
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 10);
 }]);
