@@ -15,7 +15,7 @@
                     "config.js",
                     "siriusUtils.js",
                     "taskfiltersconstants.js",
-                    "lodash.min.js"  ],
+                    "lodash.min.js"   ],
 	"css_files" : ["style.css"]
 }
 
