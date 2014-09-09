@@ -52,15 +52,15 @@
             </div>
         </div>
 
-        <div class="row col-xs-12 col-md-6" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
+        <div class="row" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
             <div class="btn-group">
-                <p style="margin-top: 5px">Filtered by:</p>
-                <multiselect-dropdown style="margin-left:10px;width: 200px;" options="assignedToUsers"
+                <p class="col-xs-1" style="margin-top: 5px; width: 120px;">Filtered by:</p>
+                <multiselect-dropdown class="col-xs-1" style="margin-left: -40px; width: 250px;" options="assignedToUsers"
                                       model="$parent.selectedUserInAssignedToDropDown" text="'Assignee'" sort="true"
                                       is-filter="true" display-attribute="display">
                 </multiselect-dropdown>
-                <p style="margin-top: 5px;margin-left: -70px">with:</p>
-                <multiselect-dropdown style="margin-left:10px;width:200px;" options="statusDropDown" model="$parent.selectedStatus"
+                <p class="col-xs-1" style="margin-top: 5px;margin-left: -120px; width:120px;">with:</p>
+                <multiselect-dropdown class="col-xs-1" style="margin-left:-80px;width:200px;" options="statusDropDown" model="$parent.selectedStatus"
                                       text="'Status'" isFilter="true" is-filter="true">
                 </multiselect-dropdown>
             </div>
