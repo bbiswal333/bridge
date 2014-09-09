@@ -1,15 +1,15 @@
 {
-	"app":
-	{
-		"module_name"			:	"app.sirius",
-		"title"					:	"Sirius BETA ",
-		"icon_css"				:	"sirius-icon",
-		"overview_directive"	:	"app.sirius",
+    "app":
+    {
+        "module_name"			:	"app.sirius",
+        "title"					:	"Sirius BETA ",
+        "icon_css"				:	"sirius-icon",
+        "overview_directive"	:	"app.sirius",
         "needs_client"			:	false,
         "default_hidden"		: 	false
     },
 	"modules" : [],
-	"js_files" : [  "siriusDirectives.js",
+	"js_files" : ["siriusDirectives.js",
                     "overview.js",
                     "settings.js",
                     "config.js",
