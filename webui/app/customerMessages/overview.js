@@ -26,7 +26,7 @@ angular.module('app.customerMessages').directive('app.customerMessages', ['app.c
             {
                 configservice.data = $scope.appConfig.data;
                 configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
-            }            
+            }
         }
     };
 }]);
