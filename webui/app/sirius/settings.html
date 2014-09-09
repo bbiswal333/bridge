@@ -1,0 +1,95 @@
+    <form name="ConfigItemForm">
+        <div class="row">
+            <div class="col-xs-2 form_head" style="float:none;">Select a View</div>
+            <div class="btn-group" style="margin-left:15px;margin-top:10px">
+                <span ng-click="currentConfigValues.showProgramOverview = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.showProgramOverview === true || currentConfigValues.showProgramOverview];" style="margin-right:0;">Program</span>
+                <span ng-click="currentConfigValues.showProgramOverview = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showProgramOverview === false];" style="margin-right:0;">Tasks</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div ng-if="currentConfigValues.showProgramOverview"class="col-xs-12 col-md-6" style="margin-left:4px">
+                <br/><b>Search for Programs and show overview</b><br/><br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div  ng-if="!currentConfigValues.showProgramOverview" class="col-xs-12 col-md-6" style="margin-left:4px">
+                <br/><b>Show tasks of a specific delivery in a program</b><br/><br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div  ng-if="!currentConfigValues.showProgramOverview" class="col-xs-12 col-md-6" style="margin-left:4px">
+                <table>
+                    <tr>
+                        <th>
+                            <input id="searchProgram"
+                               class="form-control form "
+                               ng-model="$parent.$parent.searchString"
+                               style="width:390px"
+                               type="text" placeholder={{SettingsProgramName}}
+                               typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
+                               typeahead-min-length="3"
+                               typeahead-wait-ms="200"
+                               typeahead-on-select="onSelect($item);resetFilter()"/>
+                        </th>
+                        <th>
+                            <div class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">
+                                <button type="button" class="btn btn-default dropdown-toggle"style="text-align:left;width:375px;">
+                                    <i class="fa fa-caret-down" style="float:right;margin-top:4px;"></i>
+                                    {{firstdelivery.DELIVERY_NAME}}
+                                </button>
+                                <ul class="dropdown-menu siriusDropDownBox " role="menu" ng-if="deliveries.length>0">
+                                    <li ng-repeat="delivery in deliveries" ng-click="getTasks(delivery);">
+                                        <a>{{delivery.LOAD_STATE.DELIVERY_NAME}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row col-xs-12 col-md-6" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
+            <div class="btn-group">
+                <p style="margin-top: 5px">Filtered by:</p>
+                <multiselect-dropdown style="margin-left:10px;width: 200px;" options="assignedToUsers"
+                                      model="$parent.selectedUserInAssignedToDropDown" text="'Assignee'" sort="true"
+                                      is-filter="true" display-attribute="display">
+                </multiselect-dropdown>
+                <p style="margin-top: 5px;margin-left: -70px">with:</p>
+                <multiselect-dropdown style="margin-left:10px;width:200px;" options="statusDropDown" model="$parent.selectedStatus"
+                                      text="'Status'" isFilter="true" is-filter="true">
+                </multiselect-dropdown>
+            </div>
+        </div>
+
+        <div class="row" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
+            <div style="display:inline-block;margin-left:10px;vertical-align:middle;" class="scroll-x no-padding"
+                 ng-if="!statusDropDown[0].checked">
+                <div class="col-xs-1 taskFilter-selected" ng-repeat="item in selectedUserInAssignedToDropDown">
+                    <div class="col-xs-10 taskFilter-selected-text" sirius-ellipsis="{{item.display}}"
+                         popover-trigger="mouseenter" popover-placement="top" popover-append-to-body="true">{{item.display}}
+                    </div>
+                    <div class="col-xs-1 taskFilter-selected-remove"><i class="clickable remove-icon"
+                                                                        ng-click="selectedUserInAssignedToDropDown.splice(selectedUserInAssignedToDropDown.indexOf(item),1)">×</i>
+                    </div>
+                </div>
+                <div class="col-xs-1 taskFilter-selected {{classMap[item]}}" ng-repeat="item in selectedStatus">
+                    <div class="col-xs-10 taskFilter-selected-text" sirius-ellipsis="{{item}}"
+                         popover-trigger="mouseenter" popover-placement="top" popover-append-to-body="true">{{item}}
+                    </div>
+                    <div class="col-xs-1 taskFilter-selected-remove"><i class="clickable remove-icon"
+                                                                        ng-click="selectedStatus.splice(selectedStatus.indexOf(item),1)">×</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+	<div class="row" >
+		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+	</div>
+
