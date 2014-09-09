@@ -118,7 +118,6 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
                     task.WORKING_STATE.TASK_STATUS = "Critical"
                     break;
             }
-            ;
         };
 
         //Date Format for show due date
