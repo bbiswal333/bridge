@@ -5,6 +5,8 @@
         var storageKey = "bridgeConfig";
         var that = this;
 
+        this.configSnapshot = null;
+
         function getAppConfig(app) {
             return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
         }
@@ -50,9 +52,20 @@
             return apps;
         }
 
+        function isEmpty(obj) {
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         this.store = function(dataService) {
-            var payload = that.constructPayload(dataService);
-            $window.localStorage.setItem(storageKey, $window.JSON.stringify(payload));
+            if (dataService.initialized === true) {
+                var payload = that.constructPayload(dataService);
+                $window.localStorage.setItem(storageKey, angular.toJson(payload));
+            }
         };
 
         this.constructPayload = function(dataService){
@@ -69,41 +82,58 @@
             return configPayload;
         };
 
-        this.persistInBackend = function (dataService, doSynchronious) {
-            var configPayload = {projects: []};
-            var projects = dataService.getProjects();
-            for (var i = 0; i < projects.length; i++) {
-                configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
-            }
+        this.decideWhichConfigToUse = function(oConfigFromBackend){
+            var oConfigFromStorage = that.getConfigFromStorage();
 
-            configPayload.bridgeSettings = dataService.getBridgeSettings();
-            configPayload.savedOn = new Date();
-            delete configPayload.bridgeSettings.local;
-
-            if (doSynchronious === true){
-                // angular cannot do synchronious requests, so use jQuery here
-                $.ajax(
-                    {
-                        url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
-                        type: "POST",
-                        data: angular.toJson(configPayload),
-                        async: false,
-                        headers: { 'Content-Type': 'text/plain' },
-                        success:function(){},
-                        error:function(){}
-                    });
+            $log.log(oConfigFromBackend.savedOn);
+            if (oConfigFromStorage !== null) {
+                $log.log(oConfigFromStorage.savedOn);
             } else {
-                $http({
-                    url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
-                    method: "POST",
-                    data: angular.toJson(configPayload),
-                    headers: { 'Content-Type': 'text/plain' }
-                }).success(function () {
-                    $log.log("Config saved successfully");
-                }).error(function () {
-                    $log.log("Error when saving config!");
-                });
+                $log.log("Config from Storage was empty");
             }
+
+            if ((!angular.isObject(oConfigFromStorage) || isEmpty(oConfigFromStorage)) && (!angular.isObject(oConfigFromBackend) || isEmpty(oConfigFromBackend))) {
+                return that.getDefaultConfig(); // return default config if we have have neither backendConfig nor localConfig
+            } else if (!angular.isObject(oConfigFromStorage) || isEmpty(oConfigFromStorage)){
+                return oConfigFromBackend;  // use backendConfig if we have no local config
+            } else if (oConfigFromBackend.savedOn > oConfigFromStorage.savedOn){
+                return oConfigFromBackend;  // use config from backend if it is newer than the local config
+            } else {
+                return oConfigFromStorage;
+            }
+        };
+
+        this.getConfigFromStorage = function(){
+            var oConfigFromStorage = angular.fromJson($window.localStorage.getItem(storageKey));
+            if (oConfigFromStorage !== null && oConfigFromStorage.savedOn !== null) {
+                oConfigFromStorage.savedOn = new Date(oConfigFromStorage.savedOn);
+            }
+
+            return oConfigFromStorage;
+        };
+
+        this.persistIfThereAreChanges = function() {
+            var configFromStorage = that.getConfigFromStorage();
+            if ((configFromStorage !== null && configFromStorage.savedOn > that.configSnapshot.savedOn) || !that.configSnapshot.hasOwnProperty("savedOn")){
+                that.persistInBackend();
+                that.configSnapshot = configFromStorage;
+            }
+        };
+
+        this.persistInBackend = function () {
+
+            var sConfigPayload = $window.localStorage.getItem(storageKey);
+
+            $http({
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                method: "POST",
+                data: sConfigPayload,
+                headers: { 'Content-Type': 'text/plain' }
+            }).success(function () {
+                $log.log("Config saved successfully");
+            }).error(function () {
+                $log.log("Error when saving config!");
+            });
         };
 
         this.loadFromBackend = function (deferred) {
@@ -112,6 +142,10 @@
                     method: "GET"
                 }).success(function (data) {
                     $log.log("Config loaded successfully");
+
+                    if (data.hasOwnProperty("savedOn")){
+                        data.savedOn = new Date(data.savedOn);
+                    }
                     deferred.resolve(data);
                 }).error(function (data) {
                     $log.log("Error when loading config!");

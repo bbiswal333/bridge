@@ -11,7 +11,7 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $window.onbeforeunload = function(){
-            bridgeConfig.persistInBackend(bridgeDataService, true);
+            bridgeConfig.store(bridgeDataService);
         };
 
         $scope.logMode = bridgeDataService.getLogMode();
@@ -42,7 +42,7 @@ angular.module('bridge.app').controller('bridgeController',
             if ($scope.sideView === "settings" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
                 if ($scope.show_settings === false) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
             $scope.sideView = "settings";
@@ -51,7 +51,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.bridge_hide_settings = function () {
             if ($scope.show_settings === true) {
                 $scope.show_settings = false;
-                bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
             }
         };
 
@@ -158,11 +158,10 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $window.debug = {
-            resetConfig: function()
-                        {
+            resetConfig: function() {
                 bridgeDataService.toDefault();
-                bridgeConfig.persistInBackend(bridgeDataService);
-                        }
+                bridgeConfig.store(bridgeDataService);
+            }
         };
 
         $scope.toggleDragging = function() {
@@ -185,7 +184,7 @@ angular.module('bridge.app').controller('bridgeController',
                     }
                 }
           }
-          bridgeConfig.persistInBackend(bridgeDataService);
+          bridgeConfig.store(bridgeDataService);
         };
 
         $scope.settings_click = function (boxId) {
@@ -229,7 +228,7 @@ angular.module('bridge.app').controller('bridgeController',
 
             // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
             function onModalClosed() {
-                bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
                 $scope.modalInstance = null;
             }
             this.modalInstance.result.then(onModalClosed, onModalClosed);
@@ -307,7 +306,7 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sortableOptionsCaption = "Activate";
             $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-            $scope.temporaryData = bridgeDataService.getTemporaryData();
+            //$scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;

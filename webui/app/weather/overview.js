@@ -213,7 +213,7 @@ return {
             }
             else
             {
-                weatherconfig.init().then( function(){ bridgeConfig.persistInBackend(bridgeDataService); } );                
+                weatherconfig.init().then( function(){ bridgeConfig.store(bridgeDataService); } );
             }
         }
     };

@@ -113,7 +113,7 @@ angular.module('app.im').controller('app.im.detailController',
                     if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, addMessage); }
                     if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, addMessage); }
                 }                                            
-                bridgeConfig.persistInBackend(bridgeDataService);                
+                bridgeConfig.store(bridgeDataService);
             }
         },true);  
 
