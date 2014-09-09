@@ -83,9 +83,9 @@ angular.module("app.cats")
 			}
 			$scope.currentMonth = "";
 			$scope.calArray = [];
-			$scope.state = "";
 			$scope.loading = true;
 			$scope.hasError = false;
+			$scope.state = "";
 			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
@@ -118,6 +118,7 @@ angular.module("app.cats")
 						calUtils.addAdditionalData(additionalData);
 						reload();
 						$scope.state = "CATS-Data received and processed";
+						$scope.hasError = false;
 					}
 					else {
 						$scope.state = "CATS-Data received from ISP but during processing an error occurred";
