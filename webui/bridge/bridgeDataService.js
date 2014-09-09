@@ -1,4 +1,4 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', '$window', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http, $window) {
+angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', '$window', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http, $window) {
     this.projects = [];
     this.bridgeSettings = {};
     this.temporaryData = {};
@@ -226,6 +226,7 @@
         getProjects: _getProjects,
         getAppMetadataForProject: _getAppMetadataForProject,
         getAppById: _getAppById,
+        getAppByModuleName: _getAppByModuleName,
         getAppConfigById: _getAppConfigById,
         getAppConfigByModuleName: _getAppConfigByModuleName,
         toDefault: _toDefault,

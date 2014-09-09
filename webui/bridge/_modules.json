@@ -28,6 +28,7 @@
 		"bridgeDownloadController.js", 
 		"bridgeGithubController.js", 
 		"bridgeDataService.js", 
+        "bridgeSettingsModalService.js",
 		"bridgeConfigService.js", 
 		"bridgeInstanceService.js", 
 		"bridgeDownloadService.js",
