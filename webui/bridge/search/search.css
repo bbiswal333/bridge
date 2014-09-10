@@ -1,0 +1,30 @@
+.search-category-column {
+	min-width: 150px;
+	text-align: right;
+	vertical-align: top;
+	border-right: #bbbbbb 1px solid;
+	padding: 0px 10px 0px 5px;
+	color: rgba(0, 0, 0, .6);
+	font-weight: normal;
+}
+
+.search-results-column {
+	text-align: left;
+	vertical-align: top;
+	background-color: rgba(255,255,255, 0.8);
+	color: rgba(0, 0, 0, .8);
+	width: 100%;
+	font-weight: normal;
+}
+
+.search-span-ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display: inline-block;
+	vertical-align: top
+}
+
+.search-line-selected {
+	background-color: rgba(0, 50, 100, 0.5);
+}

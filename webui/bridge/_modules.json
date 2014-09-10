@@ -33,6 +33,9 @@
 		"bridgeDownloadService.js",
 		"bridgeNewsController.js",
 		"bridgeNewsService.js",
+		"search/bridgeSearch.js",
+		"search/fuzzySearch.js",
+		"search/bridgeSearchDirective.js",
 		"notifier.js", 
 		"libUtils.js", 
 		"sortableService.js",
@@ -46,7 +49,7 @@
 		"news/newspreview.js"
 	],
 	"css_files" : [
-        "diagnosis/diagnosis.css"
-
+        "diagnosis/diagnosis.css",
+        "search/search.css"
 	]
 }

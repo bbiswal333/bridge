@@ -339,6 +339,9 @@ angular.module('bridge.app').controller('bridgeController',
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
             }
+            if ($location.$$host === 'localhost') {
+                $scope.isLocal = true;
+            }
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;
         });
