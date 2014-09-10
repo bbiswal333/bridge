@@ -46,10 +46,15 @@
                 {
                     category_aa = category + '_aa';
                 }
-                if(backendTicket.STATUSSTXT === "Author Action" && category_aa !== "")
+                // Customer Action 
+                if(backendTicket.STATUS_KEY === "E0004" && category_aa !== "")
                 {
                     prio[category_aa]++;
                     that.backendTickets[category_aa].push(backendTicket);
+                }
+                // incidents with status Solution Provided are not considered at all
+                else if ( backendTicket.STATUS_KEY === "E0005") {
+                    return false; //continue forEach loop
                 }
                 else
                 {

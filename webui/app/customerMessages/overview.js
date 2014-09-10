@@ -6,8 +6,8 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     var config = {};
     config.data = {};
     config.data.settings = {};
-    config.data.selection = {};
     config.data.settings.ignore_author_action = true;
+    config.data.selection = {};
     config.data.selection.sel_components = true;
     config.data.selection.assigned_me = false;
     config.lastDataUpdate = null;
