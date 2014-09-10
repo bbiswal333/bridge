@@ -28,7 +28,7 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         module("app.customerMessages");
         module("mock.module");
-        
+
         inject(function($injector){
             configService = $injector.get('app.customerMessages.configservice');
         });
@@ -115,12 +115,12 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         beforeEach(function () {
             testGet = $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin);
-            
+
         });
         afterEach(function(){
             $httpBackend.flush();
         });
-    
+
         it("should remember the tickets that were loaded (for notifications)", function(){
             expect(cmTicketData.lastTickets).toBe(null);
 
@@ -159,21 +159,21 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         });
 
-        xit("should show notification as customized", function(){
-            // configService.data.notificationDuration = 
+        // it("should show notification as customized", function(){
+        //     // configService.data.notificationDuration =
 
-            // testGet.respond(mockData);
-            // cmTicketData.loadTicketData();
-            // $httpBackend.flush();
+        //     // testGet.respond(mockData);
+        //     // cmTicketData.loadTicketData();
+        //     // $httpBackend.flush();
 
-            // testGet.respond(mockDataChanged);
-            // cmTicketData.loadTicketData().then(function(){
-            //     expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
-            //     expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
-            //     expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
-            // });
+        //     // testGet.respond(mockDataChanged);
+        //     // cmTicketData.loadTicketData().then(function(){
+        //     //     expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
+        //     //     expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
+        //     //     expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
+        //     // });
 
-        });
+        // });
 
         it("should notify me about a ticket that changed while I was offline", function(){
             configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);

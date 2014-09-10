@@ -6,7 +6,6 @@
 
         inject(["$rootScope", "app.cats.allocationBar.utils.blockCalculations", function (rootScope, _blockCalculations) {
             blockCalculations = _blockCalculations;
-            $rootScope = rootScope;
         }]);
     });
 
@@ -55,7 +54,6 @@ describe("Test the color utils for the allocation bar", function () {
 
         inject(["$rootScope", "app.cats.allocationBar.utils.colorUtils", function (rootScope, _colorUtils) {
             colorUtils = _colorUtils;
-            $rootScope = rootScope;
         }]);
     });
 

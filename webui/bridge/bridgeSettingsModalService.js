@@ -45,4 +45,3 @@ angular.module('bridge.service').service('bridge.service.bridgeSettingsModalServ
         }
     };
 } ]);
-
