@@ -4,13 +4,13 @@
     "app.playbook.configservice",
     function (tileConfigService) {
     var directiveController = ['$scope', '$http', '$window', function ($scope, $http, $window) {
-        
+
         $scope.boxSize = "1";
         $scope.contentLoaded = false;
 
         $scope.searchButton_click = function () {
             $window.open('https://myplaybook.wdf.sap.corp/#/?page=search&query=' + $scope.searchString + '&map=playbook-new');
-        };   
+        };
 
         $scope.box.settingScreenData = {
             templatePath: "playbook/settings.html",
@@ -22,18 +22,17 @@
 
         $scope.box.returnConfig = function(){
             return angular.copy($scope.configService);
-        };    
+        };
 
-        
     }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/playbook/overview.html',
         controller: directiveController,
-        link: function ($scope) 
+        link: function ($scope)
              {
-                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) 
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem)
                  {
                     tileConfigService.configItem = $scope.appConfig.configItem;
                 } else {

@@ -1,21 +1,21 @@
 angular.module('app.githubMilestone', ["lib.utils"]);
 
-angular.module('app.githubMilestone').directive('app.githubMilestone', 
+angular.module('app.githubMilestone').directive('app.githubMilestone',
     ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils",
     function($http, appGithubMilestoneConfig, calUtils) {
 
-       
-    var directiveController = ['$scope', function($scope ) {           
+
+    var directiveController = ['$scope', function($scope ) {
             $scope.box.boxSize = "2";
             $scope.box.settingsTitle = "Configure Repository and Duration";
-            $scope.error = {display: false, msg: ""};            
+            $scope.error = {display: false, msg: ""};
             //Settings Screen
             $scope.box.settingScreenData = {
             templatePath: "githubMilestone/settings.html",
                 controller: angular.module('app.githubMilestone').appGithubMilestoneSettings,
                 id: $scope.boxId
             };
-        
+
 
         $scope.box.returnConfig = function () {
                 return appGithubMilestoneConfig;
@@ -26,21 +26,21 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 
             var due_on = new Date(Date.parse(due_on_str));
             var start = new Date(due_on.getTime() - ($scope.config.milestoneDuration * 1000 * 60 * 60 * 24));
-            
+
             var due_in = calUtils.calcBusinessDays(start, due_on);
-            
+
             var passedDays = calUtils.calcBusinessDays(start, currentDate);
             if (passedDays < 0)
             {
                 passedDays = 0;
             }
-            
+
             var timeProgress = (passedDays / due_in) * 100;
             if (timeProgress > 100)
             {
                 timeProgress = 100;
             }
-            
+
             var remainingDays = due_in - passedDays;
             if (remainingDays < 0)
             {
@@ -55,7 +55,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             };
         }
 
-        $scope.getData = function() { 
+        $scope.getData = function() {
             $scope.config = appGithubMilestoneConfig;
 
             $scope.boxTitle = "Github";
@@ -96,11 +96,11 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                         }
                     }
                     else {
-                        $scope.error = {display: true, msg: "Sorry, no milestones found in this project!"};   
+                        $scope.error = {display: true, msg: "Sorry, no milestones found in this project!"};
                     }
                 }).error(function(data, status) {
-                switch (status) 
-                { 
+                switch (status)
+                {
                     case 404:
                         $scope.milestones = "";
                         $scope.error = {display: true, msg: "Repository \"" + $scope.config.repo.html_url + "\" could not be accessed. Either the link is invalid or GitHub is currently in maintenance." };
@@ -114,13 +114,15 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             $scope.$watch('config', function() {
                 $scope.getData();
             },true);
+
+            $scope.box.reloadApp($scope.getData, 60 * 5);
         }];
 
     return {
         restrict: 'E',
         templateUrl: 'app/githubMilestone/overview.html',
         controller: directiveController,
-        link: function ($scope) {            
+        link: function ($scope) {
 
             if ($scope.appConfig !== undefined && JSON.stringify($scope.appConfig) !== "{}") {
                 appGithubMilestoneConfig.repo.name = $scope.appConfig.repo.name;

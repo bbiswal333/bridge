@@ -1,7 +1,7 @@
 angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window",
   function($http, $q, $log, $window) {
     var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin;
-    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin;    
+    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin;
     var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
     var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
 
@@ -33,28 +33,30 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
       if (forceUpdate_b || CAT2ComplinaceData4FourMonthCache == null) {
         _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
-          CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
-
-          // ////////////////////////////////////////////////////////
-          // // test test test: uncomment to be a part-time colleague
-          // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
-          //   CATSCHKforDay.CONVERT_H_T = 7.9;
-          //   if (CATSCHKforDay.STDAZ) {
-          //     CATSCHKforDay.STDAZ = 7.55;
-          //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-          //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
-          //     if (STADZRounded && QUANTITYHRounded) {
-          //       if (STADZRounded === QUANTITYHRounded) {
-          //         CATSCHKforDay.STATUS = "G"; // maintained
-          //       } else {
-          //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-          //       }
-          //     }
-          //   }
-          // });
-          // ////////////////////////////////////////////////////////
-
-          deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+          if (data && data.CATSCHK) {
+            // ////////////////////////////////////////////////////////
+            // // test test test: uncomment to be a part-time colleague
+            // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
+            //   CATSCHKforDay.CONVERT_H_T = 7.9;
+            //   if (CATSCHKforDay.STDAZ) {
+            //     CATSCHKforDay.STDAZ = 7.55;
+            //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+            //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+            //     if (STADZRounded && QUANTITYHRounded) {
+            //       if (STADZRounded === QUANTITYHRounded) {
+            //         CATSCHKforDay.STATUS = "G"; // maintained
+            //       } else {
+            //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+            //       }
+            //     }
+            //   }
+            // });
+            // ////////////////////////////////////////////////////////
+            CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
+            deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+          } else {
+            deferred.resolve();
+          }
         });
       } else {
         deferred.resolve(CAT2ComplinaceData4FourMonthCache);
@@ -65,7 +67,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     this.getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
-      
+
       _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) { // /zdevdb/GETCATSDATA
         if (!data) {
           deferred.reject(status);

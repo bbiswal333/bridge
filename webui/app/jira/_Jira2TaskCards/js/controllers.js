@@ -19,7 +19,7 @@ app.controller('MyCtrl1', ['$scope', '$http', '$window', function($scope, $http,
   $scope.searchString = 'id in projectRankedIssues(I2MASEDEV) AND fixVersion in (2013_S24) order by "Project Rank" ASC, Key ASC';
 
   $scope.descriptionFlag = true;
-  
+
   $scope.descriptionFlagChanged = function() {
   };
 
@@ -34,7 +34,7 @@ app.controller('MyCtrl1', ['$scope', '$http', '$window', function($scope, $http,
 
     $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data) {
         $scope.tasks = [];
-        
+
         angular.forEach(data.issues, function(issue) {
           $scope.tasks.push({
             key:            issue.key,

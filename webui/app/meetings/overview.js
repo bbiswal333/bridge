@@ -21,7 +21,7 @@ directive("app.meetings", [
 					return dialIn + 'x' + participantCode + '#';
 				}
 				else
-				{					
+				{
 					return dialIn;
 				}
 			};
@@ -30,13 +30,13 @@ directive("app.meetings", [
 			{
 				if($window.client.os !== "win32" && meetingsConfigService.configItem.clipboard)
 				{
-					$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + $window.location.origin);	
+					$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + $window.location.origin);
 				}
 			};
 
 			$scope.box.returnConfig = function(){
 	            return angular.copy(meetingsConfigService);
-	        }; 
+	        };
 		}];
 
 		var linkFn = function ($scope) {
@@ -45,7 +45,7 @@ directive("app.meetings", [
 			$scope.dayCnt = 2; // Because of time Zone issues
 			$scope.hideAllDayEvents = true;
 			/* ====================================== */
-			
+
 			$scope.events = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
@@ -81,19 +81,19 @@ directive("app.meetings", [
 						var body;
 						body = data["m:GetItemResponse"]["m:ResponseMessages"][0]["m:GetItemResponseMessage"][0]["m:Items"][0]["t:CalendarItem"][0]["t:Body"][0]._;
 						if (typeof body !== "undefined") {
-							
+
 							for (var i = 0; i < $scope.events.length; i++) {
 								if ($scope.events[i].exchangeUid === exchangeUid) {
 									$scope.events[i].body = body;
 									//var partcode = body.match(/Participant[^0-9]+([0-9\s]+)[^0-9]/i)
 									//
-									// first get rid of the newlines in order to allow more proper participant code parsing 
+									// first get rid of the newlines in order to allow more proper participant code parsing
 									// New approach: try to fix the participant code to the "last" 10-digit number in the body
 									//
 									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
-									
+
 									var sapconnecturl;
-									
+
 									sapconnecturl = body.match(/https:\/\/[^\s"]*pgiconnect[^\s"]*/i);
 									if ( sapconnecturl == null) {
 										sapconnecturl = body.match(/https:\/\/[^\s"]*broadcast.wdf.sap.corp[^\s"]*/i);
@@ -152,9 +152,9 @@ directive("app.meetings", [
 					var end = dateFn(events[i]["t:End"][0]);
 
 					if (start.getDate() === today.getDate()) {
-						
+
 						loadFromExchangeGI(events[i]["t:ItemId"][0].$.Id);
-						
+
 						$scope.events.push({
 							subject: events[i]["t:Subject"][0],
 							start: start,
@@ -170,7 +170,6 @@ directive("app.meetings", [
 							exchangeUid: events[i]["t:ItemId"][0].$.Id,
 							changeKey: events[i]["t:ItemId"][0].$.ChangeKey
 						});
-						
 					}
 				}
 
@@ -198,7 +197,6 @@ directive("app.meetings", [
 
 					try{
 						eventsRaw = {};
-						
 						eventsRaw = data["m:FindItemResponse"]["m:ResponseMessages"][0]["m:FindItemResponseMessage"][0]["m:RootFolder"][0]["t:Items"][0]["t:CalendarItem"];
 
 						if (typeof eventsRaw !== "undefined") {
@@ -212,7 +210,7 @@ directive("app.meetings", [
 					$scope.loading = false;
 				});
 			}
-			
+
 			$scope.$watch("appConfig.configItem.boxSize", function () {
 				if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
 					$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
@@ -223,7 +221,6 @@ directive("app.meetings", [
 				$scope.box.sAPConnectPreferredDialin =  $scope.appConfig.configItem.sAPConnectPreferredDialin;
 		    }, true);
 
-			
 			$scope.upComingEvents = function () {
 			    return $scope.events;
 			};
@@ -280,6 +277,6 @@ directive("app.meetings", [
 			scope: false,
 			templateUrl: "app/meetings/overview.html",
 			replace: true,
-	        link: linkFn 
+	        link: linkFn
 		};
 }]);

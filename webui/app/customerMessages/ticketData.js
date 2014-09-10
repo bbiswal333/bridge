@@ -1,6 +1,6 @@
 ﻿angular.module('app.customerMessages').service('app.customerMessages.ticketData',
-    ['$http', '$q', '$window', 'app.customerMessages.configservice',
-    function ($http, $q, $window, configservice) {
+    ['$http', '$q', '$window', "$rootScope", "$location", 'app.customerMessages.configservice', "notifier",
+    function ($http, $q, $window, $rootScope, $location, configservice, notifier) {
     var that = this;
 
     //buckets for the backend tickets
@@ -12,11 +12,18 @@
     this.backendTickets.assigned_me = [];
     this.backendTickets.assigned_me_aa = [];
     this.backendTickets.created_me = [];
-    
+
+    this.lastTickets = null;
+    this.ticketsFromNotifications = {};
+
+    this.ticketsFromNotifications = {};
+    this.ticketsFromNotifications.assigned_me = [];
+    this.ticketsFromNotifications.sel_components = [];
+
     // make an object so that we can have it referenced in the scope
     this.isInitialized = { value: false };
 
-    function addTicket(list, ticket){ 
+    function addTicket(list, ticket){
         var allreadyExists = false;
         list.some(function(item){
             if (angular.equals(ticket, item)){
@@ -26,7 +33,7 @@
         });
 
         if (!allreadyExists){
-            list.push(ticket); 
+            list.push(ticket);
         }
     }
 
@@ -49,7 +56,7 @@
                     prio[category]++;
                     that.backendTickets[category].push(backendTicket);
                 }
-                
+
                 addTicket(prio.tickets, backendTicket);
                 prio.total = prio.tickets.length;
             }
@@ -58,9 +65,9 @@
 
     this.prios = [
         { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }, 
-        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];    
+        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
@@ -88,17 +95,18 @@
     function addCData(tagName, xml){
         var regOpen = new RegExp("<" + tagName + ">","g");
         var regClose = new RegExp("<\/" + tagName + ">","g");
-        
+
         xml = xml.replace(regOpen,"<" + tagName + "><![CDATA[");
         xml = xml.replace(regClose,"]]></" + tagName + ">");
         // console.log(xml);
         return xml;
-    }    
+    }
 
     this.loadTicketData = function () {
         var deferred = $q.defer();
+        var that = this;
 
-        $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&origin=' + $window.location.origin, {withCredentials:true}
+        $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials:true}
         ).success(function (data) {
             // data = testData;
             that.resetData();
@@ -138,6 +146,17 @@
 
         }).error(function () {
             deferred.reject();
+        });
+
+        deferred.promise.then(function(){
+            if (that.lastTickets !== null) {
+                that.notifyChanges(that.backendTickets, that.lastTickets);
+            } else if (configservice.lastDataUpdate !== null){
+                that.notifyOfflineChanges(that.backendTickets, configservice.lastDataUpdate);
+            }
+
+            configservice.lastDataUpdate = new Date();
+            that.lastTickets = angular.copy(that.backendTickets);
         });
 
         return deferred.promise;
@@ -197,6 +216,81 @@
         });
 
         return loadTicketPromise;
+    };
+
+    this.getDateFromAbapTimeString = function(sAbapDate){
+    return new Date(parseInt(sAbapDate.substring(0,4)), parseInt(sAbapDate.substring(4,6)) - 1, parseInt(sAbapDate.substring(6,8)), parseInt(sAbapDate.substring(8,10)),
+        parseInt(sAbapDate.substring(10,12)), parseInt(sAbapDate.substring(12,14)));
+    };
+
+    function notifierClickCallback() {
+        // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
+        _.defer(function() {
+            $rootScope.$apply(function() {
+                $location.path("/detail/customerMessages/Very%20high");
+            });
+        });
+    }
+
+    this.notifyChanges = function(newTicketData, oldTicketData){
+        var that = this;
+        var bNewNotifications = false;
+        var ticketsToNotify = {};
+        ticketsToNotify.assigned_me = [];
+        ticketsToNotify.sel_components = [];
+
+        for (var newTicketsCategory in newTicketData){
+            newTicketData[newTicketsCategory].forEach(function (ticket){
+                var foundTicket;
+                for (var category in oldTicketData) {
+                    foundTicket = _.find(oldTicketData[category], { OBJECT_GUID: ticket.OBJECT_GUID });
+                    
+                    if (foundTicket){
+                        break;
+                    }
+                }
+
+                
+                if (!foundTicket) {
+                    bNewNotifications = true;
+                    ticketsToNotify[newTicketsCategory].push(ticket);
+                    notifier.showInfo('New Customer Ticket', 'There is a new Customer Ticket "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
+                } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
+                    
+                    bNewNotifications = true;
+                    ticketsToNotify[newTicketsCategory].push(ticket);
+                    notifier.showInfo('Customer Ticket Changed', 'The Customer Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
+                }
+            });
+        }
+
+        if (bNewNotifications === true) {
+            that.ticketsFromNotifications = ticketsToNotify;
+        }
+    };
+
+    this.notifyOfflineChanges = function(tickets, lastDataUpdateFromConfig){
+        var foundTickets;
+        var bShowNotification = false;
+        var ticketsToNotify = {};
+        var that = this;
+        ticketsToNotify.assigned_me = [];
+        ticketsToNotify.sel_components = [];
+
+        for (var category in tickets) {
+            foundTickets = _.where(tickets[category], function(ticket){
+                return that.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
+            });
+            if (foundTickets.length > 0){
+                ticketsToNotify[category] = foundTickets;
+                bShowNotification = true;
+            }
+        }
+
+        if (bShowNotification){
+            that.ticketsFromNotifications = ticketsToNotify;
+            notifier.showInfo('Customer Tickets Changed', 'Some of your Customer Tickets changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
+        }
     };
 
 

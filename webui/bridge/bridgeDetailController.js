@@ -3,7 +3,7 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
     $scope.detailScreen.htmlPage = routeInfo.templateUrl;
     $scope.detailScreen.route = routeInfo.route;
     $scope.detailScreen.title = appInfo.title;
-    $scope.detailScreen.icon_css = appInfo.icon_css;    
+    $scope.detailScreen.icon_css = appInfo.icon_css;
 
     var infinityLimitStep = 100;
     $scope.infinityLimit = infinityLimitStep;

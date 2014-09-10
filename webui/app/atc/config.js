@@ -45,7 +45,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 		query += this.displayPrio3 ? "X;" : ";";
 		query += this.displayPrio4 ? "X;" : ";";
 		query += this.onlyInProcess ? "X" : "";
-		
+
 		return query;
 	};
 
@@ -113,6 +113,6 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 
     // this gets executed the first time this factory gets injected
 	var config = new Config();
-	
-	return config; 
+
+	return config;
 }]);

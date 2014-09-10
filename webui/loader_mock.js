@@ -20,9 +20,9 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
         overview_directive: "app.atc",
         routes:
 		[
-			{		
+			{
 			    "route"			:	"/detail/atc/:appId/:prio",
-			    "templateUrl"	:	"app/atc/detail.html"			
+			    "templateUrl"	:	"app/atc/detail.html"
 			}
 		],
         title: "ATC Results"

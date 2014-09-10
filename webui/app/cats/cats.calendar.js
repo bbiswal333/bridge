@@ -1,10 +1,10 @@
 angular.module("app.cats")
-	.directive("app.cats.calendar", 
-		["lib.utils.calUtils", 
+	.directive("app.cats.calendar",
+		["lib.utils.calUtils",
 		 "app.cats.cat2BackendZDEVDB",
 		 "app.cats.catsUtils",
-		 "$interval", 
-		 "$location", 
+		 "$interval",
+		 "$location",
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
@@ -33,7 +33,7 @@ angular.module("app.cats")
 	                var dateStr = days[i].DATEFROM;
 	                var statusStr = days[i].STATUS;
 	                var time = parseDateToTime(dateStr);
-	                
+
 	                // special handling for overbooked days
 
 	                if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
@@ -110,7 +110,7 @@ angular.module("app.cats")
 				}
 				$scope.loading = false;
 			}
-			
+
 			function handleCatsData(data) {
 				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
@@ -198,9 +198,9 @@ angular.module("app.cats")
 					default:
 						return;
 				}
-				
+
 				if (nextElement){
-					$window.setTimeout(function() { nextElement.focus(); }, 100);					
+					$window.setTimeout(function() { nextElement.focus(); }, 100);
 				}
 
 				if (originDate.getMonth() === targetDate.getMonth()) {
@@ -232,7 +232,7 @@ angular.module("app.cats")
 				});
 				return deferred.promise;
 			}
-			
+
 			$scope.selectSingleDay = function (dayString, toggle) {
 				if (dayString && !hasFixedTask(dayString)) {
 					if (toggle && $scope.isSelected(dayString)){
@@ -364,7 +364,7 @@ angular.module("app.cats")
 							if (calDay.inMonth) {
 								calArrayForMonth.push(calDay);
 							}
-						});	
+						});
 					});
 				return $scope.rangeIsSelected(calArrayForMonth);
 			};
@@ -426,7 +426,7 @@ angular.module("app.cats")
 					// togle complete month
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
-					
+
 					// load data, in case it is not yet done
 					promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
 					promise.then(function() {
@@ -462,7 +462,7 @@ angular.module("app.cats")
 					if (!hasFixedTask(dayString)) {
 						setRangeDays(dayString, null);
 						clearSelectionFromDaysWithFixedTasks();
-					} 
+					}
 					else{
 						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
 					}
@@ -473,7 +473,7 @@ angular.module("app.cats")
 					}
 					promises = selectRange(collectRange(dayString));
 				}
-				
+
 				promise = $q.all(promises);
 				promise.then(function(){
 					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
@@ -551,8 +551,7 @@ angular.module("app.cats")
 					return calDay.data.state;
 				}
 			};
-			
-			monthlyDataService.reloadInProgress.value = true;
+
 			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
 
 			if ($scope.selectedDay) {
@@ -574,7 +573,6 @@ angular.module("app.cats")
 				refreshInterval = $interval(function () {
 			        if (dateLastRun !== new Date().getDate()) {
 					    dateLastRun = new Date().getDate();
-						monthlyDataService.reloadInProgress.value = true;
 						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
 			        }
 				}, 60 * 1000);

@@ -1,5 +1,5 @@
-var $injector = angular.injector(['app.cats', 'ng']);
-var $controller = angular.module('app.cats').catsSettings;
+//var $injector = angular.injector(['app.cats', 'ng']);
+//var $controller = angular.module('app.cats').catsSettings;
   // $scope = $injector.get('$rootScope');
 
 describe("Settings view of cats app", function () {
@@ -75,30 +75,30 @@ describe("Settings view of cats app", function () {
 		expect(config.selectedTask).toBe(null);
 	});
 
-	it("should reset changes on cancel, also multiple times", function(){	
+	it("should reset changes on cancel, also multiple times", function(){
 		config.selectedTask = angular.copy(favoriteItemsMock[0]);
-		config.selectedTask.DESCR = "changed title"; 
+		config.selectedTask.DESCR = "changed title";
 		$scope.cancel();
 		expect(config.selectedTask.DESCR).not.toEqual("changed title");
 
-		config.selectedTask.DESCR = "changed title 2"; 
+		config.selectedTask.DESCR = "changed title 2";
 		$scope.cancel();
 		expect(config.selectedTask.DESCR).not.toEqual("changed title 2");
 	});
 
-	it("should reset changes on cancel also for newly created and changed tasks", function(){	
+	it("should reset changes on cancel also for newly created and changed tasks", function(){
 		$scope.createTask();
-		config.selectedTask.DESCR = "new title"; 
-		config.selectedTask.TASKTYPE = "MAIN"; 
+		config.selectedTask.DESCR = "new title";
+		config.selectedTask.TASKTYPE = "MAIN";
 		$scope.saveNewTask();
 
-		config.selectedTask.DESCR = "changed title"; 
+		config.selectedTask.DESCR = "changed title";
 		$scope.cancel();
-		
+
 		expect(config.selectedTask.DESCR).not.toEqual("changed title");
 	});
 
-	it("should detect changes on tasks", function(){	
+	it("should detect changes on tasks", function(){
 		config.selectedTask = angular.copy(favoriteItemsMock[0]);
 
 		config.selectedTask.DESCR = "changed title";
@@ -108,12 +108,12 @@ describe("Settings view of cats app", function () {
 		expect($scope.isUnchanged(config.selectedTask)).toBe(true);
 	});
 
-	it("should detect newly created task as changed", function(){	
+	it("should detect newly created task as changed", function(){
 		$scope.createTask();
 		expect($scope.isUnchanged(config.selectedTask)).toBe(false);
 	});
 
-	it("should notify user if he creates allready existing task", function(){	
+	it("should notify user if he creates allready existing task", function(){
 		$scope.createTask();
 		$scope.saveNewTask();
 		expect(bridgeInBrowserNotification.allertCalled).toBe(false);
@@ -124,7 +124,7 @@ describe("Settings view of cats app", function () {
 		expect(bridgeInBrowserNotification.allertCalled).toBe(true);
 	});
 
-	it("should notify user if he creates task with the same key values as any in catsItems or favoriteItems", function(){	
+	it("should notify user if he creates task with the same key values as any in catsItems or favoriteItems", function(){
 		expect(bridgeInBrowserNotification.allertCalled).toBe(false);
 
 		$scope.createTask();
@@ -141,7 +141,7 @@ describe("Settings view of cats app", function () {
 		expect(config.selectedTask.id).not.toBeDefined();
 	});
 
-	it("should clear favoriteItems if there are invalid tasks", function(){	
+	it("should clear favoriteItems if there are invalid tasks", function(){
 		config.favoriteItems.push(null);
 		$scope.clearFavoriteItems();
 		config.favoriteItems.forEach(function(favoriteItem){
@@ -149,16 +149,15 @@ describe("Settings view of cats app", function () {
 		});
 	});
 
-	// it("should validate new tasks", function(){	
+	// it("should validate new tasks", function(){
 	// 	$scope.createTask();
-	// 	$scope.keyPressed(); 
-	// 	config.selectedTask.DESCR = "new title"; 
+	// 	$scope.keyPressed();
+	// 	config.selectedTask.DESCR = "new title";
 
 	// 	expect(config.selectedTask.valid).not.toBe(true);
-		
+
 	// 	config.selectedTask.TASKTYPE = "DEVL";
-	// 	$scope.keyPressed(); 
+	// 	$scope.keyPressed();
 	// 	expect(config.selectedTask.valid).toBe(true);
 	// });
 });
-

@@ -1,7 +1,7 @@
 angular.module('app.imtps').factory("app.imtps.configservice", [ 'bridgeDataService' , function (bridgeDataService) {
-	var config = {  data 		 : { tcQuery: '' } , 
+	var config = {  data 		 : { tcQuery: '' } ,
 					isInitialized: false };
-	
+
 	config.initialize = function (sAppId) {
 	    this.isInitialized = true;
 	    var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
@@ -12,6 +12,6 @@ angular.module('app.imtps').factory("app.imtps.configservice", [ 'bridgeDataServ
 	    	this.data.tcQuery = '';
 	    }
 	};
-	
+
 	return config;
 }] );

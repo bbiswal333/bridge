@@ -1,3 +1,4 @@
+/* global location */
 describe("Cats Monthly Data Service", function () {
 
 	var $httpBackend = null;
