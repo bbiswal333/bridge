@@ -5,7 +5,8 @@
         this.temporaryData = {};
         this.clientMode = false;
         this.logMode = false;
-        this.initialized = false;
+
+        var initialized = false;
         var that = this;
 
         function _fetchUserInfo() {
@@ -84,7 +85,7 @@
             parseProjects(defaultConfig);
             parseSettings(defaultConfig);
 
-            this.initialized = true;
+            initialized = true;
         }
 
         function _initialize(deferredIn) {
@@ -104,7 +105,7 @@
                 bridgeConfig.configSnapshot = angular.copy(config);
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
-                this.initialized = true;
+                initialized = true;
                 deferredIn.resolve();
             }, function (data) {
                 deferredIn.reject(data);
@@ -195,8 +196,13 @@
             return this.logMode;
         }
 
+        function _getInitialized() {
+            return initialized;
+        }
+
         return {
             initialize: _initialize,
+            isInitialized: _getInitialized,
             getBridgeSettings: _getBridgeSettings,
             getTemporaryData: _getTemporaryData,
             getUserInfo: _getUserInfo,

@@ -62,7 +62,7 @@
         }
 
         this.store = function(dataService) {
-            if (dataService.initialized === true) {
+            if (dataService.isInitialized() === true) {
                 var payload = that.constructPayload(dataService);
                 $window.localStorage.setItem(storageKey, angular.toJson(payload));
             }
