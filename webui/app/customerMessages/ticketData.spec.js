@@ -11,7 +11,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     var deferred;
     var configService;
     var sNotificationText;
-    var iNotificationDuration;
+    //var iNotificationDuration;
     var loadDataMock = function() {
         return deferred.promise;
     };
@@ -19,9 +19,9 @@ describe("Ticket Data Service for Customer Messages", function () {
     beforeEach(function () {
         angular.module("mock.module").factory("notifier", function(){
             return {
-                showInfo: function(sTitle, sText, fnCallback, iDuration){
+                showInfo: function(sTitle, sText){//, fnCallback, iDuration){
                     sNotificationText = sText;
-                    iNotificationDuration = iDuration;
+                    //iNotificationDuration = iDuration;
                 }
             };
         });
