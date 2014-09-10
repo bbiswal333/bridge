@@ -48,7 +48,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         };
 
         $scope.prios = ticketData.prios;
-        $scope.$parent.titleExtension = " - Customer Messages";
+        $scope.$parent.titleExtension = " - Customer Incidents";
         $scope.dataInitialized = ticketData.isInitialized;
         $scope.showNoMessages = false;
 

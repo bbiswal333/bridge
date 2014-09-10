@@ -9,6 +9,10 @@
 		"routes"		:
 		[
 			{
+				"route"			:	"/detail/customerMessages/new",
+				"templateUrl"	:	"app/customerMessages/detail.html"			
+			},
+			{
 				"route"			:	"/detail/customerMessages/:prio",
 				"templateUrl"	:	"app/customerMessages/detail.html"			
 			}
