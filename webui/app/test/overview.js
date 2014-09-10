@@ -31,7 +31,8 @@ angular.module('app.test').directive('app.test', ['app.test.configService', 'app
 			notifier.showInfo("This is just a test",
 				"As the title says: nothing to do here :-)",
 				$scope.$parent.module_name,
-				function() {});
+				function() {},
+				7000); // duration: -1 -> no timout; undefined -> 5000 ms as default
 		};
 	}];
 
