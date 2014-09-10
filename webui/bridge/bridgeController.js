@@ -214,9 +214,9 @@ angular.module('bridge.app').controller('bridgeController',
           bridgeConfig.store(bridgeDataService);
         };
 
-        $scope.settings_click = function (boxId) {
+        /*$scope.settings_click = function (boxId) {
             bridgeConfig.showSettingsModal(boxId);
-        };
+        };*/
 
         $scope.overview_click = function () {
             $location.path('/');
