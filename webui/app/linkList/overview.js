@@ -1,5 +1,33 @@
 angular.module('app.linklist', ['ui.sortable']);
 
+angular.module('app.linklist').directive('droppable', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            element[0].addEventListener('drop', scope.handleDrop, false);
+
+            var dnD = {
+                handleDragLeave : function(){
+                    element.removeClass("app-linklist-dragEnter");
+                },
+                handleDragEnter : function(e) {
+                    if (e.preventDefault){
+                        e.preventDefault();
+                    } 
+                    element.addClass("app-linklist-dragEnter");
+                },
+                handleDrop : function(){
+                    scope.$apply();
+                }
+            };
+
+            element.bind("dragover", dnD.handleDragEnter);
+            element.bind("dragleave", dnD.handleDragLeave);
+            element.bind("drop", dnD.handleDrop);
+        }
+    };
+});
+
 angular.module('app.linklist').directive('app.linklist', ['app.linklist.configservice', '$window', function(appLinklistConfig, $window) {
 
     var directiveController = ['$scope', '$timeout', function ($scope) {
@@ -28,6 +56,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             }
             return configCopy;
         };
+        
 
         function setDefaultConfig()
         {

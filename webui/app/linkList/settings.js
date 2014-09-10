@@ -39,6 +39,14 @@ angular.module('app.linklist').appLinkListSettings =
         disabled: false
     };
 
+    $scope.handleDrop = function(event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        $scope.currentConfigValues.url = event.dataTransfer.getData('text/plain');
+        angular.element(event.target).removeClass("app-linklist-dragEnter");
+    };
+
     $scope.addLinkList = function()
     {
         appLinklistConfig.data.listCollection.push([]);

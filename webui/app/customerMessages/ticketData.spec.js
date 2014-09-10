@@ -144,20 +144,6 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         });
 
-        // it("should mark all new tickets as new", function(){
-        //     var emptyData = '<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0"><asx:values><RESULTNODE1/><RESULTNODE2/></asx:values></asx:abap>';
-
-        //     testGet.respond(emptyData);
-        //     cmTicketData.loadTicketData();
-        //     $httpBackend.flush();
-
-        //     testGet.respond(mockData);
-        //     cmTicketData.loadTicketData().then(function(){
-        //         expect(sNotificationText.indexOf("There is a new Customer Incident")).not.toBe(-1);
-        //     });
-
-        // });
-
         it("should notify me about a changed ticket", function(){
 
             testGet.respond(mockData);

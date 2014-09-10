@@ -137,3 +137,9 @@
 	width: -webkit-calc(100% - 25px);
     width: calc(100% - 40px);
 }
+
+.app-linklist-dragEnter{
+	border-style: dashed;
+    border-color: rgb(175,229,255);
+    border-width: thin;
+}
