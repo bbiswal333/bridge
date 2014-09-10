@@ -6,6 +6,18 @@ describe("Timesheet tools", function () {
 		catsUtils = _catsUtils_;
 	}]));
 
+	it("should calculate a unique ID for a task", function () {
+		var taskA = {};
+		taskA.TASKTYPE = 'DEVL';
+		expect(catsUtils.getTaskID(taskA)).toEqual('DEVL');
+		taskA.RAUFNR = 'RAUF';
+		expect(catsUtils.getTaskID(taskA)).toEqual('RAUFDEVL');
+		taskA.ZZSUBTYPE = 'MGT';
+		expect(catsUtils.getTaskID(taskA)).toEqual('RAUFDEVLMGT');
+		taskA.ZCPR_OBJGEXTID = 'UNIQUE_ID_01';
+		expect(catsUtils.getTaskID(taskA)).toEqual(taskA.ZCPR_OBJGEXTID);
+	});
+
 	it("should map the name to the state descriptor", function () {
 		expect(catsUtils.getDescForState("")).toEqual("");
 		expect(catsUtils.getDescForState("undefined")).toEqual("");

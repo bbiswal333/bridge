@@ -28,6 +28,7 @@ angular.module("app.cats")
 	        try {
 	            var processed = {};
 	            var days = cats_o;
+	            monthlyDataService.missingDays.value = 0;
 
 	            for (var i = 0; i < days.length; i++) {
 	                var dateStr = days[i].DATEFROM;
@@ -51,8 +52,10 @@ angular.module("app.cats")
 	                if (time !== null) {
 	                    processed[time] = { state: statusStr };
 	                }
+	                if (statusStr === "Y" || statusStr === "R") { // days which require attention
+	                	monthlyDataService.missingDays.value += 1;
+	                }
 	            }
-
 	            return processed;
 			} catch(err) {
 			    $log.log("parseDateToTime(): " + err);

@@ -144,6 +144,20 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         });
 
+        // it("should mark all new tickets as new", function(){
+        //     var emptyData = '<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0"><asx:values><RESULTNODE1/><RESULTNODE2/></asx:values></asx:abap>';
+
+        //     testGet.respond(emptyData);
+        //     cmTicketData.loadTicketData();
+        //     $httpBackend.flush();
+
+        //     testGet.respond(mockData);
+        //     cmTicketData.loadTicketData().then(function(){
+        //         expect(sNotificationText.indexOf("There is a new Customer Incident")).not.toBe(-1);
+        //     });
+
+        // });
+
         it("should notify me about a changed ticket", function(){
 
             testGet.respond(mockData);
@@ -159,19 +173,19 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         });
 
-        it("should show notificytion as customized", function(){
+        xit("should show notification as customized", function(){
             // configService.data.notificationDuration = 
 
-            testGet.respond(mockData);
-            cmTicketData.loadTicketData();
-            $httpBackend.flush();
+            // testGet.respond(mockData);
+            // cmTicketData.loadTicketData();
+            // $httpBackend.flush();
 
-            testGet.respond(mockDataChanged);
-            cmTicketData.loadTicketData().then(function(){
-                expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
-                expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
-                expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
-            });
+            // testGet.respond(mockDataChanged);
+            // cmTicketData.loadTicketData().then(function(){
+            //     expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
+            //     expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
+            //     expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
+            // });
 
         });
 

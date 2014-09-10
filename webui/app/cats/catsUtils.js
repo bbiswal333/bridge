@@ -20,6 +20,14 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       return "";
     };
 
+    this.getTaskID = function (task) {
+      if(task.ZCPR_OBJGEXTID) {
+        return task.ZCPR_OBJGEXTID;
+      } else {
+        return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
+      }
+    };
+
     this.isSameTask = function(task1, task2) {
       if (!task1 || !task2) {
         return false;

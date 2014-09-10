@@ -105,11 +105,11 @@ describe("Test the color utils for the allocation bar", function () {
 
         colorUtils.getColorForBlock(block1);
 
-        expect(colorUtils.blockColors.ABCABCABC).toBeDefined();
+        expect(colorUtils.blockColors.ABC).toBeDefined();
         expect(colorUtils.colorCounter).toBe(1);
 
         colorUtils.resetColorCounter();
-        expect(colorUtils.blockColors.ABCABCABC).toBeUndefined();
+        expect(colorUtils.blockColors.ABC).toBeUndefined();
         expect(colorUtils.colorCounter).toBe(0);
 
     });

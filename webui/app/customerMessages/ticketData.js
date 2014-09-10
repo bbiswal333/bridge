@@ -7,14 +7,11 @@
     this.backendTickets = {};
     this.backendTickets.sel_components = [];
     this.backendTickets.sel_components_aa = [];
-    this.backendTickets.colleagues = [];
-    this.backendTickets.colleagues_aa = [];
     this.backendTickets.assigned_me = [];
     this.backendTickets.assigned_me_aa = [];
     this.backendTickets.created_me = [];
 
     this.lastTickets = null;
-    this.ticketsFromNotifications = {};
 
     this.ticketsFromNotifications = {};
     this.ticketsFromNotifications.assigned_me = [];
@@ -56,7 +53,7 @@
                 }
                 // incidents with status Solution Provided are not considered at all
                 else if ( backendTicket.STATUS_KEY === "E0005") {
-                    return false; //continue forEach loop
+                    return; //continue forEach loop
                 }
                 else
                 {
@@ -71,17 +68,15 @@
     }
 
     this.prios = [
-        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
+        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
             prio.sel_components = 0;
             prio.sel_components_aa = 0;
-            prio.colleagues = 0;
-            prio.colleagues_aa = 0;
             prio.assigned_me = 0;
             prio.assigned_me_aa = 0;
             prio.created_me = 0;
@@ -92,8 +87,6 @@
 
         that.backendTickets.sel_components.length = 0;
         that.backendTickets.sel_components_aa.length = 0;
-        that.backendTickets.colleagues.length = 0;
-        that.backendTickets.colleagues_aa.length = 0;
         that.backendTickets.assigned_me.length = 0;
         that.backendTickets.assigned_me_aa.length = 0;
         that.backendTickets.created_me.length = 0;
@@ -181,11 +174,6 @@
                     addTicket(selectedTickets,ticket);
                 }
             });}
-            if (configservice.data.selection.colleagues) { that.backendTickets.colleagues.forEach(function(ticket){
-                if (ticket.PRIORITY_KEY === prioString){
-                    addTicket(selectedTickets,ticket);
-                }
-            });}
             if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me.forEach(function(ticket){
                 if (ticket.PRIORITY_KEY === prioString){
                     addTicket(selectedTickets,ticket);
@@ -198,11 +186,6 @@
             });}
             if (!configservice.data.settings.ignore_author_action) {
                 if (configservice.data.selection.sel_components) { that.backendTickets.sel_components_aa.forEach(function(ticket){
-                    if (ticket.PRIORITY_KEY === prioString){
-                        addTicket(selectedTickets,ticket);
-                    }
-                });}
-                if (configservice.data.selection.colleagues) { that.backendTickets.colleagues_aa.forEach(function(ticket){
                     if (ticket.PRIORITY_KEY === prioString){
                         addTicket(selectedTickets,ticket);
                     }
@@ -236,7 +219,7 @@
         // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
         _.defer(function() {
             $rootScope.$apply(function() {
-                $location.path("/detail/customerMessages/Very%20high");
+                $location.path("/detail/customerMessages/new");
             });
         });
     }

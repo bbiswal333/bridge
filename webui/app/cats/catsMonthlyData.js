@@ -4,7 +4,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"$q",
 	"lib.utils.calUtils",
 	"app.cats.cat2BackendZDEVDB",
-    "$log",
+	"$log",
 
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
@@ -13,6 +13,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.days = {};
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
+	this.missingDays = {};
 
 	this.executeWhenDone = function(promise)
 	{
@@ -58,15 +59,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			promise = $q.all(promises);
 			promise.then(function(){
-			    alreadyInitializedForMonth[month] = true;
-			    delete self.promiseForMonth[month];
-			    self.reloadInProgress.value = false;
+				alreadyInitializedForMonth[month] = true;
+				delete self.promiseForMonth[month];
+				self.reloadInProgress.value = false;
 			});
 
 			this.promiseForMonth[month] = promise;
 			return promise;
 		} catch(err) {
-		    $log.log("getMonthData(): " + err);
+			$log.log("getMonthData(): " + err);
 		}
 	};
 
@@ -88,7 +89,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				return deferred.promise;
 			}
 		} catch(err) {
-		    $log.log("getDataForDate(): " + err);
+			$log.log("getDataForDate(): " + err);
 		}
 	};
 
@@ -117,14 +118,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			day.setDate(day.getDate() + 7);
 			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
-			      (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
+				  (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
 				week = calenderUtils.getWeekNumber(day);
 				weeks.push(angular.copy(week));
 				day.setDate(day.getDate() + 7);
 			}
 			return weeks;
 		} catch(err) {
-		    $log.log("getWeeksOfMonth(): " + err);
+			$log.log("getWeeksOfMonth(): " + err);
 		}
 	};
 
@@ -213,26 +214,26 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				}
 			}
 		} catch(err) {
-		    $log.log("convertWeekData(): " + err);
+			$log.log("convertWeekData(): " + err);
 		}
 	};
 
 	this.loadDataForSelectedWeeks = function(weeks){
 		var promises = [];
 		try {
-		    var self = this;
+			var self = this;
 			self.reloadInProgress.value = true;
-		    weeks.forEach(function(week){
-		    	var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
-		        promises.push(promise);
-		    	promise.then(function(data){
-		        	if(data) {
-		        		self.convertWeekData(data);
-		        	}
-		    	});
-		    });
+			weeks.forEach(function(week){
+				var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
+				promises.push(promise);
+				promise.then(function(data){
+					if(data) {
+						self.convertWeekData(data);
+					}
+				});
+			});
 		} catch(err) {
-		    $log.log("loadDataForSelectedWeeks(): " + err);
+			$log.log("loadDataForSelectedWeeks(): " + err);
 		}
 		return $q.all(promises);
 	};
