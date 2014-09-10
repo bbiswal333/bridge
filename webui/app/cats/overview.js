@@ -10,10 +10,8 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService", "app
 			$scope.originalBoxTitle = $scope.$parent.title;
 			$scope.missingDays = monthlyDataService.missingDays;
 			$scope.$watch('missingDays', function () {
-				if (monthlyDataService.missingDays.value === 1) {
-					$scope.$parent.title = $scope.originalBoxTitle + " (1 missing day)";
-				} else if (monthlyDataService.missingDays.value > 1) {
-					$scope.$parent.title = $scope.originalBoxTitle + " (" + monthlyDataService.missingDays.value + " missing days)";
+				if (monthlyDataService.missingDays.value > 1) {
+					$scope.$parent.title = "CLICK below to record time (CAT2)";
 				}
 			}, true);
 
