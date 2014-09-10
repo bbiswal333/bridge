@@ -1,4 +1,4 @@
-﻿﻿angular.module('bridge.service').service('bridgeConfig',
+﻿angular.module('bridge.service').service('bridgeConfig',
     ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance',
     function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance) {
 
