@@ -38,6 +38,8 @@
     }
 
     function parseBackendTicket(backendTicket, category) {
+
+
         angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIORITY_KEY === prio.number.toString())
             {
@@ -115,6 +117,9 @@
             // data = testData;
             that.resetData();
 
+            var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
+            data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
+            
             data = addCData("URL_MESSAGE", data);
             data = addCData("DESCRIPTION", data);
             data = addCData("CUST_NAME", data);
@@ -258,12 +263,12 @@
                 if (!foundTicket) {
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('New Customer Ticket', 'There is a new Customer Ticket "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
+                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
                 } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
                     
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('Customer Ticket Changed', 'The Customer Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
+                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
                 }
             });
         }
@@ -293,7 +298,7 @@
 
         if (bShowNotification){
             that.ticketsFromNotifications = ticketsToNotify;
-            notifier.showInfo('Customer Tickets Changed', 'Some of your Customer Tickets changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
+            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
         }
     };
 

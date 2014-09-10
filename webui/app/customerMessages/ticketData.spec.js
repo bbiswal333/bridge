@@ -11,6 +11,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     var deferred;
     var configService;
     var sNotificationText;
+    var iNotificationDuration;
     var loadDataMock = function() {
         return deferred.promise;
     };
@@ -18,8 +19,9 @@ describe("Ticket Data Service for Customer Messages", function () {
     beforeEach(function () {
         angular.module("mock.module").factory("notifier", function(){
             return {
-                showInfo: function(sTitle, sText){
+                showInfo: function(sTitle, sText, fnCallback, iDuration){
                     sNotificationText = sText;
+                    iNotificationDuration = iDuration;
                 }
             };
         });
@@ -137,7 +139,7 @@ describe("Ticket Data Service for Customer Messages", function () {
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
-                expect(sNotificationText.indexOf("There is a new Customer Ticket")).not.toBe(-1);
+                expect(sNotificationText.indexOf("There is a new Customer Incident")).not.toBe(-1);
             });
 
         });
@@ -151,7 +153,23 @@ describe("Ticket Data Service for Customer Messages", function () {
             testGet.respond(mockDataChanged);
             cmTicketData.loadTicketData().then(function(){
                 expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
-                expect(sNotificationText.indexOf("The Customer Ticket")).not.toBe(-1);
+                expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
+                expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
+            });
+
+        });
+
+        it("should show notificytion as customized", function(){
+            // configService.data.notificationDuration = 
+
+            testGet.respond(mockData);
+            cmTicketData.loadTicketData();
+            $httpBackend.flush();
+
+            testGet.respond(mockDataChanged);
+            cmTicketData.loadTicketData().then(function(){
+                expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
+                expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
                 expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
             });
 
