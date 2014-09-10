@@ -6,8 +6,8 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     var config = {};
     config.data = {};
     config.data.settings = {};
-    config.data.selection = {};
     config.data.settings.ignore_author_action = true;
+    config.data.selection = {};
     config.data.selection.sel_components = true;
     config.data.selection.assigned_me = false;
     config.lastDataUpdate = null;
@@ -26,7 +26,7 @@ angular.module('app.customerMessages').directive('app.customerMessages', ['app.c
             {
                 configservice.data = $scope.appConfig.data;
                 configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
-            }            
+            }
         }
     };
 }]);
@@ -88,5 +88,5 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             $scope.config = configservice;
         }
 
-        $scope.box.reloadApp(ticketData, 60 * 10);
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 10);
 }]);
