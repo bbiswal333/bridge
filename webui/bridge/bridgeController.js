@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -11,7 +11,7 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $window.onbeforeunload = function(){
-            bridgeConfig.persistInBackend(bridgeDataService, true);
+            bridgeConfig.store(bridgeDataService);
         };
 
         $scope.logMode = bridgeDataService.getLogMode();
@@ -43,7 +43,7 @@ angular.module('bridge.app').controller('bridgeController',
             if ($scope.sideView === "settings" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
                 if ($scope.show_settings === false) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
             $scope.sideView = "settings";
@@ -52,7 +52,7 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.bridge_hide_settings = function () {
             if ($scope.show_settings === true) {
                 $scope.show_settings = false;
-                bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
                 $scope.stopDragging();
             }
         };
@@ -172,11 +172,10 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $window.debug = {
-            resetConfig: function()
-                        {
+            resetConfig: function() {
                 bridgeDataService.toDefault();
-                bridgeConfig.persistInBackend(bridgeDataService);
-                        }
+                bridgeConfig.store(bridgeDataService);
+            }
         };
 
         $scope.toggleDragging = function() {
@@ -212,12 +211,12 @@ angular.module('bridge.app').controller('bridgeController',
                     }
                 }
           }
-          bridgeConfig.persistInBackend(bridgeDataService);
+          bridgeConfig.store(bridgeDataService);
         };
 
-        $scope.settings_click = function (boxId) {
+        /*$scope.settings_click = function (boxId) {
             bridgeConfig.showSettingsModal(boxId);
-        };
+        };*/
 
         $scope.overview_click = function () {
             $location.path('/');
@@ -232,34 +231,15 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.showSettingsModal = function (appId) {
-            var appInstance = bridgeDataService.getAppById(appId);
+			// bridgeSettingsModalService.show_settings(appId);
+			$scope.modalInstance = bridgeSettingsModalService.show_settings(appId);
 
-            $scope.modalInstance = $modal.open({
-                templateUrl: 'view/settings.html',
-                windowClass: 'settings-dialog',
-                controller: angular.module('bridge.app').settingsController,
-                resolve: {
-                    templateString: function () {
-                        return appInstance.scope.box.settingScreenData.templatePath;
-                    },
-                    templateController: function () {
-                        return appInstance.scope.box.settingScreenData.controller;
-                    },
-                    boxController: function () {
-                        return appInstance;
-                    },
-                    boxScope: function () {
-                        return appInstance.scope;
-                    }
-                }
-            });
-
-            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            function onModalClosed() {
-                bridgeConfig.persistInBackend(bridgeDataService);
-                $scope.modalInstance = null;
-            }
-            this.modalInstance.result.then(onModalClosed, onModalClosed);
+			// save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+			function onModalClosed() {
+				bridgeConfig.store(bridgeDataService);
+				$scope.modalInstance = null;
+			}
+			this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
         $scope.apps = [];

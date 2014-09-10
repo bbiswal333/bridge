@@ -72,3 +72,30 @@ table {
 	height: 10px;
 	border-radius: 100%;
 }
+.jobTilesContainer{
+	width: 100%;
+	height: 90%;
+
+}
+.jobTilesBox{
+	width: calc(95%/5);
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 25px;
+	float: left;
+}
+.jobTilesBox:first-child{
+	margin-left: 0;
+}
+.jobTilesBox:last-child{
+	margin-right: 0;
+}
+.jobTiles{	
+	width: 100%;
+	height: 50%;	
+	text-align: center;	
+}
+.jobTiles p{
+	margin: 0 0 0px;
+	line-height: 0.25;
+}

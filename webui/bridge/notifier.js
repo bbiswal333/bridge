@@ -154,7 +154,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
         $window.localStorage.setItem('notifcations', JSON.stringify(notifications));
     }
 
-  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s, duration_i) {
       var notification = {
           title: title_s,
           body: body_s,
@@ -167,7 +167,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
           timestamp: new Date().getTime(),
           kindOf: kindOf_s,
           state: 'new',
-          duration: DEFAULT_DURATION
+          duration: duration_i || DEFAULT_DURATION
       };
 
       var notifier = new Notifier(notification);
@@ -180,14 +180,14 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   var instance = new Notifier();
 
   return {
-    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info");
+    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i) {
+      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info", duration_i);
     },
-    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success");
+    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i) {
+      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success", duration_i);
     },
-    showError: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error");
+    showError: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i) {
+      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error", duration_i);
     },
     chromePreCheckRequestNeeded: function () {
       return instance.chromePreCheckRequestNeeded();
