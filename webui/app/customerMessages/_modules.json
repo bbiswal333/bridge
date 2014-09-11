@@ -9,7 +9,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/customerMessages/new",
+				"route"			:	"/detail/customerMessages/new/:incidentGUID",
 				"templateUrl"	:	"app/customerMessages/detail.html"			
 			},
 			{

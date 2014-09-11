@@ -119,15 +119,33 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 $scope.messages.push(message);
             }
         }
+
+        function getChangedIncidents(){
+            var changedIncidents = {};
+            var listOfGuids = $routeParams.incidentGUID.split('|');
+            for (var category in ticketData.backendTickets) {
+                var foundTickets;
+                foundTickets = _.where(ticketData.backendTickets[category], function(ticket){
+                    return _.contains(listOfGuids, ticket.OBJECT_GUID );
+                });
+                changedIncidents[category] = [];
+                if (foundTickets.length > 0){
+                    changedIncidents[category] = foundTickets;
+                }
+            }
+            return changedIncidents;
+        }
+
         $scope.$watch('config', function() {
-            var ticketsToShow;
+            var ticketsToShow = {};
             if($scope.config !== undefined)
             {
                 var selected_messages = [];
                 $scope.messages = selected_messages;
 
-                if (!$routeParams.prio){
-                    ticketsToShow = ticketData.ticketsFromNotifications;
+                if ($routeParams.incidentGUID){
+                    ticketsToShow = getChangedIncidents();
+                    // ticketsToShow = ticketData.ticketsFromNotifications;
                     $scope.$parent.$parent.detailScreen.title = "New/Changed Customer Incidents";
                 } else {
                     ticketsToShow = ticketData.backendTickets;

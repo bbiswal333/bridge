@@ -1,6 +1,6 @@
 angular.module('bridge.app').
-	controller('notificationsController',['$rootScope', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
-	function ($rootScope, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
+	controller('notificationsController',['$rootScope', '$location', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
+	function ($rootScope, $location, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
         $scope.notifications = notifier.allNotifications();
         $scope.notificationPopupPermission = notifier.getPermission();
@@ -93,6 +93,15 @@ angular.module('bridge.app').
 		return item.state === "new";
 	};
 
+	function route(url) {
+        // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
+        _.defer(function() {
+            $rootScope.$apply(function() {
+                $location.path(url);
+            });
+        });
+    }
+
 	$scope.updateStatus = function(notification, state) {
 		notification.state = state;
 		notifier.store();
@@ -107,6 +116,8 @@ angular.module('bridge.app').
 		}
 		if(notification.callback && typeof notification.callback === "function") {
 			notification.callback(notification);
+		} else if (notification.routeURL) {
+			route(notification.routeURL);
 		}
 	};
 }]).

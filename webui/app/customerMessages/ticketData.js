@@ -45,7 +45,7 @@
                 {
                     category_aa = category + '_aa';
                 }
-                // Customer Action 
+                // Customer Action
                 if(backendTicket.STATUS_KEY === "E0004" && category_aa !== "")
                 {
                     prio[category_aa]++;
@@ -103,7 +103,7 @@
     }
 
     this.loadTicketData = function () {
-        var deferred = $q.defer();        
+        var deferred = $q.defer();
 
         $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials:true}
         ).success(function (data) {
@@ -112,7 +112,7 @@
 
             var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
             data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
-            
+
             data = addCData("URL_MESSAGE", data);
             data = addCData("DESCRIPTION", data);
             data = addCData("CUST_NAME", data);
@@ -215,11 +215,11 @@
         parseInt(sAbapDate.substring(10,12)), parseInt(sAbapDate.substring(12,14)));
     };
 
-    function notifierClickCallback() {
+    function notifierClickCallback(notificationApp, routeURL) {
         // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
         _.defer(function() {
             $rootScope.$apply(function() {
-                $location.path("/detail/customerMessages/new");
+                $location.path(routeURL);
             });
         });
     }
@@ -236,22 +236,22 @@
                 var foundTicket;
                 for (var category in oldTicketData) {
                     foundTicket = _.find(oldTicketData[category], { OBJECT_GUID: ticket.OBJECT_GUID });
-                    
+
                     if (foundTicket){
                         break;
                     }
                 }
-
-                
+                var routeURL = "/detail/customerMessages/new/";
                 if (!foundTicket) {
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
+                    routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, null ,routeURL);
                 } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
-                    
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
+                    routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, null, routeURL);
                 }
             });
         }
@@ -269,6 +269,9 @@
         ticketsToNotify.assigned_me = [];
         ticketsToNotify.sel_components = [];
 
+        var routeURL = "/detail/customerMessages/new/";
+        var guidList;
+
         for (var category in tickets) {
             foundTickets = _.where(tickets[category], function(ticket){
                 return that.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
@@ -277,11 +280,18 @@
                 ticketsToNotify[category] = foundTickets;
                 bShowNotification = true;
             }
+            foundTickets.forEach(function(foundTicket){
+                if (!guidList) {
+                    guidList = foundTicket.OBJECT_GUID;
+                }
+                guidList += "|" + foundTicket.OBJECT_GUID;
+            });
         }
 
         if (bShowNotification){
+            routeURL += guidList;
             that.ticketsFromNotifications = ticketsToNotify;
-            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
+            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback, null, routeURL);
         }
     };
 
