@@ -5,7 +5,8 @@
 		"title"					:	"Design Quote",
 		"icon_css"				:	"designwhizz-icon",
 		"overview_directive"	:	"app.designwhizz",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"default_hidden"		:	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],
