@@ -1,6 +1,6 @@
 angular.module('app.employeeSearch', []);
 
-angular.module('app.employeeSearch').directive('app.employeeSearch', ['bridge.search', '$modal', '$http', '$window', 'bridge.employeeSearch', function (bridgeSearch, $modal, $http, $window, employeeSearch) {
+angular.module('app.employeeSearch').directive('app.employeeSearch', ['$http', '$window', 'bridge.employeeSearch', function ($http, $window, employeeSearch) {
 
     var directiveController = ['$scope', function ($scope) {
         $scope.box.boxSize = "2";
@@ -23,24 +23,6 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', ['bridge.se
                 $scope.selectedEmployee = employeeDetails;
             });
         };
-
-        bridgeSearch.addSearchProvider({
-            getSourceName: function() {
-                return "SAP Employees";
-            },
-            findMatches: function(query, resultArray) {
-                return employeeSearch.doSearch(query, function(employees) {
-                    employees.map(function(employee) {
-                        resultArray.push({title: employee.VORNA + " " + employee.NACHN, description: employee.BNAME, originalEmployee: employee});
-                    });
-                });
-            },
-            getCallbackFn: function() {
-                return function(selectedEmployee) {
-                    $scope.onSelect(selectedEmployee.originalEmployee);
-                };
-            }
-        });
     }];
 
     return {

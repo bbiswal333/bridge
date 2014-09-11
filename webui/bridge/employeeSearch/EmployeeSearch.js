@@ -1,6 +1,6 @@
-﻿angular.module('bridge.employeeSearch', ['bridge.employeePicture']);
+﻿angular.module('bridge.employeeSearch', ['bridge.employeePicture', 'bridge.search']);
 
-angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['$http', '$window', function ($http, $window) {
+angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['bridge.search', '$http', '$window', function (bridgeSearch, $http, $window) {
     function getSearchName(username) {
         //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
         var searchname = username;
@@ -42,6 +42,23 @@ angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['$http
                 return callback(employeeDetails);
             }
         );
+    };
+
+    var that = this;
+    this.getSourceName = function() {
+        return "SAP Employees";
+    };
+    this.findMatches = function(query, resultArray) {
+        return that.doSearch(query, function(employees) {
+            employees.map(function(employee) {
+                resultArray.push({title: employee.VORNA + " " + employee.NACHN, description: employee.BNAME, originalEmployee: employee});
+            });
+        });
+    };
+    this.getCallbackFn = function() {
+        return function(selectedEmployee) {
+            $window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.originalEmployee.BNAME);
+        };
     };
 }]);
 
