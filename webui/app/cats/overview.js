@@ -7,14 +7,6 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService", "app
 			$scope.box.boxSize = "2";
 			$scope.configService = catsConfigService;
 
-			$scope.originalBoxTitle = $scope.$parent.title;
-			$scope.missingDays = monthlyDataService.missingDays;
-			$scope.$watch('missingDays', function () {
-				if (monthlyDataService.missingDays.value > 1) {
-					$scope.$parent.title = "CLICK below to record time (CAT2)";
-				}
-			}, true);
-
 			$scope.box.settingsTitle = "Configure Work List";
 			$scope.box.settingScreenData = {
 				templatePath: "cats/settings.html",
