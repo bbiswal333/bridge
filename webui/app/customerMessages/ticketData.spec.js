@@ -161,7 +161,7 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         });
 
-        xit("should show notification as customized", function(){
+        // xit("should show notification as customized", function(){
             // configService.data.notificationDuration =
 
             // testGet.respond(mockData);
@@ -175,7 +175,7 @@ describe("Ticket Data Service for Customer Messages", function () {
             //     expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
             // });
 
-        });
+        // });
 
         it("should notify me about a ticket that changed while I was offline", function(){
             configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
