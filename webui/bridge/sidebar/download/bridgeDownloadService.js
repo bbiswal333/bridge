@@ -3,7 +3,7 @@ angular.module('bridge.service').service('bridge.service.bridgeDownload', functi
         show_download: function()
         {
             $modal.open({
-                templateUrl: 'view/download.html',
+                templateUrl: 'bridge/sidebar/download/download.html',
                 windowClass: 'download-dialog',
                 controller: angular.module('bridge.app').downloadController
             });

@@ -30,7 +30,7 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_notifications_click = function () {
-            $scope.sidePanel = 'view/bridgeNotifications.html';
+            $scope.sidePanel = 'bridge/sidebar/notification/bridgeNotifications.html';
             if ($scope.sideView === "notifications" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
@@ -39,7 +39,7 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_settings_click = function () {
-            $scope.sidePanel = 'view/bridgeSettings.html';
+            $scope.sidePanel = 'bridge/sidebar/application/bridgeSettings.html';
             if ($scope.sideView === "settings" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
                 if ($scope.show_settings === false) {
@@ -58,7 +58,7 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_feedback_click = function () {
-            $scope.sidePanel = 'view/bridgeFeedback.html';
+            $scope.sidePanel = 'bridge/sidebar/feedback/bridgeFeedback.html';
             if ($scope.sideView === "feedback" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
@@ -67,7 +67,7 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_github_click = function () {
-            $scope.sidePanel = 'view/bridgeGithub.html';
+            $scope.sidePanel = 'bridge/sidebar/github/bridgeGithub.html';
             if ($scope.sideView === "github" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
@@ -76,7 +76,7 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_news_click = function () {
-            $scope.sidePanel = 'view/bridgeNews.html';
+            $scope.sidePanel = 'bridge/sidebar/news/bridgeNews.html';
             if ($scope.sideView === "news" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
