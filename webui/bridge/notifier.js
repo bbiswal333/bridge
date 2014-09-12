@@ -170,7 +170,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
           kindOf: kindOf_s,
           state: 'new',
           duration: duration_i || DEFAULT_DURATION,
-          routeURL: routeURL_s
+          routeURL: routeURL_s || ""
       };
 
       var notifier = new Notifier(notification);

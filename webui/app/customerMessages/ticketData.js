@@ -2,6 +2,7 @@
     ['$http', '$q', '$window', "$rootScope", "$location", 'app.customerMessages.configservice', "notifier",
     function ($http, $q, $window, $rootScope, $location, configservice, notifier) {
     var that = this;
+    this.sAppIdentifier = "app.customerMessages";
 
     //buckets for the backend tickets
     this.backendTickets = {};
@@ -242,17 +243,17 @@
                     }
                 }
 
-                var routeURL = "/detail/customerMessages/new/";
+                // var routeURL = "/detail/customerMessages/new/";
                 if (!foundTicket) {
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    routeURL += ticket.OBJECT_GUID;
-                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, null ,routeURL);
+                    // routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration,ticket.URL_MESSAGE.toString());
                 } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    routeURL += ticket.OBJECT_GUID;
-                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, null, routeURL);
+                    // routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, ticket.URL_MESSAGE.toString());
                 }
             });
         }
@@ -292,7 +293,7 @@
         if (bShowNotification){
             routeURL += guidList;
             that.ticketsFromNotifications = ticketsToNotify;
-            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback, null, routeURL);
+            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, routeURL);
         }
     };
 

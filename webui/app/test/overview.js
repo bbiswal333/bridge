@@ -32,7 +32,7 @@ angular.module('app.test').directive('app.test', ['app.test.configService', 'app
 				"As the title says: nothing to do here :-)",
 				$scope.$parent.module_name,
 				function() {},
-				7000); // duration: -1 -> no timout; undefined -> 5000 ms as default
+				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
 		};
 	}];
 
