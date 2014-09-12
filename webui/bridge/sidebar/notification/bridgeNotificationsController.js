@@ -19,7 +19,7 @@ angular.module('bridge.app').
             }
         };
 
-  var apps = bridgeDataService.getProjects()[0].apps;
+	var apps = bridgeDataService.getProjects()[0].apps;
 	$scope.onShowNotifications = function(){
 		notifier.allNotifications().forEach(function(notification){
 			if (notification.state === "new") {
@@ -29,48 +29,48 @@ angular.module('bridge.app').
 		notifier.store();
 	};
 
-  $scope.clearNotifications = function() {
-  	notifier.clearNotifications();
-  	return false;
-  };
+	$scope.clearNotifications = function() {
+		notifier.clearNotifications();
+		return false;
+	};
 
-  $scope.getNameOf = function(notification){
-    var module_name = notification.app;
-    if (!module_name) {
-        return '';
-    }
-    for(var i = 0; i < apps.length; i++){
-        var app = apps[i];
-        if (app.metadata.module_name === module_name) {
-            return app.metadata.title;
-        }
-    }
-    throw new Error("module name is invalid!");
-  };
+	$scope.getNameOf = function(notification){
+		var module_name = notification.app;
+		if (!module_name) {
+		    return '';
+		}
+		for(var i = 0; i < apps.length; i++){
+		    var app = apps[i];
+		    if (app.metadata.module_name === module_name) {
+		        return app.metadata.title;
+		    }
+		}
+		throw new Error("module name is invalid!");
+	};
 
-  $scope.getIconOf = function(notification){
-    var module_name = notification.app;
-    for(var i = 0; i < apps.length; i++){
-        var app = apps[i];
-        if (app.metadata.module_name === module_name) {
-            return app.metadata.icon_css;
-        }
-    }
-	switch(notification.kindOf){
-	    case 'success':
-	        return 'fa fa-check';
-	    case 'info':
-	        return 'fa fa-info';
-	    case 'error':
-	        return 'fa fa-times';
-	    default:
-	        throw new Error('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
-	}
-  };
+	$scope.getIconOf = function(notification){
+		var module_name = notification.app;
+		for(var i = 0; i < apps.length; i++){
+		    var app = apps[i];
+		    if (app.metadata.module_name === module_name) {
+		        return app.metadata.icon_css;
+		    }
+		}
+		switch(notification.kindOf){
+		    case 'success':
+		        return 'fa fa-check';
+		    case 'info':
+		        return 'fa fa-info';
+		    case 'error':
+		        return 'fa fa-times';
+		    default:
+		        throw new Error('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
+		}
+	};
 
-  $scope.getTimeAgo = function(timeInMS){
-    return $.timeago(timeInMS);
-  };
+	$scope.getTimeAgo = function(timeInMS){
+		return $.timeago(timeInMS);
+	};
 
 	$scope.retrieve_xkdc_entry = function(){
 		$.ajax({
@@ -91,6 +91,13 @@ angular.module('bridge.app').
 
 	$scope.filterNewNotifications = function newNotifications(item) {
 		return item.state === "new";
+	};
+
+	$scope.containsExternalURL = function(notification){
+		if (notification.routeURL) {
+			return notification.routeURL.match(/http.*:\/\/.*/g);
+		}
+		return false;
 	};
 
 	function route(url) {
@@ -116,7 +123,7 @@ angular.module('bridge.app').
 		}
 		if(notification.callback && typeof notification.callback === "function") {
 			notification.callback(notification);
-		} else if (notification.routeURL) {
+		} else if (notification.routeURL && !$scope.containsExternalURL(notification)) {
 			route(notification.routeURL);
 		}
 	};
