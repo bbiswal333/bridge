@@ -745,6 +745,7 @@ input[type="checkbox"]:checked:after {
 }
 .box-icon.fa{
     padding-top: 2px;
+    font-size: 20px;
 }
 .small-icon{
     font-size: 1.2rem;
