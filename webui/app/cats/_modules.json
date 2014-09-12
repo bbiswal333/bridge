@@ -2,7 +2,7 @@
 	"app":
 	{
 		"module_name"			:	"app.cats",
-		"title"					:	"CAT2 Maintenance",
+		"title"					:	"Time Recording (CAT2)",
 		"icon_css"				:	"fa fa-calendar",
 		"overview_directive"	:	"app.cats",
 		"needs_client"			:	false,

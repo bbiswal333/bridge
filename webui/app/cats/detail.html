@@ -8,24 +8,33 @@
 
                 <div class="row">
                     <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
-                        <app.cats.calendar
-                            class="app-cats-calendar"
-                            ondateselected="handleSelectedDate(dayString)"
-                            ondatedeselected="handleDeselectedDate(dayString)"
-                            selectioncompleted="selectionCompleted()"
-                            data-day-class="app-cats-day-details"
-                            data-selected-dates="selectedDates"
-                            data-maintainable="true"
-                            loading="loading">
-                        </app.cats.calendar>
+                        <div>
+                            <app.cats.calendar
+                                class="app-cats-calendar"
+                                ondateselected="handleSelectedDate(dayString)"
+                                ondatedeselected="handleDeselectedDate(dayString)"
+                                selectioncompleted="selectionCompleted()"
+                                data-day-class="app-cats-day-details"
+                                data-selected-dates="selectedDates"
+                                data-maintainable="true"
+                                loading="loading">
+                            </app.cats.calendar>
+                        </div>
+                        <div ng-show="!loading">
+                            <br><b>Short guide:</b><br>
+                            <b>1.</b> Select day(s) directly in the calendar above or by using the week or month selector buttons<br>
+                            &nbsp&nbsp&nbsp&nbsp(SHIFT + click = day range selection and CTRL/CMD + click = single day de-/selection are also possible)<br>
+                            <b>2.</b> Select tasks from the worklist and maintain correct time distribution below<br>
+                            <b>3.</b> Press "Save Timesheet"<br>
+                        </div>
                     </div> 
                     <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-5 app-cats-box" >
                         <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(task);" data-heightoflist="300px">
-                        </app.cats.maintenance-view.project-list>        
+                        </app.cats.maintenance-view.project-list>
                     </div>
                 </div>
 
-                <div style="clear: both; width: 100%; float: none;"></div>        
+                <div style="clear: both; width: 100%; float: none;"></div>
 
                 <div id="app-cats-maintencance-allocation-div" >
                     <app.cats.allocationbar

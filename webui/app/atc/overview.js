@@ -1,11 +1,11 @@
-﻿angular.module('app.atc', []);
+﻿angular.module('app.atc', ['bridge.search']);
 
 angular.module('app.atc').directive('app.atc',
     ["$modal", "app.atc.configservice", "app.atc.dataservice", "bridge.search", "bridge.search.fuzzySearch",
     function ($modal, appAtcConfig, appAtcData, bridgeSearch, fuzzySearch) {
 
     var directiveController = ['$scope', function ($scope) {
-        bridgeSearch.addSearchProvider(fuzzySearch("ATC Results", appAtcData.detailsData, {keys: ["CHECK_DESCRIPTION", "CHECK_MESSAGE"], mappingFn: function(result) { 
+        bridgeSearch.addSearchProvider(fuzzySearch("ATC Results", appAtcData.detailsData, {keys: ["CHECK_DESCRIPTION", "CHECK_MESSAGE"], mappingFn: function(result) {
                 return {title: result.item.CHECK_MESSAGE, description: result.item.CHECK_DESCRIPTION, score: result.score};
             }
         }));

@@ -2,4 +2,3 @@ angular.module('bridge.app').controller('mainNewsController', [ '$scope', 'bridg
 	$scope.testText = "halloroman";
 	$scope.news = newsService.news;
 }]);
-

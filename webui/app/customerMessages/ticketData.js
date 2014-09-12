@@ -241,6 +241,7 @@
                         break;
                     }
                 }
+
                 var routeURL = "/detail/customerMessages/new/";
                 if (!foundTicket) {
                     bNewNotifications = true;

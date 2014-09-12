@@ -1,0 +1,5 @@
+{
+	"modules" : ["bridge.employeeInput"],
+	"js_files" : ["EmployeeInput.js"],
+	"css_files" : ["EmployeeInput.css"]
+}

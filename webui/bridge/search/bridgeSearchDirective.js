@@ -16,7 +16,7 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                 hierarchyIndex = 0;
                 resultIndex = -1;
             }
-            
+
             function displayResults() {
                 $scope.displayResults = true;
                 removeSelection();

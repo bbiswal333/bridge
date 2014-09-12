@@ -13,7 +13,7 @@ angular.module('app.linklist').directive('droppable', function() {
                 handleDragEnter : function(e) {
                     if (e.preventDefault){
                         e.preventDefault();
-                    } 
+                    }
                     element.addClass("app-linklist-dragEnter");
                 },
                 handleDrop : function(){
@@ -56,7 +56,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             }
             return configCopy;
         };
-        
+
 
         function setDefaultConfig()
         {
