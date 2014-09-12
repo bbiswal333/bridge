@@ -1,6 +1,6 @@
-﻿angular.module('bridge.employeeSearch', ['bridge.employeePicture', 'bridge.search']);
+angular.module('bridge.employeeSearch', []);
 
-angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['bridge.search', '$http', '$window', function (bridgeSearch, $http, $window) {
+angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['$http', '$window', function ($http, $window) {
     function getSearchName(username) {
         //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
         var searchname = username;
@@ -27,7 +27,7 @@ angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['bridg
                 employeeDetails.TELNR = employeeDetails.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
                 employeeDetails.TELNR_MOB = employeeDetails.TELNR_MOBILE.replace(/ /g, '').replace(/-/g, '');
 
-                $http.get('/bridge/employeeSearch/buildings.xml').then(function (buildingResponse) {
+                $http.get('/bridge/search/buildings.xml').then(function (buildingResponse) {
                     var data = new X2JS().xml_str2json(buildingResponse.data);
                     for(var i = 0; i < data.items.item.length; i++)
                     {
@@ -59,31 +59,5 @@ angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['bridg
         return function(selectedEmployee) {
             $window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.originalEmployee.BNAME);
         };
-    };
-}]);
-
-angular.module('bridge.employeeSearch').directive('bridge.employeeInput', ['$http', '$window', 'bridge.employeeSearch', function ($http, $window, employeeSearch) {
-    var directiveController = ['$scope', function ($scope) {
-        if ($scope.setRequired === undefined) {
-            $scope.setRequired = false;
-        }
-
-        $scope.doSearch = function(username) {
-            return employeeSearch.doSearch(username, function (results) {
-                return results;
-            });
-        };
-    }];
-
-    return {
-        restrict: 'E',
-        templateUrl: 'bridge/employeeSearch/EmployeeInputDirective.html',
-        controller: directiveController,
-        scope: {
-            selectedEmployee: '=selectedEmployee',
-            placeholder: '=placeholder',
-            setRequired: '=required',
-            onSelect: '=onSelect'
-        }
     };
 }]);

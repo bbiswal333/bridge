@@ -6,20 +6,20 @@
 
     beforeEach(function () {
 
-        module("bridge.employeeSearch");
+        module("bridge.employeeInput");
 
         inject(["$rootScope", "$httpBackend", "$compile", function (rootScope, httpBackend, compile) {
             $rootScope = rootScope;
             $compile = compile;
             $httpBackend = httpBackend;
 
-            $httpBackend.whenGET("bridge/employeeSearch/EmployeeInputDirective.html").respond("<div></div>");
+            $httpBackend.whenGET("bridge/controls/employeeInput/EmployeeInputDirective.html").respond("<div></div>");
             $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap.corp:443\/sap\/bc\/zxa\/FIND_EMPLOYEE_JSON\?maxrow=\d+&query=Schueler/).respond(employeeSearchData);
         }]);
     });
 
     it("shoud return an Employee for Search String Schueler", function () {
-        var element = $compile('<bridge.employee-input selected-employee="selectedEmployee" placeholder="\'Name...\'" required="false"></bridge.employee-seearch>')($rootScope);
+        var element = $compile('<bridge.employee-input selected-employee="selectedEmployee" placeholder="\'Name...\'" required="false"></bridge.employee-input>')($rootScope);
         $httpBackend.flush();
         $rootScope.$digest();
 

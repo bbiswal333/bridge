@@ -1,0 +1,10 @@
+{
+	"modules" : ["bridge.search", "bridge.employeeSearch"],
+	"js_files" : [
+		"bridgeSearch.js",
+		"fuzzySearch.js",
+		"bridgeSearchDirective.js",
+		"employeeSearch.js"
+	],
+	"searchProviders" : ["bridge.employeeSearch"]
+}
