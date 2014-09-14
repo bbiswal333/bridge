@@ -22,7 +22,7 @@ angular.module('bridge.service').service('bridgeBuildingSearch', ['$http', '$q',
 		var deferred = $q.defer();
 		if(!buffer_data.initialized)
 		{
-			$http.get('/bridge/employeeSearch/buildings.xml').then(function (response)
+			$http.get('/bridge/search/buildings.xml').then(function (response)
 			{
         		var data = new X2JS().xml_str2json(response.data);
 	            for(var i = 0; i < data.items.item.length; i++)
