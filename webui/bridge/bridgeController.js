@@ -83,8 +83,6 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sideView = "news";
         };
 
-        $scope.show_news = bridgeNewsService.show_news;
-
         $scope.show_download = bridgeDownloadService.show_download;
 
         function parseVersionString(str)
