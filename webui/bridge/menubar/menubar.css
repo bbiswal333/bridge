@@ -69,5 +69,5 @@
 
 .menubar-slide.ng-leave,
 .menubar-slide.ng-enter.ng-enter-active {
-    top: 40px;
+    top: 0px;
 }
