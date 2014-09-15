@@ -6,7 +6,7 @@
 				{{resultProvider.source}}
 			</td>
 			<td ng-if="checkDisplay(resultProvider)" class="search-results-column">
-				<div style="padding: 0px 0px 0px 10px;" ng-repeat="result in resultProvider.results|limitTo:maxResults" ng-class="{'search-line-selected': selectedItem === result}" ng-mouseover="mouseSelection($parent.$index, $index)" ng-click="fireSelectedCallback()">
+				<div style="padding: 0px 0px 0px 10px;" ng-repeat="result in resultProvider.results|limitTo:maxResults" ng-class="{'search-line-selected': selectedItem === result}" ng-mouseover="mouseSelection($parent.$index, $index)" ng-mousedown="fireSelectedCallback()">
 					<!--<span>{{result.score}}</span>-->
 					<span style="max-width: 250;" class="search-span-ellipsis">{{result.title}}</span>
 					<span ng-if"result.description" style="vertical-align: top;" ng-if="result.description">&#8212;</span>
