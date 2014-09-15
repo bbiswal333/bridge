@@ -21,7 +21,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         this.initialize = function () {
-            $scope.box.reloadApp(this.jobsToDisplay, 60 * 10);
+            $scope.box.reloadApp(this.jobsToDisplay, 60);
         };
 
         var formatTimestamp = function(timestamp) {
