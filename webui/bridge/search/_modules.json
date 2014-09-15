@@ -1,5 +1,5 @@
 {
-	"modules" : ["bridge.search", "bridge.employeeSearch", "bridge.hanaAnswersSearch", "bridge.googleProposals"],
+	"modules" : ["bridge.search"],
 	"js_files" : [
 		"bridgeSearch.js",
 		"fuzzySearch.js",
@@ -8,5 +8,5 @@
 		"hanaAnswersSearch.js",
 		"googleProposals.js"
 	],
-	"searchProviders" : ["bridge.employeeSearch", "bridge.hanaAnswersSearch", "bridge.googleProposals"]
+	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals"]
 }

@@ -1,6 +1,4 @@
-angular.module('bridge.employeeSearch', []);
-
-angular.module('bridge.employeeSearch').service('bridge.employeeSearch', ['$http', '$window', function ($http, $window) {
+angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http', '$window', function ($http, $window) {
     function getSearchName(username) {
         //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
         var searchname = username;

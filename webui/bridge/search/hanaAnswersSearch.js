@@ -1,6 +1,4 @@
-angular.module('bridge.hanaAnswersSearch', []);
-
-angular.module('bridge.hanaAnswersSearch').service('bridge.hanaAnswersSearch', ['$http', '$window', function ($http, $window) {
+angular.module('bridge.search').service('bridge.search.hanaAnswersSearch', ['$http', '$window', function ($http, $window) {
     this.getSourceName = function() {
         return "SAP HANA Answers";
     };
