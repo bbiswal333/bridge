@@ -4,8 +4,11 @@ angular.module('bridge.search').service('bridge.search.googleProposals', ['$http
 		return regexp.test(s);
 	}
 
-    this.getSourceName = function() {
-        return "Google";
+    this.getSourceInfo = function() {
+        return {
+            icon: "fa fa-google",
+            name: "Google"
+        };
     };
     this.findMatches = function(query, resultArray) {
 		return $http.get('/api/get?proxy=true&url=' + encodeURIComponent("http://suggestqueries.google.com/complete/search?output=chrome&hl=en&q=" + query)).then(

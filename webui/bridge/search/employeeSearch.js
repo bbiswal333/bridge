@@ -43,19 +43,23 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
     };
 
     var that = this;
-    this.getSourceName = function() {
-        return "SAP Employees";
+    this.getSourceInfo = function() {
+        return {
+            icon: "fa fa-user",
+            name: "SAP Employees",
+            resultTemplate: "bridge/controls/employeeInput/EmployeeItemTemplate.html"
+        };
     };
     this.findMatches = function(query, resultArray) {
         return that.doSearch(query, function(employees) {
             employees.map(function(employee) {
-                resultArray.push({title: employee.VORNA + " " + employee.NACHN, description: employee.BNAME, originalEmployee: employee});
+                resultArray.push({model: employee, label: employee.NACHN + ", " + employee.VORNA + " (" + employee.BNAME + ", " + employee.SAPNA + ")"});
             });
         });
     };
     this.getCallbackFn = function() {
         return function(selectedEmployee) {
-            $window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.originalEmployee.BNAME);
+            $window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.model.BNAME);
         };
     };
 }]);

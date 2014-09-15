@@ -1,6 +1,6 @@
 /*global Fuse*/
 angular.module("bridge.search").factory("bridge.search.fuzzySearch", [function() {
-	return function(sSourceName, oData, oOptions) {
+	return function(sSourceInfo, oData, oOptions) {
 		oOptions.includeScore = true;
 		oOptions.threshold = oOptions.threshold || 0.4;
 		oOptions.shouldSort = true;
@@ -18,8 +18,8 @@ angular.module("bridge.search").factory("bridge.search.fuzzySearch", [function()
 				});
 			};
 
-			this.getSourceName = function() {
-				return sSourceName;
+			this.getSourceInfo = function() {
+				return sSourceInfo;
 			};
 
 			this.getCallbackFn = function() {

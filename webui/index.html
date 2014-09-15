@@ -81,6 +81,7 @@
 <body class="noselect" style="overflow:auto">
     <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: temporaryData.backgroundDayNight}[(temporaryData.backgroundDayNight == undefined)]" ng-cloak>
         <div class="sun" ng-class="{true: 'mainPageBackground', false: temporaryData.backgroundClass}[(temporaryData.backgroundClass == undefined)]">
+            <bridge.menubar ng-if="isTestInstance || isLocal"></bridge.menubar>
             <div ng-if="isTestInstance" class="testInstanceBar" style="align: center">This is the test instance of Bridge. For productive use of Bridge please click <a href="https://bridge.mo.sap.corp">HERE</a></div>
             <div>
                 <div ng-if="showLoadingBar" class="loadingBar">
@@ -93,9 +94,6 @@
                     <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
                 </div>
                 <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
-            </div>
-            <div class="searchBar" ng-if="isTestInstance || isLocal">
-                <bridge.search></bridge.search>
             </div>
             <div id="main-container" ng-view class="mainContainer">
             </div>

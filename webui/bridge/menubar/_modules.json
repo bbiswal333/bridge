@@ -1,0 +1,8 @@
+{
+	"js_files" : [
+                "menubarDirective.js"
+	],
+	"css_files" : [
+                "menubar.css"
+	]
+}

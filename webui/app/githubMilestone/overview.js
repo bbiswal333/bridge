@@ -4,7 +4,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
     ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "app.githubIssueSearch",
     function($http, appGithubMilestoneConfig, calUtils, githubIssueSearch) {
 
-    githubIssueSearch.getSourceName();
+    githubIssueSearch.getSourceInfo();
 
     var directiveController = ['$scope', function($scope ) {
             $scope.box.boxSize = "2";
@@ -141,8 +141,11 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 }]);
 
 angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http', 'app.githubMilestone.configservice', "bridge.search", "$window", function($http, githubConfig, bridgeSearch, $window) {
-    this.getSourceName = function() {
-        return "Github Issues";
+    this.getSourceInfo = function() {
+        return {
+            icon: "fa fa-github",
+            name: "Github Issues"
+        };
     };
     this.findMatches = function(query, resultArray) {
         return $http({
