@@ -6,6 +6,7 @@
         "icon_css"				:	"icon-comment",
         "overview_directive"	:	"app.itdirect",
         "needs_client"			:	false,
+        "default_hidden"        :   true,
         "routes"		:
             [
                 {

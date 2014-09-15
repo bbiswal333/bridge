@@ -6,6 +6,7 @@
 		"icon_css"				:	"fa fa-bell",
 		"overview_directive"	:	"app.jira",
 		"needs_client"			:	false,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{

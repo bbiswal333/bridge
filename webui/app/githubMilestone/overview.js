@@ -1,9 +1,10 @@
-angular.module('app.githubMilestone', ["lib.utils"]);
+angular.module('app.githubMilestone', ["lib.utils", "bridge.search"]);
 
 angular.module('app.githubMilestone').directive('app.githubMilestone',
-    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils",
-    function($http, appGithubMilestoneConfig, calUtils) {
+    ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "app.githubIssueSearch",
+    function($http, appGithubMilestoneConfig, calUtils, githubIssueSearch) {
 
+    githubIssueSearch.getSourceName();
 
     var directiveController = ['$scope', function($scope ) {
             $scope.box.boxSize = "2";
@@ -137,4 +138,30 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             }
         }
     };
+}]);
+
+angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http', 'app.githubMilestone.configservice', "bridge.search", "$window", function($http, githubConfig, bridgeSearch, $window) {
+    this.getSourceName = function() {
+        return "Github Issues";
+    };
+    this.findMatches = function(query, resultArray) {
+        return $http({
+                        method: 'GET',
+                        url: githubConfig.api_url + 'search/issues?q=' + query + '+repo:' + githubConfig.repo.full_name + '&origin=' + $window.location.origin,
+                        withCredentials: false
+                    }).then(
+            function(response) {
+                response.data.items.map(function(result) {
+                    resultArray.push({title: result.title, originalIssue: result});
+                });
+            }
+        );
+    };
+    this.getCallbackFn = function() {
+        return function(selectedItem) {
+            $window.open(selectedItem.originalIssue.html_url);
+        };
+    };
+
+    bridgeSearch.addSearchProvider(this);
 }]);

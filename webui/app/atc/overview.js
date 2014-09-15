@@ -1,4 +1,4 @@
-﻿angular.module('app.atc', []);
+﻿angular.module('app.atc', ['bridge.search']);
 
 angular.module('app.atc').directive('app.atc',
     ["$modal", "app.atc.configservice", "app.atc.dataservice", "bridge.search", "bridge.search.fuzzySearch",

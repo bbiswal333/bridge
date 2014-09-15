@@ -45,10 +45,6 @@
         "diagnosis/mailPreviewController.js",
         "diagnosis/statusController.js",
 
-        "search/bridgeSearch.js",
-        "search/fuzzySearch.js",
-        "search/bridgeSearchDirective.js",
-
         "controls/checkbox.js",
         "controls/radio.js"
 	],

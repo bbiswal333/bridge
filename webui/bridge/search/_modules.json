@@ -1,0 +1,12 @@
+{
+	"modules" : ["bridge.search", "bridge.employeeSearch", "bridge.hanaAnswersSearch", "bridge.googleProposals"],
+	"js_files" : [
+		"bridgeSearch.js",
+		"fuzzySearch.js",
+		"bridgeSearchDirective.js",
+		"employeeSearch.js",
+		"hanaAnswersSearch.js",
+		"googleProposals.js"
+	],
+	"searchProviders" : ["bridge.employeeSearch", "bridge.hanaAnswersSearch", "bridge.googleProposals"]
+}
