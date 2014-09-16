@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			: 	["Tools"],
 		"module_name"			:	"app.correctionWorkbench",
 		"title"					:	"Java CWB",
 		"icon_css"				:	"fa fa-circle",

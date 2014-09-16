@@ -4,13 +4,16 @@
 	<div class="menubar-slide" ng-include="'bridge/menubar/notification/bridgeNotifications.html'" ng-if="display == 'notifications'"></div>
 	<div class="menubar-slide" ng-include="'bridge/menubar/news/bridgeNews.html'" ng-if="display == 'news'"></div>
 </div>
+<div class="menubar-applications-container">
+	<div class="applications-slide" ng-include="'bridge/menubar/applications/bridgeApplications.html'" ng-if="display == 'apps'" />
+</div>
 <div class="bridge-menubar">
 	<div style="padding: 4px 0px 0px 15px" class="col-md-5">
 		<bridge.search></bridge.search>
 	</div>
 	<div class="col-md-2" style="text-align: center">
 		BRIDGE
-        <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click(); toggleDragging()"><span class="fa fa-plus"></span></div>
+        <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-plus"></span></div>
 	</div>
 	<div class="col-md-2" style="text-align: center">
 		Weather

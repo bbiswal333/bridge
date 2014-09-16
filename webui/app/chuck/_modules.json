@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		categories				:   ["Fun"],
 		"module_name"			:	"app.chuck",
 		"title"					:	"Chuck Norris",
 		"icon_css"				:	"fa fa-bomb",

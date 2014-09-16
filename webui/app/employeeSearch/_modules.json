@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			: 	["Tools"],
 		"module_name"			:	"app.employeeSearch",
 		"title"					:	"Employee Search",
 		"icon_css"				:	"fa fa-user",
