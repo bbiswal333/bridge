@@ -1,0 +1,22 @@
+{
+	"news": [
+		{
+			"id":		1,
+			"header": 	"header0",
+			"preview": 	"preview0", 
+			"snapURL": 	"../img/snap02.png",
+			"content": 	"content00fghjfgnusfgdfunfgunsfgnubsusnznuzub",
+			"img1": 	"../img/snap02.png",
+			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438",
+			"read":		false
+		},
+		{
+			"header": "header1",
+			"preview": "preview1", 
+			"snapURL": "../img/snap02.png",
+			"content": "content01",
+			"img1": "../img/snap02.png",
+			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
+		}
+	]
+}
