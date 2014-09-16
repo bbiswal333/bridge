@@ -1,6 +1,6 @@
 .bridge-menubar {
 	width: 100%;
-	min-height: 40px;
+	height: 40px;
 	background-color: #3B3B3B;
 	z-index: 10;
 	position: absolute;
@@ -37,13 +37,51 @@
     color:#0099CC;
 }
 
+.menubar-applications-container {
+  width: 70%;
+  position: absolute;
+  text-align: center;
+  right: 15%;
+  left: 15%;
+  top: 40px;
+  z-index: 9;
+}
+
 .menubar-animation-container {
   width: 300px;
   position: absolute;
   right: 0px;
   top: 40px;
-  background-color:white;
+  bottom: 0px;
   z-index: 9;
+}
+
+.applications-slide {
+    background-color: white;
+    position: absolute;
+    padding: 15px;
+    margin: 0px;
+    -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+    top:40px;
+    overflow: auto;
+    width: 100%;
+}
+
+.applications-slide.ng-enter, .applications-slide.ng-leave {
+    -webkit-transition:all linear 0.25s;
+    transition:all linear 0.25s;
+}
+
+.applications-slide.ng-enter,
+.applications-slide.ng-leave.ng-leave-active {
+    top: -400px;
+}
+
+.applications-slide.ng-leave,
+.applications-slide.ng-enter.ng-enter-active {
+    top: 40px;
 }
 
 .menubar-slide {
@@ -55,11 +93,14 @@
     -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
     -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
     box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
+    top: 0px;
+    bottom: 0px;
+    overflow: auto;
 }
 
 .menubar-slide.ng-enter, .menubar-slide.ng-leave {
-    -webkit-transition:all linear 0.5s;
-    transition:all linear 0.5s;
+    -webkit-transition:all linear 0.25s;
+    transition:all linear 0.25s;
 }
 
 .menubar-slide.ng-enter,

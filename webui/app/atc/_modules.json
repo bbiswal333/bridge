@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			: 	["ABAP"],
 		"module_name"			:	"app.atc",
 		"title"					:	"ATC Results",
 		"icon_css"				:	"icon-wrench",

@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		categories				:   ["Tools"],
 		"module_name"			:	"app.cats",
 		"title"					:	"Time Recording (CAT2)",
 		"icon_css"				:	"fa fa-calendar",

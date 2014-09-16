@@ -2,7 +2,7 @@ angular.module("bridge.app").directive("bridge.menubar", [function() {
 	return {
 		restrict: "E",
         templateUrl: "bridge/menubar/MenuBar.html",
-        controller: function($scope) {
+        controller: function($scope, $modal) {
         	$scope.displayView = function(view) {
         		if($scope.display === view) {
         			$scope.display = "";
@@ -10,6 +10,11 @@ angular.module("bridge.app").directive("bridge.menubar", [function() {
         		}
         		$scope.display = view;
         	};
+
+                $scope.changeSelectedApps = function() {
+                        $scope.toggleDragging();
+                        $scope.displayView('apps');
+                };
         }
 	};
 }]);
