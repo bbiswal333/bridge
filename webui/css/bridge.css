@@ -814,9 +814,11 @@ h3{
     font-weight: bold;
     text-align: center;
     left: 25%;
+    top: 40px;
 }
 
 .logAlertBar {
+    top: 40px;
     position: absolute;
     z-index: 1000;
     /* width should be big enough to cover every screen*/
