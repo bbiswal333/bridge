@@ -9,6 +9,7 @@ function (colorUtils, blockCalculations, calUtils) {
             selectedHours: "=",
             totalValue: "=",
             totalWidth: "=",
+            height: "=",
             getRemainingValue: "=",
             getBlockIndex: "=",
             blockSizeChangeRequested: "=",
@@ -20,7 +21,11 @@ function (colorUtils, blockCalculations, calUtils) {
             // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
             $scope.blockData.localValue = $scope.blockData.value;
 
-            $scope.dragBarWidth = 5;
+            if ($scope.blockData.fixed) {
+                $scope.dragBarWidth = 0;
+            } else {
+                $scope.dragBarWidth = 5;
+            }
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getDescription = function () {
@@ -79,13 +84,13 @@ function (colorUtils, blockCalculations, calUtils) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
 //            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover-placement="top" popover-trigger="mouseenter" popover-popup-delay="1500">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
-                '<div class="allocation-bar-project-text">{{blockData.desc}}</div>' +
-                '<div class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor, height: height - 20}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
+                '<div ng-if="height == 80" class="allocation-bar-project-text">{{blockData.desc}}</div>' +
+                '<div ng-if="height == 80" class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +
             '</div>' +
-            '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth}">' +
-                '<div ng-style="{background: blockColor}" style="height: 60px; margin-top: 10px;">' +
-                    '<img ng-hide="blockData.fixed" class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
+            '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth, height: height - 20}">' +
+                '<div ng-style="{background: blockColor, height: height - 20}" style="margin-top: 10px;">' +
+                    '<img ng-if="height == 80" ng-hide="blockData.fixed" class="allocation-bar-dragBar-image" src="img/bar_handler.svg"></img>' +
                 '</div>' +
             '</div>' +
         '</div>'
