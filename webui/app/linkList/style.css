@@ -4,6 +4,11 @@
 	cursor: move;
 }
 
+.app-linkList-emptyRow{
+	height: 50px;
+	width: 100%;
+}
+
 .app-linkList-tableHeader{
 	font-size: 14px;
 	font-weight: bold;
@@ -30,6 +35,11 @@
 	overflow: hidden;	
 }
 
+.app-linkList-listContainer{
+	overflow: scroll; 
+	height: 100%
+}
+
 .app-linkList-entry{
 	line-height: 3em;
 }
@@ -41,6 +51,14 @@
 	cursor: pointer;
 	width: 100%;
 	height: 36px;
+}
+.app-linkList-linkList {
+    /*padding: 5px;*/
+    border-style: dashed;
+    border-color: rgb(175,229,255);
+    border-width: thin;
+    height: 300px;
+    position: relative;
 }
 
 .no-padd{
@@ -64,15 +82,6 @@
 	padding-left: 3px;
 }
 
-.app-linkList-linkList {
-    /*padding: 5px;*/
-    border-style: dashed;
-    border-color: rgb(175,229,255);
-    border-width: thin;
-    height: 300px;
-    overflow: auto;
-    position: relative;
-}
 .new_link_zero{
 	margin-top: 5px;
 }

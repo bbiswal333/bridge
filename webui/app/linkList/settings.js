@@ -165,6 +165,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.toggleAddForm = function(col)
 	{
+		$scope.selectedIndex = col;
 		if($scope.addForm[col] === '' || $scope.addForm[col] === undefined)
 		{
 			$scope.addForm[col] = 'web';
