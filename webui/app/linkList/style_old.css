@@ -1,9 +1,11 @@
 .app-linkList-row{
+	padding-bottom: 8px;
 	margin-left: 0px;
 	margin-right: 0px;
+	min-height:45px;
 	cursor: move;
-}
 
+}
 .app-linkList-tableHeader{
 	font-size: 14px;
 	font-weight: bold;
@@ -17,6 +19,7 @@
 }
 
 .app-linkList-link{
+
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -28,19 +31,6 @@
 	margin-top: 10px; 
 	height: 145px;
 	overflow: hidden;	
-}
-
-.app-linkList-entry{
-	line-height: 3em;
-}
-
-.app-linkList-addLink{
-	position: absolute;
-	bottom: 0;
-	text-align: center;
-	cursor: pointer;
-	width: 100%;
-	height: 36px;
 }
 
 .no-padd{
@@ -63,15 +53,14 @@
 	padding-right: 3px;
 	padding-left: 3px;
 }
-
+.padd_bot{
+	margin-top: 10px;
+}
 .app-linkList-linkList {
-    /*padding: 5px;*/
+    padding: 5px;
     border-style: dashed;
     border-color: rgb(175,229,255);
     border-width: thin;
-    height: 300px;
-    overflow: auto;
-    position: relative;
 }
 .new_link_zero{
 	margin-top: 5px;
