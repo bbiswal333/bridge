@@ -1,6 +1,6 @@
 angular.module('app.employeeSearch', []);
 
-angular.module('app.employeeSearch').directive('app.employeeSearch', ['$http', '$window', 'bridge.employeeSearch', function ($http, $window, employeeSearch) {
+angular.module('app.employeeSearch').directive('app.employeeSearch', ['$http', '$window', 'bridge.search.employeeSearch', function ($http, $window, employeeSearch) {
 
     var directiveController = ['$scope', function ($scope) {
         $scope.box.boxSize = "2";

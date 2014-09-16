@@ -7,8 +7,8 @@ describe("BridgeSearch provides functionalities to collect and call content prov
 		findMatches: function(query, resultArray) {
 			resultArray.push({title: "title with " + query, description: "description with " + query});
 		},
-		getSourceName: function() {
-			return "sample source";
+		getSourceInfo: function() {
+			return {name: "sample source"};
 		},
 		getCallbackFn: function() {
 		}
@@ -24,8 +24,8 @@ describe("BridgeSearch provides functionalities to collect and call content prov
 		    },10);
 			return deferred.promise;
 		},
-		getSourceName: function() {
-			return "sample source";
+		getSourceInfo: function() {
+			return {name: "sample source"};
 		},
 		getCallbackFn: function() {
 		}

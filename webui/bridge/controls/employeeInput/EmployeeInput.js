@@ -1,6 +1,6 @@
-﻿angular.module('bridge.employeeInput', ['bridge.employeePicture', 'bridge.employeeSearch']);
+﻿angular.module('bridge.employeeInput', ['bridge.employeePicture', 'bridge.search']);
 
-angular.module('bridge.employeeInput').directive('bridge.employeeInput', ['$http', '$window', 'bridge.employeeSearch', function ($http, $window, employeeSearch) {
+angular.module('bridge.employeeInput').directive('bridge.employeeInput', ['$http', '$window', 'bridge.search.employeeSearch', function ($http, $window, employeeSearch) {
     var directiveController = ['$scope', function ($scope) {
         if ($scope.setRequired === undefined) {
             $scope.setRequired = false;

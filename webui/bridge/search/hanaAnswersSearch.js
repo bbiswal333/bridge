@@ -1,8 +1,9 @@
-angular.module('bridge.hanaAnswersSearch', []);
-
-angular.module('bridge.hanaAnswersSearch').service('bridge.hanaAnswersSearch', ['$http', '$window', function ($http, $window) {
-    this.getSourceName = function() {
-        return "SAP HANA Answers";
+angular.module('bridge.search').service('bridge.search.hanaAnswersSearch', ['$http', '$window', function ($http, $window) {
+    this.getSourceInfo = function() {
+        return {
+            icon: "fa fa-database",
+            name: "SAP HANA Answers"
+        };
     };
     this.findMatches = function(query, resultArray) {
 		return $http.get('https://answers.saphana.com/sap/answers/backend/rest/public/search/?q=' + query + '&order=RELEVANCE&n=10&page=1&origin=' + $window.location.origin).then(

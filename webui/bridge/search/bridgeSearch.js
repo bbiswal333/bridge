@@ -4,7 +4,7 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 
 	this.addSearchProvider = function(searchProvider) {
 		//todo: check for search function
-		if(searchProvider === null || !searchProvider.hasOwnProperty('findMatches') || !searchProvider.hasOwnProperty('getSourceName') ||
+		if(searchProvider === null || !searchProvider.hasOwnProperty('findMatches') || !searchProvider.hasOwnProperty('getSourceInfo') ||
 			!searchProvider.hasOwnProperty('getCallbackFn')) {
 			throw new Error("Invalid search provider");
 		}
@@ -29,7 +29,7 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 		var deferred = $q.defer();
 		var promises = [];
 		searchProviders.map(function(provider) {
-			var result = {source: provider.getSourceName(), results: [], callbackFn: provider.getCallbackFn()};
+			var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
 			resultArray.push(result);
 			var promise = provider.findMatches(query, result.results);
 			if(promise) {

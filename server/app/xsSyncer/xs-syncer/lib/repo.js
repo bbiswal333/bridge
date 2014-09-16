@@ -371,11 +371,11 @@ Repo.prototype.putFile = function (filePath, remoteFilePath, workspaceId, cb) {
                 body: fileContent
             };
 
-            var requestId = require('randomstring').generate(20);;
+            var requestId = require('randomstring').generate(20);
             self.output.info("Repo", "uploading", query.path, "Request Id: ", requestId);
             self.request(query, function(error, data) {
                 if(error) {
-                    self.output.info("Repo", "uploading failed", query.path, "Request Id: ", requestId);
+                    self.output.info("Repo", "uploading failed", query.path, "Request Id: ", requestId, error.message);
                 } else {
                     self.output.info("Repo", "uploading finished", query.path, "Request Id: ", requestId);
                 }

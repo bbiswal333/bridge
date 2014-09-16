@@ -1,0 +1,27 @@
+<div ng-controller="bridge.menubar.newsController">
+    <div class="news-header-badge">
+        <span class="image_rounded_shadow">
+            <img style="border-radius:100%;border:4px solid #418AC9" ng-src="{{selectedNews.snapURL}}" width="100px" height="100px" />
+        </span>
+        <a href="{{selectedNews.gitURL}}">
+            <span class="news-icons">
+                <i class="fa fa-github fa-4x basic-blue-font-40"></i>
+                <br>
+                View it on Github
+            </span>
+        </a>
+        <h1 class="basic-blue-font news-headline">{{selectedNews.header}}</h1>
+        <div class="news-navi basic-blue-font">
+            <i class="fa fa-angle-left fa-4x" ng-click="show_news()"></i>
+            <i class="fa fa-angle-right fa-4x" ng-click="show_news()"></i>
+        </div>
+    </div>
+    <div class="news-header">
+        <div class="news-content">
+            {{selectedNews.content}}
+        </div>
+        <div class="news-image">
+            <img ng-src="{{selectedNews.img1}}">
+        </div>
+    </div>
+</div>

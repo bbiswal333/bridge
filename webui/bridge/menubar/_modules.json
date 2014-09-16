@@ -1,0 +1,14 @@
+{
+	"js_files" : [
+                "menubarDirective.js",
+                "github/bridgeGithubController.js",
+                "notification/bridgeNotificationsController.js",
+                "news/bridgeNewsController.js",
+                "news/bridgeNewsService.js",
+                "download/bridgeDownloadController.js",
+                "download/bridgeDownloadService.js"
+	],
+	"css_files" : [
+                "menubar.css"
+	]
+}
