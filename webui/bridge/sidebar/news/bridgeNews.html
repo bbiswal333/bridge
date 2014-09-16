@@ -4,7 +4,9 @@
 		<span class="settingsIcon fa fa-flash"  style="color:inherit!important;cursor:default!important;margin-right:0;"></span>
 	</div>   
 	<br>
-	Here you will find the latest news about Bridge.
+    <div class="sidebar-news-tabBar">
+	    <a href="" ng-click="selectTab('new')">New</a> | <a href="" ng-click="selectTab('read')">Read</a>
+    </div>
 
     <div ng-repeat="newsItem in news" ng-click="show_news(newsItem)" class="hover" style="height: 70px; width: 110%; position: relative; left: -15px;">
         <div class="boxLeft">
