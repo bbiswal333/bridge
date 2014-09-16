@@ -1,4 +1,4 @@
-﻿
+﻿<div></div>
 <div ng-if="noJobSelected()">
 	No jobs selected.
 </div>
@@ -7,12 +7,8 @@
 	<table>
             <tr ng-repeat="job in jobsToDisplay | orderBy:'-lastBuild'">
             	<td><a tooltip="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
-                <!-- <td class="buildstatuscell">
-                	<!-- <img ng-if="job.color !== 'grey'" ng-src="{{getWeatherIconLink(job)}}"/> -->
-                	<!-- <a ng-if="job.color !== 'grey'" class="fa fa-long-arrow-right {{getWeatherIconLink(job)}}"></a> -->
-                <!-- </td>  -->
-                <td class="style" style="width: 260px;"><a target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 35)}}</a></td>
 
+                <td class="style" style="width: 240px;"><a ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
                 <td style="">{{job.timestamp}}</td>
             </tr>
 	</table>
@@ -77,3 +73,9 @@
 
 </div>
 -->
+
+
+</div>
+
+
+

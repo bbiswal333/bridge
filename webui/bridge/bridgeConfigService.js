@@ -8,7 +8,17 @@
         this.configSnapshot = null;
 
         function getAppConfig(app) {
-            return app.scope ? (app.scope.box ? (app.scope.box.returnConfig ? app.scope.box.returnConfig() : app.appConfig) : {}) : {};
+            try {
+                if (angular.isFunction(app.scope.box.returnConfig)){
+                    return app.scope.box.returnConfig();
+                } else {
+                    $log.log(app.metadata.module_name + " has no returnConfig() function.");
+                    return app.appConfig;
+                }
+            } catch (exception){
+                $log.error(exception.message);
+                return app.appConfig;
+            }
         }
 
         function getAppsData(project) {
@@ -36,12 +46,8 @@
 
             for (var j = 0; j < visible_apps.length; j++)
             {
-                var appConfig = {};
-                try {
-                    appConfig = getAppConfig(visible_apps[j]);
-                } catch(e) {
-                    $log.error("Failed to get the app-config: " + e.stack);
-                }
+                var appConfig = getAppConfig(visible_apps[j]);
+
                 apps.push({
                     metadata: {
                         "module_name": visible_apps[j].metadata.module_name
@@ -179,6 +185,7 @@
                     }
                 ],
                 bridgeSettings: {
+                    readNotifications: []
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };

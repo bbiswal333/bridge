@@ -8,7 +8,7 @@
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
-		"beta_users"			: ["D055406","D050049", "C5187668", "C5183791", "D044558", "C5103920", "D049677"]
+		"beta_users"			: ["D055406","D050049","C5187668","C5183791","D044558", "C5103920","D063241","D062536","D053108","D049677","D036920","D047612"]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "feedService.js"],

@@ -1,5 +1,7 @@
 angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
+
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", "$interval", "$timeout", function (jenkinsConfigService, $location, $interval, $timeout) {
+
 
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
@@ -7,6 +9,11 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.jobsToDisplay = [];
         $scope.jenkinsConfig = {};
         $scope.configService = jenkinsConfigService;
+
+        $scope.dependancyGraph = [];
+
+
+        
 
         // Settings Screen
         $scope.box.settingsTitle = "Configure Jenkins URL";
@@ -62,16 +69,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
-        // $scope.detailJobView = function(jobUrl){
-        //     console.log($scope.jobResult);
-        //     getJobDependancy(jobUrl);
-        //     $location.path("/detail/job/");
-
-        // };
-
-        // var getJobDependancy = function(){
-
-        // }
 
         $scope.limitDisplayName = function(name, limit) {
             if(name.toString().length > limit) {
@@ -121,6 +118,10 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                                 $scope.jobsToDisplay[jobIndex].lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
 
                                 $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
+
+                                
+                                // $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
+
                             }
                     }
 
@@ -147,10 +148,16 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                             // $scope.jobsToDisplay[jobIndex].statusInfo = result.result;
                             if(result.color === "red"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-times";
+                                $scope.jobsToDisplay[jobIndex].statusInfo = "Failed";
                             }else if(result.color === "yellow"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-circle";
+                                $scope.jobsToDisplay[jobIndex].statusInfo = "Unstable";
                             }else if(result.color === "blue" || result.color === "green"){
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-check";
+                                $scope.jobsToDisplay[jobIndex].statusInfo = "Success";
+                            }else if(result.color === "blue_anime" || result.color === "green_anime" || result.color === "red_anime" || result.color === "yellow_anime"){
+                                $scope.jobsToDisplay[jobIndex].statusIcon = "fa-circle-o-notch fa-spin";
+                                $scope.jobsToDisplay[jobIndex].statusInfo = "Running";
                             }else{
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-question";
                             }
@@ -168,6 +175,25 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         };
 
+        var getDependancyData = function(job){
+            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json"), withCredentials: false }).
+                success(function(result) {
+                    
+                    for(var jobIndex in $scope.jobsToDisplay) {
+                        if($scope.jobsToDisplay[jobIndex].name === job.name) {
+                            $scope.jobsToDisplay[jobIndex].downstreamProjects = result.downstreamProjects;
+                            $scope.jobsToDisplay[jobIndex].upstreamProjects = result.upstreamProjects;
+                        }
+                    }
+
+            }).
+                error(function(result, status) {
+                     $log.log("Could not GET job " + job.name + ", status: " + status);
+
+            });
+
+        };
+
         $scope.updateJobsView = function(configItems) {
 
             $scope.jobsToDisplay = configItems;
@@ -176,9 +202,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                 $scope.jobsToDisplay[jobIndex].name = $scope.jobsToDisplay[jobIndex].selectedJob;
                 $scope.jobsToDisplay[jobIndex].url = $scope.jobsToDisplay[jobIndex].jenkinsUrl + "/job/" + $scope.jobsToDisplay[jobIndex].name;
-
+                getDependancyData($scope.jobsToDisplay[jobIndex]);
                 getAndSetHealthReportAndColorToJob($scope.jobsToDisplay[jobIndex]);
-
             }
 
         };
@@ -243,7 +268,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                  .success(function (jobsOverviewData) {
 
                     $scope.primaryViewName = jobsOverviewData.primaryView.name;
-
+                    $scope.downstreamProjects = jobsOverviewData.downstreamProjects;
+                    $scope.upstreamProjects = jobsOverviewData.upstreamProjects;
                     jenkinsConfigService.configItem.views = removeViewAll(jobsOverviewData.views);
                     jenkinsConfigService.configItem.jobs = jobsOverviewData.jobs;
                     jenkinsConfigService.couldReachJenkinsUrl = true;
