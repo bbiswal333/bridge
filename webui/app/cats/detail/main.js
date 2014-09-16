@@ -224,9 +224,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 } else if (task.TASKTYPE === "ABSE") {
                     addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
+                    addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
                 } else {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
+                    addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
             checkAndCorrectPartTimeInconsistancies(day);
