@@ -1,4 +1,8 @@
 angular.module('bridge.app').controller('sidebarNewsController', [ '$scope', '$modal', 'bridge.service.bridgeNews', function ($scope, $modal, newsService) {
+    if (newsService.isInitialized === false) {
+        newsService.initialize();
+    }
+
 	$scope.news = newsService.news;
 
     $scope.show_news = function(selectedNews){
