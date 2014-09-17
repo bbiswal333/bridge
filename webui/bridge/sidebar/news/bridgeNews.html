@@ -5,10 +5,13 @@
 	</div>   
 	<br>
     <div class="sidebar-news-tabBar">
-	    <a href="" ng-click="selectTab('new')">New</a> | <a href="" ng-click="selectTab('read')">Read</a>
+	    <a href="" ng-class="selectedTab === 'new' ? 'underline' : ''" ng-click="selectTab('new')">New</a> | <a href="" ng-class="selectedTab === 'read' ? 'underline' : ''" ng-click="selectTab('read')">Read</a>
+    </div>
+    <div ng-if="selectedTab === 'new'">
+        <a href="" ng-click="markAllNewsAsRead()">Mark All as Read</a>
     </div>
 
-    <div ng-repeat="newsItem in news.data" ng-click="show_news(newsItem)" class="hover" style="height: 70px; width: 110%; position: relative; left: -15px;">
+    <div ng-repeat="newsItem in news.data | filter: filterList" ng-click="show_news(newsItem)" class="hover" style="height: 70px; width: 110%; position: relative; left: -15px;">
         <div class="boxLeft">
             <span class="image_rounded_shadow">
                       <img style="margin-top:10px;margin-left:15px;pointer-events:auto;border-radius:100%;border:4px solid #4EA175" ng-src="{{newsItem.snapURL}}" width="50px" height="50px" />
