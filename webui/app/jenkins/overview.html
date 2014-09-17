@@ -8,8 +8,9 @@
             <tr ng-repeat="job in jobsToDisplay | orderBy:'-lastBuild'">
             	<td><a tooltip="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
 
-                <td class="style" style="width: 240px;"><a ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
-                <td style="">{{job.timestamp}}</td>
+                <td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
+                <td style="padding-right: 5px;">{{job.timestamp}}</td>
+                <td><i tooltip="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
             </tr>
 	</table>
 </div>

@@ -227,26 +227,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             return views;
         };
 
-        // $scope.getWeatherIconLink = function(job) {
-        //     if(job.jobHealthReport[0].iconUrl === "health-60to79.png")
-        //     {
-        //         return "fa-rotate-315";
-        //     }else if(job.jobHealthReport[0].iconUrl === "health-80plus.png")
-        //     {
-        //         return "fa-rotate-270";
-        //     }else if(job.jobHealthReport[0].iconUrl === "health-40to59.png")
-        //     {
-        //         return "fa-rotate-360";
-        //     }else if(job.jobHealthReport[0].iconUrl === "health-20to39.png")
-        //     {
-        //         return "fa-rotate-45";
-        //     }else if(job.jobHealthReport[0].iconUrl === "health-00to19.png")
-        //     {
-        //         return "fa-rotate-90";
-        //     }
-        //     // return ((job.jobHealthReport === undefined) ? "" : "/app/jenkins/icons/" + job.jobHealthReport[0].iconUrl);
-        // };
-
         var clearJobsViewAndSetErrorMsg = function(msg) {
             $scope.primaryViewName = "";
             jenkinsConfigService.configItem.selectedJob = "";
