@@ -143,15 +143,16 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
     }
 
     function loadData() {
-        if(weatherConfig.configItem.location !== undefined && weatherConfig.configItem.location.name !== undefined)
+        if(weatherConfig.getConfig().location !== undefined && weatherConfig.getConfig().location.name !== undefined)
         {
-            data.city_name = weatherConfig.configItem.location.name;
-            data.fahrenheit = weatherConfig.configItem.fahrenheit;
-            setPosition(weatherConfig.configItem.location);
+            data.city_name = weatherConfig.getConfig().location.name;
+            data.fahrenheit = weatherConfig.getConfig().fahrenheit;
+            setPosition(weatherConfig.getConfig().location);
             getWeather();
             getForcast();
         }
     }
+    this.loadData = loadData;
     this.getData = function() {
         return data;
     };

@@ -3,7 +3,7 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 	var that = this;
 
 	//default value
-	this.configItem =
+	var configItem =
 	{
 		fahrenheit : false,
 		location:
@@ -13,6 +13,14 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 			longitude: 8.641992
 		}
 	};
+
+	var deferred = $q.defer();
+	bridgeDataService.initialize(deferred);
+	deferred.promise.then(function() {
+		if(bridgeDataService.getBridgeSettings().weatherConfig) {
+			that.setConfig(bridgeDataService.getBridgeSettings().weatherConfig);
+		}
+	});
 
 	//initialization method
 	this.init = function()
@@ -27,11 +35,20 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 		{
 			if(result !== undefined)
 			{
-				that.configItem.location = result;
+				configItem.location = result;
 			}
 			deferred.resolve();
 		});
 		return deferred.promise;
+	};
+
+	this.getConfig = function() {
+		return configItem;
+	};
+	this.setConfig = function(config) {
+		configItem.location = config.location;
+		configItem.fahrenheit = config.fahrenheit;
+		bridgeDataService.getBridgeSettings().weatherConfig = configItem;
 	};
 
 }]);

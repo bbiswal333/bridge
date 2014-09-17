@@ -1,4 +1,4 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$popover", "bridge.menubar.weather.weatherData", function($popover, weatherData) {
+angular.module("bridge.app").directive("bridge.menubar", ["$popover", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", function($popover, weatherData, weatherConfig) {
 	return {
 		restrict: "E",
                 templateUrl: "bridge/menubar/MenuBar.html",
@@ -21,6 +21,10 @@ angular.module("bridge.app").directive("bridge.menubar", ["$popover", "bridge.me
                         };
 
                         $scope.weatherData = weatherData.getData();
+                        $scope.weatherConfig = weatherConfig.getConfig();
+                        $scope.$watch('weatherConfig', function() {
+                            weatherData.loadData();
+                        }, true);
                 }
 	};
 }]);
