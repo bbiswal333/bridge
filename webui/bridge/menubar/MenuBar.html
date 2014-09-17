@@ -17,15 +17,22 @@
 		</a>
         <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-plus"></span></div>
 	</div>
-	<div class="col-md-3" style="text-align: center">
+	<div class="col-md-2" style="text-align: center">
 		<div style="vertical-alignment: middle">
 			<span data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover>
-				<span class="menubar-weather-temperature"><i class="{{weatherData.weatherIcon}}" style="font-size: 2.0rem"></i>{{weatherData.temperature}}</span> <span ng-if="!weatherData.fahrenheit" class="menubar-weather-temperature-unit">°C</span><span ng-if="weatherData.fahrenheit" class="menubar-weather-temperature-unit">°F</span>
+				<span class="menubar-weather-temperature">
+					<i class="{{weatherData.weatherIcon}}" style="font-size: 2.0rem"></i>
+					{{weatherData.temperature}}
+				</span> 
+				<span ng-if="!weatherData.fahrenheit" class="menubar-weather-temperature-unit">°C</span>
+				<span ng-if="weatherData.fahrenheit" class="menubar-weather-temperature-unit">°F</span>
 			</span>
-			<span class="menubar-weather-location" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/settings.html" data-animation="am-slide-top" bs-popover> | {{weatherData.city_name}}<i style="margin-left: 5px;" class="fa fa-gear"></i></span>
+			<span class="menubar-weather-location" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/settings.html" data-animation="am-slide-top" bs-popover>
+				{{weatherData.city_name}}
+			</span>
 		</div>
 	</div>
-	<div class="col-md-2" style="text-align: right">
+	<div class="col-md-3" style="text-align: right">
 		<div class="menuBar-settingsButton" title="Notifications" style="position:relative;top:-1px;" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover>
           <span class="icon-bell"></span>
           <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge" style="position: absolute; right: -10px; bottom: 20px; background: red; opacity: 0.9; border: darkred solid thin;">{{ (notifications | newNotification).length }}</span>
@@ -39,6 +46,6 @@
 
         <div class="menuBar-settingsButton" title="Feedback" style="position:relative;top:-1px;" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/feedback/bridgeFeedback.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover><span class="icon-heart"></span></div>
         <div class="menuBar-settingsButton" title="Collaboration" style="font-size: 20px; position: relative; top: -1px;" data-placement="custom" data-popover-init="togglePopover" data-content-template="bridge/menubar/github/bridgeGithub.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover data-toggle="popover"><span class="icon-github-circled"></span></div>
-        <div ng-if="!client" title="Download latest client" class="menuBar-settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()"><span class="icon-download"></span></div>
+        <div ng-if="!client" title="Download latest client" class="menuBar-settingsButton" style="position:relative;top:-1px;" ng-click="show_download()"><span class="icon-download"></span></div>
 	</div>
 </div>
