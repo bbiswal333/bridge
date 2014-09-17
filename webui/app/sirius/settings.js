@@ -18,6 +18,7 @@ angular.module('app.sirius').appSiriusSettings =
         $scope.siriusConfigService=siriusConfigService;
         _loadProgram($scope.siriusConfigService.tasks.programGUID, _loadTask);
         $scope.selectedStatus=$scope.siriusConfigService.tasks.selectedStatus;
+        $scope.selectedUserInAssignedToDropDown=$scope.siriusConfigService.tasks.selectedUserInAssignedToDropDown;
     };
 
 	$scope.currentConfigValues = siriusConfigService.configItem;

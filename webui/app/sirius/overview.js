@@ -87,16 +87,43 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
                         $scope.tasks.forEach(function (task) {
                             _mapStatus(task);
                             _dateFormat(task);
-                            if ($scope.configService.tasks.selectedStatus.length === 0) {
+                            if ($scope.configService.tasks.selectedStatus.length === 0 && $scope.configService.tasks.selectedUserInAssignedToDropDown.length === 0) {
                                 $scope.filteredTask = $scope.tasks;
                             }
                             else {
                                 _filterTasks(task);
                             }
                         });
+
+                        //add URL to every filtered Task
+                        $scope.filteredTask.forEach(function(filteredTask){
+                            filteredTask.URL = _getURLForTask(filteredTask);
+                        });
                     });
-            }
-            ;
+            };
+        };
+
+        var _getURLForTask = function(task){
+             var url = _getURLForRunningEnvironment("protocol://host:port/prs/link.do");
+             return url + "?id=" + task.WORKING_STATE.GUID;
+        };
+
+        var _getURLForRunningEnvironment = function(url){
+            var result_url = url;
+             if (window.location.host.match(/localhost/) || window.location.host.match(/mo-4a73692b1.mo.sap.corp/) || window.location.host.match(/^wdf/) || window.location.host.match(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?):1133[7|8]$/)) {
+                result_url = result_url.replace(/protocol:\/\/host:port/g, siriusUtils.DEV_SERVER_URL());
+             }
+             else{
+                if (window.location.port == "") {
+                    result_url = result_url.replace(/\:port/g, '');
+                }
+                else{
+                    result_url = result_url.replace(/port/g, window.location.port);
+                }
+             }
+            return result_url
+                .replace(/protocol\:/g, window.location.protocol)
+                .replace(/host/g, window.location.host);
         };
 
         //map the Task-status from Backend to display on Front end
@@ -127,10 +154,22 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
 
         //filter the tasks
         var _filterTasks = function (task) {
+            var _statusFilter = false,
+            _assignedToFilter = false;
+
             for (var i = 0; i < $scope.configService.tasks.selectedStatus.length; i++) {
                 if ($scope.configService.tasks.selectedStatus[i] === task.WORKING_STATE.TASK_STATUS) {
-                    $scope.filteredTask.push(task);
+                    _statusFilter = true;
                 }
+            }
+            for (var i = 0; i < $scope.configService.tasks.selectedUserInAssignedToDropDown.length; i++){
+                if($scope.configService.tasks.selectedUserInAssignedToDropDown[i].id === task.WORKING_STATE.USER_ID){
+                    _assignedToFilter = true;
+                }
+            }
+
+            if(_statusFilter && _assignedToFilter){
+                $scope.filteredTask.push(task);
             }
         };
 

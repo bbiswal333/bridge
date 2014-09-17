@@ -13,6 +13,10 @@ var siriusUtils = function () {
         return 'https://ifd.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
     };
 
+    this.DEV_SERVER_URL =function(){
+        return "https://ifd.wdf.sap.corp:443";
+    };
+
     this.SiriusObject = function () {
         this.WORKING_STATE = null;
         this.LOAD_STATE = null;

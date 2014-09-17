@@ -14,7 +14,7 @@
             </thead>
                 <tr ng-repeat="task in filteredTask">
                     <td>
-                        {{ task.WORKING_STATE.TASK_NAME }}
+                       <a href="{{task.URL}}" target="_blank"> {{ task.WORKING_STATE.TASK_NAME }}</a>
                     </td>
                     <td>
                         {{ task.WORKING_STATE.TASK_STATUS }}

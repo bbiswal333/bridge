@@ -93,9 +93,21 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                     // Copy everything from the options to the model
                     if ($scope.options instanceof Array && $scope.model instanceof Array) {
                         $scope.options.forEach(function(value) {
-                            if (!_.contains($scope.model,value)) {
+                            var addToModel = true;
+                            var tmpVal;
+                            $scope.model.forEach(function(model){
+                                model = model.id || model;
+                                tmpVal = value.id || value;
+                                if(model === tmpVal){
+                                    addToModel = false;
+                                }
+                            });
+                            if(addToModel){
                                 $scope.model.push(value);
                             }
+                            /*if (!_.contains($scope.model,value)) {
+                                $scope.model.push(value);
+                            }*/
                         });
                     }
                 };
@@ -107,12 +119,40 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
 
                 $scope.selectItem = function (event) {
                     event.stopPropagation();
-                    if (_.contains($scope.model, this.option)) {
+                    var self = this;
+                    var addToModel = true;
+                    var tmpVal;
+                    $scope.model.forEach(function(model){
+                        model = model.id || model;
+                        tmpVal = self.option.id || self.option;
+                        if(model === tmpVal){
+                            addToModel = false;
+                        }
+                    })
+
+                    if(addToModel){
+                         $scope.model.push(this.option);
+                        $scope.model.sort(_sortFunction);
+                    }
+                    else{
+                        //get index
+                        var index = 0;
+                        $scope.model.forEach(function(model, i){
+                           model = model.id || model;
+                           tmpVal = self.option.id || self.option;
+                           if(model === tmpVal){
+                               index = i;
+                           }
+                        });
+                        $scope.model.splice(index, 1);
+                    }
+
+                    /*if (_.contains($scope.model, this.option)) {
                         $scope.model.splice($scope.model.indexOf(this.option), 1);
                     } else {
                         $scope.model.push(this.option);
                         $scope.model.sort(_sortFunction);
-                    }
+                    }*/
                     return false;
                 };
 
