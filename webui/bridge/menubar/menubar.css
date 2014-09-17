@@ -47,15 +47,6 @@
   z-index: 9;
 }
 
-.menubar-animation-container {
-  width: 300px;
-  position: absolute;
-  right: 0px;
-  top: 40px;
-  bottom: 0px;
-  z-index: 9;
-}
-
 .applications-slide {
     background-color: white;
     position: absolute;
@@ -82,33 +73,4 @@
 .applications-slide.ng-leave,
 .applications-slide.ng-enter.ng-enter-active {
     top: 40px;
-}
-
-.menubar-slide {
-    width: 300px;
-    background-color: white;
-    position: absolute;
-    padding: 15px;
-    margin: 0px;
-    -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    top: 0px;
-    bottom: 0px;
-    overflow: auto;
-}
-
-.menubar-slide.ng-enter, .menubar-slide.ng-leave {
-    -webkit-transition:all linear 0.25s;
-    transition:all linear 0.25s;
-}
-
-.menubar-slide.ng-enter,
-.menubar-slide.ng-leave.ng-leave-active {
-    top: -400px;
-}
-
-.menubar-slide.ng-leave,
-.menubar-slide.ng-enter.ng-enter-active {
-    top: 0px;
 }

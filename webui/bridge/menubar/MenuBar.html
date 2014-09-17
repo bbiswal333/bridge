@@ -1,9 +1,3 @@
-<div class="menubar-animation-container">
-	<div class="menubar-slide" ng-include="'bridge/menubar/github/bridgeGithub.html'" ng-if="display == 'github'"></div>
-	<div class="menubar-slide" ng-include="'bridge/menubar/feedback/bridgeFeedback.html'" ng-if="display == 'feedback'"></div>
-	<div class="menubar-slide" ng-include="'bridge/menubar/notification/bridgeNotifications.html'" ng-if="display == 'notifications'"></div>
-	<div class="menubar-slide" ng-include="'bridge/menubar/news/bridgeNews.html'" ng-if="display == 'news'"></div>
-</div>
 <div class="menubar-applications-container">
 	<div class="applications-slide" ng-include="'bridge/menubar/applications/bridgeApplications.html'" ng-if="display == 'apps'" />
 </div>
@@ -12,26 +6,30 @@
 		<bridge.search></bridge.search>
 	</div>
 	<div class="col-md-2" style="text-align: center">
-		BRIDGE
+		<a href="/">
+			<img src="img/bridge-icon.png" width="24" />
+			<span style="font-size: 16px; font-weight: bold; font-style: italic; vertical-align: middle; margin-right: 5px">BRIDGE</span>
+		</a>
         <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-plus"></span></div>
 	</div>
-	<div class="col-md-2" style="text-align: center">
-		Weather
+	<div class="col-md-3" style="text-align: center">
+		<div><span class="menubar-weather-temperature"><i class="{{weatherData.weatherIcon}}"></i>{{weatherData.temperature}}</span> <span ng-if="!weatherData.fahrenheit" class="menubar-weather-temperature-unit">°C</span><span ng-if="weatherData.fahrenheit" class="menubar-weather-temperature-unit">°F</span></div>
+		<span class="menubar-weather-location">{{weatherData.city_name}}</span>
 	</div>
-	<div class="col-md-3" style="text-align: right">
-		<div class="menuBar-settingsButton" title="Notifications" style="position:relative;top:-1px;" ng-click="displayView('notifications')">
+	<div class="col-md-2" style="text-align: right">
+		<div class="menuBar-settingsButton" title="Notifications" style="position:relative;top:-1px;" data-placement="bottom" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-slide-top" bs-popover>
           <span class="icon-bell"></span>
           <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge" style="position: absolute; right: -10px; bottom: 20px; background: red; opacity: 0.9; border: darkred solid thin;">{{ (notifications | newNotification).length }}</span>
         </div>
 
 
-         <div class="menuBar-settingsButton" title="News" style="position:relative;top:-1px; z-index: 3" ng-click="displayView('news')">
+         <div class="menuBar-settingsButton" title="News" style="position:relative;top:-1px; z-index: 3" data-placement="bottom" data-content-template="bridge/menubar/news/bridgeNews.html" data-animation="am-slide-top" bs-popover>
           <span class="fa fa-flash"></span>
           <span class="badge green" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">2</span>
         </div>
 
-        <div class="menuBar-settingsButton" title="Feedback" style="position:relative;top:-1px;" ng-click="displayView('feedback')"><span class="icon-heart"></span></div>
-        <div class="menuBar-settingsButton" title="Collaboration" style="font-size: 20px; position: relative; top: -1px;" ng-click="displayView('github')"><span class="icon-github-circled"></span></div>
+        <div class="menuBar-settingsButton" title="Feedback" style="position:relative;top:-1px;" data-placement="bottom" data-content-template="bridge/menubar/feedback/bridgeFeedback.html" data-animation="am-slide-top" bs-popover><span class="icon-heart"></span></div>
+        <div class="menuBar-settingsButton" title="Collaboration" style="font-size: 20px; position: relative; top: -1px;" data-placement="bottom" data-content-template="bridge/menubar/github/bridgeGithub.html" data-animation="am-slide-top" bs-popover><span class="icon-github-circled"></span></div>
         <div ng-if="!client" title="Download latest client" class="menuBar-settingsButton" style="position:relative;top:-1px;width:35px;" ng-click="show_download()"><span class="icon-download"></span></div>
 	</div>
 </div>

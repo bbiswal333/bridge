@@ -1,0 +1,5 @@
+{
+	"modules" : [],
+	"js_files" : ["weatherDetails.js", "settings.js", "config.js", "weatherData.js"],
+	"css_files" : ["style.css"]
+}

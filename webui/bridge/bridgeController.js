@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
