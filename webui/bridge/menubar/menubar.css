@@ -74,3 +74,23 @@
 .applications-slide.ng-enter.ng-enter-active {
     top: 40px;
 }
+
+.menubar-popover {
+  position: absolute;
+  z-index: 50;
+  display: none;
+  padding: 10px;
+  text-align: left;
+  background-color: #ffffff;
+  border-radius: 8px;
+  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+
+  // Overrides for proper insertion
+  white-space: normal;
+}
+
+.menubar-popover-content {
+  overflow: auto;
+  width: 400px;
+  max-height: 500px;
+}

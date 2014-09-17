@@ -3771,7 +3771,11 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.helpers.dimensions'])
 
           // Set the initial positioning.  Make the tooltip invisible
           // so IE doesn't try to focus on it off screen.
-          tipElement.css({top: '-9999px', left: '-9999px', display: 'block', visibility: 'hidden'}).addClass(options.placement);
+          if(options.placement !== "custom") {
+            tipElement.css({top: '-9999px', left: '-9999px', display: 'block', visibility: 'hidden'}).addClass(options.placement);
+          } else {
+            tipElement.css({display: 'block', visibility: 'hidden'}).addClass(options.placement);
+          }
 
           // Options: animation
           if(options.animation) tipElement.addClass(options.animation);
@@ -3854,7 +3858,7 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.helpers.dimensions'])
         // Protected methods
 
         $tooltip.$applyPlacement = function() {
-          if(!tipElement) return;
+          if(!tipElement || options.placement === "custom") return;
 
           // Get the position of the tooltip element.
           var elementPosition = getPosition();
