@@ -84,7 +84,6 @@ angular.
             $scope.portalLinkText = lunchBackendData.getBackendMetadata($scope.chosenbackend).portalLinkText;
         };
 
-        $scope.refreshBackend();
         $scope.box.reloadApp($scope.refreshBackend, 60 * 10);
     }];
 
