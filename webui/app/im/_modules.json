@@ -10,7 +10,7 @@
 		[
 			{
 				"route"			:	"/detail/im/:prio",
-				"templateUrl"	:	"app/im/detail.html"			
+				"templateUrl"	:	"app/im/detail.html"
 			}
 		]	
 	},

@@ -185,7 +185,7 @@
                     }
                 ],
                 bridgeSettings: {
-                    readNotifications: []
+                    readNews: []
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };

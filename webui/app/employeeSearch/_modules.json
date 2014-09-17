@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			: 	["Tools"],
+		"categories"			:	["Tools"],
 		"module_name"			:	"app.employeeSearch",
 		"title"					:	"Employee Search",
 		"icon_css"				:	"fa fa-user",
@@ -11,7 +11,7 @@
 		[
 			{		
 				"route"			:	"/tetris",
-				"templateUrl"	:	"app/employeeSearch/funtime.html"			
+				"templateUrl"	:	"app/employeeSearch/funtime.html"
 			}
 		]
 	},

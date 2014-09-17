@@ -112,3 +112,7 @@ table {
     width: 1400px;
     height: 600px;
   }
+
+.changeCursor{
+	cursor: pointer;
+}

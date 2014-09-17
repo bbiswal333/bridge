@@ -1,3 +1,4 @@
+/*jslint browser: true */ /*global sigma*/
 angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$http', '$location' , '$q',
     function ($scope, $http, $location, $q) {
 
@@ -13,16 +14,15 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
     var removeDuplicate = function(nodes){
         var newNodes = [];
-        var found;
-        debugger;
+        var found, label2, label2Length, label1, labelLength;
         for (var x = 0; x < nodes.length; x++) {
             found = undefined;
-            var label1 = nodes[x].label;
-            var labelLength = label1.length;
+            label1 = nodes[x].label;
+            labelLength = label1.length;
             label1.slice(0,(labelLength - 1));
             for (var y = 0; y < newNodes.length; y++) {
-                var label2 = newNodes[y].label
-                var label2Length = label2.length;
+                label2 = newNodes[y].label;
+                label2Length = label2.length;
                 label2.slice(0,label2Length - 1);
                 if (label2 === label1) {
                     found = true;
@@ -37,17 +37,16 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
     };
 
     var getColor = function(color){
-        debugger;
             if(color === "red"){
                 return "#D53F26";
             }else if(color === "yellow"){
                 return "#FCB517";
-            }else if(color=== "blue" || color=== "green"){
+            }else if(color === "blue" || color === "green"){
                 return "#4EA175";
             }else{
                 return "#707070";
             }
-        }
+        };
 
 
     var getNodeId = function(fromNode){
@@ -56,15 +55,10 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                 return dependancyGraph.nodes[nodeIndex].id;
             }
         }
-    }
+    };
 
- 
     var formNodes = function(dependancy){
-        debugger;
-        
-        
         for(var nodeIndex in dependancy) {
-
                dependancyGraph.nodes.push({
                                         id: dependancy[nodeIndex].from + nodeIndex,
                                         label: dependancy[nodeIndex].from,
@@ -81,17 +75,14 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                                         y: Math.random(),
                                         size: 10,
                                         color: getColor(dependancy[nodeIndex].colorTo)
-                                      }
-                                    ); 
-            
-
+                                      });
         }
 
         dependancyGraph.nodes = removeDuplicate(dependancyGraph.nodes);
 
         for(var dependancyIndex in dependancy) {
             dependancyGraph.edges.push({
-                                            id: 'e' + dependancyIndex,
+                                            id: "e" + dependancyIndex,
                                             source: getNodeId(dependancy[dependancyIndex].from),
                                             target: getNodeId(dependancy[dependancyIndex].to),
                                             type: "arrow",
@@ -99,50 +90,33 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                                             color: "#707070"
                                           }
                                         );
-
         }
-        
 
         sigma.renderers.def = sigma.renderers.canvas;
-        s = new sigma({
+        var s = new sigma({
               graph: dependancyGraph,
-              type: 'canvas',
-              container: 'container'
-            });;
+              type: "canvas",
+              container: "container"
+            });
 
         // Neighbour showing
-        s.bind('clickNode', function(ev) {
+        s.bind("clickNode", function(ev) {
           var nodeIdx = ev.data.node.id;
           var neighbors = [];
           s.graph.edges().forEach(function(edge) {
             if ((edge.target === nodeIdx) || (edge.source === nodeIdx)) {
-              edge.color = '#0000CD';
+              edge.color = "#0000CD";
               neighbors.push(edge.target);
               neighbors.push(edge.source);
             } else {
-              edge.color = '#e6e6e6';
+              edge.color = "#e6e6e6";
             }
           });
           s.refresh();
         });
 
         sigma.plugins.dragNodes(s, s.renderers[0]);
-    }
-
-    var getDownstreamJobs = function(url){
-        var deferred = $q.defer();
-        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "api/json"), withCredentials: false })
-            .success(function(result) {
-                getDependancyData(result).then(function(){
-                    deferred.resolve();
-                    
-                });
-
-            }).error(function(result, status) {
-                deferred.reject();
-            });
-        return deferred.promise;
-    }
+    };
 
     var getDependancyData = function(job){
         var promisses = [];
@@ -161,23 +135,22 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
             }
         return $q.all(promisses);
-    }
+    };
 
-    var getJob = function(url){
+    var getDownstreamJobs = function(url){
         var deferred = $q.defer();
-        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "/api/json"), withCredentials: false })
+        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "api/json"), withCredentials: false })
             .success(function(result) {
-                    parentJob = result;                  
-                    findParentNodeJob(result).then(function(){ 
-                        deferred.resolve();
+                getDependancyData(result).then(function(){
+                    deferred.resolve();
                     
-                    });
+                });
 
-            }).error(function(result, status) {
+            }).error(function(result) {
                 deferred.reject();
             });
         return deferred.promise;
-    }
+    };
 
     var findParentNodeJob = function(job){
         var promisses = [];
@@ -186,15 +159,27 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
             promisses.push(getJob(jobUrl));
         }
         return $q.all(promisses);
-    }
+    };
 
-    
+    var getJob = function(url){
+        var deferred = $q.defer();
+        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "/api/json"), withCredentials: false })
+            .success(function(result) {
+                    parentJob = result;
+                    findParentNodeJob(result).then(function(){
+                        deferred.resolve();
+                    });
+
+            }).error(function(result) {
+                deferred.reject();
+            });
+        return deferred.promise;
+    };
 
     $scope.detailJobView = function(url){
             $location.path("/detail/job/");
             $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "/api/json"), withCredentials: false }).
                 success(function(data) {
-                    debugger;
                     if(data.upstreamProjects.length >= 1){
                         findParentNodeJob(data).then(function(){
                             getDependancyData(parentJob).then(function(){
@@ -205,10 +190,9 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                         getDependancyData(data).then(function(){
                             formNodes(dependancyData.dependancy);
                         });
-                    }else{
-                    
+                    }else{           
                             dependancyGraph.nodes.push({
-                                        id: 'n1',
+                                        id: "n1",
                                         label: data.name,
                                         x: 0,
                                         y: 0,
@@ -216,32 +200,14 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                                         color: data.color
                                       }
                                     );
-                            s = new sigma({
+                            var s = new sigma({
                                       graph: dependancyGraph,
-                                      container: 'container'
+                                      container: "container"
                                     });;
                     }
-                    
-                    
                 }).
                 error(function(data, status) {
-                    console.log("GET for url : "+ url + " didnot work with status : "+ status);
+                    // console.log("GET for url : "+ url + " didnot work with status : " + status);
                 });
-
-
- 
-    };    
-
+    };
 }]);
-
-
-
-
-
-
-
-
-
-
-
-

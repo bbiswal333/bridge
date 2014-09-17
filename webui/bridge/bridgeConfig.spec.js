@@ -3,7 +3,6 @@
         bridgeDataService,
         $window,
         $httpBackend,
-        $log,
         bridgeInstance;
 
 
@@ -11,12 +10,11 @@
 
         module("bridge.service");
 
-        inject(["$window", "$httpBackend", "$log", "bridgeConfig", "bridgeDataService", "bridgeInstance", function (_$window, _$httpBackend, _$log, _bridgeConfigService, _bridgeDataService, _bridgeInstance) {
+        inject(["$window", "$httpBackend", "bridgeConfig", "bridgeDataService", "bridgeInstance", function (_$window, _$httpBackend, _bridgeConfigService, _bridgeDataService, _bridgeInstance) {
             bridgeConfigService = _bridgeConfigService;
             bridgeDataService = _bridgeDataService;
             $window = _$window;
             $httpBackend = _$httpBackend;
-            $log = _$log;
             bridgeInstance = _bridgeInstance;
         }]);
 
