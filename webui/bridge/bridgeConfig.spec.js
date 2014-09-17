@@ -32,10 +32,30 @@
 
     it("should construct the config payload", function(){
         bridgeDataService.toDefault();
+        bridgeDataService.getProjects()[0].apps[0].scope = {
+            box: {
+                returnConfig: function () {
+                    return {
+                        testValue: "testTest"
+                    };
+                }
+            }
+        };
         var payload = bridgeConfigService.constructPayload(bridgeDataService);
 
         expect(payload.projects[0].apps.length).toBe(2);
+        expect(payload.projects[0].apps[0].appConfig.testValue).toBe("testTest");
         expect(angular.isObject(payload.bridgeSettings)).toBe(true);
+    });
+
+    it("should return the old app config if there is no return config method", function(){
+        bridgeDataService.toDefault();
+        bridgeDataService.getProjects()[0].apps[0].appConfig = {
+            testValue: "testTest"
+        };
+        var payload = bridgeConfigService.constructPayload(bridgeDataService);
+
+        expect(payload.projects[0].apps[0].appConfig.testValue).toBe("testTest");
     });
 
     it("should read the config from the local storage and send it to the backend", function(){

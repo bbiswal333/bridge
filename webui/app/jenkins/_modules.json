@@ -11,7 +11,7 @@
 		[
 			{
 				"route"			:	"/detail/job/",
-				"templateUrl"	:	"app/jenkins/detailJobView.html"			
+				"templateUrl"	:	"app/jenkins/detailJobView.html"
 			}
 		]	
 	},

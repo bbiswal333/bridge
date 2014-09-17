@@ -10,11 +10,11 @@
 		[
 			{
 				"route"			:	"/detail/customerMessages/new/:incidentGUID",
-				"templateUrl"	:	"app/customerMessages/detail.html"			
+				"templateUrl"	:	"app/customerMessages/detail.html"
 			},
 			{
 				"route"			:	"/detail/customerMessages/:prio",
-				"templateUrl"	:	"app/customerMessages/detail.html"			
+				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
 		],
 		"beta"					: true,

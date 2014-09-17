@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["ABAP"],
 		"module_name"			:	"app.atc",
 		"title"					:	"ATC Results",
 		"icon_css"				:	"icon-wrench",
@@ -11,7 +12,7 @@
 		[
 			{		
 				"route"			:	"/detail/atc/:appId/:prio",
-				"templateUrl"	:	"app/atc/detail.html"			
+				"templateUrl"	:	"app/atc/detail.html"
 			}
 		]	
 	},	

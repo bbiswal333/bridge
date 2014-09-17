@@ -1,4 +1,4 @@
-<input class="form-control form" type="text" placeholder="Search bridge..." style="width: 60%" ng-model="query" ng-keyup="keyPressed($event)" ng-focus="checkAndShowResults()"/>
+<input class="form-control form" type="text" placeholder="Search bridge..." style="width: 60%" ng-model="query" ng-keyup="keyPressed($event)" ng-focus="checkAndShowResults()" ng-blur="hideResults()"/>
 <div ng-if="displayResults" class="search-results-pane">
 	<table width="100%">
 		<tr ng-repeat="resultProvider in results">

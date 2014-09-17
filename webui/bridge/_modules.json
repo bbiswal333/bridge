@@ -38,6 +38,7 @@
         "sidebar/notification/bridgeNotificationsController.js",
         "sidebar/news/bridgeNewsController.js",
         "sidebar/news/bridgeNewsService.js",
+        "sidebar/news/newsDetailsController.js",
         "sidebar/application/bridgeMainSettingsController.js",
 
         "diagnosis/logService.js",
@@ -50,6 +51,7 @@
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css",
-        "search/search.css"
+        "search/search.css",
+        "sidebar/news/news.css"
 	]
 }

@@ -6,7 +6,8 @@
                 "news/bridgeNewsController.js",
                 "news/bridgeNewsService.js",
                 "download/bridgeDownloadController.js",
-                "download/bridgeDownloadService.js"
+                "download/bridgeDownloadService.js",
+                "applications/bridgeApplicationsController.js"
 	],
 	"css_files" : [
                 "menubar.css"

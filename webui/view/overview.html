@@ -16,7 +16,7 @@
         <div class="settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click(); toggleDragging()"><span class="icon-wrench"></span></div>
 
 
-         <div class="settingsButton" title="News" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='news', 'tab-inactive':sideView!='news'}" ng-click="bridge_news_click()">
+         <div ng-if="isTestInstance || isLocal" class="settingsButton" title="News" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='news', 'tab-inactive':sideView!='news'}" ng-click="bridge_news_click()">
           <span class="fa fa-flash"></span>
           <span class="badge green" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">2</span>
         </div>
