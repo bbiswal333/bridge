@@ -33,9 +33,9 @@
 		</div>
 	</div>
 	<div class="col-md-3" style="text-align: right">
-		<div class="menuBar-settingsButton" title="Notifications" style="position:relative;top:-1px;" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover>
+		<div class="menuBar-settingsButton" title="Notifications" style="position:relative;top:-1px; z-index: 4" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover>
           <span class="icon-bell"></span>
-          <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge" style="position: absolute; right: -10px; bottom: 20px; background: red; opacity: 0.9; border: darkred solid thin;">{{ (notifications | newNotification).length }}</span>
+          <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge red" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>
         </div>
 
 
