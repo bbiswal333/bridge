@@ -88,7 +88,14 @@
             initialized = true;
         }
 
+        var deferrals = [];
         function _initialize(deferredIn) {
+            deferrals.push(deferredIn);
+            if(deferrals.length > 1) {
+                //initialization was already started
+                return deferredIn.promise;
+            }
+
             var deferred = $q.defer();
 
             var configPromise = bridgeConfig.loadFromBackend(deferred);
@@ -106,9 +113,13 @@
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
                 initialized = true;
-                deferredIn.resolve();
+                deferrals.map(function(deferral) {
+                    deferral.resolve();
+                });
             }, function (data) {
-                deferredIn.reject(data);
+                deferrals.map(function(deferral) {
+                    deferral.reject(data);
+                });
             });
 
             return deferredIn.promise;
