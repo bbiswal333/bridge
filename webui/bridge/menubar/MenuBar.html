@@ -13,8 +13,8 @@
 	<div class="col-md-2" style="text-align: center">
 		<a href="/">
 			<img src="img/bridge-icon.png" width="24" />
-			<span style="font-size: 16px; font-weight: bold; font-style: italic; vertical-align: middle; margin-right: 5px" >BRIDGE</span>
-		</a>
+			<span style="font-size: 16px; font-weight: bold; font-style: italic; vertical-align: middle; margin-right: 5px">BRIDGE</span>			
+		</a>		
         <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-plus"></span></div>
 	</div>
 	<div class="col-md-2" style="text-align: center">
@@ -49,3 +49,4 @@
         <div ng-if="!client" title="Download latest client" class="menuBar-settingsButton" style="position:relative;top:-1px;" ng-click="show_download()"><span class="icon-download"></span></div>
 	</div>
 </div>
+<!--<div ng-if="isTestInstance || isLocal" class="testInstanceBar" style="align: center;">This is the test instance of Bridge. For productive use of Bridge please click <a href="https://bridge.mo.sap.corp">HERE</a></div>-->
