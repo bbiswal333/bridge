@@ -19,7 +19,7 @@
 	</div>
 	<div class="col-md-2" style="text-align: center">
 		<div style="vertical-alignment: middle">
-			<span data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover>
+			<span class="clickable" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover>
 				<span class="menubar-weather-temperature">
 					<i class="{{weatherData.weatherIcon}}" style="font-size: 2.0rem"></i>
 					{{weatherData.temperature}}
@@ -27,7 +27,7 @@
 				<span ng-if="!weatherData.fahrenheit" class="menubar-weather-temperature-unit">°C</span>
 				<span ng-if="weatherData.fahrenheit" class="menubar-weather-temperature-unit">°F</span>
 			</span>
-			<span class="menubar-weather-location" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/settings.html" data-animation="am-slide-top" bs-popover>
+			<span class="menubar-weather-location clickable" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/settings.html" data-animation="am-slide-top" bs-popover>
 				{{weatherData.city_name}}
 			</span>
 		</div>
