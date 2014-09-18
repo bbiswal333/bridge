@@ -1,21 +1,29 @@
-<div ng-controller="bridge.menubar.newsController">
+<div ng-controller="sidebarNewsController">
 	<div class="underline" style="margin-right:15px;">
 		<h4 class="box-title">News</h4>
 		<span class="settingsIcon fa fa-flash"  style="color:inherit!important;cursor:default!important;margin-right:0;"></span>
 	</div>   
 	<br>
-	Here you will find the latest news about Bridge.
+    <div class="sidebar-news-tabBar">
+	    <a href="" ng-class="selectedTab === 'new' ? 'underline' : ''" ng-click="selectTab('new')">New</a> | <a href="" ng-class="selectedTab === 'read' ? 'underline' : ''" ng-click="selectTab('read')">Read</a>
+    </div>
+    <div ng-if="selectedTab === 'new'">
+        <a href="" ng-click="markAllNewsAsRead()">Mark All as Read</a>
+    </div>
 
-    <div ng-repeat="newsItem in news" ng-click="show_news(newsItem)" class="hover" style="height: 70px; width: 110%; position: relative; left: -15px;">
-        <div class="boxLeft">
-            <span class="image_rounded_shadow">
-                      <img style="margin-top:10px;margin-left:15px;pointer-events:auto;border-radius:100%;border:4px solid #4EA175" ng-src="{{newsItem.snapURL}}" width="50px" height="50px" />
+    <div ng-repeat="newsItem in news.data | filter: filterList | orderBy: '-id'" ng-click="show_news(newsItem)" class="hover sidebar-news-item">
+        <div class="sidebar-news-boxLeft">
+            <span ng-if="newsItem.snapURL !== undefined" class="image_rounded_shadow">
+                      <img style="margin: 0; pointer-events: auto; border-radius:100%; border:4px solid #4EA175" ng-src="{{newsItem.snapURL}}" width="50px" height="50px" />
             </span>
         </div>
-        <div class="boxRight" style="padding-top:5px;padding-left:10px">
+        <div class="sidebar-news-boxRight">
             <b style="text-transform:uppercase;"> {{newsItem.header}} </b>
             <br/>
             {{newsItem.preview}}
+        </div>
+        <div ng-if="selectedTab === 'new'" ng-click="markItemAsRead(newsItem)" class="sidebar-news-markReadBox" title="Mark as Read">
+            <i class="fa fa-check"></i>
         </div>
     </div>
 

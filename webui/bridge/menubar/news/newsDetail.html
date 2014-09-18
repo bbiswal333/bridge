@@ -1,0 +1,26 @@
+<div ng-controller="newsDetailController">
+    <div class="news-header-badge">
+        <span ng-if="selectedNews.snapURL !== undefined" class="image_rounded_shadow">
+            <img style="border-radius:100%;border:4px solid #418AC9" ng-src="{{selectedNews.snapURL}}" width="100px" height="100px" />
+        </span>
+    </div>
+
+    <a ng-if="selectedNews.gitURL !== undefined" href="{{selectedNews.gitURL}}">
+            <span class="sidebar-news-githubIcon">
+                <i class="fa fa-github fa-4x basic-blue-font-40"></i>
+                <br>
+                View it on Github
+            </span>
+    </a>
+    <h1 class="basic-blue-font sidebar-news-headline">{{selectedNews.header}}</h1>
+
+    <div class="sidebar-news-header">
+        <div class="sidebar-news-content" ng-bind-html="selectedNews.content"></div>
+        <div class="sidebar-news-image">
+            <img ng-src="{{selectedNews.img1}}">
+        </div>
+    </div>
+    <div class="btn btn_blue save_close_btn" ng-click="closeModal()">
+        Close
+    </div>
+</div>
