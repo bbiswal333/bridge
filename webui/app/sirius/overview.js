@@ -157,16 +157,28 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             var _statusFilter = false,
             _assignedToFilter = false;
 
-            for (var i = 0; i < $scope.configService.tasks.selectedStatus.length; i++) {
-                if ($scope.configService.tasks.selectedStatus[i] === task.WORKING_STATE.TASK_STATUS) {
-                    _statusFilter = true;
+            if($scope.configService.tasks.selectedStatus.length === 0){
+                _statusFilter = true;
+            }
+            else{
+                for (var i = 0; i < $scope.configService.tasks.selectedStatus.length; i++) {
+                    if ($scope.configService.tasks.selectedStatus[i] === task.WORKING_STATE.TASK_STATUS) {
+                        _statusFilter = true;
+                    }
                 }
             }
-            for (var i = 0; i < $scope.configService.tasks.selectedUserInAssignedToDropDown.length; i++){
-                if($scope.configService.tasks.selectedUserInAssignedToDropDown[i].id === task.WORKING_STATE.USER_ID){
-                    _assignedToFilter = true;
+
+            if($scope.configService.tasks.selectedUserInAssignedToDropDown.length === 0){
+                _assignedToFilter = true;
+            }
+            else{
+                for (var i = 0; i < $scope.configService.tasks.selectedUserInAssignedToDropDown.length; i++){
+                    if($scope.configService.tasks.selectedUserInAssignedToDropDown[i].id === task.WORKING_STATE.USER_ID){
+                        _assignedToFilter = true;
+                    }
                 }
             }
+
 
             if(_statusFilter && _assignedToFilter){
                 $scope.filteredTask.push(task);
