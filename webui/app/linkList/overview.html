@@ -1,7 +1,7 @@
 <div class="app-linkList-container" style="overflow-y: auto">
-	<div ng-repeat="linklist in config.data.listCollection">
+	<div ng-repeat="linklist in config.data.listCollection" ng-if="containsValidEntries(linklist)" >
 
-		<div class="col-xs-{{12/config.data.listCollection.length}}"
+		<div class="col-xs-{{12/numberOfValidLists()}}"
              ng-class="{'no-padd': $index + 1 == 1 && config.data.listCollection.length ==1,
 		                'padd-right': $index + 1 == 1 && config.data.listCollection.length >= 2,
 		                'padd-left': $index + 1 == 2 && config.data.listCollection.length == 2,
