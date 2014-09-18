@@ -86,7 +86,7 @@
 
 .taskList {
     background-color: rgb(229, 242, 250);
-    border-top: 1px solid white;
+    border-top: 2px solid white;
 }
 
 .taskList td{
