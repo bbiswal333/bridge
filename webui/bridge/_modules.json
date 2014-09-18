@@ -50,7 +50,6 @@
 	],
 	"css_files" : [
                 "diagnosis/diagnosis.css",
-                "search/search.css",
-                "sidebar/news/news.css"
+                "search/search.css"
 	]
 }

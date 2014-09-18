@@ -44,7 +44,7 @@ describe("The bridge news service", function () {
             $httpBackend = _$httpBackend;
         }]);
 
-        $httpBackend.whenGET("../bridge/sidebar/news/news.json").respond(newsDummyData);
+        $httpBackend.whenGET("../bridge/menubar/news/news.json").respond(newsDummyData);
     });
 
     it("should fill the its news object when created", function(){
