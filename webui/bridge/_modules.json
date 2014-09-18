@@ -18,8 +18,8 @@
 	],
 	"js_files" : [
                 "bridgeModuleSetup.js",
-		"bridgeController.js", 
-		"bridgeDetailController.js",
+		        "bridgeController.js",
+		        "bridgeDetailController.js",
                 "bridgeHttpInterceptor.js",
                 "bridgeSettingsController.js",
                 "bridgeDataService.js",
@@ -38,13 +38,10 @@
                 "sidebar/download/bridgeDownloadService.js",
                 "sidebar/github/bridgeGithubController.js",
                 "sidebar/notification/bridgeNotificationsController.js",
-                "sidebar/news/bridgeNewsController.js",
-                "sidebar/news/bridgeNewsService.js",
-                "sidebar/news/newsDetailsController.js",
                 "sidebar/application/bridgeMainSettingsController.js",
 
                 "diagnosis/logService.js",
-		"diagnosis/corsTestPageController.js",
+		        "diagnosis/corsTestPageController.js",
                 "diagnosis/mailPreviewController.js",
                 "diagnosis/statusController.js",
 

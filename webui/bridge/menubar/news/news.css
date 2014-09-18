@@ -7,7 +7,7 @@
 .sidebar-news-item {
     height: 70px;
     display:table;
-    width: 110%;
+    width: 100%;
     position: relative;
     left: -15px;
     padding-left: 15px;

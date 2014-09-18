@@ -9,7 +9,7 @@ angular.module('bridge.app').controller('sidebarNewsController', [ '$scope', '$m
     $scope.show_news = function(selectedNews){
         newsService.selectedNews = selectedNews;
         newsService.modalInstance = $modal.open({
-            templateUrl: 'bridge/sidebar/news/newsDetail.html',
+            templateUrl: 'bridge/menubar/news/newsDetail.html',
             windowClass: 'settings-dialog'
         });
     };
