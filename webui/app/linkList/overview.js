@@ -3,8 +3,8 @@ angular.module('app.linklist', ['ui.sortable']);
 angular.module('app.linklist').directive('droppable', function() {
     return {
         restrict: 'A',
-        link: function(scope, element) {
-            element[0].addEventListener('drop', scope.handleDrop, false);
+        link: function(scope, element, attrs) {
+            // element[0].addEventListener('drop', scope.handleDrop, false);
 
             var dnD = {
                 handleDragLeave : function(){
@@ -16,14 +16,17 @@ angular.module('app.linklist').directive('droppable', function() {
                     }
                     element.addClass("app-linklist-dragEnter");
                 },
-                handleDrop : function(){
+                handleDrop : function(e){
+                    scope.handleDrop(e, attrs.droppable);
                     scope.$apply();
                 }
             };
 
             element.bind("dragover", dnD.handleDragEnter);
             element.bind("dragleave", dnD.handleDragLeave);
-            element.bind("drop", dnD.handleDrop);
+            // element.bind("drop", dnD.handleDrop);
+            element[0].addEventListener('drop', dnD.handleDrop, false);
+
         }
     };
 });

@@ -6,7 +6,7 @@
 
 			<!--- DISPLAY existing Links -->
 			<div class="app-linkList-linkList">
-				<div class="sortableConnect app-linkList-listContainer" ui-sortable="sortableOptions" ng-model="linkList">
+				<div class="sortableConnect app-linkList-listContainer" ui-sortable="sortableOptions" ng-model="linkList" droppable="{{$index}}">
 					<div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-class="{'grey-40':isMouseOverRow}" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
 						<div class="app-linkList-entry col-xs-9" ng-click="selectLink($index,link)">{{link.name}}</div>
 
@@ -53,7 +53,7 @@
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL" droppable/>
+			<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>
 		</div>
 	</div>
 	<div class="row app-linkList-tbMargin">

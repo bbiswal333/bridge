@@ -40,12 +40,18 @@ angular.module('app.linklist').appLinkListSettings =
         disabled: false
     };
 
-    $scope.handleDrop = function(event){
+    $scope.handleDrop = function(event, colNo){
         event.preventDefault();
         event.stopPropagation();
 
+        $scope.toggleAddForm(colNo);
         $scope.currentConfigValues.url = event.dataTransfer.getData('text/plain');
-        
+
+        var regex = /(.*:)\/\/([a-z\-.]+)(:[0-9]+)?(.*)/g;
+		var urlArray = regex.exec($scope.currentConfigValues.url);
+
+        $scope.currentConfigValues.name = urlArray[2];
+
         angular.element(event.target).removeClass("app-linklist-dragEnter");
     };
 
@@ -96,6 +102,10 @@ angular.module('app.linklist').appLinkListSettings =
 					}
 				}
 			}
+		}
+		if (entry.id === $scope.currentConfigValues.id) {
+			$scope.currentConfigValues = {};
+			$scope.addForm = [];
 		}
 	};
 
