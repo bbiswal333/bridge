@@ -19,7 +19,7 @@
     padding-right: 8px;
     box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
     border-top:  1px solid rgba(231, 231, 231, 1);
-    
+    width: 45px;
     cursor: pointer;                
     line-height: 1;    
     background-color:rgba(73, 73, 73, 1);        
@@ -44,15 +44,6 @@
   right: 15%;
   left: 15%;
   top: 40px;
-  z-index: 9;
-}
-
-.menubar-animation-container {
-  width: 300px;
-  position: absolute;
-  right: 0px;
-  top: 40px;
-  bottom: 0px;
   z-index: 9;
 }
 
@@ -84,31 +75,22 @@
     top: 40px;
 }
 
-.menubar-slide {
-    width: 300px;
-    background-color: white;
-    position: absolute;
-    padding: 15px;
-    margin: 0px;
-    -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.5);
-    top: 0px;
-    bottom: 0px;
-    overflow: auto;
+.menubar-popover {
+  position: absolute;
+  z-index: 50;
+  display: none;
+  padding: 10px;
+  text-align: left;
+  background-color: #ffffff;
+  border-radius: 8px;
+  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+
+  // Overrides for proper insertion
+  white-space: normal;
 }
 
-.menubar-slide.ng-enter, .menubar-slide.ng-leave {
-    -webkit-transition:all linear 0.25s;
-    transition:all linear 0.25s;
-}
-
-.menubar-slide.ng-enter,
-.menubar-slide.ng-leave.ng-leave-active {
-    top: -400px;
-}
-
-.menubar-slide.ng-leave,
-.menubar-slide.ng-enter.ng-enter-active {
-    top: 0px;
+.menubar-popover-content {
+  overflow: auto;
+  width: 400px;
+  max-height: 500px;
 }

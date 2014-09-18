@@ -1,4 +1,4 @@
-angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.dataModule", "app.cats.utilsModule", "app.cats.allocationBar.utils"]).
+angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "app.cats.utilsModule", "app.cats.allocationBar.utils"]).
   directive("app.cats.maintenanceView.projectList", [
     "app.cats.cat2BackendZDEVDB",
     "app.cats.catsUtils",

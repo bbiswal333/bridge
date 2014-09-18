@@ -34,12 +34,21 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
         	}
 
             var interval;
+            var previousQuery;
             $scope.$watch("query", function() {
                 if($scope.query.length > MINIMUM_QUERY_LENGTH) {
+                    if(interval) {
+                        $interval.cancel(interval);
+                    }
+
                     if(!$scope.displayResults) {
                         interval = $interval(doSearch, 500, 1);
                     } else {
-                        doSearch();
+                        interval = $interval(function() {
+                            if($scope.query === previousQuery) {
+                                doSearch();
+                            }
+                        }, 500, 1);
                     }
                 } else {
                     if(interval) {
@@ -48,6 +57,7 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                     }
                     hideResults();
                 }
+                previousQuery = $scope.query;
             });
 
             $scope.checkDisplay = function(resultProvider) {

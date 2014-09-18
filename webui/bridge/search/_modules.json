@@ -7,7 +7,8 @@
 		"bridgeSearchResultDirective.js",
 		"employeeSearch.js",
 		"hanaAnswersSearch.js",
-		"googleProposals.js"
+		"googleProposals.js",
+		"stackoverflowSearch.js"
 	],
-	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals"]
+	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch"]
 }
