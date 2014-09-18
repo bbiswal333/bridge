@@ -14,13 +14,12 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 		}
 	};
 
-	/*var deferred = $q.defer();
-	bridgeDataService.initialize(deferred);
-	deferred.promise.then(function() {
+	var deferred = $q.defer();
+	bridgeDataService.initialize(deferred).then(function() {
 		if(bridgeDataService.getBridgeSettings().weatherConfig) {
 			that.setConfig(bridgeDataService.getBridgeSettings().weatherConfig);
 		}
-	});*/
+	});
 
 	//initialization method
 	this.init = function()
