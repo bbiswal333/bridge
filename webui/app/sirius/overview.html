@@ -4,15 +4,16 @@
             <p>This delivery contains no tasks as it is in processing status New</p>
         </div>
         <div ng-if="emptyTask!=true">
+        <h5 style="margin-top: 0px">Tasks</h5>
         <table style="width: 100%" >
             <thead class="table-header" style="position: relative;">
             <tr >
-                <th style="width: 60%">Name</th>
-                <th style="width: 20%">Status</th>
-                <th style="width: 20%">Due Date</th>
+                <th style="width: 60%; padding: 3px;">Name</th>
+                <th style="width: 20%; padding: 3px;">Status</th>
+                <th style="width: 20%; padding: 3px;">Due Date</th>
             </tr>
             </thead>
-                <tr ng-repeat="task in filteredTask">
+                <tr ng-repeat="task in filteredTask" class="taskList">
                     <td>
                        <a href="{{task.URL}}" target="_blank"> {{ task.WORKING_STATE.TASK_NAME }}</a>
                     </td>

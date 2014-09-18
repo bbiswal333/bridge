@@ -84,6 +84,15 @@
     padding-right: 0px;
 }
 
+.taskList {
+    background-color: rgb(229, 242, 250);
+    border-top: 1px solid white;
+}
+
+.taskList td{
+    padding: 3px;
+}
+
 .siriusEllipsisCompiled {
     display: block !important;
 }
