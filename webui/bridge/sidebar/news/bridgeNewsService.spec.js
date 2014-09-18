@@ -1,6 +1,9 @@
 describe("The bridge news service", function () {
     var newsService,
         $httpBackend,
+        bridgeSettings = {
+            readNews: [],
+        },
         newsDummyData = {
             "news": [
                 {
@@ -25,7 +28,16 @@ describe("The bridge news service", function () {
         };
 
     beforeEach(function(){
+        bridgeSettings.readNews.length = 0;
+
+        angular.module("mock.module", []).service("bridgeDataService", function(){
+            this.getBridgeSettings = function(){
+                return bridgeSettings;
+            };
+        });
+
         module("bridge.service");
+        module("mock.module");
 
         inject(["bridge.service.bridgeNews", "$httpBackend", function(_newsService, _$httpBackend){
             newsService = _newsService;
@@ -40,6 +52,31 @@ describe("The bridge news service", function () {
         $httpBackend.flush();
 
         expect(newsService.news.data.length).toBe(2);
+    });
+
+    it("should tell me that there are unread news", function(){
+        newsService.initialize();
+        $httpBackend.flush();
+
+        expect(newsService.existUnreadNews()).toBe(true);
+    });
+
+    it("should tell me that there are no unread news", function(){
+        bridgeSettings.readNews.push(1);
+        bridgeSettings.readNews.push(2);
+
+        newsService.initialize();
+        $httpBackend.flush();
+
+        expect(newsService.existUnreadNews()).toBe(false);
+    });
+
+    it("should tell me that there are unread news if the readNews property does not exist", function(){
+        delete bridgeSettings.readNews;
+        newsService.initialize();
+        $httpBackend.flush();
+
+        expect(newsService.existUnreadNews()).toBe(true);
     });
 
 });

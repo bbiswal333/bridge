@@ -161,4 +161,17 @@ describe("The bridgeNewsController", function(){
         $rootScope.markAllNewsAsRead();
         expect(dataServiceMock.getBridgeSettings().readNews.length).toBe(2);
     });
+
+    it("should mark the selected news item as read", function(){
+        $controller("sidebarNewsController", {
+            "$scope": $rootScope,
+            "$modal": modalMock,
+            "bridge.service.bridgeNews": newsServiceMock,
+            "bridgeDataService": dataServiceMock
+        });
+
+        $rootScope.markItemAsRead($rootScope.news.data[0]);
+        expect(dataServiceMock.getBridgeSettings().readNews.length).toBe(1);
+        expect(dataServiceMock.getBridgeSettings().readNews[0]).toBe(1);
+    });
 });

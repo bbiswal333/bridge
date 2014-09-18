@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.service.bridgeNews",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService, bridgeNewsService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -84,6 +84,10 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.show_download = bridgeDownloadService.show_download;
+        if (bridgeNewsService.isInitialized === false){
+            bridgeNewsService.initialize();
+        }
+        $scope.existUnreadNews = bridgeNewsService.existUnreadNews;
 
         function parseVersionString(str)
         {
@@ -212,11 +216,7 @@ angular.module('bridge.app').controller('bridgeController',
           bridgeConfig.store(bridgeDataService);
         };
 
-        /*$scope.settings_click = function (boxId) {
-            bridgeConfig.showSettingsModal(boxId);
-        };*/
-
-        $scope.overview_click = function () {
+        /*$scope.overview_click = function () {
             $location.path('/');
             $window.document.getElementById('overview-button').classList.add('selected');
             //document.getElementById('projects-button').classList.remove('selected');
@@ -227,6 +227,7 @@ angular.module('bridge.app').controller('bridgeController',
             $window.document.getElementById('overview-button').classList.remove('selected');
             $window.document.getElementById('projects-button').classList.add('selected');
         };
+        */
 
         $scope.showSettingsModal = function (appId) {
 			// bridgeSettingsModalService.show_settings(appId);

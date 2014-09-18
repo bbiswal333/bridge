@@ -1,7 +1,7 @@
 {
 	"news": [
 		{
-			"id":		1,
+			"id":		-99,
 			"header": 	"header0",
 			"preview": 	"preview0", 
 			"snapURL": 	"bridge/sidebar/news/image/snap02.png",
@@ -10,13 +10,19 @@
 			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
 		},
 		{
-            "id":       2,
+            "id":       -98,
 			"header":   "header1",
 			"preview":  "preview1",
 			"snapURL":  "bridge/sidebar/news/image/snap02.png",
 			"content":  "content01",
 			"img1":     "bridge/sidebar/news/image/snap02.png",
 			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
-		}
+		},
+        {
+            "id":       -97,
+            "header":   "New News",
+            "preview":  "Incredible Change",
+            "content":  "I am <br> html"
+        }
 	]
 }

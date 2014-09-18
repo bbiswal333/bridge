@@ -11,14 +11,14 @@
     <div style="height:100px;width:36px;float:left;height:100%;border-left: 1px solid rgba(231, 231, 231, 1);position:relative;top:48px;">
         <div class="settingsButton" title="Notifications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='notifications', 'tab-inactive':sideView!='notifications'}" ng-click="bridge_notifications_click()">
           <span class="icon-bell"></span>
-          <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge" style="position: absolute; right: -10px; bottom: 20px; background: red; opacity: 0.9; border: darkred solid thin;">{{ (notifications | newNotification).length }}</span>
+          <span ng-hide="(notifications | newNotification).length == 0" ng-controller="notificationsController" class="badge red" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>
         </div>
         <div class="settingsButton" title="Applications" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="bridge_settings_click(); toggleDragging()"><span class="icon-wrench"></span></div>
 
 
          <div ng-if="isTestInstance || isLocal" class="settingsButton" title="News" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='news', 'tab-inactive':sideView!='news'}" ng-click="bridge_news_click()">
           <span class="fa fa-flash"></span>
-          <span class="badge green" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">2</span>
+          <span ng-if="existUnreadNews()" class="badge red" style="position: absolute; right: -10px; bottom: 20px; opacity: 0.9;">*</span>
         </div>
 
         <div class="settingsButton" title="Feedback" style="position:relative;top:-1px;" ng-class="{'tab-active':sideView=='feedback', 'tab-inactive':sideView!='feedback'}" ng-click="bridge_feedback_click()"><span class="icon-heart"></span></div>

@@ -8,7 +8,7 @@ angular.module('bridge.app').controller('sidebarNewsController', [ '$scope', '$m
 
     $scope.show_news = function(selectedNews){
         newsService.selectedNews = selectedNews;
-        $modal.open({
+        newsService.modalInstance = $modal.open({
             templateUrl: 'bridge/sidebar/news/newsDetail.html',
             windowClass: 'settings-dialog'
         });
@@ -39,5 +39,15 @@ angular.module('bridge.app').controller('sidebarNewsController', [ '$scope', '$m
         for (var i = 0; i < $scope.news.data.length; i++){
             bridgeSettings.readNews.push($scope.news.data[i].id);
         }
+    };
+
+    $scope.markItemAsRead = function(newsItem) {
+        var bridgeSettings = bridgeDataService.getBridgeSettings();
+
+        if (bridgeSettings.readNews === undefined) {
+            bridgeSettings.readNews = [];
+        }
+
+        bridgeSettings.readNews.push(newsItem.id);
     };
 }]);
