@@ -5,7 +5,7 @@
 }
 
 .app-linkList-emptyRow{
-	height: 50px;
+	height: 35px;
 	width: 100%;
 }
 
@@ -59,6 +59,13 @@
     border-width: thin;
     height: 300px;
     position: relative;
+}
+
+.app-linkList-tbMargin{
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .no-padd{

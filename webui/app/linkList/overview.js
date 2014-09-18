@@ -51,12 +51,14 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                         delete linkList[j].editable;
                         delete linkList[j].old;
                         delete linkList[j].sapGuiFile;
+                        if (!linkList[j].name){
+                            linkList.splice(j, 1);
+                        }
                     }
                 }
             }
             return configCopy;
         };
-
 
         function setDefaultConfig()
         {
@@ -104,6 +106,30 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             appLinklistConfig.isInitialized = true;
         }
 
+        $scope.containsValidEntries = function(list){
+            if (list.length > 0) {
+                var validEntrieExists = false;
+                list.some(function(entry){
+                    if (entry.name) {
+                        validEntrieExists = true;
+                        return true;
+                    }
+                });
+                return validEntrieExists;
+            }
+            return false;
+        };
+
+        $scope.numberOfValidLists = function(){
+            var number = 0;
+            appLinklistConfig.data.listCollection.forEach(function(list){
+                if ($scope.containsValidEntries(list)) {
+                    number++;
+                }
+            });
+            return number;
+        };
+
         $scope.openBlob = function(link){
             $window.open("https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid=" + link.sid +
                 "&client=&transaction=" + (link.transaction === undefined ? "" : link.transaction) +
@@ -111,7 +137,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
         };
 
         $scope.$watch("config.data", function () {
-            if($scope.config.data.listCollection.length > 1) {
+            if($scope.numberOfValidLists() > 1) {
                 $scope.box.boxSize = 2;
             } else {
                 $scope.box.boxSize = 1;
