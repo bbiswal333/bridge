@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -29,7 +29,7 @@ angular.module('bridge.app').controller('bridgeController',
             return $scope.sidePanel;
         };
 
-        $scope.bridge_notifications_click = function () {
+        /*$scope.bridge_notifications_click = function () {
             $scope.sidePanel = 'bridge/sidebar/notification/bridgeNotifications.html';
             if ($scope.sideView === "notifications" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
@@ -47,7 +47,7 @@ angular.module('bridge.app').controller('bridgeController',
                 }
             }
             $scope.sideView = "settings";
-        };
+        };*/
 
         $scope.bridge_hide_settings = function () {
             if ($scope.show_settings === true) {
@@ -57,7 +57,7 @@ angular.module('bridge.app').controller('bridgeController',
             }
         };
 
-        $scope.bridge_feedback_click = function () {
+        /*$scope.bridge_feedback_click = function () {
             $scope.sidePanel = 'bridge/sidebar/feedback/bridgeFeedback.html';
             if ($scope.sideView === "feedback" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
@@ -73,15 +73,15 @@ angular.module('bridge.app').controller('bridgeController',
             }
             $scope.sideView = "github";
             $scope.stopDragging();
-        };
+        };*/
 
-        $scope.bridge_news_click = function () {
+        /*$scope.bridge_news_click = function () {
             $scope.sidePanel = 'bridge/sidebar/news/bridgeNews.html';
             if ($scope.sideView === "news" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "news";
-        };
+        };*/
 
         $scope.show_download = bridgeDownloadService.show_download;
 
@@ -211,10 +211,6 @@ angular.module('bridge.app').controller('bridgeController',
           }
           bridgeConfig.store(bridgeDataService);
         };
-
-        /*$scope.settings_click = function (boxId) {
-            bridgeConfig.showSettingsModal(boxId);
-        };*/
 
         $scope.overview_click = function () {
             $location.path('/');
