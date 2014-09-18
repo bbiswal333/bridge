@@ -1,5 +1,17 @@
 angular.module('app.linklist', ['ui.sortable']);
 
+angular.module('app.linklist').directive('scrollBottom', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr){
+            $(element).on("click", function(){
+                var $id = angular.element(document.querySelector('#' + attr.scrollBottom));
+                $id.scrollTop($id[0].scrollHeight + 50);
+            });
+        }
+    };
+});
+
 angular.module('app.linklist').directive('droppable', function() {
     return {
         restrict: 'A',
@@ -60,12 +72,15 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                     }
                 }
             }
+
             return configCopy;
         };
 
         function setDefaultConfig()
         {
             appLinklistConfig.data.listCollection.length = 0;
+            appLinklistConfig.data.listCollection.push([]);
+            appLinklistConfig.data.listCollection.push([]);
             appLinklistConfig.data.listCollection.push([]);
             appLinklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
             appLinklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
@@ -106,6 +121,11 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             else {
                 setDefaultConfig();
             }
+
+            for (;appLinklistConfig.data.listCollection.length < 3;) {
+                appLinklistConfig.data.listCollection.push([]);
+            }
+
             appLinklistConfig.isInitialized = true;
         }
 

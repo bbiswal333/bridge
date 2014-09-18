@@ -6,19 +6,24 @@
 
 			<!--- DISPLAY existing Links -->
 			<div class="app-linkList-linkList">
-				<div class="sortableConnect app-linkList-listContainer" ui-sortable="sortableOptions" ng-model="linkList" droppable="{{$index}}">
-					<div class="row app-linkList-row" ng-repeat="link in linkList track by link.id" ng-class="{'grey-40':isMouseOverRow}" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
-						<div class="app-linkList-entry col-xs-9" ng-click="selectLink($index,link)">{{link.name}}</div>
+				<div id="scrollList{{$index}}" class="sortableConnect app-linkList-listContainer" ui-sortable="sortableOptions" ng-model="linkList" droppable="{{$index}}" >
+					<div class="row app-linkList-row" 
+					ng-repeat="link in linkList track by link.id" 
+					ng-class="{'grey-40':link.id === currentConfigValues.id}" 
+					ng-mouseover="isMouseOverRow = true" 
+					ng-mouseout="isMouseOverRow = false">
+						<div class="app-linkList-entry col-xs-10" ng-click="selectLink($index,link)">{{link.name}}</div>
 
-						<div class="app-linklist-editIcons app-linklist-clickIcon col-xs-3" ng-show="isMouseOverRow">
-							<span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;" class="fa fa-times" ></span>
+						<div class="app-linklist-editIcons app-linklist-clickIcon col-xs-2" ng-show="isMouseOverRow">
+							<span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;" class="fa fa-times"></span>
 						</div>
 					</div>
 					<div class="app-linkList-emptyRow"> </div>
 				</div>
 				<div ng-show="mouseOverList" 
 					class="app-linkList-entry app-linkList-addLink" 
-					ng-click="toggleAddForm($index)" 
+					scroll-bottom="scrollList{{$index}}"
+					ng-click="toggleAddForm($index)"
 					ng-mouseover="hoverAddLink = 'grey-font grey-40'" 
 					ng-mouseout="hoverAddLink = 'grey-font-40'" 
 					ng-class="hoverAddLink" 
