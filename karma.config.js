@@ -23,7 +23,7 @@ module.exports = function(config) {
         './webui/lib/jQuery-2_1_0/jquery.min.js',
         './webui/lib/angular-1_2_13/angular.min.js',
         './webui/lib/sigma-1_0_3/sigma.min.js',
-        './webui/lib/**/*.js',
+        './webui/lib/!(angular-1_2_25)/*.js',
 
         './webui/loader_mock.js',
 
