@@ -2,15 +2,11 @@
 angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$http', '$location' , '$q',
     function ($scope, $http, $location, $q) {
 
-    var dependancyGraph = {      nodes: [],
-                                    edges: []
-                            };
-    var dependancyData = {      dependancy: []
-                            };
-
+    var dependancyGraph = { nodes: [],
+                            edges: []
+                        };
+    var dependancyData = { dependancy: [] };
     var parentJob = [];
-
-
 
     var removeDuplicate = function(nodes){
         var newNodes = [];
@@ -37,17 +33,16 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
     };
 
     var getColor = function(color){
-            if(color === "red"){
-                return "#D53F26";
-            }else if(color === "yellow"){
-                return "#FCB517";
-            }else if(color === "blue" || color === "green"){
-                return "#4EA175";
-            }else{
-                return "#707070";
-            }
-        };
-
+        if(color === "red"){
+            return "#D53F26";
+        }else if(color === "yellow"){
+            return "#FCB517";
+        }else if(color === "blue" || color === "green"){
+            return "#4EA175";
+        }else{
+            return "#707070";
+        }
+    };
 
     var getNodeId = function(fromNode){
         for(var nodeIndex in dependancyGraph.nodes) {
@@ -143,10 +138,8 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
             .success(function(result) {
                 getDependancyData(result).then(function(){
                     deferred.resolve();
-                    
                 });
-
-            }).error(function(result) {
+            }).error(function() {
                 deferred.reject();
             });
         return deferred.promise;
@@ -169,8 +162,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                     findParentNodeJob(result).then(function(){
                         deferred.resolve();
                     });
-
-            }).error(function(result) {
+            }).error(function() {
                 deferred.reject();
             });
         return deferred.promise;
@@ -190,7 +182,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                         getDependancyData(data).then(function(){
                             formNodes(dependancyData.dependancy);
                         });
-                    }else{           
+                    }else{
                             dependancyGraph.nodes.push({
                                         id: "n1",
                                         label: data.name,
@@ -203,10 +195,10 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
                             var s = new sigma({
                                       graph: dependancyGraph,
                                       container: "container"
-                                    });;
+                                    });
                     }
                 }).
-                error(function(data, status) {
+                error(function() {
                     // console.log("GET for url : "+ url + " didnot work with status : " + status);
                 });
     };

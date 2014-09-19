@@ -1,7 +1,6 @@
 angular.module('app.jenkins', []);
 
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "$location", "$interval", "$timeout", function (jenkinsConfigService, $location, $interval, $timeout) {
-
+angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", function (jenkinsConfigService) {
 
     var directiveController = ['$scope', '$http', "$log", function ($scope, $http, $log) {
 
@@ -9,11 +8,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         $scope.jobsToDisplay = [];
         $scope.jenkinsConfig = {};
         $scope.configService = jenkinsConfigService;
-
         $scope.dependancyGraph = [];
-
-
-        
 
         // Settings Screen
         $scope.box.settingsTitle = "Configure Jenkins URL";
@@ -64,11 +59,8 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                 }).error(function(data, status) {
                     $log.log("Could not retrieve view details from " + views[viewIndex].url + "api/json, status: " + status);
                 }); // GET
-
             }
-
         };
-
 
         $scope.limitDisplayName = function(name, limit) {
             if(name.toString().length > limit) {
@@ -95,7 +87,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                             $scope.jobsToDisplay[jobIndex].statusInfo = "Unknown";
                             $scope.jobsToDisplay[jobIndex].lastBuild = "0000000000000";
                             $log.log($scope.jobsToDisplay[jobIndex].lastBuild);
-
                         }
                 }
         };
@@ -119,20 +110,13 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
                                 $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
 
-                                
-                                // $scope.jobsToDisplay[jobIndex].statusInfo = getStatusInfo(latestBuildData.result);
-
                             }
                     }
-
                 }).
                 error(function(data, status) {
                      $log.log("Could not GET last build info for job" + data.fullDisplayName + ", status: " + status);
-
                 });
-
             }
-
         };
 
         var getAndSetHealthReportAndColorToJob = function(job) {
@@ -161,24 +145,19 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
                             }else{
                                 $scope.jobsToDisplay[jobIndex].statusIcon = "fa-question";
                             }
-
                         }
                     }
-
             }).
                 error(function(result, status) {
                      $log.log("Could not GET job " + job.name + ", status: " + status);
-
             });
-
             getAndSetTimestampForLastBuild(job);
-
         };
 
         var getDependancyData = function(job){
             $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json"), withCredentials: false }).
                 success(function(result) {
-                    
+
                     for(var jobIndex in $scope.jobsToDisplay) {
                         if($scope.jobsToDisplay[jobIndex].name === job.name) {
                             $scope.jobsToDisplay[jobIndex].downstreamProjects = result.downstreamProjects;
@@ -189,9 +168,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
             }).
                 error(function(result, status) {
                      $log.log("Could not GET job " + job.name + ", status: " + status);
-
             });
-
         };
 
         $scope.updateJobsView = function(configItems) {
