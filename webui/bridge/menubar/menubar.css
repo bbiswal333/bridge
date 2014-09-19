@@ -94,3 +94,22 @@
   width: 400px;
   max-height: 500px;
 }
+.menubar-settings{
+  position: absolute;
+  right: 0;
+}
+
+/* ========================= *\
+|* ----- MEDIA QUERIES ----- *|
+\* ========================= */
+
+@media (max-width:1250px){
+  .menubar-weather-location{
+    display: none;
+  }
+}
+@media (max-width:1050px){
+  .menubar-weather{
+    display: none;
+  }
+}
