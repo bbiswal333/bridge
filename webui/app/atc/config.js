@@ -45,7 +45,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 		query += this.displayPrio2 ? "X;" : ";";
 		query += this.displayPrio3 ? "X;" : ";";
 		query += this.displayPrio4 ? "X;" : ";";
-		query += this.onlyInProcess ? "X" : ";";
+		query += this.onlyInProcess ? "X;" : ";";
 		query += this.softwareComponent;
 		
 		return query;
