@@ -173,6 +173,7 @@ angular.module('bridge.app').controller('bridgeController',
             resetConfig: function() {
                 bridgeDataService.toDefault();
                 bridgeConfig.store(bridgeDataService);
+                bridgeConfig.persistInBackend();
             }
         };
 

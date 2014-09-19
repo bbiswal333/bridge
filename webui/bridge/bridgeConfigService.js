@@ -9,7 +9,7 @@
 
         function getAppConfig(app) {
             try {
-                if (angular.isFunction(app.scope.box.returnConfig)){
+                if (app.scope && angular.isFunction(app.scope.box.returnConfig)){
                     return app.scope.box.returnConfig();
                 } else {
                     $log.log(app.metadata.module_name + " has no returnConfig() function.");
