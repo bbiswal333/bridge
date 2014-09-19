@@ -43,7 +43,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             for(var viewIndex in views) {
 
-                $http.get('/api/get?url=' + encodeURIComponent(views[viewIndex].url + "api/json"), {withCredentials: false})
+                $http.get('/api/get?url=' + encodeURIComponent(views[viewIndex].url + "api/json?depth=2&tree=name,jobs[color,name,url]"), {withCredentials: false})
                 .success(function (viewData) {
 
                     // since the page for the primary view is the start page, there is no view name
@@ -99,7 +99,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
             } else {
 
-                $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json"), withCredentials: false }).
+                $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json?depth=1&tree=timestamp,result"), withCredentials: false }).
                 success(function(latestBuildData) {
 
                     for(var jobIndex in $scope.jobsToDisplay) {
@@ -121,7 +121,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
         var getAndSetHealthReportAndColorToJob = function(job) {
 
-            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json"), withCredentials: false }).
+            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json?depth=2&tree=color,healthReport[description,iconUrl,score]"), withCredentials: false }).
                 success(function(result) {
 
                     for(var jobIndex in $scope.jobsToDisplay) {
@@ -155,7 +155,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
         };
 
         var getDependancyData = function(job){
-            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json"), withCredentials: false }).
+            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json?depth=2&tree=downstreamProjects[color,name,url],upstreamProjects[color,name,url]"), withCredentials: false }).
                 success(function(result) {
 
                     for(var jobIndex in $scope.jobsToDisplay) {
