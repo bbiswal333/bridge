@@ -88,8 +88,8 @@
 </head>
 
 <body class="noselect" style="overflow:auto">
-    <div class="basic-blue-40" ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
-        <div class="basic-blue-40">
+    <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
+        <div>
             
             <bridge.menubar ng-if="isTestInstance || isLocal"></bridge.menubar>
             
@@ -105,7 +105,7 @@
                 </div>
                 <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
             </div>
-            <div id="main-container" ng-view class="mainContainer">
+            <div id="main-container" ng-view class="mainContainer basic-blue-40">
             </div>
         </div>
     </div>
