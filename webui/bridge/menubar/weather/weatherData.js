@@ -77,30 +77,31 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
     }
 
 
-    function getWeather() {
+    function getWeather(targetObject) {
 
-        var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + data.latitude + '&lon=' + data.longitude;
+        var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + targetObject.latitude + '&lon=' + targetObject.longitude;
         weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(weatherDataURL);
 
         $http.get(weatherDataURL).success(function (weatherDataJSON) {
 
             if(data.fahrenheit){
-                data.temperature = (((weatherDataJSON.main.temp - 273)  * 1.8) + 32).toFixed(0);
+                targetObject.temperature = (((weatherDataJSON.main.temp - 273)  * 1.8) + 32).toFixed(0);
             }
             if(!data.fahrenheit){
-                data.temperature = (weatherDataJSON.main.temp - 273).toFixed(0);
+                targetObject.temperature = (weatherDataJSON.main.temp - 273).toFixed(0);
             }
 
             var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
             bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
 
-            data.city = weatherDataJSON.name;
-            data.city_id = weatherDataJSON.id;
+            targetObject.city = weatherDataJSON.name;
+            targetObject.city_id = weatherDataJSON.id;
 
-            data.description = weatherData.description;
-            data.weatherIcon = weatherData.icon;
+            targetObject.description = weatherData.description;
+            targetObject.weatherIcon = weatherData.icon;
         });
     }
+    this.getWeather = getWeather;
 
     function getForcast() {
 
@@ -148,7 +149,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
             data.city_name = weatherConfig.getConfig().location.name;
             data.fahrenheit = weatherConfig.getConfig().fahrenheit;
             setPosition(weatherConfig.getConfig().location);
-            getWeather();
+            getWeather(data);
             getForcast();
         }
     }
