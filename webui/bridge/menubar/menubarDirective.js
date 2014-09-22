@@ -1,5 +1,5 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$popover", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews",
-    function($popover, weatherData, weatherConfig, newsService) {
+angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews",
+    function($modal, weatherData, weatherConfig, newsService) {
         return {
             restrict: "E",
             templateUrl: "bridge/menubar/MenuBar.html",
@@ -22,8 +22,11 @@ angular.module("bridge.app").directive("bridge.menubar", ["$popover", "bridge.me
                 $scope.existUnreadNews = newsService.existUnreadNews;
 
                 $scope.changeSelectedApps = function() {
-                        $scope.toggleDragging();
-                        $scope.displayView('apps');
+                    $modal.open({
+                      templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
+                      size: 'lg'
+                    });
+                        //$scope.toggleDragging();
                 };
 
                 $scope.weatherData = weatherData.getData();

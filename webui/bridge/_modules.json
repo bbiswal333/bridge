@@ -10,6 +10,8 @@
                 "ui.bootstrap.modal",
                 "ui.bootstrap.typeahead",
                 "ui.bootstrap.tpls",
+                "ui.bootstrap.tabs",
+                "ui.bootstrap.alert",
                 "ngTable",
                 "ngGrid",
                 "ui.sortable",
@@ -33,12 +35,6 @@
                 "trafficLightService.js",
                 "employeeService.js",
                 "bridgeBuildingSearchService.js",
-
-                "sidebar/download/bridgeDownloadController.js",
-                "sidebar/download/bridgeDownloadService.js",
-                "sidebar/github/bridgeGithubController.js",
-                "sidebar/notification/bridgeNotificationsController.js",
-                "sidebar/application/bridgeMainSettingsController.js",
 
                 "diagnosis/logService.js",
 		"diagnosis/corsTestPageController.js",
