@@ -56,7 +56,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
 
         //get data for program details
         $scope.onSelect = function ($item) {
-            _viewSettings($item)
+            _viewSettings($item);
             _loadProgramLeadData($item);
             _loadProgramDetailsData($item);
         };
@@ -100,7 +100,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
                             filteredTask.URL = _getURLForTask(filteredTask);
                         });
                     });
-            };
+            }
         };
 
         var _getURLForTask = function(task){
@@ -130,19 +130,19 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         var _mapStatus = function (task) {
             switch (task.WORKING_STATE.TASK_STATUS) {
                 case taskFilterConstants.OPEN_STATUS():
-                    task.WORKING_STATE.TASK_STATUS = "Open"
+                    task.WORKING_STATE.TASK_STATUS = "Open";
                     break;
                 case taskFilterConstants.IN_PROCESS_STATUS():
-                    task.WORKING_STATE.TASK_STATUS = "In Process"
+                    task.WORKING_STATE.TASK_STATUS = "In Process";
                     break;
                 case taskFilterConstants.NOT_APPLICABLE_STATUS():
-                    task.WORKING_STATE.TASK_STATUS = "Not Applicable"
+                    task.WORKING_STATE.TASK_STATUS = "Not Applicable";
                     break;
                 case taskFilterConstants.COMPLETED_STATUS():
-                    task.WORKING_STATE.TASK_STATUS = "Completed"
+                    task.WORKING_STATE.TASK_STATUS = "Completed";
                     break;
                 case taskFilterConstants.CRITICAL_STATUS():
-                    task.WORKING_STATE.TASK_STATUS = "Critical"
+                    task.WORKING_STATE.TASK_STATUS = "Critical";
                     break;
             }
         };
