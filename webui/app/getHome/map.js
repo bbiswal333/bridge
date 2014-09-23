@@ -14,8 +14,8 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 		// be made concurrently
 		that = this;
 
-	nokia.Settings.set("app_id", "BGFtzY6olMoTQcTu9MGp");
-	nokia.Settings.set("app_code", "pbI1l9jZBzUsw0pouKowHA");
+	nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
+	nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
 	(document.location.protocol == "https:") && nokia.Settings.set("secureConnection", "force");
 
 	this.trafficEnabledRoutingManager = new nokia.maps.routing.Manager(),
