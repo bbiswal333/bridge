@@ -36,7 +36,7 @@ module.exports = function(config) {
         './webui/app/**/overview.js',
 
         './webui/**/!(browser_redirect).js',
-        '**/*.spec.js'
+        './webui/**/*.spec.js'
     ],
 
     // list of files to exclude
@@ -44,7 +44,8 @@ module.exports = function(config) {
         "./webui/Test/**/*",
         "./server/**/*",
         "./client/**/*",
-        "./webui/lib/angular-1_2_25/angular.js"
+        "./webui/lib/angular-1_2_25/angular.js",
+        "./webui/lib-bower/**/*"        
     ],
 
     // test results reporter to use
