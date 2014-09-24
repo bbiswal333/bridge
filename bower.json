@@ -14,7 +14,7 @@
 		"jquery-ui":"~1.11.1",
 		"lodash":"~2.4.1",
 		"sigma":"https://github.com/jacomyal/sigma.js.git",
-		"angular-ui-bootstrap":"~0.10.0",
+		"angular-ui-bootstrap":"0.10.0",
 		"angular-ui-select":"~0.7.0"
 	},
 	"devDependencies": 
