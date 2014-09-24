@@ -17,7 +17,6 @@ angular.module('app.simple').directive('app.simple',['$http', function ($http) {
             }).error(function (data, status, headers, config) {
 
             });
-/*eslint no-unused-vars:1*/
 		};
 	}];
 
