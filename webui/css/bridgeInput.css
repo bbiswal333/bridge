@@ -1,0 +1,68 @@
+/* ============= *\
+|     OLD Input    |
+\* ============= */
+
+/*input[type="text"].form{
+    border: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+    background-color: rgba(240,240,240,1);
+    border-radius: 0px;
+    height: 32px;
+    font-weight: normal;
+}
+
+input[type="text"].form_unactive{
+    background-color: rgba(240,240,240,0.5);
+    box-shadow: inset 0 1px 2px rgba(100, 100, 100, .1);
+}
+input[type="text"].form:focus{
+    border: none;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, .2)!important;
+    background-color: rgba(230,230,230,0.8);
+    border-radius: 0px;
+}
+input[type="text"].form:hover{
+    background-color: rgba(230,230,230,0.8);
+}*/
+
+
+/* ============= *\
+|   NEW  Input    |
+\* ============= */
+
+.styled-input {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+input[type="text"], textarea {
+    padding: 6px 12px;
+    border: 1px solid #c3c3c3;
+    width: 100%;
+}
+input ~ span, textarea ~ span {
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #c3c3c3;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: all 0.25s cubic-bezier(0.2, 0, 0.03, 1);
+    transition: all 0.25s cubic-bezier(0.2, 0, 0.03, 1);
+}
+input:focus, textarea:focus {
+    border: 1px solid #c3c3c3;
+    outline: 0;
+}
+input:focus ~ span, textarea:focus ~ span {
+
+    width: 100%;
+    -webkit-transition: all 0.25s cubic-bezier(0.2, 0, 0.03, 1);
+    transition: all 0.25s cubic-bezier(0.2, 0, 0.03, 1);
+}
+input:hover, textarea:hover {
+    border: 1px solid #8a8a8a;
+    outline: 0;
+}

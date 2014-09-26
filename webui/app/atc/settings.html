@@ -76,18 +76,14 @@
                     </td>
                     <td data-title="'Priorities'">
                         <span>
-                            <!--<span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />-->
                             <bridge.checkbox checked-label="1" unchecked-label="1" is-checked="configItem.displayPrio1" ng-disabled="true"></bridge.checkbox>
-                            <!--<span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />-->
                             <bridge.checkbox checked-label="2" unchecked-label="2" is-checked="configItem.displayPrio2" ng-disabled="true"></bridge.checkbox>
-                            <!--<span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />-->
                             <bridge.checkbox checked-label="3" unchecked-label="3" is-checked="configItem.displayPrio3" ng-disabled="true"></bridge.checkbox>
-                            <!--<span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />-->
                             <bridge.checkbox checked-label="4" unchecked-label="4" is-checked="configItem.displayPrio4" ng-disabled="true"></bridge.checkbox>
                         </span>
                     </td>
                     <td data-title="'Functions'">
-                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-times"></span>
                     </td>
                 </tr>
             </tbody>
