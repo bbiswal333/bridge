@@ -1,8 +1,18 @@
+.trim-info {
+    max-width: 50px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 15px;
+    position: relative;
+}
+
 .image_rounded_shadow_sirius_program img {
     margin: 5px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     border-radius: 100%;
-    margin-top: 5px;
+    margin-top: 2px;
 }
 
 .sirius-boxLeft {
@@ -248,7 +258,6 @@
     float: left;
     color: #707070;
 }
-
 
 .trafficLightStatusGrey {
     background-color: #f4f4f4 !important;

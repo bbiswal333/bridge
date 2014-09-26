@@ -5,16 +5,17 @@
  * Utils
  */
 var siriusUtils = function () {
-
+    
     this.adjustURLForRunningEnvironment=function(){
-        return 'https://ifd.wdf.sap.corp/zprs/json';
-    };
-    this.OLD_PR_URL=function(){
-        return 'https://ifd.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
+        return 'https://ifp.wdf.sap.corp/zprs/json';
     };
 
     this.DEV_SERVER_URL =function(){
-        return "https://ifd.wdf.sap.corp:443";
+        return 'https://ifp.wdf.sap.corp:443';
+    };
+
+    this.OLD_PR_URL=function(){
+        return this.DEV_SERVER_URL + '/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
     };
 
     this.SiriusObject = function () {

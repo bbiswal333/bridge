@@ -129,7 +129,7 @@ angular.module('app.sirius').appSiriusSettings =
     var _updateUserInformation = function(task, user) {
         // Updates the user Information in the given task
         if (user && user.BNAME && user.BNAME !== '') {
-            task.WORKING_STATE.USER_ID = user.BNAME
+            task.WORKING_STATE.USER_ID = user.BNAME;
             task.WORKING_STATE.USER_ID_DISPLAY = user.VORNA + " " + user.NACHN + " (" + user.BNAME + ")";
             task.WORKING_STATE.USER_ID_DISPLAY_LAST = task.WORKING_STATE.USER_ID_DISPLAY;
             task.WORKING_STATE.VORNA = user.VORNA;
@@ -174,7 +174,7 @@ angular.module('app.sirius').appSiriusSettings =
 
             if($scope.deliveries.length==0){
                 $scope.firstdelivery=_noDelivery().WORKING_STATE;
-                };
+                }
 
             if (doAfterLoad) {
                 doAfterLoad();
