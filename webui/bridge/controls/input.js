@@ -7,6 +7,7 @@ angular.module('bridge.app').directive('bridge.input', function() {
         scope: {
             placeholder: '@?',
             model: '=?',
+            change: '=?',
             blur: '&',
             focus: '&'
         }
