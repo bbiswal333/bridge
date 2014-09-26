@@ -36,11 +36,11 @@
                         </th>
                         <th>
                             <div class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">
-                                <button type="button" class="btn btn-default dropdown-toggle"style="text-align:left;width:375px;">
+                                <button type="button" class="btn btn-default dropdown-toggle" style="text-align:left;width:375px;">
                                     <i class="fa fa-caret-down" style="float:right;margin-top:4px;"></i>
                                     {{firstdelivery.DELIVERY_NAME}}
                                 </button>
-                                <ul class="dropdown-menu siriusDropDownBox " role="menu" ng-if="deliveries.length>0">
+                                <ul class="dropdown-menu siriusDropDownBox" role="menu" ng-if="deliveries.length>0">
                                     <li ng-repeat="delivery in deliveries" ng-click="getTasks(delivery);">
                                         <a>{{delivery.LOAD_STATE.DELIVERY_NAME}}</a>
                                     </li>

@@ -48,8 +48,7 @@
     margin: 5px 5px 5px 5px;
 }
 
-.siriusDropDownBox
-{
+.siriusDropDownBox{
     max-height: 200px;
     width:375px;
     overflow: auto;
