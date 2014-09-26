@@ -1,4 +1,4 @@
-﻿angular.module('bridge.diagnosis', ['bridge.service', 'ui.bootstrap'])
+﻿angular.module('bridge.diagnosis', ['bridge.service', 'ui.bootstrap.modal'])
 .service(   'bridge.diagnosis.logService', ["$rootScope", "$http", "bridgeDataService", "bridgeInBrowserNotification", "$modal", "$window",
             function ($rootScope, $http, bridgeDataService, bridgeInBrowserNotification, $modal, $window) {
 

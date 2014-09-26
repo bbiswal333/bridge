@@ -46,14 +46,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		}
 	};
 
-	this.getTaskID = function (task) {
-		if(task.ZCPR_OBJGEXTID) {
-			return task.ZCPR_OBJGEXTID;
-		} else {
-			return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
-		}
-	};
-
 	this.enhanceTask = function (task){
 		if (!task) {
 			return task;
@@ -78,16 +70,15 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 			}
 		}
 		if (!enhancedTask.id) {
-			enhancedTask.id = this.getTaskID(task);
+			enhancedTask.id = catsUtils.getTaskID(task);
 		}
 
 		return enhancedTask;
 	};
 
 	this.recalculateTaskIDs = function (tasks) {
-		var that = this;
 		tasks.forEach(function(task) {
-			task.id = that.getTaskID(task);
+			task.id = catsUtils.getTaskID(task);
 		});
 	};
 

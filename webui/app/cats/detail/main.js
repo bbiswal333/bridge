@@ -1,8 +1,7 @@
-angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ui.bootstrap", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
+angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute", "lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ui.bootstrap.modal", "app.cats"]).controller("app.cats.maintenanceView.mainCntrl", [
   "$scope",
   "$q",
   "$log",
-  "$modal",
   "$routeParams",
   "$location",
   "lib.utils.calUtils",
@@ -14,7 +13,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $modal, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.loaded = false;
@@ -224,9 +223,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 } else if (task.TASKTYPE === "ABSE") {
                     addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
                 } else if (task.UNIT === "H") {
-                    addBlock(task.DESCR || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
+                    addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
                 } else {
-                    addBlock(task.DESCR || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
+                    addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
             checkAndCorrectPartTimeInconsistancies(day);

@@ -6,7 +6,8 @@
 		"icon_css"				:	"playbook-icon",
 		"overview_directive"	:	"app.playbook",
 		"beta"					:	true,
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"default_hidden"		:	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js","settings.js","config.js"],

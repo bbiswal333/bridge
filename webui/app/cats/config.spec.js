@@ -6,18 +6,6 @@ describe("CAT2 config service", function () {
 		catsConfig = _catsConfig_;
 	}]));
 
-	it("should calculate a unique ID for a task", function () {
-		var taskA = {};
-		taskA.TASKTYPE = 'DEVL';
-		expect(catsConfig.getTaskID(taskA)).toEqual('DEVL');
-		taskA.RAUFNR = 'RAUF';
-		expect(catsConfig.getTaskID(taskA)).toEqual('RAUFDEVL');
-		taskA.ZZSUBTYPE = 'MGT';
-		expect(catsConfig.getTaskID(taskA)).toEqual('RAUFDEVLMGT');
-		taskA.ZCPR_OBJGEXTID = 'UNIQUE_ID_01';
-		expect(catsConfig.getTaskID(taskA)).toEqual(taskA.ZCPR_OBJGEXTID);
-	});
-
 	it("should calculate a unique ID for each task", function () {
 		var tasks = [];
 		var taskA = {};

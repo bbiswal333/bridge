@@ -1,11 +1,19 @@
 .app-linkList-row{
-	padding-bottom: 8px;
 	margin-left: 0px;
 	margin-right: 0px;
-	min-height:45px;
 	cursor: move;
-
 }
+
+.app-linkList-row:hover{
+	/*background-color:rgb(220,220,220);*/
+	background-color:#e1e1e1;
+}
+
+.app-linkList-emptyRow{
+	height: 36px;
+	width: 100%;
+}
+
 .app-linkList-tableHeader{
 	font-size: 14px;
 	font-weight: bold;
@@ -19,7 +27,6 @@
 }
 
 .app-linkList-link{
-
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -31,6 +38,39 @@
 	margin-top: 10px; 
 	height: 145px;
 	overflow: hidden;	
+}
+
+.app-linkList-listContainer{
+	overflow-y: scroll;
+	height: 100%
+}
+
+.app-linkList-entry{
+	line-height: 3em;
+}
+
+.app-linkList-addLink{
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	cursor: pointer;
+	width: 100%;
+	height: 36px;
+}
+.app-linkList-linkList {
+    /*padding: 5px;*/
+    border-style: dashed;
+    border-color: rgb(175,229,255);
+    border-width: thin;
+    height: 300px;
+    position: relative;
+}
+
+.app-linkList-tbMargin{
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .no-padd{
@@ -53,15 +93,7 @@
 	padding-right: 3px;
 	padding-left: 3px;
 }
-.padd_bot{
-	margin-top: 10px;
-}
-.app-linkList-linkList {
-    padding: 5px;
-    border-style: dashed;
-    border-color: rgb(175,229,255);
-    border-width: thin;
-}
+
 .new_link_zero{
 	margin-top: 5px;
 }
@@ -116,12 +148,12 @@
 }
 
 .app-linklist-editIcons{
-	display: inline-block;
-	float: right;
-	clear:right;
-	
-	padding-left:5px;
 	text-align: center;
+	height: 36px;
+}
+
+.app-linklist-editIcons:hover {
+	background-color: rgba(255,255,255,0.5);
 }
 
 .appLinklist-urlSetting{
@@ -136,4 +168,10 @@
 	width: -moz-calc(100% - 25px);
 	width: -webkit-calc(100% - 25px);
     width: calc(100% - 40px);
+}
+
+.app-linklist-dragEnter{
+	border-style: dashed;
+    border-color: rgb(175,229,255);
+    border-width: thin;
 }

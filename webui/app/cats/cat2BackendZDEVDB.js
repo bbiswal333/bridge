@@ -7,7 +7,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     var CAT2ComplinaceData4FourMonthCache = null;
     var tasksFromWorklistCache = null;
-    var CAT2AllocationDataForWeeks = [];
+    var CAT2AllocationDataForWeeks = {};
 
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
@@ -157,8 +157,27 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       }
 
       var promise = $q.all(CAT2AllocationDataForWeeks);
-      promise.then(function() {
-        CAT2AllocationDataForWeeks.forEach(function (promise) {
+      promise.then(function(promisesData) {
+        angular.forEach(promisesData, function(data){
+            var tasks = null;
+            if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
+                tasks = [];
+                var nodes = data.TIMESHEETS.RECORDS;
+                for (var i = 0; i < nodes.length; i++) {
+                    var task = {};
+                    task.RAUFNR         = (nodes[i].RAUFNR || "");
+                    task.TASKTYPE       = (nodes[i].TASKTYPE || "");
+                    task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
+                    task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
+                    task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
+                    task.UNIT           = nodes[i].UNIT;
+                    task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+                    tasks.push(task);
+                }
+            }
+            callback_fn(tasks);
+        });
+        /*CAT2AllocationDataForWeeks.forEach(function (promise) {
           promise.then(function (data) {
             var tasks = null;
             if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
@@ -178,7 +197,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
             }
             callback_fn(tasks);
           });
-        });
+        });*/
         deferred.resolve();
       });
       return deferred.promise;

@@ -33,7 +33,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
             if($scope.config !== undefined && newVal !== oldVal){
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                 if (oldVal !== undefined) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
         },true);

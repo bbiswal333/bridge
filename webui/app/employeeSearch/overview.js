@@ -1,6 +1,6 @@
-angular.module('app.employeeSearch', ['bridge.employeeSearch']);
+angular.module('app.employeeSearch', []);
 
-angular.module('app.employeeSearch').directive('app.employeeSearch', function ($modal, $http, $window) {
+angular.module('app.employeeSearch').directive('app.employeeSearch', ['$http', '$window', 'bridge.search.employeeSearch', function ($http, $window, employeeSearch) {
 
     var directiveController = ['$scope', function ($scope) {
         $scope.box.boxSize = "2";
@@ -16,6 +16,13 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
             	$window.location.href = '#/tetris';
             }
         }, true);
+
+        $scope.onSelect = function ($item) {
+            // FIND_EMPLOYEE_JSON service call with id as a parameter returns more details about the user. We need TELNR.
+            employeeSearch.getDetails($item, function(employeeDetails) {
+                $scope.selectedEmployee = employeeDetails;
+            });
+        };
     }];
 
     return {
@@ -23,4 +30,4 @@ angular.module('app.employeeSearch').directive('app.employeeSearch', function ($
         templateUrl: 'app/employeeSearch/overview.html',
         controller: directiveController
     };
-});
+}]);

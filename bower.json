@@ -1,0 +1,23 @@
+{
+	"name": "bridge",
+	"version": "0.1",
+	"dependencies": 
+	{
+		"angular": "~1.2.25",	
+		"angular-motion":"~0.3.3",	
+		"angular-strap":"~2.1.0",
+		"bootstrap": "~3.2.0",
+		"ng-table":"~0.3.2",
+		"fileSaver":"https://github.com/eligrey/FileSaver.js.git",
+		"fuse.js":"~1.2.0",
+		"jquery": "~2.1.0",
+		"jquery-ui":"~1.11.1",
+		"lodash":"~2.4.1",
+		"sigma":"https://github.com/jacomyal/sigma.js.git",
+		"angular-ui-bootstrap":"0.10.0",
+		"angular-ui-select":"~0.7.0"
+	},
+	"devDependencies": 
+	{		
+	}
+}

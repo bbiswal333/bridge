@@ -29,6 +29,7 @@ client/node_download/**/*
 
 ._*
 settings.json
+webui/lib-bower
 
 # Eclipse project files
 .classpath

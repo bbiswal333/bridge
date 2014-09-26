@@ -1,16 +1,18 @@
 {
 	"app":
 	{
+		"categories"			:	["ABAP"],
 		"module_name"			:	"app.atc",
 		"title"					:	"ATC Results",
 		"icon_css"				:	"icon-wrench",
 		"overview_directive"	:	"app.atc",
 		"needs_client"			:	false,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{		
 				"route"			:	"/detail/atc/:appId/:prio",
-				"templateUrl"	:	"app/atc/detail.html"			
+				"templateUrl"	:	"app/atc/detail.html"
 			}
 		]	
 	},	

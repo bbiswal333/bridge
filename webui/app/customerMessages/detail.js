@@ -2,13 +2,14 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
     ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', '$window',
     function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, window) {
 
-        $scope.$parent.titleExtension = " - Customer Messages Details";
+        $scope.$parent.$parent.detailScreen.title = "Customer Incidents Details";
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};
         $scope.zoomIndex = -1;
         $scope.zoomedStyle = "";
+        $scope.showNewOnly = false;
 
 
         function update_table()
@@ -19,9 +20,15 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             {
                 if(!$scope.getStatusArray().length)
                 {
-                    var status_filter = $routeParams.prio.split('|');
+                    if ($routeParams.prio) {
+                        var status_filter = $routeParams.prio.split('|');
+                    }
 
                     $scope.prios.forEach(function (prio){
+                        if (!status_filter){
+                            $scope.statusMap[prio.name] = {"active":true};
+                            return;
+                        }
                         if(status_filter.indexOf(prio.name) > -1)
                         {
                             $scope.statusMap[prio.name] = {"active":true};
@@ -90,8 +97,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         {
             ticketData.backendTickets.sel_components.forEach(enhanceMessage);
             ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
-            ticketData.backendTickets.colleagues.forEach(enhanceMessage);
-            ticketData.backendTickets.colleagues_aa.forEach(enhanceMessage);
             ticketData.backendTickets.assigned_me.forEach(enhanceMessage);
             ticketData.backendTickets.assigned_me_aa.forEach(enhanceMessage);
             ticketData.backendTickets.created_me.forEach(enhanceMessage);
@@ -114,23 +119,47 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 $scope.messages.push(message);
             }
         }
+
+        function getChangedIncidents(){
+            var changedIncidents = {};
+            var listOfGuids = $routeParams.incidentGUID.split('|');
+            for (var category in ticketData.backendTickets) {
+                var foundTickets;
+                foundTickets = _.where(ticketData.backendTickets[category], function(ticket){
+                    return _.contains(listOfGuids, ticket.OBJECT_GUID );
+                });
+                changedIncidents[category] = [];
+                if (foundTickets.length > 0){
+                    changedIncidents[category] = foundTickets;
+                }
+            }
+            return changedIncidents;
+        }
+
         $scope.$watch('config', function() {
+            var ticketsToShow = {};
             if($scope.config !== undefined)
             {
                 var selected_messages = [];
                 $scope.messages = selected_messages;
 
-                if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components, addMessage); }
-                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues, addMessage); }
-                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me, addMessage); }
-                if($scope.config.data.selection.created_me)     { angular.forEach(ticketData.backendTickets.created_me, addMessage); }
+                if ($routeParams.incidentGUID){
+                    ticketsToShow = getChangedIncidents();
+                    // ticketsToShow = ticketData.ticketsFromNotifications;
+                    $scope.$parent.$parent.detailScreen.title = "New/Changed Customer Incidents";
+                } else {
+                    ticketsToShow = ticketData.backendTickets;
+                }
+
+                if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components, addMessage); }
+                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me, addMessage); }
+                if($scope.config.data.selection.created_me)     { angular.forEach(ticketsToShow.created_me, addMessage); }
                 if(!$scope.config.data.settings.ignore_author_action)
                 {
-                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketData.backendTickets.sel_components_aa, addMessage); }
-                    if($scope.config.data.selection.colleagues)     { angular.forEach(ticketData.backendTickets.colleagues_aa, addMessage); }
-                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketData.backendTickets.assigned_me_aa, addMessage); }
+                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components_aa, addMessage); }
+                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
                 }
-                bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
             }
         },true);
 

@@ -2,19 +2,17 @@
     ['$http', '$q', '$window', "$rootScope", "$location", 'app.customerMessages.configservice', "notifier",
     function ($http, $q, $window, $rootScope, $location, configservice, notifier) {
     var that = this;
+    this.sAppIdentifier = "app.customerMessages";
 
     //buckets for the backend tickets
     this.backendTickets = {};
     this.backendTickets.sel_components = [];
     this.backendTickets.sel_components_aa = [];
-    this.backendTickets.colleagues = [];
-    this.backendTickets.colleagues_aa = [];
     this.backendTickets.assigned_me = [];
     this.backendTickets.assigned_me_aa = [];
     this.backendTickets.created_me = [];
 
     this.lastTickets = null;
-    this.ticketsFromNotifications = {};
 
     this.ticketsFromNotifications = {};
     this.ticketsFromNotifications.assigned_me = [];
@@ -38,6 +36,8 @@
     }
 
     function parseBackendTicket(backendTicket, category) {
+
+
         angular.forEach(that.prios, function (prio) {
             if (backendTicket.PRIORITY_KEY === prio.number.toString())
             {
@@ -46,10 +46,15 @@
                 {
                     category_aa = category + '_aa';
                 }
-                if(backendTicket.STATUSSTXT === "Author Action" && category_aa !== "")
+                // Customer Action
+                if(backendTicket.STATUS_KEY === "E0004" && category_aa !== "")
                 {
                     prio[category_aa]++;
                     that.backendTickets[category_aa].push(backendTicket);
+                }
+                // incidents with status Solution Provided are not considered at all
+                else if ( backendTicket.STATUS_KEY === "E0005") {
+                    return; //continue forEach loop
                 }
                 else
                 {
@@ -64,17 +69,15 @@
     }
 
     this.prios = [
-        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
-        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues:0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
+        { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] },
+        { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0, total: 0, tickets: [] }];
 
     this.resetData = function () {
         angular.forEach(that.prios, function (prio) {
             prio.sel_components = 0;
             prio.sel_components_aa = 0;
-            prio.colleagues = 0;
-            prio.colleagues_aa = 0;
             prio.assigned_me = 0;
             prio.assigned_me_aa = 0;
             prio.created_me = 0;
@@ -85,8 +88,6 @@
 
         that.backendTickets.sel_components.length = 0;
         that.backendTickets.sel_components_aa.length = 0;
-        that.backendTickets.colleagues.length = 0;
-        that.backendTickets.colleagues_aa.length = 0;
         that.backendTickets.assigned_me.length = 0;
         that.backendTickets.assigned_me_aa.length = 0;
         that.backendTickets.created_me.length = 0;
@@ -103,12 +104,15 @@
     }
 
     this.loadTicketData = function () {
-        var deferred = $q.defer();        
+        var deferred = $q.defer();
 
         $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials:true}
         ).success(function (data) {
             // data = testData;
             that.resetData();
+
+            var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
+            data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
 
             data = addCData("URL_MESSAGE", data);
             data = addCData("DESCRIPTION", data);
@@ -171,11 +175,6 @@
                     addTicket(selectedTickets,ticket);
                 }
             });}
-            if (configservice.data.selection.colleagues) { that.backendTickets.colleagues.forEach(function(ticket){
-                if (ticket.PRIORITY_KEY === prioString){
-                    addTicket(selectedTickets,ticket);
-                }
-            });}
             if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me.forEach(function(ticket){
                 if (ticket.PRIORITY_KEY === prioString){
                     addTicket(selectedTickets,ticket);
@@ -188,11 +187,6 @@
             });}
             if (!configservice.data.settings.ignore_author_action) {
                 if (configservice.data.selection.sel_components) { that.backendTickets.sel_components_aa.forEach(function(ticket){
-                    if (ticket.PRIORITY_KEY === prioString){
-                        addTicket(selectedTickets,ticket);
-                    }
-                });}
-                if (configservice.data.selection.colleagues) { that.backendTickets.colleagues_aa.forEach(function(ticket){
                     if (ticket.PRIORITY_KEY === prioString){
                         addTicket(selectedTickets,ticket);
                     }
@@ -222,11 +216,11 @@
         parseInt(sAbapDate.substring(10,12)), parseInt(sAbapDate.substring(12,14)));
     };
 
-    function notifierClickCallback() {
+    function notifierClickCallback(notificationApp, routeURL) {
         // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
         _.defer(function() {
             $rootScope.$apply(function() {
-                $location.path("/detail/customerMessages/Very%20high");
+                $location.path(routeURL);
             });
         });
     }
@@ -243,22 +237,23 @@
                 var foundTicket;
                 for (var category in oldTicketData) {
                     foundTicket = _.find(oldTicketData[category], { OBJECT_GUID: ticket.OBJECT_GUID });
-                    
+
                     if (foundTicket){
                         break;
                     }
                 }
 
-                
+                // var routeURL = "/detail/customerMessages/new/";
                 if (!foundTicket) {
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('New Customer Ticket', 'There is a new Customer Ticket "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
+                    // routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration,ticket.URL_MESSAGE.toString());
                 } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
-                    
                     bNewNotifications = true;
                     ticketsToNotify[newTicketsCategory].push(ticket);
-                    notifier.showInfo('Customer Ticket Changed', 'The Customer Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
+                    // routeURL += ticket.OBJECT_GUID;
+                    notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, ticket.URL_MESSAGE.toString());
                 }
             });
         }
@@ -276,6 +271,9 @@
         ticketsToNotify.assigned_me = [];
         ticketsToNotify.sel_components = [];
 
+        var routeURL = "/detail/customerMessages/new/";
+        var guidList;
+
         for (var category in tickets) {
             foundTickets = _.where(tickets[category], function(ticket){
                 return that.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
@@ -284,11 +282,18 @@
                 ticketsToNotify[category] = foundTickets;
                 bShowNotification = true;
             }
+            foundTickets.forEach(function(foundTicket){
+                if (!guidList) {
+                    guidList = foundTicket.OBJECT_GUID;
+                }
+                guidList += "|" + foundTicket.OBJECT_GUID;
+            });
         }
 
         if (bShowNotification){
+            routeURL += guidList;
             that.ticketsFromNotifications = ticketsToNotify;
-            notifier.showInfo('Customer Tickets Changed', 'Some of your Customer Tickets changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
+            notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, routeURL);
         }
     };
 

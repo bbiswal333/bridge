@@ -3,11 +3,12 @@
 	{
 		"module_name"			:	"app.xsSyncer",
 		"title"					:	"XS Syncer",
-		"beta"					: 	true,
+		"beta"					:	true,
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.xsSyncer",
 		"needs_client"			:	true,
-		"beta_users"			:	["D049677","D051804", "D055920", "I069723", "D061878", "D059683", "D055416", "D052309", "D027515", "D062131"]
+		"beta_users"			:	["D049677","D051804", "D055920", "I069723", "D061878", "D059683", "D055416", "D052309", "D027515", "D062131"],
+		"default_hidden"		:   true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "dataService.js", "settings.js"],

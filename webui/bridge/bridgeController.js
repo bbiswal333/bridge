@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -11,7 +11,7 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $window.onbeforeunload = function(){
-            bridgeConfig.persistInBackend(bridgeDataService, true);
+            bridgeConfig.store(bridgeDataService);
         };
 
         $scope.logMode = bridgeDataService.getLogMode();
@@ -29,8 +29,8 @@ angular.module('bridge.app').controller('bridgeController',
             return $scope.sidePanel;
         };
 
-        $scope.bridge_notifications_click = function () {
-            $scope.sidePanel = 'view/bridgeNotifications.html';
+        /*$scope.bridge_notifications_click = function () {
+            $scope.sidePanel = 'bridge/sidebar/notification/bridgeNotifications.html';
             if ($scope.sideView === "notifications" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
@@ -39,26 +39,26 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_settings_click = function () {
-            $scope.sidePanel = 'view/bridgeSettings.html';
+            $scope.sidePanel = 'bridge/sidebar/application/bridgeSettings.html';
             if ($scope.sideView === "settings" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
                 if ($scope.show_settings === false) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
             $scope.sideView = "settings";
-        };
+        };*/
 
         $scope.bridge_hide_settings = function () {
             if ($scope.show_settings === true) {
                 $scope.show_settings = false;
-                bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
                 $scope.stopDragging();
             }
         };
 
-        $scope.bridge_feedback_click = function () {
-            $scope.sidePanel = 'view/bridgeFeedback.html';
+        /*$scope.bridge_feedback_click = function () {
+            $scope.sidePanel = 'bridge/sidebar/feedback/bridgeFeedback.html';
             if ($scope.sideView === "feedback" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
@@ -67,23 +67,21 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.bridge_github_click = function () {
-            $scope.sidePanel = 'view/bridgeGithub.html';
+            $scope.sidePanel = 'bridge/sidebar/github/bridgeGithub.html';
             if ($scope.sideView === "github" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "github";
             $scope.stopDragging();
-        };
+        };*/
 
-        $scope.bridge_news_click = function () {
-            $scope.sidePanel = 'view/bridgeNews.html';
+        /*$scope.bridge_news_click = function () {
+            $scope.sidePanel = 'bridge/sidebar/news/bridgeNews.html';
             if ($scope.sideView === "news" || !$scope.show_settings) {
                 $scope.show_settings = !$scope.show_settings;
             }
             $scope.sideView = "news";
-        };
-
-        $scope.show_news = bridgeNewsService.show_news;
+        };*/
 
         $scope.show_download = bridgeDownloadService.show_download;
 
@@ -172,11 +170,11 @@ angular.module('bridge.app').controller('bridgeController',
         }
 
         $window.debug = {
-            resetConfig: function()
-                        {
+            resetConfig: function() {
                 bridgeDataService.toDefault();
-                bridgeConfig.persistInBackend(bridgeDataService);
-                        }
+                bridgeConfig.store(bridgeDataService);
+                bridgeConfig.persistInBackend();
+            }
         };
 
         $scope.toggleDragging = function() {
@@ -212,11 +210,7 @@ angular.module('bridge.app').controller('bridgeController',
                     }
                 }
           }
-          bridgeConfig.persistInBackend(bridgeDataService);
-        };
-
-        $scope.settings_click = function (boxId) {
-            bridgeConfig.showSettingsModal(boxId);
+          bridgeConfig.store(bridgeDataService);
         };
 
         $scope.overview_click = function () {
@@ -232,34 +226,15 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.showSettingsModal = function (appId) {
-            var appInstance = bridgeDataService.getAppById(appId);
+			// bridgeSettingsModalService.show_settings(appId);
+			$scope.modalInstance = bridgeSettingsModalService.show_settings(appId);
 
-            $scope.modalInstance = $modal.open({
-                templateUrl: 'view/settings.html',
-                windowClass: 'settings-dialog',
-                controller: angular.module('bridge.app').settingsController,
-                resolve: {
-                    templateString: function () {
-                        return appInstance.scope.box.settingScreenData.templatePath;
-                    },
-                    templateController: function () {
-                        return appInstance.scope.box.settingScreenData.controller;
-                    },
-                    boxController: function () {
-                        return appInstance;
-                    },
-                    boxScope: function () {
-                        return appInstance.scope;
-                    }
-                }
-            });
-
-            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            function onModalClosed() {
-                bridgeConfig.persistInBackend(bridgeDataService);
-                $scope.modalInstance = null;
-            }
-            this.modalInstance.result.then(onModalClosed, onModalClosed);
+			// save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+			function onModalClosed() {
+				bridgeConfig.store(bridgeDataService);
+				$scope.modalInstance = null;
+			}
+			this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
         $scope.apps = [];
@@ -338,6 +313,9 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
+            }
+            if ($location.$$host === 'localhost') {
+                $scope.isLocal = true;
             }
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;

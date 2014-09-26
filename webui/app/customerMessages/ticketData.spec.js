@@ -11,6 +11,8 @@ describe("Ticket Data Service for Customer Messages", function () {
     var deferred;
     var configService;
     var sNotificationText;
+    var iNotificationDuration;
+    var sNotificationRouteURL;
     var loadDataMock = function() {
         return deferred.promise;
     };
@@ -18,15 +20,17 @@ describe("Ticket Data Service for Customer Messages", function () {
     beforeEach(function () {
         angular.module("mock.module").factory("notifier", function(){
             return {
-                showInfo: function(sTitle, sText){
+                showInfo: function(sTitle, sText, appIdentifier_s, onCLick_fn, duration_i, routeURL_s){
                     sNotificationText = sText;
+                    iNotificationDuration = duration_i;
+                    sNotificationRouteURL = routeURL_s;
                 }
             };
         });
 
         module("app.customerMessages");
         module("mock.module");
-        
+
         inject(function($injector){
             configService = $injector.get('app.customerMessages.configservice');
         });
@@ -113,12 +117,12 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         beforeEach(function () {
             testGet = $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin);
-            
+
         });
         afterEach(function(){
             $httpBackend.flush();
         });
-    
+
         it("should remember the tickets that were loaded (for notifications)", function(){
             expect(cmTicketData.lastTickets).toBe(null);
 
@@ -137,7 +141,7 @@ describe("Ticket Data Service for Customer Messages", function () {
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
-                expect(sNotificationText.indexOf("There is a new Customer Ticket")).not.toBe(-1);
+                expect(sNotificationText.indexOf("There is a new Customer Incident")).not.toBe(-1);
             });
 
         });
@@ -151,7 +155,7 @@ describe("Ticket Data Service for Customer Messages", function () {
             testGet.respond(mockDataChanged);
             cmTicketData.loadTicketData().then(function(){
                 expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(1);
-                expect(sNotificationText.indexOf("The Customer Ticket")).not.toBe(-1);
+                expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
                 expect(cmTicketData.ticketsFromNotifications.assigned_me[0].OBJECT_GUID).toBe("00505681409E1EE3BADC4A687B7B5E13");
             });
 
@@ -165,6 +169,18 @@ describe("Ticket Data Service for Customer Messages", function () {
                 expect(sNotificationText.indexOf("since your last visit")).not.toBe(-1);
                 expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(2);
                 expect(cmTicketData.ticketsFromNotifications.sel_components.length).toBe(1);
+            });
+
+        });
+
+        it("should show notification as long as customized", function(){
+            configService.data.settings.notificationDuration = -1;
+            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+
+            testGet.respond(mockData);
+            cmTicketData.loadTicketData().then(function(){
+                expect(sNotificationText.indexOf("since your last visit")).not.toBe(-1);
+                expect(iNotificationDuration).toBe(-1);
             });
 
         });
@@ -193,6 +209,37 @@ describe("Ticket Data Service for Customer Messages", function () {
             cmTicketData.loadTicketData().then(function(){
                 expect(cmTicketData.ticketsFromNotifications.assigned_me.length).toBe(2);
                 expect(cmTicketData.ticketsFromNotifications.sel_components.length).toBe(1);
+            });
+        });
+
+        it("should provide route URL of new/changed incident for notification", function(){
+        	var emptyData = '<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0"><asx:values><RESULTNODE1/><RESULTNODE2/></asx:values></asx:abap>';
+
+            testGet.respond(emptyData);
+            cmTicketData.loadTicketData();
+            $httpBackend.flush();
+
+            testGet.respond(mockData);
+            cmTicketData.loadTicketData().then(function(){
+                expect(sNotificationText.indexOf("There is a new Customer Incident")).not.toBe(-1);
+                expect(sNotificationRouteURL).toBe("https://BCDMAIN.WDF.SAP.CORP:443/sap/support/message/0000000082?sap-client=001&sap-language=EN&sap-domainRelax=min");
+            });
+            $httpBackend.flush();
+
+            testGet.respond(mockDataChanged);
+            cmTicketData.loadTicketData().then(function(){
+                expect(sNotificationText.indexOf("The Customer Incident")).not.toBe(-1);
+                expect(sNotificationRouteURL).toBe("https://BCDMAIN.WDF.SAP.CORP:443/sap/support/message/1410541346?sap-client=001&sap-language=EN&sap-domainRelax=min");
+            });
+        });
+
+        it("should provide route URL of new/changed incidents for notification", function(){
+            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+
+            testGet.respond(mockData);
+            cmTicketData.loadTicketData().then(function(){
+                expect(sNotificationText.indexOf("Some of your Customer Incidents changed")).not.toBe(-1);
+                expect(sNotificationRouteURL).toBe("/detail/customerMessages/new/0050568E3DB61ED295B0C4C96593DE3E|0050568E3DB61ED295B0C4C96593DE3E|00505681409E1EE3BADC4A687B7B5E13|0050568E3DB61ED295A369943052BE3E");
             });
         });
     });

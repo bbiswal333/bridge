@@ -6,8 +6,9 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     var config = {};
     config.data = {};
     config.data.settings = {};
-    config.data.selection = {};
     config.data.settings.ignore_author_action = true;
+    config.data.settings.notificationDuration = 5000;
+    config.data.selection = {};
     config.data.selection.sel_components = true;
     config.data.selection.assigned_me = false;
     config.lastDataUpdate = null;
@@ -48,7 +49,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         };
 
         $scope.prios = ticketData.prios;
-        $scope.$parent.titleExtension = " - Customer Messages";
+        $scope.$parent.titleExtension = " - Customer Incidents";
         $scope.dataInitialized = ticketData.isInitialized;
         $scope.showNoMessages = false;
 
@@ -72,7 +73,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
 
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                 if (oldVal !== undefined) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
         },true);

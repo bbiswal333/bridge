@@ -58,7 +58,9 @@
         bridgeDataService.setLogMode(true);
 
         try {
-            IDoNotExist();
+/*eslint-disable no-undef */
+            thisFunctionIsDefinitelyNotExisting();
+/*eslint-enable no-undef */
         } catch (e) {
             logService.log(e);
             expect(logService.getLog()[0].sMessage).not.toBe('');

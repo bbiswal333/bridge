@@ -22,6 +22,23 @@
                         });
                     }
 
+                    function instantiateSerachProviders(injector) {
+                        if(!data.searchProviders) {
+                            return;
+                        }
+
+                        var bridgeSearch;
+                        injector.invoke(['bridge.search', function(search) {
+                            bridgeSearch = search;
+                        }]);
+
+                        data.searchProviders.map(function(searchProvider) {
+                            injector.invoke([searchProvider, function(searchProviderInstance){
+                                bridgeSearch.addSearchProvider(searchProviderInstance);
+                            }]);
+                        });
+                    }
+
                     fetchUserInfo(function(user)
                     {
 
@@ -50,9 +67,8 @@
                             }
                         }
 
-                        angular.module('bridge.service', ['ui.bootstrap']);
+                        angular.module('bridge.service', ["ui.bootstrap.modal", "ui.bootstrap.tpls"]);
                         angular.module('bridge.service').provider("bridge.service.loader", function () {
-
                             this.apps = apps;
                             this.$get = function () { return this; };
                         });
@@ -73,7 +89,8 @@
                                 return;
                             }
 
-                            angular.bootstrap($window.document, ['bridge.app']);
+                            var injector = angular.bootstrap($window.document, ['bridge.app']);
+                            instantiateSerachProviders(injector);
                         };
 
                         function load_scripts(array, callback) {
