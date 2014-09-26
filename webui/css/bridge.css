@@ -700,6 +700,7 @@ img {
 }
 .fa{
     line-height: inherit!important;
+    font-size: 18px!important;
 }
 .box-icon.fa{
     padding-top: 2px;
