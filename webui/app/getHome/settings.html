@@ -1,0 +1,58 @@
+<div class="row select">
+<!-- LIST -->
+	<div class="col-md-4">
+
+		<br>
+
+		<!--- DISPLAY existing Locations -->
+		<div ng-model="locations" class="app-getHome-getHome">
+			<div class="app-getHome-settings-row" style="min-height:45px;" ng-if="!config.data.locations[0]">
+			</div>
+			<div class="row app-getHome-settings-row" ng-repeat="location in config.data.locations track by location.name">
+				<div class="no-padd col-xs-4 bold">
+					<input type="text" class="form-control form" ng-model="location.name" placeholder="Name for the location" />
+				</div>
+				<div class="no-padd padd-left col-xs-8">
+					<div class="app-getHome-settings-address">{{location.address}}</div>
+					<div class="app-getHome-settings-editIcons">
+						<span ng-click="deleteLocation(location,$index)" style="margin-right:0;top:0px;padding-top:10px;cursor:pointer;" title="Delete this Location" class="fa fa-times"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<!--- DISPLAY New Link button -->
+<div ng-show="!addMode">
+	<div class="col-xs-12" style="padding:0 0 0 0;">
+		<button ng-click="addMode = true" type="button" class="btn btn-default btn_blue app-getHome-settings-add-button" style="z-index:3;">New Location</button>
+	</div>
+</div>
+
+<!--- ADD LOCATION -->
+<form ng-submit="addNewLocation()" ng-show="addMode" class="app-getHome-settings-add-form">
+	<div class="row">
+		<div class="col-xs-4" style="padding:0 0 10px 0;">
+			<input type="text" class="form-control form" ng-model="newLocation.name" maxlength="20" placeholder="Name for the Location" autofocus />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-4" style="padding:0 0 10px 0;">
+			<input type="text" class="form-control form" ng-model="newLocation.address" placeholder="Search for a location" typeahead="location as location.address.label for location in searchAddress($viewValue)"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4" style="padding:0 0 0 0;">
+			<button class="btn btn-primary btn_blue" type="submit">Add</button>
+			<span class="btn btn-default " ng-click="addMode = false">Cancel</span>
+		</div>
+	</div>
+</form>
+
+<div class="row">
+	<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
+</div>

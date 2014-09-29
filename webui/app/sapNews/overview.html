@@ -1,7 +1,30 @@
-﻿<div class="app-sapnews-container" style="overflow-y: auto">
-	<ul class="basic-blue-font">
-		<li ng-repeat="feed in feeds">
-			<a ng-href="{{feed.link}}" target="_blank">{{feed.title}}</a>
-		</li>
-	</ul>
+﻿<!--<div class="app-sapnews-container" style="overflow-y: auto">
+	<div class="basic-blue-font">
+		<div ng-repeat="feed in feeds" class="app-sapnews-feed" > 
+			<a ng-href="{{feed.link}}" target="_blank">
+
+				<img src="https://blogs.wdf.sap.corp/sapnews_en/files/2014/09/RunSimpleTL-248x177.jpg" width="25" height="25">
+				{{feed.title}}
+
+			</a>
+		</div>
+	</div>
+</div>-->
+
+<div class="sapnews-container">
+	<div class="sapnews-image" style="background-image:url('https://blogs.wdf.sap.corp/sapnews_en/files/2014/09/RunSimpleTL-248x177.jpg');">
+		<div class="sapnews-header">
+			SAP NEWS TEST
+		</div>
+	</div>
+	<div class="sapnews-preview">
+		Lorem ipsum dolor sit amed blablablabla...psum dolor sit  ed blabdolor sit amed ...
+	</div>
+</div>
+<div class="sapnews-navi basic-blue-font-100">
+		<i class="fa fa-circle-o"></i>
+		<i class="fa fa-circle-o"></i>
+		<i class="fa fa-circle"></i>
+		<i class="fa fa-circle-o"></i>
+		<i class="fa fa-circle-o"></i>
 </div>
