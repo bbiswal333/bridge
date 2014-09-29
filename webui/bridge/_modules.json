@@ -11,6 +11,7 @@
                 "ui.bootstrap.typeahead",
                 "ui.bootstrap.tpls",
                 "ui.bootstrap.alert",
+                "ui.bootstrap.dropdownToggle",
                 "ngTable",
                 "ngGrid",
                 "ui.sortable",
