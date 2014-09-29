@@ -34,18 +34,18 @@
 
 <!--- ADD LOCATION -->
 <form ng-submit="addNewLocation()" ng-show="addMode" class="app-getHome-settings-add-form">
-	<div class="row app-linkList-row">
-		<div class="col-xs-4" style="padding:0 0 0 0;">
+	<div class="row">
+		<div class="col-xs-4" style="padding:0 0 10px 0;">
 			<input type="text" class="form-control form" ng-model="newLocation.name" maxlength="20" placeholder="Name for the Location" autofocus />
 		</div>
 	</div>
 
-	<div class="row app-linkList-row">
-		<div class="col-xs-4" style="padding:0 0 0 0;">
+	<div class="row">
+		<div class="col-xs-4" style="padding:0 0 10px 0;">
 			<input type="text" class="form-control form" ng-model="newLocation.address" placeholder="Search for a location" typeahead="location as location.address.label for location in searchAddress($viewValue)"/>
 		</div>
 	</div>
-	<div class="row app-linkList-row">
+	<div class="row">
 		<div class="col-xs-4" style="padding:0 0 0 0;">
 			<button class="btn btn-primary btn_blue" type="submit">Add</button>
 			<span class="btn btn-default " ng-click="addMode = false">Cancel</span>
