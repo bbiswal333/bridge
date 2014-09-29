@@ -37,7 +37,7 @@
                         <th>
                             <div class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">
                                 <button type="button" class="btn btn-default dropdown-toggle" style="text-align:left;width:375px;">
-                                    <i class="fa fa-caret-down" style="float:right;margin-top:4px;"></i>
+                                    <i class="fa fa-caret-down" style="float:right;margin-top:0px;"></i>
                                     {{firstdelivery.DELIVERY_NAME}}
                                 </button>
                                 <ul class="dropdown-menu siriusDropDownBox" role="menu" ng-if="deliveries.length>0">
@@ -54,12 +54,12 @@
 
         <div class="row" style="margin-left:4px;margin-top:10px" ng-if="tasks.length>0 &&!currentConfigValues.showProgramOverview">
             <div class="btn-group">
-                <p class="col-xs-1" style="margin-top: 5px; width: 120px;">Filtered by:</p>
+                <p class="col-xs-1" style="margin-top: 9px; width: 120px;">Filtered by:</p>
                 <multiselect-dropdown class="col-xs-1" style="margin-left: -40px; width: 250px;" options="assignedToUsers"
                                       model="$parent.selectedUserInAssignedToDropDown" text="'Assignee'" sort="true"
                                       is-filter="true" display-attribute="display">
                 </multiselect-dropdown>
-                <p class="col-xs-1" style="margin-top: 5px;margin-left: -120px; width:120px;">with:</p>
+                <p class="col-xs-1" style="margin-top: 9px;margin-left: -120px; width:120px;">with:</p>
                 <multiselect-dropdown class="col-xs-1" style="margin-left:-80px;width:200px;" options="statusDropDown" model="$parent.selectedStatus"
                                       text="'Status'" isFilter="true" is-filter="true">
                 </multiselect-dropdown>

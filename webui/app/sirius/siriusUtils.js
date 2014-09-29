@@ -7,11 +7,11 @@
 var siriusUtils = function () {
     
     this.adjustURLForRunningEnvironment=function(){
-        return 'https://ifd.wdf.sap.corp/zprs/json';
+        return 'https://ifp.wdf.sap.corp/zprs/json';
     };
 
     this.DEV_SERVER_URL =function(){
-        return 'https://ifd.wdf.sap.corp:443';
+        return 'https://ifp.wdf.sap.corp:443';
     };
 
     this.OLD_PR_URL=function(){
