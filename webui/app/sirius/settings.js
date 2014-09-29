@@ -2,6 +2,38 @@ angular.module('app.sirius').appSiriusSettings =
 ['$scope', '$rootScope', "app.sirius.configservice","app.sirius.taskFilterConstants","$http", function ($scope, $rootScope, siriusConfigService, taskFilterConstants, $http) {
 
     var _init = function() {
+        $scope.currentConfigValues = siriusConfigService.configItem;
+        $scope.showDelivery=false;
+        $scope.programGUID="";
+        $scope.deliveryID="";
+        $scope.tasks="";
+        $scope.assignedToUsers = [];
+        $scope.selectedUserInAssignedToDropDown = [];
+        $scope.selectedTasks = [];
+        $scope.selectedStatus = [];
+        $scope.user="";
+
+        $scope.classMap = {
+            "Open": "taskStatusOpen",
+            "In Process": "taskStatusInProcess",
+            "Not Applicable": "taskStatusNA",
+            "Completed": "taskStatusCompleted",
+            "Critical": "taskStatusCritical"
+        };
+
+        $scope.statusMap = {
+            "Open": taskFilterConstants.OPEN_STATUS(),
+            "In Process": taskFilterConstants.IN_PROCESS_STATUS(),
+            "Not Applicable": taskFilterConstants.NOT_APPLICABLE_STATUS(),
+            "Completed": taskFilterConstants.COMPLETED_STATUS(),
+            "Critical": taskFilterConstants.CRITICAL_STATUS()
+        };
+
+        $scope.statusDropDown = [];
+        for (var item in $scope.statusMap) {
+            $scope.statusDropDown.push(item);
+        }
+
         _loadTaskSettings();
     };
 
@@ -19,25 +51,6 @@ angular.module('app.sirius').appSiriusSettings =
         _loadProgram($scope.siriusConfigService.tasks.programGUID, _loadTask);
         $scope.selectedStatus=$scope.siriusConfigService.tasks.selectedStatus;
         $scope.selectedUserInAssignedToDropDown=$scope.siriusConfigService.tasks.selectedUserInAssignedToDropDown;
-    };
-
-	$scope.currentConfigValues = siriusConfigService.configItem;
-    $scope.showDelivery=false;
-    $scope.programGUID="";
-    $scope.deliveryID="";
-    $scope.tasks="";
-    $scope.assignedToUsers = [];
-    $scope.selectedUserInAssignedToDropDown = [];
-    $scope.selectedTasks = [];
-    $scope.selectedStatus = [];
-    $scope.user="";
-
-    $scope.classMap = {
-        "Open": "taskStatusOpen",
-        "In Process": "taskStatusInProcess",
-        "Not Applicable": "taskStatusNA",
-        "Completed": "taskStatusCompleted",
-        "Critical": "taskStatusCritical"
     };
 
     $scope.save_click = function () {
@@ -82,19 +95,6 @@ angular.module('app.sirius').appSiriusSettings =
         _getOwnUser();
         _getDeliveries($item, doAfterLoad);
     };
-
-    $scope.statusMap = {
-        "Open": taskFilterConstants.OPEN_STATUS(),
-        "In Process": taskFilterConstants.IN_PROCESS_STATUS(),
-        "Not Applicable": taskFilterConstants.NOT_APPLICABLE_STATUS(),
-        "Completed": taskFilterConstants.COMPLETED_STATUS(),
-        "Critical": taskFilterConstants.CRITICAL_STATUS()
-    };
-
-    $scope.statusDropDown = [];
-    for (var item in $scope.statusMap) {
-        $scope.statusDropDown.push(item);
-    }
 
     //get the Taks for given delivery
     $scope.getTasks = function(item) {
