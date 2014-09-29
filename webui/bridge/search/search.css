@@ -13,12 +13,14 @@
 	min-width: 150px;
 	text-align: right;
 	vertical-align: top;
-	padding: 10px 10px 0px 5px;
+	padding: 5px 10px 0px 5px;
 	color: #999999;
 	background-color: rgba(255, 255, 255, 0.90);
 	font-weight: normal;
 }
-
+.search-result-column:last-child .search-result-item:last-child{
+	padding-bottom:100px;
+}
 .search-category-source {
 	margin-left: 5px;
 }
@@ -28,7 +30,8 @@
 	vertical-align: top;
 	background-color: #EBECEE;
 	color: rgba(0, 0, 0, .8);
-	padding-top: 10px;
+	padding-top: 5px;
+	padding-bottom: 7px;
 	width: 100%;
 	font-weight: normal;
 }

@@ -16,6 +16,7 @@
                 "ngGrid",
                 "ui.sortable",
                 "nvd3ChartDirectives",
+                "mgcrea.ngStrap.tooltip",
                 "mgcrea.ngStrap.popover"
 	],
 	"js_files" : [

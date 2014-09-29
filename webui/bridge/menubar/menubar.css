@@ -89,3 +89,20 @@
     display: none;
   }
 }
+
+.menubar-feedback-descriptionCell {
+  display: table-cell; 
+  padding: 10px;
+}
+
+.menubar-feedback-iconCell {
+  display: table-cell;
+  width: 70px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.menubar-feedback-icon {
+  font-size: 30px;
+}

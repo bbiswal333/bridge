@@ -6,11 +6,11 @@
 <div  class="jobTable" style="overflow-y: auto">
 	<table>
             <tr ng-repeat="job in jobsToDisplay | orderBy:'-lastBuild'">
-            	<td><a tooltip="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
+            	<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
 
                 <td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
                 <td style="padding-right: 5px;">{{job.timestamp}}</td>
-                <td><i tooltip="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
+                <td><i bs-tooltip data-title="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
             </tr>
 	</table>
 </div>
