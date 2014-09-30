@@ -14,8 +14,7 @@
                     "settings.js",
                     "config.js",
                     "siriusUtils.js",
-                    "taskfiltersconstants.js",
-                    "lodash.min.js"],
-	"css_files" : ["style.css", "font-awesome.min.css"]
+                    "taskfiltersconstants.js"],
+	"css_files" : ["style.css"]
 }
 

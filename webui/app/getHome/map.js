@@ -2,11 +2,13 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 
 	var mode = {
 			enabled: {
-				type: "fastestNow",
+				type: "fastest",
+				trafficMode: "enabled",
 				transportModes: ["car"],
 			},
 			disabled: {
-				type: "directDrive",
+				type: "fastest",
+				trafficMode: "disabled",
 				transportModes: ["car"],
 			}
 		},
@@ -154,12 +156,22 @@ angular.module('app.getHome').service("app.getHome.mapservice", function () {
 		return this.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime;
 	};
 
+	this.getOverTimeWithTraffic = function () {
+		if (!this.trafficEnabledRoutingManager.getRoutes().length > 0 ||
+				!this.noTrafficRoutingManager.getRoutes().length > 0) {
+			console.log("No route calculated yet");
+			return;
+		}
+		return this.trafficEnabledRoutingManager.getRoutes()[0].summary.trafficTime - this.trafficEnabledRoutingManager.getRoutes()[0].summary.baseTime;
+	};
+
 	this.getTimeWithoutTraffic = function () {
 		if (!this.trafficEnabledRoutingManager.getRoutes().length > 0 ||
 				!this.noTrafficRoutingManager.getRoutes().length > 0) {
 			console.log("No route calculated yet");
 			return;
 		}
+		console.log(this.noTrafficRoutingManager.getRoutes()[0]);
 		return this.noTrafficRoutingManager.getRoutes()[0].summary.baseTime;
 	};
 

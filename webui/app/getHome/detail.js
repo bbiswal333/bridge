@@ -9,6 +9,7 @@
 	appGetHomeMap.displayMap(mapContainer);
 
 	$scope.time_with_traffic = appGetHomeMap.formatTime(appGetHomeMap.getTimeWithTraffic());
+	$scope.overtime_with_traffic = appGetHomeMap.formatTime(appGetHomeMap.getOverTimeWithTraffic());
 	$scope.time_without_traffic = appGetHomeMap.formatTime(appGetHomeMap.getTimeWithoutTraffic());
 
 }]);
