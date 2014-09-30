@@ -30,8 +30,7 @@
 
 
 
-.sapnews-container{
-	background-color: grey;
+.sapnews-container{	
 	width: 100%;
 	height: 80%;
 }
@@ -45,7 +44,7 @@
 	width: calc(60%/5)
 }
 .sapnews-preview{
-	height: 50%;
+	height: 55px;
 	background-color: white;
 	padding-top: 5px;
 
