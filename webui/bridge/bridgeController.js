@@ -25,64 +25,6 @@ angular.module('bridge.app').controller('bridgeController',
             $window.open("https://github.wdf.sap.corp/bridge/bridge/wiki/Log-Mode");
         };
 
-        $scope.getSidePane = function () {
-            return $scope.sidePanel;
-        };
-
-        /*$scope.bridge_notifications_click = function () {
-            $scope.sidePanel = 'bridge/sidebar/notification/bridgeNotifications.html';
-            if ($scope.sideView === "notifications" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "notifications";
-            $scope.stopDragging();
-        };
-
-        $scope.bridge_settings_click = function () {
-            $scope.sidePanel = 'bridge/sidebar/application/bridgeSettings.html';
-            if ($scope.sideView === "settings" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-                if ($scope.show_settings === false) {
-                    bridgeConfig.store(bridgeDataService);
-                }
-            }
-            $scope.sideView = "settings";
-        };*/
-
-        $scope.bridge_hide_settings = function () {
-            if ($scope.show_settings === true) {
-                $scope.show_settings = false;
-                bridgeConfig.store(bridgeDataService);
-                $scope.stopDragging();
-            }
-        };
-
-        /*$scope.bridge_feedback_click = function () {
-            $scope.sidePanel = 'bridge/sidebar/feedback/bridgeFeedback.html';
-            if ($scope.sideView === "feedback" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "feedback";
-            $scope.stopDragging();
-        };
-
-        $scope.bridge_github_click = function () {
-            $scope.sidePanel = 'bridge/sidebar/github/bridgeGithub.html';
-            if ($scope.sideView === "github" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "github";
-            $scope.stopDragging();
-        };*/
-
-        /*$scope.bridge_news_click = function () {
-            $scope.sidePanel = 'bridge/sidebar/news/bridgeNews.html';
-            if ($scope.sideView === "news" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "news";
-        };*/
-
         $scope.show_download = bridgeDownloadService.show_download;
 
         function parseVersionString(str)
@@ -176,30 +118,6 @@ angular.module('bridge.app').controller('bridgeController',
                 bridgeConfig.persistInBackend();
             }
         };
-
-        $scope.toggleDragging = function() {
-
-            $scope.sortableOptions.disabled = !$scope.sortableOptions.disabled;
-            if ($scope.sortableOptions.disabled) {
-
-                $scope.sortableOptionsCaption = "Activate";
-                $('.mainContainer').removeClass("darken");
-                $scope.shaking = false;
-            } else {
-                $scope.sortableOptionsCaption = "Deactivate";
-                $('.mainContainer').addClass("darken");
-                $scope.shaking = true;
-            }
-
-
-        };
-        
-        $scope.stopDragging = function(){
-            $scope.sortableOptions.disabled = true;
-            $('.mainContainer').removeClass("darken");
-            $scope.shaking = false;
-        };
-
 
         $scope.saveAppsSortable = function(){
           for (var i = 0; i < $scope.visible_apps.length; i++) {
