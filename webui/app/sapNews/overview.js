@@ -7,6 +7,12 @@ angular.module('app.sapNews').directive('app.sapNews', function () {
 
         function getFeedCallback(data){
             $scope.feeds = data.channel.item;
+            $scope.feed = {};
+            $scope.feed.title = $scope.feeds[0].title;
+            $scope.feed.link = $scope.feeds[0].link;
+            $scope.feed.text = $scope.feeds[0].description;
+
+            console.log($scope.feeds);
         }
 
         //do only once:
