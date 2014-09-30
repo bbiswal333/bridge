@@ -26,4 +26,8 @@ angular.module('bridge.app').
 	    	}
 	    	$scope.categories[0].apps.push(app);
 	    });
+
+	    $scope.adjustModalSize = function() {
+	    	$('.modal-dialog').addClass("menubar-applications-modal");
+	    };
 }]);

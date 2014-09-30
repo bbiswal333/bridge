@@ -1,5 +1,4 @@
 <bridge.input placeholder="Search bridge..." model="query" style="width:60%" ng-keyup="keyPressed($event)" focus="checkAndShowResults()" blur="hideResults()"></bridge.input>
-
 <div ng-if="displayResults" class="search-results-pane">
 	<table width="100%">
 		<tr ng-repeat="resultProvider in results">

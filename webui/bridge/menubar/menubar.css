@@ -37,44 +37,6 @@
     color:#0099CC;
 }
 
-.menubar-applications-container {
-  width: 70%;
-  position: absolute;
-  text-align: center;
-  right: 15%;
-  left: 15%;
-  top: 40px;
-  z-index: 9;
-}
-
-.applications-slide {
-    background-color: white;
-    position: absolute;
-    padding: 15px;
-    margin: 0px;
-    -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
-    top:40px;
-    overflow: auto;
-    width: 100%;
-}
-
-.applications-slide.ng-enter, .applications-slide.ng-leave {
-    -webkit-transition:all linear 0.25s;
-    transition:all linear 0.25s;
-}
-
-.applications-slide.ng-enter,
-.applications-slide.ng-leave.ng-leave-active {
-    top: -400px;
-}
-
-.applications-slide.ng-leave,
-.applications-slide.ng-enter.ng-enter-active {
-    top: 40px;
-}
-
 .menubar-popover {
   position: absolute;
   z-index: 50;
@@ -98,9 +60,22 @@
   right: 0;
 }
 
+.menubar-bridge-title {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  vertical-align: middle;
+  margin-right: 5px;
+  color:white;
+}
+
 /* ========================= *\
 |* ----- MEDIA QUERIES ----- *|
 \* ========================= */
+
+.menubar-applications-modal {
+  width: 70%;
+}
 
 @media (max-width:1250px){
   .menubar-weather-location{
@@ -111,4 +86,27 @@
   .menubar-weather{
     display: none;
   }
+}
+
+@media (max-width:650px){
+  .menubar-bridge-title{
+    display: none;
+  }
+}
+
+.menubar-feedback-descriptionCell {
+  display: table-cell; 
+  padding: 10px;
+}
+
+.menubar-feedback-iconCell {
+  display: table-cell;
+  width: 70px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.menubar-feedback-icon {
+  font-size: 30px;
 }

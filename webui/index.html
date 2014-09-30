@@ -25,7 +25,6 @@
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/bridgeColors.css" rel="stylesheet" />
     <link href="css/notificationStyles.css" rel="stylesheet" />
-    <link href="css/animation.css" rel="stylesheet" />
     <link href="css/bridgeCheckbox.css" rel="stylesheet" />
     <link href="css/bridgeInput.css" rel="stylesheet" />
     
@@ -94,7 +93,7 @@
     <title>Bridge</title>
 </head>
 
-<body class="noselect" style="overflow:auto">
+<body class="noselect grey-60" style="overflow:auto">
     <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <div>
             
@@ -112,7 +111,7 @@
                 </div>
                 <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
             </div>
-            <div id="main-container" ng-view class="mainContainer basic-blue-40">
+            <div id="main-container" ng-view class="mainContainer centeredContent">
             </div>
         </div>
     </div>

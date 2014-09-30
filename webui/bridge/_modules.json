@@ -12,10 +12,12 @@
                 "ui.bootstrap.tpls",
                 "ui.bootstrap.alert",
                 "ui.bootstrap.dropdownToggle",
+                "ui.bootstrap.tabs",
                 "ngTable",
                 "ngGrid",
                 "ui.sortable",
                 "nvd3ChartDirectives",
+                "mgcrea.ngStrap.tooltip",
                 "mgcrea.ngStrap.popover"
 	],
 	"js_files" : [
@@ -35,12 +37,6 @@
                 "trafficLightService.js",
                 "employeeService.js",
                 "bridgeBuildingSearchService.js",
-
-                "sidebar/download/bridgeDownloadController.js",
-                "sidebar/download/bridgeDownloadService.js",
-                "sidebar/github/bridgeGithubController.js",
-                "sidebar/notification/bridgeNotificationsController.js",
-                "sidebar/application/bridgeMainSettingsController.js",
 
                 "diagnosis/logService.js",
 		        "diagnosis/corsTestPageController.js",
