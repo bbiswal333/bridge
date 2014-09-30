@@ -49,8 +49,8 @@ img {
 }
 
 .zoomOut {
-    -moz-transform: scale(0.7);
-    transform: scale(0.7);
+    -moz-transform: scale(0.95);
+    transform: scale(0.95);
     -webkit-transition: 0.1s ease-in;
     -moz-transition: 0.1s ease-in;
     -o-transition: 0.1s ease-in;
