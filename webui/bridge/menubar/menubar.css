@@ -73,12 +73,9 @@
 |* ----- MEDIA QUERIES ----- *|
 \* ========================= */
 
-@media (min-width: 1000px) {
-  .modal-dialog {
-    width: 70%;
-  }
+.menubar-applications-modal {
+  width: 70%;
 }
-
 
 @media (max-width:1250px){
   .menubar-weather-location{
