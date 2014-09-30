@@ -1,5 +1,5 @@
 <div ui-sortable="sortableOptions" ng-model="visible_apps" class="sortable-list">
-  <div ng-repeat="app in visible_apps" class="sortable-item">
+  <!--<div ng-repeat="app in visible_apps" class="sortable-item">
       <div class="disabled"
            size="{{app.size}}"
            ng-hide="sortableOptions.disabled"
@@ -7,5 +7,6 @@
            ng-mouseenter="showOverlay={background:'none'}"
            ng-mouseleave="showOverlay={}"></div>
       <bridge.box content="{{app.overview_directive}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
-  </div>
+  </div>-->
+  <bridge.box ng-repeat="app in visible_apps" class="sortable-item" content="{{app.overview_directive}}" id="{{app.id}}" size="{{app.size}}"></bridge.box>
 </div>

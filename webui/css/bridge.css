@@ -48,6 +48,19 @@ img {
     pointer-events: none;
 }
 
+.zoomOut {
+    -moz-transform: scale(0.7);
+    transform: scale(0.7);
+    -webkit-transition: 0.1s ease-in;
+    -moz-transition: 0.1s ease-in;
+    -o-transition: 0.1s ease-in;
+    transition: 0.1s ease-in;
+}
+
+.zoomIn {
+    transform: sclae(1.2);
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }

@@ -193,6 +193,7 @@ angular.module('bridge.app').controller('bridgeController',
 
 
         };
+        
         $scope.stopDragging = function(){
             $scope.sortableOptions.disabled = true;
             $('.mainContainer').removeClass("darken");
@@ -305,7 +306,6 @@ angular.module('bridge.app').controller('bridgeController',
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
-            $scope.sortableOptions.disabled = true; // always allow sorting
             $scope.sortableOptionsCaption = "Activate";
             $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
