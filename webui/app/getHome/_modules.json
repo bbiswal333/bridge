@@ -15,6 +15,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "settings.js", "detail.js", "config.js", "map.js"],
+	"js_files" : ["overview.js", "settings.js", "detail.js", "config.js", "map.js", "mapService.js"],
 	"css_files" : ["style.css"]
 }

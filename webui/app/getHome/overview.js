@@ -14,7 +14,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			var configCopy = angular.copy(appGetHomeConfig.data);
 			 return configCopy;
 		};
-
+/*
 		$scope.from = null;
 		$scope.to = null;
 
@@ -87,7 +87,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			}
 		}
 
-		setInterval(recalculateRoute, 30000);
+		setInterval(recalculateRoute, 30000);*/
 	}];
 
 	return {
