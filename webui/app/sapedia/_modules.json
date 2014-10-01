@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.sapedia",
 		"title"					:	"SAPedia",
 		"icon_css"				:	"fa fa-book",

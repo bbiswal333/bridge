@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.imtps",
 		"title"					:	"GTP Test MSG",
 		"icon_css"				:	"icon-comment",

@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.xsSyncer",
 		"title"					:	"XS Syncer",
 		"beta"					:	true,

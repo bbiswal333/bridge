@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.jenkins",
 		"title"					:	"Jenkins",
 		"icon_css"				:	"fa fa-star",
