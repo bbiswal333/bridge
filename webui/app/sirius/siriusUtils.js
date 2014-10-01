@@ -15,7 +15,7 @@ var siriusUtils = function () {
     };
 
     this.OLD_PR_URL=function(){
-        return this.DEV_SERVER_URL + '/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
+        return this.DEV_SERVER_URL() + '/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
     };
 
     this.SiriusObject = function () {
