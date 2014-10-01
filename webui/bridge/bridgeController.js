@@ -1,3 +1,5 @@
+console.log("briiiiidge");
+
 angular.module('bridge.app').controller('bridgeController',
     ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.service.bridgeNews", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
     function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, bridgeNewsService, logService, bridgeSettingsModalService) {
