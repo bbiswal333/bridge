@@ -1,4 +1,4 @@
-angular.module('app.getHome').service("app.getHome.mapservice", function () {
+angular.module('app.getHome').service("app.getHome.mapservice2", function () {
 
 	var mode = {
 			enabled: {

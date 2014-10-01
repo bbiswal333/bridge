@@ -86,6 +86,11 @@
 	height: 600px;
 }
 
+.app-getHome-settings-map {
+	height: 400px;
+	width: 100%;
+}
+
 .app-getHome-detail-legend {
 	font-weight: bold;
 	text-align: center;
@@ -102,4 +107,20 @@
 
 .app-getHome-detail-no-traffic {
 	color: rgb(206, 90, 187);
+}
+
+.getHome-route-option {
+	background-color: #ffffff;
+	border: 0px;
+	border-radius: 7px;
+}
+
+.getHome-route-option:hover {
+	background-color: #888888;
+	color: #ffffff;
+}
+
+.getHome-route-option-selected {
+	background-color: #444444;
+	color: #ffffff;
 }
