@@ -16,7 +16,6 @@ angular.module('bridge.app').directive('bridge.input', function() {
             
             // set default type if not given by the directive-definition
             if (_.isUndefined(attrs.type)) {
-				$scope.type="\"text\"";
 				attrs.type="text";
 			}
 			
