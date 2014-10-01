@@ -24,7 +24,8 @@
         "_": true,
         "saveAs": true,
         "location": true,
-        "sessionStorage": true
+        "sessionStorage": true,
+        "he": true
     },
     "rules": 
     {        
