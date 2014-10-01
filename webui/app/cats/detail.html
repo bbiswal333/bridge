@@ -51,7 +51,8 @@
 
                 <div class="save_close_btn">
                     <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Save Timesheet" ng-click="saveTimesheet()" style="margin:4px"></input>
-                    <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Saving ..." style="margin:4px"></input>
+                    <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Saving ..." style="margin:4px"></input><br />
+                    <span>(using development profile DEV2002C)</span>
                 </div>
             </div>
             <div class="panel-body" ng-show="!loaded">
