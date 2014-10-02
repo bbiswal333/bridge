@@ -2,13 +2,15 @@
  * Created by D062081 on 13.08.2014.
  */
 
-'use strict';
+(function(){
+    "use strict";
+})();
 
 /* Directives */
 
 //angular.module("app.sirius", []);
 
-var directives = angular.module('app.sirius.siriusDirectives', [])
+angular.module('app.sirius.siriusDirectives', [])
     .directive('siriusEllipsis', ['$compile', '$timeout', function($compile, $timeout) {
         // For this directive to work, the element need the display style "block" in Chrome
         return {
@@ -48,7 +50,7 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                     // Bind the mouse enter event
                     element.bind('mouseenter', function (event) {
                         _calculateAndSetPopup(event);
-                    })
+                    });
                 }
             }
         };
@@ -76,13 +78,20 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                 "<li ng-repeat='option in options' ng-class='{selected: isChecked(option)}' ng-click='selectItem($event)'><a unselectable='on' ng-class='{bold: getDisplayText(option) == \"me\"}'>{{getDisplayText(option)}}</a></li>" +
                 "</ul>" +
                 "</div>",
-            controller: function ($scope, $element) {
+            controller: function ($scope) {
                 $scope.showDivider = false;
 
+                var _sortFunction = function (a, b) {
+                    // Sort the entries in alphabetical order with "me" always at the top
+                    if ((a[$scope.displayAttribute] === 'me') !== (b[$scope.displayAttribute] === 'me')) {
+                        return a[$scope.displayAttribute] === 'me' ? -1 : 1;
+                    }
+                    return a[$scope.displayAttribute] > b[$scope.displayAttribute] ? 1 : a[$scope.displayAttribute] < b[$scope.displayAttribute] ? -1 : 0;
+                };
                 $scope.toggleDropdown = function () {
                 };
 
-                $scope.$watch('options', function (newVals, oldVals) {
+                $scope.$watch('options', function () {
                     if ($scope.sort) {
                         $scope.options.sort(_sortFunction);
                     }
@@ -114,7 +123,7 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
 
                 $scope.deselectAll = function () {
                     // Reset all entries in the model
-                    _.remove($scope.model, function() {return true})
+                    _.remove($scope.model, function() {return true;});
                 };
 
                 $scope.selectItem = function (event) {
@@ -128,7 +137,7 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                         if(model === tmpVal){
                             addToModel = false;
                         }
-                    })
+                    });
 
                     if(addToModel){
                          $scope.model.push(this.option);
@@ -157,7 +166,7 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                 };
 
                 $scope.isChecked = function (id) {
-                    return _.contains($scope.model, id)
+                    return _.contains($scope.model, id);
                 };
 
                 $scope.checkDisabled = function () {
@@ -172,14 +181,6 @@ var directives = angular.module('app.sirius.siriusDirectives', [])
                     else {
                         return value;
                     }
-                };
-
-                var _sortFunction = function (a, b) {
-                    // Sort the entries in alphabetical order with "me" always at the top
-                    if ((a[$scope.displayAttribute] === 'me') != (b[$scope.displayAttribute] === 'me')) {
-                        return a[$scope.displayAttribute] === 'me' ? -1 : 1;
-                    }
-                    return a[$scope.displayAttribute] > b[$scope.displayAttribute] ? 1 : a[$scope.displayAttribute] < b[$scope.displayAttribute] ? -1 : 0;
                 };
             }
         };
