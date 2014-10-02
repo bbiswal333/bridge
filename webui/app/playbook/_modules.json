@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.playbook",
 		"title"					:	"Playbook",
 		"icon_css"				:	"playbook-icon",

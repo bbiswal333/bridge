@@ -1,0 +1,22 @@
+{
+    "app":
+    {
+        "categories"            :   ["Productivity"],
+        "module_name"			:	"app.sirius",
+        "title"					:	"Sirius",
+        "icon_css"				:	"sirius-icon",
+        "overview_directive"	:	"app.sirius",
+        "needs_client"          :   false,
+        "beta"                  :   true,
+        "default_hidden"        :   true
+    },
+	"modules" : [],
+	"js_files" : ["siriusDirectives.js",
+                    "overview.js",
+                    "settings.js",
+                    "config.js",
+                    "siriusUtils.js",
+                    "taskfiltersconstants.js"],
+	"css_files" : ["style.css"]
+}
+

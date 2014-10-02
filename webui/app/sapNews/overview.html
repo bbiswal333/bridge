@@ -1,7 +1,18 @@
-﻿<div class="app-sapnews-container" style="overflow-y: auto">
-	<ul class="basic-blue-font">
-		<li ng-repeat="feed in feeds">
-			<a ng-href="{{feed.link}}" target="_blank">{{feed.title}}</a>
-		</li>
-	</ul>
+﻿<div class="sapnews-container" title="{{feed.title}}">
+	<a target="_blank" href="{{feed.link}}">
+	<div class="sapnews-image" style="background-image: url('img/sapnews.jpg');">
+		<div class="sapnews-header">
+			{{feed.title}}
+		</div>
+	</div>
+	</a>
+	<div class="sapnews-preview" title="{{feed.text}}" ng-bind-html="feed.text">		
+	</div>
+</div>
+<div class="sapnews-navi basic-blue-font-100">
+		<a href=""><i class="fa" ng-class="{'fa-circle':feedNumber == 0, 'fa-circle-o':feedNumber != 0}" ng-click="switch_feed(0)"></i></a>
+		<a href=""><i class="fa" ng-class="{'fa-circle':feedNumber == 1, 'fa-circle-o':feedNumber != 1}"  ng-click="switch_feed(1)"></i></a>
+		<a href=""><i class="fa" ng-class="{'fa-circle':feedNumber == 2, 'fa-circle-o':feedNumber != 2}"  ng-click="switch_feed(2)"></i></a>
+		<a href=""><i class="fa" ng-class="{'fa-circle':feedNumber == 3, 'fa-circle-o':feedNumber != 3}"  ng-click="switch_feed(3)"></i></a>
+		<a href=""><i class="fa" ng-class="{'fa-circle':feedNumber == 4, 'fa-circle-o':feedNumber != 4}"  ng-click="switch_feed(4)"></i></a>
 </div>

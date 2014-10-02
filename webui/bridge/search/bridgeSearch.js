@@ -1,4 +1,4 @@
-angular.module("bridge.search", []);
+angular.module("bridge.search", ["ui.bootstrap.modal"]);
 angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 	var searchProviders = [];
 

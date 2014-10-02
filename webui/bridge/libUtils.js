@@ -145,15 +145,16 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 daysInLastMonth = 6;
             }
         }
-
         var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
+        var firstDateOfGrid = new Date(firstDateOfGridInMs);
         var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
 
         var i;
         var stop = false;
         for (i = 0; !stop; i++) {
             var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-            var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
+            //var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
+            var thisDay = new Date(firstDateOfGrid.getFullYear(), firstDateOfGrid.getMonth(), firstDateOfGrid.getDate() + i);
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
                 inMonth: (thisDay.getMonth() === month_i),
@@ -166,7 +167,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             };
 
             if ((i + 1) % 7 === 0) {
-                if (new Date(firstDateOfGridInMs + (i + 1) * MILLISECS_DAY).getMonth() !== month_i) {
+                if (thisDay.getMonth() !== month_i) {
                     stop = true;
                 } else {
                     cal[Math.floor((i + 1) / 7)] = [];

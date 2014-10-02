@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.itdirect",
 		"title"					:	"IT Direct",
 		"icon_css"				:	"icon-comment",

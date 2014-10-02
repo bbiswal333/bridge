@@ -9,7 +9,8 @@
 		"hanaAnswersSearch.js",
 		"googleProposals.js",
 		"stackoverflowSearch.js",
-		"citySearch.js"
+		"citySearch.js",
+		"sapedia.js"
 	],
-	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch"]
+	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch"]
 }
