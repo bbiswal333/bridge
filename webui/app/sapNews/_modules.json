@@ -4,7 +4,7 @@
 		"categories"			:	["Productivity"],
 		"module_name"			:	"app.sapNews",
 		"title"					:	"SAP News",
-		"icon_css"				:	"fa fa-bullhorn",
+		"icon_css"				:	"fa fa-newspaper-o",
 		"overview_directive"	:	"app.sapNews",
 		"needs_client"			:	false,
 		"beta"					:	true,
