@@ -134,6 +134,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
     var getDownstreamJobs = function(url){
         var deferred = $q.defer();
+// $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(job.url + "/api/json?depth=2&tree=downstreamProjects[color,name,url],upstreamProjects[color,name,url]"), withCredentials: false }).
         $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "api/json"), withCredentials: false })
             .success(function(result) {
                 getDependancyData(result).then(function(){

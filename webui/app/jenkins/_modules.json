@@ -16,6 +16,6 @@
 		]	
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js", "controller.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "controller.js", "dataService.js"],
 	"css_files" : ["overview.css"]
 }
