@@ -10,7 +10,9 @@
 		"googleProposals.js",
 		"stackoverflowSearch.js",
 		"citySearch.js",
-		"sapedia.js"
+		"sapedia.js",
+		"playbook.js",
+		"portal.js"
 	],
-	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch"]
+	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch"]
 }
