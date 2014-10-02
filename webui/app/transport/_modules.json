@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.transport",
 		"title"					:	"Transports",
 		"icon_css"				:	"fa fa-suitcase",

@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Tools"],
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.clearCapacity",
 		"title"					:	"Clear Capacity",
 		"icon_css"				:	"fa fa-user",

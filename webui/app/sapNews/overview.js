@@ -14,7 +14,7 @@ angular.module('app.sapNews').directive('app.sapNews', function () {
         $scope.switch_feed = function(number){
             $scope.feedNumber = number;
             $scope.feed = {};
-            $scope.feed.title = $scope.feeds[number].title;   
+            $scope.feed.title = $scope.feeds[number].title;
             $scope.feed.link = $scope.feeds[number].link;
             $scope.feed.text = $scope.feeds[number].description.toString();
             $scope.feed.content = $scope.feeds[number].encoded.toString();

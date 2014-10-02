@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.jira",
 		"title"					:	"Jira",
 		"icon_css"				:	"fa fa-bell",

@@ -1,6 +1,6 @@
 angular.module('app.linklist').appLinkListSettings =
-    ['app.linklist.configservice', '$scope',
-        function (appLinklistConfig, $scope) {
+    ['app.linklist.configservice', '$scope', '$log',
+        function (appLinklistConfig, $scope, $log) {
 
 	$scope.config  = appLinklistConfig;
 	$scope.selectedIndex = 0;
@@ -144,7 +144,7 @@ angular.module('app.linklist').appLinkListSettings =
 	function validateLink(){
 		if ($scope.currentConfigValues.id && !$scope.currentConfigValues.name) {
 			$scope.deleteEntry($scope.selectedIndex, $scope.currentConfigValues);
-			console.log('link deleted ', $scope.currentConfigValues.id);
+			$log.log('link deleted ', $scope.currentConfigValues.id);
 		}
 	}
 

@@ -2,55 +2,66 @@
 
 		<form name="newConfigItemForm" class="atc_input">
 
-            <div class="row" style="margin:15px 0 0 0;">
-                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
-                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.jenkinsUrl" placeholder="Jenkins URL..." autofocus/>
-                 <span style="color: green" ng-if="config.couldReachJenkinsUrl">Loaded successfully.</span>
-                 <span style="color: red" ng-if="currentConfigValues.jenkinsUrl.length > 0 && !config.couldReachJenkinsUrl">{{config.lastErrorMsg}}</span>
-            </div>  
-           
-            <div class="row" style="margin:15px 0 0 0;">
-                <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
-                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.selectedView" placeholder="View..."
-					typeahead="view.name for view in currentConfigValues.views | filter:$viewValue | limitTo:8" typeahead-editable="false"
-                    ng-disabled="!config.couldReachJenkinsUrl" />
-            </div>
-            
-            <div class="row" style="margin:15px 0 0 0;">
-                <span class="copy form_head">Job</span>
-                <input type="text" class="form-control form"  ng-model="currentConfigValues.selectedJob" placeholder="Job..."
-                typeahead="job.name for job in getJobsByView(currentConfigValues.selectedView) | filter:$viewValue | limitTo:8"
-                typeahead-editable="true" ng-disabled="!config.couldReachJenkinsUrl"/>
-            </div>  
+			<div class="row" style="margin:15px 0 0 0;">
+				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
+				<div style="width:95%">
+					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus/>
+				</div>
+				<div styple="width:5%">
+					<i ng-if="dataService.jenkinsData.urlIsValid" class="fa fa-check"></i>
+				</div>
+			</div>
 
-            <div class="row" style="margin:25px 0 0 0;">
-            </div>
-            <input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="isAddButtonDisabled()" value="Add New Selection" />
+			<div class="row" style="margin:15px 0 0 0;">
+				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
+				<div style="width:95%">
+					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.view" placeholder="Optional..."
+					typeahead="view.name for view in doViewSearch($viewValue,20)" typeahead-editable="false" />
+				</div>
+				<div styple="width:5%">
+					<i ng-class="dataService.jenkinsData.viewsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>
+				</div>
+			</div>
+			
+			<div class="row" style="margin:15px 0 0 0;">
+				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Job</span>
+				<div style="width:95%">
+					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.job" placeholder="Mandatory..."
+					typeahead="job.name for job in doJobSearch($viewValue,20)" typeahead-editable="true" />
+				</div>
+				<div styple="width:5%">
+					<i ng-class="dataService.jenkinsData.jobsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>
+				</div>
+			</div>  
 
-    	</form>
+			<div class="row" style="margin:25px 0 0 0;">
+			</div>
+			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="isAddButtonDisabled()" value="Add New Selection" />
 
-    	<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
-        <table ng-table="tableParams" class="table tableTransparentBorder" >
-            <thead style="background-color: #ECECEC;">
-                <tr>
-                    <th>Source System</th>
-                    <th>View</th>
-                    <th>Job</th>
-                    <th>Functions</th> <!-- Empty Head for functions -->
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false">
-                    <td data-title="'Source System'">{{configItem.jenkinsUrl}}</td>
-                    <td data-title="'View'">{{configItem.selectedView}}</td>
-                    <td data-title="'Job'">{{configItem.selectedJob}}</td>
-                    <td data-title="'Functions'">
-                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+		</form>
+
+		<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+		<table ng-table="tableParams" class="table tableTransparentBorder" >
+			<thead style="background-color: #ECECEC;">
+				<tr>
+					<th>Source System</th>
+					<th>View</th>
+					<th>Job</th>
+					<th>Functions</th> <!-- Empty Head for functions -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false" ng-click="select_click($index)">
+					<td data-title="'Source System'">{{configItem.jenkinsUrl}}</td>
+					<td data-title="'View'">{{configItem.selectedView}}</td>
+					<td data-title="'Job'">{{configItem.selectedJob}}</td>
+					<td data-title="'Functions'">
+						<span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>

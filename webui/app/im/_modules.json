@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.im",
 		"title"					:	"Internal Msg",
 		"icon_css"				:	"icon-comment",

@@ -13,12 +13,11 @@ angular.module('bridge.app').directive('bridge.input', function() {
             focus: '&'
         },
         link:function ($scope, element, attrs) {
-            
+
             // set default type if not given by the directive-definition
             if (_.isUndefined(attrs.type)) {
-				attrs.type="text";
+				attrs.type = "text";
 			}
-			
         /*
             $scope.$parent.$watch(attrs.ngDisabled, function(newVal){
                 $scope.disabled = newVal;

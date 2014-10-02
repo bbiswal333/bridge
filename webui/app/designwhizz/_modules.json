@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Design"],
 		"module_name"			:	"app.designwhizz",
 		"title"					:	"Design Quote",
 		"icon_css"				:	"designwhizz-icon",

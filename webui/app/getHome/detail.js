@@ -1,7 +1,8 @@
 ﻿angular.module('app.getHome').controller('app.getHome.detailCtrl', ['$scope', 'app.getHome.mapservice', '$location', function ($scope, appGetHomeMap, $location) {
 
+/*eslint-disable no-undef*/
 	var mapContainer = document.getElementById("app-getHome-detail-map");
-
+/*eslint-enable*/
 	if (!appGetHomeMap.routesCalculated()) {
 		$location.path("/");
 	}
