@@ -114,14 +114,12 @@ angular.module("app.cats")
 			}
 
 			function handleCatsData(data) {
+				$scope.hasError = false;
 				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
 					if (additionalData !== null) {
 						calUtils.addAdditionalData(additionalData);
 						reload();
-
-						$scope.state = "CATS-Data received and processed";
-						$scope.hasError = false;
 					}
 					else {
 						$scope.state = "CATS-Data received from ISP but during processing an error occurred";
