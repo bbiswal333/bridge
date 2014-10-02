@@ -124,3 +124,12 @@
 	background-color: #444444;
 	color: #ffffff;
 }
+
+.getHome-route-column {
+	width: 120px;
+	height: 65px;
+	float: left;
+	color: white;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

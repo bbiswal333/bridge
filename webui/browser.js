@@ -18,7 +18,7 @@ navigator.featuresAvailable = function () {
     addTest("csstransforms");
     addTest("cssgradients");
     addTest("geolocation");
-    addTest("localstorage");
+    //addTest("localstorage");
 
 /*eslint-disable no-undef */
     for (var i = 0; i < window.feature_check.length; i++) {

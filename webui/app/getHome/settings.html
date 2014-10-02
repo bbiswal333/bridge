@@ -1,9 +1,9 @@
 <h3>Selected Routes:</h3>
-<div class="row" ng-if="config.routes.length === 0">
+<div class="row" ng-if="configuredRoutes.length === 0">
 	Currently no routes configured
 </div>
 
-<div class="row" ng-if="config.routes.length > 0">
+<div class="row" ng-if="configuredRoutes.length > 0">
 	<div class="col-xs-12">
 		<div class="row" style="border-bottom: 1px dotted #aaaaaa">
 			<div class="col-xs-3">
@@ -14,16 +14,21 @@
 			<div class="col-xs-2">
 				<b>distance</b>
 			</div>
+			<div class="col-xs-2">
+			</div>
 		</div>
-		<div class="row getHome-route-option" ng-repeat="route in config.routes">
+		<div class="row getHome-route-option" ng-repeat="route in configuredRoutes" ng-click="displayRouteInMap(route.originalRoute)">
 			<div class="col-xs-3" style="heigth: 35px; padding-top: 8px">
-				<span class="fa fa-map-marker" style="font-size: 25px; position: absolute; top: 0px"></span><span style="margin-left: 20px">{{route.routeName}}:</span>
+				<span class="fa fa-map-marker" style="font-size: 25px; position: absolute; top: 0px"></span><span style="margin-left: 20px">{{route.name}}:</span>
 			</div>
 			<div class="col-xs-4" style="height: 35px; padding-top: 8px">
-				 <span>{{route.route.trafficTime}} (+{{route.route.delay}})</span>
+				 <span>{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})</span>
 			</div>
 			<div class="col-xs-2" style="height: 35px; padding-top: 8px">
-				 <span >{{route.route.distance}}</span>
+				 <span >{{formatDistance(route.summary.distance)}}</span>
+			</div>
+			<div class="col-xs-2" style="height: 35px; padding-top: 8px">
+				 <span class="fa fa-remove" ng-click="removeRouteFromSettings(route)" style="cursor: pointer"></span>
 			</div>
 		</div>
 	</div>
@@ -57,7 +62,7 @@
 				</div>
 			</div>
 			<br />
-			<div class="row" ng-if="newRoute.proposedRoutes.length > 0">
+			<div class="row" ng-if="proposedRoutes.length > 0">
 				<div class="col-xs-12">
 					<div class="row" style="border-bottom: 1px dotted #aaaaaa">
 						<div class="col-xs-3">
@@ -69,21 +74,21 @@
 							<b>distance</b>
 						</div>
 					</div>
-					<div class="row getHome-route-option" ng-repeat="route in newRoute.proposedRoutes" ng-click="setSelectedRoute(route)" ng-class="{'getHome-route-option-selected': route === newRoute.selectedRoute}">
+					<div class="row getHome-route-option" ng-repeat="route in proposedRoutes" ng-click="setSelectedRoute(route)" ng-class="{'getHome-route-option-selected': route === selectedRoute}">
 						<div class="col-xs-3" style="heigth: 35px; padding-top: 8px">
 							<span class="fa fa-map-marker" style="color: {{route.color}}; font-size: 25px; position: absolute; top: 0px"></span><span style="margin-left: 20px">Route {{$index + 1}}:</span>
 						</div>
 						<div class="col-xs-4" style="height: 35px; padding-top: 8px">
-							 <span>{{route.trafficTime}} (+{{route.delay}})</span>
+							 <span>{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})</span>
 						</div>
 						<div class="col-xs-2" style="height: 35px; padding-top: 8px">
-							 <span >{{route.distance}}</span>
+							 <span >{{formatDistance(route.summary.distance)}}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="btn btn-primary btn_blue" style="float: right" ng-disabled="!newRoute.selectedRoute" ng-click="addSelectedRouteToConfig()">Add Route</div>
+				<div class="btn btn-primary btn_blue" style="float: right" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add Route</div>
 			</div>
 		</div>
 		<div class="col-md-8">

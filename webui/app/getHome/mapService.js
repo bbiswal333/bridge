@@ -2,18 +2,19 @@
 angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function ($q) {
 	var routeColors = ["#418AC9", "#8561C5", "#707070"];
 	var mode = {
-			fastestNow: {
-				type: "fastestNow",
-				transportModes: ["car"]
-			},
 			fastest: {
 				type: "fastest",
 				trafficMode: "enabled",
 				transportModes: ["car"]
 			},
+			fastestWithoutTraffic: {
+				type: "fastest",
+				trafficMode: "disabled",
+				transportModes: ["car"]
+			},
 			shortest: {
 				type: "shortest",
-				trafficMode: "disabled",
+				trafficMode: "enabled",
 				transportModes: ["car"]
 			}
 		};
@@ -29,13 +30,30 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 		
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
-				deferred.resolve({error: false, routes: convertRoutes(observedRouter.getRoutes())});
+				deferred.resolve({error: false, routes: addColorToRoutes(observedRouter.getRoutes())});
 			} else if (value === "failed") {
 				deferred.resolve({error:true, message: observedRouter.getErrorCause().message});
 			}
 		});
 		//routingManager.calculateRoute(this.coordinatesToWaypoints([startCoords, destCoords]), [mode.enabled, mode.shortest]);
 		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastest]});
+
+		return deferred.promise;
+	};
+
+	this.rebuildRouteFromWaypoints = function(waypoints) {
+		var deferred = $q.defer();
+		var routingManager = new nokia.maps.advrouting.Manager();
+		
+		routingManager.addObserver("state", function(observedRouter, key, value) {
+			if (value === "finished") {
+				deferred.resolve(addColorToRoutes(observedRouter.getRoutes())[0]);
+			} else if (value === "failed") {
+				deferred.reject();
+			}
+		});
+		//routingManager.calculateRoute(this.coordinatesToWaypoints([startCoords, destCoords]), [mode.enabled, mode.shortest]);
+		routingManager.calculateRoute({waypoints: waypoints, alternatives: 0, modes: [mode.fastestWithoutTraffic]});
 
 		return deferred.promise;
 	};
@@ -82,7 +100,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
         return map;
 	};
 
-	function formatTime(iSeconds) {
+	this.formatTime = function(iSeconds) {
 		var sec_num = parseInt(iSeconds, 10);
 		var hours   = Math.floor(sec_num / 3600);
 		var minutes = Math.round((sec_num - (hours * 3600)) / 60);
@@ -92,31 +110,23 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 					(minutes > 0 ? minutes + "min" : "0min");
 					// (seconds > 0 ? seconds + "sec " : "");
 		return time;
-	}
+	};
 
-	function formatDistance(distance) {
+	this.formatDistance = function(distance) {
 		var distanceInt = parseInt(distance, 10);
 		return (distanceInt / 1000).toFixed(1) + "km";
-	}
+	};
 
-	function convertRoutes(nokiaRoutes) {
-		var bridgeRoutes = [];
+	function addColorToRoutes(nokiaRoutes) {
 		var i = 0;
 		nokiaRoutes.map(function(route) {
-			bridgeRoutes.push({
-				baseTime: formatTime(route.summary.baseTime),
-				trafficTime: formatTime(route.summary.trafficTime),
-				delay: formatTime(route.summary.trafficTime - route.summary.baseTime),
-				waypoints: route.waypoints,
-				originalRoute: route,
-				color: routeColors[i],
-				distance: formatDistance(route.summary.distance)
-			});
+			route.color = routeColors[i];
+
 			i++;
 			if(i > routeColors.length - 1) {
 				i = 0;
 			}
 		});
-		return bridgeRoutes;
+		return nokiaRoutes;
 	}
 }]);
