@@ -1,4 +1,3 @@
-/*jslint browser: true */ /*global sigma*/
 angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$http', '$location' , '$q',
 	function ($scope, $http, $location, $q) {
 
@@ -87,6 +86,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 										);
 		}
 
+/*eslint-disable*/
 		sigma.renderers.def = sigma.renderers.canvas;
 		var s = new sigma({
 			  graph: dependancyGraph,
@@ -152,6 +152,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 			var jobUrl = job.upstreamProjects[index].url;
 			promisses.push(getJob(jobUrl));
 		}
+/*eslint-enable*/
 		return $q.all(promisses);
 	};
 
@@ -193,10 +194,6 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 										color: data.color
 									  }
 									);
-							var s = new sigma({
-									  graph: dependancyGraph,
-									  container: "container"
-									});
 					}
 				}).
 				error(function() {

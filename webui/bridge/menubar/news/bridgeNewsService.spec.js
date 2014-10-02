@@ -2,7 +2,7 @@ describe("The bridge news service", function () {
     var newsService,
         $httpBackend,
         bridgeSettings = {
-            readNews: [],
+            readNews: []
         },
         newsDummyData = {
             "news": [

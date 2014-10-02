@@ -66,15 +66,15 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
         data.longitude = position.longitude;
     }
 
-    function getCurrentDate(days)
-    {
-        var date = new Date();
-        var dayInWeek = (date.getDay() - 1 + days);
-        if (dayInWeek === -1) { // Sunday
-            dayInWeek = 6;
-        }
-        return calUtils.getWeekdays()[dayInWeek % 7].medium;
-    }
+    // function getCurrentDate(days)
+    // {
+    //     var date = new Date();
+    //     var dayInWeek = (date.getDay() - 1 + days);
+    //     if (dayInWeek === -1) { // Sunday
+    //         dayInWeek = 6;
+    //     }
+    //     return calUtils.getWeekdays()[dayInWeek % 7].medium;
+    // }
 
 
     function getWeather(targetObject) {
