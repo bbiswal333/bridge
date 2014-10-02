@@ -3,17 +3,21 @@ angular.module('app.getHome').appGetHomeSettings =
 	['app.getHome.configservice', 'app.getHome.mapservice', '$scope', '$q', 
 		function (appGetHomeConfig, appGetHomeMap, $scope, $q) {
 	var mapInstance;
-	$scope.config  = appGetHomeConfig;
+	$scope.configuredRoutes  = appGetHomeConfig.routes;
+
+	$scope.formatTime = appGetHomeMap.formatTime;
+	$scope.formatDistance = appGetHomeMap.formatDistance;
 
 	function resetNewRoute() {
 		$scope.newRoute = {
 			start: '',
 			destination: '',
-			routeName: 'New Route',
-			proposedRoutes: []
+			routeName: 'New Route'
 		};
 	}
 	resetNewRoute();
+
+	$scope.proposedRoutes = [];
 
 	function deriveRouteNameFromDestinationAndStartCities() {
 		$scope.newRoute.routeName = $scope.newRoute.start.address.city + " - " + $scope.newRoute.destination.address.city;
@@ -27,7 +31,7 @@ angular.module('app.getHome').appGetHomeSettings =
 		if($scope.newRoute.start.displayPosition && $scope.newRoute.destination.displayPosition) {
 			appGetHomeMap.calculateRoutes($scope.newRoute.start.displayPosition, $scope.newRoute.destination.displayPosition).then(function(result) {
 				if(!result.error) {
-					$scope.newRoute.proposedRoutes = result.routes;
+					$scope.proposedRoutes = result.routes;
 					displayRoutesInMap();
 				} else {
 					//display error
@@ -36,7 +40,8 @@ angular.module('app.getHome').appGetHomeSettings =
 		}
 	}
 
-	$scope.$watch('newRoute', updateRouteName, true);
+	$scope.$watch('newRoute.start', updateRouteName);
+	$scope.$watch('newRoute.destination', updateRouteName);
 
 	$scope.switchStartAndDestination = function() {
 		var startTmp = $scope.newRoute.start;
@@ -50,7 +55,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.setSelectedRoute = function(route) {
-		$scope.newRoute.selectedRoute = route;
+		$scope.selectedRoute = route;
 	};
 
 	function clearMap() {
@@ -58,15 +63,24 @@ angular.module('app.getHome').appGetHomeSettings =
 	}
 
 	function displayRouteInMap(route) {
-		var mapRoute = new nokia.maps.routing.component.RouteResultSet(route.originalRoute, {color: route.color}).container;
+		var mapRoute = new nokia.maps.routing.component.RouteResultSet(route, {color: route.color}).container;
 		mapInstance.objects.add(mapRoute);
 		return mapRoute;
 	}
 
+	function centerRoute(route) {
+		mapInstance.zoomTo(route.getBoundingBox(), false, "default");
+	}
+
+	$scope.displayRouteInMap = function(route) {
+		clearMap();
+		centerRoute(displayRouteInMap(route));
+	};
+
 	function displayRoutesInMap() {
 		var mapRoute;
 		clearMap();
-		$scope.newRoute.proposedRoutes.map(function(route) {
+		$scope.proposedRoutes.map(function(route) {
 			mapRoute = displayRouteInMap(route);
 		});
 		if(mapRoute) {
@@ -75,29 +89,18 @@ angular.module('app.getHome').appGetHomeSettings =
 	}
 
 	$scope.addSelectedRouteToConfig = function() {
-		appGetHomeConfig.routes.push({routeName: $scope.newRoute.routeName, route: $scope.newRoute.selectedRoute});
-		resetNewRoute();
+		appGetHomeConfig.addRoute($scope.newRoute.routeName, $scope.selectedRoute);
+		/*resetNewRoute();
 		clearMap();
+		$scope.selectedRoute = null;
+		$scope.proposedRoutes.length = 0;*/
+		$scope.proposedRoutes.splice($scope.proposedRoutes.indexOf($scope.selectedRoute), 1);
+		$scope.selectedRoute = null;
 	};
 
-/*
-	$scope.addNewLocation = function() {
-		var location = {
-			name: $scope.newLocation.name,
-			address: $scope.newLocation.address.address.label,
-			latitude: $scope.newLocation.address.displayPosition.latitude, 
-			longitude: $scope.newLocation.address.displayPosition.longitude
-		};
-
-		appGetHomeConfig.data.locations.push(location);
-		$scope.newLocation.name = '';
-		$scope.newLocation.address = '';
-		$scope.addMode = false;
+	$scope.removeRouteFromSettings = function(route) {
+		appGetHomeConfig.removeRoute(route);
 	};
-
-	$scope.deleteLocation = function (location, index) {
-		appGetHomeConfig.data.locations.splice(index, 1);
-	};*/
 
 	$scope.searchAddress = function(searchString) {
 		var addresses = $q.defer();

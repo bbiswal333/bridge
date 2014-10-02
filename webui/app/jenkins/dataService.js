@@ -1,80 +1,153 @@
-angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", function($http){
+angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q", "$log", function($http, $q, $log) {
 
-	var jenkinsDataCache = null;
-	this.jenkinsData = {
-		views: [],
-		jobs: []
-	};
-	this.hasViewData = false;
-	this.hasJobData = false;
 	var that = this;
 
-	function initialize() {
-		jenkinsDataCache = null;
-		this.jenkinsData = {
-			views: [],
-			jobs: []
-		};
-		this.hasViewData = false;
-		this.hasJobData = false;
-	}
-	initialize();
+	this.jobsToDisplay = [];
+
+	this.jenkinsUrl = "";
+
+	this.jenkinsData = {
+		url: "",
+		urlIsValid: false,
+		view: "",
+		job: "",
+		views: [],
+		viewsAreLoading: false,
+		jobs: [],
+		jobsForView: [],
+		jobsAreLoading: false
+	};
+
+	this.initialize = function() {
+		// do not initialize this.jenkinsData.url...
+		this.jenkinsData.view = "";
+		this.jenkinsData.job = "";
+		this.jenkinsData.urlIsValid = false;
+		this.jenkinsData.views = [];
+		this.viewsAreLoading = false;
+		this.jenkinsData.jobs = [];
+		this.jenkinsData.jobsForView = [];
+		this.jobsAreLoading = false;
+	};
+	this.initialize();
 
 	function setJenkinsData(data) {
 		if(data) {
 			if(data.views) {
-				that.hasViewData = true;
 				that.jenkinsData.views = data.views;
 			}
 			if(data.jobs) {
-				that.hasJobData  = true;
 				that.jenkinsData.jobs = data.jobs;
 			}
 		} else {
-			initialize();
+			this.initialize();
 		}
 	}
 
-	// http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/api/json?depth=1&tree=views[name,url]
-	this.getJenkinsViews = function(jenkinsUrl){
-		if(!jenkinsDataCache) {
-			//$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url]"), {withCredentials: false})
-			$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url]"), {withCredentials: false})
-				.success(function (data) {
-					setJenkinsData(data);
-				}).error(function() {
-					initialize();
-			});
+	this.setJenkinsUrl = function(url) {
+		this.jenkinsUrl = url;
+	};
+
+	this.isValidUrl = function(value) {
+		return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+	};
+
+	this.isValidJenkinsUrl = function(jenkinsUrl) {
+		that.jenkinsData.urlIsValid = false;
+		if(!this.isValidUrl(jenkinsUrl)) {
+			this.initialize();
 		} else {
-			setJenkinsData(jenkinsDataCache);
+			$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: 2000})
+			.success(function (data) {
+				if(angular.isDefined(data.mode)) {
+					that.jenkinsData.urlIsValid = true;
+					that.getJenkinsViewsAndJobs(jenkinsUrl);
+				} else {
+					that.initialize();
+				}
+			});
 		}
 	};
 
-	this.getJenkinsJobs = function(jenkinsUrl){
-		if(!jenkinsDataCache) {
-			//$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=jobs[name,url,color]"), {withCredentials: false})
-			$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=jobs[name,url,color]"), {withCredentials: false})
-				.success(function (data) {
-					setJenkinsData(data);
-				}).error(function() {
-					initialize();
-			});
-		} else {
-			setJenkinsData(jenkinsDataCache);
-		}
+	// http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/api/json?depth=1&tree=views[name,url],jobs[name,url,color]
+	this.getJenkinsViewsAndJobs = function(jenkinsUrl){
+		that.jenkinsData.viewsAreLoading = true;
+		that.jenkinsData.jobsAreLoading = true;
+		$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url],jobs[name,url,color]"), {withCredentials: false, timeout: 10000})
+		.success(function (data) {
+			if(angular.isDefined(data)) {
+				setJenkinsData(data);
+			} else {
+				that.initialize();
+			}
+			that.jenkinsData.viewsAreLoading = false;
+			that.jenkinsData.jobsAreLoading = false;
+		});
 	};
 
 	// http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/view/Chameleon_53/api/json
 	this.getJenkinsJobsForView = function(viewUrl){
-		$http.get('/api/get?url=' + encodeURIComponent(viewUrl + "/api/json"), {withCredentials: false})
-			.success(function (data) {
-				if(data) {
-					that.hasJobData = true;
-				}
-				that.jenkinsData.jobs = data.jobs;
-			}).error(function() {
-				that.hasJobData = false;
-				that.jenkinsData.jobs = [];
+		that.jenkinsData.jobsAreLoading = true;
+		$http.get('/api/get?url=' + encodeURIComponent(viewUrl + "/api/json"), {withCredentials: false, timeout: 10000})
+		.success(function (data) {
+			if(angular.isDefined(data.jobs)) {
+				that.jenkinsData.jobsForView = data.jobs;
+			} else {
+				that.jenkinsData.jobsForView = [];
+			}
+			that.jenkinsData.jobsAreLoading = false;
 		});
+	};
+
+	var formatTimestamp = function(timestamp) {
+		return $.timeago(timestamp);
+	};
+
+	function getLastBuildTimestamp(job) {
+		$http.get('/api/get?url=' + encodeURIComponent(job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json?depth=1&tree=timestamp"), {withCredentials: false, timeout: 10000})
+		.success(function (data) {
+			job.timestamp = formatTimestamp(data.timestamp);
+			job.lastBuild = data.timestamp;
+		}).error(function (data, status){
+			job.timestamp = "unknown";
+			$log.log("Could not GET last build info for job" + job.name + ", status: " + status);
+		});
+	}
+
+	function updateJob(job) {
+		job.name = job.selectedJob;
+		job.url = job.jenkinsUrl + "/job/" + job.name;
+		job.lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
+		getLastBuildTimestamp(job);
+
+		$http.get('/api/get?url=' + encodeURIComponent(job.url + "/api/json?depth=1&tree=color"), {withCredentials: false, timeout: 10000})
+		.success(function (data) {
+			var color = data.color;
+			job.color = (color === "notbuilt") ? "grey" : color;
+			job.statusColor = "status" + color;
+			if(color === "red"){
+				job.statusIcon = "fa-times";
+				job.statusInfo = "Failed";
+			}else if(color === "yellow"){
+				job.statusIcon = "fa-circle";
+				job.statusInfo = "Unstable";
+			}else if(color === "blue" || color === "green"){
+				job.statusIcon = "fa-check";
+				job.statusInfo = "Success";
+			}else if(color === "blue_anime" || color === "green_anime" || color === "red_anime" || color === "yellow_anime"){
+				job.statusIcon = "fa-circle-o-notch fa-spin";
+				job.statusInfo = "Running";
+			}else{
+				job.statusIcon = "fa-question";
+			}
+		}).error(function(data,status) {
+			$log.log("Could not GET job " + job.name + ", status: " + status);
+		});
+	}
+
+	this.updateJobs = function() {
+		for(var jobIndex in this.jobsToDisplay) {
+			updateJob(this.jobsToDisplay[jobIndex]);
+		}
 	};
 }]);
