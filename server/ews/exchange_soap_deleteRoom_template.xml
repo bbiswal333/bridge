@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" 
+               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+  <soap:Body>
+    <UpdateItem MessageDisposition="SaveOnly" ConflictResolution="AutoResolve" SendMeetingInvitationsOrCancellations="SendToChangedAndSaveCopy"
+                xmlns="http://schemas.microsoft.com/exchange/services/2006/messages">
+      <ItemChanges>
+        <t:ItemChange>
+          <t:ItemId Id="<%= exchangeUid %>" ChangeKey="<%= changeKey %>"/>
+          <t:Updates>
+         
+	   	 <t:DeleteItemField>
+              
+              <t:FieldURI FieldURI="calendar:RequiredAttendees" />
+              <t:CalendarItem>
+                <t:RequiredAttendees>
+                  
+                 
+                  <t:Attendee>
+                    <t:Mailbox>
+                     
+                      <t:EmailAddress>VR000000001576@exchange.sap.corp</t:EmailAddress>
+                      
+                    </t:Mailbox>
+                  </t:Attendee>
+                 
+                </t:RequiredAttendees>
+              </t:CalendarItem>
+            </t:DeleteItemField>
+           
+          </t:Updates>
+        </t:ItemChange>
+      </ItemChanges>
+    </UpdateItem>
+  </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,15 @@
+{
+	"app":
+	{
+		"categories"			:	["Fun"],
+		"module_name"			:	"app.chuck",
+		"title"					:	"Chuck Norris",
+		"icon_css"				:	"fa fa-bomb",
+		"overview_directive"	:	"app.chuck",
+		"needs_client"			:	false,
+		"default_hidden"		:	true
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["style.css"]
+}

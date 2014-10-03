@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" 
+               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" 
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2007_SP1" />
+  </soap:Header>
+  <soap:Body>
+    
+    
+    <m:CreateItem MessageDisposition="SendAndSaveCopy">
+      <m:Items>
+
+                     
+             <t:CancelCalendarItem>
+                <t:ToRecipients>
+                  <t:Mailbox>
+                    <t:EmailAddress><%= eMail %></t:EmailAddress>
+                    <t:RoutingType>SMTP</t:RoutingType>
+                    <t:MailboxType>Contact</t:MailboxType>
+                  </t:Mailbox>
+                </t:ToRecipients>
+
+                             <t:ReferenceItemId Id="<%= exchangeUid %>" ChangeKey="<%= changeKey %>" />
+               <t:NewBodyContent BodyType="Text">This meeting has been canceled due to poor weather.</t:NewBodyContent>
+            </t:CancelCalendarItem>
+      </m:Items>
+    </m:CreateItem>
+  </soap:Body>
+</soap:Envelope>

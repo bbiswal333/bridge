@@ -1,0 +1,118 @@
+.error {
+	padding: 15px;
+	color: red;
+}
+
+.buildstatuscell {
+		text-align: center; 
+		width: 40px;
+}
+
+.jobTable{
+	margin-top: 10px; 
+	height: 145px;
+	overflow: hidden;	
+}
+
+.jobTable table {
+		margin-right: 8px;
+	}
+
+.jobTable tr:not(:first-of-type) {
+		border-top: 1px solid #e5e5e5;
+	}
+
+.style{
+	padding-right: 5px;
+	padding-left: 20px;
+}
+
+a.tooltip{
+	position: left;
+}
+
+.statusred{
+ 	color: #D53F26;
+ }
+
+ .statusblue{
+ 	color: #4EA175;
+ }
+
+ .statusyellow{
+ 	color:  #FCB517;
+ }
+
+ .statusgrey{
+ 	color:  #707070;
+ }
+
+ .statusnotbuilt{
+ 	color:  #707070;
+ }
+
+ .{
+ 	background-color:  #A4A4A4;
+ }
+
+table {
+		margin-right: 5px;
+		margin-top: 5px;
+ }
+
+ .jobName{
+ 	width: 200px; 
+ 	color: #204A87; 
+ 	cursor: pointer;
+ }
+
+
+.status-color{
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+}
+
+.jobTilesContainer{
+	width: 100%;
+	height: 90%;
+
+}
+.jobTilesBox{
+	width: calc(95%/5);
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 25px;
+	float: left;
+}
+.jobTilesBox:first-child{
+	margin-left: 0;
+}
+.jobTilesBox:last-child{
+	margin-right: 0;
+}
+.jobTiles{	
+	width: 100%;
+	height: 50%;	
+	text-align: center;	
+}
+.jobTiles p{
+	margin: 0 0 0px;
+	line-height: 0.25;
+}
+
+.jobDependancy{
+	margin-top: 10px; 
+	height: 700px;
+	width: 1800px;
+	text-align: left;
+}
+
+#container {
+    width: 1400px;
+    height: 600px;
+  }
+
+.changeCursor{
+	cursor: pointer;
+}

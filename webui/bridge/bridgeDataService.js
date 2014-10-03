@@ -1,217 +1,231 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', 'bridge.service.loader', '$http', function (bridgeConfig, $q, bridgeLoaderServiceProvider, $http) {
-    this.projects = [];
-    this.bridgeSettings = {};
-    this.temporaryData = {};
-    this.configRawData = null;
-    this.clientMode = false;
-    var that = this;
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window',
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window) {
+        this.projects = [];
+        this.bridgeSettings = {};
+        this.temporaryData = {};
+        this.clientMode = false;
+        this.logMode = false;
 
-    function isEmpty(obj) {
-        for (var prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
-                return false;
-            }
+        var initialized = false;
+        var that = this;
+
+        function _fetchUserInfo() {
+            var defer = $q.defer();
+
+            $http({
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
+                method: "GET"
+            }).success(function (data) {
+                that.userInfo = data.USERINFO;
+                defer.resolve();
+            }).error(function(){
+                defer.reject();
+            });
+
+            return defer.promise;
         }
 
-        return true;
-    }
+        function parseApps(project) {
+            var apps = [];
 
-    //TODO: this extra call should be integrated with the config, projects, etc
-    function _fetchUserInfo() {
-        $http({
-            url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent(location.origin),
-            method: "GET"
-        }).success(function (data) {
-            that.userInfo = data.USERINFO;
-        });
-    }
+            for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
+                //initialize metadata from loader service
+                var app = {};
+                app.metadata = bridgeLoaderServiceProvider.apps[i];
+                app.metadata.id = i;
+                app.metadata.show = false;
 
-    function parseApps(project) {
-        var apps = [];
+                //fetch corresponding config from backend
+                for (var j = 0; j < project.apps.length; j++) {
+                    if (project.apps[j].metadata.module_name === app.metadata.module_name) {
+                        app.metadata.show = true;
+                        app.metadata.order = j;
+                        app.appConfig = project.apps[j].appConfig;
+                    }
+                }
+                apps.push(app);
+            }
 
-        for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
-            //initialize metadata from loader service
-            var app = {};
-            app.metadata = bridgeLoaderServiceProvider.apps[i];
-            app.metadata.id = i;
-            app.metadata.show = false;
+            apps.sort(function (app1, app2) {
+                if (app1.metadata.title < app2.metadata.title) {
+                    return -1;
+                }
+                if (app1.metadata.title > app2.metadata.title) {
+                    return 1;
+                }
+                return 0;
+            });
+            return apps;
+        }
 
-            //fetch corresponding config from backend
-            for (var j = 0; j < project.apps.length; j++) {
-                if (project.apps[j].metadata.module_name === app.metadata.module_name) {
-                    app.metadata.show = true;
-                    app.metadata.order = j;
-                    app.appConfig = project.apps[j].appConfig;
+        function parseProject(project) {
+            that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
+        }
+
+        function parseProjects(config) {
+            if (config.bridgeSettings && config.bridgeSettings.apps) {
+                parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+            }
+            else if (config.projects) {
+                for (var i = 0; i < config.projects.length; i++) {
+                    parseProject(config.projects[i]);
                 }
             }
-            apps.push(app);
         }
 
-        apps.sort(function (app1, app2) {
-            if (app1.metadata.title < app2.metadata.title) {
-                return -1;
-            }
-            if (app1.metadata.title > app2.metadata.title) {
-                return 1;
-            }
-            return 0;
-        });
-        return apps;
-    }
-
-    function parseProject(project) {
-        that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
-    }
-
-    function parseProjects(config) {
-        if (config.bridgeSettings && config.bridgeSettings.apps) {
-            parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
-        }
-        else if (config.projects) {
-            for (var i = 0; i < config.projects.length; i++) {
-                parseProject(config.projects[i]);
+        function parseSettings(config) {
+            if (config.bridgeSettings) {
+                that.bridgeSettings = config.bridgeSettings;
             }
         }
-    }
 
-    function parseSettings(config) {
-        if (config.bridgeSettings) {
-            that.bridgeSettings = config.bridgeSettings;
+        function _toDefault() {
+            that.projects.length = 0;
+            var defaultConfig = bridgeConfig.getDefaultConfig();
+            parseProjects(defaultConfig);
+            parseSettings(defaultConfig);
+
+            initialized = true;
         }
-    }
 
-    function _toDefault() {
-        that.projects.length = 0;
-        var defaultConfig = bridgeConfig.getDefaultConfig();
-        parseProjects(defaultConfig);
-        parseSettings(defaultConfig);
-    }
+        var deferrals = [];
+        function _initialize(deferredIn) {
+            deferrals.push(deferredIn);
+            if(deferrals.length > 1) {
+                //initialization was already started
+                return deferredIn.promise;
+            }
 
-    function _initialize(deferredIn) {
-        var deferred = $q.defer();
-        var promise = bridgeConfig.loadFromBackend(deferred);
-        promise.then(function (config) {
-            that.configRawData = config;
+            var deferred = $q.defer();
 
-            _fetchUserInfo();
+            var configPromise = bridgeConfig.loadFromBackend(deferred);
+            var userInfoPromise = _fetchUserInfo();
 
-            // if the config is not an object, then the user has no configuration stored in the backend
-            if (angular.isObject(config) && !isEmpty(config)) {
+            var allPromises = $q.all([configPromise, userInfoPromise]);
+            allPromises.then(function (data) {
+                var configFromBackend = data[0];
+                var config = bridgeConfig.decideWhichConfigToUse(configFromBackend);
+
                 parseProjects(config);
                 parseSettings(config);
+
+                bridgeConfig.configSnapshot = angular.copy(config);
+                $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
+
+                initialized = true;
+                deferrals.map(function(deferral) {
+                    deferral.resolve();
+                });
+            }, function (data) {
+                deferrals.map(function(deferral) {
+                    deferral.reject(data);
+                });
+            });
+
+            return deferredIn.promise;
+        }
+
+        function _getProjects() {
+            return that.projects;
+        }
+
+        function _getAppById(id) {
+            for (var i = 0; i < _getProjects().length; i++) {
+                for (var a = 0; a < _getProjects()[i].apps.length; a++) {
+                    if (_getProjects()[i].apps[a].metadata.id.toString() === id.toString()) {
+                        return _getProjects()[i].apps[a];
+                    }
+                }
+            }
+
+            throw new Error("App with ID " + id + " could not be found.");
+        }
+
+        function _getAppConfigById(id) {
+            var app = _getAppById(id);
+            if (app.appConfig) {
+                return app.appConfig;
             } else {
-                _toDefault();
+                return {};
             }
-            deferredIn.resolve();
-        }, function (data) {
-            deferredIn.reject(data);
-        });
-
-        return deferredIn.promise;
-    }
-
-    function _getProjects() {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
         }
 
-        return that.projects;
-    }
-
-    function _getAppById(id) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
-        }
-
-        for (var i = 0; i < _getProjects().length; i++) {
-            for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                if (_getProjects()[i].apps[a].metadata.id.toString() === id.toString()) {
-                    return _getProjects()[i].apps[a];
+        function _getAppByModuleName(module_name) {
+            for (var i = 0; i < _getProjects().length; i++) {
+                for (var a = 0; a < _getProjects()[i].apps.length; a++) {
+                    if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
+                        return _getProjects()[i].apps[a];
+                    }
                 }
             }
+
+            throw new Error("App with module name " + module_name + " could not be found.");
         }
 
-        throw new Error("App with ID " + id + " could not be found.");
-    }
-
-    function _getAppConfigById(id) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
+        function _getAppConfigByModuleName(module_name) {
+            return _getAppConfigById(_getAppByModuleName(module_name).metadata.id);
         }
 
-        var app = _getAppById(id);
-        if (app.appConfig) {
-            return app.appConfig;
-        } else {
-            return {};
-        }
-    }
-
-    function _getAppByModuleName(module_name) {
-        if (!that.configRawData) {
-            throw new Error("Bridge data not yet initialized");
+        function _getUserInfo() {
+            return that.userInfo;
         }
 
-        for (var i = 0; i < _getProjects().length; i++) {
-            for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
-                    return _getProjects()[i].apps[a];
-                }
+        function _getAppMetadataForProject(projectIndex) {
+            var project = _getProjects()[projectIndex];
+            if (!project) {
+                throw new Error("Project was not found");
             }
+
+            var appMetadata = [];
+            for (var i = 0; i < project.apps.length; i++) {
+                appMetadata.push(project.apps[i].metadata);
+            }
+            return appMetadata;
         }
 
-        throw new Error("App with module name " + module_name + " could not be found.");
-    }
-
-    function _getAppConfigByModuleName(module_name) {
-        return _getAppConfigById(_getAppByModuleName(module_name).metadata.id);
-    }
-
-    function _getUserInfo() {
-        return that.userInfo;
-    }
-
-    function _getAppMetadataForProject(projectIndex) {
-        var project = _getProjects()[projectIndex];
-        if (!project) {
-            throw new Error("Project was not found");
+        function _getBridgeSettings() {
+            return that.bridgeSettings;
         }
 
-        var appMetadata = [];
-        for (var i = 0; i < project.apps.length; i++) {
-            appMetadata.push(project.apps[i].metadata);
+        function _getTemporaryData() {
+            return that.temporaryData;
         }
-        return appMetadata;
-    }
 
-    function _getBridgeSettings() {
-        return that.bridgeSettings;
-    }
+        function _setClientMode(bClientMode) {
+            this.clientMode = bClientMode;
+        }
 
-    function _getTemporaryData() {
-        return that.temporaryData;
-    }
+        function _getClientMode() {
+            return this.clientMode;
+        }
 
-    function _setClientMode(bClientMode) {
-        this.clientMode = bClientMode;
-    }
+        function _setLogMode(bLogMode) {
+            this.logMode = bLogMode;
+        }
 
-    function _getClientMode() {
-        return this.clientMode;
-    }
+        function _getLogMode() {
+            return this.logMode;
+        }
 
-    return {
-        initialize: _initialize,
-        getBridgeSettings: _getBridgeSettings,
-        getTemporaryData: _getTemporaryData,
-        getUserInfo: _getUserInfo,
-        getProjects: _getProjects,
-        getAppMetadataForProject: _getAppMetadataForProject,
-        getAppById: _getAppById,
-        getAppConfigById: _getAppConfigById,
-        getAppConfigByModuleName: _getAppConfigByModuleName,
-        toDefault: _toDefault,
-        setClientMode: _setClientMode,
-        getClientMode: _getClientMode
-    };
+        function _getInitialized() {
+            return initialized;
+        }
+
+        return {
+            initialize: _initialize,
+            isInitialized: _getInitialized,
+            getBridgeSettings: _getBridgeSettings,
+            getTemporaryData: _getTemporaryData,
+            getUserInfo: _getUserInfo,
+            getProjects: _getProjects,
+            getAppMetadataForProject: _getAppMetadataForProject,
+            getAppById: _getAppById,
+            getAppConfigById: _getAppConfigById,
+            getAppConfigByModuleName: _getAppConfigByModuleName,
+            toDefault: _toDefault,
+            setClientMode: _setClientMode,
+            getClientMode: _getClientMode,
+            setLogMode: _setLogMode,
+            getLogMode: _getLogMode
+        };
 }]);

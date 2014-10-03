@@ -106,8 +106,8 @@
     margin: 0 8px 0 8px;  
 }
 .app-cats-current-year{
-    font-size: 5rem;
-    font-weight: 300;
+    font-size: 3rem;
+    font-weight: 350;
 }
 .app-cats-calendar {
     max-width: 800px;
@@ -126,6 +126,14 @@
 .app-cats-day-details {
     width: 12%;
     height: 40px;
+    float: left;
+    padding: 3px;
+    text-align: center;
+    color: #707070;
+}
+.app-cats-heading-details {
+    width: 12%;
+    height: 25px;
     float: left;
     padding: 3px;
     text-align: center;
@@ -258,12 +266,12 @@
 }
 .selected_day span{
     position: relative;
-    top: -2px;
+    top: -3px;
 }
 
 .selected_day{
     background: ;
-    border: 2px solid #c2b0e2;
+    border: 3px solid #707070;
     color: #707070!important;
     font-weight: 600;
 }
@@ -317,7 +325,8 @@
 }
 .allocation-bar-block {
     height:60px;
-    float:left
+    float:left;
+    color:#ffffff;
 }
 .allocation-bar-dragBar-image {
     height: 80px;
@@ -563,4 +572,14 @@
     
     text-align: center; 
     line-height: 3em;
+}
+
+.settings_add_task_button {
+    margin-right: 0px;
+    float: right;
+}
+
+.settings_required_label_mark {
+    position: absolute;
+    right: 3px;
 }

@@ -1,0 +1,20 @@
+﻿<div>
+	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
+		<div style="height: 94%; float: left">	
+			<div ng-repeat="category in categories" class="prio_col im-prio_col prio_bg_{{$index+1}}">
+			<a href="#/detail/correctionWorkbench/{{categories[$index].name}}/false" >
+				<div class="prio_box" style="color:white">
+					<p>{{categories[$index].name}}</p>
+				</div>
+				<div class="prio_content_box" style="color:white">
+					<p ng-if="categories[$index].total<=99">{{categories[$index].total}}</p>
+					<p ng-if="categories[$index].total>=100">+99</p>
+				</div>
+			</a>	
+			</div>	
+		</div>
+	</div>
+    <div ng-if="showNoMessages">
+        You have no correction requests to display!
+    </div>
+</div>

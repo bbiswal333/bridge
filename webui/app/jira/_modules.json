@@ -1,16 +1,18 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.jira",
 		"title"					:	"Jira",
 		"icon_css"				:	"fa fa-bell",
 		"overview_directive"	:	"app.jira",
 		"needs_client"			:	false,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{
 				"route"			:	"/detail/jira/:appId/:status",
-				"templateUrl"	:	"app/jira/detail.html"			
+				"templateUrl"	:	"app/jira/detail.html"
 			}
 		]
 	},

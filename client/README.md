@@ -25,7 +25,7 @@ If the tag is not present, the client will fetch the latest tag from the bridge 
 ```
 {
 	"name": "bridge-client",
-	"version": "0.0.1",
+	"version": "0.9",
 	"main": "index.html",
 	"bridge_tag": "master",
 	"window": {
@@ -37,3 +37,4 @@ If the tag is not present, the client will fetch the latest tag from the bridge 
 	}
 }
 ```
+In order to release a new version of the client, the version of the app/package.json and app/package_build.json needs to be adjusted.

@@ -1,11 +1,16 @@
-﻿angular.module('app.atc', []);
+﻿angular.module('app.atc', ['bridge.search']);
 
 angular.module('app.atc').directive('app.atc',
-    ["$modal", "$interval", "app.atc.configservice", "app.atc.dataservice",
-    function ($modal, $interval, appAtcConfig, appAtcData) {
-    
-    var directiveController = ['$scope', function ($scope) {        
-        $scope.box.settingsTitle = "Configure Source Systems and Packages";                
+    ["app.atc.configservice", "app.atc.dataservice", "bridge.search", "bridge.search.fuzzySearch",
+    function (appAtcConfig, appAtcData, bridgeSearch, fuzzySearch) {
+
+    var directiveController = ['$scope', function ($scope) {
+        bridgeSearch.addSearchProvider(fuzzySearch({name: "ATC Results", icon: "icon-wrench"}, appAtcData.detailsData, {keys: ["CHECK_DESCRIPTION", "CHECK_MESSAGE"], mappingFn: function(result) {
+                return {title: result.item.CHECK_MESSAGE, description: result.item.CHECK_DESCRIPTION, score: result.score};
+            }
+        }));
+
+        $scope.box.settingsTitle = "Configure Source Systems and Packages";
         $scope.box.settingScreenData = {
             templatePath: "atc/settings.html",
             controller: angular.module('app.atc').appAtcSettings
@@ -15,14 +20,16 @@ angular.module('app.atc').directive('app.atc',
             return appAtcConfig;
         };
 
+        $scope.box.reloadApp(appAtcData.loadOverviewData,60 * 5);
+
         $scope.atcData = $scope.atcData || appAtcData;
-        $scope.config = $scope.config || appAtcConfig;                    
-      
+        $scope.config = $scope.config || appAtcConfig;
+
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
                 appAtcData.loadOverviewData();
             }
-        }, true);    
+        }, true);
     }];
 
     return {
@@ -33,6 +40,7 @@ angular.module('app.atc').directive('app.atc',
             if (appAtcConfig.isInitialized === false) {
                 appAtcConfig.initialize($scope.id);
                 appAtcData.loadOverviewData();
+                appAtcData.getDetailsForConfig(appAtcConfig);
             }
         }
     };

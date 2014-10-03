@@ -8,6 +8,7 @@
   -webkit-flex-direction: column;
   flex-direction: column;
 
+    cursor: pointer;
 }
 
 .notification{
@@ -40,7 +41,7 @@
 }
 
 .notification .sender{
-
+  min-height: 25px;
   -webkit-flex: 1;
   flex: 1;
   
@@ -53,15 +54,24 @@
 }
 
 .notification .content{
+    min-height: 125px;
+    max-height: 125px;
+    overflow: hidden;
   -webkit-flex: 3;
   flex: 3;
 }
-
 
 .notification .content .timeAgo{
   font-size: smaller;
 }
 
+.notification-content-body{
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.activateNotificationButton{
+    margin-top: 8px;
 }
 
 ul.notification-menu{

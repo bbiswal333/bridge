@@ -6,12 +6,14 @@
     <div class="bridge-fade-anim" ng-if="loaded">
         <div id="filter-bar">
             <div class="input-group app-cats-project-filter-input">
+                <!--<a href="https://isp.wdf.sap.corp/sap/bc/webdynpro/sap/zui_staffinglist" target="_blank">ISP staffing list</a>&nbsp&nbsp&nbsp&nbsp<a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Leave Request</a><br><br>-->
                 <input type="text" ng-keypress="onPressEnter($event)" id="filterTextfield" ng-model="filter.val" class="form-control form" placeholder="Type here to filter..." autofocus="autofocus">
             </div>
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
-                <div  ng-repeat="item in items | filter:filter.val" class="col-xs-6 col-md-12 col-lg-6 animate-repeat">
+                <div ng-repeat="item in items | filter:filter.val"
+                     ng-class="{'col-xs-6 col-md-12 col-lg-6 animate-repeat' : items.length > 5,'' : items.length <= 5}">
                     <button type="button"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"
@@ -21,7 +23,7 @@
                             ng-mouseenter="showEditButton(item.id)" 
                             ng-mouseout="">{{item.DESCR}}
                         <br>
-                        <span style="font-size: 10px;">{{item.ZCPR_EXTID}}</span>
+                        <span style="font-size: 10px;">{{item.subDescription}}</span>
                     </button>
                     <div class="clickable settings_task_edit_button" 
                         ng-show="item.selected && forSettingsView && toEdit == item.id" 

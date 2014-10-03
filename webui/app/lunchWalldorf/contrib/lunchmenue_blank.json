@@ -1,0 +1,169 @@
+{
+	"menu": [],
+	"service": {
+		"id": "269",
+		"title": {
+			"de": "Abstimmung Wunschgericht vor\u00fcbergehend pausiert",
+			"en": "Special request voting is being paused temporarily "
+		},
+		"isActive": true,
+		"serviceItems": [{
+			"id": "557",
+			"title": {
+				"de": " ",
+				"en": " "
+			},
+			"description": {
+				"de": " ",
+				"en": " "
+			},
+			"extraInformation": {
+				"de": "",
+				"en": ""
+			},
+			"votes": "18",
+			"percentage": 81.818181818182,
+			"isWinner": true
+		}, {
+			"id": "559",
+			"title": {
+				"de": " ",
+				"en": " "
+			},
+			"description": {
+				"de": " ",
+				"en": " "
+			},
+			"extraInformation": {
+				"de": "",
+				"en": ""
+			},
+			"votes": "4",
+			"percentage": 18.181818181818,
+			"isWinner": false
+		}]
+	},
+	"special": [],
+	"settings": {
+		"currency": "\u20ac",
+		"hidePrices": false,
+		"feedbackForceCommentStars": 2,
+		"useService": true,
+		"useFeedback": true,
+		"useSpecial": true,
+		"useLocation": true,
+		"useLanguage": true,
+		"impressum": [{
+			"id": "31",
+			"text": {
+				"de": "Max Rubner Institut - Casino Catering - compiled out of a voluntary project for SAP AG",
+				"en": "Max Rubner Institut - Casino Catering - compiled out of a voluntary project for SAP AG"
+			}
+		}],
+		"availableDays": [true, true, true, true, true, false, false],
+		"additives": [{
+			"id": "1",
+			"text": {
+				"de": "mit Konservierungsstoff",
+				"en": "with preserving agent"
+			}
+		}, {
+			"id": "2",
+			"text": {
+				"de": "mit Farbstoff",
+				"en": "with colorant"
+			}
+		}, {
+			"id": "3",
+			"text": {
+				"de": "mit Antioxidationsmittel",
+				"en": "with antioxidation agent"
+			}
+		}, {
+			"id": "4",
+			"text": {
+				"de": "mit Geschmacksverst\u00e4rker",
+				"en": "with flavor enhancer"
+			}
+		}, {
+			"id": "5",
+			"text": {
+				"de": "mit Phosphat",
+				"en": "with phosphate"
+			}
+		}, {
+			"id": "6",
+			"text": {
+				"de": "mit S\u00fc\u00dfungsmittel(n)",
+				"en": "with sweetening"
+			}
+		}, {
+			"id": "7",
+			"text": {
+				"de": "enth\u00e4lt eine Phenylalaninquelle",
+				"en": "contains phenylalanine"
+			}
+		}, {
+			"id": "8",
+			"text": {
+				"de": "geschwefelt",
+				"en": "sulfurated"
+			}
+		}, {
+			"id": "9",
+			"text": {
+				"de": "geschw\u00e4rzt",
+				"en": "blackened"
+			}
+		}, {
+			"id": "10",
+			"text": {
+				"de": "gewachst",
+				"en": "waxed"
+			}
+		}, {
+			"id": "11",
+			"text": {
+				"de": "koffeinhaltig",
+				"en": "with caffeine"
+			}
+		}, {
+			"id": "12",
+			"text": {
+				"de": "chininhaltig",
+				"en": "with quinine"
+			}
+		}, {
+			"id": "13",
+			"text": {
+				"de": "enth\u00e4lt Alkohol (Compass-interne Kennzeichnungspflicht)",
+				"en": "Alcohol"
+			}
+		}, {
+			"id": "K",
+			"text": {
+				"de": "Knoblauch",
+				"en": "garlic"
+			}
+		}],
+		"feedbackItems": [{
+			"id": "26",
+			"name": {
+				"de": "Geschmack",
+				"en": "Taste"
+			}
+		}, {
+			"id": "27",
+			"name": {
+				"de": "Optik der Speise",
+				"en": "Presentation of food"
+			}
+		}, {
+			"id": "28",
+			"name": {
+				"de": "Service",
+				"en": "Service"
+			}
+		}]
+	}
+}

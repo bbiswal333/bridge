@@ -3,12 +3,12 @@
     <script type="text/javascript" src="../lib/angular-1_2_13/angular.js"></script>
     <script type="text/javascript" src="notifier.js"></script>
     <script type="text/javascript">
-      angular.module("myApp", ["notifier"]).controller("myCntrl", function ($scope, notifier) {
+        angular.module("myApp", ["notifier"]).controller("myCntrl", function ($scope, $log, notifier) {
         $scope.showButton = false;
 
         $scope.ask = function () {
           notifier.requestPermission(function (perm) {
-            console.log(perm);
+              $log.log(perm);
           });
         };
 
@@ -20,7 +20,7 @@
           $scope.request = "Permission granted / denied";
         }
       });
-    </script>
+  </script>
   </head>
   <body ng-app="myApp" ng-controller="myCntrl">
     {{request}}

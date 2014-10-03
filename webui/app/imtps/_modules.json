@@ -1,17 +1,18 @@
 {
 	"app":
 	{
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.imtps",
 		"title"					:	"GTP Test MSG",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.imtps",
 		"needs_client"			:	false,
-		"default_hidden"		: 	true,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{
 				"route"			:	"/detail/imtps/:appId",
-				"templateUrl"	:	"app/imtps/detail.html"			
+				"templateUrl"	:	"app/imtps/detail.html"
 			}
 		]
 	},

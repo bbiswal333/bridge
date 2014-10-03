@@ -1,22 +1,24 @@
 <div >
-	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
+	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px">
         <div ng-if="errMsg != null">
           {{errMsg}}
         </div>
 		<div ng-if="hasEvents()">
-            <div>
+            <div ng-if="box.boxSize == 1">
                 <b>{{getCurrentDate()}}</b><br>
-                {{getMeetingsLeftText()}}
             </div>
-            <div style="margin-top: 5px; height: 110px; overflow: hidden;">
-                <div style="height: 110px; overflow-y: auto;">
+            <div ng-if="box.boxSize == 2">
+                <b>{{getCurrentDate()}}</b>{{getMeetingsLeftText()}}<br>
+            </div>
+            <div style="margin-top: 3px; height: 125px; overflow: hidden;">
+                <div style="height: 125px; overflow-y: auto;">
                     <table cellpadding="2" class="meetings-table" >
                         <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
                             <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
-                                <span ng-if="$first && !event.isCurrent" >
+                                <span ng-if="$first && event.isInTheNext30Minutes && !event.isCurrent" >
                                     <b>{{event.startRel}}</b>
                                 </span>
-                                <span ng-if="!$first && !event.isCurrent">
+                                <span ng-if="(!$first || !event.isInTheNext30Minutes) && !event.isCurrent">
                                     {{event.startTime}}
                                     {{event.endTime}}
                                 </span>
@@ -25,26 +27,47 @@
                                     {{event.endTime}}
                                 </span>
                             </td>
-                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
+                            <td ng-if="box.boxSize == 1" style="padding-left: 10px;padding-top:2px;vertical-align:inherit;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b>
                                     </span>
                                     <span ng-if="!$first">
-                                        {{event.subject}}
+                                        {{event.subject}} 
                                     </span>
+                                    
+									<span ng-if="event.participantCode" >
+                                       	<a ng-click="click_tel(event.participantCode)" class="box-icon fa fa-phone small-icon basic-blue-font-40" href="tel:{{get_tel(box.sAPConnectPreferredDialin, event.participantCode)}}" bs-tooltip data-title="Dial in with Code: {{event.participantCode}}"></a>  
+                                    </span>
+                                    <span ng-if="event.sapconnectUrl" >
+                                       	<a class="box-icon fa fa-users small-icon basic-blue-font-40" href="{{event.sapconnectUrl}}" target="_blank" bs-tooltip data-title="SAP connect"></a>
+                                    </span>
+
                                 </div>
-                                {{event.location}}
+                                <span ng-if="!event.sapconnectUrl">
+                                    {{event.location}}
+                                </span>
                             </td>
-                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                            <td ng-if="box.boxSize == 2" style="padding-left: 10px;vertical-align:inherit;">
                                 <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
                                     <span ng-if="$first">
                                         <b>{{event.subject}}</b><br>
                                         {{event.location}}
                                     </span>
                                     <span ng-if="!$first">
-                                        {{event.subject}}<br>
+                                        {{event.subject}}<br> 
                                         {{event.location}}
+                                    </span>
+
+                                    <span ng-if="event.participantCode" >
+                                        </br>
+                                       	Part.Code: {{event.participantCode}}
+                                       	<a ng-click="click_tel(event.participantCode)" class="box-icon fa fa-phone small-icon basic-blue-font-40" style="position: relative;
+    bottom: 5px;" href="tel:{{get_tel(box.sAPConnectPreferredDialin, event.participantCode)}}" bs-tooltip data-title="Dial in"></a>  
+                                    </span>
+                                    <span ng-if="event.sapconnectUrl" >
+                                    	<a class="box-icon fa fa-users small-icon basic-blue-font-40" style="position: relative;
+    bottom: 5px;" href="{{event.sapconnectUrl}}" target="_blank" bs-tooltip data-title="SAP connect"></a>
                                     </span>
                                 </div>
                             </td>
@@ -54,7 +77,7 @@
             </div>
 		</div>
 		<div ng-if="!hasEvents() && errMsg == null">
-			Hooray! You got no more meetings today!
+			Hooray! You have no more meetings today!
 		</div>
 	</div>	
 </div>

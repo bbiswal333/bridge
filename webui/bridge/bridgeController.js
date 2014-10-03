@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", "$modal", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, $modal, bridgeInBrowserNotification, bridgeDownloadService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService) {
 
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
@@ -10,143 +10,150 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
-        $scope.getSidePane = function () {
-            return $scope.sidePanel;
+        $window.onbeforeunload = function(){
+            bridgeConfig.store(bridgeDataService);
         };
 
-        $scope.bridge_notifications_click = function () {
-            $scope.sidePanel = 'view/bridgeNotifications.html';
-            if ($scope.sideView === "notifications" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "notifications";
+        $scope.logMode = bridgeDataService.getLogMode();
+        $scope.sendLog = function () {
+            var modalPromise = logService.showPreview();
+            modalPromise.then(function resolved() {
+                logService.sendLog();
+            });
         };
-
-        $scope.bridge_settings_click = function () {
-            $scope.sidePanel = 'view/bridgeSettings.html';
-            if ($scope.sideView === "settings" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-                if ($scope.show_settings === false) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
-                }
-            }
-            $scope.sideView = "settings";
-        };
-
-        $scope.bridge_hide_settings = function () {
-            if ($scope.show_settings === true) {
-                $scope.show_settings = false;
-                bridgeConfig.persistInBackend(bridgeDataService);
-            }
-        };
-
-        $scope.bridge_feedback_click = function () {
-            $scope.sidePanel = 'view/bridgeFeedback.html';
-            if ($scope.sideView === "feedback" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "feedback";
-        };
-
-        $scope.bridge_github_click = function () {
-            $scope.sidePanel = 'view/bridgeGithub.html';
-            if ($scope.sideView === "github" || !$scope.show_settings) {
-                $scope.show_settings = !$scope.show_settings;
-            }
-            $scope.sideView = "github";
+        $scope.showLogModeWiki = function () {
+            $window.open("https://github.wdf.sap.corp/bridge/bridge/wiki/Log-Mode");
         };
 
         $scope.show_download = bridgeDownloadService.show_download;
 
-        $http.get(window.client.origin + '/client').success(function () {
-            $scope.client = true;
-        	window.client.available = true;
+        function parseVersionString(str)
+        {
+            if (typeof(str) !== 'string') { return false; }
+            var x = str.split('.');
+            // parse from string or default to 0 if can't parse
+            var maj = parseInt(x[0]) || 0;
+            var min = parseInt(x[1]) || 0;
+            var pat = parseInt(x[2]) || 0;
+            return {
+                major: maj,
+                minor: min,
+                patch: pat
+            };
+        }
+
+        function needsUpdate(needed_version, current_version)
+        {
+            var minimum = parseVersionString(needed_version);
+            var running = parseVersionString(current_version);
+            if (running.major !== minimum.major)
+            {
+                return (running.major < minimum.major);
+            }
+            else
+            {
+                if (running.minor !== minimum.minor)
+                {
+                    return (running.minor < minimum.minor);
+                }
+                else
+                {
+                    if (running.patch !== minimum.patch)
+                    {
+                        return (running.patch < minimum.patch);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        $http.get($window.client.origin + '/client').success(function (data)
+        {
+            //version which is needed by the application
+            var needs_version = "0.9.0";
+            var has_version = "0.0.1";
+            if(data.version !== undefined)
+            {
+                has_version = data.version;
+            }
+
+            //set global window attributes
+            $window.client.has_version = has_version;
+            $window.client.needs_version = needs_version;
+            $window.client.os = data.os;
+
+            if(!needsUpdate(needs_version, has_version))
+            {
+        	   $window.client.available = true;
+               $window.client.outdated = false;
+            }
+            else
+            {
+                $window.client.available = false;
+                $window.client.outdated = true;
+                $scope.client_update = true;
+            }
+
+            $scope.client = $window.client.available;
+            $log.log($window.client);
+
         }).error(function () {
-            $scope.client = false;
-            window.client.available = false;
+            $window.client.available = false;
+            $scope.client = $window.client.available;
+            $scope.client_update = false;
+            $log.log($window.client);
         });
 
         if ($location.path() === "" || $location.path() === "/") {
             $scope.showLoadingAnimation = true;
         }
 
-        window.debug = {
-            resetConfig: function()
-                        {
+        $window.debug = {
+            resetConfig: function() {
                 bridgeDataService.toDefault();
-                bridgeConfig.persistInBackend(bridgeDataService);
-                        }
-        };
-
-        $scope.toggleDragging = function(){
-            if( !$scope.sortableOptions.disabled )
-            {
-
-              for (var i = 0; i < $scope.visible_apps.length; i++) {
-                    for(var j = 0; j < $scope.apps.length; j++)
-                    {
-                        if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
-                        {
-                            $scope.apps[j].order = i;
-                        }
-                    }
-              }
-              bridgeConfig.persistInBackend(bridgeDataService);
+                bridgeConfig.store(bridgeDataService);
+                bridgeConfig.persistInBackend();
             }
-            $scope.sortableOptions.disabled = ! $scope.sortableOptions.disabled;
-
-            if($scope.sortableOptions.disabled) {
-               $scope.sortableOptionsCaption = "Activate";
-            } else {
-                $scope.sortableOptionsCaption = "Save";
-        }
         };
 
-        $scope.settings_click = function (boxId) {
-            bridgeConfig.showSettingsModal(boxId);
+        $scope.saveAppsSortable = function(){
+          for (var i = 0; i < $scope.visible_apps.length; i++) {
+                for(var j = 0; j < $scope.apps.length; j++)
+                {
+                    if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
+                    {
+                        $scope.apps[j].order = i;
+                    }
+                }
+          }
+          bridgeConfig.store(bridgeDataService);
         };
 
         $scope.overview_click = function () {
             $location.path('/');
-            document.getElementById('overview-button').classList.add('selected');
+            $window.document.getElementById('overview-button').classList.add('selected');
             //document.getElementById('projects-button').classList.remove('selected');
         };
 
         $scope.projects_click = function () {
             $location.path('/projects');
-            document.getElementById('overview-button').classList.remove('selected');
-            document.getElementById('projects-button').classList.add('selected');
+            $window.document.getElementById('overview-button').classList.remove('selected');
+            $window.document.getElementById('projects-button').classList.add('selected');
         };
 
         $scope.showSettingsModal = function (appId) {
-            var appInstance = bridgeDataService.getAppById(appId);
+			// bridgeSettingsModalService.show_settings(appId);
+			$scope.modalInstance = bridgeSettingsModalService.show_settings(appId);
 
-            $scope.modalInstance = $modal.open({
-                templateUrl: 'view/settings.html',
-                windowClass: 'settings-dialog',
-                controller: angular.module('bridge.app').settingsController,
-                resolve: {
-                    templateString: function () {
-                        return appInstance.scope.box.settingScreenData.templatePath;
-                    },
-                    templateController: function () {
-                        return appInstance.scope.box.settingScreenData.controller;
-                    },
-                    boxController: function () {
-                        return appInstance;
-                    },
-                    boxScope: function () {
-                        return appInstance.scope;
-                    }
-                }
-            });
-
-            // save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
-            function onModalClosed() {
-                bridgeConfig.persistInBackend(bridgeDataService);
-                $scope.modalInstance = null;
-            }
-            this.modalInstance.result.then(onModalClosed, onModalClosed);
+			// save the config in the backend no matter if the result was ok or cancel -> we have no cancel button at the moment, but clicking on the faded screen = cancel
+			function onModalClosed() {
+				bridgeConfig.store(bridgeDataService);
+				$scope.modalInstance = null;
+			}
+			this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
         $scope.apps = [];
@@ -214,198 +221,35 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
-        $scope.$on('bridgeConfigLoadedReceived', function (event) {
+        $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
             $scope.sortableOptions = sortableConfig.sortableOptions;
+            $scope.sortableOptionsCaption = "Activate";
+            $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.apps = bridgeDataService.getAppMetadataForProject(0);
+            if ($location.$$host === 'bridge-master.mo.sap.corp') {
+                $scope.isTestInstance = true;
+            }
+            if ($location.$$host === 'localhost') {
+                $scope.isLocal = true;
+            }
             $scope.configLoadingFinished = true;
             $scope.showLoadingAnimation = false;
         });
 
-        $scope.sortableOptionsCaption = "Activate";
     }
 ]);
 
-angular.module('bridge.app').config(["$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider","bridge.service.loaderProvider", function ($routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils, bridgeLoaderServiceProvider) {
-    //main overview page
-    $routeProvider.when("/", {
-        templateUrl: 'view/overview.html'
-    });
-
-    //detail controller registered by module files
-    function routeInfo($q, $route) {
-        var defer = $q.defer();
-        var info = $route.current.info;
-        defer.resolve(info);
-        return defer.promise;
-    }
-    function appInfo($q, $route) {
-        var defer = $q.defer();
-        var info = $route.current.app;
-        defer.resolve(info);
-        return defer.promise;
-    }
-
-    for(var i = 0; i < bridgeLoaderServiceProvider.apps.length; i ++)
-    {
-        var app = bridgeLoaderServiceProvider.apps[i];
-        if(app.routes !== undefined && Object.prototype.toString.call( app.routes ) === '[object Array]')
-        {
-            for(var j = 0; j < app.routes.length; j++)
-            {
-                $routeProvider.when(app.routes[j].route,
-                    {
-                        templateUrl: 'view/detail.html',
-                        controller: 'bridge.app.detailController',
-                        info: app.routes[j],
-                        app: bridgeLoaderServiceProvider.apps[i],
-                        resolve: {
-                            routeInfo: routeInfo,
-                            appInfo: appInfo
-                        }
-                    });
-            }
-        }
-    }
-
-    //If no valid URL has been entered redirect to main entry point
-    $routeProvider.otherwise({
-        redirectTo: "/"
-    });
-
-    // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
-    $httpProvider.defaults.withCredentials = true;
-    $httpProvider.interceptors.push('bridge.app.httpInterceptor');
-
-    //allow blob, tel, mailto links
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
-}]);
-
-angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService, bridgeInBrowserNotification) {
-    //Receive emitted message and broadcast it.
-    //Event names must be distinct or browser will blow up!
-    $rootScope.$on('bridgeConfigLoaded', function (event, args) {
-        $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
-    });
-    $rootScope.$on("refreshApp", function (event, args) {
-        $rootScope.$broadcast('refreshAppReceived', args);
-    });
-    $rootScope.$on("closeSettingsScreen", function (event, args) {
-        $rootScope.$broadcast('closeSettingsScreenRequested', args);
-    });
-    $rootScope.$on("$locationChangeStart", function(event, args) {
-        $rootScope.$broadcast('closeSettingsScreenRequested', args);
-    });
-
-    if ($location.search().clientMode === "true") {
-        bridgeDataService.setClientMode(true);
-    }
-
-    var deferred = $q.defer();
-    bridgeDataService.initialize(deferred).then(function () {
-        $rootScope.$emit('bridgeConfigLoaded', {});
-    }, function () { // promise rejected = config load failed
-        bridgeInBrowserNotification.setScope($rootScope);
-        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
-    });
-});
-
-
-angular.module('bridge.app').filter("decodeIcon", function () {
+angular.module('bridge.app').filter("decodeIcon", function ($window) {
     return function (str) {
         if (str === undefined) {
             return "";
         }
-        var el = document.createElement("div");
+        var el = $window.document.createElement("div");
         el.innerHTML = str;
         str = el.innerText || el.textContent;
         return str;
     };
 });
-
-
-angular.module('bridge.app').factory('bridge.app.httpInterceptor', ['$q', '$rootScope', '$injector', '$location', '$timeout', function ($q, $rootScope, $injector, $location, $timeout) {
-
-    var $http;
-    var bridgeDataService;
-    var rProtocol = /^http|^https/i;
-    var rLocalhost = /^https:\/\/localhost/i;
-
-    function checkResponse (response) {
-        $timeout.cancel(response.config.timer);
-
-        // inject $http object manually, see: http://stackoverflow.com/questions/20647483/angularjs-injecting-service-into-a-http-interceptor-circular-dependency
-        // for the same reason we need to inject the bridgeDataService manually (as it needs the $https service)
-        $http = $http || $injector.get('$http');
-        if ($http.pendingRequests.length < 1)
-        {
-            $rootScope.showLoadingBar = false;
-            response.config.timer = undefined;
-        }
-    }
-
-    function rerouteCall(oConfig) {
-        var sNewUrl = "";
-        var sEncodedUrl = "";
-
-        if (oConfig.method === "GET") {
-            //oConfig.url = oConfig.url.replace(/\?/, "&");
-            sEncodedUrl = encodeURIComponent(oConfig.url);
-            sNewUrl = "https://localhost:1972/api/get?url=" + sEncodedUrl;
-        } else {
-            sNewUrl = oConfig.url;
-        }
-
-        return sNewUrl;
-    }
-
-    function uncachifyUrl(url) {
-        var resultUrl = url + "?" + new Date().getTime();
-        if(url.indexOf("?") >= 0)
-        {
-            resultUrl = url + "&" + new Date().getTime();
-        }
-        return resultUrl;
-    }
-
-    return {
-        'request': function(config)
-        {
-            bridgeDataService = bridgeDataService || $injector.get('bridgeDataService');
-            // if we have an external call (starting with http/https) and we are in client mode, then route all calls via the client
-            if (bridgeDataService.getClientMode() === true && rProtocol.test(config.url)) {
-                // if the call already targets to localhost, don't modify it
-                if (!rLocalhost.test(config.url)) {
-                    var sNewUrl = rerouteCall(config);
-                    config.url = sNewUrl;
-                }
-            }
-
-            //IE wants to cache everything so all external https calls are uncached here
-            if(config.url.indexOf("https://") !== -1)
-            {
-                config.url = uncachifyUrl(config.url);
-            }
-
-            config.timer = $timeout(function()
-            {
-                $rootScope.showLoadingBar = true;
-            }, 500, true);
-
-            return config || $q.when(config);
-        },
-        'response': function(response)
-        {
-            checkResponse(response);
-            return response || $q.when(response);
-        },
-        'responseError': function (response)
-        {
-            checkResponse(response);
-            return $q.reject(response);
-        }
-    };
-
-}]);

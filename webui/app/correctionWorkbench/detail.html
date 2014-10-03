@@ -1,0 +1,57 @@
+<div ng-controller="app.correctionWorkbench.detailController" style="box-sizing:border-box;">    
+    <div style="padding:30px;box-sizing:border-box;">                
+
+    	<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
+        <div class="btn-group" style="height:32px;max-width:100%;">
+          <span ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
+      	</div>
+        
+			
+	
+
+        <div>
+        	<div infinitescroll>
+	            <div class="row">
+		            <div class="box-title col-sm-1" ng-click="sort('priority.__text')">Priority
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'priority.__text'"></i>
+		            </div>
+		        	<div class="box-title col-sm-2" ng-click="sort('component.__text')">Component
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'component.__text'"></i>
+		        	</div>
+		        	<div class="box-title col-sm-2" ng-click="sort('status.__text')">Status
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'status.__text'"></i>
+		        	</div>
+		        	<div class="box-title col-sm-3" ng-click="sort('reporterEnhanced.username')">Reporter
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'reporterEnhanced.username'"></i>
+		        	</div>
+		        	<div class="box-title col-sm-4" ng-click="sort('shortText.__text')">Description
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'shortText.__text'"></i>
+		        	</div>
+		        </div>
+	            <div ng-repeat="row in tableData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+	            	<div class="cellText col-sm-1">{{row.priority.__text}}</div>
+	            	<div class="cellText col-sm-2">{{row.component.__text}}</div>
+	            	<div class="cellText col-sm-2">{{row.status.__text}}</div>
+	            	<div class="cellText col-sm-3">
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.reporter._alternateId}}?s=60x60" 
+		            		 class="im-reporter-img"
+		            		 ng-mouseenter="zoom($index, $event)"
+		            		 ng-if="row.reporterEnhanced.BNAME"></img>
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.reporter._alternateId}}?s=100x100" 
+		            		 class="im-reporter-img-lrg"
+		            		 ng-style="{left: zoomImg.x - 50 + zoomImg.width/2, top: zoomImg.y - 50 + zoomImg.height/2}"
+		            		 ng-show="zoomIndex === $index"
+		            		 ng-mouseleave="zoom(-1)"></img>
+			            <a target="_blank" href="{{row.reporterEnhanced.url}}">{{row.reporterEnhanced.username}}</a>
+			            <a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+			            <a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+        			</div>
+	            	<div class="cellText col-sm-4">
+        				<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
+	            	</div>
+	            </div>
+	        </div>
+
+        </div>        
+    </div>
+</div>

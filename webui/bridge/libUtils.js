@@ -35,6 +35,36 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         long: "Sunday"
     }];
 
+    var _weekdaysStartOnSunday = [{
+        short: "Su",
+        medium: "Sun",
+        long: "Sunday"
+    }, {
+        short: "Mo",
+        medium: "Mon",
+        long: "Monday"
+    }, {
+        short: "Tu",
+        medium: "Tue",
+        long: "Tuesday"
+    }, {
+        short: "We",
+        medium: "Wed",
+        long: "Wednesday"
+    }, {
+        short: "Th",
+        medium: "Thu",
+        long: "Thursday"
+    }, {
+        short: "Fr",
+        medium: "Fri",
+        long: "Friday"
+    }, {
+        short: "Sa",
+        medium: "Sat",
+        long: "Saturday"
+    }];
+
     var _months = [{
         short: "Jan",
         long: "January"
@@ -98,28 +128,33 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return null;
     };
 
-    this.buildCalendarArray = function(year_i, month_i) {
+    this.buildCalendarArray = function(year_i, month_i, startOnSunday_b) {
         var cal = [];
         var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
         var daysInLastMonth = 0;
         var today = new Date(); //Needed as a workaround for strange behaviour of javascript
-        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
+        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)
 
         cal[0] = [];
-        if (firstDayInMonth !== 0) {
-            daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+        if (startOnSunday_b) {
+            daysInLastMonth = firstDayInMonth;
         } else {
-            daysInLastMonth = 6;
+            if (firstDayInMonth !== 0) {
+                daysInLastMonth = firstDayInMonth - 1; //-1 because sunday is actually 0 but we move it to 6, so all other days shift one to the left
+            } else {
+                daysInLastMonth = 6;
+            }
         }
-
         var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
+        var firstDateOfGrid = new Date(firstDateOfGridInMs);
         var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
 
         var i;
         var stop = false;
         for (i = 0; !stop; i++) {
             var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-            var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
+            //var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
+            var thisDay = new Date(firstDateOfGrid.getFullYear(), firstDateOfGrid.getMonth(), firstDateOfGrid.getDate() + i);
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
                 inMonth: (thisDay.getMonth() === month_i),
@@ -132,7 +167,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             };
 
             if ((i + 1) % 7 === 0) {
-                if (new Date(firstDateOfGridInMs + i * MILLISECS_DAY).getMonth() !== month_i) {
+                if (thisDay.getMonth() !== month_i) {
                     stop = true;
                 } else {
                     cal[Math.floor((i + 1) / 7)] = [];
@@ -154,10 +189,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return this.getTimeInWords(diffMin, short_b);
     };
 
-    this.getTimeInWords = function (minutes_i, short_b) {
-        var days = Math.floor(minutes_i / (24 * 60));
-        minutes_i = minutes_i - days * 24 * 60;
-
+    this.getTimeInWords = function (minutes_i, short_b, only_hours_and_minutes_b) {
+        if (!only_hours_and_minutes_b) {
+            var days = Math.floor(minutes_i / (24 * 60));
+            minutes_i = minutes_i - days * 24 * 60;
+        }
         var hours = Math.floor(minutes_i / 60);
         minutes_i = Math.round(minutes_i - hours * 60);
 
@@ -185,7 +221,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             res += minutes_i + ((minutes_i === 1) ? " minute" : " minutes");
         }
 
-        return res;       
+        return res;
     };
 
     this.useNDigits = function(val_i, n_i) {
@@ -259,8 +295,12 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
-    this.getWeekdays = function() {
-        return angular.copy(_weekdays);
+    this.getWeekdays = function(startOnSunday_b) {
+        if (startOnSunday_b) {
+            return angular.copy(_weekdaysStartOnSunday);
+        } else {
+            return angular.copy(_weekdays);
+        }
     };
 
     this.getWeekday = function (day, format) {
@@ -306,11 +346,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         } else {
             jan4WeekDay = 6;
         }
-        //console.log("-> " +  date_o);
+        //$log.log("-> " +  date_o);
         var monInFirstWeek = new Date(jan4Week.getTime() - (jan4WeekDay * MILLISECS_DAY));
-        //console.log(monInFirstWeek);
+        //$log.log(monInFirstWeek);
         var daysSinceFirstMon = Math.round((date_o.getTime() - monInFirstWeek.getTime()) / MILLISECS_DAY);
-        //console.log(daysSinceFirstMon);
+        //$log.log(daysSinceFirstMon);
         res.weekNo = 1 + Math.floor(daysSinceFirstMon / 7);
 
         var monInSelectedWeek = new Date(date_o.getTime() - ((date_o.getDay() !== 0) ? date_o.getDay() - 1 : 6)  * MILLISECS_DAY);
@@ -334,12 +374,16 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.getUTC = function (year, month, date) {
+        //Date.UTC is a function and not a constructor, cannot be changed here
+        /*eslint-disable new-cap*/
+        var returnDate = new Date(Date.UTC(year, month, date));
         if (!arguments || arguments.length === 0) {
             var today = new Date();
-            return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+            return returnDate;
         }
-
-        return new Date(Date.UTC(year, month, date));
+        return returnDate;
+        /*eslint-enable new-cap*/
     };
 
     this.substractMonths = function (date, months) {

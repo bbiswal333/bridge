@@ -1,13 +1,14 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.lunchWalldorf",
-		"title"					:	"Lunch Wdf",
+		"title"					:	"Lunch",
 		"icon_css"				:	"icon-meal",
 		"overview_directive"	:	"app.lunchWalldorf",
 		"needs_client"			:	false
 	},
 	"modules" : [],
-	"js_files" : ["overview.js","settings.js","config.js"],
+	"js_files" : ["overview.js","settings.js","config.js", "backendData.js"],
 	"css_files" : ["style.css"]
 }

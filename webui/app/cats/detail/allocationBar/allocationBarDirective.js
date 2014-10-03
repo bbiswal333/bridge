@@ -5,8 +5,8 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
             $scope.width = parseInt($scope.width || 810); //deafult width is 810px
             $scope.height = parseInt($scope.height || 100);
 
-            // reset color counter that for each new allocation bar we start with the same colors for the blocks
-            colorUtils.resetColorCounter();
+            // // reset color counter that for each new allocation bar we start with the same colors for the blocks
+            // colorUtils.resetColorCounter();
 
             $scope.getRemainingValue = function () {
                 var remaining = $scope.totalValue;
@@ -48,10 +48,6 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 
                 block.blockWidth = Math.round(blockMetrics.newWidth * 1000) / 1000;
                 block.localValue = Math.round(blockMetrics.newValue * 1000) / 1000;
-
-                if(block.localValue !== changeValue) {
-                    // change Hint Text
-                }
 
                 if(!nextBlock) {
                     return;
@@ -115,6 +111,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                 width: "@width",
                 height: "@height",
                 blocks: "=blocks",
+                selectedHours: '=selectedHours',
                 totalValue: "@totalValue",
                 text: "=text"
             },
@@ -128,9 +125,8 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
         '<div class="allocation-bar-container">' +
             '<div class="allocation-bar-background-panel-hint">{{text}}</div>' +
             '<div class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
-                '<div class="allocation-bar-background-panel-div" style="height:60px">' +
-                    '<font ng-if="!blocks.length" class="allocation-bar-background-panel-hint">Please select date(s) and choose tasks from the list on the left</font>' +
-                    '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width">' +
+                '<div class="allocation-bar-background-panel-div" ng-style="{height: height - 20}">' +
+                    '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" data-selected-hours="selectedHours" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width" height="height">' +
                     '</app.cats.allocationbar-block>' +
                 '</div>' +
             '</div>' +

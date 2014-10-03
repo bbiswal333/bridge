@@ -48,6 +48,19 @@ img {
     pointer-events: none;
 }
 
+.zoomOut {
+    -moz-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-transition: 0.1s ease-in;
+    -moz-transition: 0.1s ease-in;
+    -o-transition: 0.1s ease-in;
+    transition: 0.1s ease-in;
+}
+
+.zoomIn {
+    transform: sclae(1.2);
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -60,6 +73,7 @@ img {
     left: 0px;
     width: 35px;
 }
+/*TODO: delete when layout change is done*/
 .settingsButton {
     /*width: 36px;*/
     height: 40px;
@@ -253,17 +267,7 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-/*.centeredContent {
-    top: 40px;
-    margin-bottom:40px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    
-    position: relative;
-    text-align: center;
-}
-*/
+
 .animation-container{
     height: 100%;
 }
@@ -273,14 +277,13 @@ img {
     margin: auto;
 }
 .centeredContent {
-    
     display: table-cell;
     vertical-align: middle;
     margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    padding: 40px 0;
+    padding: 80px 40px;
     text-align: center;
     position: relative;
 }
@@ -345,8 +348,6 @@ img {
     font-style: italic;
     font-weight: bold;
 }
-
-
 .copy_head{
     font-weight: bold;
 }
@@ -369,10 +370,9 @@ img {
 .box-icon {
     font-family:'bridge_icons';
     font-size: 20px;
-    margin-right: 2px;
-    float: right;
+    margin-right: 5px;
+    float: left;
 }
-
 .table-icon-small {
     font-family:'bridge_icons';
     font-size: 14px;
@@ -403,7 +403,7 @@ img {
 .settingsIcon {
     font-family:'SAP-icons';
     font-size: 20px;
-    margin-right: 10px;
+    margin-right: 0px;
     float: right;
 }
 .settingsIcon:hover {
@@ -463,38 +463,6 @@ img {
     outline: none;
 }
 
-.div-background-gradient {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    right:0;
-    top: 0;
-    background-color: #ffffff;
-    /*
-    background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3) 0, rgba(0, 124, 192, 0.2) 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgb(255, 255, 255)), color-stop(100%, rgb(0, 124, 192)));
-    background-image: -webkit-linear-gradient(top, rgb(255, 255, 255) 0, rgb(0, 124, 192) 100%);
-    background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3) 0, rgba(0, 124, 192, 0.2) 100%);
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0, rgba(0, 124, 192, 0.2) 100%);
-    background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3) 0, rgba(0, 124, 192, 0.2) 100%);
-    */
-    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3;
-    -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    -webkit-tranform: translateZ(0);
-}
-.div-background {
-    width: 100%;
-    height: 100%;
-    background-image: url('../img/stripes.png');
-    background-position: center bottom;
-    background-attachment: fixed;
-    background-repeat: repeat;
-    position: absolute;
-    overflow-y: hidden;
-    overflow-x: hidden;
-}
 input[type="checkbox"] {
     -webkit-appearance: none;
     background-color: #ffffff;
@@ -518,9 +486,10 @@ input[type="checkbox"]:checked:after {
     left: 3px;
     color: #99a1a7;
 }
+
 .sortable-list {
     list-style-type: none;
-    width: 100%;
+    max-width: 1500px;
     display:inline-block;
     padding-left: 0px;
 }
@@ -554,25 +523,7 @@ input[type="checkbox"]:checked:after {
 .underline{
     border-bottom: 1px solid #CCCCCC;
 }
-.form{
-    border: none;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
-    background-color: rgba(240,240,240,1);
-    border-radius: 0px;
-    height: 32px;
-    font-weight: normal;
-}
 
-.form_unactive{
-    background-color: rgba(240,240,240,0.5);
-    box-shadow: inset 0 1px 2px rgba(100, 100, 100, .1);
-}
-.form:focus{
-    border: none;
-    box-shadow: inset 0 2px 3px rgba(0, 0, 0, .1)!important;
-    background-color: rgba(240,240,240,0.8);
-    border-radius: 0px;
-}
 /*#### BUTTONS #####*/
 .btn, button{
     border-radius: 0px;
@@ -656,7 +607,7 @@ input[type="checkbox"]:checked:after {
 }
 .panel{
     border: none;
-    -webkit box-shadow: none;
+    -webkit-box-shadow: none;
     box-shadow: none;
     border-radius: 0;
     height:100%;
@@ -682,6 +633,7 @@ input[type="checkbox"]:checked:after {
     position: absolute;
     top: 0px;
     bottom: 0px;
+   
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
@@ -752,6 +704,7 @@ input[type="checkbox"]:checked:after {
 .meetings-table{
     font-size:0.9em;
 }
+
 #detailContainer{
     text-align: left;
 }
@@ -760,6 +713,12 @@ input[type="checkbox"]:checked:after {
 }
 .box-icon.fa{
     padding-top: 2px;
+    font-size: 20px;
+}
+.small-icon{
+    font-size: 1.2rem;
+    padding-top: 0;
+    
 }
 .table-cell{
     border:2px solid white;
@@ -810,226 +769,106 @@ h3{
     font-weight:600;
     font-style:italic;
     text-transform:uppercase;
-    }
-
-/* colors */
-
-.basic-blue{
-background-color:#418AC9;
-}
-.basic-blue-font{
-color:#418AC9;
-}
-.basic-blue-100{
-background-color:#418AC9;
-}
-.basic-blue-font-100{
-color:#418AC9;
-}
-.basic-blue-80{
-background-color:#68A1D4;
-}
-.basic-blue-font-80{
-color:#68A1D4;
-}
-.basic-blue-60{
-background-color:#8EB9DF;
-}
-.basic-blue-font-60{
-color:#8EB9DF;
-}
-.basic-blue-40{
-background-color:#B3D0E9;
-}
-.basic-blue-font-40{
-color:#B3D0E9;
 }
 
-.green{
-background-color:#4EA175;
-}
-.green-font{
-color:#4EA175;
-}
-.green-100{
-background-color:#4EA175;
-}
-.green-font-100{
-color:#4EA175;
-}
-.green-80{
-background-color:#7AB997;
-}
-.green-font-80{
-color:#7AB997;
-}
-.green-60{
-background-color:#A7D0BA;
-}
-.green-font-60{
-color:#A7D0BA;
-}
-.green-40{
-background-color:#D3E6DC;
-}
-.green-font-40{
-color:#D3E6DC;
+.testInstanceBar {
+    position: absolute;
+    z-index: 1000;
+    width: 50%;
+    line-height: 25px;
+    background-color: #D53F26;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    left: 25%;
+    top: 40px;
 }
 
-.red{
-background-color:#D53F26;
+.logAlertBar {
+    top: 40px;
+    position: absolute;
+    z-index: 1000;
+    /* width should be big enough to cover every screen*/
+    width: 4000px;
+    line-height: 38px;
+    background-color: red;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+
+    overflow: hidden;
+    display: inline-block;
 }
-.red-font{
-color:#D53F26;
-}
-.red-100{
-background-color:#D53F26;
-}
-.red-font-100{
-color:#D53F26;
-}
-.red-80{
-background-color:#DD6551;
-}
-.red-font-80{
-color:#DD6551;
-}
-.red-60{
-background-color:#E68C7D;
-}
-.red-font-60{
-color:#E68C7D;
-}
-.red-40{
-background-color:#EEB2A8;
-}
-.red-font-40{
-color:#EEB2A8;
+.logAlertButton {
+    margin-left: 10px;
+    margin-top: -3px;
 }
 
-.purple{
-background-color:#8561c5;
+.logAlertButtonGroup {
+    float: left;
 }
-.purple-font{
-color:#8561c5;
+
+/* ============= *\
+|  HOVEREFFECTS   |
+\* ============= */
+
+.hover:hover{
+    background-image: url('../img/darken.png');
 }
-.purple-100{
-background-color:#8561c5;
-}
-.purple-font-100{
-color:#8561c5;
-}
-.purple-80{
-background-color:#a489d4;
-}
-.purple-font-80{
-color:#a489d4;
-}
-.purple-60{
-background-color:#c2b0e2;
-}
-.purple-font-60{
-color:#c2b0e2;
-}
-.purple-40{
-background-color:#d2c6e5;
-}
-.purple-font-40{
-color:#d2c6e5;
+.focus:focus{
+    background-image: url('../img/darken.png');
 }
 
 
-.yellow{
-background-color:#fcb517;
-}
-.yellow-font{
-color:#fcb517;
-}
-.yellow-100{
-background-color:#fcb517;
-}
-.yellow-font-100{
-color:#fcb517;
-}
-.yellow-80{
-background-color:#FCC445;
-}
-.yellow-font-80{
-color:#FCC445;
-}
-.yellow-60{
-background-color:#FCD274;
-}
-.yellow-font-60{
-color:#FCD274;
-}
-.yellow-40{
-background-color:#FEE0A1;
-}
-.yellow-font-40{
-color:#FEE0A1;
-}
+/* ============= *\
+|      SHAKE      |
+\* ============= */
 
 
-.orange{
-background-color:#E76F24;
+@-webkit-keyframes shake {
+    0% { -webkit-transform: rotate(0deg); }
+    10% { -webkit-transform:  rotate(-1deg); }
+    20% { -webkit-transform:  rotate(0deg); }
+    30% { -webkit-transform: rotate(-1deg); }
+    40% { -webkit-transform:  rotate(0deg); }
+    50% { -webkit-transform:  rotate(-1deg); }
+    60% { -webkit-transform:  rotate(0deg); }
+    70% { -webkit-transform: rotate(-1deg); }
+    80% { -webkit-transform:  rotate(0deg); }
+    90% { -webkit-transform: rotate(1deg); }
+    100% { -webkit-transform:  rotate(0deg); }
 }
-.orange-font{
-color:#E76F24;
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    10% { transform:  rotate(-1deg); }
+    20% { transform:  rotate(0deg); }
+    30% { transform: rotate(-1deg); }
+    40% { transform:  rotate(0deg); }
+    50% { transform:  rotate(-1deg); }
+    60% { transform:  rotate(0deg); }
+    70% { transform: rotate(-1deg); }
+    80% { transform:  rotate(0deg); }
+    90% { transform: rotate(1deg); }
+    100% { transform:  rotate(0deg); }
 }
-.orange-100{
-background-color:#E76F24;
-}
-.orange-font-100{
-color:#E76F24;
-}
-.orange-80{
-background-color:#EC8948;
-}
-.orange-font-80{
-color:#EC8948;
-}
-.orange-60{
-background-color:#F0A470;
-}
-.orange-font-60{
-color:#F0A470;
-}
-.orange-40{
-background-color:#F5C099;
-}
-.orange-font-40{
-color:#F5C099;
+.shake {
+
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 1s;
+    -webkit-transform-origin:50% 50%;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+
+    animation-name: shake;
+    animation-duration: 1s;
+    transform-origin:50% 50%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
 }
 
-
-.grey{
-background-color:#707070;
-}
-.grey-font{
-color:#707070;
-}
-.grey-100{
-background-color:#707070;
-}
-.grey-font-100{
-color:#707070;
-}
-.grey-80{
-background-color:#8a8a8a;
-}
-.grey-font-80{
-color:#8a8a8a;
-}
-.grey-60{
-background-color:#a6a6a6;
-}
-.grey-font-60{
-color:#a6a6a6;
-}
-.grey-40{
-background-color:#c3c3c3;
-}
-.grey-font-40{
-color:#c3c3c3;
+.darken{
+    transition:ease all 1s;
+    background-color: rgba(0,0,0,0.3);
 }

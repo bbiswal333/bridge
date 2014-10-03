@@ -5,7 +5,7 @@
 		  <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>
 		</div>
         <div>
-        	<div infinitescroll>
+        	<div infinitescroll style="clear:both">
             <div class="row">
 	            <div class="box-title col-sm-3" ng-click="sort('summary')">Summary
 	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'summary'"></i>

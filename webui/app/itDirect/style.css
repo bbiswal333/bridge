@@ -1,0 +1,47 @@
+.app-itdirect-prio_col{
+    width: 48%;
+    height: 50%;
+}
+.app-itdirect-prio_col:nth-child(2), .app-itdirect-prio_col:nth-child(4) {
+    margin-left: 0;
+    width: 45%;
+    float: right;
+    margin-right: 5px;
+}
+.app-itdirect-prio_col:nth-child(3), .app-itdirect-prio_col:nth-child(4) {
+    margin-top: 5px;
+}
+.app-itdirect-prio_container{
+    width: 80%;
+    height: 94%;
+    float: left;
+}
+.app-itdirect-btn-container{
+    width: 20%;
+    height: 86%;
+    float: right;
+}
+.app-itdirect-btn-box{
+
+    height: 25%;
+    margin-right: 0;
+    margin-bottom: 5px;
+    float: right;
+}
+.app-itdirect-reporter-img
+{
+    height:80%;
+    border-radius:100%;
+    margin-right:20px;
+    vertical-align:middle;
+    pointer-events:all
+}
+.app-itdirect-reporter-img-lrg
+{
+    height:100px;
+    border-radius:100%;
+    /*margin-right:20px; */
+    position:fixed;
+    pointer-events:all;
+    z-index:99;
+}

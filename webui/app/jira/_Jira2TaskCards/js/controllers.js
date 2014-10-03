@@ -1,9 +1,6 @@
-'use strict';
-
-
 var app = angular.module('myApp', []);
 
-app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
+app.controller('MyCtrl1', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   $scope.layouts = [
     { name: '1 x 1', css: 'layout-1by1.css' },
@@ -22,22 +19,22 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
   $scope.searchString = 'id in projectRankedIssues(I2MASEDEV) AND fixVersion in (2013_S24) order by "Project Rank" ASC, Key ASC';
 
   $scope.descriptionFlag = true;
-  
+
   $scope.descriptionFlagChanged = function() {
   };
 
   $scope.statusMessage = 'Waiting for input';
 
   $scope.printButtonClicked = function() {
-    window.print();
+    $window.print();
   };
 
   $scope.fireButtonClicked = function() {
     $scope.statusMessage = 'Accessing JIRA...';
 
-    $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data, status, headers, config) {
+    $http.get('/api/jira?jql=' + encodeURI($scope.searchString)).success(function(data) {
         $scope.tasks = [];
-        
+
         angular.forEach(data.issues, function(issue) {
           $scope.tasks.push({
             key:            issue.key,
@@ -51,10 +48,10 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
         });
 
         $scope.tasks.sort(function (a,b) {
-          if (a.parentKey < b.parentKey) return -1;
-          if (a.parentKey > b.parentKey) return 1;
-          if (a.key < b.key) return -1;
-          if (a.key > b.key) return 1;
+          if (a.parentKey < b.parentKey) { return -1; }
+          if (a.parentKey > b.parentKey) { return 1; }
+          if (a.key < b.key) { return -1; }
+          if (a.key > b.key) { return 1; }
           return 0;
         });
 
@@ -72,12 +69,12 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
           }
 
           return group;
-        }
+        };
 
         var group      = null;
         var colorIndex = 0;
         angular.forEach($scope.tasks, function(task) {
-          if (getGroup(task) != group) {
+          if (getGroup(task) !== group) {
               ++colorIndex;
               group = getGroup(task);
           }
@@ -87,10 +84,8 @@ app.controller('MyCtrl1', ['$scope', '$http', function($scope, $http) {
 
         $scope.statusMessage = 'Retrieved ' + $scope.tasks.length + ' tasks';
       }).
-      error(function(data, status, headers, config) {
+      error(function() {
         $scope.statusMessage = 'Error accessing JIRA';
       });
-
   };
-
 }]);

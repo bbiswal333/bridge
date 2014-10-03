@@ -5,7 +5,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 	 $scope.searchResults = [];
 
 
-     function search_repo(limit) 
+     function search_repo(limit)
      {
         var repo = "";
         switch (arguments.length){
@@ -15,7 +15,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                     method: 'GET',
                     url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q=' + repo + 'fork:' + $scope.currentConfigValues.fork + '+in:name&per_page=' + limit,
                     headers: {'Accept': 'application/vnd.github.preview+json'},
-                    withCredentials: false                    
+                    withCredentials: false
                         }).then(function(res){
                              var results = [];
                                 angular.forEach(res.data.items, function(item){
@@ -29,40 +29,38 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
             repo = arguments[2];
 
             return $http({
-                            method: 'GET',
-                            url: 'https://github.wdf.sap.corp/api/v3/users/' + user,
-                            withCredentials: false
-                        }).then(function(res) { 
-                                if(res.status === 200)
-                                {
-                                    return $http({
-                                                method: 'GET',
-                                                url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q=' + repo + '+user:' + user + '+fork:' + $scope.currentConfigValues.fork + '+in:name&per_page=' + limit,
-                                                headers: {'Accept': 'application/vnd.github.preview+json'},
-                                                withCredentials: false
-                                                }).then(function(res){
-                                                                        var results = [];
-                                                                        angular.forEach(res.data.items, function(item){
-                                                                        results.push(item.html_url);
-                                                                                                                    });
-                                                        return results;
-                                                    });
-                                }
-                                                });            
-            }
-   
+                method: 'GET',
+                url: 'https://github.wdf.sap.corp/api/v3/users/' + user,
+                withCredentials: false
+            }).then(function(res) {
+                if(res.status === 200) {
+                    return $http({
+                        method: 'GET',
+                        url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q=' + repo + '+user:' + user + '+fork:' + $scope.currentConfigValues.fork + '+in:name&per_page=' + limit,
+                        headers: {'Accept': 'application/vnd.github.preview+json'},
+                        withCredentials: false
+                    }).then(function(res){
+                        var results = [];
+                        angular.forEach(res.data.items, function(item){
+                            results.push(item.html_url);
+                        });
+                        return results;
+                    });
+                }
+            });
+        }
     }
 
     function parseInput(input)
     {
-        if(input !== undefined && input !== null && input !== '') 
+        if(input !== undefined && input !== null && input !== '')
         {
             var parts = [];
             if(input.indexOf("github.wdf.sap.corp") === 0)
             {
                 input = 'https://' + input;
             }
-            else if( input.search(/^http[^s].*/) > -1) 
+            else if( input.search(/^http[^s].*/) > -1)
             {
                 input = [input.slice(0, 4), 's', input.slice(4)].join('');
             }
@@ -74,14 +72,14 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                 {
                     parts = full_name.split("/");
                     if (parts.length > 1)
-                    {    
+                    {
                         return search_repo(12,parts[0],parts[1]);
                     }
                 }
                 else if(full_name.length > 0)
                 {
-                    return search_repo(12,full_name);  
-                }   
+                    return search_repo(12,full_name);
+                }
             }
             else if( input.indexOf("https://") === -1 || input.indexOf("http://") === -1)
             {
@@ -91,17 +89,17 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                     if (parts.length > 1)
                     {
                         return search_repo(12,parts[0],parts[1]);
-                    }    
+                    }
                 }
                 else if(input.length > 0 )
                 {
-                    return search_repo(12,input); 
-                } 
+                    return search_repo(12,input);
+                }
             }
         }
     }
-	 
-	 $scope.save_click = function () {  
+
+	 $scope.save_click = function () {
 
 	 	var copiedConfigItem = angular.copy($scope.currentConfigValues);        			//Copy the Current input values
         var api = "api/v3/";
@@ -120,13 +118,11 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
     };//$scope.save_click
 
     $scope.getTypeaheadData = function() { /* eslint no_undef */
-        var copiedConfigItem = angular.copy($scope.currentConfigValues); 
+        var copiedConfigItem = angular.copy($scope.currentConfigValues);
         //$scope.searchResults = [];
         if(copiedConfigItem.repo.html_url !== undefined && copiedConfigItem.repo.html_url !== null && copiedConfigItem.repo.html_url !== '')
         {
-             //console.log(copiedConfigItem.repo.html_url);
-        return parseInput(copiedConfigItem.repo.html_url);
-      
+            return parseInput(copiedConfigItem.repo.html_url);
         }
     };
 }];

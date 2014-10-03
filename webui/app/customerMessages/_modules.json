@@ -1,0 +1,27 @@
+{
+	"app":
+	{
+		"categories"			:	["Service & Support"],
+		"module_name"			:	"app.customerMessages",
+		"title"					:	"Cust. Incid.",
+		"icon_css"				:	"icon-comment",
+		"overview_directive"	:	"app.customerMessages",
+		"needs_client"			:	false,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/customerMessages/new/:incidentGUID",
+				"templateUrl"	:	"app/customerMessages/detail.html"
+			},
+			{
+				"route"			:	"/detail/customerMessages/:prio",
+				"templateUrl"	:	"app/customerMessages/detail.html"
+			}
+		],
+		"beta"					: true,
+		"beta_users"			: ["I003106", "D055406","D050049","D051804","D025786", "D041846", "I069022", "D025435", "I810014", "I074043" ,"I813312", "D055517", "D035514", "I805427", "I067985","I830361","I068905","D003301","D001550","I027957","I043841","D001634","D046176"]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js"],
+	"css_files" : ["style.css"]
+}

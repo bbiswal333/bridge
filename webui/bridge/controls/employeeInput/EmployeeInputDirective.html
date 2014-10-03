@@ -1,0 +1,14 @@
+﻿<script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
+    <ul class="typeahead dropdown-menu" style="position:absolute;z-index:101" ng-style="{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}">
+	      <li ng-repeat="match in matches" ng-class="{customactive: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" style="line-height: 18px; margin-top: 4px; padding: 0px 3px 0px 3px;z-index:101;border-color: white">
+	          <typeahead-match index="$index" match="match" query="query" template-url="templateUrl" style="z-index:101"></typeahead-match>
+	      </li>
+	  </ul>
+</script>
+
+<!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
+<input ng-if="setRequired" required class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="selectedEmployee" 
+    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" />
+    
+<input ng-if="!setRequired" class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
+    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)"  />    
