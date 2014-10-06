@@ -1,5 +1,5 @@
 ﻿angular.module('app.getHome', []);
-angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', 'bridgeDataService', 'bridgeConfig', '$location', function (appGetHomeConfig, appGetHomeMap, bridgeDataService, bridgeConfig, $location) {
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', 'bridgeDataService', 'bridgeConfig', '$location', function (appGetHomeConfig, appGetHomeMap) {
 
 	var directiveController = ['$scope', function ($scope)
 	{
@@ -13,18 +13,8 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		$scope.routes = appGetHomeConfig.routes;
 
 		$scope.box.returnConfig = function () {
-			//var configCopy = angular.copy(appGetHomeConfig.data);
 			return appGetHomeConfig.routes;
 		};
-
-		/*
-		$scope.$watch("routes.length", function() {
-			if($scope.routes.length <= 4) {
-				$scope.box.boxSize = "1";
-			} else if($scope.routes.length > 4) {
-				$scope.box.boxSize = "2";
-			}
-		});*/
 	}];
 
 	return {

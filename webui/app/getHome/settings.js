@@ -23,6 +23,36 @@ angular.module('app.getHome').appGetHomeSettings =
 		$scope.newRoute.routeName = $scope.newRoute.start.address.city + " - " + $scope.newRoute.destination.address.city;
 	}
 
+	function clearMap() {
+		mapInstance.objects.clear();
+	}
+
+	function displayRouteInMap(route) {
+		var mapRoute = new nokia.maps.routing.component.RouteResultSet(route, {color: route.color}).container;
+		mapInstance.objects.add(mapRoute);
+		return mapRoute;
+	}
+
+	function centerRoute(route) {
+		mapInstance.zoomTo(route.getBoundingBox(), false, "default");
+	}
+
+	$scope.displayRouteInMap = function(route) {
+		clearMap();
+		centerRoute(displayRouteInMap(route));
+	};
+
+	function displayRoutesInMap() {
+		var mapRoute;
+		clearMap();
+		$scope.proposedRoutes.map(function(route) {
+			mapRoute = displayRouteInMap(route);
+		});
+		if(mapRoute) {
+			mapInstance.zoomTo(mapRoute.getBoundingBox(), false, "default");
+		}
+	}
+
 	function updateRouteName() {
 		if($scope.newRoute.routeName === "New Route" && $scope.newRoute.start.address && $scope.newRoute.destination.address) {
 			deriveRouteNameFromDestinationAndStartCities();
@@ -57,36 +87,6 @@ angular.module('app.getHome').appGetHomeSettings =
 	$scope.setSelectedRoute = function(route) {
 		$scope.selectedRoute = route;
 	};
-
-	function clearMap() {
-		mapInstance.objects.clear();
-	}
-
-	function displayRouteInMap(route) {
-		var mapRoute = new nokia.maps.routing.component.RouteResultSet(route, {color: route.color}).container;
-		mapInstance.objects.add(mapRoute);
-		return mapRoute;
-	}
-
-	function centerRoute(route) {
-		mapInstance.zoomTo(route.getBoundingBox(), false, "default");
-	}
-
-	$scope.displayRouteInMap = function(route) {
-		clearMap();
-		centerRoute(displayRouteInMap(route));
-	};
-
-	function displayRoutesInMap() {
-		var mapRoute;
-		clearMap();
-		$scope.proposedRoutes.map(function(route) {
-			mapRoute = displayRouteInMap(route);
-		});
-		if(mapRoute) {
-			mapInstance.zoomTo(mapRoute.getBoundingBox(), false, "default");
-		}
-	}
 
 	$scope.addSelectedRouteToConfig = function() {
 		appGetHomeConfig.addRoute($scope.newRoute.routeName, $scope.selectedRoute);

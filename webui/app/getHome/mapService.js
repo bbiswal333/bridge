@@ -22,7 +22,20 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 	nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
 	nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
 	nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
-	(document.location.protocol == "https:") && nokia.Settings.set("secureConnection", "force");
+	nokia.Settings.set("secureConnection", "force");
+
+	function addColorToRoutes(nokiaRoutes) {
+		var i = 0;
+		nokiaRoutes.map(function(route) {
+			route.color = routeColors[i];
+
+			i++;
+			if(i > routeColors.length - 1) {
+				i = 0;
+			}
+		});
+		return nokiaRoutes;
+	}
 
 	this.calculateRoutes = function (startCoords, destCoords) {
 		var deferred = $q.defer();
@@ -76,12 +89,9 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 				if (observedManager.getLocations().length > 0) {
 					callback(observedManager.getLocations());
 				}
-			} else if (observedManager.state === "failed") {
-				console.log('Failed');
-				console.log(observedManager);
 			}
 		});
-		searchRequest = {//geocode
+		searchRequest = {
 				searchText: sSearchText
 			};
 		searchManager.clear();
@@ -116,17 +126,4 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 		var distanceInt = parseInt(distance, 10);
 		return (distanceInt / 1000).toFixed(1) + "km";
 	};
-
-	function addColorToRoutes(nokiaRoutes) {
-		var i = 0;
-		nokiaRoutes.map(function(route) {
-			route.color = routeColors[i];
-
-			i++;
-			if(i > routeColors.length - 1) {
-				i = 0;
-			}
-		});
-		return nokiaRoutes;
-	}
 }]);
