@@ -40,7 +40,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 	this.calculateRoutes = function (startCoords, destCoords) {
 		var deferred = $q.defer();
 		var routingManager = new nokia.maps.advrouting.Manager();
-		
+
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
 				deferred.resolve({error: false, routes: addColorToRoutes(observedRouter.getRoutes())});
@@ -57,7 +57,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 	this.rebuildRouteFromWaypoints = function(waypoints) {
 		var deferred = $q.defer();
 		var routingManager = new nokia.maps.advrouting.Manager();
-		
+
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
 				deferred.resolve(addColorToRoutes(observedRouter.getRoutes())[0]);
@@ -81,7 +81,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 
 	this.search = function (sSearchText, callback) {
 		var searchManager, searchRequest;
-		
+
 		searchManager = new nokia.maps.advsearch.Manager();
 		searchManager.addObserver("state", function (observedManager) {
 

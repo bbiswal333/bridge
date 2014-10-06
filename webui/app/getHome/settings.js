@@ -1,6 +1,6 @@
 /*global nokia*/
-angular.module('app.getHome').appGetHomeSettings = 
-	['app.getHome.configservice', 'app.getHome.mapservice', '$scope', '$q', 
+angular.module('app.getHome').appGetHomeSettings =
+	['app.getHome.configservice', 'app.getHome.mapservice', '$scope', '$q',
 		function (appGetHomeConfig, appGetHomeMap, $scope, $q) {
 	var mapInstance;
 	$scope.configuredRoutes  = appGetHomeConfig.routes;
@@ -63,9 +63,9 @@ angular.module('app.getHome').appGetHomeSettings =
 				if(!result.error) {
 					$scope.proposedRoutes = result.routes;
 					displayRoutesInMap();
-				} else {
+				}// else {
 					//display error
-				}
+				//}
 			});
 		}
 	}
