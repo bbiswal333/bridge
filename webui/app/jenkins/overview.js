@@ -43,7 +43,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 			$scope.dataService.updateJobs();
 		};
 
-		$scope.box.reloadApp($scope.dataService.updateJobs, 10);
+		$scope.box.reloadApp($scope.dataService.updateJobs, 60 * 2);
 
 	}];
 

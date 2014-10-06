@@ -54,8 +54,8 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 
 	this.isValidJenkinsUrl = function(jenkinsUrl) {
 		that.jenkinsData.urlIsValid = false;
-		if(!this.isValidUrl(jenkinsUrl)) {
-			this.initialize();
+		if(!that.isValidUrl(jenkinsUrl)) {
+			that.initialize();
 		} else {
 			$http.get('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: 2000})
 			.success(function (data) {
@@ -69,7 +69,6 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 		}
 	};
 
-	// http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/api/json?depth=1&tree=views[name,url],jobs[name,url,color]
 	this.getJenkinsViewsAndJobs = function(jenkinsUrl){
 		that.jenkinsData.viewsAreLoading = true;
 		that.jenkinsData.jobsAreLoading = true;
@@ -85,7 +84,6 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 		});
 	};
 
-	// http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/view/Chameleon_53/api/json
 	this.getJenkinsJobsForView = function(viewUrl){
 		that.jenkinsData.jobsAreLoading = true;
 		$http.get('/api/get?url=' + encodeURIComponent(viewUrl + "/api/json"), {withCredentials: false, timeout: 10000})
@@ -146,8 +144,8 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 	}
 
 	this.updateJobs = function() {
-		for(var jobIndex in this.jobsToDisplay) {
-			updateJob(this.jobsToDisplay[jobIndex]);
+		for(var jobIndex in that.jobsToDisplay) {
+			updateJob(that.jobsToDisplay[jobIndex]);
 		}
 	};
 }]);
