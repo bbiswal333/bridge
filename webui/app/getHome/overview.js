@@ -33,7 +33,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		controller: directiveController,
 		link: function($scope) {
 
-			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig)) {
+			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig) && appGetHomeConfig.routes.length === 0) {
 				$scope.appConfig.map(function(configItem) {
 					var routeItem = JSON.parse(configItem);
 					appGetHomeConfig.addRouteFromConfig(routeItem);
