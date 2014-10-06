@@ -26,7 +26,6 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                       templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
                       size: 'lg'
                     });
-                        //$scope.toggleDragging();
                 };
 
                 $scope.weatherData = weatherData.getData();

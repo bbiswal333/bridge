@@ -4,7 +4,8 @@
 	<div ng-show="routes.length > 0"  style="width:390px; height:140px">
 		<div ng-repeat="route in routes | limitTo: 6" class="getHome-route-column hover" ng-class="{'green-80': (route.summary.trafficTime - route.summary.baseTime) / 60 <= 5,
 																					   'yellow-80': (route.summary.trafficTime - route.summary.baseTime) / 60 > 5 && (route.summary.trafficTime - route.summary.baseTime) / 60 <= 10,
-																					   'red-80': (route.summary.trafficTime - route.summary.baseTime) / 60 > 10}">
+																					   'red-80': (route.summary.trafficTime - route.summary.baseTime) / 60 > 10}"
+																					   ng-click="openRouteDetails(route)">
 			<div class="prio_box" style="color:white">
 				<p>{{route.name}}</p>
 			</div>
