@@ -1,5 +1,5 @@
 /*global nokia*/
-angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function ($q) {
+angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', function ($q, $http) {
 	var routeColors = ["#418AC9", "#8561C5", "#707070"];
 	var mode = {
 			fastest: {
@@ -48,25 +48,56 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 				deferred.resolve({error:true, message: observedRouter.getErrorCause().message});
 			}
 		});
-		//routingManager.calculateRoute(this.coordinatesToWaypoints([startCoords, destCoords]), [mode.enabled, mode.shortest]);
-		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastest]});
+		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastest], apiVersion: "7.2"});
 
 		return deferred.promise;
 	};
 
+	function getIncidents(route) {
+		var incidents = [];
+		route.getLinks().map(function(link) {
+			if(link.incident) {
+				link.incident.map(function(incident) {
+					if(incidents.indexOf(incident.text) === -1) {
+						incidents.push(incident.text);
+					}
+				});
+			}
+		});
+		return incidents;
+	}
+
 	this.rebuildRouteFromWaypoints = function(waypoints) {
 		var deferred = $q.defer();
 		var routingManager = new nokia.maps.advrouting.Manager();
+		var routingManagerIncidents = new nokia.maps.advrouting.Manager();
 
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
-				deferred.resolve(addColorToRoutes(observedRouter.getRoutes())[0]);
+
+
+				routingManagerIncidents.addObserver("state", function(observedRouter, incidentsKey, incidentsValue) {
+					if (incidentsValue === "finished") {
+						var route = addColorToRoutes(routingManager.getRoutes())[0];
+						route.incidents = getIncidents(routingManagerIncidents.getRoutes()[0]);
+						deferred.resolve(route);
+					}
+				});
+				routingManagerIncidents.calculateRoute({waypoints: waypoints, alternatives: 0, modes: [mode.fastestWithoutTraffic],
+					representationOptions: {
+						routeAttributes: ["wp","sc","sm","sh","bb","lg","no"],
+						legAttributes: ["wp","mn","li","le","tt"],
+						maneuverAttributes: ["po","sh","tt","le",
+		        			 "ti","li","pt","pl","eq","la","rn",
+		        			 "nr"
+		        		 ],
+						linkAttributes: ["ic"]}
+					});
 			} else if (value === "failed") {
 				deferred.reject();
 			}
 		});
-		//routingManager.calculateRoute(this.coordinatesToWaypoints([startCoords, destCoords]), [mode.enabled, mode.shortest]);
-		routingManager.calculateRoute({waypoints: waypoints, alternatives: 0, modes: [mode.fastestWithoutTraffic]});
+		routingManager.calculateRoute({waypoints: waypoints, alternatives: 0, modes: [mode.fastestWithoutTraffic], apiVersion: "7.2"});
 
 		return deferred.promise;
 	};
@@ -125,5 +156,11 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', function 
 	this.formatDistance = function(distance) {
 		var distanceInt = parseInt(distance, 10);
 		return (distanceInt / 1000).toFixed(1) + "km";
+	};
+
+	this.getTrafficIncidents = function(boundingBox) {
+		return $http.jsonp("https://route.nlp.nokia.com/traffic/6.0/incidents.json?app_id=TSCNwGZFblBU5DnJLAH8&app_code=OvJJVLXUQZGWHmYf1HZCFg&" +
+			"bbox=" + boundingBox.topLeft.latitude + "," + boundingBox.topLeft.longitude + ";" + boundingBox.bottomRight.latitude + "," + boundingBox.bottomRight.longitude +
+			"&jsoncallback=JSON_CALLBACK");
 	};
 }]);

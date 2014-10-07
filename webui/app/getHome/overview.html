@@ -10,7 +10,7 @@
 				<p>{{route.name}}</p>
 			</div>
 			<div class="prio_content_box" style="color: white">
-				<span style="font-size: 11px">{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})</span>
+				<span style="font-size: 11px">{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}}) <i bs-tooltip data-placement="bottom" data-content-template="app/getHome/incidents.html" data-title="{{route.originalRoute.incidents}}" class="fa fa-warning" ng-if="route.originalRoute.incidents.length > 0"></i></span>
 			</div>
 		</div>
 	</div>

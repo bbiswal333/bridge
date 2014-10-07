@@ -8,10 +8,17 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.
 			var waypoints = aWaypoints;
 			var that = this;
 
+			/*function getTrafficIncidents() {
+				mapService.getTrafficIncidents(that.originalRoute.shape.getBoundingBox()).then(function(incidentData) {
+					console.log(incidentData);
+				});
+			}*/
+
 			function getRouteInformation() {
 				mapService.rebuildRouteFromWaypoints(waypoints).then(function(routeData) {
 					that.summary = routeData.summary;
 					that.originalRoute = routeData;
+					//getTrafficIncidents();
 				});
 			}
 
