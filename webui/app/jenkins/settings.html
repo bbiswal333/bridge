@@ -5,7 +5,8 @@
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
 				<div style="width:95%">
-					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus/>
+					<!--<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus/>-->
+					<bridge.input style="float:left;" model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus></bridge.input>
 				</div>
 				<div styple="width:5%">
 					<i ng-if="dataService.jenkinsData.urlIsValid" class="fa fa-check"></i>

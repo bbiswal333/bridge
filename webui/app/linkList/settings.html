@@ -58,8 +58,9 @@
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>
-		</div>
+			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>
+		</div>-->
+		<bridge.input model="currentConfigValues.url" placeholder="URL"></bridge.input>
 	</div>
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
@@ -81,10 +82,12 @@
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.transaction" placeholder="Transaction" />
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.transaction" placeholder="Transaction" />-->
+			<bridge.input model="$parent.currentConfigValues.transaction" placeholder="Transaction"></bridge.input>
 		</div>
 		<div class="col-xs-6 no-padd">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.parameters" placeholder="Parameters" />
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.parameters" placeholder="Parameters" />-->
+			<bridge.input model="$parent.currentConfigValues.parameters" placeholder="Parameters"></bridge.input>
 		</div>
 	</div>
 

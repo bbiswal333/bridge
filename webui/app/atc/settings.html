@@ -3,13 +3,15 @@
 <form name="newConfigItemForm" class="atc_input">
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
-                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
+                 <!--<input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>-->
+                 <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus></bridge.input>
                  
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
-                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
+               <!-- <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>-->
+                 <bridge.input tyle="float:left;" model="currentConfigValues.devClass" placeholder="Package..."></bridge.input>
                 
             </div>
 
@@ -22,7 +24,9 @@
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">AKH Component</span>
-                <input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+                <!--<input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="AKH Component..."/>-->
+
+                <bridge.input tyle="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
 
             </div>  
 
