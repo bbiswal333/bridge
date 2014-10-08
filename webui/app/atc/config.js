@@ -101,7 +101,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
-              currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent;
+              currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent ? persistedConfig.configItems[configItem].softwareComponent : "";
 	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
 	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
 
