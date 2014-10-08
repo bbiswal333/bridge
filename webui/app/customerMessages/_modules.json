@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Service & Support"],
+		"categories"			:	["Service & Support", "Beta"],
 		"module_name"			:	"app.customerMessages",
 		"title"					:	"Cust. Incid.",
 		"icon_css"				:	"icon-comment",
