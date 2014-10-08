@@ -40,20 +40,18 @@
 		<div class="col-md-4">
 			<div class="row">
 				<div class="col-xs-11">
-					<div  style="position: relative; height: 40px" class="row">
-						<input type="text" style="position: absolute; padding-left: 35px" class="form-control form" ng-model="newRoute.start" placeholder="From" typeahead="location as location.address.label for location in searchAddress($viewValue)"/>
-						<span class="fa fa-map-marker" style="position: absolute; font-size: 22px; left: 10px; top: 3px"></span>
+					<div class="row" style="margin-top: 5px">
+						<bridge.input model="newRoute.start" placeholder="From" input-typeahead="location as location.address.label for location in searchAddress($viewValue)" icon="fa-map-marker"></bridge.input>
 					</div>
-					<div style="position: relative; height: 40px" class="row">
-						<input type="text" style="position: absolute; padding-left: 35px" class="form-control form" ng-model="newRoute.destination" placeholder="To" typeahead="location as location.address.label for location in searchAddress($viewValue)"/>
-						<span class="fa fa-bullseye" style="position: absolute; font-size: 22px; left: 7px; top: 3px"></span>
+					<div class="row" style="margin-top: 5px">
+						<bridge.input model="newRoute.destination" placeholder="To" input-typeahead="location as location.address.label for location in searchAddress($viewValue)" icon="fa-bullseye"></bridge.input>
 					</div>
 				</div>
 				<div class="col-xs-1">
 					<a ng-click="switchStartAndDestination()" style="cursor: pointer"><i class="fa fa-exchange" style="font-size: 20px; transform: rotate(90deg); position: absolute; top: 23px; left: 2px"></i></a>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" style="margin-top: 5px">
 				<div class="col-xs-2 settings_input" style="padding:6px 0 0 0;">
 					Route Name:
 				</div>

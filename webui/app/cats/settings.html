@@ -41,11 +41,9 @@
                 	<div class="row settings_input_row">
                 		<span class="col-md-4 settings_input settings_input_label">Description</span>
                 		<div class="col-md-8">
-		                	<input type="text"
-		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.DESCR" 
-		                		class="form-control form ng-pristine ng-valid" 
-		                		placeholder="Task Description">
+                			<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+		                		model="configService.selectedTask.DESCR"
+		                		placeholder="Task Description"></bridge.input>
                 		</div>
                 	</div>
 
@@ -53,12 +51,11 @@
                 		<span class="col-md-4 settings_input settings_input_label">Order</span>
                 		<div class="col-md-8">
                 			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.RAUFNR || "Order Number"}}</div>
-		                	<input type="text"
-		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.RAUFNR" 
-		                		class="form-control form ng-pristine ng-valid" 
+                			<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+		                		model="configService.selectedTask.RAUFNR"
 		                		placeholder="Order Number"
 		                		ng-show="configService.selectedTask.custom">
+                			</bridge.input>
 		            	</div>
                 	</div>
 
@@ -66,12 +63,10 @@
                 		<span class="col-md-4 settings_input settings_input_label">Project</span>
                 		<div class="col-md-8">    		
                 			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_EXTID || "Project Id"}}</div>
-		                	<input type="text"
-		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.ZCPR_EXTID" 
-		                		class="form-control form ng-pristine ng-valid" 
+                			<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+		                		model="configService.selectedTask.ZCPR_EXTID" 
 		                		placeholder="Project Id"
-		                		ng-show="configService.selectedTask.custom">
+		                		ng-show="configService.selectedTask.custom"></bridge.input>
                 		</div>
                 	</div>
 
@@ -81,13 +76,11 @@
                 		</span>
                 		<div class="col-md-8">	
                 			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
-		                	<input type="text"
-		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.ZCPR_OBJGEXTID" 
+                			<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+		                		model="configService.selectedTask.ZCPR_OBJGEXTID" 
 		                		ng-required="!configService.selectedTask.TASKTYPE"
-		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Task Id"
-		                		ng-show="configService.selectedTask.custom">
+		                		ng-show="configService.selectedTask.custom"></bridge.input>
 		            	</div>
                 	</div>
 
@@ -97,13 +90,11 @@
                 		</span>
                 		<div class="col-md-8">	
                 			<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
-		                	<input type="text"
-		                		ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
-		                		ng-model="configService.selectedTask.TASKTYPE"
+                			<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+		                		model="configService.selectedTask.TASKTYPE"
 		                		ng-required="!configService.selectedTask.ZCPR_OBJGEXTID"
-		                		class="form-control form ng-pristine ng-valid" 
 		                		placeholder="Task Type"
-		                		ng-show="configService.selectedTask.custom">
+		                		ng-show="configService.selectedTask.custom"></bridge.input>
 		            	</div>
                 	</div>
 
@@ -113,7 +104,6 @@
         					<div ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
                 			<div ng-show="configService.selectedTask.custom && !configService.selectedTask.id" ng-disabled="ConfigItemForm.$invalid" class="btn btn-primary btn_blue settings_add_task_button" ng-click="saveNewTask()">Save</div>
                 			<div ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>
-                			
 		            	</div>
                 	</div>
                 </div>

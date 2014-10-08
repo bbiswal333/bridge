@@ -6,9 +6,8 @@
 	  </ul>
 </script>
 
-<!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
-<input ng-if="setRequired" required class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="selectedEmployee" 
-    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" />
+<bridge.input ng-if="setRequired" required="true" placeholder="{{placeholder}}" model="selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>
     
-<input ng-if="!setRequired" class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)"  />    
+<bridge.input ng-if="!setRequired" placeholder="{{placeholder}}" model="$parent.selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>

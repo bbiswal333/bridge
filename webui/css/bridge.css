@@ -872,3 +872,8 @@ h3{
     transition:ease all 1s;
     background-color: rgba(0,0,0,0.3);
 }
+
+.bridge-input[disabled] {
+    background-color: #eee;
+    cursor: not-allowed;
+}
