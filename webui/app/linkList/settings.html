@@ -52,7 +52,8 @@
 <dev name="ConfigItemFormHyperlink" ng-show="addForm[selectedIndex] == 'web'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<input type="text" class="form-control form" ng-model="currentConfigValues.name" maxlength="40" placeholder="Name for the Link" autofocus />
+			<bridge.input model="currentConfigValues.name" placeholder="Name for the Link" maxlength="40"></bridge.input>
+			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.name" maxlength="40" placeholder="Name for the Link" autofocus />-->
 		</div>
 	</div>
 
@@ -73,10 +74,12 @@
 <dev name="ConfigItemFormSAPlink" ng-show="addForm[selectedIndex] == 'gui'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.name" maxlength="40" placeholder="Name for the SAP GUI Link" autofocus />
+			<bridge.input model="$parent.currentConfigValues.name" placeholder="Name for the SAP GUI Link" maxlength="40"></bridge.input>
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.name" maxlength="40" placeholder="Name for the SAP GUI Link" autofocus />-->
 		</div>
 		<div class="col-xs-6 no-padd">
-			<input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sid" placeholder="SAP System ID" />
+			<bridge.input model="$parent.currentConfigValues.sid" placeholder="SAP System ID"></bridge.input>
+			<!--<input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sid" placeholder="SAP System ID" />-->
 		</div>
 	</div>
 

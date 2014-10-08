@@ -10,7 +10,8 @@ angular.module('bridge.app').directive('bridge.input', function() {
             model: '=?',
             change: '=?',
             blur: '&',
-            focus: '&'
+            focus: '&',
+            maxlength: '@?'
         },
         link:function ($scope, element, attrs) {
 
