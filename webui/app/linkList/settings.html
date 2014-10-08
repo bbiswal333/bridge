@@ -49,7 +49,7 @@
 </div>
 
 <!--- ADD HYPERLINK -->
-<dev name="ConfigItemFormHyperlink" ng-show="addForm[selectedIndex] == 'web'">
+<div name="ConfigItemFormHyperlink" ng-show="addForm[selectedIndex] == 'web'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
 			<bridge.input model="currentConfigValues.name" placeholder="Name for the Link" maxlength="40"></bridge.input>
@@ -59,8 +59,8 @@
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>
-		</div>-->
+			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>-->
+		</div>
 		<bridge.input model="currentConfigValues.url" placeholder="URL"></bridge.input>
 	</div>
 	<div class="row app-linkList-tbMargin">
@@ -68,10 +68,10 @@
 			<span class="btn btn-default " ng-click="setAddForm(selectedIndex,'')">Cancel</span>
 		</div>
 	</div>
-</dev>
+</div>
 
 <!--- ADD SAP-LINK -->
-<dev name="ConfigItemFormSAPlink" ng-show="addForm[selectedIndex] == 'gui'">
+<div name="ConfigItemFormSAPlink" ng-show="addForm[selectedIndex] == 'gui'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
 			<bridge.input model="$parent.currentConfigValues.name" placeholder="Name for the SAP GUI Link" maxlength="40"></bridge.input>
@@ -99,7 +99,7 @@
 			<span class="btn btn-default" ng-click="setAddForm(selectedIndex,'')">Cancel</span>
 		</div>
 	</div>
-</dev>
+</div>
 
 
 <div class="row">
