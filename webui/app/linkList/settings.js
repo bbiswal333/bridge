@@ -1,6 +1,6 @@
 angular.module('app.linklist').appLinkListSettings =
-    ['app.linklist.configservice', '$scope', '$log',
-        function (appLinklistConfig, $scope, $log) {
+    ['app.linklist.configservice', '$scope', '$log', '$interval',
+        function (appLinklistConfig, $scope, $log, $interval) {
 
 	$scope.config  = appLinklistConfig;
 	$scope.selectedIndex = 0;
@@ -166,5 +166,12 @@ angular.module('app.linklist').appLinkListSettings =
 		$scope.currentConfigValues = {};
 		$scope.addForm[col] = 'web';
 		$scope.newEntry(col);
+		$interval(function() {
+			$("#scrollList" + col)[0].scrollTop = $("#scrollList" + col)[0].scrollHeight;
+		});
+	};
+
+	$scope.cancelAdd = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
 	};
 }];
