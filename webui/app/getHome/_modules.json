@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.getHome",
-		"title"					:	"Get Home",
+		"title"					:	"Beat the Traffic",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false,
