@@ -49,6 +49,7 @@ img {
 }
 
 .zoomOut {
+    -webkit-transform: scale(0.95);
     -moz-transform: scale(0.95);
     transform: scale(0.95);
     -webkit-transition: 0.1s ease-in;
