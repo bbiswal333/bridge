@@ -270,7 +270,7 @@
 }
 
 .selected_day{
-    background: ;
+    /*background: ;*/
     border: 3px solid #707070;
     color: #707070!important;
     font-weight: 600;
@@ -331,7 +331,7 @@
 .allocation-bar-dragBar-image {
     height: 80px;
     width: 50px;
-    margin-left: -21px;
+    margin-left: -6px;
     margin-top: -10px;
 }
 .allocation-bar-dragBar {
