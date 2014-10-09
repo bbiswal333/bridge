@@ -12,7 +12,8 @@
 				<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">
 					Which SAP-Connect Dial-in you want to dial-into via the Meeting App?
 				</div>
-				<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>
+				<bridge.input model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764" style="width:30%;margin-left:15px;margin-top:10px"></bridge.input>
+				<!--<input type="text" class="form-control form" style="width:30%;margin-left:15px;margin-top:10px" ng-model="currentConfigValues.sAPConnectPreferredDialin" placeholder="Type a dial-string like (please emit spaces): +4969222210764"/>-->
 			</div>
 			<div class="row" ng-if="client.os === 'darwin'">
 				<div class="col-xs-6 form_head" style="float:none; margin-top:20px;">

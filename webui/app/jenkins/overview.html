@@ -1,82 +1,14 @@
-﻿<div></div>
-<div ng-if="noJobSelected()">
+﻿<div ng-if="noJobSelected()">
 	No jobs selected.
 </div>
-
 <div  class="jobTable" style="overflow-y: auto">
 	<table>
-            <tr ng-repeat="job in jobsToDisplay | orderBy:'-lastBuild'">
-            	<td><a tooltip="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}" style="font-size:inherit!important;"></a></td>
+		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
+			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
 
-                <td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
-                <td style="padding-right: 5px;">{{job.timestamp}}</td>
-                <td><i tooltip="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)" style="font-size:inherit!important;"></i></td>
-            </tr>
+			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
+			<td style="padding-right: 5px;">{{job.timestamp}}</td>
+			<td><i bs-tooltip data-title="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
+		</tr>
 	</table>
 </div>
-<!--
-<div class="jobTilesContainer" ng-if="jobsToDisplay.length >= 9">
-
-    <div class="jobTilesBox">
-        <div class="jobTiles red" >
-            <i class="fa fa-times fa-4x" style="color:white;"></i>
-        </div>
-        <div class="jobTiles">
-            <b class="box-title">12</b>
-            <br>
-            <p>Failed</p>
-        </div>
-    </div>
-
-   <div class="jobTilesBox">
-        <div class="jobTiles yellow" >
-            <i class="fa fa-circle fa-4x" style="color:white;"></i>
-        </div>
-        <div class="jobTiles">
-            <b class="box-title">12</b>
-            <br>
-            <p>Unstable</p>
-        </div>
-    </div>
-
-    <div class="jobTilesBox">
-        <div class="jobTiles green" >
-            <i class="fa fa-check fa-4x" style="color:white;"></i>
-        </div>
-        <div class="jobTiles">
-            <b class="box-title">12</b>
-            <br>
-            <p>Success</p>
-        </div>
-    </div>
-
-    <div class="jobTilesBox">
-        <div class="jobTiles grey" >
-            <i class="fa fa-pause fa-4x" style="color:white;"></i>
-        </div>
-        <div class="jobTiles">
-            <b class="box-title">12</b>
-            <br>
-            <p>Deactivated</p>
-        </div>
-    </div>
-
-    <div class="jobTilesBox">
-        <div class="jobTiles purple" >
-            <i class="fa fa-play fa-4x" style="color:white;"></i>
-        </div>
-        <div class="jobTiles">
-            <b class="box-title">12</b>
-            <br>
-            <p>Running</p>
-        </div>
-    </div>
-
-</div>
--->
-
-
-</div>
-
-
-

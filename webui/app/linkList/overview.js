@@ -5,7 +5,9 @@ angular.module('app.linklist').directive('scrollBottom', function(){
         restrict: 'A',
         link: function(scope, element, attr){
             $(element).on("click", function(){
+/*eslint-disable no-undef*/
                 var $id = angular.element(document.querySelector('#' + attr.scrollBottom));
+/*eslint-enable no-undef*/
                 $id.scrollTop($id[0].scrollHeight + 50);
             });
         }

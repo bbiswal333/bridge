@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.githubMilestone",
 		"title"					:	"GitHub",
 		"icon_css"				:	"fa fa-github-alt",

@@ -1,11 +1,13 @@
 {
 	"app":
 	{
+		"categories"			:	["Beta"],
 		"module_name"			:	"app.getHome",
 		"title"					:	"Get Home",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false,
+		"beta"					:	true,
 		"routes"				:
 		[
 			{
@@ -15,6 +17,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "settings.js", "detail.js", "config.js", "map.js"],
+	"js_files" : ["overview.js", "settings.js", "config.js", "mapService.js", "routeFactory.js"],
 	"css_files" : ["style.css"]
 }

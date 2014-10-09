@@ -1,93 +1,45 @@
-﻿angular.module('app.getHome', []);
-angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', 'bridgeDataService', 'bridgeConfig', '$location', function (appGetHomeConfig, appGetHomeMap, bridgeDataService, bridgeConfig, $location) {
+﻿/*global nokia*/
+angular.module('app.getHome', []);
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', '$modal', '$interval', function (appGetHomeConfig, appGetHomeMap, $modal, $interval) {
 
 	var directiveController = ['$scope', function ($scope)
 	{
-		$scope.box.boxSize = "1";
+		$scope.box.boxSize = "2";
 		$scope.box.settingScreenData = {
 			templatePath: "getHome/settings.html",
 			controller: angular.module('app.getHome').appGetHomeSettings
-		};        
-		$scope.config = appGetHomeConfig;
+		};
+		$scope.formatTime = appGetHomeMap.formatTime;
+		$scope.formatDistance = appGetHomeMap.formatDistance;
+		$scope.routes = appGetHomeConfig.routes;
 
 		$scope.box.returnConfig = function () {
-			var configCopy = angular.copy(appGetHomeConfig.data);
-			 return configCopy;
+			return appGetHomeConfig.routes;
 		};
 
-		$scope.from = null;
-		$scope.to = null;
+		$scope.openRouteDetails = function(route) {
+            $modal.open({
+              templateUrl: 'app/getHome/detail.html',
+              controller: function($scope) {
+              	$scope.route = route;
+              	$scope.formatTime = appGetHomeMap.formatTime;
+              	$scope.formatDistance = appGetHomeMap.formatDistance;
 
-		var startCoord = null,
-			destCoord = null;
-
-		$scope.$watch('from', function(newValue, oldValue) {
-			if (newValue && newValue.name) {
-
-				if ($scope.to && newValue.name === $scope.to.name) {
-					$scope.to = oldValue;
-					$scope.config.data.toLocation = oldValue.name;
-				}
-
-				$scope.config.data.fromLocation = newValue.name;
-
-				if (newValue !== oldValue) {
-					bridgeConfig.persistInBackend(bridgeDataService);
-				}
-
-				if (startCoord == null || newValue !== oldValue) {
-					startCoord = new nokia.maps.geo.Coordinate(newValue.latitude, newValue.longitude);
-				}
-
-				recalculateRoute();
-			}
-		});
-
-		$scope.$watch('to', function(newValue, oldValue) {
-			if (newValue && newValue.name) {
-
-				if ($scope.from && newValue.name === $scope.from.name) {
-					$scope.from = oldValue;
-					$scope.config.data.fromLocation = oldValue.name;
-				}
-
-				$scope.config.data.toLocation = newValue.name;
-
-				if (newValue !== oldValue) {
-					bridgeConfig.persistInBackend(bridgeDataService);
-				}
-
-				if (destCoord == null || newValue !== oldValue) {
-					destCoord = new nokia.maps.geo.Coordinate(newValue.latitude, newValue.longitude);
-				}
-
-				recalculateRoute();
-			}
-		});
-
-		$scope.toDetail = function() {
-			$location.path("/detail/gethome/");
-		};
-
-		function recalculateRoute() {
-			if (startCoord && destCoord) {
-				appGetHomeMap.calculateRoute(startCoord, destCoord,
-					function (trafficTimeSeconds) {
-						$scope.$apply(function() {
-							$scope.traffic_time_string = appGetHomeMap.formatTime(trafficTimeSeconds);
-						});
-					}, function (result) {
-						$scope.$apply(function() {
-							console.log(result.percent);
-							$scope.time_style = result.percent > 30 ? "app-getHome-bad" :
-									result.percent > 10 ? "app-getHome-delayed" : "app-getHome-good";
-							$scope.delay_string = result.delay > 60 ? " (+" + appGetHomeMap.formatTime(result.delay) + ")" : "";
-						});
-				});
-			}
-		}
-
-		setInterval(recalculateRoute, 30000);
+              	$scope.initializeMap = function() {
+	              	var mapInstance = appGetHomeMap.createMap($('#app-getHome-detail-map')[0]);
+	              	var mapRoute = new nokia.maps.routing.component.RouteResultSet(route.originalRoute, {pen: {
+							lineWidth: 3,
+							lineJoin: 'round'
+						}}).container;
+					mapInstance.objects.add(mapRoute);
+					$interval(function() {
+						mapInstance.zoomTo(mapRoute.getBoundingBox(), false, "default");
+					}, 200, 1);
+              	};
+              },
+              size: 'lg'
+            });
+        };
 	}];
 
 	return {
@@ -96,42 +48,11 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		controller: directiveController,
 		link: function($scope) {
 
-			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig)) {
-				appGetHomeConfig.data = $scope.appConfig;
-
-				var fromLocation = null,
-					toLocation = null;
-
-				angular.forEach(appGetHomeConfig.data.locations, function(location, index) {
-					if (!fromLocation && location.name === appGetHomeConfig.data.fromLocation) {
-						fromLocation = location;
-					}
-					if (!toLocation && location.name === appGetHomeConfig.data.toLocation) {
-						toLocation = location;
-					}
+			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig) && appGetHomeConfig.routes.length === 0) {
+				$scope.appConfig.map(function(configItem) {
+					var routeItem = JSON.parse(configItem);
+					appGetHomeConfig.addRouteFromConfig(routeItem);
 				});
-
-				$scope.from = fromLocation;
-				$scope.to = toLocation;
-			} else {
-				// default config
-				appGetHomeConfig.data.locations.push({
-					name: "Work",
-					address: "Dietmar-Hopp-Allee, Walldorf",
-					latitude: 49.30289,
-					longitude: 8.64298
-				});
-				appGetHomeConfig.data.locations.push({
-					name: "Home",
-					address: "Kaiserstraße, Karlsruhe",
-					latitude: 49.009079,
-					longitude: 8.4165401
-				});
-				appGetHomeConfig.data.fromLocation = "Work";
-				appGetHomeConfig.data.toLocation = "Home";
-				$scope.appConfig = appGetHomeConfig.data;
-				$scope.from = appGetHomeConfig.data.locations[0];
-				$scope.to = appGetHomeConfig.data.locations[1];
 			}
 		}
 	};

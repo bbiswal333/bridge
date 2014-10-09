@@ -5,6 +5,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
             this.devClass = "";
             this.tadirResponsible = "";
             this.component = "";
+			this.softwareComponent = "";
             this.showSuppressed = false;
             this.displayPrio1 = true;
             this.displayPrio2 = true;
@@ -14,7 +15,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
         };
 
         this.isEmpty = function () {
-            if (this.srcSystem === "" && this.devClass === "" && this.tadirResponsible === "" && this.component === "") {
+            if (this.srcSystem === "" && this.devClass === "" && this.tadirResponsible === "" && this.component === "" && this.softwareComponent === "") {
                 return true;
             }
             else {
@@ -44,8 +45,8 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 		query += this.displayPrio2 ? "X;" : ";";
 		query += this.displayPrio3 ? "X;" : ";";
 		query += this.displayPrio4 ? "X;" : ";";
-		query += this.onlyInProcess ? "X" : "";
-
+		query += this.onlyInProcess ? "X;" : ";";
+		query += this.softwareComponent;
 		return query;
 	};
 
@@ -99,6 +100,7 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
+              	currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent ? persistedConfig.configItems[configItem].softwareComponent : "";
 	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
 	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
 

@@ -1,4 +1,4 @@
-angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http', '$window', function ($http, $window) {
+angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http', '$window', '$modal', function ($http, $window, $modal) {
     function getSearchName(username) {
         //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
         var searchname = username;
@@ -59,7 +59,16 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
     };
     this.getCallbackFn = function() {
         return function(selectedEmployee) {
-            $window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.model.BNAME);
+            that.getDetails(selectedEmployee.model, function(employeeDetails) {
+                $modal.open({
+                    templateUrl: 'bridge/controls/employeeInput/employeeDetails.html',
+                    controller: function($scope) {
+                        $scope.selectedEmployee = employeeDetails;
+                    },
+                    size: "sm"
+                });
+            });
+            /*$window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.model.BNAME);*/
         };
     };
 }]);

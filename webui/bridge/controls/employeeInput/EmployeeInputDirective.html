@@ -1,23 +1,4 @@
-﻿<!-- override the UI template for a found match -->
-<script id="bridge/controls/employeeInput/EmployeeItemTemplate.html" type="text/ng-template">
-    <div style="padding-left: 10px; padding-right: 10px">
-        <table>
-            <td>
-                <bridge.employee-picture employee-user="{{match.model.BNAME}}"></bridge.employee-picture>&nbsp&nbsp
-            </td>
-            <td>
-                <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
-                <span style="font-size: 13px">
-                    <i>
-                        {{match.model.KOSTX}}<br />            
-                    </i>
-                </span>
-            </td>
-        </div>
-    </div>
-</script>
-
-<script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
+﻿<script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
     <ul class="typeahead dropdown-menu" style="position:absolute;z-index:101" ng-style="{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}">
 	      <li ng-repeat="match in matches" ng-class="{customactive: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" style="line-height: 18px; margin-top: 4px; padding: 0px 3px 0px 3px;z-index:101;border-color: white">
 	          <typeahead-match index="$index" match="match" query="query" template-url="templateUrl" style="z-index:101"></typeahead-match>
@@ -25,9 +6,8 @@
 	  </ul>
 </script>
 
-<!-- ng-if creates a new scope so we have to bin ng-model against $parent.selectedEmployee to pass the employee to the EmployeeSearchDirective -->
-<input ng-if="setRequired" required class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="selectedEmployee" 
-    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)" />
+<bridge.input ng-if="setRequired" required="true" placeholder="{{placeholder}}" model="selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>
     
-<input ng-if="!setRequired" class="form-control form" type="text" placeholder="{{placeholder}}" ng-model="$parent.selectedEmployee" 
-    typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" typeahead-on-select="onSelect($item, $model, $label)"  />    
+<bridge.input ng-if="!setRequired" placeholder="{{placeholder}}" model="$parent.selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>

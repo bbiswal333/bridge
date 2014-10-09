@@ -7,7 +7,7 @@
         <div id="filter-bar">
             <div class="input-group app-cats-project-filter-input">
                 <!--<a href="https://isp.wdf.sap.corp/sap/bc/webdynpro/sap/zui_staffinglist" target="_blank">ISP staffing list</a>&nbsp&nbsp&nbsp&nbsp<a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Leave Request</a><br><br>-->
-                <input type="text" ng-keypress="onPressEnter($event)" id="filterTextfield" ng-model="filter.val" class="form-control form" placeholder="Type here to filter..." autofocus="autofocus">
+                <bridge.input ng-keypress="onPressEnter($event)" id="filterTextfield" model="filter.val" placeholder="Type here to filter..." autofocus="true"></bridge.input>
             </div>
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">

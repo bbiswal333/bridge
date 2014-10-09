@@ -209,7 +209,9 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                         {
                             lunchMenu.mainCourse = [];
                         }
-                        lunchMenu.mainCourse.push( date_menu[j].dishes[0] );
+                        if(date_menu[j].dishes[0] !== undefined) {
+                            lunchMenu.mainCourse.push( date_menu[j].dishes[0] );
+                        }
                     }
 
                 }

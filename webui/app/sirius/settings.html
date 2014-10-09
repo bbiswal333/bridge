@@ -24,15 +24,14 @@
                 <table>
                     <tr>
                         <th>
-                            <input id="searchProgram"
-                               class="form-control form "
-                               ng-model="$parent.$parent.searchString"
+                            <bridge.input id="searchProgram"
+                               model="$parent.$parent.searchString"
                                style="width:390px"
-                               type="text" placeholder={{SettingsProgramName}}
-                               typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
-                               typeahead-min-length="3"
-                               typeahead-wait-ms="200"
-                               typeahead-on-select="onSelect($item);resetFilter()"/>
+                               placeholder={{SettingsProgramName}}
+                               input-typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
+                               input-typeahead-min-length="3"
+                               input-typeahead-wait-ms="200"
+                               input-typeahead-on-select="onSelect($item);resetFilter()"></bridge.input>
                         </th>
                         <th>
                             <div class="btn-group" style="margin-top:-16px; margin-left: 30px" ng-if="showDelivery" ng-class="{disabled: firstdelivery}">

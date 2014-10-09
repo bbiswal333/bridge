@@ -25,7 +25,6 @@
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/bridgeColors.css" rel="stylesheet" />
     <link href="css/notificationStyles.css" rel="stylesheet" />
-    <link href="css/animation.css" rel="stylesheet" />
     <link href="css/bridgeCheckbox.css" rel="stylesheet" />
     <link href="css/bridgeInput.css" rel="stylesheet" />
     
@@ -68,8 +67,7 @@
     <script src="lib/jQueryUISortable.js"></script>
     <script src="lib/stacktracejs-140806/stacktrace.js"></script>
     <script src="lib/lodash-2_4_1/lodash.compat.min.js"></script>
-    <script src="lib/fileSaver-140822/fileSaver.js"></script>
-
+    <script src="lib/fileSaver-140822/fileSaver.js"></script>    
     
     <!-- sigma.js required for Jenkins dependancy graph -->
     <script src="lib/sigma-1_0_3/sigma.min.js"></script>
@@ -78,27 +76,25 @@
     <script src="lib/sigma-1_0_3/sigma.plugins.neighborhoods.js"></script>
     <script src="lib/sigma-1_0_3/sigma.canvas.edges.arrow.js"></script>
 
-    <script src="//js.api.here.com/ee/2.5.4/jsl.js" type="text/javascript" charset="utf-8"></script>
+    <script src="app/getHome/nokiaHere/jsl.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="//js.api.here.com/ee/2.5.4/jsl.js?with=all" type="text/javascript" charset="utf-8"></script>--><!--
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"
+            type="text/javascript" charset="utf-8"></script>-->
 
     <script src="loader.js"></script>   
-
-    
-    <script type="text/javascript">
-        var SpritzSettings = {
-        clientId: "",
-        redirectUri: window.location.origin
-     };
-     </script>
-     <script id="spritzjs" src="//sdk.spritzinc.com/js/1.2/js/spritz.min.js"></script>
 
     <title>Bridge</title>
 </head>
 
-<body class="noselect" style="overflow:auto">
+<body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed;" style="overflow:auto">
     <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <div>
             
-            <bridge.menubar ng-if="isTestInstance || isLocal"></bridge.menubar>
+            <bridge.menubar></bridge.menubar>
             
             <div>
                 <div ng-if="showLoadingBar" class="loadingBar">
@@ -112,7 +108,7 @@
                 </div>
                 <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
             </div>
-            <div id="main-container" ng-view class="mainContainer basic-blue-40">
+            <div id="main-container" ng-view class="mainContainer centeredContent">
             </div>
         </div>
     </div>

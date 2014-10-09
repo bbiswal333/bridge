@@ -1,10 +1,9 @@
 <div ng-controller="app.imtps.detailController" style="box-sizing:border-box;">    
     <div style="padding:30px;box-sizing:border-box;">                
 
-    	<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="float:left;margin-right:25px;" />			
-	
+    	<bridge.input model="filterText" placeholder="Filter.." style="float:left;margin-right:25px;"></bridge.input>	
         <div>
-        	<div infinitescroll>
+        	<div infinitescroll style="clear:both">
         	      
 	            <div class="row">
 		            <div class="box-title col-sm-3" ng-click="sort('PLAN_TITLE')">Test Plan

@@ -1,7 +1,6 @@
-<div ng-controller="app.getHome.detailCtrl">
-	<div id="app-getHome-detail-map" class="app-getHome-detail"></div>
+<div>
+	<div id="app-getHome-detail-map" class="app-getHome-detail" ng-init="initializeMap()"></div>
 	<div class="app-getHome-detail-legend">
-		<span class="app-getHome-detail-traffic">Route considering traffic: {{time_with_traffic}}</span>
-		<span class="app-getHome-detail-no-traffic">Route not considering traffic: {{time_without_traffic}}</span>
+		{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})
 	</div>
 </div>

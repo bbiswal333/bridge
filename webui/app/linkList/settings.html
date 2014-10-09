@@ -12,7 +12,7 @@
 					ng-class="{'grey-40':link.id === currentConfigValues.id}" 
 					ng-mouseover="isMouseOverRow = true" 
 					ng-mouseout="isMouseOverRow = false">
-						<div class="app-linkList-entry col-xs-10" ng-click="selectLink($index,link)">{{link.name}}</div>
+						<div class="app-linkList-entry col-xs-10" ng-click="selectLink($index,link)">{{link.name}}&nbsp;</div>
 
 						<div class="app-linklist-editIcons app-linklist-clickIcon col-xs-2" ng-show="isMouseOverRow">
 							<span ng-click="deleteEntry($parent.$index,link)" style="margin-right:0;top:0px;padding-top:10px;" class="fa fa-times"></span>
@@ -49,51 +49,57 @@
 </div>
 
 <!--- ADD HYPERLINK -->
-<dev name="ConfigItemFormHyperlink" ng-show="addForm[selectedIndex] == 'web'">
+<div name="ConfigItemFormHyperlink" ng-show="addForm[selectedIndex] == 'web'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<input type="text" class="form-control form" ng-model="currentConfigValues.name" maxlength="40" placeholder="Name for the Link" autofocus />
+			<bridge.input model="currentConfigValues.name" placeholder="Name for the Link" maxlength="40"></bridge.input>
+			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.name" maxlength="40" placeholder="Name for the Link" autofocus />-->
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>
+			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>-->
 		</div>
+		<bridge.input model="currentConfigValues.url" placeholder="URL"></bridge.input>
 	</div>
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<span class="btn btn-default " ng-click="setAddForm(selectedIndex,'')">Cancel</span>
+			<span class="btn btn-default " ng-click="cancelAdd()">Cancel</span>
 		</div>
 	</div>
-</dev>
+</div>
 
 <!--- ADD SAP-LINK -->
-<dev name="ConfigItemFormSAPlink" ng-show="addForm[selectedIndex] == 'gui'">
+<div name="ConfigItemFormSAPlink" ng-show="addForm[selectedIndex] == 'gui'">
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.name" maxlength="40" placeholder="Name for the SAP GUI Link" autofocus />
+			<bridge.input model="$parent.currentConfigValues.name" placeholder="Name for the SAP GUI Link" maxlength="40"></bridge.input>
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.name" maxlength="40" placeholder="Name for the SAP GUI Link" autofocus />-->
 		</div>
 		<div class="col-xs-6 no-padd">
-			<input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sid" placeholder="SAP System ID" />
+			<bridge.input model="$parent.currentConfigValues.sid" placeholder="SAP System ID"></bridge.input>
+			<!--<input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sid" placeholder="SAP System ID" />-->
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.transaction" placeholder="Transaction" />
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.transaction" placeholder="Transaction" />-->
+			<bridge.input model="$parent.currentConfigValues.transaction" placeholder="Transaction"></bridge.input>
 		</div>
 		<div class="col-xs-6 no-padd">
-			<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.parameters" placeholder="Parameters" />
+			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.parameters" placeholder="Parameters" />-->
+			<bridge.input model="$parent.currentConfigValues.parameters" placeholder="Parameters"></bridge.input>
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<span class="btn btn-default" ng-click="setAddForm(selectedIndex,'')">Cancel</span>
+			<span class="btn btn-default" ng-click="cancelAdd()">Cancel</span>
 		</div>
 	</div>
-</dev>
+</div>
 
 
 <div class="row">
