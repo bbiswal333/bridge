@@ -1,16 +1,14 @@
 ﻿
-<div style="width: 100%;height:450px; "> 
+<div style="width: 100%;height:500px; "> 
 <form name="newConfigItemForm" class="atc_input">
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
-                 <!--<input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>-->
                  <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus></bridge.input>
                  
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
-               <!-- <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>-->
                  <bridge.input style="float:left;" model="currentConfigValues.devClass" placeholder="Package..."></bridge.input>
                 
             </div>
@@ -24,11 +22,15 @@
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">AKH Component</span>
-                <!--<input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="AKH Component..."/>-->
-
                 <bridge.input style="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
 
-            </div>  
+            </div>
+
+            <div class="row" style="margin:15px 0 0 0;">
+                <span class="copy form_head">Software Component</span>
+                <bridge.input model="currentConfigValues.softwareComponent" placeholder="Software Component..."></bridge.input>
+
+            </div>  			
 
             <div class="row" style="margin:25px 0 0 0;">
                 <span ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>
@@ -56,6 +58,7 @@
                     <th>Package</th>
                     <th>Object Responsible</th>
                     <th>AKH Component</th>
+                    <th>Software Component</th>
                     <th>Display Suppressed</th>
                     <th>Ignore Completed</th>
                     <th>Priorities</th>
@@ -68,6 +71,7 @@
                     <td data-title="'Package'">{{configItem.devClass}}</td>
                     <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
                     <td data-title="'AKH Component'">{{configItem.component}}</td>
+					<td data-title="'Software Component'">{{configItem.softwareComponent}}</td>
                     <td data-title="'Display Suppressed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
