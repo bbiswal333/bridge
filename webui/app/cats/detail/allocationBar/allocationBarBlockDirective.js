@@ -24,7 +24,7 @@ function (colorUtils, blockCalculations, calUtils) {
             if ($scope.blockData.fixed) {
                 $scope.dragBarWidth = 0;
             } else {
-                $scope.dragBarWidth = 5;
+                $scope.dragBarWidth = 50;
             }
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
