@@ -1,5 +1,5 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews",
-    function($modal, weatherData, weatherConfig, newsService) {
+angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier",
+    function($modal, weatherData, weatherConfig, newsService, notifier) {
         return {
             restrict: "E",
             templateUrl: "bridge/menubar/MenuBar.html",
@@ -17,9 +17,21 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                 };
 
                 if (newsService.isInitialized === false){
-                    newsService.initialize();
+                    newsService.initialize().then(function() {
+                        if(newsService.existUnreadNews()) {
+                            var unreadNews = newsService.getUnreadNews();
+                            unreadNews.map(function(news) {
+                                notifier.showInfo(news.header, news.preview, "", function() {
+                                    newsService.modalInstance = $modal.open({
+                                        templateUrl: "bridge/menubar/news/newsDetail.html",
+                                        size: 'lg'
+                                    });
+                                });
+                            });
+                            newsService.markAllNewsAsRead();
+                        }
+                    });
                 }
-                $scope.existUnreadNews = newsService.existUnreadNews;
 
                 $scope.changeSelectedApps = function() {
                     $modal.open({
