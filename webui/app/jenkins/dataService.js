@@ -110,9 +110,10 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 			job.timestamp = "unknown";
 			$log.log("Could not GET last build info for job" + job.name + ", status: " + status);
 		});
-	}
+	};
 
 	function updateJob(job) {
+		var deferred = $q.defer();
 		job.name = job.selectedJob;
 		job.url = job.jenkinsUrl + "/job/" + job.name;
 		job.lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
@@ -138,14 +139,19 @@ angular.module('app.jenkins').service("app.jenkins.dataService", ["$http", "$q",
 			}else{
 				job.statusIcon = "fa-question";
 			}
+			deferred.resolve();
 		}).error(function(data,status) {
 			$log.log("Could not GET job " + job.name + ", status: " + status);
+			deferred.reject();
 		});
-	}
+		return deferred.promise;
+	};
 
 	this.updateJobs = function() {
+		var promisses = [];
 		for(var jobIndex in that.jobsToDisplay) {
-			updateJob(that.jobsToDisplay[jobIndex]);
+			promisses.push(updateJob(that.jobsToDisplay[jobIndex]));
 		}
+		return $q.all(promisses);
 	};
 }]);

@@ -1,14 +1,62 @@
 ﻿<div ng-if="noJobSelected()">
 	No jobs selected.
 </div>
-<div  class="jobTable" style="overflow-y: auto">
+<div ng-show="showJobs" class="completeDiv">
+<div class="leftSideDiv" style="border-"><i class="imageSize fa fa-arrow-left fa-2x" ng-click="showJobs=false;"></i></div>
+<div class="jobTable rightSideDiv" style="overflow-y: auto">
 	<table>
 		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
 			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
 
-			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
+			<td class="style" style="width: 200px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 28)}}</a></td>
 			<td style="padding-right: 5px;">{{job.timestamp}}</td>
 			<td><i bs-tooltip data-title="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
 		</tr>
 	</table>
+</div>
+</div>
+<div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
+    <div class="jobTilesBox">
+        <div class="jobTiles red" ng-click="displayJobs();">
+            <i class="fa fa-times fa-4x" style="color:white;"></i>
+        </div>
+        <div class="jobTiles">
+            <b class="box-title">{{redCount}}</b>
+            <br>
+            <p>Failed</p>
+        </div>
+    </div>
+
+   <div class="jobTilesBox">
+        <div class="jobTiles yellow" ng-click="displayJobs();">
+            <i class="fa fa-circle fa-4x" style="color:white;"></i>
+        </div>
+        <div class="jobTiles">
+            <b class="box-title">{{yellowCount}}</b>
+            <br>
+            <p>Unstable</p>
+        </div>
+    </div>
+
+    <div class="jobTilesBox">
+        <div class="jobTiles green" ng-click="displayJobs();">
+            <i class="fa fa-check fa-4x" style="color:white;"></i>
+        </div>
+        <div class="jobTiles">
+            <b class="box-title">{{greenCount}}</b>
+            <br>
+            <p>Success</p>
+        </div>
+    </div>
+
+    <div class="jobTilesBox">
+        <div class="jobTiles purple" ng-click="displayJobs();">
+            <i class="fa fa-play fa-4x" style="color:white;"></i>
+        </div>
+        <div class="jobTiles">
+            <b class="box-title">{{runningCount}}</b>
+            <br>
+            <p>Running</p>
+        </div>
+    </div> 
 </div>
