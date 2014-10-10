@@ -2,7 +2,7 @@
 	No jobs selected.
 </div>
 <div ng-show="showJobs" class="completeDiv">
-<div class="leftSideDiv" style="border-"><i class="changeCursor imageSize fa fa-arrow-left fa-2x" ng-click="showJobs=false;"></i></div>
+<div class="leftSideDiv hover" style="border-" ng-click="showJobs=false;"><i class="changeCursor imageSize fa fa-angle-left fa-2x"></i></div>
 <div class="jobTable rightSideDiv" style="overflow-y: auto">
 	<table>
 		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
@@ -16,46 +16,48 @@
 </div>
 <div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
     <div class="jobTilesBox">
-        <div class="jobTiles red changeCursor" ng-click="displayJobs();">
-            <i class="fa fa-times fa-4x" style="color:white;"></i>
+        <div class="jobTiles red-80 changeCursor" ng-click="displayJobs();">
+            <span style="color:white;font-size:5rem;">{{redCount}}</span>
         </div>
         <div class="jobTiles">
-            <b class="box-title">{{redCount}}</b>
             <br>
-            <p>Failed</p>
+            <p><i class="fa fa-times red-font-80"></i>   Failed</p>
         </div>
     </div>
 
    <div class="jobTilesBox">
-        <div class="jobTiles yellow changeCursor" ng-click="displayJobs();">
-            <i class="fa fa-circle fa-4x" style="color:white;"></i>
+        <div class="jobTiles yellow-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{yellowCount}}</span>
         </div>
         <div class="jobTiles">
-            <b class="box-title">{{yellowCount}}</b>
+ 
             <br>
-            <p>Unstable</p>
+            <p><i class="fa fa-circle yellow-font-80"></i>   Unstable</p>
         </div>
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles green changeCursor" ng-click="displayJobs();">
-            <i class="fa fa-check fa-4x" style="color:white;"></i>
+        <div class="jobTiles green-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{greenCount}}</span>
         </div>
         <div class="jobTiles">
-            <b class="box-title">{{greenCount}}</b>
+
             <br>
-            <p>Success</p>
+            <p><i class="fa fa-check green-font-80"></i>   Success</p>
         </div>
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles purple changeCursor" ng-click="displayJobs();">
-            <i class="fa fa-play fa-4x" style="color:white;"></i>
+        <div class="jobTiles purple-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{runningCount}}</span>
         </div>
         <div class="jobTiles">
-            <b class="box-title">{{runningCount}}</b>
+
             <br>
-            <p>Running</p>
+            <p><i class="fa fa-play purple-font-80"></i>   Running</p>
         </div>
     </div> 
 </div>
