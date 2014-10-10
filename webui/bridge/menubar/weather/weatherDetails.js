@@ -5,7 +5,7 @@
     $scope.preferencesText = "Show Preferences";
 
     $scope.preferences_click = function(){
-        $scope.showPreferences = !$scope.showPreferences
+        $scope.showPreferences = !$scope.showPreferences;
         if ($scope.showPreferences){
             $scope.preferencesText = "Hide Preferences";
         } else {
