@@ -1,7 +1,7 @@
-angular.module('app.jenkins', []);
-angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservice", "app.jenkins.dataService", function (jenkinsConfigService, jenkinsDataService) {
+angular.module("app.jenkins", []);
+angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", function (jenkinsConfigService, jenkinsDataService) {
 
-	var directiveController = ['$scope', function ($scope) {
+	var directiveController = ["$scope", function ($scope) {
 
 		$scope.box.boxSize = '2';
         $scope.showJobs = false;
@@ -17,7 +17,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 		$scope.box.settingsTitle = "Configure Jenkins URL";
 		$scope.box.settingScreenData = {
 			templatePath: "/jenkins/settings.html",
-			controller: angular.module('app.jenkins').appJenkinsSettings,
+			controller: angular.module("app.jenkins").appJenkinsSettings,
 			id: $scope.boxId
 		};
 
@@ -34,19 +34,6 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 		};
 
         $scope.displayJobs = function(color){
-            // var redIndex = 0 , yellowIndex = 0 , greenIndex = 0;
-            // for(var jobIndex in $scope.dataService.jobsToDisplay) {
-            //     if(color === $scope.dataService.jobsToDisplay[jobIndex].color) {
-            //         $scope.jobsToDisplayColor[redIndex] = $scope.dataService.jobsToDisplay[jobIndex];
-            //     } else if(color === $scope.dataService.jobsToDisplay[jobIndex].color) {
-            //         $scope.jobsToDisplayColor[yellowIndex] = $scope.dataService.jobsToDisplay[jobIndex];
-            //     } else if(color === $scope.dataService.jobsToDisplay[jobIndex].color) {
-            //         $scope.jobsToDisplayColor[greenIndex] = $scope.dataService.jobsToDisplay[jobIndex];
-            //     }
-            //     redIndex++;
-            //     yellowIndex++;
-            //     greenIndex++;
-            // }
             $scope.showJobs = true;
         };
 
@@ -87,7 +74,7 @@ angular.module('app.jenkins').directive('app.jenkins', ["app.jenkins.configservi
 
 	return {
 		restrict: 'E',
-		templateUrl: 'app/jenkins/overview.html',
+		templateUrl: "app/jenkins/overview.html",
 		controller: directiveController,
 		link: function ($scope) {
 

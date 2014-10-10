@@ -1,5 +1,5 @@
 /*jslint browser: true */ /*global sigma*/
-angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$http', '$location' , '$q',
+angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$http", "$location" , "$q",
     function ($scope, $http, $location, $q) {
 
     var dependancyGraph = {      nodes: [],
@@ -139,7 +139,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
     var getDownstreamJobs = function(url){
         var deferred = $q.defer();
-        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "api/json"), withCredentials: false })
+        $http({ method: "GET", url: "/api/get?url=" + encodeURIComponent(url + "api/json"), withCredentials: false })
             .success(function(result) {
                 getDependancyData(result).then(function(){
                     deferred.resolve();
@@ -162,7 +162,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
     var getJob = function(url){
         var deferred = $q.defer();
-        $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "/api/json"), withCredentials: false })
+        $http({ method: "GET", url: "/api/get?url=" + encodeURIComponent(url + "/api/json"), withCredentials: false })
             .success(function(result) {
                     parentJob = result;
                     findParentNodeJob(result).then(function(){
@@ -177,7 +177,7 @@ angular.module('app.jenkins').controller('app.jenkins.controller', ['$scope', '$
 
     $scope.detailJobView = function(url){
             $location.path("/detail/job/");
-            $http({ method: 'GET', url: '/api/get?url=' + encodeURIComponent(url + "/api/json"), withCredentials: false }).
+            $http({ method: "GET", url: "/api/get?url=" + encodeURIComponent(url + "/api/json"), withCredentials: false }).
                 success(function(data) {
                     if(data.upstreamProjects.length >= 1){
                         findParentNodeJob(data).then(function(){

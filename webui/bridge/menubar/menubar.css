@@ -44,9 +44,7 @@
   padding: 10px;
   text-align: left;
   background-color: #ffffff;
-  -webkit-box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
-  -moz-box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
-  box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
+  box-shadow:0 5px 10px rgba(0,0,0,.2);
 
   // Overrides for proper insertion
   white-space: normal;
@@ -71,6 +69,17 @@
   color:white;
 }
 
+.popover{
+  border-radius: 0;
+  border: none;
+}
+.popover.bottom{
+  margin-top: 0;
+  top:40px!important;
+}
+.popover.bottom > .arrow{
+  display: none!important;
+}
 /* ========================= *\
 |* ----- MEDIA QUERIES ----- *|
 \* ========================= */
