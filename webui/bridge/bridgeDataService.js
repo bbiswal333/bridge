@@ -73,7 +73,21 @@
             }
         }
 
+        function extractWeatherConfigFromOldWeatherAppIfAvailable(config) {
+            if(config.projects && config.projects.length > 0) {
+                var project = config.projects[0];
+                for(var i = 0, length = project.apps.length; i < length; i++) {
+                    if(project.apps[i].metadata.module_name === "app.weather") {
+                        this.bridgeSettings.weatherConfig = project.apps[i].appConfig;
+                    }
+                }
+            }
+        }
+
         function parseSettings(config) {
+            //take over weather from weather app
+            extractWeatherConfigFromOldWeatherAppIfAvailable(config);
+
             if (config.bridgeSettings) {
                 that.bridgeSettings = config.bridgeSettings;
             }
