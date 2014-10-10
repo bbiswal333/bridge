@@ -78,7 +78,7 @@
                 var project = config.projects[0];
                 for(var i = 0, length = project.apps.length; i < length; i++) {
                     if(project.apps[i].metadata.module_name === "app.weather") {
-                        this.bridgeSettings.weatherConfig = project.apps[i].appConfig;
+                        that.bridgeSettings.weatherConfig = project.apps[i].appConfig;
                     }
                 }
             }
