@@ -5,16 +5,15 @@
  * Utils
  */
 var siriusUtils = function () {
-    
-    this.adjustURLForRunningEnvironment=function(){
+    this.adjustURLForRunningEnvironment = function(){
         return 'https://ifp.wdf.sap.corp/zprs/json';
     };
 
-    this.DEV_SERVER_URL =function(){
+    this.DEV_SERVER_URL = function(){
         return 'https://ifp.wdf.sap.corp:443';
     };
 
-    this.OLD_PR_URL=function(){
+    this.OLD_PR_URL = function(){
         return this.DEV_SERVER_URL() + '/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
     };
 
@@ -24,13 +23,13 @@ var siriusUtils = function () {
     };
 
     this.createDate = function (dateString) {
-        var date;
+        var date = null;
         if (dateString === '0000-00-00' ) {
-            return date = null;
+            return date;
         } else {
             try {
                 date = new Date(dateString);
-                date=date.getDay()+"."+date.getMonth()+"."+date.getFullYear();
+                date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
 
             } catch (e) {
                 date = null;
@@ -43,6 +42,3 @@ var siriusUtils = function () {
 
 
 }();
-
-
-
