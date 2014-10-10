@@ -2,22 +2,21 @@
 	No jobs selected.
 </div>
 <div ng-show="showJobs" class="completeDiv">
-<div class="leftSideDiv" style="border-"><i class="imageSize fa fa-arrow-left fa-2x" ng-click="showJobs=false;"></i></div>
+<div class="leftSideDiv" style="border-"><i class="changeCursor imageSize fa fa-arrow-left fa-2x" ng-click="showJobs=false;"></i></div>
 <div class="jobTable rightSideDiv" style="overflow-y: auto">
 	<table>
 		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
 			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
-
 			<td class="style" style="width: 200px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 28)}}</a></td>
 			<td style="padding-right: 5px;">{{job.timestamp}}</td>
-			<td><i bs-tooltip data-title="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
+            <td><a title="View Dependancy" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
 		</tr>
 	</table>
 </div>
 </div>
 <div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
     <div class="jobTilesBox">
-        <div class="jobTiles red" ng-click="displayJobs();">
+        <div class="jobTiles red changeCursor" ng-click="displayJobs();">
             <i class="fa fa-times fa-4x" style="color:white;"></i>
         </div>
         <div class="jobTiles">
@@ -28,7 +27,7 @@
     </div>
 
    <div class="jobTilesBox">
-        <div class="jobTiles yellow" ng-click="displayJobs();">
+        <div class="jobTiles yellow changeCursor" ng-click="displayJobs();">
             <i class="fa fa-circle fa-4x" style="color:white;"></i>
         </div>
         <div class="jobTiles">
@@ -39,7 +38,7 @@
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles green" ng-click="displayJobs();">
+        <div class="jobTiles green changeCursor" ng-click="displayJobs();">
             <i class="fa fa-check fa-4x" style="color:white;"></i>
         </div>
         <div class="jobTiles">
@@ -50,7 +49,7 @@
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles purple" ng-click="displayJobs();">
+        <div class="jobTiles purple changeCursor" ng-click="displayJobs();">
             <i class="fa fa-play fa-4x" style="color:white;"></i>
         </div>
         <div class="jobTiles">
