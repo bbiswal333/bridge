@@ -3,7 +3,7 @@
 </div>
 <div ng-show="showJobs" class="completeDiv">
 <div class="leftSideDiv hover" style="border-" ng-click="showJobs=false;"><i class="changeCursor imageSize fa fa-angle-left fa-2x"></i></div>
-<div class="jobTable rightSideDiv" style="overflow-y: auto">
+<div class="jobTable rightSideDiv">
 	<table>
 		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
 			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
