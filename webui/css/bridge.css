@@ -876,3 +876,12 @@ h3{
     background-color: #eee;
     cursor: not-allowed;
 }
+
+/* ============= *\
+|      MODAL      |
+\* ============= */
+
+.modal-content{
+    border-radius: 0;
+    border:none;
+}
