@@ -40,12 +40,12 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
 $('body').on('mousedown', function (e) {
     $('[data-toggle="popover"]').each(function () {
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.menubar-popover').has(e.target).length === 0 && $('.menubar-popover').scope()) {
-            //$('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide(); });
+            $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide(); });
             $('.menubar-popover').scope().$hide();
         }
 
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0 && $('.popover').scope()) {
-            //$('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
+            $('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
             $('.popover').scope().$hide();
         }
     });

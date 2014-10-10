@@ -18,7 +18,6 @@
     padding-left: 8px;
     padding-right: 8px;
     box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-    border-top:  1px solid rgba(231, 231, 231, 1);
     width: 45px;
     cursor: pointer;                
     line-height: 1;    
@@ -39,12 +38,15 @@
 
 .menubar-popover {
   position: absolute;
+  right: 0px;
   z-index: 50;
   display: none;
   padding: 10px;
   text-align: left;
   background-color: #ffffff;
-  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
+  box-shadow: 3px 3px 5px 0px rgba(51,51,51,1);
 
   // Overrides for proper insertion
   white-space: normal;
@@ -56,8 +58,8 @@
   max-height: 500px;
 }
 .menubar-settings{
-  position: absolute;
-  right: 0;
+
+
 }
 
 .menubar-bridge-title {
