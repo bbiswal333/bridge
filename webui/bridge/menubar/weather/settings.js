@@ -2,15 +2,12 @@ angular.module('bridge.app').controller('bridge.menubar.weatherSettingsControlle
 {
 	$scope.currentConfigValues = weatherConfigService.getConfig();
 
+	$scope.$watch("currentConfigValues", function() {
+		weatherConfigService.setConfig($scope.currentConfigValues);
+	}, true);
+
 	$scope.searchLocation = function(searchString)
 	{
 		return bridgeBuildingSearch.searchLocation(searchString);
 	};
-
-	$scope.save_click = function ()
-	{
-		weatherConfigService.setConfig($scope.currentConfigValues);
-        $scope.$parent.$hide();
-    };
-
 }]);
