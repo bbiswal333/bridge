@@ -5,12 +5,17 @@
  * Utils
  */
 var siriusUtils = function () {
+
     this.adjustURLForRunningEnvironment = function(){
         return 'https://ifp.wdf.sap.corp/zprs/json';
     };
 
+    this.adjustURLForExternalSiriusApp = function(){
+        return 'https://ifp.wdf.sap.corp/prs';
+    };
+
     this.DEV_SERVER_URL = function(){
-        return 'https://ifp.wdf.sap.corp:443';
+        return 'https://ifd.wdf.sap.corp:443';
     };
 
     this.OLD_PR_URL = function(){
@@ -39,6 +44,4 @@ var siriusUtils = function () {
     };
 
     return this;
-
-
 }();
