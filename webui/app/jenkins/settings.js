@@ -1,7 +1,7 @@
 angular.module('app.jenkins').appJenkinsSettings =
-['$filter', 'ngTableParams', '$scope', "app.jenkins.configservice", "app.jenkins.dataService",
+['$filter', 'ngTableParams', '$scope', "$route", "app.jenkins.configservice", "app.jenkins.dataService",
 
-	function ($filter, ngTableParams, $scope, jenkinsConfigService, jenkinsDataService) {
+	function ($filter, ngTableParams, $scope, $route, jenkinsConfigService, jenkinsDataService) {
 
 		$scope.config = jenkinsConfigService;
 		$scope.currentConfigValues = jenkinsConfigService.configItem;
@@ -9,6 +9,7 @@ angular.module('app.jenkins').appJenkinsSettings =
 
 		$scope.save_click = function() {
 			$scope.$emit('closeSettingsScreen');
+			$route.reload();
 		};
 
 		$scope.$watch('config', function () {

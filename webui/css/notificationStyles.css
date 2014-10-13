@@ -54,8 +54,6 @@
 }
 
 .notification .content{
-    min-height: 125px;
-    max-height: 125px;
     overflow: hidden;
   -webkit-flex: 3;
   flex: 3;

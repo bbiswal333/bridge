@@ -3,12 +3,10 @@
                 "menubarDirective.js",
                 "github/bridgeGithubController.js",
                 "notification/bridgeNotificationsController.js",
-                "news/bridgeNewsController.js",
                 "news/bridgeNewsService.js",
                 "download/bridgeDownloadController.js",
                 "download/bridgeDownloadService.js",
                 "applications/bridgeApplicationsController.js",
-                "news/bridgeNewsController.js",
                 "news/bridgeNewsService.js",
                 "news/newsDetailsController.js"
 	],

@@ -1,28 +1,12 @@
 {
 	"news": [
-		{
-			"id":		-99,
-			"header": 	"header0",
-			"preview": 	"preview0", 
-			"snapURL": 	"bridge/menubar/news/image/snap02.png",
-			"content": 	"content00fghjfgnusfgdfunfgunsfgnubsusnznuzub",
-			"img1": 	"bridge/menubar/news/image/snap02.png",
-			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
-		},
-		{
-            "id":       -98,
-			"header":   "header1",
-			"preview":  "preview1",
-			"snapURL":  "bridge/menubar/news/image/snap02.png",
-			"content":  "content01",
-			"img1":     "bridge/menubar/news/image/snap02.png",
-			"gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
-		},
         {
-            "id":       -97,
-            "header":   "New News",
-            "preview":  "Incredible Change",
-            "content":  "I am <br> html"
+            "id":       1,
+            "header":   "New Design for Bridge",
+            "date": "2014-10-10",
+            "snapURL": 	"bridge/menubar/news/image/newDesignSnap.png",
+            "preview":  "Bridge was launched in a new design and with new features.",
+            "content":  "We're excited to announce the new design for bridge. With over 5000 unique visitors per months we are now gaining momentum and hereby would like to thank all of you for your great support, feedback and contributions.<br /><br /><ul><li>Drag and Drop Applications: It is now easily possible to change the sequence of your apps by just using drag and drop on the header section of each application.</li><li>Unified Search: We were able to remove some applications by introducing a generic search with a number of search providers to find relevant inforamtion accross various information sources.</li><li>New Menu Bar: The new design comes with a new menubar with a more structured look and feel. We also made the interactions more consitent.</li><li>Application Categories: Applications are now structured in categories to be able to find them more quickly.</li></ul><br />Along with the overall changes, we have also improved individual applications:<ul><li>Links: Drag and drop events on the settings screen are improved and it is now also possible to drag urls into that screen directly.</li><li>CAT2: Stability improvements and bug fixes.</li><li>Jenkins: Major performance improvements, handling of data loading events, bug fixes, a new overview layout and display of job dependencies.</li></ul>"
         }
 	]
 }

@@ -79,17 +79,11 @@
     width: 150px;
 }
 .sidebar-news-header{
-    position: relative;
-    left: 300px;
-    width: 70%;
 }
 .sidebar-news-githubIcon{
-    position: absolute;
-    top: 250px;
     width: 150px;
     display: block;
     text-align: center;
-    left: 95px;
 }
 .sidebar-news-githubIcon:hover i{
     color:#418AC9;
@@ -113,7 +107,4 @@
 }
 
 .sidebar-news-headline {
-    position: absolute;
-    top: 55px;
-    left: 325px;
 }

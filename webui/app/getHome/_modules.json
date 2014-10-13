@@ -8,6 +8,7 @@
 		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false,
 		"beta"					:	true,
+		"beta_users"			: 	["D049677", "D051804", "D050049", "D023269", "D028685"],
 		"routes"				:
 		[
 			{

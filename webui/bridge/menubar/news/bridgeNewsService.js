@@ -31,4 +31,41 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 
         return false;
     };
 
+    this.getUnreadNews = function(){
+        var readNews = bridgeDataService.getBridgeSettings().readNews;
+        var unreadNews = [];
+
+        for (var i = 0; i < that.news.data.length; i++){
+            if (!_.contains(readNews, that.news.data[i].id)){
+                unreadNews.push(that.news.data[i]);
+            }
+        }
+
+        return unreadNews;
+    };
+
+    this.markAllNewsAsRead = function() {
+        var bridgeSettings = bridgeDataService.getBridgeSettings();
+
+        if (bridgeSettings.readNews === undefined){
+            bridgeSettings.readNews = [];
+        } else {
+            bridgeSettings.readNews.length = 0;
+        }
+
+        for (var i = 0; i < this.news.data.length; i++){
+            bridgeSettings.readNews.push(this.news.data[i].id);
+        }
+    };
+
+    this.markItemAsRead = function(newsItem) {
+        var bridgeSettings = bridgeDataService.getBridgeSettings();
+
+        if (bridgeSettings.readNews === undefined) {
+            bridgeSettings.readNews = [];
+        }
+
+        bridgeSettings.readNews.push(newsItem.id);
+    };
+
 }]);

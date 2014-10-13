@@ -1,14 +1,63 @@
 ﻿<div ng-if="noJobSelected()">
 	No jobs selected.
 </div>
-<div  class="jobTable" style="overflow-y: auto">
-	<table>
-		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
-			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
+<div ng-show="showJobs" class="completeDiv">
+<div class="leftSideDiv hover" style="border-" ng-click="showJobs=false;"><i class="changeCursor imageSize fa fa-angle-left fa-2x"></i></div>
+    <div class="jobTable rightSideDiv" style="margin-top: 5px;margin-right: 12px;overflow-y: auto">
+    	<table>
+    		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
+    			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
+    			<td class="style" style="width: 200px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 28)}}</a></td>
+    			<td style="padding-right: 5px;">{{job.timestamp}}</td>
+                <td><a title="View Dependancy" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
+    		</tr>
+    	</table>
+    </div>
+</div>
+<div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
+    <div class="jobTilesBox">
+        <div class="jobTiles red-80 changeCursor" ng-click="displayJobs();">
+            <span style="color:white;font-size:5rem;">{{redCount}}</span>
+        </div>
+        <div class="jobTiles">
+            <br>
+            <p><i class="fa fa-times red-font-80"></i>   Failed</p>
+        </div>
+    </div>
 
-			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
-			<td style="padding-right: 5px;">{{job.timestamp}}</td>
-			<td><i bs-tooltip data-title="View Dependancy" class="fa fa-sitemap" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></i></td>
-		</tr>
-	</table>
+   <div class="jobTilesBox">
+        <div class="jobTiles yellow-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{yellowCount}}</span>
+        </div>
+        <div class="jobTiles">
+ 
+            <br>
+            <p><i class="fa fa-circle yellow-font-80"></i>   Unstable</p>
+        </div>
+    </div>
+
+    <div class="jobTilesBox">
+        <div class="jobTiles green-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{greenCount}}</span>
+        </div>
+        <div class="jobTiles">
+
+            <br>
+            <p><i class="fa fa-check green-font-80"></i>   Success</p>
+        </div>
+    </div>
+
+    <div class="jobTilesBox">
+        <div class="jobTiles purple-80 changeCursor" ng-click="displayJobs();">
+
+             <span style="color:white;font-size:5rem;">{{runningCount}}</span>
+        </div>
+        <div class="jobTiles">
+
+            <br>
+            <p><i class="fa fa-play purple-font-80"></i>   Running</p>
+        </div>
+    </div> 
 </div>

@@ -116,7 +116,6 @@ img {
     margin-top: 15px;
 }
 .noselect {
-    -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -126,11 +125,10 @@ img {
 }
 
 .select {
-    -webkit-touch-callout: auto;
     -webkit-user-select: auto;
     -khtml-user-select: auto;
     -moz-user-select: auto;
-    -ms-user-select: auto;
+    -ms-user-select: text;
     user-select: auto;
     cursor:auto;  
 }
@@ -877,4 +875,13 @@ h3{
 .bridge-input[disabled] {
     background-color: #eee;
     cursor: not-allowed;
+}
+
+/* ============= *\
+|      MODAL      |
+\* ============= */
+
+.modal-content{
+    border-radius: 0;
+    border:none;
 }

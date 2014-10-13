@@ -27,7 +27,7 @@
   </div>
   <div class="allNotifications" ng-if="notifications.length > 0" ng-repeat="notification in notifications track by $index" ng-init="hasExternalURL = containsExternalURL(notification)">
     <div class="notification notificationState-{{notification.state}} underline" ng-click="updateStatus(notification, 'read')"> <!--todo use state instead of-->
-      <div class="sender">
+      <div class="sender" ng-if="getNameOf(notification) != ''">
         <span title="app">{{getNameOf(notification)}}</span>
         <span class="settingsIcon {{getIconOf(notification)}}"></span> <!--todo placeholder for actuall icon-->
       </div>
