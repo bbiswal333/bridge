@@ -5,8 +5,13 @@
  * Utils
  */
 var siriusUtils = function () {
+
     this.adjustURLForRunningEnvironment = function(){
-        return 'https://ifd.wdf.sap.corp/zprs/json';
+        return 'https://ifp.wdf.sap.corp/zprs/json';
+    };
+
+    this.adjustURLForExternalSiriusApp = function(){
+        return 'https://ifp.wdf.sap.corp/prs';
     };
 
     this.DEV_SERVER_URL = function(){
@@ -39,6 +44,4 @@ var siriusUtils = function () {
     };
 
     return this;
-
-
 }();

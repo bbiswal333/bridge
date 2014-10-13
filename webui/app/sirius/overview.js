@@ -10,6 +10,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         var _init = function () {
             $scope.tasks = [];
             $scope.showGrid = false;
+            $scope.siriusAppURL = siriusUtils.adjustURLForExternalSiriusApp();
             $scope.program = new siriusUtils.SiriusObject();
             $scope.programLeads = [];
             $scope.programLeadsString = "";
