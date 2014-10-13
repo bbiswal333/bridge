@@ -76,7 +76,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         $scope.getTasks = function () {
             $scope.emptyTask = false;
             if ($scope.configService.tasks.programGUID && $scope.configService.tasks.deliveryID) {
-                $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.configService.tasks.programGUID + '/delivery/' + $scope.configService.tasks.deliveryID + '/task?sap-language=en').
+                $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.configService.tasks.programGUID + '/delivery/' + $scope.configService.tasks.deliveryID + '/task?sap-language=en&readonly=X').
                     then(function (response) {
                         if (response.data.data.length == 0) {
                             $scope.emptyTask = true;
@@ -201,7 +201,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         // get data of program lead
         var _loadProgramLeadData = function ($item) {
             $scope.ProgramGUIDSirius = $item.GUID;
-            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/role?sap-language=en&roleType=PROGRAM_LEAD').then(function (response) {
+            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/role?sap-language=en&roleType=PROGRAM_LEAD&readonly=X').then(function (response) {
                 $scope.programLeads = [];
 
                 response.data.data.forEach(function (programLead) {
@@ -211,7 +211,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         };
 
         var _getUser4UI = function (userID) {
-            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en').then(function (response) {
+            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en&readonly=X').then(function (response) {
                 $scope.programLeads.push(response.data.data);
                 return response.data.data;
             }).then(function () {
@@ -226,7 +226,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         // get data of program lead
         var _loadProgramDetailsData = function ($item) {
             if (!$item.IS_OLD_PROGRAM) {
-                return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '?sap-language=en').then(function (response) {
+                return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '?sap-language=en&readonly=X').then(function (response) {
                     $scope.program.WORKING_STATE = response.data.data.WORKING_STATE;
                     var a = $scope.program.WORKING_STATE.KEY_MESSAGE;
                 }).then(function () {

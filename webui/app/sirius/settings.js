@@ -11,7 +11,7 @@ angular.module('app.sirius').appSiriusSettings =
 
     //load Program with given Program ID
     var _loadProgram = function (programGUID, doAfterLoad) {
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID+'?sap-language=en').then(function (response) {
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID+'?sap-language=en&readonly=X').then(function (response) {
             var program = [];
             program.GUID = response.data.data.WORKING_STATE.GUID;
             $scope.SettingsProgramName = response.data.data.WORKING_STATE.PROGRAM_NAME;
@@ -89,7 +89,7 @@ angular.module('app.sirius').appSiriusSettings =
     });
 
     var _getOwnUser = function(){
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user?sap-language=en').then(function(response){
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user?sap-language=en&readonly=X').then(function(response){
             $scope.user = response.data.data;
             return response.data.data;
 
@@ -108,7 +108,7 @@ angular.module('app.sirius').appSiriusSettings =
     _init();
 
     var _getDeliveries = function($item, doAfterLoad) {
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/delivery?sap-language=en').then(function (response) {
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/delivery?sap-language=en&readonly=X').then(function (response) {
             $scope.programGUID = $item.GUID;
             $scope.deliveries = response.data.data;
             $scope.firstdelivery = _dummyDelivery().WORKING_STATE;
@@ -133,7 +133,7 @@ angular.module('app.sirius').appSiriusSettings =
     //get the Taks for given delivery
     $scope.getTasks = function(item) {
         $scope.firstdelivery= item.WORKING_STATE;
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.programGUID + '/delivery/'+item.WORKING_STATE.GUID+'/task?sap-language=en').
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.programGUID + '/delivery/'+item.WORKING_STATE.GUID+'/task?sap-language=en&readonly=X').
             then(function (response) {
             siriusConfigService.tasks.programGUID = $scope.programGUID;
             $scope.deliveryID = item.WORKING_STATE.GUID;
@@ -142,7 +142,7 @@ angular.module('app.sirius').appSiriusSettings =
             $scope.tasks = response.data.data;
             $scope.tasks.forEach(function(task){
                 if (task.WORKING_STATE.USER_ID !== "") {
-                    $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + task.WORKING_STATE.USER_ID + '?sap-language=en').then(function (user) {
+                    $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + task.WORKING_STATE.USER_ID + '?sap-language=en&readonly=X').then(function (user) {
                             _updateUserInformation(task, user.data.data);
                         }
                     );
