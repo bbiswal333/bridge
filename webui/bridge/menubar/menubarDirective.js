@@ -41,10 +41,6 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                 };
 
                 $scope.weatherData = weatherData.getData();
-                $scope.weatherConfig = weatherConfig.getConfig();
-                $scope.$watch('weatherConfig', function() {
-                    weatherData.loadData();
-                }, true);
             }
         };
 }]);

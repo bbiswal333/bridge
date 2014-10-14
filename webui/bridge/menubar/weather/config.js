@@ -2,41 +2,29 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 {
 	var that = this;
 
-	//default value
 	var configItem =
 	{
 		fahrenheit : false,
-		location:
-		{
-			name: "Walldorf",
-			latitude: 49.293351,
-			longitude: 8.641992
-		}
+		location: {}
 	};
 
-	var deferred = $q.defer();
-	bridgeDataService.initialize(deferred).then(function() {
-		if(bridgeDataService.getBridgeSettings().weatherConfig) {
-			that.setConfig(bridgeDataService.getBridgeSettings().weatherConfig);
-		}
-	});
-
-	//initialization method
-	this.init = function()
-	{
+	this.initialize = function() {
+		var dataServiceDeferred = $q.defer();
 		var deferred = $q.defer();
-		var building = "WDF01";
-		if (typeof bridgeDataService.getUserInfo() !== "undefined")
-		{
-			building = bridgeDataService.getUserInfo().BUILDING;
-		}
-		bridgeBuildingSearch.searchLocationbyBuilding(building).then(function (result)
-		{
-			if(result !== undefined)
-			{
-				configItem.location = result;
+		bridgeDataService.initialize(dataServiceDeferred).then(function() {
+			if(bridgeDataService.getBridgeSettings().weatherConfig) {
+				that.setConfig(bridgeDataService.getBridgeSettings().weatherConfig);
+				deferred.resolve();
+			} else {
+				var building = "WDF01";
+				bridgeBuildingSearch.searchLocationbyBuilding(building).then(function(result) {
+					if(result !== undefined)
+					{
+						configItem.location = result;
+					}
+					deferred.resolve();
+				});
 			}
-			deferred.resolve();
 		});
 		return deferred.promise;
 	};
