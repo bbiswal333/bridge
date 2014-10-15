@@ -1,4 +1,4 @@
-angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bridge.menubar.weather.configservice", "lib.utils.calUtils", "bridgeDataService", "$http", "$interval", function(weatherConfig, calUtils, bridgeDataService, $http, $interval) {
+angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bridge.menubar.weather.configservice", "lib.utils.calUtils", "bridgeDataService", "$http", "$interval", "bridgeBuildingSearch", function(weatherConfig, calUtils, bridgeDataService, $http, $interval, bridgeBuildingSearch) {
     var data = {};
 
     function checkWeatherConditionClouds (clouds){
@@ -143,14 +143,27 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
         });
     }
 
-    function loadData() {
-        if(weatherConfig.getConfig().location !== undefined && weatherConfig.getConfig().location.name !== undefined)
+    function loadDataForLocation(location) {
+        if(location !== undefined && location.name !== undefined)
         {
-            data.city_name = weatherConfig.getConfig().location.name;
+            data.city_name = location.name;
             data.fahrenheit = weatherConfig.getConfig().fahrenheit;
-            setPosition(weatherConfig.getConfig().location);
+            setPosition(location);
             getWeather(data);
             getForcast();
+        }
+    }
+
+    function loadData() {
+        var location = weatherConfig.getConfig().location;
+
+        if(typeof location === "string") {
+            bridgeBuildingSearch.searchLocation(location).then(function(locations) {
+                location = locations[0];
+                loadDataForLocation(location);
+            });
+        } else {
+            loadDataForLocation(location);
         }
     }
     this.loadData = loadData;
@@ -158,6 +171,8 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
         return data;
     };
 
-    loadData();
-    $interval(loadData, 60000 * 5);
+    weatherConfig.initialize().then(function() {
+        loadData();
+        $interval(loadData, 60000 * 5);
+    });
 }]);

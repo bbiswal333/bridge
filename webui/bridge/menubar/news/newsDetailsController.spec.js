@@ -1,10 +1,10 @@
 describe("The newsDetailsController", function() {
     var $rootScope,
-        closeCalled = false,
+        //closeCalled = false,
         newsServiceMock = {
             modalInstance: {
                 close: function(){
-                    closeCalled = true;
+                    //closeCalled = true;
                 }
             }
         };
@@ -20,4 +20,5 @@ describe("The newsDetailsController", function() {
             });
         }]);
     });
+
 });

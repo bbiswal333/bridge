@@ -131,6 +131,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.newEntry = function(colNo)
 	{
+		$scope.editLink = false;
 		updateEntry(colNo);
 		appLinklistConfig.data.listCollection[colNo].push($scope.currentConfigValues);
 	};
@@ -148,9 +149,13 @@ angular.module('app.linklist').appLinkListSettings =
 		}
 	}
 
+	var oldValue;
+
 	$scope.selectLink = function(col, link){
+		$scope.editLink = true;
 		validateLink();
 		$scope.selectedIndex = col;
+		oldValue = angular.copy(link);
 		$scope.currentConfigValues = link;
 		if ($scope.currentConfigValues.type === 'hyperlink') {
 			$scope.addForm[col] = 'web';
@@ -167,11 +172,22 @@ angular.module('app.linklist').appLinkListSettings =
 		$scope.addForm[col] = 'web';
 		$scope.newEntry(col);
 		$interval(function() {
-			$("#scrollList" + col)[0].scrollTop = $("#scrollList" + col)[0].scrollHeight;
+			var container = $("#scrollList" + col)[0];
+			if(container) {
+				container.scrollTop = container.scrollHeight;
+			}
 		});
 	};
 
 	$scope.cancelAdd = function() {
 		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex].splice(index, 1);
+	};
+
+	$scope.cancelEdit = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex][index] = oldValue;
 	};
 }];

@@ -110,7 +110,7 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			job.timestamp = "unknown";
 			$log.log("Could not GET last build info for job" + job.name + ", status: " + status);
 		});
-	};
+	}
 
 	function updateJob(job) {
 		var deferred = $q.defer();
@@ -145,7 +145,7 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			deferred.reject();
 		});
 		return deferred.promise;
-	};
+	}
 
 	this.updateJobs = function() {
 		var promisses = [];
