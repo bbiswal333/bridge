@@ -6,6 +6,16 @@ var app = angular.module("app.sirius", ["app.sirius.siriusDirectives"])
     }]);
 app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterConstants", '$filter', '$window', function (siriusConfigService, taskFilterConstants, $filter, $window) {
 
+    //get the settings and set it in siriusConfigService
+    var _setConfigService = function ($scope) {
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
+            siriusConfigService.tasks = $scope.appConfig.tasks;
+
+        } else {
+            $scope.appConfig.tasks = siriusConfigService.tasks;
+        }
+    };
+
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         var _init = function () {
             $scope.tasks = [];
@@ -124,7 +134,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
              }
             return result_url
                 .replace(/protocol\:/g, window.location.protocol)
-                .replace(/host/g, window.location.host);
+                .replace(/host/g, siriusUtils.PROD_SERVER_HOST());
         };
 
         //map the Task-status from Backend to display on Front end
@@ -274,16 +284,6 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         _init();
     }];
 
-    //get the settings and set it in siriusConfigService
-    var _setConfigService = function ($scope) {
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
-            siriusConfigService.tasks = $scope.appConfig.tasks;
-
-        } else {
-            $scope.appConfig.tasks = siriusConfigService.tasks;
-        }
-    };
-
     return {
         restrict: 'E',
         templateUrl: 'app/sirius/overview.html',
@@ -300,4 +300,5 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             $scope.box.boxSize = siriusConfigService.configItem.boxSize;
         }
     };
+
 }]);
