@@ -6,6 +6,16 @@ var app = angular.module("app.sirius", ["app.sirius.siriusDirectives"])
     }]);
 app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterConstants", '$filter', '$window', function (siriusConfigService, taskFilterConstants, $filter, $window) {
 
+    //get the settings and set it in siriusConfigService
+    var _setConfigService = function ($scope) {
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
+            siriusConfigService.tasks = $scope.appConfig.tasks;
+
+        } else {
+            $scope.appConfig.tasks = siriusConfigService.tasks;
+        }
+    };
+
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         var _init = function () {
             $scope.tasks = [];
@@ -31,6 +41,17 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         $scope.$on('reloadTasks', function () {
             $scope.getTasks();
         });
+
+        var _sortProgs = function (a, b) {
+            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
+                return -1;
+            }
+            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        };
+
         // Search as-you-type on type ahead
         $scope.startSearchAsYouType = function () {
             var searchString = $scope.searchString;
@@ -124,7 +145,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
              }
             return result_url
                 .replace(/protocol\:/g, window.location.protocol)
-                .replace(/host/g, window.location.host);
+                .replace(/host/g, siriusUtils.PROD_SERVER_HOST());
         };
 
         //map the Task-status from Backend to display on Front end
@@ -261,28 +282,8 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             }
         };
 
-        var _sortProgs = function (a, b) {
-            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
-                return -1;
-            }
-            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
-                return 1;
-            }
-            return 0;
-        };
-
         _init();
     }];
-
-    //get the settings and set it in siriusConfigService
-    var _setConfigService = function ($scope) {
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
-            siriusConfigService.tasks = $scope.appConfig.tasks;
-
-        } else {
-            $scope.appConfig.tasks = siriusConfigService.tasks;
-        }
-    };
 
     return {
         restrict: 'E',
@@ -300,4 +301,5 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             $scope.box.boxSize = siriusConfigService.configItem.boxSize;
         }
     };
+
 }]);
