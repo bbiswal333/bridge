@@ -43,7 +43,7 @@
                    input-typeahead-wait-ms="200"
                    input-typeahead-on-select="onSelect($item)"></bridge.input>
         </div>
-        <a ng-if="showGrid" style="width: 5%;float: right" href="https://ifp.wdf.sap.corp/prs#/home/program/{{ProgramGUIDSirius}}" target="_blank">
+        <a ng-if="showGrid" style="width: 5%;float: right" href="{{siriusAppURL}}#/home/program/{{ProgramGUIDSirius}}" target="_blank">
             <i style="font-size:15px;margin-top:5px" class="fa fa-share"
                popover="Go to the sirius Tool"
                popover-trigger="mouseenter"

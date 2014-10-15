@@ -1,13 +1,9 @@
-/*jslint browser: true */ /*global sigma*/
+/*jslint browser: true*/ /*global sigma*/
 angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$http", "$location" , "$q",
     function ($scope, $http, $location, $q) {
 
-    var dependancyGraph = {      nodes: [],
-                                    edges: []
-                            };
-    var dependancyData = {      dependancy: []
-                            };
-
+    var dependancyGraph = { nodes: [], edges: [] };
+    var dependancyData = { dependancy: [] };
     var parentJob = [];
 
 
@@ -93,11 +89,13 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
         }
 
         sigma.renderers.def = sigma.renderers.canvas;
+        /*eslint-disable new-cap*/
         var s = new sigma({
               graph: dependancyGraph,
               type: "canvas",
               container: "container"
             });
+        /*eslint-enable new-cap*/
 
         // Neighbour showing
         s.bind("clickNode", function(ev) {
@@ -118,6 +116,7 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
         sigma.plugins.dragNodes(s, s.renderers[0]);
     };
 
+    /*eslint-disable no-use-before-define*/
     var getDependancyData = function(job){
         var promisses = [];
         var level = 0;
@@ -145,11 +144,12 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
                     deferred.resolve();
                 });
 
-            }).error(function(result) {
+            }).error(function() {
                 deferred.reject();
             });
         return deferred.promise;
     };
+
 
     var findParentNodeJob = function(job){
         var promisses = [];
@@ -169,11 +169,12 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
                         deferred.resolve();
                     });
 
-            }).error(function(result){
+            }).error(function(){
                 deferred.reject();
             });
         return deferred.promise;
     };
+    /*eslint-enable no-use-before-define*/
 
     $scope.detailJobView = function(url){
             $location.path("/detail/job/");
@@ -199,10 +200,12 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
                                         color: data.color
                                       }
                                     );
+                            /*eslint-disable*/
                             new sigma({
                                 graph: dependancyGraph,
                                 container: "container"
                             });
+                            /*eslint-enable*/
                     }
                 }).
                 error(function() {
