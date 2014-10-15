@@ -33,7 +33,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			}
 		};
 
-        $scope.displayJobs = function(color){
+        $scope.displayJobs = function(){
             $scope.showJobs = true;
         };
 
