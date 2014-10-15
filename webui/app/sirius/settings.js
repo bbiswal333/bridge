@@ -11,7 +11,7 @@ angular.module('app.sirius').appSiriusSettings =
 
     //load Program with given Program ID
     var _loadProgram = function (programGUID, doAfterLoad) {
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID+'?sap-language=en&readonly=X').then(function (response) {
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + programGUID + '?sap-language=en&readonly=X').then(function (response) {
             var program = [];
             program.GUID = response.data.data.WORKING_STATE.GUID;
             $scope.SettingsProgramName = response.data.data.WORKING_STATE.PROGRAM_NAME;
@@ -133,7 +133,7 @@ angular.module('app.sirius').appSiriusSettings =
     //get the Taks for given delivery
     $scope.getTasks = function(item) {
         $scope.firstdelivery= item.WORKING_STATE;
-        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.programGUID + '/delivery/'+item.WORKING_STATE.GUID+'/task?sap-language=en&readonly=X').
+        return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.programGUID + '/delivery/' + item.WORKING_STATE.GUID + '/task?sap-language=en&readonly=X').
             then(function (response) {
             siriusConfigService.tasks.programGUID = $scope.programGUID;
             $scope.deliveryID = item.WORKING_STATE.GUID;

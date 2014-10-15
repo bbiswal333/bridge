@@ -41,6 +41,17 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         $scope.$on('reloadTasks', function () {
             $scope.getTasks();
         });
+
+        var _sortProgs = function (a, b) {
+            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
+                return -1;
+            }
+            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        };
+
         // Search as-you-type on type ahead
         $scope.startSearchAsYouType = function () {
             var searchString = $scope.searchString;
@@ -269,16 +280,6 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
                     }
                 })
             }
-        };
-
-        var _sortProgs = function (a, b) {
-            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
-                return -1;
-            }
-            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
-                return 1;
-            }
-            return 0;
         };
 
         _init();
