@@ -1,6 +1,8 @@
 /**
  * Created by d056670 on 01.08.14.
  */
+
+/*eslint global-strict:0*/
 'use strict';
 
 /* Services */
@@ -18,30 +20,29 @@ angular.module('app.sirius')
         _constants.USER_ID_EMPTY = 'EMPTY';
 
         return {
-            ANY_USERS: function () {
+            any_users: function () {
                 return _constants.ANY_USERS;
             },
-            ANY_STATUS: function () {
+            any_status: function () {
                 return _constants.ANY_STATUS;
             },
-            OPEN_STATUS: function () {
+            open_status: function () {
                 return _constants.OPEN_STATUS;
             },
-            IN_PROCESS_STATUS: function () {
+            in_process_status: function () {
                 return _constants.IN_PROCESS_STATUS;
             },
-            NOT_APPLICABLE_STATUS: function () {
+            not_applicable_status: function () {
                 return _constants.NOT_APPLICABLE_STATUS;
             },
-            COMPLETED_STATUS: function () {
+            completed_status: function () {
                 return _constants.COMPLETED_STATUS;
             },
-            CRITICAL_STATUS: function () {
+            critical_status: function () {
                 return _constants.CRITICAL_STATUS;
             },
-            USER_ID_EMPTY: function () {
+            user_id_empty: function () {
                 return _constants.USER_ID_EMPTY;
             }
-        }
+        };
     });
-
