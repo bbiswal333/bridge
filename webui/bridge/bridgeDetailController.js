@@ -31,7 +31,7 @@ angular.module('bridge.app').directive("infinitescroll", ["$window", function ($
         container.bind("scroll", function () {
             var containerBottom = cont.scrollY + cont.outerHeight;
             var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
-            console.log(containerBottom, ' ', elementBottom);
+            //console.log(containerBottom, ' ', elementBottom);
 
             if (containerBottom >= elementBottom) {
                 scope.$apply(scope.increaseInfinityLimit());
