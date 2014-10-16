@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "test": "karma start karma.config.js -stealth --single-run",
-    "lint": "eslint webui",
-    "postinstall": "node_modules/.bin/bower install --config.interactive=false"
+    "lint": "eslint webui"    
   },
   "pre-commit": [
     "test"  

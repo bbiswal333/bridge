@@ -326,14 +326,13 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
     			delete require.cache[require.resolve(modulePath)];
 	    		var module = require(modulePath);
 				if(module.nodeModules) {
-					if(webkitClient) {
+					if(typeof webkitClient !== 'undefined' && webkitClient) {
 						findFilesByName(path.join(modulePath, '../../../../server/app', path.basename(path.dirname(modulePath))), 'package.json', function(packagePath, content) {
 							console.log("running npm install in folder: " + path.dirname(packagePath));
 							console.log("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
 							require('child_process').exec("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
 						});
-					}
-					console.log("found one module:" + modulePath);
+					}					
 					for(var i = 0; i < module.nodeModules.length; i++) {
 						require(path.join(modulePath, '../../../../server/app', path.basename(path.dirname(modulePath)), module.nodeModules[i]))(app);
 					}

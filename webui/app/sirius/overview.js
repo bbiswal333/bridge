@@ -6,10 +6,21 @@ var app = angular.module("app.sirius", ["app.sirius.siriusDirectives"])
     }]);
 app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterConstants", '$filter', '$window', function (siriusConfigService, taskFilterConstants, $filter, $window) {
 
+    //get the settings and set it in siriusConfigService
+    var _setConfigService = function ($scope) {
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
+            siriusConfigService.tasks = $scope.appConfig.tasks;
+
+        } else {
+            $scope.appConfig.tasks = siriusConfigService.tasks;
+        }
+    };
+
     var directiveController = ['$scope', '$http', function ($scope, $http) {
         var _init = function () {
             $scope.tasks = [];
             $scope.showGrid = false;
+            $scope.siriusAppURL = siriusUtils.adjustURLForExternalSiriusApp();
             $scope.program = new siriusUtils.SiriusObject();
             $scope.programLeads = [];
             $scope.programLeadsString = "";
@@ -30,6 +41,17 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         $scope.$on('reloadTasks', function () {
             $scope.getTasks();
         });
+
+        var _sortProgs = function (a, b) {
+            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
+                return -1;
+            }
+            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        };
+
         // Search as-you-type on type ahead
         $scope.startSearchAsYouType = function () {
             var searchString = $scope.searchString;
@@ -76,7 +98,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         $scope.getTasks = function () {
             $scope.emptyTask = false;
             if ($scope.configService.tasks.programGUID && $scope.configService.tasks.deliveryID) {
-                $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.configService.tasks.programGUID + '/delivery/' + $scope.configService.tasks.deliveryID + '/task?sap-language=en').
+                $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $scope.configService.tasks.programGUID + '/delivery/' + $scope.configService.tasks.deliveryID + '/task?sap-language=en&readonly=X').
                     then(function (response) {
                         if (response.data.data.length == 0) {
                             $scope.emptyTask = true;
@@ -123,7 +145,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
              }
             return result_url
                 .replace(/protocol\:/g, window.location.protocol)
-                .replace(/host/g, window.location.host);
+                .replace(/host/g, siriusUtils.PROD_SERVER_HOST());
         };
 
         //map the Task-status from Backend to display on Front end
@@ -201,7 +223,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         // get data of program lead
         var _loadProgramLeadData = function ($item) {
             $scope.ProgramGUIDSirius = $item.GUID;
-            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/role?sap-language=en&roleType=PROGRAM_LEAD').then(function (response) {
+            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '/role?sap-language=en&roleType=PROGRAM_LEAD&readonly=X').then(function (response) {
                 $scope.programLeads = [];
 
                 response.data.data.forEach(function (programLead) {
@@ -211,7 +233,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         };
 
         var _getUser4UI = function (userID) {
-            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en').then(function (response) {
+            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en&readonly=X').then(function (response) {
                 $scope.programLeads.push(response.data.data);
                 return response.data.data;
             }).then(function () {
@@ -226,7 +248,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
         // get data of program lead
         var _loadProgramDetailsData = function ($item) {
             if (!$item.IS_OLD_PROGRAM) {
-                return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '?sap-language=en').then(function (response) {
+                return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/program/' + $item.GUID + '?sap-language=en&readonly=X').then(function (response) {
                     $scope.program.WORKING_STATE = response.data.data.WORKING_STATE;
                     var a = $scope.program.WORKING_STATE.KEY_MESSAGE;
                 }).then(function () {
@@ -260,28 +282,8 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             }
         };
 
-        var _sortProgs = function (a, b) {
-            if (a.DISPLAY_TEXT.toLowerCase() < b.DISPLAY_TEXT.toLowerCase()) {
-                return -1;
-            }
-            if (a.DISPLAY_TEXT.toLowerCase() > b.DISPLAY_TEXT.toLowerCase()) {
-                return 1;
-            }
-            return 0;
-        };
-
         _init();
     }];
-
-    //get the settings and set it in siriusConfigService
-    var _setConfigService = function ($scope) {
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.tasks) {
-            siriusConfigService.tasks = $scope.appConfig.tasks;
-
-        } else {
-            $scope.appConfig.tasks = siriusConfigService.tasks;
-        }
-    };
 
     return {
         restrict: 'E',
@@ -299,4 +301,5 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             $scope.box.boxSize = siriusConfigService.configItem.boxSize;
         }
     };
+
 }]);

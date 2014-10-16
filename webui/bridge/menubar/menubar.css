@@ -93,14 +93,8 @@
     display: none;
   }
 }
-@media (max-width:1050px){
-  .menubar-weather{
-    display: none;
-  }
-}
-
 @media (max-width:650px){
-  .menubar-bridge-title{
+  .menubar-weather{
     display: none;
   }
 }

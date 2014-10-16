@@ -1,16 +1,18 @@
-angular.module('bridge.app').controller('bridge.menubar.weatherSettingsController', ['$scope', '$http','$filter','$q', 'bridge.menubar.weather.configservice', 'bridgeBuildingSearch', function ($scope, $http, $filter, $q, weatherConfigService, bridgeBuildingSearch)
+angular.module('bridge.app').controller('bridge.menubar.weatherSettingsController', ['$scope', '$http','$filter','$q', 'bridge.menubar.weather.configservice', 'bridgeBuildingSearch', "bridge.menubar.weather.weatherData", function ($scope, $http, $filter, $q, weatherConfigService, bridgeBuildingSearch, weatherData)
 {
 	$scope.currentConfigValues = weatherConfigService.getConfig();
+
+	$scope.$watch("currentConfigValues", function(newVal, oldVal) {
+		if(newVal === oldVal) {
+			return;
+		}
+
+		weatherConfigService.setConfig($scope.currentConfigValues);
+		weatherData.loadData();
+	}, true);
 
 	$scope.searchLocation = function(searchString)
 	{
 		return bridgeBuildingSearch.searchLocation(searchString);
 	};
-
-	$scope.save_click = function ()
-	{
-		weatherConfigService.setConfig($scope.currentConfigValues);
-        $scope.$parent.$hide();
-    };
-
 }]);

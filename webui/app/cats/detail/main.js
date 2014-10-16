@@ -40,6 +40,25 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    function dayCanBeMaintained() {
+        try {
+            var sum = 0;
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                if ($scope.blockdata[i].fixed) {
+                    sum = sum + $scope.blockdata[i].value;
+                }
+            }
+            if (($scope.totalWorkingTime - sum) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(err) {
+            $log.log("dayCanBeMaintained(): " + err);
+            return $scope.totalWorkingTime;
+        }
+    }
+
     function addToTotalSelectedHours(dayString) {
         $scope.totalSelectedHours = $scope.totalSelectedHours + monthlyDataService.days[dayString].targetHours;
     }
@@ -117,9 +136,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
 
-            adjustBarValues();
-
             if (val_i == null) {
+                adjustBarValues();
                 val_i = 1;
                 if (val_i > timeToMaintain()) {
                     val_i = Math.round(timeToMaintain() * 1000) / 1000;
@@ -127,12 +145,26 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
 
             if (val_i) { // val_i could be 0 e.g. in case of vacation or weekends or not selected
-                $scope.blockdata.push({
-                    desc: desc_s,
-                    value: val_i,
-                    task: block,
-                    fixed: fixed || false
-                });
+                if (fixed === true) {
+                    $scope.blockdata.unshift({ // fixed tasks first!
+                        desc: desc_s,
+                        value: val_i,
+                        task: block,
+                        fixed: fixed || false
+                    });
+                } else {
+                    $scope.blockdata.push({
+                        desc: desc_s,
+                        value: val_i,
+                        task: block,
+                        fixed: fixed || false
+                    });
+                }
+
+                if (timeToMaintain() < 0) {
+                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please adjust tasks to match 100% and save timesheet.');
+                }
+
                 return true;
             } else {
                 return false;
@@ -284,7 +316,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             UNIT: "T"
         };
 
-        var blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
+        var blockCouldBeAdded = false;
+        if (dayCanBeMaintained()) {
+            blockCouldBeAdded = addBlock(desc_s, val_i, block, false); // false is the "fixed" parameter
+        }
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
                 bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first');

@@ -25,12 +25,13 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
 
 angular.module('bridge.app').directive("infinitescroll", ["$window", function ($window) {
     return function (scope, elm) {
-        var container = angular.element($window.document.querySelector('#scrollContainer'));
+        var container = angular.element($window);
         var cont = container[0];
 
         container.bind("scroll", function () {
-            var containerBottom = cont.scrollTop + cont.offsetHeight;
+            var containerBottom = cont.scrollY + cont.outerHeight;
             var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
+            console.log(containerBottom, ' ', elementBottom);
 
             if (containerBottom >= elementBottom) {
                 scope.$apply(scope.increaseInfinityLimit());

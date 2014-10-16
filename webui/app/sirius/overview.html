@@ -4,14 +4,14 @@
             <p>This delivery contains no tasks as it is in processing status New</p>
         </div>
         <div ng-if="emptyTask!=true">
-        <table style="width: 100%" >
-            <thead class="table-header" style="position: relative;">
-            <tr >
-                <th style="width: 60%; padding: 3px; color: #ffffff">Task Name</th>
-                <th style="width: 20%; padding: 3px; color: #ffffff">Status</th>
-                <th style="width: 20%; padding: 3px; color: #ffffff">Due Date</th>
-            </tr>
-            </thead>
+            <table style="width: 100%" >
+                <thead class="basic-blue" style="position: relative;">
+                    <tr >
+                        <th style="width: 60%; padding: 3px; color: #ffffff">Task Name</th>
+                        <th style="width: 20%; padding: 3px; color: #ffffff">Status</th>
+                        <th style="width: 20%; padding: 3px; color: #ffffff">Due Date</th>
+                    </tr>
+                </thead>
                 <tr ng-repeat="task in filteredTask" class="taskList">
                     <td>
                        <a href="{{task.URL}}" target="_blank">
@@ -43,7 +43,7 @@
                    input-typeahead-wait-ms="200"
                    input-typeahead-on-select="onSelect($item)"></bridge.input>
         </div>
-        <a ng-if="showGrid" style="width: 5%;float: right" href="https://ifp.wdf.sap.corp/prs#/home/program/{{ProgramGUIDSirius}}" target="_blank">
+        <a ng-if="showGrid" style="width: 5%;float: right" href="{{siriusAppURL}}#/home/program/{{ProgramGUIDSirius}}" target="_blank">
             <i style="font-size:15px;margin-top:5px" class="fa fa-share"
                popover="Go to the sirius Tool"
                popover-trigger="mouseenter"
