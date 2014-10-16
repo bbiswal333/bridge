@@ -9,6 +9,9 @@
                 <div class="row">
                     <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
                         <div>
+                            <div ng-show="!loading" style="text-align:right">
+                                <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2" target="_blank">Frequently asked questions (FAQ)</a></b><br><br>
+                            </div>
                             <app.cats.calendar
                                 class="app-cats-calendar"
                                 ondateselected="handleSelectedDate(dayString)"
@@ -19,9 +22,6 @@
                                 data-maintainable="true"
                                 loading="loading">
                             </app.cats.calendar>
-                        </div>
-                        <div ng-show="!loading">
-                            <br><b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2" target="_blank">Frequently asked questions (FAQ)</a></b><br>
                         </div>
                     </div> 
                     <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-5 app-cats-box" >

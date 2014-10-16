@@ -114,6 +114,7 @@ angular.module("app.cats")
 			}
 
 			function handleCatsData(data) {
+				$scope.state = "";
 				$scope.hasError = false;
 				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
