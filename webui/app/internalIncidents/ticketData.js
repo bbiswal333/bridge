@@ -1,83 +1,97 @@
-angular.module("app.itdirect").service("app.itdirect.ticketData",
-    ["$rootScope","$http", "$q", "$location", "bridgeDataService", "app.itdirect.config", "notifier", "bridge.converter",
-    function($rootScope, $http, $q, $location, bridgeDataService, itdirectConfig, notifier, converter){
+angular.module("app.internalIncidents").service("app.internalIncidents.ticketData",
+    ["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "app.internalIncidents.configservice", "notifier", "bridge.converter",
+    function($rootScope, $http, $q, $window, $location, bridgeDataService, config, notifier, converter){
 
         var that = this;
         this.isInitialized = {value: false};
         this.prios = [{
-            key: "1", description: "Very High", active: false
+            key: "1", description: "Very High", total: 0
         },{
-            key: "2", description: "High", active: false
+            key: "2", description: "High", total: 0
         },{
-            key: "3", description: "Medium", active: false
+            key: "3", description: "Medium", total: 0
         },{
-            key: "4", description: "Low", active: false
+            key: "4", description: "Low", total: 0
         }];
 
         this.tickets = {};
-        this.tickets.assigned_me = [];
-        this.tickets.savedSearch = [];
         this.lastTickets = null;
-
-        this.ticketsFromNotifications = {};
-        this.ticketsFromNotifications.assigned_me = [];
-        this.ticketsFromNotifications.savedSearch = [];
 
         this.sAppIdentifier = "";
 
+        function objectToArray(object, property){
+            if (angular.isObject(object) && !angular.isArray(object[property])){
+                var dataCopy = angular.copy(object[property]);
+                object[property] = [];
+                object[property].push(dataCopy);
+            }
+        }
+
         this.loadTicketData = function(){
-            var promiseArray = [];
-            var deferAssignedToMe = $q.defer();
+            var defer = $q.defer();
 
-            that.tickets.assigned_me.length = 0;
-            that.tickets.savedSearch.length = 0;
-
-            var userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-            $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARTIES_OF_REQ eq '" + userid + "'&$format=json")
+            $http.get("https://bcdmain.wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&origin=" + $window.location.origin)
                 .success(function(data){
+                    that.tickets = new X2JS().xml_str2json(data).abap.values;
+                    objectToArray(that.tickets.RESULTNODE1, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
+                    objectToArray(that.tickets.RESULTNODE2, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
+                    objectToArray(that.tickets.RESULTNODE3, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
 
-                    angular.forEach(data.d.results, function(backendTicket){
-                        that.tickets.assigned_me.push(backendTicket);
-                    });
-                    deferAssignedToMe.resolve();
+                    that.calculateTotals();
+
+                    defer.resolve();
                 })
                 .error(function(){
-                    deferAssignedToMe.reject();
+                    defer.reject();
                 });
-            promiseArray.push(deferAssignedToMe.promise);
 
-            if (itdirectConfig.bIncludeSavedSearch === true && itdirectConfig.sSavedSearchToInclude !== "") {
-                var deferSavedSearch = $q.defer();
+            defer.promise.then(function(){
 
-                $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARAMETER_KEY eq '" + itdirectConfig.sSavedSearchToInclude + "'&$format=json")
-                    .success(function(data){
-
-                        angular.forEach(data.d.results, function(backendTicket){
-                            that.tickets.savedSearch.push(backendTicket);
-                        });
-                        deferSavedSearch.resolve();
-                    })
-                    .error(function(){
-                        deferSavedSearch.reject();
-                    });
-
-                promiseArray.push(deferSavedSearch.promise);
-            }
-
-            var pAllRequestsFinished = $q.all(promiseArray);
-            pAllRequestsFinished.then(function(){
-
-                if (that.lastTickets !== null) {
+                /*if (that.lastTickets !== null) {
                     that.notifyChanges(that.tickets, that.lastTickets);
-                } else if (itdirectConfig.lastDataUpdate !== null){
-                    that.notifyOfflineChanges(that.tickets, itdirectConfig.lastDataUpdate);
+                } else if (config.lastDataUpdate !== null){
+                    that.notifyOfflineChanges(that.tickets, config.lastDataUpdate);
                 }
 
-                itdirectConfig.lastDataUpdate = new Date();
-                that.lastTickets = angular.copy(that.tickets);
+                config.lastDataUpdate = new Date();
+                that.lastTickets = angular.copy(that.tickets);*/
             });
 
-            return pAllRequestsFinished;
+            return defer.promise;
+        };
+
+        this.getRelevantTickets = function() {
+            var tickets = [];
+            if (config.data.selection.sel_components){
+                tickets  = _.union(tickets, _.where(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], {"PROCESSOR_ID" : ""}));
+            }
+            if (config.data.selection.colleagues) {
+                tickets  = _.union(tickets, _.filter(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){
+                    return ticket.PROCESSOR_ID !== "" && ticket.PROCESSOR_ID !== bridgeDataService.getUserInfo().BNAME;
+                }));
+            }
+            if(config.data.selection.assigned_me){
+                tickets  = _.union(tickets, that.tickets.RESULTNODE3["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
+            }
+            if (config.data.selection.created_me){
+                tickets  = _.union(tickets, that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
+            }
+
+            /*tickets = _.uniq(tickets, function(ticket){
+                return ticket.OBJECT_GUID;
+            });*/
+            return tickets;
+        };
+
+        this.calculateTotals = function() {
+            var tickets = that.getRelevantTickets();
+            var totals = _.countBy(tickets, function(ticket){
+                return ticket.PRIORITY_KEY;
+            });
+            that.prios[0].total = totals["1"] === undefined ? 0 : totals["1"];
+            that.prios[1].total = totals["3"] === undefined ? 0 : totals["3"];
+            that.prios[2].total = totals["5"] === undefined ? 0 : totals["5"];
+            that.prios[3].total = totals["9"] === undefined ? 0 : totals["9"];
         };
 
         function notifierClickCallback() {
@@ -143,22 +157,6 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                 that.ticketsFromNotifications = ticketsToNotify;
                 notifier.showInfo('IT Direct Tickets Changed', 'Some of your IT Direct Tickets changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
             }
-        };
-
-        this.activatePrio = function(sPrioKey){
-            angular.forEach(that.prios, function(prio){
-                // reset all prios first
-                prio.active = false;
-                if (prio.key === sPrioKey){
-                   prio.active = true;
-                }
-            });
-        };
-
-        this.activateAllPrios = function(){
-            angular.forEach(that.prios, function(prio){
-                prio.active = true;
-            });
         };
 
         this.initialize = function (sAppIdentifier) {
