@@ -1,37 +1,6 @@
 angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bridge.menubar.weather.configservice", "lib.utils.calUtils", "bridgeDataService", "$http", "$interval", "bridgeBuildingSearch", function(weatherConfig, calUtils, bridgeDataService, $http, $interval, bridgeBuildingSearch) {
     var data = {};
 
-    function checkWeatherConditionClouds (clouds){
-        if(clouds !== undefined){
-            if (clouds === 0){
-                return "sun";
-            }
-            if (clouds >= 1 && clouds <= 40){
-                return "smallClouds";
-            }
-            if (clouds >= 41){
-                return "bigClouds";
-            }
-        }
-        else {
-            return null;
-        }
-    }
-
-    function checkWeatherConditionRain(rain){
-        if(rain !== undefined) {
-            if (rain['3h'] > 0){
-                return  "rain";
-            }
-            else {
-                return null;
-            }
-        }
-        else {
-                return null;
-            }
-    }
-
     function mapWeatherData(weatherData) {
         var resultData = {};
         resultData.description = weatherData.description;
