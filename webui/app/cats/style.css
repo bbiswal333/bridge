@@ -223,15 +223,13 @@
     background-image: url('/../../img/part_maint_FUTURE.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 50%;
-    background-position-y:50%;
+    background-position: center;
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
     background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 50%;
-    background-position-y:50%;
+    background-position: center;
 }
 .app-cats-stateG { /* maintained */
     background: #D3E6DC;
@@ -241,8 +239,7 @@
     background-image: url('/../../img/over_booked.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 50%;
-    background-position-y: 50%;
+    background-position: center;
 }
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
