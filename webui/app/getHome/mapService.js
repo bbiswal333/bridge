@@ -24,9 +24,10 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
 	nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
 	nokia.Settings.set("secureConnection", "force");
 
-	function addColorToRoutes(nokiaRoutes) {
+	function enhanceRouteInformation(nokiaRoutes) {
 		var i = 0;
 		nokiaRoutes.map(function(route) {
+			route.draggable = true;
 			route.color = routeColors[i];
 
 			i++;
@@ -43,12 +44,12 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
 
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
-				deferred.resolve({error: false, routes: addColorToRoutes(observedRouter.getRoutes())});
+				deferred.resolve({error: false, routes: enhanceRouteInformation(observedRouter.getRoutes())});
 			} else if (value === "failed") {
 				deferred.resolve({error:true, message: observedRouter.getErrorCause().message});
 			}
 		});
-		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastest], apiVersion: "7.2"});
+		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastestWithoutTraffic], apiVersion: "7.2"});
 
 		return deferred.promise;
 	};
@@ -74,12 +75,13 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
 
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
-
-
 				routingManagerIncidents.addObserver("state", function(observedRouter, incidentsKey, incidentsValue) {
+					var route = enhanceRouteInformation(routingManager.getRoutes())[0];
 					if (incidentsValue === "finished") {
-						var route = addColorToRoutes(routingManager.getRoutes())[0];
 						route.incidents = getIncidents(routingManagerIncidents.getRoutes()[0]);
+						deferred.resolve(route);
+					}
+					if(incidentsValue === "failed") {
 						deferred.resolve(route);
 					}
 				});
@@ -134,8 +136,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
         	center: [53, 13],
         	zoomLevel: 3,
         	components: [new nokia.maps.map.component.Behavior(),
-        				 new nokia.maps.map.component.Traffic(),
-        				 new nokia.maps.map.component.TrafficIncidents()]
+        				 new nokia.maps.map.component.Traffic()]
         });
         map.set("baseMapType", nokia.maps.map.Display.TRAFFIC);
         return map;
