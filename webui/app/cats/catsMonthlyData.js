@@ -9,11 +9,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
 	var alreadyInitializedForMonth = {};
-	var staticCatsData4FourMonth = null;
 	this.days = {};
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
-	this.missingDays = {};
 
 	this.executeWhenDone = function(promise)
 	{
@@ -40,15 +38,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			}
 
 			// not buffered! so getting the data
-			this.reloadInProgress.value = true;
-
-			if (!staticCatsData4FourMonth) {
-				promise = catsBackend.getCAT2ComplianceData4FourMonth();
-				promises.push(promise);
-				promise.then(function(data) {
-					staticCatsData4FourMonth = data;
-				});
-			}
+			self.reloadInProgress.value = true;
 
 			var weeks = this.getWeeksOfMonth(year, month);
 			for (var i = 0; i < weeks.length; i++) {
@@ -131,7 +121,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	this.getTargeHoursForDay = function (dayString) {
 		var targetHours = 0;
-		staticCatsData4FourMonth.some(function (data4day) {
+		catsBackend.CAT2ComplinaceDataCache.some(function (data4day) {
 			if (data4day.DATEFROM === dayString) {
 				targetHours = data4day.STDAZ;
 				return true;
@@ -142,7 +132,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	this.getHoursOfWorkingDay = function (dayString) {
 		var hoursOfWorkingDay = 0;
-		staticCatsData4FourMonth.some(function (data4day) {
+		catsBackend.CAT2ComplinaceDataCache.some(function (data4day) {
 			if (data4day.DATEFROM === dayString) {
 				hoursOfWorkingDay = data4day.CONVERT_H_T;
 				return true;

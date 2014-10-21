@@ -1,13 +1,17 @@
-angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window",
-  function($http, $q, $log, $window) {
-    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin;
-    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&catsprofile=DEV2002C";
-    var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
-    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
+angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
+  function($http, $q, $log, $window, calUtils) {
+    var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
+    var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001catsprofile=";
+    var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
+    var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
 
-    var CAT2ComplinaceData4FourMonthCache = null;
-    var tasksFromWorklistCache = null;
+    this.CAT2ComplinaceDataCache = [];
+    var that = this;
+    var tasksFromWorklistCache = [];
     var CAT2AllocationDataForWeeks = {};
+
+    // that must be read from backend with the the first web call
+    //this.catsProfile = "DEV2002C";
 
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
@@ -28,47 +32,91 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       return deferred.promise;
     }
 
-    this.getCAT2ComplianceData4FourMonth = function(forceUpdate_b) {
+    // this.getCAT2ComplianceData4FourMonth = function(forceUpdate_b) {
+    //   var deferred = $q.defer();
+
+    //   if (forceUpdate_b || that.CAT2ComplinaceDataCache === []) {
+    //     _httpRequest(MYCATSDATA_WEBSERVICE).then(function(data) {
+    //       if (data && data.CATSCHK) {
+    //         // ////////////////////////////////////////////////////////
+    //         // // test test test: uncomment to be a part-time colleague
+    //         // that.CAT2ComplinaceDataCache.forEach(function(CATSCHKforDay){
+    //         //   CATSCHKforDay.CONVERT_H_T = 7.9;
+    //         //   if (CATSCHKforDay.STDAZ) {
+    //         //     CATSCHKforDay.STDAZ = 7.55;
+    //         //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+    //         //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+    //         //     if (STADZRounded && QUANTITYHRounded) {
+    //         //       if (STADZRounded === QUANTITYHRounded) {
+    //         //         CATSCHKforDay.STATUS = "G"; // maintained
+    //         //       } else {
+    //         //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+    //         //       }
+    //         //     }
+    //         //   }
+    //         // });
+    //         // ////////////////////////////////////////////////////////
+    //         that.CAT2ComplinaceDataCache = data.CATSCHK;
+    //         // that.catsProfile = data.PROFILE;
+    //         deferred.resolve(data.CATSCHK);
+    //       } else {
+    //         deferred.resolve();
+    //       }
+    //     });
+    //   } else {
+    //     deferred.resolve(that.CAT2ComplinaceDataCache);
+    //   }
+
+    //   return deferred.promise;
+    // };
+
+    function monthAlreadyCached(year, month) {
+      var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
+      var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "-" + "15";
+
+      if(_.find(that.CAT2ComplinaceDataCache, { "DATEFROM":  middate }) !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
       var deferred = $q.defer();
 
-      if (forceUpdate_b || CAT2ComplinaceData4FourMonthCache == null) {
-        _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
+      if (forceUpdate_b || !monthAlreadyCached(year, month)) {
+        var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
+        var begdate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "01";
+        var enddate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + calUtils.getLengthOfMonth(year, month);
+
+        _httpRequest(MYCATSDATA_WEBSERVICE + "&begda=" + begdate + "&endda=" + enddate).then(function(data) {
           if (data && data.CATSCHK) {
-            // ////////////////////////////////////////////////////////
-            // // test test test: uncomment to be a part-time colleague
-            // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
-            //   CATSCHKforDay.CONVERT_H_T = 7.9;
-            //   if (CATSCHKforDay.STDAZ) {
-            //     CATSCHKforDay.STDAZ = 7.55;
-            //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-            //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
-            //     if (STADZRounded && QUANTITYHRounded) {
-            //       if (STADZRounded === QUANTITYHRounded) {
-            //         CATSCHKforDay.STATUS = "G"; // maintained
-            //       } else {
-            //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-            //       }
-            //     }
-            //   }
-            // });
-            // ////////////////////////////////////////////////////////
-            CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
-            deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+            // that.CAT2ComplinaceDataCache = data.CATSCHK;
+            data.CATSCHK.forEach(function(CATSCHKforDay) {
+              var entry = _.find(that.CAT2ComplinaceDataCache, { "DATEFROM":  CATSCHKforDay.DATEFROM });
+              if (entry !== undefined) {
+                var index = that.CAT2ComplinaceDataCache.indexOf(entry);
+                if (index > -1) {
+                  that.CAT2ComplinaceDataCache.splice(index, 1);
+                }
+              }
+              that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
+            });
+            deferred.resolve(data.CATSCHK);
           } else {
             deferred.resolve();
           }
         });
       } else {
-        deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+        deferred.resolve(that.CAT2ComplinaceDataCache);
       }
-
       return deferred.promise;
     };
 
     this.getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
 
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) { // /zdevdb/GETCATSDATA
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
@@ -82,25 +130,11 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       return deferred.promise;
     };
 
-    //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
-    this.getTotalWorkingTimeForDay = function(day_s) {
-      var deferred = $q.defer();
-
-      this.getCAT2ComplianceData4FourMonth(false).then(function(data) {
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].DATEFROM ===  day_s) {
-            deferred.resolve(data[i].STDAZ);
-          }
-        }
-      });
-      return deferred.promise;
-    };
-
     this.requestTasksFromWorklist = function(forceUpdate_b, profile_s) {
       var deferred = $q.defer();
 
       if (forceUpdate_b || !tasksFromWorklistCache) {
-        _httpRequest(TASKS_WEBSERVICE).then(function(data) { // /zdevdb/GETWORKLIST
+         _httpRequest(GETWORKLIST_WEBSERVICE + profile_s).then(function(data) { // /zdevdb/GETWORKLIST
           var tasks = [];
 
           if (profile_s === "DEV2002C") {
@@ -206,7 +240,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     this.writeCATSData = function(container, profile_s){
       var deferred = $q.defer();
       // /zdevdb/WRITECATSDATA
-      $http.post(CATS_WRITE_WEBSERVICE + profile_s, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+      $http.post(WRITECATSDATA_WEBSERVICE + profile_s, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
           deferred.resolve(data);
       }).error(function (data, status) {
           deferred.reject(status);

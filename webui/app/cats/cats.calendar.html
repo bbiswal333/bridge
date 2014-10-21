@@ -9,10 +9,10 @@
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">
             <h1 ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</h1>
-			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();">&#xe1ee;</span>
+			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"><i class="fa fa-arrow-left"></i></span>
             <button ng-if="maintainable" class="btn btn-default" ng-click="jump('', $event);" ng-class="{true:'btn btn_blue',false:'btn'}[monthIsSelected()]" style="margin-right:0">{{currentMonth}}</button>
             <b ng-if="!maintainable" class="app-cats-current-month">{{currentMonth}}</b>
-			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();">&#xe1ed;</span>	
+			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"><i class="fa fa-arrow-right"></i></span>	
 		</div>
         
 		<div ng-class="{false:'app-cats-calendar',true:'app-cats-calendar-maintainable'}[maintainable]">

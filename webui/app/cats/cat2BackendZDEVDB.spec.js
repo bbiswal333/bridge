@@ -22,21 +22,6 @@ describe("The mini calendar shall display information about the current CATS com
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  it("should be possible to make an asynchronous test whether working hours on one day can be retrieved from CATS", function () {
-    var result1;
-    var result2;
-    catsBackend.getTotalWorkingTimeForDay("2014-03-25").then(function (val) {
-		result1 = val;
-		expect(result1).toBe(8); // hours
-    });
-    // January 6th is a public holidy, so working ours should be 0
-    catsBackend.getTotalWorkingTimeForDay("2014-01-06").then(function (val) {
-		result2 = val;
-		expect(result2).toBe(0);
-    });
-    $httpBackend.flush();
-  });
-
   it("should not work if data and given week and year do not correspond", function () {
 	catsBackend.getCatsAllocationDataForWeek(2014, 21).then(function(data){
 		expect(data).toBeUndefined();

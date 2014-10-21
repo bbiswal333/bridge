@@ -294,10 +294,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             promise.then(function() {
                 displayCATSDataForDay(monthlyDataService.days[dayString]);
                 $scope.loaded = true;
+                monthlyDataService.reloadInProgress.value = false;
             });
         } catch(err) {
             $log.log("loadCATSDataForDay(): " + err);
             $scope.loaded = true;
+            monthlyDataService.reloadInProgress.value = false;
         }
     }
 

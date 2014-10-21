@@ -157,23 +157,23 @@ describe("Cats Monthly Data Service", function () {
 		$httpBackend.flush();
 	});
 
-	it("should get target hours for selected days", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var promise = catsMonthlyDataService.getMonthData(2014,7);
-		promise.then(function () {
-			expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-01")).toBe(8);
-			expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-02")).toBe(0);
-		});
-		$httpBackend.flush();
-	});
+	// it("should get target hours for selected days", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var promise = catsMonthlyDataService.getMonthData(2014,7);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-01")).toBe(8);
+	// 		expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-02")).toBe(0);
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 
-	it("should get target hours for selected days", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var promise = catsMonthlyDataService.getMonthData(2014,7);
-		promise.then(function () {
-			expect(catsMonthlyDataService.getTasksForDate("2014-08-01").length).toBe(3);
-			expect(catsMonthlyDataService.getTasksForDate("2014-08-02").length).toBe(0);
-		});
-		$httpBackend.flush();
-	});
+	// it("should get target hours for selected days", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var promise = catsMonthlyDataService.getMonthData(2014,7);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.getTasksForDate("2014-08-01").length).toBe(3);
+	// 		expect(catsMonthlyDataService.getTasksForDate("2014-08-02").length).toBe(0);
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 });
