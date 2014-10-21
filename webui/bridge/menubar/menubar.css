@@ -115,3 +115,22 @@
 .menubar-feedback-icon {
   font-size: 30px;
 }
+
+/* ========================= *\
+|* ----- APPLICATIONS  ----- *|
+\* ========================= */
+
+.nav-tabs{
+  border-bottom: none;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+  color: #555;
+  cursor: default;
+  background-color: #ddd;
+  /* border: 1px solid #ddd; */
+  border-radius: 0;
+  border-bottom-color: transparent;
+}
+.nav-tabs > li > a{
+  border-radius: 0;
+}

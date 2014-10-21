@@ -46,7 +46,7 @@ module.exports = function(config) {
         "./client/**/*",
         "./webui/lib/angular-1_2_25/angular.js",
         "./webui/lib-bower/**/*",
-        "./webui/app/getHome/nokiaHere/**/*"       
+        "./webui/app/getHome/nokiaHere/**/*"
     ],
 
     // test results reporter to use

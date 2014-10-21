@@ -1,5 +1,5 @@
-angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "app.itdirect.formatter",
-    function($scope, $routeParams, bridgeDataService, ticketData, config, formatter){
+angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "bridge.converter",
+    function($scope, $routeParams, bridgeDataService, ticketData, config, converter){
 
         var that = this;
         $scope.prios = ticketData.prios;
@@ -42,7 +42,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         };
 
         $scope.getFormattedDate = function(sAbapDate){
-            return formatter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
+            return converter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
         };
 
         this.containsTicket = function(sGuid){
