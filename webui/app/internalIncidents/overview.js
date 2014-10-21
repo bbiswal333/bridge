@@ -44,9 +44,11 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 });
             } else {
                 $scope.config = configservice;
+                setNoMessagesFlag();
+                ticketData.calculateTotals();
             }
 
-            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
+            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 20);
         }
     ];
 

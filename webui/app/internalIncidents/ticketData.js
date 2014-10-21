@@ -5,13 +5,13 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         var that = this;
         this.isInitialized = {value: false};
         this.prios = [{
-            key: "1", description: "Very High", total: 0
+            key: "1", description: "Very High", active: false, total: 0
         },{
-            key: "2", description: "High", total: 0
+            key: "3", description: "High", active: false, total: 0
         },{
-            key: "3", description: "Medium", total: 0
+            key: "5", description: "Medium", active: false, total: 0
         },{
-            key: "4", description: "Low", total: 0
+            key: "9", description: "Low", active: false, total: 0
         }];
 
         this.tickets = {};
