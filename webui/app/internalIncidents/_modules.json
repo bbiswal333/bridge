@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Service & Support", "Beta"],
 		"module_name"			:	"app.internalIncidents",
-		"title"					:	"Internal Incid.",
+		"title"					:	"Int. Incid.",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.internalIncidents",
 		"needs_client"			:	false,
@@ -18,6 +18,6 @@
 		"beta_users"			: ["D051804", "D055406", "D049583", "D055469", "D049677", "D050049", "D025786"]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js"],
+	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],
 	"css_files" : ["style.css"]
 }
