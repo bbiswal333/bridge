@@ -11,7 +11,7 @@ angular.module('app.getHome').appGetHomeSettings =
 		$scope.keyModifierString = "CMD ⌘";
 		eventKey = "metaKey";
 	} else {
-		$scope.keyModifierString = "CTRL" ;
+		$scope.keyModifierString = "CTRL";
 		eventKey = "ctrlKey";
 	}
 
@@ -42,8 +42,102 @@ angular.module('app.getHome').appGetHomeSettings =
 		markerLayer.objects.clear();
 	}
 
-	function displayRouteInMap(route) {
-		if(route.markers === undefined) {
+	function updateSelectedRoute() {
+		if($scope.selectedRoute === undefined) {
+			return;
+		}
+
+		appGetHomeMap.rebuildRouteFromWaypoints($scope.selectedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function(route) {
+			$scope.proposedRoutes[$scope.proposedRoutes.indexOf($scope.selectedRoute)] = route;
+			route.markers = $scope.selectedRoute.markers.map(function(marker) { marker.originalRoute = route; return marker; });
+			route.initiallyCalculatedRoute = $scope.selectedRoute.initiallyCalculatedRoute;
+			route.color = $scope.selectedRoute.color;
+			$scope.setSelectedRoute(route, true);
+		});
+	}
+
+	function arrayIndexOf(array, element) {
+		for (var i = 0, l = array.length; i < l; i++) {
+			if (array[i] === element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	function removeWaypointMarker(marker) {
+		var index = arrayIndexOf(marker.originalRoute.markers, marker);
+		
+		marker.originalRoute.markers.splice(index, 1);
+		markerLayer.objects.remove(marker);
+		
+		// Correct the markers' text after maker insertion
+		for (var i = index; i < $scope.selectedRoute.markers.length; i++) {
+			marker.originalRoute.markers[i].set("text", "" + (i + 1));
+		}
+
+		// Remove the route if there aren't more than 1 marker left
+		if (marker.originalRoute.markers.length < 2) {
+			// remove the current route polyline from the map
+			if (marker.originalRoute.routePolyline) {
+				routeLayer.objects.remove(marker.originalRoute.routePolyline);
+			}
+		}
+	}
+
+	function makeMarkerRemovableOnClick(marker) {
+		marker.addListener("click", function (evt) {
+			if(!marker.originalRoute.draggable) { 
+				return;
+			}
+
+			if (evt[eventKey] === true) {
+				removeWaypointMarker(evt.currentTarget);
+				updateSelectedRoute();
+				evt.preventDefault();
+				evt.stopPropagation();
+			}
+		});
+	}
+
+	function createWaypointMarker (route, geocoord, index) {
+		var marker = new nokia.maps.map.StandardMarker(geocoord, {
+			draggable: true,
+			visibility: false
+		});
+		marker.originalRoute = route;
+		
+		makeMarkerRemovableOnClick(marker);
+		
+		// Add a listener for dragend events on waypoint markers
+		marker.addListener("dragend", function () {
+			if(!route.draggable) { 
+				return;
+			}
+			updateSelectedRoute();
+		});
+		
+		// Add the marker to the markers array according to the passed index
+		if (typeof index === "number") {
+			route.markers.splice(index, 0, marker);
+		} else {
+			route.markers.push(marker);
+			index = route.markers.length;
+		}
+		
+		// Correct the markers' text after maker insertion
+		for (var i = (index - 1); i < route.markers.length; i++) {
+			route.markers[i].set("text", "" + (i + 1));
+		}
+		
+		// Add marker to the markerLayer, to make it visible on the map
+		markerLayer.objects.add(marker);
+		
+		return marker;
+	}
+
+	function displayRouteMarkersInMap(route) {
+		if(!route.markers) {
 			route.markers = [];
 			createWaypointMarker(route, route.waypoints[0].mappedPosition, 1).set("visibility", true);
 			createWaypointMarker(route, route.waypoints[route.waypoints.length - 1].mappedPosition, route.markers.length).set("visibility", true);
@@ -52,32 +146,34 @@ angular.module('app.getHome').appGetHomeSettings =
 				markerLayer.objects.add(marker);
 			});
 		}
+	}
 
-		var routePolyline = new nokia.maps.map.Polyline(route.shape, {
-			pen: {
-				lineWidth: 5,
-				lineJoin: 'round',
-				strokeColor: route.color
-			}
-		});
-		route.routePolyline = routePolyline;
-		
-		// Add the listener for the mouse move event on the route
-		if(route.draggable) {
-			routePolyline.addListener("mouseenter", function (evt) {
-				var coord = mapInstance.pixelToGeo((evt.displayX - 8), (evt.displayY - 8));
-				routerHoverMarker.set("coordinate", coord);
-				routerHoverMarker.set("visibility", true);
-				waypoints = route.waypoints;
-			});
-			
-			// Add the listener for the mouse leave event on the route
-			routePolyline.addListener("mouseleave", function (evt) {
-				routerHoverMarker.set("visibility", false);
-			});
-		}
-
+	function createAndDisplayRoutePolylineInMap(route) {
+		var routePolyline = appGetHomeMap.createRoutePolyline(route, {strokeColor: route.color});
 		routeLayer.objects.add(routePolyline);
+		return routePolyline;
+	}
+
+	function makeRouteDraggable(route) {
+		route.routePolyline.addListener("mouseenter", function (evt) {
+			var coord = mapInstance.pixelToGeo((evt.displayX - 8), (evt.displayY - 8));
+			routerHoverMarker.set("coordinate", coord);
+			routerHoverMarker.set("visibility", true);
+		});
+		
+		// Add the listener for the mouse leave event on the route
+		route.routePolyline.addListener("mouseleave", function () {
+			routerHoverMarker.set("visibility", false);
+		});
+	}
+
+	function displayRouteInMap(route) {
+		displayRouteMarkersInMap(route);
+		var routePolyline = createAndDisplayRoutePolylineInMap(route);
+
+		if(route.draggable) {
+			makeRouteDraggable(route);
+		}
 
 		return routePolyline;
 	}
@@ -88,9 +184,9 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	$scope.displayRouteInMap = function(route, skipCenterRoute) {
 		clearMap();
-		var route = displayRouteInMap(route);
+		var routePolyline = displayRouteInMap(route);
 		if(!skipCenterRoute) {
-			centerRoute(route);
+			centerRoute(routePolyline);
 		}
 	};
 
@@ -123,7 +219,10 @@ angular.module('app.getHome').appGetHomeSettings =
 		if($scope.newRoute.start.displayPosition && $scope.newRoute.destination.displayPosition) {
 			appGetHomeMap.calculateRoutes($scope.newRoute.start.displayPosition, $scope.newRoute.destination.displayPosition).then(function(result) {
 				if(!result.error) {
-					$scope.proposedRoutes = result.routes;
+					$scope.proposedRoutes = result.routes.map(function(route) {
+						route.initiallyCalculatedRoute = route;
+						return route;
+					});
 					$scope.setSelectedRoute(result.routes[0]);
 				}// else {
 					//display error
@@ -172,104 +271,7 @@ angular.module('app.getHome').appGetHomeSettings =
 		$scope.$emit('closeSettingsScreen');
 	};
 
-	function arrayIndexOf(array, element) {
-		for (var i = 0, l = array.length; i < l; i++) {
-			if (array[i] === element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	function removeWaypointMarker(marker) {
-		var index = arrayIndexOf(marker.originalRoute.markers, marker);
-		
-		marker.originalRoute.markers.splice(index, 1);
-		markerLayer.objects.remove(marker);
-		
-		// Correct the markers' text after maker insertion
-		for (var i = index; i < $scope.selectedRoute.markers.length; i++) {
-			marker.originalRoute.markers[i].set("text", "" + (i + 1));
-		}
-		
-		// Remove the route if there aren't more than 1 marker left
-		if (marker.originalRoute.markers.length < 2) {
-			// remove the current route polyline from the map
-			if (marker.originalRoute.routePolyline) {
-				routeLayer.objects.remove(marker.originalRoute.routePolyline);
-			}
-		}
-	}
-
-	function updateSelectedRoute() {
-		if($scope.selectedRoute === undefined) {
-			return;
-		}
-
-		appGetHomeMap.rebuildRouteFromWaypoints($scope.selectedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function(route) {
-			$scope.proposedRoutes[$scope.proposedRoutes.indexOf($scope.selectedRoute)] = route;
-			route.markers = $scope.selectedRoute.markers.map(function(marker) { marker.originalRoute = route; return marker; });
-			$scope.setSelectedRoute(route, true);
-		});
-	}
-
-	var routerDrag = new nokia.maps.routing.Manager();
-
-	function createWaypointMarker (route, geocoord, index) {
-		var marker = new nokia.maps.map.StandardMarker(geocoord, {
-			draggable: true,
-			visibility: false
-		});
-		
-		// Add a listener for click events on waypoint markers
-		marker.addListener("click", function (evt) {
-			if(!route.draggable) { 
-				return;
-			}
-
-			// Remember the eventKey was determined at the start of the example by querying the running platform
-			if (evt[eventKey] === true) {	
-				// Remove the waypoint marker from the map and recalculate the route
-				removeWaypointMarker(evt.currentTarget);
-				updateSelectedRoute();
-				evt.preventDefault();
-				evt.stopPropagation();
-			}
-		});
-		
-		// Add a listener for dragend events on waypoint markers
-		marker.addListener("dragend", function (evt) {
-			if(!route.draggable) { 
-				return;
-			}
-			updateSelectedRoute();
-		});
-		
-		// Add the marker to the markers array according to the passed index
-		if (typeof index === "number") {
-			route.markers.splice(index, 0, marker);
-		} else {
-			route.markers.push(marker);
-			index = route.markers.length;
-		}
-		
-		// Correct the markers' text after maker insertion
-		for (var i = (index - 1); i < route.markers.length; i++) {
-			route.markers[i].set("text", "" + (i + 1));
-		}
-		
-		// Add marker to the markerLayer, to make it visible on the map
-		markerLayer.objects.add(marker);
-
-		marker.originalRoute = route;
-		
-		return marker;
-	}
-
-	function makeMapRoutesDraggable(mapInstance) {
-		routeLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(routeLayer);
-
+	function createRouteHoverMarker() {
 		var routeHoverContext = new nokia.maps.gfx.Graphics();
 		routeHoverContext.beginImage(18, 18);
 		routeHoverContext.set("fillColor", "#FFF2");
@@ -289,12 +291,6 @@ angular.module('app.getHome').appGetHomeSettings =
 			draggable: true
 		});
 		routeLayer.objects.add(routerHoverMarker);
-
-		// Add the listener for the mouse move event on the route
-		routeLayer.addListener("mousemove", function (evt) {
-			var coord = mapInstance.pixelToGeo((evt.displayX - 8), (evt.displayY - 8));
-			routerHoverMarker.set("coordinate", coord);
-		});
 
 		routerHoverMarker.addListener("dragstart", function (evt) {
 			if(!$scope.selectedRoute.routePolyline || !$scope.selectedRoute.draggable) {
@@ -325,9 +321,14 @@ angular.module('app.getHome').appGetHomeSettings =
 			// Update the whole route
 			updateSelectedRoute();
 		});
+	}
 
-		markerLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(markerLayer);
+	function addMouseEvents() {
+		// Add the listener for the mouse move event on the route
+		routeLayer.addListener("mousemove", function (evt) {
+			var coord = mapInstance.pixelToGeo((evt.displayX - 8), (evt.displayY - 8));
+			routerHoverMarker.set("coordinate", coord);
+		});
 
 		mapInstance.addListener("click", function (evt) {
 			if($scope.selectedRoute === undefined) {
@@ -345,6 +346,25 @@ angular.module('app.getHome').appGetHomeSettings =
 			}
 		});
 	}
+
+	function makeMapRoutesDraggable(mapInstance) {
+		routeLayer = new nokia.maps.map.Container();
+		mapInstance.objects.add(routeLayer);
+
+		createRouteHoverMarker();
+
+		addMouseEvents();
+
+		markerLayer = new nokia.maps.map.Container();
+		mapInstance.objects.add(markerLayer);
+	}
+
+	$scope.undoChanges = function(route) {
+		$scope.proposedRoutes[$scope.proposedRoutes.indexOf(route)] = route.initiallyCalculatedRoute;
+		route.initiallyCalculatedRoute.markers = undefined;
+		//route.initiallyCalculatedRoute.markers = route.markers.map(function(marker) { marker.originalRoute = route; return marker; });
+		$scope.setSelectedRoute(route.initiallyCalculatedRoute);
+	};
 
 	$scope.hideDescription = function() {
 		$scope.descriptionHidden = true;

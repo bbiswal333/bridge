@@ -31,12 +31,6 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 	              	var markerLayer = new nokia.maps.map.Container();
 					mapInstance.objects.add(routeLayer);
 					mapInstance.objects.add(markerLayer);
-	              	var routePolyline = new nokia.maps.map.Polyline(route.originalRoute.shape, {
-						pen: {
-							lineWidth: 4,
-							lineJoin: 'round'
-						}
-					});
 					var startMarker = new nokia.maps.map.StandardMarker(route.originalRoute.waypoints[0].mappedPosition, {
 						draggable: false,
 						visibility: true,
@@ -49,7 +43,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					});
 					markerLayer.objects.add(startMarker);
 					markerLayer.objects.add(endMarker);
-					routeLayer.objects.add(routePolyline);
+					routeLayer.objects.add(appGetHomeMap.createRoutePolyline(route.originalRoute, {lineWidth: 4}));
 					$interval(function() {
 						mapInstance.zoomTo(routeLayer.getBoundingBox());
 					}, 200, 1);

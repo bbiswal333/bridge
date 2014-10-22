@@ -164,4 +164,18 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
 			"bbox=" + boundingBox.topLeft.latitude + "," + boundingBox.topLeft.longitude + ";" + boundingBox.bottomRight.latitude + "," + boundingBox.bottomRight.longitude +
 			"&jsoncallback=JSON_CALLBACK");
 	};
+
+	this.createRoutePolyline = function(route, settings) {
+		var penSettings = {
+			lineJoin: settings.lineJoin ? settings.lineJoin : "round",
+			lineWidth: settings.lineWidth ? settings.lineWidth : 5
+		};
+		if(settings.strokeColor) {
+			penSettings.strokeColor = settings.strokeColor;
+		}
+
+		var routePolyline = new nokia.maps.map.Polyline(route.shape, {pen: penSettings});
+		route.routePolyline = routePolyline;
+		return routePolyline;
+	};
 }]);
