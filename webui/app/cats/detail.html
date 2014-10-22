@@ -1,12 +1,14 @@
 <div>
     
     <div  ng-controller="app.cats.maintenanceView.mainCntrl">
-        <div class="panel panel-default">
-            <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
-
-                <span style="clear: both; width: 100%; float: none;"></span>
+        <div class="panel panel-default" style="margin-bottom: 0px">
+            <div class="panel-body bridge-fade-anim" ng-show="loaded">
 
                 <div class="row">
+                    <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-5 app-cats-box" >
+                        <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(task);" data-heightoflist="520px">
+                        </app.cats.maintenance-view.project-list>
+                    </div>
                     <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
                         <div>
                             <div ng-show="!loading" style="text-align:right">
@@ -23,32 +25,24 @@
                                 loading="loading">
                             </app.cats.calendar>
                         </div>
-                    </div> 
-                    <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-5 app-cats-box" >
-                        <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(task);" data-heightoflist="300px">
-                        </app.cats.maintenance-view.project-list>
+                        <div id="app-cats-maintencance-allocation-div" >
+                            <app.cats.allocationbar
+                                data-width="{{width}}"
+                                data-height="80"
+                                data-blocks="blockdata"
+                                data-total-value="{{totalWorkingTime}}"
+                                data-text="hintText"
+                                data-selected-hours="totalSelectedHours"
+                                onblockremoved=""
+                                handlervaluetodisplay="calcMinutes(perc);">
+                            </app.cats.allocationbar>
+                        </div>
+                        <div class="save_close_btn" style="text-align: right">
+                            <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
+                            <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Apply changes" style="margin:4px"></input><br />
+                            <div>(using development profile DEV2002C)</div>
+                        </div>
                     </div>
-                </div>
-
-                <div style="clear: both; width: 100%; float: none;"></div>
-
-                <div id="app-cats-maintencance-allocation-div" >
-                    <app.cats.allocationbar
-                        data-width="{{width}}"
-                        data-height="80"
-                        data-blocks="blockdata"
-                        data-total-value="{{totalWorkingTime}}"
-                        data-text="hintText"
-                        data-selected-hours="totalSelectedHours"
-                        onblockremoved=""
-                        handlervaluetodisplay="calcMinutes(perc);">
-                    </app.cats.allocationbar>
-                </div>
-
-                <div class="save_close_btn">
-                    <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
-                    <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Apply changes" style="margin:4px"></input><br />
-                    <div>(using development profile DEV2002C)</div>
                 </div>
             </div>
             <div class="panel-body" ng-show="!loaded">

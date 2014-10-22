@@ -488,23 +488,33 @@ angular.module("app.cats")
 				return true;
 			};
 
+			function prevMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 0) {
+					data.month = 11;
+					data.year--;
+				}
+				else {
+					data.month--;
+				}
+				return data;
+			}
+
 			$scope.prevMonth = function () {
 				if (!$scope.canGoBackward()) {
 					return;
 				}
 				monthRelative--;
-
-				if (monthlyDataService.month === 0) {
-					monthlyDataService.month = 11;
-					monthlyDataService.year--;
-				}
-				else {
-					monthlyDataService.month--;
-				}
+				monthlyDataService.year = prevMonth(monthlyDataService).year;
+				monthlyDataService.month = prevMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+				// some buffering
+				catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.canGoForward = function () {
@@ -515,23 +525,33 @@ angular.module("app.cats")
 				return true;
 			};
 
+			function nextMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 11) {
+					data.month = 0;
+					data.year++;
+				}
+				else {
+					data.month++;
+				}
+				return data;
+			}
+
 			$scope.nextMonth = function () {
 				if (!$scope.canGoForward()) {
 					return;
 				}
 				monthRelative++;
-
-				if (monthlyDataService.month === 11) {
-					monthlyDataService.month = 0;
-					monthlyDataService.year++;
-				}
-				else {
-					monthlyDataService.month++;
-				}
+				monthlyDataService.year = nextMonth(monthlyDataService).year;
+				monthlyDataService.month = nextMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+				// some buffering
+				catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.reloadCalendar = function () {
@@ -551,6 +571,9 @@ angular.module("app.cats")
 			};
 
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+			// some buffering
+			catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month).then( );
+			catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month).then( );
 
 			if ($scope.selectedDay) {
 				while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {

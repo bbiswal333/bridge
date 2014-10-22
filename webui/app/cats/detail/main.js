@@ -17,7 +17,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.blockdata = [];
     $scope.loaded = false;
-    $scope.width = 800;
+    $scope.width = 600;
     $scope.selectedDates = [];
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;

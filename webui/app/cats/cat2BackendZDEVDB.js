@@ -20,7 +20,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     function _httpRequest(url) {
       var deferred = $q.defer();
 
-      $http.get(url).success(function(data, status) {
+      $http.get(url, {timeout: 15000}).success(function(data, status) {
         if (between(status, 200, 299)) {
           deferred.resolve(data, status);
         }
