@@ -2,6 +2,9 @@
 [![Coverage](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/badge/coverage.svg)](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/results/coverage.txt)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
 
+[![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
+
+
 # Bridge
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
