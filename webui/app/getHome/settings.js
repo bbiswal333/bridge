@@ -6,13 +6,12 @@ angular.module('app.getHome').appGetHomeSettings =
 	var routeLayer, routerHoverMarker, markerLayer, dragMarker;
 
 	var platform = nokia.maps.dom.Page.platform,
-		keyModifierString,
 		eventKey;
 	if (platform.mac) {
-		keyModifierString = "CMD ⌘";
+		$scope.keyModifierString = "CMD ⌘";
 		eventKey = "metaKey";
 	} else {
-		keyModifierString = "CTRL" ;
+		$scope.keyModifierString = "CTRL" ;
 		eventKey = "ctrlKey";
 	}
 
@@ -92,6 +91,27 @@ angular.module('app.getHome').appGetHomeSettings =
 		var route = displayRouteInMap(route);
 		if(!skipCenterRoute) {
 			centerRoute(route);
+		}
+	};
+
+	$scope.displayRouteShallow = function(route) {
+		if($scope.selectedRoute === route) {
+			return;
+		}
+
+		displayRouteInMap(route);
+	};
+
+	$scope.hideRouteShallow = function(route) {
+		if($scope.selectedRoute === route) {
+			return;
+		}
+
+		route.markers.map(function(marker) {
+			markerLayer.objects.remove(marker);
+		});
+		if(route.routePolyline !== undefined) {
+			routeLayer.objects.remove(route.routePolyline);
 		}
 	};
 
@@ -182,6 +202,10 @@ angular.module('app.getHome').appGetHomeSettings =
 	}
 
 	function updateSelectedRoute() {
+		if($scope.selectedRoute === undefined) {
+			return;
+		}
+
 		appGetHomeMap.rebuildRouteFromWaypoints($scope.selectedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function(route) {
 			$scope.proposedRoutes[$scope.proposedRoutes.indexOf($scope.selectedRoute)] = route;
 			route.markers = $scope.selectedRoute.markers.map(function(marker) { marker.originalRoute = route; return marker; });
@@ -199,6 +223,10 @@ angular.module('app.getHome').appGetHomeSettings =
 		
 		// Add a listener for click events on waypoint markers
 		marker.addListener("click", function (evt) {
+			if(!route.draggable) { 
+				return;
+			}
+
 			// Remember the eventKey was determined at the start of the example by querying the running platform
 			if (evt[eventKey] === true) {	
 				// Remove the waypoint marker from the map and recalculate the route
@@ -211,6 +239,9 @@ angular.module('app.getHome').appGetHomeSettings =
 		
 		// Add a listener for dragend events on waypoint markers
 		marker.addListener("dragend", function (evt) {
+			if(!route.draggable) { 
+				return;
+			}
 			updateSelectedRoute();
 		});
 		
@@ -266,7 +297,7 @@ angular.module('app.getHome').appGetHomeSettings =
 		});
 
 		routerHoverMarker.addListener("dragstart", function (evt) {
-			if(!$scope.selectedRoute.routePolyline) {
+			if(!$scope.selectedRoute.routePolyline || !$scope.selectedRoute.draggable) {
 				return;
 			}
 
@@ -297,7 +328,27 @@ angular.module('app.getHome').appGetHomeSettings =
 
 		markerLayer = new nokia.maps.map.Container();
 		mapInstance.objects.add(markerLayer);
+
+		mapInstance.addListener("click", function (evt) {
+			if($scope.selectedRoute === undefined) {
+				return;
+			}
+
+			// Remember the eventKey was determined at the start of the example by querying the running platform
+			if (evt[eventKey] === true) {
+				var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY),
+					marker = createWaypointMarker($scope.selectedRoute, coord);
+				
+				marker.set("visibility", true);
+				updateSelectedRoute();
+				evt.preventDefault();
+			}
+		});
 	}
+
+	$scope.hideDescription = function() {
+		$scope.descriptionHidden = true;
+	};
 
 	$scope.initializeMap = function() {
 		mapInstance = appGetHomeMap.createMap($("#app-getHome-settings-map")[0]);
