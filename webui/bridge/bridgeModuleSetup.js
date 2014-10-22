@@ -69,6 +69,11 @@
             controller: 'bridge.diagnosis.statusController'
         });
 
+        $routeProvider.when("/whatsNew", {
+            templateUrl: 'bridge/menubar/news/newsDetail.html',
+            controller: 'bridge.newsDetailController'
+        });
+
         //If no valid URL has been entered redirect to main entry point
         $routeProvider.otherwise({
             redirectTo: "/"

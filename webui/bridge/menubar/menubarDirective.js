@@ -1,5 +1,5 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier",
-    function($modal, weatherData, weatherConfig, newsService, notifier) {
+angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location",
+    function($modal, weatherData, weatherConfig, newsService, notifier, $location) {
         return {
             restrict: "E",
             templateUrl: "bridge/menubar/MenuBar.html",
@@ -22,10 +22,7 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                             var unreadNews = newsService.getUnreadNews();
                             unreadNews.map(function(news) {
                                 notifier.showInfo(news.header, news.preview, "", function() {
-                                    newsService.modalInstance = $modal.open({
-                                        templateUrl: "bridge/menubar/news/newsDetail.html",
-                                        size: 'lg'
-                                    });
+                                    $location.path("/whatsNew");
                                 });
                             });
                             newsService.markAllNewsAsRead();

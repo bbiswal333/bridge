@@ -14,7 +14,7 @@ describe("The newsDetailsController", function() {
 
         inject(["$rootScope", "$controller", function (_$rootScope, _$controller) {
             $rootScope = _$rootScope;
-            _$controller("newsDetailController", {
+            _$controller("bridge.newsDetailController", {
                 "$scope": $rootScope,
                 "bridge.service.bridgeNews": newsServiceMock
             });
