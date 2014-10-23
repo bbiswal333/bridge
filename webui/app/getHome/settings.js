@@ -67,10 +67,10 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	function removeWaypointMarker(marker) {
 		var index = arrayIndexOf(marker.originalRoute.markers, marker);
-		
+
 		marker.originalRoute.markers.splice(index, 1);
 		markerLayer.objects.remove(marker);
-		
+
 		// Correct the markers' text after maker insertion
 		for (var i = index; i < $scope.selectedRoute.markers.length; i++) {
 			marker.originalRoute.markers[i].set("text", "" + (i + 1));
@@ -106,9 +106,9 @@ angular.module('app.getHome').appGetHomeSettings =
 			visibility: false
 		});
 		marker.originalRoute = route;
-		
+
 		makeMarkerRemovableOnClick(marker);
-		
+
 		// Add a listener for dragend events on waypoint markers
 		marker.addListener("dragend", function () {
 			if(!route.draggable) { 
@@ -116,7 +116,7 @@ angular.module('app.getHome').appGetHomeSettings =
 			}
 			updateSelectedRoute();
 		});
-		
+
 		// Add the marker to the markers array according to the passed index
 		if (typeof index === "number") {
 			route.markers.splice(index, 0, marker);
@@ -124,15 +124,15 @@ angular.module('app.getHome').appGetHomeSettings =
 			route.markers.push(marker);
 			index = route.markers.length;
 		}
-		
+
 		// Correct the markers' text after maker insertion
 		for (var i = (index - 1); i < route.markers.length; i++) {
 			route.markers[i].set("text", "" + (i + 1));
 		}
-		
+
 		// Add marker to the markerLayer, to make it visible on the map
 		markerLayer.objects.add(marker);
-		
+
 		return marker;
 	}
 
@@ -160,7 +160,7 @@ angular.module('app.getHome').appGetHomeSettings =
 			routerHoverMarker.set("coordinate", coord);
 			routerHoverMarker.set("visibility", true);
 		});
-		
+
 		// Add the listener for the mouse leave event on the route
 		route.routePolyline.addListener("mouseleave", function () {
 			routerHoverMarker.set("visibility", false);
@@ -298,7 +298,7 @@ angular.module('app.getHome').appGetHomeSettings =
 			}
 
 			var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY), nearestIndex = $scope.selectedRoute.routePolyline.getNearestIndex(coord), shape = $scope.selectedRoute.routePolyline.path.asArray(), currentWaypoint = $scope.selectedRoute.waypoints[0].mappedPosition, currentWaypointIdx = 0, i;
-			
+
 			// Find the route's waypoint which comes before the point affected by the dragstart operation
 			for (i = 0; i <= ((nearestIndex + 1) * 3); i += 3) {
 				if (currentWaypoint.latitude === shape[i] &&
@@ -306,7 +306,7 @@ angular.module('app.getHome').appGetHomeSettings =
 					currentWaypoint = $scope.selectedRoute.waypoints[++currentWaypointIdx].mappedPosition;
 				}
 			}
-			
+
 			// Create a new marker at the drag start position and add it to the markers array at the correct position
 			dragMarker = createWaypointMarker($scope.selectedRoute, coord, currentWaypointIdx);
 		});
@@ -314,7 +314,7 @@ angular.module('app.getHome').appGetHomeSettings =
 		// Add the listener for the dragend event on the route
 		routerHoverMarker.addListener("dragend", function (evt) {
 			var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY);
-			
+
 			// Finalize the new created drag marker
 			dragMarker.set("coordinate", coord);
 			dragMarker.set("visibility", true);
@@ -339,7 +339,7 @@ angular.module('app.getHome').appGetHomeSettings =
 			if (evt[eventKey] === true) {
 				var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY),
 					marker = createWaypointMarker($scope.selectedRoute, coord);
-				
+
 				marker.set("visibility", true);
 				updateSelectedRoute();
 				evt.preventDefault();
