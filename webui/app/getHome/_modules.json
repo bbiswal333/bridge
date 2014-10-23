@@ -1,13 +1,12 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.getHome",
 		"title"					:	"Beat the Traffic",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false,
-		"beta"					:	true,
 		"routes"				:
 		[
 			{
