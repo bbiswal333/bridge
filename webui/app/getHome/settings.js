@@ -87,7 +87,7 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	function makeMarkerRemovableOnClick(marker) {
 		marker.addListener("click", function (evt) {
-			if(!marker.originalRoute.draggable) { 
+			if(!marker.originalRoute.draggable) {
 				return;
 			}
 
@@ -111,7 +111,7 @@ angular.module('app.getHome').appGetHomeSettings =
 
 		// Add a listener for dragend events on waypoint markers
 		marker.addListener("dragend", function () {
-			if(!route.draggable) { 
+			if(!route.draggable) {
 				return;
 			}
 			updateSelectedRoute();
