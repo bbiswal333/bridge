@@ -10,8 +10,6 @@ function (catsUtils) {
     ];
 
     this.colorful = [
-      "#418AC9",
-      "#8EB9DF",
       "#FCB517",
       "#FCD274",
       "#8561C5",
@@ -19,7 +17,9 @@ function (catsUtils) {
       "#E76F24",
       "#F0A470",
       "#4EA175",
-      "#A7D0BA"
+      "#A7D0BA",
+      "#418AC9",
+      "#8EB9DF"
     ];
 
     this.blockColors = {};

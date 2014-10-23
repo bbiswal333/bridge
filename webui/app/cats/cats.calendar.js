@@ -572,8 +572,8 @@ angular.module("app.cats")
 
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
 			// some buffering
-			catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month).then( );
-			catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month).then( );
+			// catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month).then( );
+			// catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month).then( );
 
 			if ($scope.selectedDay) {
 				while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {

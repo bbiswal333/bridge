@@ -1,7 +1,9 @@
 angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
   function($http, $q, $log, $window, calUtils) {
     var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
-    var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001catsprofile=";
+    var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001&options=CPROWORKLIST&catsprofile=";
+    var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
+    var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
     var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
     var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
 
@@ -81,6 +83,18 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       }
     }
 
+    this.getTaskDescription = function(container) {
+      var deferred = $q.defer();
+
+      $http.post(GETTASKTEXT_IFP_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+        deferred.resolve(data);
+      }).error(function (data, status) {
+        deferred.reject(status);
+      });
+
+      return deferred.promise;
+    };
+
     this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
       var deferred = $q.defer();
 
@@ -116,7 +130,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     this.getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
 
-      _httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) {
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
@@ -133,8 +147,16 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     this.requestTasksFromWorklist = function(forceUpdate_b, profile_s) {
       var deferred = $q.defer();
 
+      _httpRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
+        if (!data) {
+          status = status;
+        } else {
+          data = data;
+        }
+      });
+
       if (forceUpdate_b || !tasksFromWorklistCache) {
-         _httpRequest(GETWORKLIST_WEBSERVICE + profile_s).then(function(data) { // /zdevdb/GETWORKLIST
+         _httpRequest(GETWORKLIST_WEBSERVICE + profile_s).then(function(data) {
           var tasks = [];
 
           if (profile_s === "DEV2002C") {
@@ -156,7 +178,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
                 ZZSUBTYPE: "",
                 DESCR: "Education"
             });
-        }
+          }
 
           if (data && data.WORKLIST) {
             var nodes = data.WORKLIST;
@@ -193,23 +215,29 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       var promise = $q.all(CAT2AllocationDataForWeeks);
       promise.then(function(promisesData) {
         angular.forEach(promisesData, function(data){
-            var tasks = null;
-            if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
-                tasks = [];
-                var nodes = data.TIMESHEETS.RECORDS;
-                for (var i = 0; i < nodes.length; i++) {
-                    var task = {};
-                    task.RAUFNR         = (nodes[i].RAUFNR || "");
-                    task.TASKTYPE       = (nodes[i].TASKTYPE || "");
-                    task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
-                    task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-                    task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
-                    task.UNIT           = nodes[i].UNIT;
-                    task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-                    tasks.push(task);
-                }
+          var tasks = null;
+          var container = {};
+          container.DATA = [];
+
+          if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
+            tasks = [];
+            var nodes = data.TIMESHEETS.RECORDS;
+            for (var i = 0; i < nodes.length; i++) {
+              var task = {};
+              task.RAUFNR         = (nodes[i].RAUFNR || "");
+              task.TASKTYPE       = (nodes[i].TASKTYPE || "");
+              task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
+              task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
+              task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
+              task.UNIT           = nodes[i].UNIT;
+              task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+              tasks.push(task);
+              if (task.ZCPR_OBJGEXTID && !task.DESCR) {
+                container.DATA.push({TASK_ID: task.ZCPR_OBJGEXTID});
+              }
             }
-            callback_fn(tasks);
+          }
+          callback_fn(tasks);
         });
         /*CAT2AllocationDataForWeeks.forEach(function (promise) {
           promise.then(function (data) {
@@ -239,11 +267,10 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     this.writeCATSData = function(container, profile_s){
       var deferred = $q.defer();
-      // /zdevdb/WRITECATSDATA
       $http.post(WRITECATSDATA_WEBSERVICE + profile_s, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
-          deferred.resolve(data);
+        deferred.resolve(data);
       }).error(function (data, status) {
-          deferred.reject(status);
+        deferred.reject(status);
       });
       return deferred.promise;
     };
