@@ -262,21 +262,6 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
       }
       $scope.items.forEach( function(item) {
         configService.updateDescription(item);
-        // special case that cPro-task has no correct description
-        if (item.DESCR === item.ZCPR_OBJGEXTID) {
-          var container = {};
-          container.DATA = [];
-          container.DATA.push({TASK_ID:item.ZCPR_OBJGEXTID});
-          catsBackend.getTaskDescription(container).then(function(data) {
-            for (var j = 0; j < data.DATA.length; j++) {
-              for (var k = 0; k < $scope.items.length; k++) {
-                if (data.DATA[j].TASK_ID === $scope.items[k].ZCPR_OBJGEXTID) {
-                  $scope.items[k].DESCR = data.DATA[j].TEXT;
-                }
-              }
-            }
-          });
-        }
       });
     }
 

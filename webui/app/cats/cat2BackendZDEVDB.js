@@ -8,12 +8,11 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
 
     this.CAT2ComplinaceDataCache = [];
+    this.CPROTaskTextCache = {};
+    this.CPROTaskTextCache.DATA = [];
     var that = this;
     var tasksFromWorklistCache = [];
     var CAT2AllocationDataForWeeks = {};
-
-    // that must be read from backend with the the first web call
-    //this.catsProfile = "DEV2002C";
 
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
@@ -85,13 +84,62 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     this.getTaskDescription = function(container) {
       var deferred = $q.defer();
+      if (container === undefined ||
+          container.DATA === undefined) {
+        deferred.resolve();
+        return deferred.promise;
+      }
+
+      if (this.CPROTaskTextCache.DATA) {
+        var newItemFound = false;
+        for (var i = 0; i < container.DATA.length; i++) {
+          var bufferedItem = _.find(this.CPROTaskTextCache.DATA, { "TASK_ID":  container.DATA[i].TASK_ID });
+          if (!bufferedItem) {
+            newItemFound = true;
+          }
+        }
+        if (!newItemFound) {
+          deferred.resolve(this.CPROTaskTextCache);
+          return deferred.promise;
+        }
+      }
 
       $http.post(GETTASKTEXT_IFP_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+        for (var i = 0; i < data.DATA.length; i++) {
+          that.CPROTaskTextCache.DATA.push(data.DATA[i]);
+        }
         deferred.resolve(data);
       }).error(function (data, status) {
         deferred.reject(status);
       });
 
+      return deferred.promise;
+    };
+
+    this.updateDescriptionsFromCPRO = function(items) {
+      var deferred = $q.defer();
+
+      var container = {};
+      container.DATA = [];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].ZCPR_OBJGEXTID !== "" &&
+            (items[i].DESCR === items[i].ZCPR_OBJGEXTID ||
+             items[i].DESCR === "")) {
+          container.DATA.push({TASK_ID:items[i].ZCPR_OBJGEXTID});
+        }
+      }
+      this.getTaskDescription(container).then(function(data) {
+        if (data) {
+          for (var j = 0; j < data.DATA.length; j++) {
+            for (var k = 0; k < items.length; k++) {
+              if (data.DATA[j].TASK_ID === items[k].ZCPR_OBJGEXTID) {
+                items[k].DESCR = data.DATA[j].TEXT;
+              }
+            }
+          }
+        }
+        deferred.resolve(items);
+      });
       return deferred.promise;
     };
 
@@ -137,7 +185,14 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
             $log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
           deferred.resolve();
         } else {
-          deferred.resolve(data);
+          if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
+            that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS).then(function(items) {
+              data.TIMESHEETS.RECORDS = items;
+              deferred.resolve(data);
+            });
+          } else {
+            deferred.resolve(data);
+          }
         }
       });
       CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
