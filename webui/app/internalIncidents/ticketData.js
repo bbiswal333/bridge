@@ -42,7 +42,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         this.loadTicketData = function(){
             var defer = $q.defer();
 
-            $http.get("https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&origin=" + $window.location.origin)
+            $http.get("https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&sap-language=en&origin=" + $window.location.origin)
                 .success(function(data){
                     that.tickets = new X2JS().xml_str2json(data).abap.values;
                     objectToArray(that.tickets.RESULTNODE1, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
