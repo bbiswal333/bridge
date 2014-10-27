@@ -94,7 +94,9 @@ angular.module("app.cats")
 			var daysElements = [];
 
 			$scope.getDescForState = function (state_s) {
-				return catsUtils.getDescForState(state_s);
+				if (state_s !== undefined) {
+					return catsUtils.getDescForState(state_s);
+				}
 			};
 
 			function reload() {
@@ -559,14 +561,18 @@ angular.module("app.cats")
 			};
 
 			$scope.getStateClassSubstring = function(calDay){
-				if(calDay.data.state === 'Y' && calDay.today){
-					return 'Y_TODAY';
-				}
-				else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
-					return 'OVERBOOKED_TODAY';
-				}
-				else {
-					return calDay.data.state;
+				if (calDay.data !== null) {
+					if(calDay.data.state === 'Y' && calDay.today){
+						return 'Y_TODAY';
+					}
+					else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
+						return 'OVERBOOKED_TODAY';
+					}
+					else {
+						return calDay.data.state;
+					}
+				} else {
+					return ''; // not relevant (might be hidden)
 				}
 			};
 

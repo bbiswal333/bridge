@@ -167,7 +167,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             };
 
             if ((i + 1) % 7 === 0) {
-                if (thisDay.getMonth() !== month_i) {
+                var dateToCheck = thisDay;
+                if (!startOnSunday_b) {
+                    dateToCheck.setDate(thisDay.getDate() + 1);
+                }
+                if (dateToCheck.getMonth() !== month_i) {
                     stop = true;
                 } else {
                     cal[Math.floor((i + 1) / 7)] = [];
