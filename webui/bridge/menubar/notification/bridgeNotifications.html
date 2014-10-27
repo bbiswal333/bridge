@@ -26,10 +26,12 @@
 
   </div>
   <div class="allNotifications" ng-if="notifications.length > 0" ng-repeat="notification in notifications track by $index" ng-init="hasExternalURL = containsExternalURL(notification)">
-    <div class="notification notificationState-{{notification.state}} underline" ng-click="updateStatus(notification, 'read')"> <!--todo use state instead of-->
+    <div class="notification notificationState-{{notification.state}} underline hover" ng-click="updateStatus(notification, 'read')"> <!--todo use state instead of-->
+    <!--
       <div class="sender" ng-if="getNameOf(notification) != ''">
         <span title="app">{{getNameOf(notification)}}</span>
-        <span class="settingsIcon {{getIconOf(notification)}}"></span> <!--todo placeholder for actuall icon-->
+        <span class="settingsIcon {{getIconOf(notification)}}"></span>--> <!--todo placeholder for actuall icon-->
+    <!--
       </div>
       <div class="content">
         <h5 title="title">{{notification.title}}</h5>
@@ -42,6 +44,32 @@
             {{notification.body}}
         </p>
         <span class="timeAgo bold">{{getTimeAgo(notification.timestamp)}}</span>
+      </div>
+    -->
+      <div class="sender ">
+        <div class="sender-img">
+          <!-- to do: image if news and icon from app if app notification -->
+          <i class=" {{getIconOf(notification)}} "></i>
+        </div>
+        <div title="app" class="sender-name">
+          {{getNameOf(notification)}}
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 title="title">{{notification.title}}</h3>
+
+        <p>
+          <a ng-show="hasExternalURL" title="body" class="notification-content-body" target="_blank" href="{{notification.routeURL}}">
+            {{notification.body}}
+          </a>
+        </p>  
+        <p ng-show="!hasExternalURL" title="body" class="notification-content-body">
+          {{notification.body}}
+        </p>
+        <span class="timeAgo bold">
+          {{getTimeAgo(notification.timestamp)}}
+        </span>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <div id="scrollContainer" style="height:100%">
-    <div class="centeredContent innerbox" style="width:90%; min-width:900px">
+    <div class="centeredContent innerbox news-container" style="width:90%; min-width:900px">
         <div style="width: 100%">
                 <div class="box-heading">
                     <div class="box-heading-content">           
@@ -7,7 +7,7 @@
                     </div>
                 </div>
 
-            <div ng-repeat="newsItem in news">
+            <div ng-repeat="newsItem in news" class="news-item">
                 <span ng-if="newsItem.snapURL !== undefined" class="image_rounded_shadow">
                     <img style="border-radius:100%;border:4px solid #418AC9" ng-src="{{newsItem.snapURL}}" width="100px" height="100px" />
                 </span>
@@ -22,7 +22,7 @@
                         <img ng-src="{{newsItem.img1}}">
                     </div>
                 </div>
-                <hr size="1" style="height: 0px; border-bottom: 1px solid #bbbbbb" ng-if="$index != (news.length - 1)" />
+                <hr size="1" style="height: 0px; border-bottom: 1px solid #bbbbbb;width:50%;" ng-if="$index != (news.length - 1)" />
             </div>
         </div>
     </div>

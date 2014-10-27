@@ -25,7 +25,7 @@
 		<div class="menubar-settings" style="text-align: right">
 			<div class="menuBar-settingsButton" title="Notifications" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-fade-and-slide-top" data-template="menubar/popover.html" bs-popover>
 			  <div ng-controller="bridge.menubar.notificationsController">
-		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox red-font"></span>
+		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox green-font"></span>
 		          <span ng-if="(notifications | newNotification).length == 0" class="fa fa-inbox" ></span>
 	          </div>
 	          <!--<span ng-hide="(notifications | newNotification).length == 0" ng-controller="bridge.menubar.notificationsController" class="badge red" style="position: absolute; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>-->

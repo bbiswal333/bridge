@@ -108,3 +108,10 @@
 
 .sidebar-news-headline {
 }
+
+.news-item{
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top:30px;
+}
+
