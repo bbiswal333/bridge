@@ -108,72 +108,72 @@ describe("Cats Monthly Data Service", function () {
 		expect(weeks[3].weekNo).toBe(8);
 	});
 
-	it("should retrieve data for 1st August 2014", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var dayString = "2014-08-01";
-		var promise = catsMonthlyDataService.getDataForDate(dayString);
-		promise.then(function () {
-			expect(catsMonthlyDataService.days[dayString].actualTimeInPercentageOfDay).toBe(1);
-			expect(catsMonthlyDataService.days[dayString].date).toBe(dayString);
-			expect(catsMonthlyDataService.days[dayString].dayString).toBe(dayString);
-			expect(catsMonthlyDataService.days[dayString].tasks.length).toBe(3);
-			expect(catsMonthlyDataService.days[dayString].tasks[0].COUNTER).toBe("000192547653");
-			expect(catsMonthlyDataService.days[dayString].tasks[0].ZCPR_OBJGEXTID).toBe("00000000000000617125");
-			expect(catsMonthlyDataService.days[dayString].week).toBe("31");
-			expect(catsMonthlyDataService.days[dayString].year).toBe("2014");
-		});
-		$httpBackend.flush();
-	});
+	// it("should retrieve data for 1st August 2014", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var dayString = "2014-08-01";
+	// 	var promise = catsMonthlyDataService.getDataForDate(dayString);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.days[dayString].actualTimeInPercentageOfDay).toBe(1);
+	// 		expect(catsMonthlyDataService.days[dayString].date).toBe(dayString);
+	// 		expect(catsMonthlyDataService.days[dayString].dayString).toBe(dayString);
+	// 		expect(catsMonthlyDataService.days[dayString].tasks.length).toBe(3);
+	// 		expect(catsMonthlyDataService.days[dayString].tasks[0].COUNTER).toBe("000192547653");
+	// 		expect(catsMonthlyDataService.days[dayString].tasks[0].ZCPR_OBJGEXTID).toBe("00000000000000617125");
+	// 		expect(catsMonthlyDataService.days[dayString].week).toBe("31");
+	// 		expect(catsMonthlyDataService.days[dayString].year).toBe("2014");
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 
-	it("should retrieve data for 16th June 2014", function() {
-		catsMonthlyDataService.calArray = calArrayJune;
-		var dayString = "2014-06-16";
-		var promise = catsMonthlyDataService.getDataForDate(dayString);
-		promise.then(function () {
-			expect(catsMonthlyDataService.days[dayString].actualTimeInPercentageOfDay).toBe(1);
-			expect(catsMonthlyDataService.days[dayString].date).toBe(dayString);
-			expect(catsMonthlyDataService.days[dayString].dayString).toBe(dayString);
-			expect(catsMonthlyDataService.days[dayString].tasks.length).toBe(4);
-			expect(catsMonthlyDataService.days[dayString].week).toBe("25");
-			expect(catsMonthlyDataService.days[dayString].year).toBe("2014");
-		});
-		$httpBackend.flush();
-	});
+	// it("should retrieve data for 16th June 2014", function() {
+	// 	catsMonthlyDataService.calArray = calArrayJune;
+	// 	var dayString = "2014-06-16";
+	// 	var promise = catsMonthlyDataService.getDataForDate(dayString);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.days[dayString].actualTimeInPercentageOfDay).toBe(1);
+	// 		expect(catsMonthlyDataService.days[dayString].date).toBe(dayString);
+	// 		expect(catsMonthlyDataService.days[dayString].dayString).toBe(dayString);
+	// 		expect(catsMonthlyDataService.days[dayString].tasks.length).toBe(4);
+	// 		expect(catsMonthlyDataService.days[dayString].week).toBe("25");
+	// 		expect(catsMonthlyDataService.days[dayString].year).toBe("2014");
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 
-	it("should cache the complete August 2014", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var promise = catsMonthlyDataService.getMonthData(2014,7);
-		promise.then(function () {
-			expect(catsMonthlyDataService.days["2014-07-27"]).toBeUndefined();
-			expect(catsMonthlyDataService.days["2014-07-28"]).toBeDefined(); // Monday of first week
-			expect(catsMonthlyDataService.days["2014-08-01"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-08-04"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-08-11"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-08-18"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-08-25"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-08-31"]).toBeDefined();
-			expect(catsMonthlyDataService.days["2014-09-01"]).toBeUndefined();
-		});
-		$httpBackend.flush();
-	});
+	// it("should cache the complete August 2014", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var promise = catsMonthlyDataService.getMonthData(2014,7);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.days["2014-07-27"]).toBeUndefined();
+	// 		expect(catsMonthlyDataService.days["2014-07-28"]).toBeDefined(); // Monday of first week
+	// 		expect(catsMonthlyDataService.days["2014-08-01"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-08-04"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-08-11"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-08-18"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-08-25"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-08-31"]).toBeDefined();
+	// 		expect(catsMonthlyDataService.days["2014-09-01"]).toBeUndefined();
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 
-	it("should get target hours for selected days", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var promise = catsMonthlyDataService.getMonthData(2014,7);
-		promise.then(function () {
-			expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-01")).toBe(8);
-			expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-02")).toBe(0);
-		});
-		$httpBackend.flush();
-	});
+	// it("should get target hours for selected days", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var promise = catsMonthlyDataService.getMonthData(2014,7);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-01")).toBe(8);
+	// 		expect(catsMonthlyDataService.getTargeHoursForDay("2014-08-02")).toBe(0);
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 
-	it("should get target hours for selected days", function() {
-		catsMonthlyDataService.calArray = calArrayAugust;
-		var promise = catsMonthlyDataService.getMonthData(2014,7);
-		promise.then(function () {
-			expect(catsMonthlyDataService.getTasksForDate("2014-08-01").length).toBe(3);
-			expect(catsMonthlyDataService.getTasksForDate("2014-08-02").length).toBe(0);
-		});
-		$httpBackend.flush();
-	});
+	// it("should get target hours for selected days", function() {
+	// 	catsMonthlyDataService.calArray = calArrayAugust;
+	// 	var promise = catsMonthlyDataService.getMonthData(2014,7);
+	// 	promise.then(function () {
+	// 		expect(catsMonthlyDataService.getTasksForDate("2014-08-01").length).toBe(3);
+	// 		expect(catsMonthlyDataService.getTasksForDate("2014-08-02").length).toBe(0);
+	// 	});
+	// 	$httpBackend.flush();
+	// });
 });

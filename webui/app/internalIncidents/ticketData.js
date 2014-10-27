@@ -5,15 +5,27 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         var that = this;
         this.isInitialized = {value: false};
         this.prios = [{
-            key: "1", description: "Very High", total: 0
+            key: "1", description: "Very High", active: false, total: 0
         },{
-            key: "2", description: "High", total: 0
+            key: "3", description: "High", active: false, total: 0
         },{
-            key: "3", description: "Medium", total: 0
+            key: "5", description: "Medium", active: false, total: 0
         },{
-            key: "4", description: "Low", total: 0
+            key: "9", description: "Low", active: false, total: 0
         }];
 
+        this.ticketSourceSystems = [{
+            urlPart: "bcdmain", name: "BCD"
+        },{
+            urlPart: "bctmain", name: "BCT"
+        },{
+            urlPart: "bcqmain", name: "BCQ"
+        },{
+            urlPart: "bcvmain", name: "BCV"
+        },{
+            urlPart: "backup-support", name: "BCP"
+        }];
+        this.selectedSourceSystem = this.ticketSourceSystems[0];
         this.tickets = {};
         this.lastTickets = null;
 
@@ -30,7 +42,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         this.loadTicketData = function(){
             var defer = $q.defer();
 
-            $http.get("https://bcdmain.wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&origin=" + $window.location.origin)
+            $http.get("https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&sap-language=en&origin=" + $window.location.origin)
                 .success(function(data){
                     that.tickets = new X2JS().xml_str2json(data).abap.values;
                     objectToArray(that.tickets.RESULTNODE1, "_-SID_-CN_IF_DEVDB_INC_OUT_S");

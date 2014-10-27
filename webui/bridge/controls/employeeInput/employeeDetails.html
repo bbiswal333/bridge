@@ -4,7 +4,7 @@
 	</div>
 	<div style="display: table-cell; padding: 5px; vertical-align: top; width: 250px">
 		<span style="font-size: 20px; font-weight: bold">{{selectedEmployee.VORNA}} {{selectedEmployee.NACHN}}</span><br />
-		<a target="_blank" href="https://people.wdf.sap.corp/search#?query=costcenter:{{selectedEmployee.KOSTL}}">{{selectedEmployee.KOSTX}}</a><br /> 
+		<b>Cost Center:</b> <a target="_blank" href="https://people.wdf.sap.corp/search#?query=costcenter:{{selectedEmployee.KOSTL}}">{{selectedEmployee.KOSTL}}<br />{{selectedEmployee.KOSTX}}</a><br /> 
 		<b>User ID:</b> {{selectedEmployee.BNAME}}<br />
 		<br />
 		<b><a href="https://people.wdf.sap.corp/profiles/{{selectedEmployee.BNAME}}" target="_blank">User Profile</a></b>		

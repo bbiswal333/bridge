@@ -101,7 +101,10 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 
     this.updateDescription = function (task) {
 		this.lastUsedDescriptions.some(function(lastUsedDescription){
-			if (catsUtils.isSameTask(task, lastUsedDescription)) {
+			if (catsUtils.isSameTask(task, lastUsedDescription) &&
+				lastUsedDescription.DESCR !== task.id &&
+				lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
+				lastUsedDescription.DESCR !== task.RAUFNR) {
 				task.DESCR = lastUsedDescription.DESCR;
 				return true;
 			}

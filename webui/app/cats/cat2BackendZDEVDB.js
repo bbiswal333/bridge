@@ -1,12 +1,17 @@
-angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window",
-  function($http, $q, $log, $window) {
-    var CATS_COMPLIANCE_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin;
-    var TASKS_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&catsprofile=DEV2002C";
-    var CATS_ALLOC_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
-    var CATS_WRITE_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
+angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
+  function($http, $q, $log, $window, calUtils) {
+    var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
+    var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001&options=CPROWORKLIST&catsprofile=";
+    var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
+    var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
+    var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
+    var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin + "&catsprofile=";
 
-    var CAT2ComplinaceData4FourMonthCache = null;
-    var tasksFromWorklistCache = null;
+    this.CAT2ComplinaceDataCache = [];
+    this.CPROTaskTextCache = {};
+    this.CPROTaskTextCache.DATA = [];
+    var that = this;
+    var tasksFromWorklistCache = [];
     var CAT2AllocationDataForWeeks = {};
 
     function between(val_i, min_i, max_i) {
@@ -16,7 +21,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     function _httpRequest(url) {
       var deferred = $q.defer();
 
-      $http.get(url).success(function(data, status) {
+      $http.get(url, {timeout: 15000}).success(function(data, status) {
         if (between(status, 200, 299)) {
           deferred.resolve(data, status);
         }
@@ -28,79 +33,185 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       return deferred.promise;
     }
 
-    this.getCAT2ComplianceData4FourMonth = function(forceUpdate_b) {
+    // this.getCAT2ComplianceData4FourMonth = function(forceUpdate_b) {
+    //   var deferred = $q.defer();
+
+    //   if (forceUpdate_b || that.CAT2ComplinaceDataCache === []) {
+    //     _httpRequest(MYCATSDATA_WEBSERVICE).then(function(data) {
+    //       if (data && data.CATSCHK) {
+    //         // ////////////////////////////////////////////////////////
+    //         // // test test test: uncomment to be a part-time colleague
+    //         // that.CAT2ComplinaceDataCache.forEach(function(CATSCHKforDay){
+    //         //   CATSCHKforDay.CONVERT_H_T = 7.9;
+    //         //   if (CATSCHKforDay.STDAZ) {
+    //         //     CATSCHKforDay.STDAZ = 7.55;
+    //         //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+    //         //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+    //         //     if (STADZRounded && QUANTITYHRounded) {
+    //         //       if (STADZRounded === QUANTITYHRounded) {
+    //         //         CATSCHKforDay.STATUS = "G"; // maintained
+    //         //       } else {
+    //         //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+    //         //       }
+    //         //     }
+    //         //   }
+    //         // });
+    //         // ////////////////////////////////////////////////////////
+    //         that.CAT2ComplinaceDataCache = data.CATSCHK;
+    //         // that.catsProfile = data.PROFILE;
+    //         deferred.resolve(data.CATSCHK);
+    //       } else {
+    //         deferred.resolve();
+    //       }
+    //     });
+    //   } else {
+    //     deferred.resolve(that.CAT2ComplinaceDataCache);
+    //   }
+
+    //   return deferred.promise;
+    // };
+
+    function monthAlreadyCached(year, month) {
+      var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
+      var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "-" + "15";
+
+      if(_.find(that.CAT2ComplinaceDataCache, { "DATEFROM":  middate }) !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    this.getTaskDescription = function(container) {
+      var deferred = $q.defer();
+      if (container === undefined ||
+          container.DATA === undefined) {
+        deferred.resolve();
+        return deferred.promise;
+      }
+
+      if (this.CPROTaskTextCache.DATA) {
+        var newItemFound = false;
+        for (var i = 0; i < container.DATA.length; i++) {
+          var bufferedItem = _.find(this.CPROTaskTextCache.DATA, { "TASK_ID":  container.DATA[i].TASK_ID });
+          if (!bufferedItem) {
+            newItemFound = true;
+          }
+        }
+        if (!newItemFound) {
+          deferred.resolve(this.CPROTaskTextCache);
+          return deferred.promise;
+        }
+      }
+
+      $http.post(GETTASKTEXT_IFP_WEBSERVICE, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+        for (var i = 0; i < data.DATA.length; i++) {
+          that.CPROTaskTextCache.DATA.push(data.DATA[i]);
+        }
+        deferred.resolve(data);
+      }).error(function (data, status) {
+        deferred.reject(status);
+      });
+
+      return deferred.promise;
+    };
+
+    this.updateDescriptionsFromCPRO = function(items) {
       var deferred = $q.defer();
 
-      if (forceUpdate_b || CAT2ComplinaceData4FourMonthCache == null) {
-        _httpRequest(CATS_COMPLIANCE_WEBSERVICE).then(function(data) {
+      var container = {};
+      container.DATA = [];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].ZCPR_OBJGEXTID !== "" &&
+            (items[i].DESCR === items[i].ZCPR_OBJGEXTID ||
+             items[i].DESCR === "")) {
+          container.DATA.push({TASK_ID:items[i].ZCPR_OBJGEXTID});
+        }
+      }
+      this.getTaskDescription(container).then(function(data) {
+        if (data) {
+          for (var j = 0; j < data.DATA.length; j++) {
+            for (var k = 0; k < items.length; k++) {
+              if (data.DATA[j].TASK_ID === items[k].ZCPR_OBJGEXTID) {
+                items[k].DESCR = data.DATA[j].TEXT;
+              }
+            }
+          }
+        }
+        deferred.resolve(items);
+      });
+      return deferred.promise;
+    };
+
+    this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
+      var deferred = $q.defer();
+
+      if (forceUpdate_b || !monthAlreadyCached(year, month)) {
+        var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
+        var begdate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "01";
+        var enddate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + calUtils.getLengthOfMonth(year, month);
+
+        _httpRequest(MYCATSDATA_WEBSERVICE + "&begda=" + begdate + "&endda=" + enddate).then(function(data) {
           if (data && data.CATSCHK) {
-            // ////////////////////////////////////////////////////////
-            // // test test test: uncomment to be a part-time colleague
-            // CAT2ComplinaceData4FourMonthCache.forEach(function(CATSCHKforDay){
-            //   CATSCHKforDay.CONVERT_H_T = 7.9;
-            //   if (CATSCHKforDay.STDAZ) {
-            //     CATSCHKforDay.STDAZ = 7.55;
-            //     var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-            //     var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
-            //     if (STADZRounded && QUANTITYHRounded) {
-            //       if (STADZRounded === QUANTITYHRounded) {
-            //         CATSCHKforDay.STATUS = "G"; // maintained
-            //       } else {
-            //         CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-            //       }
-            //     }
-            //   }
-            // });
-            // ////////////////////////////////////////////////////////
-            CAT2ComplinaceData4FourMonthCache = data.CATSCHK;
-            deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+            // that.CAT2ComplinaceDataCache = data.CATSCHK;
+            data.CATSCHK.forEach(function(CATSCHKforDay) {
+              var entry = _.find(that.CAT2ComplinaceDataCache, { "DATEFROM":  CATSCHKforDay.DATEFROM });
+              if (entry !== undefined) {
+                var index = that.CAT2ComplinaceDataCache.indexOf(entry);
+                if (index > -1) {
+                  that.CAT2ComplinaceDataCache.splice(index, 1);
+                }
+              }
+              that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
+            });
+            deferred.resolve(data.CATSCHK);
           } else {
             deferred.resolve();
           }
         });
       } else {
-        deferred.resolve(CAT2ComplinaceData4FourMonthCache);
+        deferred.resolve(that.CAT2ComplinaceDataCache);
       }
-
       return deferred.promise;
     };
 
     this.getCatsAllocationDataForWeek = function (year, week) {
       var deferred = $q.defer();
 
-      _httpRequest(CATS_ALLOC_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) { // /zdevdb/GETCATSDATA
+      _httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY").then(function(data, status) {
         if (!data) {
           deferred.reject(status);
         } else if (data.TIMESHEETS.WEEK !== week + "." + year ) {
             $log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
           deferred.resolve();
         } else {
-          deferred.resolve(data);
+          if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
+            that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS).then(function(items) {
+              data.TIMESHEETS.RECORDS = items;
+              deferred.resolve(data);
+            });
+          } else {
+            deferred.resolve(data);
+          }
         }
       });
       CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
       return deferred.promise;
     };
 
-    //expects to be day in format returned by calUtils.stringifyDate() (yyyy-mm-dd)
-    this.getTotalWorkingTimeForDay = function(day_s) {
-      var deferred = $q.defer();
-
-      this.getCAT2ComplianceData4FourMonth(false).then(function(data) {
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].DATEFROM ===  day_s) {
-            deferred.resolve(data[i].STDAZ);
-          }
-        }
-      });
-      return deferred.promise;
-    };
-
     this.requestTasksFromWorklist = function(forceUpdate_b, profile_s) {
       var deferred = $q.defer();
 
+      _httpRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
+        if (!data) {
+          status = status;
+        } else {
+          data = data;
+        }
+      });
+
       if (forceUpdate_b || !tasksFromWorklistCache) {
-        _httpRequest(TASKS_WEBSERVICE).then(function(data) { // /zdevdb/GETWORKLIST
+         _httpRequest(GETWORKLIST_WEBSERVICE + profile_s).then(function(data) {
           var tasks = [];
 
           if (profile_s === "DEV2002C") {
@@ -122,7 +233,7 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
                 ZZSUBTYPE: "",
                 DESCR: "Education"
             });
-        }
+          }
 
           if (data && data.WORKLIST) {
             var nodes = data.WORKLIST;
@@ -159,23 +270,29 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
       var promise = $q.all(CAT2AllocationDataForWeeks);
       promise.then(function(promisesData) {
         angular.forEach(promisesData, function(data){
-            var tasks = null;
-            if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
-                tasks = [];
-                var nodes = data.TIMESHEETS.RECORDS;
-                for (var i = 0; i < nodes.length; i++) {
-                    var task = {};
-                    task.RAUFNR         = (nodes[i].RAUFNR || "");
-                    task.TASKTYPE       = (nodes[i].TASKTYPE || "");
-                    task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
-                    task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-                    task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
-                    task.UNIT           = nodes[i].UNIT;
-                    task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-                    tasks.push(task);
-                }
+          var tasks = null;
+          var container = {};
+          container.DATA = [];
+
+          if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
+            tasks = [];
+            var nodes = data.TIMESHEETS.RECORDS;
+            for (var i = 0; i < nodes.length; i++) {
+              var task = {};
+              task.RAUFNR         = (nodes[i].RAUFNR || "");
+              task.TASKTYPE       = (nodes[i].TASKTYPE || "");
+              task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
+              task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
+              task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
+              task.UNIT           = nodes[i].UNIT;
+              task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+              tasks.push(task);
+              if (task.ZCPR_OBJGEXTID && !task.DESCR) {
+                container.DATA.push({TASK_ID: task.ZCPR_OBJGEXTID});
+              }
             }
-            callback_fn(tasks);
+          }
+          callback_fn(tasks);
         });
         /*CAT2AllocationDataForWeeks.forEach(function (promise) {
           promise.then(function (data) {
@@ -205,11 +322,10 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
 
     this.writeCATSData = function(container, profile_s){
       var deferred = $q.defer();
-      // /zdevdb/WRITECATSDATA
-      $http.post(CATS_WRITE_WEBSERVICE + profile_s, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
-          deferred.resolve(data);
+      $http.post(WRITECATSDATA_WEBSERVICE + profile_s, container, {'headers':{'Content-Type':'text/plain'}}).success(function(data) {
+        deferred.resolve(data);
       }).error(function (data, status) {
-          deferred.reject(status);
+        deferred.reject(status);
       });
       return deferred.promise;
     };

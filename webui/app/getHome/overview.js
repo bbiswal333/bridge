@@ -27,13 +27,25 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 
               	$scope.initializeMap = function() {
 	              	var mapInstance = appGetHomeMap.createMap($('#app-getHome-detail-map')[0]);
-	              	var mapRoute = new nokia.maps.routing.component.RouteResultSet(route.originalRoute, {pen: {
-							lineWidth: 3,
-							lineJoin: 'round'
-						}}).container;
-					mapInstance.objects.add(mapRoute);
+	              	var routeLayer = new nokia.maps.map.Container();
+	              	var markerLayer = new nokia.maps.map.Container();
+					mapInstance.objects.add(routeLayer);
+					mapInstance.objects.add(markerLayer);
+					var startMarker = new nokia.maps.map.StandardMarker(route.originalRoute.waypoints[0].mappedPosition, {
+						draggable: false,
+						visibility: true,
+						text: "A"
+					});
+					var endMarker = new nokia.maps.map.StandardMarker(route.originalRoute.waypoints[route.originalRoute.waypoints.length - 1].mappedPosition, {
+						draggable: false,
+						visibility: true,
+						text: "B"
+					});
+					markerLayer.objects.add(startMarker);
+					markerLayer.objects.add(endMarker);
+					routeLayer.objects.add(appGetHomeMap.createRoutePolyline(route.originalRoute, {lineWidth: 4}));
 					$interval(function() {
-						mapInstance.zoomTo(mapRoute.getBoundingBox(), false, "default");
+						mapInstance.zoomTo(routeLayer.getBoundingBox());
 					}, 200, 1);
               	};
               },

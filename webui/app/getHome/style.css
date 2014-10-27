@@ -134,3 +134,14 @@
 	margin-bottom: 10px;
 	cursor: pointer;
 }
+
+.app-getHome-settings-mapDescription {
+	width: 300px;
+	height: 200px;
+	background: rgba(0,0,0, 0.9);
+	padding: 20px;
+	position: absolute;
+	top: 10px;
+	left: 25px;
+	color: white;
+}

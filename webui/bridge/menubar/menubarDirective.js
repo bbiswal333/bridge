@@ -1,5 +1,14 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier",
-    function($modal, weatherData, weatherConfig, newsService, notifier) {
+angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location",
+    function($modal, weatherData, weatherConfig, newsService, notifier, $location) {
+        function isDateYoungerThanOneMonth(dateString) {
+            var newsDate = new Date(dateString);
+            var now = new Date();
+            if(newsDate.setMonth(newsDate.getMonth() + 1) > now.getTime()) {
+                return true;
+            }
+            return false;
+        }
+
         return {
             restrict: "E",
             templateUrl: "bridge/menubar/MenuBar.html",
@@ -21,12 +30,11 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                         if(newsService.existUnreadNews()) {
                             var unreadNews = newsService.getUnreadNews();
                             unreadNews.map(function(news) {
-                                notifier.showInfo(news.header, news.preview, "", function() {
-                                    newsService.modalInstance = $modal.open({
-                                        templateUrl: "bridge/menubar/news/newsDetail.html",
-                                        size: 'lg'
+                                if(isDateYoungerThanOneMonth(news.date)) {
+                                    notifier.showInfo(news.header, news.preview, "", function() {
+                                        $location.path("/whatsNew");
                                     });
-                                });
+                                }
                             });
                             newsService.markAllNewsAsRead();
                         }

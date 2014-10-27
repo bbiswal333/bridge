@@ -8,7 +8,11 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             }
 
             $scope.box.boxSize = "1";
-
+            $scope.box.settingScreenData = {
+                templatePath: "internalIncidents/settings.html",
+                controller: function(){},
+                id: $scope.boxId
+            };
             $scope.box.returnConfig = function() {
                 return configservice;
             };
@@ -28,7 +32,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.$watch('config', function (newVal, oldVal) {
                 if($scope.config !== undefined && newVal !== oldVal){
                     ticketData.calculateTotals();
-                    setNoMessagesFlag();
+                    //setNoMessagesFlag();
                     // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                     if (oldVal !== undefined) {
                         bridgeConfig.store(bridgeDataService);
@@ -44,9 +48,11 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 });
             } else {
                 $scope.config = configservice;
+                setNoMessagesFlag();
+                ticketData.calculateTotals();
             }
 
-            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
+            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 20);
         }
     ];
 

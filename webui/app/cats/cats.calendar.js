@@ -28,7 +28,6 @@ angular.module("app.cats")
 			try {
 				var processed = {};
 				var days = cats_o;
-				monthlyDataService.missingDays.value = 0;
 
 				for (var i = 0; i < days.length; i++) {
 					var dateStr = days[i].DATEFROM;
@@ -50,9 +49,6 @@ angular.module("app.cats")
 					}
 					if (time !== null) {
 						processed[time] = { state: statusStr };
-					}
-					if (statusStr === "Y" || statusStr === "R") { // days which require attention
-						monthlyDataService.missingDays.value += 1;
 					}
 				}
 				return processed;
@@ -131,7 +127,6 @@ angular.module("app.cats")
 					$scope.state = "CATS-Data could no be retrieved from system ISP";
 					$scope.hasError = true;
 				}
-				monthlyDataService.reloadInProgress.value = false;
 			}
 
 			function hasFixedTask (dayString){
@@ -487,56 +482,76 @@ angular.module("app.cats")
 			};
 
 			$scope.canGoBackward = function () {
-				if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)
+				if (monthRelative - 1 < -6) { // Maximum number of month to go back
 					return false;
 				}
 				return true;
 			};
+
+			function prevMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 0) {
+					data.month = 11;
+					data.year--;
+				}
+				else {
+					data.month--;
+				}
+				return data;
+			}
 
 			$scope.prevMonth = function () {
 				if (!$scope.canGoBackward()) {
 					return;
 				}
 				monthRelative--;
-
-				if (monthlyDataService.month === 0) {
-					monthlyDataService.month = 11;
-					monthlyDataService.year--;
-				}
-				else {
-					monthlyDataService.month--;
-				}
+				monthlyDataService.year = prevMonth(monthlyDataService).year;
+				monthlyDataService.month = prevMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				reload();
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+				// some buffering
+				catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.canGoForward = function () {
-				if (monthRelative + 1 > 0) { //Go back a maximum of four month
+				if (monthRelative + 1 > 1) { // Maximum number of month to go forward
 					return false;
 				}
 
 				return true;
 			};
 
+			function nextMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 11) {
+					data.month = 0;
+					data.year++;
+				}
+				else {
+					data.month++;
+				}
+				return data;
+			}
+
 			$scope.nextMonth = function () {
 				if (!$scope.canGoForward()) {
 					return;
 				}
 				monthRelative++;
-
-				if (monthlyDataService.month === 11) {
-					monthlyDataService.month = 0;
-					monthlyDataService.year++;
-				}
-				else {
-					monthlyDataService.month++;
-				}
+				monthlyDataService.year = nextMonth(monthlyDataService).year;
+				monthlyDataService.month = nextMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 
-				reload();
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+				// some buffering
+				catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.reloadCalendar = function () {
@@ -555,7 +570,10 @@ angular.module("app.cats")
 				}
 			};
 
-			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
+			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
+			// some buffering
+			// catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month).then( );
+			// catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month).then( );
 
 			if ($scope.selectedDay) {
 				while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
@@ -576,14 +594,14 @@ angular.module("app.cats")
 				refreshInterval = $interval(function () {
 					if (dateLastRun !== new Date().getDate()) {
 						dateLastRun = new Date().getDate();
-						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
+						catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true).then( handleCatsData );
 					}
 				}, 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
 				monthlyDataService.reloadInProgress.value = true;
-				catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true).then( handleCatsData );
 			});
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
