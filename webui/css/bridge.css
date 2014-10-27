@@ -575,7 +575,7 @@ input[type="checkbox"]:checked:after {
     display: flex;
 }
 .back-btn{
-    font-size: 2rem;
+    font-size: 1.6rem!important;
     margin-right: 10px;
     position: relative;
     top: 1px;
