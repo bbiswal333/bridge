@@ -182,17 +182,17 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
 
     function getCatsData () {
       var deferred = $q.defer();
-      catsBackend.requestTasksFromWorklist(true, configService.catsProfile).then(function (dataFromWorklist) {
-        if ($scope.blocks === undefined) {
-          $scope.blocks = [];
-        }
-
-        dataFromWorklist.forEach(function(entry){
-          addNewProjectItem(entry);
-          configService.updateLastUsedDescriptions(entry,true);
-        });
-
         getDataFromCatsTemplate().then( function() {
+          catsBackend.requestTasksFromWorklist(false, configService.catsProfile).then(function (dataFromWorklist) {
+          if ($scope.blocks === undefined) {
+            $scope.blocks = [];
+          }
+
+          dataFromWorklist.forEach(function(entry){
+            addNewProjectItem(entry);
+            configService.updateLastUsedDescriptions(entry,true);
+          });
+
           deferred.resolve();
         });
       });
@@ -271,8 +271,16 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
       });
     }
 
-    function loadProjects () {
-      if (!configService.loaded || $scope.forSettingsView) {
+    function loadProjects (forceReload) {
+      if (forceReload || !configService.loaded || $scope.forSettingsView) {
+        if (forceReload) {
+          $scope.items = [];
+          $scope.filter = {};
+          $scope.filter.val = "";
+          $scope.loaded = false;
+          $scope.toEdit = -1;
+          configService.catsItems = [];
+        }
         getCatsData().then(function(){
           configService.loaded = true;
           initProjectItems();
@@ -295,6 +303,12 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
     }
 
     loadProjects();
+
+    $scope.backendData = catsBackend.CAT2AllocationDataForWeeks;
+
+    $scope.$watch("backendData", function () {
+      loadProjects(true);
+    }, true);
 
     $scope.$watch("blocks", function () {
       initProjectItems();

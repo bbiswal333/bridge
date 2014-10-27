@@ -10,9 +10,9 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     this.CAT2ComplinaceDataCache = [];
     this.CPROTaskTextCache = {};
     this.CPROTaskTextCache.DATA = [];
+    this.CAT2AllocationDataForWeeks = {};
     var that = this;
     var tasksFromWorklistCache = [];
-    var CAT2AllocationDataForWeeks = {};
 
     function between(val_i, min_i, max_i) {
       return (val_i >= min_i && val_i <= max_i);
@@ -195,22 +195,22 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
           }
         }
       });
-      CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+      this.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
       return deferred.promise;
     };
 
     this.requestTasksFromWorklist = function(forceUpdate_b, profile_s) {
       var deferred = $q.defer();
 
-      _httpRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
-        if (!data) {
-          status = status;
-        } else {
-          data = data;
-        }
-      });
+      // _httpRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
+      //   if (!data) {
+      //     status = status;
+      //   } else {
+      //     data = data;
+      //   }
+      // });
 
-      if (forceUpdate_b || !tasksFromWorklistCache) {
+      if (forceUpdate_b || tasksFromWorklistCache.length === 0) {
          _httpRequest(GETWORKLIST_WEBSERVICE + profile_s).then(function(data) {
           var tasks = [];
 
@@ -263,11 +263,11 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
     this.requestTasksFromTemplate = function(year, week, callback_fn) {
       var deferred = $q.defer();
 
-      if (!CAT2AllocationDataForWeeks[year + "" + week]) {
+      if (!this.CAT2AllocationDataForWeeks[year + "" + week]) {
         this.getCatsAllocationDataForWeek(year, week);
       }
 
-      var promise = $q.all(CAT2AllocationDataForWeeks);
+      var promise = $q.all(this.CAT2AllocationDataForWeeks);
       promise.then(function(promisesData) {
         angular.forEach(promisesData, function(data){
           var tasks = null;
@@ -294,27 +294,6 @@ angular.module("app.cats.dataModule", ["lib.utils"]).service("app.cats.cat2Backe
           }
           callback_fn(tasks);
         });
-        /*CAT2AllocationDataForWeeks.forEach(function (promise) {
-          promise.then(function (data) {
-            var tasks = null;
-            if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS){
-              tasks = [];
-              var nodes = data.TIMESHEETS.RECORDS;
-              for (var i = 0; i < nodes.length; i++) {
-                var task = {};
-                task.RAUFNR         = (nodes[i].RAUFNR || "");
-                task.TASKTYPE       = (nodes[i].TASKTYPE || "");
-                task.ZCPR_EXTID     = (nodes[i].ZCPR_EXTID || "");
-                task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-                task.ZZSUBTYPE      = (nodes[i].ZZSUBTYPE || "");
-                task.UNIT           = nodes[i].UNIT;
-                task.DESCR          = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-                tasks.push(task);
-              }
-            }
-            callback_fn(tasks);
-          });
-        });*/
         deferred.resolve();
       });
       return deferred.promise;
