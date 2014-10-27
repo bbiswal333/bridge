@@ -106,7 +106,7 @@
                              popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
                              popover-trigger="mouseenter"
                              popover-placement="top"
-                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE | limitTo: 32 }}{{program.WORKING_STATE.KEY_MESSAGE > 32 ? '...' : ''}}
+                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE | limitTo: 24 }}{{program.WORKING_STATE.KEY_MESSAGE.length > 24 ? '...' : ''}}
                         </div>
                     </div>
                 </div>
