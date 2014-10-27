@@ -20,7 +20,7 @@
     </div>
 
   <div ng-if="notifications.length > 0">
-    <ul class="notification-menu">
+    <ul class="notification-menu underline">
       <li><a id="clearNotifications" href="" ng-click="clearNotifications()">Clear all</a></li>
     </ul>
 
@@ -45,10 +45,12 @@
         </p>
         <span class="timeAgo bold">{{getTimeAgo(notification.timestamp)}}</span>
       </div>
-    -->
+    
+
+
       <div class="sender ">
         <div class="sender-img">
-          <!-- to do: image if news and icon from app if app notification -->
+          
           <i class=" {{getIconOf(notification)}} "></i>
         </div>
         <div title="app" class="sender-name">
@@ -71,6 +73,28 @@
           {{getTimeAgo(notification.timestamp)}}
         </span>
       </div>
+      -->
+
+      <div style="margin-top:15px;margin-bottom:15px;">
+        <div class="menubar-feedback-iconCell">
+          <span class="menubar-feedback-icon {{getIconOf(notification)}}"></span>
+        </div>
+        <div class="menubar-feedback-descriptionCell">
+          <b title="title">{{notification.title}}</b>
+          <br>
+          <a ng-show="hasExternalURL" title="body" class="notification-content-body" target="_blank" href="{{notification.routeURL}}">
+            {{notification.body}}
+          </a>
+          <p ng-show="!hasExternalURL" title="body" class="notification-content-body">
+            {{notification.body}}
+          </p>
+         
+          <b>{{getTimeAgo(notification.timestamp)}}</b>
+        </div>
+      </div>
+    
+
+
     </div>
   </div>
 
