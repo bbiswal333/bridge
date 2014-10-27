@@ -23,6 +23,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
     $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions = 25; // 5 weeks
+    var lastSelectedDaysLength = 0;
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
     configService.copyConfigIfLoaded(catsConfigService);
@@ -349,7 +350,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
-                $scope.blockdata = [];
+                if (lastSelectedDaysLength === 1) {
+                    $scope.blockdata = []; // Enter range selection
+                }
                 if ($scope.selectedDates.length >= $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions) {
                     bridgeInBrowserNotification.addAlert('','Due to legal restrictions it is only allowed to select/ maintain up to ' + $scope.maximumNumberOfSelectedDaysDueToLeagalRestrictions + ' days at once');
                 }
@@ -358,6 +361,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         } catch(err) {
             $log.log("selectionCompleted(): " + err);
         }
+        lastSelectedDaysLength = $scope.selectedDates.length;
     };
 
     $scope.handleSelectedDate = function(dayString){
