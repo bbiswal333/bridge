@@ -40,17 +40,17 @@ describe("Cats Monthly Data Service", function () {
 
 		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=' + location.origin).respond(fakeWorkList);
 
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.22&options=CLEANMINIFY').respond(fakeCW22none);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.23&options=CLEANMINIFY').respond(fakeCW23vacation);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.24&options=CLEANMINIFY').respond(fakeCW24various);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.25&options=CLEANMINIFY').respond(fakeCW25various);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.26&options=CLEANMINIFY').respond(fakeCW26maintained);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.27&options=CLEANMINIFY').respond(fakeCW27maintained);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.31&options=CLEANMINIFY').respond(fakeCW31maintained);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.32&options=CLEANMINIFY').respond(fakeCW32maintained);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.33&options=CLEANMINIFY').respond(fakeCW33free);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.34&options=CLEANMINIFY').respond(fakeCW34free);
-		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=' + location.origin + '&week=2014.35&options=CLEANMINIFY').respond(fakeCW35parttime);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.22&options=CLEANMINIFY').respond(fakeCW22none);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.23&options=CLEANMINIFY').respond(fakeCW23vacation);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.24&options=CLEANMINIFY').respond(fakeCW24various);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.25&options=CLEANMINIFY').respond(fakeCW25various);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.26&options=CLEANMINIFY').respond(fakeCW26maintained);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.27&options=CLEANMINIFY').respond(fakeCW27maintained);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.31&options=CLEANMINIFY').respond(fakeCW31maintained);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.32&options=CLEANMINIFY').respond(fakeCW32maintained);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.33&options=CLEANMINIFY').respond(fakeCW33free);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.34&options=CLEANMINIFY').respond(fakeCW34free);
+		$httpBackend.when('GET', 'https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&catsprofile=DEV2002C&origin=' + location.origin + '&week=2014.35&options=CLEANMINIFY').respond(fakeCW35parttime);
 	});
 
 	afterEach(function() {
