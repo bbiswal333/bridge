@@ -94,7 +94,9 @@ angular.module("app.cats")
 			var daysElements = [];
 
 			$scope.getDescForState = function (state_s) {
-				return catsUtils.getDescForState(state_s);
+				if (state_s !== undefined) {
+					return catsUtils.getDescForState(state_s);
+				}
 			};
 
 			function reload() {
@@ -481,6 +483,21 @@ angular.module("app.cats")
 				});
 			};
 
+			function unSelectAllDays() {
+				var promise = null;
+				var promises = [];
+				if ($scope.selectedDates) {
+					$scope.selectedDates.forEach(function(selectedDayString){
+						promises.push(unSelectDay(selectedDayString));
+					});
+				}
+				promise = $q.all(promises);
+				promise.then(function(){
+					monthlyDataService.lastSingleClickDayString = '';
+					$scope.selectionCompleted();
+				});
+			};
+
 			$scope.canGoBackward = function () {
 				if (monthRelative - 1 < -6) { // Maximum number of month to go back
 					return false;
@@ -511,6 +528,7 @@ angular.module("app.cats")
 				monthlyDataService.month = prevMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
+				unSelectAllDays();
 
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
 				// some buffering
@@ -548,6 +566,7 @@ angular.module("app.cats")
 				monthlyDataService.month = nextMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
+				unSelectAllDays();
 
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
 				// some buffering
@@ -559,14 +578,18 @@ angular.module("app.cats")
 			};
 
 			$scope.getStateClassSubstring = function(calDay){
-				if(calDay.data.state === 'Y' && calDay.today){
-					return 'Y_TODAY';
-				}
-				else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
-					return 'OVERBOOKED_TODAY';
-				}
-				else {
-					return calDay.data.state;
+				if (calDay.data !== null) {
+					if(calDay.data.state === 'Y' && calDay.today){
+						return 'Y_TODAY';
+					}
+					else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
+						return 'OVERBOOKED_TODAY';
+					}
+					else {
+						return calDay.data.state;
+					}
+				} else {
+					return ''; // not relevant (might be hidden)
 				}
 			};
 

@@ -4,13 +4,13 @@
 
 <div class="bridge-menubar">
 	<div style="max-width: 1288px; height: 40px; margin: 0 auto; position: relative">
-		<div style="padding: 4px" class="col-md-6 col-sm-6 col-xs-6">
+		<div style="padding: 4px" class="col-md-5 col-sm-5 col-xs-5">
 			<bridge.search></bridge.search>
 		</div>
-		<div class="col-md-2 col-sm-1 col-xs-1" style="text-align: center">	
+		<div class="col-md-2 col-sm-2 col-xs-2" style="text-align: center">	
 	        <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-th-large"></span></div>
 		</div>
-		<div class="col-md-2 col-sm-2 col-xs-2 menubar-weather" style="text-align: center" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover >
+		<div class="col-md-3 col-sm-3 col-xs-3 menubar-weather" style="text-align: center" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover >
 			<div style="vertical-alignment: middle">
 				<span class="clickable" >
 					<span class="menubar-weather-temperature">
@@ -25,7 +25,7 @@
 		<div class="menubar-settings" style="text-align: right">
 			<div class="menuBar-settingsButton" title="Notifications" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-fade-and-slide-top" data-template="menubar/popover.html" bs-popover>
 			  <div ng-controller="bridge.menubar.notificationsController">
-		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox red-font"></span>
+		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox green-font"></span>
 		          <span ng-if="(notifications | newNotification).length == 0" class="fa fa-inbox" ></span>
 	          </div>
 	          <!--<span ng-hide="(notifications | newNotification).length == 0" ng-controller="bridge.menubar.notificationsController" class="badge red" style="position: absolute; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>-->
