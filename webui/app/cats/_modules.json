@@ -1,16 +1,17 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.cats",
-		"title"					:	"CATS Compliance",
-		"icon_css"				:	"fa fa-star",
+		"title"					:	"Time Recording (CAT2)",
+		"icon_css"				:	"fa fa-calendar",
 		"overview_directive"	:	"app.cats",
 		"needs_client"			:	false,
 		"routes"		:
 		[
 			{
 				"route"			:	"/detail/cats/",
-				"templateUrl"	:	"app/cats/detail.html"			
+				"templateUrl"	:	"app/cats/detail.html"
 			}
 		]	
 	},
@@ -20,12 +21,15 @@
 		"app.cats.allocationBar.utils",
 		"app.cats.maintenanceView",
 		"app.cats.maintenanceView.projectList",
-		"app.cats.monthlyDataModule"
+		"app.cats.monthlyDataModule",
+		"app.cats.dataModule",
+		"app.cats.utilsModule"
 	],
 
 	"js_files" : [
 		"catsMonthlyData.js",
-		"cats.js",
+		"catsUtils.js",
+		"cat2BackendZDEVDB.js",
 		"overview.js",
 		"settings.js",
 		"config.js",
@@ -33,7 +37,7 @@
 		"detail/main.js", 
 		"detail/allocationBar/allocationBarUtils.js",
 		"detail/allocationBar/allocationBarBlockDirective.js",
-		"detail/allocationBar/allocationBarDirective.js", 
+		"detail/allocationBar/allocationBarDirective.js",
 		"detail/projectList.js"
 	],
 	"css_files" : ["style.css"]

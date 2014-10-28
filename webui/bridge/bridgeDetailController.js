@@ -1,9 +1,9 @@
-angular.module('bridge.app').controller('bridge.app.detailController', ['$scope', '$routeParams','routeInfo', 'appInfo', function ($scope, $routeParams, routeInfo, appInfo) {		
+angular.module('bridge.app').controller('bridge.app.detailController', ['$scope', '$routeParams','routeInfo', 'appInfo', function ($scope, $routeParams, routeInfo, appInfo) {
 	$scope.detailScreen = {};
     $scope.detailScreen.htmlPage = routeInfo.templateUrl;
     $scope.detailScreen.route = routeInfo.route;
     $scope.detailScreen.title = appInfo.title;
-    $scope.detailScreen.icon_css = appInfo.icon_css;    
+    $scope.detailScreen.icon_css = appInfo.icon_css;
 
     var infinityLimitStep = 100;
     $scope.infinityLimit = infinityLimitStep;
@@ -23,14 +23,15 @@ angular.module('bridge.app').controller('bridge.app.detailController', ['$scope'
 }]);
 
 
-angular.module('bridge.app').directive("infinitescroll", [function () {
+angular.module('bridge.app').directive("infinitescroll", ["$window", function ($window) {
     return function (scope, elm) {
-        var container = angular.element(document.querySelector('#scrollContainer'));
+        var container = angular.element($window);
         var cont = container[0];
 
         container.bind("scroll", function () {
-            var containerBottom = cont.scrollTop + cont.offsetHeight;
+            var containerBottom = cont.scrollY + cont.outerHeight;
             var elementBottom = elm[0].scrollHeight + elm[0].offsetTop;
+            //console.log(containerBottom, ' ', elementBottom);
 
             if (containerBottom >= elementBottom) {
                 scope.$apply(scope.increaseInfinityLimit());

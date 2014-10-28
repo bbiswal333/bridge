@@ -1,0 +1,13 @@
+<label ng-class="{'checkbox checked': isChecked, 'checkbox': !isChecked}" ng-click="checkClicked()" ng-disabled="disabled">
+    <span class="icons">
+        <span class="fa-stack">
+            <span class="fa fa-stop second-icon" ng-class="{'enabled': !disabled}"></span>
+            <span class="fa fa-check second-icon fa-inverse" ng-class="{'enabled': !disabled}"></span>
+        </span>
+        <span class="fa fa-stop first-icon" ng-class="{'enabled': !disabled}"></span>
+    </span>
+    <span class="content">
+        <span class="unchecked-content">{{uncheckedLabel}}</span>
+        <span class="checked-content">{{checkedLabel}}</span>
+    </span>
+</label>

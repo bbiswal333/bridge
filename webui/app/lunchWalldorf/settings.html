@@ -3,15 +3,33 @@
 		<form name="ConfigItemForm">
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select menu language</div>
-		  		<div class="btn-group" style="margin-left:15px;margin-top:10px">
-		  				<span ng-click="currentConfigValues.language = 'de'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.language === 'de' || !currentConfigValues.language];" style="margin-right:0;">Deutsch</span>
-		  				<span ng-click="currentConfigValues.language = 'en'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.language === 'en'];" style="margin-right:0;">English</span>
-		  		</div>
-		  	</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+						<span ng-click="currentConfigValues.language = 'de'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.language === 'de' || !currentConfigValues.language];" style="margin-right:0;">Deutsch</span>
+						<span ng-click="currentConfigValues.language = 'en'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.language === 'en'];" style="margin-right:0;">English</span>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+						<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
+						<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Choose Backend</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<span ng-click="currentConfigValues.chosenbackend = 'WDF'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.chosenbackend === 'WDF' || !currentConfigValues.chosenbackend];" style="margin-right:0;">WDF</span>
+					<span ng-click="currentConfigValues.chosenbackend = 'KAR'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.chosenbackend === 'KAR'];" style="margin-right:0;">KAR</span>
+					<span ng-click="currentConfigValues.chosenbackend = 'Building'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.chosenbackend === 'Building'];" style="margin-right:0;">based on my Building</span>
+				</div>
+			</div>
+
 		</form>
 	</p>
 
 	<div class="row" >
-        <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
-    </div>
+		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save &amp; Close</div>
+	</div>
 </div>

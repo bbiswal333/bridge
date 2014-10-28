@@ -1,6 +1,6 @@
-angular.module('bridge.service').service('bridgeInBrowserNotification', function ($timeout) {
+angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootScope", "$timeout", function ($rootScope, $timeout) {
 
-	var scopeForDisplay;
+	var scopeForDisplay = $rootScope;
 
 	this.setScope = function (scope) {
 	    scopeForDisplay = scope;
@@ -30,4 +30,4 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', function
 	        }
         } , 1000 * timeoutInSeconds);
     };
-});
+}]);

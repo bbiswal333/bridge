@@ -1,0 +1,37 @@
+<script id="menubar/popover.html" type="text/ng-template">
+	<div class="menubar-popover" style="top: 40px;"><div class="popover-content menubar-popover-content" ng-bind="content"></div></div>
+</script>
+
+<div class="bridge-menubar">
+	<div style="max-width: 1288px; height: 40px; margin: 0 auto; position: relative">
+		<div style="padding: 4px" class="col-md-5 col-sm-5 col-xs-5">
+			<bridge.search></bridge.search>
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-2" style="text-align: center">	
+	        <div class="menuBar-settingsButton" title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();"><span class="fa fa-th-large"></span></div>
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-3 menubar-weather" style="text-align: center" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover >
+			<div style="vertical-alignment: middle">
+				<span class="clickable" >
+					<span class="menubar-weather-temperature">
+						<i class="{{weatherData.weatherIcon}}" style="font-size: 2.0rem"></i>
+						{{weatherData.temperature}}
+					</span> 
+					<span ng-if="!weatherData.fahrenheit" class="menubar-weather-temperature-unit">°C</span>
+					<span ng-if="weatherData.fahrenheit" class="menubar-weather-temperature-unit">°F</span>
+				</span>				
+			</div>
+		</div>
+		<div class="menubar-settings" style="text-align: right">
+			<div class="menuBar-settingsButton" title="Notifications" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-fade-and-slide-top" data-template="menubar/popover.html" bs-popover>
+			  <div ng-controller="bridge.menubar.notificationsController">
+		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox green-font"></span>
+		          <span ng-if="(notifications | newNotification).length == 0" class="fa fa-inbox" ></span>
+	          </div>
+	          <!--<span ng-hide="(notifications | newNotification).length == 0" ng-controller="bridge.menubar.notificationsController" class="badge red" style="position: absolute; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>-->
+	        </div>
+
+	        <div class="menuBar-settingsButton" title="Feedback" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/feedback/bridgeFeedback.html" data-animation="am-fade-and-slide-top" data-template="menubar/popover.html" bs-popover><span class="icon-heart"></span></div>
+		</div>
+	</div>
+</div>

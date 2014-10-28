@@ -1,0 +1,10 @@
+.chuck-bottom {
+	position: absolute;
+	bottom:0;
+	font-size: 1.5em;
+}
+
+.quote-bubble + p {
+margin: 0px -10px 1em 60px;
+/*font-style: italic;*/
+}

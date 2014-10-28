@@ -1,20 +1,22 @@
 
-<div id="scrollContainer" style="height:100%;overflow:scroll;">
-	<div class="centeredContent innerbox" style="width:90%; min-width:900px">
-	    <div class="box-heading">
-	        <div class="box-heading-content">        	
-	            <a href="/"><i class="fa fa-angle-left back-btn"></i> </a><h6 class="box-title">{{detailScreen.title}}</h6>            
-	        </div>
-    	</div>
-			<!--<div id="menu">						
-			    <ul class="subNav">		    	
-			        <li id="overview-button" class="selected  subNav_title"><h6 class="box-title">{{detailScreen.title}}</h6></li>        
-			    </ul>
-			</div>-->
-		<div id="detailContainer" style="width:100%;height:100%">
+<div id="scrollContainer" style="height:100%;">
+	<div class="centeredContent innerbox" style="max-width: 1288px">
+		<div style="width: 100%">
+		    <div class="box-heading">
+		        <div class="box-heading-content">        	
+		            <a href="/"><i class="fa fa-arrow-left back-btn"></i> </a><h6 class="box-title">{{detailScreen.title}}</h6>            
+		        </div>
+	    	</div>
+				<!--<div id="menu">						
+				    <ul class="subNav">		    	
+				        <li id="overview-button" class="selected  subNav_title"><h6 class="box-title">{{detailScreen.title}}</h6></li>        
+				    </ul>
+				</div>-->
+			<div id="detailContainer" style="width:100%;height:100%">
 
-			<ng-include src="detailScreen.htmlPage" class="animation-content">
-			</ng-include>
+				<ng-include src="detailScreen.htmlPage" class="animation-content">
+				</ng-include>
+			</div>
 		</div>
 	</div>
-<!--</div>-->
+</div>

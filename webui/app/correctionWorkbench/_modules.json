@@ -1,0 +1,22 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.correctionWorkbench",
+		"title"					:	"Java CWB",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.correctionWorkbench",
+		"needs_client"			:	false,
+		"default_hidden"		:	true,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/correctionWorkbench/:category/:calledFromNotification",
+				"templateUrl"	:	"app/correctionWorkbench/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "workbenchData.js", "detail.js"],
+	"css_files" : []
+}

@@ -1,0 +1,25 @@
+﻿<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<div ng-if="!dataService.noConfig">
+<span class="fa fa-circle-thin" ng-if="!socketConnected" /> <span class="fa fa-check-circle" ng-if="socketConnected" /> <a href="#" ng-click="startServer()" ng-if="!socketConnected">Start xs-syncer</a><a href="#" ng-click="stopServer()" ng-if="socketConnected">Stop xs-syncer</a>
+<i ng-if="dataService.restartNeeded"> your syncer needs to be restarted!</i>
+</div>
+<div ng-if="dataService.noConfig">
+Please configure xs-syncer first!
+</div>
+<div class="syncerMessageTable" style="overflow-y: auto">
+<table>
+<tr ng-repeat="output in outputArray">
+<td>
+<span class="fa {{output.icon}}" />
+</td>
+<td style="padding-right: 8px">
+{{formatDate(output.date)}}
+</td>
+<td>
+<span ng-bind-html="output.message"></span>
+<span style="color: green" class="fa fa-check" ng-if="output.status == 'finished'" />
+<span style="color: red" class="fa fa-flash" ng-if="output.status == 'failed'" />
+</td>
+</tr>
+</table>
+</div>

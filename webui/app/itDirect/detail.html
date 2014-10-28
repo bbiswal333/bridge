@@ -1,0 +1,53 @@
+<div ng-controller="app.itdirect.detailController" style="box-sizing:border-box;">
+    <div style="padding:30px;box-sizing:border-box;">
+
+        <bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+        <!--<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />-->
+        <div class="btn-group" style="height:32px;max-width:100%;">
+            <span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
+
+            <div ng-if="detailForNotifications === false" style="position:absolute;right:0">
+                <div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bPartieOfRequestSelected];" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected"
+                     style="width:35px;" title="With your involvement">
+                    <i class="fa fa-1.5x fa-crosshairs"></i>
+                </div>
+                <div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bSavedSearchSelected];" ng-click="config.bSavedSearchSelected = !config.bSavedSearchSelected"
+                     style="width:35px;" title="From Your Saved Search">
+                    <i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div infinitescroll>
+                <div class="row">
+                    <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESC')">Priority
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESC'"></i>
+                    </div>
+                    <div class="box-title col-sm-2" ng-click="sort('CAT_ID')">Component
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CAT_ID'"></i>
+                    </div>
+                    <div class="box-title col-sm-2" ng-click="sort('USER_STATUS_TEXT')">Status
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'USER_STATUS_TEXT'"></i>
+                    </div>
+                    <div class="box-title col-sm-2" ng-click="sort('CREATED_AT')">Creation
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CREATED_AT'"></i>
+                    </div>
+                    <div class="box-title col-sm-4" ng-click="sort('DESCRIPTION')">Description
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
+                    </div>
+                </div>
+                <div ng-repeat="row in tickets | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit" class="row" ng-class="zebraCell($index)">
+                    <div class="cellText col-sm-1">{{row.PRIORITY_DESC}}</div>
+                    <div class="cellText col-sm-2">{{row.CAT_ID}}</div>
+                    <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT}}</div>
+                    <div class="cellText col-sm-2">{{getFormattedDate(row.CREATED_AT)}}</div>
+                    <div class="cellText col-sm-4">
+                        <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

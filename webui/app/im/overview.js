@@ -1,7 +1,7 @@
 angular.module('app.im', ['ngTable']);
 
-angular.module('app.im').factory("app.im.configservice", function () 
-{  
+angular.module('app.im').factory("app.im.configservice", function ()
+{
     //set the default configuration object
     var config = {};
     config.data = {};
@@ -15,17 +15,17 @@ angular.module('app.im').factory("app.im.configservice", function ()
     return config;
 });
 
-angular.module('app.im').directive('app.im', ['app.im.configservice', function (configservice) 
+angular.module('app.im').directive('app.im', ['app.im.configservice', function (configservice)
 {
     return {
         restrict: 'E',
-        templateUrl: 'app/im/overview.html',        
-        link: function ($scope) 
+        templateUrl: 'app/im/overview.html',
+        link: function ($scope)
         {
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined) 
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined)
             {
                 configservice.data = $scope.appConfig.data;
-            }            
+            }
         }
     };
 }]);
@@ -33,19 +33,18 @@ angular.module('app.im').directive('app.im', ['app.im.configservice', function (
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData', 'app.im.configservice','bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig) {
 
-        $scope.box.boxSize = "1";      
+        $scope.box.boxSize = "1";
         $scope.box.settingScreenData = {
             templatePath: "im/settings.html",
             controller: angular.module('app.im').appImSettings,
             id: $scope.boxId
-        };          
+        };
 
-        $scope.box.returnConfig = function()
-        {
+        $scope.box.returnConfig = function() {
             return configservice;
         };
 
-        $scope.prios = ticketData.prios;        
+        $scope.prios = ticketData.prios;
         $scope.$parent.titleExtension = " - Internal Messages";
         $scope.dataInitialized = ticketData.isInitialized;
         $scope.showNoMessages = false;
@@ -67,15 +66,13 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             if($scope.config !== undefined && newVal !== oldVal)
             {
                 ticketData.updatePrioSelectionCounts();
-                
+
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                 if (oldVal !== undefined) {
-                    bridgeConfig.persistInBackend(bridgeDataService);
+                    bridgeConfig.store(bridgeDataService);
                 }
             }
-        },true);  
-
-
+        },true);
 
         if (ticketData.isInitialized.value === false) {
             var initPromise = ticketData.initialize();
@@ -88,5 +85,5 @@ angular.module('app.im').controller('app.im.directiveController', ['$scope', '$h
             $scope.config = configservice;
         }
 
+        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
 }]);
-    

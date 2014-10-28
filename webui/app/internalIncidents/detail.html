@@ -1,0 +1,76 @@
+<div ng-controller="app.internalIncidents.detailController" style="box-sizing:border-box;">
+    <div style="padding:30px;box-sizing:border-box;">                
+
+    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+
+        <div class="btn-group" style="height:32px;max-width:100%;">
+        	<span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
+
+        	<div style="position:absolute;right:0">
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+					style="width:35px;" title="Selected Components">
+					<i class="fa fa-cube"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
+					style="width:35px;" title="Assigned to Colleagues">
+					<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
+					style="width:35px;" title="Assigned to Me">
+					<i class="fa fa-1.5x fa-crosshairs"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
+					style="width:35px;margin-right:0;" title="Created by Me">
+					<i class="fa fa-user"></i>
+				</div>
+      		</div>
+      	</div>
+
+        <div>
+        	<div infinitescroll>
+	            <div class="row">
+		            <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESCR')">Priority
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESCR'"></i>
+		            </div>
+		        	<div class="box-title col-sm-2" ng-click="sort('CATEGORY')">Category
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CATEGORY'"></i>
+		        	</div>
+		        	<div class="box-title col-sm-1" ng-click="sort('STATUS_DESCR')">Status
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'STATUS_DESCR'"></i>
+		        	</div>
+		        	<div class="box-title col-sm-2" ng-click="sort('REPORTER_NAME')">Reporter
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'REPORTER_NAME'"></i>
+		        	</div>
+                    <div class="box-title col-sm-1" ng-click="sort('CREATE_DATE')">Created
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CREATE_DATE'"></i>
+                    </div>
+                    <div class="box-title col-sm-1" ng-click="sort('CHANGE_DATE')">Changed
+                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHANGE_DATE'"></i>
+                    </div>
+		        	<div class="box-title col-sm-3" ng-click="sort('DESCRIPTION')">Description
+		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
+		        	</div>
+		        </div>
+	            <div ng-repeat="row in messages | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
+	            	<div class="cellText col-sm-1">{{row.PRIORITY_DESCR}}</div>
+	            	<div class="cellText col-sm-2">{{row.CATEGORY}}</div>
+	            	<div class="cellText col-sm-1">{{row.STATUS_DESCR}}</div>
+	            	<div class="cellText col-sm-2">
+		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
+		            		 class="im-reporter-img"
+		            		 ng-if="row.REPORTER_ID"></img>
+			            <a target="_blank" href="{{row.url}}">{{row.REPORTER_NAME}}</a>
+			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
+			            <a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+        			</div>
+                    <div class="cellText col-sm-1">{{getFormattedDate(row.CREATE_DATE)}}</div>
+                    <div class="cellText col-sm-1">{{getFormattedDate(row.CHANGE_DATE)}}</div>
+	            	<div class="cellText col-sm-3">
+        				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
+	            	</div>
+	            </div>
+	        </div>
+
+        </div>        
+    </div>
+</div>

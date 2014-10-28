@@ -18,7 +18,7 @@ describe("The mini calendar shall display information about the current CATS com
 			do {
 				date = new Date(year_i, month_i, i, 0, 0, 0);
 				i++;
-			} while (date.getDay() == 0 || date.getDay() == 6);
+			} while (date.getDay() === 0 || date.getDay() === 6);
 
 			return weekdays[date.getDay() - 1];
 		}
@@ -37,19 +37,26 @@ describe("The mini calendar shall display information about the current CATS com
 	});
 
 	it("should be possible to create array-field by accessing them", function () {
-		var ar = new Array();
+		var ar = [];
 
-		ar[5] = new Array();
+		ar[5] = [];
 		ar[5][2] = "Hello";
 
 		expect(ar[5][2]).toEqual("Hello");
 	});
 
-	it ("should generate a cal-array of correct size", function () {
+	it("should generate a cal-array for weeks starting with Monday of correct size", function () {
 		var ar = calUtils.buildCalendarArray(2014, Math.floor(Math.random() * 12)); //0: January, 11 December
 		expect(ar.length).toBeGreaterThan(4);
 		expect(ar[2].length).toBe(7);
-		expect(ar[ar.length-1].length).toBe(7);
+		expect(ar[ar.length - 1].length).toBe(7);
+	});
+
+	it("should generate a cal-array for weeks starting with Sunday of correct size", function () {
+		var ar = calUtils.buildCalendarArray(2014, Math.floor(Math.random() * 12), true); //0: January, 11 December
+		expect(ar.length).toBeGreaterThan(4);
+		expect(ar[2].length).toBe(7);
+		expect(ar[ar.length - 1].length).toBe(7);
 	});
 
 	it("should be possible to bind additional data to dates", function () {
@@ -67,7 +74,7 @@ describe("The mini calendar shall display information about the current CATS com
 		expect(ar[4][4].data.location).toEqual("Walldorf");
 	});
 
-	it("the calendar array should start with the correct day", function () {
+	it("the calendar array should start with the correct day which is Monday", function () {
 		var mo = calUtils.buildCalendarArray(2014, 8);
 		var tu = calUtils.buildCalendarArray(2013, 9);
 		var we = calUtils.buildCalendarArray(2014, 0);
@@ -76,12 +83,30 @@ describe("The mini calendar shall display information about the current CATS com
 		var sa = calUtils.buildCalendarArray(2013, 5);
 		var su = calUtils.buildCalendarArray(2013, 8);
 
-		expect(mo[0][0].dayNr).toBe(1); 
+		expect(mo[0][0].dayNr).toBe(1);
 		expect(tu[0][0].dayNr).toBe(30);
 		expect(we[0][0].dayNr).toBe(30);
 		expect(th[0][0].dayNr).toBe(28);
 		expect(fr[0][0].dayNr).toBe(28);
 		expect(sa[0][0].dayNr).toBe(27);
 		expect(su[0][0].dayNr).toBe(26);
+	});
+
+	it("the calendar array should start with the correct day which is Sunday", function () {
+		var mo = calUtils.buildCalendarArray(2014, 8, true);
+		var tu = calUtils.buildCalendarArray(2013, 9, true);
+		var we = calUtils.buildCalendarArray(2014, 0, true);
+		var th = calUtils.buildCalendarArray(2014, 4, true);
+		var fr = calUtils.buildCalendarArray(2013, 10, true);
+		var sa = calUtils.buildCalendarArray(2013, 5, true);
+		var su = calUtils.buildCalendarArray(2013, 8, true);
+
+		expect(mo[0][0].dayNr).toBe(31);
+		expect(tu[0][0].dayNr).toBe(29);
+		expect(we[0][0].dayNr).toBe(29);
+		expect(th[0][0].dayNr).toBe(27);
+		expect(fr[0][0].dayNr).toBe(27);
+		expect(sa[0][0].dayNr).toBe(26);
+		expect(su[0][0].dayNr).toBe(1);
 	});
 });

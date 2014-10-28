@@ -1,4 +1,9 @@
-[![Build Status](http://mo-c97a0800b.mo.sap.corp:49153/buildStatus/icon?job=Bridge-UnitTests)](http://mo-c97a0800b.mo.sap.corp:49153/job/Bridge-UnitTests/)
+[![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecksBadge/ws/badge/eslint.svg)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
+[![Coverage](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/badge/coverage.svg)](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/results/coverage.txt)
+[![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
+
+[![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
+
 
 # Bridge
 
@@ -26,4 +31,5 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * to get started, just copy our "test app" and adjust it
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
-Further information can be found on our [wiki](https://github.wdf.sap.corp/bridge/bridge/wiki).
+Further information can be found on our [wiki page](https://github.wdf.sap.corp/bridge/bridge/wiki).
+

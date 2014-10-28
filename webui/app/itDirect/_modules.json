@@ -1,0 +1,22 @@
+{
+	"app":
+	{
+		"categories"			:	["Service & Support"],
+		"module_name"			:	"app.itdirect",
+		"title"					:	"IT Direct",
+		"icon_css"				:	"icon-comment",
+		"overview_directive"	:	"app.itdirect",
+		"needs_client"			:	false,
+		"default_hidden"		:   true,
+		"routes"		:
+			[
+				{
+					"route"			:	"/detail/itdirect/:appId/:prio/:calledFromNotifications",
+					"templateUrl"	:	"app/itDirect/detail.html"
+				}
+			]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "ticketData.js", "config.js", "detail.js", "settings.js"],
+	"css_files" : ["style.css"]
+}

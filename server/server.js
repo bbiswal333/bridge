@@ -9,11 +9,12 @@ var api			= require('./api.js');
 var helper		= require('./helper.js');
 
 exports.run = function(npm, port)
-{	
-	var proxy      = param.get("proxy", true);
-	var local      = param.get("local", true);
-	var cache 	   = param.get("cache", false);
-	var sso_enable = param.get("sso", false);
+{
+	var proxy       = param.get("proxy", true);
+	var local       = param.get("local", true);
+	var cache 	    = param.get("cache", false);
+	var sso_enable  = param.get("sso", false);
+	var host_filter = param.get("host_filter", "127.0.0.1");
 
 	helper.checkErrorFileSize();
 
@@ -33,6 +34,7 @@ exports.run = function(npm, port)
 		
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
+		app.use('/badge', express.static(path.join(__dirname, '../badge')));
 		app.use(express.bodyParser());
 	    
 		var options = {
@@ -41,8 +43,15 @@ exports.run = function(npm, port)
 		};
 		
 		var server = https.createServer(options, app);		
-		api.register(app, user, local, proxy, npm, eTag, sso_enable);	 	
-		server.listen(port, "127.0.0.1");		
+		api.register(app, user, local, proxy, npm, eTag, sso_enable);
+		if( host_filter === "")
+		{
+			server.listen(port);			
+		}	
+		else
+		{ 	
+			server.listen(port, host_filter);					
+		}
 		
 		helper.printConsole(port);		
 		helper.handleException(port);		
@@ -56,6 +65,10 @@ exports.run = function(npm, port)
 		{
 			helper.wrappedExec('forever restart updater', function (error, stdout, stderr) {
 				console.log('..restarted updater');			
+			});
+
+			helper.wrappedExec('node ' + path.join(__dirname, './../badge/prodStatusBadge'), function (error, stdout, stderr) {
+				console.log('..status badge updated');			
 			});
 		}
 	}

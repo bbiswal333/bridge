@@ -3,6 +3,9 @@
 <head>
     <!-- browser compatibility  -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Use UTF-8 as charset to display special chars like ß -->
+<!--     <meta charset="utf-8"> -->
 
     <!-- browser test -->
     <script src="lib/modernizr-2_7_1/modernizr.js"></script>
@@ -16,19 +19,28 @@
 
     <!-- css -->
     <link href="css/background-image.css" rel="stylesheet" />
+    <link href="lib/angular-motion/angular-motion.css" rel="stylesheet" />  
 
     <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
     <link href="css/bridge.css" rel="stylesheet" />
-    <link href="css/animation.css" rel="stylesheet" />
+    <link href="css/bridgeColors.css" rel="stylesheet" />
+    <link href="css/notificationStyles.css" rel="stylesheet" />
+    <link href="css/bridgeCheckbox.css" rel="stylesheet" />
+    <link href="css/bridgeInput.css" rel="stylesheet" />
     
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
+    <script src="lib/jquery.timeago.js"></script>
+    <script src="lib/jquery-ui-touch-0_2_3/jquery-ui-touch-punch.min.js"></script>
     
-    <script src="lib/angular-1_2_13/angular.js"></script>
-    <script src="lib/angular-1_2_13/angular-route.min.js"></script>
-    <script src="lib/angular-1_2_13/angular-resource.min.js"></script>
-    <script src="lib/angular-1_2_13/angular-animate.min.js"></script>
-    <script src="lib/angular-1_2_13/angular-sanitize.min.js"></script>
+    <script src="lib/angular-1_2_25/angular.js"></script>
+    <script src="lib/angular-1_2_25/angular-route.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-resource.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-animate.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-sanitize.min.js"></script>
+
+    <script src="lib/socket.io.js"></script>
+    <script src="lib/fuse/fuse.js"></script>
 
     <script src="lib/d3_3_4_6/d3.min.js"></script>
     <script src="lib/nvd3_1_1/nv.d3.min.js"></script>
@@ -40,55 +52,65 @@
 
     <!-- icon -->
     <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
-    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />  
-    <link href="css/fonts/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" /> 
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" /> 
+    <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" /> 
      
     <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">  
 
     <!-- external packed libs -->
-    <script src="lib/linq-2_2_0_2/linq.min.js"></script>
     <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
     <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
     <script src="lib/ng-grid-2_0_11/ng-grid.min.js"></script>
     <script src="lib/ng-grid-2_0_11/ngGridFlexibleHeightPlugin.js"></script>    
 
-    <script src="lib/angular-strap-2_0_0_RC4/angular-strap.min.js"></script>
-    <script src="lib/angular-strap-2_0_0_RC4/angular-strap.tpl.min.js"></script>
+    <script src="lib/angular-strap-2_1_0/angular-strap.js"></script>
+    <script src="lib/angular-strap-2_1_0/angular-strap.tpl.min.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
+    <script src="lib/stacktracejs-140806/stacktrace.js"></script>
+    <script src="lib/lodash-2_4_1/lodash.compat.min.js"></script>
+    <script src="lib/fileSaver-140822/fileSaver.js"></script>    
+    
+    <!-- sigma.js required for Jenkins dependancy graph -->
+    <script src="lib/sigma-1_0_3/sigma.min.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.parsers.json.min.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.plugins.dragNodes.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.plugins.neighborhoods.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.canvas.edges.arrow.js"></script>
+
+    <script src="app/getHome/nokiaHere/jsl.js" type="text/javascript" charset="utf-8"></script>
+    <script src="app/getHome/nokiaHere/exampleHelpers.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="//js.api.here.com/ee/2.5.4/jsl.js?with=all" type="text/javascript" charset="utf-8"></script>--><!--
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"
+            type="text/javascript" charset="utf-8"></script>-->
 
     <script src="loader.js"></script>   
-
-    
-    <script type="text/javascript">
-        var SpritzSettings = {
-        clientId: "",
-        redirectUri: window.location.origin
-     };
-     </script>
-     <script id="spritzjs" src="//sdk.spritzinc.com/js/1.2/js/spritz.min.js"></script>
 
     <title>Bridge</title>
 </head>
 
-<body class="noselect" style="overflow:auto">    
-    <div class="mainPageBackgroundGradient" ng-if="configLoadingFinished" id="mainContainer" ng-class="{true: 'mainPageBackgroundGradient', false: temporaryData.backgroundDayNight}[(temporaryData.backgroundDayNight == undefined)]" ng-cloak>
-        <div class="sun" ng-class="{true: 'mainPageBackground', false: temporaryData.backgroundClass}[(temporaryData.backgroundClass == undefined)]">
+<body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
+    <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
+        <div>
+            
+            <bridge.menubar></bridge.menubar>
+            
             <div>
-                <div ng-if="!showLoadingBar" class="TitleBar"></div>
                 <div ng-if="showLoadingBar" class="loadingBar">
                     <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
                 </div>
-                <!--<span class="headertext">
-                    <a href="/#"><img style="pointer-events:auto" src="img/Logo_Bridge_beta.svg" height="24" alt="Bridge Logo"></a>
-                </span>-->
             </div>
-            <!--<div id="menu">
-                <ul class="mainNav">
-                    <li id="overview-button" class="selected" ng-click="overview_click()">OVERVIEW</li>
-                    
-                </ul>
-            </div>-->
-            <div id="main-container" ng-view class="mainContainer">
+            <div ng-if="logMode" class="logAlertBar">
+                <div class="logAlertButtonGroup">
+                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
+                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
+                </div>
+                <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
+            </div>
+            <div id="main-container" ng-view class="mainContainer centeredContent">
             </div>
         </div>
     </div>

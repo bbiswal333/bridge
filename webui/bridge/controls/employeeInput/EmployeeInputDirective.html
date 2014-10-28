@@ -1,0 +1,13 @@
+﻿<script id="template/typeahead/typeahead-popup.html" type="text/ng-template">
+    <ul class="typeahead dropdown-menu" style="position:absolute;z-index:101" ng-style="{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}">
+	      <li ng-repeat="match in matches" ng-class="{customactive: isActive($index) }" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" style="line-height: 18px; margin-top: 4px; padding: 0px 3px 0px 3px;z-index:101;border-color: white">
+	          <typeahead-match index="$index" match="match" query="query" template-url="templateUrl" style="z-index:101"></typeahead-match>
+	      </li>
+	  </ul>
+</script>
+
+<bridge.input ng-if="setRequired" required="true" placeholder="{{placeholder}}" model="selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>
+    
+<bridge.input ng-if="!setRequired" placeholder="{{placeholder}}" model="$parent.selectedEmployee" 
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>

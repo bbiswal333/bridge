@@ -1,21 +1,22 @@
 {
 	"app":
 	{
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.imtps",
 		"title"					:	"GTP Test MSG",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.imtps",
 		"needs_client"			:	false,
-		"default_hidden"		: 	true,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/imtps",
-				"templateUrl"	:	"app/imtps/detail.html"			
+				"route"			:	"/detail/imtps/:appId",
+				"templateUrl"	:	"app/imtps/detail.html"
 			}
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js","settings.js","config.js"],
+	"js_files" : ["overview.js", "detail.js","settings.js","config.js","msgReaderData.js"],
 	"css_files" : []
 }

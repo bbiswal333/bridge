@@ -1,0 +1,20 @@
+{
+	"news": [
+        {
+            "id":       1,
+            "header":   "New Design for Bridge",
+            "date": "2014-10-10",
+            "snapURL":  "bridge/menubar/news/image/newDesignSnap.png",
+            "preview":  "Bridge was launched in a new design and with new features.",
+            "content":  "We're excited to announce the new design for bridge. With over 5000 unique visitors per months we are now gaining momentum and hereby would like to thank all of you for your great support, feedback and contributions.<br /><br /><ul><li>Drag and Drop Applications: It is now easily possible to change the sequence of your apps by just using drag and drop on the header section of each application.</li><li>Unified Search: We were able to remove some applications by introducing a generic search with a number of search providers to find relevant inforamtion accross various information sources.</li><li>New Menu Bar: The new design comes with a new menubar with a more structured look and feel. We also made the interactions more consitent.</li><li>Application Categories: Applications are now structured in categories to be able to find them more quickly.</li></ul><br />Along with the overall changes, we have also improved individual applications:<ul><li>Links: Drag and drop events on the settings screen are improved and it is now also possible to drag urls into that screen directly.</li><li>CAT2: Stability improvements and bug fixes.</li><li>Jenkins: Major performance improvements, handling of data loading events, bug fixes, a new overview layout and display of job dependencies.</li></ul>"
+        },
+        {
+            "id":       2,
+            "header":   "Beat the traffic & Customer Incidents",
+            "date": "2014-10-23",
+            "snapURL":  "bridge/menubar/news/image/beatTheTrafficSnap.png",
+            "preview":  "New app for monitoring the traffic on your way home.",
+            "content":  "Today, we would like to make two announcements.<br /><br /><ul><li>Our new app <b>\"beat the traffic\"</b> will inform you about traffic incidents on your route home or to work and show you how long it will take you to get to your destination. Simply add it from the available applications (category \"Productivity\").</li><li>Also, we would like to extend our beta test for our app for customer incident. In case you are interested, please register <a target=\"_blank\" href=\"https://profiles.wdf.sap.corp/groups/5448e3d2fd84a045cc000003/users\">here</a>.</li></ul><br />We would like to thank <b>Merlin Beutlberger</b>, <b>Stefan Lay</b>, <b>Matthias Gradl</b>, <b>Matthias Osswald</b> and <b>Martin Locher</b> for their contributions to the \"beat the traffic\" app during our hackathon and also afterwards."
+        }
+	]
+}

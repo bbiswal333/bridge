@@ -1,21 +1,45 @@
 .ccm-box{
-	width: 33%;
+	width: 50%;
 	float: left;
-	text-align: center;
-	border-right: 1px solid #e5e5e5;
+	text-align: left;
+	border-right: 2px dotted #e5e5e5;
 	padding-left: 5px;
 	padding-right: 5px;
+
 }
 .ccm-box:last-child{
 	border:none;
 }
 .ccm-row{
 	width: 100%;
-	text-align: center;
+	text-align: left;
 	margin-bottom: 10px;
+	display: block;
 }
 .ccm-head{
 	display: inline-table;
 	width: 30%;
+	overflow: hidden;
+	margin-left: 5px;
+}
+.ccm-box div:not(:first-of-type){
+	border-bottom: 1px solid #e5e5e5;
 
+}
+.ccm-content {
+	opacity: 0.8;
+}
+
+.ccm-projectid {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.ccm-percentage {
+	vertical-align: top;
+	font-weight: bold;
+	display: inline-block;
 }

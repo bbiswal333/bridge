@@ -1,29 +1,24 @@
-angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cats.data", "app.cats.allocationBar.utils"]).
-  directive("app.cats.maintenanceView.projectList", ["app.cats.data.catsUtils", "$timeout", "app.cats.allocationBar.utils.colorUtils",  "lib.utils.calUtils", "app.cats.configService",
-    function (catsUtils, $timeout, colorUtils, calenderUtils, configService) {
+angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "app.cats.utilsModule", "app.cats.allocationBar.utils"]).
+  directive("app.cats.maintenanceView.projectList", [
+    "app.cats.cat2BackendZDEVDB",
+    "app.cats.catsUtils",
+    "$timeout",
+    "app.cats.allocationBar.utils.colorUtils",
+    "lib.utils.calUtils",
+    "app.cats.configService",
+    "$q",
+    "$window",
+    function (catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q, $window) {
   var linkFn = function ($scope) {
     $scope.items = [];
     $scope.filter = {};
     $scope.filter.val = "";
     $scope.loaded = false;
-    var additionalData;
+    $scope.toEdit = -1;
+    var exitLoop = true;
+    var continueLoop = false;
 
     var config = {};
-
-
-    function initProjectItems () {
-      // if (!configService.loaded || $scope.forSettingsView) {
-      //   configService.catsItems = [];
-      // }
-      
-      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
-        $scope.items = configService.favoriteItems;
-      } else{
-        $scope.items = configService.catsItems;
-      }
-    }
-
-    initProjectItems();
 
     $scope.scrollbar = function(direction, autoResize) {
         config.direction = direction;
@@ -31,33 +26,63 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
         return config;
     };
 
-    $scope.onPressEnter = function(){
+    $scope.onPressEnter = function(event){
       if (event.which === 13) {
-        document.getElementById("projectButton").focus();
+        $window.document.getElementById("projectButton").focus();
       }
     };
 
-    $scope.toogleSelect = function (indx) {
-      $scope.items[indx].selected = !$scope.items[indx].selected;
+    $scope.showEditButton = function(id) {
+      $scope.toEdit = id;
+    };
 
-      if ($scope.items[indx].selected) {
+    function getIndexForId(id) {
+      var index = -1;
+      var foundIndex = index;
+      $scope.items.some(function(item) {
+        index++;
+        if (id === item.id) {
+          foundIndex = index;
+          return exitLoop;
+        }
+      });
+      return foundIndex;
+    }
+
+    $scope.editTask = function(id) {
+      var index = getIndexForId(id);
+      if($scope.forSettingsView){
+        configService.selectedTask = $scope.items[index];
+        $scope.onProjectEdit({id: id});
+      }
+    };
+
+    $scope.toogleSelect = function (id) {
+      var index = getIndexForId(id);
+      $scope.items[index].selected = !$scope.items[index].selected;
+
+      if ($scope.items[index].selected) {
+        if($scope.forSettingsView){
+          configService.selectedTask = $scope.items[index];
+        }
+
         var ok = $scope.onProjectChecked({
-          desc_s: $scope.items[indx].DESCR,
+          desc_s: $scope.items[index].DESCR,
           val_i: null,
-          task: $scope.items[indx],
-          index: indx
+          task: $scope.items[index],
+          id: id
         });
 
         if (!ok) {
-          $scope.items[indx].selected = false;
+          $scope.items[index].selected = false;
         }
       }
       else {
         $scope.onProjectUnchecked({
-          task: $scope.items[indx]
+          task: $scope.items[index]
         });
       }
-      document.getElementById("filterTextfield").focus();
+      // document.getElementById("filterTextfield").focus();
     };
 
     $scope.resetFilter = function () {
@@ -94,12 +119,15 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       //  taskDesc: "I2M Research & Innovation"
       var found = false;
       var color = null;
-      $scope.blocks.some(function(block){
+      $scope.blocks.some(function(block){ // is allocation bar block or a favourite item
+        if (!block) {
+          return found;
+        }
 
         if (block.task) {
           if (catsUtils.isSameTask(item, block.task) && block.value !== 0){
             found = true;
-            color = colorUtils.getColorForBlock(block);    
+            color = colorUtils.getColorForBlock(block);
           }
         } else {
           if (catsUtils.isSameTask(item, block)){
@@ -111,32 +139,22 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       });
       item.selected  = found;
       item.color     = color;
-      // return {'found' : found, 'color': color};
     }
 
-    function createNewProjectItem (item) {
-      var newItem        = item;
-      newItem.id         = $scope.items.length;
-      newItem.DESCR      = item.taskDesc || item.DESCR || item.ZCPR_OBJGEXTID || item.RAUFNR || item.TASKTYPE;
-      // newItem.ZCPR_EXTID = item.projectDesc || item.ZCPR_EXTID || item.TASKTYPE;
-      
+    function addNewProjectItem (item) {
+      var newItem = configService.enhanceTask(item);
+
       markItemIfSelected(item);
 
-      if (configService.catsItems.length < 1) {
-        configService.catsItems.push(newItem);
-      }
-
       var allreadyExists = false;
-      var taskTypeList = ['ABSE', 'VACA'];
 
+      if (catsUtils.isFixedTask(item)) { // don't add "fixed" tasks to favorites
+        return;
+      }
       configService.catsItems.some(function(oldItem){
-        if (taskTypeList.indexOf(item.TASKTYPE) >= 0) { // don't add VACA and ABSE to favorites
-          allreadyExists = true;
-          return true;
-        }
         if (catsUtils.isSameTask(item, oldItem)) {
           allreadyExists = true;
-          return true;
+          return exitLoop;
         }
       });
 
@@ -145,75 +163,163 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
       }
     }
 
-    function getDataFromCatsTemplate () {
-      if (additionalData === undefined) {
-        var week = calenderUtils.getWeekNumber(new Date());
-        // additionalData = catsUtils.getCatsAllocationDataForWeek(week.year, week.weekNo);
-        catsUtils.requestTasksFromTemplate(week.year, week.weekNo, function(data){
-          additionalData = data;
-          additionalData.forEach(function(task){
-            createNewProjectItem(task);
-          });
+    function addNewProjectItems (items) {
+      items.forEach( function(item) {
+        addNewProjectItem(item);
+      });
+    }
 
-          $timeout(function () {
-            $scope.$broadcast('rebuild:me');
-          }, 100);
-        });
-      }
+    function getDataFromCatsTemplate () {
+      var deferred = $q.defer();
+
+      var week = calenderUtils.getWeekNumber(new Date());
+      catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addNewProjectItems).then( function(){
+        deferred.resolve();
+      });
+
+      return deferred.promise;
     }
 
     function getCatsData () {
-      
-      catsUtils.getTasks(function (data) {
-        if ($scope.blocks === undefined) {
-          $scope.blocks = [];
-        }
-        data.forEach(function(entry){
-          createNewProjectItem(entry);  
+      var deferred = $q.defer();
+        getDataFromCatsTemplate().then( function() {
+          catsBackend.requestTasksFromWorklist(false, configService.catsProfile).then(function (dataFromWorklist) {
+          if ($scope.blocks === undefined) {
+            $scope.blocks = [];
+          }
+
+          dataFromWorklist.forEach(function(entry){
+            addNewProjectItem(entry);
+            configService.updateLastUsedDescriptions(entry,true);
+          });
+
+          deferred.resolve();
         });
-
-        getDataFromCatsTemplate();
-
-        // var uniqBy = function(ary, key) {
-        //     var seen = {};
-        //     return ary.filter(function(elem) {
-        //         var k = key([elem.ZCPR_OBJGEXTID, elem.RAUFNR, elem.ZCPR_EXTID]);
-        //         return (seen[k] === 1) ? 0 : seen[k] = 1;
-        //     });
-        // };
-
-        // configService.catsItems = uniqBy(configService.catsItems, JSON.stringify);
-
-        $timeout(function () {
-          $scope.$broadcast('rebuild:me');
-        }, 100);
       });
-      $scope.loaded = true;
+      return deferred.promise;
     }
 
-    function loadProjects () {
-      if (!configService.loaded || $scope.forSettingsView) {
-        initProjectItems();
-        getCatsData();
-        configService.loaded = true;
-      } else {
-        $scope.items.forEach(function(item){
-          markItemIfSelected(item);
+    function addItemsFromBlocks () {
+      $scope.blocks.some(function(blockItem){
+        if (!blockItem.task) {
+          return exitLoop;
+        }
+
+        if (catsUtils.isFixedTask(blockItem.task)) {
+          return continueLoop;
+        }
+
+        var allreadyExists = false;
+        $scope.items.some(function(item){
+          if (catsUtils.isSameTask(blockItem.task, item)) {
+            allreadyExists = true;
+            return exitLoop;
+          }
         });
-        $timeout(function () {
-          $scope.$broadcast('rebuild:me');
-        }, 100);        
-      } 
-
-      $scope.loaded = true;
+        if (!allreadyExists) {
+          $scope.items.push( configService.enhanceTask(blockItem.task) );
+        }
+      });
     }
+
+    function addItemsFromFavoriteList() {
+      var favoriteItems = angular.copy(configService.favoriteItems);
+      if (favoriteItems.length === 0) {
+        return;
+      }
+
+      favoriteItems.forEach(function(favoriteItem){
+        var allreadyExists = false;
+        $scope.items.some(function(item){
+          if (catsUtils.isSameTask(favoriteItem, item)) {
+            allreadyExists = true;
+            // item = favoriteItem;
+            return exitLoop;
+          }
+        });
+        if (!allreadyExists) {
+          $scope.items.push( configService.enhanceTask(favoriteItem) );
+        }
+      });
+    }
+
+    function validateItems(items){
+      var index = items.length;
+      while (index--) {
+          if (!catsUtils.isValid(items[index])) {
+            items.splice(index, 1);
+          }
+      }
+    }
+
+    function initProjectItems () {
+      colorUtils.setColorScheme(configService.colorScheme);
+      if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
+        $scope.items = angular.copy(configService.favoriteItems);
+      } else{
+        $scope.items = angular.copy(configService.catsItems);
+        addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
+      }
+      $scope.items.forEach( function(item) {
+        configService.updateDescription(item);
+      });
+    }
+
+    function markProjectItems() {
+      $scope.items.forEach(function(item){
+        markItemIfSelected(item);
+      });
+    }
+
+    function loadProjects (forceReload) {
+      if (forceReload || !configService.loaded || $scope.forSettingsView) {
+        if (forceReload) {
+          $scope.items = [];
+          $scope.filter = {};
+          $scope.filter.val = "";
+          $scope.loaded = false;
+          $scope.toEdit = -1;
+          configService.catsItems = [];
+        }
+        getCatsData().then(function(){
+          configService.loaded = true;
+          initProjectItems();
+          addItemsFromBlocks();
+          validateItems($scope.items);
+
+          markProjectItems();
+          $scope.loaded = true;
+        });
+      } else {
+        initProjectItems();
+        validateItems($scope.items);
+
+        $scope.loaded = true;
+      }
+
+      $timeout(function () {
+        $scope.$broadcast('rebuild:me');
+      }, 100);
+    }
+
+    loadProjects();
+
+    $scope.backendData = catsBackend.CAT2AllocationDataForWeeks;
+
+    $scope.$watch("backendData", function () {
+      loadProjects(true);
+    }, true);
 
     $scope.$watch("blocks", function () {
-      loadProjects();
+      initProjectItems();
+      addItemsFromBlocks();
+      validateItems($scope.items);
+
+      markProjectItems();
     }, true);
 
     $scope.$watch("items", function () {
-      loadProjects();
+      markProjectItems();
     }, true);  };
 
   return {
@@ -221,6 +327,7 @@ angular.module("app.cats.maintenanceView.projectList", ["ui.bootstrap", "app.cat
     scope: {
         onProjectChecked: "&onprojectchecked",
         onProjectUnchecked: "&onprojectunchecked",
+        onProjectEdit:"&onprojectedit",
         blocks: "=blocks",
         heightOfList: "@heightoflist",
         forSettingsView: "@forSettingsView"

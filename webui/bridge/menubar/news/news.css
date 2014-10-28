@@ -1,0 +1,117 @@
+.sidebar-news-tabBar {
+    text-align: center;
+    font-size: larger;
+    margin-bottom: 10px;
+}
+
+.sidebar-news-item {
+    height: 70px;
+    display:table;
+    width: 100%;
+    position: relative;
+    left: -15px;
+    padding-left: 15px;
+}
+
+.sidebar-news-boxLeft {
+    display: table-cell;
+    vertical-align: middle;
+    width: 25%;
+    font-family: 'Open Sans', sans-serif;
+    color: #707070;
+}
+
+.sidebar-news-boxRight {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 5px;
+    width: 60%;
+    font-family: 'Open Sans', sans-serif;
+    color: #707070;
+}
+
+.sidebar-news-markReadBox {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 5px;
+    width: 15%;
+    font-family: 'Open Sans', sans-serif;
+    color: #707070;
+    cursor: pointer;
+}
+
+.sidebar-news-markReadBox:hover {
+    font-size: large;
+    color: #0099CC;
+}
+
+.news-header-badge{
+    width: 0;
+    height: 0;
+    border: 100px solid #B3D0E9;
+    border-bottom-color: #B3D0E9;
+    position: relative;
+    top: -40px;
+    left:30px;
+}
+.news-header-badge:after{
+    content: "";
+    position: absolute;
+    bottom: -125px;
+    left: -100px;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 25px solid #B3D0E9;
+}
+.news-header-badge .image_rounded_shadow{
+    position: relative;
+    top: -60px;
+    right: 50px;
+}
+.news-title{
+    position: relative;
+    top: -20%;
+    left: -75px;
+    display: block;
+    text-align: center;
+    width: 150px;
+}
+.sidebar-news-header{
+}
+.sidebar-news-githubIcon{
+    width: 150px;
+    display: block;
+    text-align: center;
+}
+.sidebar-news-githubIcon:hover i{
+    color:#418AC9;
+}
+.sidebar-news-image{
+    margin-top: 50px;
+}
+.sidebar-news-content{
+    margin-top:20px;
+}
+.news-navi{
+    width: 100px;
+    text-align: center;
+    position: relative;
+    right: -1040px;
+    top: -300px;
+}
+
+.news-navi i{
+    padding-left: 10px;
+}
+
+.sidebar-news-headline {
+}
+
+.news-item{
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top:30px;
+}
+

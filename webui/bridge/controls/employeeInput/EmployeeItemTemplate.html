@@ -1,0 +1,15 @@
+<div style="padding-left: 10px; padding-right: 10px">
+    <table>
+        <td>
+            <bridge.employee-picture employee-user="{{match.model.BNAME}}"></bridge.employee-picture>&nbsp&nbsp
+        </td>
+        <td>
+            <span tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></span><br />
+            <span style="font-size: 13px">
+                <i>
+                    {{match.model.KOSTX}}<br />            
+                </i>
+            </span>
+        </td>
+    </div>
+</div>
