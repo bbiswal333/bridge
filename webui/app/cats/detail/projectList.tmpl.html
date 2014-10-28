@@ -13,7 +13,6 @@
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
                 <div ng-repeat="item in items | filter:filter.val"
-                     ng-class="{'col-xs-6 col-md-12 col-lg-6 animate-repeat' : items.length > 5,'' : items.length <= 5}">
                     <button type="button"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"
@@ -22,8 +21,7 @@
                             ng-click="toogleSelect(item.id,$event);"
                             ng-mouseenter="showEditButton(item.id)" 
                             ng-mouseout="">{{item.DESCR}}
-                        <br>
-                        <span style="font-size: 10px;">{{item.subDescription}}</span>
+                        <span>{{item.subDescription}}</span>
                     </button>
                     <div class="clickable settings_task_edit_button" 
                         ng-show="item.selected && forSettingsView && toEdit == item.id" 
