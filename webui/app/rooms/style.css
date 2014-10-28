@@ -1,0 +1,32 @@
+
+.myrow {
+  width: 80%;
+  float: left;
+}
+
+.mybox {
+  float:left;
+}
+
+.mybox input{
+  float:left;
+  margin-left: 5px;
+}
+
+.roomserror {
+  position: absolute; 
+  box-shadow:2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.roominplace {
+  position: absolute;
+  border: solid #009de0 2px;
+  width: 250px;
+  z-index: 1000;
+  box-shadow:2px 2px 0px rgba(0,0,0,0.1);
+  background-color: white;
+  
+  padding: 10px;
+  
+  
+}
