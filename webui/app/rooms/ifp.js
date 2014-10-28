@@ -69,7 +69,7 @@ angular.module('app.rooms').service('ifpservice', [
 			
 			return $http({
 				method: 'POST',
-				url: ISP_CANCELROOM,
+				url: ISP_CANCELROOM + '?' + 'origin=' + location.origin ,
 				transformRequest: __transformRequest,
 				data: data
 			}).success(function(data){

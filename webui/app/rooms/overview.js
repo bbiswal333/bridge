@@ -49,7 +49,14 @@ directive("app.rooms", [
 			$scope.cancelRoom = function(room) {
 				$scope.closeMsgBox = false;
 				$scope.selectedRoom = undefined;
-				ifpservice.cancelRoom(room).then({},function(error){
+				ifpservice.cancelRoom(room).then(function(data) {
+					if (data.data.RESULT.TYPE == "E") {
+						$scope.errMsg = "Error canceling your booking of "+ room.LOCATION +". "+ data.data.RESULT.MESSAGE;
+					} 
+					if (data.data.RESULT.TYPE == "S") {
+						$scope.loadMyReservations();
+					}
+				},function(error){
 					$scope.errMsg = "Error canceling your booking of "+ room.LOCATION;
 				});;
 			}

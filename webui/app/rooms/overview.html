@@ -13,10 +13,12 @@
             <p>{{selectedRoom.LOCATION}} on the {{ selectedRoom.VALIDFROMDATE | date: 'dd.MM.' }}</p>
             <button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
             <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>
+            
         </div>
 
         <div ng-if="!hasBookings() && errMsg == null">
-            You did not book a room for the next days! Saving ressources, perfecto!
+            <p>You did not book a room for the next days! Saving ressources, perfecto!</p>
+            <p>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</p>
         </div>
         
 
@@ -46,14 +48,14 @@
                                         <b bs-tooltip data-title="{{room.SUBJECT}}">{{room.SUBJECT}}</b>
                                     </span>
                                 </div>
-                                {{room.LOCATION}}<button class="box-icon table-icon-small icon-trash" ng-click="selectRoom(room)" style="margin-bottom:0px;margin-right:5px;padding:0px 0px 0px 0px;height:inherit; color:grey;background-color:transparent; box-shadow:0px 0px 0px;display:inline"></button>
+                                {{room.LOCATION}}<button class="box-icon table-icon-small icon-trash" ng-click="selectRoom(room)" style="margin-bottom:0px;margin-right:5px;padding:0px;height:inherit; color:grey;background-color:transparent; box-shadow:0px 0px 0px;display:inline"></button>
 
                             </td>
                             <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
                                 <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 256px">
                                     <span>
                                         <b>{{room.SUBJECT}}</b>
-                                        <button class="box-icon icon-trash" ng-click="selectRoom(room)" style="margin-bottom:5px;margin-right:5px;color:grey;background-color:transparent; box-shadow:0px 0px 0px"></button><br>
+                                        <button class="box-icon icon-trash" ng-click="selectRoom(room)" style="margin-bottom:5px;margin-right:5px;padding:0px;color:grey;background-color:transparent; box-shadow:0px 0px 0px"></button><br>
                                         {{room.LOCATION}}
                                     </span>
                                 </div>
