@@ -8,7 +8,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
-	var alreadyInitializedForMonth = {};
 	this.days = {};
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
@@ -42,7 +41,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			promise = $q.all(promises);
 			promise.then(function(){
-				alreadyInitializedForMonth[month] = true;
 				delete self.promiseForMonth[month];
 				self.reloadInProgress.value = false;
 			});
