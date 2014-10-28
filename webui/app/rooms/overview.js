@@ -1,18 +1,18 @@
-angular.module("app.rooms", ["app.rooms.ews", "lib.utils", "notifier"]).
+angular.module("app.rooms", ["lib.utils", "notifier"]).
 directive("app.rooms", [
 	"$timeout",
 	"$http",
-	"app.rooms.ews.ewsUtils",
 	"lib.utils.calUtils",
 	"$interval",
 	"app.rooms.configservice",
 	"notifier",
   "ifpservice",
-	function ($timeout, $http, ewsUtils, calUtils, $interval, meetingsConfigService, notifier, ifpservice) {
+	function ($timeout, $http, calUtils, $interval, meetingsConfigService, notifier, ifpservice) {
 
 		var directiveController = ['$scope', function ($scope){
 
 			$scope.closeMsgBox = true;
+			
 			$scope.box.settingsTitle = "Configure box size";
 			$scope.box.settingScreenData = {
 				templatePath: "rooms/settings.html",
@@ -54,6 +54,7 @@ directive("app.rooms", [
 						$scope.errMsg = "Error canceling your booking of "+ room.LOCATION +". "+ data.data.RESULT.MESSAGE;
 					} 
 					if (data.data.RESULT.TYPE == "S") {
+						$scope.successMsg = data.data.RESULT.MESSAGE;
 						$scope.loadMyReservations();
 					}
 				},function(error){
@@ -75,7 +76,7 @@ directive("app.rooms", [
 				$scope.closeMsgBox = false;
                 var today = new Date();
                 var till = new Date();
-                till.setDate(till.getDate()+7);
+                till.setDate(till.getDate()+14);
 
                 $scope.tillDate = till;
 
@@ -88,6 +89,8 @@ directive("app.rooms", [
             };
 			$scope.closeMsgBoxaction = function () {
 				$scope.closeMsgBox = true;
+				$scope.errMsg = undefined;
+				$scope.successMsg = undefined;
 			};
 
 			$scope.getCurrentDate = function () {

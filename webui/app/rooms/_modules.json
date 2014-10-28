@@ -7,15 +7,9 @@
 		"icon_css"				:	"fa fa-building",
 		"overview_directive"	:	"app.rooms",
 		"needs_client"			:	false,
-		"default_hidden"		: 	true,
-    "routes": [
-      {
-        "route"     :   "/detail/rooms/",
-        "templateUrl" : "app/rooms/detail.html"      
-      }
-    ]
+		"default_hidden"		: 	true
 	},
 	"modules" : [],
-	"js_files" : ["ews.js", "overview.js", "settings.js", "config.js", "ifp.js", "detail.js", "timePickerController.js"],
+	"js_files" : ["overview.js", "settings.js", "config.js", "ifp.js"],
 	"css_files" : ["style.css"]
 }

@@ -1,10 +1,17 @@
 <div>
     <div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
 
-        <div ng-if="errMsg !== null && ! closeMsgBox">
-            <alert class="roomserror" type="error" close="closeMsgBoxaction()">{{errMsg}}</alert>
+        <div ng-if="!isEmpty(errMsg)&& ! closeMsgBox">
+            <alert class="roomserror" type="'danger'" close="closeMsgBoxaction()"><b>{{errMsg}}</b><br>
+                <p><i>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</i></p>
+            </alert>
+            
         </div>
         
+        <div ng-if="!isEmpty(successMsg) && ! closeMsgBox">
+            <alert class="roomserror" type="'success'" close="closeMsgBoxaction()">{{successMsg}}</alert>
+        </div>
+
         <div ng-if="!isEmpty(selectedRoom)" class="roominplace bridge-fade-anim">
         
             <h5>
@@ -18,7 +25,7 @@
 
         <div ng-if="!hasBookings() && errMsg == null">
             <p>You did not book a room for the next days! Saving ressources, perfecto!</p>
-            <p>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</p>
+            <i>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</i>
         </div>
         
 
