@@ -4,8 +4,8 @@
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select task list color scheme</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
-					<span ng-click="configService.colorScheme = 'basicBlue'" ng-class="{true: 'btn btn_blue',false: 'btn '}[configService.colorScheme === 'basicBlue' || !configService.colorScheme];" style="margin-right:0;">Basic blue</span>
-					<span ng-click="configService.colorScheme = 'colorful'" ng-class="{true: 'btn btn_blue', false: 'btn'}[configService.colorScheme === 'colorful'];" style="margin-right:0;">Colorful</span>
+					<span ng-click="configService.colorScheme = 'basicBlue'" ng-class="{true: 'btn btn_blue',false: 'btn '}[configService.colorScheme === 'basicBlue'];" style="margin-right:0;">Basic blue</span>
+					<span ng-click="configService.colorScheme = 'colorful'" ng-class="{true: 'btn btn_blue', false: 'btn'}[configService.colorScheme === 'colorful' || !configService.colorScheme];" style="margin-right:0;">Colorful</span>
 				</div>
 			</div>
 			<!--<div class="row">

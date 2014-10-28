@@ -6,7 +6,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.selectedTask = null;
 	this.sundayweekstart = false;
 	this.catsProfile = "DEV2002C";
-	this.colorScheme = "basicBlue";
+	this.colorScheme = "colorful";
 
 	function getIndex (tasks, task) {
 		var index = -1;
