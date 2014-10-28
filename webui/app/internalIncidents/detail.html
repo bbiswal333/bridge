@@ -2,32 +2,29 @@
     <div style="padding:30px;box-sizing:border-box;">                
 
     	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
-    	<!--<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />-->
-        <div class="btn-group" style="height:32px;max-width:100%;">      	
-          <span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
 
-          <div style="position:absolute;right:0">
-          	<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components" 
-			style="width:35px;" title="Selected Components">
-				<i class="fa fa-cube"></i>
-			</div>	
-			<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
-			style="width:35px;" title="Assigned to Colleagues">
-				<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
-			</div>	
-			<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
-			style="width:35px;" title="Assigned to Me">
-				<i class="fa fa-1.5x fa-crosshairs"></i>
-			</div>	
-			<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
-			style="width:35px;margin-right:0;" title="Created by Me">
-				<i class="fa fa-user"></i>
-			</div>	
+        <div class="btn-group" style="height:32px;max-width:100%;">
+        	<span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
+
+        	<div style="position:absolute;right:0">
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+					style="width:35px;" title="Selected Components">
+					<i class="fa fa-cube"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
+					style="width:35px;" title="Assigned to Colleagues">
+					<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
+					style="width:35px;" title="Assigned to Me">
+					<i class="fa fa-1.5x fa-crosshairs"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
+					style="width:35px;margin-right:0;" title="Created by Me">
+					<i class="fa fa-user"></i>
+				</div>
+      		</div>
       	</div>
-      	</div>
-        
-			
-	
 
         <div>
         	<div infinitescroll>

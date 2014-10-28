@@ -1,6 +1,6 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', 'bridgeDataService', "bridge.converter",
-    function Controller($scope, $http, $window, ticketData, $routeParams, config, bridgeDataService, converter) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter",
+    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter) {
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
@@ -46,39 +46,49 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
         }
 
         function enhanceAllMessages(){
-            $scope.messages = ticketData.getRelevantTickets();
-
+            if ($scope.detailForNotifications === true){
+                $scope.messages = ticketData.ticketsFromNotifications;
+            } else {
+                $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me);
+            }
             $scope.messages.forEach(enhanceMessage);
         }
 
-        $scope.$watch('config', function() {
-            if($scope.config !== undefined){
+        $scope.$watch('config', function(newVal, oldVal) {
+            if($scope.config !== undefined && newVal !== oldVal){
                 enhanceAllMessages();
             }
         },true);
 
         $scope.getFormattedDate = function(sAbapDate){
-            return converter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
+            var date = converter.getDateFromAbapTimeString(sAbapDate);
+            return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
         };
 
-        function resetPrioSelections(){
+        function setPrioSelections(active){
             angular.forEach($scope.prios, function(prio){
-                prio.active = false;
+                prio.active = active;
             });
         }
 
-        if (ticketData.isInitialized.value === false) {
-            var promise = ticketData.initialize();
+        $scope.config = config;
 
-            promise.then(function success() {
-                enhanceAllMessages();
-                $scope.config = config;
-            });
-        } else {
+        if ($routeParams.calledFromNotifications === "true"){
+            $scope.detailForNotifications = true;
+            setPrioSelections(true);
             enhanceAllMessages();
-            $scope.config = config;
-        }
+        } else {
+            if (ticketData.isInitialized.value === false) {
+                var promise = ticketData.initialize();
 
-        resetPrioSelections();
-        _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+                promise.then(function success() {
+                    enhanceAllMessages();
+                });
+            } else {
+                enhanceAllMessages();
+            }
+
+            setPrioSelections(false);
+            _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+        }
 }]);

@@ -1,6 +1,7 @@
 angular.module('app.internalIncidents').factory("app.internalIncidents.configservice", function (){
     var config = {};
     config.data = {};
+    config.data.lastDataUpdate = null;
     config.data.selection = {};
     config.data.selection.sel_components = true;
     config.data.selection.colleagues = false;
