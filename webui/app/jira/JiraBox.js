@@ -57,19 +57,19 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
             });
 
             var getGroup = function(task) {
-              var group = '';
+                var localGroup = '';
 
-              if (task.parentKey !== null && task.parentKey !== undefined) {
-                group += task.parentKey;
-              }
-
-              if (task.component !== null && task.component !== undefined) {
-                for (var i = 0; i < task.components.length; ++i) {
-                  group += task.components[i].id;
+                if (task.parentKey !== null && task.parentKey !== undefined) {
+                localGroup += task.parentKey;
                 }
-              }
 
-              return group;
+                if (task.component !== null && task.component !== undefined) {
+                for (var i = 0; i < task.components.length; ++i) {
+                  localGroup += task.components[i].id;
+                }
+                }
+
+                return localGroup;
             };
 
             var group      = null;

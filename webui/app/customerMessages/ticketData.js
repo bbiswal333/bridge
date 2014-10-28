@@ -226,7 +226,6 @@
     }
 
     this.notifyChanges = function(newTicketData, oldTicketData){
-        var that = this;
         var bNewNotifications = false;
         var ticketsToNotify = {};
         ticketsToNotify.assigned_me = [];
@@ -267,7 +266,6 @@
         var foundTickets;
         var bShowNotification = false;
         var ticketsToNotify = {};
-        var that = this;
         ticketsToNotify.assigned_me = [];
         ticketsToNotify.sel_components = [];
 
