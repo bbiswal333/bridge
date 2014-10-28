@@ -1,20 +1,19 @@
 <div>
-    <style>
-
-    </style>
-
+    <div class="app-cats-project-list" ng-if="!loaded">
+        Loading...
+    </div>
     <div class="bridge-fade-anim" ng-if="loaded">
         <div id="filter-bar">
             <div class="input-group app-cats-project-filter-input">
-                <!--<a href="https://isp.wdf.sap.corp/sap/bc/webdynpro/sap/zui_staffinglist" target="_blank">ISP staffing list</a>&nbsp&nbsp&nbsp&nbsp<a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Leave Request</a><br><br>-->
                 <bridge.input ng-keypress="onPressEnter($event)" id="filterTextfield" model="filter.val" placeholder="Type here to filter..." autofocus="true"></bridge.input>
             </div>
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
-                <div ng-repeat="item in items | filter:filter.val"
-                     ng-class="{'col-xs-6 col-md-12 col-lg-6 animate-repeat' : items.length > 5,'' : items.length <= 5}">
+                <div ng-repeat="item in items | filter:filter.val">
+                    <span ng-if="item.TASKTYPE === 'BRIDGE_HEADER'"><b>{{item.DESCR}}</b></span>
                     <button type="button"
+                            ng-if="item.TASKTYPE !== 'BRIDGE_HEADER'"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"
                             ng-style="item.color ? {'background':item.color, 'color':'white'} : ''" 
@@ -22,8 +21,7 @@
                             ng-click="toogleSelect(item.id,$event);"
                             ng-mouseenter="showEditButton(item.id)" 
                             ng-mouseout="">{{item.DESCR}}
-                        <br>
-                        <span style="font-size: 10px;">{{item.subDescription}}</span>
+                        <span>{{item.subDescription}}</span>
                     </button>
                     <div class="clickable settings_task_edit_button" 
                         ng-show="item.selected && forSettingsView && toEdit == item.id" 
@@ -33,8 +31,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="app-cats-project-list" ng-if="!loaded">
-        Loading...
     </div>
 </div>

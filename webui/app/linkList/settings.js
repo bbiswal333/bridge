@@ -6,7 +6,7 @@ angular.module('app.linklist').appLinkListSettings =
 	$scope.selectedIndex = 0;
 
 	$scope.addForm = [];
-	for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
+	for (var u = appLinklistConfig.data.listCollection.length - 1; u >= 0; u--) {
 		$scope.addForm.push('');
 	}
 
