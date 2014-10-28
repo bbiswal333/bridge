@@ -8,46 +8,33 @@ var _und 	= require('underscore')._;
     http://msdn.microsoft.com/en-us/library/office/aa494315(v=exchg.150).aspx
 */
 
-exports.EWSClient = function(clientType, query , json) {
+exports.EWSClient = function(clientType, query2, json) {
     var EWS_URI = "https://mymailwdf.global.corp.sap/ews/exchange.asmx";
     var SOAP_TEMPLATE_FILE;
     var ERR_MSG_CONNECTION_TO_EXCHANGE = "An error occured during request to the Microsoft Exchange server.";    
     
-	var dateFrom, dateTo, searchString;
-	
-	if ( query.from != undefined ) {
-		dateFrom = query.from;
-		dateTo = query.to;
-		searchString = query.searchString;
-	}
-	
-	if (clientType == "caldata" ) {
-		SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_template.xml";    
-	}
-	else  {
-		SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_roomsearch_template.xml";    
-		
-	}
-	
-    if (dateFrom == undefined || dateTo == undefined) {
-        throw new Error("dateFrom_s and dateTo_s must not be undefined.");
-    }
+	// need to copy the value due to race condition
+	var query = clone(query2);
 
-    if (dateFrom == "" || dateTo == "") {
-        throw new Error("dateFrom_s and dateTo_s must not ne empty.");
-    }
+	if (typeof clientType == "undefined" ) {
+		throw new Error("Client-Type needs to be set");
+	}
+				
+	SOAP_TEMPLATE_FILE = path.join(__dirname, "/") + "exchange_soap_"+clientType+"_template.xml";    
 
-    if (dateFrom.length != 20 || dateTo.length != 20) {
-        throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");
-    }
-    
     this.doRequest = function(callback_fn) {
         readSoapTemplate(function(data) {
-			
-			var compiled = _und.template(data)
-			data = compiled({dateFrom: dateFrom, dateTo: dateTo, searchString: searchString});
-						
-			var myresult;
+            
+           try {
+               var compiled = _und.template(data);
+               data = compiled(query);
+           } catch (err) {
+               var text = "Error applying template. Please check if every needed variable is set.\n"+ err;
+               callback_fn(new Error(text + " " + ERR_MSG_CONNECTION_TO_EXCHANGE));
+               console.log('3' + text);
+           }
+            
+            var myresult;
 				  
 				  
             if (typeof webkitClient !== 'undefined' && webkitClient)
@@ -69,7 +56,7 @@ exports.EWSClient = function(clientType, query , json) {
                     error: 
                         function() {
                             console.log('6' + ERR_MSG_CONNECTION_TO_EXCHANGE);
-                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));                            
+                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
                         }
                 });
 
@@ -82,12 +69,12 @@ exports.EWSClient = function(clientType, query , json) {
                             if (err == undefined) {
                                 callback_fn(JSON.stringify(result));
                             } else {
-                                callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
+                                callback_fn(new Error("handleData cb => "+ERR_MSG_CONNECTION_TO_EXCHANGE));
                             }
                         });
                     } catch (err) {
                         var text = "Error parsing JSON. Please try again requesting XML."
-                        callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
+                        callback_fn(new Error("handleData catch => " + ERR_MSG_CONNECTION_TO_EXCHANGE));
                         console.log('3' + text);
                     }
                 } else {
@@ -109,5 +96,15 @@ exports.EWSClient = function(clientType, query , json) {
             callback_fn(data);
         });
     }
+	//Clones an object
+	function clone(obj) {
+		if (null == obj || "object" != typeof obj) return obj;
+    	var copy = {} // obj.constructor();
+    	for (var attr in obj) {
+        	copy[attr] = obj[attr];
+		}
+    	return copy;
+}
+
 
 };
