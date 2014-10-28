@@ -24,20 +24,13 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.getMonthData = function(year, month){
 		try {
 			var self = this;
-			var deferred = $q.defer();
 			var promise = null;
 			var promises = [];
 
-			// already done or buffered?
-			if (!alreadyInitializedForMonth[month] && this.promiseForMonth[month]) {
-				return this.promiseForMonth[month]; // return promise which is yet to be resolved
-			}
-			else if (alreadyInitializedForMonth[month]) {
-				deferred.resolve();
-				return deferred.promise; // data already present so simply return a resolved promise
+			if (this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
 			}
 
-			// not buffered! so getting the data
 			self.reloadInProgress.value = true;
 
 			var weeks = this.getWeeksOfMonth(year, month);
