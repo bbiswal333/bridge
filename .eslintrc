@@ -33,6 +33,7 @@
         "strict": 0,
         "camelcase": 0,
         "no-underscore-dangle": 0,
-        "no-mixed-spaces-and-tabs": 0
+        "no-mixed-spaces-and-tabs": 0,
+        "key-spacing": 0
     }
 }
