@@ -163,7 +163,15 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
       }
     }
 
-    function addNewProjectItems (items) {
+    function addItemsFromTemplate (items) {
+      // Write header
+      if (items.length > 0) {
+        var header = {};
+        header.DESCR = "Tasks from CAT2 Template using profile " + configService.getCatsProfile() + "...";
+        header.TASKTYPE = "BRIDGE_HEADER";
+        header.RAUFNR = "1";
+        addNewProjectItem(header);
+      }
       items.forEach( function(item) {
         addNewProjectItem(item);
       });
@@ -173,7 +181,7 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
       var deferred = $q.defer();
 
       var week = calenderUtils.getWeekNumber(new Date());
-      catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addNewProjectItems).then( function(){
+      catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate).then( function(){
         deferred.resolve();
       });
 
@@ -183,9 +191,18 @@ angular.module("app.cats.maintenanceView.projectList", ["app.cats.dataModule", "
     function getCatsData () {
       var deferred = $q.defer();
         getDataFromCatsTemplate().then( function() {
-          catsBackend.requestTasksFromWorklist(false, configService.catsProfile).then(function (dataFromWorklist) {
+          catsBackend.requestTasksFromWorklist(false).then(function (dataFromWorklist) {
           if ($scope.blocks === undefined) {
             $scope.blocks = [];
+          }
+
+          // Write header
+          if (dataFromWorklist.length > 0) {
+            var header = {};
+            header.DESCR = "Additional tasks from cPro work list...";
+            header.TASKTYPE = "BRIDGE_HEADER";
+            header.RAUFNR = "2";
+            addNewProjectItem(header);
           }
 
           dataFromWorklist.forEach(function(entry){

@@ -496,7 +496,7 @@ angular.module("app.cats")
 					monthlyDataService.lastSingleClickDayString = '';
 					$scope.selectionCompleted();
 				});
-			};
+			}
 
 			$scope.canGoBackward = function () {
 				if (monthRelative - 1 < -6) { // Maximum number of month to go back

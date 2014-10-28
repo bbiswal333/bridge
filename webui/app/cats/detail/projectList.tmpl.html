@@ -12,8 +12,10 @@
         </div>
         <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
-                <div ng-repeat="item in items | filter:filter.val"
+                <div ng-repeat="item in items | filter:filter.val">
+                    <span ng-if="item.TASKTYPE === 'BRIDGE_HEADER'">{{item.DESCR}}</span>
                     <button type="button"
+                            ng-if="item.TASKTYPE !== 'BRIDGE_HEADER'"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"
                             ng-style="item.color ? {'background':item.color, 'color':'white'} : ''" 
