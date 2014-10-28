@@ -30,17 +30,17 @@
     </div>
 </div>
 
-
-<div style="overflow:auto; height:95%; overflow-x:hidden">
+<div style="height:95%;">
     <div ng-if="configService.configItem.showProgramOverview">
         <div class="col-xs-6 input-group add-on right-inner-addon-home" style="width: 95%;float:left">
         <bridge.input id="searchProgram"
                    model="$parent.searchString"
-                   style="width:350px"
+                   style="width:350px;"
                    placeholder="Search for Programs..."
                    input-typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
                    input-typeahead-min-length="3"
                    input-typeahead-wait-ms="200"
+                   input-typeahead-limit="20"
                    input-typeahead-on-select="onSelect($item)"></bridge.input>
         </div>
         <a ng-if="showGrid" style="width: 5%;float: right" href="{{siriusAppURL}}#/home/program/{{ProgramGUIDSirius}}" target="_blank">
@@ -106,7 +106,7 @@
                              popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
                              popover-trigger="mouseenter"
                              popover-placement="top"
-                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE}}
+                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE | limitTo: 24 }}{{program.WORKING_STATE.KEY_MESSAGE.length > 24 ? '...' : ''}}
                         </div>
                     </div>
                 </div>
