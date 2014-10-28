@@ -1,11 +1,12 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.rooms",
 		"title"					:	"Room bookings",
-		"icon_css"				:	"fa fa-users",
+		"icon_css"				:	"fa fa-building",
 		"overview_directive"	:	"app.rooms",
-		"needs_client"			:	true,
+		"needs_client"			:	false,
 		"default_hidden"		: 	true,
     "routes": [
       {

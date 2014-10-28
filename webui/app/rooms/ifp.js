@@ -3,9 +3,14 @@ angular.module('app.rooms').service('ifpservice', [
     "bridgeDataService",
     "lib.utils.calUtils",
     function($http, dataService, calUtils) {
+		var self = this;
 
-        var user = dataService.getUserInfo().BNAME;
+        //var user
+        //if (typeof dataService.getUserInfo() == "undefined") {
+        //	user = dataService.getUserInfo().BNAME;
+        //}
         var ISP_ROOMS = "https://ifp.wdf.sap.corp/sap/bc/bridge/MY_ROOM_RESERVATIONS";
+		var ISP_CANCELROOM = "https://ifp.wdf.sap.corp/sap/bc/bridge/CANCEL_ROOM_RESERVATION";
 
         function extractDates(reservation) {
 
@@ -21,19 +26,29 @@ angular.module('app.rooms').service('ifpservice', [
             var roomId = reservation.OOIDEXT;
             reservation.BUILDING = roomId.match(regex)[1];
             reservation.ROOM = roomId.match(regex)[2];
+			reservation.LOCATION= reservation.BUILDING + ", " + reservation.ROOM;
         }
+		
+		function extractVenues(reservation, data) {
+			for (var venueid in data.VENUES) {
+				if (data.VENUES[venueid].OOIDEXT == reservation.OOIDEXT) {
+					reservation.EMAIL = data.VENUES[venueid].MAIL;
+					reservation.ROOMDISPLAYNAME = data.VENUES[venueid].DISPLAYNAME;
+				}
+			}
 
-        function _loadFromIsp(from, to, callback) {
-            $http({
+		}
+
+		function _loadFromIsp(from, to) {
+            return $http({
                 method: 'GET',
-                url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + _formatDateForQuery(from) + '&to=' + _formatDateForQuery(to) + '&user=' + user
+                url: ISP_ROOMS + '?' + 'origin=' + location.origin + '&from=' + _formatDateForQuery(from) + '&to=' + _formatDateForQuery(to)
             }).success(function(data){
                 data.RESERVATIONS.forEach(extractDates);
                 data.RESERVATIONS.forEach(extractRoom);
+				data.RESERVATIONS.forEach(extractVenues, data);
                 //alert(JSON.stringify(data));
-                callback(data);
-            }).error(function(){
-                alert("error");
+                return data;
             });
         }
 
@@ -48,8 +63,37 @@ angular.module('app.rooms').service('ifpservice', [
             return year + month + day + hour + minutes + seconds;
         }
 
+				
+		function _cancelRoom(room) {
+			var data = { reservationId : room.RESERVATION_ID }; // EXHANGE_UID, EXHANGE_ID, RESERVATION_ID
+			
+			return $http({
+				method: 'POST',
+				url: ISP_CANCELROOM,
+				transformRequest: __transformRequest,
+				data: data
+			}).success(function(data){
+				return data;
+			});
+
+		}
+		function __transformRequest( data, headers ) {
+			headers()[ "Content-Type" ] = "application/x-www-form-urlencoded; charset=utf-8";
+
+			if (! _.isObject( data) ) {
+				return ( _.isEmpty(data) ? "" : _.toString(data)) ;
+			}
+			var md = _.values(_.mapValues(data, function(value, key) {
+				return encodeURIComponent(key) + "=" + encodeURIComponent(value);
+			})).join("&");
+			return md;
+
+		};
+
+		
         return {
-            loadFromIsp: _loadFromIsp
+            loadFromIsp: _loadFromIsp,
+			cancelRoom: _cancelRoom
         }
     }
 ])

@@ -1,39 +1,60 @@
-<div >
-	<div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
-        <div ng-if="errMsg != null">
-          {{errMsg}}
+<div>
+    <div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
+
+        <div ng-if="errMsg !== null && ! closeMsgBox">
+            <alert class="roomserror" type="error" close="closeMsgBoxaction()">{{errMsg}}</alert>
         </div>
-      	<div ng-if="hasEvents()">
+        
+        <div ng-if="!isEmpty(selectedRoom)" class="roominplace bridge-fade-anim">
+        
+            <h5>
+                Do you really want to cancel the booking of the following room?
+            </h5>
+            <p>{{selectedRoom.LOCATION}} on the {{ selectedRoom.VALIDFROMDATE | date: 'dd.MM.' }}</p>
+            <button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
+            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>
+        </div>
+
+        <div ng-if="!hasBookings() && errMsg == null">
+            You did not book a room for the next days! Saving ressources, perfecto!
+        </div>
+        
+
+        <div ng-if="hasBookings()">
             <div>
-                <b>{{getCurrentDate()}}</b>   <a href="#/detail/rooms/" style="margin-left:10px;">Book Room</a>
-
-                <br>
-                {{getRoomsLeftText()}}
+                {{getRoomsLeftText()}}.
             </div>
-          <div style="margin-top: 5px; height: 110px; overflow: hidden;">
-                <div style="height: 110px; overflow-y: auto;">
-                    <table cellpadding="2" class="meetings-table" >
-                        <tr ng-repeat="event in upComingEvents()" style="border-top: 1px solid #e5e5e5;">
-                            <td style="border-right: 1px solid #0099CC; width: 35px;" id="eventId{{($index+1)}}">
+            <div style="margin-top: 5px; height: 110px; overflow: hidden;">
+                <div style="height: 115px; overflow-y: auto;">
+                    <table cellpadding="2" class="meetings-table">
+                        <tr ng-repeat="room in upComingBookings()" style="border-top: 1px solid #e5e5e5;">
+                            <td ng-if="box.boxSize == 1" style="border-right: 1px solid #0099CC; width: 48px;" id="eventId{{($index+1)}}">
                                 <span>
-                                    <b>{{event.date}}</b>
-                                    {{event.startTime}}
-                                    {{event.endTime}}
+                                    <b>{{room.VALIDFROMDATE | date: 'dd.MM.' }}</b><br />
+                                    <div style="font-size:10px">{{room.VALIDFROMDATE | date: 'HH:mm'}} - {{room.VALIDTODATE | date: 'HH:mm'}}</div>
                                 </span>
                             </td>
-                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
-                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
+                            <td ng-if="box.boxSize == 2" style="border-right: 1px solid #0099CC; width: 89px;" id="eventId{{($index+1)}}">
+                                <span>
+                                    <b>{{room.VALIDFROMDATE | date: 'EEE, dd.MM.' }}</b><br />
+                                    {{room.VALIDFROMDATE | date: 'HH:mm'}} - {{room.VALIDTODATE | date: 'HH:mm'}}
+                                </span>
+                            </td>
+                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 5px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 100px">
                                     <span>
-                                        <b>{{event.subject}}</b>
+                                        <b bs-tooltip data-title="{{room.SUBJECT}}">{{room.SUBJECT}}</b>
                                     </span>
                                 </div>
-                                {{event.location}}
+                                {{room.LOCATION}}<button class="box-icon table-icon-small icon-trash" ng-click="selectRoom(room)" style="margin-bottom:0px;margin-right:5px;padding:0px 0px 0px 0px;height:inherit; color:grey;background-color:transparent; box-shadow:0px 0px 0px;display:inline"></button>
+
                             </td>
                             <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
-                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 316px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 256px">
                                     <span>
-                                        <b>{{event.subject}}</b><br>
-                                        {{event.location}}
+                                        <b>{{room.SUBJECT}}</b>
+                                        <button class="box-icon icon-trash" ng-click="selectRoom(room)" style="margin-bottom:5px;margin-right:5px;color:grey;background-color:transparent; box-shadow:0px 0px 0px"></button><br>
+                                        {{room.LOCATION}}
                                     </span>
                                 </div>
                             </td>
@@ -41,43 +62,6 @@
                     </table>
                 </div>
             </div>
-		</div>
-		<div ng-if="!hasEvents() && errMsg == null">
-			Hey! You didn't book a room for the next days!
-		</div>
-	</div>	
-	<div>
-	<form ng-submit="searchButton_click()">
-		<input class="form-control form" type="text" placeholder="...search for rooms try e.g.: 'MR WDF03' ..." ng-model="searchString" />
-	</form>
-	                <div style="height: 110px; overflow-y: auto;">
-                    <table cellpadding="2" class="meetings-table" >
-                        <tr ng-repeat="foundRoom in getFoundRooms()" style="border-top: 1px solid #e5e5e5;">
-                            <td style="border-right: 1px solid #0099CC; width: 85px;" id="roomId{{($index+1)}}">
-                                <span>
-                                    <b>{{foundRoom.displayName}}</b>
-                                </span>
-                            </td>
-                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 10px">
-                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 105px">
-                                    <span>
-                                        <b>{{foundRoom.phoneNumber}}</b>
-                                    </span>
-                                </div>
-                                {{foundRoom.eMail}}
-                            </td>
-                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
-                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 216px">
-                                    <span>
-                                        <b>{{foundRoom.phoneNumber}}</b>
-                                    </span>
-                                	{{foundRoom.eMail}}
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-	
-	</div>
+        </div>
+    </div>
 </div>
