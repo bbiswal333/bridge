@@ -247,6 +247,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					if(data) {
 						self.convertWeekData(data);
 					}
+					self.reloadInProgress.value = false;
 				});
 			});
 		} catch(err) {
