@@ -12,7 +12,7 @@ directive("app.rooms", [
 		var directiveController = ['$scope', function ($scope){
 
 			$scope.closeMsgBox = true;
-			
+
 			$scope.box.settingsTitle = "Configure box size";
 			$scope.box.settingScreenData = {
 				templatePath: "rooms/settings.html",
@@ -36,34 +36,34 @@ directive("app.rooms", [
 
 			$scope.hasBookings = function () {
 				//return true;
-				return (($scope.rooms||[]).length !== 0);
+				return (($scope.rooms || []).length !== 0);
 				// return ($scope.rooms.length !== 0);
 			};
 			$scope.selectRoom = function (room) {
-				$scope.selectedRoom=room;
+				$scope.selectedRoom = room;
 			};
-			$scope.deselectRoom = function (room) {
-				$scope.selectedRoom=undefined;
+			$scope.deselectRoom = function () {
+				$scope.selectedRoom = undefined;
 			};
 
 			$scope.cancelRoom = function(room) {
 				$scope.closeMsgBox = false;
 				$scope.selectedRoom = undefined;
 				ifpservice.cancelRoom(room).then(function(data) {
-					if (data.data.RESULT.TYPE == "E") {
-						$scope.errMsg = "Error canceling your booking of "+ room.LOCATION +". "+ data.data.RESULT.MESSAGE;
-					} 
-					if (data.data.RESULT.TYPE == "S") {
+					if (data.data.RESULT.TYPE === "E") {
+						$scope.errMsg = "Error canceling your booking of " + room.LOCATION + ". " + data.data.RESULT.MESSAGE;
+					}
+					if (data.data.RESULT.TYPE === "S") {
 						$scope.successMsg = data.data.RESULT.MESSAGE;
 						$scope.loadMyReservations();
 					}
-				},function(error){
-					$scope.errMsg = "Error canceling your booking of "+ room.LOCATION;
-				});;
-			}
+				},function(){
+					$scope.errMsg = "Error canceling your booking of " + room.LOCATION;
+				});
+			};
 
 			$scope.getRoomsLeftText = function () {
-				var cnt = ($scope.rooms||[]).length;
+				var cnt = ($scope.rooms || []).length;
 				return cnt + " booking" + (cnt === 1 ? "" : "s") + " till " + calUtils.getWeekdays()[$scope.tillDate.getDay() - 1].long + ", " + $scope.tillDate.getDate() + ". " + calUtils.getMonthName($scope.tillDate.getMonth()).long;
 			};
 
@@ -76,7 +76,7 @@ directive("app.rooms", [
 				$scope.closeMsgBox = false;
                 var today = new Date();
                 var till = new Date();
-                till.setDate(till.getDate()+14);
+                till.setDate(till.getDate() + 14);
 
                 $scope.tillDate = till;
 
@@ -100,7 +100,8 @@ directive("app.rooms", [
 
 			$scope.isEmpty = function(obj) {
 				return _.isEmpty(obj);
-			}
+			};
+
             $scope.loadMyReservations();
 		}];
 
@@ -114,9 +115,7 @@ directive("app.rooms", [
             $scope.rooms  = [];
 			$scope.loading = true;
 			$scope.errMsg = null;
-			var today = new Date(new Date().toDateString());
 
-			
 			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
 			    meetingsConfigService.configItem = $scope.appConfig.configItem;
 			}
@@ -127,12 +126,12 @@ directive("app.rooms", [
 		    }, true);
 
 
-			function reload() {
-				if (!$scope.isLoading()) {
-                    $scope.loadMyReservations();
-				}
-			}
-			
+			// function reload() {
+			// 	if (!$scope.isLoading()) {
+   //                  $scope.loadMyReservations();
+			// 	}
+			// }
+
 			var refreshInterval = null;
 
 			$scope.$on("$destroy", function(){
@@ -140,7 +139,6 @@ directive("app.rooms", [
 					$interval.cancel(refreshInterval);
 				}
 			});
-			
 //
 // 		disable regular refresh on Room app
 //
@@ -167,6 +165,6 @@ directive("app.rooms", [
 			scope: false,
 			templateUrl: "app/rooms/overview.html",
 			replace: true,
-	        link: linkFn 
+	        link: linkFn
 		};
 }]);

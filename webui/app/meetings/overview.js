@@ -107,14 +107,13 @@ directive("app.meetings", [
 										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i);
 										useTheNormalSAPConnectDialIn = false;
 									}
-									
-									
-									// for lync.co we as well only extract the URL without supporting telefone dialin 
+
+									// for lync.co we as well only extract the URL without supporting telefone dialin
 									if (sapconnecturl == null) {
 										sapconnecturl = body.match(/https:\/\/lync.co.sap.com\/meet\/[^\s"]*/i);
 										useTheNormalSAPConnectDialIn = false;
-									} 
-									
+									}
+
 									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
 										$scope.events[i].participantCode = partcode[1].replace(/\s/g,"");
 									}

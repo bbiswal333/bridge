@@ -22,12 +22,13 @@
                             ng-mouseenter="showEditButton(item.id)" 
                             ng-mouseout="">{{item.DESCR}}
                         <span>{{item.subDescription}}</span>
+                        <button type="button"
+                            class="settings_task_edit_button" 
+                            ng-show="item.selected && forSettingsView && toEdit === item.id" 
+                            ng-click="editTask(item.id)">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </button>
                     </button>
-                    <!-- <div class="clickable settings_task_edit_button" 
-                        ng-show="item.selected && forSettingsView && toEdit == item.id" 
-                        ng-click="editTask(item.id)">
-                        <i class="fa fa-pencil fa-lg"></i>
-                    </div> -->
                 </div>
             </div>
         </div>

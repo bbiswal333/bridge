@@ -559,14 +559,14 @@
     position: absolute; 
     height: 27px; 
     width: 10%; 
-    right: 8px; 
-    margin: 4px 4px; 
+    right: 30px; 
+    margin: 4px 0px; 
     
     color: white; 
     background: rgba(255, 255, 255, 0.2); 
     
     text-align: center; 
-    line-height: 3em;
+    line-height: 2em;
 }
 
 .settings_add_task_button {
