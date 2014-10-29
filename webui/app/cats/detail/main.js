@@ -163,7 +163,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
 
                 if (timeToMaintain() < 0) {
-                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please adjust tasks to match 100% and save timesheet.');
+                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please remove or adjust tasks and apply changes.');
                 }
 
                 return true;
@@ -239,10 +239,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.blockdata = [];
             $scope.hintText = "";
             if(day.targetTimeInPercentageOfDay) {
-                //$scope.hintText = "Allocation bar represents the data form the backend for the " + day.dayString;
                 $scope.totalWorkingTime = 1;
             } else {
-                //$scope.hintText = "No maintenance possible for the " + day.dayString;
                 $scope.totalWorkingTime = 0;
             }
 
@@ -264,13 +262,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
-                $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
+                if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+                    $scope.hintText = "All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours. Please apply changes.";
+                } else {
+                    $scope.hintText = "All entries will be scaled so that 100% are reflecting your personal target hours.";
+                }
             }
 
             if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
                 var actualHours = Math.round(day.actualTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
                 var targetHours = Math.round(day.targetTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
                 bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
                     actualHours + "'' but target hours are only '" +
                     targetHours + "'!");
