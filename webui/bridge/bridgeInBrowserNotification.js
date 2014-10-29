@@ -6,18 +6,28 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 		scopeForDisplay = scope;
 	};
 
-	function closeAlert(alertID, timeoutInSeconds) {
-		$timeout(function () {
-			for (var i = 0; i < scopeForDisplay.alerts.length; i++) {
-				if (scopeForDisplay.alerts[i].id === alertID) {
-					scopeForDisplay.alerts.splice(i, 1);
-				}
-			}
-		} , 1000 * timeoutInSeconds);
+	function getAlert(alertID) {
+		var alert = _.find(scopeForDisplay.alerts, { "id": alertID });
+		if (alert !== undefined) {
+			return alert;
+		} else {
+			return {};
+		}
 	}
 
-	function close(alertID) {
-		closeAlert(alertID,0);
+	function removeAlert(alertID) {
+		var alert = getAlert(alertID);
+		$timeout.cancel(alert.closingTimer);
+		scopeForDisplay.alerts.splice(scopeForDisplay.alerts.indexOf(alert),1);
+	}
+
+	function closeAlert(alertID, timeoutInSeconds) {
+		if (!angular.isNumber(timeoutInSeconds)) {
+			timeoutInSeconds = 0;
+		}
+		var closingTimer =
+			$timeout(function () { removeAlert(alertID); } , 1000 * timeoutInSeconds);
+		return closingTimer;
 	}
 
 	// alertType can be 'success', 'danger', undefined
@@ -26,14 +36,15 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 			scopeForDisplay.alerts = [ ];
 		}
 		var alertID = alertType + alertMsg;
-		if (_.find(scopeForDisplay.alerts, { "id": alertID }) === undefined) {
-			scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID, close: close });
+		if (_.find(scopeForDisplay.alerts, { "id": alertID }) !== undefined) {
+			removeAlert(alertID);
 		}
+		scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID, close: closeAlert });
 
 		if (alertDuration) {
-			closeAlert(alertID, alertDuration);
+			getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
 		} else {
-			closeAlert(alertID, 8);
+			getAlert(alertID).closingTimer = closeAlert(alertID, 8);
 		}
 	};
 }]);
