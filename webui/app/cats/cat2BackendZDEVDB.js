@@ -181,14 +181,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				} else {
 					if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
 						// adding the SUBTYPE
-						for (var j = 0; j < data.CATS_EXT.length; j++) {
-							for (var k = 0; k < data.TIMESHEETS.RECORDS.length; k++) {
-								if (data.TIMESHEETS.RECORDS[k].ZCPR_OBJGEXTID === data.CATS_EXT[j].ZCPR_OBJGEXTID &&
-									data.TIMESHEETS.RECORDS[k].RAUFNR === data.CATS_EXT[j].RAUFNR &&
-									data.TIMESHEETS.RECORDS[k].TASKTYPE === data.CATS_EXT[j].TASKTYPE) {
-									data.TIMESHEETS.RECORDS[k].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
-									k = data.TIMESHEETS.RECORDS.length;
-								}
+						if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
+							for (var j = 0; j < data.CATS_EXT.length; j++) {
+								data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
 							}
 						}
 						// adding the description
@@ -266,11 +261,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		this.requestTasksFromTemplate = function(year, week, callback_fn) {
+		this.requestTasksFromTemplate = function(year, week, callback_fn, forceUpdate_b) {
 			var deferred = $q.defer();
 
-			if (!this.CAT2AllocationDataForWeeks[year + "" + week]) {
-				this.getCatsAllocationDataForWeek(year, week);
+			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
+				this.getCatsAllocationDataForWeek(year, week, forceUpdate_b);
 			}
 
 			var promise = $q.all(this.CAT2AllocationDataForWeeks);
@@ -310,7 +305,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
 
-			$http.post(WRITECATSDATA_WEBSERVICE + "&catsprofile=" + configService.getCatsProfile(), container, {
+			$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + configService.getCatsProfile(), container, {
 				'headers': {
 					'Content-Type': 'text/plain'
 				}

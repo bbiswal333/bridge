@@ -178,21 +178,21 @@ directive("app.cats.maintenanceView.projectList", [
 				});
 			}
 
-			function getDataFromCatsTemplate() {
+			function getDataFromCatsTemplate(forceUpdate_b) {
 				var deferred = $q.defer();
 
 				var week = calenderUtils.getWeekNumber(new Date());
-				catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate).then(function() {
+				catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate, forceUpdate_b).then(function() {
 					deferred.resolve();
 				});
 
 				return deferred.promise;
 			}
 
-			function getCatsData() {
+			function getCatsData(forceUpdate_b) {
 				var deferred = $q.defer();
-				getDataFromCatsTemplate().then(function() {
-					catsBackend.requestTasksFromWorklist(false).then(function(dataFromWorklist) {
+				getDataFromCatsTemplate(forceUpdate_b).then(function() {
+					catsBackend.requestTasksFromWorklist(forceUpdate_b).then(function(dataFromWorklist) {
 						if ($scope.blocks === undefined) {
 							$scope.blocks = [];
 						}
@@ -299,7 +299,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.toEdit = -1;
 						configService.catsItems = [];
 					}
-					getCatsData().then(function() {
+					getCatsData(true).then(function() {
 						configService.loaded = true;
 						initProjectItems();
 						addItemsFromBlocks();
@@ -339,6 +339,12 @@ directive("app.cats.maintenanceView.projectList", [
 			$scope.$watch("items", function() {
 				markProjectItems();
 			}, true);
+
+			$scope.$watch("action", function() {
+				configService.favoriteItems = [];
+				loadProjects(true);
+			}, true);
+
 		};
 
 		return {
@@ -348,6 +354,7 @@ directive("app.cats.maintenanceView.projectList", [
 				onProjectUnchecked: "&onprojectunchecked",
 				onProjectEdit: "&onprojectedit",
 				blocks: "=blocks",
+				action: "=action",
 				heightOfList: "@heightoflist",
 				forSettingsView: "@forSettingsView"
 			},

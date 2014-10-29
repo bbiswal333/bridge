@@ -47,7 +47,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	};
 
 	this.getCatsProfile = function () {
-		this.catsProfile = "DEV2002C";
 		return this.catsProfile;
 	};
 
