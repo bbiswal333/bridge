@@ -165,14 +165,14 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function addItemsFromTemplate(items) {
-				// // Write header
-				// if (items.length > 0) {
-				// 	var header = {};
-				// 	header.DESCR = "Tasks from CAT2 template using profile " + configService.getCatsProfile() + "...";
-				// 	header.TASKTYPE = "BRIDGE_HEADER";
-				// 	header.RAUFNR = "1";
-				// 	addNewProjectItem(header);
-				// }
+				// Write header
+				if (items.length > 0) {
+					var header = {};
+					header.DESCR = "Tasks from CAT2 template using profile " + configService.getCatsProfile() + "...";
+					header.TASKTYPE = "BRIDGE_HEADER";
+					header.RAUFNR = "1";
+					addNewProjectItem(header);
+				}
 				items.forEach(function(item) {
 					addNewProjectItem(item);
 				});
@@ -197,14 +197,14 @@ directive("app.cats.maintenanceView.projectList", [
 							$scope.blocks = [];
 						}
 
-						// // Write header
-						// if (dataFromWorklist.length > 0) {
-						// 	var header = {};
-						// 	header.DESCR = "Additional tasks from cPro work list...";
-						// 	header.TASKTYPE = "BRIDGE_HEADER";
-						// 	header.RAUFNR = "2";
-						// 	addNewProjectItem(header);
-						// }
+						// Write header
+						if (dataFromWorklist.length > 0) {
+							var header = {};
+							header.DESCR = "Additional tasks from cPro work list...";
+							header.TASKTYPE = "BRIDGE_HEADER";
+							header.RAUFNR = "2";
+							addNewProjectItem(header);
+						}
 
 						dataFromWorklist.forEach(function(entry) {
 							addNewProjectItem(entry);
