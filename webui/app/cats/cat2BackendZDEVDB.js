@@ -12,8 +12,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.CPROTaskTextCache = {};
 		this.CPROTaskTextCache.DATA = [];
 		this.CAT2AllocationDataForWeeks = {};
+
+		var tasksFromWorklistPromise;
 		var that = this;
-		var tasksFromWorklistCache = [];
 
 		function between(val_i, min_i, max_i) {
 			return (val_i >= min_i && val_i <= max_i);
@@ -201,8 +202,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		};
 
 		this.requestTasksFromWorklist = function(forceUpdate_b) {
-			var deferred = $q.defer();
-
 			// _httpRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
 			//   if (!data) {
 			//	 status = status;
@@ -211,8 +210,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			//   }
 			// });
 
-			if (forceUpdate_b || tasksFromWorklistCache.length === 0) {
-				_httpRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + configService.getCatsProfile()).then(function(data) {
+			var deferred = $q.defer();
+			if (forceUpdate_b || !tasksFromWorklistPromise) {
+				tasksFromWorklistPromise = _httpRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + configService.getCatsProfile());
+				tasksFromWorklistPromise.then(function(data) {
 					var tasks = [];
 
 					if (configService.getCatsProfile() === "DEV2002C") {
@@ -252,11 +253,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						}
 					}
 
-					tasksFromWorklistCache = tasks;
-					deferred.resolve(tasksFromWorklistCache);
+					deferred.resolve(tasks);
 				});
 			} else {
-				deferred.resolve(tasksFromWorklistCache);
+				deferred.promise = tasksFromWorklistPromise;
 			}
 			return deferred.promise;
 		};

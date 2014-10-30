@@ -289,9 +289,9 @@ directive("app.cats.maintenanceView.projectList", [
 				});
 			}
 
-			function loadProjects(forceReload) {
-				if (forceReload || !configService.loaded || $scope.forSettingsView) {
-					if (forceReload) {
+			function loadProjects(forceUpdate_b) {
+				if (forceUpdate_b || !configService.loaded || $scope.forSettingsView) {
+					if (forceUpdate_b) {
 						$scope.items = [];
 						$scope.filter = {};
 						$scope.filter.val = "";
@@ -299,7 +299,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.toEdit = -1;
 						configService.catsItems = [];
 					}
-					getCatsData(true).then(function() {
+					getCatsData(forceUpdate_b).then(function() {
 						configService.loaded = true;
 						initProjectItems();
 						addItemsFromBlocks();
@@ -324,8 +324,10 @@ directive("app.cats.maintenanceView.projectList", [
 
 			$scope.backendData = catsBackend.CAT2AllocationDataForWeeks;
 
-			$scope.$watch("backendData", function() {
-				loadProjects(true);
+			$scope.$watch("backendData", function(newValue,oldValue) {
+				if (newValue && newValue !== oldValue) {
+					loadProjects(true);
+				}
 			}, true);
 
 			$scope.$watch("blocks", function() {
@@ -340,9 +342,11 @@ directive("app.cats.maintenanceView.projectList", [
 				markProjectItems();
 			}, true);
 
-			$scope.$watch("action", function() {
-				configService.favoriteItems = [];
-				loadProjects(true);
+			$scope.$watch("action", function(newValue) {
+				if(newValue !== undefined) {
+					configService.favoriteItems = [];
+					loadProjects(true);
+				}
 			}, true);
 
 		};
