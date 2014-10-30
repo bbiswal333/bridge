@@ -36,6 +36,12 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 			}
 			if (catsConfigService.catsProfile) {
 				this.catsProfile = catsConfigService.catsProfile;
+				if(!this.catsProfile) {
+					this.catsProfile = 'DEV2002C';
+				}
+				if(this.catsProfile === 'SUP2007D') {
+					this.catsProfile = 'SUP2007C';
+				}
 			}
 			if (catsConfigService.sundayweekstart) {
 				this.sundayweekstart = catsConfigService.sundayweekstart;
