@@ -1,8 +1,5 @@
 angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     var self = this;
-
-    var MILLISECS_DAY = 24 * 3600 * 1000;
-
     var _additionalData = {};
 
     var _weekdays = [{
@@ -110,11 +107,9 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
         for (var prop in data_o) {
             if (data_o.hasOwnProperty(prop)) {
-                var key = Math.floor(prop / MILLISECS_DAY);
-                _additionalData[key] = data_o[prop];
+                _additionalData[prop] = data_o[prop];
             }
         }
-
         return true;
     };
 
@@ -124,7 +119,6 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 return _additionalData[prop];
             }
         }
-
         return null;
     };
 
@@ -145,16 +139,14 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 daysInLastMonth = 6;
             }
         }
-        var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
+        var firstDateOfGridInMs = new Date(year_i, month_i, 1 - daysInLastMonth).getTime();
         var firstDateOfGrid = new Date(firstDateOfGridInMs);
-        var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
 
         var i;
         var stop = false;
         for (i = 0; !stop; i++) {
-            var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-            //var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
             var thisDay = new Date(firstDateOfGrid.getFullYear(), firstDateOfGrid.getMonth(), firstDateOfGrid.getDate() + i);
+            var additionalDataForThisDay = lookupAdditionalDataForDay(thisDay.getTime());
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
                 inMonth: (thisDay.getMonth() === month_i),
@@ -178,7 +170,6 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 }
             }
         }
-
         return cal;
     };
 
@@ -342,6 +333,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         //ISO 8601
         //+ (date_o.getTimezoneOffset() / 60) * 3600000) -
         var res = {};
+        var MILLISECS_DAY = 24 * 3600 * 1000;
 
         var jan4Week = new Date(date_o.getFullYear(), 0, 4);
         var jan4WeekDay = jan4Week.getDay();
