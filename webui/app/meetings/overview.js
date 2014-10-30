@@ -92,12 +92,14 @@ directive("app.meetings", [
 									//
 
 									var partcode;
+									/*eslint-disable no-loop-func*/
 									_.forEach(body.split("\n"), function(line) {
 										var lp = line.match(/Participant.*([0-9]{10})[^0-9]/i);
 										if (!_.isEmpty(lp)) {
 											partcode = lp;
 										}
 									});
+									/*eslint-enable no-loop-func*/
 
 
 									var sapconnecturl;
