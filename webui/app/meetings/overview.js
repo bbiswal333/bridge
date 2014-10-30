@@ -90,7 +90,15 @@ directive("app.meetings", [
 									// first get rid of the newlines in order to allow more proper participant code parsing
 									// New approach: try to fix the participant code to the "last" 10-digit number in the body
 									//
-									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
+
+									var partcode;
+									_.forEach(body.split("\n"), function(line) {
+										var lp = line.match(/Participant.*([0-9]{10})[^0-9]/i);
+										if (!_.isEmpty(lp)) {
+											partcode = lp;
+										}
+									});
+
 
 									var sapconnecturl;
 

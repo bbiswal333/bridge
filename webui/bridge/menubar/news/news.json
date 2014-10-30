@@ -22,7 +22,7 @@
             "date": "2014-10-30",
             "snapURL":  "bridge/menubar/news/image/roombooking.png",
             "preview":  "New app for canelling room bookings.",
-            "content":  "This new app displays room reservations out of the outlook backend and allows easy cancelation of a given room booking with two clicks (inplace-modal which makes sure the user clicked on the right button). Thanks to the following people for making this happen:<br /><br /><ul><li>Schwach, Wolfgang</li><li>Karl Rainer</li><li>Roehrig, Rouven</li><li>Steuer, Richard</li><li>Marwinski, Dirk</li><li>Moessner, Michael</li><li>Jeschke, Christian</li><li>Jansen, Thomas</li></ul>Note that the backend is a bit \"slow\" and updates (e.g. cancelations or new bookings) are only synchronized every 10 minutes."
+            "content":  "This new app displays room reservations out of the outlook backend and allows easy cancelation of a given room booking with two clicks (inplace-modal which makes sure the user clicked on the right button). Thanks to the following people for making this happen:<br /><br /><ul><li>Thorsten Sandfuchs</li><li>Wolfgang Schwach</li><li>Rouven Roehrig</li><li>Richard Steuer</li><li>Dirk Marwinski</li><li>Michael Moessner</li><li>Christian Jeschke</li><li>Thomas Jansen</li></ul>Note that the backend is a bit \"slow\" and updates (e.g. cancelations or new bookings) are only synchronized every 10 minutes."
         }
 	]
 }
