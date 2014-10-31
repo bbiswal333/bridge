@@ -5,10 +5,8 @@ if( !navigator.featuresAvailable() )
 } else {
     switch(window.device) {
         case 0:
-            location.href = "/index_smartphone.html";
-            break;
         case 1:
-            location.href = "/index_tablet.html";
+            location.href = "/mobile";
             break;
         case 2:
             break;

@@ -31,13 +31,9 @@ navigator.featuresAvailable = function () {
 };
 
 function isMobile() {
-    //window.alert(navigator.platform); // Win32 für PCs und Windows Phones, iOS(iPad, iPhone, iPod) Android (keine Unterscheidung)
-    //window.alert(screen.height); // 1080, 1024 (iPad, egal, welche Ausrichtung),
-    //window.alert(screen.width); // 1920, 768 (iPad)
-
-    if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.3) {
+    if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.2) {
         return 0;
-    } else if (window.matchMedia("(min-width:768px) and (max-width:1281px)").matches && window.devicePixelRatio > 1.3) {
+    } else if (window.matchMedia("(min-width:768px) and (max-width:1281px)").matches && window.devicePixelRatio > 1.2) {
         return 1;
     } else {
         return 2;
