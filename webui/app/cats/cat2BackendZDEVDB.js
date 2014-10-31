@@ -1,6 +1,6 @@
 angular.module("app.cats.dataModule", ["lib.utils"])
-.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils", "app.cats.configService",
-	function($http, $q, $log, $window, calUtils, configService) {
+.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
+	function($http, $q, $log, $window, calUtils) {
 		var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
 		var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001&options=CPROWORKLIST";
 		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin="	+ $window.location.origin;
@@ -13,6 +13,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.CPROTaskTextCache.DATA = [];
 		this.CAT2AllocationDataForWeeks = {};
 
+		var catsProfileFromBackendPromise;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -121,8 +122,68 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
+		this.determineCatsProfileFromBackend = function() {
+			var deferred = $q.defer();
+
+			if (catsProfileFromBackendPromise) {
+				return catsProfileFromBackendPromise;
+			} else {
+				catsProfileFromBackendPromise = deferred.promise;
+
+				var today = new Date();
+				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
+				_httpRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString).then(function(data) {
+					// try to get it from ISP configuration
+					if ( data && data.PROFILE && (data.PROFILE.indexOf("DEV2002") > 0 || data.PROFILE.indexOf("SUP2007") > 0)) {
+						$log.log(data.PROFILE);
+						deferred.resolve(data.PROFILE);
+					} else {
+						// Now read templates in different profiles
+						var promises = [];
+						var week = calUtils.getWeekNumber(today);
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
+						var promise = $q.all(promises);
+						promise.then(function(promisesData) {
+							var dataForAnalysis = [];
+
+							// find any subtype?
+							var entriesWithSubtype = 0;
+							var totalEntries = 0;
+							angular.forEach(promisesData, function(data) {
+								for (var i = 0; i < data.CATS_EXT.length; i++) {
+									totalEntries += 1;
+									if (data.CATS_EXT[i].ZZSUBTYPE) {
+										entriesWithSubtype += 1;
+									}
+								}
+								dataForAnalysis.push(data);
+							});
+							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
+								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
+									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
+									deferred.resolve("SUP2007D");
+								} else {
+									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
+									deferred.resolve("SUP2007C");
+								}
+							} else {
+								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
+								deferred.resolve("DEV2002C");
+							}
+						});
+					}
+				});
+			}
+			return deferred.promise;
+
+		};
+
 		this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
 			var deferred = $q.defer();
+
+			this.determineCatsProfileFromBackend();
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
 				var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
@@ -170,34 +231,43 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		this.getCatsAllocationDataForWeek = function(year, week) {
-			var deferred = $q.defer();
-
-			_httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + configService.getCatsProfile()).then(function(data, status) {
-				if (!data) {
-					deferred.reject(status);
-				} else if (data.TIMESHEETS.WEEK !== week + "." + year) {
-					$log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
-					deferred.resolve();
-				} else {
-					if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
-						// adding the SUBTYPE
-						if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
-							for (var j = 0; j < data.CATS_EXT.length; j++) {
-								data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
-							}
+		function processCatsAllocationDataForWeek(year, week, deferred, data, status) {
+			if (!data) {
+				deferred.reject(status);
+			} else if (data.TIMESHEETS.WEEK !== week + "." + year) {
+				$log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
+				deferred.resolve();
+			} else {
+				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
+					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
+						for (var j = 0; j < data.CATS_EXT.length; j++) {
+							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
 						}
-						// adding the description
-						that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS).then(function(items) {
-							data.TIMESHEETS.RECORDS = items;
-							deferred.resolve(data);
-						});
-					} else {
-						deferred.resolve(data);
 					}
+					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS).then(function(items) {
+						data.TIMESHEETS.RECORDS = items;
+						deferred.resolve(data);
+					});
+				} else {
+					deferred.resolve(data);
 				}
-			});
-			this.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+			}
+		}
+
+		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
+			var deferred = $q.defer();
+			if (catsProfile) {
+				_httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfile).then(function(data, status) {
+					processCatsAllocationDataForWeek(year, week, deferred, data, status);
+				});
+			} else {
+				this.determineCatsProfileFromBackend().then(function(catsProfileFromBackend) {
+					_httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfileFromBackend).then(function(data, status) {
+						processCatsAllocationDataForWeek(year, week, deferred, data, status);
+					});
+				});
+				this.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+			}
 			return deferred.promise;
 		};
 
@@ -209,55 +279,60 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			//	 data = data;
 			//   }
 			// });
-
 			var deferred = $q.defer();
-			if (forceUpdate_b || !tasksFromWorklistPromise) {
-				tasksFromWorklistPromise = _httpRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + configService.getCatsProfile());
-				tasksFromWorklistPromise.then(function(data) {
-					var tasks = [];
+			this.determineCatsProfileFromBackend().then(function(catsProfile) {
+				if (catsProfile !== "DEV2002C") {
+					deferred.resolve();
+				} else {
+					if (forceUpdate_b || !tasksFromWorklistPromise) {
+						tasksFromWorklistPromise = _httpRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + catsProfile);
+						tasksFromWorklistPromise.then(function(data) {
+							var tasks = [];
 
-					if (configService.getCatsProfile() === "DEV2002C") {
-						// Add prefdefined tasks (ADMI & EDUC) only for the standard developer profile
-						tasks.push({
-							RAUFNR: "",
-							TASKTYPE: "ADMI",
-							ZCPR_EXTID: "",
-							ZCPR_OBJGEXTID: "",
-							ZZSUBTYPE: "",
-							DESCR: "Admin"
+							if (catsProfile === "DEV2002C") {
+								// Add prefdefined tasks (ADMI & EDUC) only for the standard developer profile
+								tasks.push({
+									RAUFNR: "",
+									TASKTYPE: "ADMI",
+									ZCPR_EXTID: "",
+									ZCPR_OBJGEXTID: "",
+									ZZSUBTYPE: "",
+									DESCR: "Admin"
+								});
+
+								tasks.push({
+									RAUFNR: "",
+									TASKTYPE: "EDUC",
+									ZCPR_EXTID: "",
+									ZCPR_OBJGEXTID: "",
+									ZZSUBTYPE: "",
+									DESCR: "Education"
+								});
+							}
+
+							if (data && data.WORKLIST) {
+								var nodes = data.WORKLIST;
+								for (var i = 0; i < nodes.length; i++) {
+									var task = {};
+									task.RAUFNR = (nodes[i].RAUFNR || "");
+									task.TASKTYPE = (nodes[i].TASKTYPE || "");
+									task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
+									task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
+									task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
+									task.UNIT = nodes[i].UNIT;
+									task.projectDesc = nodes[i].DISPTEXTW1;
+									task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+									tasks.push(task);
+								}
+							}
+
+							deferred.resolve(tasks);
 						});
-
-						tasks.push({
-							RAUFNR: "",
-							TASKTYPE: "EDUC",
-							ZCPR_EXTID: "",
-							ZCPR_OBJGEXTID: "",
-							ZZSUBTYPE: "",
-							DESCR: "Education"
-						});
+					} else {
+						deferred.promise = tasksFromWorklistPromise;
 					}
-
-					if (data && data.WORKLIST) {
-						var nodes = data.WORKLIST;
-						for (var i = 0; i < nodes.length; i++) {
-							var task = {};
-							task.RAUFNR = (nodes[i].RAUFNR || "");
-							task.TASKTYPE = (nodes[i].TASKTYPE || "");
-							task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
-							task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-							task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-							task.UNIT = nodes[i].UNIT;
-							task.projectDesc = nodes[i].DISPTEXTW1;
-							task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-							tasks.push(task);
-						}
-					}
-
-					deferred.resolve(tasks);
-				});
-			} else {
-				deferred.promise = tasksFromWorklistPromise;
-			}
+				}
+			});
 			return deferred.promise;
 		};
 
@@ -265,7 +340,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
-				this.getCatsAllocationDataForWeek(year, week, forceUpdate_b);
+				this.getCatsAllocationDataForWeek(year, week);
 			}
 
 			var promise = $q.all(this.CAT2AllocationDataForWeeks);
@@ -304,15 +379,16 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
-
-			$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + configService.getCatsProfile(), container, {
-				'headers': {
-					'Content-Type': 'text/plain'
-				}
-			}).success(function(data) {
-				deferred.resolve(data);
-			}).error(function(data, status) {
-				deferred.reject(status);
+			this.determineCatsProfileFromBackend().then(function(catsProfile) {
+				$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
+					'headers': {
+						'Content-Type': 'text/plain'
+					}
+				}).success(function(data) {
+					deferred.resolve(data);
+				}).error(function(data, status) {
+					deferred.reject(status);
+				});
 			});
 			return deferred.promise;
 		};

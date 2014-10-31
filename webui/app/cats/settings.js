@@ -166,8 +166,4 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         }
     });
 
-    $scope.$watch("configService.catsProfile", function() {
-        $scope.apply();
-    });
-
 }];

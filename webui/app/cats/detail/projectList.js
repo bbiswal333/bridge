@@ -165,16 +165,18 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function addItemsFromTemplate(items) {
-				// Write header
-				if (items.length > 0) {
-					var header = {};
-					header.DESCR = "Tasks from CAT2 template using profile " + configService.getCatsProfile() + "...";
-					header.TASKTYPE = "BRIDGE_HEADER";
-					header.RAUFNR = "1";
-					addNewProjectItem(header);
-				}
-				items.forEach(function(item) {
-					addNewProjectItem(item);
+				catsBackend.determineCatsProfileFromBackend().then(function(catsProfile) {
+					// Write header
+					if (items.length > 0) {
+						var header = {};
+						header.DESCR = "Tasks from CAT2 template using profile " + catsProfile + "...";
+						header.TASKTYPE = "BRIDGE_HEADER";
+						header.RAUFNR = "1";
+						addNewProjectItem(header);
+					}
+					items.forEach(function(item) {
+						addNewProjectItem(item);
+					});
 				});
 			}
 
@@ -191,25 +193,25 @@ directive("app.cats.maintenanceView.projectList", [
 
 			function getCatsData(forceUpdate_b) {
 				var deferred = $q.defer();
-				getDataFromCatsTemplate(forceUpdate_b).then(function() {
-					catsBackend.requestTasksFromWorklist(forceUpdate_b).then(function(dataFromWorklist) {
+				catsBackend.requestTasksFromWorklist(forceUpdate_b).then(function(dataFromWorklist) {
+					getDataFromCatsTemplate().then(function() {
 						if ($scope.blocks === undefined) {
 							$scope.blocks = [];
 						}
 
 						// Write header
-						if (dataFromWorklist.length > 0) {
+						if (dataFromWorklist && dataFromWorklist.length > 0) {
 							var header = {};
 							header.DESCR = "Additional tasks from cPro work list...";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "2";
 							addNewProjectItem(header);
-						}
 
-						dataFromWorklist.forEach(function(entry) {
-							addNewProjectItem(entry);
-							configService.updateLastUsedDescriptions(entry, true);
-						});
+							dataFromWorklist.forEach(function(entry) {
+								addNewProjectItem(entry);
+								configService.updateLastUsedDescriptions(entry, true);
+							});
+						}
 
 						deferred.resolve();
 					});
@@ -320,8 +322,6 @@ directive("app.cats.maintenanceView.projectList", [
 				}, 100);
 			}
 
-			loadProjects();
-
 			$scope.backendData = catsBackend.CAT2AllocationDataForWeeks;
 
 			$scope.$watch("backendData", function(newValue,oldValue) {
@@ -348,6 +348,8 @@ directive("app.cats.maintenanceView.projectList", [
 					loadProjects(true);
 				}
 			}, true);
+
+			loadProjects(true);
 
 		};
 
