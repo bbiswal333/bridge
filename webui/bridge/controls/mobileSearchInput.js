@@ -1,8 +1,8 @@
-angular.module('bridge.app').directive('bridge.input', ['$timeout', function($timeout) {
+angular.module('bridge.app').directive('bridge.mobileSearchInput', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
-        templateUrl: 'bridge/controls/input.html',
+        templateUrl: 'bridge/controls/mobileSearchInput.html',
         replace: true,
         compile: function(element, attrs) {
             // set default type if not given by the directive-definition

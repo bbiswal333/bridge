@@ -5,7 +5,9 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
         controller: function($scope) {
             var MINIMUM_QUERY_LENGTH = 2;
             $scope.maxResults = 5;
-            $scope.query = "";
+
+            $scope.query = ""; // Suchstring
+
             $scope.selectedItem = null;
             $scope.results = [];
 

@@ -46,7 +46,8 @@
 
         "controls/checkbox.js",
         "controls/radio.js",
-        "controls/input.js"
+        "controls/input.js",
+        "controls/mobileSearchInput.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css",

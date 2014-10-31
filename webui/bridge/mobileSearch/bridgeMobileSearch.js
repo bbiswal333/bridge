@@ -1,6 +1,8 @@
-angular.module("bridge.search", ["ui.bootstrap.modal"]);
-angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
+angular.module("bridge.mobileSearch", []);
+angular.module("bridge.mobileSearch").service("bridge.mobileSearch", ['$q', function($q) {
 	var searchProviders = [];
+	var results = [];
+	var global_query;
 
 	this.addSearchProvider = function(searchProvider) {
 		//todo: check for search function
@@ -24,13 +26,14 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 		return searchProviders.length;
 	};
 
-	this.findMatches = function(query, resultArray) {
-		resultArray.length = 0;
+	this.findMatches = function(query) {
+		global_query = query;
+		results.length = 0;
 		var deferred = $q.defer();
 		var promises = [];
 		promises = searchProviders.map(function(provider) {
 			var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
-			resultArray.push(result);
+			results.push(result);
 			var promise = provider.findMatches(query, result.results);
 			if(promise) {
 				return promise;
@@ -39,6 +42,16 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 		$q.all(promises).then(function() {
 			deferred.resolve();
 		});
-		return deferred.promise;
 	};
+
+	this.getResults = function() {
+		return results;
+	};
+
+	this.getQuery = function() {
+		return {
+			'query' : global_query
+		};
+	};
+
 }]);
