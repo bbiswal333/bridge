@@ -134,7 +134,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
 				_httpRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString).then(function(data) {
 					// try to get it from ISP configuration
-					if ( data && data.PROFILE && (data.PROFILE.indexOf("DEV2002") > 0 || data.PROFILE.indexOf("SUP2007") > 0)) {
+					if ( data && data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
 						$log.log(data.PROFILE);
 						deferred.resolve(data.PROFILE);
 					} else {

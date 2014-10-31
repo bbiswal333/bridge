@@ -101,6 +101,19 @@
 					</div>
 
 					<div class="row settings_input_row">
+						<span class="col-md-4 settings_input settings_input_label">Sub type (only for support profile)
+							<span class="settings_required_label_mark red-font" ng-show="!configService.selectedTask.TASKTYPE && configService.selectedTask.custom">*</span>
+						</span>
+						<div class="col-md-8">	
+							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZZSUBTYPE || "Sub Type"}}</div>
+							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+								model="configService.selectedTask.ZZSUBTYPE"
+								placeholder="Sub type"
+								ng-show="configService.selectedTask.custom"></bridge.input>
+						</div>
+					</div>
+
+					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label"></span>
 						<div class="col-md-8">
 							<div ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
