@@ -5,7 +5,7 @@ angular.module("bridge.mobileSearchResults").directive("bridge.mobileSearchResul
 
 	var linker = function(scope, element) {
 		function getTemplatePromise(templateUrl) {
-	        return $http.get(templateUrl, {cache: $templateCache}).then(function (result) {
+	        return $http.get('../' + templateUrl, {cache: $templateCache}).then(function (result) {
 	            return result.data;
 	        });
 	    }

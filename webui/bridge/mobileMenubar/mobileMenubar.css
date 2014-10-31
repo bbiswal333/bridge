@@ -10,7 +10,7 @@
     background-color: white;
 }
 
-.mobileMenuBar-title {
+/*.mobileMenuBar-title {
     position: absolute;
     color:white;
     height:100%;
@@ -19,13 +19,13 @@
     font-size:40px;
     padding:10px;
     width:calc(100% - 580px);
-}
+}*/
 
 #mobileMenuBar-searchfield {
     position: absolute;
     height:100%;
-    right:80px;
-    width:500px;
+    left:80px;
+    width:calc(80% - 80px);
     background-color:white;
     display:none;
 }
@@ -49,10 +49,23 @@
     z-index: 1;
     display: inline-block;
     position:absolute;
+
+}
+
+#cancel_search {
+    display:none;
+    line-height: 60px;
+    font-family: inherit;
     right:0;
+    width:20%;
+}
+
+#search {
+    left:0;
 }
 
 #cancel {
+    right:0;
     background-color:transparent;
 }
 

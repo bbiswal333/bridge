@@ -34,7 +34,7 @@ exports.run = function(npm, port)
 
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.get('/mobile', function(req, res) {
-			res.sendfile(path.join(__dirname, '../webui/index_tablet.html'));
+			res.sendfile(path.join(__dirname, '../webui/mobile.html'));
 		});
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		app.use('/badge', express.static(path.join(__dirname, '../badge')));
