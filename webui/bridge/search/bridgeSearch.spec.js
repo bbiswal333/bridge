@@ -1,4 +1,4 @@
-describe("BridgeSearch provides functionalities to collect and call content providers", function() {
+describe("BridgeMobileSearch provides functionalities to collect and call content providers", function() {
 	var bridgeSearch;
 	var timeout;
 	var q;

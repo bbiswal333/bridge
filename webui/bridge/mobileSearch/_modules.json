@@ -1,0 +1,11 @@
+{
+	"modules" : ["bridge.mobileSearch",
+	"bridge.mobileSearchResults"],
+	"js_files" : [
+	  	"bridgeMobileSearch.js",
+		"bridgeMobileSearchDirective.js",
+		"bridgeMobileSearchResults.js",
+		"bridgeMobileSearchResultDirective.js",
+		"bridgeMobileSearchResultsProviderResults.js"
+	]
+}
