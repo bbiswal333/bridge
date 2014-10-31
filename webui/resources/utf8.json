@@ -1,0 +1,57 @@
+[
+  {
+    "letter" : "A",
+    "unicodeCode" : "U+0041",
+    "HTMLCode" : "&#65;"
+  },
+  {
+    "letter" : "B",
+    "unicodeCode" : "U+0042",
+    "HTMLCode" : "&#66;"
+  },
+  {
+    "letter" : "C",
+    "unicodeCode" : "U+0043",
+    "HTMLCode" : "&#67;"
+  },
+  {
+    "letter" : "D",
+    "unicodeCode" : "U+0044",
+    "HTMLCode" : "&#68;"
+  },
+  {
+    "letter" : "E",
+    "unicodeCode" : "U+0045",
+    "HTMLCode" : "&#69;"
+  },
+  {
+    "letter" : "F",
+    "unicodeCode" : "U+0046",
+    "HTMLCode" : "&#70;"
+  },
+  {
+    "letter" : "G",
+    "unicodeCode" : "U+0047",
+    "HTMLCode" : "&#71;"
+  },
+  {
+    "letter" : "H",
+    "unicodeCode" : "U+0048",
+    "HTMLCode" : "&#72;"
+  },
+  {
+    "letter" : "I",
+    "unicodeCode" : "U+0049",
+    "HTMLCode" : "&#73;"
+  },
+  {
+    "letter" : "J",
+    "unicodeCode" : "U+004A",
+    "HTMLCode" : "&#74;"
+  },
+  {
+    "letter" : "K",
+    "unicodeCode" : "U+004B",
+    "HTMLCode" : "&#75;"
+  }
+]

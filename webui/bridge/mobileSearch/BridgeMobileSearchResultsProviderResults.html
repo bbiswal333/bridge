@@ -1,0 +1,16 @@
+<div style="width:67%; position:absolute; right:0; font-size:1.5em;">
+    <div ng-repeat="provider in providers | limitTo:9" ng-if="all">
+        <div ng-click="fireCallback($event, true, $index)" class="bridge-mobileSearchOutputProviderResults" style="padding-left:20px; padding-top:10px;" ng-if="provider.results.length > 0">
+            <span><i class="{{provider.info.icon}}"></i> {{provider.info.name}}</span>
+            <bridge.mobile-search-results.search-result match="provider.results[0]" result-source="provider.info" query="query"></bridge.mobile-search-results.search-result>
+        </div>
+    </div>
+    <div ng-repeat="result in providerResults.results | limitTo:9">
+        <div id="result_{{$index}}" ng-click="fireCallback($event, false)" class="bridge-mobileSearchOutputProviderResults" style="padding-left:20px; padding-top:10px;">
+            <bridge.mobile-search-results.search-result match="result" result-source="providerResults.info" query="query"></bridge.mobile-search-results.search-result>
+        </div>
+    </div>
+    <div ng-if="providerResults.results.length == 0" class="noResult" ng-bind-html="noResultString">
+
+    </div>
+</div>

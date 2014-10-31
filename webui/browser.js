@@ -30,6 +30,22 @@ navigator.featuresAvailable = function () {
     return all_features_available;
 };
 
+function isMobile() {
+    //window.alert(navigator.platform); // Win32 für PCs und Windows Phones, iOS(iPad, iPhone, iPod) Android (keine Unterscheidung)
+    //window.alert(screen.height); // 1080, 1024 (iPad, egal, welche Ausrichtung),
+    //window.alert(screen.width); // 1920, 768 (iPad)
+
+    if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.3) {
+        return 0;
+    } else if (window.matchMedia("(min-width:768px) and (max-width:1281px)").matches && window.devicePixelRatio > 1.3) {
+        return 1;
+    } else {
+        return 2;
+    }
+}
+
+window.device = isMobile();
+
 /*eslint-disable no-undef */
 if (!window.feature_check) {
     window.feature_check = [];
