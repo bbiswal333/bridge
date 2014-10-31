@@ -91,4 +91,5 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             setPrioSelections(false);
             _.find($scope.prios, {"key": $routeParams.prio}).active = true;
         }
+
 }]);

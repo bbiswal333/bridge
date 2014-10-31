@@ -26,51 +26,26 @@
       		</div>
       	</div>
 
-        <div>
-        	<div infinitescroll>
-	            <div class="row">
-		            <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESCR')">Priority
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESCR'"></i>
-		            </div>
-		        	<div class="box-title col-sm-2" ng-click="sort('CATEGORY')">Category
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CATEGORY'"></i>
-		        	</div>
-		        	<div class="box-title col-sm-1" ng-click="sort('STATUS_DESCR')">Status
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'STATUS_DESCR'"></i>
-		        	</div>
-		        	<div class="box-title col-sm-2" ng-click="sort('REPORTER_NAME')">Reporter
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'REPORTER_NAME'"></i>
-		        	</div>
-                    <div class="box-title col-sm-1" ng-click="sort('CREATE_DATE')">Created
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CREATE_DATE'"></i>
-                    </div>
-                    <div class="box-title col-sm-1" ng-click="sort('CHANGE_DATE')">Changed
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHANGE_DATE'"></i>
-                    </div>
-		        	<div class="box-title col-sm-3" ng-click="sort('DESCRIPTION')">Description
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
-		        	</div>
-		        </div>
-	            <div ng-repeat="row in messages | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
-	            	<div class="cellText col-sm-1">{{row.PRIORITY_DESCR}}</div>
-	            	<div class="cellText col-sm-2">{{row.CATEGORY}}</div>
-	            	<div class="cellText col-sm-1">{{row.STATUS_DESCR}}</div>
-	            	<div class="cellText col-sm-2">
-		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
-		            		 class="im-reporter-img"
-		            		 ng-if="row.REPORTER_ID"></img>
-			            <a target="_blank" href="{{row.url}}">{{row.REPORTER_NAME}}</a>
-			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
-			            <a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
-        			</div>
-                    <div class="cellText col-sm-1">{{getFormattedDate(row.CREATE_DATE)}}</div>
-                    <div class="cellText col-sm-1">{{getFormattedDate(row.CHANGE_DATE)}}</div>
-	            	<div class="cellText col-sm-3">
-        				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
-	            	</div>
-	            </div>
-	        </div>
+		<br/>
 
-        </div>        
+		<bridge.table table-data="messages" filter="filterTable">
+			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Category'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-2'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 ng-if="row.REPORTER_ID"></img>
+				<a target="_blank" href="{{row.url}}">{{row.REPORTER_NAME}}</a>
+				<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'7'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]">
+				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
+			</bridge.table-column>
+		</bridge.table>
+
     </div>
 </div>

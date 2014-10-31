@@ -7,5 +7,6 @@ angular.module('app.internalIncidents').factory("app.internalIncidents.configser
     config.data.selection.colleagues = false;
     config.data.selection.assigned_me = false;
     config.data.selection.created_me = false;
+    config.data.columnVisibility = [true, true, true, true, true, true, false];
     return config;
 });

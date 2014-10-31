@@ -145,6 +145,7 @@
 
 .checkbox .content {
     height: 20px;
+    width: auto;
     display: inline-block;
     padding-top: 2px;
 }

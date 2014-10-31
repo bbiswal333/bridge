@@ -59,7 +59,7 @@ img {
 }
 
 .zoomIn {
-    transform: sclae(1.2);
+    transform: scale(1.2);
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -323,6 +323,7 @@ img {
     font-style: italic;
     font-weight: bold;
 }
+
 .copy_head{
     font-weight: bold;
 }
@@ -722,14 +723,6 @@ input[type="checkbox"]:checked:after {
     overflow: hidden;
 }
 
-.box-title {
-    margin-top: 30px;
-    font-size: 14px;
-    line-height: 32px;
-    text-transform: uppercase;
-    font-style: italic;
-    font-weight: bold;    
-}
 .wi {
     font-size: 1.6rem;
     padding-left: 2px;

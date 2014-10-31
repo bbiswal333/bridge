@@ -46,10 +46,13 @@
 
         "controls/checkbox.js",
         "controls/radio.js",
-        "controls/input.js"
+        "controls/input.js",
+        "controls/bridgeTable/bridgeTable.js",
+        "controls/bridgeTable/bridgeTableColumn.js",
+        "controls/customTransclude.js"
 	],
 	"css_files" : [
         "diagnosis/diagnosis.css",
-        "search/search.css"
+        "controls/bridgeTable/bridgeTable.css"
 	]
 }
