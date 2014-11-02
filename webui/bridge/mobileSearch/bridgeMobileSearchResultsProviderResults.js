@@ -2,7 +2,7 @@ angular.module("bridge.mobileSearchResults").directive("bridge.mobileSearchResul
     return {
         restrict: 'E',
         templateUrl: 'bridge/mobileSearch/BridgeMobileSearchResultsProviderResults.html',
-        controller: function($scope) {
+        controller: function() {
         }
     };
 }]);

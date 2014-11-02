@@ -24,7 +24,7 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
 
                 });
                 $scope.providerResultsCount = providerResultsCount;
-                $scope.providers= results;
+                $scope.providers = results;
                 $scope.providerResults = results[selectedProviderID];
                 $('#provider_' + selectedProviderID).addClass('selectedProvider');
             }, true);

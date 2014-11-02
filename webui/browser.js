@@ -30,6 +30,7 @@ navigator.featuresAvailable = function () {
     return all_features_available;
 };
 
+/*eslint-disable no-undef */
 function isMobile() {
     if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.2) {
         return 0;
@@ -42,7 +43,6 @@ function isMobile() {
 
 window.device = isMobile();
 
-/*eslint-disable no-undef */
 if (!window.feature_check) {
     window.feature_check = [];
 }

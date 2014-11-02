@@ -232,6 +232,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		};
 
 		function processCatsAllocationDataForWeek(year, week, deferred, data, status) {
+			week = calUtils.toNumberOfCharactersString(week, 2);
 			if (!data) {
 				deferred.reject(status);
 			} else if (data.TIMESHEETS.WEEK !== week + "." + year) {
@@ -256,6 +257,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
 			var deferred = $q.defer();
+			week = calUtils.toNumberOfCharactersString(week, 2);
 			if (catsProfile) {
 				_httpRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfile).then(function(data, status) {
 					processCatsAllocationDataForWeek(year, week, deferred, data, status);

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module("bridge.app").directive("bridge.mobileMenubar", [
     function() {
         return {

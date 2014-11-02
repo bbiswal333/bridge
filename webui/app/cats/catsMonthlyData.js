@@ -147,7 +147,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		// we need to initialize each day with it's actual target hours from the data
 		// which we already have in the calendar array
 		for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
-			if (week === this.calArray[calWeekIndex][0].weekNo + "") {
+			if (week === calenderUtils.toNumberOfCharactersString(this.calArray[calWeekIndex][0].weekNo, 2) + "") {
 				for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
 					var dayString = this.calArray[calWeekIndex][dayIndex].dayString;
 					this.days[dayString] = {};
