@@ -13,6 +13,7 @@
                 <div ng-repeat="item in items | filter:filter.val">
                     <span ng-if="item.TASKTYPE === 'BRIDGE_HEADER'"><b>{{item.DESCR}}</b></span>
                     <button type="button"
+                            title="{{getDescription(item)}}"
                             ng-if="item.TASKTYPE !== 'BRIDGE_HEADER'"
                             class="btn btn-default app-cats-project-selector-button" 
                             ng-class="{'btn_blue' : item.selected && !item.color}"

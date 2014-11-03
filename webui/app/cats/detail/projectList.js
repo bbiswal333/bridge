@@ -32,6 +32,25 @@ directive("app.cats.maintenanceView.projectList", [
 				}
 			};
 
+            $scope.getDescription = function (item) {
+                var desc = item.DESCR;
+                if (item.ZCPR_EXTID) {
+                    desc = desc + ",\n" + item.ZCPR_EXTID;
+                }
+                if (item.RAUFNR) {
+                    desc = desc + ",\n" + item.RAUFNR;
+                }
+                if (item.ZCPR_OBJGEXTID) {
+                    desc = desc + ",\n" + item.ZCPR_OBJGEXTID;
+                }
+                if (item.TASKTYPE) {
+                    desc = desc + ",\n" + item.TASKTYPE;
+                }
+                if (item.ZZSUBTYPE) {
+                    desc = desc + ",\n" + item.ZZSUBTYPE;
+                }
+                return desc;
+            };
 			$scope.showEditButton = function(id) {
 				$scope.toEdit = id;
 			};
