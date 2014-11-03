@@ -48,7 +48,7 @@
     font-size:38px;
     z-index: 1;
     display: inline-block;
-    position:absolute;
+    position:absolute  !important;
 
 }
 
@@ -67,6 +67,12 @@
 #cancel {
     right:0;
     background-color:transparent;
+}
+
+#feedback {
+    display:inline-block;
+    right:0;
+    top:0;
 }
 
 .mobileMenuBar-settingsButton:hover {
