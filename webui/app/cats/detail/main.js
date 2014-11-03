@@ -453,7 +453,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
                 var taskDeletion = angular.copy(task);
                 taskDeletion.WORKDATE = workdate || task.WORKDATE;
-                // taskDeletion.QUANTITY = 0;
                 taskDeletion.CATSQUANTITY = 0;
 
                 container.BOOKINGS.push(taskDeletion);
@@ -465,10 +464,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            // booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
             booking.CATSQUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
-            if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
+            if (catsUtils.isFixedTask(booking)){
                 continue;
             }
 
@@ -479,7 +477,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (clearOldTasks) {
                 booking.COUNTER = 0;
             }
-            //if (booking.QUANTITY) { // book time > 0
             if (booking.CATSQUANTITY) { // book time > 0
                 workdateBookings.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
@@ -498,20 +495,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var totalBookingQuantity = 0;
         var biggestBooking;
         workdateBookings.forEach(function(booking){
-            // if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
             if(!biggestBooking || biggestBooking.CATSQUANTITY <= booking.CATSQUANTITY) {
                 biggestBooking = booking;
             }
-            //totalBookingQuantity += booking.QUANTITY;
             totalBookingQuantity += booking.CATSQUANTITY;
         });
         totalBookingQuantity = Math.round(totalBookingQuantity * 1000) / 1000;
         var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
         if((bookingDif > 0 && bookingDif < 0.03) ||
            (bookingDif < 0 && bookingDif > -0.03)) {
-            // biggestBooking.QUANTITY -= bookingDif;
             biggestBooking.CATSQUANTITY -= bookingDif;
-            // biggestBooking.QUANTITY = Math.round(biggestBooking.QUANTITY * 1000) / 1000;
             biggestBooking.CATSQUANTITY = Math.round(biggestBooking.CATSQUANTITY * 1000) / 1000;
         }
 
