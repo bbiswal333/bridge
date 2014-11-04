@@ -111,7 +111,7 @@ angular.module("app.cats")
 					function() {
 						if (monthlyDataService.reloadInProgress.error) {
 							$scope.hasError = true;
-							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 						}
 					});
 				}
@@ -225,7 +225,7 @@ angular.module("app.cats")
 					deferred.resolve();
 				}, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				return deferred.promise;
 			}
@@ -241,7 +241,7 @@ angular.module("app.cats")
 					deferred.resolve();
 				}, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				return deferred.promise;
 			}
@@ -329,7 +329,7 @@ angular.module("app.cats")
 					$scope.selectionCompleted();
 				}, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			};
 
@@ -460,11 +460,11 @@ angular.module("app.cats")
 							$scope.selectionCompleted();
 						}, function() {
 							$scope.hasError = true;
-							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 						});
 					}, function() {
 						$scope.hasError = true;
-						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					});
 				} else if (single_click) {
 					//unselectOthers
@@ -506,7 +506,7 @@ angular.module("app.cats")
 					$scope.selectionCompleted();
 				}, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			};
 
@@ -525,7 +525,7 @@ angular.module("app.cats")
 					$scope.selectionCompleted();
 				}, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			}
 
@@ -566,7 +566,7 @@ angular.module("app.cats")
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
 				.then( handleCatsData, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				// some buffering
 				catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month, true).then( );
@@ -610,7 +610,7 @@ angular.module("app.cats")
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
 				.then( handleCatsData, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				// some buffering
 				catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month, true).then( );
@@ -641,7 +641,7 @@ angular.module("app.cats")
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
 			.then( handleCatsData, function() {
 				$scope.hasError = true;
-				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again later.";
+				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 			});
 
 			if ($scope.selectedDay) {
@@ -664,7 +664,7 @@ angular.module("app.cats")
 					catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
 					.then( handleCatsData, function() {
 						$scope.hasError = true;
-						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					});
 				}, 60 * 1000);
 			})();
@@ -674,7 +674,7 @@ angular.module("app.cats")
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
 				.then( handleCatsData, function() {
 					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please try again.";
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			});
 
