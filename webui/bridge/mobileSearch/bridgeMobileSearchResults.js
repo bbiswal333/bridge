@@ -3,11 +3,36 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
     return {
         restrict : 'E',
         templateUrl : 'bridge/mobileSearch/BridgeMobileSearchResults.html',
-        controller : function($scope) {
+        controller : function($scope, $timeout, $window) {
+
+            var count;
+            var width;
+
+            $(window).resize(function(){
+
+                width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+                count = width > 991 ? 4 : 1;
+                $scope.$apply(function() {
+                    $scope.width = width;
+                    $scope.count = count;
+                });
+            });
+
+            $(window).scroll(function(){
+                $('#moreProvider').slideUp(300);
+            });
+
+
+
+            width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+            count = width > 991 ? 4 : 1;
+            $scope.width = width;
+            $scope.count = count;
+
             var results = [];
             var providerResultsCount = [];
             var queryObj;
-            var selectedProviderID = -1;
+            $scope.selectedProviderID = -1;
             $scope.all = true;
             $scope.noResultString = "No Results... &#3237;&#65103;&#3237;";
             $scope.maxResults = 9;
@@ -25,43 +50,48 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
                 });
                 $scope.providerResultsCount = providerResultsCount;
                 $scope.providers= results;
-                $scope.providerResults = results[selectedProviderID];
-                $('#provider_' + selectedProviderID).addClass('selectedProvider');
+                $scope.providerResults = results[$scope.selectedProviderID];
             }, true);
 
             $scope.selectProvider = function(index) {
-
                 $scope.all = false;
-
-                $('.bridge-mobileSearchOutputProvider').removeClass('selectedProvider');
-                $('#provider_' + index).addClass('selectedProvider');
-                selectedProviderID = index;
-                $scope.providerResults = results[selectedProviderID];
+                $scope.selectedProviderID = index;
+                $scope.providerResults = results[$scope.selectedProviderID];
             };
 
-            $scope.fireCallback = function(selectedAll, providerID, resultID) {
-                if(selectedAll) {
-                    resultID = 0;
+            $scope.selectProviderMore = function(index) {
+                var tmp = $scope.providers[count-1];
+                $scope.providers[count-1] = $scope.providers[index];
+                $scope.providers[index] = tmp;
+                $scope.selectProvider(count-1);
+            };
+
+            $scope.fireCallback = function(providerID, resultID) {
+
+                if(providerID !== -1) {
                     if($scope.results[providerID].callbackFn) {
                         $scope.results[providerID].callbackFn($scope.results[providerID].results[resultID]);
                     }
                 } else {
-                    if($scope.results[selectedProviderID].callbackFn) {
-                        $scope.results[selectedProviderID].callbackFn($scope.results[selectedProviderID].results[resultID]);
+                    if($scope.results[$scope.selectedProviderID].callbackFn) {
+                        $scope.results[$scope.selectedProviderID].callbackFn($scope.results[$scope.selectedProviderID].results[resultID]);
                     }
                 }
+
             };
 
              $('#search').click(function() {
                 $('#bridge-mobileSearchOutput').fadeIn(300);
             });
 
+            $scope.showMore = function() {
+                $('#moreProvider').slideToggle(300);
+            };
+
             $scope.selectAll = function() {
                 $scope.all = true;
-                selectedProviderID = -1;
-                $scope.providerResults = results[selectedProviderID];
-                $('.bridge-mobileSearchOutputProvider').removeClass('selectedProvider');
-                $('#allSelectProvider').addClass('selectedProvider');
+                $scope.selectedProviderID = -1;
+                $scope.providerResults = results[$scope.selectedProviderID];
             };
 
         }

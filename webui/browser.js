@@ -30,17 +30,21 @@ navigator.featuresAvailable = function () {
     return all_features_available;
 };
 
-function isMobile() {
-    if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.2) {
-        return 0;
-    } else if (window.matchMedia("(min-width:768px) and (max-width:1281px)").matches && window.devicePixelRatio > 1.2) {
-        return 1;
-    } else {
-        return 2;
-    }
-}
+window.mobile = function() {
+    var platform = navigator.platform;
 
-window.device = isMobile();
+    switch(platform) {
+         case 'iPod':
+         case 'iPad':
+         case 'iPhone':
+         case 'Pike v7.6 release 92':
+         case 'Pike v7.8 release 517':
+         case 'Android':
+             return true;
+         default:
+             return false;
+    }
+};
 
 /*eslint-disable no-undef */
 if (!window.feature_check) {

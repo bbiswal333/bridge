@@ -5,7 +5,7 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
         return {
             restrict: "E",
             templateUrl: "bridge/mobileMenubar/MobileMenuBar.html",
-            controller: function ($scope) {
+            controller: function ($scope, $rootScope) {
 
                 var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
                 var $mobileMenuBarSearchfield = $('#mobileMenuBar-searchfield');
@@ -13,7 +13,7 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                 $scope.openSearch = function() {
                     if(!$mobileMenuBarSearchfield.is(':visible')) {
 
-                        $('.iconResult').slideUp(300);
+                        slideUpIcons();
 
                         $mobileMenuBarSearchfield.show('slide', {direction: 'left'}, 500, function() {
                             $('.bridge-mobileSearchInput').focus();
@@ -60,6 +60,15 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                         }
                     });
                 }
+
+                function slideUpIcons() {
+                    $('.iconResult').slideUp(300);
+                }
+
+                $rootScope.hideIcons = function() {
+                    slideUpIcons();
+                };
+
             }
         };
     }]);

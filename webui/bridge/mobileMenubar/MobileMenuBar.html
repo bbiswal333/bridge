@@ -11,7 +11,7 @@
 	<div id="cancel_search" class="mobileMenuBar-settingsButton" ng-click="closeSearch();">
 		Abort
 	</div>
-	<div id="weather" class="mobileMenuBar-settingsButton mobileIcons" ng-controller="bridge.menubar.weatherDetailsController" ng-click="showWeather()">
+	<div id="weather" class="mobileMenuBar-settingsButton mobileIcons" ng-controller="bridge.menubar.weatherDetailsController" ng-click="showWeather(); $event.stopPropagation();">
 		<span class="mobileWeatherIcon">
 			<i class="{{weatherData.weatherIcon}}"></i>
 				{{weatherData.temperature}}
@@ -19,11 +19,11 @@
 		<span ng-if="!weatherData.fahrenheit">°C</span>
 		<span ng-if="weatherData.fahrenheit">°F</span>
 	</div>
-	<div id="notifications" class="mobileMenuBar-settingsButton mobileIcons" ng-controller="bridge.menubar.notificationsController" ng-click="showNotifications()">
+	<div id="notifications" class="mobileMenuBar-settingsButton mobileIcons" ng-controller="bridge.menubar.notificationsController" ng-click="showNotifications(); $event.stopPropagation();">
 		<span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox red-font"></span>
 		<span ng-if="(notifications | newNotification).length == 0" class="fa fa-inbox" ></span>
 	</div>
-	<div id="feedback" class="mobileMenuBar-settingsButton mobileIcons" ng-click="showFeedback()">
+	<div id="feedback" class="mobileMenuBar-settingsButton mobileIcons" ng-click="showFeedback(); $event.stopPropagation();">
 		<span class="icon-heart"></span>
 	</div>
 </div>
