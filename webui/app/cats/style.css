@@ -183,15 +183,11 @@
 }
 .app-cats-project-selector-button {
     height: 27px;
-    line-height: 1;
+    line-height: 0;
     text-align: left;
     margin:4px 4px;
-    float:left;
     overflow: hidden;
-}
-.app-cats-project-selector-button {
     font-size: 14px;
-    line-height: 1;
 }
 #app-cats-project-selector-button-container {
     margin-left: 10px;
@@ -561,16 +557,16 @@
 
 .settings_task_edit_button {
     position: absolute; 
-    height: 50px; 
+    height: 27px; 
     width: 10%; 
-    right: 8px; 
-    margin: 4px 4px; 
+    right: 30px; 
+    margin: 4px 0px; 
     
     color: white; 
     background: rgba(255, 255, 255, 0.2); 
     
     text-align: center; 
-    line-height: 3em;
+    line-height: 2em;
 }
 
 .settings_add_task_button {

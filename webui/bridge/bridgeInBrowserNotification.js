@@ -3,31 +3,48 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 	var scopeForDisplay = $rootScope;
 
 	this.setScope = function (scope) {
-	    scopeForDisplay = scope;
+		scopeForDisplay = scope;
 	};
 
-    // alertType can be 'success', 'danger', undefined
-    this.addAlert = function (alertType, alertMsg, alertDuration) {
-    	if (!scopeForDisplay.alerts) {
-    		scopeForDisplay.alerts = [ ];
-    	}
-    	var alertID = alertType + alertMsg;
-    	scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID });
+	function getAlert(alertID) {
+		var alert = _.find(scopeForDisplay.alerts, { "id": alertID });
+		if (alert !== undefined) {
+			return alert;
+		} else {
+			return {};
+		}
+	}
 
-        if (alertDuration) {
-            this.closeAlert(alertID, alertDuration);
-        } else {
-            this.closeAlert(alertID, 8);
-        }
-    };
+	function removeAlert(alertID) {
+		var alert = getAlert(alertID);
+		$timeout.cancel(alert.closingTimer);
+		scopeForDisplay.alerts.splice(scopeForDisplay.alerts.indexOf(alert),1);
+	}
 
-    this.closeAlert = function (alertID, timeoutInSeconds) {
-        $timeout(function () {
-	        for (var i = 0; i < scopeForDisplay.alerts.length; i++) {
-	            if (scopeForDisplay.alerts[i].id === alertID) {
-	                scopeForDisplay.alerts.splice(i, 1);
-	            }
-	        }
-        } , 1000 * timeoutInSeconds);
-    };
+	function closeAlert(alertID, timeoutInSeconds) {
+		if (!angular.isNumber(timeoutInSeconds)) {
+			timeoutInSeconds = 0;
+		}
+		var closingTimer =
+			$timeout(function () { removeAlert(alertID); } , 1000 * timeoutInSeconds);
+		return closingTimer;
+	}
+
+	// alertType can be 'success', 'danger', undefined
+	this.addAlert = function (alertType, alertMsg, alertDuration) {
+		if (!scopeForDisplay.alerts) {
+			scopeForDisplay.alerts = [ ];
+		}
+		var alertID = alertType + alertMsg;
+		if (_.find(scopeForDisplay.alerts, { "id": alertID }) !== undefined) {
+			removeAlert(alertID);
+		}
+		scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID, close: closeAlert });
+
+		if (alertDuration) {
+			getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
+		} else {
+			getAlert(alertID).closingTimer = closeAlert(alertID, 8);
+		}
+	};
 }]);

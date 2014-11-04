@@ -49,7 +49,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (catsConfigService.favoriteItems.length === newFavoriteItems.length) {
             catsConfigService.favoriteItems = newFavoriteItems;
         }
-
     }
 
     function addSelectedItemToFavorites() {
@@ -166,4 +165,5 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             });
         }
     });
+
 }];

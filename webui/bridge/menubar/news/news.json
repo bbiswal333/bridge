@@ -15,6 +15,24 @@
             "snapURL":  "bridge/menubar/news/image/beatTheTrafficSnap.png",
             "preview":  "New app for monitoring the traffic on your way home.",
             "content":  "Today, we would like to make two announcements.<br /><br /><ul><li>Our new app <b>\"beat the traffic\"</b> will inform you about traffic incidents on your route home or to work and show you how long it will take you to get to your destination. Simply add it from the available applications (category \"Productivity\").</li><li>Also, we would like to extend our beta test for our app for customer incident. In case you are interested, please register <a target=\"_blank\" href=\"https://profiles.wdf.sap.corp/groups/5448e3d2fd84a045cc000003/users\">here</a>.</li></ul><br />We would like to thank <b>Merlin Beutlberger</b>, <b>Stefan Lay</b>, <b>Matthias Gradl</b>, <b>Matthias Osswald</b> and <b>Martin Locher</b> for their contributions to the \"beat the traffic\" app during our hackathon and also afterwards."
+        },
+        {
+            "id":       3,
+            "header":   "Meeting Room Cancellation",
+            "date": "2014-10-30",
+            "snapURL":  "bridge/menubar/news/image/roombooking.png",
+            "preview":  "New app for cancelling room bookings.",
+            "content":  "This new app displays room reservations out of the outlook backend and allows easy cancelation of a given room booking with two clicks (inplace-modal which makes sure the user clicked on the right button). Thanks to the following people for making this happen:<br /><br /><ul><li>Thorsten Sandfuchs</li><li>Wolfgang Schwach</li><li>Rouven Roehrig</li><li>Richard Steuer</li><li>Dirk Marwinski</li><li>Michael Moessner</li><li>Christian Jeschke</li><li>Thomas Jansen</li></ul>Note that the backend is a bit \"slow\" and updates (e.g. cancelations or new bookings) are only synchronized every 10 minutes."
+        },
+        {
+            "id":       4,
+            "header":   "Time Recording (CAT2)",
+            "date": "2014-11-03",
+            "snapURL":  "bridge/menubar/news/image/CAT2 news.png",
+            "preview":  "Now usable for Service and Support CAT2 profiles",
+            "content":  "The <b><a href=\"https://bridge.mo.sap.corp/#/detail/cats/\" target=\"_blank\">Time Recording CAT2 app</a></b> now also supports the CAT2 profiles for Service and Support (SUP2007D and SUP2007C). It comes with an automatic CAT2 profile detection, i.e. it can be used out-of-the box without configuration.<br><br>There is a new <b><a href=\"https://sap.emea.pgiconnect.com/p377wwgy2zk/\" target=\"_blank\">introduction video</a></b> which helps you getting started.<br><br>In case of questions please check out the <b><a href=\"https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2\" target=\"_blank\">frequently asked questions (FAQ)</a></b> first."
         }
 	]
 }
+
+

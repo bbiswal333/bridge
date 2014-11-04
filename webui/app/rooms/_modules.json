@@ -1,0 +1,16 @@
+{
+	"app":
+	{
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.rooms",
+		"title"					:	"Room bookings",
+		"icon_css"				:	"fa fa-building",
+		"overview_directive"	:	"app.rooms",
+		"needs_client"			:	false,
+		"default_hidden"		: 	true,
+		"beta"					:   true
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "settings.js", "config.js", "ifp.js"],
+	"css_files" : ["style.css"]
+}

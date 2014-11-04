@@ -8,7 +8,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
-	var alreadyInitializedForMonth = {};
 	this.days = {};
 	this.promiseForMonth = {};
 	this.reloadInProgress = { value:false };
@@ -24,20 +23,13 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.getMonthData = function(year, month){
 		try {
 			var self = this;
-			var deferred = $q.defer();
 			var promise = null;
 			var promises = [];
 
-			// already done or buffered?
-			if (!alreadyInitializedForMonth[month] && this.promiseForMonth[month]) {
-				return this.promiseForMonth[month]; // return promise which is yet to be resolved
-			}
-			else if (alreadyInitializedForMonth[month]) {
-				deferred.resolve();
-				return deferred.promise; // data already present so simply return a resolved promise
+			if (this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
 			}
 
-			// not buffered! so getting the data
 			self.reloadInProgress.value = true;
 
 			var weeks = this.getWeeksOfMonth(year, month);
@@ -49,7 +41,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			promise = $q.all(promises);
 			promise.then(function(){
-				alreadyInitializedForMonth[month] = true;
 				delete self.promiseForMonth[month];
 				self.reloadInProgress.value = false;
 			});
@@ -156,7 +147,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		// we need to initialize each day with it's actual target hours from the data
 		// which we already have in the calendar array
 		for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
-			if (week === this.calArray[calWeekIndex][0].weekNo + "") {
+			if (week === calenderUtils.toNumberOfCharactersString(this.calArray[calWeekIndex][0].weekNo, 2) + "") {
 				for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
 					var dayString = this.calArray[calWeekIndex][dayIndex].dayString;
 					this.days[dayString] = {};

@@ -496,7 +496,7 @@ angular.module("app.cats")
 					monthlyDataService.lastSingleClickDayString = '';
 					$scope.selectionCompleted();
 				});
-			};
+			}
 
 			$scope.canGoBackward = function () {
 				if (monthRelative - 1 < -6) { // Maximum number of month to go back
@@ -594,7 +594,7 @@ angular.module("app.cats")
 			};
 
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month).then( handleCatsData );
-			// some buffering
+			// // some buffering
 			// catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month).then( );
 			// catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month).then( );
 

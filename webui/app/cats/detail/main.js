@@ -163,7 +163,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
 
                 if (timeToMaintain() < 0) {
-                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please adjust tasks to match 100% and save timesheet.');
+                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please remove or adjust tasks and apply changes.');
                 }
 
                 return true;
@@ -239,10 +239,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.blockdata = [];
             $scope.hintText = "";
             if(day.targetTimeInPercentageOfDay) {
-                //$scope.hintText = "Allocation bar represents the data form the backend for the " + day.dayString;
                 $scope.totalWorkingTime = 1;
             } else {
-                //$scope.hintText = "No maintenance possible for the " + day.dayString;
                 $scope.totalWorkingTime = 0;
             }
 
@@ -264,13 +262,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
-                $scope.hintText = "Part time info: All entries will be scaled so that 100% are reflecting your personal target hours for each day.";
+                if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+                    $scope.hintText = "All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours. Please apply changes.";
+                } else {
+                    $scope.hintText = "All entries will be scaled so that 100% are reflecting your personal target hours.";
+                }
             }
 
             if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
                 var actualHours = Math.round(day.actualTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
                 var targetHours = Math.round(day.targetTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                $scope.hintText = "Part time info: All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours for each day.";
                 bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
                     actualHours + "'' but target hours are only '" +
                     targetHours + "'!");
@@ -452,7 +453,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
                 var taskDeletion = angular.copy(task);
                 taskDeletion.WORKDATE = workdate || task.WORKDATE;
-                taskDeletion.QUANTITY = 0;
+                taskDeletion.CATSQUANTITY = 0;
 
                 container.BOOKINGS.push(taskDeletion);
             });
@@ -463,9 +464,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
+            booking.CATSQUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
-            if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
+            if (catsUtils.isFixedTask(booking)){
                 continue;
             }
 
@@ -476,7 +477,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (clearOldTasks) {
                 booking.COUNTER = 0;
             }
-            if (booking.QUANTITY) { // book time > 0
+            if (booking.CATSQUANTITY) { // book time > 0
                 workdateBookings.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
                 var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
@@ -494,17 +495,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var totalBookingQuantity = 0;
         var biggestBooking;
         workdateBookings.forEach(function(booking){
-            if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
+            if(!biggestBooking || biggestBooking.CATSQUANTITY <= booking.CATSQUANTITY) {
                 biggestBooking = booking;
             }
-            totalBookingQuantity += booking.QUANTITY;
+            totalBookingQuantity += booking.CATSQUANTITY;
         });
         totalBookingQuantity = Math.round(totalBookingQuantity * 1000) / 1000;
         var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
         if((bookingDif > 0 && bookingDif < 0.03) ||
            (bookingDif < 0 && bookingDif > -0.03)) {
-            biggestBooking.QUANTITY -= bookingDif;
-            biggestBooking.QUANTITY = Math.round(biggestBooking.QUANTITY * 1000) / 1000;
+            biggestBooking.CATSQUANTITY -= bookingDif;
+            biggestBooking.CATSQUANTITY = Math.round(biggestBooking.CATSQUANTITY * 1000) / 1000;
         }
 
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
@@ -549,11 +550,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (container.BOOKINGS.length) {
                 monthlyDataService.reloadInProgress.value = true;
                 $scope.reloadInProgress = monthlyDataService.reloadInProgress;
-                var catsProfile = configService.catsProfile;
-                if (!catsProfile) {
-                    catsProfile = "DEV2002C";
-                }
-                catsBackend.writeCATSData(container,catsProfile).then(function(data){
+
+                catsBackend.writeCATSData(container).then(function(data){
                     checkPostReply(data);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
