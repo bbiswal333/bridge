@@ -47,7 +47,7 @@
         "controls/checkbox.js",
         "controls/radio.js",
         "controls/input.js",
-        "controls/mobileSearchInput.js"
+        "controls/mobileSearchInput.js",
         "controls/input.js",
         "controls/bridgeTable/bridgeTable.js",
         "controls/bridgeTable/bridgeTableColumn.js",
