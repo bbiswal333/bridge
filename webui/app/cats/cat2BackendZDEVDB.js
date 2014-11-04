@@ -135,6 +135,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				_httpRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString).then(function(data) {
 					// try to get it from ISP configuration
 					if ( data && data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
+						data.PROFILE = data.PROFILE.toUpperCase();
 						$log.log(data.PROFILE);
 						deferred.resolve(data.PROFILE);
 					} else {
