@@ -14,6 +14,7 @@ directive("app.cats.maintenanceView.projectList", [
 			$scope.filter = {};
 			$scope.filter.val = "";
 			$scope.loaded = false;
+			$scope.hasError = false;
 			$scope.toEdit = -1;
 			var exitLoop = true;
 			var continueLoop = false;
@@ -184,18 +185,26 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function addItemsFromTemplate(items) {
-				catsBackend.determineCatsProfileFromBackend().then(function(catsProfile) {
-					// Write header
-					if (items.length > 0) {
-						var header = {};
-						header.DESCR = "Tasks from CAT2 template using profile " + catsProfile + "...";
-						header.TASKTYPE = "BRIDGE_HEADER";
-						header.RAUFNR = "1";
-						addNewProjectItem(header);
+				catsBackend.determineCatsProfileFromBackend()
+				.then(function(catsProfile) {
+					if (catsProfile !== null) {
+						$scope.hasError = false;
+						// Write header
+						if (items.length > 0) {
+							var header = {};
+							header.DESCR = "Tasks from CAT2 template using profile " + catsProfile + "...";
+							header.TASKTYPE = "BRIDGE_HEADER";
+							header.RAUFNR = "1";
+							addNewProjectItem(header);
+						}
+						items.forEach(function(item) {
+							addNewProjectItem(item);
+						});
+					} else {
+						$scope.hasError = true;
 					}
-					items.forEach(function(item) {
-						addNewProjectItem(item);
-					});
+				}, function() {
+					$scope.hasError = true;
 				});
 			}
 
@@ -203,8 +212,12 @@ directive("app.cats.maintenanceView.projectList", [
 				var deferred = $q.defer();
 
 				var week = calenderUtils.getWeekNumber(new Date());
-				catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate, forceUpdate_b).then(function() {
+				catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate, forceUpdate_b)
+				.then(function() {
 					deferred.resolve();
+				}, function() {
+					$scope.hasError = true;
+					deferred.reject();
 				});
 
 				return deferred.promise;
@@ -212,28 +225,39 @@ directive("app.cats.maintenanceView.projectList", [
 
 			function getCatsData(forceUpdate_b) {
 				var deferred = $q.defer();
-				catsBackend.requestTasksFromWorklist(forceUpdate_b).then(function(dataFromWorklist) {
-					getDataFromCatsTemplate().then(function() {
-						if ($scope.blocks === undefined) {
-							$scope.blocks = [];
-						}
+				catsBackend.requestTasksFromWorklist(forceUpdate_b)
+				.then(function(dataFromWorklist) {
+					if (dataFromWorklist === null) {
+						$scope.hasError = true;
+						deferred.reject();
+					} else {
+						$scope.hasError = false;
+						getDataFromCatsTemplate()
+						.then(function() {
+							if ($scope.blocks === undefined) {
+								$scope.blocks = [];
+							}
 
-						// Write header
-						if (dataFromWorklist && dataFromWorklist.length > 0) {
-							var header = {};
-							header.DESCR = "Additional tasks from cPro work list...";
-							header.TASKTYPE = "BRIDGE_HEADER";
-							header.RAUFNR = "2";
-							addNewProjectItem(header);
+							// Write header
+							if (dataFromWorklist && dataFromWorklist.length > 0) {
+								var header = {};
+								header.DESCR = "Additional tasks from cPro work list...";
+								header.TASKTYPE = "BRIDGE_HEADER";
+								header.RAUFNR = "2";
+								addNewProjectItem(header);
 
-							dataFromWorklist.forEach(function(entry) {
-								addNewProjectItem(entry);
-								configService.updateLastUsedDescriptions(entry, true);
-							});
-						}
-
-						deferred.resolve();
-					});
+								dataFromWorklist.forEach(function(entry) {
+									addNewProjectItem(entry);
+									configService.updateLastUsedDescriptions(entry, true);
+								});
+							}
+							deferred.resolve();
+						}, function() {
+							$scope.hasError = true;
+						});
+					}
+				}, function() {
+					$scope.hasError = true;
 				});
 				return deferred.promise;
 			}
@@ -311,6 +335,7 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function loadProjects(forceUpdate_b) {
+				$scope.hasError = false;
 				if (forceUpdate_b || !configService.loaded || $scope.forSettingsView) {
 					if (forceUpdate_b) {
 						$scope.items = [];
@@ -320,7 +345,8 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.toEdit = -1;
 						configService.catsItems = [];
 					}
-					getCatsData(forceUpdate_b).then(function() {
+					getCatsData(forceUpdate_b)
+					.then(function() {
 						configService.loaded = true;
 						initProjectItems();
 						addItemsFromBlocks();
@@ -328,6 +354,8 @@ directive("app.cats.maintenanceView.projectList", [
 
 						markProjectItems();
 						$scope.loaded = true;
+					}, function() {
+						$scope.hasError = true;
 					});
 				} else {
 					initProjectItems();

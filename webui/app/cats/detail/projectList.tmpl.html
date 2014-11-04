@@ -1,8 +1,12 @@
 <div>
-    <div class="app-cats-project-list" ng-if="!loaded">
+    <div class="app-cats-project-list" ng-if="hasError">
+        <b>There was a problem with the connection to ISP (error or timeout)<br>
+        Please try again later.</b>
+    </div>
+    <div class="app-cats-project-list" ng-if="!loaded && !hasError">
         Loading...
     </div>
-    <div class="bridge-fade-anim" ng-if="loaded">
+    <div class="bridge-fade-anim" ng-if="loaded && !hasError">
         <div id="filter-bar">
             <div class="input-group app-cats-project-filter-input">
                 <bridge.input ng-keypress="onPressEnter($event)" id="filterTextfield" model="filter.val" placeholder="Type here to filter..." autofocus="true"></bridge.input>
