@@ -3,18 +3,15 @@ angular.module('app.internalIncidents', ['ngTable', 'notifier', 'bridge.service'
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
     var controller = ['$scope', '$http', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig',
         function($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig){
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined){
-                configservice.data = $scope.appConfig.data;
-            }
 
             $scope.box.boxSize = "1";
-            $scope.box.settingScreenData = {
+            /*$scope.box.settingScreenData = {
                 templatePath: "internalIncidents/settings.html",
                 controller: function(){},
                 id: $scope.boxId
-            };
+            };*/
             $scope.box.returnConfig = function() {
-                return configservice;
+                return configservice.data;
             };
 
             $scope.prios = ticketData.prios;
@@ -22,7 +19,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.showNoMessages = false;
 
             function setNoMessagesFlag() {
-                if (ticketData.isInitialized.value === true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) === 0) {
+                if (ticketData.isInitialized.value === true && ticketData.tickets.RESULTNODE1 === "" && ticketData.tickets.RESULTNODE2 === "" && ticketData.tickets.RESULTNODE3 === "") {
                     $scope.showNoMessages = true;
                 } else {
                     $scope.showNoMessages = false;
@@ -32,13 +29,17 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.$watch('config', function (newVal, oldVal) {
                 if($scope.config !== undefined && newVal !== oldVal){
                     ticketData.calculateTotals();
-                    //setNoMessagesFlag();
+                    setNoMessagesFlag();
                     // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
                     if (oldVal !== undefined) {
                         bridgeConfig.store(bridgeDataService);
                     }
                 }
             },true);
+
+            if (configservice.isInitialized === false){
+                configservice.initialize($scope.appConfig);
+            }
 
             if (ticketData.isInitialized.value === false) {
                 var initPromise = ticketData.initialize();

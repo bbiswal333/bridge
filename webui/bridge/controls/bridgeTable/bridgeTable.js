@@ -8,7 +8,7 @@ angular.module('bridge.app').directive('bridge.table', function() {
             filter: "&"
         },
         controller: ["$scope", function($scope){
-            var infinityLimitStep = 100;
+            var infinityLimitStep = 50;
             $scope.infinityLimit = infinityLimitStep;
             $scope.reverse = true;
             $scope.predicate = null;
