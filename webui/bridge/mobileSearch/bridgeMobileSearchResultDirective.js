@@ -1,5 +1,5 @@
 angular.module("bridge.mobileSearchResults").directive("bridge.mobileSearchResults.searchResult", ['$compile', '$templateCache', '$http', '$q', function($compile, $templateCache, $http, $q) {
-	var defaultTemplate = '<div class="search-result-item"><span style="style="overflow:hidden; max-width: 250;" class="search-span-ellipsis" ng-bind-html="highlight(match.title)"></span>' +
+	var defaultTemplate = '<div class="search-result-item"><span style="overflow:hidden; max-width: 250px;" class="search-span-ellipsis" ng-bind-html="highlight(match.title)"></span>' +
 						  '<span ng-if="match.description" style="overflow:hidden; vertical-align: top;">&#8212;</span>' +
 						  '<span style="overflow:hidden;" class="search-span-ellipsis">{{match.description}}</span></div>';
 
