@@ -1,17 +1,19 @@
+'use strict';
+
 angular.module("bridge.app").directive("bridge.mobileMenubar", [
     function() {
         return {
             restrict: "E",
             templateUrl: "bridge/mobileMenubar/MobileMenuBar.html",
-            controller: function ($scope) {
+            controller: function ($scope, $rootScope) {
 
-                // var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
+                var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
                 var $mobileMenuBarSearchfield = $('#mobileMenuBar-searchfield');
 
                 $scope.openSearch = function() {
                     if(!$mobileMenuBarSearchfield.is(':visible')) {
 
-                        $('.iconResult').slideUp(300);
+                        slideUpIcons();
 
                         $mobileMenuBarSearchfield.show('slide', {direction: 'left'}, 500, function() {
                             $('.bridge-mobileSearchInput').focus();
@@ -35,6 +37,18 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                     $('.bridge-mobileSearchInput').val('');
                 };
 
+                $scope.showFeedback = function() {
+                    toggleIcon('#feedbackResult');
+                };
+
+                $scope.showWeather = function() {
+                    toggleIcon('#weatherResult');
+                };
+
+                $scope.showNotifications = function() {
+                    toggleIcon('#notificationsResult');
+                };
+
                 function toggleIcon(except) {
                     var $iconResult = $('.iconResult');
                     var count = $iconResult.length - 1;
@@ -47,18 +61,14 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                     });
                 }
 
-                $scope.showFeedback = function() {
-                    toggleIcon('#feedbackResult');
+                function slideUpIcons() {
+                    $('.iconResult').slideUp(300);
+                }
+
+                $rootScope.hideIcons = function() {
+                    slideUpIcons();
                 };
 
-                $scope.showWeather = function() {
-                    toggleIcon('#weatherResult');
-                };
-
-                $scope.showNotifications = function() {
-                    toggleIcon('#notificationsResult');
-                };
             }
         };
-    }
-]);
+    }]);

@@ -93,15 +93,17 @@
     <title>Bridge</title>
 </head>
 
-<body class="noselect grey-60" ng-if="configLoadingFinished">
+<body class="noselect grey-60" ng-if="configLoadingFinished" ng-click="hideIcons()">
         <div>
             <bridge.mobile-menubar></bridge.mobile-menubar>
         </div>
         <bridge.mobile-search-results></bridge.mobile-search-results>
 
+        <div id="resultArea" ng-click="stopPropagation(); $event.stopPropagation();">
             <div bridge.mobile-dashboard id="feedbackResult" class="iconResult" template-url="bridge/mobileDashboard/feedback/bridgeFeedback.html"></div>
             <div bridge.mobile-dashboard id="notificationsResult" class="iconResult" template-url="bridge/mobileDashboard/notifications/bridgeNotifications.html"></div>
             <div bridge.mobile-dashboard id="weatherResult" class="iconResult" template-url="bridge/mobileDashboard/weather/bridgeWeather.html"></div>
+        </div>
 </body>
 
 </html>
