@@ -82,6 +82,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-keypress", attrs.ngKeypress);
             }
 
+            if(attrs.ngEnter) {
+                $('input', element)[0].setAttribute("ng-enter", attrs.ngEnter);
+            }
+
             if(attrs.icon) {
                 element.append(angular.element('<i class="fa ' + attrs.icon + '" style="position: absolute; top: 0px; left: 7px; font-size: 20px" />'));
                 $('input', element).css("background-color", "rgba(0,0,0,0)");

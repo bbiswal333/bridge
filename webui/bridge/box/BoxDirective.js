@@ -74,6 +74,14 @@ angular.module('bridge.box').directive('bridge.box',
             boxContent.append(newElement);
             var box = $element.find("#innerbox");
             box = $compile(box)($scope);
+
+            $scope.doSomething = function() {
+                $scope.editTitle = true;
+            };
+
+            $scope.quitEditTitleMode = function() {
+                $scope.editTitle = false;
+            };
         }
     };
 }]);

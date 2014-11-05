@@ -4,11 +4,14 @@
         ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
         <!--  {{module_name.replace('.', '-')}}Box -->
         <div class="box-heading">
-            <div class="box-heading-content">
-                <h6 class="box-title">{{title}}</h6>
+            <div class="box-heading-content" ng-if="!editTitle">
+                <h6 class="box-title" ng-dblclick="doSomething()">{{metadata.title}}</h6>
                 <i class="grey-font-60" ng-if="beta">beta</i>
                 <span class="box-icon" ng-class="icon_css"></span>
                 <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+            </div>
+            <div ng-if="editTitle">
+                <bridge.input ng-enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title"></bridge.input>
             </div>
         </div>
 

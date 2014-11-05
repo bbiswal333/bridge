@@ -120,15 +120,6 @@ angular.module('bridge.app').controller('bridgeController',
         };
 
         $scope.saveAppsSortable = function(){
-          for (var i = 0; i < $scope.visible_apps.length; i++) {
-                for(var j = 0; j < $scope.apps.length; j++)
-                {
-                    if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
-                    {
-                        $scope.apps[j].order = i;
-                    }
-                }
-          }
           bridgeConfig.store(bridgeDataService);
         };
 
