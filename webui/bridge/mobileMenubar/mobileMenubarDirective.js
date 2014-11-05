@@ -5,7 +5,7 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
             templateUrl: "bridge/mobileMenubar/MobileMenuBar.html",
             controller: function ($scope) {
 
-                var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
+                // var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
                 var $mobileMenuBarSearchfield = $('#mobileMenuBar-searchfield');
 
                 $scope.openSearch = function() {
@@ -35,18 +35,6 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                     $('.bridge-mobileSearchInput').val('');
                 };
 
-                $scope.showFeedback = function() {
-                    toggleIcon('#feedbackResult');
-                };
-
-                $scope.showWeather = function() {
-                    toggleIcon('#weatherResult');
-                };
-
-                $scope.showNotifications = function() {
-                    toggleIcon('#notificationsResult');
-                };
-
                 function toggleIcon(except) {
                     var $iconResult = $('.iconResult');
                     var count = $iconResult.length - 1;
@@ -58,6 +46,19 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                         }
                     });
                 }
+
+                $scope.showFeedback = function() {
+                    toggleIcon('#feedbackResult');
+                };
+
+                $scope.showWeather = function() {
+                    toggleIcon('#weatherResult');
+                };
+
+                $scope.showNotifications = function() {
+                    toggleIcon('#notificationsResult');
+                };
             }
         };
-    }]);
+    }
+]);

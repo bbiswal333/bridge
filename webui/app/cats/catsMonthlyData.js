@@ -10,7 +10,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	this.days = {};
 	this.promiseForMonth = {};
-	this.reloadInProgress = { value:false };
+	this.reloadInProgress = {
+		value: false,
+		error: false };
 
 	this.executeWhenDone = function(promise)
 	{
@@ -43,6 +45,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			promise.then(function(){
 				delete self.promiseForMonth[month];
 				self.reloadInProgress.value = false;
+			}, function() {
+				self.reloadInProgress.value = false;
+				self.reloadInProgress.error = true;
 			});
 
 			this.promiseForMonth[month] = promise;
@@ -208,17 +213,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 						}
 					}
-																													// 0: Object
-																													// $$hashKey: "0AI"
-																													// blockWidth: 696
-																													// desc: "Maintenance Bridge"
-																													// fixed: false
-																													// localValue: 0.87
-																													// task: Object
-																													// value: 0.87
-																													// __proto__: Object
-																													// 1: Object
-																													// 2: Object
 				}
 			}
 		} catch(err) {
@@ -234,11 +228,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			weeks.forEach(function(week){
 				var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
 				promises.push(promise);
-				promise.then(function(data){
+				promise.
+				then(function(data){
 					if(data) {
 						self.convertWeekData(data);
 					}
 					self.reloadInProgress.value = false;
+				}, function() {
+					self.reloadInProgress.value = false;
+					self.reloadInProgress.error = true;
 				});
 			});
 		} catch(err) {

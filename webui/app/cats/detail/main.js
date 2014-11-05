@@ -238,6 +238,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
             $scope.hintText = "";
+
             if(day.targetTimeInPercentageOfDay) {
                 $scope.totalWorkingTime = 1;
             } else {
@@ -250,15 +251,23 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    addBlock("Vacation", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
-                } else if (task.TASKTYPE === "ABSE") {
-                    addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
-                } else if (task.UNIT === "H") {
+                    task.DESCR = "Vacation";
+                }
+                if (task.TASKTYPE === "ABSE") {
+                    if (task.UNIT === "H") {
+                        task.DESCR = "Absence";
+                    } else {
+                        task.DESCR = "Absence (changeable)";
+                    }
+                }
+
+                if (task.UNIT === "H") {
                     addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
                 } else {
                     addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
+
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
@@ -293,8 +302,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
 
             var promise = monthlyDataService.getDataForDate(dayString);
-            promise.then(function() {
+            promise
+            .then(function() {
                 displayCATSDataForDay(monthlyDataService.days[dayString]);
+                $scope.loaded = true;
+                monthlyDataService.reloadInProgress.value = false;
+            }, function() {
                 $scope.loaded = true;
                 monthlyDataService.reloadInProgress.value = false;
             });

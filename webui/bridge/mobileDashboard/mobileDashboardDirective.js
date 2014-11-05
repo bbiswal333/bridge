@@ -1,6 +1,5 @@
-'use strict';
 angular.module("bridge.app").directive("bridge.mobileDashboard", ["$http", "$compile",
-    function($http, $compile, $sce) {
+    function($http, $compile) {
         return {
             restrict: "A",
             link: function(scope, element, attrs){
@@ -13,4 +12,5 @@ angular.module("bridge.app").directive("bridge.mobileDashboard", ["$http", "$com
                     });
             }
         };
-    }]);
+    }
+]);
