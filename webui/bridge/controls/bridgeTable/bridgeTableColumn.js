@@ -1,4 +1,4 @@
-angular.module('bridge.app').directive('bridge.tableColumn', function() {
+angular.module('bridge.controls').directive('bridge.tableColumn', function() {
     return {
         restrict: "E",
         templateUrl: 'bridge/controls/bridgeTable/bridgeTableColumn.html',

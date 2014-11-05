@@ -1,15 +1,15 @@
-angular.module('app.internalIncidents', ['ngTable', 'notifier', 'bridge.service']);
+angular.module('app.internalIncidents', ['notifier', 'bridge.service']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
     var controller = ['$scope', '$http', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig',
         function($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig){
 
             $scope.box.boxSize = "1";
-            /*$scope.box.settingScreenData = {
+            $scope.box.settingScreenData = {
                 templatePath: "internalIncidents/settings.html",
                 controller: function(){},
                 id: $scope.boxId
-            };*/
+            };
             $scope.box.returnConfig = function() {
                 return configservice.data;
             };

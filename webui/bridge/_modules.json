@@ -42,18 +42,9 @@
         "diagnosis/logService.js",
         "diagnosis/corsTestPageController.js",
         "diagnosis/mailPreviewController.js",
-        "diagnosis/statusController.js",
-
-        "controls/checkbox.js",
-        "controls/radio.js",
-        "controls/input.js",
-        "controls/mobileSearchInput.js",
-        "controls/bridgeTable/bridgeTable.js",
-        "controls/bridgeTable/bridgeTableColumn.js",
-        "controls/customTransclude.js"
+        "diagnosis/statusController.js"
 	],
 	"css_files" : [
-        "diagnosis/diagnosis.css",
-        "controls/bridgeTable/bridgeTable.css"
+        "diagnosis/diagnosis.css"
 	]
 }
