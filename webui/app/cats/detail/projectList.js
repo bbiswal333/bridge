@@ -208,12 +208,13 @@ directive("app.cats.maintenanceView.projectList", [
 				});
 			}
 
-			function getDataFromCatsTemplate(forceUpdate_b) {
+			function getDataFromCatsTemplate() {
 				var deferred = $q.defer();
 
 				var week = calenderUtils.getWeekNumber(new Date());
-				catsBackend.requestTasksFromTemplate(week.year, week.weekNo, addItemsFromTemplate, forceUpdate_b)
-				.then(function() {
+				catsBackend.requestTasksFromTemplate(week.year, week.weekNo)
+				.then(function(itemFromCatsTemplate) {
+					addItemsFromTemplate(itemFromCatsTemplate);
 					deferred.resolve();
 				}, function() {
 					$scope.hasError = true;
@@ -223,39 +224,34 @@ directive("app.cats.maintenanceView.projectList", [
 				return deferred.promise;
 			}
 
-			function getCatsData(forceUpdate_b) {
+			function getCatsData() {
 				var deferred = $q.defer();
-				catsBackend.requestTasksFromWorklist(forceUpdate_b)
+				catsBackend.requestTasksFromWorklist()
 				.then(function(dataFromWorklist) {
-					if (dataFromWorklist === null) {
+					$scope.hasError = false;
+					getDataFromCatsTemplate()
+					.then(function() {
+						if ($scope.blocks === undefined) {
+							$scope.blocks = [];
+						}
+
+						// Write header
+						if (dataFromWorklist && dataFromWorklist.length > 0) {
+							var header = {};
+							header.DESCR = "Additional tasks from cPro work list...";
+							header.TASKTYPE = "BRIDGE_HEADER";
+							header.RAUFNR = "2";
+							addNewProjectItem(header);
+
+							dataFromWorklist.forEach(function(entry) {
+								addNewProjectItem(entry);
+								configService.updateLastUsedDescriptions(entry, true);
+							});
+						}
+						deferred.resolve();
+					}, function() {
 						$scope.hasError = true;
-						deferred.reject();
-					} else {
-						$scope.hasError = false;
-						getDataFromCatsTemplate()
-						.then(function() {
-							if ($scope.blocks === undefined) {
-								$scope.blocks = [];
-							}
-
-							// Write header
-							if (dataFromWorklist && dataFromWorklist.length > 0) {
-								var header = {};
-								header.DESCR = "Additional tasks from cPro work list...";
-								header.TASKTYPE = "BRIDGE_HEADER";
-								header.RAUFNR = "2";
-								addNewProjectItem(header);
-
-								dataFromWorklist.forEach(function(entry) {
-									addNewProjectItem(entry);
-									configService.updateLastUsedDescriptions(entry, true);
-								});
-							}
-							deferred.resolve();
-						}, function() {
-							$scope.hasError = true;
-						});
-					}
+					});
 				}, function() {
 					$scope.hasError = true;
 				});

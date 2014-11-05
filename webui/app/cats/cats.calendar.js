@@ -666,7 +666,7 @@ angular.module("app.cats")
 						$scope.hasError = true;
 						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					});
-				}, 60 * 1000);
+				}, 15 * 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {

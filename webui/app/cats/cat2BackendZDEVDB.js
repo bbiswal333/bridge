@@ -14,6 +14,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.CAT2AllocationDataForWeeks = {};
 
 		var catsProfileFromBackendPromise;
+		this.catsProfile = "";
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -139,6 +140,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					}
 					if (data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
 						$log.log(data.PROFILE);
+						that.catsProfile = data.PROFILE;
 						deferred.resolve(data.PROFILE);
 					} else {
 						// Now read templates in different profiles
@@ -167,13 +169,16 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
 								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
 									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
+									that.catsProfile = "SUP2007D";
 									deferred.resolve("SUP2007D");
 								} else {
 									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
+									that.catsProfile = "SUP2007C";
 									deferred.resolve("SUP2007C");
 								}
 							} else {
 								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
+								that.catsProfile = "DEV2002C";
 								deferred.resolve("DEV2002C");
 							}
 						}, function() {
@@ -312,54 +317,31 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				} else {
 					if (forceUpdate_b || !tasksFromWorklistPromise) {
 						tasksFromWorklistPromise = _httpGetRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + catsProfile);
-						tasksFromWorklistPromise
-						.then(function(data) {
-							var tasks = [];
-
-							if (catsProfile === "DEV2002C") {
-								// Add prefdefined tasks (ADMI & EDUC) only for the standard developer profile
-								tasks.push({
-									RAUFNR: "",
-									TASKTYPE: "ADMI",
-									ZCPR_EXTID: "",
-									ZCPR_OBJGEXTID: "",
-									ZZSUBTYPE: "",
-									DESCR: "Admin"
-								});
-
-								tasks.push({
-									RAUFNR: "",
-									TASKTYPE: "EDUC",
-									ZCPR_EXTID: "",
-									ZCPR_OBJGEXTID: "",
-									ZZSUBTYPE: "",
-									DESCR: "Education"
-								});
-							}
-
-							if (data && data.WORKLIST) {
-								var nodes = data.WORKLIST;
-								for (var i = 0; i < nodes.length; i++) {
-									var task = {};
-									task.RAUFNR = (nodes[i].RAUFNR || "");
-									task.TASKTYPE = (nodes[i].TASKTYPE || "");
-									task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
-									task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-									task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-									task.UNIT = nodes[i].UNIT;
-									task.projectDesc = nodes[i].DISPTEXTW1;
-									task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-									tasks.push(task);
-								}
-							}
-
-							deferred.resolve(tasks);
-						}, function(status) {
-							deferred.reject(status);
-						});
-					} else {
-						deferred.promise = tasksFromWorklistPromise;
 					}
+					tasksFromWorklistPromise
+					.then(function(data) {
+						var tasks = [];
+
+						if (data && data.WORKLIST) {
+							var nodes = data.WORKLIST;
+							for (var i = 0; i < nodes.length; i++) {
+								var task = {};
+								task.RAUFNR = (nodes[i].RAUFNR || "");
+								task.TASKTYPE = (nodes[i].TASKTYPE || "");
+								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
+								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
+								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
+								task.UNIT = nodes[i].UNIT;
+								task.projectDesc = nodes[i].DISPTEXTW1;
+								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
+								tasks.push(task);
+							}
+						}
+
+						deferred.resolve(tasks);
+					}, function(status) {
+						deferred.reject(status);
+					});
 				}
 			}, function(status) {
 				deferred.reject(status);
@@ -367,7 +349,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		this.requestTasksFromTemplate = function(year, week, callback_fn, forceUpdate_b) {
+		this.requestTasksFromTemplate = function(year, week, forceUpdate_b) {
 			var deferred = $q.defer();
 
 			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
@@ -377,13 +359,33 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var promise = $q.all(this.CAT2AllocationDataForWeeks);
 			promise
 			.then(function(promisesData) {
+				var tasks = [];
+				// var container = {};
+				// container.DATA = [];
 				angular.forEach(promisesData, function(data) {
-					var tasks = null;
-					var container = {};
-					container.DATA = [];
+
+					if (that.catsProfile === "DEV2002C") {
+						// Add prefdefined tasks (ADMI & EDUC) only for the standard developer profile
+						tasks.push({
+							RAUFNR: "",
+							TASKTYPE: "ADMI",
+							ZCPR_EXTID: "",
+							ZCPR_OBJGEXTID: "",
+							ZZSUBTYPE: "",
+							DESCR: "Admin"
+						});
+
+						tasks.push({
+							RAUFNR: "",
+							TASKTYPE: "EDUC",
+							ZCPR_EXTID: "",
+							ZCPR_OBJGEXTID: "",
+							ZZSUBTYPE: "",
+							DESCR: "Education"
+						});
+					}
 
 					if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS) {
-						tasks = [];
 						var nodes = data.TIMESHEETS.RECORDS;
 						for (var i = 0; i < nodes.length; i++) {
 							var task = {};
@@ -395,18 +397,17 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							task.UNIT = nodes[i].UNIT;
 							task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 							tasks.push(task);
-							if (task.ZCPR_OBJGEXTID && !task.DESCR) {
-								container.DATA.push({
-									TASK_ID: task.ZCPR_OBJGEXTID
-								});
-							}
+							// if (task.ZCPR_OBJGEXTID && !task.DESCR) {
+							// 	container.DATA.push({
+							// 		TASK_ID: task.ZCPR_OBJGEXTID
+							// 	});
+							// }
 						}
 					}
-					callback_fn(tasks);
 				}, function() {
 					deferred.reject();
 				});
-				deferred.resolve();
+				deferred.resolve(tasks);
 			}, function(status) {
 				deferred.reject(status);
 			});
