@@ -8,24 +8,24 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
             var count;
             var width;
 
-            $(window).resize(function(){
-
-                width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+            function setCount() {
+                width = ($window.innerWidth > 0) ? $window.innerWidth : $window.screen.width;
                 count = width > 991 ? 4 : 1;
+            }
+
+            $($window).resize(function(){
+                setCount();
                 $scope.$apply(function() {
                     $scope.width = width;
                     $scope.count = count;
                 });
             });
 
-            $(window).scroll(function(){
+            $($window).scroll(function(){
                 $('#moreProvider').slideUp(300);
             });
 
-
-
-            width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-            count = width > 991 ? 4 : 1;
+            setCount();
             $scope.width = width;
             $scope.count = count;
 
@@ -49,7 +49,7 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
 
                 });
                 $scope.providerResultsCount = providerResultsCount;
-                $scope.providers= results;
+                $scope.providers = results;
                 $scope.providerResults = results[$scope.selectedProviderID];
             }, true);
 
@@ -60,10 +60,10 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
             };
 
             $scope.selectProviderMore = function(index) {
-                var tmp = $scope.providers[count-1];
-                $scope.providers[count-1] = $scope.providers[index];
+                var tmp = $scope.providers[count - 1];
+                $scope.providers[count - 1] = $scope.providers[index];
                 $scope.providers[index] = tmp;
-                $scope.selectProvider(count-1);
+                $scope.selectProvider(count - 1);
             };
 
             $scope.fireCallback = function(providerID, resultID) {
