@@ -32,6 +32,7 @@ angular.module('bridge.box').directive('bridge.box',
                         $scope[attribute] = metadata[attribute];
                     }
                 }
+                $scope.metadata = metadata;
                 $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
                 $scope.box.needs_client = $scope.needs_client;
 

@@ -1,6 +1,6 @@
 ﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', function ($filter, ngTableParams, appAtcConfig, $scope) {
-    $scope.config = appAtcConfig;
-    $scope.currentConfigValues = appAtcConfig.newItem();
+    $scope.config = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid);
+    $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
     $scope.currentConfigValues.onlyInProcess = true;
 
     $scope.closeForm = function () {

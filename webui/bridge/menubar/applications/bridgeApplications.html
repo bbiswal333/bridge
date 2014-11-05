@@ -5,10 +5,19 @@
 	</div>
 	<tabset>
 	    <tab ng-repeat="category in categories" heading="{{category.name}}" active="category.active" disabled="category.disabled">
-			<button ng-repeat="app in category.apps" type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.metadata.show];" ng-click="app.metadata.show = !app.metadata.show" class="btn btn-default settingsBtn" style="text-align:left;">
-				<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
-				<p style="padding-top:5px;margin: 0 0 0 0;" >{{app.metadata.title}}</p>
-			</button>
+	    	<span ng-repeat="app in category.apps">
+				<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="toggleInstance(app.metadata)" class="btn btn-default settingsBtn" style="text-align:left;" ng-if="!app.metadata.multiInstance">
+					<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
+					<p style="padding-top:5px;margin: 0 0 0 0;" >{{app.metadata.title}}</p>
+				</button>
+				<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="addAppInstance(app.metadata)" class="btn btn-default settingsBtn" style="text-align:left;" ng-if="app.metadata.multiInstance">
+					<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
+					<p style="padding-top:5px;margin: 0 0 0 0;" >
+						{{app.metadata.title}}
+						<i class="fa fa-plus"></i>
+					</p>
+				</button>
+			</span>
 	    </tab>
     </tabset>
 </div>

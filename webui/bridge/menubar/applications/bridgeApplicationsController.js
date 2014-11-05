@@ -1,8 +1,8 @@
 angular.module('bridge.app').
-	controller('bridge.menubar.applicationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService',
-	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService){
+	controller('bridge.menubar.applicationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', 'bridge.service.appCreator',
+	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, appCreator){
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-	    $scope.apps = bridgeDataService.getProjects()[0].apps;
+	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app};});
 	    $scope.categories = [];//{name: "All Apps", apps: []}];
 
 	    function findCategoryInList(name) {
@@ -29,5 +29,32 @@ angular.module('bridge.app').
 
 	    $scope.adjustModalSize = function() {
 	    	$('.modal-dialog').addClass("menubar-applications-modal");
+	    };
+
+	    $scope.toggleInstance = function(metadata) {
+	    	if(!metadata.multiInstance) {
+	    		var instances = appCreator.getInstancesByType(metadata.module_name);
+	    		if(instances && instances.length > 0) {
+	    			instances.map(function(instance) {
+	    				appCreator.removeInstanceById(instance.metadata.guid);
+	    				bridgeDataService.getProjects()[0].apps.splice(bridgeDataService.getProjects()[0].apps.indexOf(instance), 1);
+	    			});
+	    		} else {
+	    			bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
+	    		}
+	    	}
+	    };
+
+	    $scope.hasInstance = function(metadata) {
+	    	var instances = appCreator.getInstancesByType(metadata.module_name);
+	    	if(!instances || instances.length === 0) {
+	    		return false;
+	    	} else {
+	    		return true;
+	    	}
+	    };
+
+	    $scope.addAppInstance = function(metadata) {
+	    	bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
 	    };
 }]);

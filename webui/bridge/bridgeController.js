@@ -156,65 +156,6 @@ angular.module('bridge.app').controller('bridgeController',
 			this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
-        $scope.apps = [];
-        $scope.$watch('apps', function () {
-            if (!$scope.visible_apps) {
-                $scope.visible_apps = [];
-            }
-            if ($scope.apps)
-            {
-                for (var i = 0; i < $scope.apps.length; i++)
-                {
-                    var module_visible = false;
-                    if ($scope.apps[i].show)
-                    {
-                        for(var j = 0; j < $scope.visible_apps.length; j++)
-                        {
-                            if( $scope.apps[i].module_name === $scope.visible_apps[j].module_name ){
-                                module_visible = true;
-                            }
-                        }
-                       if(!module_visible)
-                        {
-                            var push_app = $scope.apps[i];
-                            if (push_app.order === undefined) {
-                                push_app.order = $scope.visible_apps.length;
-                            }
-                            $scope.visible_apps.push(push_app);
-                        }
-                    }
-                    else
-                    {
-                        var module_index = 0;
-                        for(var k = 0; k < $scope.visible_apps.length; k++)
-                        {
-                            if( $scope.apps[i].module_name === $scope.visible_apps[k].module_name )
-                            {
-                                module_visible = true;
-                                module_index = k;
-                            }
-                        }
-                       if(module_visible)
-                        {
-                            $scope.visible_apps.splice(module_index, 1);
-                        }
-                    }
-                }
-
-
-                $scope.visible_apps.sort(function (app1, app2){
-                    if (app1.order < app2.order) {
-                        return -1;
-                    }
-                    if (app1.order > app2.order) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-            }
-        }, true);
-
         $scope.$on('closeSettingsScreenRequested', function () {
             if ($scope.modalInstance) {
                 $scope.modalInstance.close();
@@ -228,7 +169,8 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
-            $scope.apps = bridgeDataService.getAppMetadataForProject(0);
+            $scope.apps = bridgeDataService.availableApps;
+            $scope.visible_apps = bridgeDataService.getProjects()[0].apps;
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
             }

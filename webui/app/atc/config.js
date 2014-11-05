@@ -1,4 +1,4 @@
-angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
+angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
     var ConfigItem = function () {
         this.clear = function () {
             this.srcSystem = "";
@@ -113,8 +113,12 @@ angular.module('app.atc').factory("app.atc.configservice", ['bridgeDataService',
 	    }
 	};
 
-    // this gets executed the first time this factory gets injected
-	var config = new Config();
+	var instances = {};
 
-	return config;
+	this.getConfigForAppId = function(appId) {
+		if(instances[appId] === undefined) {
+			instances[appId] = new Config();
+		}
+		return instances[appId];
+	};
 }]);

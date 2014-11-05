@@ -8,7 +8,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = {};
     $scope.atcData.detailsData = [];
 
-    $scope.atcData = appAtcData;
+    $scope.atcData = appAtcData.getInstanceForAppId($scope.metadata.guid);
     $scope.atcData.tableData = [];
 
     $scope.statusMap = {};
