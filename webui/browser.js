@@ -23,7 +23,7 @@ navigator.featuresAvailable = function () {
 /*eslint-disable no-undef */
     for (var i = 0; i < window.feature_check.length; i++) {
         if (!window.feature_check[i].test) {
-/*eslint-enable no-undef */
+
             all_features_available = false;
         }
     }
@@ -46,7 +46,6 @@ window.mobile = function() {
     }
 };
 
-/*eslint-disable no-undef */
 if (!window.feature_check) {
     window.feature_check = [];
 }
