@@ -23,25 +23,28 @@ navigator.featuresAvailable = function () {
 /*eslint-disable no-undef */
     for (var i = 0; i < window.feature_check.length; i++) {
         if (!window.feature_check[i].test) {
-/*eslint-enable no-undef */
+
             all_features_available = false;
         }
     }
     return all_features_available;
 };
 
-/*eslint-disable no-undef */
-function isMobile() {
-    if(window.matchMedia("(max-width:768px)").matches && window.devicePixelRatio > 1.2) {
-        return 0;
-    } else if (window.matchMedia("(min-width:768px) and (max-width:1281px)").matches && window.devicePixelRatio > 1.2) {
-        return 1;
-    } else {
-        return 2;
-    }
-}
+window.mobile = function() {
+    var platform = navigator.platform;
 
-window.device = isMobile();
+    switch(platform) {
+         case 'iPod':
+         case 'iPad':
+         case 'iPhone':
+         case 'Pike v7.6 release 92':
+         case 'Pike v7.8 release 517':
+         case 'Android':
+             return true;
+         default:
+             return false;
+    }
+};
 
 if (!window.feature_check) {
     window.feature_check = [];

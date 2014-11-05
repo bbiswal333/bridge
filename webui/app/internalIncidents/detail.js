@@ -1,6 +1,6 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter",
-    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService",
+    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter, bridgeDataService) {
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
@@ -71,6 +71,9 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             });
         }
 
+        if (config.isInitialized === false) {
+            config.initialize(bridgeDataService.getAppConfigById($routeParams.appId));
+        }
         $scope.config = config;
 
         if ($routeParams.calledFromNotifications === "true"){
@@ -91,4 +94,5 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             setPrioSelections(false);
             _.find($scope.prios, {"key": $routeParams.prio}).active = true;
         }
+
 }]);

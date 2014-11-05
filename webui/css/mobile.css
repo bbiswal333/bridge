@@ -1,0 +1,179 @@
+#bridge-mobileSearchOutput {
+    position: absolute;
+    top:80px;
+    left:0;
+    width:100%;
+    background-color:#3B3B3B;
+    /*min-height:calc(100% - 80px);*/
+}
+
+.bridge-mobileSearchOutputProvider {
+    height:60px;
+    background-color:#3B3B3B;
+    color:white;
+    cursor:pointer;
+    margin-top:1px;
+    text-align:center;
+}
+
+#allSelectProvider {
+    margin-left:0 !important;
+}
+
+.bridge-mobileSearchOutputProvider:hover {
+    color:rgb(0, 153, 204);
+}
+
+#results{
+    width:100%;
+    position:absolute;
+    right:0;
+    font-size:1.5em;
+}
+
+.bridge-mobileSearchOutputProviderResults {
+    height:100px;
+    width:100%;
+    background-color:#F0A470;
+    cursor:pointer;
+    margin-top:1px;
+    padding-left:20px;
+    padding-top:10px;
+}
+
+.allCategories {
+    padding:0 !important;
+}
+
+.allCategories .resultText {
+    display:inline-block;
+    margin:10px 0px;
+}
+
+.allCategories .providerName {
+    float:right;
+    margin-top:70px;
+    margin-right:10px;
+}
+
+.bridge-mobileSearchOutputProviderResults:hover,
+.bridge-mobileSearchOutputProviderResults:focus,
+.bridge-mobileSearchOutputProviderResults:active {
+    background-color:#EC8948;
+    color:white;
+}
+
+.selectedProvider {
+    cursor:default;
+    color:rgb(0, 153, 204);
+}
+
+.noResult {
+    margin-top:1px;
+    font-weight: bold;
+    font-size:2em;
+    width:100%;
+    line-height:100px;
+    text-align:center;
+    background-color:#F0A470;
+    height:100px;
+}
+
+body {
+    background-color:#E5C099 !important;
+}
+
+#feedbackResult, #weatherResult, #notificationsResult {
+    position: absolute;
+    font-size:25px;
+    top:80px;
+    left:0;
+    width:100%;
+    background-color:#ffffff;
+    padding:20px 75px 20px 50px;
+    display:none;
+}
+
+.menubar-feedback-icon {
+    font-size:50px !important;
+}
+
+.feedbackType:not(:last-child) {
+    border-bottom:1px solid #C3C3C3;
+}
+
+#weather {
+    font-family: inherit !important;
+    font-size:28px;
+    position: absolute;
+    right:170px;
+    top:0;
+    width:160px;
+    line-height: 60px;
+}
+
+#notifications {
+    position: absolute;
+    right:85px;
+    top:0;
+}
+
+
+#weather .mobileWeatherIcon i {
+    font-size:35px;
+}
+
+.mobileWeatherIconDetail {
+    font-size:40px !important;
+}
+
+h4 {
+    font-size:30px !important;
+    font-weight:bold !important;
+    font-style: normal !important;
+    text-transform: none !important;
+}
+
+.btn_mobile {
+    font-size:25px;
+    min-height:50px;
+    min-width:100px;
+}
+
+.mobileProviders {
+    display:inline-block;
+}
+
+.resultProviderIcon {
+    text-align: center;
+    float:left;
+    width:100px;
+    height:100px;
+    font-size:35px;
+    line-height: 100px;
+}
+
+.provider_details {
+    display:inline-block;
+    line-height:60px;
+    font-size:15px;
+}
+
+.more_provider_details {
+    height:60px;
+    width:100%;
+}
+
+#mobileSearchMore {
+    position:relative;
+}
+
+#moreProvider {
+    display:none;
+    background-color:#3B3B3B;
+    position: absolute;
+    right:0;
+    top:60px;
+    z-index:80;
+    width:100%;
+}

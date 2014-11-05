@@ -1,11 +1,11 @@
 ﻿<div class="app-cats-body">
-	<div ng-if="hasError && !maintainable">
+	<div ng-if="hasError">
 		{{state}}
 	</div>
     <div style="position: absolute; top: 50%; left: 47%; z-index: 10">
         <i ng-class="{'fa fa-spin fa-spinner fa-2x' : reloadAnimation != ''}"></i>
     </div>
-	<div ng-if="!loading" ng-class="reloadAnimation">
+	<div ng-if="!loading && !hasError" ng-class="reloadAnimation">
 		<div class="app-cats-headline" ng-if="headline">{{headline}}</div>
 		<div class="app-cats-navigation">
             <h1 ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</h1>

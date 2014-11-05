@@ -6,21 +6,6 @@
 	position: fixed;
 }
 
-.menubar-tab-active {
-    background-color: white;
-}
-
-/*.mobileMenuBar-title {
-    position: absolute;
-    color:white;
-    height:100%;
-    display: inline-block;
-    vertical-align: middle;
-    font-size:40px;
-    padding:10px;
-    width:calc(100% - 580px);
-}*/
-
 #mobileMenuBar-searchfield {
     position: absolute;
     height:100%;
@@ -48,7 +33,7 @@
     font-size:38px;
     z-index: 1;
     display: inline-block;
-    position:absolute;
+    position:absolute  !important;
 
 }
 
@@ -69,105 +54,12 @@
     background-color:transparent;
 }
 
+#feedback {
+    display:inline-block;
+    right:0;
+    top:0;
+}
+
 .mobileMenuBar-settingsButton:hover {
     color:#0099CC;
-}
-
-.menubar-popover {
-  position: absolute;
-  right: 0px;
-  z-index: 50;
-  display: none;
-  padding: 10px;
-  text-align: left;
-  background-color: #ffffff;
-  box-shadow:0 5px 10px rgba(0,0,0,.2);
-
-  // Overrides for proper insertion
-  white-space: normal;
-}
-
-.menubar-popover-content {
-  overflow: auto;
-  width: 400px;
-  max-height: 500px;
-}
-.menubar-settings{
-
-
-}
-
-.menubar-bridge-title {
-  font-size: 16px;
-  font-weight: bold;
-  font-style: italic;
-  vertical-align: middle;
-  margin-right: 5px;
-  color:white;
-}
-
-.popover{
-  border-radius: 0;
-  border: none;
-}
-.popover.bottom{
-  margin-top: 0;
-  top:40px!important;
-}
-.popover.bottom > .arrow{
-  display: none!important;
-}
-/* ========================= *\
-|* ----- MEDIA QUERIES ----- *|
-\* ========================= */
-
-.menubar-applications-modal {
-  width: 70%;
-}
-
-@media (max-width:1250px){
-  .menubar-weather-location{
-    display: none;
-  }
-}
-@media (max-width:650px){
-  .menubar-weather{
-    display: none;
-  }
-}
-
-.menubar-feedback-descriptionCell {
-  display: table-cell; 
-  padding: 10px;
-}
-
-.menubar-feedback-iconCell {
-  display: table-cell;
-  width: 70px;
-  text-align: center;
-  vertical-align: middle;
-  padding: 10px;
-}
-
-.menubar-feedback-icon {
-  font-size: 30px;
-}
-
-/* ========================= *\
-|* ----- APPLICATIONS  ----- *|
-\* ========================= */
-
-.nav-tabs{
-  border-bottom: none;
-}
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
-  color: #555;
-  cursor: default;
-  background-color: #ddd;
-  /* border: 1px solid #ddd; */
-  border-radius: 0;
-  border-bottom-color: transparent;
-}
-.nav-tabs > li > a{
-  border-radius: 0;
 }

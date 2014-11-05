@@ -238,6 +238,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
             $scope.hintText = "";
+
             if(day.targetTimeInPercentageOfDay) {
                 $scope.totalWorkingTime = 1;
             } else {
@@ -250,15 +251,23 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    addBlock("Vacation", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
-                } else if (task.TASKTYPE === "ABSE") {
-                    addBlock("Absence", task.QUANTITY / day.hoursOfWorkingDay, task, isFixedTask);
-                } else if (task.UNIT === "H") {
+                    task.DESCR = "Vacation";
+                }
+                if (task.TASKTYPE === "ABSE") {
+                    if (task.UNIT === "H") {
+                        task.DESCR = "Absence";
+                    } else {
+                        task.DESCR = "Absence (changeable)";
+                    }
+                }
+
+                if (task.UNIT === "H") {
                     addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, Math.round(task.QUANTITY / day.hoursOfWorkingDay * 1000) / 1000, task, isFixedTask);
                 } else {
                     addBlock(task.DESCR || task.ZCPR_OBJGEXTID || task.TASKTYPE, task.QUANTITY, task, isFixedTask);
                 }
             }
+
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
@@ -293,8 +302,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
 
             var promise = monthlyDataService.getDataForDate(dayString);
-            promise.then(function() {
+            promise
+            .then(function() {
                 displayCATSDataForDay(monthlyDataService.days[dayString]);
+                $scope.loaded = true;
+                monthlyDataService.reloadInProgress.value = false;
+            }, function() {
                 $scope.loaded = true;
                 monthlyDataService.reloadInProgress.value = false;
             });
@@ -453,7 +466,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
                 var taskDeletion = angular.copy(task);
                 taskDeletion.WORKDATE = workdate || task.WORKDATE;
-                // taskDeletion.QUANTITY = 0;
                 taskDeletion.CATSQUANTITY = 0;
 
                 container.BOOKINGS.push(taskDeletion);
@@ -465,10 +477,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            // booking.QUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
             booking.CATSQUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
 
-            if (booking.TASKTYPE === 'VACA' || booking.TASKTYPE === 'ABSE'){
+            if (catsUtils.isFixedTask(booking)){
                 continue;
             }
 
@@ -479,7 +490,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (clearOldTasks) {
                 booking.COUNTER = 0;
             }
-            //if (booking.QUANTITY) { // book time > 0
             if (booking.CATSQUANTITY) { // book time > 0
                 workdateBookings.push(booking);
             } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
@@ -498,20 +508,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var totalBookingQuantity = 0;
         var biggestBooking;
         workdateBookings.forEach(function(booking){
-            // if(!biggestBooking || biggestBooking.QUANTITY <= booking.QUANTITY) {
             if(!biggestBooking || biggestBooking.CATSQUANTITY <= booking.CATSQUANTITY) {
                 biggestBooking = booking;
             }
-            //totalBookingQuantity += booking.QUANTITY;
             totalBookingQuantity += booking.CATSQUANTITY;
         });
         totalBookingQuantity = Math.round(totalBookingQuantity * 1000) / 1000;
         var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
         if((bookingDif > 0 && bookingDif < 0.03) ||
            (bookingDif < 0 && bookingDif > -0.03)) {
-            // biggestBooking.QUANTITY -= bookingDif;
             biggestBooking.CATSQUANTITY -= bookingDif;
-            // biggestBooking.QUANTITY = Math.round(biggestBooking.QUANTITY * 1000) / 1000;
             biggestBooking.CATSQUANTITY = Math.round(biggestBooking.CATSQUANTITY * 1000) / 1000;
         }
 

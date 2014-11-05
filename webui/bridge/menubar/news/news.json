@@ -29,8 +29,16 @@
             "header":   "Time Recording (CAT2)",
             "date": "2014-11-03",
             "snapURL":  "bridge/menubar/news/image/CAT2 news.png",
-            "preview":  "Now usable for Service and Support CAT2 profile",
-            "content":  "The CAT2 app now also supports the CAT2 profiles for Service and Support (SUP2007D and SUP2007C). It comes with an automatic CAT2 profile detection, i.e. it can be used out-of-the box without configuration.<br><br>There is a new <b><a href=\"https://github.wdf.sap.corp/github-enterprise-assets/0000/1022/0000/2045/8a55bdf6-6340-11e4-8aa8-497334cffede.gif\" target=\"_blank\">introduction video</a></b> which helps you getting started.<br><br>In case of questions please check out the <b><a href=\"https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2\" target=\"_blank\">frequently asked questions (FAQ)</a></b> first."
+            "preview":  "Now usable for Service and Support CAT2 profiles",
+            "content":  "The <b><a href=\"https://bridge.mo.sap.corp/#/detail/cats/\" target=\"_blank\">Time Recording CAT2 app</a></b> now also supports the CAT2 profiles for Service and Support (SUP2007D and SUP2007C). It comes with an automatic CAT2 profile detection, i.e. it can be used out-of-the box without configuration.<br><br>There is a new <b><a href=\"https://sap.emea.pgiconnect.com/p377wwgy2zk/\" target=\"_blank\">Getting Started video</a></b> which helps you getting started.<br><br>In case of questions please check out the <b><a href=\"https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2\" target=\"_blank\">frequently asked questions (FAQ)</a></b> first."
+        },
+        {
+            "id":       5,
+            "header":   "Design Thinking Workshop for JAM Integration",
+            "date": "2014-11-05",
+            "snapURL":  "bridge/menubar/news/image/jam.png",
+            "preview":  "Help to define the JAM Integration",
+            "content":  "We target to provide a Bridge App to enable users to configure their Jam input channel personalized and have a smarter solution than mail notifications. Target is to enable users to directly link to and filter the relevant Jam based information they need to follow up on for their daily tasks. To do things right it is key to focus on the right things before! We need <b>YOUR INPUT about YOUR ISSUES</b> enabling you to perform best concerning Jam channeled information. If you are ready to engage to improve your situation, please <b><a target=\"_blank\" href=\"https://profiles.wdf.sap.corp/groups/5458eb5adf15db4575000002/users\">register for the next roll in Workshop (Design Thinking mode)</a></b> planned for CW 48/49 in Wallorf/ Rot or contact <b>Christoph Ehrhardt</b> directly."
         }
 	]
 }

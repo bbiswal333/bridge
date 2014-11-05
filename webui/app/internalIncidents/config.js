@@ -7,5 +7,23 @@ angular.module('app.internalIncidents').factory("app.internalIncidents.configser
     config.data.selection.colleagues = false;
     config.data.selection.assigned_me = false;
     config.data.selection.created_me = false;
+    config.data.columnVisibility = [true, true, true, true, true, true, true, false, false];
+
+    config.isInitialized = false;
+    config.initialize = function(oConfigFromBackend){
+        var property;
+
+        config.isInitialized = true;
+
+        for (property in oConfigFromBackend){
+            if (property === "columnVisibility" && config.data.columnVisibility.length !== oConfigFromBackend.columnVisibility.length){
+                // if the length of the columnVisibility attribute changed, reset to default. This happens for example if a new column is introduced
+                continue;
+            } else {
+                config.data[property] = oConfigFromBackend[property];
+            }
+        }
+    };
+
     return config;
 });

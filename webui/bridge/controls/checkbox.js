@@ -9,9 +9,11 @@ angular.module('bridge.app').directive('bridge.checkbox', function() {
             isChecked: '='
         },
         link:function ($scope, element, attrs) {
-            $scope.$parent.$watch(attrs.ngDisabled, function(newVal){
-                $scope.disabled = newVal;
-            });
+            if (attrs.ngDisabled !== undefined) {
+                $scope.$parent.$watch(attrs.ngDisabled, function (newVal) {
+                    $scope.disabled = newVal;
+                });
+            }
             $scope.checkClicked = function(){
                 if ($scope.disabled !== true) {
                     $scope.isChecked = !$scope.isChecked;
