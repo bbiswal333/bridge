@@ -44,12 +44,7 @@
                 "diagnosis/logService.js",
                 "diagnosis/corsTestPageController.js",
                 "diagnosis/mailPreviewController.js",
-                "diagnosis/statusController.js",
-
-                "controls/checkbox.js",
-                "controls/radio.js",
-                "controls/input.js",
-                "controls/mobileSearchInput.js"
+                "diagnosis/statusController.js"
 	],
 	"css_files" : [
                 "diagnosis/diagnosis.css",
