@@ -549,10 +549,8 @@ angular.module("app.cats")
 
 				$scope.state = "";
 				$scope.hasError = false;
-				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
 				.then( handleCatsData, setISPErrorText);
-				// some buffering
-				catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.canGoForward = function () {
@@ -590,10 +588,8 @@ angular.module("app.cats")
 
 				$scope.state = "";
 				$scope.hasError = false;
-				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
 				.then( handleCatsData, setISPErrorText);
-				// some buffering
-				catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month, true).then( );
 			};
 
 			$scope.reloadCalendar = function () {
