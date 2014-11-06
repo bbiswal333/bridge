@@ -2,7 +2,6 @@
     <div style="padding:30px;box-sizing:border-box;">
 
         <bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
-        <!--<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />-->
         <div class="btn-group" style="height:32px;max-width:100%;">
             <span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
 
@@ -18,36 +17,27 @@
             </div>
         </div>
 
-        <div>
-            <div infinitescroll>
-                <div class="row">
-                    <div class="box-title col-sm-1" ng-click="sort('URGENCY_DESC')">Priority
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESC'"></i>
-                    </div>
-                    <div class="box-title col-sm-2" ng-click="sort('CAT_ID')">Component
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CAT_ID'"></i>
-                    </div>
-                    <div class="box-title col-sm-2" ng-click="sort('USER_STATUS_TEXT')">Status
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'USER_STATUS_TEXT'"></i>
-                    </div>
-                    <div class="box-title col-sm-2" ng-click="sort('CREATED_AT')">Creation
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CREATED_AT'"></i>
-                    </div>
-                    <div class="box-title col-sm-4" ng-click="sort('DESCRIPTION')">Description
-                        <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
-                    </div>
-                </div>
-                <div ng-repeat="row in tickets | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit" class="row" ng-class="zebraCell($index)">
-                    <div class="cellText col-sm-1">{{row.URGENCY_DESC}}</div>
-                    <div class="cellText col-sm-2">{{row.CAT_ID}}</div>
-                    <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT}}</div>
-                    <div class="cellText col-sm-2">{{getFormattedDate(row.CREATED_AT)}}</div>
-                    <div class="cellText col-sm-4">
-                        <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
-                    </div>
-                </div>
-            </div>
+        <br/>
 
-        </div>
+        <bridge.table table-data="tickets" filter="filterTable">
+            <bridge.table-column column-id="'1'" header="'Urgency'" column-size-class="'col-sm-1'" order-by="'URGENCY_DESC'">{{row.URGENCY_DESC}}</bridge.table-column>
+            <bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'CAT_ID'">{{row.CAT_ID}}</bridge.table-column>
+            <bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'USER_STATUS_TEXT'">{{row.USER_STATUS_TEXT}}</bridge.table-column>
+            <bridge.table-column column-id="'4'" header="'Creation'" column-size-class="'col-sm-2'" order-by="'CREATED_AT'">{{parentScope.getFormattedDate(row.CREATED_AT)}}</bridge.table-column>
+            <bridge.table-column column-id="'5'" header="'Created By'" column-size-class="'col-sm-3'" order-by="'creator.fullName'">
+                <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.CREATED_BY}}?s=60x60"
+                     class="im-reporter-img"
+                     style="height: 32px;"
+                     ng-if="row.CREATED_BY"></img>
+                <a href="mailto:{{row.creator.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+                <a href="tel:{{row.creator.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+                <a target="_blank" href="{{row.creator.url}}">{{row.creator.fullName}}</a>
+            </bridge.table-column>
+            <bridge.table-column column-id="'6'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">
+                <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
+            </bridge.table-column>
+
+        </bridge.table>
+
     </div>
 </div>

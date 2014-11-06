@@ -1,5 +1,5 @@
-angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "bridge.converter",
-    function($scope, $routeParams, bridgeDataService, ticketData, config, converter){
+angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "bridge.converter", "employeeService",
+    function($scope, $routeParams, bridgeDataService, ticketData, config, converter, employeeService){
 
         var that = this;
         $scope.prios = ticketData.prios;
@@ -59,6 +59,12 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
             function addAndEnhanceTicket(ticket) {
                 ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
                 ticket.bridgeCategory = sTicketCategory;
+
+                if (ticket.CREATED_BY !== "") {
+                    employeeService.getData(ticket.CREATED_BY).then(function success(employeeData){
+                        ticket.creator = employeeData;
+                    });
+                }
 
                 if (!that.containsTicket(ticket.GUID.toString())){
                     $scope.tickets.push(ticket);
