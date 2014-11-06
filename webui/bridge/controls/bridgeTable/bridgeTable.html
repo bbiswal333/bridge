@@ -1,5 +1,5 @@
 <div>
-    <i bs-popover title="Select Columns" data-template="bridge/controls/bridgeTable/columnsPopover.html" data-html="true" style="float: right;" class="fa fa-caret-square-o-down clickable"></i>
+    <i bs-popover title="Select Columns" data-template="bridge/controls/bridgeTable/columnsPopover.html" data-html="true" class="fa fa-caret-square-o-down clickable columnSelectButton"></i>
     <div infinitescroll>
         <div class="row">
             <div ng-repeat="column in columns" class="box-title tableTitle" ng-class="getColumnHeaderClasses(column)" ng-click="sort(column.orderBy)" ng-if="column.visible">
