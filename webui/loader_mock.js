@@ -11,7 +11,7 @@ angular.module('bridge.app', [
     "bridge.diagnosis"
 ]);
 
-angular.module('bridge.service', []);
+angular.module('bridge.service', ["ngRoute"]);
 angular.module('bridge.service').provider("bridge.service.loader", function () {
     this.apps = [{
         icon_css: "icon-wrench",

@@ -34,24 +34,6 @@
                 app.id = app.guid;
                 apps.push(app);
             }
-/*
-            for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
-                //initialize metadata from loader service
-                var app = {};
-                app.metadata = bridgeLoaderServiceProvider.apps[i];
-                app.metadata.id = i;
-                app.metadata.show = false;
-
-                //fetch corresponding config from backend
-                for (var j = 0; j < project.apps.length; j++) {
-                    if (project.apps[j].metadata.module_name === app.metadata.module_name) {
-                        app.metadata.show = true;
-                        app.metadata.order = j;
-                        app.appConfig = project.apps[j].appConfig;
-                    }
-                }
-                apps.push(app);
-            }*/
 
             return apps;
         }
@@ -91,7 +73,15 @@
             }
         }
 
+        function _removeAllApps() {
+            that.projects.map(function(project) {
+                project.apps.map(function(app) {
+                    appCreator.removeInstanceById(app.metadata.guid);
+                });
+            });
+        }
         function _toDefault() {
+            _removeAllApps();
             that.projects.length = 0;
             var defaultConfig = bridgeConfig.getDefaultConfig();
             parseProjects(defaultConfig);
@@ -179,22 +169,6 @@
             }
         }
 
-        function _getAppByModuleName(module_name) {
-            for (var i = 0; i < _getProjects().length; i++) {
-                for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                    if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
-                        return _getProjects()[i].apps[a];
-                    }
-                }
-            }
-
-            throw new Error("App with module name " + module_name + " could not be found.");
-        }
-
-        function _getAppConfigByModuleName(module_name) {
-            return _getAppConfigById(_getAppByModuleName(module_name).metadata.id);
-        }
-
         function _getUserInfo() {
             return that.userInfo;
         }
@@ -240,7 +214,6 @@
             getProjects: _getProjects,
             getAppById: _getAppById,
             getAppConfigById: _getAppConfigById,
-            getAppConfigByModuleName: _getAppConfigByModuleName,
             toDefault: _toDefault,
             setClientMode: _setClientMode,
             getClientMode: _getClientMode,

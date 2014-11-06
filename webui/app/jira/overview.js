@@ -132,7 +132,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         link: function ($scope) {
 
             if (JiraConfig.isInitialized === false) {
-                JiraConfig.initialize($scope.id);
+                JiraConfig.initialize($scope.metadata.guid);
                 JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
             }
             $scope.config = JiraConfig;

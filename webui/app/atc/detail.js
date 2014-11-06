@@ -8,7 +8,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = {};
     $scope.atcData.detailsData = [];
 
-    $scope.atcData = appAtcData.getInstanceForAppId($scope.metadata.guid);
+    $scope.atcData = appAtcData.getInstanceForAppId($routeParams.appId);
     $scope.atcData.tableData = [];
 
     $scope.statusMap = {};
@@ -16,7 +16,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     if (appAtcConfig.isInitialized === false) {
         appAtcConfig.initialize($routeParams.appId);
     }
-    $scope.atcData.getDetailsForConfig(appAtcConfig, $scope);
+    $scope.atcData.getDetailsForConfig(appAtcConfig.getConfigForAppId($routeParams.appId), $scope);
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
 
     $scope.$watch('atcData.detailsData', function ()

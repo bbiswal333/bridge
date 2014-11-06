@@ -1,4 +1,4 @@
-describe("bridgeAppCreator", function() {
+ddescribe("bridgeAppCreator", function() {
 	var appCreator;
 	var loader;
 	var exampleConfig = {
@@ -99,6 +99,7 @@ describe("bridgeAppCreator", function() {
 		var instance = appCreator.createInstance(metaData3, exampleConfig);
 		expect(instance.metadata.guid).toEqual(metaData3.guid);
 		expect(instance.metadata.title).toEqual(metaData3.title);
+		expect(typeof instance.metadata.instanceNumber).toBe("number");
 	});
 
 	it("should fail if the given id is already taken", function() {

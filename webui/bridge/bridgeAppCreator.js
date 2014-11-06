@@ -1,4 +1,4 @@
-angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.service.loader", function(loader) {
+angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.service.loader", "$route", function(loader, $route) {
 	var apps = loader.apps;
 	var instances = {};
 
@@ -17,7 +17,7 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 
 	function splitIntoModuleNameAndInstanceNumber(guid) {
 		var moduleName = guid.substring(0, guid.lastIndexOf("-"));
-		var instanceNumber = guid.substring(guid.lastIndexOf("-") + 1);
+		var instanceNumber = parseInt(guid.substring(guid.lastIndexOf("-") + 1));
 		return {moduleName: moduleName, instanceNumber: instanceNumber};
 	}
 

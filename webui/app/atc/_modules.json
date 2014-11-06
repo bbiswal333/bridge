@@ -12,10 +12,10 @@
 		"routes"		:
 		[
 			{		
-				"route"			:	"/detail/atc/:appId/:prio",
+				"route"			:	"/detail/:appId/:prio",
 				"templateUrl"	:	"app/atc/detail.html"
 			}
-		]	
+		]
 	},	
 
 	"modules" 		: [],

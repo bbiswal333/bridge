@@ -11,7 +11,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/jira/:appId/:status",
+				"route"			:	"/detail/app.jira/:instanceNumber/:status",
 				"templateUrl"	:	"app/jira/detail.html"
 			}
 		]

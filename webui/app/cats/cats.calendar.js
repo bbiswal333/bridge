@@ -478,7 +478,7 @@ angular.module("app.cats")
 					setRangeDays(dayString, null);
 
 					if (event.originalEvent) {
-						$location.path("/detail/cats/");
+						$location.path("/detail/app.cats-1/");
 					}
 				} else if (multi_click) {
 					promises.push($scope.selectSingleDay(dayString, true));

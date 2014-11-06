@@ -10,7 +10,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/cats/",
+				"route"			:	"/detail/app.cats/",
 				"templateUrl"	:	"app/cats/detail.html"
 			}
 		]	

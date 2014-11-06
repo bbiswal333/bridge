@@ -12,7 +12,7 @@
 		"routes"				:
 		[
 			{
-				"route"			:	"/detail/transport/:transportStatus",
+				"route"			:	"/detail/app.transport/:instanceNumber/:transportStatus",
 				"templateUrl"	:	"app/transport/detail.html"
 			}
 		]
