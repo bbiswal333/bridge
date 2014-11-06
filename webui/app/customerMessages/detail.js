@@ -53,10 +53,10 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             }
         }
 
-        $scope.$watch('messages', function ()
+        /*$scope.$watch('messages', function ()
         {
             update_table();
-        }, true);
+        }, true);*/
 
         $scope.$watch('statusMap', function()
         {
@@ -160,6 +160,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                     if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
                 }
                 bridgeConfig.store(bridgeDataService);
+                update_table();
             }
         },true);
 
