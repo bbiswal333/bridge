@@ -326,6 +326,9 @@ angular.module("app.cats")
 
 				$q.all(promises)
 				.then(function(){
+					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
+						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
+					}
 					$scope.selectionCompleted();
 				}, function() {
 					$scope.hasError = true;
@@ -440,7 +443,7 @@ angular.module("app.cats")
 				var promises = [];
 
 				if (!dayString && $scope.year && $scope.month) {
-					// togle complete month
+					// toggle complete month
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
 
@@ -474,7 +477,6 @@ angular.module("app.cats")
 						});
 					}
 					promises.push(selectDay(dayString));
-					monthlyDataService.lastSingleClickDayString = dayString;
 					setRangeDays(dayString, null);
 
 					if (event.originalEvent) {
@@ -492,10 +494,9 @@ angular.module("app.cats")
 					}
 				} else if (range_click) {
 					if (rangeSelectionEndDayString) {
-						var oldRange = collectRange(rangeSelectionEndDayString);
-						unSelectRange(oldRange);
+						promises.push(unSelectRange(collectRange(rangeSelectionEndDayString)));
 					}
-					promises = selectRange(collectRange(dayString));
+					promises.push(selectRange(collectRange(dayString)));
 				}
 
 				promise = $q.all(promises);

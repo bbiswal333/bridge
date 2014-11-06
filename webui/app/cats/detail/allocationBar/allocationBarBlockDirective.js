@@ -19,6 +19,9 @@ function (colorUtils, blockCalculations, calUtils) {
         link: function ($scope, elem) {
             var originalBlockWidth;
             // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
+            // if ($scope.blockData.task && $scope.blockData.task.UNIT === "H") {
+            //     $scope.blockData.value = $scope.blockData.value / 8;
+            // }
             $scope.blockData.localValue = $scope.blockData.value;
 
             if ($scope.blockData.fixed) {
