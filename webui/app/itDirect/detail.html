@@ -21,7 +21,7 @@
         <div>
             <div infinitescroll>
                 <div class="row">
-                    <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESC')">Priority
+                    <div class="box-title col-sm-1" ng-click="sort('URGENCY_DESC')">Priority
                         <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESC'"></i>
                     </div>
                     <div class="box-title col-sm-2" ng-click="sort('CAT_ID')">Component
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div ng-repeat="row in tickets | filter:filterTable | orderBy:predicate:reverse | limitTo:infinityLimit" class="row" ng-class="zebraCell($index)">
-                    <div class="cellText col-sm-1">{{row.PRIORITY_DESC}}</div>
+                    <div class="cellText col-sm-1">{{row.URGENCY_DESC}}</div>
                     <div class="cellText col-sm-2">{{row.CAT_ID}}</div>
                     <div class="cellText col-sm-2">{{row.USER_STATUS_TEXT}}</div>
                     <div class="cellText col-sm-2">{{getFormattedDate(row.CREATED_AT)}}</div>

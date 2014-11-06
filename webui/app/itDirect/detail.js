@@ -10,7 +10,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         $scope.filterTable = function(oTicket){
             var bTicketPriorityMatches = false;
             angular.forEach($scope.prios, function(prio){
-               if (prio.active === true && oTicket.PRIORITY.toString() === prio.key){
+               if (prio.active === true && oTicket.URGENCY.toString() === prio.key){
                    bTicketPriorityMatches = true;
                }
             });
