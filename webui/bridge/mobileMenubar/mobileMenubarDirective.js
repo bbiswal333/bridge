@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module("bridge.app").directive("bridge.mobileMenubar", [
     function() {
         return {
@@ -7,8 +5,23 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
             templateUrl: "bridge/mobileMenubar/MobileMenuBar.html",
             controller: function ($scope, $rootScope) {
 
-                var menuBarIcons = [$('#feedbackResult'), $('#weatherResult')];
                 var $mobileMenuBarSearchfield = $('#mobileMenuBar-searchfield');
+
+                function toggleIcon(except) {
+                    var $iconResult = $('.iconResult');
+                    var count = $iconResult.length - 1;
+                    var i = 0;
+                    $iconResult.not(except).slideUp(300, function() {
+                        i++;
+                        if(count === i) {
+                            $(except).slideToggle(300);
+                        }
+                    });
+                }
+
+                function slideUpIcons() {
+                    $('.iconResult').slideUp(300);
+                }
 
                 $scope.openSearch = function() {
                     if(!$mobileMenuBarSearchfield.is(':visible')) {
@@ -48,22 +61,6 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                 $scope.showNotifications = function() {
                     toggleIcon('#notificationsResult');
                 };
-
-                function toggleIcon(except) {
-                    var $iconResult = $('.iconResult');
-                    var count = $iconResult.length - 1;
-                    var i = 0;
-                    $iconResult.not(except).slideUp(300, function() {
-                        i++;
-                        if(count === i) {
-                            $(except).slideToggle(300);
-                        }
-                    });
-                }
-
-                function slideUpIcons() {
-                    $('.iconResult').slideUp(300);
-                }
 
                 $rootScope.hideIcons = function() {
                     slideUpIcons();

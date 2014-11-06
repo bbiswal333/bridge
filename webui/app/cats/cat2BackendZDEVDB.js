@@ -418,6 +418,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
 				$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
+					'timeout': 60000,
 					'headers': {
 						'Content-Type': 'text/plain'
 					}

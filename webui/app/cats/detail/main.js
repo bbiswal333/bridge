@@ -467,6 +467,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 var taskDeletion = angular.copy(task);
                 taskDeletion.WORKDATE = workdate || task.WORKDATE;
                 taskDeletion.CATSQUANTITY = 0;
+                delete taskDeletion.QUANTITY;
 
                 container.BOOKINGS.push(taskDeletion);
             });
@@ -478,6 +479,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
             booking.CATSQUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
+            delete booking.QUANTITY;
 
             if (catsUtils.isFixedTask(booking)){
                 continue;
