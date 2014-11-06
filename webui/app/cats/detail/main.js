@@ -32,7 +32,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             var sum = 0;
             for (var i = 0; i < $scope.blockdata.length; i++) {
-                sum = sum + $scope.blockdata[i].value;
+                sum = Math.round((sum + $scope.blockdata[i].value) * 1000) / 1000;
             }
             return $scope.totalWorkingTime - sum;
         } catch(err) {
@@ -101,7 +101,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     totalOfAdjustableTasks = Math.round(totalOfAdjustableTasks * 1000) / 1000;
                 }
             }
-            if (totalOfAdjustableTasks !== spaceWhichIsAdjustable) {
+            var remainingSpaceInPercent = 0;
+            if (spaceWhichIsAdjustable) {
+                remainingSpaceInPercent = Math.round((1 - ($scope.totalWorkingTime / spaceWhichIsAdjustable * totalOfAdjustableTasks / spaceWhichIsAdjustable)) * 1000000) / 1000000;
+            }
+            if (totalOfAdjustableTasks !== spaceWhichIsAdjustable &&
+                (remainingSpaceInPercent === 0 ||
+                 remainingSpaceInPercent >=  0.01)) {
                 return;
             }
             for (i = 0; i < $scope.blockdata.length; i++) {
@@ -467,6 +473,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 var taskDeletion = angular.copy(task);
                 taskDeletion.WORKDATE = workdate || task.WORKDATE;
                 taskDeletion.CATSQUANTITY = 0;
+                delete taskDeletion.QUANTITY;
 
                 container.BOOKINGS.push(taskDeletion);
             });
@@ -478,6 +485,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
             booking.CATSQUANTITY = Math.round($scope.blockdata[i].value * totalWorkingTimeForDay * 1000) / 1000;
+            delete booking.QUANTITY;
 
             if (catsUtils.isFixedTask(booking)){
                 continue;

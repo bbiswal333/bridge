@@ -99,6 +99,11 @@ angular.module("app.cats")
 				}
 			};
 
+			function setISPErrorText() {
+				$scope.hasError = true;
+				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+			}
+
 			function reload() {
 				$scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
@@ -110,8 +115,7 @@ angular.module("app.cats")
 					.then(function(){},
 					function() {
 						if (monthlyDataService.reloadInProgress.error) {
-							$scope.hasError = true;
-							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+							setISPErrorText();
 						}
 					});
 				}
@@ -223,10 +227,7 @@ angular.module("app.cats")
 						$scope.onDateSelected({dayString: dayString});
 					}
 					deferred.resolve();
-				}, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+				}, setISPErrorText);
 				return deferred.promise;
 			}
 
@@ -239,10 +240,7 @@ angular.module("app.cats")
 						$scope.onDateDeselected({dayString: dayString});
 					}
 					deferred.resolve();
-				}, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+				}, setISPErrorText);
 				return deferred.promise;
 			}
 
@@ -326,11 +324,11 @@ angular.module("app.cats")
 
 				$q.all(promises)
 				.then(function(){
+					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
+						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
+					}
 					$scope.selectionCompleted();
-				}, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+				}, setISPErrorText);
 			};
 
 			function isSelectable(dayString){
@@ -440,7 +438,7 @@ angular.module("app.cats")
 				var promises = [];
 
 				if (!dayString && $scope.year && $scope.month) {
-					// togle complete month
+					// toggle complete month
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
 
@@ -456,16 +454,11 @@ angular.module("app.cats")
 							promises.push(selectRange(collectRange(lastOfMonthDayString)));
 						}
 						promise = $q.all(promises);
-						promise.then(function(){
+						promise
+						.then(function(){
 							$scope.selectionCompleted();
-						}, function() {
-							$scope.hasError = true;
-							$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-						});
-					}, function() {
-						$scope.hasError = true;
-						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-					});
+						}, setISPErrorText);
+					}, setISPErrorText);
 				} else if (single_click) {
 					//unselectOthers
 					if ($scope.selectedDates) {
@@ -474,7 +467,6 @@ angular.module("app.cats")
 						});
 					}
 					promises.push(selectDay(dayString));
-					monthlyDataService.lastSingleClickDayString = dayString;
 					setRangeDays(dayString, null);
 
 					if (event.originalEvent) {
@@ -492,22 +484,19 @@ angular.module("app.cats")
 					}
 				} else if (range_click) {
 					if (rangeSelectionEndDayString) {
-						var oldRange = collectRange(rangeSelectionEndDayString);
-						unSelectRange(oldRange);
+						promises.push(unSelectRange(collectRange(rangeSelectionEndDayString)));
 					}
-					promises = selectRange(collectRange(dayString));
+					promises.push(selectRange(collectRange(dayString)));
 				}
 
 				promise = $q.all(promises);
-				promise.then(function(){
+				promise
+				.then(function(){
 					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
 						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
 					}
 					$scope.selectionCompleted();
-				}, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+				}, setISPErrorText);
 			};
 
 			function unSelectAllDays() {
@@ -523,10 +512,7 @@ angular.module("app.cats")
 				then(function(){
 					monthlyDataService.lastSingleClickDayString = '';
 					$scope.selectionCompleted();
-				}, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+				}, setISPErrorText);
 			}
 
 			$scope.canGoBackward = function () {
@@ -563,13 +549,8 @@ angular.module("app.cats")
 
 				$scope.state = "";
 				$scope.hasError = false;
-				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
-				.then( handleCatsData, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
-				// some buffering
-				catsBackend.getCAT2ComplianceData4OneMonth(prevMonth(monthlyDataService).year, prevMonth(monthlyDataService).month, true).then( );
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+				.then( handleCatsData, setISPErrorText);
 			};
 
 			$scope.canGoForward = function () {
@@ -607,13 +588,8 @@ angular.module("app.cats")
 
 				$scope.state = "";
 				$scope.hasError = false;
-				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
-				.then( handleCatsData, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
-				// some buffering
-				catsBackend.getCAT2ComplianceData4OneMonth(nextMonth(monthlyDataService).year, nextMonth(monthlyDataService).month, true).then( );
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+				.then( handleCatsData, setISPErrorText);
 			};
 
 			$scope.reloadCalendar = function () {
@@ -639,10 +615,7 @@ angular.module("app.cats")
 			$scope.state = "";
 			$scope.hasError = false;
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
-			.then( handleCatsData, function() {
-				$scope.hasError = true;
-				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-			});
+			.then( handleCatsData, setISPErrorText);
 
 			if ($scope.selectedDay) {
 				while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
@@ -662,20 +635,14 @@ angular.module("app.cats")
 					$scope.state = "";
 					$scope.hasError = false;
 					catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
-					.then( handleCatsData, function() {
-						$scope.hasError = true;
-						$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-					});
+					.then( handleCatsData, setISPErrorText);
 				}, 15 * 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
 				monthlyDataService.reloadInProgress.value = true;
 				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
-				.then( handleCatsData, function() {
-					$scope.hasError = true;
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
-				});
+					.then( handleCatsData, setISPErrorText);
 			});
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
@@ -708,4 +675,5 @@ angular.module("app.cats")
 				loading: '='
 			}
 		};
-	}]);
+	}]
+);
