@@ -1,6 +1,8 @@
 angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'app.atc.configservice', 'app.atc.dataservice',
     function ($scope, $http, $filter, $route, $routeParams, ngTableParams, appAtcConfig, appAtcData) {
 
+    var atcConfig = appAtcConfig.getConfigForAppId("app.atc-" + $routeParams.instanceNumber);
+
     $scope.$parent.titleExtension = " - ATC Details";
     $scope.filterText = '';
 
@@ -8,15 +10,18 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.atcData = {};
     $scope.atcData.detailsData = [];
 
-    $scope.atcData = appAtcData.getInstanceForAppId($routeParams.appId);
+    $scope.atcData = appAtcData.getInstanceForAppId("app.atc-" + $routeParams.instanceNumber);
     $scope.atcData.tableData = [];
 
     $scope.statusMap = {};
 
-    if (appAtcConfig.isInitialized === false) {
-        appAtcConfig.initialize($routeParams.appId);
+    if (atcConfig.isInitialized === false) {
+        atcConfig.initialize("app.atc-" + $routeParams.instanceNumber);
     }
-    $scope.atcData.getDetailsForConfig(appAtcConfig.getConfigForAppId($routeParams.appId), $scope);
+    
+    if($scope.atcData.detailsData.length === 0) {
+        $scope.atcData.getDetailsForConfig(atcConfig, $scope);
+    }
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
 
     $scope.$watch('atcData.detailsData', function ()

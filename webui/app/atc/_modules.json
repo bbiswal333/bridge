@@ -12,7 +12,7 @@
 		"routes"		:
 		[
 			{		
-				"route"			:	"/detail/:appId/:prio",
+				"route"			:	"/detail/atc/:instanceNumber/:prio",
 				"templateUrl"	:	"app/atc/detail.html"
 			}
 		]
