@@ -1,18 +1,14 @@
 <div ng-controller="app.transport.detailController" style="box-sizing:border-box;">    
-	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;"> 
-		<div infinitescroll>
-			<div class="row">
-				<div class="box-title col-sm-3">Request</div>
-				<div class="box-title col-sm-3">System/ Client</div>
-				<div class="box-title col-sm-3">Check Date</div>
-				<div class="box-title col-sm-3">Description</div>
-			</div>
-			<div ng-repeat="transport in transports" class="row">
-				<div class="cellText col-sm-3">{{transport.trkorr}}</div>
-				<div class="cellText col-sm-3">{{transport.checksystem}}/ {{transport.checkclient}}</div>
-				<div class="cellText col-sm-3">{{transport.chkdate}}</div>
-				<div class="cellText col-sm-3">{{transport.text}}</div>
-			<div>
-		</div>
+	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+
+		<br/>
+
+		<bridge.table table-data="transports">
+			<bridge.table-column column-id="'1'" header="'Request'" column-size-class="'col-sm-3'" order-by="'trkorr'">{{row.trkorr}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'System/ Client'" column-size-class="'col-sm-3'" order-by="'checksystem'">{{row.checksystem}}/ {{row.checkclient}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Check Date'" column-size-class="'col-sm-3'" order-by="'chkdate'">{{row.chkdate}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Description'" column-size-class="'col-sm-3'" order-by="'text'">{{row.text}}</bridge.table-column>
+		</bridge.table>
+
 	</div>
 </div>
