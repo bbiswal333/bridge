@@ -1,4 +1,4 @@
-ddescribe("bridgeAppCreator", function() {
+describe("bridgeAppCreator", function() {
 	var appCreator;
 	var loader;
 	var exampleConfig = {
@@ -60,6 +60,11 @@ ddescribe("bridgeAppCreator", function() {
 		var app = appCreator.createInstance(metaData1, exampleConfig);
 		expect(app.metadata.guid).toEqual("app.test-1");
 		expect(app.metadata.instanceNumber).toEqual(1);
+	});
+
+	it("should know its instances", function() {
+		var app = appCreator.createInstance(metaData1, exampleConfig);
+		expect(appCreator.hasInstanceWithId("app.test-1")).toBeTruthy();
 	});
 
 	it("should create multiple instances of multi instance apps", function() {

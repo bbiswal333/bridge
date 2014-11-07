@@ -31,7 +31,6 @@
 
             for (var j = 0; j < project.apps.length; j++) {
                 var app = appCreator.createInstance(project.apps[j].metadata, project.apps[j].appConfig);
-                app.id = app.guid;
                 apps.push(app);
             }
 

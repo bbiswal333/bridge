@@ -155,8 +155,10 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
+            sortableConfig.$scope = $scope;
             $scope.sortableOptions = sortableConfig.sortableOptions;
             $scope.sortableOptionsCaption = "Activate";
+            $scope.dustBinModel = [];
             $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();

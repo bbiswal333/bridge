@@ -82,6 +82,15 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 		return app;
 	};
 
+	this.hasInstanceWithId = function(guid) {
+		try {
+			this.getInstanceById(guid);
+			return true;
+		} catch(e) {
+			return false;
+		}
+	};
+
 	this.getInstanceById = function(guid) {
 		var parsedGuid = splitIntoModuleNameAndInstanceNumber(guid);
 		var match;
