@@ -9,7 +9,8 @@
     "mobileSearchInput.js",
     "bridgeTable/bridgeTable.js",
     "bridgeTable/bridgeTableColumn.js",
-    "customTransclude.js"
+    "customTransclude.js",
+    "infinitescroll.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"
