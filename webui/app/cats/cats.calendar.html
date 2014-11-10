@@ -10,7 +10,7 @@
 		<div class="app-cats-navigation">
             <h1 ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</h1>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"><i class="fa fa-arrow-left"></i></span>
-            <button ng-if="maintainable" class="btn btn-default" ng-click="jump('', $event);" ng-class="{true:'btn btn_blue',false:'btn'}[monthIsSelected()]" style="margin-right:0">{{currentMonth}}</button>
+            <button ng-if="maintainable" class="btn btn-default" ng-click="toggleMonth()" ng-class="{true:'btn btn_blue',false:'btn'}[monthIsSelected()]" style="margin-right:0">{{currentMonth}}</button>
             <b ng-if="!maintainable" class="app-cats-current-month">{{currentMonth}}</b>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoForward()}" ng-click="nextMonth();"><i class="fa fa-arrow-right"></i></span>	
 		</div>
@@ -24,7 +24,7 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
-                        <button class="btn btn-default" ng-click="selectWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                     </div>
                 </div>
 
