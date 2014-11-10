@@ -4,10 +4,10 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
     ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "app.githubIssueSearch",
     function($http, appGithubMilestoneConfig, calUtils, githubIssueSearch) {
 
-    githubIssueSearch.getSourceInfo();
-
     var directiveController = ['$scope', function($scope ) {
+            githubIssueSearch.getInstanceForAppId($scope.metadata.guid);
             var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.metadata.guid);;
+            
             $scope.box.boxSize = "2";
             $scope.box.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};
@@ -143,30 +143,45 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 }]);
 
 angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http', 'app.githubMilestone.configservice', "bridge.search", "$window", function($http, githubConfig, bridgeSearch, $window) {
-    this.getSourceInfo = function() {
-        return {
-            icon: "fa fa-github",
-            name: "Github Issues"
-        };
-    };
-    this.findMatches = function(query, resultArray) {
-        return $http({
-                        method: 'GET',
-                        url: githubConfig.api_url + 'search/issues?q=' + query + '+repo:' + githubConfig.repo.full_name + '&origin=' + $window.location.origin,
-                        withCredentials: false
-                    }).then(
-            function(response) {
-                response.data.items.map(function(result) {
-                    resultArray.push({title: result.title, originalIssue: result});
-                });
-            }
-        );
-    };
-    this.getCallbackFn = function() {
-        return function(selectedItem) {
-            $window.open(selectedItem.originalIssue.html_url);
-        };
-    };
+    var SearchProvider = (function() {
+        return function(appId) {
 
-    bridgeSearch.addSearchProvider(this);
+            this.getSourceInfo = function() {
+                return {
+                    icon: "fa fa-github",
+                    name: "Github Issues"
+                };
+            };
+            this.findMatches = function(query, resultArray) {
+                return $http({
+                                method: 'GET',
+                                url: githubConfig.getConfigInstanceForAppId(appId).api_url + 'search/issues?q=' + query + '+repo:' + githubConfig.getConfigInstanceForAppId(appId).repo.full_name + '&origin=' + $window.location.origin,
+                                withCredentials: false
+                            }).then(
+                    function(response) {
+                        response.data.items.map(function(result) {
+                            resultArray.push({title: result.title, originalIssue: result});
+                        });
+                    }
+                );
+            };
+            this.getCallbackFn = function() {
+                return function(selectedItem) {
+                    $window.open(selectedItem.originalIssue.html_url);
+                };
+            };
+
+            bridgeSearch.addSearchProvider(this);
+        }
+    })();
+
+    var instances = {};
+
+    this.getInstanceForAppId = function(appId) {
+        if(instances[appId] === undefined) {
+            instances[appId] = new SearchProvider(appId);
+        }
+
+        return instances[appId];
+    }
 }]);

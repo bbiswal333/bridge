@@ -1,15 +1,10 @@
 ﻿angular.module('app.atc', ['bridge.search']);
 
 angular.module('app.atc').directive('app.atc',
-    ["app.atc.configservice", "app.atc.dataservice", "bridge.search", "bridge.search.fuzzySearch",
-    function (appAtcConfig, appAtcData, bridgeSearch, fuzzySearch) {
+    ["app.atc.configservice", "app.atc.dataservice",
+    function (appAtcConfig, appAtcData) {
 
     var directiveController = ['$scope', function ($scope) {
-        bridgeSearch.addSearchProvider(fuzzySearch({name: "ATC Results", icon: "icon-wrench"}, appAtcData.detailsData, {keys: ["CHECK_DESCRIPTION", "CHECK_MESSAGE"], mappingFn: function(result) {
-                return {title: result.item.CHECK_MESSAGE, description: result.item.CHECK_DESCRIPTION, score: result.score};
-            }
-        }));
-
         $scope.box.settingsTitle = "Configure Source Systems and Packages";
         $scope.box.settingScreenData = {
             templatePath: "atc/settings.html",
