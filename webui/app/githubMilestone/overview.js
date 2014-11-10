@@ -75,7 +75,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                             $scope.milestones[i].issueProgress = Math.round((1 - ($scope.milestones[i].open_issues / ($scope.milestones[i].open_issues + $scope.milestones[i].closed_issues))) * 100); //Rate between open and closed Issues
 
                             //Time
-                            if ($scope.milestones[i].due_on !== undefined)
+                            if ($scope.milestones[i].due_on)
                             {
                                 foundADueMilestone = true;
 

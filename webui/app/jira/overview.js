@@ -1,28 +1,54 @@
 ﻿angular.module('app.jira', []);
 
 angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService", function (bridgeDataService){
-    this.isInitialized = false;
-    this.query = 'assignee = currentUser()';
-    this.jira = 'sapjira';
+    var instances = {};
 
-    this.initialize = function (sAppId) {
-        var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
+    var Config = (function () {
+        return function() {
+            var isInitialized = false;
+            var config = {
+                query: 'assignee = currentUser()',
+                jira: 'sapjira'
+            };
+            
+            this.initialize = function (sAppId) {
+                var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
 
-        if (persistedConfig !== undefined && persistedConfig !== {} && persistedConfig.query !== undefined) {
-            this.query = persistedConfig.query;
-            if(persistedConfig.jira !== undefined)
-            {
-                this.jira = persistedConfig.jira;
-            }
+                if (persistedConfig !== undefined && persistedConfig !== {} && persistedConfig.query !== undefined) {
+                    config.query = persistedConfig.query;
+                    if(persistedConfig.jira !== undefined)
+                    {
+                        config.jira = persistedConfig.jira;
+                    }
+                }
+
+                isInitialized = true;
+            };
+
+            this.isInitialized = function() {
+                return isInitialized;
+            };
+
+            this.getConfig = function() {
+                return config;
+            };
         }
+    })();
 
-        this.isInitialized = true;
+    this.getConfigInstanceForAppId = function(appId) {
+        if(instances[appId] === undefined) {
+            instances[appId] = new Config();
+        }
+        return instances[appId];
     };
 }]);
 
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
     var directiveController = ['$scope', 'JiraBox', function ($scope, JiraBox) {
+        var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
+        var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
+
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Configure JIRA Query";
         $scope.box.settingScreenData = {
@@ -31,7 +57,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 id: $scope.boxId
         };
 
-        $scope.jiraData = JiraBox.data;
+        $scope.jiraData = jiraBox.data;
         $scope.jiraChartData = [];
 
         $scope.config = {};
@@ -57,12 +83,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         };
 
         $scope.box.returnConfig = function(){
-            return JiraConfig;
+            return config.getConfig();
         };
 
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
-                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
+                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira).then(function() {
+                    $scope.jiraData = jiraBox.data;
+                });
             }
         },true);
 
@@ -130,12 +158,12 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         templateUrl: 'app/jira/overview.html',
         controller: directiveController,
         link: function ($scope) {
-
-            if (JiraConfig.isInitialized === false) {
-                JiraConfig.initialize($scope.metadata.guid);
-                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
+            var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
+            if (config.isInitialized() === false) {
+                config.initialize($scope.metadata.guid);
+                JiraBox.getInstanceForAppId($scope.metadata.guid).getIssuesforQuery(config.getConfig().query, config.getConfig().jira);
             }
-            $scope.config = JiraConfig;
+            $scope.config = config.getConfig();
         }
     };
 }]);

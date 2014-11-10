@@ -118,7 +118,7 @@
                 <span ng-bind-html="alert.msg"></span>
             </alert>
         </div>
-        <div style="position: absolute; bottom: 0; right: 0; width: 200px; height: 200px" ng-class="{'invisible': !appIsDragged}" ui-sortable="sortableOptions" ng-model="dustBinModel" class="sortable-list appDropTarget appDustBin">
+        <div style="position: fixed; bottom: 0; right: 0; width: 200px; height: 200px" ng-class="{'invisible': !appIsDragged}" ui-sortable="sortableOptions" ng-model="dustBinModel" class="sortable-list appDropTarget appDustBin">
             <div style="border-radius: 50%; width: 400px; height: 400px; -webkit-box-shadow: -10px -10px 19px -8px rgba(31,31,31,1); -moz-box-shadow: -10px -10px 19px -8px rgba(31,31,31,1); box-shadow: -10px -10px 19px -8px rgba(31,31,31,1);" class="red-80">
                 <i class="fa fa-trash" style="color: white; font-size: 120px; position: absolute; top: 40px; left: 90px"></i>
             </div>

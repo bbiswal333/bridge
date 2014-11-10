@@ -1,32 +1,34 @@
 angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
+        var config = JiraConfig.getConfigInstanceForAppId("app.jira-" + $routeParams);
+        var jiraBox = JiraBox.getInstanceForAppId("app.jira-" + $routeParams.instanceNumber);
 
-        $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
+        $scope.$watch('config.query', function (newVal, oldVal) {
 
             $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
-             if(JiraConfig.jira === 'issuemanagement')
+             if(config.jira === 'issuemanagement')
              {
                     $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
              }
-			if(JiraConfig.jira === 'jtrack')
+			if(config.jira === 'jtrack')
 			{
 				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
 			}
-            if(JiraConfig.jira === 'issues')
+            if(config.jira === 'issues')
             {
                 $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
             }
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
-                $scope.config = JiraConfig;
-                JiraBox.getIssuesforQuery(JiraConfig.query, JiraConfig.jira);
+                $scope.config = config.getConfig();
+                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira);
             }
         },true);
 
         $scope.filterText = '';
         $scope.data = {};
         $scope.data.filteredJiraData = [];
-        $scope.data.jiraData = JiraBox.data;
+        $scope.data.jiraData = jiraBox.data;
         $scope.data.status = {};
 
         $scope.$watch('data.jiraData', function()
@@ -80,8 +82,8 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
         $scope.$parent.titleExtension = " - Jira Details";
 
-        if (JiraConfig.isInitialized === false) {
-            JiraConfig.initialize("app.jira-" + $routeParams.instanceNumber);
-            JiraBox.getIssuesforQuery(JiraConfig.query);
+        if (config.isInitialized() === false) {
+            config.initialize("app.jira-" + $routeParams.instanceNumber);
+            jiraBox.getIssuesforQuery(config.getConfig().query);
         }
 }]);
