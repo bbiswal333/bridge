@@ -249,7 +249,6 @@
             var ticketsToNotify = {};
             ticketsToNotify.assigned_me = [];
             ticketsToNotify.sel_components = [];
-            ticketsToNotify_colleagues = [];
 
             for (var newTicketsCategory in newTicketData){
                 newTicketData[newTicketsCategory].forEach(function (ticket){

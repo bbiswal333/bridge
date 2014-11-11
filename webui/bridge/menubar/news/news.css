@@ -79,6 +79,8 @@
     width: 150px;
 }
 .sidebar-news-header{
+    width: 80%;
+    margin: 0 auto;
 }
 .sidebar-news-githubIcon{
     width: 150px;
@@ -93,6 +95,7 @@
 }
 .sidebar-news-content{
     margin-top:20px;
+    margin-bottom: 60px;
 }
 .news-navi{
     width: 100px;
