@@ -2,6 +2,7 @@ angular.module("app.jenkins", []);
 angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", function (jenkinsConfigService, jenkinsDataService) {
 
 	var directiveController = ["$scope", function ($scope) {
+		var config = jenkinsConfigService.getConfigForAppId($scope.metadata.guid);
 
 		$scope.box.boxSize = '2';
         $scope.showJobs = false;
@@ -10,8 +11,8 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
         $scope.greenCount = 0;
         $scope.runningCount = 0;
         $scope.jobsToDisplayColor = [];
-		$scope.configService = jenkinsConfigService;
-		$scope.dataService = jenkinsDataService;
+		$scope.configService = config;
+		$scope.dataService = jenkinsDataService.getInstanceForAppId($scope.metadata.guid);
 
 		// Settings Screen
 		$scope.box.settingsTitle = "Configure Jenkins URL";
@@ -59,7 +60,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 		};
 
 		$scope.initializeJobsView = function() {
-			$scope.dataService.jobsToDisplay = jenkinsConfigService.configItems;
+			$scope.dataService.jobsToDisplay = config.configItems;
 			for(var jobIndex in $scope.dataService.jobsToDisplay) {
 				$scope.dataService.jobsToDisplay[jobIndex].timestamp = "loading...";
 				$scope.dataService.jobsToDisplay[jobIndex].lastBuild = "0000000000000";
@@ -77,21 +78,21 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 		templateUrl: "app/jenkins/overview.html",
 		controller: directiveController,
 		link: function ($scope) {
-
+			var config = jenkinsConfigService.getConfigForAppId($scope.metadata.guid);
 			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-				jenkinsConfigService.cleanUpConfigItem($scope.appConfig.configItem);
-				jenkinsConfigService.configItem = $scope.appConfig.configItem;
+				config.cleanUpConfigItem($scope.appConfig.configItem);
+				config.configItem = $scope.appConfig.configItem;
 				for(var index in $scope.appConfig.configItems) {
-					jenkinsConfigService.cleanUpConfigItem($scope.appConfig.configItems[index]);
+					config.cleanUpConfigItem($scope.appConfig.configItems[index]);
 				}
-				jenkinsConfigService.configItems = $scope.appConfig.configItems;
+				config.configItems = $scope.appConfig.configItems;
 			} else {
-				jenkinsConfigService.cleanUpConfigItem(jenkinsConfigService.configItem);
-				$scope.appConfig.configItem = jenkinsConfigService.configItem;
+				config.cleanUpConfigItem(config.configItem);
+				$scope.appConfig.configItem = config.configItem;
 				for(index in $scope.appConfig.configItems) {
-					jenkinsConfigService.cleanUpConfigItem(jenkinsConfigService.configItems[index]);
+					config.cleanUpConfigItem(config.configItems[index]);
 				}
-				$scope.appConfig.configItems = jenkinsConfigService.configItems;
+				$scope.appConfig.configItems = config.configItems;
 			}
 
 			for(var jobIndex in $scope.appConfig.configItems) {
