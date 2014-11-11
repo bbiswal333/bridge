@@ -8,6 +8,7 @@ angular.module('app.internalIncidents').factory("app.internalIncidents.configser
     config.data.selection.assigned_me = false;
     config.data.selection.created_me = false;
     config.data.columnVisibility = [true, true, true, true, true, true, true, false, false];
+    config.data.ignoreAuthorAction = true;
 
     config.isInitialized = false;
     config.initialize = function(oConfigFromBackend){

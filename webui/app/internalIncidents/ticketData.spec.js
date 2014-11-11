@@ -86,16 +86,16 @@ describe("Internal Incident ticket data", function(){
         ticketData.loadTicketData();
         $httpBackend.flush();
 
-        var tickets = ticketData.getRelevantTickets(true, false, false, false);
+        var tickets = ticketData.getRelevantTickets(true, false, false, false, false);
         expect(tickets.length).toBe(21);
 
-        tickets = ticketData.getRelevantTickets(false, false, true, false);
+        tickets = ticketData.getRelevantTickets(false, false, true, false, false);
         expect(tickets.length).toBe(1);
 
-        tickets = ticketData.getRelevantTickets(true, false, true, false);
+        tickets = ticketData.getRelevantTickets(true, false, true, false, false);
         expect(tickets.length).toBe(22);
 
-        tickets = ticketData.getRelevantTickets(false, false, false, false);
+        tickets = ticketData.getRelevantTickets(false, false, false, false, false);
         expect(tickets.length).toBe(0);
     });
 
@@ -107,10 +107,11 @@ describe("Internal Incident ticket data", function(){
         $httpBackend.flush();
 
         ticketData.calculateTotals();
+        config.data.ignoreAuthorAction = true;
         // total of 20 is fine, even though we have 21 tickets in this category: One ticket has a "testPriority"
         expect(ticketData.prios[0].total).toBe(2);
         expect(ticketData.prios[1].total).toBe(1);
-        expect(ticketData.prios[2].total).toBe(17);
+        expect(ticketData.prios[2].total).toBe(16);
         expect(ticketData.prios[3].total).toBe(0);
 
         config.data.selection.sel_components = false;

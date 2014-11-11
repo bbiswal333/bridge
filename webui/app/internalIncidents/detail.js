@@ -49,7 +49,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             if ($scope.detailForNotifications === true){
                 $scope.messages = ticketData.ticketsFromNotifications;
             } else {
-                $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me);
+                $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
             }
             $scope.messages.forEach(enhanceMessage);
         }
