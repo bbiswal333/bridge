@@ -37,9 +37,8 @@ describe("Internal Incidents details controller", function(){
             "bridge.converter": {},
             "bridgeDataService": { getAppConfigById: function() {
                 return {
-                    data: {
-                        selection: { sel_components: true, colleagues: false }
-                    }
+                        selection: { sel_components: true, colleagues: false },
+                        ignoreAuthorAction: false
                 };
             }}
         });

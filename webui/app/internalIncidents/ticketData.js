@@ -62,9 +62,9 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
             defer.promise.then(function(){
 
                 if (that.lastTickets !== null) {
-                    that.notifyChanges(that.getRelevantTickets(true, true, true, true), that.lastTickets);
+                    that.notifyChanges(that.getRelevantTickets(true, true, true, true, false), that.lastTickets);
                 } else if (config.data.lastDataUpdate !== null){
-                    that.notifyOfflineChanges(that.getRelevantTickets(true, true, true, true), config.data.lastDataUpdate);
+                    that.notifyOfflineChanges(that.getRelevantTickets(true, true, true, true, false), config.data.lastDataUpdate);
                 }
 
                 config.data.lastDataUpdate = new Date();
@@ -74,7 +74,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
             return defer.promise;
         };
 
-        this.getRelevantTickets = function(bSelectedComponents, bColleagues, bAssignedToMe, bCreatedByMe) {
+        this.getRelevantTickets = function(bSelectedComponents, bColleagues, bAssignedToMe, bCreatedByMe, bIgnoreAuthorAction) {
             var tickets = [];
             if (bSelectedComponents){
                 tickets  = _.union(tickets, _.where(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], {"PROCESSOR_ID" : ""}));
@@ -91,11 +91,15 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 tickets  = _.union(tickets, that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
             }
 
+            if (bIgnoreAuthorAction){
+                _.remove(tickets, { STATUS_KEY: "E0004"} );
+            }
+
             return tickets;
         };
 
         this.calculateTotals = function() {
-            var tickets = that.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me);
+            var tickets = that.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
             var totals = _.countBy(tickets, function(ticket){
                 return ticket.PRIORITY_KEY;
             });
