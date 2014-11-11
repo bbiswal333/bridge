@@ -47,15 +47,14 @@
 {
 	height:100px;
 	border-radius:100%;
-	/*margin-right:20px; */
-	position:fixed; 
+	position:fixed;
 	pointer-events:all; 
 	z-index:99;
 }
 
 .trunctedText {
   display: inline-block;
-  max-width: 44%;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

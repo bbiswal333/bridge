@@ -1,12 +1,13 @@
 angular.module('app.customerMessages', []);
 
-angular.module('app.customerMessages').factory("app.customerMessages.configservice", function ()
-{
+angular.module('app.customerMessages').factory("app.customerMessages.configservice", function (){
     //set the default configuration object
     var config = {};
     config.data = {};
     config.data.settings = {};
     config.data.settings.ignore_author_action = true;
+    config.data.settings.filterByOrgUnit = false;
+    config.data.settings.selectedOrgUnits = [];
     config.data.settings.notificationDuration = 5000;
     config.data.selection = {};
     config.data.selection.sel_components = true;

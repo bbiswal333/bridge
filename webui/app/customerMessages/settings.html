@@ -1,16 +1,33 @@
 <div style="width: 100%">
 	<form name="ConfigItemForm">
+		<br/>
 		Please note that the components are assinged in the backend (BCP). It might take a few minutes before changes are effective due to data replication to the backup system.
-		<div class="row" style="margin:25px 0 0 0;width:250px">
-			<button class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.ignore_author_action];" ng-click="config.data.settings.ignore_author_action = !config.data.settings.ignore_author_action" >Ignore Incidents in Customer Action</button>
+		<br/>
+		<br/>
+		<div class="row" style="margin:10px 0 0 0;">
+			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.ignore_author_action];" ng-click="config.data.settings.ignore_author_action = !config.data.settings.ignore_author_action" >
+				Ignore Incidents in Customer Action
+			</button>
 		</div>
-		<div class="row"><br /></div>
-		<div class="row"><br /></div>
-		Notification settings
-		<div class="row" style="margin:25px 0 0 0;width:250px">
-			<button class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[!config.data.settings.notificationDuration || config.data.settings.notificationDuration >= 0];" ng-click="toggleNotificationDuration()">Hide notifications automatically</button>
+		<div class="row" style="margin:10px 0 0 0;">
+			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[!config.data.settings.notificationDuration || config.data.settings.notificationDuration >= 0];" ng-click="toggleNotificationDuration()">
+				Hide Notifications Automatically
+			</button>
 		</div>
-		<div class="row"><br /></div>
+		<div class="row" style="margin:10px 0 0 0; display: inline-block; vertical-align: top;">
+			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.filterByOrgUnit];" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit">
+				Filter By Org-Unit
+			</button>
+
+			<div style="display: inline-block" ng-if="config.data.settings.filterByOrgUnit">
+				Select the Org-Units you would like to include:
+				<br/>
+				a
+				<br/>
+				b
+			</div>
+		</div>
+		<br />
 		<div class="row">
 			<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>
 		</div>

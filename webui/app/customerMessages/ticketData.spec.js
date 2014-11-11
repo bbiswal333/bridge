@@ -18,7 +18,8 @@ describe("Ticket Data Service for Customer Messages", function () {
     };
 
     beforeEach(function () {
-        angular.module("mock.module").factory("notifier", function(){
+        var mockModule = angular.module("mock.module", []);
+        mockModule.factory("notifier", function(){
             return {
                 showInfo: function(sTitle, sText, appIdentifier_s, onCLick_fn, duration_i, routeURL_s){
                     sNotificationText = sText;
@@ -26,6 +27,22 @@ describe("Ticket Data Service for Customer Messages", function () {
                     sNotificationRouteURL = routeURL_s;
                 }
             };
+        });
+        mockModule.factory("app.customerMessages.configservice", function (){
+            var config = {};
+            config.data = {};
+            config.data.settings = {};
+            config.data.settings.ignore_author_action = false;
+            config.data.settings.filterByOrgUnit = false;
+            config.data.settings.selectedOrgUnits = [];
+            config.data.settings.notificationDuration = 5000;
+            config.data.selection = {};
+            config.data.selection.sel_components = true;
+            config.data.selection.assigned_me = true;
+            config.data.selection.colleagues = true;
+            config.lastDataUpdate = null;
+
+            return config;
         });
 
         module("app.customerMessages");
@@ -44,37 +61,38 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should increase the ticket counter according to the backend data", function () {
-        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
-        expect(cmTicketData.prios[0].total).toBe(0);
-        expect(cmTicketData.prios[1].total).toBe(1);
-        expect(cmTicketData.prios[2].total).toBe(2);
-        expect(cmTicketData.prios[3].total).toBe(0);
+        expect(cmTicketData.prios[0].selected).toBe(0);
+        expect(cmTicketData.prios[1].selected).toBe(1);
+        expect(cmTicketData.prios[2].selected).toBe(2);
+        expect(cmTicketData.prios[3].selected).toBe(0);
     });
 
     it("should reset the priorities in the data structure", function () {
-        $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
-        expect(cmTicketData.prios[2].total).toBe(2);
+        expect(cmTicketData.prios[2].selected).toBe(2);
 
         cmTicketData.resetData();
 
-        expect(cmTicketData.prios[0].total).toBe(0);
-        expect(cmTicketData.prios[1].total).toBe(0);
-        expect(cmTicketData.prios[2].total).toBe(0);
-        expect(cmTicketData.prios[3].total).toBe(0);
+        expect(cmTicketData.prios[0].selected).toBe(0);
+        expect(cmTicketData.prios[1].selected).toBe(0);
+        expect(cmTicketData.prios[2].selected).toBe(0);
+        expect(cmTicketData.prios[3].selected).toBe(0);
 
-        expect(cmTicketData.prios[3].tickets.length).toBe(0);
+        //expect(cmTicketData.prios[3].tickets.length).toBe(0);
     });
 
     it("should update correct count for selection", function(){
-    	$httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockData);
+    	$httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
             expect(configService.data.selection).toBeDefined();
 
             configService.data.selection.sel_components = true;
+            configService.data.selection.assigned_me = false;
             cmTicketData.updatePrioSelectionCounts();
             expect(cmTicketData.prios[1].selected).toBe(0);
             expect(cmTicketData.prios[2].selected).toBe(1);
@@ -116,7 +134,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         var testGet;
 
         beforeEach(function () {
-            testGet = $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin);
+            testGet = $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/);
 
         });
         afterEach(function(){
@@ -247,16 +265,10 @@ describe("Ticket Data Service for Customer Messages", function () {
     describe("in handling of duplicted messages", function () {
 
         beforeEach(function () {
-            $httpBackend.whenGET('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + location.origin).respond(mockDataWithDuplicates);
+            $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockDataWithDuplicates);
         });
         afterEach(function(){
             $httpBackend.flush();
-        });
-
-        it("should reflect correct number in prios total", function(){
-            cmTicketData.loadTicketData().then(function(){
-                expect(cmTicketData.prios[2].total).toBe(2);
-            });
         });
 
         it("should update correct count for selection", function(){
@@ -264,6 +276,7 @@ describe("Ticket Data Service for Customer Messages", function () {
                 expect(configService.data.selection).toBeDefined();
 
                 configService.data.selection.sel_components = true;
+                configService.data.selection.assigned_me = false;
                 cmTicketData.updatePrioSelectionCounts();
                 expect(cmTicketData.prios[1].selected).toBe(0);
                 expect(cmTicketData.prios[2].selected).toBe(2);
