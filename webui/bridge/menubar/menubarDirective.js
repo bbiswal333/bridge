@@ -1,5 +1,8 @@
 angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location",
     function($modal, weatherData, weatherConfig, newsService, notifier, $location) {
+
+
+
         function isDateYoungerThanOneMonth(dateString) {
             var newsDate = new Date(dateString);
             var now = new Date();
@@ -42,6 +45,12 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                 }
 
                 $scope.changeSelectedApps = function() {
+
+
+          
+                $(".navicon-button").removeClass("open");
+            
+
                     $modal.open({
                       templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
                       size: 'lg'
@@ -53,16 +62,20 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
         };
 }]);
 
+
 $('body').on('mousedown', function (e) {
     $('[data-toggle="popover"]').each(function () {
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.menubar-popover').has(e.target).length === 0 && $('.menubar-popover').scope()) {
             $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide(); });
             //$('.menubar-popover').scope().$hide();
+           
         }
 
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0 && $('.popover').scope()) {
             $('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
             //$('.popover').scope().$hide();
+
         }
+         $(".navicon-button").addClass("open");
     });
 });
