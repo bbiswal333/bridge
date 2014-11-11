@@ -4,6 +4,7 @@ angular.module('bridge.app').
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app};});
 	    $scope.categories = [];//{name: "All Apps", apps: []}];
+	    $scope.appFilter = '';
 
 	    function findCategoryInList(name) {
 	    	for(var i = 0, length = $scope.categories.length; i < length; i++) {

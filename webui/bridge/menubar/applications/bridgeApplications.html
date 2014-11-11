@@ -1,23 +1,18 @@
-<div ng-controller="bridge.menubar.applicationsController" style="padding: 50px; width: 100%" ng-init="adjustModalSize()">
+<div style="background-image: url('bridge/menubar/applications/everythingisawesome.png'); height: 150px; width: 100%">
+</div>
+<div ng-controller="bridge.menubar.applicationsController" style="padding: 30px 50px 50px 50px; width: 100%" ng-init="adjustModalSize()">
 	<div>
 		<!--<h4 class="box-title">Applications</h4>-->
-		<span class="settingsIcon" style="color:inherit!important;cursor:default!important;margin-right:0;"><span class="fa fa-th-large"></span></span>
+		<span style="color:inherit!important;cursor:default!important;margin-right:0; float: right">
+			<bridge.input style="width: 200px;" icon="fa-th-large" model="appFilter"></bridge.input>
+		</span>
 	</div>
 	<tabset>
-	    <tab ng-repeat="category in categories" heading="{{category.name}}" active="category.active" disabled="category.disabled">
-	    	<span ng-repeat="app in category.apps">
-				<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="toggleInstance(app.metadata)" class="btn btn-default settingsBtn" style="text-align:left;" ng-if="!app.metadata.multiInstance">
-					<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
-					<p style="padding-top:5px;margin: 0 0 0 0;" >{{app.metadata.title}}</p>
-				</button>
-				<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="addAppInstance(app.metadata)" class="btn btn-default settingsBtn" style="text-align:left;" ng-if="app.metadata.multiInstance">
-					<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
-					<p style="padding-top:5px;margin: 0 0 0 0;" >
-						{{app.metadata.title}}
-						<i class="fa fa-plus"></i>
-					</p>
-				</button>
-			</span>
+	    <tab ng-if="appFilter === ''" ng-repeat="category in categories" heading="{{category.name}}" active="category.active" disabled="category.disabled">
+	    	<bridge.application.box ng-repeat="app in category.apps"></bridge.application.box>
 	    </tab>
+	    <div ng-if="appFilter !== ''" style="padding-top: 38px">
+	    	<bridge.application.box ng-repeat="app in apps | filter:appFilter"></bridge.application.box>
+	    </div>
     </tabset>
 </div>

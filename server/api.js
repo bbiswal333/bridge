@@ -372,6 +372,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
     		{
     			delete require.cache[require.resolve(modulePath)];
 	    		var module = require(modulePath);
+	    		if(module.app) {
+	    			module.app.appPath = path.dirname(path.relative(__dirname, modulePath)).replace('../webui/', './');
+	    		}
 	    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
 	    		{
 	    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )

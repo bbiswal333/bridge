@@ -200,3 +200,17 @@
 .open.plus {
   transform: scale(0.75) rotate(45deg);
 }
+
+.bridge-applications-box {
+  width: 400px;
+  height: 160px;
+  border: 1px solid #bbbbbb;
+  display: inline-block;
+  margin: 15px;
+}
+
+.bridge-applications-addButton {
+  position: absolute;
+  bottom: 10px;
+  right: 0px;
+}

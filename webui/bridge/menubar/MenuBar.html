@@ -8,11 +8,9 @@
 			<bridge.search></bridge.search>
 		</div>
 		<div class="col-md-2 col-sm-2 col-xs-2" style="text-align: center">	
-	        <div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();">
-	        	<a class="navicon-button plus open">
-	        		<div class="navicon"></div>
-	        	</a>
-	        </div>
+	        <a href="/"><div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;">
+	        	<img src="img/bridge-icon.png" height="20" />
+	        </div></a>
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-3 menubar-weather" style="text-align: center" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover >
 			<div style="vertical-alignment: middle">
@@ -27,6 +25,11 @@
 			</div>
 		</div>
 		<div class="menubar-settings" style="text-align: right">
+			<div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();">
+	        	<a class="navicon-button plus open">
+	        		<div class="navicon"></div>
+	        	</a>
+	        </div>
 			<div class="menuBar-settingsButton" title="Notifications" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/notification/bridgeNotifications.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover>
 			  <div ng-controller="bridge.menubar.notificationsController">
 		          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox green-font"></span>
