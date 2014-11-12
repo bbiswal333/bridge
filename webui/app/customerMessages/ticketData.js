@@ -90,61 +90,67 @@
 
         this.loadTicketData = function () {
             var deferred = $q.defer();
+            var requestUrl = 'https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN';
+            //var requestUrl = 'https://bcdmain.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN';
+            if (configservice.data.settings.filterByOrgUnit){
+                angular.forEach(configservice.data.settings.selectedOrgUnits, function(oOrgUnit){
+                    requestUrl += '&orgunit=' + oOrgUnit.ORGUNIT;
+                });
+            }
 
-            $http.get('https://bcdmain.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials:true}
-            //$http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials:true}
-            ).success(function (data) {
-                // data = testData;
-                that.resetData();
+            $http.get(requestUrl + '&origin=' + $window.location.origin, {withCredentials:true})
+                .success(function (data) {
+                    // data = testData;
+                    that.resetData();
 
-                var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
-                data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
+                    var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
+                    data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
 
-                data = addCData("URL_MESSAGE", data);
-                data = addCData("DESCRIPTION", data);
-                data = addCData("CUST_NAME", data);
-                data = addCData("REPORTER_NAME", data);
-                data = new X2JS().xml_str2json(data);
+                    data = addCData("URL_MESSAGE", data);
+                    data = addCData("DESCRIPTION", data);
+                    data = addCData("CUST_NAME", data);
+                    data = addCData("REPORTER_NAME", data);
+                    data = new X2JS().xml_str2json(data);
 
-                var cmData = data.abap;
-                var backendTickets = cmData.values;
+                    var cmData = data.abap;
+                    var backendTickets = cmData.values;
 
-                // Resultnode1: Alle incidents auf Komponenten, zu denen ich assigned bin
-                // Resultnode2: Alle incidents, die auf meinem Namen stehen (unabhängig davon, zu welcher Komponente sie gehören)
+                    // Resultnode1: Alle incidents auf Komponenten, zu denen ich assigned bin
+                    // Resultnode2: Alle incidents, die auf meinem Namen stehen (unabhängig davon, zu welcher Komponente sie gehören)
 
-                //selected component
-                if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                    angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], { PROCESSOR_ID: ''}), function (backendTicket) {
-                        parseBackendTicket(backendTicket, 'sel_components');
-                    });
-                } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID === '') {
-                    parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'sel_components');
-                }
+                    //selected component
+                    if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
+                        angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], { PROCESSOR_ID: ''}), function (backendTicket) {
+                            parseBackendTicket(backendTicket, 'sel_components');
+                        });
+                    } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID === '') {
+                        parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'sel_components');
+                    }
 
-                // colleagues
-                if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                    angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){ return ticket.PROCESSOR_ID !== ''; }), function (backendTicket) {
-                        parseBackendTicket(backendTicket, 'colleagues');
-                    });
-                } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID !== '') {
-                    parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'colleagues');
-                }
+                    // colleagues
+                    if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
+                        angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){ return ticket.PROCESSOR_ID !== ''; }), function (backendTicket) {
+                            parseBackendTicket(backendTicket, 'colleagues');
+                        });
+                    } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID !== '') {
+                        parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'colleagues');
+                    }
 
-                //assigned to me
-                if (angular.isArray(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                    angular.forEach(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function (backendTicket) {
-                        parseBackendTicket(backendTicket, 'assigned_me');
-                    });
-                } else if (angular.isObject(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                    parseBackendTicket(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'assigned_me');
-                }
+                    //assigned to me
+                    if (angular.isArray(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
+                        angular.forEach(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function (backendTicket) {
+                            parseBackendTicket(backendTicket, 'assigned_me');
+                        });
+                    } else if (angular.isObject(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
+                        parseBackendTicket(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'assigned_me');
+                    }
 
-                that.updatePrioSelectionCounts();
-                deferred.resolve();
+                    that.updatePrioSelectionCounts();
+                    deferred.resolve();
 
-            }).error(function () {
-                deferred.reject();
-            });
+                }).error(function () {
+                    deferred.reject();
+                });
 
             deferred.promise.then(function(){
                 if (that.lastTickets !== null) {

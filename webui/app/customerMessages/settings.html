@@ -14,17 +14,16 @@
 				Hide Notifications Automatically
 			</button>
 		</div>
-		<div class="row" style="margin:10px 0 0 0; display: inline-block; vertical-align: top;">
-			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.filterByOrgUnit];" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit">
+		<div class="row" style="margin:10px 0 0 0; display: inline-block;">
+			<button class="btn btn-default" style="width: 270px; vertical-align: top;" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.filterByOrgUnit];" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit">
 				Filter By Org-Unit
 			</button>
 
 			<div style="display: inline-block" ng-if="config.data.settings.filterByOrgUnit">
 				Select the Org-Units you would like to include:
-				<br/>
-				a
-				<br/>
-				b
+				<div ng-repeat="orgUnit in orgUnits">
+					<bridge.checkbox is-checked="orgUnit.isSelected" ng-click="checkbox_click(orgUnit)" checked-label="{{orgUnit.ORGUNIT_TEXT}}" unchecked-label="{{orgUnit.ORGUNIT_TEXT}}"></bridge.checkbox>
+				</div>
 			</div>
 		</div>
 		<br />
