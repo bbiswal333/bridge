@@ -1,8 +1,8 @@
 angular.module('app.internalIncidents', ['notifier', 'bridge.service']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
-    var controller = ['$scope', '$http', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig',
-        function($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig){
+    var controller = ['$scope', '$http', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch',
+        function($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch){
 
             $scope.box.boxSize = "1";
             $scope.box.settingScreenData = {
@@ -13,6 +13,19 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.box.returnConfig = function() {
                 return configservice.data;
             };
+
+            bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment'}, function() {
+                return ticketData.getRelevantTickets(configservice.data.selection.sel_components, configservice.data.selection.colleagues, configservice.data.selection.assigned_me, configservice.data.selection.created_me, configservice.data.ignoreAuthorAction);
+            }, {
+                    keys: ["CATEGORY", "DESCRIPTION"],
+                    mappingFn: function(result) {
+                        return {title: result.item.CATEGORY, description: result.item.DESCRIPTION, score: result.score, originalItem: result.item};
+                    },
+                    callbackFn: function(){
+                        alert("test");
+                    }
+                }
+            ));
 
             $scope.prios = ticketData.prios;
             $scope.dataInitialized = ticketData.isInitialized;
