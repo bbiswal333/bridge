@@ -22,7 +22,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                         return {title: result.item.CATEGORY, description: result.item.DESCRIPTION, score: result.score, originalItem: result.item};
                     },
                     callbackFn: function(){
-                        alert("test");
+                        //alert("test");
                     }
                 }
             ));
