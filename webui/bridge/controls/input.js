@@ -63,7 +63,7 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             }
 
             if(attrs.id) {
-                $('input', element)[0].setAttribute("id", attrs.id);
+                $('input', element)[0].setAttribute("id", attrs.id + "-input");
             }
 
             if(attrs.required && attrs.required === "true") {

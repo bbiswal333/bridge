@@ -90,7 +90,17 @@ directive("app.meetings", [
 									// first get rid of the newlines in order to allow more proper participant code parsing
 									// New approach: try to fix the participant code to the "last" 10-digit number in the body
 									//
-									var partcode = body.replace(/[\r\s]/g,"").match(/Participant.*([0-9]{10})[^0-9]/i);
+
+									var partcode;
+									/*eslint-disable no-loop-func*/
+									_.forEach(body.split("\n"), function(line) {
+										var lp = line.match(/Participant.*([0-9]{10})[^0-9]/i);
+										if (!_.isEmpty(lp)) {
+											partcode = lp;
+										}
+									});
+									/*eslint-enable no-loop-func*/
+
 
 									var sapconnecturl;
 
@@ -107,6 +117,13 @@ directive("app.meetings", [
 										sapconnecturl = body.match(/https:\/\/[^\s"]*sapemeaevent.adobeconnect.com[^\s"]*/i);
 										useTheNormalSAPConnectDialIn = false;
 									}
+
+									// for lync.co we as well only extract the URL without supporting telefone dialin
+									if (sapconnecturl == null) {
+										sapconnecturl = body.match(/https:\/\/lync.co.sap.com\/meet\/[^\s"]*/i);
+										useTheNormalSAPConnectDialIn = false;
+									}
+
 									if ( partcode != null && useTheNormalSAPConnectDialIn ) {
 										$scope.events[i].participantCode = partcode[1].replace(/\s/g,"");
 									}

@@ -71,3 +71,10 @@ input:hover, textarea:hover {
     border: 1px solid #8a8a8a;
     outline: 0;
 }
+
+.bridge-mobileSearchInput {
+    width:calc(100% - 80px) !important;
+    border:none !important;
+    height:80px;
+    font-size:30px;
+}

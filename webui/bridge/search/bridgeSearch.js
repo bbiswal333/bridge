@@ -28,12 +28,12 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 		resultArray.length = 0;
 		var deferred = $q.defer();
 		var promises = [];
-		searchProviders.map(function(provider) {
+		promises = searchProviders.map(function(provider) {
 			var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
 			resultArray.push(result);
 			var promise = provider.findMatches(query, result.results);
 			if(promise) {
-				promises.push(promise);
+				return promise;
 			}
 		});
 		$q.all(promises).then(function() {

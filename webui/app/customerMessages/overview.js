@@ -11,6 +11,7 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     config.data.selection = {};
     config.data.selection.sel_components = true;
     config.data.selection.assigned_me = false;
+    config.data.selection.colleagues = false;
     config.lastDataUpdate = null;
 
     return config;
@@ -83,10 +84,12 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             initPromise.then(function success() {
                 setNoMessagesFlag();
                 $scope.config = configservice;
+                ticketData.updatePrioSelectionCounts();
             });
         }
         else{
             $scope.config = configservice;
+            ticketData.updatePrioSelectionCounts();
         }
 
         $scope.box.reloadApp(ticketData.loadTicketData, 60 * 10);

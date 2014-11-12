@@ -25,7 +25,9 @@
         "saveAs": true,
         "location": true,
         "sessionStorage": true,
-        "he": true
+        "he": true,
+        "ovi": true,
+        "nokia": true
     },
     "rules": 
     {        
@@ -33,6 +35,10 @@
         "strict": 0,
         "camelcase": 0,
         "no-underscore-dangle": 0,
-        "no-mixed-spaces-and-tabs": 0
+        "no-mixed-spaces-and-tabs": 0,
+        "key-spacing": 0,
+        "no-irregular-whitespace": 0,
+        "no-multi-spaces": 0,
+        "comma-spacing": 0
     }
 }

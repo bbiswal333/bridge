@@ -8,10 +8,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
-	var alreadyInitializedForMonth = {};
 	this.days = {};
 	this.promiseForMonth = {};
-	this.reloadInProgress = { value:false };
+	this.reloadInProgress = {
+		value: false,
+		error: false };
 
 	this.executeWhenDone = function(promise)
 	{
@@ -24,20 +25,13 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.getMonthData = function(year, month){
 		try {
 			var self = this;
-			var deferred = $q.defer();
 			var promise = null;
 			var promises = [];
 
-			// already done or buffered?
-			if (!alreadyInitializedForMonth[month] && this.promiseForMonth[month]) {
-				return this.promiseForMonth[month]; // return promise which is yet to be resolved
-			}
-			else if (alreadyInitializedForMonth[month]) {
-				deferred.resolve();
-				return deferred.promise; // data already present so simply return a resolved promise
+			if (this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
 			}
 
-			// not buffered! so getting the data
 			self.reloadInProgress.value = true;
 
 			var weeks = this.getWeeksOfMonth(year, month);
@@ -49,9 +43,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			promise = $q.all(promises);
 			promise.then(function(){
-				alreadyInitializedForMonth[month] = true;
 				delete self.promiseForMonth[month];
 				self.reloadInProgress.value = false;
+			}, function() {
+				self.reloadInProgress.value = false;
+				self.reloadInProgress.error = true;
 			});
 
 			this.promiseForMonth[month] = promise;
@@ -156,7 +152,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		// we need to initialize each day with it's actual target hours from the data
 		// which we already have in the calendar array
 		for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
-			if (week === this.calArray[calWeekIndex][0].weekNo + "") {
+			if (week === calenderUtils.toNumberOfCharactersString(this.calArray[calWeekIndex][0].weekNo, 2) + "") {
 				for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
 					var dayString = this.calArray[calWeekIndex][dayIndex].dayString;
 					this.days[dayString] = {};
@@ -217,17 +213,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 						}
 					}
-																													// 0: Object
-																													// $$hashKey: "0AI"
-																													// blockWidth: 696
-																													// desc: "Maintenance Bridge"
-																													// fixed: false
-																													// localValue: 0.87
-																													// task: Object
-																													// value: 0.87
-																													// __proto__: Object
-																													// 1: Object
-																													// 2: Object
 				}
 			}
 		} catch(err) {
@@ -243,10 +228,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			weeks.forEach(function(week){
 				var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
 				promises.push(promise);
-				promise.then(function(data){
+				promise.
+				then(function(data){
 					if(data) {
 						self.convertWeekData(data);
 					}
+					self.reloadInProgress.value = false;
+				}, function() {
+					self.reloadInProgress.value = false;
+					self.reloadInProgress.error = true;
 				});
 			});
 		} catch(err) {

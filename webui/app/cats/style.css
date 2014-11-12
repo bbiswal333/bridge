@@ -161,7 +161,7 @@
 	height: 15px;
 	float: left;
 	margin-bottom: 2px;
-	text-align: center;		
+	text-align: center;
 }
 .app-cats-week:last-of-type .app-cats-day {
 	margin-bottom: 0px;
@@ -170,7 +170,7 @@
 	margin-left: 2px;
 }
 .app-cats-project-selector-button {
-    width: 100%;
+    width: 95%;
 }
 .app-cats-project-filter-input{
 	margin: 4px 4px 20px 4px;
@@ -182,17 +182,15 @@
     background: #A4D8F9;
 }
 .app-cats-project-selector-button {
-    height: 50px;
-    line-height: 1;
+    height: 27px;
+    line-height: 0;
+    text-align: left;
     margin:4px 4px;
-    float:left;
     overflow: hidden;
-}
-.app-cats-project-selector-button {
     font-size: 14px;
-    line-height: 1;
 }
 #app-cats-project-selector-button-container {
+    margin-left: 10px;
     margin-right: 0;
 }
 .app-cats-project-selector-button span {
@@ -559,16 +557,16 @@
 
 .settings_task_edit_button {
     position: absolute; 
-    height: 50px; 
+    height: 27px; 
     width: 10%; 
-    right: 8px; 
-    margin: 4px 4px; 
+    right: 30px; 
+    margin: 4px 0px; 
     
     color: white; 
     background: rgba(255, 255, 255, 0.2); 
     
     text-align: center; 
-    line-height: 3em;
+    line-height: 2em;
 }
 
 .settings_add_task_button {

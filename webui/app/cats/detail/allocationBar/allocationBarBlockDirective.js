@@ -19,6 +19,9 @@ function (colorUtils, blockCalculations, calUtils) {
         link: function ($scope, elem) {
             var originalBlockWidth;
             // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
+            // if ($scope.blockData.task && $scope.blockData.task.UNIT === "H") {
+            //     $scope.blockData.value = $scope.blockData.value / 8;
+            // }
             $scope.blockData.localValue = $scope.blockData.value;
 
             if ($scope.blockData.fixed) {
@@ -29,17 +32,23 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getDescription = function () {
-                if ($scope.blockData.task.ZCPR_EXTID && $scope.blockData.task.RAUFNR) {
-                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID + ",\n" + $scope.blockData.task.RAUFNR;
-                } else if ($scope.blockData.task.ZCPR_EXTID) {
-                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.ZCPR_EXTID;
-                } else if ($scope.blockData.task.RAUFNR && $scope.blockData.desc !== $scope.blockData.task.RAUFNR) {
-                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.RAUFNR;
-                } else if ($scope.blockData.task.TASKTYPE && $scope.blockData.desc !== $scope.blockData.task.TASKTYPE) {
-                    return $scope.blockData.desc + ",\n" + $scope.blockData.task.TASKTYPE;
-                } else {
-                    return $scope.blockData.desc;
+                var desc = $scope.blockData.desc;
+                if ($scope.blockData.task.ZCPR_EXTID) {
+                    desc = desc + ",\n" + $scope.blockData.task.ZCPR_EXTID;
                 }
+                if ($scope.blockData.task.RAUFNR) {
+                    desc = desc + ",\n" + $scope.blockData.task.RAUFNR;
+                }
+                if ($scope.blockData.task.ZCPR_OBJGEXTID) {
+                    desc = desc + ",\n" + $scope.blockData.task.ZCPR_OBJGEXTID;
+                }
+                if ($scope.blockData.task.TASKTYPE) {
+                    desc = desc + ",\n" + $scope.blockData.task.TASKTYPE;
+                }
+                if ($scope.blockData.task.ZZSUBTYPE) {
+                    desc = desc + ",\n" + $scope.blockData.task.ZZSUBTYPE;
+                }
+                return desc;
             };
 
             $scope.getValueAsPercentage = function () {

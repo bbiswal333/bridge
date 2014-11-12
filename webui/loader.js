@@ -27,14 +27,16 @@
                             return;
                         }
 
-                        var bridgeSearch;
-                        injector.invoke(['bridge.search', function(search) {
+                        var bridgeSearch, bridgeMobileSearch;
+                        injector.invoke(['bridge.search', 'bridge.mobileSearch', function(search, mobileSearch) {
                             bridgeSearch = search;
+                            bridgeMobileSearch = mobileSearch;
                         }]);
 
                         data.searchProviders.map(function(searchProvider) {
                             injector.invoke([searchProvider, function(searchProviderInstance){
                                 bridgeSearch.addSearchProvider(searchProviderInstance);
+                                bridgeMobileSearch.addSearchProvider(searchProviderInstance);
                             }]);
                         });
                     }

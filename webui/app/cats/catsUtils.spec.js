@@ -59,6 +59,7 @@ describe("Timesheet tools", function () {
 		taskA.TASKTYPE = 'VACA';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
 		taskA.TASKTYPE = 'ABSE';
+		taskA.UNIT = "H";
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
 		taskA.TASKTYPE = 'COMP';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
@@ -73,6 +74,9 @@ describe("Timesheet tools", function () {
 		taskA.TASKTYPE = 'MESS';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
 		taskA.TASKTYPE = 'ICON';
+		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
+		taskA.TASKTYPE = 'ABSE';
+		taskA.UNIT = "TA";
 		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
 	});
 

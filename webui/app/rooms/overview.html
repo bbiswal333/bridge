@@ -1,0 +1,76 @@
+<div>
+    <div ng-if="!isLoading()" class="bridge-fade-anim" style="padding-left: 6px; padding-left: 6px">
+
+        <div ng-if="!isEmpty(errMsg)&& ! closeMsgBox">
+            <alert class="roomserror" type="'danger'" close="closeMsgBoxaction()"><b>{{errMsg}}</b><br>
+                <p><i>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</i></p>
+            </alert>
+            
+        </div>
+        
+        <div ng-if="!isEmpty(successMsg) && ! closeMsgBox">
+            <alert class="roomserror" type="'success'" close="closeMsgBoxaction()">{{successMsg}}</alert>
+        </div>
+
+        <div ng-if="!isEmpty(selectedRoom)" class="roominplace bridge-fade-anim">
+        
+            <h5>
+                Do you really want to cancel the booking of the following room?
+            </h5>
+            <p>{{selectedRoom.LOCATION}} on the {{ selectedRoom.VALIDFROMDATE | date: 'dd.MM.' }}</p>
+            <button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
+            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>
+            
+        </div>
+
+        <div ng-if="!hasBookings() && errMsg == null">
+            <p>You did not book a room for the next 14 days! Saving ressources, perfecto!</p>
+            <i>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</i>
+        </div>
+        
+
+        <div ng-if="hasBookings()">
+            <div>
+                {{getRoomsLeftText()}}.
+            </div>
+            <div style="margin-top: 5px; height: 110px; overflow: hidden;">
+                <div style="height: 115px; overflow-y: auto;">
+                    <table cellpadding="2" class="meetings-table">
+                        <tr ng-repeat="room in upComingBookings()" style="border-top: 1px solid #e5e5e5;">
+                            <td ng-if="box.boxSize == 1" style="border-right: 1px solid #0099CC; width: 48px;" id="eventId{{($index+1)}}">
+                                <span>
+                                    <b>{{room.VALIDFROMDATE | date: 'dd.MM.' }}</b><br />
+                                    <div style="font-size:10px">{{room.VALIDFROMDATE | date: 'HH:mm'}} - {{room.VALIDTODATE | date: 'HH:mm'}}</div>
+                                </span>
+                            </td>
+                            <td ng-if="box.boxSize == 2" style="border-right: 1px solid #0099CC; width: 89px;" id="eventId{{($index+1)}}">
+                                <span>
+                                    <b>{{room.VALIDFROMDATE | date: 'EEE, dd.MM.' }}</b><br />
+                                    {{room.VALIDFROMDATE | date: 'HH:mm'}} - {{room.VALIDTODATE | date: 'HH:mm'}}
+                                </span>
+                            </td>
+                            <td ng-if="box.boxSize == 1" style="vertical-align: top; padding-left: 5px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 100px">
+                                    <span>
+                                        <b bs-tooltip data-title="{{room.SUBJECT}}">{{room.SUBJECT}}</b>
+                                    </span>
+                                </div>
+                                {{room.LOCATION}}<button class="box-icon table-icon-small icon-trash" ng-click="selectRoom(room)" style="margin-bottom:0px;margin-right:5px;padding:0px;height:inherit; color:grey;background-color:transparent; box-shadow:0px 0px 0px;display:inline"></button>
+
+                            </td>
+                            <td ng-if="box.boxSize == 2" style="vertical-align: top; padding-left: 10px">
+                                <div style=" text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 256px">
+                                    <span>
+                                        <b>{{room.SUBJECT}}</b>
+                                        <button class="box-icon icon-trash" ng-click="selectRoom(room)" style="margin-bottom:5px;margin-right:5px;padding:0px;color:grey;background-color:transparent; box-shadow:0px 0px 0px"></button><br>
+                                        {{room.LOCATION}}
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

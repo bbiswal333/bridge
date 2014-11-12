@@ -56,19 +56,19 @@ app.controller('MyCtrl1', ['$scope', '$http', '$window', function($scope, $http,
         });
 
         var getGroup = function(task) {
-          var group = '';
+          var localGroup = '';
 
           if (task.parentKey !== null) {
-            group += task.parentKey;
+            localGroup += task.parentKey;
           }
 
           if (task.component !== null) {
             for (var i = 0; i < task.components.length; ++i) {
-              group += task.components[i].id;
+              localGroup += task.components[i].id;
             }
           }
 
-          return group;
+          return localGroup;
         };
 
         var group      = null;

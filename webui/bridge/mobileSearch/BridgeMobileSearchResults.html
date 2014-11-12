@@ -1,0 +1,24 @@
+<div id="bridge-mobileSearchOutput" >
+    <div class="row">
+        <div class="mobileProviders col-md-2 col-sm-4 col-xs-4">
+            <div id="allSelectProvider" ng-click="selectAll()" ng-class="all ? 'selectedProvider' : ''" class="bridge-mobileSearchOutputProvider" ng-if="providers.length > 0">
+                <div class="provider_details">All Categories</div>
+            </div>
+        </div>
+        <div ng-repeat="provider in providers " ng-if="$index < count+1" class="mobileProviders col-md-2 col-sm-4 col-xs-4">
+            <!--
+            --><div ng-if="$index < count" id="provider_{{$index}}" ng-class="$index == selectedProviderID ? 'selectedProvider' : ''" class="bridge-mobileSearchOutputProvider" ng-click="selectProvider($index)">
+                <div class="provider_details">{{provider.info.name}}</div>
+            </div><!--
+            --><div ng-if="$index == count" id="mobileSearchMore" class="bridge-mobileSearchOutputProvider" ng-click="showMore()">
+                 <div class="provider_details">More...</div>
+                 <div id="moreProvider">
+                     <div id="provider_{{$index}}" class="bridge-mobileSearchOutputProvider provider_details more_provider_details" ng-repeat="provider in providers"  ng-if="$index >= count" ng-click="selectProviderMore($index)">
+                         {{provider.info.name}}
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    <bridge.mobile-search-results.provider-results></bridge.mobile-search-results.provider-results>
+</div>

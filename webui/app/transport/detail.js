@@ -2,7 +2,7 @@ angular.module('app.transport').controller('app.transport.detailController',['$s
 	function Controller($scope, $routeParams, dataService) {
 		$scope.$parent.titleExtension = " - Requests Details";
 
-		$scope.transports = {};
+		$scope.transports = [];
 		$scope.handleTransports = function() {
 			dataService.loadData().then(function() {
                 var aTransports = null;
@@ -14,8 +14,9 @@ angular.module('app.transport').controller('app.transport.detailController',['$s
                     });
                 }
                 if (aTransports !== undefined) {
+                    $scope.transports.length = 0;
                     for (var i = 0; i < aTransports.length; i++) {
-                        $scope.transports[i] = { "trkorr": aTransports[i].TRKORR, "checksystem": aTransports[i].CHECKSYSTEM, "checkclient": aTransports[i].CHECKCLIENT, "chkdate": aTransports[i].CHKDATE, "text": aTransports[i].TEXT};
+                        $scope.transports.push({ "trkorr": aTransports[i].TRKORR, "checksystem": aTransports[i].CHECKSYSTEM, "checkclient": aTransports[i].CHECKCLIENT, "chkdate": aTransports[i].CHKDATE, "text": aTransports[i].TEXT});
                     }
                 }
 			});
