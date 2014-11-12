@@ -13,7 +13,9 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             if(attrs.placeholder) {
                 $('input', element)[0].setAttribute("placeholder", attrs.placeholder);
             }
-
+            if(attrs.inputTypeaheadAppendToBody) {
+                $('input', element)[0].setAttribute("typeahead-append-to-body", attrs.inputTypeaheadAppendToBody);
+            }
             if(attrs.type) {
                 $('input', element)[0].setAttribute("type", attrs.type);
             }
