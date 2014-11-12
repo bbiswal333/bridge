@@ -262,6 +262,7 @@
             var bNewNotifications = false;
             var ticketsToNotify = {};
             ticketsToNotify.assigned_me = [];
+            ticketsToNotify.colleagues = [];
             ticketsToNotify.sel_components = [];
 
             for (var newTicketsCategory in newTicketData){
