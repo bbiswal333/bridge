@@ -25,7 +25,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         },{
             urlPart: "backup-support", name: "BCP"
         }];
-        this.selectedSourceSystem = this.ticketSourceSystems[4];
+        this.selectedSourceSystem = this.ticketSourceSystems[0];
         this.tickets = {};
         this.lastTickets = null;
         this.ticketsFromNotifications = [];
