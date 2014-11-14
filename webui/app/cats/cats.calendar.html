@@ -17,14 +17,20 @@
         
 		<div ng-class="{false:'app-cats-calendar',true:'app-cats-calendar-maintainable'}[maintainable]">
 			<div class="app-cats-week-labels row">
-                <div class="app-cats-heading-details" ng-if="maintainable"> </div>
+                <div class="app-cats-heading-details" ng-if="maintainable"></div>
                 <div class="app-cats-heading-details" ng-if="maintainable" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
+                <div class="{{dayClass}}" ng-if="!maintainable"></div>
                 <div class="{{dayClass}}" ng-if="!maintainable" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
 			</div>
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
                         <button class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                    </div>
+                </div>
+                <div ng-if="!maintainable" class="{{dayClass}}">
+                    <div ng-class="app-cats-day-inner-small" ng-style="{'background-size': !maintainable }">
+                        <span ng-class="{ 'app-cats-day-text-small': !maintainable }">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</span>
                     </div>
                 </div>
 

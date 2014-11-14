@@ -157,8 +157,9 @@
     color: #707070;
 }
 .app-cats-day {
-	width: 13.5%;
-	height: 15px;
+    width: 11.8%;
+/*    width: 13.5%;
+*/	height: 15px;
 	float: left;
 	margin-bottom: 2px;
 	text-align: center;
@@ -292,7 +293,8 @@
 }
 .app-cats-week .app-cats-day {
     color: white;
-    width: 13.5%;
+    width: 11.8%;
+    /*width: 13.5%;*/
 }
 .allocation-bar-background-panel {
   margin-left: auto;

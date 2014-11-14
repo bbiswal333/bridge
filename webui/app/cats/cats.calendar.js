@@ -568,7 +568,6 @@ angular.module("app.cats")
 				if (monthRelative + 1 > 1) { // Maximum number of month to go forward
 					return false;
 				}
-
 				return true;
 			};
 
