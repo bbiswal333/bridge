@@ -12,7 +12,8 @@
 		"citySearch.js",
 		"sapedia.js",
 		"playbook.js",
-		"portal.js"
+		"portal.js",
+		"bridgeSearchSettingsController.js"
 	],
 	"css_files" : [
 	  "search.css"

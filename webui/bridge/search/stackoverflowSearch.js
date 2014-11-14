@@ -2,7 +2,8 @@ angular.module('bridge.search').service('bridge.search.stackoverflowSearch', ['$
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-stack-overflow",
-            name: "Stack Overflow"
+            name: "Stack Overflow",
+            defaultSelected: false
         };
     };
     this.findMatches = function(query, resultArray) {

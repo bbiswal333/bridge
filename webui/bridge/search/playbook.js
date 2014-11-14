@@ -2,7 +2,8 @@ angular.module('bridge.search').service('bridge.search.playbookSearch', ['$http'
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-play-circle",
-            name: "Playbook"
+            name: "Playbook",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {

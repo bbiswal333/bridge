@@ -22,28 +22,8 @@
                         });
                     }
 
-                    function instantiateSerachProviders(injector) {
-                        if(!data.searchProviders) {
-                            return;
-                        }
-
-                        var bridgeSearch, bridgeMobileSearch;
-                        injector.invoke(['bridge.search', 'bridge.mobileSearch', function(search, mobileSearch) {
-                            bridgeSearch = search;
-                            bridgeMobileSearch = mobileSearch;
-                        }]);
-
-                        data.searchProviders.map(function(searchProvider) {
-                            injector.invoke([searchProvider, function(searchProviderInstance){
-                                bridgeSearch.addSearchProvider(searchProviderInstance);
-                                bridgeMobileSearch.addSearchProvider(searchProviderInstance);
-                            }]);
-                        });
-                    }
-
                     fetchUserInfo(function(user)
                     {
-
                         //get all modules
                         var modules = data.modules;
                         var apps = [];
@@ -72,6 +52,7 @@
                         angular.module('bridge.service', ["ui.bootstrap.modal", "ui.bootstrap.tpls"]);
                         angular.module('bridge.service').provider("bridge.service.loader", function () {
                             this.apps = apps;
+                            this.aSearchProvider = data.searchProviders;
                             this.$get = function () { return this; };
                         });
                         angular.module('bridge.app', modules);
@@ -91,8 +72,7 @@
                                 return;
                             }
 
-                            var injector = angular.bootstrap($window.document, ['bridge.app']);
-                            instantiateSerachProviders(injector);
+                            angular.bootstrap($window.document, ['bridge.app']);
                         };
 
                         function load_scripts(array, callback) {
