@@ -1,10 +1,10 @@
-<div style="background-image: url('bridge/menubar/applications/everythingisawesome.png'); height: 150px; width: 100%">
+<div class="app-banner" style="background-image: url('bridge/menubar/applications/banner01.svg');">
 </div>
 <div ng-controller="bridge.menubar.applicationsController" style="padding: 30px 50px 50px 50px; width: 100%" ng-init="adjustModalSize()">
 	<div>
 		<!--<h4 class="box-title">Applications</h4>-->
-		<span style="color:inherit!important;cursor:default!important;margin-right:0; float: right">
-			<bridge.input style="width: 200px;" icon="fa-th-large" model="appFilter"></bridge.input>
+		<span style="color:inherit!important;cursor:default!important;margin-right:20px; float: right">
+			<bridge.input style="width: 200px;" placeholder="search Apps..." model="appFilter"></bridge.input>
 		</span>
 	</div>
 	<tabset>

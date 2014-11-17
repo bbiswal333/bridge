@@ -80,12 +80,11 @@
 .popover.bottom > .arrow{
   display: none!important;
 }
-/* ========================= *\
-|* ----- MEDIA QUERIES ----- *|
-\* ========================= */
 
 .menubar-applications-modal {
-  width: 70%;
+  width: 100%;
+  max-width: 1400px;
+  top:10px;
 }
 
 @media (max-width:1250px){
@@ -134,7 +133,12 @@
 .nav-tabs > li > a{
   border-radius: 0;
 }
-
+.nav{
+  padding-left:15px;
+}
+.tab-content{
+  margin-top: 50px;
+}
 /* ========================= *\
 |* -----     ICON      ----- *|
 \* ========================= */
@@ -211,6 +215,13 @@
 
 .bridge-applications-addButton {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   right: 0px;
+}
+.app-banner{
+  height: 200px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
 }
