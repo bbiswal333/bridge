@@ -44,11 +44,18 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
 
                 $scope.changeSelectedApps = function() {
 
+                function toPlusButton() {
+                    $(".navicon-button").addClass("open");
+                }
+
                 $(".navicon-button").removeClass("open");
-                    $modal.open({
+                console.log('remove open');
+
+                    var modal = $modal.open({
                       templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
                       size: 'lg'
                     });
+                    modal.result.then(toPlusButton,toPlusButton);
                 };
 
                 $scope.weatherData = weatherData.getData();
@@ -60,15 +67,15 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
 $('body').on('mousedown', function (e) {
     $('[data-toggle="popover"]').each(function () {
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.menubar-popover').has(e.target).length === 0 && $('.menubar-popover').scope()) {
-            $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide(); });
+            $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide();  });
             //$('.menubar-popover').scope().$hide();
+            
         }
 
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0 && $('.popover').scope()) {
             $('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
             //$('.popover').scope().$hide();
-
+            console.log('hide');
         }
-         $(".navicon-button").addClass("open");
     });
 });
