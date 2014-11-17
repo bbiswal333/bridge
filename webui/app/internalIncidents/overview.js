@@ -40,7 +40,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             if (configservice.isInitialized === false){
                 configservice.initialize($scope.appConfig);
 
-                bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment'}, function() {
+                bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment', defaultSelected: true}, function() {
                         return ticketData.getRelevantTickets(configservice.data.selection.sel_components, configservice.data.selection.colleagues, configservice.data.selection.assigned_me, configservice.data.selection.created_me, configservice.data.ignoreAuthorAction);
                     }, {
                         keys: ["CATEGORY", "DESCRIPTION"],
