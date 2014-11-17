@@ -1,6 +1,6 @@
 .bridge-mobileMenubar {
 	width: 100%;
-	height: 80px;
+	height: 50px;
 	background-color: #3B3B3B;
 	z-index: 100;
 	position: fixed;
@@ -9,40 +9,33 @@
 #mobileMenuBar-searchfield {
     position: absolute;
     height:100%;
-    left:80px;
-    width:calc(80% - 80px);
+    left:60px;
+    width:calc(90% - 60px);
     background-color:white;
     display:none;
 }
 
 .mobileMenuBar-settingsButton {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 8px;
-    padding-right: 8px;
-    box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-    height:80px;
-    width:80px;
+    height:100%;
+    width:60px;
     cursor: pointer;
     line-height: 50px;
     background-color:rgba(73, 73, 73, 1);        
     color:#e6e6e6;
-    font-family: 'SAP-icons';
-    font-weight: normal;
     text-align: center;
-    font-size:38px;
+    font-size:18px;
     z-index: 1;
     display: inline-block;
     position:absolute  !important;
-
 }
 
 #cancel_search {
     display:none;
-    line-height: 60px;
+    line-height: 50px;
     font-family: inherit;
     right:0;
-    width:20%;
+    width:10%;
+    min-width: 100px;
 }
 
 #search {
