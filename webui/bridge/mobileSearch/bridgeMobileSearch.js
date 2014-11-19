@@ -1,5 +1,5 @@
 angular.module("bridge.mobileSearch", []);
-angular.module("bridge.mobileSearch").service("bridge.mobileSearch", ['$q', function($q) {
+angular.module("bridge.mobileSearch").service("bridge.mobileSearch", ['$q', 'bridgeDataService', function($q, bridgeDataService) {
 	var searchProviders = [];
 	var results = [];
 	var global_query;
@@ -13,6 +13,15 @@ angular.module("bridge.mobileSearch").service("bridge.mobileSearch", ['$q', func
 
 		if(searchProviders.indexOf(searchProvider) >= 0) {
 			return;
+		}
+
+		var bridgeSettings = bridgeDataService.getBridgeSettings();
+		if (bridgeSettings.searchProvider === undefined){
+			bridgeSettings.searchProvider = {};
+		}
+
+		if (bridgeSettings.searchProvider[searchProvider.getSourceInfo().name] === undefined){
+			bridgeSettings.searchProvider[searchProvider.getSourceInfo().name] = { name: searchProvider.getSourceInfo().name, selected: searchProvider.getSourceInfo().defaultSelected};
 		}
 
 		searchProviders.push(searchProvider);
@@ -31,12 +40,15 @@ angular.module("bridge.mobileSearch").service("bridge.mobileSearch", ['$q', func
 		results.length = 0;
 		var deferred = $q.defer();
 		var promises = [];
+		var bridgeSettings = bridgeDataService.getBridgeSettings();
 		promises = searchProviders.map(function(provider) {
-			var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
-			results.push(result);
-			var promise = provider.findMatches(query, result.results);
-			if(promise) {
-				return promise;
+			if (bridgeSettings.searchProvider[provider.getSourceInfo().name].selected) {
+				var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
+				results.push(result);
+				var promise = provider.findMatches(query, result.results);
+				if (promise) {
+					return promise;
+				}
 			}
 		});
 		$q.all(promises).then(function() {
