@@ -12,3 +12,23 @@ global.webkitClient.serverStarted = function ()
     createTrayIcon();
     notifiy_started();
 };
+/*
+global.webkitClient.installNpmModule = function(packageToBeInstalled, callback) {
+	var result = null;
+	var confirmationFunction = function() { result = confirm("An App running in bridge wants to install '" + packageToBeInstalled + "'. \r\nDo you want to continue?"); };
+	var win = gui.Window.get(confirmationFunction);
+	win.on('focus', function() {
+		if(result === null) {
+	  		confirmationFunction.call();
+			if(result == true) {
+				callback(true, "you confirmend");
+			}
+			else {
+				callback(false, "you didn't confirm");
+			}
+		}
+	});
+	win.restore();
+	win.focus();
+	win.show();
+}*/

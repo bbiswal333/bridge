@@ -18,19 +18,34 @@ navigator.featuresAvailable = function () {
     addTest("csstransforms");
     addTest("cssgradients");
     addTest("geolocation");
-    addTest("localstorage");
+    //addTest("localstorage");
 
 /*eslint-disable no-undef */
     for (var i = 0; i < window.feature_check.length; i++) {
         if (!window.feature_check[i].test) {
-/*eslint-enable no-undef */
+
             all_features_available = false;
         }
     }
     return all_features_available;
 };
 
-/*eslint-disable no-undef */
+window.mobile = function() {
+    var platform = navigator.platform;
+
+    switch(platform) {
+         case 'iPod':
+         case 'iPad':
+         case 'iPhone':
+         case 'Pike v7.6 release 92':
+         case 'Pike v7.8 release 517':
+         case 'Android':
+             return true;
+         default:
+             return false;
+    }
+};
+
 if (!window.feature_check) {
     window.feature_check = [];
 }
@@ -43,7 +58,7 @@ window.client.hostname = "localhost";
 window.client.port = 1972;
 
 //set location and client origins
-if (!window.location.origin) 
+if (!window.location.origin)
 {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }

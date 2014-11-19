@@ -1,0 +1,64 @@
+<div class="weather-container" ng-controller="bridge.menubar.weatherDetailsController" style="width: 200px">
+	<div class="weather-box-large weather-row">
+		<div>{{weatherData.city_name}}</div>
+		<!--<div><a target="_blank" href="http://openweathermap.org/city/{{city_id}}">{{city}}</a></div>-->
+		<div class="font-lightweight-large blue">{{weatherData.temperature}} <span ng-if="!weatherData.fahrenheit">°C</span><span ng-if="weatherData.fahrenheit">°F</span></div>
+		<div>{{weatherData.description}}</div><br />
+	</div>
+	<div class="weather-row">
+		<div class="weather-box-small">
+			<i class="{{weatherData.forecastDays[0].weatherIco}}"></i>
+			<br>
+			{{getCurrentDate(0)}}
+			<br>
+			<span>{{weatherData.forecastDays[0].temperatureMin}}°</span><b>{{weatherData.forecastDays[0].temperatureMax}}°</b>
+		</div>
+		<div class="weather-box-small">
+			<i class="{{weatherData.forecastDays[1].weatherIco}}"></i>
+			<br>
+			{{getCurrentDate(1)}}
+			<br>
+			<span>{{weatherData.forecastDays[1].temperatureMin}}°</span><b>{{weatherData.forecastDays[1].temperatureMax}}°</b>
+		</div>
+		<div class="weather-box-small">
+			<i class="{{weatherData.forecastDays[2].weatherIco}}"></i>
+			<br>
+			{{getCurrentDate(2)}}
+			<br>
+			<span>{{weatherData.forecastDays[2].temperatureMin}}°</span><b>{{weatherData.forecastDays[2].temperatureMax}}°</b>
+		</div>
+		<div class="weather-box-small">
+			<i class="{{weatherData.forecastDays[3].weatherIco}}"></i>
+			<br>
+			{{getCurrentDate(3)}}
+			<br>
+			<span>{{weatherData.forecastDays[3].temperatureMin}}°</span><b>{{weatherData.forecastDays[3].temperatureMax}}°</b>
+		</div>
+	</div>
+	<div class="weather-pref">
+		<a href="" ng-click="preferences_click()">{{preferencesText}}</a>
+	</div>
+
+	<div ng-if="showPreferences"  style="width: 100%" ng-controller="bridge.menubar.weatherSettingsController" class="weather-sett">
+	
+		<form name="ConfigItemForm">
+
+			<div class="row">
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<div class="btn btn-default" ng-click="currentConfigValues.fahrenheit = !currentConfigValues.fahrenheit" ng-class="{true:'btn btn_blue',false:'btn btn-default'}[currentConfigValues.fahrenheit]" style="margin-bottom:20px;">&#8457;</div>
+					<div class="btn btn-default" ng-click="currentConfigValues.fahrenheit = !currentConfigValues.fahrenheit" ng-class="{true:'btn btn_blue',false:'btn btn-default'}[!currentConfigValues.fahrenheit]" style="margin-bottom:20px;">&#8451;</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12 form_head" style="float:none;text-align:left;">Choose SAP Location</div>
+				<div class="col-xs-12 has-feedback">
+					<bridge.input model="currentConfigValues.location" style="margin-bottom:20px;" input-typeahead="weatherLocation as weatherLocation.name for weatherLocation in searchLocation($viewValue) | filter:{name:$viewValue}" placeholder="Location.."></bridge.input>
+					<!--<input type="text" class="form-control form" style="margin-bottom:20px;" ng-model="currentConfigValues.location" placeholder="Name.." 
+					typeahead="weatherLocation as weatherLocation.name for weatherLocation in searchLocation($viewValue) | filter:{name:$viewValue}"/>-->
+				</div>
+			</div>
+
+		</form>
+   </div>
+</div>

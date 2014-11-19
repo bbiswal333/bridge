@@ -1,8 +1,8 @@
 ﻿angular.module('app.transport', ["app.transport.data"]);
 angular.module('app.transport').directive('app.transport', ['app.transport.dataService', function (dataService) {
 
-    var directiveController = ['$scope', '$http', '$interval', function ($scope, $http, $interval)
-    {
+	var directiveController = ['$scope', function ($scope)
+	{
 		$scope.box.boxSize = "1";
 		$scope.handleTransports = function() {
 			dataService.loadData().then(function() {
@@ -11,12 +11,12 @@ angular.module('app.transport').directive('app.transport', ['app.transport.dataS
 			});
 		};
 		$scope.handleTransports();
-		$interval($scope.handleTransports(), 5 * 60 * 1000);
-    }];
+		$scope.box.reloadApp($scope.handleTransports, 60 * 5);
+	}];
 
-    return {
-        restrict: 'E',
-        templateUrl: 'app/transport/overview.html',
-        controller: directiveController
-    };
+	return {
+		restrict: 'E',
+		templateUrl: 'app/transport/overview.html',
+		controller: directiveController
+	};
 }]);

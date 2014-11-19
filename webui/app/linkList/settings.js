@@ -1,11 +1,12 @@
-angular.module('app.linklist').appLinkListSettings = 
-    ['app.linklist.configservice', '$scope',  
-        function (appLinklistConfig, $scope) {
+angular.module('app.linklist').appLinkListSettings =
+    ['app.linklist.configservice', '$scope', '$log', '$interval',
+        function (appLinklistConfig, $scope, $log, $interval) {
 
 	$scope.config  = appLinklistConfig;
+	$scope.selectedIndex = 0;
 
 	$scope.addForm = [];
-	for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
+	for (var u = appLinklistConfig.data.listCollection.length - 1; u >= 0; u--) {
 		$scope.addForm.push('');
 	}
 
@@ -39,14 +40,25 @@ angular.module('app.linklist').appLinkListSettings =
         disabled: false
     };
 
+    $scope.handleDrop = function(event, colNo){
+        event.preventDefault();
+        event.stopPropagation();
+
+        $scope.toggleAddForm(colNo);
+        $scope.currentConfigValues.url = event.dataTransfer.getData('text');
+        // $scope.currentConfigValues.url = event.dataTransfer.getData('text/plain');
+
+        var regex = /(.*:)\/\/([a-z\-.]+)(:[0-9]+)?(.*)/g;
+		var urlArray = regex.exec($scope.currentConfigValues.url);
+
+        $scope.currentConfigValues.name = urlArray[2];
+
+        angular.element(event.target).removeClass("app-linklist-dragEnter");
+    };
+
     $scope.addLinkList = function()
     {
         appLinklistConfig.data.listCollection.push([]);
-    };
-
-    $scope.removeLinkList = function(colNo)
-    {
-        appLinklistConfig.data.listCollection.splice(colNo, 1);
     };
 
     $scope.isLinkListEmpty = function(colNo)
@@ -63,7 +75,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 		if(linkList.length > 0)
 		{
-			for (var i = 0; i < linkList.length; i++) 
+			for (var i = 0; i < linkList.length; i++)
 			{
 				var link = linkList[i];
 
@@ -92,77 +104,90 @@ angular.module('app.linklist').appLinkListSettings =
 				}
 			}
 		}
-		if(linkList.length === 0 && colNo !== 0)
-		{	
-			$scope.removeLinkList(colNo);
+		if (entry.id === $scope.currentConfigValues.id) {
+			$scope.currentConfigValues = {};
+			$scope.addForm = [];
 		}
 	};
 
+	function updateEntry (colNo){
+		if($scope.addForm[colNo] === "web")
+		{
+			if(!$scope.currentConfigValues.url){
+                $scope.currentConfigValues.url = "http://";
+			}
+			else if( $scope.currentConfigValues.url.indexOf("http") === -1){
+                $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
+            }
+		    $scope.currentConfigValues.id = 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.name;
+			$scope.currentConfigValues.type = 'hyperlink';
+		}
+		else if($scope.addForm[colNo] === "gui")
+		{
+			    $scope.currentConfigValues.id = 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName;
+				$scope.currentConfigValues.type = 'saplink';
+		}
+	}
+
 	$scope.newEntry = function(colNo)
 	{
-	    if (appLinklistConfig.data.listCollection[colNo].length <= 6)
-		{
-			if($scope.addForm[colNo] === "web")
-			{
-				if(!$scope.currentConfigValues.url || !$scope.currentConfigValues.linkName) {
-					return;
-				}
-				if($scope.currentConfigValues.url.indexOf("http") === -1){
-                    $scope.currentConfigValues.url = "http://" + $scope.currentConfigValues.url;
-                }
-				var entry = {
-				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.linkName,
-					'name': $scope.currentConfigValues.linkName,
-					'url':  $scope.currentConfigValues.url,
-					'type': 'hyperlink'
-				};
-			}
-			else if($scope.addForm[colNo] === "gui")
-			{
-				if(!$scope.currentConfigValues.sapLinkSID || !$scope.currentConfigValues.sapLinkName) {
-					return;
-				}
-				entry = {
-				    'id': 'ID' + colNo + appLinklistConfig.data.listCollection[colNo].length + $scope.currentConfigValues.sapLinkName,
-					'name': $scope.currentConfigValues.sapLinkName,
-					'sid':  $scope.currentConfigValues.sapLinkSID,
-					'transaction': $scope.currentConfigValues.sapLinkTransaction,
-					'parameters': $scope.currentConfigValues.sapLinkParameters,
-					'type': 'saplink'
-				};
-			}
-			$scope.currentConfigValues = {};
-			$scope.setAddForm(colNo,'');
-			appLinklistConfig.data.listCollection[colNo].push(entry);
-		}
+		$scope.editLink = false;
+		updateEntry(colNo);
+		appLinklistConfig.data.listCollection[colNo].push($scope.currentConfigValues);
 	};
 
 	$scope.setAddForm = function(col,value)
 	{
 		$scope.addForm[col] = value;
+		updateEntry(col);
 	};
 
-	$scope.isAddFormPossible = function()
-	{
-		for (var i = 0; i < $scope.addForm.length; i++)
-		{
-			if ($scope.addForm[i] !== '')
-			{
-				return false;
-			}
+	function validateLink(){
+		if ($scope.currentConfigValues.id && !$scope.currentConfigValues.name) {
+			$scope.deleteEntry($scope.selectedIndex, $scope.currentConfigValues);
+			$log.log('link deleted ', $scope.currentConfigValues.id);
 		}
-		return true;
+	}
+
+	var oldValue;
+
+	$scope.selectLink = function(col, link){
+		$scope.editLink = true;
+		validateLink();
+		$scope.selectedIndex = col;
+		oldValue = angular.copy(link);
+		$scope.currentConfigValues = link;
+		if ($scope.currentConfigValues.type === 'hyperlink') {
+			$scope.addForm[col] = 'web';
+		} else if ($scope.currentConfigValues.type === 'saplink'){
+			$scope.addForm[col] = 'gui';
+		}
 	};
 
 	$scope.toggleAddForm = function(col)
 	{
-		if($scope.addForm[col] === '' || $scope.addForm[col] === undefined)
-		{
-			$scope.addForm[col] = 'web';
-		}
-		else if($scope.addForm[col] !== '')
-		{
-			$scope.addForm[col] = '';
-		}
+		validateLink();
+		$scope.selectedIndex = col;
+		$scope.currentConfigValues = {};
+		$scope.addForm[col] = 'web';
+		$scope.newEntry(col);
+		$interval(function() {
+			var container = $("#scrollList" + col)[0];
+			if(container) {
+				container.scrollTop = container.scrollHeight;
+			}
+		});
+	};
+
+	$scope.cancelAdd = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex].splice(index, 1);
+	};
+
+	$scope.cancelEdit = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex][index] = oldValue;
 	};
 }];

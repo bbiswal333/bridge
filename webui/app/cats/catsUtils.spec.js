@@ -6,6 +6,18 @@ describe("Timesheet tools", function () {
 		catsUtils = _catsUtils_;
 	}]));
 
+	it("should calculate a unique ID for a task", function () {
+		var taskA = {};
+		taskA.TASKTYPE = 'DEVL';
+		expect(catsUtils.getTaskID(taskA)).toEqual('DEVL');
+		taskA.RAUFNR = 'RAUF';
+		expect(catsUtils.getTaskID(taskA)).toEqual('RAUFDEVL');
+		taskA.ZZSUBTYPE = 'MGT';
+		expect(catsUtils.getTaskID(taskA)).toEqual('RAUFDEVLMGT');
+		taskA.ZCPR_OBJGEXTID = 'UNIQUE_ID_01';
+		expect(catsUtils.getTaskID(taskA)).toEqual(taskA.ZCPR_OBJGEXTID);
+	});
+
 	it("should map the name to the state descriptor", function () {
 		expect(catsUtils.getDescForState("")).toEqual("");
 		expect(catsUtils.getDescForState("undefined")).toEqual("");
@@ -47,6 +59,7 @@ describe("Timesheet tools", function () {
 		taskA.TASKTYPE = 'VACA';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
 		taskA.TASKTYPE = 'ABSE';
+		taskA.UNIT = "H";
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
 		taskA.TASKTYPE = 'COMP';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(true);
@@ -61,6 +74,9 @@ describe("Timesheet tools", function () {
 		taskA.TASKTYPE = 'MESS';
 		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
 		taskA.TASKTYPE = 'ICON';
+		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
+		taskA.TASKTYPE = 'ABSE';
+		taskA.UNIT = "TA";
 		expect(catsUtils.isFixedTask(taskA)).toEqual(false);
 	});
 

@@ -1,5 +1,5 @@
-angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "app.itdirect.formatter",
-    function($scope, $routeParams, bridgeDataService, ticketData, config, formatter){
+angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "bridge.converter", "employeeService",
+    function($scope, $routeParams, bridgeDataService, ticketData, config, converter, employeeService){
 
         var that = this;
         $scope.prios = ticketData.prios;
@@ -10,7 +10,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         $scope.filterTable = function(oTicket){
             var bTicketPriorityMatches = false;
             angular.forEach($scope.prios, function(prio){
-               if (prio.active === true && oTicket.PRIORITY.toString() === prio.key){
+               if (prio.active === true && oTicket.URGENCY.toString() === prio.key){
                    bTicketPriorityMatches = true;
                }
             });
@@ -42,7 +42,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         };
 
         $scope.getFormattedDate = function(sAbapDate){
-            return formatter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
+            return converter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
         };
 
         this.containsTicket = function(sGuid){
@@ -57,8 +57,14 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
             function addAndEnhanceTicket(ticket) {
-                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&SAPROLE=ZITSERVREQU&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
+                ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
                 ticket.bridgeCategory = sTicketCategory;
+
+                if (ticket.CREATED_BY !== "") {
+                    employeeService.getData(ticket.CREATED_BY).then(function success(employeeData){
+                        ticket.creator = employeeData;
+                    });
+                }
 
                 if (!that.containsTicket(ticket.GUID.toString())){
                     $scope.tickets.push(ticket);

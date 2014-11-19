@@ -1,24 +1,31 @@
-﻿<div id="innerbox" class="{{module_name.replace('.', '-')}} innerbox" ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client}" ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
-    <div class="box-heading">
-        <div class="box-heading-content">
-            <h6 class="box-title">{{title}}</h6>
-            <span class="box-icon" ng-class="icon_css"></span>
-            <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(id)">&#xe00c;</span>
+﻿<div ng-class="module_name.replace('.', '-')">
+    <div id="innerbox" class="innerbox" 
+        ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client, 'shake':shaking}"
+        ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+        <!--  {{module_name.replace('.', '-')}}Box -->
+        <div class="box-heading">
+            <div class="box-heading-content">
+                <h6 class="box-title">{{title}}</h6>
+                <i class="grey-font-60" ng-if="beta">beta</i>
+                <span class="box-icon" ng-class="icon_css"></span>
+                <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(id)">&#xe00c;</span>
+            </div>
         </div>
-    </div>
 
-    <div id="boxContent" class="box-content select"> 
-    </div>
+        <div id="boxContent" class="box-content select"> 
+        </div>
 
-    <div class="box-content" style="font-size:15px;text-align:center;" ng-if="needs_client && !client">
-        <br />
-        <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
-                <a href="" ng-click="show_download()" class="download-icon" title="Download latest client">&#xe03a;</a>
-        </div>        
-            Please download the
+        <div class="box-content" style="font-size:15px;text-align:center;" ng-if="needs_client && !client">
             <br />
-            latest bridge client to
+            Please start the Bridge
             <br />
-            enable content.            
+            client to enable content.
+            <br />
+            <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
+            Download here:
+            <br />
+            <a href="" ng-click="show_download()" class="download-icon" title="Download latest client">&#xe03a;</a>
+            </div>
+        </div>
     </div>
 </div>

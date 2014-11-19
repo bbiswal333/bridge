@@ -1,0 +1,14 @@
+<div ng-controller="bridge.menubar.applicationsController" style="padding: 50px; width: 100%" ng-init="adjustModalSize()">
+	<div>
+		<!--<h4 class="box-title">Applications</h4>-->
+		<span class="settingsIcon" style="color:inherit!important;cursor:default!important;margin-right:0;"><span class="fa fa-th-large"></span></span>
+	</div>
+	<tabset>
+	    <tab ng-repeat="category in categories" heading="{{category.name}}" active="category.active" disabled="category.disabled">
+			<button ng-repeat="app in category.apps" type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[app.metadata.show];" ng-click="app.metadata.show = !app.metadata.show" class="btn btn-default settingsBtn" style="text-align:left;">
+				<i class="box-icon {{app.metadata.icon_css}}" style="color:inherit;"></i>
+				<p style="padding-top:5px;margin: 0 0 0 0;" >{{app.metadata.title}}</p>
+			</button>
+	    </tab>
+    </tabset>
+</div>

@@ -1,11 +1,12 @@
-﻿describe("The bridge http interceptor", function () {
+﻿/* global sessionStorage */
+describe("The bridge http interceptor", function () {
     var interceptor;
     var bridgeDataServiceMock;
     var $rootScope;
     var $http;
 
     beforeEach(function () {
-        
+
         // mock away the bridgeDataService
         angular.module("mock.app", []).service("bridgeDataService", function () {
             this.clientModeActive = false;
@@ -100,7 +101,7 @@
         mockConfig.method = "GET";
 
         bridgeDataServiceMock.logModeActive = true;
-        var changedConfig = interceptor.request(mockConfig);
+        interceptor.request(mockConfig);
 
         var log = JSON.parse(sessionStorage.getItem("bridgeLog"));
         expect(log[0].sType).toBe("Original Request");
@@ -119,10 +120,10 @@
             method: "GET"
         };
         mockResponse.status = 200;
-        mockResponse.headers = function () { return "abc"; }
+        mockResponse.headers = function () { return "abc"; };
 
         bridgeDataServiceMock.logModeActive = true;
-        var changedConfig = interceptor.response(mockResponse);
+        interceptor.response(mockResponse);
 
         var log = JSON.parse(sessionStorage.getItem("bridgeLog"));
         expect(log[0].sType).toBe("Response");
@@ -140,10 +141,10 @@
             method: "GET"
         };
         mockResponse.status = 404;
-        mockResponse.headers = function () { return "abc"; }
+        mockResponse.headers = function () { return "abc"; };
 
         bridgeDataServiceMock.logModeActive = true;
-        var changedConfig = interceptor.responseError(mockResponse);
+        interceptor.responseError(mockResponse);
 
         var log = JSON.parse(sessionStorage.getItem("bridgeLog"));
         expect(log[0].sType).toBe("Response Error");

@@ -1,0 +1,311 @@
+.trim-info {
+    max-width: 50px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 15px;
+    position: relative;
+}
+
+.image_rounded_shadow_sirius_program img {
+    margin: 5px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    border-radius: 100%;
+    margin-top: 2px;
+}
+
+.sirius-boxLeft {
+    width: 10%;
+    float: left;
+    font-family:'Open Sans', sans-serif;
+    color: #707070;
+    margin-top: 5px;
+}
+
+.sirius-boxRight {
+    width: 90%;
+    float: left;
+    font-family:'Open Sans', sans-serif;
+    color: #707070;
+    margin-top: 12px;
+}
+
+.sirius-icon-small {
+    font-family:'bridge_icons';
+    font-size: 14px;
+    margin-right: 2px;
+    float: right;
+    padding-right: 8px;
+    color:#0099CC;
+}
+
+.myAttrCheckbox input:checked + label[for]:before {
+    color:#428bca;
+}
+
+.siriusSettingsBorder{
+    margin: 5px 5px 5px 5px;
+}
+
+.siriusDropDownBox{
+    max-height: 200px;
+    width:375px;
+    overflow: auto;
+}
+
+.programLeads {
+    text-align: left;
+    font-size: 12px;
+    height: 35px;
+    padding-top: 10px;
+    margin-top: 0px;
+}
+
+.taskFilter-selected-text {
+    max-width: 80px;
+    width: auto;
+    height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 0.9em;
+}
+
+.taskFilter-selected {
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    max-width: 150px;
+    width: auto;
+    height: 20px;
+    padding: 0px 8px 2px 8px;
+    margin-left: 5px;
+    margin-top: 10px;
+    border-radius: 15px;
+    /*font-size: 12px;*/
+}
+
+.taskFilter-selected-remove {
+    padding-left: 13px;
+    padding-right: 0px;
+}
+
+.taskList {
+    background-color: rgb(229, 242, 250);
+    border-top: 2px solid white;
+}
+
+.taskList td{
+    padding: 3px;
+}
+
+.siriusEllipsisCompiled {
+    display: block !important;
+}
+
+.popover {
+    z-index: 99999999;
+    word-wrap: break-word;
+    /*  word-break: break-all;*/
+}
+
+.pseudoTileContent {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
+/* Task List */
+.taskStatusOpen {
+    background-color: #BAD4E9 !important;
+    color: #575E88;
+}
+
+.taskStatusInProcess {
+    background-color: #FFFFE4 !important;
+    color: #FF8F00;
+}
+
+.taskStatusNA {
+    background-color: #f4f4f4 !important;
+    color: #333333;
+}
+
+.taskStatusCompleted {
+    background-color: #e2f7f0 !important;
+    color: #008a3b;
+}
+
+.taskStatusCritical {
+    background-color: #fbdfdf !important;
+    color: #e52929;
+}
+
+.dropdown-menu > li > a:hover{
+    background-color: rgba(66,139,202,1);
+    color: white;
+}
+
+.sirius-icon{
+    background-image: url(../../app/sirius/img/LogoIcon_50px.png);
+
+    background-size: 20px;
+
+    height: 20px;
+
+    width: 20px;
+
+    margin-top: 5px;
+}
+
+
+.whiteBackgr {
+    /* background: #ffffff; */
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-top:-15px;
+
+
+}
+
+@media (min-width: 1px) {
+    .tileContent4PseudoTile {
+        width: 100%;
+    }
+}
+
+@media (min-width: 800px) {
+    .tileContent4PseudoTile {
+        width: 50%;
+    }
+}
+
+@media (min-width: 988px) {
+    .tileContent4PseudoTile {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1500px) {
+    .tileContent4PseudoTile {
+        width: 50%;
+        margin: 1px 0 10px 0;
+    }
+}
+
+.programItemInProgOverview {
+    cursor: auto;
+    width: 188px;
+    /*height: 75px;*/
+    padding: 0;
+    /* box-shadow: 1px 3px 0 0 #DADADA; */
+    margin: 25px 0px 10px -5px;
+    padding-right: 0px;
+    padding-left: 6px;
+}
+
+.cardheader-gapfiller {
+    background-color: #d9edf7;
+    height: 25px;
+    position: absolute;
+    right: 10%;
+}
+
+.cardheader2 {
+    position: absolute;
+    height: 10px;
+    display: block;
+    right: 0px;
+    /* top: -30px; */
+}
+
+.programPanelHdr {
+    padding-left: 5px;
+    text-align: left;
+    background-color: #d9edf7;
+    height: 25px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 12px;
+    width: 89%;
+}
+
+.pseudoTileContent {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
+.programItemContent {
+    text-align: center;
+    font-size: 12px;
+    box-shadow: 0 2px 2px #DADADA;
+    height: 35px;
+    padding-top: 10px;
+    margin-top: -10px;
+}
+
+.boxProgOverview {
+    width: 50%;
+    float: left;
+    color: #707070;
+}
+
+.trafficLightStatusGrey {
+    background-color: #f4f4f4 !important;
+    color: #333333;
+}
+
+.trafficLightStatusEmpty {
+    background-color: white !important;
+    color: #007cc0;
+}
+
+.trafficLightStatusYellow {
+    background-color: #FFFDE8 !important;
+    color: #f0ab00;
+}
+
+.trafficLightStatusRed {
+    background-color: #fbdfdf !important;
+    color: #e52929;
+}
+
+.trafficLightStatusGreen {
+    background-color: #e2f7f0 !important;
+    color: #008a3b;
+}
+
+.siriusEllipsisCompiled {
+    display: block !important;
+}
+
+.popover {
+    z-index: 99999999;
+    word-wrap: break-word;
+    /*  word-break: break-all;*/
+}
+.table-header {
+    background-color:#a4cbe2;
+}
+
+.gridDiv {
+    padding-right: 5px;
+    padding-left: 5px;
+    /*border: 1px solid rgb(212, 212, 212);
+    /*height: 90%;*/
+    max-height: 90%;
+    background-color: rgba(255, 255, 255, 0.8);
+    overflow:auto;
+}
+
+.disabled {
+    background: transparent;
+}

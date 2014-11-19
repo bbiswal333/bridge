@@ -1,8 +1,5 @@
 angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     var self = this;
-
-    var MILLISECS_DAY = 24 * 3600 * 1000;
-
     var _additionalData = {};
 
     var _weekdays = [{
@@ -110,11 +107,9 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
         for (var prop in data_o) {
             if (data_o.hasOwnProperty(prop)) {
-                var key = Math.floor(prop / MILLISECS_DAY);
-                _additionalData[key] = data_o[prop];
+                _additionalData[prop] = data_o[prop];
             }
         }
-
         return true;
     };
 
@@ -124,7 +119,6 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 return _additionalData[prop];
             }
         }
-
         return null;
     };
 
@@ -133,7 +127,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var firstDayInMonth = new Date(year_i, month_i, 1).getDay();
         var daysInLastMonth = 0;
         var today = new Date(); //Needed as a workaround for strange behaviour of javascript
-        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)	
+        var todayInMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime(); //The begin of today (00:00) in milliseconds-format (needed for comparisons)
 
         cal[0] = [];
         if (startOnSunday_b) {
@@ -145,15 +139,14 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
                 daysInLastMonth = 6;
             }
         }
-
-        var firstDateOfGridInMs = new Date(year_i, month_i, 1).getTime() - (daysInLastMonth * MILLISECS_DAY);
-        var firstDateOfGridAsDays = Math.floor(firstDateOfGridInMs / MILLISECS_DAY);
+        var firstDateOfGridInMs = new Date(year_i, month_i, 1 - daysInLastMonth).getTime();
+        var firstDateOfGrid = new Date(firstDateOfGridInMs);
 
         var i;
         var stop = false;
         for (i = 0; !stop; i++) {
-            var additionalDataForThisDay = lookupAdditionalDataForDay(firstDateOfGridAsDays + i);
-            var thisDay = new Date(firstDateOfGridInMs + i * MILLISECS_DAY);
+            var thisDay = new Date(firstDateOfGrid.getFullYear(), firstDateOfGrid.getMonth(), firstDateOfGrid.getDate() + i);
+            var additionalDataForThisDay = lookupAdditionalDataForDay(thisDay.getTime());
             cal[Math.floor(i / 7)][i % 7] = {
                 dayNr: thisDay.getDate(),
                 inMonth: (thisDay.getMonth() === month_i),
@@ -166,14 +159,17 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             };
 
             if ((i + 1) % 7 === 0) {
-                if (new Date(firstDateOfGridInMs + (i + 1) * MILLISECS_DAY).getMonth() !== month_i) {
+                var dateToCheck = thisDay;
+                if (!startOnSunday_b) {
+                    dateToCheck.setDate(thisDay.getDate() + 1);
+                }
+                if (dateToCheck.getMonth() !== month_i) {
                     stop = true;
                 } else {
                     cal[Math.floor((i + 1) / 7)] = [];
                 }
             }
         }
-
         return cal;
     };
 
@@ -220,7 +216,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
             res += minutes_i + ((minutes_i === 1) ? " minute" : " minutes");
         }
 
-        return res;       
+        return res;
     };
 
     this.useNDigits = function(val_i, n_i) {
@@ -337,6 +333,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         //ISO 8601
         //+ (date_o.getTimezoneOffset() / 60) * 3600000) -
         var res = {};
+        var MILLISECS_DAY = 24 * 3600 * 1000;
 
         var jan4Week = new Date(date_o.getFullYear(), 0, 4);
         var jan4WeekDay = jan4Week.getDay();
@@ -375,10 +372,10 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     this.getUTC = function (year, month, date) {
         //Date.UTC is a function and not a constructor, cannot be changed here
         /*eslint-disable new-cap*/
-        var returnDate = new Date(Date.UTC(year, month, date)); 
+        var returnDate = new Date(Date.UTC(year, month, date));
         if (!arguments || arguments.length === 0) {
             var today = new Date();
-            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())); 
+            returnDate = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
             return returnDate;
         }
         return returnDate;

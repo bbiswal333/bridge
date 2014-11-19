@@ -1,0 +1,53 @@
+.table-cell{
+    padding-top:8px;
+}
+.ngCellText{
+	border:2px solid white;
+	height:40px;
+}
+.ic-prio_col{
+	width: 48%;
+	height: 50%;
+}
+.ic-prio_col:nth-child(2), .ic-prio_col:nth-child(4) {
+	margin-left: 0;
+	width: 45%;
+	float: right;
+	margin-right: 5px;
+}
+.ic-prio_col:nth-child(3), .ic-prio_col:nth-child(4) {
+	margin-top: 5px;
+}
+.ic-prio_container{
+	width: 80%;
+	height: 94%;
+	float: left;
+}
+.ic-btn-container{
+	width: 20%;
+	height: 86%;
+	float: right;
+}
+.ic-btn-box{
+    
+    height: 25%;
+    margin-right: 0;
+    margin-bottom: 5px;
+    float: right;
+}
+.ic-reporter-icg
+{
+	height:80%; 
+	border-radius:100%; 
+	margin-right:20px; 
+	vertical-align:middle; 
+	pointer-events:all
+}
+.ic-reporter-img-lrg
+{
+	height:100px;
+	border-radius:100%;
+	position:fixed;
+	pointer-events:all; 
+	z-index:99;
+}

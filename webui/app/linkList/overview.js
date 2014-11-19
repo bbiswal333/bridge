@@ -1,9 +1,54 @@
 angular.module('app.linklist', ['ui.sortable']);
 
+angular.module('app.linklist').directive('scrollBottom', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr){
+            $(element).on("click", function(){
+/*eslint-disable no-undef*/
+                var $id = angular.element(document.querySelector('#' + attr.scrollBottom));
+/*eslint-enable no-undef*/
+                $id.scrollTop($id[0].scrollHeight + 50);
+            });
+        }
+    };
+});
+
+angular.module('app.linklist').directive('droppable', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            // element[0].addEventListener('drop', scope.handleDrop, false);
+
+            var dnD = {
+                handleDragLeave : function(){
+                    element.removeClass("app-linklist-dragEnter");
+                },
+                handleDragEnter : function(e) {
+                    if (e.preventDefault){
+                        e.preventDefault();
+                    }
+                    element.addClass("app-linklist-dragEnter");
+                },
+                handleDrop : function(e){
+                    scope.handleDrop(e, attrs.droppable);
+                    scope.$apply();
+                }
+            };
+
+            element.bind("dragover", dnD.handleDragEnter);
+            element.bind("dragleave", dnD.handleDragLeave);
+            // element.bind("drop", dnD.handleDrop);
+            element[0].addEventListener('drop', dnD.handleDrop, false);
+
+        }
+    };
+});
+
 angular.module('app.linklist').directive('app.linklist', ['app.linklist.configservice', '$window', function(appLinklistConfig, $window) {
 
     var directiveController = ['$scope', '$timeout', function ($scope) {
-         
+
         $scope.box.settingScreenData = {
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linklist').appLinkListSettings
@@ -15,7 +60,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             var configCopy = angular.copy(appLinklistConfig.data);
 
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
-                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {  
+                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
                     var linkList = configCopy.listCollection[i];
 
                     for (var j = linkList.length - 1; j >= 0; j--){
@@ -23,15 +68,21 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                         delete linkList[j].editable;
                         delete linkList[j].old;
                         delete linkList[j].sapGuiFile;
+                        if (!linkList[j].name){
+                            linkList.splice(j, 1);
+                        }
                     }
                 }
             }
+
             return configCopy;
         };
 
         function setDefaultConfig()
         {
             appLinklistConfig.data.listCollection.length = 0;
+            appLinklistConfig.data.listCollection.push([]);
+            appLinklistConfig.data.listCollection.push([]);
             appLinklistConfig.data.listCollection.push([]);
             appLinklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
             appLinklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
@@ -64,14 +115,45 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             return listCollection;
         }
 
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
+        if (appLinklistConfig.isInitialized === false) {
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
+                appLinklistConfig.data = angular.copy($scope.appConfig);
+                appLinklistConfig.data.listCollection = eventuallyRemoveDuplicates(appLinklistConfig.data.listCollection);
+            }
+            else {
+                setDefaultConfig();
+            }
 
-            appLinklistConfig.data = angular.copy($scope.appConfig);
-            appLinklistConfig.data.listCollection = eventuallyRemoveDuplicates(appLinklistConfig.data.listCollection);
+            for (;appLinklistConfig.data.listCollection.length < 3;) {
+                appLinklistConfig.data.listCollection.push([]);
+            }
+
+            appLinklistConfig.isInitialized = true;
         }
-        else {
-            setDefaultConfig();
-        }
+
+        $scope.containsValidEntries = function(list){
+            if (list.length > 0) {
+                var validEntrieExists = false;
+                list.some(function(entry){
+                    if (entry.name) {
+                        validEntrieExists = true;
+                        return true;
+                    }
+                });
+                return validEntrieExists;
+            }
+            return false;
+        };
+
+        $scope.numberOfValidLists = function(){
+            var number = 0;
+            appLinklistConfig.data.listCollection.forEach(function(list){
+                if ($scope.containsValidEntries(list)) {
+                    number++;
+                }
+            });
+            return number;
+        };
 
         $scope.openBlob = function(link){
             $window.open("https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid=" + link.sid +
@@ -80,7 +162,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
         };
 
         $scope.$watch("config.data", function () {
-            if($scope.config.data.listCollection.length > 1) {
+            if($scope.numberOfValidLists() > 1) {
                 $scope.box.boxSize = 2;
             } else {
                 $scope.box.boxSize = 1;

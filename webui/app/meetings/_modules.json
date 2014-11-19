@@ -1,12 +1,13 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.meetings",
 		"title"					:	"Meetings",
 		"icon_css"				:	"fa fa-users",
 		"overview_directive"	:	"app.meetings",
 		"needs_client"			:	true,
-		"default_hidden"		: 	true	
+		"default_hidden"		:	true
 	},
 	"modules" : [],
 	"js_files" : ["ews.js", "overview.js", "settings.js", "config.js"],

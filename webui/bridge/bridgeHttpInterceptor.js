@@ -78,7 +78,7 @@
                     logService.log(config, "Request");
                 }
             }
-            
+
             config.timer = $timeout(function () {
                 $rootScope.showLoadingBar = true;
             }, 500, true);
@@ -88,7 +88,7 @@
         'response': function (response) {
             checkLoadingStatus(response);
             logResponse(response, "Response");
- 
+
             return response || $q.when(response);
         },
         'responseError': function (response) {

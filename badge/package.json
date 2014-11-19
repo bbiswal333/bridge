@@ -1,0 +1,9 @@
+{
+  "name": "bridge-badges",
+  "description": "Bridge Application",
+  "version": "0.0.1",
+  "devDependencies": {    
+    "request": "~2.40.0",
+    "xml2js": "0.4.1"
+  }   
+}

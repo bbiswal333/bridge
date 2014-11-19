@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-controller="bridgeController">
+<head>
+    <!-- browser compatibility  -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <!-- Use UTF-8 as charset to display special chars like ß -->
+    <!--     <meta charset="utf-8"> -->
+
+    <!-- browser test -->
+    <script src="lib/modernizr-2_7_1/modernizr.js"></script>
+    <script src="browser.js"></script>
+
+    <!-- external css -->
+    <link href="lib/bootstrap-3_1_1/css/bootstrap.css" rel="stylesheet" />
+    <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
+    <!--<link href="lib/ng-grid-2_0_11/ng-grid.css" rel="stylesheet">-->
+
+    <!-- css -->
+    <link href="css/background-image.css" rel="stylesheet" />
+    <link href="lib/angular-motion/angular-motion.css" rel="stylesheet" />
+
+    <!--<link href="css/background-stripes.css" rel="stylesheet" />-->
+    
+    <link href="css/bridge.css" rel="stylesheet" />
+    <link href="css/bridgeColors.css" rel="stylesheet" />
+    <link href="css/notificationStyles.css" rel="stylesheet" />
+    <link href="css/bridgeCheckbox.css" rel="stylesheet" />
+    <link href="css/bridgeInput.css" rel="stylesheet" />
+    <link href="css/mobile.css" rel="stylesheet" />
+
+    <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
+    <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
+    <script src="lib/jquery.timeago.js"></script>
+    <script src="lib/jquery-ui-touch-0_2_3/jquery-ui-touch-punch.min.js"></script>
+
+    <script src="lib/angular-1_2_25/angular.js"></script>
+    <script src="lib/angular-1_2_25/angular-route.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-resource.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-animate.min.js"></script>
+    <script src="lib/angular-1_2_25/angular-sanitize.min.js"></script>
+
+    <script src="lib/socket.io.js"></script>
+    <script src="lib/fuse/fuse.js"></script>
+
+    <script src="lib/d3_3_4_6/d3.min.js"></script>
+    <script src="lib/nvd3_1_1/nv.d3.min.js"></script>
+    <script src="lib/angularjs-nvd3-directives_0_0_7-6/angularjs-nvd3-directives.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/nvd3_1_1/nv.d3.css">
+
+    <script src="bridge/piwik.js"></script>
+    <script src="lib/xml2json.js"></script>
+
+    <!-- icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
+    <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">
+
+    <!-- external packed libs -->
+    <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
+    <script src="lib/ng-grid-2_0_11/ng-grid.min.js"></script>
+    <script src="lib/ng-grid-2_0_11/ngGridFlexibleHeightPlugin.js"></script>
+
+    <script src="lib/angular-strap-2_1_0/angular-strap.js"></script>
+    <script src="lib/angular-strap-2_1_0/angular-strap.tpl.min.js"></script>
+    <script src="lib/jQueryUISortable.js"></script>
+    <script src="lib/stacktracejs-140806/stacktrace.js"></script>
+    <script src="lib/lodash-2_4_1/lodash.compat.min.js"></script>
+    <script src="lib/fileSaver-140822/fileSaver.js"></script>
+
+    <!-- sigma.js required for Jenkins dependancy graph -->
+    <script src="lib/sigma-1_0_3/sigma.min.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.parsers.json.min.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.plugins.dragNodes.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.plugins.neighborhoods.js"></script>
+    <script src="lib/sigma-1_0_3/sigma.canvas.edges.arrow.js"></script>
+
+    <!--<script src="//js.api.here.com/ee/2.5.4/jsl.js?with=all" type="text/javascript" charset="utf-8"></script>--><!--
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"
+            type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"
+            type="text/javascript" charset="utf-8"></script>-->
+
+    <script src="loader.js"></script>
+
+    <title>Bridge</title>
+</head>
+
+<body class="noselect grey-60" ng-if="configLoadingFinished" ng-click="hideIcons()">
+        <div>
+            <bridge.mobile-menubar></bridge.mobile-menubar>
+        </div>
+        <bridge.mobile-search-results></bridge.mobile-search-results>
+
+        <div id="resultArea" ng-click="stopPropagation(); $event.stopPropagation();">
+            <div bridge.mobile-dashboard id="feedbackResult" class="iconResult" template-url="bridge/mobileDashboard/feedback/bridgeFeedback.html"></div>
+            <div bridge.mobile-dashboard id="notificationsResult" class="iconResult" template-url="bridge/mobileDashboard/notifications/bridgeNotifications.html"></div>
+            <div bridge.mobile-dashboard id="weatherResult" class="iconResult" template-url="bridge/mobileDashboard/weather/bridgeWeather.html"></div>
+        </div>
+</body>
+
+</html>

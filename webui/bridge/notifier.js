@@ -5,7 +5,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   icons.push("../img/notifier_red_cross.png"); // Error
   var DEFAULT_DURATION = 5000;
   var notifications = JSON.parse($window.localStorage.getItem('notifcations')) || [];
-  
+
   //var Notifier = function (text, body, icon, tag, duration) {
   var Notifier = function(notification){
     var self = this;
@@ -118,7 +118,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
     };
 
     this.getPermission = function () {
-     if (typeof $window.Notification === "undefined") { 
+     if (typeof $window.Notification === "undefined") {
         return undefined;
       }
       else if (Notification.permission === "granted") {
@@ -139,7 +139,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   //Also see here: http://stackoverflow.com/questions/5040107/webkit-notifications-requestpermission-function-doesnt-work
   Notifier.prototype.chromePreCheckRequestNeeded = function () {
     if (typeof $window.Notification !== "undefined") {
-      return (Notification.permission === "default");  
+      return (Notification.permission === "default");
     }
     return false;
   };
@@ -154,7 +154,7 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
         $window.localStorage.setItem('notifcations', JSON.stringify(notifications));
     }
 
-  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onCLick_fn, kindOf_s) {
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onClick_fn, kindOf_s, duration_i, routeURL_s) {
       var notification = {
           title: title_s,
           body: body_s,
@@ -162,12 +162,15 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
           app: appIdentifier_s || "",
           callback: function(notification) {
               notification.state = 'read';
-              onCLick_fn(notification.app);
+              if (onClick_fn) {
+                onClick_fn(notification.app, notification.routeURL);
+              }
           },
           timestamp: new Date().getTime(),
           kindOf: kindOf_s,
           state: 'new',
-          duration: DEFAULT_DURATION
+          duration: duration_i || DEFAULT_DURATION,
+          routeURL: routeURL_s || ""
       };
 
       var notifier = new Notifier(notification);
@@ -180,14 +183,14 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   var instance = new Notifier();
 
   return {
-    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info");
+    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
+      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info", duration_i, routeURL_s);
     },
-    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success");
+    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
+      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success", duration_i, routeURL_s);
     },
-    showError: function (title_s, body_s, appIdentifier_s, onClick_fn) {
-      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error");
+    showError: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
+      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error", duration_i, routeURL_s);
     },
     chromePreCheckRequestNeeded: function () {
       return instance.chromePreCheckRequestNeeded();
@@ -210,5 +213,5 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
     store: function() {
       storeAllNotificationsInLocale();
     }
-  };  
+  };
 }]);

@@ -1,0 +1,147 @@
+.app-getHome-settings-row {
+	padding-bottom: 8px;
+	margin-left: 0;
+	margin-right: 0;
+	min-height: 45px;
+}
+
+.app-getHome-settings-editIcons {
+	display: inline-block;
+	float: right;
+	clear: right;
+	padding-left: 5px;
+	text-align: center;
+}
+
+.app-getHome-settings-address {
+	-o-text-overflow: ellipsis;   /* Opera */
+	text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+	white-space: nowrap;  
+	word-break:break-all;
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	width: -moz-calc(100% - 25px);
+	width: -webkit-calc(100% - 25px);
+	width: calc(100% - 40px);
+	height: 32px;
+	line-height: 32px;
+}
+
+.app-getHome-settings-add-button,
+.app-getHome-settings-add-form {
+	margin-top: 20px;
+}
+
+.arrowLine {
+	padding-left: 12px;
+	background-image: url(/img/arrowLine.png);
+	background-repeat: repeat-y;
+}
+
+.arrowHead {
+	padding-left: 12px;
+	background-image: url(/img/arrowHead.png);
+	background-repeat: repeat-y;
+	height: 13px;
+}
+
+.app-getHome-location-dropdown {
+	font-size: 1.5rem;
+}
+
+.app-getHome-location-dropdown.from {
+	margin-bottom: 10px;
+}
+
+.app-getHome-location-dropdown.to {
+	margin-top: 10px;
+}
+
+.app-getHome-time {
+	font-size: 2rem;
+	height: 54px;
+	font-weight: bold;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+.app-getHome-time:hover {
+	cursor: pointer;
+}
+
+.app-getHome-good {
+	color: #4EA175;
+}
+
+.app-getHome-delayed {
+	color: #E76F24;
+}
+
+.app-getHome-bad {
+	color: #D53F26;
+}
+
+.app-getHome-detail {
+	height: 600px;
+}
+
+.app-getHome-settings-map {
+	height: 400px;
+	width: 100%;
+}
+
+.app-getHome-detail-legend {
+	font-weight: bold;
+	text-align: center;
+	font-size: 2em;
+}
+
+.app-getHome-detail-legend span:first-of-type {
+	margin-right: 150px;
+}
+
+.app-getHome-detail-traffic {
+	color: rgb(93, 111, 182);
+}
+
+.app-getHome-detail-no-traffic {
+	color: rgb(206, 90, 187);
+}
+
+.getHome-route-option {
+	background-color: #ffffff;
+	border: 0px;
+	border-radius: 7px;
+}
+
+.getHome-route-option:hover {
+	background-color: #888888;
+	color: #ffffff;
+}
+
+.getHome-route-option-selected {
+	background-color: #444444;
+	color: #ffffff;
+}
+
+.getHome-route-column {
+	width: 120px;
+	height: 65px;
+	float: left;
+	color: white;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.app-getHome-settings-mapDescription {
+	width: 300px;
+	height: 200px;
+	background: rgba(0,0,0, 0.9);
+	padding: 20px;
+	position: absolute;
+	top: 10px;
+	left: 25px;
+	color: white;
+}

@@ -5,52 +5,47 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
 	this.sundayweekstart = false;
-	this.catsProfile = "DEV2002C";
-	this.colorScheme = "basicBlue";
+	this.colorScheme = "colorful";
 
-    function getIndex (tasks, task) {
-        var index = -1;
-        var foundIndex = index;
-        tasks.some(function(taskInTasks) {
-            index++;
-            if (catsUtils.isSameTask(taskInTasks, task)) {
-            	foundIndex = index;
-              	return true;
-            }
-        });
-        return foundIndex;
-    }
+	function getIndex (tasks, task) {
+		var index = -1;
+		var foundIndex = index;
+		tasks.some(function(taskInTasks) {
+			index++;
+			if (catsUtils.isSameTask(taskInTasks, task)) {
+				foundIndex = index;
+				return true;
+			}
+		});
+		return foundIndex;
+	}
 
-    this.copyConfigIfLoaded = function (catsConfigService) {
+	this.copyConfigIfLoaded = function (catsConfigService) {
+		var that = this;
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
 				this.favoriteItems = catsConfigService.favoriteItems;
+				this.favoriteItems.forEach(function(favoriteItem) {
+					that.enhanceTask(favoriteItem);
+				});
 			}
 			if (catsConfigService.lastUsedDescriptions) {
 				this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
 			}
 			if (catsConfigService.catsProfile) {
-				this.catsProfile = catsConfigService.catsProfile;
+				this.catsProfile = undefined;
 			}
 			if (catsConfigService.sundayweekstart) {
 				this.sundayweekstart = catsConfigService.sundayweekstart;
 			}
 			if (catsConfigService.colorScheme) {
-				this.colorScheme = catsConfigService.colorScheme;
+				this.colorScheme = "colorful";
 			}
 		}
 	};
 
-	this.getTaskID = function (task) {
-		if(task.ZCPR_OBJGEXTID) {
-			return task.ZCPR_OBJGEXTID;
-		} else {
-			return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
-		}
-	};
-
-	this.enhanceTask = function (task){
+	this.enhanceTask = function (task) {
 		if (!task) {
 			return task;
 		}
@@ -62,23 +57,27 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		}
 
 		enhancedTask.DESCR = task.DESCR || task.ZCPR_OBJGEXTID || task.RAUFNR || taskTypeToDisplay;
-		enhancedTask.subDescription = task.ZCPR_EXTID || "";
+
+		enhancedTask.subDescription = "";
+
+		if (task.ZCPR_EXTID) {
+			enhancedTask.subDescription = task.ZCPR_EXTID + " (" + task.RAUFNR + ")" || "";
+		}
 		if (!enhancedTask.subDescription) {
 			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
 				enhancedTask.subDescription = taskTypeToDisplay || "";
 			}
 		}
 		if (!enhancedTask.id) {
-			enhancedTask.id = this.getTaskID(task);
+			enhancedTask.id = catsUtils.getTaskID(task);
 		}
 
 		return enhancedTask;
 	};
 
 	this.recalculateTaskIDs = function (tasks) {
-		var that = this;
 		tasks.forEach(function(task) {
-			task.id = that.getTaskID(task);
+			task.id = catsUtils.getTaskID(task);
 		});
 	};
 
@@ -86,22 +85,25 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		if (task.DESCR === "") {
 			return;
 		}
-        var index = getIndex(this.lastUsedDescriptions, task);
-        if (index >= 0) {
-        	if (onlyAddDoNotUpdate) {
-        		return;
-        	} else {
-	            this.lastUsedDescriptions.splice(index,1);
-	        }
-        }
-        if (task.id) {
-            this.lastUsedDescriptions.push(task);
-        }
+		var index = getIndex(this.lastUsedDescriptions, task);
+		if (index >= 0) {
+			if (onlyAddDoNotUpdate) {
+				return;
+			} else {
+				this.lastUsedDescriptions.splice(index,1);
+			}
+		}
+		if (task.id) {
+			this.lastUsedDescriptions.push(task);
+		}
 	};
 
-    this.updateDescription = function (task) {
+	this.updateDescription = function (task) {
 		this.lastUsedDescriptions.some(function(lastUsedDescription){
-			if (catsUtils.isSameTask(task, lastUsedDescription)) {
+			if (catsUtils.isSameTask(task, lastUsedDescription) &&
+				lastUsedDescription.DESCR !== task.id &&
+				lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
+				lastUsedDescription.DESCR !== task.RAUFNR) {
 				task.DESCR = lastUsedDescription.DESCR;
 				return true;
 			}

@@ -1,8 +1,9 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.cats",
-		"title"					:	"CAT2 Maintenance",
+		"title"					:	"Time Recording (CAT2)",
 		"icon_css"				:	"fa fa-calendar",
 		"overview_directive"	:	"app.cats",
 		"needs_client"			:	false,
@@ -10,7 +11,7 @@
 		[
 			{
 				"route"			:	"/detail/cats/",
-				"templateUrl"	:	"app/cats/detail.html"			
+				"templateUrl"	:	"app/cats/detail.html"
 			}
 		]	
 	},
@@ -36,7 +37,7 @@
 		"detail/main.js", 
 		"detail/allocationBar/allocationBarUtils.js",
 		"detail/allocationBar/allocationBarBlockDirective.js",
-		"detail/allocationBar/allocationBarDirective.js", 
+		"detail/allocationBar/allocationBarDirective.js",
 		"detail/projectList.js"
 	],
 	"css_files" : ["style.css"]

@@ -1,0 +1,22 @@
+{
+	"app":
+	{
+		"categories"			:	["Service & Support", "Beta"],
+		"module_name"			:	"app.internalIncidents",
+		"title"					:	"Int. Incid.",
+		"icon_css"				:	"icon-comment",
+		"overview_directive"	:	"app.internalIncidents",
+		"needs_client"			:	false,
+		"routes":
+		[
+            {
+                "route"			:	"/detail/internalIncidents/:appId/:prio/:calledFromNotifications",
+                "templateUrl"	:	"app/internalIncidents/detail.html"
+            }
+		],
+		"beta"					: true
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],
+	"css_files" : ["style.css"]
+}

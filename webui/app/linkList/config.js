@@ -1,8 +1,10 @@
 angular.module('app.linklist').service("app.linklist.configservice", function () {
 
     this.data = {
-        version: 1, 
+        version: 1,
         listCollection: []
     };
+
+    this.isInitialized = false;
 
 });

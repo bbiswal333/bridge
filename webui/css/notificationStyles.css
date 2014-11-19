@@ -13,40 +13,66 @@
 
 .notification{
   
-  margin: 5px 0;
-  padding: 0 5px;
+ 
+
 
 
     /* flexbox setup */
-
+/*
   display: flex;
   display:-webkit-flex;
-  
+  */
   -webkit-flex-direction: column;
   flex-direction: column;
-
+  
+  display: block;
 }
 
 .notificationState-new{
   border-left-style: solid;
   border-left-color: #68A1D4;
+
 }
 .notificationState-read{
   border-left-style: solid;
   border-left-color: white;
+
 }
 .notificationState-seen{
   border-left-style: solid;
   border-left-color: #B3D0E9;
+
 }
 
 .notification .sender{
-  min-height: 25px;
   -webkit-flex: 1;
   flex: 1;
   
 }
-
+.sender{
+  width: 25%;
+  padding: 10px;
+  float: left;
+}
+.sender-img{
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background-color: #418AC9;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.sender-img i{
+  width: 100%;
+  color:white;
+  text-align: center;
+  position: relative;
+  top: 30%;
+  font-size:16px;
+}
+.sender-name{
+  text-align: center;
+}
 .notification .sender .settingsIcon{
   border-left-style: solid;
   border-width: thin;
@@ -54,13 +80,18 @@
 }
 
 .notification .content{
-    min-height: 125px;
-    max-height: 125px;
     overflow: hidden;
   -webkit-flex: 3;
   flex: 3;
 }
-
+.content{
+  width: 75%;
+  padding: 10px;
+}
+.content h3{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .notification .content .timeAgo{
   font-size: smaller;
 }
@@ -77,6 +108,7 @@
 ul.notification-menu{
   margin-top:3px;
   margin-bottom:3px;
+  text-align: right;
 }
 ul.notification-menu li{
   list-style: none;

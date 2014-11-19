@@ -1,48 +1,50 @@
 <div>
     
     <div  ng-controller="app.cats.maintenanceView.mainCntrl">
-        <div class="panel panel-default">
-            <div class="panel-body bridge-fade-anim" style="margin-left: 35px; margin-right: 35px;" ng-show="loaded">
-
-                <span style="clear: both; width: 100%; float: none;"></span>
+        <div class="panel panel-default" style="margin-bottom: 0px">
+            <div class="panel-body bridge-fade-anim" ng-show="loaded">
 
                 <div class="row">
-                    <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
-                        <app.cats.calendar
-                            class="app-cats-calendar"
-                            ondateselected="handleSelectedDate(dayString)"
-                            ondatedeselected="handleDeselectedDate(dayString)"
-                            selectioncompleted="selectionCompleted()"
-                            data-day-class="app-cats-day-details"
-                            data-selected-dates="selectedDates"
-                            data-maintainable="true"
-                            loading="loading">
-                        </app.cats.calendar>
-                    </div> 
                     <div id="app-cats-maintenance-projects-div" class="col-xs-12 col-md-5 app-cats-box" >
-                        <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(task);" data-heightoflist="300px">
-                        </app.cats.maintenance-view.project-list>        
+                        <app.cats.maintenance-view.project-list data-blocks="blockdata" data-onprojectchecked="handleProjectChecked(desc_s, val_i, task);" data-onprojectunchecked="handleProjectUnchecked(task);" data-heightoflist="520px">
+                        </app.cats.maintenance-view.project-list>
                     </div>
-                </div>
-
-                <div style="clear: both; width: 100%; float: none;"></div>        
-
-                <div id="app-cats-maintencance-allocation-div" >
-                    <app.cats.allocationbar
-                        data-width="{{width}}"
-                        data-height="80"
-                        data-blocks="blockdata"
-                        data-total-value="{{totalWorkingTime}}"
-                        data-text="hintText"
-                        data-selected-hours="totalSelectedHours"
-                        onblockremoved=""
-                        handlervaluetodisplay="calcMinutes(perc);">
-                    </app.cats.allocationbar>
-                </div>
-
-                <div class="save_close_btn">
-                    <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Save Timesheet" ng-click="saveTimesheet()" style="margin:4px"></input>
-                    <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Saving ..." style="margin:4px"></input>
+                    <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
+                        <div>
+                            <div style="text-align:right">
+                                <b><a href="https://sap.emea.pgiconnect.com/p377wwgy2zk/" target="_blank">Getting Started video</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
+                                <b><a href="mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=CAT2 time recording">Report a bug</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
+                                <b><a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Create leave request</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
+                                <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2" target="_blank">Frequently asked questions (FAQ)</a></b><br><br>
+                            </div>
+                            <app.cats.calendar
+                                class="app-cats-calendar"
+                                ondateselected="handleSelectedDate(dayString)"
+                                ondatedeselected="handleDeselectedDate(dayString)"
+                                selectioncompleted="selectionCompleted()"
+                                data-day-class="app-cats-day-details"
+                                data-selected-dates="selectedDates"
+                                data-maintainable="true"
+                                loading="loading">
+                            </app.cats.calendar>
+                        </div>
+                        <div id="app-cats-maintencance-allocation-div" >
+                            <app.cats.allocationbar
+                                data-width="{{width}}"
+                                data-height="80"
+                                data-blocks="blockdata"
+                                data-total-value="{{totalWorkingTime}}"
+                                data-text="hintText"
+                                data-selected-hours="totalSelectedHours"
+                                onblockremoved=""
+                                handlervaluetodisplay="calcMinutes(perc);">
+                            </app.cats.allocationbar>
+                        </div>
+                        <div class="save_close_btn" style="text-align: right">
+                            <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
+                            <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Apply changes" style="margin:4px"></input><br />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel-body" ng-show="!loaded">

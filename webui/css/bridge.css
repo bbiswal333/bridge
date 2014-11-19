@@ -48,6 +48,20 @@ img {
     pointer-events: none;
 }
 
+.zoomOut {
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    transform: scale(0.95);
+    -webkit-transition: 0.1s ease-in;
+    -moz-transition: 0.1s ease-in;
+    -o-transition: 0.1s ease-in;
+    transition: 0.1s ease-in;
+}
+
+.zoomIn {
+    transform: scale(1.2);
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -60,6 +74,7 @@ img {
     left: 0px;
     width: 35px;
 }
+/*TODO: delete when layout change is done*/
 .settingsButton {
     /*width: 36px;*/
     height: 40px;
@@ -101,7 +116,6 @@ img {
     margin-top: 15px;
 }
 .noselect {
-    -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -111,11 +125,10 @@ img {
 }
 
 .select {
-    -webkit-touch-callout: auto;
     -webkit-user-select: auto;
     -khtml-user-select: auto;
     -moz-user-select: auto;
-    -ms-user-select: auto;
+    -ms-user-select: text;
     user-select: auto;
     cursor:auto;  
 }
@@ -263,46 +276,21 @@ img {
     margin: auto;
 }
 .centeredContent {
-    
     display: table-cell;
     vertical-align: middle;
     margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    padding: 40px 0;
+    padding: 70px 40px;
     text-align: center;
     position: relative;
 }
 #scrollContainer .centeredContent{
     display: block;
     padding: 5px 15px;
-    top:40px;
 }
-/* 6 column */
- @media (min-width: 1620px) {
-    .centeredContent {
-        width: 1320px;
-    }
-}
-/* 5 column */
- @media (min-width: 1420px) and (max-width: 1619px) {
-    .centeredContent {
-        width: 1100px;
-    }
-}
-/* 4 column */
- @media (min-width: 1200px) and (max-width: 1419px) {
-    .centeredContent {
-        width: 880px;
-    }
-}
-/* 2 column */
- @media (max-width: 1199px) {
-    .centeredContent {
-        width: 440px;
-    }
-}
+
 #loadingAnimation {
     background-color: rgba(0, 120, 185, 1);
     position: absolute;
@@ -336,7 +324,6 @@ img {
     font-weight: bold;
 }
 
-
 .copy_head{
     font-weight: bold;
 }
@@ -359,10 +346,9 @@ img {
 .box-icon {
     font-family:'bridge_icons';
     font-size: 20px;
-    margin-right: 2px;
-    float: right;
+    margin-right: 5px;
+    float: left;
 }
-
 .table-icon-small {
     font-family:'bridge_icons';
     font-size: 14px;
@@ -393,7 +379,7 @@ img {
 .settingsIcon {
     font-family:'SAP-icons';
     font-size: 20px;
-    margin-right: 10px;
+    margin-right: 0px;
     float: right;
 }
 .settingsIcon:hover {
@@ -453,31 +439,6 @@ img {
     outline: none;
 }
 
-.div-background-gradient {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    right:0;
-    top: 0;
-    background-color: #ffffff;
-
-    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-    -webkit-tranform: translateZ(0);
-}
-.div-background {
-    width: 100%;
-    height: 100%;
-    background-image: url('../img/stripes.png');
-    background-position: center bottom;
-    background-attachment: fixed;
-    background-repeat: repeat;
-    position: absolute;
-    overflow-y: hidden;
-    overflow-x: hidden;
-}
 input[type="checkbox"] {
     -webkit-appearance: none;
     background-color: #ffffff;
@@ -501,9 +462,10 @@ input[type="checkbox"]:checked:after {
     left: 3px;
     color: #99a1a7;
 }
+
 .sortable-list {
     list-style-type: none;
-    width: 100%;
+    max-width: 1500px;
     display:inline-block;
     padding-left: 0px;
 }
@@ -537,25 +499,7 @@ input[type="checkbox"]:checked:after {
 .underline{
     border-bottom: 1px solid #CCCCCC;
 }
-.form{
-    border: none;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
-    background-color: rgba(240,240,240,1);
-    border-radius: 0px;
-    height: 32px;
-    font-weight: normal;
-}
 
-.form_unactive{
-    background-color: rgba(240,240,240,0.5);
-    box-shadow: inset 0 1px 2px rgba(100, 100, 100, .1);
-}
-.form:focus{
-    border: none;
-    box-shadow: inset 0 2px 3px rgba(0, 0, 0, .1)!important;
-    background-color: rgba(240,240,240,0.8);
-    border-radius: 0px;
-}
 /*#### BUTTONS #####*/
 .btn, button{
     border-radius: 0px;
@@ -632,14 +576,14 @@ input[type="checkbox"]:checked:after {
     display: flex;
 }
 .back-btn{
-    font-size: 2rem;
+    font-size: 1.6rem!important;
     margin-right: 10px;
     position: relative;
     top: 1px;
 }
 .panel{
     border: none;
-    -webkit box-shadow: none;
+    -webkit-box-shadow: none;
     box-shadow: none;
     border-radius: 0;
     height:100%;
@@ -665,6 +609,7 @@ input[type="checkbox"]:checked:after {
     position: absolute;
     top: 0px;
     bottom: 0px;
+   
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
@@ -744,6 +689,7 @@ input[type="checkbox"]:checked:after {
 }
 .box-icon.fa{
     padding-top: 2px;
+    font-size: 20px;
 }
 .small-icon{
     font-size: 1.2rem;
@@ -777,14 +723,6 @@ input[type="checkbox"]:checked:after {
     overflow: hidden;
 }
 
-.box-title {
-    margin-top: 30px;
-    font-size: 14px;
-    line-height: 32px;
-    text-transform: uppercase;
-    font-style: italic;
-    font-weight: bold;    
-}
 .wi {
     font-size: 1.6rem;
     padding-left: 2px;
@@ -811,9 +749,11 @@ h3{
     font-weight: bold;
     text-align: center;
     left: 25%;
+    top: 40px;
 }
 
 .logAlertBar {
+    top: 40px;
     position: absolute;
     z-index: 1000;
     /* width should be big enough to cover every screen*/
@@ -834,4 +774,83 @@ h3{
 
 .logAlertButtonGroup {
     float: left;
+}
+
+/* ============= *\
+|  HOVEREFFECTS   |
+\* ============= */
+
+.hover:hover{
+    background-image: url('../img/darken.png');
+}
+.focus:focus{
+    background-image: url('../img/darken.png');
+}
+
+
+/* ============= *\
+|      SHAKE      |
+\* ============= */
+
+
+@-webkit-keyframes shake {
+    0% { -webkit-transform: rotate(0deg); }
+    10% { -webkit-transform:  rotate(-1deg); }
+    20% { -webkit-transform:  rotate(0deg); }
+    30% { -webkit-transform: rotate(-1deg); }
+    40% { -webkit-transform:  rotate(0deg); }
+    50% { -webkit-transform:  rotate(-1deg); }
+    60% { -webkit-transform:  rotate(0deg); }
+    70% { -webkit-transform: rotate(-1deg); }
+    80% { -webkit-transform:  rotate(0deg); }
+    90% { -webkit-transform: rotate(1deg); }
+    100% { -webkit-transform:  rotate(0deg); }
+}
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    10% { transform:  rotate(-1deg); }
+    20% { transform:  rotate(0deg); }
+    30% { transform: rotate(-1deg); }
+    40% { transform:  rotate(0deg); }
+    50% { transform:  rotate(-1deg); }
+    60% { transform:  rotate(0deg); }
+    70% { transform: rotate(-1deg); }
+    80% { transform:  rotate(0deg); }
+    90% { transform: rotate(1deg); }
+    100% { transform:  rotate(0deg); }
+}
+.shake {
+
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 1s;
+    -webkit-transform-origin:50% 50%;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+
+    animation-name: shake;
+    animation-duration: 1s;
+    transform-origin:50% 50%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+}
+
+.darken{
+    transition:ease all 1s;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.bridge-input[disabled] {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
+/* ============= *\
+|      MODAL      |
+\* ============= */
+
+.modal-content{
+    border-radius: 0;
+    border:none;
 }

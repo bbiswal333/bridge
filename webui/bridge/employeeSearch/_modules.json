@@ -1,5 +1,0 @@
-{
-	"modules" : ["bridge.employeeSearch"],
-	"js_files" : ["EmployeeSearchDirective.js"],
-	"css_files" : ["EmployeeSearch.css"]
-}

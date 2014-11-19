@@ -5,14 +5,11 @@
     <input style="width: 90%;" ng-model="url" />
     <br />
     <form>
-        <div>
-            <label class="checkbox">
-                <input type="checkbox" ng-model="withCredentials" id="credentials" style="margin-top: 0px"/> 
-                <span>withCredentials</span>
-            </label>
-        </div>
 
-        <br /><br />
+        <bridge.checkbox checked-label="withCredentials" unchecked-label="withCredentials" is-checked="withCredentials"></bridge.checkbox>
+
+
+        <br />
         <button ng-click="callService(url)">Go!</button>
         <br />
     </form>

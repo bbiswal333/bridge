@@ -1,2 +1,3 @@
 webui/lib/**/**.*
-**/*.spec.js
+webui/app/getHome/nokiaHere/**/**.*
+webui/lib-bower/**/**.*

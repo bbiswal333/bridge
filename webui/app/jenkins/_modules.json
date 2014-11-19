@@ -1,6 +1,7 @@
 {
 	"app":
 	{
+		"categories"			:	["Development"],
 		"module_name"			:	"app.jenkins",
 		"title"					:	"Jenkins",
 		"icon_css"				:	"fa fa-star",
@@ -11,11 +12,11 @@
 		[
 			{
 				"route"			:	"/detail/job/",
-				"templateUrl"	:	"app/jenkins/detailJobView.html"			
+				"templateUrl"	:	"app/jenkins/detailJobView.html"
 			}
 		]	
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "controller.js", "dataService.js"],
 	"css_files" : ["overview.css"]
 }

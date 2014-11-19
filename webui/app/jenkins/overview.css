@@ -4,18 +4,50 @@
 }
 
 .buildstatuscell {
-		text-align: center; 
-		width: 40px;
+	text-align: center; 
+	width: 40px;
+}
+
+.imageSize{
+	margin-top: 4px;
+	margin-right: 3px;
+	width: 18px;
+	float: right;
+	height: 20px;
+	color: white;
+}
+
+.leftSideDiv{
+  	height: 40px;
+	width: 20px;
+	border-radius: 0 90px 90px 0;
+	position: absolute;
+	left: 0;
+	top: 45%;
+	background-color:#c3c3c3;
+	opacity: 0.7;
+}
+.leftSideDiv i{
+	position: relative;
+	left: 3px;
+}
+.rightSideDiv{
+    position: relative;
+    left: 20px;
+}
+
+.completeDiv{
+	margin-top: 10px; 
+	height: 145px;
 }
 
 .jobTable{
-	margin-top: 10px; 
-	height: 145px;
-	overflow: hidden;	
+	height: 135px;
+	/*overflow: hidden;	*/
 }
 
 .jobTable table {
-		margin-right: 8px;
+	width: 370px;
 	}
 
 .jobTable tr:not(:first-of-type) {
@@ -56,8 +88,8 @@ a.tooltip{
  }
 
 table {
-		margin-right: 5px;
-		margin-top: 5px;
+	
+
  }
 
  .jobName{
@@ -71,4 +103,49 @@ table {
 	width: 10px;
 	height: 10px;
 	border-radius: 100%;
+}
+
+.jobTilesContainer{
+	width: 100%;
+	height: 90%;
+
+}
+.jobTilesBox{
+	width: calc(95%/5);
+	margin-left: 2px;
+	margin-right: 28px;
+	margin-top: 25px;
+	float: left;
+	height: 100%;
+}
+.jobTilesBox:first-child{
+	margin-left: 0;
+}
+.jobTilesBox:last-child{
+	margin-right: 0;
+}
+.jobTiles{	
+	width: 100%;
+	height: 50%;	
+	text-align: center;	
+}
+.jobTiles p{
+	margin: 0 0 0px;
+	line-height: 0.25;
+}
+
+.jobDependancy{
+	margin-top: 10px; 
+	height: 700px;
+	width: 1800px;
+	text-align: left;
+}
+
+#container {
+    width: 1400px;
+    height: 600px;
+  }
+
+.changeCursor{
+	cursor: pointer;
 }

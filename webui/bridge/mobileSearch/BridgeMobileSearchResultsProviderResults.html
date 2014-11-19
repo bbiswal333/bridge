@@ -1,0 +1,17 @@
+<div id="results">
+    <div ng-repeat="(providerID, provider) in providers | limitTo:maxResults" ng-if="all" class="mobileProvider">
+        <div ng-repeat="result in provider.results | limitTo:3" ng-click="fireCallback(providerID, $index)" class="bridge-mobileSearchOutputProviderResults allCategories hover" ng-if="provider.results.length > 0">
+            <div class="resultProviderIcon"><i class="{{provider.info.icon}}"></i></div>
+            <div class="resultText"><bridge.mobile-search-results.search-result match="result" result-source="provider.info" query="query"></bridge.mobile-search-results.search-result></div>
+            <div class="providerName">{{provider.info.name}}</div>
+        </div>
+    </div>
+    <div ng-repeat="result in providerResults.results | limitTo:maxResults">
+        <div id="result_{{$index}}" ng-click="fireCallback(-1, $index)" class="bridge-mobileSearchOutputProviderResults">
+            <bridge.mobile-search-results.search-result match="result" result-source="providerResults.info" query="query"></bridge.mobile-search-results.search-result>
+        </div>
+    </div>
+    <div ng-if="providerResults.results.length == 0" class="noResult" ng-bind-html="noResultString">
+
+    </div>
+</div>

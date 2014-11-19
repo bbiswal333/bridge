@@ -1,6 +1,6 @@
 angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification",
     function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
-	
+
 	$scope.configService = catsConfigService;
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
 
@@ -16,7 +16,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         });
         return foundIndex;
     }
-    
+
     function sortFavoriteItemsAccordingToCatsItems() {
         var favoriteItemsThatAreNoCatsItems = [];
         var checkFound;
@@ -49,7 +49,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         if (catsConfigService.favoriteItems.length === newFavoriteItems.length) {
             catsConfigService.favoriteItems = newFavoriteItems;
         }
-
     }
 
     function addSelectedItemToFavorites() {
@@ -166,4 +165,5 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             });
         }
     });
+
 }];

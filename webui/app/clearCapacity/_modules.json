@@ -1,12 +1,13 @@
 {
 	"app":
 	{
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.clearCapacity",
 		"title"					:	"Clear Capacity",
 		"icon_css"				:	"fa fa-user",
 		"overview_directive"	:	"app.clearCapacity",
 		"needs_client"			:	false,
-		"default_hidden"		: 	true
+		"default_hidden"		:	true
 
 	},
 	"modules" : [],

@@ -3,33 +3,32 @@
 <form name="newConfigItemForm" class="atc_input">
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
-                 <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus/>
+                 <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus></bridge.input>
                  
             </div>  
            
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
-                <input type="text" class="form-control form" style="float:left;" ng-model="currentConfigValues.devClass" placeholder="Package..."/>
+                 <bridge.input style="float:left;" model="currentConfigValues.devClass" placeholder="Package..."></bridge.input>
                 
             </div>
 
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Object Responsible</span>
-                <!--<input type="text" class="form-control form" style="width:25%;float:left;" ng-model="currentConfigValues.tadirResponsible" placeholder="Object Responsible..."/> -->
-                <bridge.employee-search selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Name...'" required="false" ></bridge.employee-search>
+                <bridge.employee-input selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Name...'" required="false" ></bridge.employee-input>
               
               </div>
                     
             
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">AKH Component</span>
-                <input type="text" class="form-control form"  ng-model="currentConfigValues.component" placeholder="AKH Component..."/>
+                <bridge.input style="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
 
             </div>
 
             <div class="row" style="margin:15px 0 0 0;">
                 <span class="copy form_head">Software Component</span>
-                <input type="text" class="form-control form"  ng-model="currentConfigValues.softwareComponent" placeholder="Software Component..."/>
+                <bridge.input model="currentConfigValues.softwareComponent" placeholder="Software Component..."></bridge.input>
 
             </div>  			
 
@@ -63,7 +62,7 @@
                     <th>Display Suppressed</th>
                     <th>Ignore Completed</th>
                     <th>Priorities</th>
-                    <th>Functions</th> <!-- Empty Head for functions -->
+                    <th>Functions</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,14 +84,14 @@
                     </td>
                     <td data-title="'Priorities'">
                         <span>
-                            <span class="checkboxSpan">1</span><input type="checkbox" ng-model="configItem.displayPrio1" disabled />
-                            <span class="checkboxSpan">2</span><input type="checkbox" ng-model="configItem.displayPrio2" disabled />
-                            <span class="checkboxSpan">3</span><input type="checkbox" ng-model="configItem.displayPrio3" disabled />
-                            <span class="checkboxSpan">4</span><input type="checkbox" ng-model="configItem.displayPrio4" disabled />
+                            <bridge.checkbox checked-label="1" unchecked-label="1" is-checked="configItem.displayPrio1" ng-disabled="true"></bridge.checkbox>
+                            <bridge.checkbox checked-label="2" unchecked-label="2" is-checked="configItem.displayPrio2" ng-disabled="true"></bridge.checkbox>
+                            <bridge.checkbox checked-label="3" unchecked-label="3" is-checked="configItem.displayPrio3" ng-disabled="true"></bridge.checkbox>
+                            <bridge.checkbox checked-label="4" unchecked-label="4" is-checked="configItem.displayPrio4" ng-disabled="true"></bridge.checkbox>
                         </span>
                     </td>
                     <td data-title="'Functions'">
-                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-times"></span>
                     </td>
                 </tr>
             </tbody>

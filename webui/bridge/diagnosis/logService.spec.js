@@ -58,7 +58,9 @@
         bridgeDataService.setLogMode(true);
 
         try {
-            IDoNotExist();
+/*eslint-disable no-undef */
+            thisFunctionIsDefinitelyNotExisting();
+/*eslint-enable no-undef */
         } catch (e) {
             logService.log(e);
             expect(logService.getLog()[0].sMessage).not.toBe('');
@@ -71,7 +73,7 @@
         logService.sendLog();
 
         $httpBackend.expectPOST(/https:\/\/if.\.wdf\.sap\.corp\/sap\/bc\/bridge\/SEND_MAIL*./, function (data) {
-            if (data.indexOf("<html>") === 0 && data.indexOf("TestType") != -1 && data.indexOf("TestMessage") != -1 && data.indexOf("TestStacktrace") != -1) {
+            if (data.indexOf("<html>") === 0 && data.indexOf("TestType") !== -1 && data.indexOf("TestMessage") !== -1 && data.indexOf("TestStacktrace") !== -1) {
                 return true;
             } else {
                 return false;
