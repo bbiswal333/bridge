@@ -48,6 +48,7 @@
 
              <div class="row" style="margin:25px 0 0 0;">
                 <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
+                <button  type="button" class="btn btn-default btn_blue" title="RSS" ng-click="rss_for_selection_click()" >RSS for selection</button>
             </div>
     </form>
     <div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
@@ -98,7 +99,8 @@
         </table>
     </div>
 
-    <div class="row atc_btn" style="width:50%;float:right;">
+    <div class="row atc_btn" style="float:right;">
+            <div class="btn btn_blue" ng-click="rss_for_saved_selection_click()">RSS for saved Selection</div>
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
     </div>
 </div>
