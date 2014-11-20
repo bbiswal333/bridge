@@ -48,7 +48,7 @@
 
              <div class="row" style="margin:25px 0 0 0;">
                 <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
-                <button  type="button" class="btn btn-default btn_blue" title="RSS" ng-click="rss_for_selection_click()" >RSS for selection</button>
+                <button  type="button" class="btn btn-default btn_blue" title="Get RSS Feed link for current selection" ng-click="rss_for_selection_click()" ><span class="fa fa-rss" ></span> for Selection</button>
             </div>
     </form>
     <div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
@@ -72,7 +72,7 @@
                     <td data-title="'Package'">{{configItem.devClass}}</td>
                     <td data-title="'Object Responsible'"><bridge.employee-picture employee-user="{{configItem.tadirResponsible.BNAME}}"></bridge.employee-picture> <span ng-if="configItem.tadirResponsible">{{configItem.tadirResponsible.NACHN}}, {{configItem.tadirResponsible.VORNA}}</span></td>
                     <td data-title="'AKH Component'">{{configItem.component}}</td>
-					<td data-title="'Software Component'">{{configItem.softwareComponent}}</td>
+                    <td data-title="'Software Component'">{{configItem.softwareComponent}}</td>
                     <td data-title="'Display Suppressed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.showSuppressed" disabled>
@@ -92,6 +92,9 @@
                         </span>
                     </td>
                     <td data-title="'Functions'">
+                        <span ng-click="rss_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-rss" title="Get RSS Feed link"></span>
+                        <span ng-click="cut_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-cut"></span>
+                        <span ng-click="copy_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-copy"></span>
                         <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-times"></span>
                     </td>
                 </tr>
@@ -100,7 +103,7 @@
     </div>
 
     <div class="row atc_btn" style="float:right;">
-            <div class="btn btn_blue" ng-click="rss_for_saved_selection_click()">RSS for saved Selection</div>
+            <div class="btn btn_blue" ng-click="rss_for_saved_selection_click()" title="Get RSS Feed link for saved selection(s)"><span class="fa fa-rss" ></span> for Saved Selection(s)</div>
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
     </div>
 </div>

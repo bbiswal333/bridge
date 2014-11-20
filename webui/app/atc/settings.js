@@ -21,6 +21,19 @@
         }
     };
 
+    $scope.rss_click = function (configItem) {
+        $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + configItem.getQueryString() + '&format=rss');
+    };
+    
+    $scope.cut_click = function (configItem) {
+        $scope.copy_click(configItem);
+        $scope.remove_click(configItem);
+    };
+    
+    $scope.copy_click = function (configItem) {
+        jQuery.extend($scope.currentConfigValues,configItem);
+    };
+    
     $scope.remove_click = function (configItem) {
         var index = $scope.config.configItems.indexOf(configItem);
         if (index > -1) {
