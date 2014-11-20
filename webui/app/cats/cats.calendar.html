@@ -85,7 +85,7 @@
                         </app.cats.allocationbar>
                     </div>
 
-                    <div ng-if="!analytics || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
+                    <div ng-if="!analytics || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
@@ -107,6 +107,8 @@
 		</div>
 		<div style="clear: both;"></div>
         <div ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" data-placement="left" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
-        <div ng-if="maintainable" ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" style="right:50px;" data-placement="left" title="Details" ng-click="toggleAnalytics()"><i class="fa fa-eye"></i></div>
+
+
+        <div ng-if="maintainable" ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" style="right:50px;" data-placement="left" title="Details"><button class="btn btn-default" ng-click="toggleAnalytics()" ng-class="{true:'btn btn_blue',false:'btn'}[analytics];" style="margin-right:0"><i class="fa fa-eye"></i></button></div>
 	</div>
 </div>

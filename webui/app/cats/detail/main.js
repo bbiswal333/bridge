@@ -16,6 +16,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
+    $scope.blockdataTemplate = [];
     $scope.loaded = false;
     $scope.width = 600;
     $scope.selectedDates = [];
@@ -526,6 +527,31 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return container;
     }
 
+    $scope.checkThatContainsNoFixedTasksForTemplate = function() {
+        for (var i = 0; i < $scope.blockdata.length; i++) {
+            if ($scope.blockdata[i].fixed) {
+                return false;
+            }
+        }
+        for (i = 0; i < $scope.blockdataTemplate.length; i++) {
+            if ($scope.blockdataTemplate[i].fixed) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    $scope.toggleTemplate = function(){
+        if($scope.blockdataTemplate.length === 0) {
+            $scope.blockdataTemplate = angular.copy($scope.blockdata);
+            $scope.selectedDates = [];
+            $scope.blockdata = [];
+        } else {
+            $scope.blockdata = angular.copy($scope.blockdataTemplate);
+            $scope.blockdataTemplate = [];
+        }
+    };
+
     $scope.saveTimesheet = function(){
         var clearOldTasks = false;
         var weeks = [];
@@ -535,6 +561,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         var selectedDates = $scope.selectedDates;
         $scope.selectedDates = [];
+        $scope.blockdataTemplate = [];
         $scope.totalSelectedHours = 0;
 
         selectedDates.forEach(function(dayString){

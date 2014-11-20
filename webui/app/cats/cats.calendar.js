@@ -221,7 +221,6 @@ angular.module("app.cats")
 			};
 
 			function selectDay(dayString) {
-				$scope.analytics = false;
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(dayString)
@@ -236,7 +235,6 @@ angular.module("app.cats")
 			}
 
 			function unSelectDay(dayString) {
-				$scope.analytics = false;
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(dayString)
@@ -408,6 +406,7 @@ angular.module("app.cats")
 				var promises = [];
 				var week = $scope.calArray[index];
 				var range = [];
+				$scope.analytics = false;
 				week.forEach(function(day){
 					if (day.inMonth) {
 						range.push(day.dayString);
@@ -433,6 +432,7 @@ angular.module("app.cats")
 			$scope.toggleMonth = function () {
 				var promise = null;
 				var promises = [];
+				$scope.analytics = false;
 				if (angular.isNumber($scope.year) && angular.isNumber($scope.month)) {
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
@@ -470,6 +470,7 @@ angular.module("app.cats")
 				var single_click = !range_click && !multi_click;
 				var promise = null;
 				var promises = [];
+				$scope.analytics = false;
 
 				if (single_click) {
 					monthlyDataService.lastSingleClickDayString = dayString;
