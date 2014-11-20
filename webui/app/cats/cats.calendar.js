@@ -87,6 +87,7 @@ angular.module("app.cats")
 			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
+			$scope.analytics = false;
 
 			var monthRelative = monthDiff(new Date(),new Date(monthlyDataService.year,monthlyDataService.month));
 			var rangeSelectionStartDayString = null;
@@ -112,7 +113,9 @@ angular.module("app.cats")
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
 					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
-					.then(function(){},
+					.then(function(){
+						$scope.analyticsDays = monthlyDataService.days;
+					},
 					function() {
 						if (monthlyDataService.reloadInProgress.error) {
 							setISPErrorText();
@@ -218,6 +221,7 @@ angular.module("app.cats")
 			};
 
 			function selectDay(dayString) {
+				$scope.analytics = false;
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(dayString)
@@ -232,6 +236,7 @@ angular.module("app.cats")
 			}
 
 			function unSelectDay(dayString) {
+				$scope.analytics = false;
 				var deferred = $q.defer();
 
 				monthlyDataService.getDataForDate(dayString)
@@ -622,6 +627,14 @@ angular.module("app.cats")
 				}
 			};
 
+			$scope.toggleAnalytics = function () {
+				if ($scope.analytics === true) {
+					$scope.analytics = false;
+				} else {
+					$scope.analytics = true;
+				}
+			};
+
 			$scope.state = "";
 			$scope.hasError = false;
 			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
@@ -681,6 +694,7 @@ angular.module("app.cats")
 				selectionCompleted: "&selectioncompleted",
 				dayClassInput: '@dayClass',
 				maintainable: '=',
+				analytics: '=',
 				sundayweekstart: '=',
 				loading: '='
 			}

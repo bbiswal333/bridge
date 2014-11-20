@@ -22,6 +22,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
+    $scope.analytics = false;
     var lastSelectedDaysLength = 0;
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
@@ -81,7 +82,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return null;
     }
 
-    function adjustBarValues() {
+    function adjustBarToAllowForOneMoreBlock() {
         // only adjust if all space is taken
         var totalOfAdjustableTasks = 0;
         var spaceWhichIsAdjustable = $scope.totalWorkingTime;
@@ -115,7 +116,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
         } catch(err) {
-            $log.log("adjustBarValues(): " + err);
+            $log.log("adjustBarToAllowForOneMoreBlock(): " + err);
         }
     }
 
@@ -133,17 +134,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var existingBlock = getBlock(block);
             if (existingBlock != null) {
                 if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
-                    adjustBarValues();
+                    adjustBarToAllowForOneMoreBlock();
                     existingBlock.value = catsUtils.cat2CompliantRounding(timeToMaintain());
                     return true;
                 } else { // no need to add
-                    adjustBarValues();
                     return false;
                 }
             }
 
             if (val_i == null) {
-                adjustBarValues();
+                adjustBarToAllowForOneMoreBlock();
                 val_i = 1;
                 if (val_i > timeToMaintain()) {
                     val_i = catsUtils.cat2CompliantRounding(timeToMaintain());

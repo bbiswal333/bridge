@@ -167,19 +167,19 @@ directive("app.cats.maintenanceView.projectList", [
 
 				markItemIfSelected(item);
 
-				var allreadyExists = false;
+				var alreadyExists = false;
 
 				if (catsUtils.isFixedTask(item)) { // don't add "fixed" tasks to favorites
 					return;
 				}
 				configService.catsItems.some(function(oldItem) {
 					if (catsUtils.isSameTask(item, oldItem)) {
-						allreadyExists = true;
+						alreadyExists = true;
 						return exitLoop;
 					}
 				});
 
-				if (!allreadyExists) {
+				if (!alreadyExists) {
 					configService.catsItems.push(newItem);
 				}
 			}
@@ -224,6 +224,20 @@ directive("app.cats.maintenanceView.projectList", [
 				return deferred.promise;
 			}
 
+			function doesOneAdditionalItemExist(list) {
+				for (var i = 0; i < list.length; i++) {
+					var alreadyExists = false;
+					for (var j = 0; j < configService.catsItems.length; j++) {
+						if (catsUtils.isSameTask(list[i], configService.catsItems[j])) {
+							alreadyExists = true;
+						}
+					}
+					if (alreadyExists === false) {
+						return true;
+					}
+				}
+			}
+
 			function getCatsData() {
 				var deferred = $q.defer();
 				catsBackend.requestTasksFromWorklist()
@@ -236,7 +250,7 @@ directive("app.cats.maintenanceView.projectList", [
 						}
 
 						// Write header
-						if (dataFromWorklist && dataFromWorklist.length > 0) {
+						if (dataFromWorklist && doesOneAdditionalItemExist(dataFromWorklist)) {
 							var header = {};
 							header.DESCR = "Additional tasks from cPro work list...";
 							header.TASKTYPE = "BRIDGE_HEADER";
