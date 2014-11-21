@@ -2,7 +2,7 @@
 	width: 100%;
 	height: 40px;
 	background-color: #3B3B3B;
-	z-index: 10;
+	z-index: 100;
 	position: absolute;
 }
 
@@ -18,7 +18,6 @@
     padding-left: 8px;
     padding-right: 8px;
     box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-    border-top:  1px solid rgba(231, 231, 231, 1);
     width: 45px;
     cursor: pointer;                
     line-height: 1;    
@@ -39,12 +38,13 @@
 
 .menubar-popover {
   position: absolute;
+  right: 0px;
   z-index: 50;
   display: none;
   padding: 10px;
   text-align: left;
   background-color: #ffffff;
-  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  box-shadow:0 5px 10px rgba(0,0,0,.2);
 
   // Overrides for proper insertion
   white-space: normal;
@@ -56,8 +56,8 @@
   max-height: 500px;
 }
 .menubar-settings{
-  position: absolute;
-  right: 0;
+
+
 }
 
 .menubar-bridge-title {
@@ -69,6 +69,17 @@
   color:white;
 }
 
+.popover{
+  border-radius: 0;
+  border: none;
+}
+.popover.bottom{
+  margin-top: 0;
+  top:40px!important;
+}
+.popover.bottom > .arrow{
+  display: none!important;
+}
 /* ========================= *\
 |* ----- MEDIA QUERIES ----- *|
 \* ========================= */
@@ -82,14 +93,8 @@
     display: none;
   }
 }
-@media (max-width:1050px){
-  .menubar-weather{
-    display: none;
-  }
-}
-
 @media (max-width:650px){
-  .menubar-bridge-title{
+  .menubar-weather{
     display: none;
   }
 }
@@ -109,4 +114,89 @@
 
 .menubar-feedback-icon {
   font-size: 30px;
+}
+
+/* ========================= *\
+|* ----- APPLICATIONS  ----- *|
+\* ========================= */
+
+.nav-tabs{
+  border-bottom: none;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+  color: #555;
+  cursor: default;
+  background-color: #ddd;
+  /* border: 1px solid #ddd; */
+  border-radius: 0;
+  border-bottom-color: transparent;
+}
+.nav-tabs > li > a{
+  border-radius: 0;
+}
+
+/* ========================= *\
+|* -----     ICON      ----- *|
+\* ========================= */
+
+.navicon-button {
+  display: inline-block;
+  position: relative;
+  bottom: 4px;
+  transition: 0.25s;
+  cursor: pointer;
+  user-select: none;
+
+}
+.navicon-button .navicon:before, .navicon-button .navicon:after {
+  transition: 0.25s;
+}
+
+.navicon {
+  position: relative;
+  width: 1em;
+  left: -4px;
+  height: .3125rem;
+  background: #E7E6DD;
+  transition: 0.5s;
+  border-radius: 2.5rem;
+}
+.navicon:before, .navicon:after {
+  display: block;
+  content: "";
+  height: .3125rem;
+  width: 2.5rem;
+  background: #E7E6DD;
+  position: absolute;
+  z-index: -1;
+  transition: 0.5s 0.25s;
+  border-radius: 1rem;
+}
+
+.open .navicon:before,
+.open .navicon:after {
+  transition: 0.5s;
+}
+
+/* Minus */
+.open {
+  transform: scale(0.75);
+}
+
+/* × and + */
+.open.plus .navicon,
+.open.x .navicon {
+  background: transparent;
+}
+.open.plus .navicon:before,
+.open.x .navicon:before {
+  transform: rotate(-45deg);
+}
+.open.plus .navicon:after,
+.open.x .navicon:after {
+  transform: rotate(45deg);
+}
+
+.open.plus {
+  transform: scale(0.75) rotate(45deg);
 }

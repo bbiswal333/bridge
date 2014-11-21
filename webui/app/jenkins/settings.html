@@ -1,11 +1,11 @@
 <div style="width: 100%">
 
-		<form name="newConfigItemForm" class="atc_input">
+		<form name="newConfigItemForm" class="atc_input" autocomplete="off">
 
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
 				<div style="width:95%">
-					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus/>
+					<bridge.input style="float:left;" model="dataService.jenkinsData.url" placeholder="Mandatory..." autofocus></bridge.input>
 				</div>
 				<div styple="width:5%">
 					<i ng-if="dataService.jenkinsData.urlIsValid" class="fa fa-check"></i>
@@ -15,8 +15,8 @@
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">View</span>
 				<div style="width:95%">
-					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.view" placeholder="Optional..."
-					typeahead="view.name for view in doViewSearch($viewValue,20)" typeahead-editable="false" />
+					<bridge.input model="dataService.jenkinsData.view" placeholder="Optional..."
+						input-typeahead="view.name for view in doViewSearch($viewValue,20)" input-typeahead-editable="false" />
 				</div>
 				<div styple="width:5%">
 					<i ng-class="dataService.jenkinsData.viewsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>
@@ -26,8 +26,8 @@
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Job</span>
 				<div style="width:95%">
-					<input type="text" class="form-control form" style="float:left;" ng-model="dataService.jenkinsData.job" placeholder="Mandatory..."
-					typeahead="job.name for job in doJobSearch($viewValue,20)" typeahead-editable="true" />
+					<bridge.input model="dataService.jenkinsData.job" placeholder="Mandatory..."
+						input-typeahead="job.name for job in doJobSearch($viewValue,20)" input-typeahead-editable="true" />
 				</div>
 				<div styple="width:5%">
 					<i ng-class="dataService.jenkinsData.jobsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>

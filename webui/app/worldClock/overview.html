@@ -1,0 +1,7 @@
+<div style="overflow: hidden">
+	<app.world-clock.linear-clock time-offset-in-milliseconds="timeOffsetInMilliseconds"></app.world-clock.linear-clock>
+
+	<div style="display: inline-block; margin-top:10px;width:calc(100%/4)" ng-repeat="location in locations">
+		<app.world-clock.analog-clock width="40" height="40" timezone-offset="location.timeOffset + timeOffsetInMilliseconds" location-name="{{location.name}}"></app.world-clock.analog-clock>
+	</div>
+</div>

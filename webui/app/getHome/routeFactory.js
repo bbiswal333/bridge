@@ -12,6 +12,7 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.
 				mapService.rebuildRouteFromWaypoints(waypoints).then(function(routeData) {
 					that.summary = routeData.summary;
 					that.originalRoute = routeData;
+					that.originalRoute.draggable = false;
 				});
 			}
 
@@ -30,8 +31,13 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.
 
 	this.fromNokiaRoute = function(name, nokiaRoute) {
 		var waypoints = [];
+		var previousWaypoint;
 		nokiaRoute.getManeuvers().map(function(maneuver) {
-			waypoints.push({position: maneuver.position});
+			if(!previousWaypoint || JSON.stringify(previousWaypoint) !== JSON.stringify(maneuver.position)) {
+				waypoints.push({position: maneuver.position});
+			}
+
+			previousWaypoint = maneuver.position;
 		});
 		return new RouteClass(name, waypoints);
 	};

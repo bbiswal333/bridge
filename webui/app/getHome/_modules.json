@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Productivity"],
 		"module_name"			:	"app.getHome",
-		"title"					:	"Get Home",
+		"title"					:	"Beat the Traffic",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
 		"needs_client"			:	false,
@@ -16,6 +16,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "settings.js", "detail.js", "config.js", "mapService.js", "routeFactory.js"],
+	"js_files" : ["overview.js", "settings.js", "config.js", "mapService.js", "routeFactory.js"],
 	"css_files" : ["style.css"]
 }

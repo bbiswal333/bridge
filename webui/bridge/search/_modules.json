@@ -12,7 +12,11 @@
 		"citySearch.js",
 		"sapedia.js",
 		"playbook.js",
-		"portal.js"
+		"portal.js",
+		"bridgeSearchSettingsController.js"
+	],
+	"css_files" : [
+	  "search.css"
 	],
 	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch"]
 }

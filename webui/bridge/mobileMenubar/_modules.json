@@ -1,0 +1,8 @@
+{
+	"js_files" : [
+                "mobileMenubarDirective.js"
+	],
+	"css_files" : [
+                "mobileMenubar.css"
+	]
+}

@@ -1,0 +1,17 @@
+<br />
+<div class="row">
+	<div class="col-xs-11">
+		<bridge.input input-typeahead="location as location.name for location in searchLocation($viewValue)" model="selectedLocation" input-typeahead-on-select="setSelectedLocation($item, $model, $label)"></bridge.input>
+	</div>
+	<div class="col-xs-1">
+		<button class="blue_btn" ng-click="addLocation()">Add</button>
+	</div>
+</div>
+<div ng-repeat="location in locations" class="row">
+	<div class="col-xs-11">
+		{{location.name}}
+	</div>
+	<div>
+		<a href="" ng-click="removeLocation(location)"><i class="fa fa-remove"></i></a>
+	</div>
+</div>

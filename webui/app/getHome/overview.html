@@ -1,15 +1,16 @@
 <div>
-	<p ng-show="routes.length == 0">No routes defined…</p>
+	<p ng-show="routes.length == 0">"Beat the Traffic" will help you to monitor your daily routes and inform you about traffic jams and other traffic incidents.</p>
 	
 	<div ng-show="routes.length > 0"  style="width:390px; height:140px">
-		<div ng-repeat="route in routes | limitTo: 6" class="getHome-route-column hover" ng-class="{'green-80': (route.summary.trafficTime - route.summary.baseTime) / 60 <= 5,
-																					   'yellow-80': (route.summary.trafficTime - route.summary.baseTime) / 60 > 5 && (route.summary.trafficTime - route.summary.baseTime) / 60 <= 10,
-																					   'red-80': (route.summary.trafficTime - route.summary.baseTime) / 60 > 10}">
+		<div ng-repeat="route in routes | limitTo: 6" class="getHome-route-column hover" ng-class="{'green-80': (route.summary.trafficTime  * 100 / route.summary.baseTime) / 100 <= 1.15,
+																					   'yellow-80': (route.summary.trafficTime  * 100 / route.summary.baseTime) / 100 > 1.15 && (route.summary.trafficTime  * 100 / route.summary.baseTime) / 100 <= 1.30,
+																					   'red-80': (route.summary.trafficTime  * 100 / route.summary.baseTime) / 100 > 1.30}"
+																					   ng-click="openRouteDetails(route)">
 			<div class="prio_box" style="color:white">
 				<p>{{route.name}}</p>
 			</div>
 			<div class="prio_content_box" style="color: white">
-				<span style="font-size: 11px">{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})</span>
+				<span style="font-size: 11px">{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}}) <i bs-tooltip data-placement="bottom" data-content-template="app/getHome/incidents.html" data-title="{{route.originalRoute.incidents}}" class="fa fa-warning" ng-if="route.originalRoute.incidents.length > 0"></i></span>
 			</div>
 		</div>
 	</div>

@@ -2,6 +2,19 @@ angular.module('bridge.app').
 	controller('bridge.menubar.notificationsController',['$rootScope', '$location', '$scope', '$filter', '$timeout', 'bridgeConfig','bridgeDataService', "notifier",
 	function ($rootScope, $location, $scope, $filter, $timeout, bridgeConfig, bridgeDataService, notifier){
 
+		$scope.showPreferences = false;
+    	$scope.preferencesText = "Show Preferences";
+
+	    $scope.preferences_click = function(){
+	        $scope.showPreferences = !$scope.showPreferences;
+	        if ($scope.showPreferences){
+	            $scope.preferencesText = "Hide Preferences";
+	        } else {
+	            $scope.preferencesText = "Show Preferences";
+	        }
+
+	    };
+
         $scope.notifications = notifier.allNotifications();
         $scope.notificationPopupPermission = notifier.getPermission();
 

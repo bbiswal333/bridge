@@ -11,7 +11,6 @@
     this.detailsData = [];
 
     this.getResultForConfig = function (config) {
-        var that = this;
         $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RES_CN?query=' + config.getQueryString() + '&count_prios=X&format=json&origin=' + $window.location.origin)
         .success(function (data) {
 
@@ -25,7 +24,6 @@
     };
 
     this.getDetailsForConfig = function (config) {
-        var that = this;
         $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
         .success(function (data) {
             that.detailsData.length = 0;

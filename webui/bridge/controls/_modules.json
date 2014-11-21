@@ -1,0 +1,19 @@
+{
+  "modules" : [
+    "bridge.controls"
+  ],
+  "js_files" : [
+    "checkbox.js",
+    "radio.js",
+    "input.js",
+    "mobileSearchInput.js",
+    "bridgeTable/bridgeTable.js",
+    "bridgeTable/bridgeTableColumn.js",
+    "customTransclude.js",
+    "infinitescroll.js",
+    "bridgeButton.js"
+  ],
+  "css_files" : [
+    "bridgeTable/bridgeTable.css"
+  ]
+}

@@ -1,4 +1,4 @@
-angular.module('app.im').appImSettings = ['$scope','app.im.configservice', function ($scope, configservice) {
+angular.module('app.im').appImSettings = ['$scope', 'app.im.configservice', function ($scope, configservice) {
 	$scope.config = configservice;
 
      $scope.save_click = function () {

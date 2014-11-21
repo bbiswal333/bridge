@@ -1,12 +1,12 @@
 angular.module('app.linklist').appLinkListSettings =
-    ['app.linklist.configservice', '$scope', '$log',
-        function (appLinklistConfig, $scope, $log) {
+    ['app.linklist.configservice', '$scope', '$log', '$interval',
+        function (appLinklistConfig, $scope, $log, $interval) {
 
 	$scope.config  = appLinklistConfig;
 	$scope.selectedIndex = 0;
 
 	$scope.addForm = [];
-	for (var i = appLinklistConfig.data.listCollection.length - 1; i >= 0; i--) {
+	for (var u = appLinklistConfig.data.listCollection.length - 1; u >= 0; u--) {
 		$scope.addForm.push('');
 	}
 
@@ -131,6 +131,7 @@ angular.module('app.linklist').appLinkListSettings =
 
 	$scope.newEntry = function(colNo)
 	{
+		$scope.editLink = false;
 		updateEntry(colNo);
 		appLinklistConfig.data.listCollection[colNo].push($scope.currentConfigValues);
 	};
@@ -148,9 +149,13 @@ angular.module('app.linklist').appLinkListSettings =
 		}
 	}
 
+	var oldValue;
+
 	$scope.selectLink = function(col, link){
+		$scope.editLink = true;
 		validateLink();
 		$scope.selectedIndex = col;
+		oldValue = angular.copy(link);
 		$scope.currentConfigValues = link;
 		if ($scope.currentConfigValues.type === 'hyperlink') {
 			$scope.addForm[col] = 'web';
@@ -166,5 +171,23 @@ angular.module('app.linklist').appLinkListSettings =
 		$scope.currentConfigValues = {};
 		$scope.addForm[col] = 'web';
 		$scope.newEntry(col);
+		$interval(function() {
+			var container = $("#scrollList" + col)[0];
+			if(container) {
+				container.scrollTop = container.scrollHeight;
+			}
+		});
+	};
+
+	$scope.cancelAdd = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex].splice(index, 1);
+	};
+
+	$scope.cancelEdit = function() {
+		$scope.setAddForm($scope.selectedIndex,'');
+		var index = appLinklistConfig.data.listCollection[$scope.selectedIndex].indexOf($scope.currentConfigValues);
+		appLinklistConfig.data.listCollection[$scope.selectedIndex][index] = oldValue;
 	};
 }];

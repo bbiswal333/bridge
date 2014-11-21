@@ -1,14 +1,15 @@
-describe("BridgeSearch provides functionalities to collect and call content providers", function() {
+describe("BridgeMobileSearch provides functionalities to collect and call content providers", function() {
 	var bridgeSearch;
 	var timeout;
 	var q;
+	var synchronousSearchMockDefaultSelected = true;
 
 	var synchronousSearchMock = {
 		findMatches: function(query, resultArray) {
 			resultArray.push({title: "title with " + query, description: "description with " + query});
 		},
 		getSourceInfo: function() {
-			return {name: "sample source"};
+			return {name: "sample source", defaultSelected: synchronousSearchMockDefaultSelected};
 		},
 		getCallbackFn: function() {
 		}
@@ -25,7 +26,7 @@ describe("BridgeSearch provides functionalities to collect and call content prov
 			return deferred.promise;
 		},
 		getSourceInfo: function() {
-			return {name: "sample source"};
+			return {name: "sample source", defaultSelected: true};
 		},
 		getCallbackFn: function() {
 		}
@@ -67,6 +68,17 @@ describe("BridgeSearch provides functionalities to collect and call content prov
 		var results = [];
 		bridgeSearch.findMatches("dummy query", results).then(function() {
 			expect(results.length).toBe(2);
+		});
+		timeout.flush();
+	});
+
+	it("should not give a result for a search provider that is deselected", function(){
+		synchronousSearchMockDefaultSelected = false;
+		bridgeSearch.addSearchProvider(synchronousSearchMock);
+
+		var results = [];
+		bridgeSearch.findMatches("dummy query", results).then(function() {
+			expect(results.length).toBe(0);
 		});
 		timeout.flush();
 	});

@@ -1,17 +1,17 @@
 <div class="gridDiv" ng-if="!configService.configItem.showProgramOverview">
-    <div >
+    <div>
         <div ng-if="emptyTask">
             <p>This delivery contains no tasks as it is in processing status New</p>
         </div>
         <div ng-if="emptyTask!=true">
-        <table style="width: 100%" >
-            <thead class="table-header" style="position: relative;">
-            <tr >
-                <th style="width: 60%; padding: 3px; color: #ffffff">Task Name</th>
-                <th style="width: 20%; padding: 3px; color: #ffffff">Status</th>
-                <th style="width: 20%; padding: 3px; color: #ffffff">Due Date</th>
-            </tr>
-            </thead>
+            <table style="width: 100%" >
+                <thead class="basic-blue" style="position: relative;">
+                    <tr >
+                        <th style="width: 60%; padding: 3px; color: #ffffff">Task Name</th>
+                        <th style="width: 20%; padding: 3px; color: #ffffff">Status</th>
+                        <th style="width: 20%; padding: 3px; color: #ffffff">Due Date</th>
+                    </tr>
+                </thead>
                 <tr ng-repeat="task in filteredTask" class="taskList">
                     <td>
                        <a href="{{task.URL}}" target="_blank">
@@ -30,21 +30,21 @@
     </div>
 </div>
 
-
-<div style="overflow:auto; height:95%; overflow-x:hidden">
+<div style="height:95%; overflow:auto;">
     <div ng-if="configService.configItem.showProgramOverview">
         <div class="col-xs-6 input-group add-on right-inner-addon-home" style="width: 95%;float:left">
-            <input id="searchProgram"
-                   class="form-control form"
-                   ng-model="$parent.searchString"
-                   style="width:350px"
-                   type="text" placeholder="Search for Programs..."
-                   typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
-                   typeahead-min-length="3"
-                   typeahead-wait-ms="200"
-                   typeahead-on-select="onSelect($item)"/>
+        <bridge.input id="searchProgram"
+                   model="$parent.searchString"
+                   style="width:350px;"
+                   placeholder="Search for Programs..."
+                   input-typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
+                   input-typeahead-min-length="3"
+                   input-typeahead-wait-ms="200"
+                   input-typeahead-limit="15"
+                   input-typeahead-append-to-body="true"
+                   input-typeahead-on-select="onSelect($item)"></bridge.input>
         </div>
-        <a ng-if="showGrid" style="width: 5%;float: right" href="https://ifp.wdf.sap.corp/prs#/home/program/{{ProgramGUIDSirius}}" target="_blank">
+        <a ng-if="showGrid" style="width: 5%;float: right" href="{{siriusAppURL}}#/home/program/{{ProgramGUIDSirius}}" target="_blank">
             <i style="font-size:15px;margin-top:5px" class="fa fa-share"
                popover="Go to the sirius Tool"
                popover-trigger="mouseenter"
@@ -77,15 +77,6 @@
                 </a>
             </div>
         </div>
-        <div ng-if="showGrid && programLeads.length>1">
-            <div class="programLeads"
-                 sirius-ellipsis
-                 popover="{{programLeadsString}}"
-                 popover-trigger="mouseenter"
-                 popover-placement="top"
-                 popover-append-to-body="true">{{programLeadsString}}
-            </div>
-        </div>
         <div ng-if="showGrid">
             <div class="col-xs-12 whiteBackgr">
                 <div class="boxProgOverview">
@@ -116,7 +107,7 @@
                              popover="{{program.WORKING_STATE.KEY_MESSAGE}}"
                              popover-trigger="mouseenter"
                              popover-placement="top"
-                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE}}
+                             popover-append-to-body="true">{{program.WORKING_STATE.KEY_MESSAGE | limitTo: 24 }}{{program.WORKING_STATE.KEY_MESSAGE.length > 24 ? '...' : ''}}
                         </div>
                     </div>
                 </div>

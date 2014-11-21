@@ -1,38 +1,18 @@
 ﻿<div ng-controller="app.atc.detailcontroller" style="box-sizing:border-box;" >    
-    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-      <input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.."  style="width:280px;float:left;margin-right:25px;" />
-      <div class="btn-group" style="height:32px">      	
-          <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
-      </div>
-        <div infinitescroll>
-            <!-- <bridge.table grid-options="gridOptions" grid-data="atcData.tableData"></bridge.table> -->
-            <div class="row">
-	            <div class="box-title col-sm-1" ng-click="sort('CHECK_MSG_PRIO')">Prio
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHECK_MSG_PRIO'"></i>
-	            </div>
-	        	<div class="box-title col-sm-1" ng-click="sort('CHECK_SYSTEM')">System
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHECK_SYSTEM'"></i>
-	        	</div>
-	        	<div class="box-title col-sm-2" ng-click="sort('CHECK_DESCRIPTION')">Check
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHECK_DESCRIPTION'"></i>
-	        	</div>
-	        	<div class="box-title col-sm-4" ng-click="sort('CHECK_MESSAGE')">Check Message
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CHECK_MESSAGE'"></i>
-	        	</div>
-	        	<div class="box-title col-sm-4" ng-click="sort('OBJ_NAME')">Object
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'OBJ_NAME'"></i>
-	        	</div>
-	        </div>
-            <div ng-repeat="row in atcData.tableData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
-            	<div class="cellText col-sm-1">{{row.CHECK_MSG_PRIO}}</div>
-            	<div class="cellText col-sm-1">{{row.CHECK_SYSTEM}}</div>
-            	<div class="cellText col-sm-2">{{row.CHECK_DESCRIPTION}}</div>
-            	<div class="cellText col-sm-4">{{row.CHECK_MESSAGE}}</div>
-            	<div class="cellText col-sm-4">{{row.OBJ_NAME}}</div>
-            </div>
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+		<div class="btn-group" style="height:32px">
+			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
+		</div>
 
-            <!-- <div id="loadSpinner" class="fa fa-circle-o-notch fa-spin fa-2x" style="margin-left: 50%; margin-top: 15px; margin-bottom: 100px" ng-show="atcData.tableData.length > infinityLimit"></div> -->
+		<br/>
 
-        </div>        
+		<bridge.table table-data="atcData.tableData" filter="filterText">
+			<bridge.table-column column-id="'1'" header="'Prio'" column-size-class="'col-sm-1'" order-by="'CHECK_MSG_PRIO'">{{row.CHECK_MSG_PRIO}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'CHECK_SYSTEM'">{{row.CHECK_SYSTEM}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Check'" column-size-class="'col-sm-2'" order-by="'CHECK_DESCRIPTION'">{{row.CHECK_DESCRIPTION}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Check Message'" column-size-class="'col-sm-4'" order-by="'CHECK_MESSAGE'">{{row.CHECK_MESSAGE}}</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Object'" column-size-class="'col-sm-4'" order-by="'OBJ_NAME'">{{row.OBJ_NAME}}</bridge.table-column>
+		</bridge.table>
     </div>
 </div>

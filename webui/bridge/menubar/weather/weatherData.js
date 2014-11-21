@@ -1,64 +1,117 @@
-angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bridge.menubar.weather.configservice", "lib.utils.calUtils", "bridgeDataService", "$http", "$interval", function(weatherConfig, calUtils, bridgeDataService, $http, $interval) {
+angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bridge.menubar.weather.configservice", "lib.utils.calUtils", "bridgeDataService", "$http", "$interval", "bridgeBuildingSearch", function(weatherConfig, calUtils, bridgeDataService, $http, $interval, bridgeBuildingSearch) {
     var data = {};
 
-    function checkWeatherConditionClouds (clouds){
-        if(clouds !== undefined){
-            if (clouds === 0){
-                return "sun";
-            }
-            if (clouds >= 1 && clouds <= 40){
-                return "smallClouds";
-            }
-            if (clouds >= 41){
-                return "bigClouds";
-            }
+    function mapWeatherData(weatherData) {
+        var resultData = {};
+        resultData.description = weatherData.description;
+        switch(weatherData.id) {
+            case 200:
+            case 201:
+            case 202:
+            case 210:
+            case 211:
+            case 212:
+            case 221:
+            case 230:
+            case 231:
+            case 232:
+                resultData.icon = 'wi wi-thunderstorm';
+                break;
+            case 300:
+            case 301:
+            case 302:
+            case 310:
+            case 311:
+            case 312:
+            case 313:
+            case 314:
+            case 321:
+                resultData.icon = 'wi wi-rain-mix';
+                break;
+            case 500:
+            case 501:
+            case 502:
+            case 503:
+            case 504:
+            case 511:
+            case 520:
+            case 521:
+            case 522:
+            case 531:
+                resultData.icon = 'wi wi-rain';
+                break;
+            case 600:
+            case 601:
+            case 602:
+            case 611:
+            case 612:
+            case 615:
+            case 616:
+            case 620:
+            case 621:
+            case 622:
+                resultData.icon = 'wi wi-snow';
+                break;
+            case 600:
+            case 601:
+            case 602:
+            case 611:
+            case 612:
+            case 615:
+            case 616:
+            case 620:
+            case 621:
+            case 622:
+                resultData.icon = 'wi wi-snow';
+                break;
+            case 701:
+            case 711:
+            case 721:
+            case 731:
+            case 741:
+            case 751:
+            case 761:
+            case 762:
+            case 771:
+            case 781:
+                resultData.icon = 'wi wi-dust';
+                break;
+            case 800:
+                resultData.icon = 'wi wi-day-sunny';
+                break;
+            case 801:
+                resultData.icon = 'wi wi-day-cloudy';
+                break;
+            case 802:
+                resultData.icon = 'wi wi-cloudy';
+                break;
+            case 803:
+            case 804:
+                resultData.icon = 'wi wi-cloudy';
+                break;
+            case 900:
+                resultData.icon = 'wi wi-tornado';
+                break;
+            case 901:
+                resultData.icon = 'wi wi-day-sleet-storm';
+                break;
+            case 902:
+                resultData.icon = 'wi wi-hurricane';
+                break;
+            case 903:
+                resultData.icon = 'wi wi-snowflake-cold';
+                break;
+            case 904:
+                resultData.icon = 'wi wi-hot';
+                break;
+            case 905:
+                resultData.icon = 'wi wi-strong-wind';
+                break;
+            case 906:
+                resultData.icon = 'wi-hail';
+                break;
         }
-        else {
-            return null;
-        }
-    }
-
-    function checkWeatherConditionRain(rain){
-        if(rain !== undefined) {
-            if (rain['3h'] > 0){
-                return  "rain";
-            }
-            else {
-                return null;
-            }
-        }
-        else {
-                return null;
-            }
-    }
-
-    function parseWeatherData(rain,clouds){
-        var weatherData = {
-            rain: checkWeatherConditionRain(rain),
-            clouds: checkWeatherConditionClouds(clouds)
-        };
-        if((weatherData.clouds === null || weatherData.clouds === "sun")
-            && weatherData.rain == null){
-            weatherData.description = 'sunny';
-            weatherData.backgroundClass = 'sun';
-            weatherData.icon = 'wi wi-day-sunny';
-        }
-        if(weatherData.clouds === "smallClouds" && weatherData.rain === null){
-            weatherData.description = 'sunny with clouds';
-            weatherData.backgroundClass = 'smallClouds';
-            weatherData.icon = 'wi wi-day-cloudy';
-        }
-        if(weatherData.clouds === "bigClouds" && weatherData.rain === null){
-            weatherData.description = 'cloudy';
-            weatherData.backgroundClass = 'bigClouds';
-            weatherData.icon = 'wi wi-cloudy';
-        }
-        if(weatherData.rain != null){
-            weatherData.description = 'rainy';
-            weatherData.backgroundClass = 'rain';
-            weatherData.icon = 'wi wi-rain';
-        }
-        return weatherData;
+        return resultData;
     }
 
     function setPosition(position) {
@@ -91,8 +144,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
                 targetObject.temperature = (weatherDataJSON.main.temp - 273).toFixed(0);
             }
 
-            var weatherData = parseWeatherData(weatherDataJSON.rain, weatherDataJSON.clouds.all);
-            bridgeDataService.getTemporaryData().backgroundClass = weatherData.backgroundClass;
+            var weatherData = mapWeatherData(weatherDataJSON.weather[0]);
 
             targetObject.city = weatherDataJSON.name;
             targetObject.city_id = weatherDataJSON.id;
@@ -117,7 +169,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
             }
 
             for(var i = 0; i <= maximalPossibleEntries(forecastData.list, 3); i++)  {
-                var weatherData = parseWeatherData(forecastData.list[i].rain,forecastData.list[i].clouds);
+                var weatherData = mapWeatherData(forecastData.list[i].weather[0]);
 
                 if(data.fahrenheit)
                 {
@@ -143,14 +195,27 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
         });
     }
 
-    function loadData() {
-        if(weatherConfig.getConfig().location !== undefined && weatherConfig.getConfig().location.name !== undefined)
+    function loadDataForLocation(location) {
+        if(location !== undefined && location.name !== undefined)
         {
-            data.city_name = weatherConfig.getConfig().location.name;
+            data.city_name = location.name;
             data.fahrenheit = weatherConfig.getConfig().fahrenheit;
-            setPosition(weatherConfig.getConfig().location);
+            setPosition(location);
             getWeather(data);
             getForcast();
+        }
+    }
+
+    function loadData() {
+        var location = weatherConfig.getConfig().location;
+
+        if(typeof location === "string") {
+            bridgeBuildingSearch.searchLocation(location).then(function(locations) {
+                location = locations[0];
+                loadDataForLocation(location);
+            });
+        } else {
+            loadDataForLocation(location);
         }
     }
     this.loadData = loadData;
@@ -158,6 +223,8 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
         return data;
     };
 
-    loadData();
-    $interval(loadData, 60000 * 5);
+    weatherConfig.initialize().then(function() {
+        loadData();
+        $interval(loadData, 60000 * 5);
+    });
 }]);

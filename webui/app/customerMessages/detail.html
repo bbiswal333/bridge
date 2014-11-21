@@ -1,76 +1,49 @@
 <div ng-controller="app.customerMessages.detailController" style="box-sizing:border-box;">    
     <div style="padding:30px;box-sizing:border-box;">                
 
-    	<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
-        <div class="btn-group" style="height:32px;max-width:100%;">      	
-          <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">{{status}}</span>
+    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+        <div class="btn-group" style="height:32px;max-width:100%;">
+			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">{{status}}</span>
 
-          <div style="position:absolute;right:0">
-          	<div ng-show="config.data.selection.sel_components !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components" 
-			style="width:35px;" title="Selected Components">
-				<i class="fa fa-cube"></i>
-			</div>	
-			<div ng-show="config.data.selection.colleagues !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
-			style="width:35px;" title="Assigned to Colleagues">
-				<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
-			</div>	
-			<div ng-show="config.data.selection.assigned_me !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
-			style="width:35px;" title="Assigned to Me">
-				<i class="fa fa-1.5x fa-crosshairs"></i>
-			</div>	
-			<div ng-show="config.data.selection.created_me !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
-			style="width:35px;margin-right:0;" title="Created by Me">
-				<i class="fa fa-user"></i>
-			</div>	
+			<div style="position:absolute;right:0">
+				<div ng-show="config.data.selection.sel_components !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+					style="width:35px;" title="Selected Components">
+					<i class="fa fa-cube"></i>
+				</div>
+				<div ng-show="config.data.selection.colleagues !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
+					style="width:35px;" title="Assigned to Colleagues">
+					<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+				</div>
+				<div ng-show="config.data.selection.assigned_me !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
+					style="width:35px;" title="Assigned to Me">
+					<i class="fa fa-1.5x fa-crosshairs"></i>
+				</div>
+				<div ng-show="config.data.selection.created_me !== undefined" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
+					style="width:35px;margin-right:0;" title="Created by Me">
+					<i class="fa fa-user"></i>
+				</div>
+			</div>
       	</div>
-      	</div>
 
-        <div>
-        	<div infinitescroll style="clear:both">
-	            <div class="row">
-		            <div class="box-title col-sm-1" ng-click="sort('PRIORITY_DESCR')">Priority
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PRIORITY_DESCR'"></i>
-		            </div>
-		        	<div class="box-title col-sm-2" ng-click="sort('CATEGORY')">Component
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'CATEGORY'"></i>
-		        	</div>
-		        	<div class="box-title col-sm-2" ng-click="sort('STATUS_DESCR')">Status
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'STATUS_DESCR'"></i>
-		        	</div>
-		        	<!-- <div class="box-title col-sm-3" ng-click="sort('username')">Processor
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'username'"></i>
-		        	</div> -->
-		        	<div class="box-title col-sm-3" ng-click="sort('PROCESSOR_NAME')">Processor
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'PROCESSOR_NAME'"></i>
-		        	</div>
-		        	<div class="box-title col-sm-4" ng-click="sort('DESCRIPTION')">Description
-		            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'DESCRIPTION'"></i>
-		        	</div>
-		        </div>
-	            <div ng-repeat="row in tableData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
-	            	<div class="cellText col-sm-1">{{row.PRIORITY_DESCR}}</div>
-	            	<div class="cellText col-sm-2">{{row.CATEGORY}}</div>
-	            	<div class="cellText col-sm-2">{{row.STATUS_DESCR}}</div>
-	            	<div class="cellText col-sm-3">
-		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=60x60" 
-		            		 class="cm-reporter-img"
-		            		 ng-mouseenter="zoom($index, $event)"
-		            		 ng-if="row.PROCESSOR"></img>
-		            	<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=100x100" 
-		            		 class="cm-reporter-img-lrg"
-		            		 style="{{zoomedStyle}}"
-		            		 ng-show="zoomIndex === $index"
-		            		 ng-mouseleave="zoom(-1)"></img>
-			            <a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
-			            <a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
-		            	<a class="trunctedText" target="_blank" href="{{row.url}}">{{row.PROCESSOR_NAME}}</a>
-        			</div>
-	            	<div class="cellText trunctedText col-sm-4">
-        				<a target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
-	            	</div>
-	            </div>
-	        </div>
+		<br/>
 
-        </div>        
+		<bridge.table table-data="tableData" filter="filterText">
+			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'">{{row.PRIORITY_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'CATEGORY'">{{row.CATEGORY}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUS_DESCR'">{{row.STATUS_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px; vertical-align: initial; vertical-align: auto;"
+					 ng-if="row.PROCESSOR"></img>
+				<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+				<a class="trunctedText" target="_blank" href="{{row.url}}">{{row.PROCESSOR_NAME}}</a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'">
+				<a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
+			</bridge.table-column>
+		</bridge.table>
+
     </div>
 </div>

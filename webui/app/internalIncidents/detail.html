@@ -1,0 +1,63 @@
+<div ng-controller="app.internalIncidents.detailController" style="box-sizing:border-box;">
+    <div style="padding:30px;box-sizing:border-box;">                
+
+    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+
+        <div class="btn-group" style="height:32px;max-width:100%;">
+        	<span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
+
+        	<div style="position:absolute;right:0">
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+					style="width:35px;" title="Selected Components">
+					<i class="fa fa-cube"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.colleagues];" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues"
+					style="width:35px;" title="Assigned to Colleagues">
+					<i class="fa fa-users"  style="position: relative;right: 2px;"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.assigned_me];" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me"
+					style="width:35px;" title="Assigned to Me">
+					<i class="fa fa-1.5x fa-crosshairs"></i>
+				</div>
+				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
+					style="width:35px;margin-right:0;" title="Created by Me">
+					<i class="fa fa-user"></i>
+				</div>
+      		</div>
+      	</div>
+
+		<br/>
+
+		<bridge.table table-data="messages" filter="filterTable">
+			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Category'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px;"
+					 ng-if="row.REPORTER_ID"></img>
+				<a target="_blank" href="{{row.reporterData.url}}">{{row.REPORTER_NAME}}</a>
+				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px;"
+					 ng-if="row.PROCESSOR_ID"></img>
+				<a target="_blank" href="{{row.processorData.url}}">{{row.PROCESSOR_NAME}}</a>
+				<a href="mailto:{{row.processorData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.processorData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'7'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]">
+				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]">{{row.OBJECT_ID}}</bridge.table-column>
+			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
+		</bridge.table>
+
+    </div>
+</div>

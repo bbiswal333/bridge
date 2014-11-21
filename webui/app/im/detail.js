@@ -1,6 +1,6 @@
 angular.module('app.im').controller('app.im.detailController',
-    ['$scope', '$http', '$window', '$templateCache', 'app.im.ticketData','$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig', '$window',
-    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, window) {
+    ['$scope', '$http', '$window', 'app.im.ticketData', '$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig',
+    function Controller($scope, $http, $window, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
 
         $scope.$parent.titleExtension = " - IM Details";
         $scope.filterText = '';
@@ -87,7 +87,8 @@ angular.module('app.im').controller('app.im.detailController',
         function addMessage(message){
             var allreadyExists = false;
             $scope.messages.some(function(item){
-                if (angular.equals(message, item)){
+                if (angular.equals(message.CSINSTA + message.MNUMM + message.MYEAR, item.CSINSTA + item.MNUMM + item.MYEAR)){
+                //angular.equals(message, item)){
                     allreadyExists = true;
                 }
                 return allreadyExists;
@@ -119,8 +120,8 @@ angular.module('app.im').controller('app.im.detailController',
 
         function getOffset(element) {
             var rect = element.getBoundingClientRect();
-            var top  = rect.top + $(window).scrollTop();
-            var left = rect.left + $(window).scrollLeft();
+            var top  = rect.top + $($window).scrollTop();
+            var left = rect.left + $($window).scrollLeft();
             return { top: Math.round(top), left: Math.round(left) };
         }
 

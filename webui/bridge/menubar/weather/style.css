@@ -17,6 +17,10 @@
 	height:40%;
 	position: relative;
 	bottom: 5px;
+	margin-top: 20px;
+}
+.weather-pref{
+	padding-top: 60px;
 }
 .weather-box-small{
 	

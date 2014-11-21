@@ -1,0 +1,9 @@
+<div class="popover" style="width: 300px">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-show="title">{{title}}<span class="glyphicon glyphicon-remove-circle clickable" style="float: right" ng-click="$hide();"></span></h3>
+    <div class="popover-content">
+        <div ng-repeat="column in columns">
+            <bridge.checkbox checked-label="{{column.header}}" unchecked-label="{{column.header}}" is-checked="column.visible"></bridge.checkbox>
+        </div>
+    </div>
+</div>

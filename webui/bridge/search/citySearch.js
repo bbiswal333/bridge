@@ -4,7 +4,8 @@ angular.module('bridge.search').service('bridge.search.citySearch', ['$http', "b
         return {
             icon: "fa fa-globe",
             name: "Cities",
-            resultTemplate: "bridge/search/cityTemplate.html"
+            resultTemplate: "bridge/search/cityTemplate.html",
+			defaultSelected: false
         };
     };
     this.findMatches = function(query, resultArray) {

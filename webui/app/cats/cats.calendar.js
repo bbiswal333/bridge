@@ -11,7 +11,8 @@ angular.module("app.cats")
 		 "$q",
 		 "$log",
 		 "$window",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log, $window) {
+		 "$timeout",
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log, $window, $timeout) {
 		function processCatsData(cats_o) {
 			function parseDateToTime(date_s) {
 				if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -28,7 +29,6 @@ angular.module("app.cats")
 			try {
 				var processed = {};
 				var days = cats_o;
-				monthlyDataService.missingDays.value = 0;
 
 				for (var i = 0; i < days.length; i++) {
 					var dateStr = days[i].DATEFROM;
@@ -50,9 +50,6 @@ angular.module("app.cats")
 					}
 					if (time !== null) {
 						processed[time] = { state: statusStr };
-					}
-					if (statusStr === "Y" || statusStr === "R") { // days which require attention
-						monthlyDataService.missingDays.value += 1;
 					}
 				}
 				return processed;
@@ -91,6 +88,7 @@ angular.module("app.cats")
 			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
+			$scope.analytics = {};
 
 			var monthRelative = monthDiff(new Date(),new Date(monthlyDataService.year,monthlyDataService.month));
 			var rangeSelectionStartDayString = null;
@@ -98,8 +96,15 @@ angular.module("app.cats")
 			var daysElements = [];
 
 			$scope.getDescForState = function (state_s) {
-				return catsUtils.getDescForState(state_s);
+				if (state_s !== undefined) {
+					return catsUtils.getDescForState(state_s);
+				}
 			};
+
+			function setISPErrorText() {
+				$scope.hasError = true;
+				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+			}
 
 			function reload() {
 				$scope.loading = true;
@@ -108,13 +113,20 @@ angular.module("app.cats")
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
-					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)));
+					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
+					.then(function(){
+						$scope.analyticsDays = monthlyDataService.days;
+					},
+					function() {
+						if (monthlyDataService.reloadInProgress.error) {
+							setISPErrorText();
+						}
+					});
 				}
 				$scope.loading = false;
 			}
 
 			function handleCatsData(data) {
-				$scope.hasError = false;
 				if (data !== null && data !== undefined) {
 					var additionalData = processCatsData(data);
 					if (additionalData !== null) {
@@ -130,7 +142,6 @@ angular.module("app.cats")
 					$scope.state = "CATS-Data could no be retrieved from system ISP";
 					$scope.hasError = true;
 				}
-				monthlyDataService.reloadInProgress.value = false;
 			}
 
 			function hasFixedTask (dayString){
@@ -213,25 +224,27 @@ angular.module("app.cats")
 			function selectDay(dayString) {
 				var deferred = $q.defer();
 
-				monthlyDataService.getDataForDate(dayString).then(function(){
+				monthlyDataService.getDataForDate(dayString)
+				.then(function(){
 					if (monthlyDataService.days[dayString] &&
 						monthlyDataService.days[dayString].targetHours > 0) {
 						$scope.onDateSelected({dayString: dayString});
 					}
 					deferred.resolve();
-				});
+				}, setISPErrorText);
 				return deferred.promise;
 			}
 
 			function unSelectDay(dayString) {
 				var deferred = $q.defer();
 
-				monthlyDataService.getDataForDate(dayString).then(function(){
+				monthlyDataService.getDataForDate(dayString)
+				.then(function(){
 					if ($scope.isSelected(dayString)) {
 						$scope.onDateDeselected({dayString: dayString});
 					}
 					deferred.resolve();
-				});
+				}, setISPErrorText);
 				return deferred.promise;
 			}
 
@@ -295,28 +308,6 @@ angular.module("app.cats")
 
 				return promises;
 			}
-
-			$scope.selectWeek = function (index) {
-				var promises = [];
-				var week = $scope.calArray[index];
-				var range = [];
-				week.forEach(function(day){
-					if (day.inMonth) {
-						range.push(day.dayString);
-					}
-				});
-
-				if ($scope.weekIsSelected(index)){
-					promises = unSelectRange(range);
-				}
-				else{
-					promises = selectRange(range);
-				}
-
-				$q.all(promises).then(function(){
-					$scope.selectionCompleted();
-				});
-			};
 
 			function isSelectable(dayString){
 				if (monthlyDataService.days[dayString] &&
@@ -412,6 +403,63 @@ angular.module("app.cats")
 				return range;
 			}
 
+			$scope.toggleWeek = function (index) {
+				var promises = [];
+				var week = $scope.calArray[index];
+				var range = [];
+				$scope.analytics.value = false;
+				week.forEach(function(day){
+					if (day.inMonth) {
+						range.push(day.dayString);
+					}
+				});
+
+				if ($scope.weekIsSelected(index)){
+					promises = unSelectRange(range);
+				}
+				else{
+					promises = selectRange(range);
+				}
+
+				$q.all(promises)
+				.then(function(){
+					if ($scope.selectedDates && $scope.selectedDates.length > 0) {
+						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
+					}
+					$scope.selectionCompleted();
+				}, setISPErrorText);
+			};
+
+			$scope.toggleMonth = function () {
+				var promise = null;
+				var promises = [];
+				$scope.analytics.value = false;
+				if (angular.isNumber($scope.year) && angular.isNumber($scope.month)) {
+					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
+					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
+
+					// load data, in case it is not yet done
+					monthlyDataService.getDataForDate(firstOfMonthDayString)
+					.then(function() {
+						monthlyDataService.lastSingleClickDayString = '';
+						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
+						if ($scope.monthIsSelected()) {
+							promises.push(unSelectRange(collectRange(lastOfMonthDayString)));
+						} else {
+							promises.push(selectRange(collectRange(lastOfMonthDayString)));
+						}
+						promise = $q.all(promises);
+						promise
+						.then(function(){
+							if ($scope.selectedDates && $scope.selectedDates.length > 0) {
+								monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
+							}
+							$scope.selectionCompleted();
+						}, setISPErrorText);
+					}, setISPErrorText);
+				}
+			};
+
 			$scope.jump = function (dayString, event) {
 
 				if (monthlyDataService.reloadInProgress.value === true) {
@@ -423,28 +471,10 @@ angular.module("app.cats")
 				var single_click = !range_click && !multi_click;
 				var promise = null;
 				var promises = [];
+				$scope.analytics.value = false;
 
-				if (!dayString && $scope.year && $scope.month) {
-					// togle complete month
-					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
-					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
-
-					// load data, in case it is not yet done
-					promise = monthlyDataService.getDataForDate(firstOfMonthDayString);
-					promise.then(function() {
-						monthlyDataService.lastSingleClickDayString = firstOfMonthDayString;
-						setRangeDays(firstOfMonthDayString, lastOfMonthDayString);
-						if ($scope.monthIsSelected()) {
-							promises.push(unSelectRange(collectRange(lastOfMonthDayString)));
-						} else {
-							promises.push(selectRange(collectRange(lastOfMonthDayString)));
-						}
-						promise = $q.all(promises);
-						promise.then(function(){
-							$scope.selectionCompleted();
-						});
-					});
-				} else if (single_click) {
+				if (single_click) {
+					monthlyDataService.lastSingleClickDayString = dayString;
 					//unselectOthers
 					if ($scope.selectedDates) {
 						$scope.selectedDates.forEach(function(selectedDayString){
@@ -452,12 +482,12 @@ angular.module("app.cats")
 						});
 					}
 					promises.push(selectDay(dayString));
-					monthlyDataService.lastSingleClickDayString = dayString;
 					setRangeDays(dayString, null);
 
 					if (event.originalEvent) {
 						$location.path("/detail/cats/");
 					}
+
 				} else if (multi_click) {
 					promises.push($scope.selectSingleDay(dayString, true));
 
@@ -468,74 +498,115 @@ angular.module("app.cats")
 					else{
 						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
 					}
+
 				} else if (range_click) {
 					if (rangeSelectionEndDayString) {
-						var oldRange = collectRange(rangeSelectionEndDayString);
-						unSelectRange(oldRange);
+						promises.push(unSelectRange(collectRange(rangeSelectionEndDayString)));
 					}
-					promises = selectRange(collectRange(dayString));
+					promises.push(selectRange(collectRange(dayString)));
 				}
 
 				promise = $q.all(promises);
-				promise.then(function(){
+				promise
+				.then(function(){
 					if (!$scope.isSelected(monthlyDataService.lastSingleClickDayString) && $scope.selectedDates && $scope.selectedDates.length > 0) {
 						monthlyDataService.lastSingleClickDayString = $scope.selectedDates[0];
 					}
 					$scope.selectionCompleted();
-				});
+				}, setISPErrorText);
 			};
 
+			function unSelectAllDays() {
+				var promise = null;
+				var promises = [];
+				if ($scope.selectedDates) {
+					$scope.selectedDates.forEach(function(selectedDayString){
+						promises.push(unSelectDay(selectedDayString));
+					});
+				}
+				promise = $q.all(promises);
+				promise.
+				then(function(){
+					monthlyDataService.lastSingleClickDayString = '';
+					setRangeDays(null, null);
+					$scope.selectionCompleted();
+				}, setISPErrorText);
+			}
+
 			$scope.canGoBackward = function () {
-				if (monthRelative - 1 < -3) { //Go back a maximum of three month (so displays four months alltogether)
+				if (monthRelative - 1 < -6) { // Maximum number of month to go back
 					return false;
 				}
 				return true;
 			};
+
+			function prevMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 0) {
+					data.month = 11;
+					data.year--;
+				}
+				else {
+					data.month--;
+				}
+				return data;
+			}
 
 			$scope.prevMonth = function () {
 				if (!$scope.canGoBackward()) {
 					return;
 				}
 				monthRelative--;
-
-				if (monthlyDataService.month === 0) {
-					monthlyDataService.month = 11;
-					monthlyDataService.year--;
-				}
-				else {
-					monthlyDataService.month--;
-				}
+				monthlyDataService.year = prevMonth(monthlyDataService).year;
+				monthlyDataService.month = prevMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
+				unSelectAllDays();
 
-				reload();
+				$scope.state = "";
+				$scope.hasError = false;
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+				.then( handleCatsData, setISPErrorText);
 			};
 
 			$scope.canGoForward = function () {
-				if (monthRelative + 1 > 0) { //Go back a maximum of four month
+				if (monthRelative + 1 > 1) { // Maximum number of month to go forward
 					return false;
 				}
-
 				return true;
 			};
+
+			function nextMonth(structureContainingYearAndMonth) {
+				var data = {};
+				data.year = angular.copy(structureContainingYearAndMonth.year);
+				data.month = angular.copy(structureContainingYearAndMonth.month);
+				if (data.month === 11) {
+					data.month = 0;
+					data.year++;
+				}
+				else {
+					data.month++;
+				}
+				return data;
+			}
 
 			$scope.nextMonth = function () {
 				if (!$scope.canGoForward()) {
 					return;
 				}
 				monthRelative++;
-
-				if (monthlyDataService.month === 11) {
-					monthlyDataService.month = 0;
-					monthlyDataService.year++;
-				}
-				else {
-					monthlyDataService.month++;
-				}
+				monthlyDataService.year = nextMonth(monthlyDataService).year;
+				monthlyDataService.month = nextMonth(monthlyDataService).month;
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
+				unSelectAllDays();
 
-				reload();
+				$scope.state = "";
+				$scope.hasError = false;
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+				.then( handleCatsData, setISPErrorText);
 			};
 
 			$scope.reloadCalendar = function () {
@@ -543,18 +614,52 @@ angular.module("app.cats")
 			};
 
 			$scope.getStateClassSubstring = function(calDay){
-				if(calDay.data.state === 'Y' && calDay.today){
-					return 'Y_TODAY';
-				}
-				else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
-					return 'OVERBOOKED_TODAY';
-				}
-				else {
-					return calDay.data.state;
+				if (calDay.data !== null) {
+					if(calDay.data.state === 'Y' && calDay.today){
+						return 'Y_TODAY';
+					}
+					else if(calDay.data.state === 'OVERBOOKED' && calDay.today){
+						return 'OVERBOOKED_TODAY';
+					}
+					else {
+						return calDay.data.state;
+					}
+				} else {
+					return ''; // not relevant (might be hidden)
 				}
 			};
 
-			catsBackend.getCAT2ComplianceData4FourMonth().then( handleCatsData );
+			$scope.toggleAnalytics = function () {
+				if ($scope.analytics.value === true) {
+					$scope.analytics.value = false;
+				} else {
+					$scope.analytics.value = true;
+				}
+			};
+
+			$scope.switchOnSingleDayAnalytics = function (dayString) {
+				$scope.analytics.singleDay = dayString;
+				if($scope.analytics.closingTimer) {
+					$timeout.cancel($scope.analytics.closingTimer);
+				}
+				$scope.analytics.closingTimer = $timeout(function () { $scope.analytics.singleDay = ''; } , 2000);
+			};
+
+			$scope.switchOffSingleDayAnalytics = function () {
+				$scope.analytics.singleDay = '';
+			};
+
+			$scope.confirmSingleDayAnalytics = function () {
+				if($scope.analytics.closingTimer) {
+					$timeout.cancel($scope.analytics.closingTimer);
+				}
+				$scope.analytics.closingTimer = $timeout(function () { $scope.analytics.singleDay = ''; } , 2000);
+			};
+
+			$scope.state = "";
+			$scope.hasError = false;
+			catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month)
+			.then( handleCatsData, setISPErrorText);
 
 			if ($scope.selectedDay) {
 				while (new Date($scope.selectedDay).getMonth() !== monthlyDataService.month) {
@@ -570,19 +675,18 @@ angular.module("app.cats")
 			});
 
 			(function reloader() {
-				var dateLastRun = new Date().getDate();
-
 				refreshInterval = $interval(function () {
-					if (dateLastRun !== new Date().getDate()) {
-						dateLastRun = new Date().getDate();
-						catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
-					}
-				}, 60 * 1000);
+					$scope.state = "";
+					$scope.hasError = false;
+					catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+					.then( handleCatsData, setISPErrorText);
+				}, 15 * 60 * 1000);
 			})();
 
 			$scope.$on("refreshAppReceived", function () {
 				monthlyDataService.reloadInProgress.value = true;
-				catsBackend.getCAT2ComplianceData4FourMonth(true).then( handleCatsData ); // force update
+				catsBackend.getCAT2ComplianceData4OneMonth(monthlyDataService.year, monthlyDataService.month, true)
+					.then( handleCatsData, setISPErrorText);
 			});
 
 			$scope.reloadInProgress = monthlyDataService.reloadInProgress;
@@ -611,8 +715,10 @@ angular.module("app.cats")
 				selectionCompleted: "&selectioncompleted",
 				dayClassInput: '@dayClass',
 				maintainable: '=',
+				analytics: '=',
 				sundayweekstart: '=',
 				loading: '='
 			}
 		};
-	}]);
+	}]
+);

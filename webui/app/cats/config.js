@@ -5,24 +5,23 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
 	this.sundayweekstart = false;
-	this.catsProfile = "DEV2002C";
-	this.colorScheme = "basicBlue";
+	this.colorScheme = "colorful";
 
-    function getIndex (tasks, task) {
-        var index = -1;
-        var foundIndex = index;
-        tasks.some(function(taskInTasks) {
-            index++;
-            if (catsUtils.isSameTask(taskInTasks, task)) {
-            	foundIndex = index;
-              	return true;
-            }
-        });
-        return foundIndex;
-    }
+	function getIndex (tasks, task) {
+		var index = -1;
+		var foundIndex = index;
+		tasks.some(function(taskInTasks) {
+			index++;
+			if (catsUtils.isSameTask(taskInTasks, task)) {
+				foundIndex = index;
+				return true;
+			}
+		});
+		return foundIndex;
+	}
 
-    this.copyConfigIfLoaded = function (catsConfigService) {
-    	var that = this;
+	this.copyConfigIfLoaded = function (catsConfigService) {
+		var that = this;
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
@@ -35,18 +34,18 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 				this.lastUsedDescriptions = catsConfigService.lastUsedDescriptions;
 			}
 			if (catsConfigService.catsProfile) {
-				this.catsProfile = catsConfigService.catsProfile;
+				this.catsProfile = undefined;
 			}
 			if (catsConfigService.sundayweekstart) {
 				this.sundayweekstart = catsConfigService.sundayweekstart;
 			}
 			if (catsConfigService.colorScheme) {
-				this.colorScheme = catsConfigService.colorScheme;
+				this.colorScheme = "colorful";
 			}
 		}
 	};
 
-	this.enhanceTask = function (task){
+	this.enhanceTask = function (task) {
 		if (!task) {
 			return task;
 		}
@@ -86,22 +85,25 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		if (task.DESCR === "") {
 			return;
 		}
-        var index = getIndex(this.lastUsedDescriptions, task);
-        if (index >= 0) {
-        	if (onlyAddDoNotUpdate) {
-        		return;
-        	} else {
-	            this.lastUsedDescriptions.splice(index,1);
-	        }
-        }
-        if (task.id) {
-            this.lastUsedDescriptions.push(task);
-        }
+		var index = getIndex(this.lastUsedDescriptions, task);
+		if (index >= 0) {
+			if (onlyAddDoNotUpdate) {
+				return;
+			} else {
+				this.lastUsedDescriptions.splice(index,1);
+			}
+		}
+		if (task.id) {
+			this.lastUsedDescriptions.push(task);
+		}
 	};
 
-    this.updateDescription = function (task) {
+	this.updateDescription = function (task) {
 		this.lastUsedDescriptions.some(function(lastUsedDescription){
-			if (catsUtils.isSameTask(task, lastUsedDescription)) {
+			if (catsUtils.isSameTask(task, lastUsedDescription) &&
+				lastUsedDescription.DESCR !== task.id &&
+				lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
+				lastUsedDescription.DESCR !== task.RAUFNR) {
 				task.DESCR = lastUsedDescription.DESCR;
 				return true;
 			}

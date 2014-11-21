@@ -12,6 +12,10 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 			{
 				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
 			}
+            if(JiraConfig.jira === 'issues')
+            {
+                $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
+            }
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
                 $scope.config = JiraConfig;

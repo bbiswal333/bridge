@@ -8,12 +8,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	function ($http, $q, calenderUtils, catsBackend, $log) {
 
-	var alreadyInitializedForMonth = {};
-	var staticCatsData4FourMonth = null;
 	this.days = {};
 	this.promiseForMonth = {};
-	this.reloadInProgress = { value:false };
-	this.missingDays = {};
+	this.reloadInProgress = {
+		value: false,
+		error: false };
 
 	this.executeWhenDone = function(promise)
 	{
@@ -26,29 +25,14 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	this.getMonthData = function(year, month){
 		try {
 			var self = this;
-			var deferred = $q.defer();
 			var promise = null;
 			var promises = [];
 
-			// already done or buffered?
-			if (!alreadyInitializedForMonth[month] && this.promiseForMonth[month]) {
-				return this.promiseForMonth[month]; // return promise which is yet to be resolved
-			}
-			else if (alreadyInitializedForMonth[month]) {
-				deferred.resolve();
-				return deferred.promise; // data already present so simply return a resolved promise
+			if (this.promiseForMonth[month]) {
+				return this.promiseForMonth[month];
 			}
 
-			// not buffered! so getting the data
-			this.reloadInProgress.value = true;
-
-			if (!staticCatsData4FourMonth) {
-				promise = catsBackend.getCAT2ComplianceData4FourMonth();
-				promises.push(promise);
-				promise.then(function(data) {
-					staticCatsData4FourMonth = data;
-				});
-			}
+			self.reloadInProgress.value = true;
 
 			var weeks = this.getWeeksOfMonth(year, month);
 			for (var i = 0; i < weeks.length; i++) {
@@ -59,9 +43,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			promise = $q.all(promises);
 			promise.then(function(){
-				alreadyInitializedForMonth[month] = true;
 				delete self.promiseForMonth[month];
 				self.reloadInProgress.value = false;
+			}, function() {
+				self.reloadInProgress.value = false;
+				self.reloadInProgress.error = true;
 			});
 
 			this.promiseForMonth[month] = promise;
@@ -131,7 +117,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	this.getTargeHoursForDay = function (dayString) {
 		var targetHours = 0;
-		staticCatsData4FourMonth.some(function (data4day) {
+		catsBackend.CAT2ComplinaceDataCache.some(function (data4day) {
 			if (data4day.DATEFROM === dayString) {
 				targetHours = data4day.STDAZ;
 				return true;
@@ -142,7 +128,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 	this.getHoursOfWorkingDay = function (dayString) {
 		var hoursOfWorkingDay = 0;
-		staticCatsData4FourMonth.some(function (data4day) {
+		catsBackend.CAT2ComplinaceDataCache.some(function (data4day) {
 			if (data4day.DATEFROM === dayString) {
 				hoursOfWorkingDay = data4day.CONVERT_H_T;
 				return true;
@@ -166,7 +152,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		// we need to initialize each day with it's actual target hours from the data
 		// which we already have in the calendar array
 		for (var calWeekIndex = 0; calWeekIndex < this.calArray.length; calWeekIndex++) {
-			if (week === this.calArray[calWeekIndex][0].weekNo + "") {
+			if (week === calenderUtils.toNumberOfCharactersString(this.calArray[calWeekIndex][0].weekNo, 2) + "") {
 				for (var dayIndex = 0; dayIndex < this.calArray[calWeekIndex].length; dayIndex++) {
 					var dayString = this.calArray[calWeekIndex][dayIndex].dayString;
 					this.days[dayString] = {};
@@ -208,8 +194,24 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
 							task.UNIT = ISPtask.UNIT;
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
+							// knowingly doing some data doublication here
+							if (task.UNIT === 'H') {
+								task.QUANTITY_DAY = task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								task.QUANTITY_DAY = task.QUANTITY;
+							}
+							task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * this.days[task.WORKDATE].hoursOfWorkingDay / this.days[task.WORKDATE].targetHours * 1000) / 1000;
 							task.DESCR = ISPtask.DESCR;
 							this.days[task.WORKDATE].tasks.push( task );
+
+							if (task.UNIT === 'H') {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
+							}
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
+
+							// That coding does not belong here...
 							var block = {};
 							block.desc = task.DESCR;
 							block.fixed = true;
@@ -219,25 +221,8 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
 							}
 							this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
-							if (task.UNIT === 'H') {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-							} else {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
-							}
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 						}
 					}
-																													// 0: Object
-																													// $$hashKey: "0AI"
-																													// blockWidth: 696
-																													// desc: "Maintenance Bridge"
-																													// fixed: false
-																													// localValue: 0.87
-																													// task: Object
-																													// value: 0.87
-																													// __proto__: Object
-																													// 1: Object
-																													// 2: Object
 				}
 			}
 		} catch(err) {
@@ -253,10 +238,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			weeks.forEach(function(week){
 				var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
 				promises.push(promise);
-				promise.then(function(data){
+				promise.
+				then(function(data){
 					if(data) {
 						self.convertWeekData(data);
 					}
+					self.reloadInProgress.value = false;
+				}, function() {
+					self.reloadInProgress.value = false;
+					self.reloadInProgress.error = true;
 				});
 			});
 		} catch(err) {

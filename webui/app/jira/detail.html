@@ -1,31 +1,30 @@
 ﻿<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">    
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-		<input type="text" class="form form-control" ng-model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;" />
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
 		<div class="btn-group" style="height:32px">
 		  <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>
 		</div>
-        <div>
-        	<div infinitescroll style="clear:both">
-            <div class="row">
-	            <div class="box-title col-sm-3" ng-click="sort('summary')">Summary
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'summary'"></i>
-	            </div>
-	        	<div class="box-title col-sm-7" ng-click="sort('description')">Description
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'description'"></i>
-	        	</div>
-	        	<div class="box-title col-sm-2" ng-click="sort('status')">Status
-	            	<i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === 'status'"></i>
-	        	</div>
-	        </div>
-            <div ng-repeat="row in data.filteredJiraData | filter:filterText | orderBy:predicate:reverse | limitTo:infinityLimit " class="row" ng-class="zebraCell($index)">
-            	<div class="cellText col-sm-3">
-	            	<a target="_blank" href="{{data.jira_url}}{{row.key}}">{{row.summary}}</a>
-            	</div>
-            	<div class="cellText col-sm-7">{{row.description}}</div>
-            	<div class="cellText col-sm-2">{{row.status}}</div>
-            </div>
-        </div>        
-    </div>
+
+		<br/>
+
+		<bridge.table table-data="data.filteredJiraData" filter="filterText">
+			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-2'" order-by="'key'">
+				<a target="_blank" href="{{parentScope.data.jira_url}}{{row.key}}">{{row.key}}</a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">
+				<div bs-tooltip data-title="{{row.summary}}">
+					{{row.summary}}
+				</div>
+			</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">
+				<div bs-tooltip data-title="{{row.description}}">
+					{{row.description}}
+				</div>
+			</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Status'" column-size-class="'col-sm-2'" order-by="'status'">{{row.status}}</bridge.table-column>
+		</bridge.table>
+
+	</div>
 </div>
 
 

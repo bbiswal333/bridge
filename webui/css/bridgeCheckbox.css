@@ -1,6 +1,6 @@
 .checkbox,
 .radio {
-    margin-bottom: 12px;
+    margin: 0;
     padding-left: 25px;
     position: relative;
     cursor: pointer;
@@ -145,6 +145,7 @@
 
 .checkbox .content {
     height: 20px;
+    width: auto;
     display: inline-block;
     padding-top: 2px;
 }

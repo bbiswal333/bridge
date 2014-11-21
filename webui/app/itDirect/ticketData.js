@@ -1,17 +1,17 @@
 angular.module("app.itdirect").service("app.itdirect.ticketData",
-    ["$rootScope","$http", "$q", "$location", "bridgeDataService", "app.itdirect.config", "notifier", "app.itdirect.formatter",
-    function($rootScope, $http, $q, $location, bridgeDataService, itdirectConfig, notifier, formatter){
+    ["$rootScope","$http", "$q", "$location", "bridgeDataService", "app.itdirect.config", "notifier", "bridge.converter",
+    function($rootScope, $http, $q, $location, bridgeDataService, itdirectConfig, notifier, converter){
 
         var that = this;
         this.isInitialized = {value: false};
         this.prios = [{
-            key: "1", description: "Very High", active: false
+            key: "01", description: "Very High", active: false
         },{
-            key: "2", description: "High", active: false
+            key: "02", description: "High", active: false
         },{
-            key: "3", description: "Medium", active: false
+            key: "03", description: "Medium", active: false
         },{
-            key: "4", description: "Low", active: false
+            key: "04", description: "Low", active: false
         }];
 
         this.tickets = {};
@@ -109,7 +109,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                         bNewNotifications = true;
                         ticketsToNotify[newTicketsCategory].push(ticket);
                         notifier.showInfo('New IT Direct Ticket', 'There is a new IT Direct Ticket "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
-                    } else if (formatter.getDateFromAbapTimeString(ticket.CHANGED_AT) > formatter.getDateFromAbapTimeString(foundTicket.CHANGED_AT)) {
+                    } else if (converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > converter.getDateFromAbapTimeString(foundTicket.CHANGED_AT)) {
                         bNewNotifications = true;
                         ticketsToNotify[newTicketsCategory].push(ticket);
                         notifier.showInfo('IT Direct Ticket Changed', 'The IT Direct Ticket "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
@@ -131,7 +131,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
 
             for (var category in tickets) {
                 foundTickets = _.where(tickets[category], function(ticket){
-                    return formatter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
+                    return converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
                 });
                 if (foundTickets.length > 0){
                     ticketsToNotify[category] = foundTickets;

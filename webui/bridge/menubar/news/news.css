@@ -79,17 +79,13 @@
     width: 150px;
 }
 .sidebar-news-header{
-    position: relative;
-    left: 300px;
-    width: 70%;
+    width: 80%;
+    margin: 0 auto;
 }
 .sidebar-news-githubIcon{
-    position: absolute;
-    top: 250px;
     width: 150px;
     display: block;
     text-align: center;
-    left: 95px;
 }
 .sidebar-news-githubIcon:hover i{
     color:#418AC9;
@@ -99,6 +95,7 @@
 }
 .sidebar-news-content{
     margin-top:20px;
+    margin-bottom: 60px;
 }
 .news-navi{
     width: 100px;
@@ -113,7 +110,11 @@
 }
 
 .sidebar-news-headline {
-    position: absolute;
-    top: 55px;
-    left: 325px;
 }
+
+.news-item{
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top:30px;
+}
+
