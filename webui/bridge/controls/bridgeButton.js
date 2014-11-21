@@ -18,7 +18,7 @@ angular.module('bridge.app').directive('bridge.button', [function() {
         	state: '@'
         },
         controller: function($scope, $element) {
-		    centerX = 0,
+		    var centerX = 0,
 		    centerY = 0,
 		    color = '',
 		    rectColor = '',
