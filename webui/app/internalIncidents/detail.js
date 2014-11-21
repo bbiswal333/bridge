@@ -7,8 +7,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
         $scope.detailForNotifications = false;
 
         $scope.filterTable = function(oTicket){
-            return true;
-            /*var bTicketPriorityMatches = false;
+            var bTicketPriorityMatches = false;
             angular.forEach($scope.prios, function(prio){
                 if (prio.active === true && oTicket.PRIORITY_KEY === prio.key){
                     bTicketPriorityMatches = true;
@@ -27,7 +26,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
                 }
             }
 
-            return bTicketPriorityMatches && bTicketContainsFilterString;*/
+            return bTicketPriorityMatches && bTicketContainsFilterString;
         };
 
         function enhanceMessage(message){
