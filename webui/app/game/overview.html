@@ -1,0 +1,27 @@
+﻿<div>
+	<div ng-show="!gameInProgress" style="float:left;width:175px;height:140px">
+		<i ng-show="showInfo" class="grey-font-100">Click on the TILE with different shade to proceed to the next level.</i>
+		<i ng-show="showInfo" class="grey-font-100">HINT: Tilt the monitor forward or backward..:)</i>
+		<div ng-show="!showInfo">
+			<span>Points Scored...!!</span></br>
+			<div style="text-align:center"><b class="grey-font-100" style="font-size:60px">{{hits}}</b></div>
+		</div>
+		<div style="position:absolute;top:152px;right: 38px;">
+			<div class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">Start Game</div>
+		</div>
+	</div>
+
+	<div ng-show="gameInProgress" style="float:left">
+		<ul style="width:140px; height:140px;padding-left:0px">
+			<li ng-click="click($index)" ng-repeat="x in data" style="border-radius:2px;display:block;float:left;border-right:1px solid white;border-top:1px solid white;background-color:{{x.X}};width:{{140/counter}}px;height:{{140/counter}}px">
+			</li>
+		</ul>
+	</div>
+
+	<div ng-show="gameInProgress" style="float:right;font-size:80px;margin-right:50px">
+		<span id="timer" style="margin-right:-15px"></span>
+		<span style="font-size:50px">s</span>
+	</div>
+	<div ng-show="gameInProgress" class="game-refresh" ><p><a href="" ng-click="startGame()" title="Restart Game"><i class="fa fa-refresh"></i></a></p></div>
+</div>
+

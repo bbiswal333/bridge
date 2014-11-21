@@ -1,0 +1,17 @@
+<div style="width: 100%">
+	<p>
+		<form name="form">
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select Complexity</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<span ng-click="values.comp = '7'" ng-class="{true: 'btn btn_blue',false: 'btn '}[values.comp === '7' || !values.comp];" style="margin-right:0;">Easy</span>
+					<span ng-click="values.comp = '8'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '8'];" style="margin-right:0;">Medium</span>
+					<span ng-click="values.comp = '9'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '9'];" style="margin-right:0;">Complex</span>
+				</div>
+			</div>
+		</form>
+	</p>
+	<div class="row" >
+		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+	</div>
+</div>
