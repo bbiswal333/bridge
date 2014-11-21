@@ -8,7 +8,7 @@
                 <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === column.orderBy"></i>
             </div>
         </div>
-        <div class="row" ng-repeat="row in tableData | limitTo:infinityLimit | orderBy:predicate:reverse | filter:filter()" ng-class="zebraCell($index)">
+        <div class="row" ng-repeat="row in tableData | filter:filter() | orderBy:predicate:reverse | limitTo:infinityLimit " ng-class="zebraCell($index)">
             <div custom-transclude="parent"></div>
         </div>
     </div>
