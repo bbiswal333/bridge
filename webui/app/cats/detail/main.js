@@ -24,7 +24,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
     $scope.analytics = false;
-    var lastSelectedDaysLength = 0;
+    // var lastSelectedDaysLength = 0;
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
     configService.copyConfigIfLoaded(catsConfigService);
@@ -370,15 +370,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
-                if (lastSelectedDaysLength === 1) {
-                    $scope.blockdata = []; // Enter range selection
-                }
+                // if (lastSelectedDaysLength === 1) {
+                    // $scope.blockdata = []; // One potential step for new templating functionality
+                // }
                 $scope.totalWorkingTime = 1;
             }
         } catch(err) {
             $log.log("selectionCompleted(): " + err);
         }
-        lastSelectedDaysLength = $scope.selectedDates.length;
+        // lastSelectedDaysLength = $scope.selectedDates.length;
     };
 
     $scope.handleSelectedDate = function(dayString){
