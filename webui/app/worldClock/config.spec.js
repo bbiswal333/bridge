@@ -1,4 +1,4 @@
-ddescribe("Worldclock config", function() {
+describe("Worldclock config", function() {
 	var testLocation = {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333, timeOffset: 1};
 	var testLocationWithoutTimeOffset =  {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333};
 
