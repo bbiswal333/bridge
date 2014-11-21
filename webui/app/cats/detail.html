@@ -40,17 +40,16 @@
                                 onblockremoved=""
                                 handlervaluetodisplay="calcMinutes(perc);">
                             </app.cats.allocationbar>
-
-                            <input ng-if="!reloadInProgress.value && checkThatContainsNoFixedTasksForTemplate() && blockdata.length > 0 && blockdataTemplate.length === 0" class="btn btn-default btn_blue" type="button" value="Copy to template" ng-click="toggleTemplate()" style="margin:4px"></input>
-
-                            <input ng-if="!reloadInProgress.value && checkThatContainsNoFixedTasksForTemplate() && blockdataTemplate.length > 0 && selectedDates.length > 0" class="btn btn-default btn_blue" type="button" value="Apply template" ng-click="toggleTemplate()" style="margin:4px"></input>
-                            <input ng-if="!reloadInProgress.value && checkThatContainsNoFixedTasksForTemplate() && blockdataTemplate.length > 0 && selectedDates.length === 0" class="btn btn-default btn-" type="button" value="Apply template" style="margin:4px"></input>
-
                         </div>
+                        <br>
+<!--                         <input ng-if="checkThatContainsNoFixedTasksForTemplate() && blockdata.length > 0" class="btn btn-default btn_blue" type="button" value="Copy distribution" ng-click="copyTemplate()" style="margin:4px"></input>
+                        <input ng-if="!checkThatContainsNoFixedTasksForTemplate() || blockdata.length === 0" class="btn btn-default btn_inactive" type="button" value="Copy distribution" ng-click="" style="margin:4px"></input>
+                        <input ng-if="checkThatContainsNoFixedTasksForTemplate() && blockdataTemplate.length > 0" class="btn btn-default btn_blue" type="button" value="Paste distribution" ng-click="pasteTemplate()" style="margin:4px"></input>
+                        <input ng-if="!checkThatContainsNoFixedTasksForTemplate() || blockdataTemplate.length === 0" class="btn btn-default btn_inactive" type="button" value="Paste distribution" style="margin:4px"></input> -->
                         <div class="save_close_btn" style="text-align: right">
                             <input ng-if="!reloadInProgress.value && selectedDates.length > 0" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
-                            <input ng-if="!reloadInProgress.value && selectedDates.length === 0" class="btn btn-default" type="button" value="Apply changes" ng-click="" style="margin:4px"></input>
-                            <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Apply changes" style="margin-left:4px"></input><br />
+                            <input ng-if="!reloadInProgress.value && selectedDates.length === 0" class="btn btn-default btn_inactive" type="button" value="Apply changes" ng-click="" style="margin:4px"></input>
+                            <input ng-if="reloadInProgress.value" class="btn btn-default btn_inactive" type="button" value="Apply changes" style="margin-left:4px"></input><br />
                         </div>
                     </div>
                 </div>

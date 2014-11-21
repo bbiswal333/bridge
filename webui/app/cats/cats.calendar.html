@@ -72,7 +72,10 @@
                      tabindex="1"
                      style="outline: 0">
 
-                    <div ng-if="analytics && analyticsDays[day.dayString].tasks.length > 0">
+                    <div ng-if="(analytics.value || analytics.singleDay === day.dayString) && analyticsDays[day.dayString].tasks.length > 0"
+                        ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
+                        ng-mouseover="confirmSingleDayAnalytics()"
+                        ng-mouseleave="switchOffSingleDayAnalytics()">
                         <app.cats.allocationbar
                             data-width="80"
                             data-height="54"
@@ -85,12 +88,14 @@
                         </app.cats.allocationbar>
                     </div>
 
-                    <div ng-if="!analytics || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
+                    <div ng-if="(!analytics.value && analytics.singleDay != day.dayString) || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
                          'selected_day': isSelected(day.dayString)}"
-                         ng-style="{'background-size': !maintainable && day.today && 'cover'}">
+                         ng-style="{'background-size': !maintainable && day.today && 'cover'}"
+                         ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
+                         ng-mouseleave="switchOffSingleDayAnalytics()">
 
                         <span ng-class="{
                               'bold': isSelected(day.dayString),
