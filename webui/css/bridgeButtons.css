@@ -1,0 +1,66 @@
+.button {
+  align-items: flex-start;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 2px 6px 3px;
+  display: inline-block;
+  margin: 0em;
+  border: none;
+  color: white;
+  overflow: hidden;
+  margin: 1rem;
+  padding: 0;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+}
+.button canvas {
+  opacity: 0.25;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:all ease 0.15s;
+}
+.button:hover{
+  box-shadow: 0px 0px 5px #707070;
+  transition:all ease 0.25s;
+}
+
+button:focus{
+  outline: none;
+}
+.fadeOut{
+  opacity:0!important;
+}
+.active{
+  box-shadow:0 0 10px  #707070;
+}
+
+
+.button.blue {
+  background-color: transparent;
+  border: 2px solid #418AC9;
+  color: #418AC9;
+}
+.button.blue.active {
+  background-color: #426FC5;
+  border:none;
+  color: #fff;
+}
+
+
+
+.button.disabled{
+  background-color: transparent;
+  border: 2px solid #c3c3c3;
+  color: #c3c3c3;
+}
+.button.disabled:hover{
+  box-shadow: none;
+}
+.button.disabled canvas{
+  opacity: 0;
+}
