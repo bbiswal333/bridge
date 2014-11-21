@@ -200,6 +200,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							} else {
 								task.QUANTITY_DAY = task.QUANTITY;
 							}
+							task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * this.days[task.WORKDATE].hoursOfWorkingDay / this.days[task.WORKDATE].targetHours * 1000) / 1000;
 							task.DESCR = ISPtask.DESCR;
 							this.days[task.WORKDATE].tasks.push( task );
 
