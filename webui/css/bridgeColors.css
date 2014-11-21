@@ -30,6 +30,17 @@ background-color:#B3D0E9;
 .basic-blue-font-40{
 color:#B3D0E9;
 }
+.button.blue{
+	background-color: transparent;
+  border: 2px solid #418AC9;
+  color: #418AC9;
+}
+.button.blue.active{
+	background-color: #418AC9;
+  border: none;
+  color: #fff;
+}
+
 
 .green{
 background-color:#4EA175;
@@ -61,6 +72,17 @@ background-color:#D3E6DC;
 .green-font-40{
 color:#D3E6DC;
 }
+.button.green{
+	background-color: transparent;
+  border: 2px solid #4EA175;
+  color: #4EA175;
+}
+.button.green.active{
+	background-color: #4EA175;
+  border: none;
+  color: #fff;
+}
+
 
 .red{
 background-color:#D53F26;
@@ -92,6 +114,17 @@ background-color:#EEB2A8;
 .red-font-40{
 color:#EEB2A8;
 }
+.button.red{
+	background-color: transparent;
+  border: 2px solid #D53F26;
+  color: #D53F26;
+}
+.button.red.active{
+	background-color: #D53F26;
+  border: none;
+  color: #fff;
+}
+
 
 .purple{
 background-color:#8561c5;
@@ -123,7 +156,16 @@ background-color:#d2c6e5;
 .purple-font-40{
 color:#d2c6e5;
 }
-
+.button.purple{
+	background-color: transparent;
+  border: 2px solid #8561c5;
+  color: #8561c5;
+}
+.button.purple.active{
+	background-color: #8561c5;
+  border: none;
+  color: #fff;
+}
 
 .yellow{
 background-color:#fcb517;
@@ -155,7 +197,16 @@ background-color:#FEE0A1;
 .yellow-font-40{
 color:#FEE0A1;
 }
-
+.button.yellow{
+	background-color: transparent;
+  border: 2px solid #fcb517;
+  color: #fcb517;
+}
+.button.yellow.active{
+	background-color: #fcb517;
+  border: none;
+  color: #fff;
+}
 
 .orange{
 background-color:#E76F24;
@@ -187,7 +238,16 @@ background-color:#F5C099;
 .orange-font-40{
 color:#F5C099;
 }
-
+.button.orange{
+	background-color: transparent;
+  border: 2px solid #E76F24;
+  color: #E76F24;
+}
+.button.orange.active{
+	background-color: #E76F24;
+  border: none;
+  color: #fff;
+}
 
 .grey{
 background-color:#707070;
@@ -219,4 +279,17 @@ background-color:#c3c3c3;
 .grey-font-40{
 color:#c3c3c3;
 }
+.button.grey{
+	background-color: transparent;
+  border: 2px solid #707070;
+  color: #707070;
+}
+.button.grey.active{
+	background-color: #707070;
+  border: none;
+  color: #fff;
+}
+
+
+
 

@@ -47,7 +47,8 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
         return {
             icon: "fa fa-user",
             name: "SAP Employees",
-            resultTemplate: "bridge/controls/employeeInput/EmployeeItemTemplate.html"
+            resultTemplate: "bridge/controls/employeeInput/EmployeeItemTemplate.html",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {

@@ -32,13 +32,23 @@
 			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
 			<bridge.table-column column-id="'2'" header="'Category'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
 			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-2'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
+			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
 				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
 					 class="im-reporter-img"
+					 style="height: 32px;"
 					 ng-if="row.REPORTER_ID"></img>
-				<a target="_blank" href="{{row.url}}">{{row.REPORTER_NAME}}</a>
-				<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+				<a target="_blank" href="{{row.reporterData.url}}">{{row.REPORTER_NAME}}</a>
+				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px;"
+					 ng-if="row.PROCESSOR_ID"></img>
+				<a target="_blank" href="{{row.processorData.url}}">{{row.PROCESSOR_NAME}}</a>
+				<a href="mailto:{{row.processorData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.processorData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
 			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
 			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>

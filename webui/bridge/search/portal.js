@@ -2,7 +2,8 @@ angular.module('bridge.search').service('bridge.search.portalSearch', ['$http', 
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-building-o",
-            name: "Corporate Portal"
+            name: "Corporate Portal",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {

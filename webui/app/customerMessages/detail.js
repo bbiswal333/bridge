@@ -152,7 +152,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 {
                     if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components_aa, addMessage); }
                     if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
-                    if($scope.config.data.selection.colleagues)    { angular.forEach(ticketsToShow.colleagues, addMessage); }
+                    if($scope.config.data.selection.colleagues)    { angular.forEach(ticketsToShow.colleagues_aa, addMessage); }
                 }
                 bridgeConfig.store(bridgeDataService);
                 update_table();

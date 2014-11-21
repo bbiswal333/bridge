@@ -113,7 +113,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
             // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
             _.defer(function() {
                 $rootScope.$apply(function() {
-                    $location.path("/detail/internalIncidents/null/true");
+                    $location.path("/detail/internalIncidents/null/null/true");
                 });
             });
         }

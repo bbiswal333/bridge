@@ -18,22 +18,23 @@
     }
 
      beforeEach(function () {
-         // create the mock module
-        angular.module("mock.atc", []).service("bridgeDataService", function () {
-            this.hasConfigForATC = true;
-            this.getAppConfigById = function () {
-                if (this.hasConfigForATC) {
-                    return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true}]}');
-                } else {
+        module("app.atc", function($provide){
+            var mockDataService = {
+                hasConfigForATC: true,
+                getAppConfigById: function () {
+                    if (this.hasConfigForATC) {
+                        return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true}]}');
+                    } else {
+                        return {};
+                    }
+                },
+                getUserInfo: function () {
                     return {};
                 }
             };
-            this.getUserInfo = function () {
-                return {};
-            };
+
+            $provide.value("bridgeDataService", mockDataService);
         });
-        module("mock.atc");
-        module("app.atc");
 
         inject(["app.atc.configservice", "bridgeDataService", function (_atcConfigService, _bridgeDataService) {
             atcConfigService = _atcConfigService.getConfigForAppId("app.test");

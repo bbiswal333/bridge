@@ -17,14 +17,20 @@
         
 		<div ng-class="{false:'app-cats-calendar',true:'app-cats-calendar-maintainable'}[maintainable]">
 			<div class="app-cats-week-labels row">
-                <div class="app-cats-heading-details" ng-if="maintainable"> </div>
+                <div class="app-cats-heading-details" ng-if="maintainable"></div>
                 <div class="app-cats-heading-details" ng-if="maintainable" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
+                <div class="{{dayClass}}" ng-if="!maintainable"></div>
                 <div class="{{dayClass}}" ng-if="!maintainable" ng-repeat="weekday in weekdays">{{weekday.medium}}</div>
 			</div>
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
                         <button class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                    </div>
+                </div>
+                <div ng-if="!maintainable" class="{{dayClass}}">
+                    <div ng-class="app-cats-day-inner-small" ng-style="{'background-size': !maintainable }">
+                        <span ng-class="{ 'app-cats-day-text-small': !maintainable }">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</span>
                     </div>
                 </div>
 
@@ -66,29 +72,37 @@
                      tabindex="1"
                      style="outline: 0">
 
-<!--                     <app.cats.allocationbar
-                        data-width="80"
-                        data-height="54"
-                        data-blocks="day.blocks"
-                        data-total-value="1"
-                        data-text=""
-                        data-selected-hours="day.targetHours"
-                        onblockremoved=""
-                        handlervaluetodisplay="calcMinutes(perc);">
-                    </app.cats.allocationbar> -->
+                    <div ng-if="(analytics.value || analytics.singleDay === day.dayString) && analyticsDays[day.dayString].tasks.length > 0"
+                        ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
+                        ng-mouseover="confirmSingleDayAnalytics()"
+                        ng-mouseleave="switchOffSingleDayAnalytics()">
+                        <app.cats.allocationbar
+                            data-width="80"
+                            data-height="54"
+                            data-blocks="analyticsDays[day.dayString].tasks"
+                            data-total-value="1"
+                            data-text=""
+                            data-selected-hours="day.targetHours"
+                            onblockremoved=""
+                            handlervaluetodisplay="calcMinutes(perc);">
+                        </app.cats.allocationbar>
+                    </div>
 
-                    <div id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
+                    <div ng-if="(!analytics.value && analytics.singleDay != day.dayString) || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
                          'app-cats-day-inner-small': !maintainable,
                          'app-cats-day-inner-big': maintainable,
                          'app-cats-today': day.today,
                          'selected_day': isSelected(day.dayString)}"
-                         ng-style="{'background-size': !maintainable && day.today && 'cover'}">
+                         ng-style="{'background-size': !maintainable && day.today && 'cover'}"
+                         ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
+                         ng-mouseleave="switchOffSingleDayAnalytics()">
 
                         <span ng-class="{
                               'bold': isSelected(day.dayString),
                               'app-cats-day-text-small': !maintainable,
                               'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
+
                 </div>
 
                 <div ng-repeat="day in week" ng-if="day.data == null" class="{{dayClass}} app-cats-noDataInCats" ng-class="{'app-cats-notInMonth': !day.inMonth}" title="No data available in CATS for this date.">
@@ -97,6 +111,9 @@
 			</div>
 		</div>
 		<div style="clear: both;"></div>
-		<div ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class=" clickable app-cats-icon" data-placement="left-bottom" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
+        <div ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" data-placement="left" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
+
+
+        <div ng-if="maintainable" ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" style="right:50px;" data-placement="left" title="Details"><button class="btn btn-default" ng-click="toggleAnalytics()" ng-class="{true:'btn btn_blue',false:'btn'}[analytics];" style="margin-right:0"><i class="fa fa-eye"></i></button></div>
 	</div>
 </div>

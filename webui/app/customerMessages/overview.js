@@ -18,13 +18,13 @@ angular.module('app.customerMessages').factory("app.customerMessages.configservi
     return config;
 });
 
-angular.module('app.customerMessages').directive('app.customerMessages', ['app.customerMessages.configservice', function (configservice)
+angular.module('app.customerMessages').directive('app.customerMessages', function ()
 {
     return {
         restrict: 'E',
-        templateUrl: 'app/customerMessages/overview.html',
+        templateUrl: 'app/customerMessages/overview.html'
     };
-}]);
+});
 
 angular.module('app.customerMessages').controller('app.customerMessages.directiveController',
     ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData',

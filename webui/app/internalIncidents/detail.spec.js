@@ -49,10 +49,10 @@ describe("Internal Incidents details controller", function(){
     });
 
     it("should display the notification tickets if the details screen is called from notifications", function(){
-        $httpBackend.expectGET(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/zxa\/FIND_EMPLOYEE_JSON/)
+        $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/zxa\/FIND_EMPLOYEE_JSON/)
             .respond({
                 DATA: {
-                    TELNR: "555-123-456",
+                    TELNR_DEF: "555-123-456",
                     BNAME: ""
                 }
             });
@@ -86,7 +86,7 @@ describe("Internal Incidents details controller", function(){
         $httpBackend.flush();
 
         expect($rootScope.messages.length).toBe(1);
-        expect($rootScope.messages[0].employee.TELNR).toBe("555-123-456");
+        expect($rootScope.messages[0].reporterData.TELNR).toBe("555123456");
     });
 
     it("should initialize the config object if that has not happened yet", function(){

@@ -1,0 +1,10 @@
+<div class="popover" style="width: 350px; max-width: 350px" ng-controller="bridge.search.searchSettingsController">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Select where you want to Search<span class="glyphicon glyphicon-remove-circle clickable" style="float: right" ng-click="$hide();"></span></h3>
+    <div class="popover-content">
+        <div ng-repeat="provider in searchProvider">
+            <bridge.checkbox checked-label="{{provider.getSourceInfo().name}}" unchecked-label="{{provider.getSourceInfo().name}}"
+                             is-checked="bridgeSettings.searchProvider[provider.getSourceInfo().name].selected"></bridge.checkbox>
+        </div>
+    </div>
+</div>

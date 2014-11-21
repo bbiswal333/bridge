@@ -1,9 +1,8 @@
-angular.module("bridge.search", ["ui.bootstrap.modal"]);
-angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
+angular.module("bridge.search", ["ui.bootstrap.modal", "bridge.service"]);
+angular.module("bridge.search").service("bridge.search", ['$q', 'bridgeDataService', function($q, bridgeDataService) {
 	var searchProviders = [];
 
 	this.addSearchProvider = function(searchProvider) {
-		//todo: check for search function
 		if(searchProvider === null || !searchProvider.hasOwnProperty('findMatches') || !searchProvider.hasOwnProperty('getSourceInfo') ||
 			!searchProvider.hasOwnProperty('getCallbackFn')) {
 			throw new Error("Invalid search provider");
@@ -13,7 +12,20 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 			return;
 		}
 
+		var bridgeSettings = bridgeDataService.getBridgeSettings();
+		if (bridgeSettings.searchProvider === undefined){
+			bridgeSettings.searchProvider = {};
+		}
+
+		if (bridgeSettings.searchProvider[searchProvider.getSourceInfo().name] === undefined){
+			bridgeSettings.searchProvider[searchProvider.getSourceInfo().name] = { name: searchProvider.getSourceInfo().name, selected: searchProvider.getSourceInfo().defaultSelected};
+		}
+
 		searchProviders.push(searchProvider);
+	};
+
+	this.getSearchProvider = function(){
+		return searchProviders;
 	};
 
 	this.removeSearchProvider = function(searchProvider) {
@@ -28,12 +40,15 @@ angular.module("bridge.search").service("bridge.search", ['$q', function($q) {
 		resultArray.length = 0;
 		var deferred = $q.defer();
 		var promises = [];
+		var bridgeSettings = bridgeDataService.getBridgeSettings();
 		promises = searchProviders.map(function(provider) {
-			var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
-			resultArray.push(result);
-			var promise = provider.findMatches(query, result.results);
-			if(promise) {
-				return promise;
+			if (bridgeSettings.searchProvider[provider.getSourceInfo().name].selected) {
+				var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
+				resultArray.push(result);
+				var promise = provider.findMatches(query, result.results);
+				if (promise) {
+					return promise;
+				}
 			}
 		});
 		$q.all(promises).then(function() {

@@ -8,7 +8,9 @@ angular.module('bridge.app', [
     "ngRoute",
     "bridge.service",
     "lib.utils",
-    "bridge.diagnosis"
+    "bridge.diagnosis",
+    "bridge.search",
+    "bridge.mobileSearch"
 ]);
 
 angular.module('bridge.service', ["ngRoute"]);

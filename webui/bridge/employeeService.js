@@ -14,6 +14,7 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 				resp.TELNR = resp.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
 				resp.fullName =  resp.VORNA + ' ' + resp.NACHN;
 				resp.url = 'https://people.wdf.sap.corp/profiles/' + user;
+				resp.mail = resp.SMTP_MAIL;
 				buffer[user] = resp;
 
 				defer.resolve(resp);

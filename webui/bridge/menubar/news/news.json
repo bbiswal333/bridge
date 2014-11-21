@@ -39,6 +39,14 @@
             "snapURL":  "bridge/menubar/news/image/jam.png",
             "preview":  "Help to define the JAM Integration",
             "content":  "We target to provide a Bridge App to enable users to configure their Jam input channel personalized and have a smarter solution than mail notifications. Target is to enable users to directly link to and filter the relevant Jam based information they need to follow up on for their daily tasks. To do things right it is key to focus on the right things before! We need <b>YOUR INPUT about YOUR ISSUES</b> enabling you to perform best concerning Jam channeled information. If you are ready to engage to improve your situation, please <b><a target=\"_blank\" href=\"https://profiles.wdf.sap.corp/groups/5458eb5adf15db4575000002/users\">register for the next roll in Workshop (Design Thinking mode)</a></b> planned for CW 48/49 in Wallorf/ Rot or contact <b>Christoph Ehrhardt</b> directly."
+        },
+        {
+            "id":       6,
+            "header":   "Bridge Usability Survey",
+            "date": "2014-11-17",
+            "snapURL":  "bridge/menubar/news/image/Clouds.png",
+            "preview":  "Please let us know your feedback!",
+            "content":  "We are constantly working on improving Bridge. This requires that we understand your experiences with it - something we hope you are willing to share via an online survey. Your anonymous answers will help us evaluate the tool's effectiveness and decide on improvements.<br><br>Please complete the survey before <b>November 28st, 2014</b> by using this <b><a href=\"https://www.sapsurvey.com/cgi-bin/qwebcorporate.dll?idx=B5TZCF\" target=\"_blank\">link</a></b>. We understand that your time is very valuable, so we kept the survey very short: it should only take <b>about 5-10 minutes</b> to complete.<br><br>If you have any questions or are having any difficulties accessing the link, please contact <b>Marian Gunkel</b>.<br><br>Thank you for your input!"
         }
 	]
 }

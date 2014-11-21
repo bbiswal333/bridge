@@ -40,7 +40,7 @@
                 "employeeService.js",
                 "bridgeBuildingSearchService.js",
                 "converter.js",
-
+                "bridgeButtons.js",
                 "diagnosis/logService.js",
                 "diagnosis/corsTestPageController.js",
                 "diagnosis/mailPreviewController.js",

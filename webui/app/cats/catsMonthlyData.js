@@ -194,8 +194,23 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
 							task.UNIT = ISPtask.UNIT;
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
+							// knowingly doing some data doublication here
+							if (task.UNIT === 'H') {
+								task.QUANTITY_DAY = task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								task.QUANTITY_DAY = task.QUANTITY;
+							}
 							task.DESCR = ISPtask.DESCR;
 							this.days[task.WORKDATE].tasks.push( task );
+
+							if (task.UNIT === 'H') {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
+							}
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
+
+							// That coding does not belong here...
 							var block = {};
 							block.desc = task.DESCR;
 							block.fixed = true;
@@ -205,12 +220,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
 							}
 							this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
-							if (task.UNIT === 'H') {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-							} else {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
-							}
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 						}
 					}
 				}
