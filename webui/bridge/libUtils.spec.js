@@ -81,4 +81,17 @@ describe("The calUtils-Lib provides various functions for working with dates", f
       expect(calUtils.moveDateToFirstDayInMonth(calUtils.getUTC(2014, 3, 15)).toISOString()).toBe("2014-04-01T00:00:00.000Z");
   });
 
+  it("should get the current time", function() {
+    var date = new Date();
+    var dateFromLib = calUtils.now();
+    expect(dateFromLib.toDateString()).toEqual(date.toDateString());
+  });
+
+  it("should get the current time with offset", function() {
+    var date = new Date();
+    var dateFromLib = calUtils.utcNowWithOffset(3600000);
+    expect(dateFromLib.getHours() === date.getHours() + 1).toBeTruthy();
+    dateFromLib = calUtils.utcNowWithOffset(7200000);
+    expect(dateFromLib.getHours()).toEqual(date.getHours() + 2);
+  });
 });
