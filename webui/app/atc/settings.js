@@ -25,11 +25,6 @@
         $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + configItem.getQueryString() + '&format=rss');
     };
     
-    $scope.cut_click = function (configItem) {
-        $scope.copy_click(configItem);
-        $scope.remove_click(configItem);
-    };
-    
     $scope.copy_click = function (configItem) {
         jQuery.extend($scope.currentConfigValues,configItem);
     };
@@ -38,12 +33,6 @@
         var index = $scope.config.configItems.indexOf(configItem);
         if (index > -1) {
             $scope.config.configItems.splice(index, 1);
-        }
-    };
-    
-    $scope.rss_for_selection_click = function () {
-        if (!$scope.currentConfigValues.isEmpty()) {         
-            $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + $scope.currentConfigValues.getQueryString() + '&format=rss');
         }
     };
     
