@@ -1,4 +1,4 @@
-ddescribe("Worldclock config", function() {
+describe("Worldclock config", function() {
 	var testLocation = {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333, timeOffset: 1};
 	var testLocationWithoutTimeOffset =  {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333};
 
@@ -10,7 +10,7 @@ ddescribe("Worldclock config", function() {
 		module("app.worldClock");
 		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", function(_config, bridgeDataService, $httpBackend) {
 			config = _config;
-			bridgeDataService.getAppConfigByModuleName = function() {
+			bridgeDataService.getAppConfigById = function() {
 				return {locations: [testLocation]};
 			};
 			httpBackend = $httpBackend;
