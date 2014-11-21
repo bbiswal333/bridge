@@ -1,9 +1,10 @@
+/*globals window*/
 angular.module('bridge.app').directive('bridge.button', [function() {
 
-	var requestAnimFrame = 	window.requestAnimationFrame       || 
-							window.mozRequestAnimationFrame    || 
-							window.oRequestAnimationFrame      || 
-							window.msRequestAnimationFrame     || 
+	var requestAnimFrame = 	window.requestAnimationFrame       ||
+							window.mozRequestAnimationFrame    ||
+							window.oRequestAnimationFrame      ||
+							window.msRequestAnimationFrame     ||
 							function (callback) {
 								window.setTimeout(callback, 1000 / 60);
 							};
@@ -17,7 +18,6 @@ angular.module('bridge.app').directive('bridge.button', [function() {
         	state: '@'
         },
         controller: function($scope, $element) {
-        	var canvas = {},
 		    centerX = 0,
 		    centerY = 0,
 		    color = '',
@@ -27,6 +27,10 @@ angular.module('bridge.app').directive('bridge.button', [function() {
 		    radius = 0;
 
 		    $scope.canvas = $('canvas', $element)[0];
+
+		    function resetFade(){
+				$('canvas').removeClass('fadeOut');
+			}
 
 			function draw() {
 				context.beginPath();
@@ -40,24 +44,21 @@ angular.module('bridge.app').directive('bridge.button', [function() {
 				}
 				if (radius >= element.width){
 					$('canvas').addClass('fadeOut');
-					setTimeout(function() {
+					window.setTimeout(function() {
 						context.clearRect(0, 0, element.width, element.height);
 					}, 50);
 				}
 			}
-			function resetFade(){
-				$('canvas').removeClass('fadeOut');
-			}
 
         	$scope.canvasClick = function(event) {
         		color = event.toElement.parentElement.dataset.color;
-				if (color == 'light'){
+				if (color === 'light'){
 					rectColor = '#fff';
 				}
-				else if (color == 'dark'){
+				else if (color === 'dark'){
 					rectColor = '#000';
 				}
-				else if (color == 'disabled'){
+				else if (color === 'disabled'){
 					rectColor = '#e1e1e1';
 				}
 				else {
@@ -70,7 +71,7 @@ angular.module('bridge.app').directive('bridge.button', [function() {
 				centerY = event.offsetY;
 				draw();
 				context.clearRect(0, 0, element.width, element.height);
-        	}
+        	};
         }
     };
 }]);

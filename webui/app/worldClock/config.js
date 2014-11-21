@@ -12,12 +12,12 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
         			that.timeOffset = (parseFloat(/<offset>(.*)<\/offset>/gi.exec(timezoneData.data)[1]) + (calUtils.now().getTimezoneOffset() / 60)) * 1000 * 60 * 60;
         		});
 			})();
-		}
+		};
 	})();
 
 	this.locations = [];
 
-	this.initialize = function(appId) {
+	this.initialize = function() {
 		//TODO: comment out when merged with multiInstance
 		/*
 		bridgeDataService.getConfigByAppId(appId).locations.map(function(location) {

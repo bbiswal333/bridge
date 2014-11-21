@@ -424,7 +424,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         var returnDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()));
         returnDate.setUTCMilliseconds(returnDate.getUTCMilliseconds() + millisecondsOffset);
         return returnDate;
-    }
+    };
 
     //Factory-method of provider
     this.$get = function() {
