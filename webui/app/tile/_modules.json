@@ -3,10 +3,10 @@
         "categories": [
             "Fun"
         ],
-        "module_name": "app.game",
+        "module_name": "app.tile",
         "title": "Tile",
         "icon_css": "tile-icon",
-        "overview_directive": "app.game",
+        "overview_directive": "app.tile",
         "needs_client": false,
         "beta": true,
         "default_hidden": true

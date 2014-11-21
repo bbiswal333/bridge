@@ -1,5 +1,5 @@
-angular.module('app.game').appGameSettings =
-	['$scope', "app.game.configService", function ($scope, configService) {
+angular.module('app.tile').appTileSettings =
+	['$scope', "app.tile.configService", function ($scope, configService) {
 
 	$scope.values = configService.values;
 

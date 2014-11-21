@@ -1,13 +1,13 @@
-﻿angular.module('app.game', []);
-angular.module('app.game').directive('app.game',['$http','app.game.configService',function ($http,configService) {
+﻿angular.module('app.tile', []);
+angular.module('app.tile').directive('app.tile',['$http','app.tile.configService',function ($http,configService) {
 	
 	var directiveController = ['$scope', function ($scope) {
 		
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure Tile";
 		$scope.box.settingScreenData = {
-			templatePath: "game/settings.html",
-				controller: angular.module('app.game').appGameSettings,
+			templatePath: "tile/settings.html",
+				controller: angular.module('app.tile').appTileSettings,
 				id: $scope.boxId
 		};
 
@@ -17,7 +17,7 @@ angular.module('app.game').directive('app.game',['$http','app.game.configService
 		};
 
 		//Load the color pallette
-		$http.get('app/game/pallette.json').success(function(response){
+		$http.get('app/tile/pallette.json').success(function(response){
 			$scope._colors = response;
 		}); 	
 				
@@ -136,7 +136,7 @@ angular.module('app.game').directive('app.game',['$http','app.game.configService
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'app/game/overview.html',
+		templateUrl: 'app/tile/overview.html',
 		controller: directiveController,
 		link: linkFn
 	};

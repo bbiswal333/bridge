@@ -1,4 +1,4 @@
-angular.module('app.game').service("app.game.configService", function () {
+angular.module('app.tile').service("app.tile.configService", function () {
 
 	this.values = {
 		comp : '7'

@@ -5,7 +5,7 @@
 	font-size: 1.5em;
 }
 .tile-icon{
-	background-image: url(../../app/game/tile-icon.png);
+	background-image: url(../../app/tile/tile-icon.png);
 	background-size: 20px;
 	height: 20px;
 	width: 20px;
