@@ -194,13 +194,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
 							task.UNIT = ISPtask.UNIT;
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
-							// knowingly doing some data doublication here
-							if (task.UNIT === 'H') {
-								task.QUANTITY_DAY = task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-							} else {
-								task.QUANTITY_DAY = task.QUANTITY;
-							}
-							task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * this.days[task.WORKDATE].hoursOfWorkingDay / this.days[task.WORKDATE].targetHours * 1000) / 1000;
 							task.DESCR = ISPtask.DESCR;
 							this.days[task.WORKDATE].tasks.push( task );
 
@@ -224,6 +217,19 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 						}
 					}
 				}
+			angular.forEach(this.days,function(day) {
+				angular.forEach(day.tasks,function(task) {
+					// knowingly doing some data doublication here
+					if (task.UNIT === 'H') {
+						task.QUANTITY_DAY = task.QUANTITY / day.hoursOfWorkingDay;
+					} else {
+						task.QUANTITY_DAY = task.QUANTITY;
+					}
+					if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
+						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / day.targetHours * 1000) / 1000;
+					}
+				});
+			});
 			}
 		} catch(err) {
 			$log.log("convertWeekData(): " + err);
