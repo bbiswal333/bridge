@@ -35,6 +35,7 @@ angular.module('app.tile').directive('app.tile',['$http','app.tile.configService
 			$scope.hits = 0;//No. Of Hits-->Score
 			$scope.data = [];//Color Codes for active cells
 			$scope.gameInProgress = false;
+			$scope.gamePaused = false;
 			$scope.showInfo = true;
 		};
 			
@@ -43,16 +44,20 @@ angular.module('app.tile').directive('app.tile',['$http','app.tile.configService
 		//Start timer
 		$scope.startTimer = function(){
 		    document.getElementById("timer").innerHTML = $scope.time;
-					$scope.timer = window.setInterval(function(){ 
-					$scope.time--;
-					if(document.getElementById("timer"))
-						document.getElementById("timer").innerHTML = $scope.time;					
+					$scope.timer = window.setInterval(function(){
 					
-					if($scope.time <= 0){
-						$scope.gameInProgress = false;
-						//Adjust Box Size
-						$scope.box.boxSize = 1;
-						window.clearInterval($scope.timer);
+						if( $scope.gameInProgress && !$scope.gamePaused ){					
+							$scope.time--;
+							if(document.getElementById("timer")){
+								document.getElementById("timer").innerHTML = $scope.time;
+							}
+							
+							if($scope.time <= 0){
+								$scope.gameInProgress = false;
+								//Adjust Box Size
+								$scope.box.boxSize = 1;
+								window.clearInterval($scope.timer);
+							}
 					}
 				}
 			,1000);
@@ -98,6 +103,16 @@ angular.module('app.tile').directive('app.tile',['$http','app.tile.configService
 				$scope.generateData( );
 			}
 		};
+		
+		//Pause Game
+		$scope.pauseGame = function(){
+			$scope.gamePaused = true;
+		};
+		
+		//Resume Game
+		$scope.resumeGame = function(){
+			$scope.gamePaused = false;
+		}
 		
 		//Start new game
 		$scope.startGame = function(){

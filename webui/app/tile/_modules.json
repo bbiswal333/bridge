@@ -5,7 +5,7 @@
         ],
         "module_name": "app.tile",
         "title": "Tile",
-        "icon_css": "tile-icon",
+        "icon_css": "fa fa-th-large",
         "overview_directive": "app.tile",
         "needs_client": false,
         "beta": true,
