@@ -1,16 +1,12 @@
 <div style="background: rgba(255, 255, 255, 0.1); position: relative; width: 100%; overflow-x: hidden; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none;" ng-mouseleave="handleMouseLeave()" ng-mouseup="handleMouseUp()" unselectable="on" ng-mousemove="handleMouseMove($event)">
-	<button ng-if="timeOffsetInMilliseconds !== 0" style="position: absolute; left: 0px; top: 0px" ng-click="clearTimeOffset()">Now</button>
-	<!--<span style="position: absolute; top: -2px; left: 48%; right: 52%;">{{useNDigits(now.getHours(), 2)}}:{{useNDigits(now.getMinutes(), 2)}}</span>
-	<span class="fa fa-dot-circle-o" style="color: red; font-size: 20px; position: absolute; width: {{cursorWidth}}px; left: 50%; right: 50%; cursor: pointer; bottom: 12px" ng-mousedown="handleMouseDown($event)" ng-mouseup="handleMouseUp()"></span>-->
 	<div style="white-space: nowrap; position: relative; height: 40px; left: {{clockOffset}}px; margin-top: 10px" ng-mouseup="handleMouseUp()">
 		<div ng-repeat="time in timeArray" style="position: absolute; left: {{$index * oneHourWidth}}px; bottom: 0px; display: inline-block">
-			<div style="width: 2px; height: 15px; position: absolute; background-color: #777777; left: 0px; bottom: 18px"/>
-			<div style="width: 1px; height: 4px; position: absolute; background-color: #AAAAAA; left: {{oneHourWidth / 4}}px; bottom: 18px"/>
-			<div style="width: 1px; height: 10px; position: absolute; background-color: #AAAAAA; left: {{oneHourWidth / 2}}px; bottom: 18px"/>
-			<div style="width: 1px; height: 4px; position: absolute; background-color: #AAAAAA; left: {{oneHourWidth / 4 * 3}}px; bottom: 18px"/>
+			<div class="grey-60" style="width: 5px; height: 15px; position: absolute; left: -2px; bottom: 18px"/>
+			<div class="grey-60" style="width: 80px; height: 10px; position: absolute; left: {{oneHourWidth}}px; bottom: 23px"/>
+
 			<span style="position: absolute; left: {{textOffset}}px; bottom: 0px">{{useNDigits(time.getHours(), 2)}}:00</span>
 		</div>
-		<span style="position: absolute; top: -12px; left: {{-1 * cursorOffset - 10}}px;">{{useNDigits(now.getHours(), 2)}}:{{useNDigits(now.getMinutes(), 2)}}</span>
-		<span class="fa fa-dot-circle-o" style="color: red; font-size: 20px; position: absolute; width: {{cursorWidth}}px; left: {{-1 * cursorOffset}}px; cursor: pointer; bottom: 12px" ng-mousedown="handleMouseDown($event)" ng-mouseup="handleMouseUp()"></span>
+		<span style="position: absolute; top: -12px; left: {{-1 * cursorOffset - 10}}px;">{{useNDigits(now.getHours(), 2)}}:{{useNDigits(now.getMinutes(), 2)}} <a href="" ng-if="timeOffsetInMilliseconds !== 0" ng-click="clearTimeOffset()" style="margin-left: 5px"><i class="fa fa-clock-o"></i> Now</a></span>
+		<span class="fa fa-circle red-font" style="font-size: 20px; position: absolute; width: {{cursorWidth}}px; left: {{-1 * cursorOffset}}px; cursor: pointer; bottom: 12px" ng-mousedown="handleMouseDown($event)" ng-mouseup="handleMouseUp()"></span>
 	</div>
 </div>

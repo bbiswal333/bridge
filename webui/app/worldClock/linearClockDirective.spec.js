@@ -11,7 +11,7 @@ describe("Linear Clock Directive", function() {
 		inject(["lib.utils.calUtils", function (_calUtils_) {
 			calUtils = _calUtils_;
 			calUtils.now = function() {
-				return new Date(2014, 11, 11, 11, 11, 11);
+				return new Date(Date.UTC(2014, 11, 11, 11, 11, 11));
 			};
 		}]);
 
@@ -28,27 +28,27 @@ describe("Linear Clock Directive", function() {
 
 	it("should create the data array based on the current time", function() {
 		expect($scope.timeArray.length).toEqual(49);
-		expect($scope.timeArray[0].getDate()).toEqual(10);
-		expect($scope.timeArray[0].getHours()).toEqual(11);
-		expect($scope.timeArray[0].getMinutes()).toEqual(0);
+		expect($scope.timeArray[0].getUTCDate()).toEqual(10);
+		expect($scope.timeArray[0].getUTCHours()).toEqual(11);
+		expect($scope.timeArray[0].getUTCMinutes()).toEqual(0);
 
-		expect($scope.timeArray[11].getDate()).toEqual(10);
-		expect($scope.timeArray[11].getHours()).toEqual(22);
-		expect($scope.timeArray[11].getMinutes()).toEqual(0);
+		expect($scope.timeArray[11].getUTCDate()).toEqual(10);
+		expect($scope.timeArray[11].getUTCHours()).toEqual(22);
+		expect($scope.timeArray[11].getUTCMinutes()).toEqual(0);
 
-		expect($scope.timeArray[24].getDate()).toEqual(11);
-		expect($scope.timeArray[24].getHours()).toEqual(11);
-		expect($scope.timeArray[24].getMinutes()).toEqual(0);
+		expect($scope.timeArray[24].getUTCDate()).toEqual(11);
+		expect($scope.timeArray[24].getUTCHours()).toEqual(11);
+		expect($scope.timeArray[24].getUTCMinutes()).toEqual(0);
 
-		expect($scope.timeArray[48].getDate()).toEqual(12);
-		expect($scope.timeArray[48].getHours()).toEqual(11);
-		expect($scope.timeArray[48].getMinutes()).toEqual(0);
+		expect($scope.timeArray[48].getUTCDate()).toEqual(12);
+		expect($scope.timeArray[48].getUTCHours()).toEqual(11);
+		expect($scope.timeArray[48].getUTCMinutes()).toEqual(0);
 	});
 
 	it("should calculate the correct clock and cursor offset", function() {
 		expect($scope.clockOffset).toEqual(-1877);
 		expect($scope.cursorOffset).toEqual(-1927);
-		expect($scope.now.toTimeString()).toEqual(calUtils.now().toTimeString());
+		expect($scope.now.toUTCString()).toEqual(calUtils.now().toUTCString());
 	});
 
 	it("should align the offsets when the time is changed", function() {
@@ -65,18 +65,18 @@ describe("Linear Clock Directive", function() {
 		$scope.handleMouseMove({clientX: 460});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-2471000);
-		expect($scope.now.toTimeString()).toEqual("10:30:00 GMT+0100 (CET)");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 10:30:00 GMT");
 		$scope.handleMouseMove({clientX: 420});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-4271000);
-		expect($scope.now.toTimeString()).toEqual("10:00:00 GMT+0100 (CET)");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 10:00:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 		$scope.handleMouseUp();
 		$scope.handleMouseDown({clientX: 500});
 		$scope.handleMouseMove({clientX: 600});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(229000);
-		expect($scope.now.toTimeString()).toEqual("11:15:00 GMT+0100 (CET)");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 11:15:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 	});
 
@@ -85,12 +85,12 @@ describe("Linear Clock Directive", function() {
 		$scope.handleMouseMove({clientX: 420});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-4271000);
-		expect($scope.now.toTimeString()).toEqual("10:00:00 GMT+0100 (CET)");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 10:00:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 		$scope.handleMouseMove({clientX: 600});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(4729000);
-		expect($scope.now.toTimeString()).toEqual("12:30:00 GMT+0100 (CET)");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 12:30:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 	});
 

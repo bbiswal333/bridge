@@ -21,5 +21,5 @@ angular.module("app.worldClock").directive("app.worldClock.analogClock", ["lib.u
 			$scope.useNDigits = calUtils.useNDigits;
 		},
 		templateUrl: "app/worldClock/analogClockTemplate.html"
-	}
+	};
 }]);

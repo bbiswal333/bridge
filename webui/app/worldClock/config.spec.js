@@ -8,13 +8,21 @@ describe("Worldclock config", function() {
 		module("lib.utils");
 		module("bridge.service");
 		module("app.worldClock");
-		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", function(_config, bridgeDataService, $httpBackend) {
+		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", "lib.utils.calUtils", function(_config, bridgeDataService, $httpBackend, calUtils) {
 			config = _config;
 			bridgeDataService.getAppConfigById = function() {
 				return {locations: [testLocation]};
 			};
 			httpBackend = $httpBackend;
 			$httpBackend.when('GET').respond("<offset>10</offset>");
+
+			calUtils.now = function() {
+				var date = new Date();
+				date.getTimezoneOffset = function() {
+					return -60;
+				};
+				return date;
+			};
 		}]);
 	});
 

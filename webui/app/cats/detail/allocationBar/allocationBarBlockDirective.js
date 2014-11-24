@@ -101,6 +101,13 @@ function (colorUtils, blockCalculations, calUtils) {
                 originalBlockWidth = $scope.blockData.blockWidth;
                 $scope.blockData.localValue = $scope.blockData.value;
             });
+
+            $scope.$watch("totalWidth", function () {
+                $scope.blockData.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
+                // reset originalBlockwidth to the current blockWidth for the next dragging actions
+                originalBlockWidth = $scope.blockData.blockWidth;
+                $scope.blockData.localValue = $scope.blockData.value;
+            });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"
     };

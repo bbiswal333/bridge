@@ -8,17 +8,18 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.cat2BackendZDEVDB",
   "app.cats.catsUtils",
   "$http",
+  "$interval",
   "$window",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.blockdataTemplate = [];
     $scope.loaded = false;
-    $scope.width = 600;
+    $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
     $scope.selectedDates = [];
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
@@ -28,6 +29,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
     configService.copyConfigIfLoaded(catsConfigService);
+
+    function adjustBarSize() {
+        $scope.$apply(function(){
+            $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
+            if ($scope.width > 600) {
+                $scope.width = 600;
+            }
+            $scope.width = parseInt(Math.round($scope.width / 10) * 10 || 600);
+        });
+    }
+    /* eslint-disable no-undef */
+    $(window).resize(adjustBarSize);
+    $scope.$on("$destroy", function(){
+        $(window).off('resize', adjustBarSize);
+    });
+    /* eslint-enable no-undef */
 
     function timeToMaintain() {
         try {
