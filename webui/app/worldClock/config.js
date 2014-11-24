@@ -17,7 +17,13 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 
 	this.locations = [];
 
+	var initialized = false;
+
 	this.initialize = function() {
+		if(initialized === true) {
+			return;
+		}
+
 		//TODO: comment out when merged with multiInstance
 		/*
 		bridgeDataService.getConfigByAppId(appId).locations.map(function(location) {
@@ -28,6 +34,7 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 			bridgeDataService.getAppConfigByModuleName("app.worldClock").locations.map(function(location) {
 				that.addLocation(location);
 			});
+			initialized = true;
 		}
 	};
 
