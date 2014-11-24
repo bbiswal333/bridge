@@ -32,8 +32,10 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	$scope.proposedRoutes = [];
 
+	var previouslyDerivedRouteName = "";
 	function deriveRouteNameFromDestinationAndStartCities() {
 		$scope.newRoute.routeName = $scope.newRoute.start.address.city + " - " + $scope.newRoute.destination.address.city;
+		previouslyDerivedRouteName = $scope.newRoute.routeName;
 	}
 
 	function clearMap() {
@@ -212,7 +214,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	function updateRouteName() {
-		if($scope.newRoute.routeName === "New Route" && $scope.newRoute.start.address && $scope.newRoute.destination.address) {
+		if(($scope.newRoute.routeName === "New Route" || $scope.newRoute.routeName === previouslyDerivedRouteName) && $scope.newRoute.start.address && $scope.newRoute.destination.address) {
 			deriveRouteNameFromDestinationAndStartCities();
 		}
 
@@ -250,6 +252,10 @@ angular.module('app.getHome').appGetHomeSettings =
 		appGetHomeConfig.addRoute($scope.newRoute.routeName, $scope.selectedRoute);
 		$scope.proposedRoutes.splice($scope.proposedRoutes.indexOf($scope.selectedRoute), 1);
 		$scope.selectedRoute = null;
+
+		if($scope.proposedRoutes.length === 0) {
+			resetNewRoute();
+		}
 	};
 
 	$scope.removeRouteFromSettings = function(route) {
