@@ -30,7 +30,7 @@ angular.module('app.tile').directive('app.tile',['$http','app.tile.configService
 			
 			$scope.time = 60;
 			$scope.counter = 1;//Array Size Counter->Will be linked to setting
-			$scope.colorIndex = 1;//Index of the color pallete
+			$scope.colorIndex = 0;//Index of the color pallete
 			$scope.random = 0;//Index of the Dirty Cell
 			$scope.hits = 0;//No. Of Hits-->Score
 			$scope.data = [];//Color Codes for active cells
