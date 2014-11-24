@@ -118,10 +118,10 @@
             <alert ng-repeat="alert in alerts" style="font-weight:light;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
                 <span ng-bind-html="alert.msg"></span>
             </alert>
-        </div>
-        <div style="position: fixed; bottom: 0; right: 0; width: 200px; height: 200px" ng-class="{'invisible': !appIsDragged}" ui-sortable="sortableOptions" ng-model="dustBinModel" class="sortable-list appDropTarget appDustBin">
-            <div style="border-radius: 50%; width: 400px; height: 400px; -webkit-box-shadow: -10px -10px 19px -8px rgba(31,31,31,1); -moz-box-shadow: -10px -10px 19px -8px rgba(31,31,31,1); box-shadow: -10px -10px 19px -8px rgba(31,31,31,1);" class="red-80">
-                <i class="fa fa-trash" style="color: white; font-size: 120px; position: absolute; top: 40px; left: 90px"></i>
+        </div><!--  -->
+        <div style="position: fixed; bottom: 20px;right:45%; text-align:center;" ng-class="{'invisible': !appIsDragged}" ui-sortable="sortableOptions" ng-model="dustBinModel" class="sortable-list appDropTarget appDustBin">
+            <div style="border-radius: 100%;text-align:center; box-shadow: 0px 0px 20px rgba(31,31,31,0.8);" class="grey-60 hover">
+                <i class="fa fa-trash fa-4x" style="color: white;padding:35px 50px;"></i>
             </div>
         </div>
     </div>
