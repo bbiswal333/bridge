@@ -48,7 +48,7 @@ describe("Linear Clock Directive", function() {
 	it("should calculate the correct clock and cursor offset", function() {
 		expect($scope.clockOffset).toEqual(-1877);
 		expect($scope.cursorOffset).toEqual(-1927);
-		expect($scope.now.toISOString()).toEqual(calUtils.now().toISOString());
+		expect($scope.now.toUTCString()).toEqual(calUtils.now().toUTCString());
 	});
 
 	it("should align the offsets when the time is changed", function() {
@@ -65,18 +65,18 @@ describe("Linear Clock Directive", function() {
 		$scope.handleMouseMove({clientX: 460});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-2471000);
-		expect($scope.now.toISOString()).toEqual("2014-12-11T09:30:00.000Z");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 09:30:00 GMT");
 		$scope.handleMouseMove({clientX: 420});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-4271000);
-		expect($scope.now.toISOString()).toEqual("2014-12-11T09:00:00.000Z");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 09:00:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 		$scope.handleMouseUp();
 		$scope.handleMouseDown({clientX: 500});
 		$scope.handleMouseMove({clientX: 600});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(229000);
-		expect($scope.now.toISOString()).toEqual("2014-12-11T10:15:00.000Z");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 10:15:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 	});
 
@@ -85,12 +85,12 @@ describe("Linear Clock Directive", function() {
 		$scope.handleMouseMove({clientX: 420});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(-4271000);
-		expect($scope.now.toISOString()).toEqual("2014-12-11T09:00:00.000Z");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 09:00:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 		$scope.handleMouseMove({clientX: 600});
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(4729000);
-		expect($scope.now.toISOString()).toEqual("2014-12-11T11:30:00.000Z");
+		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 11:30:00 GMT");
 		expect($scope.clockOffset).toEqual(-1877);
 	});
 
