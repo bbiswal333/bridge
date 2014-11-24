@@ -17,12 +17,15 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 
 	this.locations = [];
 
+	var initialized = false;
+
 	this.initialize = function(appId) {
 		var that = this;
 		if(bridgeDataService.getAppConfigById(appId) !== undefined && bridgeDataService.getAppConfigById(appId).locations !== undefined) {
 			bridgeDataService.getAppConfigById(appId).locations.map(function(location) {
 				that.addLocation(location);
 			});
+			initialized = true;
 		}
 	};
 

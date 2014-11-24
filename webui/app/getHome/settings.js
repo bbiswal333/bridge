@@ -1,4 +1,4 @@
-/*global nokia*/
+/*globals nokia, jQuery*/
 angular.module('app.getHome').appGetHomeSettings =
 	['app.getHome.configservice', 'app.getHome.mapservice', 'app.getHome.routeFactory', '$scope', '$q',
 		function (appGetHomeConfig, appGetHomeMap, routeFactory, $scope, $q) {
@@ -267,7 +267,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	$scope.quitEditMode = function() {
 		$scope.editMode = false;
 		$scope.selectedRoute = null;
-		$scope.editedRoute.null;
+		$scope.editedRoute = null;
 		clearMap();
 	};
 
