@@ -15,6 +15,23 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
 
+	var modulesPacked = "../webui/bridge/modulesPacked.json";
+	var javascriptPacked = "../webui/bridge/modulesPacked.js";
+	var stylesheetsPacked = "../webui/bridge/modulesPacked.css";
+
+	(function deletePackedFiles() {
+		if(fs.existsSync(path.join(__dirname, javascriptPacked))) {
+			fs.unlinkSync(path.join(__dirname, javascriptPacked));
+		}
+		if(fs.existsSync(path.join(__dirname, stylesheetsPacked))) {
+			fs.unlinkSync(path.join(__dirname, stylesheetsPacked));
+		}
+		if(fs.existsSync(path.join(__dirname, modulesPacked))) {
+			fs.unlinkSync(path.join(__dirname, modulesPacked));
+		}
+	})();
+	
+
 	// FIXME - currently migrated from ews.js
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
 		var s = ewsDateStr_s;
@@ -428,35 +445,43 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		if( getResponse )
 		{
-		    var files = {};
+			if(!fs.existsSync(path.join(__dirname, javascriptPacked)) || !fs.existsSync(path.join(__dirname, stylesheetsPacked)) || !fs.existsSync(path.join(__dirname, modulesPacked))) {
+				var files = {};
 
-			var bridge_path = path.join(__dirname, '../webui/bridge');
-		    var bridge_files = getFiles(bridge_path);
-		    files = concatAttributes(files, bridge_files);
+				var bridge_path = path.join(__dirname, '../webui/bridge');
+			    var bridge_files = getFiles(bridge_path);
+			    files = concatAttributes(files, bridge_files);
 
-			var app_path = path.join(__dirname, '../webui/app');
-		    var app_files = getFiles(app_path);	
-		    files = concatAttributes(files, app_files);
+				var app_path = path.join(__dirname, '../webui/app');
+			    var app_files = getFiles(app_path);	
+			    files = concatAttributes(files, app_files);
 
-		    if (typeof request.query.format === "undefined")
-		    {
-		    	response.setHeader('Content-Type', 'text/plain;');						    	   
-				response.send(JSON.stringify(files));		
+			    fs.writeFileSync(path.join(__dirname, modulesPacked), JSON.stringify(files));
+				
+				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
+				buildifyJS.concat(files.js_files);
+				fs.writeFileSync(path.join(__dirname, javascriptPacked), buildifyJS.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
+				
+				var buildifyCSS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
+				buildifyCSS.concat(files.css_files);
+				fs.writeFileSync(path.join(__dirname, stylesheetsPacked), buildifyCSS.cssmin().getContent());
 			}
-			else if( request.query.format === "js")
-			{
-				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
-				buildify.concat(files.js_files);		
-				response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
-				response.send(buildify.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
-			}
-			else if( request.query.format === "css")
-			{
-				var buildify = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
-				buildify.concat(files.css_files);				
-				response.setHeader('Content-Type', 'text/css; charset=utf-8');
-				response.send(buildify.cssmin().getContent());	
-			}
+
+			if (typeof request.query.format === "undefined")
+			    {
+			    	response.setHeader('Content-Type', 'text/plain;');						    	   
+					response.send(fs.readFileSync(path.join(__dirname, modulesPacked)));		
+				}
+				else if( request.query.format === "js")
+				{	
+					response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+					response.send(fs.readFileSync(path.join(__dirname, javascriptPacked)));
+				}
+				else if( request.query.format === "css")
+				{			
+					response.setHeader('Content-Type', 'text/css; charset=utf-8');
+					response.send(fs.readFileSync(path.join(__dirname, stylesheetsPacked)));
+			}   
 		}
 		else
 		{
