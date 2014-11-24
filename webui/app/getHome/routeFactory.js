@@ -1,4 +1,4 @@
-angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.mapservice', '$interval', function (mapService, $interval) {
+angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.mapservice', '$interval', '$q', function (mapService, $interval, $q) {
 
 	var RouteClass = (function() {
 		return function(sName, aWaypoints) {
@@ -9,11 +9,14 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.
 			var that = this;
 
 			function getRouteInformation() {
+				var deferred = $q.defer();
 				mapService.rebuildRouteFromWaypoints(waypoints).then(function(routeData) {
 					that.summary = routeData.summary;
 					that.originalRoute = routeData;
-					that.originalRoute.draggable = false;
+					that.originalRoute.draggable = true;
+					deferred.resolve();
 				});
+				return deferred.promise;
 			}
 
 			getRouteInformation();
@@ -25,6 +28,11 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.
 					name: this.name,
 					waypoints: waypoints
 				});
+			};
+
+			this.updateFromNewWaypoints = function(aUpdatedWaypoints) {
+				waypoints = aUpdatedWaypoints;
+				return getRouteInformation();
 			};
 		};
 	})();
