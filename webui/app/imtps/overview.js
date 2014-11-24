@@ -62,7 +62,7 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
 		});
 
 	}];
-
+	
     return {
         restrict: 'E',
         templateUrl: 'app/imtps/overview.html',
