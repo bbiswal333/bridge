@@ -2,11 +2,8 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 ]).directive("app.cats.allocationbar", [ "app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", function (colorUtils, blockCalculations) {
 
         var linkFunction = function($scope) {
-            $scope.width = parseInt($scope.width || 810); //deafult width is 810px
+            $scope.width = parseInt($scope.width || 810);
             $scope.height = parseInt($scope.height || 100);
-
-            // // reset color counter that for each new allocation bar we start with the same colors for the blocks
-            // colorUtils.resetColorCounter();
 
             $scope.getRemainingValue = function () {
                 var remaining = $scope.totalValue;
@@ -108,7 +105,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
         return {
             restrict: "E",
             scope: {
-                width: "@width",
+                width: "=width",
                 height: "@height",
                 blocks: "=blocks",
                 selectedHours: '=selectedHours',
