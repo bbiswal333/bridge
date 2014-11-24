@@ -1,4 +1,4 @@
-﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', function ($filter, ngTableParams, appAtcConfig, $scope) {
+﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', function ($filter, ngTableParams, appAtcConfig, $scope, $window) {
     $scope.config = appAtcConfig;
     $scope.currentConfigValues = appAtcConfig.newItem();
     $scope.currentConfigValues.onlyInProcess = true;
@@ -21,11 +21,23 @@
         }
     };
 
+    $scope.rss_click = function (configItem) {
+        $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + configItem.getQueryString() + '&format=rss');
+    };
+    
+    $scope.copy_click = function (configItem) {
+        jQuery.extend($scope.currentConfigValues,configItem);
+    };
+    
     $scope.remove_click = function (configItem) {
         var index = $scope.config.configItems.indexOf(configItem);
         if (index > -1) {
             $scope.config.configItems.splice(index, 1);
         }
+    };
+    
+    $scope.rss_for_saved_selection_click = function () {
+        $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + $scope.config.getQueryString() + '&format=rss');
     };
 
 /*eslint-disable */
