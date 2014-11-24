@@ -15,22 +15,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	var execFile  	  = require('child_process').execFile;
 	var pathTrafLight = path.join( __dirname , '\\trafficlight');
 
-	var modulesPacked = "../webui/bridge/modulesPacked.json";
-	var javascriptPacked = "../webui/bridge/modulesPacked.js";
-	var stylesheetsPacked = "../webui/bridge/modulesPacked.css";
-
-	(function deletePackedFiles() {
-		if(fs.existsSync(path.join(__dirname, javascriptPacked))) {
-			fs.unlinkSync(path.join(__dirname, javascriptPacked));
-		}
-		if(fs.existsSync(path.join(__dirname, stylesheetsPacked))) {
-			fs.unlinkSync(path.join(__dirname, stylesheetsPacked));
-		}
-		if(fs.existsSync(path.join(__dirname, modulesPacked))) {
-			fs.unlinkSync(path.join(__dirname, modulesPacked));
-		}
-	})();
-	
+	var modulesPacked;
+	var javascriptPacked;
+	var stylesheetsPacked;
 
 	// FIXME - currently migrated from ews.js
 	function _parseEWSDateString (ewsDateStr_s, offsetUTC_i) {
@@ -445,7 +432,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		if( getResponse )
 		{
-			if(!fs.existsSync(path.join(__dirname, javascriptPacked)) || !fs.existsSync(path.join(__dirname, stylesheetsPacked)) || !fs.existsSync(path.join(__dirname, modulesPacked))) {
+			if(!javascriptPacked || !stylesheetsPacked || !modulesPacked) {
 				var files = {};
 
 				var bridge_path = path.join(__dirname, '../webui/bridge');
@@ -456,31 +443,31 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			    var app_files = getFiles(app_path);	
 			    files = concatAttributes(files, app_files);
 
-			    fs.writeFileSync(path.join(__dirname, modulesPacked), JSON.stringify(files));
+			    modulesPacked = JSON.stringify(files);
 				
 				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
 				buildifyJS.concat(files.js_files);
-				fs.writeFileSync(path.join(__dirname, javascriptPacked), buildifyJS.uglify({ mangle: false }).getContent()); //mangle does not work with angular currently		
+				javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently		
 				
 				var buildifyCSS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
 				buildifyCSS.concat(files.css_files);
-				fs.writeFileSync(path.join(__dirname, stylesheetsPacked), buildifyCSS.cssmin().getContent());
+				stylesheetsPacked = buildifyCSS.cssmin().getContent();
 			}
 
 			if (typeof request.query.format === "undefined")
 			    {
 			    	response.setHeader('Content-Type', 'text/plain;');						    	   
-					response.send(fs.readFileSync(path.join(__dirname, modulesPacked)));		
+					response.send(modulesPacked);		
 				}
 				else if( request.query.format === "js")
 				{	
 					response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
-					response.send(fs.readFileSync(path.join(__dirname, javascriptPacked)));
+					response.send(javascriptPacked);
 				}
 				else if( request.query.format === "css")
 				{			
 					response.setHeader('Content-Type', 'text/css; charset=utf-8');
-					response.send(fs.readFileSync(path.join(__dirname, stylesheetsPacked)));
+					response.send(stylesheetsPacked);
 			}   
 		}
 		else

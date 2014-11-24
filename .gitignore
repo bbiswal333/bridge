@@ -12,10 +12,6 @@ test-results.xml
 checkstyle.xml
 badge/*.svg
 
-webui/bridge/modulesPacked.css
-webui/bridge/modulesPacked.js
-webui/bridge/modulesPacked.json
-
 pids
 logs
 results
