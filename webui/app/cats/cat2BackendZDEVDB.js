@@ -126,6 +126,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 				var today = new Date();
 				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
+				var twoMonthAgo = new Date();
+				twoMonthAgo.setDate(twoMonthAgo.getDate() - 60);
 				_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
@@ -143,6 +145,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// Now read templates in different profiles
 						var promises = [];
 						var week = calUtils.getWeekNumber(today);
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
+						week = calUtils.getWeekNumber(twoMonthAgo);
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
