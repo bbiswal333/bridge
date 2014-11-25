@@ -498,9 +498,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
+            delete booking.QUANTITY_DAY;
+            delete booking.STATUS;
 
             if (booking.UNIT === "H" && targetHoursForDay) {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                booking.CATSHOURS    = booking.CATSQUANTITY;
             } else {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
             }
