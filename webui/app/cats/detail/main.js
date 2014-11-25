@@ -274,7 +274,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    task.DESCR = "Vacation";
+                    if (task.UNIT === "H") {
+                        task.DESCR = "Vacation";
+                    } else {
+                        task.DESCR = "Vacation (changeable)";
+                    }
                 }
                 if (task.TASKTYPE === "ABSE") {
                     if (task.UNIT === "H") {
