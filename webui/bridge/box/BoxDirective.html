@@ -2,7 +2,6 @@
     <div id="innerbox" class="innerbox" 
         ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client, 'shake':shaking}"
         ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
-        <!--  {{module_name.replace('.', '-')}}Box -->
         <div class="box-heading">
             <div class="box-heading-content" ng-if="!editTitle">
                 <h6 class="box-title" ng-dblclick="doSomething()">{{metadata.title}}</h6>
@@ -11,7 +10,7 @@
                 <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
             </div>
             <div ng-if="editTitle">
-                <bridge.input ng-enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title"></bridge.input>
+                <bridge.input enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title"></bridge.input>
             </div>
         </div>
 

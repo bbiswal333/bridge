@@ -20,6 +20,10 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 	var initialized = false;
 
 	this.initialize = function(appId) {
+		if(initialized === true) {
+			return;
+		}
+
 		var that = this;
 		if(bridgeDataService.getAppConfigById(appId) !== undefined && bridgeDataService.getAppConfigById(appId).locations !== undefined) {
 			bridgeDataService.getAppConfigById(appId).locations.map(function(location) {

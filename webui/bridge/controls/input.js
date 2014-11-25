@@ -84,8 +84,8 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-keypress", attrs.ngKeypress);
             }
 
-            if(attrs.ngEnter) {
-                $('input', element)[0].setAttribute("ng-enter", attrs.ngEnter);
+            if(attrs.enter) {
+                $('input', element)[0].setAttribute("ng-enter", attrs.enter);
             }
 
             if(attrs.icon) {
@@ -101,4 +101,16 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             };
         }
     };
-}]);
+}]).directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                        scope.$apply(function(){
+                                scope.$eval(attrs.ngEnter);
+                        });
+
+                        event.preventDefault();
+                }
+            });
+        };
+});
