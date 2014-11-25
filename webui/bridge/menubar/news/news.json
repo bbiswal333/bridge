@@ -47,6 +47,14 @@
             "snapURL":  "bridge/menubar/news/image/Clouds.png",
             "preview":  "Please let us know your feedback!",
             "content":  "We are constantly working on improving Bridge. This requires that we understand your experiences with it - something we hope you are willing to share via an online survey. Your anonymous answers will help us evaluate the tool's effectiveness and decide on improvements.<br><br>Please complete the survey before <b>November 28st, 2014</b> by using this <b><a href=\"https://www.sapsurvey.com/cgi-bin/qwebcorporate.dll?idx=B5TZCF\" target=\"_blank\">link</a></b>. We understand that your time is very valuable, so we kept the survey very short: it should only take <b>about 5-10 minutes</b> to complete.<br><br>If you have any questions or are having any difficulties accessing the link, please contact <b>Marian Gunkel</b>.<br><br>Thank you for your input!"
+        },
+        {
+          "id":       7,
+          "header":   "Customer- and Internal-Incident Apps available",
+          "date": "2014-11-21",
+          "snapURL":  "bridge/menubar/news/image/newDesignSnap.png",
+          "preview":  "New Incident Apps!",
+          "content":  "A lot of you were awaiting these apps for a long time, finally the <b>Customer- and Internal-Incident Apps</b> left the beta status and are available for everyone. The apps connect to the new ticket systems in BCP, reuse your component assignment there and show you the relevant tickets grouped by different categories.<br/><br/>Changed and new tickets will appear in your notifications list and in Chrome and Firefox there is also a popup notification for these messages.<br/><br/>Please note that we retrieve our data from the BCP backup system, which might result in a small delay of 1-5 minutes before Bridge displays changes in tickets and component assignments.<br/><br/> Visit the <a href='https://portal.wdf.sap.corp/go/internal-incidents'>Internal Incident Portal Page</a> for more information."
         }
 	]
 }
