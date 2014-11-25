@@ -1,33 +1,33 @@
-.tile-refresh-button {
+.spottheodd-refresh-button {
 	position: absolute;
 	bottom:0px;
 	right:15px;
 	font-size: 1.5em;
 }
-.tile-pause-button {
+.spottheodd-pause-button {
 	position: absolute;
 	bottom:0px;
 	right:40px;
 	font-size: 1.5em;
 }
-.tile-resume-button {
+.spottheodd-resume-button {
 	position: absolute;
 	bottom:0px;
 	right:40px;
 	font-size: 1.5em;
 }
-.tile-icon{
-	background-image: url(../../app/tile/tile-icon.png);
+.spottheodd-icon{
+	background-image: url(../../app/spottheodd/spottheodd-icon.png);
 	background-size: 20px;
 	height: 20px;
 	width: 20px;
 	margin-top: 5px;	
 }
-.tile-timer-red{
+.spottheodd-timer-red{
 	background-color: #eeb2a8;
 	border-radius: 5px;
 }
-.tile-paused{
+.spottheodd-paused{
 	float: left;
     width: 170px;
 	font-size: 30px;
@@ -37,7 +37,7 @@
 	text-align: center;
 	padding-top: 30px;
 }
-.tile-cube{
+.spottheodd-cube{
 	border-radius:2px;
 	display:block;
 	float:left;

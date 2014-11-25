@@ -1,5 +1,5 @@
-﻿angular.module('app.tile', []);
-angular.module('app.tile').directive('app.tile', ['$http', 'app.tile.configService', function($http, configService) {
+﻿angular.module('app.spottheodd', []);
+angular.module('app.spottheodd').directive('app.spottheodd', ['$http', 'app.spottheodd.configService', function($http, configService) {
 
     var directiveController = ['$scope', '$interval', function($scope, $interval) {
 
@@ -7,8 +7,8 @@ angular.module('app.tile').directive('app.tile', ['$http', 'app.tile.configServi
 
         // Required information to get settings icon/ screen
         $scope.box.settingScreenData = {
-            templatePath: "tile/settings.html",
-            controller: angular.module('app.tile').appTileSettings,
+            templatePath: "spottheodd/settings.html",
+            controller: angular.module('app.spottheodd').appSpotTheOddSettings,
             id: $scope.boxId
         };
 
@@ -18,7 +18,7 @@ angular.module('app.tile').directive('app.tile', ['$http', 'app.tile.configServi
         };
 
         //Load the color pallette
-        $http.get('app/tile/pallette.json').success(function(response) {
+        $http.get('app/spottheodd/pallette.json').success(function(response) {
             $scope._colors = response;
         });
 
@@ -148,7 +148,7 @@ angular.module('app.tile').directive('app.tile', ['$http', 'app.tile.configServi
 
     return {
         restrict: 'E',
-        templateUrl: 'app/tile/overview.html',
+        templateUrl: 'app/spottheodd/overview.html',
         controller: directiveController,
         link: linkFn
     };

@@ -1,5 +1,5 @@
-angular.module('app.tile').appTileSettings =
-	['$scope', "app.tile.configService", function ($scope, configService) {
+angular.module('app.spottheodd').appSpotTheOddSettings =
+	['$scope', "app.spottheodd.configService", function ($scope, configService) {
 
 	$scope.values = configService.values;
 

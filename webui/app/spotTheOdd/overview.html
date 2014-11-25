@@ -14,11 +14,11 @@
    </div>
    <div ng-show="gameInProgress && !gamePaused" style="float:left;margin-right:40px">
       <ul style="width:140px; height:140px;padding-left:0px">
-         <li ng-click="click($index)" ng-repeat="x in data" class="tile-cube" style="background-color:{{x.X}};width:{{140/counter}}px;height:{{140/counter}}px">
+         <li ng-click="click($index)" ng-repeat="x in data" class="spottheodd-cube" style="background-color:{{x.X}};width:{{140/counter}}px;height:{{140/counter}}px">
          </li>
       </ul>
    </div>
-   <div ng-show="gamePaused" class="red-font-80 tile-paused" >
+   <div ng-show="gamePaused" class="red-font-80 spottheodd-paused" >
       Game Paused
    </div>
    <div ng-show="gameInProgress || gamePaused" style="float:right;margin-right:80px">
@@ -34,13 +34,13 @@
          <b class="grey-font-100" style="font-size:30px">{{hits}}</b>
       </div>
    </div>
-   <div ng-show="gamePaused" class="tile-resume-button" >
+   <div ng-show="gamePaused" class="spottheodd-resume-button" >
       <p><a href="" ng-click="resumeGame()" title="Resume Game"><i class="fa fa-play"></i></a></p>
    </div>
-   <div ng-show="gameInProgress && !gamePaused" class="tile-pause-button" >
+   <div ng-show="gameInProgress && !gamePaused" class="spottheodd-pause-button" >
       <p><a href="" ng-click="pauseGame()" title="Pause Game"><i class="fa fa-pause"></i></a></p>
    </div>
-   <div ng-show="gameInProgress || gamePaused" class="tile-refresh-button" >
+   <div ng-show="gameInProgress || gamePaused" class="spottheodd-refresh-button" >
       <p><a href="" ng-click="startGame()" title="New Game"><i class="fa fa-refresh"></i></a></p>
    </div>
 </div>
