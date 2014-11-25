@@ -1,19 +1,19 @@
-.game-refresh {
+.tile-refresh-button {
 	position: absolute;
 	bottom:0px;
 	right:15px;
 	font-size: 1.5em;
 }
-.game-pause {
+.tile-pause-button {
 	position: absolute;
 	bottom:0px;
 	right:40px;
 	font-size: 1.5em;
 }
-.game-resume {
+.tile-resume-button {
 	position: absolute;
 	bottom:0px;
-	left:100px;
+	right:40px;
 	font-size: 1.5em;
 }
 .tile-icon{
@@ -22,4 +22,25 @@
 	height: 20px;
 	width: 20px;
 	margin-top: 5px;	
+}
+.tile-timer-red{
+	background-color: #eeb2a8;
+	border-radius: 5px;
+}
+.tile-paused{
+	float: left;
+    width: 170px;
+	font-size: 30px;
+	font-weight: bold;
+	line-height: 30px;
+	height: 140px;
+	text-align: center;
+	padding-top: 30px;
+}
+.tile-cube{
+	border-radius:2px;
+	display:block;
+	float:left;
+	border-right:1px solid white;
+	border-top:1px solid white;
 }

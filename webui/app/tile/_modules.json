@@ -4,7 +4,7 @@
             "Fun"
         ],
         "module_name": "app.tile",
-        "title": "Tile",
+        "title": "Spot The Odd",
         "icon_css": "fa fa-th-large",
         "overview_directive": "app.tile",
         "needs_client": false,
