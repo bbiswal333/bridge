@@ -36,7 +36,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if ($scope.width > 600) {
                 $scope.width = 600;
             }
-            $scope.width = parseInt(Math.round($scope.width / 10) * 10 || 600);
+            $scope.width = parseInt($scope.width || 600);
         });
     }
     /* eslint-disable no-undef */

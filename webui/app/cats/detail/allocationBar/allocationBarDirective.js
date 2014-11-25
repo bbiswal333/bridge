@@ -5,7 +5,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
             if ($scope.width > 600) {
                 $scope.width = 600;
             }
-            $scope.width = parseInt(Math.round($scope.width / 10) * 10 || 600);
+            $scope.width = parseInt($scope.width || 600);
             $scope.height = parseInt($scope.height || 100);
 
             $scope.getRemainingValue = function () {
