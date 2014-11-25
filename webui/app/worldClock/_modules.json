@@ -1,0 +1,17 @@
+{
+	"app":
+	{
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.worldClock",
+		"title"					:	"World Clock",
+		"icon_css"				:	"fa fa-clock-o",
+		"overview_directive"	:	"app.worldClock",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D049677", "D062131", "D051804", "D050049", "D049583"]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "linearClockDirective.js", "analogClockDirective.js", "settings.js", "config.js"],
+	"css_files" : []
+}

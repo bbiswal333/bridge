@@ -49,7 +49,7 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                 }
 
                 $(".navicon-button").removeClass("open");
-                console.log('remove open');
+                // console.log('remove open');
 
                     var modal = $modal.open({
                       templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
@@ -69,13 +69,12 @@ $('body').on('mousedown', function (e) {
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.menubar-popover').has(e.target).length === 0 && $('.menubar-popover').scope()) {
             $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide();  });
             //$('.menubar-popover').scope().$hide();
-            
         }
 
         if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0 && $('.popover').scope()) {
             $('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
             //$('.popover').scope().$hide();
-            console.log('hide');
+            // console.log('hide');
         }
     });
 });

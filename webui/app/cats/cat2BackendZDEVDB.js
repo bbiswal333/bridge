@@ -371,7 +371,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-								task.UNIT = nodes[i].UNIT;
+								task.UNIT = nodes[i].UNIT || "T"; // T is default unit for cPro
 								task.projectDesc = nodes[i].DISPTEXTW1;
 								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 								tasks.push(task);

@@ -8,26 +8,43 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.cat2BackendZDEVDB",
   "app.cats.catsUtils",
   "$http",
+  "$interval",
   "$window",
   "bridgeInBrowserNotification",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
     $scope.blockdataTemplate = [];
     $scope.loaded = false;
-    $scope.width = 600;
+    $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
     $scope.selectedDates = [];
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
     $scope.analytics = false;
-    var lastSelectedDaysLength = 0;
+    // var lastSelectedDaysLength = 0;
 
     var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
     configService.copyConfigIfLoaded(catsConfigService);
+
+    function adjustBarSize() {
+        $scope.$apply(function(){
+            $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
+            if ($scope.width > 600) {
+                $scope.width = 600;
+            }
+            $scope.width = parseInt($scope.width || 600);
+        });
+    }
+    /* eslint-disable no-undef */
+    $(window).resize(adjustBarSize);
+    $scope.$on("$destroy", function(){
+        $(window).off('resize', adjustBarSize);
+    });
+    /* eslint-enable no-undef */
 
     function timeToMaintain() {
         try {
@@ -257,7 +274,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    task.DESCR = "Vacation";
+                    if (task.UNIT === "H") {
+                        task.DESCR = "Vacation";
+                    } else {
+                        task.DESCR = "Vacation (changeable)";
+                    }
                 }
                 if (task.TASKTYPE === "ABSE") {
                     if (task.UNIT === "H") {
@@ -336,7 +357,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             ZZSUBTYPE: task.ZZSUBTYPE,
-            UNIT: "T"
+            UNIT: task.UNIT || "T"
         };
 
         var blockCouldBeAdded = false;
@@ -345,9 +366,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
-                bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first');
+                bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first.');
             } else {
-                bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day');
+                bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day.');
             }
         }
         return blockCouldBeAdded;
@@ -370,15 +391,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
-                if (lastSelectedDaysLength === 1) {
-                    $scope.blockdata = []; // Enter range selection
-                }
+                // if (lastSelectedDaysLength === 1) {
+                    // $scope.blockdata = []; // One potential step for new templating functionality
+                // }
                 $scope.totalWorkingTime = 1;
             }
         } catch(err) {
             $log.log("selectionCompleted(): " + err);
         }
-        lastSelectedDaysLength = $scope.selectedDates.length;
+        // lastSelectedDaysLength = $scope.selectedDates.length;
     };
 
     $scope.handleSelectedDate = function(dayString){
@@ -421,7 +442,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                         replyMessages.push(message.childNodes[0].nodeValue);
                         if (replyMessages.length <= maxMessageCount) {
                             if(message.childNodes[0].nodeValue.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                                bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user',alertDuration);
+                                bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
                             } else {
                                 bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
                             }
@@ -440,7 +461,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
             if (!replyMessages.length) {
-                bridgeInBrowserNotification.addAlert('info', 'Well done! Data was saved successfully');
+                bridgeInBrowserNotification.addAlert('info', 'Data was saved successfully.');
             }
         } catch(err) {
             $log.log("checkPostReply(): " + err);
@@ -450,9 +471,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function prepareCATSData (workdate, container, clearOldTasks){
         var workdateBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
+        var targetHoursForDay = monthlyDataService.days[workdate].targetHours;
 
         if(!totalWorkingTimeForDay) {
-            bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0');
+            bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0.');
             loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return null;
@@ -477,7 +499,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            if (booking.UNIT === "H" && targetHoursForDay) {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+            } else {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            }
             delete booking.QUANTITY;
 
             if (catsUtils.isFixedTask(booking)){
@@ -541,15 +567,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return true;
     };
 
-    $scope.toggleTemplate = function(){
-        if($scope.blockdataTemplate.length === 0) {
-            $scope.blockdataTemplate = angular.copy($scope.blockdata);
-            $scope.selectedDates = [];
-            $scope.blockdata = [];
-        } else {
-            $scope.blockdata = angular.copy($scope.blockdataTemplate);
-            $scope.blockdataTemplate = [];
-        }
+    $scope.copyTemplate = function(){
+        $scope.blockdataTemplate = angular.copy($scope.blockdata);
+    };
+
+    $scope.pasteTemplate = function(){
+        $scope.blockdata = angular.copy($scope.blockdataTemplate);
     };
 
     $scope.saveTimesheet = function(){
@@ -561,7 +584,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         var selectedDates = $scope.selectedDates;
         $scope.selectedDates = [];
-        $scope.blockdataTemplate = [];
         $scope.totalSelectedHours = 0;
 
         selectedDates.forEach(function(dayString){
