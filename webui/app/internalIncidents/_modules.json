@@ -13,8 +13,7 @@
                 "route"			:	"/detail/internalIncidents/:appId/:prio/:calledFromNotifications",
                 "templateUrl"	:	"app/internalIncidents/detail.html"
             }
-		],
-		"beta"					: true
+		]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],

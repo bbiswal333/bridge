@@ -17,8 +17,7 @@
 				"route"			:	"/detail/customerMessages/:prio",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
-		],
-		"beta"					: true
+		]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js"],
