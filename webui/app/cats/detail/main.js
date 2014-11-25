@@ -471,6 +471,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function prepareCATSData (workdate, container, clearOldTasks){
         var workdateBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
+        var targetHoursForDay = monthlyDataService.days[workdate].targetHours;
 
         if(!totalWorkingTimeForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0.');
@@ -498,7 +499,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
 
-            booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            if (booking.UNIT === "H" && targetHoursForDay) {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+            } else {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            }
             delete booking.QUANTITY;
 
             if (catsUtils.isFixedTask(booking)){
