@@ -2,18 +2,19 @@
 <div id="scrollContainer" style="height:100%;">
 	<div class="centeredContent innerbox" style="max-width: 1288px">
 		<div style="width: 100%">
-		    <div class="box-heading">
-		        <div class="box-heading-content">        	
-		            <a href="/"><i class="fa fa-arrow-left back-btn"></i> </a><h6 class="box-title">{{detailScreen.title}}</h6>            
-		        </div>
-	    	</div>
-				<!--<div id="menu">						
-				    <ul class="subNav">		    	
-				        <li id="overview-button" class="selected  subNav_title"><h6 class="box-title">{{detailScreen.title}}</h6></li>        
-				    </ul>
-				</div>-->
+			<div class="box-heading">
+				<table style="width: 100%">
+					<tr class="box-heading-content">
+						<td style="text-align: left; width: 1px; font-size: 2.2rem; margin-right: 10px; position: relative; top: 1px;">
+							<a href="/"><i class="fa fa-arrow-left"></i></a>
+						</td>
+						<td style="text-align: center">
+							<h6 class="box-title">{{detailScreen.title}}</h6>
+						</td>
+					</tr>
+				<table>
+			</div>
 			<div id="detailContainer" style="width:100%;height:100%">
-
 				<ng-include src="detailScreen.htmlPage" class="animation-content">
 				</ng-include>
 			</div>
