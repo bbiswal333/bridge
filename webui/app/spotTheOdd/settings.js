@@ -1,5 +1,5 @@
-angular.module('app.spottheodd').appSpotTheOddSettings =
-	['$scope', "app.spottheodd.configService", function ($scope, configService) {
+angular.module('app.spotTheOdd').appspotTheOddSettings =
+	['$scope', "app.spotTheOdd.configService", function ($scope, configService) {
 
 	$scope.values = configService.values;
 

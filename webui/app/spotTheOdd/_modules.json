@@ -3,10 +3,10 @@
         "categories": [
             "Fun"
         ],
-        "module_name": "app.spottheodd",
+        "module_name": "app.spotTheOdd",
         "title": "Spot The Odd",
         "icon_css": "fa fa-th-large",
-        "overview_directive": "app.spottheodd",
+        "overview_directive": "app.spotTheOdd",
         "needs_client": false,
         "beta": true,
         "default_hidden": true
