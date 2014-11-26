@@ -26,8 +26,9 @@ angular.module('app.spottheodd').directive('app.spottheodd', ['$http', 'app.spot
         $scope.init = function() {
 
             // Close Timer if it's in progress
-            if (angular.isDefined(timer))
+            if (angular.isDefined(timer)) {
                 $interval.cancel(timer);
+            }
 
             $scope.time = 60;
             $scope.counter = 1; //Array Size Counter->Will be linked to setting
@@ -73,9 +74,9 @@ angular.module('app.spottheodd').directive('app.spottheodd', ['$http', 'app.spot
 
             for (var i = 0; i < $scope.counter * $scope.counter; i++) {
                 var set = {};
-                set = jQuery.extend({}, $scope._colors[$scope.colorIndex]);
+                set = $.extend({}, $scope._colors[$scope.colorIndex]);
 
-                if (i == $scope.random) {
+                if (i === $scope.random) {
                     set.X = set.Y;
                 }
                 $scope.data.push(set);
@@ -84,16 +85,19 @@ angular.module('app.spottheodd').directive('app.spottheodd', ['$http', 'app.spot
 
         //Shuffle the color pallette
         $scope.shuffle = function shuffle(o) {
-            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            /* eslint-disable no-empty */
+            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x){}
+            /* eslint-enable no-empty */
             return o;
         };
 
         //Handle Click
         $scope.click = function(i) {
 
-            if (i == $scope.random) {
-                if ($scope.counter <= $scope.comp)
+            if (i === $scope.random) {
+                if ($scope.counter <= $scope.comp) {
                     $scope.counter++;
+                }
 
                 $scope.hits++;
                 $scope.colorIndex++;
@@ -109,7 +113,7 @@ angular.module('app.spottheodd').directive('app.spottheodd', ['$http', 'app.spot
         //Resume Game
         $scope.resumeGame = function() {
             $scope.gamePaused = false;
-        }
+        };
 
         //Start new game
         $scope.startGame = function() {
