@@ -1,4 +1,4 @@
-angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.service.loader", "$route", function(loader, $route) {
+angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.service.loader", function(loader) {
 	var apps = loader.apps;
 	var instances = {};
 

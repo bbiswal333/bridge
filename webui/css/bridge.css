@@ -281,10 +281,8 @@ img {
     margin-bottom:40px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: auto;
     padding: 70px 40px;
     text-align: center;
-    position: relative;
 }
 #scrollContainer .centeredContent{
     display: block;
@@ -635,7 +633,6 @@ input[type="checkbox"]:checked:after {
 
 .mainContainer {
     width: 100%;
-    position: absolute;
     top: 0px;
     bottom: 0px;
    

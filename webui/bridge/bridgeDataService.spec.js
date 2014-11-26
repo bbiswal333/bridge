@@ -24,18 +24,21 @@ describe("The bridgeDataService", function () {
                 app.metadata.guid = metadata.module_name + "-1";
                 return app;
             };
+
+            bridgeDataService.initialize($q.defer());
+            $httpBackend.flush();
         }]);
 
         $window.localStorage.clear();
     });
 
     it("Check load config from backend and parse it", function () {
-        var deferred = $q.defer();
-        var promise = bridgeDataService.initialize(deferred);
-        promise.then(function () {
-            expect(bridgeDataService.getBridgeSettings().someFlag).toBe(true);
-        }, function () {
-        });
-        $httpBackend.flush();
+        expect(bridgeDataService.getBridgeSettings().someFlag).toBe(true);
+    });
+
+    it("should remove an app from the config by it's id", function() {
+        expect(bridgeDataService.getAppById("app.lunchWalldorf-1")).toBeDefined();
+        bridgeDataService.removeAppById("app.lunchWalldorf-1");
+        expect(function() { bridgeDataService.getAppById("app.lunchWalldorf-1"); }).toThrow(new Error("App with ID app.lunchWalldorf-1 could not be found."));
     });
 });

@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService) {
+    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo",
+    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -118,10 +118,6 @@ angular.module('bridge.app').controller('bridgeController',
             }
         };
 
-        $scope.saveAppsSortable = function(){
-          bridgeConfig.store(bridgeDataService);
-        };
-
         $scope.overview_click = function () {
             $location.path('/');
             $window.document.getElementById('overview-button').classList.add('selected');
@@ -154,14 +150,9 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
-            sortableConfig.$scope = $scope;
-            $scope.sortableOptions = sortableConfig.sortableOptions;
-            $scope.sortableOptionsCaption = "Activate";
             $scope.dustBinModel = [];
-            $scope.sortableOptions.stop = $scope.saveAppsSortable;
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
-            $scope.apps = bridgeDataService.availableApps;
             $scope.projects = bridgeDataService.getProjects();
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
@@ -173,6 +164,7 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.showLoadingAnimation = false;
         });
 
+        $scope.appDragInfo = dragInfo;
     }
 ]);
 

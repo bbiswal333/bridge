@@ -63,7 +63,7 @@ describe("bridgeAppCreator", function() {
 	});
 
 	it("should know its instances", function() {
-		var app = appCreator.createInstance(metaData1, exampleConfig);
+		appCreator.createInstance(metaData1, exampleConfig);
 		expect(appCreator.hasInstanceWithId("app.test-1")).toBeTruthy();
 	});
 

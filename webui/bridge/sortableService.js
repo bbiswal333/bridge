@@ -17,7 +17,7 @@ angular.module('bridge.app').service('sortableConfig', ["bridge.service.appCreat
         update: function (event, dragInfo) {
             $('.sortable-item').removeClass('zoomOut');
             that.$scope.$apply(function() { that.$scope.appIsDragged = false; });
-            if(dragInfo.item.sortable.droptarget.hasClass("appDustBin") && appCreator.hasInstanceWithId(dragInfo.item[0].id)) {                
+            if(dragInfo.item.sortable.droptarget.hasClass("appDustBin") && appCreator.hasInstanceWithId(dragInfo.item[0].id)) {
                 appCreator.removeInstanceById(dragInfo.item[0].id);
             }
         },

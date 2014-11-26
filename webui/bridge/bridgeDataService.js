@@ -1,7 +1,7 @@
 ﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator",
     function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator) {
         this.projects = [];
-        this.bridgeSettings = {}; 
+        this.bridgeSettings = {};
         this.temporaryData = {};
         this.clientMode = false;
         this.logMode = false;
@@ -147,16 +147,26 @@
             return that.projects;
         }
 
-        function _getAppById(id) {
+        function _getAppLocationById(id) {
             for (var i = 0; i < _getProjects().length; i++) {
                 for (var a = 0; a < _getProjects()[i].apps.length; a++) {
                     if (_getProjects()[i].apps[a].metadata.guid.toString() === id.toString()) {
-                        return _getProjects()[i].apps[a];
+                        return {projectIndex: i, appIndex: a};
                     }
                 }
             }
 
             throw new Error("App with ID " + id + " could not be found.");
+        }
+
+        function _getAppById(id) {
+            var appLocation = _getAppLocationById(id);
+            return _getProjects()[appLocation.projectIndex].apps[appLocation.appIndex];
+        }
+
+        function _removeAppById(id) {
+            var appLocation = _getAppLocationById(id);
+            return _getProjects()[appLocation.projectIndex].apps.splice(appLocation.appIndex, 1);
         }
 
         function _getAppConfigById(id) {
@@ -212,6 +222,7 @@
             getUserInfo: _getUserInfo,
             getProjects: _getProjects,
             getAppById: _getAppById,
+            removeAppById: _removeAppById,
             getAppConfigById: _getAppConfigById,
             toDefault: _toDefault,
             setClientMode: _setClientMode,
