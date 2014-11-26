@@ -1,4 +1,4 @@
-angular.module('app.spottheodd').service("app.spottheodd.configService", function () {
+angular.module('app.spotTheOdd').service("app.spotTheOdd.configService", function () {
 
 	this.values = {
 		comp : '7'
