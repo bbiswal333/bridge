@@ -74,6 +74,11 @@
             controller: 'bridge.newsDetailController'
         });
 
+        $routeProvider.when("/availableApps", {
+            templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
+            controller: 'bridge.menubar.applicationsController'
+        });
+
         //If no valid URL has been entered redirect to main entry point
         $routeProvider.otherwise({
             redirectTo: "/"

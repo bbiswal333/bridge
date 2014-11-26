@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo) {
+    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo",
+    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -165,6 +165,14 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.appDragInfo = dragInfo;
+
+        $rootScope.$on('$routeChangeSuccess', function () {
+            if($location.path() === "/availableApps") {
+                $(".navicon-button").removeClass("open");
+            } else {
+                $(".navicon-button").addClass("open");
+            }
+        });
     }
 ]);
 

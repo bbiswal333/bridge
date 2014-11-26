@@ -43,19 +43,7 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                 }
 
                 $scope.changeSelectedApps = function() {
-
-                function toPlusButton() {
-                    $(".navicon-button").addClass("open");
-                }
-
-                $(".navicon-button").removeClass("open");
-                // console.log('remove open');
-
-                    var modal = $modal.open({
-                      templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
-                      size: 'lg'
-                    });
-                    modal.result.then(toPlusButton,toPlusButton);
+                    $location.path("/availableApps");
                 };
 
                 $scope.weatherData = weatherData.getData();

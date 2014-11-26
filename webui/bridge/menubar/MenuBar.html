@@ -32,7 +32,7 @@
 			</div>
 			<div class="menubar-settings col-md-6 col-sm-6 col-xs-6" style="text-align: right">
 				<div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();">
-		        	<a class="navicon-button plus open">
+		        	<a class="navicon-button plus open"#>
 		        		<div class="navicon"></div>
 		        	</a>
 		        </div>
@@ -41,7 +41,6 @@
 			          <span ng-if="(notifications | newNotification).length != 0" class="fa fa-inbox green-font"></span>
 			          <span ng-if="(notifications | newNotification).length == 0" class="fa fa-inbox" ></span>
 		          </div>
-		          <!--<span ng-hide="(notifications | newNotification).length == 0" ng-controller="bridge.menubar.notificationsController" class="badge red" style="position: absolute; bottom: 20px; opacity: 0.9;">{{ (notifications | newNotification).length }}</span>-->
 		        </div>
 
 		        <div class="menuBar-settingsButton" title="Feedback" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/feedback/bridgeFeedback.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover><span class="icon-heart"></span></div>

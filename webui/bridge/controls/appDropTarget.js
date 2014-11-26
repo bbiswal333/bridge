@@ -1,4 +1,4 @@
-angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.appCreator", "bridgeConfig", "bridgeDataService", "bridge.appDragInfo", function (appCreator, bridgeConfig, bridgeDataService, dragInfo) {
+angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.appCreator", "bridgeConfig", "bridgeDataService", "bridge.appDragInfo", "$window", function (appCreator, bridgeConfig, bridgeDataService, dragInfo, $window) {
 	$.widget("ui.fixedSortable", $.ui.sortable, {
         _init: function () {
             this.element.data("sortable", this.element.data("fixedSortable"));
@@ -10,8 +10,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
             return result;
         },
         _intersectsWithPointer: function () {
-//This line....
-			var hitTest = $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top});
+			var hitTest = $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + $window.scrollY});
 			if(hitTest) {
 				$('.appDustBinIcon').removeClass("grey-60");
 				$('.appDustBinIcon').addClass("red-60");
@@ -25,8 +24,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
             return $.ui.sortable.prototype._intersectsWithPointer.apply(this, arguments);
         },
         _intersectsWith: function(containerCache) {
-//Also this line....
-            if (containerCache.sortable.element.hasClass("app-container") && $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top})) {
+            if (containerCache.sortable.element.hasClass("app-container") && $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + $window.scrollY})) {
                 return false;
             }
             return $.ui.sortable.prototype._intersectsWith.apply(this, arguments);
@@ -52,6 +50,8 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 		        start: function(event, ui) {
 		            $('.sortable-item').addClass('zoomOut');
 		            ui.item.removeClass('zoomOut');
+		            $('.sortable-placeholder').addClass('zoomOut');
+		            ui.item.css({marginTop:$window.scrollY+'px'});
 		            $scope.$apply(function() { dragInfo.appIsDragged = true; });
 		        },
 		        receive: function(event, dragInfo) {
@@ -62,9 +62,10 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 		                bridgeDataService.removeAppById(dragInfo.item[0].id);
 		            }
 		        },
-		        stop: function () {
+		        stop: function (event, ui) {
 		        	bridgeConfig.store(bridgeDataService);
 		            $('.sortable-item').removeClass('zoomOut');
+		            ui.item.css({marginTop:'0px'});
 		            $scope.$apply(function() { dragInfo.appIsDragged = false; });
 		        },
 		        deactivate: function () {
