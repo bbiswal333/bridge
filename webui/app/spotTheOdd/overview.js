@@ -38,6 +38,7 @@ angular.module('app.spotTheOdd').directive('app.spotTheOdd', ['$http', 'app.spot
             $scope.gameInProgress = false;
             $scope.gamePaused = false;
             $scope.showInfo = true;
+			$scope.box.boxSize = 2;
         };
 
         $scope.init();
@@ -51,7 +52,7 @@ angular.module('app.spotTheOdd').directive('app.spotTheOdd', ['$http', 'app.spot
                     if ($scope.time <= 0) {
                         $scope.gameInProgress = false;
                         //Adjust Box Size
-                        $scope.box.boxSize = 1;
+                        //$scope.box.boxSize = 1;
                         if (angular.isDefined(timer)) {
                             $interval.cancel(timer);
                             timer = undefined;
@@ -131,7 +132,7 @@ angular.module('app.spotTheOdd').directive('app.spotTheOdd', ['$http', 'app.spot
             $scope.generateData();
 
             //Adjust Box Size
-            $scope.box.boxSize = 2;
+            //$scope.box.boxSize = 2;
         };
     }];
 
