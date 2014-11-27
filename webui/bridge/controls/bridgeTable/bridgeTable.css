@@ -3,7 +3,7 @@
 }
 
 .columnSelectButton {
-    right: 35px;
+    right: 0px;
     position: absolute;
     z-index: 1000;
 }
