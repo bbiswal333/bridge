@@ -54,7 +54,7 @@ angular.module('app.spotTheOdd').directive('app.spotTheOdd', ['$http', 'app.spot
                     if ($scope.time <= 0) {
                         $scope.gameInProgress = false;
 						$scope.buttonText = 'Play Again';
-						
+
                         if (angular.isDefined(timer)) {
                             $interval.cancel(timer);
                             timer = undefined;
