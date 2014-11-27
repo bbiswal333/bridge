@@ -23,9 +23,13 @@
 	width: 20px;
 	margin-top: 5px;	
 }
+.spottheodd-startgame{
+	position: absolute;
+	top: 25px;
+	left: -10px;
+}
 .spottheodd-timer-red{
-	background-color: #eeb2a8;
-	border-radius: 5px;
+	color: #d53f26;
 }
 .spottheodd-paused{
 	float: left;
@@ -36,6 +40,16 @@
 	height: 140px;
 	text-align: center;
 	padding-top: 30px;
+}
+.spottheodd-gameover{
+    width: 165px;
+	font-size: 30px;
+	font-weight: bold;
+	line-height: 30px;
+	height: 140px;
+	text-align: center;
+	padding-top: 30px;
+	padding-left:60px
 }
 .spottheodd-cube{
 	border-radius:2px;
