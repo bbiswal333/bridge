@@ -147,7 +147,9 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		$scope.removeAll_click = function () {
-			$scope.config.configItems = [];
+			if ($scope.config.configItems.length > 0) {
+				$scope.config.configItems.splice(0, $scope.config.configItems.length);
+			}
 		};
 
 		/*eslint-disable */
