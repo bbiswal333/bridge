@@ -89,6 +89,24 @@ angular.module("app.cats")
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
 			$scope.analytics = {};
+			$scope.width = 80;
+
+			function adjustBarSize() {
+				$scope.$apply(function(){
+					$scope.width = $window.document.getElementById('inner').offsetWidth;
+					if ($scope.width > 80) {
+						$scope.width = 80;
+					}
+					$scope.width = parseInt($scope.width || 80);
+				});
+			}
+
+			/* eslint-disable no-undef */
+			$(window).resize(adjustBarSize);
+			$scope.$on("$destroy", function(){
+				$(window).off('resize', adjustBarSize);
+			});
+			/* eslint-enable no-undef */
 
 			var monthRelative = monthDiff(new Date(),new Date(monthlyDataService.year,monthlyDataService.month));
 			var rangeSelectionStartDayString = null;
@@ -630,6 +648,7 @@ angular.module("app.cats")
 			};
 
 			$scope.toggleAnalytics = function () {
+				$scope.width = $window.document.getElementById('inner').offsetWidth;
 				if ($scope.analytics.value === true) {
 					$scope.analytics.value = false;
 				} else {

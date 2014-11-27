@@ -39,6 +39,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             $scope.width = parseInt($scope.width || 600);
         });
     }
+
     /* eslint-disable no-undef */
     $(window).resize(adjustBarSize);
     $scope.$on("$destroy", function(){
