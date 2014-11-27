@@ -146,7 +146,7 @@
                     }
 
                     that.updatePrioSelectionCounts();
-                    deferred.resolve();
+                    deferred.resolve({errors: backendTickets.ERRORS});
 
                 }).error(function () {
                     deferred.reject();

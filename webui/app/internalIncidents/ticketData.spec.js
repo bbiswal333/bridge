@@ -228,4 +228,5 @@ describe("Internal Incident ticket data", function(){
 
         expect(ticketData.ticketsFromNotifications.length).toBe(101);
     });
+
 });

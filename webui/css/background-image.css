@@ -128,3 +128,11 @@
     display: block !important;
     color: rgba(0,0,0,0.5);
 }
+
+.box-errorIcon {
+    color: red;
+    float: right;
+    font-weight: bold;
+    font-size: 21px;
+    width: 12px;
+}
