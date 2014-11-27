@@ -4,12 +4,12 @@
          <i class="grey-font-100"><b>INSTRUCTIONS:</b> Click on the <b>TILE</b> with different shade to proceed to the next level.</i></br>
          <i class="grey-font-100"><b>HINT:</b> Tilt the monitor forward or backward..:)</i>
       </div>
-      <div ng-show="!showInfo && !gamePaused" style="float:right;position: absolute;right: 70px;">
-         <span>Points Scored...!!</span></br>
+      <div ng-show="!showInfo && !gamePaused" style="float:right;position: absolute;right: 25px;text-align:center;width:175px">
+		 Your Score..!!
          <div style="text-align:center"><b class="grey-font-100" style="font-size:60px">{{hits}}</b></div>
       </div>
       <div ng-hide="gamePaused" style="position:absolute;top:130px;right:145px;">
-         <div ng-class="{'spottheodd-startgame':!gameInProgress && !showInfo}" class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">Start Game</div>
+         <div ng-class="{'spottheodd-startgame':!gameInProgress && !showInfo}" class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">{{buttonText}}</div>
       </div>
    </div>
    <div ng-show="gameInProgress && !gamePaused" style="float:left;margin-right:40px">
