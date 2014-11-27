@@ -25,9 +25,11 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 		this.jenkinsData.urlIsValid = false;
 		this.jenkinsData.views = [];
 		this.viewsAreLoading = false;
+		this.viewsLoadError = false;
 		this.jenkinsData.jobs = [];
 		this.jenkinsData.jobsForView = [];
 		this.jobsAreLoading = false;
+		this.jobsLoadError = false;
 	};
 	this.initialize();
 
@@ -65,36 +67,81 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 				} else {
 					that.initialize();
 				}
+			}).error(function (){
+				that.initialize();
 			});
+		}
+	};
+
+	this.isValidJob = function(jobName) {
+		if (that.jenkinsData.view === undefined) {
+			return false;
+		} else if (this.jenkinsData.view === "") {
+			var foundJob = _.find(that.jenkinsData.jobs, { "name":  jobName });
+		} else {
+			foundJob = _.find(that.jenkinsData.jobsForView, { "name":  jobName });
+		}
+		if (foundJob) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	this.isValidView = function(viewName) {
+		var foundView = _.find(that.jenkinsData.views, { "name":  viewName });
+		if (foundView) {
+			return true;
+		} else {
+			return false;
 		}
 	};
 
 	this.getJenkinsViewsAndJobs = function(jenkinsUrl){
 		that.jenkinsData.viewsAreLoading = true;
 		that.jenkinsData.jobsAreLoading = true;
-		$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url],jobs[name,url,color]"), {withCredentials: false, timeout: 10000})
+		that.jenkinsData.viewsLoadError = false;
+		that.jenkinsData.jobsLoadError = false;
+		$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url],jobs[name,url,color]"), {withCredentials: false, timeout: 15000})
 		.success(function (data) {
 			if(angular.isDefined(data)) {
 				setJenkinsData(data);
 			} else {
-				that.initialize();
+				that.jenkinsData.viewsLoadError = true;
+				that.jenkinsData.jobsLoadError = true;
 			}
 			that.jenkinsData.viewsAreLoading = false;
 			that.jenkinsData.jobsAreLoading = false;
+		}).error(function (){
+			that.jenkinsData.viewsAreLoading = false;
+			that.jenkinsData.jobsAreLoading = false;
+			that.jenkinsData.viewsLoadError = true;
+			that.jenkinsData.jobsLoadError = true;
 		});
 	};
 
-	this.getJenkinsJobsForView = function(viewUrl){
+	this.getJenkinsJobsForCurrentView = function(){
 		that.jenkinsData.jobsAreLoading = true;
-		$http.get("/api/get?url=" + encodeURIComponent(viewUrl + "/api/json"), {withCredentials: false, timeout: 10000})
-		.success(function (data) {
-			if(angular.isDefined(data.jobs)) {
-				that.jenkinsData.jobsForView = data.jobs;
-			} else {
-				that.jenkinsData.jobsForView = [];
-			}
+		that.jenkinsData.jobsLoadError = false;
+		that.jenkinsData.jobsForView = [];
+
+		var view = _.find(this.jenkinsData.views, { "name":  this.jenkinsData.view });
+		if(view && view.url && this.isValidUrl(view.url) ) {
+			$http.get("/api/get?url=" + encodeURIComponent(view.url + "/api/json"), {withCredentials: false, timeout: 10000})
+			.success(function (data) {
+				if(angular.isDefined(data.jobs)) {
+					that.jenkinsData.jobsForView = data.jobs;
+				} else {
+					that.jenkinsData.jobsForView = [];
+				}
+				that.jenkinsData.jobsAreLoading = false;
+			}).error(function (){
+				that.jenkinsData.jobsAreLoading = false;
+				that.jenkinsData.jobsLoadError = true;
+			});
+		} else {
 			that.jenkinsData.jobsAreLoading = false;
-		});
+		}
 	};
 
 	var formatTimestamp = function(timestamp) {

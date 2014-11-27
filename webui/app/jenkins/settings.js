@@ -24,10 +24,7 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		$scope.loadJobsForView = function() {
-			var view = _.find($scope.dataService.jenkinsData.views, { "name":  $scope.dataService.jenkinsData.view });
-			if(view && view.url && $scope.dataService.isValidUrl(view.url) ) {
-				$scope.dataService.getJenkinsJobsForView(view.url);
-			}
+			$scope.dataService.getJenkinsJobsForCurrentView(); // load data
 		};
 
 		function doSearch(dataForSearch, searchExpression, maxLength) {
@@ -71,7 +68,6 @@ angular.module('app.jenkins').appJenkinsSettings =
 			} else {
 				jenkinsConfigService.addConfigItem(copiedConfigItem);
 			}
-			$scope.dataService.updateJobs();
 		}
 
 		function isInArrayByName(nameString, candidateObjects) {
@@ -102,8 +98,15 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		$scope.isAddButtonDisabled = function() {
-			return $scope.dataService.jenkinsData.urlIsValid === false ||
-				   $scope.dataService.jenkinsData.job === "";
+			return 	!$scope.dataService.jenkinsData.urlIsValid ||
+					!$scope.dataService.jenkinsData.job ||
+					!$scope.dataService.isValidJob($scope.dataService.jenkinsData.job);
+		};
+
+		$scope.isAddAllJobsButtonDisabled = function() {
+			return 	!$scope.dataService.jenkinsData.urlIsValid ||
+					!$scope.dataService.jenkinsData.view ||
+					!$scope.dataService.isValidView($scope.dataService.jenkinsData.view);
 		};
 
 		$scope.add_click = function() {
@@ -114,6 +117,20 @@ angular.module('app.jenkins').appJenkinsSettings =
 				configItem.selectedJob = $scope.dataService.jenkinsData.job;
 				addConfigItem(configItem);
 			}
+			$scope.dataService.updateJobs();
+		};
+
+		$scope.addAllJobs_click = function() {
+			if ($scope.dataService.jenkinsData.url && $scope.dataService.jenkinsData.view) {
+				angular.forEach($scope.dataService.jenkinsData.jobsForView, 	function(job) {
+					var configItem = {};
+					configItem.jenkinsUrl = $scope.dataService.jenkinsData.url;
+					configItem.selectedView = $scope.dataService.jenkinsData.view;
+					configItem.selectedJob = job.name;
+					addConfigItem(configItem);
+				});
+			}
+			$scope.dataService.updateJobs();
 		};
 
 		$scope.select_click = function(index) {
@@ -127,6 +144,10 @@ angular.module('app.jenkins').appJenkinsSettings =
 			if (index > -1) {
 				$scope.config.configItems.splice(index, 1);
 			}
+		};
+
+		$scope.removeAll_click = function () {
+			$scope.config.configItems = [];
 		};
 
 		/*eslint-disable */
