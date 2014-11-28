@@ -3,7 +3,7 @@
 
 		<div ng-if="showNoMessages == false" style="height: 100%">
 			<div class="ic-prio_container" >
-				<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}">
+				<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
 					<a href="#/detail/internalIncidents/{{id}}/{{prios[$index].key}}/false" >
 						<div class="prio_box" style="color:white">
 							<p>{{prios[$index].description}}</p>
