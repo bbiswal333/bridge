@@ -83,7 +83,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 });
             }
 
-            $scope.box.reloadApp(reloadTicketData, 60*20);
+            $scope.box.reloadApp(reloadTicketData, 60 * 20);
         }
     ];
 
