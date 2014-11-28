@@ -20,6 +20,8 @@
 				</div>
 				<div styple="width:5%">
 					<i ng-class="dataService.jenkinsData.viewsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>
+					<i ng-class="dataService.jenkinsData.viewsLoadError ? 'fa fa-flash' : ''"></i>
+					<i ng-class="dataService.isValidView(dataService.jenkinsData.view) ? 'fa fa-check' : ''"></i>
 				</div>
 			</div>
 			
@@ -31,13 +33,15 @@
 				</div>
 				<div styple="width:5%">
 					<i ng-class="dataService.jenkinsData.jobsAreLoading ? 'fa fa-spin fa-spinner' : ''"></i>
+					<i ng-class="dataService.jenkinsData.jobsLoadError ? 'fa fa-flash' : ''"></i>
+					<i ng-class="dataService.isValidJob(dataService.jenkinsData.job) ? 'fa fa-check' : ''"></i>
 				</div>
 			</div>  
 
 			<div class="row" style="margin:25px 0 0 0;">
 			</div>
-			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="isAddButtonDisabled()" value="Add New Selection" />
-
+			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="add_click()" ng-disabled="isAddButtonDisabled()" value="Add Job" />
+			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="addAllJobs_click()" ng-disabled="isAddAllJobsButtonDisabled()" value="Add all jobs of view" />
 		</form>
 
 		<div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
@@ -56,7 +60,15 @@
 					<td data-title="'View'">{{configItem.selectedView}}</td>
 					<td data-title="'Job'">{{configItem.selectedJob}}</td>
 					<td data-title="'Functions'">
-						<span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-times"></span>
+						<span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-trash"></span>
+					</td>
+				</tr>
+				<tr ng-if="config.configItems.length > 0">
+					<td data-title="'Source System'"></td>
+					<td data-title="'View'"></td>
+					<td data-title="'Job'"></td>
+					<td data-title="'Functions'">
+						<span ng-click="removeAll_click()" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-trash">&nbspALL</span>
 					</td>
 				</tr>
 			</tbody>

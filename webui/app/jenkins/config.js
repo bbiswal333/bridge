@@ -83,11 +83,6 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 		}
 	};
 
-	this.clearViewAndJob = function() {
-		this.configItem.selectedView = "";
-		this.configItem.selectedJob = "";
-	};
-
 	this.clearView = function() {
 		this.configItem.selectedJob = "";
 	};
