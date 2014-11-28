@@ -1,5 +1,5 @@
 angular.module("app.jenkins", []);
-angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", function (jenkinsConfigService, jenkinsDataService) {
+angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", "$q", function (jenkinsConfigService, jenkinsDataService, $q) {
 
 	var directiveController = ["$scope", function ($scope) {
 
@@ -58,15 +58,47 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			return name;
 		};
 
-		$scope.initializeJobsView = function() {
-			$scope.dataService.jobsToDisplay = jenkinsConfigService.configItems;
+		function updateStatus() {
 			for(var jobIndex in $scope.dataService.jobsToDisplay) {
 				$scope.dataService.jobsToDisplay[jobIndex].timestamp = "loading...";
 				$scope.dataService.jobsToDisplay[jobIndex].lastBuild = "0000000000000";
 			}
 			$scope.dataService.updateJobs().then(function(){
-                $scope.getStatusCount($scope.dataService.jobsToDisplay);
-            });
+				$scope.getStatusCount($scope.dataService.jobsToDisplay);
+			});
+		}
+
+		$scope.initializeJobsView = function() {
+			var promises = [];
+			var promise = {};
+			$scope.dataService.jobsToDisplay = [];
+
+			angular.forEach(jenkinsConfigService.configItems, function(configItem) {
+				if (configItem.selectedJob) {
+					$scope.dataService.jobsToDisplay.push(configItem);
+				} else if (configItem.selectedView) {
+					promise = $scope.dataService.getJenkinsJobsForView(configItem.jenkinsUrl, configItem.selectedView);
+					promises.push(promise);
+					promise.then(function(jobs) {
+						angular.forEach(jobs, function(job) {
+							var jobInConfigItemStyle = {};
+							jobInConfigItemStyle.jenkinsUrl = configItem.jenkinsUrl;
+							jobInConfigItemStyle.selectedView = configItem.selectedView;
+							jobInConfigItemStyle.selectedJob = job.name;
+							$scope.dataService.jobsToDisplay.push(jobInConfigItemStyle);
+						});
+					});
+				}
+			});
+
+			if (promises.length > 0) {
+				promise = $q.all(promises);
+				promise.then(function() {
+					updateStatus();
+				});
+			} else {
+				updateStatus();
+			}
 		};
 
 		$scope.box.reloadApp($scope.dataService.updateJobs, 60 * 2);

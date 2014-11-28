@@ -55,11 +55,17 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 	};
 
 	this.isValidJenkinsUrl = function(jenkinsUrl) {
+		if (that.jenkinsDiscoveryCanceler) {
+			that.jenkinsDiscoveryCanceler.resolve();
+			that.jenkinsDiscoveryCanceler = undefined;
+		}
+		var deferred = $q.defer();
 		that.jenkinsData.urlIsValid = false;
 		if(!that.isValidUrl(jenkinsUrl)) {
 			that.initialize();
 		} else {
-			$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: 2000})
+			that.jenkinsDiscoveryCanceler = deferred;
+			$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: deferred.promise})
 			.success(function (data) {
 				if(angular.isDefined(data.mode)) {
 					that.jenkinsData.urlIsValid = true;
@@ -67,8 +73,10 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 				} else {
 					that.initialize();
 				}
+				that.jenkinsDiscoveryCanceler = undefined;
 			}).error(function (){
 				that.initialize();
+				that.jenkinsDiscoveryCanceler = undefined;
 			});
 		}
 	};
@@ -119,6 +127,27 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			that.jenkinsData.jobsLoadError = true;
 		});
 	};
+
+	this.getJenkinsJobsForView = function(jenkinsUrl, viewName){
+		var deferred = $q.defer();
+		var url = jenkinsUrl + "/view/" + viewName + "/";
+		if(jenkinsUrl && viewName && this.isValidUrl(url) ) {
+			$http.get("/api/get?url=" + encodeURIComponent(url + "/api/json"), {withCredentials: false, timeout: 10000})
+			.success(function (data) {
+				if(angular.isDefined(data.jobs)) {
+					deferred.resolve(data.jobs);
+				} else {
+					deferred.reject();
+				}
+			}).error(function (){
+				deferred.reject();
+			});
+		} else {
+			deferred.reject();
+		}
+		return deferred.promise;
+	};
+
 
 	this.getJenkinsJobsForCurrentView = function(){
 		that.jenkinsData.jobsAreLoading = true;

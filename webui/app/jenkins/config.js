@@ -40,11 +40,13 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 	this.configItems = [];
 	this.lastErrorMsg = "";
 
-	function isSameJob(configItemA, configItemB) { // comparison can also be done via Job URL?
+	function isSameJob(configItemA, configItemB) {
 		var isEqual = true;
 		isEqual &= configItemA.jenkinsUrl === configItemB.jenkinsUrl;
-		// isEqual &= configItemA.selectedView === configItemB.selectedView; // This may change (and must be read dynamically?)
 		isEqual &= configItemA.selectedJob === configItemB.selectedJob;
+		if (!configItemA.selectedJob) {
+			isEqual &= configItemA.selectedView === configItemB.selectedView;
+		}
 		return isEqual;
 	}
 

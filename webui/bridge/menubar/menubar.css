@@ -102,6 +102,7 @@
 .menubar-feedback-descriptionCell {
   display: table-cell; 
   padding: 10px;
+  vertical-align: middle;
 }
 
 .menubar-feedback-iconCell {
