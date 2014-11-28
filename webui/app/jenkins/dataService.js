@@ -120,6 +120,27 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 		});
 	};
 
+	this.getJenkinsJobsForView = function(jenkinsUrl, viewName){
+		var deferred = $q.defer();
+		var url = jenkinsUrl + "/view/" + viewName + "/";
+		if(jenkinsUrl && viewName && this.isValidUrl(url) ) {
+			$http.get("/api/get?url=" + encodeURIComponent(url + "/api/json"), {withCredentials: false, timeout: 10000})
+			.success(function (data) {
+				if(angular.isDefined(data.jobs)) {
+					deferred.resolve(data.jobs);
+				} else {
+					deferred.reject();
+				}
+			}).error(function (){
+				deferred.reject();
+			});
+		} else {
+			deferred.reject();
+		}
+		return deferred.promise;
+	};
+
+
 	this.getJenkinsJobsForCurrentView = function(){
 		that.jenkinsData.jobsAreLoading = true;
 		that.jenkinsData.jobsLoadError = false;

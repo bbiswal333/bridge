@@ -58,7 +58,7 @@ describe("The jenkins data service", function(){
 	// 	var jenkinsUrl = 'http://some.valid.jenkins.url';
 	// 	$httpBackend.expectGET('/api/get?url=' + encodeURIComponent(jenkinsUrl + "/api/json")).respond(200, jenkinsJobsForViewMock);
 
-	// 	dataService.getJenkinsJobsForCurrentView();
+	// 	dataService.getJenkinsJobsForView();
 	// 	expect(dataService.jenkinsData.jobsForView.length).toBe(0);
 	// 	$httpBackend.flush();
 	// 	expect(dataService.jenkinsData.jobsForView.length).toBe(13);
