@@ -58,12 +58,21 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			return name;
 		};
 
-		$scope.initializeJobsView = function() {
+		function updateStatus() {
+			for(var jobIndex in $scope.dataService.jobsToDisplay) {
+				$scope.dataService.jobsToDisplay[jobIndex].timestamp = "loading...";
+				$scope.dataService.jobsToDisplay[jobIndex].lastBuild = "0000000000000";
+			}
+			$scope.dataService.updateJobs().then(function(){
+				$scope.getStatusCount($scope.dataService.jobsToDisplay);
+			});
+		}
 
+		$scope.initializeJobsView = function() {
 			var promises = [];
 			var promise = {};
-
 			$scope.dataService.jobsToDisplay = [];
+
 			angular.forEach(jenkinsConfigService.configItems, function(configItem) {
 				if (configItem.selectedJob) {
 					$scope.dataService.jobsToDisplay.push(configItem);
@@ -82,16 +91,14 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 				}
 			});
 
-			promise = $q.all(promises);
-			promise.then(function() {
-				for(var jobIndex in $scope.dataService.jobsToDisplay) {
-					$scope.dataService.jobsToDisplay[jobIndex].timestamp = "loading...";
-					$scope.dataService.jobsToDisplay[jobIndex].lastBuild = "0000000000000";
-				}
-				$scope.dataService.updateJobs().then(function(){
-	                $scope.getStatusCount($scope.dataService.jobsToDisplay);
-	            });
-	        });
+			if (promises.length > 0) {
+				promise = $q.all(promises);
+				promise.then(function() {
+					updateStatus();
+				});
+			} else {
+				updateStatus();
+			}
 		};
 
 		$scope.box.reloadApp($scope.dataService.updateJobs, 60 * 2);

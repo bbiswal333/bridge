@@ -103,8 +103,8 @@ angular.module('app.jenkins').appJenkinsSettings =
 				configItem.selectedView = $scope.dataService.jenkinsData.view;
 				configItem.selectedJob = $scope.dataService.jenkinsData.job;
 				addConfigItem(configItem);
+				$scope.dataService.updateJobs();
 			}
-			$scope.dataService.updateJobs();
 		};
 
 		$scope.addView_click = function() {
@@ -114,8 +114,8 @@ angular.module('app.jenkins').appJenkinsSettings =
 				configItem.selectedView = $scope.dataService.jenkinsData.view;
 				configItem.selectedJob = "";
 				addConfigItem(configItem);
+				$scope.dataService.updateJobs();
 			}
-			$scope.dataService.updateJobs();
 		};
 
 		$scope.addAllJobs_click = function() {
@@ -127,8 +127,8 @@ angular.module('app.jenkins').appJenkinsSettings =
 					configItem.selectedJob = job.name;
 					addConfigItem(configItem);
 				});
+				$scope.dataService.updateJobs();
 			}
-			$scope.dataService.updateJobs();
 		};
 
 		$scope.select_click = function(index) {

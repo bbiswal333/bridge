@@ -43,9 +43,8 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 	function isSameJob(configItemA, configItemB) {
 		var isEqual = true;
 		isEqual &= configItemA.jenkinsUrl === configItemB.jenkinsUrl;
-		if (configItemA.selectedJob) {
-			isEqual &= configItemA.selectedJob === configItemB.selectedJob;
-		} else {
+		isEqual &= configItemA.selectedJob === configItemB.selectedJob;
+		if (!configItemA.selectedJob) {
 			isEqual &= configItemA.selectedView === configItemB.selectedView;
 		}
 		return isEqual;

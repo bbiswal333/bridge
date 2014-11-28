@@ -55,11 +55,17 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 	};
 
 	this.isValidJenkinsUrl = function(jenkinsUrl) {
+		if (that.jenkinsDiscoveryCanceler) {
+			that.jenkinsDiscoveryCanceler.resolve();
+			that.jenkinsDiscoveryCanceler = undefined;
+		}
+		var deferred = $q.defer();
 		that.jenkinsData.urlIsValid = false;
 		if(!that.isValidUrl(jenkinsUrl)) {
 			that.initialize();
 		} else {
-			$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: 2000})
+			that.jenkinsDiscoveryCanceler = deferred;
+			$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=mode"), {withCredentials: false, timeout: deferred.promise})
 			.success(function (data) {
 				if(angular.isDefined(data.mode)) {
 					that.jenkinsData.urlIsValid = true;
@@ -67,8 +73,10 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 				} else {
 					that.initialize();
 				}
+				that.jenkinsDiscoveryCanceler = undefined;
 			}).error(function (){
 				that.initialize();
+				that.jenkinsDiscoveryCanceler = undefined;
 			});
 		}
 	};
