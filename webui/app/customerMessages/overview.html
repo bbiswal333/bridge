@@ -1,7 +1,7 @@
 <div ng-controller="app.customerMessages.directiveController">
 	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
 		<div class="cm-prio_container">	
-			<div ng-repeat="prio in prios" class="prio_col cm-prio_col prio_bg_{{$index+1}}">
+			<div ng-repeat="prio in prios" class="prio_col cm-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].selected==0}">
 			<a href="#/detail/customerMessages/{{prios[$index].name}}" >
 				<div class="prio_box" style="color:white">
 					<p>{{prios[$index].name}}</p>
