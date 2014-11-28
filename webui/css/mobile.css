@@ -47,7 +47,7 @@
 
 .allCategories .resultText {
     display:inline-block;
-    margin:10px 0px;
+    height: 100%;
 }
 
 .allCategories .providerName {
@@ -89,12 +89,17 @@ body {
     display:none;
 }
 
-.menubar-feedback-icon {
-    font-size:50px !important;
+#weatherResult .weather-container{
+    max-width: 350px;
+    margin: 0 auto;
 }
 
 .feedbackType:not(:last-child) {
     border-bottom:1px solid #C3C3C3;
+}
+
+.feedbackType{
+    padding: 20px;
 }
 
 #weather {

@@ -22,10 +22,10 @@ describe("Ticket Data Service for Customer Messages", function () {
         var mockModule = angular.module("mock.module", []);
         mockModule.factory("notifier", function(){
             return {
-                showInfo: function(sTitle, sText, appIdentifier_s, onCLick_fn, duration_i, routeURL_s){
+                showInfo: function(sTitle, sText, appIdentifier_s, onCLick_fn, duration_i, notificationData_o){
                     sNotificationText = sText;
                     iNotificationDuration = duration_i;
-                    sNotificationRouteURL = routeURL_s;
+                    sNotificationRouteURL = notificationData_o.routeURL;
                 }
             };
         });

@@ -249,11 +249,11 @@
                 parseInt(sAbapDate.substring(10,12)), parseInt(sAbapDate.substring(12,14)));
         };
 
-        function notifierClickCallback(notificationApp, routeURL) {
+        function notifierClickCallback(notificationApp, notificationData) {
             // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
             _.defer(function() {
                 $rootScope.$apply(function() {
-                    $location.path(routeURL);
+                    $location.path(notificationData.routeURL);
                 });
             });
         }
@@ -281,12 +281,14 @@
                         bNewNotifications = true;
                         ticketsToNotify[newTicketsCategory].push(ticket);
                         // routeURL += ticket.OBJECT_GUID;
-                        notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration,ticket.URL_MESSAGE.toString());
+                        notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback,
+                            configservice.data.settings.notificationDuration, { routeURL: ticket.URL_MESSAGE.toString() } );
                     } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
                         bNewNotifications = true;
                         ticketsToNotify[newTicketsCategory].push(ticket);
                         // routeURL += ticket.OBJECT_GUID;
-                        notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, ticket.URL_MESSAGE.toString());
+                        notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback,
+                            configservice.data.settings.notificationDuration, { routeURL: ticket.URL_MESSAGE.toString() });
                     }
                 });
             }
@@ -326,7 +328,8 @@
             if (bShowNotification){
                 routeURL += guidList;
                 that.ticketsFromNotifications = ticketsToNotify;
-                notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback, configservice.data.settings.notificationDuration, routeURL);
+                notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback,
+                    configservice.data.settings.notificationDuration, { routeURL: routeURL });
             }
         };
 }]);

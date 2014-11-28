@@ -100,7 +100,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
                 $scope.config = configservice;
                 ticketData.updatePrioSelectionCounts();
 
-                if (data !== undefined){
+                if (data.errors !== undefined){
                     setErrorText(data.errors.BAPIRET2.MESSAGE);
                 }
             }, function error() {
@@ -114,7 +114,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
 
         $scope.box.reloadApp(function() {
             ticketData.loadTicketData().then(function success(data){
-                if (data !== undefined){
+                if (data.errors !== undefined){
                     setErrorText(data.errors.BAPIRET2.MESSAGE);
                 }
             }, function error(){
