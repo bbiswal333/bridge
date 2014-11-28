@@ -108,7 +108,8 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
             that.prios[3].total = totals["9"] === undefined ? 0 : totals["9"];
         };
 
-        function notifierClickCallback() {
+        function notifierClickCallback(sApp, oNotificationData) {
+            that.ticketsFromNotifications = oNotificationData.tickets;
             // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
             _.defer(function() {
                 $rootScope.$apply(function() {
@@ -118,9 +119,6 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
         }
 
         this.notifyChanges = function(newTicketData, oldTicketData){
-            var bNewNotifications = false;
-            var ticketsToNotify = [];
-
             angular.forEach(newTicketData, function(ticket){
                 var foundTicket;
                 for (var category in oldTicketData) {
@@ -131,19 +129,11 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 }
 
                 if (foundTicket === undefined) {
-                    bNewNotifications = true;
-                    ticketsToNotify.push(ticket);
-                    notifier.showInfo('New Internal Incident', 'There is a new Internal Incident"' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback);
+                    notifier.showInfo('New Internal Incident', 'There is a new Internal Incident"' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, null, { tickets: [ticket] });
                 } else if (converter.getDateFromAbapTimeString(ticket.CHANGE_DATE) > converter.getDateFromAbapTimeString(foundTicket.CHANGE_DATE)) {
-                    bNewNotifications = true;
-                    ticketsToNotify.push(ticket);
-                    notifier.showInfo('Internal Incident Changed', 'The Internal Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback);
+                    notifier.showInfo('Internal Incident Changed', 'The Internal Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, null, { tickets: [ticket] });
                 }
             });
-
-            if (bNewNotifications === true) {
-                that.ticketsFromNotifications = ticketsToNotify;
-            }
         };
 
         this.notifyOfflineChanges = function(tickets, lastDataUpdateFromConfig){
@@ -154,8 +144,8 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
             });
 
             if (angular.isArray(foundTickets) && foundTickets.length > 0){
-                that.ticketsFromNotifications = foundTickets;
-                notifier.showInfo('Internal Incidents Changed', 'Some of your Internal Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback);
+                notifier.showInfo('Internal Incidents Changed', 'Some of your Internal Incidents changed since your last visit of Bridge', that.sAppIdentifier,
+                    notifierClickCallback, null, { tickets: foundTickets });
             }
         };
 
