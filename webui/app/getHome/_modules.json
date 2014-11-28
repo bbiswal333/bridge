@@ -16,6 +16,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "settings.js", "config.js", "mapService.js", "routeFactory.js"],
+	"js_files" : ["overview.js", "settings.js", "config.js", "routeFactory.js"],
 	"css_files" : ["style.css"]
 }

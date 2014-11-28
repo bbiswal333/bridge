@@ -115,6 +115,11 @@
                 oConfigFromStorage.savedOn = new Date(oConfigFromStorage.savedOn);
             }
 
+            //D049677: This transformation is necessary due to a previous bug in the default config
+            if(oConfigFromStorage && oConfigFromStorage.bridgeSettings && angular.isArray(oConfigFromStorage.bridgeSettings.searchProvider)) {
+                oConfigFromStorage.bridgeSettings.searchProvider = {};
+            }
+
             return oConfigFromStorage;
         };
 
@@ -186,7 +191,7 @@
                 ],
                 bridgeSettings: {
                     readNews: [],
-                    searchProvider: []
+                    searchProvider: {}
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };

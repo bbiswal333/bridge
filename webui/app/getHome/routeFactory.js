@@ -1,4 +1,4 @@
-angular.module('app.getHome').service("app.getHome.routeFactory", ['app.getHome.mapservice', '$interval', '$q', function (mapService, $interval, $q) {
+angular.module('app.getHome').service("app.getHome.routeFactory", ['bridge.service.maps', '$interval', '$q', function (mapService, $interval, $q) {
 
 	var RouteClass = (function() {
 		return function(sName, aWaypoints) {
