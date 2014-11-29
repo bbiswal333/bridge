@@ -128,7 +128,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
 				var twoMonthAgo = new Date();
 				twoMonthAgo.setDate(twoMonthAgo.getDate() - 60);
-				_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString)
+				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLY&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
 					if ( !data ) {
@@ -137,10 +137,21 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if (data.PROFILE) {
 						data.PROFILE = data.PROFILE.toUpperCase();
 					}
-					if (data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
-						$log.log(data.PROFILE);
-						that.catsProfile = data.PROFILE;
-						deferred.resolve(data.PROFILE);
+					if (data.PROFILE) {
+						if (data.PROFILE.indexOf("DEV2002C") > -1 ||
+						 	data.PROFILE.indexOf("SUP2007C") > -1 ||
+							data.PROFILE.indexOf("SUP2007D") > -1) {
+							$log.log(data.PROFILE);
+							that.catsProfile = data.PROFILE;
+							deferred.resolve(data.PROFILE);
+						} else if ( data.PROFILE.indexOf("DEV2002") > -1 ||
+						 			data.PROFILE.indexOf("SUP2012") > -1 ||
+									data.PROFILE.indexOf("SUP2007") > -1 ||
+									data.PROFILE.indexOf("AUSALE") > -1) {
+							$log.log("CATS2 profile not supported");
+							that.catsProfile = "CAT2_PROFILE_NOT_SUPPORTED";
+							deferred.reject("CAT2_PROFILE_NOT_SUPPORTED");
+						}
 					} else {
 						// Now read templates in different profiles
 						var promises = [];
@@ -160,16 +171,26 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							// find any subtype?
 							var entriesWithSubtype = 0;
 							var totalEntries = 0;
+							var catsxtTaskFound = false;
 							angular.forEach(promisesData, function(data) {
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
 										entriesWithSubtype += 1;
 									}
+									if (!data.CATS_EXT[i].TASKTYPE &&
+										!data.CATS_EXT[i].RAUFNR &&
+										!data.CATS_EXT[i].ZCPR_EXTID) {
+										catsxtTaskFound = true;
+									}
 								}
 								dataForAnalysis.push(data);
 							});
-							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
+							if (catsxtTaskFound) {
+								$log.log("CATSXT is not supported");
+								that.catsProfile = "CATSXT_NOT_SUPPORTED";
+								deferred.reject("CATSXT_NOT_SUPPORTED");
+							} else if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
 								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
 									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007D";
@@ -179,10 +200,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 									that.catsProfile = "SUP2007C";
 									deferred.resolve("SUP2007C");
 								}
-							} else {
+							} else if (entriesWithSubtype === 0 && totalEntries > 0) {
 								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
 								deferred.resolve("DEV2002C");
+							} else {
+								$log.log("CATS2 profile not determined");
+								that.catsProfile = "CAT2_PROFILE_UNKNOWN";
+								deferred.reject("CAT2_PROFILE_UNKNOWN");
 							}
 						}, deferred.reject);
 					}
@@ -273,7 +298,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);

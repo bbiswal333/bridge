@@ -119,9 +119,15 @@ angular.module("app.cats")
 				}
 			};
 
-			function setISPErrorText() {
+			function setISPErrorText(catsProfile) {
 				$scope.hasError = true;
-				$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+				if (catsProfile === "CATSXT_NOT_SUPPORTED") {
+					$scope.state = "CATSXT is is not supported by the CAT2 app";
+				} else if (catsProfile === "CAT2_PROFILE_UNKNOWN") {
+					$scope.state = "The CAT2 profile was not recognized. Bridge currently supports CAT2 profiles DEV2002, SUP2007D and SUP2007C.";
+				} else {
+					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+				}
 			}
 
 			function reload() {
@@ -135,9 +141,9 @@ angular.module("app.cats")
 					.then(function(){
 						$scope.analyticsDays = monthlyDataService.days;
 					},
-					function() {
+					function(data) {
 						if (monthlyDataService.reloadInProgress.error) {
-							setISPErrorText();
+							setISPErrorText(data);
 						}
 					});
 				}
