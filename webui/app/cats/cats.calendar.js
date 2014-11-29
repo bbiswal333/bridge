@@ -596,7 +596,7 @@ angular.module("app.cats")
 			};
 
 			$scope.canGoForward = function () {
-				if (monthRelative + 1 > 1) { // Maximum number of month to go forward
+				if (monthRelative + 1 > 3) { // Maximum number of month to go forward
 					return false;
 				}
 				return true;

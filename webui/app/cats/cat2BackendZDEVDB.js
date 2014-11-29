@@ -34,8 +34,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function monthAlreadyCached(year, month) {
-			var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "-" + "15";
+			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(month + 1, 2) + "-" + "15";
 			if (_.find(that.CAT2ComplinaceDataCache, {
 					"DATEFROM": middate
 				}) !== undefined) {
@@ -217,11 +216,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		};
 
-		function getCAT2ComplianceData(deferred, begdate, enddate) {
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + begdate + "&endda=" + enddate)
-			.then(function(data) {
+		function getCAT2ComplianceData(date) {
+			var deferred = $q.defer();
+			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
+
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
+			.then(function(data) { // Amelie Amelie
 				if (data && data.CATSCHK) {
-					data.CATSCHK.forEach(function(CATSCHKforDay) {
+					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
 							"DATEFROM": CATSCHKforDay.DATEFROM
 						});
@@ -249,11 +251,25 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
 					});
-					deferred.resolve(data.CATSCHK);
-				} else {
-					deferred.resolve();
 				}
+				deferred.resolve();
 			}, deferred.reject);
+			return deferred.promise;
+		}
+
+		function getCAT2ComplianceForRange(deferred, begdate, enddate) {
+			var promises = [];
+			var date = new Date(begdate.substr(0,4),begdate.substr(4,2) - 1,begdate.substr(6,2),12);
+			enddate = new Date(enddate.substr(0,4),enddate.substr(4,2) - 1,enddate.substr(6,2),12);
+
+			for (var week = 0; date < enddate; week++) {
+				promises.push(getCAT2ComplianceData(date));
+				date.setDate(date.getDate() + 7);
+			}
+			var promise = $q.all(promises);
+			promise.then(function() {
+				deferred.resolve(that.CAT2ComplinaceDataCache);
+			});
 		}
 
 		this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
@@ -262,10 +278,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			this.determineCatsProfileFromBackend(); // trigger profile determination
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
-				var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-				var begdate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "01";
-				var enddate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + calUtils.getLengthOfMonth(year, month);
-				getCAT2ComplianceData(deferred, begdate, enddate);
+				var begdate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + "01";
+				var enddate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + calUtils.getLengthOfMonth(year, month);
+				getCAT2ComplianceForRange(deferred, begdate, enddate);
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
