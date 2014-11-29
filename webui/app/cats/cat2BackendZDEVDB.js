@@ -148,8 +148,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 									data.PROFILE.indexOf("SUP2007") > -1 ||
 									data.PROFILE.indexOf("AUSALE") > -1) {
 							$log.log("CATS2 profile not supported");
-							that.catsProfile = "CAT2_PROFILE_NOT_SUPPORTED";
-							deferred.reject("CAT2_PROFILE_NOT_SUPPORTED");
+							that.catsProfile = data.PROFILE;
+							deferred.resolve(data.PROFILE);
+							// that.catsProfile = "CAT2_PROFILE_NOT_SUPPORTED";
+							// deferred.reject("CAT2_PROFILE_NOT_SUPPORTED");
 						}
 					} else {
 						// Now read templates in different profiles
@@ -296,11 +298,20 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve();
 			} else {
 				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
-					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
-						for (var j = 0; j < data.CATS_EXT.length; j++) {
-							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
+					// determine SUBTYPE
+					for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
+						var record = data.TIMESHEETS.RECORDS[j];
+						if (record) {
+						var day = record.DAYS[0];
+							if (day) {
+								var CATS_EXT = _.find(data.CATS_EXT, { "COUNTER":  day.COUNTER });
+								data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = CATS_EXT.ZZSUBTYPE;
+							}
 						}
 					}
+					// for (var j = 0; j < data.CATS_EXT.length; j++) {
+					// 	data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
+					// }
 					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS)
 					.then(function(items) {
 						data.TIMESHEETS.RECORDS = items;
@@ -434,7 +445,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
-				$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
+				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,
 					'headers': {
 						'Content-Type': 'text/plain'
