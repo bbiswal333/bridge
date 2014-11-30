@@ -420,37 +420,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function checkPostReply(data) {
         try {
-            var parser;
-            var xmlDoc;
-            if ($window.DOMParser) {
-                parser = new $window.DOMParser();
-                xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer
-                /*eslint-disable no-undef*/
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                /*eslint-enable no-undef*/
-                xmlDoc.async = false;
-                xmlDoc.loadXML(data);
-            }
             var replyMessages = [];
-            var weAreDone = false;
             var alertDuration = 5;
             var maxMessageCount = 5;
-            for (var i = 0; weAreDone === false; i++) {
-                var message = xmlDoc.getElementsByTagName("TEXT")[i];
-                if (message) {
-                    if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
-                        replyMessages.push(message.childNodes[0].nodeValue);
-                        if (replyMessages.length <= maxMessageCount) {
-                            if(message.childNodes[0].nodeValue.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                                bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
-                            } else {
-                                bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
-                            }
+            for (var i = 0; i < data.CHECKMESSAGES.length; i++) {
+                if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
+                    replyMessages.push(data.CHECKMESSAGES[i].TEXT);
+                    if (replyMessages.length <= maxMessageCount) {
+                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
+                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
+                        } else {
+                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT,alertDuration);
                         }
                     }
-                } else {
-                    weAreDone = true;
                 }
             }
             if (replyMessages.length > maxMessageCount) {
