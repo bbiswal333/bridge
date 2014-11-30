@@ -15,6 +15,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
+		this.catsProfileIsSupported = false;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -137,30 +138,22 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						data.PROFILE = data.PROFILE.toUpperCase();
 					}
 					if (data.PROFILE) {
-						if (data.PROFILE.indexOf("DEV2002C") > -1 ||
-						 	data.PROFILE.indexOf("SUP2007C") > -1 ||
-							data.PROFILE.indexOf("SUP2007D") > -1) {
-							$log.log(data.PROFILE);
+						$log.log("Time recording profile " + data.PROFILE);
+						if ( data.PROFILE.indexOf("DEV2002") > -1 ||
+						 	 data.PROFILE.indexOf("SUP2012") > -1 ||
+							 data.PROFILE.indexOf("SUP2007") > -1 ||
+							 data.PROFILE.indexOf("AUSALE") > -1) {
 							that.catsProfile = data.PROFILE;
+							that.catsProfileIsSupported = true;
 							deferred.resolve(data.PROFILE);
-						} else if ( data.PROFILE.indexOf("DEV2002") > -1 ||
-						 			data.PROFILE.indexOf("SUP2012") > -1 ||
-									data.PROFILE.indexOf("SUP2007") > -1 ||
-									data.PROFILE.indexOf("AUSALE") > -1) {
-							$log.log("CATS2 profile not supported");
-							that.catsProfile = data.PROFILE;
-							deferred.resolve(data.PROFILE);
-							// that.catsProfile = "CAT2_PROFILE_NOT_SUPPORTED";
-							// deferred.reject("CAT2_PROFILE_NOT_SUPPORTED");
+						} else {
+							that.catsProfileIsSupported = false;
+							deferred.resolve("SUP2007D"); // simple profile to get data
 						}
 					} else {
-						// Now read templates in different profiles
 						var promises = [];
 						var week = calUtils.getWeekNumber(today);
-						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
-						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
-						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
-						week = calUtils.getWeekNumber(twoMonthAgo);
+						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
@@ -168,8 +161,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
-
-							// find any subtype?
 							var entriesWithSubtype = 0;
 							var totalEntries = 0;
 							var catsxtTaskFound = false;
@@ -188,27 +179,28 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								dataForAnalysis.push(data);
 							});
 							if (catsxtTaskFound) {
-								$log.log("CATSXT is not supported");
-								that.catsProfile = "CATSXT_NOT_SUPPORTED";
-								deferred.reject("CATSXT_NOT_SUPPORTED");
+								that.catsProfileIsSupported = false;
+								deferred.resolve("SUP2007D"); // simple profile to get data
 							} else if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
 								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
 									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007D";
+									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007D");
 								} else {
 									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007C";
+									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007C");
 								}
-							} else if (entriesWithSubtype === 0 && totalEntries > 0) {
+							} else if (totalEntries > 0) {
 								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
+								that.catsProfileIsSupported = true;
 								deferred.resolve("DEV2002C");
 							} else {
-								$log.log("CATS2 profile not determined");
-								that.catsProfile = "CAT2_PROFILE_UNKNOWN";
-								deferred.reject("CAT2_PROFILE_UNKNOWN");
+								that.catsProfileIsSupported = false;
+								deferred.resolve("SUP2007D"); // simple profile to get data
 							}
 						}, deferred.reject);
 					}
@@ -309,9 +301,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							}
 						}
 					}
-					// for (var j = 0; j < data.CATS_EXT.length; j++) {
-					// 	data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
-					// }
 					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS)
 					.then(function(items) {
 						data.TIMESHEETS.RECORDS = items;
@@ -347,6 +336,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.requestTasksFromTemplate = function(year, week, forceUpdate_b) {
 			var deferred = $q.defer();
+
+			if (!that.catsProfileIsSupported) {
+				deferred.reject("Task list not available. The time recording profile was not recognized as valid CAT2 profile. Please see FAQ for details.");
+				return deferred.promise;
+			}
 
 			// this here is important for the app settings
 			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[this.catsProfile + "" + year + "" + week]) {
@@ -444,6 +438,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
+
+			if (!that.catsProfileIsSupported) {
+				deferred.reject("Posting not possible, the time recording profile was not recognized as valid CAT2 profile. Please see FAQ for details.");
+				return deferred.promise;
+			}
+
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
 				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,

@@ -202,9 +202,11 @@ directive("app.cats.maintenanceView.projectList", [
 						});
 					} else {
 						$scope.hasError = true;
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					}
 				}, function() {
 					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			}
 
@@ -216,9 +218,14 @@ directive("app.cats.maintenanceView.projectList", [
 				.then(function(itemFromCatsTemplate) {
 					addItemsFromTemplate(itemFromCatsTemplate);
 					deferred.resolve();
-				}, function() {
+				}, function(errorText) {
 					$scope.hasError = true;
-					deferred.reject();
+					if(errorText) {
+						$scope.errorText = errorText;
+					} else {
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					}
+					deferred.reject($scope.errorText);
 				});
 
 				return deferred.promise;
@@ -263,11 +270,17 @@ directive("app.cats.maintenanceView.projectList", [
 							});
 						}
 						deferred.resolve();
-					}, function() {
+					}, function(errorText) {
 						$scope.hasError = true;
+						if(errorText) {
+							$scope.errorText = errorText;
+						} else {
+							$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						}
 					});
 				}, function() {
 					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				return deferred.promise;
 			}
@@ -376,6 +389,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.loaded = true;
 					}, function() {
 						$scope.hasError = true;
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					});
 				} else {
 					initProjectItems();
