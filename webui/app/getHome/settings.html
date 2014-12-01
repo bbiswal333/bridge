@@ -48,7 +48,7 @@
 					<bridge.input model="editedRoute.name" placeholder="Route Name"></bridge.input>
 				</div>
 			</div>
-			<div >
+			<div style="margin-bottom:100px;">
 				<div class="btn btn-primary btn_blue" style="float: right" ng-click="quitEditMode()">Done</div>
 				<div class="btn btn-primary btn_blue" style="float: right" ng-click="undoEditOfExistingRoute()" ng-show="editedRoute.modified"><i class="fa fa-undo"></i> Undo</div>
 			</div>
@@ -105,14 +105,14 @@
 					Route Name:
 				</div>
 				<div  style="padding:0 0 10px 0;">
-					<bridge.input model="newRoute.routeName" placeholder="Route Name" style="width:90%;"></bridge.input>
+					<bridge.input model="newRoute.routeName" placeholder="Route Name" style="width:70%;"></bridge.input>
+					<div class="btn btn-primary btn_blue" style="float: right;margin-bottom:20px;width:23%" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add</div>
 				</div>
-				<div class="btn btn-primary btn_blue" style="float: left;margin-top:10px;" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add Route</div>
 			</div>
 		</form>
 	</div>
 
-	<div class="col-md-8" style="margin-top: 15px">
+	<div class="col-md-8" style="margin-top: 25px;margin-bottom:30px;padding-left:0;padding-right:0;">
 		<div id="app-getHome-settings-map" class="app-getHome-settings-map" ng-init="initializeMap()"></div>
 		<div id="app-getHome-settings-mapDescription" class="app-getHome-settings-mapDescription" ng-if="!descriptionHidden">
 			<a href="" ng-click="hideDescription()"><i class="fa fa-close" style="position: absolute; right: 5px; top: 5px; color: white" /></a>
@@ -123,6 +123,6 @@
 	</div>
 </div>
 
-<div class="row" style="margin-top: 15px">
-	<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
-</div>
+	<div class="row" style="margin-top: 85px">
+		<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
+	</div>
