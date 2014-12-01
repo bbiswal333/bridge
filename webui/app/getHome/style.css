@@ -95,6 +95,7 @@
 	font-weight: bold;
 	text-align: center;
 	font-size: 2em;
+	margin-top: 25px;
 }
 
 .app-getHome-detail-legend span:first-of-type {
@@ -126,15 +127,24 @@
 }
 
 .getHome-route-column {
-	width: 120px;
-	height: 65px;
+	width: 100%;
+	height: 25px;
 	float: left;
 	color: white;
-	margin-right: 10px;
-	margin-bottom: 10px;
 	cursor: pointer;
+	padding: 5px;
+	margin-bottom: 3px;
 }
-
+.getHome-route-name{
+	float:left;
+	text-align: left;
+	margin:-1px 0 10px;
+}
+.getHome-route-time{
+	float:right;
+	text-align: right;
+	margin:-1px 0 0;
+}
 .app-getHome-settings-mapDescription {
 	width: 300px;
 	height: 200px;
@@ -144,4 +154,11 @@
 	top: 10px;
 	left: 25px;
 	color: white;
+}
+.appGetHomeMapClass .modal-dialog {
+	width:1000px;
+}
+.appGetHomeMapClass .modal-content {
+	padding:50px;
+	padding-bottom: 25px;
 }
