@@ -28,7 +28,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject(status);
+				deferred.reject("HTTP-Status of write posting call is " + status);
 			});
 
 			return deferred.promise;
@@ -291,13 +291,15 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			} else {
 				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
 					// determine SUBTYPE
-					for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
-						var record = data.TIMESHEETS.RECORDS[j];
-						if (record) {
-						var day = record.DAYS[0];
-							if (day) {
-								var CATS_EXT = _.find(data.CATS_EXT, { "COUNTER":  day.COUNTER });
-								data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = CATS_EXT.ZZSUBTYPE;
+					if (that.catsProfile.indexOf("DEV2002") === -1) {
+						for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
+							var record = data.TIMESHEETS.RECORDS[j];
+							if (record) {
+							var day = record.DAYS[0];
+								if (day) {
+									var CATS_EXT = _.find(data.CATS_EXT, { "COUNTER":  day.COUNTER });
+									data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = CATS_EXT.ZZSUBTYPE;
+								}
 							}
 						}
 					}
@@ -336,11 +338,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.requestTasksFromTemplate = function(year, week, forceUpdate_b) {
 			var deferred = $q.defer();
-
-			if (!that.catsProfileIsSupported) {
-				deferred.reject("Task list not available. The time recording profile was not recognized as valid CAT2 profile. Please see FAQ for details.");
-				return deferred.promise;
-			}
 
 			// this here is important for the app settings
 			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[this.catsProfile + "" + year + "" + week]) {
@@ -439,11 +436,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
 
-			if (!that.catsProfileIsSupported) {
-				deferred.reject("Posting not possible, the time recording profile was not recognized as valid CAT2 profile. Please see FAQ for details.");
-				return deferred.promise;
-			}
-
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
 				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,
@@ -453,7 +445,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}).success(function(data) {
 					deferred.resolve(data);
 				}).error(function(data, status) {
-					deferred.reject(status);
+					deferred.reject("HTTP-Status of write posting call is " + status);
 				});
 			});
 			return deferred.promise;
