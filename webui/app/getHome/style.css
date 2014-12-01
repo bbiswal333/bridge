@@ -113,15 +113,24 @@
 .getHome-route-option {
 	background-color: #ffffff;
 	border: 0px;
-	border-radius: 7px;
+	line-height: 25px;
+	padding: 5px;
+}
+.getHome-route-proposal{
+	background-color: #ffffff;
+	border: 0px;
+	height: 35px;
+	padding: 5px;
+	margin-bottom: 5px;
+	line-height: 25px;
 }
 
-.getHome-route-option:hover {
+.getHome-route-option:hover, .getHome-route-proposal:hover {
 	background-color: #888888;
 	color: #ffffff;
 }
 
-.getHome-route-option-selected {
+.getHome-route-option-selected, .getHome-route-proposal-selected {
 	background-color: #444444;
 	color: #ffffff;
 }
