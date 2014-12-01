@@ -485,8 +485,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.STATUS;
 
             if (booking.UNIT === "H" && targetHoursForDay) {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
-                booking.CATSHOURS    = booking.CATSQUANTITY;
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                booking.CATSHOURS = booking.CATSQUANTITY; // There might be a rounding issue
+                // \nERROR: Beim Konvertieren trat ein Verlust von Nachkommastellen auf. (termination: RABAX_STATE)
             } else {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
             }
