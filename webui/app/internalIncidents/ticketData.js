@@ -75,18 +75,18 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
 
         this.getRelevantTickets = function(bSelectedComponents, bColleagues, bAssignedToMe, bCreatedByMe, bIgnoreAuthorAction) {
             var tickets = [];
-            if (bSelectedComponents){
+            if (bSelectedComponents && that.tickets.hasOwnProperty("RESULTNODE1")){
                 tickets  = _.union(tickets, _.where(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], {"PROCESSOR_ID" : ""}));
             }
-            if (bColleagues) {
+            if (bColleagues && that.tickets.hasOwnProperty("RESULTNODE1")) {
                 tickets  = _.union(tickets, _.filter(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){
                     return ticket.PROCESSOR_ID !== "" && ticket.PROCESSOR_ID !== bridgeDataService.getUserInfo().BNAME;
                 }));
             }
-            if(bAssignedToMe){
+            if(bAssignedToMe && that.tickets.hasOwnProperty("RESULTNODE3")){
                 tickets  = _.union(tickets, that.tickets.RESULTNODE3["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
             }
-            if (bCreatedByMe){
+            if (bCreatedByMe && that.tickets.hasOwnProperty("RESULTNODE2")){
                 tickets  = _.union(tickets, that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
             }
 
