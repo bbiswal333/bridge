@@ -15,6 +15,15 @@ describe("Internal Incidents details controller", function(){
                     return { BNAME: "D051804" };
                 }
             };
+
+            var mockNotifier = {
+                storeAllNotificationsInLocale: function(){
+                },
+                showInfo: function(){
+                }
+            };
+
+            $provide.value("notifier", mockNotifier);
             $provide.value("bridgeDataService", mockDataService);
         });
 
