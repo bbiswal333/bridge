@@ -1,0 +1,4 @@
+image: sap_nodejs_ubuntu_latest
+script: 
+ - npm install
+ - npm test
