@@ -282,13 +282,11 @@ img {
 .centeredContent {
     display: table-cell;
     vertical-align: middle;
-    margin-bottom:40px;
+    margin-bottom: 40px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: auto;
     padding: 70px 40px;
     text-align: center;
-    position: relative;
 }
 #scrollContainer .centeredContent{
     display: block;
@@ -638,11 +636,11 @@ input[type="checkbox"]:checked:after {
 }
 
 .mainContainer {
-    width: 100%;
-    position: absolute;
+    left: 0px;
+    right:  0px;
     top: 0px;
     bottom: 0px;
-   
+    position: absolute;
 }
 /* ##### PRIO TILES ##### */
 .prio_container{

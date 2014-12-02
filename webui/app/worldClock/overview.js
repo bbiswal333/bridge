@@ -12,9 +12,7 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 				id: $scope.boxId
 		};
 
-		//TODO: comment out when merged with multiInstance
-		//configService.initialize($scope.metadata.guid);
-		configService.initialize();
+		configService.initialize($scope.metadata.guid);
 		$scope.locations = configService.locations;
 
 		$scope.box.returnConfig = function(){

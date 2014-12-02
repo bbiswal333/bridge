@@ -6,14 +6,7 @@
 		"title"					:	"Beat the Traffic",
 		"icon_css"				:	"fa fa-home",
 		"overview_directive"	:	"app.getHome",
-		"needs_client"			:	false,
-		"routes"				:
-		[
-			{
-				"route"			:	"/detail/gethome/",
-				"templateUrl"	:	"app/getHome/detail.html"
-			}
-		]
+		"needs_client"			:	false
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js", "routeFactory.js"],

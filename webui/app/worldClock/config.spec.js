@@ -10,7 +10,7 @@ describe("Worldclock config", function() {
 		module("app.worldClock");
 		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", "lib.utils.calUtils", function(_config, bridgeDataService, $httpBackend, calUtils) {
 			config = _config;
-			bridgeDataService.getAppConfigByModuleName = function() {
+			bridgeDataService.getAppConfigById = function() {
 				return {locations: [testLocation]};
 			};
 			httpBackend = $httpBackend;

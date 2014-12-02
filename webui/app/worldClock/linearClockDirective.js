@@ -70,7 +70,7 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 
 			function calculateTimeOffsetInMillisecondsFromNowToActualTime() {
 				var offset = $scope.now - calUtils.now();
-				$scope.timeOffsetInMilliseconds = Math.abs(offset) >= 5 ? offset : 0;
+				$scope.timeOffsetInMilliseconds = Math.abs(offset) >= 500 ? offset : 0;
 			}
 
 			function calculateClockVariables() {

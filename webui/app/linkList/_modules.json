@@ -6,7 +6,8 @@
 		"title"					:	"Links",
 		"icon_css"				:	"fa fa-bookmark",
 		"overview_directive"	:	"app.linklist",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"multiInstance"			:	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js"],

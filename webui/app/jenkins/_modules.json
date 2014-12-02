@@ -8,6 +8,7 @@
 		"overview_directive"	:	"app.jenkins",
 		"needs_client"			:	false,
 		"default_hidden"		: 	true,
+		"multiInstance"			:	true,
 		"routes"		:
 		[
 			{

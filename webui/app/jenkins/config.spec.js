@@ -9,7 +9,7 @@ describe("The Jenkins config service", function() {
 
 	beforeEach(inject(["app.jenkins.configservice", function(_configService_) {
 
-		configService = _configService_;
+		configService = _configService_.getConfigForAppId("app.test");
 
 
 	}]));

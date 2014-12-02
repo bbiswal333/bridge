@@ -9,7 +9,7 @@ describe("The linklist config service", function() {
 
     beforeEach(inject(["app.linklist.configservice", function(_configService_) {
 
-        configService = _configService_;
+        configService = _configService_.getInstanceForAppId("app.none");
 
 
     }]));

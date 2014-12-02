@@ -1,12 +1,12 @@
 ﻿<div class="jira_container" ng-if="jiraChartData.length > 0">
     <div ng-repeat="data in jiraChartData" class="status_container">
         <div class="status_bar_container">
-            <a href="#/detail/jira/{{id}}/{{data.status_filter}}">         
+            <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}">         
                 <div class="status_bar" ng-style="{'height':(data.count/totalCount)*100 + '%', 'background-color':colors[$index] }">      
                 </div>   
             </a>         
         </div>
-        <a href="#/detail/jira/{{id}}/{{data.status_filter}}">
+        <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}">
             <div class="status_title">
                 {{data.status}}
             </div>

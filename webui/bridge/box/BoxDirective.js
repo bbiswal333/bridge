@@ -32,6 +32,7 @@ angular.module('bridge.box').directive('bridge.box',
                         $scope[attribute] = metadata[attribute];
                     }
                 }
+                $scope.metadata = metadata;
                 $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
                 $scope.box.needs_client = $scope.needs_client;
 
@@ -73,6 +74,14 @@ angular.module('bridge.box').directive('bridge.box',
             boxContent.append(newElement);
             var box = $element.find("#innerbox");
             box = $compile(box)($scope);
+
+            $scope.doSomething = function() {
+                $scope.editTitle = true;
+            };
+
+            $scope.quitEditTitleMode = function() {
+                $scope.editTitle = false;
+            };
         }
     };
 }]);

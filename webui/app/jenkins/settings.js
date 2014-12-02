@@ -2,10 +2,10 @@ angular.module('app.jenkins').appJenkinsSettings =
 ['$filter', 'ngTableParams', '$scope', "$route", "app.jenkins.configservice", "app.jenkins.dataService",
 
 	function ($filter, ngTableParams, $scope, $route, jenkinsConfigService, jenkinsDataService) {
-
-		$scope.config = jenkinsConfigService;
-		$scope.currentConfigValues = jenkinsConfigService.configItem;
-		$scope.dataService = jenkinsDataService;
+		var config = jenkinsConfigService.getConfigForAppId($scope.boxScope.metadata.guid);
+		$scope.config = config;
+		$scope.currentConfigValues = config.configItem;
+		$scope.dataService = jenkinsDataService.getInstanceForAppId($scope.boxScope.metadata.guid);
 
 		$scope.save_click = function() {
 			$scope.$emit('closeSettingsScreen');
@@ -54,7 +54,7 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		function addConfigItem(copiedConfigItem) {
-			jenkinsConfigService.addConfigItem(copiedConfigItem);
+			$scope.config.addConfigItem(copiedConfigItem);
 		}
 
 		function isInArrayByName(nameString, candidateObjects) {
@@ -132,8 +132,8 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		$scope.select_click = function(index) {
-			if(jenkinsConfigService.configItems[index]) {
-				$scope.dataService.jenkinsData.url = jenkinsConfigService.configItems[index].jenkinsUrl;
+			if(config.configItems[index]) {
+				$scope.dataService.jenkinsData.url = config.configItems[index].jenkinsUrl;
 			}
 		};
 
@@ -171,10 +171,10 @@ angular.module('app.jenkins').appJenkinsSettings =
 
 			var jobsByView = [];
 
-			for(var viewNameIndex in jenkinsConfigService.configItem.jobsByView) {
+			for(var viewNameIndex in config.configItem.jobsByView) {
 
-				if(jenkinsConfigService.configItem.jobsByView[viewNameIndex].name === viewname) {
-					jobsByView = jobsByView.concat(jenkinsConfigService.configItem.jobsByView[viewNameIndex].jobs);
+				if(config.configItem.jobsByView[viewNameIndex].name === viewname) {
+					jobsByView = jobsByView.concat(config.configItem.jobsByView[viewNameIndex].jobs);
 				}
 			}
 

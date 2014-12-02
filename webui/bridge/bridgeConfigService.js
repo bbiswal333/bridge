@@ -22,40 +22,12 @@
         }
 
         function getAppsData(project) {
-            var visible_apps = [];
-            var apps = [];
-
-            if (project.apps) {
-                for (var i = 0; i < project.apps.length; i++) {
-                    if(project.apps[i].metadata.show)
-                    {
-                        visible_apps.push(project.apps[i]);
-                    }
-                }
-            }
-
-            visible_apps.sort(function(app1, app2){
-                if (app1.metadata.order < app2.metadata.order) {
-                    return -1;
-                }
-                if (app1.metadata.order > app2.metadata.order) {
-                    return 1;
-                }
-                return 0;
+            return project.apps.map(function(app) {
+                return {
+                    metadata: app.metadata,
+                    appConfig: getAppConfig(app)
+                };
             });
-
-            for (var j = 0; j < visible_apps.length; j++)
-            {
-                var appConfig = getAppConfig(visible_apps[j]);
-
-                apps.push({
-                    metadata: {
-                        "module_name": visible_apps[j].metadata.module_name
-                    },
-                    appConfig: appConfig
-                });
-            }
-            return apps;
         }
 
         function isEmpty(obj) {
@@ -169,15 +141,8 @@
         this.getDefaultConfig = function () {
             var apps = [];
             for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
-                apps[i] = {};
-                apps[i].metadata = {};
-                apps[i].metadata.id = i;
-                if (bridgeLoaderServiceProvider.apps[i].default_hidden) {
-                    apps[i].metadata.show = false;
-                }
-                else {
-                    apps[i].metadata.module_name = bridgeLoaderServiceProvider.apps[i].module_name;
-                    apps[i].metadata.show = true;
+                if(!bridgeLoaderServiceProvider.apps[i].default_hidden) {
+                    apps.push({metadata: bridgeLoaderServiceProvider.apps[i]});
                 }
             }
 
