@@ -226,7 +226,13 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 						task.QUANTITY_DAY = task.QUANTITY;
 					}
 					if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
-						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / day.targetHours * 1000) / 1000;
+						if (task.UNIT !== 'H') {
+							// Adjusting to acutal part-time and country specific target hours value
+							var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
+						} else {
+							roundedTargetHours = day.targetHours;
+						}
+						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
 					}
 				});
 			});

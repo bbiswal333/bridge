@@ -44,7 +44,7 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     };
 
     this.isFixedTask = function(task){
-      if ( task.TASKTYPE === "VACA" ||
+      if ((task.TASKTYPE === "VACA" && task.UNIT === "H") || // There is a valid VACA/TA task in Israel
           (task.TASKTYPE === "ABSE" && task.UNIT === "H") || // There is a valid ABSE/TA task in Israel
            task.TASKTYPE === "COMP") {
         return true;
@@ -65,6 +65,10 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
     this.cat2CompliantRounding = function(value) {
       return Math.round(value * 1000) / 1000;
+    };
+
+    this.cat2CompliantRoundingForHours = function(value) {
+      return Math.round(value * 100) / 100;
     };
   }
 );

@@ -24,6 +24,8 @@ angular.module('app.internalIncidents').factory("app.internalIncidents.configser
                 config.data[property] = oConfigFromBackend[property];
             }
         }
+
+        this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
     };
 
     return config;

@@ -36,9 +36,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if ($scope.width > 600) {
                 $scope.width = 600;
             }
-            $scope.width = parseInt(Math.round($scope.width / 10) * 10 || 600);
+            $scope.width = parseInt($scope.width || 600);
         });
     }
+
     /* eslint-disable no-undef */
     $(window).resize(adjustBarSize);
     $scope.$on("$destroy", function(){
@@ -274,7 +275,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 configService.updateDescription(task);
 
                 if (task.TASKTYPE === "VACA") {
-                    task.DESCR = "Vacation";
+                    if (task.UNIT === "H") {
+                        task.DESCR = "Vacation";
+                    } else {
+                        task.DESCR = "Vacation (changeable)";
+                    }
                 }
                 if (task.TASKTYPE === "ABSE") {
                     if (task.UNIT === "H") {
@@ -353,7 +358,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             ZZSUBTYPE: task.ZZSUBTYPE,
-            UNIT: "T"
+            UNIT: task.UNIT || "T"
         };
 
         var blockCouldBeAdded = false;
@@ -415,37 +420,19 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     function checkPostReply(data) {
         try {
-            var parser;
-            var xmlDoc;
-            if ($window.DOMParser) {
-                parser = new $window.DOMParser();
-                xmlDoc = parser.parseFromString(data, "text/xml");
-            } else { // Internet Explorer
-                /*eslint-disable no-undef*/
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                /*eslint-enable no-undef*/
-                xmlDoc.async = false;
-                xmlDoc.loadXML(data);
-            }
             var replyMessages = [];
-            var weAreDone = false;
             var alertDuration = 5;
             var maxMessageCount = 5;
-            for (var i = 0; weAreDone === false; i++) {
-                var message = xmlDoc.getElementsByTagName("TEXT")[i];
-                if (message) {
-                    if (!_.contains(replyMessages, message.childNodes[0].nodeValue)) {
-                        replyMessages.push(message.childNodes[0].nodeValue);
-                        if (replyMessages.length <= maxMessageCount) {
-                            if(message.childNodes[0].nodeValue.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                                bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
-                            } else {
-                                bridgeInBrowserNotification.addAlert('danger', message.childNodes[0].nodeValue,alertDuration);
-                            }
+            for (var i = 0; i < data.CHECKMESSAGES.length; i++) {
+                if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
+                    replyMessages.push(data.CHECKMESSAGES[i].TEXT);
+                    if (replyMessages.length <= maxMessageCount) {
+                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
+                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
+                        } else {
+                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT,alertDuration);
                         }
                     }
-                } else {
-                    weAreDone = true;
                 }
             }
             if (replyMessages.length > maxMessageCount) {
@@ -467,6 +454,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function prepareCATSData (workdate, container, clearOldTasks){
         var workdateBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
+        var targetHoursForDay = monthlyDataService.days[workdate].targetHours;
 
         if(!totalWorkingTimeForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0.');
@@ -493,8 +481,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
             var booking = angular.copy($scope.blockdata[i].task);
             booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
+            delete booking.QUANTITY_DAY;
+            delete booking.STATUS;
 
-            booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            if (booking.UNIT === "H" && targetHoursForDay) {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                if (catsBackend.catsProfile === "SUP2007H") {
+                    booking.CATSHOURS = booking.CATSQUANTITY;
+                }
+            } else {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            }
             delete booking.QUANTITY;
 
             if (catsUtils.isFixedTask(booking)){
@@ -610,8 +607,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
-                }, function(status){
-                    bridgeInBrowserNotification.addAlert('', "POST-Request to write CATS data failed. HTTP-Status: " + status + ".");
+                }, function(errorText){
+                    bridgeInBrowserNotification.addAlert('danger', errorText);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();

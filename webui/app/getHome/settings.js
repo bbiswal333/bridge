@@ -1,7 +1,7 @@
 /*globals nokia, jQuery*/
 angular.module('app.getHome').appGetHomeSettings =
-	['app.getHome.configservice', 'app.getHome.mapservice', 'app.getHome.routeFactory', '$scope', '$q',
-		function (appGetHomeConfig, appGetHomeMap, routeFactory, $scope, $q) {
+	['app.getHome.configservice', 'bridge.service.maps', 'app.getHome.routeFactory', '$scope', '$q', 'bridge.search.locationSearch',
+		function (appGetHomeConfig, appGetHomeMap, routeFactory, $scope, $q, bridgeLocationSearch) {
 	var mapInstance;
 	var routeLayer, routerHoverMarker, markerLayer, dragMarker;
 
@@ -297,14 +297,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.searchAddress = function(searchString) {
-		var addresses = $q.defer();
-		appGetHomeMap.search(searchString, function(locations) {
-			addresses.resolve(locations);
-		});
-		addresses.promise.then(function(data) {
-			return data;
-		});
-		return addresses.promise;
+		return bridgeLocationSearch.findMatches(searchString, [], true);
 	};
 
 	$scope.closeForm = function () {

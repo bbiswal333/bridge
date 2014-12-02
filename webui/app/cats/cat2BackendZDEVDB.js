@@ -6,7 +6,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin="	+ $window.location.origin;
 		var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
 		var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
-		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?origin=" + $window.location.origin;
+		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
 
 		this.CAT2ComplinaceDataCache = [];
 		this.CPROTaskTextCache = {};
@@ -15,6 +15,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
+		this.catsProfileIsSupported = false;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -27,15 +28,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject(status);
+				deferred.reject("HTTP-Status of write posting call is " + status);
 			});
 
 			return deferred.promise;
 		}
 
 		function monthAlreadyCached(year, month) {
-			var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "-" + "15";
+			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(month + 1, 2) + "-" + "15";
 			if (_.find(that.CAT2ComplinaceDataCache, {
 					"DATEFROM": middate
 				}) !== undefined) {
@@ -126,7 +126,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 				var today = new Date();
 				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
-				_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString)
+				var twoMonthAgo = new Date();
+				twoMonthAgo.setDate(twoMonthAgo.getDate() - 60);
+				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLY&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
 					if ( !data ) {
@@ -135,14 +137,23 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if (data.PROFILE) {
 						data.PROFILE = data.PROFILE.toUpperCase();
 					}
-					if (data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
-						$log.log(data.PROFILE);
-						that.catsProfile = data.PROFILE;
-						deferred.resolve(data.PROFILE);
+					if (data.PROFILE) {
+						$log.log("Time recording profile " + data.PROFILE);
+						if ( data.PROFILE.indexOf("DEV2002") > -1 ||
+						 	 data.PROFILE.indexOf("SUP2012") > -1 ||
+							 data.PROFILE.indexOf("SUP2007") > -1 ||
+							 data.PROFILE.indexOf("AUSALE") > -1) {
+							that.catsProfile = data.PROFILE;
+							that.catsProfileIsSupported = true;
+							deferred.resolve(data.PROFILE);
+						} else {
+							that.catsProfileIsSupported = false;
+							deferred.resolve("SUP2007D"); // simple profile to get data
+						}
 					} else {
-						// Now read templates in different profiles
 						var promises = [];
 						var week = calUtils.getWeekNumber(today);
+						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
@@ -150,33 +161,46 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
-
-							// find any subtype?
 							var entriesWithSubtype = 0;
 							var totalEntries = 0;
+							var catsxtTaskFound = false;
 							angular.forEach(promisesData, function(data) {
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
 										entriesWithSubtype += 1;
 									}
+									if (!data.CATS_EXT[i].TASKTYPE &&
+										!data.CATS_EXT[i].RAUFNR &&
+										!data.CATS_EXT[i].ZCPR_EXTID) {
+										catsxtTaskFound = true;
+									}
 								}
 								dataForAnalysis.push(data);
 							});
-							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
+							if (catsxtTaskFound) {
+								that.catsProfileIsSupported = false;
+								deferred.resolve("SUP2007D"); // simple profile to get data
+							} else if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
 								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
 									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007D";
+									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007D");
 								} else {
 									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007C";
+									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007C");
 								}
-							} else {
+							} else if (totalEntries > 0) {
 								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
+								that.catsProfileIsSupported = true;
 								deferred.resolve("DEV2002C");
+							} else {
+								that.catsProfileIsSupported = false;
+								deferred.resolve("SUP2007D"); // simple profile to get data
 							}
 						}, deferred.reject);
 					}
@@ -186,11 +210,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		};
 
-		function getCAT2ComplianceData(deferred, begdate, enddate) {
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + begdate + "&endda=" + enddate)
-			.then(function(data) {
+		function getCAT2ComplianceData(date) {
+			var deferred = $q.defer();
+			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
+
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
+			.then(function(data) { // Amelie Amelie
 				if (data && data.CATSCHK) {
-					data.CATSCHK.forEach(function(CATSCHKforDay) {
+					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
 							"DATEFROM": CATSCHKforDay.DATEFROM
 						});
@@ -218,11 +245,25 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
 					});
-					deferred.resolve(data.CATSCHK);
-				} else {
-					deferred.resolve();
 				}
+				deferred.resolve();
 			}, deferred.reject);
+			return deferred.promise;
+		}
+
+		function getCAT2ComplianceForRange(deferred, begdate, enddate) {
+			var promises = [];
+			var date = new Date(begdate.substr(0,4),begdate.substr(4,2) - 1,begdate.substr(6,2),12);
+			enddate = new Date(enddate.substr(0,4),enddate.substr(4,2) - 1,enddate.substr(6,2),12);
+
+			for (var week = 0; date < enddate; week++) {
+				promises.push(getCAT2ComplianceData(date));
+				date.setDate(date.getDate() + 7);
+			}
+			var promise = $q.all(promises);
+			promise.then(function() {
+				deferred.resolve(that.CAT2ComplinaceDataCache);
+			});
 		}
 
 		this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
@@ -231,10 +272,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			this.determineCatsProfileFromBackend(); // trigger profile determination
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
-				var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-				var begdate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "01";
-				var enddate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + calUtils.getLengthOfMonth(year, month);
-				getCAT2ComplianceData(deferred, begdate, enddate);
+				var begdate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + "01";
+				var enddate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + calUtils.getLengthOfMonth(year, month);
+				getCAT2ComplianceForRange(deferred, begdate, enddate);
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
@@ -267,7 +307,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
@@ -371,7 +411,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-								task.UNIT = nodes[i].UNIT;
+								task.UNIT = nodes[i].UNIT || "T"; // T is default unit for cPro
 								task.projectDesc = nodes[i].DISPTEXTW1;
 								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 								tasks.push(task);
@@ -387,8 +427,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
+
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
-				$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
+				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,
 					'headers': {
 						'Content-Type': 'text/plain'
@@ -396,7 +437,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}).success(function(data) {
 					deferred.resolve(data);
 				}).error(function(data, status) {
-					deferred.reject(status);
+					deferred.reject("HTTP-Status of write posting call is " + status);
 				});
 			});
 			return deferred.promise;

@@ -13,38 +13,40 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 			// views: [] // not needed anymore, to be cleared
 		};
 
-	// Cleaned up config item
-	// boxSize: null
-	// checkBoxViews: null
-	// checkboxJobs: null
-	// color: "blue"
-	// downstreamProjects: Array[1]
-	// jenkinsUrl: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins"
-	// jobHealthReport: Array[1]
-	// jobs: null
-	// jobsByView: null
-	// language: null
-	// lastBuild: 1411480806000
-	// lastbuildUrl: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/job/Chameleon_11_Main53_Core_12_Sync_SapCustomer/lastBuild"
-	// name: "Chameleon_11_Main53_Core_12_Sync_SapCustomer"
-	// selectedJob: "Chameleon_11_Main53_Core_12_Sync_SapCustomer"
-	// selectedView: "Chameleon_53"
-	// statusColor: "statusblue"
-	// statusIcon: "fa-check"
-	// statusInfo: "Success"
-	// timestamp: "about 18 hours ago"
-	// upstreamProjects: Array[1]
-	// url: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/job/Chameleon_11_Main53_Core_12_Sync_SapCustomer"
-	// views: null
+		// Cleaned up config item
+		// boxSize: null
+		// checkBoxViews: null
+		// checkboxJobs: null
+		// color: "blue"
+		// downstreamProjects: Array[1]
+		// jenkinsUrl: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins"
+		// jobHealthReport: Array[1]
+		// jobs: null
+		// jobsByView: null
+		// language: null
+		// lastBuild: 1411480806000
+		// lastbuildUrl: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/job/Chameleon_11_Main53_Core_12_Sync_SapCustomer/lastBuild"
+		// name: "Chameleon_11_Main53_Core_12_Sync_SapCustomer"
+		// selectedJob: "Chameleon_11_Main53_Core_12_Sync_SapCustomer"
+		// selectedView: "Chameleon_53"
+		// statusColor: "statusblue"
+		// statusIcon: "fa-check"
+		// statusInfo: "Success"
+		// timestamp: "about 18 hours ago"
+		// upstreamProjects: Array[1]
+		// url: "http://vecrmhybrisi2.dhcp.wdf.sap.corp:8080/jenkins/job/Chameleon_11_Main53_Core_12_Sync_SapCustomer"
+		// views: null
 
 		this.configItems = [];
 		this.lastErrorMsg = "";
 
-		function isSameJob(configItemA, configItemB) { // comparison can also be done via Job URL?
+		function isSameJob(configItemA, configItemB) {
 			var isEqual = true;
 			isEqual &= configItemA.jenkinsUrl === configItemB.jenkinsUrl;
-			// isEqual &= configItemA.selectedView === configItemB.selectedView; // This may change (and must be read dynamically?)
 			isEqual &= configItemA.selectedJob === configItemB.selectedJob;
+			if (!configItemA.selectedJob) {
+				isEqual &= configItemA.selectedView === configItemB.selectedView;
+			}
 			return isEqual;
 		}
 
@@ -83,11 +85,6 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 			}
 		};
 
-		this.clearViewAndJob = function() {
-			this.configItem.selectedView = "";
-			this.configItem.selectedJob = "";
-		};
-
 		this.clearView = function() {
 			this.configItem.selectedJob = "";
 		};
@@ -111,5 +108,5 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 			instances[appId] = new Config();
 		}
 		return instances[appId];
-	}
+	};
 });

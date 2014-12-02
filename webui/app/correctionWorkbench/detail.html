@@ -21,7 +21,9 @@
 				<a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'shortText.__text'">{{row.shortText.__text}}</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'shortText.__text'">
+				<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
+			</bridge.table-column>
 		</bridge.table>
 
     </div>

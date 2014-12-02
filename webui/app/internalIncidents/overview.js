@@ -18,6 +18,8 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.dataInitialized = ticketData.isInitialized;
             $scope.showNoMessages = false;
 
+            //$scope.box.errorText = "Blub";
+
             function setNoMessagesFlag() {
                 if (ticketData.isInitialized.value === true && ticketData.tickets.RESULTNODE1 === "" && ticketData.tickets.RESULTNODE2 === "" && ticketData.tickets.RESULTNODE3 === "") {
                     $scope.showNoMessages = true;
@@ -56,11 +58,17 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 ));
             }
 
+            function setErrorText(){
+                $scope.box.errorText = "<div style='width:200px'>Error loading the data from BCP. The BCP-backup system may be temporarily offline.</div>";
+            }
+
             if (ticketData.isInitialized.value === false) {
                 var initPromise = ticketData.initialize($scope.module_name);
                 initPromise.then(function success() {
                     setNoMessagesFlag();
                     $scope.config = configservice;
+                }, function error(){
+                    setErrorText();
                 });
             } else {
                 $scope.config = configservice;
@@ -68,7 +76,14 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 ticketData.calculateTotals();
             }
 
-            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 20);
+            function reloadTicketData(){
+                ticketData.loadTicketData().then(function success(){
+                }, function error(){
+                    setErrorText();
+                });
+            }
+
+            $scope.box.reloadApp(reloadTicketData, 60 * 20);
         }
     ];
 

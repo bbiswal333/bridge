@@ -6,8 +6,8 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 
     var directiveController = ['$scope', function($scope ) {
             githubIssueSearch.getInstanceForAppId($scope.metadata.guid);
-            var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.metadata.guid);;
-            
+            var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.metadata.guid);
+
             $scope.box.boxSize = "2";
             $scope.box.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};
@@ -172,7 +172,7 @@ angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http',
             };
 
             bridgeSearch.addSearchProvider(this);
-        }
+        };
     })();
 
     var instances = {};
@@ -183,5 +183,5 @@ angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http',
         }
 
         return instances[appId];
-    }
+    };
 }]);

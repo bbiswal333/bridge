@@ -37,12 +37,12 @@
                 "bridgeInBrowserNotification.js",
                 "trafficLightService.js",
                 "employeeService.js",
-                "bridgeBuildingSearchService.js",
                 "converter.js",
                 "diagnosis/logService.js",
                 "diagnosis/corsTestPageController.js",
                 "diagnosis/mailPreviewController.js",
-                "diagnosis/statusController.js"
+                "diagnosis/statusController.js",
+                "mapService.js"
 	],
 	"css_files" : [
                 "diagnosis/diagnosis.css",

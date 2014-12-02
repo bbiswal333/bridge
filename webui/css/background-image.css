@@ -122,9 +122,18 @@
 
 .settingsIcon{
     display: block !important;
-    color: rgba(0,0,0,0.2);
+    color: #c3c3c3;
+    transition: all ease 0.1s;
 }
 .settingsIcon:hover{
     display: block !important;
-    color: rgba(0,0,0,0.5);
+    color: #a6a6a6;
+}
+
+.box-errorIcon {
+    color: red;
+    float: right;
+    font-weight: bold;
+    font-size: 21px;
+    width: 12px;
 }

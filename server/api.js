@@ -435,7 +435,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		if( getResponse )
 		{
-			if(!javascriptPacked || !stylesheetsPacked || !modulesPacked) {
+			if(!javascriptPacked || !stylesheetsPacked || !modulesPacked || !require("./params.js").get("cache", false)) {
 				var files = {};
 
 				var bridge_path = path.join(__dirname, '../webui/bridge');

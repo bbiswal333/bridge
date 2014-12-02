@@ -1,0 +1,49 @@
+﻿<div>
+   <div ng-show="showInfo || !gameInProgress">
+      <div ng-show="showInfo">
+         <i class="grey-font-100"><b>INSTRUCTIONS:</b> Click on the <b>TILE</b> with different shade to proceed to the next level.</i></br>
+         <i class="grey-font-100"><b>HINT:</b> Tilt the monitor forward or backward..:)</i>
+      </div>
+      <div ng-show="!showInfo && !gamePaused" style="float:right;position: absolute;right: 25px;text-align:center;width:175px">
+		 Your Score..!!
+         <div style="text-align:center"><b class="grey-font-100" style="font-size:60px">{{hits}}</b></div>
+      </div>
+      <div ng-hide="gamePaused" style="position:absolute;top:130px;right:145px;">
+         <div ng-class="{'spottheodd-startgame':!gameInProgress && !showInfo}" class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">{{buttonText}}</div>
+      </div>
+   </div>
+   <div ng-show="gameInProgress && !gamePaused" style="float:left;margin-right:40px">
+      <ul style="width:140px; height:140px;padding-left:0px">
+         <li ng-click="click($index)" ng-repeat="x in data" class="spottheodd-cube" style="background-color:{{x.X}};width:{{140/counter}}px;height:{{140/counter}}px">
+         </li>
+      </ul>
+   </div>
+   <div ng-show="gamePaused" class="red-font-80 spottheodd-paused" >
+      Game Paused
+   </div>
+   <div ng-show="!gameInProgress && !showInfo" class="red-font-80 spottheodd-gameover" >
+      Game Over
+   </div>  
+   <div ng-show="gameInProgress || gamePaused" style="float:right;margin-right:80px">
+      <div class="grey-font-100" style="margin-right:10px">Time Remaining</div>
+      <div style="width:50px">
+         <b id="timer" ng-class="{'spottheodd-timer-red': time < 20}" class="grey-font-100" style="font-size:30px">{{time}}</b>
+         <b ng-class="{'spottheodd-timer-red': time < 20}" class="grey-font-100" style="font-size:20px">s</b>
+      </div>
+   </div>
+   <div ng-show="gameInProgress || gamePaused" style="float:right;margin-right:90px;margin-top:15px">
+      <div class="grey-font-100" style="margin-right:12px">Points Scored</div>
+      <div>
+         <b class="grey-font-100" style="font-size:30px">{{hits}}</b>
+      </div>
+   </div>
+   <div ng-show="gamePaused" class="spottheodd-resume-button" >
+      <p><a href="" ng-click="resumeGame()" title="Resume Game"><i class="fa fa-play"></i></a></p>
+   </div>
+   <div ng-show="gameInProgress && !gamePaused" class="spottheodd-pause-button" >
+      <p><a href="" ng-click="pauseGame()" title="Pause Game"><i class="fa fa-pause"></i></a></p>
+   </div>
+   <div ng-show="gameInProgress || gamePaused" class="spottheodd-refresh-button" >
+      <p><a href="" ng-click="startGame()" title="New Game"><i class="fa fa-refresh"></i></a></p>
+   </div>
+</div>

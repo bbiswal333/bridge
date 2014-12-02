@@ -74,9 +74,6 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.getValueAbsolute = function () {
                 return calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true, true);
             };
-            $scope.setWidth = function(width) {
-                $scope.blockData.blockWidth = width;
-            };
 
             elem.find(".allocation-bar-dragBar").draggable({
                 axis: 'x',
@@ -104,6 +101,8 @@ function (colorUtils, blockCalculations, calUtils) {
 
             $scope.$watch("totalWidth", function () {
                 $scope.blockData.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
+                // important: one weired line to overcome some firefox rounding issue
+                $scope.blockData.blockWidth = $scope.blockData.blockWidth - 0.01;
                 // reset originalBlockwidth to the current blockWidth for the next dragging actions
                 originalBlockWidth = $scope.blockData.blockWidth;
                 $scope.blockData.localValue = $scope.blockData.value;

@@ -1,12 +1,14 @@
 {
 	"app":
 	{
-		"categories"			:	["Service & Support", "Beta"],
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.customerMessages",
 		"title"					:	"Cust. Incid.",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.customerMessages",
 		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
 		"routes"		:
 		[
 			{
@@ -17,8 +19,7 @@
 				"route"			:	"/detail/customerMessages/:prio",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
-		],
-		"beta"					: true
+		]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js"],

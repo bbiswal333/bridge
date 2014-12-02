@@ -51,7 +51,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 		            $('.sortable-item').addClass('zoomOut');
 		            ui.item.removeClass('zoomOut');
 		            $('.sortable-placeholder').addClass('zoomOut');
-		            ui.item.css({marginTop:$window.scrollY+'px'});
+		            ui.item.css({marginTop:$window.scrollY + 'px'});
 		            $scope.$apply(function() { dragInfo.appIsDragged = true; });
 		        },
 		        receive: function(event, dragInfo) {

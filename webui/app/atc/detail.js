@@ -6,7 +6,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.$parent.titleExtension = " - ATC Details";
     $scope.filterText = '';
 
-
     $scope.atcData = {};
     $scope.atcData.detailsData = [];
 
@@ -18,7 +17,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     if (atcConfig.isInitialized === false) {
         atcConfig.initialize("app.atc-" + $routeParams.instanceNumber);
     }
-    
+
     if($scope.atcData.detailsData.length === 0) {
         $scope.atcData.getDetailsForConfig(atcConfig, $scope);
     }

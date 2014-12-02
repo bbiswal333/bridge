@@ -43,7 +43,7 @@
     })();
 
     var dataInstances = {};
-    
+
     this.getInstanceForAppId = function(appId) {
         if(dataInstances[appId] === undefined) {
             dataInstances[appId] = new Data(appId);

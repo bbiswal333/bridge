@@ -79,14 +79,32 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
         }
 
+        function setErrorText(text){
+            var resultText = "<div style='width:200px'>";
+
+            if (text === undefined) {
+                 resultText += "Error loading the data from BCP. The BCP-backup system may be temporarily offline.";
+            } else {
+                resultText += text;
+            }
+            resultText += "</div>";
+            $scope.box.errorText = resultText;
+        }
+
         if (ticketData.isInitialized.value === false) {
             orgUnitData.loadData();
 
             var initPromise = ticketData.initialize();
-            initPromise.then(function success() {
+            initPromise.then(function success(data) {
                 setNoMessagesFlag();
                 $scope.config = configservice;
                 ticketData.updatePrioSelectionCounts();
+
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error() {
+                setErrorText();
             });
         }
         else{
@@ -95,7 +113,13 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         }
 
         $scope.box.reloadApp(function() {
-            ticketData.loadTicketData();
+            ticketData.loadTicketData().then(function success(data){
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error(){
+                setErrorText();
+            });
             orgUnitData.loadData();
         }, 60 * 10);
 }]);

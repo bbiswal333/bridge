@@ -7,7 +7,7 @@ angular.module('app.linklist').service("app.linklist.configservice", function ()
 
 	    this.isInitialized = false;
 	};
-    
+
 	var instances = {};
 
 	this.getInstanceForAppId = function(appId) {

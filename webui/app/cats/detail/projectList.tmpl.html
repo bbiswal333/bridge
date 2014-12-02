@@ -1,7 +1,6 @@
 <div>
     <div class="app-cats-project-list" ng-if="hasError">
-        <b>There was a problem with the connection to ISP (error or timeout)<br>
-        Please refresh the browser.</b>
+        {{errorText}}
     </div>
     <div class="app-cats-project-list" ng-if="!loaded && !hasError">
         Loading...

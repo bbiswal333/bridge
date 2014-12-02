@@ -17,13 +17,12 @@ angular.module('bridge.app').service("bridge.menubar.weather.configservice", ['b
 				that.setConfig(bridgeDataService.getBridgeSettings().weatherConfig);
 				deferred.resolve();
 			} else {
-				var building = "WDF01";
-				bridgeBuildingSearch.searchLocationbyBuilding(building).then(function (result) {
-					if (result !== undefined) {
-						configItem.location = result;
-					}
-					deferred.resolve();
-				});
+				configItem.location = {
+					name: "Walldorf",
+					latitude: 49.293351,
+					longitude: 8.641992
+				};
+				deferred.resolve();
 			}
 		}
 

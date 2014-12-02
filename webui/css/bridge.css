@@ -147,6 +147,10 @@ img {
 .clickable {
     cursor: pointer;
 }
+.clickable:hover{
+    text-decoration: none!important;
+    background-color: inherit!important;
+}
 .details {
     background-color: white;
 }
@@ -809,6 +813,7 @@ h3{
 
 .hover:hover{
     background-image: url('../img/darken.png');
+    transition:all ease 0.25s;
 }
 .focus:focus{
     background-image: url('../img/darken.png');

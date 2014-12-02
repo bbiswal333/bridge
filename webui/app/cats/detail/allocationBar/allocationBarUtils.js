@@ -19,7 +19,11 @@ function (catsUtils) {
       "#E76F24",
       "#F0A470",
       "#4EA175",
-      "#A7D0BA"
+      "#A7D0BA",
+      "#D53F26",
+      "#DD6551",
+      "#707070",
+      "#8A8A8A"
     ];
 
     this.blockColors = {};

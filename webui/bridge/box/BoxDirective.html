@@ -1,13 +1,15 @@
 ﻿<div ng-class="module_name.replace('.', '-')" style="display: inline-block">
     <div id="innerbox" class="innerbox" 
-        ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client, 'shake':shaking}"
+        ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client}"
         ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
+
         <div class="box-heading">
             <div class="box-heading-content" ng-if="!editTitle">
                 <h6 class="box-title" ng-dblclick="doSomething()">{{metadata.title}}</h6>
                 <i class="grey-font-60" ng-if="beta">beta</i>
                 <span class="box-icon" ng-class="icon_css"></span>
-                <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+                <span ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+                <span ng-if="box.errorText" bs-popover trigger="hover" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" >!</span>
             </div>
             <div ng-if="editTitle">
                 <bridge.input enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title"></bridge.input>
@@ -23,7 +25,7 @@
             <br />
             client to enable content.
             <br />
-            <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
+            <div style="top: 50%;margin-top: 10px;left: 50%;margin-left: -20px;margin-bottom:10px">
             Download here:
             <br />
             <a href="" ng-click="show_download()" class="download-icon" title="Download latest client">&#xe03a;</a>

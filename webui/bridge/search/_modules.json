@@ -9,14 +9,15 @@
 		"hanaAnswersSearch.js",
 		"googleProposals.js",
 		"stackoverflowSearch.js",
-		"citySearch.js",
 		"sapedia.js",
 		"playbook.js",
 		"portal.js",
-		"bridgeSearchSettingsController.js"
+		"bridgeSearchSettingsController.js",
+		"locationSearch.js",
+        "bridgeBuildingSearchService.js"
 	],
 	"css_files" : [
 	  "search.css"
 	],
-	"searchProviders" : ["bridge.search.citySearch", "bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch"]
+	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch", "bridge.search.locationSearch"]
 }

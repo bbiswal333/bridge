@@ -10,7 +10,7 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
                 query: 'assignee = currentUser()',
                 jira: 'sapjira'
             };
-            
+
             this.initialize = function (sAppId) {
                 var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
 
@@ -32,7 +32,7 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
             this.getConfig = function() {
                 return config;
             };
-        }
+        };
     })();
 
     this.getConfigInstanceForAppId = function(appId) {
