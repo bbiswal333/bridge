@@ -11,4 +11,3 @@ script:
     on_started: true
     on_success: true
     on_failure: true
-    
