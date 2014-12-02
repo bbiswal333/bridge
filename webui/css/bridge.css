@@ -147,6 +147,10 @@ img {
 .clickable {
     cursor: pointer;
 }
+.clickable:hover{
+    text-decoration: none!important;
+    background-color: inherit!important;
+}
 .details {
     background-color: white;
 }

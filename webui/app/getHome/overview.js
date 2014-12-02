@@ -49,6 +49,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					}, 200, 1);
               	};
               },
+              windowClass: 'appGetHomeMapClass',
               size: 'lg'
             });
         };

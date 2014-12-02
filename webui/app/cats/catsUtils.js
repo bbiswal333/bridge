@@ -66,5 +66,9 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     this.cat2CompliantRounding = function(value) {
       return Math.round(value * 1000) / 1000;
     };
+
+    this.cat2CompliantRoundingForHours = function(value) {
+      return Math.round(value * 100) / 100;
+    };
   }
 );

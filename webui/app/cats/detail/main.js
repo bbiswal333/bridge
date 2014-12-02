@@ -485,8 +485,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.STATUS;
 
             if (booking.UNIT === "H" && targetHoursForDay) {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
-                booking.CATSHOURS    = booking.CATSQUANTITY;
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                if (catsBackend.catsProfile === "SUP2007H") {
+                    booking.CATSHOURS = booking.CATSQUANTITY;
+                }
             } else {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
             }
