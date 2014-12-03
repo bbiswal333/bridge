@@ -106,6 +106,33 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			}
 		};
 
+		this.getJenkinsSubViewsForView = function(jenkinsUrl, viewName){
+			var deferred = $q.defer();
+			viewName = viewName.replace(/ /g,"_");
+			viewName = viewName.replace("/","");
+			var url = jenkinsUrl + "/view/" + viewName + "/";
+			if(jenkinsUrl && viewName && this.isValidUrl(url) ) {
+				$http.get("/api/get?url=" + encodeURIComponent(url + "/api/json"), {withCredentials: false, timeout: 10000})
+				.success(function (data) {
+					if(angular.isDefined(data.views)) {
+						var returnValue = {};
+						returnValue.viewName = viewName;
+						returnValue.views = data.views;
+						deferred.resolve(returnValue);
+					} else {
+						deferred.resolve();
+					}
+				}).error(function (){
+					deferred.reject();
+					that.jenkinsData.viewsLoadError = true;
+				});
+			} else {
+				deferred.reject();
+				that.jenkinsData.viewsLoadError = true;
+			}
+			return deferred.promise;
+		};
+
 		this.getJenkinsViewsAndJobs = function(jenkinsUrl){
 			that.jenkinsData.viewsAreLoading = true;
 			that.jenkinsData.jobsAreLoading = true;
@@ -113,14 +140,38 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			that.jenkinsData.jobsLoadError = false;
 			$http.get("/api/get?url=" + encodeURIComponent(jenkinsUrl + "/api/json?depth=1&tree=views[name,url],jobs[name,url,color]"), {withCredentials: false, timeout: 15000})
 			.success(function (data) {
+				that.jenkinsData.viewsAreLoading = false;
+				that.jenkinsData.jobsAreLoading = false;
 				if(angular.isDefined(data)) {
-					setJenkinsData(data);
+					// all jobs are retrieved, but not all subviews...
+					var promises = [];
+					angular.forEach(data.views, function(view) {
+						promises.push(that.getJenkinsSubViewsForView(jenkinsUrl, view.name));
+					});
+					var promise = $q.all(promises);
+					promise.then(function(promisesData) {
+						that.jenkinsData.viewsAreLoading = false;
+						that.jenkinsData.jobsAreLoading = false;
+						angular.forEach(promisesData, function(promiseData) {
+							if (promiseData && promiseData.viewName && promiseData.views && promiseData.views.length > 0) {
+								var entry = _.find(data.views, { "name": promiseData.viewName });
+								var index = data.views.indexOf(entry);
+								if (index > -1) {
+									data.views.splice(index, 1);
+									angular.forEach(promiseData.views, function(subView) {
+										data.views.push(subView);
+									});
+								}
+							}
+						});
+						setJenkinsData(data);
+					});
 				} else {
+					that.jenkinsData.viewsAreLoading = false;
+					that.jenkinsData.jobsAreLoading = false;
 					that.jenkinsData.viewsLoadError = true;
 					that.jenkinsData.jobsLoadError = true;
 				}
-				that.jenkinsData.viewsAreLoading = false;
-				that.jenkinsData.jobsAreLoading = false;
 			}).error(function (){
 				that.jenkinsData.viewsAreLoading = false;
 				that.jenkinsData.jobsAreLoading = false;
@@ -129,9 +180,15 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			});
 		};
 
-		this.getJenkinsJobsForView = function(jenkinsUrl, viewName){
+		this.getJenkinsJobsForView = function(jenkinsUrl, viewName, optionalViewUrl){
 			var deferred = $q.defer();
-			var url = jenkinsUrl + "/view/" + viewName + "/";
+			if (optionalViewUrl) {
+				var url = optionalViewUrl;
+			} else {
+				viewName = viewName.replace(/ /g,"_");
+				viewName = viewName.replace("/","");
+				url = jenkinsUrl + "/view/" + viewName + "/";
+			}
 			if(jenkinsUrl && viewName && this.isValidUrl(url) ) {
 				$http.get("/api/get?url=" + encodeURIComponent(url + "/api/json"), {withCredentials: false, timeout: 10000})
 				.success(function (data) {
@@ -175,7 +232,11 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 		};
 
 		var formatTimestamp = function(timestamp) {
-			return $.timeago(timestamp);
+			if (angular.isNumber(timestamp)) {
+				return $.timeago(timestamp);
+			} else {
+				return "unknown";
+			}
 		};
 
 		function getLastBuildTimestamp(job) {

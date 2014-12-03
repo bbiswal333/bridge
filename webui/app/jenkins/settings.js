@@ -54,6 +54,10 @@ angular.module('app.jenkins').appJenkinsSettings =
 		};
 
 		function addConfigItem(copiedConfigItem) {
+			var view = _.find($scope.dataService.jenkinsData.views, { "name":  $scope.dataService.jenkinsData.view });
+			if(view && view.url && $scope.dataService.isValidUrl(view.url) ) {
+				copiedConfigItem.viewUrl = view.url;
+			}
 			$scope.config.addConfigItem(copiedConfigItem);
 		}
 

@@ -78,7 +78,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 				if (configItem.selectedJob) {
 					$scope.dataService.jobsToDisplay.push(configItem);
 				} else if (configItem.selectedView) {
-					promise = $scope.dataService.getJenkinsJobsForView(configItem.jenkinsUrl, configItem.selectedView);
+					promise = $scope.dataService.getJenkinsJobsForView(configItem.jenkinsUrl, configItem.selectedView, configItem.viewUrl);
 					promises.push(promise);
 					promise.then(function(jobs) {
 						angular.forEach(jobs, function(job) {
