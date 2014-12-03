@@ -11,7 +11,8 @@
     "bridgeTable/bridgeTableColumn.js",
     "customTransclude.js",
     "infinitescroll.js",
-    "bridgeButton.js"
+    "bridgeButton.js",
+    "appDropTarget.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"

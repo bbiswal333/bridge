@@ -1,0 +1,13 @@
+image: sap_nodejs_ubuntu_latest
+script: 
+ - npm install
+ - npm test
+notify:
+  slack:
+    username: $$SLACK_USER
+    token: $$SLACK_TOKEN
+    team: $$SLACK_TEAM
+    channel: $$SLACK_CHANNEL
+    on_started: true
+    on_success: true
+    on_failure: true

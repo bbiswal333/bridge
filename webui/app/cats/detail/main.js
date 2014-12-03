@@ -27,7 +27,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.analytics = false;
     // var lastSelectedDaysLength = 0;
 
-    var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
+    var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
     configService.copyConfigIfLoaded(catsConfigService);
 
     function adjustBarSize() {

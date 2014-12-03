@@ -5,7 +5,6 @@ var IJiraBox = {
 var JiraBox = function(http){
     this.http = http;
     this.data = [];
-    this.isInitialized = false;
 };
 
 JiraBox.prototype = Object.create(IJiraBox);
@@ -30,7 +29,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
         // jira_url = window.client.origin + '/api/get?proxy=true&url=' + encodeURI(jira_url);
     }
 
-    this.http.get(jira_url + sQuery
+    return this.http.get(jira_url + sQuery
         ).success(function (data) {
 
             that.data.length = 0;
@@ -88,7 +87,14 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
         });
 };
 
-angular.module('app.jira').factory('JiraBox', ['$http',
-   function ($http) {
-       return new JiraBox($http);
-   }]);
+angular.module('app.jira').service('JiraBox', ['$http', function($http) {
+  var instances = {};
+
+  this.getInstanceForAppId = function(appId) {
+    if(instances[appId] === undefined) {
+      instances[appId] = new JiraBox($http);
+    }
+
+    return instances[appId];
+  };
+}]);

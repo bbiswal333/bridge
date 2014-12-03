@@ -6,7 +6,7 @@ describe("The jenkins data service", function(){
 		module("app.jenkins");
 		inject(["$httpBackend", "app.jenkins.dataService", function(_$httpBackend, _dataService){
 			$httpBackend = _$httpBackend;
-			dataService = _dataService;
+			dataService = _dataService.getInstanceForAppId("app.test");
 		}]);
 	});
 
