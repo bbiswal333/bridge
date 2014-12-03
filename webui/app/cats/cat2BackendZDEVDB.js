@@ -125,9 +125,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				catsProfileFromBackendPromise = deferred.promise;
 
 				var today = new Date();
-				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
-				var twoMonthAgo = new Date();
-				twoMonthAgo.setDate(twoMonthAgo.getDate() - 60);
+				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(today.getDate(), 2);
+
 				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLY&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
@@ -215,7 +214,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
 			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
-			.then(function(data) { // Amelie Amelie
+			.then(function(data) {
 				if (data && data.CATSCHK) {
 					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
@@ -245,8 +244,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
 					});
+					deferred.resolve(data.CATSCHK);
 				}
-				deferred.resolve();
+				deferred.reject();
 			}, deferred.reject);
 			return deferred.promise;
 		}
@@ -261,7 +261,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				date.setDate(date.getDate() + 7);
 			}
 			var promise = $q.all(promises);
-			promise.then(function() {
+			promise.then(function(promises) {
+				angular.forEach(promises, function(promiseData) {
+					if (!promiseData || promiseData.length !== 7) { // days a week
+						deferred.reject();
+						return;
+					}
+				});
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			});
 		}

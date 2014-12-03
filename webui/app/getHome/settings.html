@@ -8,11 +8,14 @@
 			<div class="col-xs-5">
 				<b>name</b>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				<b>in current traffic</b>
 			</div>
 			<div class="col-xs-2">
 				<b>distance</b>
+			</div>
+			<div class="col-xs-1">
+				Active
 			</div>
 			<div class="col-xs-1">
 			</div>
@@ -21,14 +24,17 @@
 			<div class="col-xs-5">
 				<span class="fa fa-map-marker" style="font-size: 18px;"></span><span style="margin-left: 10px">{{route.name}}</span>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-3">
 				 <span>{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})</span>
 			</div>
 			<div class="col-xs-2">
 				 <span>{{formatDistance(route.summary.distance)}}</span>
 			</div>
+			<div class="col-xs-1">
+				<bridge.checkbox checked-label="Active" unchecked-label="Inactive" is-checked="route.isActive" check-toggle="route.toggleIsActive()"></bridge.checkbox>
+			</div>
 			<div class="col-xs-1" style="text-align:right">
-				 <span class="fa fa-remove" ng-click="removeRouteFromSettings(route)" style="cursor: pointer"></span>
+				<span class="fa fa-remove" ng-click="removeRouteFromSettings(route)" style="cursor: pointer"></span>
 			</div>
 		</div>
 	</div>
