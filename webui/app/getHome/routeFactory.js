@@ -24,7 +24,7 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['bridge.servi
 
 			var interval;
 			function updateInterval() {
-				if(this.isActive) {
+				if(that.isActive) {
 					interval = $interval(getRouteInformation, 1000 * 60 * 2.5); //update all 2.5 minutes
 				} else {
 					if(interval !== undefined) {
