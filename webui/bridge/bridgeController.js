@@ -165,14 +165,6 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.appDragInfo = dragInfo;
-
-        $rootScope.$on('$routeChangeSuccess', function () {
-            if($location.path() === "/availableApps") {
-                $(".navicon-button").removeClass("open");
-            } else {
-                $(".navicon-button").addClass("open");
-            }
-        });
     }
 ]);
 
