@@ -93,33 +93,32 @@
     <title>Bridge</title>
 </head>
 
-<body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
-    <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
-        <div>
-            
-            <bridge.menubar></bridge.menubar>
-            
+    <body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
+        <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
             <div>
-                <div ng-if="showLoadingBar" class="loadingBar">
-                    <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
+                
+                <bridge.menubar></bridge.menubar>
+                
+                <div>
+                    <div ng-if="showLoadingBar" class="loadingBar">
+                        <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
+                    </div>
+                </div>
+                <div ng-if="logMode" class="logAlertBar">
+                    <div class="logAlertButtonGroup">
+                        <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
+                        <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
+                    </div>
+                    <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
+                </div>
+                <div id="main-container" ng-view class="mainContainer centeredContent">
                 </div>
             </div>
-            <div ng-if="logMode" class="logAlertBar">
-                <div class="logAlertButtonGroup">
-                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
-                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
-                </div>
-                <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
-            </div>
-            <div id="main-container" ng-view class="mainContainer centeredContent">
+            <div style="position:absolute;bottom:0;width:100%;">
+                <alert ng-repeat="alert in alerts" style="font-weight:lighter;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
+                    <span ng-bind-html="alert.msg"></span>
+                </alert>
             </div>
         </div>
-        <div style="position:absolute;bottom:0;width:100%;">
-            <alert ng-repeat="alert in alerts" style="font-weight:lighter;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
-                <span ng-bind-html="alert.msg"></span>
-            </alert>
-        </div>
-    </div>
-</body>
-
+    </body>
 </html>
