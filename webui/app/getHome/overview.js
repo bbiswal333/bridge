@@ -53,6 +53,10 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
               size: 'lg'
             });
         };
+
+        $scope.isActive = function(route) {
+        	return route.isActive;
+        };
 	}];
 
 	return {

@@ -117,7 +117,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 							savedNodes.appendTo(element);
 						}
 					}
-					
+
 					$('.sortable-placeholder').remove();
 		        },
 		        update: function(e, ui) {

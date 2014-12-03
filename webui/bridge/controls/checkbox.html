@@ -1,4 +1,4 @@
-<label ng-class="{'checkbox checked': isChecked, 'checkbox': !isChecked}" ng-click="checkClicked()" ng-disabled="disabled">
+<label ng-class="{'checkbox checked': isChecked, 'checkbox': !isChecked}" ng-click="checkToggle ? checkToggle() : checkClicked()" ng-disabled="disabled">
     <span class="icons">
         <span class="fa-stack">
             <span class="fa fa-stop second-icon" ng-class="{'enabled': !disabled}"></span>
