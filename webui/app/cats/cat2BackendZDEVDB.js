@@ -245,7 +245,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
 					});
-
 				}
 				deferred.resolve();
 			}, deferred.reject);
