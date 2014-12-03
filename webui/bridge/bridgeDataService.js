@@ -1,5 +1,5 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator",
-    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification",
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification) {
         this.projects = [];
         this.bridgeSettings = {};
         this.temporaryData = {};
@@ -30,8 +30,12 @@
             var apps = [];
 
             for (var j = 0; j < project.apps.length; j++) {
-                var app = appCreator.createInstance(project.apps[j].metadata, project.apps[j].appConfig);
-                apps.push(app);
+                try {
+                    var app = appCreator.createInstance(project.apps[j].metadata, project.apps[j].appConfig);
+                    apps.push(app);
+                } catch(e) {
+                    bridgeInBrowserNotification.addAlert("danger", e.message, 600);
+                }
             }
 
             return apps;
