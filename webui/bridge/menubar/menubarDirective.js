@@ -1,5 +1,5 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location",
-    function($modal, weatherData, weatherConfig, newsService, notifier, $location) {
+angular.module("bridge.app").directive("bridge.menubar", ["$window", "$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location", "$rootScope",
+    function($window, $modal, weatherData, weatherConfig, newsService, notifier, $location, $rootScope) {
 
         function isDateYoungerThanOneMonth(dateString) {
             var newsDate = new Date(dateString);
@@ -42,8 +42,20 @@ angular.module("bridge.app").directive("bridge.menubar", ["$modal", "bridge.menu
                     });
                 }
 
+                $rootScope.$on('$routeChangeSuccess', function () {
+                    if($location.path() === "/availableApps") {
+                        $scope.appScreenOpen = true;
+                    } else {
+                        $scope.appScreenOpen = false;
+                    }
+                });
+
                 $scope.changeSelectedApps = function() {
-                    $location.path("/availableApps");
+                    if (!$scope.appScreenOpen) {
+                        $location.path("/availableApps");
+                    } else {
+                        $window.history.back();
+                    }
                 };
 
                 $scope.weatherData = weatherData.getData();

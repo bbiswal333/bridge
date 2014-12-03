@@ -8,7 +8,7 @@
 		<div class="col-md-6 col-sm-6 col-xs-6">
 
 		<div style="text-align: center;float:left">	
-	        <a href="/"><div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;">
+	        <a href="/"><div class="menuBar-settingsButton " title="Home" style="position:relative;top:-1px;width:40px;">
 	        	<i class="fa fa-home"></i>
 	        </div></a>
 		</div>
@@ -19,7 +19,7 @@
 		
 		<div class="col-md-6 col-sm-6 col-xs-6">
 			<div class="col-md-6 col-sm-6 col-xs-6 menubar-weather" style="text-align: right" data-placement="bottom" data-toggle="popover" data-content-template="bridge/menubar/weather/weatherDetails.html" data-animation="am-slide-top" bs-popover >
-				<div style="vertical-alignment: middle">
+				<div>
 					<span class="clickable" >
 						<span class="menubar-weather-temperature">
 							<i class="{{weatherData.weatherIcon}}" style="font-size: 2.0rem"></i>
@@ -31,8 +31,8 @@
 				</div>
 			</div>
 			<div class="menubar-settings col-md-6 col-sm-6 col-xs-6" style="text-align: right">
-				<div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;" ng-class="{'tab-active':sideView=='settings', 'tab-inactive':sideView!='settings'}" ng-click="changeSelectedApps();">
-		        	<a class="navicon-button plus open"#>
+				<div class="menuBar-settingsButton " title="Applications" style="position:relative;top:-1px;width:40px;" ng-click="changeSelectedApps();">
+		        	<a class="navicon-button plus" ng-class="{'open': !appScreenOpen}">
 		        		<div class="navicon"></div>
 		        	</a>
 		        </div>
