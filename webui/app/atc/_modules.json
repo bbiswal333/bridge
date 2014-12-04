@@ -15,7 +15,8 @@
 				"route"			:	"/detail/atc/:instanceNumber/:prio",
 				"templateUrl"	:	"app/atc/detail.html"
 			}
-		]
+		],
+		"description"			:	"The ATC app lets you monitor ATC results from various systems in near realtime. You can select the issues via various parameters like source system, package, TADIR responsible, priorities and others. The systems you would like to monitor must be connected to our middleware. The data is extracted every 30 minutes to guarantuee a near realtime view on your relevant data."
 	},	
 
 	"modules" 		: [],

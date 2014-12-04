@@ -6,7 +6,8 @@
 		"title"					:	"Lunch",
 		"icon_css"				:	"icon-meal",
 		"overview_directive"	:	"app.lunchWalldorf",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"description"			:	"Displays the lunch for Walldorf / St. Leon-Rot"
 	},
 	"modules" : [],
 	"js_files" : ["overview.js","settings.js","config.js", "backendData.js"],
