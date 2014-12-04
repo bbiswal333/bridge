@@ -54,6 +54,19 @@
                             this.apps = apps;
                             this.aSearchProvider = data.searchProviders;
                             this.$get = function () { return this; };
+
+                            this.findAppByModuleName = function(moduleName) {
+                                var result;
+                                this.apps.map(function(app) {
+                                    if(app.module_name === moduleName) {
+                                        result = app;
+                                    }
+                                });
+                                if(result === undefined) {
+                                    throw new Error("App not found: " + moduleName);
+                                }
+                                return result;
+                            };
                         });
                         angular.module('bridge.app', modules);
 

@@ -28,7 +28,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         function parseVersionString(str)
         {
-            if (typeof(str) !== 'string') { return false; }
+            if (typeof str !== 'string') { return false; }
             var x = str.split('.');
             // parse from string or default to 0 if can't parse
             var maj = parseInt(x[0]) || 0;

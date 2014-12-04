@@ -52,9 +52,9 @@ angular.
         $scope.refreshBackend = function () {
 
             // default back to user building if no Backend selected - if not to WDF
-            if ( ! lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
+            if (!lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
                 $scope.chosenbackend = $scope.userInfo.building.substring(0,3);
-                if ( ! lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
+                if (!lunchBackendData.isValidBackend( $scope.chosenbackend ) ) {
                     $scope.chosenbackend = lunchBackendData.getDefaultBackend();
                 }
             }

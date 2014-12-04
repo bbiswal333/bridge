@@ -1,19 +1,5 @@
 angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.service.loader", function(loader) {
-	var apps = loader.apps;
 	var instances = {};
-
-	function findAppByModuleName(moduleName) {
-		var result;
-		apps.map(function(app) {
-			if(app.module_name === moduleName) {
-				result = app;
-			}
-		});
-		if(result === undefined) {
-			throw new Error("App not found: " + moduleName);
-		}
-		return result;
-	}
 
 	function splitIntoModuleNameAndInstanceNumber(guid) {
 		var moduleName = guid.substring(0, guid.lastIndexOf("-"));
@@ -62,7 +48,7 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 
 		var type = metaData.module_name;
 
-		var module = findAppByModuleName(type);
+		var module = loader.findAppByModuleName(type);
 		if(instances[type] === undefined) {
 			instances[type] = [];
 		}
