@@ -29,12 +29,10 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             var promiseArray = [];
             var deferAssignedToMe = $q.defer();
 
-            that.tickets.assigned_me.length = 0;
-            that.tickets.savedSearch.length = 0;
-
             var userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
             $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARTIES_OF_REQ eq '" + userid + "'&$format=json")
                 .success(function(data){
+                    that.tickets.assigned_me.length = 0;
 
                     angular.forEach(data.d.results, function(backendTicket){
                         that.tickets.assigned_me.push(backendTicket);
@@ -51,6 +49,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
 
                 $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARAMETER_KEY eq '" + itdirectConfig.sSavedSearchToInclude + "'&$format=json")
                     .success(function(data){
+                        that.tickets.savedSearch.length = 0;
 
                         angular.forEach(data.d.results, function(backendTicket){
                             that.tickets.savedSearch.push(backendTicket);
