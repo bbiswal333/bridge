@@ -15,7 +15,8 @@
 				"route"			:	"/detail/transport/:transportStatus",
 				"templateUrl"	:	"app/transport/detail.html"
 			}
-		]
+		],
+		"description"			:	"The Transports app displays two category of transport requests: open requests and failed imports. The data is collected from the various systems by our middleware. Thus this is no live data."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "data.js"],

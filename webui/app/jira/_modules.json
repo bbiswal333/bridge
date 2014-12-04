@@ -15,7 +15,8 @@
 				"route"			:	"/detail/jira/:instanceNumber/:status",
 				"templateUrl"	:	"app/jira/detail.html"
 			}
-		]
+		],
+		"description"			:	"The Jira app is compatible with SAP Jira, Issuemanagement and Issues Jira and let's you specify own JQL queries to monitor any jira issues in real-time."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js","settings.js","JiraBox.js"],

@@ -21,10 +21,21 @@
             }
         }
 
+        function getOnlyChangedMetadata(metadata) {
+            var cleanedMetadata = {};
+            var originalMetadata = bridgeLoaderServiceProvider.findAppByModuleName(metadata.module_name);
+            for (var prop in metadata) {
+                if(originalMetadata[prop] === undefined || JSON.stringify(metadata[prop]) !== JSON.stringify(originalMetadata[prop]) || prop === "module_name" || prop === "guid") {
+                    cleanedMetadata[prop] = metadata[prop];
+                }
+            }
+            return cleanedMetadata;
+        }
+
         function getAppsData(project) {
             return project.apps.map(function(app) {
                 return {
-                    metadata: app.metadata,
+                    metadata: getOnlyChangedMetadata(app.metadata),
                     appConfig: getAppConfig(app)
                 };
             });

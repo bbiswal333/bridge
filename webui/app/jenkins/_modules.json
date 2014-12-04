@@ -15,7 +15,8 @@
 				"route"			:	"/detail/job/",
 				"templateUrl"	:	"app/jenkins/detailJobView.html"
 			}
-		]	
+		],
+		"description"			:	"Using the jenkins app you can monitor your automated jobs in an easy ways. Specify the Jenkins URL and the corresponding views/jobs you would like to keep an eye on and the app notifies you in real-time about failed, unstable, successfull or running jobs."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "settings.js", "controller.js", "dataService.js"],

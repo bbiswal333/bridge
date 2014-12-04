@@ -15,7 +15,8 @@
 				"route"			:	"/detail/test/",
 				"templateUrl"	:	"app/test/detail.html"
 			}
-		]
+		],
+		"description"			:	"This is a more sophisticated app, which shows you how to develop single features of an own app."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
