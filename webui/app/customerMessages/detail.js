@@ -101,17 +101,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         };
 
         function addMessage(message){
-            var allreadyExists = false;
-            $scope.messages.some(function(item){
-                if (angular.equals(message, item)){
-                    allreadyExists = true;
-                }
-                return allreadyExists;
-            });
-
-            if (!allreadyExists){
-                $scope.messages.push(message);
-            }
+            ticketData.addTicket($scope.messages, message);
         }
 
         function getChangedIncidents(){

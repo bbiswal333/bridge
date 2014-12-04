@@ -161,16 +161,15 @@
             return deferred.promise;
         };
 
-        function addTicket(list, ticket){
-            var allreadyExists = false;
-            allreadyExists = list.some(function(item){
+        this.addTicket = function(list, ticket){
+            var allreadyExists = list.some(function(item){
                 return item.OBJECT_GUID === ticket.OBJECT_GUID;
             });
 
             if (!allreadyExists){
                 list.push(ticket);
             }
-        }
+        };
 
         this.updatePrioSelectionCounts = function () {
             angular.forEach(this.prios, function (prio) {
@@ -180,21 +179,21 @@
                 if (configservice.data.selection.sel_components) {
                     that.backendTickets.sel_components.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
                 if (configservice.data.selection.assigned_me) {
                     that.backendTickets.assigned_me.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
                 if (configservice.data.selection.colleagues) {
                     that.backendTickets.colleagues.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
@@ -203,21 +202,21 @@
                     if (configservice.data.selection.sel_components) {
                         that.backendTickets.sel_components_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }
                     if (configservice.data.selection.assigned_me) {
                         that.backendTickets.assigned_me_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }
                     if (configservice.data.selection.colleagues) {
                         that.backendTickets.colleagues_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }
