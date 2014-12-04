@@ -90,7 +90,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 		            scope.$apply(function() { dragInfo.appIsDragged = false; });
 		            if($(event.target).hasClass("appDustBin") && appCreator.hasInstanceWithId(dragInfo.item[0].id)) {
 		                appCreator.removeInstanceById(dragInfo.item[0].id);
-		                bridgeDataService.removeAppById(dragInfo.item[0].id);
+		                //bridgeDataService.removeAppById(dragInfo.item[0].id);
 		            }
 		        },
 		        remove: function(e, ui) {
