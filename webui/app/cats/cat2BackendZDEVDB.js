@@ -136,19 +136,17 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if (data.PROFILE) {
 						data.PROFILE = data.PROFILE.toUpperCase();
 					}
-					if (data.PROFILE) {
-						$log.log("Time recording profile " + data.PROFILE);
-						if ( data.PROFILE.indexOf("DEV2002") > -1 ||
-						 	 data.PROFILE.indexOf("SUP2012") > -1 ||
-							 data.PROFILE.indexOf("SUP2007") > -1 ||
-							 data.PROFILE.indexOf("AUSALE") > -1) {
-							that.catsProfile = data.PROFILE;
-							that.catsProfileIsSupported = true;
-							deferred.resolve(data.PROFILE);
-						} else {
-							that.catsProfileIsSupported = false;
-							deferred.resolve("SUP2007D"); // simple profile to get data
-						}
+					if (data.PROFILE &&
+					   (data.PROFILE.indexOf("DEV2002") > -1 ||
+						data.PROFILE.indexOf("SUP2012") > -1 ||
+						data.PROFILE.indexOf("SUP2007") > -1 ||
+						data.PROFILE.indexOf("AUSALE") > -1)) {
+
+						$log.log("Time recording profile retrieved from Backend: " + data.PROFILE);
+						that.catsProfile = data.PROFILE;
+						that.catsProfileIsSupported = true;
+						deferred.resolve(data.PROFILE);
+
 					} else {
 						var promises = [];
 						var week = calUtils.getWeekNumber(today);
@@ -162,44 +160,45 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							var dataForAnalysis = [];
 							var entriesWithSubtype = 0;
 							var totalEntries = 0;
-							var catsxtTaskFound = false;
 							angular.forEach(promisesData, function(data) {
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
 										entriesWithSubtype += 1;
 									}
-									if (!data.CATS_EXT[i].TASKTYPE &&
-										!data.CATS_EXT[i].RAUFNR &&
-										!data.CATS_EXT[i].ZCPR_EXTID) {
-										catsxtTaskFound = true;
-									}
 								}
 								dataForAnalysis.push(data);
 							});
-							if (catsxtTaskFound) {
-								that.catsProfileIsSupported = false;
-								deferred.resolve("SUP2007D"); // simple profile to get data
-							} else if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
+							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
 								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
-									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
+
+									$log.log("Time recording profile SUP2007D determined: " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007D";
 									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007D");
+
 								} else {
-									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
+
+									$log.log("Time recording profile SUP2007C determined: " + totalEntries + " " + entriesWithSubtype);
 									that.catsProfile = "SUP2007C";
 									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007C");
+
 								}
 							} else if (totalEntries > 0) {
-								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
+
+								$log.log("Time recording profile DEV2002C determined: " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
 								that.catsProfileIsSupported = true;
 								deferred.resolve("DEV2002C");
+
 							} else {
+
+								$log.log("Fallback time recording profile SUP2007D");
+								that.catsProfile = "SUP2007D";
 								that.catsProfileIsSupported = false;
 								deferred.resolve("SUP2007D"); // simple profile to get data
+
 							}
 						}, deferred.reject);
 					}
@@ -299,6 +298,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
 						for (var j = 0; j < data.CATS_EXT.length; j++) {
 							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
+							data.TIMESHEETS.RECORDS[j].TASKCOUNTER = data.CATS_EXT[j].TASKCOUNTER; // if filled it is CATSXT
 						}
 					}
 					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS)
@@ -348,7 +348,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var tasks = [];
 				angular.forEach(promisesData, function(data) {
 
-					if (that.catsProfile === "DEV2002C") {
+					if (that.catsProfile.indexOf("DEV2002") > -1) {
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "ADMI",
@@ -398,7 +398,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
-				if (catsProfile !== "DEV2002C") {
+				if (catsProfile !== "DEV2002C") { // That is the only profile where the cPro worklist shall be read
 					deferred.resolve();
 				} else {
 					if (!tasksFromWorklistPromise) {
