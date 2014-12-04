@@ -9,7 +9,7 @@
 		"needs_client"			:	false,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
-		"description"			:	"Facts about Chuck Norris."
+		"description"			:	"Norris, Norris - who the Chuck is Norris?"
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],
