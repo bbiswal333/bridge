@@ -24,7 +24,7 @@
         function getOnlyChangedMetadata(metadata) {
             var cleanedMetadata = {};
             var originalMetadata = bridgeLoaderServiceProvider.findAppByModuleName(metadata.module_name);
-            for(prop in metadata) {
+            for (var prop in metadata) {
                 if(originalMetadata[prop] === undefined || JSON.stringify(metadata[prop]) !== JSON.stringify(originalMetadata[prop]) || prop === "module_name" || prop === "guid") {
                     cleanedMetadata[prop] = metadata[prop];
                 }

@@ -48,6 +48,6 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
             throw new Error("App not found: " + moduleName);
         }
         return result;
-    }
+    };
     this.$get = function () { return this; };
 });
