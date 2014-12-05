@@ -257,6 +257,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    // function checkGracePeriods(day) {
+    //     var date = new Date(day.dayString.substr(0,4),day.dayString.substr(5,2) - 1,day.dayString.substr(8,2),12);
+    //     if (catsBackend.gracePeriodInMonth) {
+    //         var gracePeriodLimit = new Date();
+    //     }
+    //     if (catsBackend.futureGracePeriodInDays) {
+    //         var futureGracePeriodLimit = new Date();
+    //         futureGracePeriodLimit.setDate(futureGracePeriodLimit.getDate() + catsBackend.futureGracePeriodInDays);
+    //     }
+    // }
+
     function displayCATSDataForDay(day) {
         try {
             $scope.lastCatsAllocationDataForDay = day;
@@ -268,6 +279,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else {
                 $scope.totalWorkingTime = 0;
             }
+
+            // checkGracePeriods(day);
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
