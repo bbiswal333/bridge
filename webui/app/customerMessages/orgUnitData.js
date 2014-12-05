@@ -13,7 +13,7 @@ angular.module('app.customerMessages').service('app.customerMessages.orgUnitData
                     data = new X2JS().xml_str2json(data);
 
                     var orgUnits;
-                    if (!angular.isArray(data.abap.values.RESULTNODE1.CRMT_PPM_OM_USER_ASSIGNMENTS)){
+                    if (data.abap.values.RESULTNODE1.CRMT_PPM_OM_USER_ASSIGNMENTS !== undefined && !angular.isArray(data.abap.values.RESULTNODE1.CRMT_PPM_OM_USER_ASSIGNMENTS)){
                         orgUnits = [data.abap.values.RESULTNODE1.CRMT_PPM_OM_USER_ASSIGNMENTS];
                     } else {
                         orgUnits = data.abap.values.RESULTNODE1.CRMT_PPM_OM_USER_ASSIGNMENTS;
