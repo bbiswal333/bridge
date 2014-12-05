@@ -49,7 +49,10 @@ angular.module('bridge.service').service("bridge.service.maps", ['$q', '$http', 
 				deferred.resolve({error:true, message: observedRouter.getErrorCause().message});
 			}
 		});
-		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastestWithoutTraffic], apiVersion: "7.2"});
+		routingManager.calculateRoute({waypoints: [{position: startCoords}, {position: destCoords}], alternatives: 2, modes: [mode.fastestWithoutTraffic], representationOptions: {
+						legAttributes: ["wp","mn","li","le","tt"],
+						maneuverAttributes: ["po","sh","tt","le","ti","li","pt","rn","nr"]
+					}, apiVersion: "7.2"});
 
 		return deferred.promise;
 	};
