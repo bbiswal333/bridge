@@ -95,10 +95,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
 				week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 				week = calenderUtils.getWeekNumber(day);
 				week.year = year;
 			} else {
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 			}
 
@@ -106,6 +108,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
 				  (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
 				week = calenderUtils.getWeekNumber(day);
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 				day.setDate(day.getDate() + 7);
 			}

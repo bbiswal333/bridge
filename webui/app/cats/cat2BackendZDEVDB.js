@@ -16,6 +16,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
 		this.catsProfileIsSupported = false;
+		this.gracePeriodInMonth = 2;
+		this.futureGracePeriodInDays = 30;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -212,8 +214,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "GRACEPERIOD&begda=" + date + "&endda=" + date)
 			.then(function(data) {
+				// if (data && data.G_PERIOD && data.F_G_PERIOD) {
+				// 	that.gracePeriodInMonth = data.G_PERIOD * 1;
+				// 	that.futureGracePeriodInDays = data.F_G_PERIOD * 1;
+				// }
 				if (data && data.CATSCHK) {
 					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
