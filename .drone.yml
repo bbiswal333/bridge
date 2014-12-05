@@ -4,9 +4,8 @@ script:
  - npm test
 notify:
   slack:
+    webhook_url: $$SLACK_HOOK
     username: $$SLACK_USER
-    token: $$SLACK_TOKEN
-    team: $$SLACK_TEAM
     channel: $$SLACK_CHANNEL
     on_started: true
     on_success: true
