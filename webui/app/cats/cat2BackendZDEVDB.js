@@ -342,7 +342,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var tasks = [];
 				angular.forEach(promisesData, function(data) {
 
-					if (that.catsProfile === "DEV2002C") {
+					if (that.catsProfile.indexOf("DEV2002") > -1) {
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "ADMI",
