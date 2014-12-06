@@ -326,6 +326,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     actualHours + "'' but target hours are only '" +
                     targetHours + "'!");
             }
+
+            if (catsBackend.catsProfile && catsBackend.catsProfile.indexOf("DEV2002") < 0) {
+                var elventhDecembertwentyfourteen = new Date(2014,11,11);
+                if (new Date() < elventhDecembertwentyfourteen) {
+                    $scope.hintText = "There is currently a problem for all service and support CAT2 profiles. Please see FAQ.";
+                    bridgeInBrowserNotification.addAlert('danger', "There is currently a problem for all service and support CAT2 profiles. The issue will be resolve on 11. December. Please see FAQ.");
+                }
+            }
+
         } catch(err) {
             $log.log("displayCATSDataForDay(): " + err);
         }
