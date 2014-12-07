@@ -214,7 +214,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "GRACEPERIOD&begda=" + date + "&endda=" + date)
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "GRACEPERIODPROFILEONLY&begda=" + date + "&endda=" + date)
 			.then(function(data) {
 				// if (data && data.G_PERIOD && data.F_G_PERIOD) {
 				// 	that.gracePeriodInMonth = data.G_PERIOD * 1;
@@ -319,7 +319,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURS&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURSDESCRDETAILS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
