@@ -321,7 +321,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
-			that.CAT2AllocationDataForWeeks[catsProfile + "" + year + "" + week] = deferred.promise;
+			if (that.catsProfile) { // cache only if profile is already clear
+				that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+			}
 		}
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
@@ -342,7 +344,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			// this here is important for the app settings
-			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[this.catsProfile + "" + year + "" + week]) {
+			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
 				this.getCatsAllocationDataForWeek(year, week);
 			}
 
@@ -359,7 +361,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Admin"
+							DESCR: "Administrative"
 						});
 						tasks.push({
 							RAUFNR: "",
@@ -367,7 +369,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Education"
+							DESCR: "Personal education"
 						});
 					}
 
