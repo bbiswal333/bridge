@@ -1,4 +1,4 @@
-image: sap_nodejs_ubuntu_latest
+image: drone-registry.mo.sap.corp/sap_tools/ubuntu_nodejs:latest
 script: 
  - npm install
  - npm test
