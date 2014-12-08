@@ -257,6 +257,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    // function checkGracePeriods(day) {
+    //     var date = new Date(day.dayString.substr(0,4),day.dayString.substr(5,2) - 1,day.dayString.substr(8,2),12);
+    //     if (catsBackend.gracePeriodInMonth) {
+    //         var gracePeriodLimit = new Date();
+    //     }
+    //     if (catsBackend.futureGracePeriodInDays) {
+    //         var futureGracePeriodLimit = new Date();
+    //         futureGracePeriodLimit.setDate(futureGracePeriodLimit.getDate() + catsBackend.futureGracePeriodInDays);
+    //     }
+    // }
+
     function displayCATSDataForDay(day) {
         try {
             $scope.lastCatsAllocationDataForDay = day;
@@ -268,6 +279,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else {
                 $scope.totalWorkingTime = 0;
             }
+
+            // checkGracePeriods(day);
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
@@ -313,6 +326,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     actualHours + "'' but target hours are only '" +
                     targetHours + "'!");
             }
+
+            if (catsBackend.catsProfile && catsBackend.catsProfile.indexOf("DEV2002") < 0) {
+                var elventhDecembertwentyfourteen = new Date(2014,11,11);
+                if (new Date() < elventhDecembertwentyfourteen) {
+                    $scope.hintText = "There is currently a problem for all service and support CAT2 profiles. Please see FAQ.";
+                    bridgeInBrowserNotification.addAlert('danger', "There is currently a problem for all service and support CAT2 profiles. The issue will be resolve on 11. December. Please see FAQ.");
+                }
+            }
+
         } catch(err) {
             $log.log("displayCATSDataForDay(): " + err);
         }
@@ -485,7 +507,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.STATUS;
 
             if (booking.UNIT === "H" && targetHoursForDay) {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
                 if (catsBackend.catsProfile === "SUP2007H") {
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }

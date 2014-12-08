@@ -16,6 +16,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
 		this.catsProfileIsSupported = false;
+		this.gracePeriodInMonth = 2;
+		this.futureGracePeriodInDays = 30;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -212,8 +214,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "GRACEPERIOD&begda=" + date + "&endda=" + date)
 			.then(function(data) {
+				// if (data && data.G_PERIOD && data.F_G_PERIOD) {
+				// 	that.gracePeriodInMonth = data.G_PERIOD * 1;
+				// 	that.futureGracePeriodInDays = data.F_G_PERIOD * 1;
+				// }
 				if (data && data.CATSCHK) {
 					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
@@ -231,13 +237,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// if (CATSCHKforDay.STDAZ) {
 						//   CATSCHKforDay.STDAZ = 7.55;
 						//   var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 7.9 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
 						//   if (STADZRounded && QUANTITYHRounded) {
-						//	 if (STADZRounded === QUANTITYHRounded) {
-						//	   CATSCHKforDay.STATUS = "G"; // maintained
-						//	 } else {
-						//	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-						//	 }
+						// 	 if (STADZRounded === QUANTITYHRounded) {
+						// 	   CATSCHKforDay.STATUS = "G"; // maintained
+						// 	 } else {
+						// 	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+						// 	 }
 						//   }
 						// }
 						// ////////////////////////////////////////////////////////
@@ -313,7 +319,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURS&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURSDESCRDETAILS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
