@@ -69,7 +69,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		}
 
 		if (!enhancedTask.subDescription) {
-			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
+			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.TASKTYPE === 'ADMI' || enhancedTask.TASKTYPE === 'EDUC') {
 				enhancedTask.subDescription = taskTypeToDisplay || "";
 			}
 		}
