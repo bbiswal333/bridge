@@ -355,8 +355,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             promise
             .then(function() {
                 displayCATSDataForDay(monthlyDataService.days[dayString]);
-                $scope.loaded = true;
-                monthlyDataService.reloadInProgress.value = false;
+                catsBackend.CAT2ComplinaceDataPromise
+                .then(function() {
+                    $scope.loaded = true;
+                    monthlyDataService.reloadInProgress.value = false;
+                });
             }, function() {
                 $scope.loaded = true;
                 monthlyDataService.reloadInProgress.value = false;

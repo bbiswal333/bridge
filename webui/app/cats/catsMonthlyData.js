@@ -258,7 +258,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					if(data) {
 						self.convertWeekData(data);
 					}
-					self.reloadInProgress.value = false;
+					catsBackend.CAT2ComplinaceDataPromise
+					.then(function(){
+						self.reloadInProgress.value = false;
+					});
 				}, function() {
 					self.reloadInProgress.value = false;
 					self.reloadInProgress.error = true;

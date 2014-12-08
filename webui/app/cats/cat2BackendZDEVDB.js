@@ -9,6 +9,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
 
 		this.CAT2ComplinaceDataCache = [];
+		this.CAT2ComplinaceDataPromise = {};
 		this.CPROTaskTextCache = {};
 		this.CPROTaskTextCache.DATA = [];
 		this.CAT2AllocationDataForWeeks = {};
@@ -212,9 +213,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		function getCAT2ComplianceData(date) {
 			var deferred = $q.defer();
-			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
+			var dateString = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + date + "&endda=" + date)
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + dateString + "&endda=" + dateString)
 			.then(function(data) {
 				if (data && data.CATSCHK) {
 					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
@@ -285,6 +286,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
+			that.CAT2ComplinaceDataPromise = deferred.promise;
 			return deferred.promise;
 		};
 
