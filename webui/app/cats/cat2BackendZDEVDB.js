@@ -9,6 +9,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
 
 		this.CAT2ComplinaceDataCache = [];
+		this.CAT2ComplinaceDataPromise = {};
 		this.CPROTaskTextCache = {};
 		this.CPROTaskTextCache.DATA = [];
 		this.CAT2AllocationDataForWeeks = {};
@@ -129,7 +130,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var today = new Date();
 				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(today.getDate(), 2);
 
-				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLY&begda=" + todayString + "&endda=" + todayString)
+				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLYGRACEPERIOD&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
 					if ( !data ) {
@@ -212,14 +213,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		function getCAT2ComplianceData(date) {
 			var deferred = $q.defer();
-			date = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
+			var dateString = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
 
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "GRACEPERIOD&begda=" + date + "&endda=" + date)
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + dateString + "&endda=" + dateString)
 			.then(function(data) {
-				// if (data && data.G_PERIOD && data.F_G_PERIOD) {
-				// 	that.gracePeriodInMonth = data.G_PERIOD * 1;
-				// 	that.futureGracePeriodInDays = data.F_G_PERIOD * 1;
-				// }
 				if (data && data.CATSCHK) {
 					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
@@ -237,13 +234,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// if (CATSCHKforDay.STDAZ) {
 						//   CATSCHKforDay.STDAZ = 7.55;
 						//   var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 7.9 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
 						//   if (STADZRounded && QUANTITYHRounded) {
-						//	 if (STADZRounded === QUANTITYHRounded) {
-						//	   CATSCHKforDay.STATUS = "G"; // maintained
-						//	 } else {
-						//	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-						//	 }
+						// 	 if (STADZRounded === QUANTITYHRounded) {
+						// 	   CATSCHKforDay.STATUS = "G"; // maintained
+						// 	 } else {
+						// 	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+						// 	 }
 						//   }
 						// }
 						// ////////////////////////////////////////////////////////
@@ -289,6 +286,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
+			that.CAT2ComplinaceDataPromise = deferred.promise;
 			return deferred.promise;
 		};
 
@@ -304,7 +302,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
 						for (var j = 0; j < data.CATS_EXT.length; j++) {
 							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
-							data.TIMESHEETS.RECORDS[j].TASKCOUNTER = data.CATS_EXT[j].TASKCOUNTER; // if filled it is CATSXT
+							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
+								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
+							}
 						}
 					}
 					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS)
@@ -319,11 +319,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURS&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURSDESCRDETAILS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
-			that.CAT2AllocationDataForWeeks[catsProfile + "" + year + "" + week] = deferred.promise;
+			if (that.catsProfile) { // cache only if profile is already clear
+				that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+			}
 		}
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
@@ -344,7 +346,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			// this here is important for the app settings
-			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[this.catsProfile + "" + year + "" + week]) {
+			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
 				this.getCatsAllocationDataForWeek(year, week);
 			}
 
@@ -361,7 +363,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Admin"
+							DESCR: "Administrative"
 						});
 						tasks.push({
 							RAUFNR: "",
@@ -369,7 +371,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Education"
+							DESCR: "Personal education"
 						});
 					}
 

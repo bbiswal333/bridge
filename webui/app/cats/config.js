@@ -61,10 +61,15 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		enhancedTask.subDescription = "";
 
 		if (task.ZCPR_EXTID) {
+			if (task.RAUFNR) {
 			enhancedTask.subDescription = task.ZCPR_EXTID + " (" + task.RAUFNR + ")" || "";
+			} else {
+				enhancedTask.subDescription = task.ZCPR_EXTID;
+			}
 		}
+
 		if (!enhancedTask.subDescription) {
-			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.DESCR === 'Admin' || enhancedTask.DESCR === 'Education') {
+			if (enhancedTask.DESCR === task.RAUFNR || enhancedTask.TASKTYPE === 'ADMI' || enhancedTask.TASKTYPE === 'EDUC') {
 				enhancedTask.subDescription = taskTypeToDisplay || "";
 			}
 		}

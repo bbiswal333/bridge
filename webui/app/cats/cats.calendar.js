@@ -71,12 +71,12 @@ angular.module("app.cats")
 			$scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 
 			$scope.year = monthlyDataService.year;
-			if (!$scope.year) {
+			if (!angular.isNumber($scope.year)) {
 				monthlyDataService.year = new Date().getFullYear();
 				$scope.year = monthlyDataService.year;
 			}
 			$scope.month = monthlyDataService.month;
-			if (!$scope.month) {
+			if (!angular.isNumber($scope.month)) {
 				monthlyDataService.month = new Date().getMonth();
 				$scope.month = monthlyDataService.month;
 			}
