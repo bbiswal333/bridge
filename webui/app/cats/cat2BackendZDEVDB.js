@@ -188,20 +188,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 									deferred.resolve("SUP2007C");
 
 								}
-							} else if (totalEntries > 0) {
-
+							} else {
 								$log.log("Time recording profile DEV2002C determined: " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
 								that.catsProfileIsSupported = true;
 								deferred.resolve("DEV2002C");
-
-							} else {
-
-								$log.log("Fallback time recording profile SUP2007D");
-								that.catsProfile = "SUP2007D";
-								that.catsProfileIsSupported = false;
-								deferred.resolve("SUP2007D"); // simple profile to get data
-
 							}
 						}, deferred.reject);
 					}
