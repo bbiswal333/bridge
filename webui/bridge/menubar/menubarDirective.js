@@ -51,11 +51,24 @@ angular.module("bridge.app").directive("bridge.menubar", ["$window", "$modal", "
                 });
 
                 $scope.changeSelectedApps = function() {
-                    if (!$scope.appScreenOpen) {
+                    function toPlusButton() {
+                        $(".navicon-button").addClass("open");
+                    }
+
+                    $(".navicon-button").removeClass("open");
+                    // console.log('remove open');
+
+                    var modal = $modal.open({
+                        templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
+                        size: 'lg'
+                    });
+                    modal.result.then(toPlusButton,toPlusButton);
+
+                    /*if (!$scope.appScreenOpen) {
                         $location.path("/availableApps");
                     } else {
                         $window.history.back();
-                    }
+                    }*/
                 };
 
                 $scope.weatherData = weatherData.getData();
