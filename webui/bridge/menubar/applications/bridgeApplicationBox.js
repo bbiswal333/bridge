@@ -4,7 +4,7 @@ angular.module("bridge.app").directive("bridge.application.box", ["bridge.servic
 		templateUrl: "bridge/menubar/applications/bridgeApplicationBox.html",
 		controller: function($scope) {
 			$scope.numberOfInstances = function() {
-				return parseInt(appCreator.getInstancesByType($scope.app.metadata.module_name).length);
+				return appCreator.getInstancesByType($scope.app.metadata.module_name).length ? appCreator.getInstancesByType($scope.app.metadata.module_name).length : 0;
 			};
 		}
 	};
