@@ -142,12 +142,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function addBlock(desc_s, val_i, block, fixed) {
         try {
             // Scale data which is read from backend BUT only if it is not OVERBOOKED
-            if (block.COUNTER && // already in backend
-                monthlyDataService.days[block.WORKDATE] &&
-                monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
-                monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
-
-                val_i = catsUtils.cat2CompliantRounding(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay);
+            if (block.COUNTER) {
+                if (block.QUANTITY_DAY) { // if explicit day value is present...
+                    val_i = block.QUANTITY_DAY;
+                } else {
+                    if (monthlyDataService.days[block.WORKDATE] &&
+                        monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
+                        monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
+                    val_i = catsUtils.cat2CompliantRounding(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay);
+                    }
+                }
             }
 
             var existingBlock = getBlock(block);
@@ -374,6 +378,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     loadCATSDataForDay();
 
     $scope.handleProjectChecked = function (desc_s, val_i, task) {
+        if (!task.UNIT) {
+            if (catsBackend.catsProfile === "SUP2007H") {
+                task.UNIT = "H";
+            } else {
+                task.UNIT = "T";
+            }
+        }
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,
@@ -383,7 +394,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             ZZSUBTYPE: task.ZZSUBTYPE,
-            UNIT: task.UNIT || "T"
+            UNIT: task.UNIT
         };
 
         var blockCouldBeAdded = false;

@@ -221,6 +221,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					}
 				}
 			angular.forEach(this.days,function(day) {
+				// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
+				var totalOfQuantityDay = 0;
+				var biggestTask = {};
+				biggestTask.QUANTITY_DAY = 0;
 				angular.forEach(day.tasks,function(task) {
 					// knowingly doing some data doublication here
 					if (task.UNIT === 'H') {
@@ -237,7 +241,16 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 						}
 						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
 					}
+					totalOfQuantityDay = totalOfQuantityDay + task.QUANTITY_DAY;
+					if(task.QUANTITY_DAY > biggestTask.QUANTITY_DAY) {
+						biggestTask = task;
+					}
 				});
+				// Fix rounding issues
+				totalOfQuantityDay = Math.round(totalOfQuantityDay * 1000) / 1000;
+				if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
+					biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
+				}
 			});
 			}
 		} catch(err) {
