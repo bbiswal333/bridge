@@ -193,14 +193,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 									that.catsProfileIsSupported = true;
 									deferred.resolve("SUP2007C");
 								}
-							} else if (totalEntries > 0) {
+							} else {
 								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
 								that.catsProfile = "DEV2002C";
 								that.catsProfileIsSupported = true;
 								deferred.resolve("DEV2002C");
-							} else {
-								that.catsProfileIsSupported = false;
-								deferred.resolve("SUP2007D"); // simple profile to get data
 							}
 						}, deferred.reject);
 					}
