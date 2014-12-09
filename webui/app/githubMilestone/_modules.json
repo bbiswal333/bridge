@@ -9,7 +9,7 @@
 		"needs_client"			:	false,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
-		"description"			:	"The GitHub app enables you to monitor the the milestones in your github projects by displaying the progress. Simply specify the git project you would like to monitor and the data is fetched live from github."
+		"description"			:	"The GitHub app enables you to monitor the milestones in your github projects by displaying the progress. Simply specify the git project you would like to monitor and the data is fetched live from github."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js"],
