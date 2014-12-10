@@ -186,6 +186,7 @@
 /* Minus */
 .open {
   transform: scale(0.75);
+  -webkit-transform: scale(0.75);
 }
 
 /* × and + */
@@ -196,14 +197,17 @@
 .open.plus .navicon:before,
 .open.x .navicon:before {
   transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
 }
 .open.plus .navicon:after,
 .open.x .navicon:after {
   transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 
 .open.plus {
   transform: scale(0.75) rotate(45deg);
+  -webkit-transform: scale(0.75) rotate(45deg);
 }
 
 .bridge-applications-box {
