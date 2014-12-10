@@ -340,10 +340,12 @@ img {
 .app-box-title {
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
     flex-grow: 1;
     -ms-flex: 1;
     -webkit-flex: 1;
+    height: 22px;
 }
 
 .copy_head{
