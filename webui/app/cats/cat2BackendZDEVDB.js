@@ -299,10 +299,20 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			} else {
 				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
-						for (var j = 0; j < data.CATS_EXT.length; j++) {
+						for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
 							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
 							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
 								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
+							}
+							if(data.CATS_EXT_TASK && data.TIMESHEETS.RECORDS[j].DAYS) {
+								/* eslint-disable no-loop-func */
+								angular.forEach(data.TIMESHEETS.RECORDS[j].DAYS, function(task) {
+								/* eslint-enable no-loop-func */
+									var entry = _.find(data.CATS_EXT_TASK, { "COUNTER": task.COUNTER });
+									if(entry) {
+										task.TASKCOUNTER = entry.TASKCOUNTER;
+									}
+								});
 							}
 						}
 					}

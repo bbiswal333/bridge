@@ -46,7 +46,8 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     this.isFixedTask = function(task){
       if ((task.TASKTYPE === "VACA" && task.UNIT === "H") || // There is a valid VACA/TA task in Israel
           (task.TASKTYPE === "ABSE" && task.UNIT === "H") || // There is a valid ABSE/TA task in Israel
-           task.TASKTYPE === "COMP") {
+           task.TASKTYPE === "COMP" ||
+           task.TASKCOUNTER) { // System entered time or CATSXT
         return true;
       }
       return false;
