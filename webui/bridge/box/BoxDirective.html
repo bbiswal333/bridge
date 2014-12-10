@@ -4,10 +4,9 @@
         ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
 
         <div class="box-heading">
-            <div class="box-heading-content" style="display: flex; display: -ms-flexbox" ng-if="!editTitle">
+            <div class="box-heading-content app-box-heading-content" style="display: flex; display: -ms-flexbox" ng-if="!editTitle">
                 <span class="box-icon" ng-class="icon_css"></span>
-                <h6 class="box-title" style="flex-grow: 1; -ms-flex: 1" ng-dblclick="doSomething()">{{metadata.title}}</h6>
-                <div style="position: relative; display: inline"><i class="grey-font-60" ng-if="beta" style="position: absolute; bottom: 6px; margin-left: 2px">beta</i></div>
+                <h6 class="box-title app-box-title" style="" ng-dblclick="doSomething()">{{metadata.title}}<i class="grey-font-60" ng-if="beta" style="position: absolute; bottom: 8px; margin-left: 2px; font-size: 10px">beta</i></h6>
                 <span ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)" style="min-width: 20px;">&#xe00c;</span>
                 <span ng-if="box.errorText" bs-popover trigger="hover" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
             </div>
