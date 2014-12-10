@@ -59,17 +59,9 @@ angular.module('app.getHome').service("app.getHome.routeFactory", ['bridge.servi
 	this.fromNokiaRoute = function(name, nokiaRoute, isActive) {
 		var waypoints = [];
 		var previousWaypoint;
-		var index = 0;
 		nokiaRoute.getManeuvers().map(function(maneuver) {
 			if(!previousWaypoint || JSON.stringify(previousWaypoint) !== JSON.stringify(maneuver.position)) {
-				var waypoint = {};
-				if(maneuver.toLink && index !== 0) {
-					waypoint.linkPositions = [{linkId: maneuver.toLink.linkId}];
-				} else {
-					waypoint.position = maneuver.position;
-				}
-				waypoints.push(waypoint);
-				index++;
+				waypoints.push({position: maneuver.position});
 			}
 
 			previousWaypoint = maneuver.position;
