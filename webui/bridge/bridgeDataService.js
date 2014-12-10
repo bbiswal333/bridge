@@ -169,6 +169,7 @@
         }
 
         function _removeAppById(id) {
+            appCreator.removeInstanceById(id);
             var appLocation = _getAppLocationById(id);
             return _getProjects()[appLocation.projectIndex].apps.splice(appLocation.appIndex, 1);
         }

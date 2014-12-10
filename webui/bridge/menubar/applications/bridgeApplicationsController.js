@@ -58,4 +58,9 @@ angular.module('bridge.app').
 	    $scope.addAppInstance = function(metadata) {
 	    	bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
 	    };
+
+	    $scope.removeAppInstance = function(metadata) {
+	    	var lastInstance = appCreator.getInstancesByType(metadata.module_name)[appCreator.getInstancesByType(metadata.module_name).length - 1];
+	    	bridgeDataService.removeAppById(lastInstance.metadata.guid);
+	    };
 }]);
