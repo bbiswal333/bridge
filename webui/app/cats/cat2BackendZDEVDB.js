@@ -17,8 +17,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
 		this.catsProfileIsSupported = false;
-		this.gracePeriodInMonth = 2;
-		this.futureGracePeriodInDays = 30;
+		this.gracePeriodInMonth = 0;
+		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -135,6 +135,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					// try to get it from ISP configuration
 					if ( !data ) {
 						deferred.reject();
+						return;
+					}
+					if (data.G_PERIOD) {
+						this.gracePeriodInMonth = data.G_PERIOD * 1;
+					}
+					if (data.F_G_PERIOD) {
+						this.futureGracePeriodInDays = data.F_G_PERIOD * 1;
 					}
 					if (data.PROFILE) {
 						data.PROFILE = data.PROFILE.toUpperCase();
