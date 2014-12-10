@@ -170,6 +170,9 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
 
     this.getLunchMenu = function (data, date)
     {
+        if (!data.menu) {
+            return "Not a displayable menu";
+        }
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
