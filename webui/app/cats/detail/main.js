@@ -261,16 +261,23 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    // function checkGracePeriods(day) {
-    //     var date = new Date(day.dayString.substr(0,4),day.dayString.substr(5,2) - 1,day.dayString.substr(8,2),12);
-    //     if (catsBackend.gracePeriodInMonth) {
-    //         var gracePeriodLimit = new Date();
-    //     }
-    //     if (catsBackend.futureGracePeriodInDays) {
-    //         var futureGracePeriodLimit = new Date();
-    //         futureGracePeriodLimit.setDate(futureGracePeriodLimit.getDate() + catsBackend.futureGracePeriodInDays);
-    //     }
-    // }
+    function checkGracePeriods(dayString) {
+        var dateToCheck = new Date(dayString.substr(0,4),dayString.substr(5,2) - 1,dayString.substr(8,2),12);
+        if (catsBackend.gracePeriodInMonth > 0) {
+            var gracePeriodLimitDate = new Date();
+            gracePeriodLimitDate.setMonth(gracePeriodLimitDate.getMonth() - (catsBackend.gracePeriodInMonth));
+            if (dateToCheck < gracePeriodLimitDate) {
+                bridgeInBrowserNotification.addAlert('danger', "According to the grace period days shall NOT be maintained which are more the " + catsBackend.gracePeriodInMonth + " month in the past.");
+            }
+        }
+        if (catsBackend.futureGracePeriodInDays > 0) {
+            var futureGracePeriodLimitDate = new Date();
+            futureGracePeriodLimitDate.setDate(futureGracePeriodLimitDate.getDate() + catsBackend.futureGracePeriodInDays);
+            if (dateToCheck > futureGracePeriodLimitDate) {
+                bridgeInBrowserNotification.addAlert('danger', "According to the futur grace period days shall NOT be maintained which are more the " + catsBackend.futureGracePeriodInDays + " days in the future.");
+            }
+        }
+    }
 
     function displayCATSDataForDay(day) {
         try {
@@ -283,8 +290,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else {
                 $scope.totalWorkingTime = 0;
             }
-
-            // checkGracePeriods(day);
 
             for (var i = 0; i < day.tasks.length; i++) {
                 var task = day.tasks[i];
@@ -421,6 +426,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.selectionCompleted = function() {
         try {
+            angular.forEach($scope.selectedDates, function(dayString) {
+                checkGracePeriods(dayString);
+            });
             if($scope.selectedDates.length === 0) { // Nothing selected
                 $scope.blockdata = [];
                 $scope.totalWorkingTime = 0;
