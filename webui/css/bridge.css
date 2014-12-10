@@ -318,7 +318,7 @@ img {
     height: 100%;
     overflow: hidden;
     display: -webkit-flex;  // for Safari
-    display: -ms-flexbox;   // for IE
+    display: -ms-flexbox; display: flexbox;   // for IE
     display: flex;          // for real browsers
     -webkit-flex-flow: row nowrap;  // for Safari
     -ms-flex-flow: row nowrap;      // for IE
