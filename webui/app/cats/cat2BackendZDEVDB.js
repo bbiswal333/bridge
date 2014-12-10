@@ -268,7 +268,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
 			var deferred = $q.defer();
 
-			this.determineCatsProfileFromBackend(); // trigger profile determination
+			this.determineCatsProfileFromBackend()
+			.then(function() { }, function() { deferred.reject(); }); // trigger profile determination
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
 				var begdate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + "01";
