@@ -1,5 +1,5 @@
 {
-	"news": [
+	"news": [ 
         {
             "id":       1,
             "header":   "New Design for Bridge",
@@ -63,6 +63,14 @@
           "snapURL":  "bridge/menubar/news/image/newDesignSnap.png",
           "preview":  "New Incident Apps!",
           "content":  "A lot of you were awaiting these apps for a long time, finally the <b>Customer- and Internal-Incident Apps</b> left the beta status and are available for everyone. The apps connect to the new ticket systems in BCP, reuse your component assignment there and show you the relevant tickets grouped by different categories.<br/><br/>Changed and new tickets will appear in your notifications list and in Chrome and Firefox there is also a popup notification for these messages.<br/><br/>Please note that we retrieve our data from the BCP backup system, which might result in a small delay of 1-5 minutes before Bridge displays changes in tickets and component assignments.<br/><br/> Visit the <a href='https://portal.wdf.sap.corp/go/internal-incidents'>Internal Incident Portal Page</a> for more information."
+        },
+        {
+            "id":       9,
+            "header":   "Multi-Instance Apps out now!",
+            "date":     "2014-12-10",
+            "snapURL":  "bridge/menubar/applications/banner01.svg",
+            "preview":  "It is now possible to add multiple instances of the same app. Click if you want to learn more.",
+            "content":  "During the last weeks we were working on a major improvement that you were longing for: having multiple instances of the same app on bridge.<br /><br />With todays release it is possible to add multiple instances of enabled apps from our new apps section:<br /><img src=\"bridge/menubar/news/image/addRemoveMultiInstance.gif\" width=\"1000\" /><br /><br />In addition to having multiple instances it is possible to rename all apps and give them a more meaningful name. In order to do this just double click the header of an app as shown in the screen recording above.<br /><br />In case you want to remove an app you can either do it via the apps section as shown above or via drag&drop."
         }
 	]
 }

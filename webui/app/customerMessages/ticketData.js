@@ -53,10 +53,10 @@
         }
 
         this.prios = [
-            { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0},
-            { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0},
-            { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0},
-            { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, created_me: 0, selected: 0}];
+            { name: "Very high",    number: 1, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, selected: 0},
+            { name: "High",         number: 3, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, selected: 0},
+            { name: "Medium",       number: 5, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, selected: 0},
+            { name: "Low",          number: 9, sel_components: 0, sel_components_aa: 0, colleagues: 0, colleagues_aa: 0, assigned_me: 0, assigned_me_aa: 0, selected: 0}];
 
         this.resetData = function () {
             angular.forEach(that.prios, function (prio) {
@@ -66,7 +66,6 @@
                 prio.colleagues_aa = 0;
                 prio.assigned_me = 0;
                 prio.assigned_me_aa = 0;
-                prio.created_me = 0;
                 prio.selected = 0;
             });
 
@@ -113,40 +112,36 @@
                     data = new X2JS().xml_str2json(data);
 
                     var cmData = data.abap;
-                    var backendTickets = cmData.values;
+                    var tickets = cmData.values;
 
                     // Resultnode1: Alle incidents auf Komponenten, zu denen ich assigned bin
                     // Resultnode2: Alle incidents, die auf meinem Namen stehen (unabhängig davon, zu welcher Komponente sie gehören)
 
-                    //selected component
-                    if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                        angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], { PROCESSOR_ID: ''}), function (backendTicket) {
-                            parseBackendTicket(backendTicket, 'sel_components');
-                        });
-                    } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID === '') {
-                        parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'sel_components');
+                    if (!angular.isArray(tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])){
+                        tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"] = [tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]];
                     }
+
+                    if (!angular.isArray(tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])){
+                        tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"] = [tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"]];
+                    }
+
+                    //selected component
+                    angular.forEach(_.where(tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], { PROCESSOR_ID: ''}), function (backendTicket) {
+                        parseBackendTicket(backendTicket, 'sel_components');
+                    });
 
                     // colleagues
-                    if (angular.isArray(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                        angular.forEach(_.where(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){ return ticket.PROCESSOR_ID !== ''; }), function (backendTicket) {
-                            parseBackendTicket(backendTicket, 'colleagues');
-                        });
-                    } else if (angular.isObject(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"]) && backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"].PROCESSOR_ID !== '') {
-                        parseBackendTicket(backendTickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'colleagues');
-                    }
+                    angular.forEach(_.where(tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){ return ticket.PROCESSOR_ID !== ''; }), function (backendTicket) {
+                        parseBackendTicket(backendTicket, 'colleagues');
+                    });
 
                     //assigned to me
-                    if (angular.isArray(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                        angular.forEach(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function (backendTicket) {
-                            parseBackendTicket(backendTicket, 'assigned_me');
-                        });
-                    } else if (angular.isObject(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"])) {
-                        parseBackendTicket(backendTickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], 'assigned_me');
-                    }
+                    angular.forEach(tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function (backendTicket) {
+                        parseBackendTicket(backendTicket, 'assigned_me');
+                    });
 
                     that.updatePrioSelectionCounts();
-                    deferred.resolve({errors: backendTickets.ERRORS});
+                    deferred.resolve({errors: tickets.ERRORS});
 
                 }).error(function () {
                     deferred.reject();
@@ -166,19 +161,15 @@
             return deferred.promise;
         };
 
-        function addTicket(list, ticket){
-            var allreadyExists = false;
-            list.some(function(item){
-                if (angular.equals(ticket, item)){
-                    allreadyExists = true;
-                }
-                return allreadyExists;
+        this.addTicket = function(list, ticket){
+            var allreadyExists = list.some(function(item){
+                return item.OBJECT_GUID === ticket.OBJECT_GUID;
             });
 
             if (!allreadyExists){
                 list.push(ticket);
             }
-        }
+        };
 
         this.updatePrioSelectionCounts = function () {
             angular.forEach(this.prios, function (prio) {
@@ -188,21 +179,21 @@
                 if (configservice.data.selection.sel_components) {
                     that.backendTickets.sel_components.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
                 if (configservice.data.selection.assigned_me) {
                     that.backendTickets.assigned_me.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
                 if (configservice.data.selection.colleagues) {
                     that.backendTickets.colleagues.forEach(function(ticket){
                         if (ticket.PRIORITY_KEY === prioString){
-                            addTicket(selectedTickets,ticket);
+                            that.addTicket(selectedTickets,ticket);
                         }
                     });
                 }
@@ -211,21 +202,21 @@
                     if (configservice.data.selection.sel_components) {
                         that.backendTickets.sel_components_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }
                     if (configservice.data.selection.assigned_me) {
                         that.backendTickets.assigned_me_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }
                     if (configservice.data.selection.colleagues) {
                         that.backendTickets.colleagues_aa.forEach(function(ticket){
                             if (ticket.PRIORITY_KEY === prioString){
-                                addTicket(selectedTickets,ticket);
+                                that.addTicket(selectedTickets,ticket);
                             }
                         });
                     }

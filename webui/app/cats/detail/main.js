@@ -27,7 +27,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.analytics = false;
     // var lastSelectedDaysLength = 0;
 
-    var catsConfigService = bridgeDataService.getAppConfigByModuleName('app.cats');
+    var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
     configService.copyConfigIfLoaded(catsConfigService);
 
     function adjustBarSize() {
@@ -142,12 +142,16 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function addBlock(desc_s, val_i, block, fixed) {
         try {
             // Scale data which is read from backend BUT only if it is not OVERBOOKED
-            if (block.COUNTER && // already in backend
-                monthlyDataService.days[block.WORKDATE] &&
-                monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
-                monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
-
-                val_i = catsUtils.cat2CompliantRounding(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay);
+            if (block.COUNTER) {
+                if (block.QUANTITY_DAY) { // if explicit day value is present...
+                    val_i = block.QUANTITY_DAY;
+                } else {
+                    if (monthlyDataService.days[block.WORKDATE] &&
+                        monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay >=
+                        monthlyDataService.days[block.WORKDATE].actualTimeInPercentageOfDay) {
+                    val_i = catsUtils.cat2CompliantRounding(val_i / monthlyDataService.days[block.WORKDATE].targetTimeInPercentageOfDay);
+                    }
+                }
             }
 
             var existingBlock = getBlock(block);
@@ -205,7 +209,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var i = 0;
             while (i < $scope.blockdata.length) {
                 if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
-                    if ($scope.blockdata[i].task.COUNTER) {
+                    if (catsUtils.isFixedTask($scope.blockdata[i].task)) {
+                        bridgeInBrowserNotification.addAlert('danger','That task is not a regular CAT2 task and can not be removed.');
+                        return;
+                    } else if ($scope.blockdata[i].task.COUNTER) {
                         $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
                     } else {
                         $scope.blockdata.splice(i,1);
@@ -253,6 +260,24 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                (blockDif < 0 && blockDif > -0.03)) {
                 biggestBlock.value -= blockDif;
                 biggestBlock.value = catsUtils.cat2CompliantRounding(biggestBlock.value);
+            }
+        }
+    }
+
+    function checkGracePeriods(dayString) {
+        var dateToCheck = new Date(dayString.substr(0,4),dayString.substr(5,2) - 1,dayString.substr(8,2),12);
+        if (catsBackend.gracePeriodInMonth > 0) {
+            var gracePeriodLimitDate = new Date();
+            gracePeriodLimitDate.setMonth(gracePeriodLimitDate.getMonth() - (catsBackend.gracePeriodInMonth));
+            if (dateToCheck < gracePeriodLimitDate) {
+                bridgeInBrowserNotification.addAlert('danger', "According to the grace period days shall NOT be maintained which are more the " + catsBackend.gracePeriodInMonth + " month in the past.");
+            }
+        }
+        if (catsBackend.futureGracePeriodInDays > 0) {
+            var futureGracePeriodLimitDate = new Date();
+            futureGracePeriodLimitDate.setDate(futureGracePeriodLimitDate.getDate() + catsBackend.futureGracePeriodInDays);
+            if (dateToCheck > futureGracePeriodLimitDate) {
+                bridgeInBrowserNotification.addAlert('danger', "According to the futur grace period days shall NOT be maintained which are more the " + catsBackend.futureGracePeriodInDays + " days in the future.");
             }
         }
     }
@@ -313,6 +338,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     actualHours + "'' but target hours are only '" +
                     targetHours + "'!");
             }
+
         } catch(err) {
             $log.log("displayCATSDataForDay(): " + err);
         }
@@ -333,8 +359,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             promise
             .then(function() {
                 displayCATSDataForDay(monthlyDataService.days[dayString]);
-                $scope.loaded = true;
-                monthlyDataService.reloadInProgress.value = false;
+                catsBackend.CAT2ComplinaceDataPromise
+                .then(function() {
+                    $scope.loaded = true;
+                    monthlyDataService.reloadInProgress.value = false;
+                });
             }, function() {
                 $scope.loaded = true;
                 monthlyDataService.reloadInProgress.value = false;
@@ -349,6 +378,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     loadCATSDataForDay();
 
     $scope.handleProjectChecked = function (desc_s, val_i, task) {
+        if (!task.UNIT) {
+            if (catsBackend.catsProfile === "SUP2007H") {
+                task.UNIT = "H";
+            } else {
+                task.UNIT = "T";
+            }
+        }
         var block = {
             RAUFNR: task.RAUFNR,
             COUNTER: 0,
@@ -358,7 +394,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             ZCPR_EXTID: task.ZCPR_EXTID,
             ZCPR_OBJGEXTID: task.ZCPR_OBJGEXTID,
             ZZSUBTYPE: task.ZZSUBTYPE,
-            UNIT: task.UNIT || "T"
+            UNIT: task.UNIT
         };
 
         var blockCouldBeAdded = false;
@@ -385,6 +421,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.selectionCompleted = function() {
         try {
+            angular.forEach($scope.selectedDates, function(dayString) {
+                checkGracePeriods(dayString);
+            });
             if($scope.selectedDates.length === 0) { // Nothing selected
                 $scope.blockdata = [];
                 $scope.totalWorkingTime = 0;
@@ -451,10 +490,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function prepareCATSData (workdate, container, clearOldTasks){
+    function prepareCATSData (workdate, container){
         var workdateBookings = [];
+        var unchangedBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
-        var targetHoursForDay = monthlyDataService.days[workdate].targetHours;
+        var targetHoursForDay      = monthlyDataService.days[workdate].targetHours;
+        var tasksInBackend         = monthlyDataService.days[workdate].tasks;
 
         if(!totalWorkingTimeForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0.');
@@ -463,29 +504,33 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             return null;
         }
 
-        if (clearOldTasks) {
-            monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) {
-                    return null;
-                }
-                var taskDeletion = angular.copy(task);
-                taskDeletion.WORKDATE = workdate || task.WORKDATE;
-                taskDeletion.CATSQUANTITY = 0;
-                delete taskDeletion.QUANTITY;
-
-                container.BOOKINGS.push(taskDeletion);
-            });
-        }
-
         for(var i = 0; i < $scope.blockdata.length; i++) {
 
             var booking = angular.copy($scope.blockdata[i].task);
-            booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
+            var taskInBackend = _.find(tasksInBackend, {
+                "ZCPR_OBJGEXTID": booking.ZCPR_OBJGEXTID,
+                "RAUFNR": booking.RAUFNR,
+                "TASKTYPE": booking.TASKTYPE,
+                "ZZSUBTYPE": booking.ZZSUBTYPE });
+
+            if (taskInBackend && taskInBackend.COUNTER) {
+                booking.COUNTER = taskInBackend.COUNTER;
+            } else {
+                booking.COUNTER = 0;
+            }
+
+            if (catsUtils.isFixedTask(booking) || (taskInBackend && catsUtils.isFixedTask(taskInBackend))) {
+                unchangedBookings.push(booking);
+                continue;
+            }
+
+            booking.WORKDATE = workdate;
             delete booking.QUANTITY_DAY;
             delete booking.STATUS;
 
+            // determine amount to post
             if (booking.UNIT === "H" && targetHoursForDay) {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * totalWorkingTimeForDay * targetHoursForDay);
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
                 if (catsBackend.catsProfile === "SUP2007H") {
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
@@ -494,30 +539,35 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             delete booking.QUANTITY;
 
-            if (catsUtils.isFixedTask(booking)){
+            // Don't sent tasks which are already in the Backend with the exact same amount
+            if (taskInBackend &&
+                taskInBackend.QUANTITY === booking.CATSQUANTITY) {
+                unchangedBookings.push(booking);
                 continue;
             }
 
-            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
+            //cleanup temporary data
+            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) {
                 booking.ZCPR_OBJGEXTID = null;
             }
 
-            if (clearOldTasks) {
-                booking.COUNTER = 0;
-            }
-            if (booking.CATSQUANTITY) { // book time > 0
+            if (booking.CATSQUANTITY > 0) {
                 workdateBookings.push(booking);
-            } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
-                for(var j = 0; j < oldTasks.length; j++) {
-                    if (oldTasks[j].RAUFNR === booking.RAUFNR
-                        && !clearOldTasks) {
-                        workdateBookings.push(booking);
-                        break;
-                    }
-                }
             }
         }
+
+        // Remove all tasks which are not modified or ignored
+        tasksInBackend.forEach(function(task){
+            var taskPreparedForBooking = _.find(workdateBookings, {"COUNTER": task.COUNTER });
+            var taskNotRelevantForBooking = _.find(unchangedBookings, {"COUNTER": task.COUNTER });
+            if (!taskPreparedForBooking && !taskNotRelevantForBooking) {
+                var taskDeletion = angular.copy(task);
+                taskDeletion.WORKDATE = workdate;
+                taskDeletion.CATSQUANTITY = 0;
+                delete taskDeletion.QUANTITY;
+                container.BOOKINGS.push(taskDeletion);
+            }
+        });
 
         // adjust slight deviations in QUANTITY when posting part time
         var totalBookingQuantity = 0;
@@ -564,7 +614,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     $scope.saveTimesheet = function(){
-        var clearOldTasks = false;
         var weeks = [];
         var container = {
             BOOKINGS: []
@@ -583,13 +632,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        if ($scope.selectedDates.length > 1) {
-            clearOldTasks = true;
-        }
-
         try {
             $scope.selectedDates.forEach(function(dayString){
-                container = prepareCATSData(dayString, container, clearOldTasks);
+                container = prepareCATSData(dayString, container);
 
                 var day = monthlyDataService.days[dayString];
                 if (weeks.indexOf(day.year + '.' + day.week) === -1) {
@@ -616,6 +661,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 });
             } else {
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
+                $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
+                monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                    loadCATSDataForDay();
+                });
             }
         } catch(err) {
             $log.log("saveTimesheet(): " + err);

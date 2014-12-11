@@ -11,16 +11,8 @@
 			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-2'" order-by="'key'">
 				<a target="_blank" href="{{parentScope.data.jira_url}}{{row.key}}">{{row.key}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">
-				<div bs-tooltip data-title="{{row.summary}}">
-					{{row.summary}}
-				</div>
-			</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">
-				<div bs-tooltip data-title="{{row.description}}">
-					{{row.description}}
-				</div>
-			</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">{{row.summary}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">{{row.description}}</bridge.table-column>
 			<bridge.table-column column-id="'4'" header="'Status'" column-size-class="'col-sm-2'" order-by="'status'">{{row.status}}</bridge.table-column>
 		</bridge.table>
 

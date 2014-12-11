@@ -14,7 +14,7 @@
 					 class="im-reporter-img"
 					 style="height: 32px"
 					 ng-if="row.MSG_CREATED_BY_UID"></img>
-				<a target="_blank" href="{{row.employee_created.url}}">{{row.MSG_CREATED_BY_FULLNAME}}</a>
+				<a class="clickable" ng-click="parentScope.userClick(row.employee_created)">{{row.MSG_CREATED_BY_FULLNAME}}</a>
 				<a href="mailto:{{row.employee_created.mail}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.employee_created.tel}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
@@ -23,7 +23,7 @@
 					 class="im-reporter-img"
 					 style="height: 32px"
 					 ng-if="row.MSG_PROCESSOR_UID"></img>
-				<a target="_blank" href="{{row.employee_process.url}}">{{row.MSG_PROCESSOR_NAME}}</a>
+				<a class="clickable" ng-click="parentScope.userClick(row.employee_process)">{{row.MSG_PROCESSOR_NAME}}</a>
 				<a href="mailto:{{row.employee_process.mail}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.employee_process.tel}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>

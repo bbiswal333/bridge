@@ -2,18 +2,17 @@
 	<p ng-show="config.configItems.length == 0">No Source System defined…</p>
 	
 	<div ng-show="config.configItems.length > 0"  style="width:175px; height:140px">
-		<div class="prio_container">		
-				
-				<div ng-repeat="data in atcData.data" class="prio_col prio_bg_{{$index+1}} hover" ng-class="{'grey-40':atcData.data['prio'+($index+1)]==0}">
-				<a href="#/detail/atc/{{id}}/{{$index+1}}">
-					<div class="prio_box" style="color:white">
-						<p>Prio {{$index+1}}</p>
-					</div>
-					<div class="prio_content_box" style="color: white">
-						<p ng-if="atcData.data['prio'+($index+1)]<=999">{{atcData.data["prio"+($index+1)]}}</p>
-						<p ng-if="atcData.data['prio'+($index+1)]>=999">+999</p>
-					</div>
-				</a>
+		<div class="prio_container">
+				<div ng-repeat="data in atcData.data" class="prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':atcData.data['prio'+($index+1)] == 0, 'hover': atcData.data['prio'+($index+1)] !== 0}">
+					<bridge.conditional-link navigate-to="/detail/atc/{{metadata.instanceNumber}}/{{$index+1}}" navigate-if="atcData.data['prio'+($index+1)]!==0">
+						<div class="prio_box" style="color:white">
+							<p>Prio {{$index+1}}</p>
+						</div>
+						<div class="prio_content_box" style="color: white">
+							<p ng-if="atcData.data['prio'+($index+1)]<=999">{{atcData.data["prio"+($index+1)]}}</p>
+							<p ng-if="atcData.data['prio'+($index+1)]>=999">+999</p>
+						</div>
+					</bridge.conditional-link>
 				</div>				
 		</div>
 	</div>

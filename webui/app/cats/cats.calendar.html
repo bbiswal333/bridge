@@ -25,7 +25,8 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
-                        <button class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button ng-if="calUtils.getWeekNumber(week[0].date).weekNo > 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button ng-if="calUtils.getWeekNumber(week[0].date).weekNo <= 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                     </div>
                 </div>
                 <div ng-if="!maintainable" class="{{dayClass}}">
@@ -114,6 +115,6 @@
         <div ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" data-placement="left" title="Help" data-template="app/cats/overview_legend.tmpl.html" data-html="true" data-animation="app-cats-fadeAnim" bs-popover>&#xe1c4;</div>
 
 
-        <div ng-if="maintainable" ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" ng-click="toggleAnalytics()" style="right:50px;" data-placement="left" title="Details"><img src="app/cats/toggleanalytics.jpg" width="60"></div>
+        <div ng-if="maintainable" ng-class="{'app-cats-legend':true,'app-cats-legend-hide':false}" class="clickable app-cats-icon" ng-click="toggleAnalytics()" style="right:50px;" data-placement="left" title="Details"><img ng-class="{'selected_day': analytics.value}" src="app/cats/toggleanalytics.jpg" width="60"></div>
 	</div>
 </div>

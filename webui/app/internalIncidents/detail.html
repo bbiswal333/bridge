@@ -37,7 +37,7 @@
 					 class="im-reporter-img"
 					 style="height: 32px;"
 					 ng-if="row.REPORTER_ID"></img>
-				<a target="_blank" href="{{row.reporterData.url}}">{{row.REPORTER_NAME}}</a>
+				<a class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
 				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
@@ -46,7 +46,7 @@
 					 class="im-reporter-img"
 					 style="height: 32px;"
 					 ng-if="row.PROCESSOR_ID"></img>
-				<a target="_blank" href="{{row.processorData.url}}">{{row.PROCESSOR_NAME}}</a>
+				<a class="clickable" ng-click="parentScope.userClick(row.processorData)">{{row.PROCESSOR_NAME}}</a>
 				<a href="mailto:{{row.processorData.mail}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.processorData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>

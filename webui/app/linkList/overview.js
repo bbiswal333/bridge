@@ -1,4 +1,4 @@
-angular.module('app.linklist', ['ui.sortable']);
+angular.module('app.linklist', ["ui.sortable"]);
 
 angular.module('app.linklist').directive('scrollBottom', function(){
     return {
@@ -53,11 +53,12 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             templatePath: "linkList/settings.html",
             controller: angular.module('app.linklist').appLinkListSettings
         };
-        $scope.config = appLinklistConfig;
+        var linklistConfig = appLinklistConfig.getInstanceForAppId($scope.metadata.guid);
+        $scope.config = linklistConfig;
 
         $scope.box.returnConfig = function () {
 
-            var configCopy = angular.copy(appLinklistConfig.data);
+            var configCopy = angular.copy(linklistConfig.data);
 
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
@@ -80,19 +81,19 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
 
         function setDefaultConfig()
         {
-            appLinklistConfig.data.listCollection.length = 0;
-            appLinklistConfig.data.listCollection.push([]);
-            appLinklistConfig.data.listCollection.push([]);
-            appLinklistConfig.data.listCollection.push([]);
-            appLinklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
-            appLinklistConfig.data.listCollection[0].push({ "name": "Most Popular Links", "url": "https://portal.wdf.sap.corp/go/most-popular-links", "type": "hyperlink"});
-            appLinklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
-            appLinklistConfig.data.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview", "type": "hyperlink" });
-            //appLinklistConfig.data.listCollection[0].push({ "name": "Bridge Github Repo", "url": "https://github.wdf.sap.corp/bridge/bridge", "type": "hyperlink" });
-            appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
-            appLinklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
-            appLinklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
-            appLinklistConfig.data.boxSize = 1;
+            linklistConfig.data.listCollection.length = 0;
+            linklistConfig.data.listCollection.push([]);
+            linklistConfig.data.listCollection.push([]);
+            linklistConfig.data.listCollection.push([]);
+            linklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "Most Popular Links", "url": "https://portal.wdf.sap.corp/go/most-popular-links", "type": "hyperlink"});
+            linklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview", "type": "hyperlink" });
+            //linklistConfig.data.listCollection[0].push({ "name": "Bridge Github Repo", "url": "https://github.wdf.sap.corp/bridge/bridge", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
+            linklistConfig.data.boxSize = 1;
         }
 
         function eventuallyRemoveDuplicates(listCollection) {
@@ -116,20 +117,20 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             return listCollection;
         }
 
-        if (appLinklistConfig.isInitialized === false) {
+        if (linklistConfig.isInitialized === false) {
             if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.hasOwnProperty('version') && $scope.appConfig.version === 1) {
-                appLinklistConfig.data = angular.copy($scope.appConfig);
-                appLinklistConfig.data.listCollection = eventuallyRemoveDuplicates(appLinklistConfig.data.listCollection);
+                linklistConfig.data = angular.copy($scope.appConfig);
+                linklistConfig.data.listCollection = eventuallyRemoveDuplicates(linklistConfig.data.listCollection);
             }
             else {
                 setDefaultConfig();
             }
 
-            for (;appLinklistConfig.data.listCollection.length < 3;) {
-                appLinklistConfig.data.listCollection.push([]);
+            for (;linklistConfig.data.listCollection.length < 3;) {
+                linklistConfig.data.listCollection.push([]);
             }
 
-            appLinklistConfig.isInitialized = true;
+            linklistConfig.isInitialized = true;
         }
 
         $scope.containsValidEntries = function(list){
@@ -148,7 +149,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
 
         $scope.numberOfValidLists = function(){
             var number = 0;
-            appLinklistConfig.data.listCollection.forEach(function(list){
+            linklistConfig.data.listCollection.forEach(function(list){
                 if ($scope.containsValidEntries(list)) {
                     number++;
                 }

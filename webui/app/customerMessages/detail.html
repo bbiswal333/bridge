@@ -36,9 +36,9 @@
 					 class="im-reporter-img"
 					 style="height: 32px; vertical-align: initial; vertical-align: auto;"
 					 ng-if="row.PROCESSOR"></img>
-				<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
-				<a class="trunctedText" target="_blank" href="{{row.url}}">{{row.PROCESSOR_NAME}}</a>
+				<a href="mailto:{{row.processor_enh.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.processor_enh.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+				<a class="trunctedText clickable" ng-click="parentScope.userClick(row.processor_enh)">{{row.processor_enh.fullName}}</a>
 			</bridge.table-column>
 			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'">
 				<a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>

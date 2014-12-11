@@ -2,7 +2,7 @@
 	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
 		<div class="im-prio_container">	
 			<div ng-repeat="prio in prios" class="prio_col im-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].selected==0}">
-				<a href="#/detail/im/{{prios[$index].name}}" >
+				<bridge.conditional-link navigate-to="/detail/im/{{prios[$index].name}}" navigate-if="prios[$index].selected!==0">
 					<div class="prio_box" style="color:white">
 						<p>{{prios[$index].name}}</p>
 					</div>
@@ -10,7 +10,7 @@
 						<p ng-if="prios[$index].selected<=99">{{prios[$index].selected}}</p>
 						<p ng-if="prios[$index].selected>=100">+99</p>
 					</div>
-				</a>	
+				</bridge.conditional-link>
 			</div>	
 		</div>
 		<div class="im-btn-container">

@@ -8,7 +8,8 @@
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.xsSyncer",
 		"needs_client"			:	true,
-		"default_hidden"		:   true
+		"default_hidden"		:   true,
+		"beta_users"			:	["D049677"]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "dataService.js", "settings.js"],

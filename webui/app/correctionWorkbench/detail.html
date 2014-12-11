@@ -17,7 +17,7 @@
 					 class="im-reporter-img"
 					 style="height: 32px"
 					 ng-if="row.reporterEnhanced.BNAME"></img>
-				<a target="_blank" href="{{row.reporterEnhanced.url}}">{{row.reporterEnhanced.username}}</a>
+				<a class="clickable" ng-click="parentScope.userClick(row.reporterEnhanced)">{{row.reporterEnhanced.fullName}}</a>
 				<a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
 				<a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>

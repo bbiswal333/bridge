@@ -37,7 +37,7 @@
         });
 
         inject(["app.atc.configservice", "bridgeDataService", function (_atcConfigService, _bridgeDataService) {
-            atcConfigService = _atcConfigService;
+            atcConfigService = _atcConfigService.getConfigForAppId("app.test");
             bridgeDataService = _bridgeDataService;
         }]);
     });

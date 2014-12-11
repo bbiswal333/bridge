@@ -1,7 +1,8 @@
-﻿/*globals jQuery*/
-angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', function ($filter, ngTableParams, appAtcConfig, $scope, $window) {
-    $scope.config = appAtcConfig;
-    $scope.currentConfigValues = appAtcConfig.newItem();
+/*globals jQuery*/
+﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', function ($filter, ngTableParams, appAtcConfig, $scope, $window) {
+    $scope.config = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid);
+    $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
+
     $scope.currentConfigValues.onlyInProcess = true;
 
     $scope.closeForm = function () {

@@ -16,11 +16,13 @@ angular.module('app.customerMessages').appImSettings = ['$scope','app.customerMe
 			}
 		};
 
-		angular.forEach($scope.orgUnits, function(scopeOrgUnit){
-			if (_.some(configservice.data.settings.selectedOrgUnits, { 'ORGUNIT': scopeOrgUnit.ORGUNIT })){
-				scopeOrgUnit.isSelected = true;
-			}
-		});
+		if (angular.isArray($scope.orgUnits)) {
+			angular.forEach($scope.orgUnits, function (scopeOrgUnit) {
+				if (_.some(configservice.data.settings.selectedOrgUnits, {'ORGUNIT': scopeOrgUnit.ORGUNIT})) {
+					scopeOrgUnit.isSelected = true;
+				}
+			});
+		}
 
 		$scope.$watch("orgUnits", function(newVal, oldVal){
 			if (oldVal !== undefined){

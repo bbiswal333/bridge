@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', 'sortableConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService",
-    function ($scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, sortableConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService) {
+    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo",
+    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -28,7 +28,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         function parseVersionString(str)
         {
-            if (typeof(str) !== 'string') { return false; }
+            if (typeof str !== 'string') { return false; }
             var x = str.split('.');
             // parse from string or default to 0 if can't parse
             var maj = parseInt(x[0]) || 0;
@@ -72,7 +72,7 @@ angular.module('bridge.app').controller('bridgeController',
         $http.get($window.client.origin + '/client').success(function (data)
         {
             //version which is needed by the application
-            var needs_version = "0.9.0";
+            var needs_version = "0.9.1";
             var has_version = "0.0.1";
             if(data.version !== undefined)
             {
@@ -118,19 +118,6 @@ angular.module('bridge.app').controller('bridgeController',
             }
         };
 
-        $scope.saveAppsSortable = function(){
-          for (var i = 0; i < $scope.visible_apps.length; i++) {
-                for(var j = 0; j < $scope.apps.length; j++)
-                {
-                    if($scope.apps[j].module_name === $scope.visible_apps[i].module_name)
-                    {
-                        $scope.apps[j].order = i;
-                    }
-                }
-          }
-          bridgeConfig.store(bridgeDataService);
-        };
-
         $scope.overview_click = function () {
             $location.path('/');
             $window.document.getElementById('overview-button').classList.add('selected');
@@ -155,65 +142,6 @@ angular.module('bridge.app').controller('bridgeController',
 			this.modalInstance.result.then(onModalClosed, onModalClosed);
         };
 
-        $scope.apps = [];
-        $scope.$watch('apps', function () {
-            if (!$scope.visible_apps) {
-                $scope.visible_apps = [];
-            }
-            if ($scope.apps)
-            {
-                for (var i = 0; i < $scope.apps.length; i++)
-                {
-                    var module_visible = false;
-                    if ($scope.apps[i].show)
-                    {
-                        for(var j = 0; j < $scope.visible_apps.length; j++)
-                        {
-                            if( $scope.apps[i].module_name === $scope.visible_apps[j].module_name ){
-                                module_visible = true;
-                            }
-                        }
-                       if(!module_visible)
-                        {
-                            var push_app = $scope.apps[i];
-                            if (push_app.order === undefined) {
-                                push_app.order = $scope.visible_apps.length;
-                            }
-                            $scope.visible_apps.push(push_app);
-                        }
-                    }
-                    else
-                    {
-                        var module_index = 0;
-                        for(var k = 0; k < $scope.visible_apps.length; k++)
-                        {
-                            if( $scope.apps[i].module_name === $scope.visible_apps[k].module_name )
-                            {
-                                module_visible = true;
-                                module_index = k;
-                            }
-                        }
-                       if(module_visible)
-                        {
-                            $scope.visible_apps.splice(module_index, 1);
-                        }
-                    }
-                }
-
-
-                $scope.visible_apps.sort(function (app1, app2){
-                    if (app1.order < app2.order) {
-                        return -1;
-                    }
-                    if (app1.order > app2.order) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-            }
-        }, true);
-
         $scope.$on('closeSettingsScreenRequested', function () {
             if ($scope.modalInstance) {
                 $scope.modalInstance.close();
@@ -222,12 +150,10 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
-            $scope.sortableOptions = sortableConfig.sortableOptions;
-            $scope.sortableOptionsCaption = "Activate";
-            $scope.sortableOptions.stop = $scope.saveAppsSortable;
+            $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             $scope.temporaryData = bridgeDataService.getTemporaryData();
-            $scope.apps = bridgeDataService.getAppMetadataForProject(0);
+            $scope.projects = bridgeDataService.getProjects();
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
             }
@@ -238,6 +164,7 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.showLoadingAnimation = false;
         });
 
+        $scope.appDragInfo = dragInfo;
     }
 ]);
 

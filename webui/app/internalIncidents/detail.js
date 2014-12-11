@@ -29,15 +29,14 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             return bTicketPriorityMatches && bTicketContainsFilterString;
         };
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
+
         function enhanceMessage(message){
             if(message.REPORTER_ID !== "") {
                 employeeService.getData(message.REPORTER_ID).then(function(empData) {
                     message.reporterData = empData;
-                });
-            }
-            if(message.PROCESSOR_ID !== "") {
-                employeeService.getData(message.PROCESSOR_ID).then(function(empData) {
-                    message.processorData = empData;
                 });
             }
         }
