@@ -1,6 +1,16 @@
-angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', function($http, $window, $q){
+angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', '$modal', function($http, $window, $q, $modal){
 	var buffer = [];
 	var url = 'https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON';
+
+	this.showEmployeeModal = function(oEmployeeDetails){
+		$modal.open({
+			templateUrl: 'bridge/controls/employeeInput/employeeDetails.html',
+			controller: function($scope) {
+				$scope.selectedEmployee = oEmployeeDetails;
+			},
+			size: "sm"
+		});
+	};
 
 	this.getData = function(user){
 		var defer = $q.defer();
