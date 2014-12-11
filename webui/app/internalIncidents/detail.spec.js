@@ -37,6 +37,9 @@ describe("Internal Incidents details controller", function(){
                 $http = _$http;
                 config = _config;
         }]);
+
+        $httpBackend.whenGET("/bridge/search/buildings.xml")
+            .respond("<items><item></item></items>");
     });
 
     it("should load the tickets if the ticketData is not initialized yet", function(){
@@ -69,6 +72,7 @@ describe("Internal Incidents details controller", function(){
             .respond({
                 DATA: {
                     TELNR_DEF: "555-123-456",
+                    TELNR_MOBILE: "555-123-456",
                     BNAME: ""
                 }
             });
