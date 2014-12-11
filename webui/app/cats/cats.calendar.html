@@ -25,7 +25,8 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
-                        <button class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button ng-if="calUtils.getWeekNumber(week[0].date).weekNo > 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
+                        <button ng-if="calUtils.getWeekNumber(week[0].date).weekNo <= 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
                     </div>
                 </div>
                 <div ng-if="!maintainable" class="{{dayClass}}">
