@@ -1,6 +1,6 @@
 angular.module('app.customerMessages').controller('app.customerMessages.detailController',
-    ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
+    ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', 'employeeService',
+    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, employeeService) {
 
         $scope.$parent.$parent.detailScreen.title = "Customer Incidents Details";
         $scope.filterText = '';
@@ -56,6 +56,9 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             update_table();
         }, true);
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
 
         function enhanceMessage(message)
         {
@@ -66,10 +69,12 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             var username = message.PROCESSOR_NAME.split(" /");
             message.PROCESSOR_NAME = username[0];
 
-
             if(message.PROCESSOR)
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
+                employeeService.getData(message.PROCESSOR).then(function(employee){
+                    message.processor_enh = employee;
+                });
+                /*$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
                     message.employee = response.data.DATA;
                     if(message.employee.BNAME)
                     {
@@ -82,7 +87,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                             message.PROCESSOR_NAME = message.username;
                         }
                     }
-                });
+                });*/
             }
         }
 

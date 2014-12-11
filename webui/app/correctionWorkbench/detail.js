@@ -62,15 +62,6 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
                 employeeService.getData(workbenchItem.reporter._alternateId).then(function(employee){
                     workbenchItem.reporterEnhanced = employee;
                 });
-                /*$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + workbenchItem.reporter._alternateId + '&origin=' + $window.location.origin).then(function (response) {
-                    workbenchItem.reporterEnhanced = response.data.DATA;
-                    if(workbenchItem.reporterEnhanced.BNAME !== "")
-                    {
-                        workbenchItem.reporterEnhanced.TELNR = workbenchItem.reporterEnhanced.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                        workbenchItem.reporterEnhanced.url = 'https://people.wdf.sap.corp/profiles/' + workbenchItem.reporterEnhanced.BNAME;
-                        workbenchItem.reporterEnhanced.username = workbenchItem.reporterEnhanced.VORNA + ' ' + workbenchItem.reporterEnhanced.NACHN;
-                    }
-                });*/
             }
         }
 
