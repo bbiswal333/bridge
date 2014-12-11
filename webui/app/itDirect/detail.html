@@ -31,7 +31,7 @@
                      ng-if="row.CREATED_BY"></img>
                 <a href="mailto:{{row.creator.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
                 <a href="tel:{{row.creator.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-                <a target="_blank" href="{{row.creator.url}}">{{row.creator.fullName}}</a>
+                <a class="clickable" ng-click="parentScope.userClick(row.creator)">{{row.creator.fullName}}</a>
             </bridge.table-column>
             <bridge.table-column column-id="'6'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">
                 <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>

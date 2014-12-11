@@ -2,7 +2,7 @@
     <div style="height:140px">
         <div class="app-itdirect-prio_container">
             <div ng-repeat="prio in prios" class="prio_col app-itdirect-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':getTicketCountForPrio(prios[$index].key)==0}">
-                <bridge.conditional-link navigate-to="/detail/itdirect/{{metadata.instanceNumber}}/{{prios[$index].key}}/false" navigate-if="getTicketCountForPrio(prios[$index].key)!==0">
+                <bridge.conditional-link navigate-to="/detail/itdirect/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="getTicketCountForPrio(prios[$index].key)!==0">
                     <div class="prio_box" style="color:white">
                         <p>{{prios[$index].description}}</p>
                     </div>
