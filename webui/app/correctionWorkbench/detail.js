@@ -1,15 +1,11 @@
-angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http', '$window', '$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams',
-        function Controller($scope, $http, $window, $templateCache, workbenchData, $routeParams) {
+angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.detailController', ['$scope', '$http', '$window', '$templateCache', 'app.correctionWorkbench.workbenchData','$routeParams', 'employeeService',
+        function Controller($scope, $http, $window, $templateCache, workbenchData, $routeParams, employeeService) {
 
-        $scope.$parent.titleExtension = " - Details";
         $scope.filterText = '';
         $scope.categories = workbenchData.categories;
         $scope.workbenchData = workbenchData.workbenchData;
         $scope.categoryMap = {};
-        $scope.zoomIndex = -1;
-        $scope.zoomImg = null;
         $scope.detailForNotifications = ($routeParams.calledFromNotification === 'true');
-
 
         function update_table()
         {
@@ -55,12 +51,18 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
             update_table();
         }, true);
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
 
         function enhanceMessage(workbenchItem)
         {
             if(workbenchItem.reporter._alternateId !== "")
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + workbenchItem.reporter._alternateId + '&origin=' + $window.location.origin).then(function (response) {
+                employeeService.getData(workbenchItem.reporter._alternateId).then(function(employee){
+                    workbenchItem.reporterEnhanced = employee;
+                });
+                /*$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + workbenchItem.reporter._alternateId + '&origin=' + $window.location.origin).then(function (response) {
                     workbenchItem.reporterEnhanced = response.data.DATA;
                     if(workbenchItem.reporterEnhanced.BNAME !== "")
                     {
@@ -68,7 +70,7 @@ angular.module('app.correctionWorkbench').controller('app.correctionWorkbench.de
                         workbenchItem.reporterEnhanced.url = 'https://people.wdf.sap.corp/profiles/' + workbenchItem.reporterEnhanced.BNAME;
                         workbenchItem.reporterEnhanced.username = workbenchItem.reporterEnhanced.VORNA + ' ' + workbenchItem.reporterEnhanced.NACHN;
                     }
-                });
+                });*/
             }
         }
 
