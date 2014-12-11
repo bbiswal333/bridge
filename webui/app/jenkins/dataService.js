@@ -1,4 +1,4 @@
-angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q", "$log", function($http, $q, $log) {
+angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q", "$log", "notifier", "$window", function($http, $q, $log, notifier, $window) {
 
 	var that = this;
 
@@ -195,7 +195,7 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 		job.lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
 		getLastBuildTimestamp(job);
 
-		$http.get("/api/get?url=" + encodeURIComponent(job.url + "/api/json?depth=1&tree=color"), {withCredentials: false, timeout: 10000})
+		$http.get("/api/get?url=" + encodeURIComponent(job.url + "/api/json?depth=1&tree=color,lastCompletedBuild[number,url],lastFailedBuild[number,url]"), {withCredentials: false, timeout: 10000})
 		.success(function (data) {
 			var color = data.color;
 			job.color = (color === "notbuilt") ? "grey" : color;
@@ -215,6 +215,17 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			}else{
 				job.statusIcon = "fa-question";
 			}
+
+			// If alert flag set for job, and if last completed build failed, and that failure hasn't been reported yet (avoid duplicate notifications of same failure) - then notify
+			if (job.bAlertOnFail && data.lastCompletedBuild && data.lastFailedBuild && data.lastCompletedBuild.number === data.lastFailedBuild.number && job.lastFailureReported !== data.lastFailedBuild.number) {
+				// Update last reported failure
+				job.lastFailureReported = data.lastFailedBuild.number;
+				// Notify build failure. Open failed jenkins build in new tab on notification click
+				notifier.showInfo('Jenkins Build Failed','Last build [Build #' + data.lastFailedBuild.number + '] of job "' + job.name + '" failed.','app.jenkins', function() {
+					$window.open(data.lastFailedBuild.url, '_blank');
+				});
+			}
+
 			deferred.resolve();
 		}).error(function(data,status) {
 			$log.log("Could not GET job " + job.name + ", status: " + status);
