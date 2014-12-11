@@ -4,7 +4,7 @@ angular.module('bridge.app').directive( 'customTransclude', ["$tooltip", functio
         link: function( $scope, $element, $attrs, controller, $transclude ) {
             function addTextTooltip(parent, element, attrs) {
                 if(attrs.addTextTooltip === "true") {
-                    var tooltipScope = $tooltip(parent, {title: element.text(), trigger: "hover", placement: "bottom", container: "body"}).$scope;
+                    var tooltipScope = $tooltip(parent, {title: element.text(), trigger: "hover", placement: "bottom", container: "body", delay: { show: 400 }}).$scope;
                     tooltipScope.$on('tooltip.show.before', function() {
                         tooltipScope.title = element.text();
                     });
