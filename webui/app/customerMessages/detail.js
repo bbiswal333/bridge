@@ -74,20 +74,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 employeeService.getData(message.PROCESSOR).then(function(employee){
                     message.processor_enh = employee;
                 });
-                /*$http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
-                    message.employee = response.data.DATA;
-                    if(message.employee.BNAME)
-                    {
-                        message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.PROCESSOR;
-                        message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
-                        message.mail = message.employee.SMTP_MAIL;
-                        message.tel = message.employee.TELNR;
-                        if (!message.PROCESSOR_NAME) {
-                            message.PROCESSOR_NAME = message.username;
-                        }
-                    }
-                });*/
             }
         }
 
