@@ -296,109 +296,15 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			return deferred.promise;
 		}
 
-<<<<<<< HEAD
 		this.updateJobs = function() {
 			var promisses = [];
 			for(var jobIndex in that.jobsToDisplay) {
 				promisses.push(updateJob(that.jobsToDisplay[jobIndex]));
-=======
-<<<<<<< HEAD
-		this.updateJobs = function() {
-			var promisses = [];
-			for(var jobIndex in that.jobsToDisplay) {
-				promisses.push(updateJob(that.jobsToDisplay[jobIndex]));
-=======
-
-	this.getJenkinsJobsForCurrentView = function(){
-		that.jenkinsData.jobsAreLoading = true;
-		that.jenkinsData.jobsLoadError = false;
-		that.jenkinsData.jobsForView = [];
-
-		var view = _.find(this.jenkinsData.views, { "name":  this.jenkinsData.view });
-		if(view && view.url && this.isValidUrl(view.url) ) {
-			$http.get("/api/get?url=" + encodeURIComponent(view.url + "/api/json"), {withCredentials: false, timeout: 10000})
-			.success(function (data) {
-				if(angular.isDefined(data.jobs)) {
-					that.jenkinsData.jobsForView = data.jobs;
-				} else {
-					that.jenkinsData.jobsForView = [];
->>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
-				}
+			}
 			return $q.all(promisses);
 		};
 	};
 
-<<<<<<< HEAD
-=======
-	var formatTimestamp = function(timestamp) {
-		return $.timeago(timestamp);
-	};
-
-	function getLastBuildTimestamp(job) {
-		$http.get("/api/get?url=" + encodeURIComponent(job.jenkinsUrl + "/job/" + job.name + "/lastBuild/api/json?depth=1&tree=timestamp"), {withCredentials: false, timeout: 10000})
-		.success(function (data) {
-			job.timestamp = formatTimestamp(data.timestamp);
-			job.lastBuild = data.timestamp;
-		}).error(function (data, status){
-			job.timestamp = "unknown";
-			$log.log("Could not GET last build info for job" + job.name + ", status: " + status);
-		});
-	}
-
-	function updateJob(job) {
-		var deferred = $q.defer();
-		job.name = job.selectedJob;
-		job.url = job.jenkinsUrl + "/job/" + job.name;
-		job.lastbuildUrl = job.jenkinsUrl + "/job/" + job.name + "/lastBuild";
-		getLastBuildTimestamp(job);
-
-		$http.get("/api/get?url=" + encodeURIComponent(job.url + "/api/json?depth=1&tree=color,lastCompletedBuild[number,url],lastFailedBuild[number,url]"), {withCredentials: false, timeout: 10000})
-		.success(function (data) {
-			var color = data.color;
-			job.color = (color === "notbuilt") ? "grey" : color;
-			job.statusColor = "status" + color;
-			if(color === "red"){
-				job.statusIcon = "fa-times";
-				job.statusInfo = "Failed";
-			}else if(color === "yellow"){
-				job.statusIcon = "fa-circle";
-				job.statusInfo = "Unstable";
-			}else if(color === "blue" || color === "green"){
-				job.statusIcon = "fa-check";
-				job.statusInfo = "Success";
-			}else if(color === "blue_anime" || color === "green_anime" || color === "red_anime" || color === "yellow_anime"){
-				job.statusIcon = "fa-circle-o-notch fa-spin";
-				job.statusInfo = "Running";
-			}else{
-				job.statusIcon = "fa-question";
->>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
-			}
-<<<<<<< HEAD
-			return $q.all(promisses);
-		};
-	};
-=======
-
-			// If alert flag set for job, and if last completed build failed, and that failure hasn't been reported yet (avoid duplicate notifications of same failure) - then notify
-			if (job.bAlertOnFail && data.lastCompletedBuild && data.lastFailedBuild && data.lastCompletedBuild.number === data.lastFailedBuild.number && job.lastFailureReported !== data.lastFailedBuild.number) {
-				// Update last reported failure
-				job.lastFailureReported = data.lastFailedBuild.number;
-				// Notify build failure. Open failed jenkins build in new tab on notification click
-				notifier.showInfo('Jenkins Build Failed','Last build [Build #' + data.lastFailedBuild.number + '] of job "' + job.name + '" failed.','app.jenkins', function() {
-					$window.open(data.lastFailedBuild.url, '_blank');
-				});
-			}
-
-			deferred.resolve();
-		}).error(function(data,status) {
-			$log.log("Could not GET job " + job.name + ", status: " + status);
-			deferred.reject();
-		});
-		return deferred.promise;
-	}
->>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
-
->>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
 	var instances = {};
 	this.getInstanceForAppId = function(appId) {
 		if(instances[appId] === undefined) {
