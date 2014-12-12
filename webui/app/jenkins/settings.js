@@ -154,6 +154,26 @@ angular.module('app.jenkins').appJenkinsSettings =
 			}
 		};
 
+		$scope.alertAll_click = function () {
+			for(var i = 0; i < $scope.config.configItems.length; i++) {
+				$scope.config.configItems[i].bAlertOnFail = this.bAlertAllOnFail;
+			}
+		};
+
+		$scope.alert_click = function () {
+			this.bAlertAllOnFail = false;
+		};
+
+		$scope.alertAll_click = function () {
+			for(var i = 0; i < $scope.config.configItems.length; i++) {
+				$scope.config.configItems[i].bAlertOnFail = this.bAlertAllOnFail;
+			}
+		};
+
+		$scope.alert_click = function () {
+			this.bAlertAllOnFail = false;
+		};
+
 		/*eslint-disable */
 		$scope.tableParams = new ngTableParams({
 		/*eslint-enable */

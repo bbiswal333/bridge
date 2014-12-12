@@ -1,4 +1,4 @@
-angular.module("app.jenkins", []);
+angular.module("app.jenkins", ["notifier"]);
 angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", "$q", function (jenkinsConfigService, jenkinsDataService, $q) {
 
 	var directiveController = ["$scope", function ($scope) {

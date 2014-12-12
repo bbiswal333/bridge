@@ -24,7 +24,7 @@
 					<i ng-class="dataService.isValidView(dataService.jenkinsData.view) ? 'fa fa-check' : ''"></i>
 				</div>
 			</div>
-			
+
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Job</span>
 				<div style="width:95%">
@@ -36,7 +36,7 @@
 					<i ng-class="dataService.jenkinsData.jobsLoadError ? 'fa fa-flash' : ''"></i>
 					<i ng-class="dataService.isValidJob(dataService.jenkinsData.job) ? 'fa fa-check' : ''"></i>
 				</div>
-			</div>  
+			</div>
 
 			<div class="row" style="margin:25px 0 0 0;">
 			</div>
@@ -53,6 +53,7 @@
 					<th>View</th>
 					<th>Job</th>
 					<th>Functions</th> <!-- Empty Head for functions -->
+					<th>Failure Alert</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -63,6 +64,9 @@
 					<td data-title="'Functions'">
 						<span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-trash"></span>
 					</td>
+					<td data-title="'Failure Alert'">
+						<bridge.checkbox is-checked="configItem.bAlertOnFail" ng-click="alert_click()"></bridge.checkbox>
+					</td>
 				</tr>
 				<tr ng-if="config.configItems.length > 0">
 					<td data-title="'Source System'"></td>
@@ -70,6 +74,9 @@
 					<td data-title="'Job'"></td>
 					<td data-title="'Functions'">
 						<span ng-click="removeAll_click()" style="margin-right:0;top:0px;padding-top:10px;" class=" app-linklist-clickIcon fa fa-trash">&nbspALL</span>
+					</td>
+					<td data-title="'Failure Alert'">
+						<bridge.checkbox is-checked="bAlertAllOnFail" checked-label="ALL" unchecked-label="ALL" ng-click="alertAll_click()"></bridge.checkbox>
 					</td>
 				</tr>
 			</tbody>
