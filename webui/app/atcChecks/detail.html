@@ -1,0 +1,26 @@
+<div ng-controller="app.atcc.detailController" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
+		<div class="btn-group" style="height:32px">
+		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p1_active];" class="btn btn-default" ng-click="data.prio.p1_active = !data.prio.p1_active" style="margin-bottom:20px;">Prio 1</span>
+		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p2_active];" class="btn btn-default" ng-click="data.prio.p2_active = !data.prio.p2_active" style="margin-bottom:20px;">Prio 2</span>
+		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p3_active];" class="btn btn-default" ng-click="data.prio.p3_active = !data.prio.p3_active" style="margin-bottom:20px;">Prio 3</span>
+		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p4_active];" class="btn btn-default" ng-click="data.prio.p4_active = !data.prio.p4_active" style="margin-bottom:20px;">Prio 4</span>
+		</div>	
+	    <br/><br/>
+
+		<bridge.table table-data="data.filtered_profile" filter="filterText">
+			<bridge.table-column column-id="'1'" header="'Check'" column-size-class="'col-sm-4'" order-by="'CHKID'">{{row.CHKID}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Message'" column-size-class="'col-sm-4'" order-by="'CHKMSGID'">{{row.CHKMSGID}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Central Priority'" column-size-class="'col-sm-4'" order-by="'CENTRAL_PRIO'">{{row.CENTRAL_PRIO}}</bridge.table-column>			
+		</bridge.table>
+
+	</div>
+</div>
+
+
+
+
+
+
+
