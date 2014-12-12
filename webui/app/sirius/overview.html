@@ -1,5 +1,5 @@
 <div class="gridDiv" ng-if="!configService.configItem.showProgramOverview">
-    <div >
+    <div>
         <div ng-if="emptyTask">
             <p>This delivery contains no tasks as it is in processing status New</p>
         </div>
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div style="height:95%;">
+<div style="height:95%; overflow:auto;">
     <div ng-if="configService.configItem.showProgramOverview">
         <div class="col-xs-6 input-group add-on right-inner-addon-home" style="width: 95%;float:left">
         <bridge.input id="searchProgram"
@@ -40,7 +40,8 @@
                    input-typeahead="program.DISPLAY_TEXT for program in startSearchAsYouType()"
                    input-typeahead-min-length="3"
                    input-typeahead-wait-ms="200"
-                   input-typeahead-limit="20"
+                   input-typeahead-limit="15"
+                   input-typeahead-append-to-body="true"
                    input-typeahead-on-select="onSelect($item)"></bridge.input>
         </div>
         <a ng-if="showGrid" style="width: 5%;float: right" href="{{siriusAppURL}}#/home/program/{{ProgramGUIDSirius}}" target="_blank">

@@ -23,8 +23,8 @@
   #app-cats-maintencance-allocation-div {
     width: 100%;
     text-align: center;    
-    margin-bottom: 25px; /* 10px Dragger-Expand, 15px padding von panel-body */
-    margin-top: 40px;
+    margin-bottom: 15px;
+    margin-top: 20px;
     color: #fff;
     padding-right: 2%;
     padding-left: 2%;
@@ -157,8 +157,9 @@
     color: #707070;
 }
 .app-cats-day {
-	width: 13.5%;
-	height: 15px;
+    width: 11.8%;
+/*    width: 13.5%;
+*/	height: 15px;
 	float: left;
 	margin-bottom: 2px;
 	text-align: center;
@@ -292,7 +293,8 @@
 }
 .app-cats-week .app-cats-day {
     color: white;
-    width: 13.5%;
+    width: 11.8%;
+    /*width: 13.5%;*/
 }
 .allocation-bar-background-panel {
   margin-left: auto;

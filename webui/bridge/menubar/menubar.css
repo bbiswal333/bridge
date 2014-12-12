@@ -80,12 +80,11 @@
 .popover.bottom > .arrow{
   display: none!important;
 }
-/* ========================= *\
-|* ----- MEDIA QUERIES ----- *|
-\* ========================= */
 
 .menubar-applications-modal {
-  width: 70%;
+  width: 100%;
+  max-width: 1400px;
+  top:10px;
 }
 
 @media (max-width:1250px){
@@ -102,6 +101,7 @@
 .menubar-feedback-descriptionCell {
   display: table-cell; 
   padding: 10px;
+  vertical-align: middle;
 }
 
 .menubar-feedback-iconCell {
@@ -133,4 +133,100 @@
 }
 .nav-tabs > li > a{
   border-radius: 0;
+}
+.nav{
+  padding-left:15px;
+}
+.tab-content{
+  margin-top: 50px;
+}
+/* ========================= *\
+|* -----     ICON      ----- *|
+\* ========================= */
+
+.navicon-button {
+  display: inline-block;
+  position: relative;
+  bottom: 4px;
+  transition: 0.25s;
+  cursor: pointer;
+  user-select: none;
+
+}
+.navicon-button .navicon:before, .navicon-button .navicon:after {
+  transition: 0.25s;
+}
+
+.navicon {
+  position: relative;
+  width: 1em;
+  left: -4px;
+  height: .3125rem;
+  background: #E7E6DD;
+  transition: 0.5s;
+  border-radius: 2.5rem;
+}
+.navicon:before, .navicon:after {
+  display: block;
+  content: "";
+  height: .3125rem;
+  width: 2.5rem;
+  background: #E7E6DD;
+  position: absolute;
+  z-index: -1;
+  transition: 0.5s 0.25s;
+  border-radius: 1rem;
+}
+
+.open .navicon:before,
+.open .navicon:after {
+  transition: 0.5s;
+}
+
+/* Minus */
+.open {
+  transform: scale(0.75);
+  -webkit-transform: scale(0.75);
+}
+
+/* × and + */
+.open.plus .navicon,
+.open.x .navicon {
+  background: transparent;
+}
+.open.plus .navicon:before,
+.open.x .navicon:before {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+.open.plus .navicon:after,
+.open.x .navicon:after {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.open.plus {
+  transform: scale(0.75) rotate(45deg);
+  -webkit-transform: scale(0.75) rotate(45deg);
+}
+
+.bridge-applications-box {
+  width: 390px;
+  height: 160px;
+  border: 1px solid #bbbbbb;
+  display: inline-block;
+  margin: 15px;
+}
+
+.bridge-applications-addButton {
+  position: absolute;
+  bottom: 20px;
+  right: 0px;
+}
+.app-banner{
+  height: 200px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
 }

@@ -2,7 +2,8 @@ angular.module('bridge.search').service('bridge.search.sapediaSearch', ['$http',
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-book",
-            name: "SAPedia"
+            name: "SAPedia",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {

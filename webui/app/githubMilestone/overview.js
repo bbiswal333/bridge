@@ -4,9 +4,10 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
     ['$http', 'app.githubMilestone.configservice', "lib.utils.calUtils", "app.githubIssueSearch",
     function($http, appGithubMilestoneConfig, calUtils, githubIssueSearch) {
 
-    githubIssueSearch.getSourceInfo();
-
     var directiveController = ['$scope', function($scope ) {
+            githubIssueSearch.getInstanceForAppId($scope.metadata.guid);
+            var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.metadata.guid);
+
             $scope.box.boxSize = "2";
             $scope.box.settingsTitle = "Configure Repository and Duration";
             $scope.error = {display: false, msg: ""};
@@ -19,14 +20,14 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 
 
         $scope.box.returnConfig = function () {
-                return appGithubMilestoneConfig;
+                return config;
             };
 
         function getTimeDimensions(due_on_str) {
             var currentDate = new Date();
 
             var due_on = new Date(Date.parse(due_on_str));
-            var start = new Date(due_on.getTime() - ($scope.config.milestoneDuration * 1000 * 60 * 60 * 24));
+            var start = new Date(due_on.getTime() - (config.milestoneDuration * 1000 * 60 * 60 * 24));
 
             var due_in = calUtils.calcBusinessDays(start, due_on);
 
@@ -57,7 +58,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
         }
 
         $scope.getData = function() {
-            $scope.config = appGithubMilestoneConfig;
+            $scope.config = config;
 
             $scope.boxTitle = "Github";
                 $http({
@@ -74,7 +75,7 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                             $scope.milestones[i].issueProgress = Math.round((1 - ($scope.milestones[i].open_issues / ($scope.milestones[i].open_issues + $scope.milestones[i].closed_issues))) * 100); //Rate between open and closed Issues
 
                             //Time
-                            if ($scope.milestones[i].due_on !== undefined)
+                            if ($scope.milestones[i].due_on)
                             {
                                 foundADueMilestone = true;
 
@@ -126,45 +127,61 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
         link: function ($scope) {
 
             if ($scope.appConfig !== undefined && JSON.stringify($scope.appConfig) !== "{}") {
-                appGithubMilestoneConfig.repo.name = $scope.appConfig.repo.name;
-                appGithubMilestoneConfig.repo.full_name = $scope.appConfig.repo.full_name;
-                appGithubMilestoneConfig.repo.html_url = $scope.appConfig.repo.html_url;
-                appGithubMilestoneConfig.repo.api_url = $scope.appConfig.repo.api_url;
-                appGithubMilestoneConfig.milestoneDuration = $scope.appConfig.milestoneDuration;
-                appGithubMilestoneConfig.countMilestones = $scope.appConfig.countMilestones;
-                appGithubMilestoneConfig.html_url = $scope.appConfig.html_url;
-                appGithubMilestoneConfig.api_url = $scope.appConfig.api_url;
-                appGithubMilestoneConfig.fork = $scope.appConfig.fork;
+                var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.metadata.guid);
+                config.repo.name = $scope.appConfig.repo.name;
+                config.repo.full_name = $scope.appConfig.repo.full_name;
+                config.repo.html_url = $scope.appConfig.repo.html_url;
+                config.repo.api_url = $scope.appConfig.repo.api_url;
+                config.milestoneDuration = $scope.appConfig.milestoneDuration;
+                config.countMilestones = $scope.appConfig.countMilestones;
+                config.html_url = $scope.appConfig.html_url;
+                config.api_url = $scope.appConfig.api_url;
+                config.fork = $scope.appConfig.fork;
             }
         }
     };
 }]);
 
 angular.module('app.githubMilestone').service("app.githubIssueSearch", ['$http', 'app.githubMilestone.configservice', "bridge.search", "$window", function($http, githubConfig, bridgeSearch, $window) {
-    this.getSourceInfo = function() {
-        return {
-            icon: "fa fa-github",
-            name: "Github Issues"
-        };
-    };
-    this.findMatches = function(query, resultArray) {
-        return $http({
-                        method: 'GET',
-                        url: githubConfig.api_url + 'search/issues?q=' + query + '+repo:' + githubConfig.repo.full_name + '&origin=' + $window.location.origin,
-                        withCredentials: false
-                    }).then(
-            function(response) {
-                response.data.items.map(function(result) {
-                    resultArray.push({title: result.title, originalIssue: result});
-                });
-            }
-        );
-    };
-    this.getCallbackFn = function() {
-        return function(selectedItem) {
-            $window.open(selectedItem.originalIssue.html_url);
-        };
-    };
+    var SearchProvider = (function() {
+        return function(appId) {
 
-    bridgeSearch.addSearchProvider(this);
+            this.getSourceInfo = function() {
+                return {
+                    icon: "fa fa-github",
+                    name: "Github Issues"
+                };
+            };
+            this.findMatches = function(query, resultArray) {
+                return $http({
+                                method: 'GET',
+                                url: githubConfig.getConfigInstanceForAppId(appId).api_url + 'search/issues?q=' + query + '+repo:' + githubConfig.getConfigInstanceForAppId(appId).repo.full_name + '&origin=' + $window.location.origin,
+                                withCredentials: false
+                            }).then(
+                    function(response) {
+                        response.data.items.map(function(result) {
+                            resultArray.push({title: result.title, originalIssue: result});
+                        });
+                    }
+                );
+            };
+            this.getCallbackFn = function() {
+                return function(selectedItem) {
+                    $window.open(selectedItem.originalIssue.html_url);
+                };
+            };
+
+            bridgeSearch.addSearchProvider(this);
+        };
+    })();
+
+    var instances = {};
+
+    this.getInstanceForAppId = function(appId) {
+        if(instances[appId] === undefined) {
+            instances[appId] = new SearchProvider(appId);
+        }
+
+        return instances[appId];
+    };
 }]);

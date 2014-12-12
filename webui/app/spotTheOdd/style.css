@@ -1,0 +1,60 @@
+.spottheodd-refresh-button {
+	position: absolute;
+	bottom:0px;
+	right:15px;
+	font-size: 1.5em;
+}
+.spottheodd-pause-button {
+	position: absolute;
+	bottom:0px;
+	right:40px;
+	font-size: 1.5em;
+}
+.spottheodd-resume-button {
+	position: absolute;
+	bottom:0px;
+	right:40px;
+	font-size: 1.5em;
+}
+.spottheodd-icon{
+	background-image: url(../../app/spottheodd/spottheodd-icon.png);
+	background-size: 20px;
+	height: 20px;
+	width: 20px;
+	margin-top: 5px;	
+}
+.spottheodd-startgame{
+	position: absolute;
+	top: 25px;
+	left: -10px;
+}
+.spottheodd-timer-red{
+	color: #d53f26;
+}
+.spottheodd-paused{
+	float: left;
+    width: 170px;
+	font-size: 30px;
+	font-weight: bold;
+	line-height: 30px;
+	height: 140px;
+	text-align: center;
+	padding-top: 30px;
+}
+.spottheodd-gameover{
+    width: 165px;
+	font-size: 30px;
+	font-weight: bold;
+	line-height: 30px;
+	height: 140px;
+	text-align: center;
+	padding-top: 30px;
+	padding-left:60px
+}
+.spottheodd-cube{
+	border-radius:2px;
+	display:block;
+	float:left;
+	border-right:1px solid white;
+	border-top:1px solid white;
+}

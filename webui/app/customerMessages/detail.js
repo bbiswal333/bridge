@@ -1,14 +1,12 @@
 angular.module('app.customerMessages').controller('app.customerMessages.detailController',
-    ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', '$window',
-    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, window) {
+    ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', 'employeeService',
+    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, employeeService) {
 
         $scope.$parent.$parent.detailScreen.title = "Customer Incidents Details";
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};
-        $scope.zoomIndex = -1;
-        $scope.zoomedStyle = "";
         $scope.showNewOnly = false;
 
 
@@ -53,16 +51,14 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             }
         }
 
-        $scope.$watch('messages', function ()
-        {
-            update_table();
-        }, true);
-
         $scope.$watch('statusMap', function()
         {
             update_table();
         }, true);
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
 
         function enhanceMessage(message)
         {
@@ -73,22 +69,10 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             var username = message.PROCESSOR_NAME.split(" /");
             message.PROCESSOR_NAME = username[0];
 
-
             if(message.PROCESSOR)
             {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.PROCESSOR + '&origin=' + $window.location.origin).then(function (response) {
-                    message.employee = response.data.DATA;
-                    if(message.employee.BNAME)
-                    {
-                        message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.PROCESSOR;
-                        message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
-                        message.mail = message.employee.SMTP_MAIL;
-                        message.tel = message.employee.TELNR;
-                        if (!message.PROCESSOR_NAME) {
-                            message.PROCESSOR_NAME = message.username;
-                        }
-                    }
+                employeeService.getData(message.PROCESSOR).then(function(employee){
+                    message.processor_enh = employee;
                 });
             }
         }
@@ -97,9 +81,10 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         {
             ticketData.backendTickets.sel_components.forEach(enhanceMessage);
             ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
+            ticketData.backendTickets.colleagues.forEach(enhanceMessage);
+            ticketData.backendTickets.colleagues_aa.forEach(enhanceMessage);
             ticketData.backendTickets.assigned_me.forEach(enhanceMessage);
             ticketData.backendTickets.assigned_me_aa.forEach(enhanceMessage);
-            ticketData.backendTickets.created_me.forEach(enhanceMessage);
         }
 
         $scope.getStatusArray = function(){
@@ -107,17 +92,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         };
 
         function addMessage(message){
-            var allreadyExists = false;
-            $scope.messages.some(function(item){
-                if (angular.equals(message, item)){
-                    allreadyExists = true;
-                }
-                return allreadyExists;
-            });
-
-            if (!allreadyExists){
-                $scope.messages.push(message);
-            }
+            ticketData.addTicket($scope.messages, message);
         }
 
         function getChangedIncidents(){
@@ -153,35 +128,17 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
 
                 if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components, addMessage); }
                 if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me, addMessage); }
-                if($scope.config.data.selection.created_me)     { angular.forEach(ticketsToShow.created_me, addMessage); }
+                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketsToShow.colleagues, addMessage); }
                 if(!$scope.config.data.settings.ignore_author_action)
                 {
                     if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components_aa, addMessage); }
                     if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
+                    if($scope.config.data.selection.colleagues)    { angular.forEach(ticketsToShow.colleagues_aa, addMessage); }
                 }
                 bridgeConfig.store(bridgeDataService);
+                update_table();
             }
         },true);
-
-        function getOffset(element) {
-            var rect = element.getBoundingClientRect();
-            var top  = rect.top + $(window).scrollTop();
-            var left = rect.left + $(window).scrollLeft();
-            return { top: Math.round(top), left: Math.round(left) };
-        }
-
-        $scope.zoom = function(index, event){
-            var zoomImg = null;
-
-            $scope.zoomIndex = index;
-            if (event) {
-                zoomImg = event.currentTarget;
-                var imgOffset = getOffset(zoomImg);
-                var left = imgOffset.left - 50 + (zoomImg.width / 2);
-                var top = imgOffset.top - 50 + (zoomImg.height / 2);
-                $scope.zoomedStyle = 'left:' + left + 'px; top:' + top + 'px;';
-            }
-        };
 
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();

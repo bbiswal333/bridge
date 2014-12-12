@@ -4,33 +4,28 @@ angular.module("app.cats.allocationBar.utils", ["app.cats.utilsModule"])
 function (catsUtils) {
     this.colorCounter = 0;
 
-    this.basicBlue = [
-      "#418AC9",
-      "#8EB9DF"
-    ];
-
     this.colorful = [
-      "#FCB517",
-      "#FCD274",
-      "#8561C5",
-      "#C2B0E2",
-      "#E76F24",
-      "#F0A470",
-      "#4EA175",
-      "#A7D0BA",
-      "#418AC9",
-      "#8EB9DF"
+      "#418AC9", // blue
+      "#FCB517", // yellow
+      "#8561C5", // purple
+      "#E76F24", // orange
+      "#4EA175", // green
+      "#707070", // grey
+      "#D53F26", // red
+      "#8EB9DF", // light blue
+      "#C2b0E2", // light purple
+      "#F0A470", // light orange
+      "#A7D0BA", // light green
+      "#A6A6A6", // light grey
+      "#FCD274", // light yellow
+      "#E68C7D"  // light red
     ];
 
     this.blockColors = {};
-    this.colors = this.basicBlue;
+    this.colors = this.colorful;
 
-    this.setColorScheme = function(scheme) {
-        if (scheme === 'colorful') {
-            this.colors = this.colorful;
-        } else {
-            this.colors = this.basicBlue;
-        }
+    this.setColorScheme = function() {
+        this.colors = this.colorful;
     };
 
     this.getColorForBlock = function(block){

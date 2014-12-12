@@ -109,7 +109,6 @@
 .popover {
     z-index: 99999999;
     word-wrap: break-word;
-    /*  word-break: break-all;*/
 }
 
 .pseudoTileContent {
@@ -201,7 +200,7 @@
 .programItemInProgOverview {
     cursor: auto;
     width: 188px;
-    height: 75px;
+    /*height: 75px;*/
     padding: 0;
     /* box-shadow: 1px 3px 0 0 #DADADA; */
     margin: 25px 0px 10px -5px;
@@ -287,11 +286,6 @@
     display: block !important;
 }
 
-.popover {
-    z-index: 99999999;
-    word-wrap: break-word;
-    /*  word-break: break-all;*/
-}
 .table-header {
     background-color:#a4cbe2;
 }

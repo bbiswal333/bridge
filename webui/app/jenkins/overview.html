@@ -3,12 +3,13 @@
 </div>
 <div ng-show="showJobs" class="completeDiv">
 <div class="leftSideDiv hover" style="border-" ng-click="showJobs=false;"><i class="changeCursor imageSize fa fa-angle-left fa-2x"></i></div>
-    <div class="jobTable rightSideDiv" style="margin-top: 5px;margin-right: 12px;overflow-y: auto">
+    <div class="jobTable rightSideDiv" style="margin-top: 0px;margin-right: 0px; overflow-y: auto;">
     	<table>
-    		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
+            <!-- <tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'"> -->
+            <tr ng-repeat="job in dataService.jobsToDisplay">
     			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
-    			<td class="style" style="width: 200px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 28)}}</a></td>
-    			<td style="padding-right: 5px;">{{job.timestamp}}</td>
+    			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
+    			<td style="padding-right: 0px;">{{job.timestamp}}</td>
                 <td><a title="View Dependancy" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
     		</tr>
     	</table>

@@ -7,7 +7,7 @@ angular.module('app.getHome').service("app.getHome.configservice", ["app.getHome
 	};
 
 	this.addRouteFromConfig = function(configItem) {
-		this.routes.push(routeFactory.fromWaypoints(configItem.name, configItem.waypoints));
+		this.routes.push(routeFactory.fromWaypoints(configItem.name, configItem.waypoints, configItem.isActive));
 	};
 
 	this.removeRoute = function(route) {

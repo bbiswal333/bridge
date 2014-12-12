@@ -1,6 +1,6 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService",
-    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter, bridgeDataService) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService",
+    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter, bridgeDataService, employeeService) {
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
@@ -29,18 +29,14 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             return bTicketPriorityMatches && bTicketContainsFilterString;
         };
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
+
         function enhanceMessage(message){
-            if(message.REPORTER_ID !== "")
-            {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + message.REPORTER_ID + '&origin=' + $window.location.origin).then(function (response) {
-                    message.employee = response.data.DATA;
-                    if(message.employee.BNAME !== ""){
-                        message.employee.TELNR = message.employee.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                        message.url = 'https://people.wdf.sap.corp/profiles/' + message.employee.BNAME;
-                        message.username = message.employee.VORNA + ' ' + message.employee.NACHN;
-                        message.mail = message.employee.SMTP_MAIL;
-                        message.tel = message.employee.TELNR;
-                    }
+            if(message.REPORTER_ID !== "") {
+                employeeService.getData(message.REPORTER_ID).then(function(empData) {
+                    message.reporterData = empData;
                 });
             }
         }
@@ -49,7 +45,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             if ($scope.detailForNotifications === true){
                 $scope.messages = ticketData.ticketsFromNotifications;
             } else {
-                $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me);
+                $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
             }
             $scope.messages.forEach(enhanceMessage);
         }

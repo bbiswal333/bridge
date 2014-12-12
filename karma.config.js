@@ -17,18 +17,6 @@ module.exports = function(config) {
         // frameworks to use
         frameworks: ['jasmine'],
 
-        preprocessors: {
-            './webui/app/**/*.html': ['ng-html2js'],
-            './webui/bridge/**/*.html': ['ng-html2js'],
-            './webui/view/**/*.html': ['ng-html2js'],
-            '**/*.html': ['ng-html2js'],
-            // source files, that you wanna generate coverage for
-            // do not include tests or libraries
-            // (these files will be instrumented by Istanbul)
-            './webui/!(*.spec).js': ['coverage'],
-            './webui/!(lib)/**/!(*.spec).js': ['coverage']
-        },
-
         // list of files / patterns to load in the browser (*.spec.js is redundant)
         files: [
             './webui/lib/jQuery-2_1_0/jquery.min.js',
@@ -36,6 +24,7 @@ module.exports = function(config) {
             './webui/lib/sigma-1_0_3/sigma.min.js',
             './webui/lib/nokiaHere/jsl.js',
             './webui/lib/nokiaHere/exampleHelpers.js',
+            './webui/lib/nokiaHere/language-en-US.js',
             './webui/lib/**/*.js',
 
             './webui/loader_mock.js',
@@ -67,6 +56,17 @@ module.exports = function(config) {
             "./webui/lib-bower/**/*",
             "./webui/app/getHome/nokiaHere/**/*"
         ],
+
+        preprocessors: {
+            './webui/app/**/*.html': ['ng-html2js'],
+            './webui/bridge/**/*.html': ['ng-html2js'],
+            './webui/view/**/*.html': ['ng-html2js'],
+            // source files, that you wanna generate coverage for
+            // do not include tests or libraries
+            // (these files will be instrumented by Istanbul)
+            './webui/!(*.spec).js': ['coverage'],
+            './webui/!(lib)/**/!(*.spec).js': ['coverage']
+        },
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'

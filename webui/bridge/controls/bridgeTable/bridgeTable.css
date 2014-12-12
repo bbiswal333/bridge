@@ -1,3 +1,9 @@
 .tableTitle {
     padding-right: 5px;
 }
+
+.columnSelectButton {
+    right: 0px;
+    position: absolute;
+    z-index: 1;
+}

@@ -7,10 +7,11 @@ exports.run = function(npm)
 	var port   = param.get("port", 8080);
 	var proxy  = param.get("proxy", true);
 	var mode   = param.get("mode", "tag");	
+	var branch = param.get("branch", "master");
 
 	function update_repo()
 	{
-		helper.wrappedExec('cd /srv/bridge/ && git pull origin master && forever restart server', function (error, stdout, stderr) {
+		helper.wrappedExec('cd /srv/bridge/ && git pull origin ' + branch + ' && forever restart server', function (error, stdout, stderr) {
 			console.log('updated');			
 		});
 
@@ -24,7 +25,7 @@ exports.run = function(npm)
 		{
 			gith({
 				repo: 'bridge/bridge',
-	  			branch: 'master'
+	  			branch: branch
 			}).on( 'file:all', function( payload ) {
 	  			console.log( "..file change event received" );
 	  			update_repo();  			

@@ -2,7 +2,8 @@ angular.module('bridge.search').service('bridge.search.hanaAnswersSearch', ['$ht
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-database",
-            name: "SAP HANA Answers"
+            name: "SAP HANA Answers",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {

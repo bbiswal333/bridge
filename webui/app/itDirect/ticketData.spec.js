@@ -93,7 +93,7 @@ describe("IT Direct ticket data", function(){
     });
 
     it("should activate a priority", function(){
-       ticketData.activatePrio("2");
+       ticketData.activatePrio("02");
 
         expect(ticketData.prios[0].active).toBe(false);
         expect(ticketData.prios[1].active).toBe(true);

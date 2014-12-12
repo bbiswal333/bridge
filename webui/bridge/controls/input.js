@@ -13,7 +13,9 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             if(attrs.placeholder) {
                 $('input', element)[0].setAttribute("placeholder", attrs.placeholder);
             }
-
+            if(attrs.inputTypeaheadAppendToBody) {
+                $('input', element)[0].setAttribute("typeahead-append-to-body", attrs.inputTypeaheadAppendToBody);
+            }
             if(attrs.type) {
                 $('input', element)[0].setAttribute("type", attrs.type);
             }
@@ -82,6 +84,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-keypress", attrs.ngKeypress);
             }
 
+            if(attrs.enter) {
+                $('input', element)[0].setAttribute("ng-enter", attrs.enter);
+            }
+
             if(attrs.icon) {
                 element.append(angular.element('<i class="fa ' + attrs.icon + '" style="position: absolute; top: 0px; left: 7px; font-size: 20px" />'));
                 $('input', element).css("background-color", "rgba(0,0,0,0)");
@@ -95,4 +101,16 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             };
         }
     };
-}]);
+}]).directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                        scope.$apply(function(){
+                                scope.$eval(attrs.ngEnter);
+                        });
+
+                        event.preventDefault();
+                }
+            });
+        };
+});

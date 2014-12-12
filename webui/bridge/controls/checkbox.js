@@ -6,13 +6,17 @@ angular.module('bridge.app').directive('bridge.checkbox', function() {
         scope: {
             checkedLabel: '@',
             uncheckedLabel: '@',
-            isChecked: '='
+            isChecked: '=',
+            checkToggle: '&'
         },
         link:function ($scope, element, attrs) {
             if (attrs.ngDisabled !== undefined) {
                 $scope.$parent.$watch(attrs.ngDisabled, function (newVal) {
                     $scope.disabled = newVal;
                 });
+            }
+            if(attrs.checkToggle === undefined) {
+                $scope.checkToggle = undefined;
             }
             $scope.checkClicked = function(){
                 if ($scope.disabled !== true) {

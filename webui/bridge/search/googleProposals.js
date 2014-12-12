@@ -7,7 +7,8 @@ angular.module('bridge.search').service('bridge.search.googleProposals', ['$http
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-google",
-            name: "Google"
+            name: "Google",
+            defaultSelected: false
         };
     };
     this.findMatches = function(query, resultArray) {

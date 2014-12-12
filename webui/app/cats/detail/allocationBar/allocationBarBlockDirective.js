@@ -18,7 +18,16 @@ function (colorUtils, blockCalculations, calUtils) {
         replace: true,
         link: function ($scope, elem) {
             var originalBlockWidth;
-            // we copy blockData.value to modify it for the UI. Don't Modify blockData directly too often as this is slow
+
+            // The block seems to be the task
+            if (!$scope.blockData.task && $scope.blockData) {
+                $scope.blockData.task = angular.copy($scope.blockData);
+                $scope.blockData.fixed = true; // display of analytics
+            }
+
+            if ($scope.blockData.task.QUANTITY_DAY) { // if explicit day value is present...
+                $scope.blockData.value = $scope.blockData.task.QUANTITY_DAY;
+            }
             $scope.blockData.localValue = $scope.blockData.value;
 
             if ($scope.blockData.fixed) {
@@ -29,21 +38,31 @@ function (colorUtils, blockCalculations, calUtils) {
             $scope.blockColor = colorUtils.getColorForBlock($scope.blockData);
 
             $scope.getDescription = function () {
-                var desc = $scope.blockData.desc;
+                var desc = "";
+                if ($scope.blockData.desc) {
+                    desc = $scope.blockData.desc;
+                } else if($scope.blockData.DESCR) {
+                    desc = $scope.blockData.DESCR;
+                }
                 if ($scope.blockData.task.ZCPR_EXTID) {
-                    desc = desc + ",\n" + $scope.blockData.task.ZCPR_EXTID;
+                    if (desc) { desc = desc + ",\n"; }
+                    desc = desc + $scope.blockData.task.ZCPR_EXTID;
                 }
                 if ($scope.blockData.task.RAUFNR) {
-                    desc = desc + ",\n" + $scope.blockData.task.RAUFNR;
+                    if (desc) { desc = desc + ",\n"; }
+                    desc = desc + $scope.blockData.task.RAUFNR;
                 }
                 if ($scope.blockData.task.ZCPR_OBJGEXTID) {
-                    desc = desc + ",\n" + $scope.blockData.task.ZCPR_OBJGEXTID;
+                    if (desc) { desc = desc + ",\n"; }
+                    desc = desc + $scope.blockData.task.ZCPR_OBJGEXTID;
                 }
                 if ($scope.blockData.task.TASKTYPE) {
-                    desc = desc + ",\n" + $scope.blockData.task.TASKTYPE;
+                    if (desc) { desc = desc + ",\n"; }
+                    desc = desc + $scope.blockData.task.TASKTYPE;
                 }
                 if ($scope.blockData.task.ZZSUBTYPE) {
-                    desc = desc + ",\n" + $scope.blockData.task.ZZSUBTYPE;
+                    if (desc) { desc = desc + ",\n"; }
+                    desc = desc + $scope.blockData.task.ZZSUBTYPE;
                 }
                 return desc;
             };
@@ -54,9 +73,6 @@ function (colorUtils, blockCalculations, calUtils) {
 
             $scope.getValueAbsolute = function () {
                 return calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true, true);
-            };
-            $scope.setWidth = function(width) {
-                $scope.blockData.blockWidth = width;
             };
 
             elem.find(".allocation-bar-dragBar").draggable({
@@ -82,6 +98,15 @@ function (colorUtils, blockCalculations, calUtils) {
                 originalBlockWidth = $scope.blockData.blockWidth;
                 $scope.blockData.localValue = $scope.blockData.value;
             });
+
+            $scope.$watch("totalWidth", function () {
+                $scope.blockData.blockWidth = blockCalculations.getWidthFromValue($scope.blockData.value, $scope.totalWidth, $scope.totalValue);
+                // important: one weired line to overcome some firefox rounding issue
+                $scope.blockData.blockWidth = $scope.blockData.blockWidth - 0.01;
+                // reset originalBlockwidth to the current blockWidth for the next dragging actions
+                originalBlockWidth = $scope.blockData.blockWidth;
+                $scope.blockData.localValue = $scope.blockData.value;
+            });
         },
         templateUrl: "allocationBarBlockDirective.tmpl.html"
     };
@@ -89,7 +114,6 @@ function (colorUtils, blockCalculations, calUtils) {
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-//            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor}" title="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover="{{getDescription()}} {{getValueAsPercentage()}} % ({{getValueAbsolute()}})" popover-placement="top" popover-trigger="mouseenter" popover-popup-delay="1500">' +
             '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor, height: height - 20}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
                 '<div ng-if="height == 80" class="allocation-bar-project-text">{{blockData.desc}}</div>' +
                 '<div ng-if="height == 80" class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +

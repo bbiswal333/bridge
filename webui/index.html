@@ -27,6 +27,7 @@
     <link href="css/notificationStyles.css" rel="stylesheet" />
     <link href="css/bridgeCheckbox.css" rel="stylesheet" />
     <link href="css/bridgeInput.css" rel="stylesheet" />
+    <link href="css/bridgeButtons.css" rel="stylesheet" />
     
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
@@ -50,9 +51,11 @@
     <script src="bridge/piwik.js"></script>
     <script src="lib/xml2json.js"></script>
 
+    <script src="lib/jQueryHitTest.js"></script>
+
     <!-- icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.png" />
-    <link href="css/fonts/bridge-icons.css" rel="stylesheet" /> 
+    <link rel="shortcut icon" type="image/x-icon" href="img/bridge-icon.ico" />
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
     <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" /> 
      
     <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">  
@@ -94,29 +97,34 @@
 
 <body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
     <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
+        <bridge.menubar></bridge.menubar>
+        
         <div>
-            
-            <bridge.menubar></bridge.menubar>
-            
-            <div>
-                <div ng-if="showLoadingBar" class="loadingBar">
-                    <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
-                </div>
-            </div>
-            <div ng-if="logMode" class="logAlertBar">
-                <div class="logAlertButtonGroup">
-                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
-                    <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
-                </div>
-                <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
-            </div>
-            <div id="main-container" ng-view class="mainContainer centeredContent">
+            <div ng-if="showLoadingBar" class="loadingBar">
+                <div class="moveBox"  ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}"></div>
             </div>
         </div>
+        <div ng-if="logMode" class="logAlertBar">
+            <div class="logAlertButtonGroup">
+                <input class="btn btn-default btn_blue logAlertButton" type="button" value="Send Log" ng-click="sendLog()">
+                <input class="btn btn-default btn_blue logAlertButton" type="button" value="More Information" ng-click="showLogModeWiki()">
+            </div>
+            <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
+        </div>
+        <div id="main-container" class="mainContainer centeredContent" ng-view>
+        </div>
+
         <div style="position:absolute;bottom:0px;width:100%;">
             <alert ng-repeat="alert in alerts" style="font-weight:light;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
                 <span ng-bind-html="alert.msg"></span>
             </alert>
+        </div><!--  -->
+        <div style="position: fixed; bottom: 20px;right:45%; text-align:center; width: 138px; height: 138px" ng-class="{'invisible': !appDragInfo.appIsDragged}">
+            <div style="border-radius: 100%;text-align:center; box-shadow: 0px 0px 20px rgba(31,31,31,0.8); position: absolute" class="appDustBinIcon grey-60 hover">
+                <i class="fa fa-trash fa-4x" style="color: white;padding:35px 50px;"></i>
+            </div>
+            <bridge.app-drop-target ng-model="dustBinModel" class="appDustBin" style="width: 100%; height: 100%; opacity: 0.1;">
+            </bridge.app-drop-target>
         </div>
     </div>
 </body>

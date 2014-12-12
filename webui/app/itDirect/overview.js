@@ -42,7 +42,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
             var count = 0;
 
             function checkTicket(ticket){
-                if (ticket.PRIORITY.toString() === sPrio){
+                if (ticket.URGENCY.toString() === sPrio){
                     count++;
                 }
             }
