@@ -24,6 +24,7 @@ module.exports = function(config) {
             './webui/lib/sigma-1_0_3/sigma.min.js',
             './webui/lib/nokiaHere/jsl.js',
             './webui/lib/nokiaHere/exampleHelpers.js',
+            './webui/lib/nokiaHere/language-en-US.js',
             './webui/lib/**/*.js',
 
             './webui/loader_mock.js',
