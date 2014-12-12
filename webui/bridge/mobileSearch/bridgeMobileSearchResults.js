@@ -10,7 +10,7 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
 
             function setCount() {
                 width = ($window.innerWidth > 0) ? $window.innerWidth : $window.screen.width;
-                count = width > 991 ? 4 : 1;
+                count = (width > 991 ? 4 : ((width < 768) ? 1 : 2));
             }
 
             $($window).resize(function(){
@@ -79,10 +79,6 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
                 }
 
             };
-
-             $('#search').click(function() {
-                $('#bridge-mobileSearchOutput').fadeIn(300);
-            });
 
             $scope.showMore = function() {
                 $('#moreProvider').slideToggle(300);
