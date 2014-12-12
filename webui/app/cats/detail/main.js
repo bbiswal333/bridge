@@ -490,10 +490,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function prepareCATSData (workdate, container, clearOldTasks){
+    function prepareCATSData (workdate, container){
         var workdateBookings = [];
+        var unchangedBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
-        var targetHoursForDay = monthlyDataService.days[workdate].targetHours;
+        var targetHoursForDay      = monthlyDataService.days[workdate].targetHours;
+        var tasksInBackend         = monthlyDataService.days[workdate].tasks;
 
         if(!totalWorkingTimeForDay) {
             bridgeInBrowserNotification.addAlert('info','Nothing to submit as target hours are 0.');
@@ -502,64 +504,70 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             return null;
         }
 
-        if (clearOldTasks) {
-            monthlyDataService.days[workdate].tasks.forEach(function(task){
-                if (task.QUANTITY === 0 || catsUtils.isFixedTask(task)) {
-                    return null;
-                }
-                var taskDeletion = angular.copy(task);
-                taskDeletion.WORKDATE = workdate || task.WORKDATE;
-                taskDeletion.CATSQUANTITY = 0;
-                delete taskDeletion.QUANTITY;
-
-                container.BOOKINGS.push(taskDeletion);
-            });
-        }
-
         for(var i = 0; i < $scope.blockdata.length; i++) {
 
             var booking = angular.copy($scope.blockdata[i].task);
+            var taskInBackend = _.find(tasksInBackend, {
+                "ZCPR_OBJGEXTID": booking.ZCPR_OBJGEXTID,
+                "RAUFNR": booking.RAUFNR,
+                "TASKTYPE": booking.TASKTYPE,
+                "ZZSUBTYPE": booking.ZZSUBTYPE });
 
-            if (!catsUtils.isFixedTask(booking) ) {
-                booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
-                delete booking.QUANTITY_DAY;
-                delete booking.STATUS;
+            if (taskInBackend && taskInBackend.COUNTER) {
+                booking.COUNTER = taskInBackend.COUNTER;
+            } else {
+                booking.COUNTER = 0;
+            }
 
-                if (booking.UNIT === "H" && targetHoursForDay) {
-                    booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
-                    if (catsBackend.catsProfile === "SUP2007H") {
-                        booking.CATSHOURS = booking.CATSQUANTITY;
-                    }
-                } else {
-                    booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
-                }
-                delete booking.QUANTITY;
+            if (catsUtils.isFixedTask(booking) || (taskInBackend && catsUtils.isFixedTask(taskInBackend))) {
+                unchangedBookings.push(booking);
+                continue;
+            }
 
-                if (catsUtils.isFixedTask(booking)){
-                    continue;
-                }
+            booking.WORKDATE = workdate;
+            delete booking.QUANTITY_DAY;
+            delete booking.STATUS;
 
-                if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
-                    booking.ZCPR_OBJGEXTID = null;
+            // determine amount to post
+            if (booking.UNIT === "H" && targetHoursForDay) {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
+                if (catsBackend.catsProfile === "SUP2007H") {
+                    booking.CATSHOURS = booking.CATSQUANTITY;
                 }
+            } else {
+                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+            }
+            delete booking.QUANTITY;
 
-                if (clearOldTasks) {
-                    booking.COUNTER = 0;
-                }
-                if (booking.CATSQUANTITY) { // book time > 0
-                    workdateBookings.push(booking);
-                } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                    var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
-                    for(var j = 0; j < oldTasks.length; j++) {
-                        if (oldTasks[j].RAUFNR === booking.RAUFNR
-                            && !clearOldTasks) {
-                            workdateBookings.push(booking);
-                            break;
-                        }
-                    }
-                }
+            // Don't sent tasks which are already in the Backend with the exact same amount
+            if (taskInBackend &&
+                taskInBackend.QUANTITY === booking.CATSQUANTITY) {
+                unchangedBookings.push(booking);
+                continue;
+            }
+
+            //cleanup temporary data
+            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) {
+                booking.ZCPR_OBJGEXTID = null;
+            }
+
+            if (booking.CATSQUANTITY > 0) {
+                workdateBookings.push(booking);
             }
         }
+
+        // Remove all tasks which are not modified or ignored
+        tasksInBackend.forEach(function(task){
+            var taskPreparedForBooking = _.find(workdateBookings, {"COUNTER": task.COUNTER });
+            var taskNotRelevantForBooking = _.find(unchangedBookings, {"COUNTER": task.COUNTER });
+            if (!taskPreparedForBooking && !taskNotRelevantForBooking) {
+                var taskDeletion = angular.copy(task);
+                taskDeletion.WORKDATE = workdate;
+                taskDeletion.CATSQUANTITY = 0;
+                delete taskDeletion.QUANTITY;
+                container.BOOKINGS.push(taskDeletion);
+            }
+        });
 
         // adjust slight deviations in QUANTITY when posting part time
         var totalBookingQuantity = 0;
@@ -606,7 +614,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     };
 
     $scope.saveTimesheet = function(){
-        var clearOldTasks = false;
         var weeks = [];
         var container = {
             BOOKINGS: []
@@ -625,13 +632,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        if ($scope.selectedDates.length > 1) {
-            clearOldTasks = true;
-        }
-
         try {
             $scope.selectedDates.forEach(function(dayString){
-                container = prepareCATSData(dayString, container, clearOldTasks);
+                container = prepareCATSData(dayString, container);
 
                 var day = monthlyDataService.days[dayString];
                 if (weeks.indexOf(day.year + '.' + day.week) === -1) {
