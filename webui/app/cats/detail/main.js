@@ -209,7 +209,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             var i = 0;
             while (i < $scope.blockdata.length) {
                 if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
-                    if ($scope.blockdata[i].task.COUNTER) {
+                    if (catsUtils.isFixedTask($scope.blockdata[i].task)) {
+                        bridgeInBrowserNotification.addAlert('danger','That task is not a regular CAT2 task and can not be removed.');
+                        return;
+                    } else if ($scope.blockdata[i].task.COUNTER) {
                         $scope.blockdata[i].value = 0; // is kept for deletion in backend with value = 0
                     } else {
                         $scope.blockdata.splice(i,1);
@@ -516,40 +519,43 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         for(var i = 0; i < $scope.blockdata.length; i++) {
 
             var booking = angular.copy($scope.blockdata[i].task);
-            booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
-            delete booking.QUANTITY_DAY;
-            delete booking.STATUS;
 
-            if (booking.UNIT === "H" && targetHoursForDay) {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
-                if (catsBackend.catsProfile === "SUP2007H") {
-                    booking.CATSHOURS = booking.CATSQUANTITY;
+            if (!catsUtils.isFixedTask(booking) ) {
+                booking.WORKDATE = workdate || $scope.blockdata[i].task.WORKDATE;
+                delete booking.QUANTITY_DAY;
+                delete booking.STATUS;
+
+                if (booking.UNIT === "H" && targetHoursForDay) {
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
+                    if (catsBackend.catsProfile === "SUP2007H") {
+                        booking.CATSHOURS = booking.CATSQUANTITY;
+                    }
+                } else {
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
                 }
-            } else {
-                booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
-            }
-            delete booking.QUANTITY;
+                delete booking.QUANTITY;
 
-            if (catsUtils.isFixedTask(booking)){
-                continue;
-            }
+                if (catsUtils.isFixedTask(booking)){
+                    continue;
+                }
 
-            if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
-                booking.ZCPR_OBJGEXTID = null;
-            }
+                if (booking.TASKTYPE === booking.ZCPR_OBJGEXTID) { //cleanup temporary data
+                    booking.ZCPR_OBJGEXTID = null;
+                }
 
-            if (clearOldTasks) {
-                booking.COUNTER = 0;
-            }
-            if (booking.CATSQUANTITY) { // book time > 0
-                workdateBookings.push(booking);
-            } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
-                var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
-                for(var j = 0; j < oldTasks.length; j++) {
-                    if (oldTasks[j].RAUFNR === booking.RAUFNR
-                        && !clearOldTasks) {
-                        workdateBookings.push(booking);
-                        break;
+                if (clearOldTasks) {
+                    booking.COUNTER = 0;
+                }
+                if (booking.CATSQUANTITY) { // book time > 0
+                    workdateBookings.push(booking);
+                } else { // book time = 0 only when RAUFNR already exists ==> "Deletion of task"
+                    var oldTasks = monthlyDataService.getTasksForDate(workdate || $scope.blockdata[i].task.WORKDATE);
+                    for(var j = 0; j < oldTasks.length; j++) {
+                        if (oldTasks[j].RAUFNR === booking.RAUFNR
+                            && !clearOldTasks) {
+                            workdateBookings.push(booking);
+                            break;
+                        }
                     }
                 }
             }
@@ -652,6 +658,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 });
             } else {
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
+                $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
+                monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
+                    loadCATSDataForDay();
+                });
             }
         } catch(err) {
             $log.log("saveTimesheet(): " + err);

@@ -188,6 +188,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 						if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
 							var task = {};
 							task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
+							task.TASKCOUNTER = ISPtask.DAYS[DayIterator].TASKCOUNTER;
 							task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
 							task.RAUFNR = ISPtask.RAUFNR;
 							task.TASKTYPE = ISPtask.TASKTYPE;
