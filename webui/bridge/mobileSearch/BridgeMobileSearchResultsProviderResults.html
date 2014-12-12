@@ -1,9 +1,9 @@
 <div id="results">
     <div ng-repeat="(providerID, provider) in providers | limitTo:maxResults" ng-if="all" class="mobileProvider">
         <div ng-repeat="result in provider.results | limitTo:3" ng-click="fireCallback(providerID, $index)" class="bridge-mobileSearchOutputProviderResults allCategories" ng-if="provider.results.length > 0">
-            <div class="resultProviderIcon"><i class="{{provider.info.icon}}"></i></div>
+            <div class="resultProviderIcon"><i ng-if="$index === 0" class="{{provider.info.icon}}"></i><span ng-if="$index === 0"><br />{{provider.info.name}}</span></div>
             <div class="resultText"><bridge.mobile-search-results.search-result match="result" result-source="provider.info" query="query"></bridge.mobile-search-results.search-result></div>
-            <div class="providerName">{{provider.info.name}}</div>
+
         </div>
     </div>
     <div ng-repeat="result in providerResults.results | limitTo:maxResults">
