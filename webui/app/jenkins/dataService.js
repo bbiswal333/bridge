@@ -302,6 +302,12 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 			for(var jobIndex in that.jobsToDisplay) {
 				promisses.push(updateJob(that.jobsToDisplay[jobIndex]));
 =======
+<<<<<<< HEAD
+		this.updateJobs = function() {
+			var promisses = [];
+			for(var jobIndex in that.jobsToDisplay) {
+				promisses.push(updateJob(that.jobsToDisplay[jobIndex]));
+=======
 
 	this.getJenkinsJobsForCurrentView = function(){
 		that.jenkinsData.jobsAreLoading = true;
@@ -316,17 +322,14 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 					that.jenkinsData.jobsForView = data.jobs;
 				} else {
 					that.jenkinsData.jobsForView = [];
+>>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
 				}
-				that.jenkinsData.jobsAreLoading = false;
-			}).error(function (){
-				that.jenkinsData.jobsAreLoading = false;
-				that.jenkinsData.jobsLoadError = true;
-			});
-		} else {
-			that.jenkinsData.jobsAreLoading = false;
-		}
+			return $q.all(promisses);
+		};
 	};
 
+<<<<<<< HEAD
+=======
 	var formatTimestamp = function(timestamp) {
 		return $.timeago(timestamp);
 	};
@@ -395,6 +398,7 @@ angular.module("app.jenkins").service("app.jenkins.dataService", ["$http", "$q",
 	}
 >>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
 
+>>>>>>> branch 'jenkins-failure-alert' of https://github.wdf.sap.corp/I055636/bridge.git
 	var instances = {};
 	this.getInstanceForAppId = function(appId) {
 		if(instances[appId] === undefined) {
