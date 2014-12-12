@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.atcc",
+		"title"					:	"ATC Checks",
+		"icon_css"				:	"fa fa-check-square-o",
+		"overview_directive"	:	"app.atcc",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"Provides the centrally defined priorities for atc checks.",
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/atcChecks/:profile",
+				"templateUrl"	:	"app/atcChecks/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js","detail.js"],
+	"css_files" : []
+}
