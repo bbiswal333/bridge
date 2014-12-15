@@ -162,8 +162,13 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						var week = calUtils.getWeekNumber(today);
 						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
+						// var profileDEV2002C = 0;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
+						var profileSUP2007D = 1;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
+						var profileSUP2007C = 2;
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007H"));
+						var profileSUP2007H = 3;
 						var promise = $q.all(promises);
 						promise
 						.then(function(promisesData) {
@@ -171,36 +176,45 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							var entriesWithSubtype = 0;
 							var totalEntries = 0;
 							angular.forEach(promisesData, function(data) {
+								data.entriesWithSubtype = 0;
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
+										data.entriesWithSubtype += 1;
 										entriesWithSubtype += 1;
 									}
 								}
 								dataForAnalysis.push(data);
 							});
+
+							var profileToUse = "";
+
 							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
-								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
+								// analyse which support profile has the most entries in the template/ current week
+								if (dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+									dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
+									dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
 
-									$log.log("Time recording profile SUP2007D determined: " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007D";
-									that.catsProfileIsSupported = true;
-									deferred.resolve("SUP2007D");
+									profileToUse = "SUP2007D";
+								} else if (dataForAnalysis[profileSUP2007H].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+									dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
 
-								} else {
+									profileToUse = "SUP2007H";
+								} else if (dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
 
-									$log.log("Time recording profile SUP2007C determined: " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007C";
-									that.catsProfileIsSupported = true;
-									deferred.resolve("SUP2007C");
-
+									profileToUse = "SUP2007C";
 								}
-							} else {
-								$log.log("Time recording profile DEV2002C determined: " + totalEntries + " " + entriesWithSubtype);
-								that.catsProfile = "DEV2002C";
-								that.catsProfileIsSupported = true;
-								deferred.resolve("DEV2002C");
 							}
+
+							if (profileToUse === "") {
+								profileToUse = "DEV2002C";
+							}
+
+							$log.log("Time recording profile " + profileToUse + " determined: " + totalEntries + " " + entriesWithSubtype);
+							that.catsProfile = profileToUse;
+							that.catsProfileIsSupported = true;
+							deferred.resolve(profileToUse);
+
 						}, deferred.reject);
 					}
 				}, deferred.reject);
