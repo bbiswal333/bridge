@@ -90,6 +90,22 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
                 $scope.providerResults = results[$scope.selectedProviderID];
             };
 
+            $('#results').on('swiperight', function() {
+                if($scope.selectedProviderID >= $scope.count - 1 ) {
+                    $scope.selectProviderMore($scope.selectedProviderID + 1);
+                } else {
+                    $scope.selectProvider($scope.selectedProviderID + 1);
+                }
+            });
+
+            $('#results').on('swipeleft', function() {
+                if($scope.selectedProviderID >= $scope.count - 1 ) {
+                    $scope.selectProviderMore($scope.selectedProviderID - 1);
+                } else {
+                    $scope.selectProvider($scope.selectedProviderID - 1);
+                }
+            });
+
         }
     };
 }]);
