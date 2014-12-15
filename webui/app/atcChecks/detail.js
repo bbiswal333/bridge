@@ -1,5 +1,5 @@
 angular.module('app.atcc').controller('app.atcc.detailController',['$scope','$routeParams','$http',
-	function Controller($scope, $routeParams, $http) {	
+	function Controller($scope, $routeParams, $http) {
 
 		$scope.data = {};
 		$scope.data.prio = {};
@@ -22,14 +22,14 @@ angular.module('app.atcc').controller('app.atcc.detailController',['$scope','$ro
             }
 		}
 
-		$http.get('https://ifp.wdf.sap.corp/sap/bc/abapcq/definition/' + $routeParams.profile + '?format=json&origin=' + location.origin).success(function(data){			
-			$scope.data.profile = data.DATA;	
-			filter_data();						
+		$http.get('https://ifp.wdf.sap.corp/sap/bc/abapcq/definition/' + $routeParams.profile + '?format=json&origin=' + location.origin).success(function(data){
+			$scope.data.profile = data.DATA;
+			filter_data();
 		});
 
 
 		$scope.$watch('data.prio', function()
         {
-			filter_data();                        
+			filter_data();
         }, true);
 }]);

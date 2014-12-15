@@ -22,7 +22,6 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                 function slideUpIcons() {
                     $('.iconResult').slideUp(300);
                 }
-
                 $scope.openSearch = function() {
                     if(!$mobileMenuBarSearchfield.is(':visible')) {
 
@@ -35,15 +34,17 @@ angular.module("bridge.app").directive("bridge.mobileMenubar", [
                             $('#cancel_search').fadeIn(300);
                         });
                         $('#bridge-mobileSearchOutput').fadeIn(300);
+                    } else {
+                        $scope.closeSearch();
                     }
                 };
 
                 $scope.closeSearch = function() {
-                    $('#cancel_search').fadeOut(300, function() {
-                        $('.mobileIcons').fadeIn(200);
-                    });
-                    $mobileMenuBarSearchfield.hide('slide', {direction: 'left'}, 500);
-                    $('#bridge-mobileSearchOutput').fadeOut(300);
+                        $('#cancel_search').fadeOut(300, function() {
+                            $('.mobileIcons').fadeIn(200);
+                        });
+                        $mobileMenuBarSearchfield.hide('slide', {direction: 'left'}, 500);
+                        $('#bridge-mobileSearchOutput').fadeOut(300);
                 };
 
                 $scope.clearSearch = function() {

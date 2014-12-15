@@ -11,7 +11,6 @@
         } else {
             $scope.preferencesText = "Show Preferences";
         }
-
     };
 
     $scope.getCurrentDate = function (days)

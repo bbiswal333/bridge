@@ -251,12 +251,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		}
 
-		function getCAT2ComplianceForRange(deferred, begdate, enddate) {
+		function getCAT2ComplianceForRange(deferred, begDate, endDate) {
 			var promises = [];
-			var date = new Date(begdate.substr(0,4),begdate.substr(4,2) - 1,begdate.substr(6,2),12);
-			enddate = new Date(enddate.substr(0,4),enddate.substr(4,2) - 1,enddate.substr(6,2),12);
+			var date = begDate;
 
-			for (var week = 0; date < enddate; week++) {
+			for (var week = 0; date < endDate; week++) {
 				promises.push(getCAT2ComplianceData(date));
 				date.setDate(date.getDate() + 7);
 			}
@@ -279,9 +278,15 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			.then(function() { }, function() { deferred.reject(); }); // trigger profile determination
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
-				var begdate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + "01";
-				var enddate = "" + year + calUtils.toNumberOfCharactersString(month + 1, 2) + calUtils.getLengthOfMonth(year, month);
-				getCAT2ComplianceForRange(deferred, begdate, enddate);
+				var begDate = new Date(year,month,1,12);
+				// begDate shall be Monday
+				if (begDate.getDay() === 0) { // Sunday
+					begDate.setDate(begDate.getDate() - 6);
+				} else {
+					begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
+				}
+				var endDate = new Date(year,month,calUtils.getLengthOfMonth(year, month),12);
+				getCAT2ComplianceForRange(deferred, begDate, endDate);
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
@@ -332,9 +337,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
-			if (that.catsProfile) { // cache only if profile is already clear
-				that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
-			}
 		}
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
@@ -347,6 +349,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				.then(function(catsProfileFromBackend) {
 					retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfileFromBackend);
 				}, deferred.reject);
+				if (that.catsProfile) { // cache only if profile is already clear
+					that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+				}
 			}
 			return deferred.promise;
 		};
