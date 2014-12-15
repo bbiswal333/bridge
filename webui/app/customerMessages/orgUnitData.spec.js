@@ -10,7 +10,7 @@ describe("CustomerIncidents OrgUnit Data", function(){
         });
 
         inject(["app.customerMessages.orgUnitData", function(_orgUnitData){
-            orgUnitData = _orgUnitData;
+            orgUnitData = _orgUnitData.getInstanceForAppId("test-1");
         }]);
     });
 

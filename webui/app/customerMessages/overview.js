@@ -1,21 +1,28 @@
 angular.module('app.customerMessages', []);
 
-angular.module('app.customerMessages').factory("app.customerMessages.configservice", function (){
+angular.module('app.customerMessages').service("app.customerMessages.configservice", function (){
     //set the default configuration object
-    var config = {};
-    config.data = {};
-    config.data.settings = {};
-    config.data.settings.ignore_author_action = true;
-    config.data.settings.filterByOrgUnit = false;
-    config.data.settings.selectedOrgUnits = [];
-    config.data.settings.notificationDuration = 5000;
-    config.data.selection = {};
-    config.data.selection.sel_components = true;
-    config.data.selection.assigned_me = false;
-    config.data.selection.colleagues = false;
-    config.lastDataUpdate = null;
+    var Config = function(){
+        this.data = {};
+        this.data.settings = {};
+        this.data.settings.ignore_author_action = true;
+        this.data.settings.filterByOrgUnit = false;
+        this.data.settings.selectedOrgUnits = [];
+        this.data.settings.notificationDuration = 5000;
+        this.data.selection = {};
+        this.data.selection.sel_components = true;
+        this.data.selection.assigned_me = false;
+        this.data.selection.colleagues = false;
+        this.lastDataUpdate = null;
+    };
 
-    return config;
+    var instances = {};
+    this.getInstanceForAppId = function(appId) {
+        if(instances[appId] === undefined) {
+            instances[appId] = new Config();
+        }
+        return instances[appId];
+    };
 });
 
 angular.module('app.customerMessages').directive('app.customerMessages', function ()
@@ -28,7 +35,10 @@ angular.module('app.customerMessages').directive('app.customerMessages', functio
 
 angular.module('app.customerMessages').controller('app.customerMessages.directiveController',
     ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData',
-    function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig, orgUnitData) {
+    function Controller($scope, $http, ticketDataService, configService, bridgeDataService, bridgeConfig, orgUnitDataService) {
+        var config = configService.getInstanceForAppId($scope.metadata.guid);
+        var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+        var orgUnitData = orgUnitDataService.getInstanceForAppId($scope.metadata.guid);
 
         $scope.box.boxSize = "1";
         $scope.box.settingScreenData = {
@@ -38,7 +48,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         };
 
         $scope.box.returnConfig = function(){
-            return configservice;
+            return config;
         };
 
         $scope.prios = ticketData.prios;
@@ -75,8 +85,8 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         },true);
 
         if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined){
-            configservice.data = $scope.appConfig.data;
-            configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
+            config.data = $scope.appConfig.data;
+            config.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
         }
 
         function setErrorText(text){
@@ -97,7 +107,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             var initPromise = ticketData.initialize();
             initPromise.then(function success(data) {
                 setNoMessagesFlag();
-                $scope.config = configservice;
+                $scope.config = config;
                 ticketData.updatePrioSelectionCounts();
 
                 if (data.errors !== undefined){
@@ -108,7 +118,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             });
         }
         else{
-            $scope.config = configservice;
+            $scope.config = config;
             ticketData.updatePrioSelectionCounts();
         }
 
