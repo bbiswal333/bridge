@@ -4,7 +4,7 @@
 		<div ng-if="showNoMessages == false" style="height: 100%">
 			<div class="ic-prio_container" >
 				<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
-					<bridge.conditional-link navigate-to="/detail/internalIncidents/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
+					<bridge.conditional-link navigate-to="/detail/internalIncidents/{{metadata.instanceNumber}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
 						<div class="prio_box" style="color:white">
 							<p>{{prios[$index].description}}</p>
 						</div>

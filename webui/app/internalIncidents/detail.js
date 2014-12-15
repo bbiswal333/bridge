@@ -1,6 +1,8 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
     ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService",
-    function Controller($scope, $http, $window, ticketData, $routeParams, config, converter, bridgeDataService, employeeService) {
+    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService) {
+        var config = configService.getConfigForAppId($routeParams.appId);
+        var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
         $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;

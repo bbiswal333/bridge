@@ -2,8 +2,9 @@ angular.module('app.internalIncidents', ['notifier', 'bridge.service']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
     var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch',
-        function($scope, $http, $location, ticketData, configservice, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch){
-
+        function($scope, $http, $location, ticketDataService, configService, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch){
+            var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+            var config = configService.getConfigForAppId($scope.metadata.guid);
             $scope.box.boxSize = "1";
             $scope.box.settingScreenData = {
                 templatePath: "internalIncidents/settings.html",
@@ -11,7 +12,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 id: $scope.boxId
             };
             $scope.box.returnConfig = function() {
-                return configservice.data;
+                return config.data;
             };
 
             $scope.prios = ticketData.prios;
@@ -39,11 +40,11 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 }
             },true);
 
-            if (configservice.isInitialized === false){
-                configservice.initialize($scope.appConfig);
+            if (config.isInitialized === false){
+                config.initialize($scope.appConfig);
 
                 bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment', defaultSelected: true}, function() {
-                        return ticketData.getRelevantTickets(configservice.data.selection.sel_components, configservice.data.selection.colleagues, configservice.data.selection.assigned_me, configservice.data.selection.created_me, configservice.data.ignoreAuthorAction);
+                        return ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
                     }, {
                         keys: ["CATEGORY", "DESCRIPTION"],
                         mappingFn: function(result) {
@@ -66,12 +67,12 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 var initPromise = ticketData.initialize($scope.module_name);
                 initPromise.then(function success() {
                     setNoMessagesFlag();
-                    $scope.config = configservice;
+                    $scope.config = config;
                 }, function error(){
                     setErrorText();
                 });
             } else {
-                $scope.config = configservice;
+                $scope.config = config;
                 setNoMessagesFlag();
                 ticketData.calculateTotals();
             }

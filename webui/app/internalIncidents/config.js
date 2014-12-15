@@ -1,32 +1,39 @@
-angular.module('app.internalIncidents').factory("app.internalIncidents.configservice", function (){
-    var config = {};
-    config.data = {};
-    config.data.lastDataUpdate = null;
-    config.data.selection = {};
-    config.data.selection.sel_components = true;
-    config.data.selection.colleagues = false;
-    config.data.selection.assigned_me = false;
-    config.data.selection.created_me = false;
-    config.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false];
-    config.data.ignoreAuthorAction = true;
+angular.module('app.internalIncidents').service("app.internalIncidents.configservice", function (){
+    var Config = function() {
+        this.data = {};
+        this.data.lastDataUpdate = null;
+        this.data.selection = {};
+        this.data.selection.sel_components = true;
+        this.data.selection.colleagues = false;
+        this.data.selection.assigned_me = false;
+        this.data.selection.created_me = false;
+        this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false];
+        this.data.ignoreAuthorAction = true;
 
-    config.isInitialized = false;
-    config.initialize = function(oConfigFromBackend){
-        var property;
+        this.isInitialized = false;
+        this.initialize = function (oConfigFromBackend) {
+            var property;
 
-        config.isInitialized = true;
+            this.isInitialized = true;
 
-        for (property in oConfigFromBackend){
-            if (property === "columnVisibility" && config.data.columnVisibility.length !== oConfigFromBackend.columnVisibility.length){
-                // if the length of the columnVisibility attribute changed, reset to default. This happens for example if a new column is introduced
-                continue;
-            } else {
-                config.data[property] = oConfigFromBackend[property];
+            for (property in oConfigFromBackend) {
+                if (property === "columnVisibility" && this.data.columnVisibility.length !== oConfigFromBackend.columnVisibility.length) {
+                    // if the length of the columnVisibility attribute changed, reset to default. This happens for example if a new column is introduced
+                    continue;
+                } else {
+                    this.data[property] = oConfigFromBackend[property];
+                }
             }
-        }
 
-        this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
+            this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
+        };
     };
 
-    return config;
+    var instances = {};
+    this.getConfigForAppId = function(appId) {
+        if(instances[appId] === undefined) {
+            instances[appId] = new Config();
+        }
+        return instances[appId];
+    };
 });

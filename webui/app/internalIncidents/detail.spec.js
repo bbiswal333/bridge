@@ -51,7 +51,7 @@ describe("Internal Incidents details controller", function(){
             "$http": $http,
             "$window": $window,
             "app.internalIncidents.ticketData": ticketData,
-            "$routeParams": { prio: "1" },
+            "$routeParams": { appId: "test-1", prio: "1" },
             "app.internalIncidents.config": {},
             "bridge.converter": {},
             "bridgeDataService": { getAppConfigById: function() {
@@ -77,7 +77,7 @@ describe("Internal Incidents details controller", function(){
                 }
             });
 
-        ticketData.ticketsFromNotifications.push({
+        ticketData.getInstanceForAppId("test-1").ticketsFromNotifications.push({
             DESCRIPTION: "I am a dummy Ticket",
             REPORTER_ID: "D051804"
         });
@@ -88,6 +88,7 @@ describe("Internal Incidents details controller", function(){
             "$window": $window,
             "app.internalIncidents.ticketData": ticketData,
             "$routeParams": {
+                appId: "test-1",
                 prio: "1",
                 calledFromNotifications: "true"
             },
@@ -110,14 +111,14 @@ describe("Internal Incidents details controller", function(){
     });
 
     it("should initialize the config object if that has not happened yet", function(){
-        expect(config.isInitialized).toBe(false);
+        expect(config.getConfigForAppId("test-1").isInitialized).toBe(false);
 
         $controller("app.internalIncidents.detailController", {
             "$scope": $rootScope,
             "$http": $http,
             "$window": $window,
             "app.internalIncidents.ticketData": ticketData,
-            "$routeParams": { prio: "1", appId: "5" },
+            "$routeParams": { prio: "1", appId: "test-1" },
             "app.internalIncidents.config": config,
             "bridge.converter": {},
             "bridgeDataService": { getAppConfigById: function() {
@@ -129,6 +130,6 @@ describe("Internal Incidents details controller", function(){
             }}
         });
 
-        expect(config.isInitialized).toBe(true);
+        expect(config.getConfigForAppId("test-1").isInitialized).toBe(true);
     });
 });

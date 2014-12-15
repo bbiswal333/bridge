@@ -10,6 +10,7 @@
 		"beta"					:	false,
 		"default_hidden"		:	true,
 	    "description"			:	"Shows the Internal Incidents from the BCP system according to your component assignment there. The data is retrieved from the backup system, so there is a minor delay of 1-5 minutes for changes.",
+	  	"multiInstance"			:	true,
 		"routes":
 		[
             {
