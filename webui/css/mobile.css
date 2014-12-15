@@ -1,3 +1,16 @@
+html, body {
+    overflow-x:hidden;
+}
+
+#results div table {
+    margin-top:16px;
+}
+
+#results img.ng-scope {
+    margin-left:10px;
+    margin-right:15px;
+}
+
 #bridge-mobileSearchOutput {
     position: absolute;
     top:50px;

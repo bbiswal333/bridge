@@ -54,9 +54,9 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
             }, true);
 
             $scope.selectProvider = function(index) {
-                $scope.all = false;
-                $scope.selectedProviderID = index;
-                $scope.providerResults = results[$scope.selectedProviderID];
+                    $scope.all = false;
+                    $scope.selectedProviderID = index;
+                    $scope.providerResults = results[$scope.selectedProviderID];
             };
 
             $scope.selectProviderMore = function(index) {
@@ -85,25 +85,29 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
             };
 
             $scope.selectAll = function() {
-                $scope.all = true;
-                $scope.selectedProviderID = -1;
-                $scope.providerResults = results[$scope.selectedProviderID];
+                    $scope.all = true;
+                    $scope.selectedProviderID = -1;
+                    $scope.providerResults = results[$scope.selectedProviderID];
             };
 
-            $('#results').on('swiperight', function() {
-                if($scope.selectedProviderID >= $scope.count - 1 ) {
-                    $scope.selectProviderMore($scope.selectedProviderID + 1);
-                } else {
-                    $scope.selectProvider($scope.selectedProviderID + 1);
-                }
+            $("#results").on('swipeleft', function() {
+                $scope.$apply(function() {
+                    if($scope.selectedProviderID >= $scope.count - 1 ) {
+                        $scope.selectProviderMore($scope.selectedProviderID + 1);
+                    } else {
+                        $scope.selectProvider($scope.selectedProviderID + 1);
+                    }
+                });
             });
 
-            $('#results').on('swipeleft', function() {
-                if($scope.selectedProviderID >= $scope.count - 1 ) {
-                    $scope.selectProviderMore($scope.selectedProviderID - 1);
-                } else {
-                    $scope.selectProvider($scope.selectedProviderID - 1);
-                }
+            $("#results").on('swiperight', function() {
+                $scope.$apply(function() {
+                    if($scope.selectedProviderID > 0 ) {
+                        $scope.selectProvider($scope.selectedProviderID - 1);
+                    } else {
+                        $scope.selectAll();
+                    }
+                });
             });
 
         }
