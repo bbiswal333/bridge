@@ -59,7 +59,12 @@
 }
 .resultProviderIcon i{
     position: relative;
-    top: 20px;
+    top: 5px;
+}
+
+.resultProviderIcon span {
+    position: relative;
+    top:15px;
 }
 
 

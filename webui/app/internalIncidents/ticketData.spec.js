@@ -48,8 +48,8 @@ describe("Internal Incident ticket data", function(){
             $rootScope = _$rootScope;
             $httpBackend = _$httpBackend;
             $q = _$q;
-            ticketData = _ticketData;
-            config = _config;
+            ticketData = _ticketData.getInstanceForAppId("test-1");
+            config = _config.getConfigForAppId("test-1");
         }]);
     });
 

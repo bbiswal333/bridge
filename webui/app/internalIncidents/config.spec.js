@@ -5,7 +5,7 @@ describe("Internal Incidents config", function(){
         module("app.internalIncidents");
 
         inject(["app.internalIncidents.configservice", function(_config){
-            config = _config;
+            config = _config.getConfigForAppId("test-1");
         }]);
     });
 

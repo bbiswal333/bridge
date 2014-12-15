@@ -29,21 +29,28 @@ describe("Ticket Data Service for Customer Messages", function () {
                 }
             };
         });
-        mockModule.factory("app.customerMessages.configservice", function (){
-            var config = {};
-            config.data = {};
-            config.data.settings = {};
-            config.data.settings.ignore_author_action = false;
-            config.data.settings.filterByOrgUnit = false;
-            config.data.settings.selectedOrgUnits = [];
-            config.data.settings.notificationDuration = 5000;
-            config.data.selection = {};
-            config.data.selection.sel_components = true;
-            config.data.selection.assigned_me = true;
-            config.data.selection.colleagues = true;
-            config.lastDataUpdate = null;
+        mockModule.service("app.customerMessages.configservice", function (){
+            var Config = function(){
+                this.data = {};
+                this.data.settings = {};
+                this.data.settings.ignore_author_action = false;
+                this.data.settings.filterByOrgUnit = false;
+                this.data.settings.selectedOrgUnits = [];
+                this.data.settings.notificationDuration = 5000;
+                this.data.selection = {};
+                this.data.selection.sel_components = true;
+                this.data.selection.assigned_me = true;
+                this.data.selection.colleagues = true;
+                this.lastDataUpdate = null;
+            };
 
-            return config;
+            var instances = {};
+            this.getInstanceForAppId = function(appId) {
+                if(instances[appId] === undefined) {
+                    instances[appId] = new Config();
+                }
+                return instances[appId];
+            };
         });
 
         module("app.customerMessages");
@@ -55,7 +62,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         inject(["$rootScope", "$httpBackend", "$q", "app.customerMessages.ticketData", function (rootScope, _$httpBackend, _$q, _cmTicketData) {
             $httpBackend = _$httpBackend;
             $q = _$q;
-            cmTicketData = _cmTicketData;
+            cmTicketData = _cmTicketData.getInstanceForAppId("test-1");
 
         }]);
         sNotificationText = "";
@@ -90,15 +97,15 @@ describe("Ticket Data Service for Customer Messages", function () {
     it("should update correct count for selection", function(){
     	$httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
-            expect(configService.data.selection).toBeDefined();
+            expect(configService.getInstanceForAppId("test-1").data.selection).toBeDefined();
 
-            configService.data.selection.sel_components = true;
-            configService.data.selection.assigned_me = false;
+            configService.getInstanceForAppId("test-1").data.selection.sel_components = true;
+            configService.getInstanceForAppId("test-1").data.selection.assigned_me = false;
             cmTicketData.updatePrioSelectionCounts();
             expect(cmTicketData.prios[1].selected).toBe(0);
             expect(cmTicketData.prios[2].selected).toBe(1);
 
-            configService.data.selection.assigned_me = true;
+            configService.getInstanceForAppId("test-1").data.selection.assigned_me = true;
             cmTicketData.updatePrioSelectionCounts();
             expect(cmTicketData.prios[1].selected).toBe(1);
             expect(cmTicketData.prios[2].selected).toBe(2);
@@ -191,7 +198,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         });
 
         it("should notify me about a ticket that changed while I was offline", function(){
-            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+            configService.getInstanceForAppId("test-1").lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
@@ -203,8 +210,8 @@ describe("Ticket Data Service for Customer Messages", function () {
         });
 
         it("should show notification as long as customized", function(){
-            configService.data.settings.notificationDuration = -1;
-            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+            configService.getInstanceForAppId("test-1").data.settings.notificationDuration = -1;
+            configService.getInstanceForAppId("test-1").lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
@@ -226,7 +233,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         });
 
         it("should keep the ticketsFromNotifications even if there are newer data loads without notifications", function(){
-            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+            configService.getInstanceForAppId("test-1").lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
@@ -263,7 +270,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         });
 
         it("should provide route URL of new/changed incidents for notification", function(){
-            configService.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
+            configService.getInstanceForAppId("test-1").lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
             testGet.respond(mockData);
             cmTicketData.loadTicketData().then(function(){
@@ -285,15 +292,15 @@ describe("Ticket Data Service for Customer Messages", function () {
 
         it("should update correct count for selection", function(){
             cmTicketData.loadTicketData().then(function(){
-                expect(configService.data.selection).toBeDefined();
+                expect(configService.getInstanceForAppId("test-1").data.selection).toBeDefined();
 
-                configService.data.selection.sel_components = true;
-                configService.data.selection.assigned_me = false;
+                configService.getInstanceForAppId("test-1").data.selection.sel_components = true;
+                configService.getInstanceForAppId("test-1").data.selection.assigned_me = false;
                 cmTicketData.updatePrioSelectionCounts();
                 expect(cmTicketData.prios[1].selected).toBe(0);
                 expect(cmTicketData.prios[2].selected).toBe(2);
 
-                configService.data.selection.assigned_me = true;
+                configService.getInstanceForAppId("test-1").data.selection.assigned_me = true;
                 cmTicketData.updatePrioSelectionCounts();
                 expect(cmTicketData.prios[1].selected).toBe(1);
                 expect(cmTicketData.prios[2].selected).toBe(2);

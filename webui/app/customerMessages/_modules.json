@@ -10,14 +10,15 @@
 		"beta"					:	false,
 		"default_hidden"		:	true,
 	    "description"			:	"Shows the Customer Incidents from the BCP system according to your component assignment there. The data is retrieved from the backup system, so there is a minor delay of 1-5 minutes for changes.",
+	  	"multiInstance"			:	true,
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/customerMessages/new/:incidentGUID",
+				"route"			:	"/detail/customerMessages/new/:appId/:incidentGUID",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			},
 			{
-				"route"			:	"/detail/customerMessages/:prio",
+				"route"			:	"/detail/customerMessages/:appId/:prio",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
 		]

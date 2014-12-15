@@ -1,6 +1,8 @@
 angular.module('app.customerMessages').controller('app.customerMessages.detailController',
     ['$scope', '$http', '$window', '$templateCache', 'app.customerMessages.ticketData','$routeParams', 'app.customerMessages.configservice', 'bridgeDataService', 'bridgeConfig', 'employeeService',
-    function Controller($scope, $http, $window, $templateCache, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig, employeeService) {
+    function Controller($scope, $http, $window, $templateCache, ticketDataService, $routeParams, configService, bridgeDataService, bridgeConfig, employeeService) {
+        var config = configService.getInstanceForAppId($routeParams.appId);
+        var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
 
         $scope.$parent.$parent.detailScreen.title = "Customer Incidents Details";
         $scope.filterText = '';
@@ -8,7 +10,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};
         $scope.showNewOnly = false;
-
 
         function update_table()
         {
@@ -145,10 +146,10 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
 
             promise.then(function success() {
                 enhanceAllMessages();
-                $scope.config = configservice;
+                $scope.config = config;
             });
         } else {
             enhanceAllMessages();
-            $scope.config = configservice;
+            $scope.config = config;
         }
 }]);
