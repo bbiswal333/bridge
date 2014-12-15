@@ -337,9 +337,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			.then(function(data, status) {
 				processCatsAllocationDataForWeek(year, week, deferred, data, status);
 			}, deferred.reject);
-			if (that.catsProfile) { // cache only if profile is already clear
-				that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
-			}
 		}
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
@@ -352,6 +349,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				.then(function(catsProfileFromBackend) {
 					retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfileFromBackend);
 				}, deferred.reject);
+				if (that.catsProfile) { // cache only if profile is already clear
+					that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+				}
 			}
 			return deferred.promise;
 		};
