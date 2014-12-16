@@ -101,22 +101,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             ticketData.addTicket($scope.messages, message);
         }
 
-        //function getChangedIncidents(){
-        //    var changedIncidents = {};
-        //    var listOfGuids = $routeParams.incidentGUID.split('|');
-        //    for (var category in ticketData.backendTickets) {
-        //        var foundTickets;
-        //        foundTickets = _.where(ticketData.backendTickets[category], function(ticket){
-        //            return _.contains(listOfGuids, ticket.OBJECT_GUID );
-        //        });
-        //        changedIncidents[category] = [];
-        //        if (foundTickets.length > 0){
-        //            changedIncidents[category] = foundTickets;
-        //        }
-        //    }
-        //    return changedIncidents;
-        //}
-
         $scope.$watch('config', function() {
             var ticketsToShow = {};
             if($scope.config !== undefined)
@@ -145,15 +129,22 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             }
         },true);
 
+        function dataReady(){
+            if (config.isInitialized === false){
+                config.initialize();
+            }
+
+            $scope.config = config;
+            enhanceAllMessages();
+        }
+
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
             promise.then(function success() {
-                enhanceAllMessages();
-                $scope.config = config;
+                dataReady();
             });
         } else {
-            enhanceAllMessages();
-            $scope.config = config;
+            dataReady();
         }
 }]);

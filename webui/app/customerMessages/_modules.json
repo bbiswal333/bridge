@@ -20,6 +20,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js"],
+	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js", "config.js"],
 	"css_files" : ["style.css"]
 }

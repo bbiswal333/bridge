@@ -1,30 +1,5 @@
 angular.module('app.customerMessages', ['notifier', 'bridge.service']);
 
-angular.module('app.customerMessages').service("app.customerMessages.configservice", function (){
-    //set the default configuration object
-    var Config = function(){
-        this.data = {};
-        this.data.settings = {};
-        this.data.settings.ignore_author_action = true;
-        this.data.settings.filterByOrgUnit = false;
-        this.data.settings.selectedOrgUnits = [];
-        this.data.settings.notificationDuration = 5000;
-        this.data.selection = {};
-        this.data.selection.sel_components = true;
-        this.data.selection.assigned_me = false;
-        this.data.selection.colleagues = false;
-        this.lastDataUpdate = null;
-    };
-
-    var instances = {};
-    this.getInstanceForAppId = function(appId) {
-        if(instances[appId] === undefined) {
-            instances[appId] = new Config();
-        }
-        return instances[appId];
-    };
-});
-
 angular.module('app.customerMessages').directive('app.customerMessages', function ()
 {
     return {
@@ -48,7 +23,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         };
 
         $scope.box.returnConfig = function(){
-            return config;
+            return config.data;
         };
 
         $scope.prios = ticketData.prios;
@@ -84,9 +59,8 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             }
         },true);
 
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined){
-            config.data = $scope.appConfig.data;
-            config.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && config.isInitialized === false){
+            config.initialize();
         }
 
         function setErrorText(text){
