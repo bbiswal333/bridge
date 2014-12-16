@@ -64,6 +64,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-blur", attrs.blur);
             }
 
+            if(attrs.cancel) {
+                $('input', element)[0].setAttribute("ng-cancel", attrs.cancel);
+            }
+
             if(attrs.id) {
                 $('input', element)[0].setAttribute("id", attrs.id + "-input");
             }
@@ -74,6 +78,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
 
             if(attrs.ngDisabled) {
                 $('input', element)[0].setAttribute("ng-disabled", attrs.ngDisabled);
+            }
+
+            if(attrs.focusOn) {
+                $('input', element)[0].setAttribute("focus-on", attrs.focusOn);
             }
 
             if(attrs.ngRequired) {
@@ -105,12 +113,35 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
         return function(scope, element, attrs) {
             element.bind("keydown keypress", function(event) {
                 if(event.which === 13) {
-                        scope.$apply(function(){
-                                scope.$eval(attrs.ngEnter);
-                        });
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEnter);
+                    });
 
-                        event.preventDefault();
+                    event.preventDefault();
                 }
             });
         };
+}).directive('ngCancel', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 27) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngCancel);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+}).directive('focusOn',function($timeout) {
+    return {
+        restrict : 'A',
+        link : function($scope, $element, $attr) {
+            $scope.$watch($attr.focusOn, function(_focusVal) {
+                $timeout(function() {
+                    return _focusVal ? $element.focus() : $element.blur();
+                });
+            });
+        }
+    };
 });

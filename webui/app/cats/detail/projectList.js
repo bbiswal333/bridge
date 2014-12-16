@@ -339,26 +339,35 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function initProjectItems() {
-				colorUtils.setColorScheme(configService.colorScheme);
-				if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
-					$scope.items = angular.copy(configService.favoriteItems);
-					var header1 = {};
-					header1.DESCR = "Favourite tasks (configured in CAT2 app settings)";
-					header1.TASKTYPE = "BRIDGE_HEADER";
-					header1.RAUFNR = "3";
-					$scope.items.unshift(header1);
-					var header2 = {};
-					header2.DESCR = "Additional tasks for current day";
-					header2.TASKTYPE = "BRIDGE_HEADER";
-					header2.RAUFNR = "4";
-					$scope.items.push(header2);
-				} else {
-					$scope.items = angular.copy(configService.catsItems);
-					addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
-				}
-				$scope.items.forEach(function(item) {
-					configService.updateDescription(item);
+
+				catsBackend.determineCatsProfileFromBackend()
+				.then(function(catsProfile) {
+
+					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
+						$scope.items = angular.copy(configService.favoriteItems);
+						var header1 = {};
+						header1.DESCR = "Favourite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
+						header1.TASKTYPE = "BRIDGE_HEADER";
+						header1.RAUFNR = "3";
+						$scope.items.unshift(header1);
+						var header2 = {};
+						header2.DESCR = "Additional tasks for current day";
+						header2.TASKTYPE = "BRIDGE_HEADER";
+						header2.RAUFNR = "4";
+						$scope.items.push(header2);
+					} else {
+						$scope.items = angular.copy(configService.catsItems);
+						addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
+					}
+					$scope.items.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+
+				}, function() {
+					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
+
 			}
 
 			function markProjectItems() {

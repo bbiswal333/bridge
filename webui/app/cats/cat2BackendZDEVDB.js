@@ -16,7 +16,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
-		this.catsProfileIsSupported = false;
 		this.gracePeriodInMonth = 0;
 		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
@@ -154,7 +153,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 						$log.log("Time recording profile retrieved from Backend: " + data.PROFILE);
 						that.catsProfile = data.PROFILE;
-						that.catsProfileIsSupported = true;
 						deferred.resolve(data.PROFILE);
 
 					} else {
@@ -162,45 +160,49 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						var week = calUtils.getWeekNumber(today);
 						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
+						var profileDEV2002C = 0;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
+						var profileSUP2007D = 1;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
+						var profileSUP2007C = 2;
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007H"));
+						var profileSUP2007H = 3;
 						var promise = $q.all(promises);
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
-							var entriesWithSubtype = 0;
 							var totalEntries = 0;
 							angular.forEach(promisesData, function(data) {
+								data.entriesWithSubtype = 0;
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
-										entriesWithSubtype += 1;
+										data.entriesWithSubtype += 1;
 									}
 								}
 								dataForAnalysis.push(data);
 							});
-							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
-								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
 
-									$log.log("Time recording profile SUP2007D determined: " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007D";
-									that.catsProfileIsSupported = true;
-									deferred.resolve("SUP2007D");
-
-								} else {
-
-									$log.log("Time recording profile SUP2007C determined: " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007C";
-									that.catsProfileIsSupported = true;
-									deferred.resolve("SUP2007C");
-
-								}
-							} else {
-								$log.log("Time recording profile DEV2002C determined: " + totalEntries + " " + entriesWithSubtype);
-								that.catsProfile = "DEV2002C";
-								that.catsProfileIsSupported = true;
-								deferred.resolve("DEV2002C");
+							var profileToUse = "DEV2002C";
+							if (		dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007D].CATS_EXT.length &&
+										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
+										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length) {
+								profileToUse = "DEV2002C";
+							} else if (	dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007D";
+							} else if (	dataForAnalysis[profileSUP2007H].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007H";
+							} else if (	dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007C";
 							}
+
+							$log.log("Time recording profile " + profileToUse + " determined.");
+							that.catsProfile = profileToUse;
+							deferred.resolve(profileToUse);
+
 						}, deferred.reject);
 					}
 				}, deferred.reject);

@@ -24,10 +24,6 @@ function (catsUtils) {
     this.blockColors = {};
     this.colors = this.colorful;
 
-    this.setColorScheme = function() {
-        this.colors = this.colorful;
-    };
-
     this.getColorForBlock = function(block){
         var len = this.colors.length;
 

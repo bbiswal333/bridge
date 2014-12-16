@@ -13,6 +13,6 @@
 		"description"			:	"Ever wondered what time it is in other SAP office locations? With the world clock app you can select your relevant locations and monitor the current times. You can even simulate the time by using drag&drop on the linear clock."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "linearClockDirective.js", "analogClockDirective.js", "settings.js", "config.js"],
-	"css_files" : []
+	"js_files" : ["overview.js", "linearClockDirective.js", "analogClockDirective.js", "config.js"],
+	"css_files" : ["worldClock.css"]
 }

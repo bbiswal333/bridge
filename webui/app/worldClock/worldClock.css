@@ -1,0 +1,10 @@
+.configAddHover {
+	border: 1px dashed #aaaaaa;
+	border-radius: 10px;
+}
+
+.configAddInactive {
+	border: 1px dashed #e6e6e6;
+	border-radius: 10px;
+	color: #e6e6e6;
+}
