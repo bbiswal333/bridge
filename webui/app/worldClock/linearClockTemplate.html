@@ -2,7 +2,7 @@
 	<div style="white-space: nowrap; position: relative; height: 40px; left: {{clockOffset}}px; margin-top: 10px" ng-mouseup="handleMouseUp()">
 		<div ng-repeat="time in timeArray" style="position: absolute; left: {{$index * oneHourWidth}}px; bottom: 0px; display: inline-block">
 			<div class="grey-60" style="width: 5px; height: 15px; position: absolute; left: -2px; bottom: 18px"/>
-			<div class="grey-60" style="width: 80px; height: 10px; position: absolute; left: {{oneHourWidth}}px; bottom: 23px"/>
+			<div class="grey-60" style="width: 80px; height: 6px; position: absolute; left: {{oneHourWidth}}px; bottom: 19px"/>
 
 			<span style="position: absolute; left: {{textOffset}}px; bottom: 0px">{{useNDigits(time.getHours(), 2)}}:00</span>
 		</div>

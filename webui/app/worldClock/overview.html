@@ -1,7 +1,12 @@
 <div style="overflow: hidden">
 	<app.world-clock.linear-clock time-offset-in-milliseconds="timeOffsetInMilliseconds"></app.world-clock.linear-clock>
 
-	<div style="display: inline-block; margin-top:10px;width:calc(100%/4)" ng-repeat="location in locations">
+	<div style="display: inline-block;width:95px; vertical-align: top; text-align: center" ng-repeat="location in locations | limitTo: 4" ng-mouseenter="showRemoveButton = true" ng-mouseleave="showRemoveButton = false">
 		<app.world-clock.analog-clock width="40" height="40" timezone-offset="location.timeOffset + timeOffsetInMilliseconds" location-name="{{location.name}}"></app.world-clock.analog-clock>
+		<a href="" ng-click="removeLocation(location)" ng-if="showRemoveButton"><i class="fa fa-trash" style="font-size: 18px"></i></a>
+	</div>
+	<div style="display: inline-block;width:95px; height: 85px; position: relative;" ng-mouseenter="showAddButton = true" ng-mouseleave="showAddButton = false" ng-show="locations.length === 0 || locations.length < 4" ng-class="{'configAddHover': showAddButton, 'configAddInactive': !showAddButton}" ng-click="editMode = true">
+		<i class="fa fa-plus" style="position: absolute; left: 40px; top: 33px; margin: 0; font-size: 18px;" ng-if="!editMode" />
+		<bridge.input ng-show="editMode" input-typeahead="location as location.name for location in searchLocation($viewValue)" focus-on="editMode" model="selectedLocation" input-typeahead-append-to-body="true" input-typeahead-on-select="addLocation($item, $model, $label)" cancel="editMode = false" blur="editMode = false"></bridge.input>
 	</div>
 </div>
