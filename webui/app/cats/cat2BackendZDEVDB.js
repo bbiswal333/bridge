@@ -160,7 +160,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						var week = calUtils.getWeekNumber(today);
 						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
-						// var profileDEV2002C = 0;
+						var profileDEV2002C = 0;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
 						var profileSUP2007D = 1;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
@@ -171,7 +171,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
-							var entriesWithSubtype = 0;
 							var totalEntries = 0;
 							angular.forEach(promisesData, function(data) {
 								data.entriesWithSubtype = 0;
@@ -179,36 +178,28 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 									totalEntries += 1;
 									if (data.CATS_EXT[i].ZZSUBTYPE) {
 										data.entriesWithSubtype += 1;
-										entriesWithSubtype += 1;
 									}
 								}
 								dataForAnalysis.push(data);
 							});
 
-							var profileToUse = "";
-
-							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
-								// analyse which support profile has the most entries in the template/ current week
-								if (dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
-									dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
-									dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
-
-									profileToUse = "SUP2007D";
-								} else if (dataForAnalysis[profileSUP2007H].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
-									dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
-
-									profileToUse = "SUP2007H";
-								} else if (dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
-
-									profileToUse = "SUP2007C";
-								}
-							}
-
-							if (profileToUse === "") {
+							var profileToUse = "DEV2002C";
+							if (		dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007D].CATS_EXT.length &&
+										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
+										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length) {
 								profileToUse = "DEV2002C";
+							} else if (	dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007D";
+							} else if (	dataForAnalysis[profileSUP2007H].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+										dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007H";
+							} else if (	dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007C";
 							}
 
-							$log.log("Time recording profile " + profileToUse + " determined: " + totalEntries + " " + entriesWithSubtype);
+							$log.log("Time recording profile " + profileToUse + " determined.");
 							that.catsProfile = profileToUse;
 							deferred.resolve(profileToUse);
 
