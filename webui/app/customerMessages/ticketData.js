@@ -1,10 +1,11 @@
 ﻿angular.module('app.customerMessages').service('app.customerMessages.ticketData',
-    ['$http', '$q', '$window', "$rootScope", "$location", 'app.customerMessages.configservice', "notifier",
-    function ($http, $q, $window, $rootScope, $location, configService, notifier) {
+    ['$http', '$q', '$window', "$rootScope", "$location", "$timeout", 'app.customerMessages.configservice', "notifier", "bridge.converter",
+    function ($http, $q, $window, $rootScope, $location, $timeout, configService, notifier, converter) {
         var Data = function(appId) {
             var that = this;
             var config = configService.getInstanceForAppId(appId);
             this.sAppIdentifier = "app.customerMessages";
+            this.appId = appId;
 
             //buckets for the backend tickets
             this.backendTickets = {};
@@ -16,11 +17,7 @@
             this.backendTickets.assigned_me_aa = [];
 
             this.lastTickets = null;
-
-            this.ticketsFromNotifications = {};
-            this.ticketsFromNotifications.assigned_me = [];
-            this.ticketsFromNotifications.sel_components = [];
-            this.ticketsFromNotifications.colleagues = [];
+            this.ticketsFromNotifications = [];
 
             // make an object so that we can have it referenced in the scope
             this.isInitialized = {value: false};
@@ -137,11 +134,7 @@
 
                 $http.get(requestUrl + '&origin=' + $window.location.origin, {withCredentials: true})
                     .success(function (data) {
-                        // data = testData;
                         that.resetData();
-
-                        var regEx = new RegExp("https:\/\/BCP\.WDF\.SAP\.CORP", "g");
-                        data = data.replace(regEx, "https://SUPPORT.WDF.SAP.CORP");
 
                         data = addCData("URL_MESSAGE", data);
                         data = addCData("DESCRIPTION", data);
@@ -149,8 +142,7 @@
                         data = addCData("REPORTER_NAME", data);
                         data = new X2JS().xml_str2json(data);
 
-                        var cmData = data.abap;
-                        var tickets = cmData.values;
+                        var tickets = data.abap.values;
 
                         // Resultnode1: Alle incidents auf Komponenten, zu denen ich assigned bin
                         // Resultnode2: Alle incidents, die auf meinem Namen stehen (unabhängig davon, zu welcher Komponente sie gehören)
@@ -278,92 +270,55 @@
                 return loadTicketPromise;
             };
 
-            this.getDateFromAbapTimeString = function (sAbapDate) {
-                return new Date(parseInt(sAbapDate.substring(0, 4)), parseInt(sAbapDate.substring(4, 6)) - 1, parseInt(sAbapDate.substring(6, 8)), parseInt(sAbapDate.substring(8, 10)),
-                    parseInt(sAbapDate.substring(10, 12)), parseInt(sAbapDate.substring(12, 14)));
-            };
-
             function notifierClickCallback(notificationApp, notificationData) {
+                that.ticketsFromNotifications = notificationData.tickets;
                 // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
-                _.defer(function () {
-                    $rootScope.$apply(function () {
-                        $location.path(notificationData.routeURL);
-                    });
+                $timeout(function() {
+                    $location.path("/detail/customerMessages/" + that.appId + "/null/true");
                 });
             }
 
             this.notifyChanges = function (newTicketData, oldTicketData) {
-                var bNewNotifications = false;
-                var ticketsToNotify = {};
-                ticketsToNotify.assigned_me = [];
-                ticketsToNotify.colleagues = [];
-                ticketsToNotify.sel_components = [];
+                function checkIfTicketIsNew(ticket){
+                    var foundTicket;
+                    for (var category in oldTicketData) {
+                        foundTicket = _.find(oldTicketData[category], {OBJECT_GUID: ticket.OBJECT_GUID});
 
-                for (var newTicketsCategory in newTicketData) {
-                    newTicketData[newTicketsCategory].forEach(function (ticket) {
-                        var foundTicket;
-                        for (var category in oldTicketData) {
-                            foundTicket = _.find(oldTicketData[category], {OBJECT_GUID: ticket.OBJECT_GUID});
-
-                            if (foundTicket) {
-                                break;
-                            }
+                        if (foundTicket) {
+                            break;
                         }
+                    }
 
-                        // var routeURL = "/detail/customerMessages/new/";
-                        if (!foundTicket) {
-                            bNewNotifications = true;
-                            ticketsToNotify[newTicketsCategory].push(ticket);
-                            // routeURL += ticket.OBJECT_GUID;
-                            notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback,
-                                config.data.settings.notificationDuration, {routeURL: ticket.URL_MESSAGE.toString()});
-                        } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
-                            bNewNotifications = true;
-                            ticketsToNotify[newTicketsCategory].push(ticket);
-                            // routeURL += ticket.OBJECT_GUID;
-                            notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback,
-                                config.data.settings.notificationDuration, {routeURL: ticket.URL_MESSAGE.toString()});
-                        }
-                    });
+                    if (!foundTicket) {
+                        notifier.showInfo('New Customer Incident', 'There is a new Customer Incident "' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback,
+                            config.data.settings.notificationDuration, {tickets: [ticket]});
+                    } else if (ticket.CHANGE_DATE > foundTicket.CHANGE_DATE) {
+                        notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback,
+                            config.data.settings.notificationDuration, {tickets: [ticket]});
+                    }
                 }
 
-                if (bNewNotifications === true) {
-                    that.ticketsFromNotifications = ticketsToNotify;
+                for (var newTicketsCategory in newTicketData) {
+                    newTicketData[newTicketsCategory].forEach(checkIfTicketIsNew);
                 }
             };
 
             this.notifyOfflineChanges = function (tickets, lastDataUpdateFromConfig) {
-                var foundTickets;
-                var bShowNotification = false;
-                var ticketsToNotify = {};
-                ticketsToNotify.assigned_me = [];
-                ticketsToNotify.sel_components = [];
-                ticketsToNotify.colleagues = [];
-
-                var routeURL = "/detail/customerMessages/new/";
-                var guidList;
-
-                for (var category in tickets) {
-                    foundTickets = _.where(tickets[category], function (ticket) {
-                        return that.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
-                    });
-                    if (foundTickets.length > 0) {
-                        ticketsToNotify[category] = foundTickets;
-                        bShowNotification = true;
-                    }
-                    foundTickets.forEach(function (foundTicket) {
-                        if (!guidList) {
-                            guidList = foundTicket.OBJECT_GUID;
-                        }
-                        guidList += "|" + foundTicket.OBJECT_GUID;
-                    });
+                var foundTickets = [];
+                function checkIfTicketIsYounger(ticket){
+                    return converter.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
                 }
 
-                if (bShowNotification) {
-                    routeURL += guidList;
-                    that.ticketsFromNotifications = ticketsToNotify;
+                for (var category in tickets) {
+                    var ticketsForCategory = _.where(tickets[category], checkIfTicketIsYounger);
+                    if (ticketsForCategory !== undefined) {
+                        foundTickets = foundTickets.concat(ticketsForCategory);
+                    }
+                }
+
+                if (foundTickets.length > 0){
                     notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier, notifierClickCallback,
-                        config.data.settings.notificationDuration, {routeURL: routeURL});
+                        config.data.settings.notificationDuration, {tickets: foundTickets});
                 }
             };
         };

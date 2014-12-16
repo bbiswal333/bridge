@@ -1,4 +1,4 @@
-angular.module('app.customerMessages', []);
+angular.module('app.customerMessages', ['notifier', 'bridge.service']);
 
 angular.module('app.customerMessages').service("app.customerMessages.configservice", function (){
     //set the default configuration object

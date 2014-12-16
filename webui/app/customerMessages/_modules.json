@@ -14,11 +14,7 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/customerMessages/new/:appId/:incidentGUID",
-				"templateUrl"	:	"app/customerMessages/detail.html"
-			},
-			{
-				"route"			:	"/detail/customerMessages/:appId/:prio",
+				"route"			:	"/detail/customerMessages/:appId/:prio/:calledFromNotifications",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
 		]
