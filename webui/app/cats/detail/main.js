@@ -33,10 +33,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function adjustBarSize() {
         $scope.$apply(function(){
             $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
-            if ($scope.width > 600) {
-                $scope.width = 600;
+            if ($scope.width > 1111) {
+                $scope.width = 1111;
             }
-            $scope.width = parseInt($scope.width || 600);
+            $scope.width = parseInt($scope.width || 1111);
         });
     }
 
