@@ -12,7 +12,6 @@ describe("Ticket Data Service for Customer Messages", function () {
     var configService;
     var sNotificationText;
     var iNotificationDuration;
-    var sNotificationRouteURL;
     var oNotificationData;
     var loadDataMock = function() {
         return deferred.promise;
@@ -25,7 +24,6 @@ describe("Ticket Data Service for Customer Messages", function () {
                 showInfo: function(sTitle, sText, appIdentifier_s, onCLick_fn, duration_i, notificationData_o){
                     sNotificationText = sText;
                     iNotificationDuration = duration_i;
-                    sNotificationRouteURL = notificationData_o.routeURL;
                     oNotificationData = notificationData_o;
                 }
             };

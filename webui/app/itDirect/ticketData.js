@@ -94,11 +94,11 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             ticketsToNotify.assigned_me = [];
             ticketsToNotify.savedSearch = [];
 
-            for (var newTicketsCategory in newTicketData){
+            function checkForChangedTickets(newTicketsCategory){
                 angular.forEach(newTicketData[newTicketsCategory], function(ticket){
                     var foundTicket;
                     for (var category in oldTicketData) {
-                         foundTicket = _.find(oldTicketData[category], { GUID: ticket.GUID });
+                        foundTicket = _.find(oldTicketData[category], { GUID: ticket.GUID });
                         if (foundTicket !== undefined){
                             break;
                         }
@@ -116,6 +116,10 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                 });
             }
 
+            for (var newTicketsCategory in newTicketData){
+                checkForChangedTickets(newTicketsCategory);
+            }
+
             if (bNewNotifications === true) {
                 that.ticketsFromNotifications = ticketsToNotify;
             }
@@ -128,10 +132,12 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             ticketsToNotify.assigned_me = [];
             ticketsToNotify.savedSearch = [];
 
+            function checkIfTicketIsYounger(ticket){
+                return converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
+            }
+
             for (var category in tickets) {
-                foundTickets = _.where(tickets[category], function(ticket){
-                    return converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
-                });
+                foundTickets = _.where(tickets[category], checkIfTicketIsYounger);
                 if (foundTickets.length > 0){
                     ticketsToNotify[category] = foundTickets;
                     bShowNotification = true;
