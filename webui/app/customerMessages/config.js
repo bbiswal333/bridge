@@ -22,7 +22,7 @@ angular.module('app.customerMessages').service("app.customerMessages.configservi
 
             if (oConfigFromBackend.hasOwnProperty("data")){
                 for (property in oConfigFromBackend.data) {
-                    this.data[property] = oConfigFromBackend[property];
+                    this.data[property] = oConfigFromBackend.data[property];
                 }
             } else {
                 for (property in oConfigFromBackend) {
