@@ -16,7 +16,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
-		this.catsProfileIsSupported = false;
 		this.gracePeriodInMonth = 0;
 		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
@@ -154,7 +153,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 						$log.log("Time recording profile retrieved from Backend: " + data.PROFILE);
 						that.catsProfile = data.PROFILE;
-						that.catsProfileIsSupported = true;
 						deferred.resolve(data.PROFILE);
 
 					} else {
@@ -212,7 +210,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 							$log.log("Time recording profile " + profileToUse + " determined: " + totalEntries + " " + entriesWithSubtype);
 							that.catsProfile = profileToUse;
-							that.catsProfileIsSupported = true;
 							deferred.resolve(profileToUse);
 
 						}, deferred.reject);
