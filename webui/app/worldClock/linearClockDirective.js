@@ -2,6 +2,7 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 	var C_1_MINUTE = 60000;
 	var C_10_SECONDS = 10000;
 	var C_15_MINUTES = 15 * C_1_MINUTE;
+	var incrementInterval;
 
 	function getNowWithoutMinutesAndSeconds() {
 		var now = calUtils.now();
@@ -17,6 +18,8 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			"timeOffsetInMilliseconds": "="
 		},
 		controller: function($scope, $element) {
+			var dragInfo;
+
 			function createTimeArray() {
 				var timeArray = [];
 				var now = getNowWithoutMinutesAndSeconds();
@@ -36,24 +39,33 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 				return $scope.timeArray[0] - $scope.now;
 			}
 
-			var incrementInterval;
+			function stopIncrementInterval() {
+				if(incrementInterval !== undefined) {
+					$interval.cancel(incrementInterval);
+					incrementInterval = undefined;
+				}
+			}
 
-			var dragX = 0;
 			function incrementBy(value) {
 				if(incrementInterval !== undefined) {
-					return;
+					return undefined;
 				}
 
 				var counter = 0;
 				incrementInterval = $interval(function() {
 					$scope.clockOffset += (value > 0 ? 2 : -2);
-					dragX += (value > 0 ? 2 : -2);
-					counter += 2;
-					if(counter >= Math.abs(value)) {
-						$interval.cancel(incrementInterval);
-						incrementInterval = undefined;
+					if(dragInfo.active) {
+						dragInfo.mouseDownEvent.clientX += (value > 0 ? 2 : -2);
 					}
-				}, 1);
+					counter += 2;
+				}, 1, Math.abs(value) / 2);
+				incrementInterval.then(function() {
+					stopIncrementInterval();
+					if(dragInfo.active && (dragInfo.mouseMoveEvent.clientX - $element.offset().left > $element.parent().width() * 3 / 4 || dragInfo.mouseMoveEvent.clientX - $element.offset().left < $element.parent().width() / 4)) {
+						dragInfo.mouseMoveEvent.clientX -= value / 2;
+						$scope.handleMouseMove(dragInfo.mouseMoveEvent);
+					}
+				});
 			}
 
 			function calculateCursorOffset() {
@@ -86,9 +98,9 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			$scope.textOffset = -15;
 			$scope.cursorWidth = 15;
 
-			$interval(calculateNowFromOffset, C_10_SECONDS);
 			calculateNowFromOffset();
 			calculateClockVariables();
+			$interval(calculateNowFromOffset, C_10_SECONDS);
 
 			$scope.$watch("now", function() {
 				calculateTimeOffsetInMillisecondsFromNowToActualTime();
@@ -97,22 +109,29 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 
 			//$interval(createTimeArray, C_10_MINUTES);
 
-			var dragXDistance = 0;
-			var dragActive = false;
-			var dragStartedNow = null;
+			function resetDragInfo() {
+				dragInfo = {
+					active: false,
+					nowAtDragStart: null,
+					clockOffsetAtStart: null,
+					mouseDownEvent: null,
+					mouseMoveEvent: null
+				};
+			}
+			resetDragInfo();
 
 			function turnOffDragging() {
-				dragStartedNow = null;
-				dragActive = false;
-				dragXDistance = 0;
-				dragX = 0;
+				stopIncrementInterval();
+				resetDragInfo();
 			}
 
-			function calculateNowFromDragDistance(distanceInPixel, foward) {
+			function calculateNowFrom($mouseEvent) {
+				var distanceInPixel = $mouseEvent.clientX - dragInfo.mouseDownEvent.clientX;
 				var distanceInMilliseconds = C_1_MINUTE * 60 * distanceInPixel / $scope.oneHourWidth;
-				var now = calUtils.addOffsetToDate(dragStartedNow, distanceInMilliseconds);
+				var forward = distanceInMilliseconds >= 0 ? true : false;
+				var now = calUtils.addOffsetToDate(dragInfo.nowAtDragStart, distanceInMilliseconds);
 				if(now.getTime() % C_15_MINUTES !== 0) {
-					if(foward) {
+					if(forward) {
 						now = calUtils.addOffsetToDate(now, C_15_MINUTES - now.getTime() % C_15_MINUTES);
 					} else {
 						now = calUtils.addOffsetToDate(now, -now.getTime() % C_15_MINUTES);
@@ -122,15 +141,17 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			}
 
 			$scope.handleMouseDown = function($event) {
-				dragActive = true;
-				dragStartedNow = new Date($scope.now);
-				dragX = $event.clientX;
+				dragInfo.active = true;
+				dragInfo.nowAtDragStart = new Date($scope.now);
+				dragInfo.mouseDownEvent = {clientX: $event.clientX};
+				dragInfo.mouseMoveEvent = {clientX: $event.clientX};
+				dragInfo.clockOffsetAtStart = $scope.clockOffset;
 			};
 
 			$scope.handleMouseMove = function($event) {
-				if(dragActive) {
-					dragXDistance = $event.clientX - dragX;
-					$scope.now = calculateNowFromDragDistance(dragXDistance, (dragXDistance >= 0 ? true : false));
+				if(dragInfo.active) {
+					dragInfo.mouseMoveEvent = {clientX: $event.clientX};
+					$scope.now = calculateNowFrom($event);
 				}
 			};
 

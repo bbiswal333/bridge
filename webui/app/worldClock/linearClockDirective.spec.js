@@ -13,6 +13,9 @@ describe("Linear Clock Directive", function() {
 			calUtils.now = function() {
 				return new Date(Date.UTC(2014, 11, 11, 11, 11, 11));
 			};
+			calUtils.useNDigits = function() {
+				return "";
+			};
 		}]);
 
 		inject(function($rootScope, $compile, $interval) {
@@ -60,6 +63,13 @@ describe("Linear Clock Directive", function() {
 		expect($scope.cursorOffset).toEqual(-2087);
 	});
 
+	it("should check the time each 10 seconds and align the cursors", function() {
+		spyOn(calUtils, "utcNowWithOffset");
+		interval.flush(30000);
+		expect(calUtils.utcNowWithOffset).toHaveBeenCalled();
+		expect(calUtils.utcNowWithOffset.calls.count()).toEqual(3);
+	});
+
 	it("should react on dragging the cursor", function() {
 		$scope.handleMouseDown({clientX: 500});
 		$scope.handleMouseMove({clientX: 460});
@@ -101,5 +111,24 @@ describe("Linear Clock Directive", function() {
 		$scope.$digest();
 		interval.flush(1000);
 		expect($scope.clockOffset).toEqual(-1997);
+	});
+
+	it("should continue to move the clock when the cursor stays at the edge and stop when cursor moves back", function() {
+		expect($scope.clockOffset).toEqual(-1877);
+		$scope.handleMouseDown({clientX: 500});
+		$scope.handleMouseMove({clientX: 700});
+		$scope.$digest();
+		interval.flush(1000);
+		expect($scope.clockOffset).toEqual(-1997);
+		interval.flush(1000);
+		expect($scope.clockOffset).toEqual(-2117);
+		$scope.handleMouseMove({clientX: 100});
+		$scope.$digest();
+		interval.flush(1000);
+		expect($scope.clockOffset).toEqual(-2237);
+		$scope.handleMouseMove({clientX: -100});
+		$scope.$digest();
+		interval.flush(1000);
+		expect($scope.clockOffset).toEqual(-2117);
 	});
 });
