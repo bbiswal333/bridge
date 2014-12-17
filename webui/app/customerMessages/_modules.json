@@ -14,16 +14,12 @@
 		"routes"		:
 		[
 			{
-				"route"			:	"/detail/customerMessages/new/:appId/:incidentGUID",
-				"templateUrl"	:	"app/customerMessages/detail.html"
-			},
-			{
-				"route"			:	"/detail/customerMessages/:appId/:prio",
+				"route"			:	"/detail/customerMessages/:appId/:prio/:calledFromNotifications",
 				"templateUrl"	:	"app/customerMessages/detail.html"
 			}
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js"],
+	"js_files" : ["overview.js", "detail.js", "ticketData.js", "settings.js", "orgUnitData.js", "config.js"],
 	"css_files" : ["style.css"]
 }

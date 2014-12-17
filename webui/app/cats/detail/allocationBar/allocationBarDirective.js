@@ -2,10 +2,10 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 ]).directive("app.cats.allocationbar", [ "app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", function (colorUtils, blockCalculations) {
 
         var linkFunction = function($scope) {
-            if ($scope.width > 600) {
-                $scope.width = 600;
+            if ($scope.width > 1111) {
+                $scope.width = 1111;
             }
-            $scope.width = parseInt($scope.width || 600);
+            $scope.width = parseInt($scope.width || 1111);
             $scope.height = parseInt($scope.height || 100);
 
             $scope.getRemainingValue = function () {

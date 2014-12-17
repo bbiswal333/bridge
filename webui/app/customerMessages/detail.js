@@ -9,7 +9,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         $scope.messages = [];
         $scope.prios = ticketData.prios;
         $scope.statusMap = {};
-        $scope.showNewOnly = false;
 
         function update_table()
         {
@@ -17,38 +16,41 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             var statusNumberMap = {};
             if($scope.messages && $scope.messages.length > 0)
             {
-                if(!$scope.getStatusArray().length)
-                {
-                    if ($routeParams.prio) {
-                        var status_filter = $routeParams.prio.split('|');
+                if ($routeParams.calledFromNotifications === 'true'){
+                    $scope.messages.forEach(function (message){
+                        $scope.tableData.push(message);
+                    });
+                } else {
+                    if (!$scope.getStatusArray().length) {
+                        if ($routeParams.prio) {
+                            var status_filter = $routeParams.prio.split('|');
+                        }
+
+                        $scope.prios.forEach(function (prio) {
+                            if (!status_filter) {
+                                $scope.statusMap[prio.name] = {"active": true};
+                                return;
+                            }
+                            if (status_filter.indexOf(prio.name) > -1) {
+                                $scope.statusMap[prio.name] = {"active": true};
+                            }
+                            else {
+                                $scope.statusMap[prio.name] = {"active": false};
+                            }
+                        });
                     }
 
-                    $scope.prios.forEach(function (prio){
-                        if (!status_filter){
-                            $scope.statusMap[prio.name] = {"active":true};
-                            return;
-                        }
-                        if(status_filter.indexOf(prio.name) > -1)
-                        {
-                            $scope.statusMap[prio.name] = {"active":true};
-                        }
-                        else
-                        {
-                            $scope.statusMap[prio.name] = {"active":false};
+                    $scope.prios.forEach(function (prio) {
+                        statusNumberMap[prio.number] = prio.name;
+                    });
+
+                    $scope.messages.forEach(function (message) {
+                        message.PRIORITY_DESCR = statusNumberMap[message.PRIORITY_KEY];
+                        if ($scope.statusMap[message.PRIORITY_DESCR].active) {
+                            $scope.tableData.push(message);
                         }
                     });
                 }
-
-                $scope.prios.forEach(function(prio){
-                    statusNumberMap[prio.number] = prio.name;
-                });
-
-                $scope.messages.forEach(function (message){
-                    message.PRIORITY_DESCR = statusNumberMap[message.PRIORITY_KEY];
-                    if ($scope.statusMap[message.PRIORITY_DESCR].active) {
-                        $scope.tableData.push(message);
-                    }
-                });
             }
         }
 
@@ -78,14 +80,17 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             }
         }
 
-        function enhanceAllMessages()
-        {
-            ticketData.backendTickets.sel_components.forEach(enhanceMessage);
-            ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
-            ticketData.backendTickets.colleagues.forEach(enhanceMessage);
-            ticketData.backendTickets.colleagues_aa.forEach(enhanceMessage);
-            ticketData.backendTickets.assigned_me.forEach(enhanceMessage);
-            ticketData.backendTickets.assigned_me_aa.forEach(enhanceMessage);
+        function enhanceAllMessages(){
+            if ($routeParams.calledFromNotifications === 'true'){
+                ticketData.ticketsFromNotifications.forEach(enhanceMessage);
+            }else {
+                ticketData.backendTickets.sel_components.forEach(enhanceMessage);
+                ticketData.backendTickets.sel_components_aa.forEach(enhanceMessage);
+                ticketData.backendTickets.colleagues.forEach(enhanceMessage);
+                ticketData.backendTickets.colleagues_aa.forEach(enhanceMessage);
+                ticketData.backendTickets.assigned_me.forEach(enhanceMessage);
+                ticketData.backendTickets.assigned_me_aa.forEach(enhanceMessage);
+            }
         }
 
         $scope.getStatusArray = function(){
@@ -96,22 +101,6 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
             ticketData.addTicket($scope.messages, message);
         }
 
-        function getChangedIncidents(){
-            var changedIncidents = {};
-            var listOfGuids = $routeParams.incidentGUID.split('|');
-            for (var category in ticketData.backendTickets) {
-                var foundTickets;
-                foundTickets = _.where(ticketData.backendTickets[category], function(ticket){
-                    return _.contains(listOfGuids, ticket.OBJECT_GUID );
-                });
-                changedIncidents[category] = [];
-                if (foundTickets.length > 0){
-                    changedIncidents[category] = foundTickets;
-                }
-            }
-            return changedIncidents;
-        }
-
         $scope.$watch('config', function() {
             var ticketsToShow = {};
             if($scope.config !== undefined)
@@ -119,37 +108,43 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
                 var selected_messages = [];
                 $scope.messages = selected_messages;
 
-                if ($routeParams.incidentGUID){
-                    ticketsToShow = getChangedIncidents();
-                    // ticketsToShow = ticketData.ticketsFromNotifications;
-                    $scope.$parent.$parent.detailScreen.title = "New/Changed Customer Incidents";
+                if ($routeParams.calledFromNotifications === 'true'){
+                    angular.forEach(ticketData.ticketsFromNotifications, addMessage);
                 } else {
                     ticketsToShow = ticketData.backendTickets;
+
+                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components, addMessage); }
+                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me, addMessage); }
+                    if($scope.config.data.selection.colleagues)     { angular.forEach(ticketsToShow.colleagues, addMessage); }
+                    if(!$scope.config.data.settings.ignore_author_action)
+                    {
+                        if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components_aa, addMessage); }
+                        if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
+                        if($scope.config.data.selection.colleagues)    { angular.forEach(ticketsToShow.colleagues_aa, addMessage); }
+                    }
                 }
 
-                if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components, addMessage); }
-                if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me, addMessage); }
-                if($scope.config.data.selection.colleagues)     { angular.forEach(ticketsToShow.colleagues, addMessage); }
-                if(!$scope.config.data.settings.ignore_author_action)
-                {
-                    if($scope.config.data.selection.sel_components) { angular.forEach(ticketsToShow.sel_components_aa, addMessage); }
-                    if($scope.config.data.selection.assigned_me)    { angular.forEach(ticketsToShow.assigned_me_aa, addMessage); }
-                    if($scope.config.data.selection.colleagues)    { angular.forEach(ticketsToShow.colleagues_aa, addMessage); }
-                }
                 bridgeConfig.store(bridgeDataService);
                 update_table();
             }
         },true);
 
+        function dataReady(){
+            if (config.isInitialized === false){
+                config.initialize();
+            }
+
+            $scope.config = config;
+            enhanceAllMessages();
+        }
+
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
             promise.then(function success() {
-                enhanceAllMessages();
-                $scope.config = config;
+                dataReady();
             });
         } else {
-            enhanceAllMessages();
-            $scope.config = config;
+            dataReady();
         }
 }]);

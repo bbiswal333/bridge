@@ -2,7 +2,7 @@
 	<div ng-if="dataInitialized.value && showNoMessages == false" style="height:140px">
 		<div class="cm-prio_container">	
 			<div ng-repeat="prio in prios" class="prio_col cm-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].selected==0}">
-				<bridge.conditional-link navigate-to="/detail/customerMessages/{{metadata.guid}}/{{prios[$index].name}}" navigate-if="prios[$index].selected!==0">
+				<bridge.conditional-link navigate-to="/detail/customerMessages/{{metadata.guid}}/{{prios[$index].name}}/false" navigate-if="prios[$index].selected!==0">
 					<div class="prio_box" style="color:white">
 						<p>{{prios[$index].name}}</p>
 					</div>
