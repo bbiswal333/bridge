@@ -130,11 +130,13 @@ angular.module('bridge.app').run(["$rootScope", "$q", "$injector", "$templateCac
         }
 
         var deferred = $q.defer();
-        bridgeDataService.initialize(deferred).then(function () {
+        bridgeDataService.initialize(deferred).then(function (data) {
             $rootScope.$emit('bridgeConfigLoaded', {});
             instantiateSerachProviders($injector, bridgeLoader.aSearchProvider);
 
-        }, function () { // promise rejected = config load failed
-            bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
+            if (data !== undefined && data.bBackendCallFailed === true) {
+                bridgeInBrowserNotification.addAlert("", "Loading the configuration from the backend failed. Bridge is using local settings.", 20);
+            }
+
         });
 }]);
