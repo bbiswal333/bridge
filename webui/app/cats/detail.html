@@ -41,11 +41,11 @@
                                 handlervaluetodisplay="calcMinutes(perc);">
                             </app.cats.allocationbar>
                         </div>
-                        <br>
-<!--                         <input ng-if="checkThatContainsNoFixedTasksForTemplate() && blockdata.length > 0" class="btn btn-default btn_blue" type="button" value="Copy distribution" ng-click="copyTemplate()" style="margin:4px"></input>
-                        <input ng-if="!checkThatContainsNoFixedTasksForTemplate() || blockdata.length === 0" class="btn btn-default btn_inactive" type="button" value="Copy distribution" ng-click="" style="margin:4px"></input>
-                        <input ng-if="checkThatContainsNoFixedTasksForTemplate() && blockdataTemplate.length > 0" class="btn btn-default btn_blue" type="button" value="Paste distribution" ng-click="pasteTemplate()" style="margin:4px"></input>
-                        <input ng-if="!checkThatContainsNoFixedTasksForTemplate() || blockdataTemplate.length === 0" class="btn btn-default btn_inactive" type="button" value="Paste distribution" style="margin:4px"></input> -->
+                        <br>&nbsp&nbsp&nbsp
+                        <div ng-if="isCopyTemplateEnabled()" class="btn btn-default btn_blue" ng-click="copyTemplate()" style="margin:4px"><i class="fa fa-arrow-down"></i>&nbspCopy&nbsp<i class="fa fa-arrow-down"></i></div>
+                        <div ng-if="!isCopyTemplateEnabled()" class="btn btn-default btn_inactive" ng-click="" style="margin:4px"><i class="fa fa-arrow-down"></i>&nbspCopy&nbsp<i class="fa fa-arrow-down"></i></div>
+                        <div ng-if="isPasteTemplateEnabled()" class="btn btn-default btn_blue" ng-click="pasteTemplate()" style="margin:4px"><i class="fa fa-arrow-up"></i>&nbspPaste&nbsp<i class="fa fa-arrow-up"></i></div>
+                        <div ng-if="!isPasteTemplateEnabled()" class="btn btn-default btn_inactive" style="margin:4px"><i class="fa fa-arrow-up"></i>&nbspPaste&nbsp<i class="fa fa-arrow-up"></i></div>
                         <div class="save_close_btn" style="text-align: right">
                             <input ng-if="!reloadInProgress.value && selectedDates.length > 0" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
                             <input ng-if="!reloadInProgress.value && selectedDates.length === 0" class="btn btn-default btn_inactive" type="button" value="Apply changes" ng-click="" style="margin:4px"></input>

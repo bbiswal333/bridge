@@ -1,6 +1,6 @@
 angular.module("app.cats.dataModule", ["lib.utils"])
-.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
-	function($http, $q, $log, $window, calUtils) {
+.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils", "app.cats.catsUtils",
+	function($http, $q, $log, $window, calUtils, catsUtils) {
 		var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
 		var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
 		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin="	+ $window.location.origin;
@@ -171,28 +171,51 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
-							var totalEntries = 0;
+
 							angular.forEach(promisesData, function(data) {
+
+								data.entriesWhichAreNotFixedTasks = 0;
 								data.entriesWithSubtype = 0;
+
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
-									totalEntries += 1;
-									if (data.CATS_EXT[i].ZZSUBTYPE) {
-										data.entriesWithSubtype += 1;
+									if (!catsUtils.isFixedTask(data.CATS_EXT[i])) {
+										data.entriesWhichAreNotFixedTasks += 1;
+										var entry = _.find(data.CATS_EXT_TASK, {
+											"RAUFNR": data.CATS_EXT[i].RAUFNR,
+											"TASKTYPE": data.CATS_EXT[i].TASKTYPE,
+											"ZZSUBTYPE": data.CATS_EXT[i].ZZSUBTYPE,
+											"ZCPR_OBJGEXTID": data.CATS_EXT[i].ZCPR_OBJGEXTID
+										});
+										// make corrections if tasks are already posted presumingly for a different profile
+										if (entry) {
+											if (data.catsProfile === "DEV2002C") {
+												if (data.CATS_EXT[i].ZZSUBTYPE) {
+													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+												}
+											} else {
+												if (!data.CATS_EXT[i].ZZSUBTYPE) {
+													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+												}
+											}
+										}
+										if (data.CATS_EXT[i].ZZSUBTYPE) {
+											data.entriesWithSubtype += 1;
+										}
 									}
 								}
 								dataForAnalysis.push(data);
 							});
 
 							var profileToUse = "DEV2002C";
-							if (		dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007D].CATS_EXT.length &&
-										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
-										dataForAnalysis[profileDEV2002C].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length) {
+							if (		dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks) {
 								profileToUse = "DEV2002C";
-							} else if (	dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007H].CATS_EXT.length &&
-										dataForAnalysis[profileSUP2007D].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+							} else if (	dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks &&
 										dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
 								profileToUse = "SUP2007D";
-							} else if (	dataForAnalysis[profileSUP2007H].CATS_EXT.length >= dataForAnalysis[profileSUP2007C].CATS_EXT.length &&
+							} else if (	dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks &&
 										dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
 								profileToUse = "SUP2007H";
 							} else if (	dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
@@ -296,7 +319,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		function processCatsAllocationDataForWeek(year, week, deferred, data, status) {
+		function processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile) {
 			week = calUtils.toNumberOfCharactersString(week, 2);
 			if (!data) {
 				deferred.reject(status);
@@ -304,6 +327,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				$log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
 				deferred.resolve();
 			} else {
+				data.catsProfile = catsProfile;
 				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
 						for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
@@ -337,7 +361,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
 			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURSDESCRDETAILS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
-				processCatsAllocationDataForWeek(year, week, deferred, data, status);
+				processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile);
 			}, deferred.reject);
 		}
 
