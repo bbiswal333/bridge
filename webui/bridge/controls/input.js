@@ -80,8 +80,8 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-disabled", attrs.ngDisabled);
             }
 
-            if(attrs.focusOn) {
-                $('input', element)[0].setAttribute("focus-on", attrs.focusOn);
+            if(attrs.inputFocusOn) {
+                $('input', element)[0].setAttribute("focus-on", attrs.inputFocusOn);
             }
 
             if(attrs.ngRequired) {
