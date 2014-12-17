@@ -648,7 +648,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.isPasteTemplateEnabled = function(){
         if ($scope.checkThatContainsNoFixedTasksForTemplate() &&
             $scope.selectedDates.length > 0 &&
-            $scope.blockdataTemplate.length > 0) {
+            $scope.blockdataTemplate.length > 0 &&
+            isTemplateDifferent()) {
             return true;
         } else {
             return false;
