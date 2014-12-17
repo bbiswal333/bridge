@@ -115,7 +115,8 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 					nowAtDragStart: null,
 					clockOffsetAtStart: null,
 					mouseDownEvent: null,
-					mouseMoveEvent: null
+					mouseMoveEvent: null,
+					dragDistance: 0
 				};
 			}
 			resetDragInfo();
@@ -123,10 +124,17 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			function turnOffDragging() {
 				stopIncrementInterval();
 				resetDragInfo();
+				if($scope.clockOffset - $scope.cursorOffset > $element.parent().width() - $scope.cursorWidth) {
+					$scope.clockOffset -= $scope.clockOffset - $scope.cursorOffset - $element.parent().width() + ($scope.cursorWidth * 3);
+				}
+				if($scope.clockOffset - $scope.cursorOffset < $scope.cursorWidth) {
+					$scope.clockOffset += Math.abs($scope.clockOffset - $scope.cursorOffset) + $scope.cursorWidth * 3;
+				}
 			}
 
 			function calculateNowFrom($mouseEvent) {
 				var distanceInPixel = $mouseEvent.clientX - dragInfo.mouseDownEvent.clientX;
+				dragInfo.dragDistance = distanceInPixel;
 				var distanceInMilliseconds = C_1_MINUTE * 60 * distanceInPixel / $scope.oneHourWidth;
 				var forward = distanceInMilliseconds >= 0 ? true : false;
 				var now = calUtils.addOffsetToDate(dragInfo.nowAtDragStart, distanceInMilliseconds);
@@ -150,6 +158,8 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 
 			$scope.handleMouseMove = function($event) {
 				if(dragInfo.active) {
+					stopIncrementInterval();
+
 					dragInfo.mouseMoveEvent = {clientX: $event.clientX};
 					$scope.now = calculateNowFrom($event);
 				}

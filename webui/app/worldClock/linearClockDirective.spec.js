@@ -87,7 +87,7 @@ describe("Linear Clock Directive", function() {
 		$scope.$digest();
 		expect($scope.timeOffsetInMilliseconds).toEqual(229000);
 		expect($scope.now.toUTCString()).toEqual("Thu, 11 Dec 2014 11:15:00 GMT");
-		expect($scope.clockOffset).toEqual(-1877);
+		expect($scope.clockOffset).toEqual(-1787);
 	});
 
 	it("should react on dragging the cursor from right to left and back", function() {
@@ -122,13 +122,13 @@ describe("Linear Clock Directive", function() {
 		expect($scope.clockOffset).toEqual(-1997);
 		interval.flush(1000);
 		expect($scope.clockOffset).toEqual(-2117);
+		$scope.handleMouseMove({clientX: 300});
+		$scope.$digest();
+		interval.flush(1000);
+		expect($scope.clockOffset).toEqual(-1997);
 		$scope.handleMouseMove({clientX: 100});
 		$scope.$digest();
 		interval.flush(1000);
-		expect($scope.clockOffset).toEqual(-2237);
-		$scope.handleMouseMove({clientX: -100});
-		$scope.$digest();
-		interval.flush(1000);
-		expect($scope.clockOffset).toEqual(-2117);
+		expect($scope.clockOffset).toEqual(-1877);
 	});
 });
