@@ -74,7 +74,6 @@
         this.decideWhichConfigToUse = function(oConfigFromBackend){
             var oConfigFromStorage = that.getConfigFromStorage();
 
-            $log.log(oConfigFromBackend.savedOn);
             if (oConfigFromStorage !== null) {
                 $log.log(oConfigFromStorage.savedOn);
             } else {
@@ -85,7 +84,7 @@
                 return that.getDefaultConfig(); // return default config if we have have neither backendConfig nor localConfig
             } else if (!angular.isObject(oConfigFromStorage) || isEmpty(oConfigFromStorage)){
                 return oConfigFromBackend;  // use backendConfig if we have no local config
-            } else if (oConfigFromBackend.savedOn > oConfigFromStorage.savedOn){
+            } else if (oConfigFromBackend !== null && oConfigFromBackend.savedOn > oConfigFromStorage.savedOn){
                 return oConfigFromBackend;  // use config from backend if it is newer than the local config
             } else {
                 return oConfigFromStorage;

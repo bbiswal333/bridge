@@ -122,11 +122,9 @@
             var configPromise = bridgeConfig.loadFromBackend(deferred);
             var userInfoPromise = _fetchUserInfo();
 
-            var allPromises = $q.all([configPromise, userInfoPromise]);
-            allPromises.then(function (data) {
+            function assignConfig(oConfigFromBackend){
                 initializeAvailableApps();
-                var configFromBackend = data[0];
-                var config = bridgeConfig.decideWhichConfigToUse(configFromBackend);
+                var config = bridgeConfig.decideWhichConfigToUse(oConfigFromBackend);
 
                 parseProjects(config);
                 parseSettings(config);
@@ -135,12 +133,19 @@
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
                 initialized = true;
+            }
+
+            var allPromises = $q.all([configPromise, userInfoPromise]);
+            allPromises.then(function (data) {
+                assignConfig(data[0]);
                 deferrals.map(function(deferral) {
                     deferral.resolve();
                 });
-            }, function (data) {
+            }, function () {
+                assignConfig(null);
+                var initializationResult = { bBackendCallFailed: true };
                 deferrals.map(function(deferral) {
-                    deferral.reject(data);
+                    deferral.resolve(initializationResult);
                 });
             });
 

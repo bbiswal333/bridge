@@ -124,6 +124,16 @@
         expect(returnedConfig).not.toBe(mockConfigFromBackend);
     });
 
+    it("should use the config from the localStorage because the config from backend null", function(){
+        bridgeDataService.toDefault();
+        bridgeConfigService.store(bridgeDataService);
+
+        var mockConfigFromBackend = null;
+        var returnedConfig = bridgeConfigService.decideWhichConfigToUse(mockConfigFromBackend);
+
+        expect(returnedConfig).not.toBe(mockConfigFromBackend);
+    });
+
     it("should use the config from the backend because there is none in the local storage", function(){
         var mockConfigFromBackend = bridgeConfigService.getDefaultConfig();
         var returnedConfig = bridgeConfigService.decideWhichConfigToUse(mockConfigFromBackend);
