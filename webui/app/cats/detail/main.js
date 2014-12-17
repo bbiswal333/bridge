@@ -605,8 +605,54 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return true;
     };
 
+    function isTemplateDifferent() {
+        if ($scope.blockdata &&
+            $scope.blockdataTemplate &&
+            $scope.blockdata.length > 0 &&
+            $scope.blockdata.length === $scope.blockdataTemplate.length) {
+
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                if ($scope.blockdata[i].desc !== $scope.blockdataTemplate[i].desc ||
+                    $scope.blockdata[i].value !== $scope.blockdataTemplate[i].value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    $scope.isCopyTemplateEnabled = function(){
+        if ($scope.checkThatContainsNoFixedTasksForTemplate() &&
+            $scope.blockdata.length > 0 &&
+            isTemplateDifferent()) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     $scope.copyTemplate = function(){
         $scope.blockdataTemplate = angular.copy($scope.blockdata);
+        angular.forEach($scope.blockdataTemplate, function(block) {
+            if (block.task) {
+                block.task.COUNTER = 0;
+                block.task.TASKCOUNTER = "";
+                block.task.WORKDATE = "";
+                delete block.task.QUANTITY;
+                delete block.task.QUANTITY_DAY;
+            }
+        });
+    };
+
+    $scope.isPasteTemplateEnabled = function(){
+        if ($scope.checkThatContainsNoFixedTasksForTemplate() &&
+            $scope.selectedDates.length > 0 &&
+            $scope.blockdataTemplate.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.pasteTemplate = function(){
