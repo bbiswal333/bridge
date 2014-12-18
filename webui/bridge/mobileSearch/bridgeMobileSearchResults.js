@@ -90,7 +90,7 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
                     $scope.providerResults = results[$scope.selectedProviderID];
             };
 
-            $(document).on('swipeleft', function() {
+            $($window.document).on('swipeleft', function() {
                 $scope.$apply(function() {
                     if($scope.selectedProviderID >= $scope.count - 1 ) {
                         $scope.selectProviderMore($scope.selectedProviderID + 1);
@@ -100,7 +100,7 @@ angular.module("bridge.mobileSearchResults").directive('bridge.mobileSearchResul
                 });
             });
 
-            $(document).on('swiperight', function() {
+            $($window.document).on('swiperight', function() {
                 $scope.$apply(function() {
                     if($scope.selectedProviderID > 0 ) {
                         $scope.selectProvider($scope.selectedProviderID - 1);
