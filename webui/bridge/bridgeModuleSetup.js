@@ -69,6 +69,11 @@
             controller: 'bridge.diagnosis.statusController'
         });
 
+        $routeProvider.when("/tetris", {
+            templateUrl: 'bridge/search/funtime.html',
+            controller: 'bridge.search.tetris'
+        });
+
         $routeProvider.when("/whatsNew", {
             templateUrl: 'bridge/menubar/news/newsDetail.html',
             controller: 'bridge.newsDetailController'
