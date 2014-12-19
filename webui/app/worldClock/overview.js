@@ -1,4 +1,4 @@
-angular.module('app.worldClock', ["lib.utils", "ui.bootstrap.timepicker"]);
+angular.module('app.worldClock', ["lib.utils", "ui.bootstrap.modal"]);
 angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.config", "bridgeBuildingSearch", "lib.utils.calUtils", "$templateCache", function (configService, bridgeBuildingSearch, calUtils, $templateCache) {
 
 	$templateCache.put("template/timepicker/timepicker.html",
