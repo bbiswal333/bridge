@@ -126,10 +126,18 @@
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
   color: #555;
   cursor: default;
-  background-color: #ddd;
-  /* border: 1px solid #ddd; */
+  box-shadow: 0px 0px 2px #707070;
+  transition: all ease 0.25s;
+  border:  none;
   border-radius: 0;
-  border-bottom-color: transparent;
+  background-color: transparent;
+  border: 2px solid #418AC9;
+  color: #418AC9;
+}
+.nav-tabs > li > a:hover{
+  box-shadow: 0px 0px 5px #707070;
+  transition: all ease 0.25s;
+  background-color: #fff;
 }
 .nav-tabs > li > a{
   border-radius: 0;
@@ -139,6 +147,7 @@
 }
 .tab-content{
   margin-top: 50px;
+  text-align: left;
 }
 /* ========================= *\
 |* -----     ICON      ----- *|
@@ -220,7 +229,7 @@
 
 .bridge-applications-addButton {
   position: absolute;
-  bottom: 20px;
+  bottom: 3px;
   right: 0px;
 }
 .app-banner{
@@ -228,5 +237,5 @@
   width: 100%;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 80%;
+  background-size: 100%;
 }

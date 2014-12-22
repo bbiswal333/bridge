@@ -31,7 +31,7 @@
 				 <span>{{formatDistance(route.summary.distance)}}</span>
 			</div>
 			<div class="col-xs-1">
-				<bridge.checkbox checked-label="Active" unchecked-label="Inactive" is-checked="route.isActive" check-toggle="route.toggleIsActive()"></bridge.checkbox>
+				<bridge.checkbox style="position:relative;top:5px;" is-checked="route.isActive" check-toggle="route.toggleIsActive()"></bridge.checkbox>
 			</div>
 			<div class="col-xs-1" style="text-align:right">
 				<span class="fa fa-remove" ng-click="removeRouteFromSettings(route)" style="cursor: pointer"></span>
@@ -55,8 +55,10 @@
 				</div>
 			</div>
 			<div style="margin-bottom:100px;">
-				<div class="btn btn-primary btn_blue" style="float: right" ng-click="quitEditMode()">Done</div>
-				<div class="btn btn-primary btn_blue" style="float: right" ng-click="undoEditOfExistingRoute()" ng-show="editedRoute.modified"><i class="fa fa-undo"></i> Undo</div>
+				<!--<div class="btn btn-primary btn_blue" style="float: right" ng-click="quitEditMode()">Done</div>
+				<div class="btn btn-primary btn_blue" style="float: right" ng-click="undoEditOfExistingRoute()" ng-show="editedRoute.modified"><i class="fa fa-undo"></i> Undo</div>-->
+				<bridge.button  style="width:100px;" ng-click="quitEditMode(); doAlert()">Done</bridge.button>
+				<bridge.button  style="width:100px;" ng-click="undoEditOfExistingRoute(); doAlert()" ng-show="editedRoute.modified"><i class="fa fa-undo"></i> Undo</bridge.button>
 			</div>
 		</div>
 
@@ -112,7 +114,8 @@
 				</div>
 				<div  style="padding:0 0 10px 0;">
 					<bridge.input model="newRoute.routeName" placeholder="Route Name" style="width:70%;"></bridge.input>
-					<div class="btn btn-primary btn_blue" style="float: right;margin-bottom:20px;width:23%" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add</div>
+					<!--<div class="btn btn-primary btn_blue" style="float: right;margin-bottom:20px;width:23%" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add</div>-->
+					<bridge.button style="float: right;margin-bottom:20px;margin-top:0;width:70px" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig(); doAlert()">Add</bridge.button>
 				</div>
 			</div>
 		</form>
@@ -130,5 +133,6 @@
 </div>
 
 	<div class="row" style="margin-top: 85px">
-		<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>-->
+		<bridge.button class="save_close_btn" ng-click="closeForm()">Save & Close</bridge.button>
 	</div>

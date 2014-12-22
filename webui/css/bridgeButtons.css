@@ -30,7 +30,8 @@
 }
 
 button:focus{
-  outline: none;
+  box-shadow: 0px 0px 5px #707070;
+  transition:all ease 0.25s;
 }
 .fadeOut{
   opacity:0!important;
@@ -63,4 +64,8 @@ button:focus{
 }
 .button.disabled canvas{
   opacity: 0;
+}
+.invisible-button{
+  border: none!important;
+  box-shadow: none;
 }

@@ -1,56 +1,69 @@
 ﻿
-<div style="width: 100%;height:500px; "> 
+<div style="width: 100%;"> 
 <form name="newConfigItemForm" class="atc_input">
-            <div class="row" style="margin:15px 0 0 0;">
+            <div class="atc-input-field">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Source System</span>
                  <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." autofocus></bridge.input>
                  
             </div>  
            
-            <div class="row" style="margin:15px 0 0 0;">
+            <div class="atc-input-field">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Package</span>
                  <bridge.input style="float:left;" model="currentConfigValues.devClass" placeholder="Package..."></bridge.input>
                 
             </div>
 
-            <div class="row" style="margin:15px 0 0 0;">
+            <div class="atc-input-field">
                 <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Object Responsible</span>
                 <bridge.employee-input selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Name...'" required="false" ></bridge.employee-input>
               
               </div>
                     
             
-            <div class="row" style="margin:15px 0 0 0;">
+            <div class="atc-input-field">
                 <span class="copy form_head">AKH Component</span>
                 <bridge.input style="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
 
             </div>
 
-            <div class="row" style="margin:15px 0 0 0;">
+            <div class="atc-input-field">
                 <span class="copy form_head">Software Component</span>
                 <bridge.input model="currentConfigValues.softwareComponent" placeholder="Software Component..."></bridge.input>
 
             </div>  			
 
-            <div class="row" style="margin:25px 0 0 0;">
-                <span ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>
-                <span  ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>
-            </div>
+            <div style="width:100%;float:left;margin:25px 0 0 0;">
+                <!--<span ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>-->
+                <!--<span  ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>-->
 
-            <div class="row" style="margin:15px 0 0 0;">
-                    <div >
-                        <span ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
+                <bridge.button style="margin-left:0;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" state="currentConfigValues.showSuppressed === true ? 'active' : ' '">Display Suppressed</bridge.button>
+
+                 <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
+            
+
+           
+                  
+                        <!--<span ng-click="doAlert(); currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
                         <span ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio2];">Prio 2</span>
                         <span ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio3];" >Prio 3</span>
-                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>
-                    </div>
+                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>-->
+                        <bridge.button style="width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : ' '">Prio 1</bridge.button>
+
+                        <bridge.button style="width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : ' '">Prio 2</bridge.button>
+
+                        <bridge.button style="width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : ' '">Prio 3</bridge.button>
+
+                        <bridge.button style="width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : ' '">Prio 4</bridge.button>
+                    
             </div>
 
-             <div class="row" style="margin:25px 0 0 0;">
-                <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>
+             <div style="float:right;">
+               <!-- <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>-->
+                <bridge.button ng-click="doAlert(); add_click()" state="'active'">Add New Selection</bridge.button>
+
             </div>
     </form>
-    <div style="overflow-y: scroll; overflow-x: hidden; height: 85%; padding-top: 10px">
+    <div >
         <table ng-table="tableParams" class="table tableTransparentBorder" >
             <thead style="background-color: #ECECEC;">
                 <tr>
@@ -101,7 +114,10 @@
     </div>
 
     <div class="row atc_btn" style="float:right;">
-            <div class="btn" ng-click="rss_for_saved_selection_click()" title="Get RSS Feed link for saved selection(s)"><span class="fa fa-rss" ></span> for all</div>
-            <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>
+            <!--<div class="btn" ng-click="rss_for_saved_selection_click()" title="Get RSS Feed link for saved selection(s)"><span class="fa fa-rss" ></span> for all</div>
+            <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>-->
+
+            <bridge.button title="Get RSS Feed link for saved selection(s)" ng-click="rss_for_saved_selection_click()" style="width:100px;"><span class="fa fa-rss" ></span> for all</bridge.button>
+            <bridge.button state="'active'" ng-click="doAlert(); closeForm()">Save & Close</bridge.button>
     </div>
 </div>

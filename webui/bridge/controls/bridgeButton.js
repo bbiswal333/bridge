@@ -15,7 +15,7 @@ angular.module('bridge.app').directive('bridge.button', [function() {
         replace: true,
         transclude: true,
         scope: {
-        	state: '@'
+        	state: '='
         },
         controller: function($scope, $element) {
 		    var centerX = 0,
@@ -37,7 +37,7 @@ angular.module('bridge.app').directive('bridge.button', [function() {
 				context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 				context.fillStyle = rectColor;
 				context.fill();
-				radius += 10;
+				radius += 20;
 				if (radius < element.width) {
 					resetFade();
 					requestAnimFrame(draw);

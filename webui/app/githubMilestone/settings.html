@@ -24,10 +24,17 @@
 	<div class="row">
 		<div class="col-xs-2 form_head" style="float:none;">Milestone Duration</div>
   		<div class="btn-group" style="margin-left:15px;">
-  				<span ng-click="currentConfigValues.milestoneDuration = 7" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.milestoneDuration == 7];" style="margin-right:0;">1 week</span>
+  				<!--<span ng-click="currentConfigValues.milestoneDuration = 7" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.milestoneDuration == 7];" style="margin-right:0;">1 week</span>
   				<span ng-click="currentConfigValues.milestoneDuration = 14" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 14];" style="margin-right:0;">2 weeks</span>
   				<span ng-click="currentConfigValues.milestoneDuration = 21" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 21];" style="margin-right:0;">3 weeks</span>
-  				<span ng-click="currentConfigValues.milestoneDuration = 28" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 28];" style="margin-right:0;">4 weeks</span>
+  				<span ng-click="currentConfigValues.milestoneDuration = 28" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.milestoneDuration == 28];" style="margin-right:0;">4 weeks</span>-->
+  				<bridge.button state="(currentConfigValues.milestoneDuration == 7) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 7; doAlert()" style="margin-right:0;margin-left:0;width:100px;">1 week</bridge.button>
+
+  				<bridge.button state="(currentConfigValues.milestoneDuration == 14) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 14; doAlert()" style="margin-right:0;margin-left:0;width:100px;">2 weeks</bridge.button>
+
+  				<bridge.button state="(currentConfigValues.milestoneDuration == 21) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 21; doAlert()" style="margin-right:0;margin-left:0;width:100px;">3 weeks</bridge.button>
+
+  				<bridge.button state="(currentConfigValues.milestoneDuration == 28) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 28; doAlert()" style="margin-right:0;margin-left:0;width:100px;">4 weeks</bridge.button>
   		</div>
   	</div>
 </form>
@@ -37,7 +44,8 @@
 
 
         <div class="row" >
-            <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+            <!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+            <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
         </div>
     
 

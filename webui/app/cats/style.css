@@ -54,7 +54,7 @@
 	right: 3%;
 	top: 0px;
 	font-size: 16px;
-	color: #e1e1e1;
+	color: #C2C2C2;
 }
 .app-cats-legend-hide{
     display: none;
@@ -183,15 +183,21 @@
     background: #A4D8F9;
 }
 .app-cats-project-selector-button {
-    height: 27px;
     line-height: 0;
     text-align: left;
-    margin:4px 4px;
+    margin: -1px;
     overflow: hidden;
     font-size: 14px;
+    padding: 25px;
+    padding-left: 10px;
+    border: none!important;
+
+    box-shadow: none;
+ 
 }
+
 #app-cats-project-selector-button-container {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: 0;
 }
 .app-cats-project-selector-button span {
@@ -558,17 +564,15 @@
 }
 
 .settings_task_edit_button {
-    position: absolute; 
-    height: 27px; 
-    width: 10%; 
-    right: 30px; 
-    margin: 4px 0px; 
-    
-    color: white; 
-    background: rgba(255, 255, 255, 0.2); 
-    
-    text-align: center; 
-    line-height: 2em;
+    position: absolute;
+    height: 47px;
+    width: 50px;
+    right: 7%;
+    /* margin: 4px 0; */
+    color: #418AC9;
+    background: rgba(255,255,255,.2);
+    text-align: center;
+    /* line-height: 2em; */
 }
 
 .settings_add_task_button {
@@ -579,4 +583,8 @@
 .settings_required_label_mark {
     position: absolute;
     right: 3px;
+}
+.list-header{
+    margin-bottom: 10px;
+    margin-top:20px;
 }
