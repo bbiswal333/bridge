@@ -37,7 +37,7 @@
                         {{item.DESCR}}
                         <span> {{item.subDescription}} </span>
                     </bridge.button>
-                    <bridge.button state="'invisible-button'" ng-show="item.selected && forSettingsView && toEdit === item.id" ng-click="editTask(item.id);" style="width:44px;margin:0;line-height:30px;">
+                    <bridge.button state="'invisible-button'" ng-show="item.selected && forSettingsView" ng-click="editTask(item.id);" style="width:44px;margin:0;line-height:30px;">
                         <i class="fa fa-pencil fa-lg"></i>
                      </bridge.button>
                 </div>

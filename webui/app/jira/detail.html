@@ -2,7 +2,10 @@
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
 		<div class="btn-group" style="height:32px">
-		  <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>
+		  <!--<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>-->
+		  <bridge.button state="data.status[status].active === true ? 'active' : 'invisible-button'" ng-click="data.status[status].active = !data.status[status].active" ng-repeat="status in getStatusArray()" style="width:100px;margin-left:0;margin-right:0;">
+		  	{{status}}
+		  </bridge.button>
 		</div>
 
 		<br/>

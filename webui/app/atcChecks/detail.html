@@ -2,10 +2,22 @@
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
 		<div class="btn-group" style="height:32px">
-		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p1_active];" class="btn btn-default" ng-click="data.prio.p1_active = !data.prio.p1_active" style="margin-bottom:20px;">Prio 1</span>
+		  <!--<span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p1_active];" class="btn btn-default" ng-click="data.prio.p1_active = !data.prio.p1_active" style="margin-bottom:20px;">Prio 1</span>
 		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p2_active];" class="btn btn-default" ng-click="data.prio.p2_active = !data.prio.p2_active" style="margin-bottom:20px;">Prio 2</span>
 		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p3_active];" class="btn btn-default" ng-click="data.prio.p3_active = !data.prio.p3_active" style="margin-bottom:20px;">Prio 3</span>
-		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p4_active];" class="btn btn-default" ng-click="data.prio.p4_active = !data.prio.p4_active" style="margin-bottom:20px;">Prio 4</span>
+		  <span ng-class="{true: 'btn btn_blue', false: 'btn'}[data.prio.p4_active];" class="btn btn-default" ng-click="data.prio.p4_active = !data.prio.p4_active" style="margin-bottom:20px;">Prio 4</span>-->
+		  <bridge.button state="data.prio.p1_active === true ? 'active' : 'invisible-button'" ng-click="data.prio.p1_active = !data.prio.p1_active" style="margin-bottom:20px;width:70px;margin-left:0;margin-right:0;margin-top:0">
+		  	Prio 1
+		  </bridge.button>
+		  <bridge.button state="data.prio.p2_active === true ? 'active' : 'invisible-button'" ng-click="data.prio.p2_active = !data.prio.p2_active" style="margin-bottom:20px;width:70px;margin-left:0;margin-right:0;margin-top:0">
+		  	Prio 2
+		  </bridge.button>
+		  <bridge.button state="data.prio.p3_active === true ? 'active' : 'invisible-button'" ng-click="data.prio.p3_active = !data.prio.p3_active" style="margin-bottom:20px;width:70px;margin-left:0;margin-right:0;margin-top:0">
+		  	Prio 3
+		  </bridge.button>
+		  <bridge.button state="data.prio.p4_active === true ? 'active' : 'invisible-button'" ng-click="data.prio.p4_active = !data.prio.p4_active" style="margin-bottom:20px;width:70px;margin-left:0;margin-right:0;margin-top:0">
+		  	Prio 4
+		  </bridge.button>
 		</div>	
 	    <br/><br/>
 

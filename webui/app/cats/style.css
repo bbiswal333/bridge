@@ -225,26 +225,29 @@
     background: #F3F2F2;
 }
 .app-cats-stateY_INTHEFUTURE_part_maint {
-    background-image: url('/../../img/part_maint_FUTURE.svg');
+    /*background-image: url('/../../img/part_maint_FUTURE.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100%);
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-    background-image: url('/../../img/part_maint_B.svg');
+    /*background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
 }
 .app-cats-stateG { /* maintained */
-    background: #D3E6DC;
+    background: #A7D0BA;
 }
 .app-cats-stateOVERBOOKED { /*overbooked*/
     /*background: #A7D0BA;*/
-    background-image: url('/../../img/over_booked.svg');
+    /*background-image: url('/../../img/over_booked.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
 }
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
@@ -255,16 +258,21 @@
     visibility: hidden;
 }
 .app-cats-today { 
-    background-image: url('/../../img/ecke_dunkel.svg');
+    /*background-image: url('/../../img/ecke_dunkel.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
 }
 .app-cats-today-legend { 
-    background-image: url('/../../img/ecke_dunkel_legend.svg');
+    /*background-image: url('/../../img/ecke_dunkel_legend.svg');
     background-repeat: no-repeat;
     background-size: cover;
-/*    background-position-x: 100%;*/
+    background-position-x: 100%;*/
+
+    font-weight: 900;
+    font-style: italic;
 }
 .selected_day span{
     position: relative;
@@ -275,21 +283,27 @@
     /*background: ;*/
     border: 3px solid #707070;
     color: #707070!important;
-    font-weight: 600;
+ 
 }
 .app-cats-stateY_TODAY { 
-    /*background-color:#FEE0A1;*/
+    /*background-color:#FEE0A1;
     background-image: url('/../../img/part_maint_TODAY_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
 }
 .app-cats-stateOVERBOOKED_TODAY { 
-    /*background-color:#A7D0BA;*/
+    /*background-color:#A7D0BA;
     background-image: url('/../../img/over_booked_TODAY.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
 } 
 .app-cats-icon {
     font-family: 'SAP-icons';

@@ -18,9 +18,14 @@
                 Do you really want to cancel the booking of the following room?
             </h5>
             <p>{{selectedRoom.LOCATION}} on the {{ selectedRoom.VALIDFROMDATE | date: 'dd.MM.' }}</p>
-            <button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
-            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>
-            
+            <!--<button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
+            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>-->
+            <bridge.button state="isEmpty(selectedRoom) === true ? 'disabled' : ' '" ng-click="cancelRoom(selectedRoom)">
+                Yes
+            </bridge.button>
+            <bridge.button ng-click="deselectRoom()">
+                No
+            </bridge.button>
         </div>
 
         <div ng-if="!hasBookings() && errMsg == null">

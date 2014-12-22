@@ -4,7 +4,7 @@
 		<!--<div class="btn-group" style="height:32px">
 			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
 		</div>-->
-		<bridge.button ng-repeat="status in getStatusArray()" style="margin-bottom:30px;margin-top:0;width:70px;" ng-click="statusMap[status].active = !statusMap[status].active" state="statusMap[status].active === true ? 'active' : ' '">Prio {{status}}</bridge.button>
+		<bridge.button ng-repeat="status in getStatusArray()" style="margin-bottom:30px;margin-top:0;margin-left:0;margin-right:0;width:70px;" ng-click="statusMap[status].active = !statusMap[status].active" state="statusMap[status].active === true ? 'active' : 'invisible-button'">Prio {{status}}</bridge.button>
 
 		<br/>
 
