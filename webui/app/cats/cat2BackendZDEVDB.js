@@ -332,6 +332,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
 						for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
 							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
+							data.TIMESHEETS.RECORDS[j].RNPLNR = data.CATS_EXT[j].RNPLNR;
+							data.TIMESHEETS.RECORDS[j].VORNR = data.CATS_EXT[j].VORNR;
+							data.TIMESHEETS.RECORDS[j].AUTYP = data.CATS_EXT[j].AUTYP;
+							data.TIMESHEETS.RECORDS[j].TASKLEVEL = data.CATS_EXT[j].TASKLEVEL;
+							data.TIMESHEETS.RECORDS[j].SKOSTL = data.CATS_EXT[j].SKOSTL;
+							data.TIMESHEETS.RECORDS[j].ZZOBJNR = data.CATS_EXT[j].ZZOBJNR;
 							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
 								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
 							}
@@ -400,6 +406,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "ADMI",
+							RNPLNR: "",
+							VORNR: "",
+							AUTYP: "",
+							TASKLEVEL: "",
+							SKOSTL: "",
+							ZZOBJNR: "",
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
@@ -408,6 +420,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "EDUC",
+							RNPLNR: "",
+							VORNR: "",
+							AUTYP: "",
+							TASKLEVEL: "",
+							SKOSTL: "",
+							ZZOBJNR: "",
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
@@ -421,6 +439,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							var task = {};
 							task.RAUFNR = (nodes[i].RAUFNR || "");
 							task.TASKTYPE = (nodes[i].TASKTYPE || "");
+							task.RNPLNR = (nodes[i].RNPLNR || "");
+							task.VORNR = (nodes[i].VORNR || "");
+							task.AUTYP = (nodes[i].AUTYP || "");
+							task.TASKLEVEL = (nodes[i].TASKLEVEL || "");
+							task.SKOSTL = (nodes[i].SKOSTL || "");
+							task.ZZOBJNR = (nodes[i].ZZOBJNR || "");
 							task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 							task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 							task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
