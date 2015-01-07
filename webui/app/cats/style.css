@@ -104,6 +104,8 @@
 }
 .app-cats-current-month {
     margin: 0 8px 0 8px;  
+    display: inline-block;
+    width: 80px;
 }
 .app-cats-current-year{
     font-size: 3rem;
