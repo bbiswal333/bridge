@@ -48,6 +48,22 @@
         expect(angular.isObject(payload.bridgeSettings)).toBe(true);
     });
 
+    it("should store only app metadata that differs from the original metadata + module_name, guid, instanceNumber", function() {
+        bridgeDataService.toDefault();
+        bridgeDataService.getProjects()[0].apps[0].metadata.title = "V7Z ATC Results";
+        bridgeDataService.getProjects()[0].apps[0].scope = {
+            box: {
+                returnConfig: function () {
+                    return {
+                        testValue: "testTest"
+                    };
+                }
+            }
+        };
+        var payload = bridgeConfigService.constructPayload(bridgeDataService);
+        expect(JSON.stringify(payload.projects[0].apps)).toEqual('[{"metadata":{"module_name":"app.atc","title":"V7Z ATC Results","instanceNumber":1,"guid":"app.atc-1"},"appConfig":{"testValue":"testTest"}},{"metadata":{"module_name":"app.cats","instanceNumber":1,"guid":"app.cats-1"}}]');
+    });
+
     it("should return the old app config if there is no return config method", function(){
         bridgeDataService.toDefault();
         bridgeDataService.getProjects()[0].apps[0].appConfig = {
@@ -103,6 +119,16 @@
         bridgeConfigService.store(bridgeDataService);
 
         var mockConfigFromBackend = {};
+        var returnedConfig = bridgeConfigService.decideWhichConfigToUse(mockConfigFromBackend);
+
+        expect(returnedConfig).not.toBe(mockConfigFromBackend);
+    });
+
+    it("should use the config from the localStorage because the config from backend null", function(){
+        bridgeDataService.toDefault();
+        bridgeConfigService.store(bridgeDataService);
+
+        var mockConfigFromBackend = null;
         var returnedConfig = bridgeConfigService.decideWhichConfigToUse(mockConfigFromBackend);
 
         expect(returnedConfig).not.toBe(mockConfigFromBackend);

@@ -1,6 +1,6 @@
 ﻿/*global nokia*/
-angular.module('app.getHome', []);
-angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'app.getHome.mapservice', '$modal', '$interval', function (appGetHomeConfig, appGetHomeMap, $modal, $interval) {
+angular.module('app.getHome', ["bridge.service"]);
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'bridge.service.maps', '$modal', '$interval', function (appGetHomeConfig, appGetHomeMap, $modal, $interval) {
 
 	var directiveController = ['$scope', function ($scope)
 	{
@@ -49,8 +49,13 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					}, 200, 1);
               	};
               },
+              windowClass: 'appGetHomeMapClass',
               size: 'lg'
             });
+        };
+
+        $scope.isActive = function(route) {
+        	return route.isActive;
         };
 	}];
 

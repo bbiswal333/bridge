@@ -5,10 +5,10 @@ angular.module("bridge.search").factory("bridge.search.fuzzySearch", [function()
 		oOptions.threshold = oOptions.threshold || 0.4;
 		oOptions.shouldSort = true;
 		oOptions.distance = 500;
-		var fuse = new Fuse(oData, oOptions);
 
 		var FuzzySearch = function() {
 			this.findMatches = function(query, resultArray) {
+				var fuse = angular.isFunction(oData) ? new Fuse(oData.call(), oOptions) : new Fuse(oData, oOptions);
 				fuse.search(query).map(function(result) {
 					if(oOptions.mappingFn && typeof oOptions.mappingFn === "function") {
 						resultArray.push(oOptions.mappingFn(result));

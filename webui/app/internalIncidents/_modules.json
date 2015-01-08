@@ -1,20 +1,23 @@
 {
 	"app":
 	{
-		"categories"			:	["Service & Support", "Beta"],
+		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.internalIncidents",
 		"title"					:	"Int. Incid.",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.internalIncidents",
 		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+	    "description"			:	"Shows the Internal Incidents from the BCP system according to your component assignment there. The data is retrieved from the backup system, so there is a minor delay of 1-5 minutes for changes.",
+	  	"multiInstance"			:	true,
 		"routes":
 		[
             {
                 "route"			:	"/detail/internalIncidents/:appId/:prio/:calledFromNotifications",
                 "templateUrl"	:	"app/internalIncidents/detail.html"
             }
-		],
-		"beta"					: true
+		]
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],

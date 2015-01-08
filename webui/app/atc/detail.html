@@ -1,9 +1,10 @@
 ﻿<div ng-controller="app.atc.detailcontroller" style="box-sizing:border-box;" >    
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
-		<div class="btn-group" style="height:32px">
+		<!--<div class="btn-group" style="height:32px">
 			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
-		</div>
+		</div>-->
+		<bridge.button ng-repeat="status in getStatusArray()" style="margin-bottom:30px;margin-top:0;margin-left:0;margin-right:0;width:70px;" ng-click="statusMap[status].active = !statusMap[status].active" state="statusMap[status].active === true ? 'active' : 'invisible-button'">Prio {{status}}</bridge.button>
 
 		<br/>
 

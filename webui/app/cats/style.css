@@ -23,8 +23,8 @@
   #app-cats-maintencance-allocation-div {
     width: 100%;
     text-align: center;    
-    margin-bottom: 25px; /* 10px Dragger-Expand, 15px padding von panel-body */
-    margin-top: 40px;
+    margin-bottom: 15px;
+    margin-top: 20px;
     color: #fff;
     padding-right: 2%;
     padding-left: 2%;
@@ -54,7 +54,7 @@
 	right: 3%;
 	top: 0px;
 	font-size: 16px;
-	color: #e1e1e1;
+	color: #C2C2C2;
 }
 .app-cats-legend-hide{
     display: none;
@@ -104,6 +104,8 @@
 }
 .app-cats-current-month {
     margin: 0 8px 0 8px;  
+    display: inline-block;
+    width: 80px;
 }
 .app-cats-current-year{
     font-size: 3rem;
@@ -157,8 +159,9 @@
     color: #707070;
 }
 .app-cats-day {
-	width: 13.5%;
-	height: 15px;
+    width: 11.8%;
+/*    width: 13.5%;
+*/	height: 15px;
 	float: left;
 	margin-bottom: 2px;
 	text-align: center;
@@ -182,15 +185,21 @@
     background: #A4D8F9;
 }
 .app-cats-project-selector-button {
-    height: 27px;
     line-height: 0;
     text-align: left;
-    margin:4px 4px;
+    margin: -1px;
     overflow: hidden;
     font-size: 14px;
+    padding: 25px;
+    padding-left: 10px;
+    border: none!important;
+
+    box-shadow: none;
+ 
 }
+
 #app-cats-project-selector-button-container {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-right: 0;
 }
 .app-cats-project-selector-button span {
@@ -218,26 +227,29 @@
     background: #F3F2F2;
 }
 .app-cats-stateY_INTHEFUTURE_part_maint {
-    background-image: url('/../../img/part_maint_FUTURE.svg');
+    /*background-image: url('/../../img/part_maint_FUTURE.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100%);
 }
 .app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-    background-image: url('/../../img/part_maint_B.svg');
+    /*background-image: url('/../../img/part_maint_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
 }
 .app-cats-stateG { /* maintained */
-    background: #D3E6DC;
+    background: #A7D0BA;
 }
 .app-cats-stateOVERBOOKED { /*overbooked*/
     /*background: #A7D0BA;*/
-    background-image: url('/../../img/over_booked.svg');
+    /*background-image: url('/../../img/over_booked.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
 }
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
@@ -248,16 +260,21 @@
     visibility: hidden;
 }
 .app-cats-today { 
-    background-image: url('/../../img/ecke_dunkel.svg');
+    /*background-image: url('/../../img/ecke_dunkel.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
 }
 .app-cats-today-legend { 
-    background-image: url('/../../img/ecke_dunkel_legend.svg');
+    /*background-image: url('/../../img/ecke_dunkel_legend.svg');
     background-repeat: no-repeat;
     background-size: cover;
-/*    background-position-x: 100%;*/
+    background-position-x: 100%;*/
+
+    font-weight: 900;
+    font-style: italic;
 }
 .selected_day span{
     position: relative;
@@ -268,21 +285,27 @@
     /*background: ;*/
     border: 3px solid #707070;
     color: #707070!important;
-    font-weight: 600;
+ 
 }
 .app-cats-stateY_TODAY { 
-    /*background-color:#FEE0A1;*/
+    /*background-color:#FEE0A1;
     background-image: url('/../../img/part_maint_TODAY_B.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
 }
 .app-cats-stateOVERBOOKED_TODAY { 
-    /*background-color:#A7D0BA;*/
+    /*background-color:#A7D0BA;
     background-image: url('/../../img/over_booked_TODAY.svg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position-x: 100%;
+    background-position-x: 100%;*/
+    font-weight: 900;
+    font-style: italic;
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
 } 
 .app-cats-icon {
     font-family: 'SAP-icons';
@@ -292,7 +315,8 @@
 }
 .app-cats-week .app-cats-day {
     color: white;
-    width: 13.5%;
+    width: 11.8%;
+    /*width: 13.5%;*/
 }
 .allocation-bar-background-panel {
   margin-left: auto;
@@ -556,17 +580,15 @@
 }
 
 .settings_task_edit_button {
-    position: absolute; 
-    height: 27px; 
-    width: 10%; 
-    right: 30px; 
-    margin: 4px 0px; 
-    
-    color: white; 
-    background: rgba(255, 255, 255, 0.2); 
-    
-    text-align: center; 
-    line-height: 2em;
+    position: absolute;
+    height: 47px;
+    width: 50px;
+    right: 7%;
+    /* margin: 4px 0; */
+    color: #418AC9;
+    background: rgba(255,255,255,.2);
+    text-align: center;
+    /* line-height: 2em; */
 }
 
 .settings_add_task_button {
@@ -577,4 +599,8 @@
 .settings_required_label_mark {
     position: absolute;
     right: 3px;
+}
+.list-header{
+    margin-bottom: 10px;
+    margin-top:20px;
 }

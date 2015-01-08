@@ -18,13 +18,18 @@
                 Do you really want to cancel the booking of the following room?
             </h5>
             <p>{{selectedRoom.LOCATION}} on the {{ selectedRoom.VALIDFROMDATE | date: 'dd.MM.' }}</p>
-            <button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
-            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>
-            
+            <!--<button ng-disabled="isEmpty(selectedRoom)" class="btn btn_blue" ng-click="cancelRoom(selectedRoom)">YES</button>
+            <button class="btn btn_blue" ng-click="deselectRoom()">NO</button>-->
+            <bridge.button state="isEmpty(selectedRoom) === true ? 'disabled' : ' '" ng-click="cancelRoom(selectedRoom)">
+                Yes
+            </bridge.button>
+            <bridge.button ng-click="deselectRoom()">
+                No
+            </bridge.button>
         </div>
 
         <div ng-if="!hasBookings() && errMsg == null">
-            <p>You did not book a room for the next 14 days! Saving ressources, perfecto!</p>
+            <p>You did not book a room for the next 14 days! Saving resources, perfecto!</p>
             <i>Please note: the backend system will take up to 10 minutes to reflect a room booked via Outlook. Please be patient.</i>
         </div>
         

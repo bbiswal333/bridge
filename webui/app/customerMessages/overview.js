@@ -1,41 +1,19 @@
-angular.module('app.customerMessages', []);
+angular.module('app.customerMessages', ['notifier', 'bridge.service']);
 
-angular.module('app.customerMessages').factory("app.customerMessages.configservice", function ()
-{
-    //set the default configuration object
-    var config = {};
-    config.data = {};
-    config.data.settings = {};
-    config.data.settings.ignore_author_action = true;
-    config.data.settings.notificationDuration = 5000;
-    config.data.selection = {};
-    config.data.selection.sel_components = true;
-    config.data.selection.assigned_me = false;
-    config.data.selection.colleagues = false;
-    config.lastDataUpdate = null;
-
-    return config;
-});
-
-angular.module('app.customerMessages').directive('app.customerMessages', ['app.customerMessages.configservice', function (configservice)
+angular.module('app.customerMessages').directive('app.customerMessages', function ()
 {
     return {
         restrict: 'E',
-        templateUrl: 'app/customerMessages/overview.html',
-        link: function ($scope)
-        {
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined)
-            {
-                configservice.data = $scope.appConfig.data;
-                configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
-            }
-        }
+        templateUrl: 'app/customerMessages/overview.html'
     };
-}]);
+});
 
 angular.module('app.customerMessages').controller('app.customerMessages.directiveController',
-    ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig',
-    function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig) {
+    ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData',
+    function Controller($scope, $http, ticketDataService, configService, bridgeDataService, bridgeConfig, orgUnitDataService) {
+        var config = configService.getInstanceForAppId($scope.metadata.guid);
+        var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+        var orgUnitData = orgUnitDataService.getInstanceForAppId($scope.metadata.guid);
 
         $scope.box.boxSize = "1";
         $scope.box.settingScreenData = {
@@ -44,9 +22,8 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             id: $scope.boxId
         };
 
-        $scope.box.returnConfig = function()
-        {
-            return configservice;
+        $scope.box.returnConfig = function(){
+            return config.data;
         };
 
         $scope.prios = ticketData.prios;
@@ -55,7 +32,11 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         $scope.showNoMessages = false;
 
         function setNoMessagesFlag() {
-            if (ticketData.isInitialized.value === true && ($scope.prios[0].total + $scope.prios[1].total + $scope.prios[2].total + $scope.prios[3].total) === 0) {
+            var totalTickets = 0;
+            angular.forEach(ticketData.backendTickets, function(property){
+                totalTickets += property.length;
+            });
+            if (ticketData.isInitialized.value === true && totalTickets === 0) {
                 $scope.showNoMessages = true;
             } else {
                 $scope.showNoMessages = false;
@@ -68,8 +49,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
 
 
         $scope.$watch('config', function (newVal, oldVal) {
-            if($scope.config !== undefined && newVal !== oldVal)
-            {
+            if($scope.config !== undefined && newVal !== oldVal){
                 ticketData.updatePrioSelectionCounts();
 
                 // oldval is undefined for the first call of this watcher, i.e. the initial setup of the config. We do not have to save the config in this case
@@ -79,18 +59,51 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             }
         },true);
 
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && config.isInitialized === false){
+            config.initialize();
+        }
+
+        function setErrorText(text){
+            var resultText = "<div style='width:200px'>";
+
+            if (text === undefined) {
+                 resultText += "Error loading the data from BCP. The BCP-backup system may be temporarily offline.";
+            } else {
+                resultText += text;
+            }
+            resultText += "</div>";
+            $scope.box.errorText = resultText;
+        }
+
         if (ticketData.isInitialized.value === false) {
+            orgUnitData.loadData();
+
             var initPromise = ticketData.initialize();
-            initPromise.then(function success() {
+            initPromise.then(function success(data) {
                 setNoMessagesFlag();
-                $scope.config = configservice;
+                $scope.config = config;
                 ticketData.updatePrioSelectionCounts();
+
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error() {
+                setErrorText();
             });
         }
         else{
-            $scope.config = configservice;
+            $scope.config = config;
             ticketData.updatePrioSelectionCounts();
         }
 
-        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 10);
+        $scope.box.reloadApp(function() {
+            ticketData.loadTicketData().then(function success(data){
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error(){
+                setErrorText();
+            });
+            orgUnitData.loadData();
+        }, 60 * 10);
 }]);

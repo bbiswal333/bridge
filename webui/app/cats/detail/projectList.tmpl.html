@@ -1,7 +1,6 @@
 <div>
     <div class="app-cats-project-list" ng-if="hasError">
-        <b>There was a problem with the connection to ISP (error or timeout)<br>
-        Please refresh the browser.</b>
+        {{errorText}}
     </div>
     <div class="app-cats-project-list" ng-if="!loaded && !hasError">
         Loading...
@@ -12,15 +11,15 @@
                 <bridge.input ng-keypress="onPressEnter($event)" id="filterTextfield" model="filter.val" placeholder="Type here to filter..." autofocus="true"></bridge.input>
             </div>
         </div>
-        <div style="overflow-y: scroll" ng-style="{height: heightOfList}" ng-mouseleave="showEditButton(-1)">
+        <div style="overflow-y: scroll"  ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
-                <div ng-repeat="item in items | filter:filter.val">
-                    <span ng-if="item.TASKTYPE === 'BRIDGE_HEADER'"><b>{{item.DESCR}}</b></span>
-                    <button type="button"
+                <div ng-repeat="item in items | filter:filter.val" ng-class="{'list-header' : item.TASKTYPE === 'BRIDGE_HEADER'}">
+                    <span style="margin-bottom:10px;" ng-if="item.TASKTYPE === 'BRIDGE_HEADER'" ><b >{{item.DESCR}}</b></span>
+                    <!--<button type="button"
                             title="{{getDescription(item)}}"
                             ng-if="item.TASKTYPE !== 'BRIDGE_HEADER'"
-                            class="btn btn-default app-cats-project-selector-button" 
-                            ng-class="{'btn_blue' : item.selected && !item.color}"
+                            class="button blue app-cats-project-selector-button" 
+                            ng-class="{'active' : item.selected && !item.color}"
                             ng-style="item.color ? {'background':item.color, 'color':'white'} : ''" 
                             id="projectButton" 
                             ng-click="toogleSelect(item.id,$event);"
@@ -33,7 +32,14 @@
                             ng-click="editTask(item.id)">
                             <i class="fa fa-pencil fa-lg"></i>
                         </button>
-                    </button>
+                    </button>-->
+                    <bridge.button title="{{getDescription(item)}}" ng-if="item.TASKTYPE !== 'BRIDGE_HEADER'" state="item.selected && !item.color === true ? 'active' : 'invisible-button'" ng-style="item.color ? {'background':item.color, 'color':'white'} : ''" ng-click="toogleSelect(item.id,$event);doAlert()" ng-mouseenter="showEditButton(item.id)" ng-mouseout="" style="margin:0;width:calc(99% - 44px);text-align:left;padding-left:10px;"> 
+                        {{item.DESCR}}
+                        <span> {{item.subDescription}} </span>
+                    </bridge.button>
+                    <bridge.button state="'invisible-button'" ng-show="item.selected && forSettingsView" ng-click="editTask(item.id);" style="width:44px;margin:0;line-height:30px;">
+                        <i class="fa fa-pencil fa-lg"></i>
+                     </bridge.button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,8 @@
+<div style="padding-left: 10px">
+	<i class="fa fa-location-arrow"></i><img src="img/SAP-Logo-50x25.png" height="15" ng-if="match.sapLocation" style="margin-left: 5px" />
+	{{match.address.label}}
+	<span ng-if="match.sapDetails" style="vertical-align: top;">&#8212;</span>
+	<span class="search-span-ellipsis">{{match.sapDetails}}</span>
+	<br />
+	{{match.localTime}} <i class="{{match.weatherIcon}}"></i> {{match.temperature}}
+</div>

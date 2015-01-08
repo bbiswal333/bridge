@@ -1,6 +1,7 @@
 .search-results-pane {
 	z-index: 100;
 	max-width: 600px;
+	position: absolute;
 	
 	-webkit-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.5);
 	-moz-box-shadow: 0px 0px 7px 0px rgba(0,0,0,0.5);
@@ -32,7 +33,6 @@
 	color: rgba(0, 0, 0, .8);
 	padding-top: 5px;
 	padding-bottom: 7px;
-	width: 100%;
 	font-weight: normal;
 }
 
@@ -56,6 +56,15 @@
 
 .bridge-search-input {
 	width: 60%;
+}
+
+.bridge-search-settingsButton {
+	float: left;
+	margin-left: -27px;
+	margin-top: -1px;
+	z-index: 1000;
+	position: absolute;
+	color: rgba(0,0,0,0.2);
 }
 
 @media (max-width:600px){

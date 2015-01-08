@@ -35,18 +35,27 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
       if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
           (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID &&
-           task2.RAUFNR === task1.RAUFNR &&
-           task2.TASKTYPE === task1.TASKTYPE && task1.TASKTYPE &&
-           task1.ZZSUBTYPE === task2.ZZSUBTYPE)) { // unique TASKTYPE RAUFNR SUBTYPE combination
+           !task1.RNPLNR && !task2.RNPLNR &&
+            task1.RAUFNR === task2.RAUFNR &&
+            task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
+            task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // CAT2 task check
+           (task1.RNPLNR === task2.RNPLNR && task1.RNPLNR &&
+            task1.VORNR === task2.VORN &&
+            task1.AUTYP === task2.AUTYP &&
+            task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
+            task1.TASKLEVEL === task2.TASKLEVEL &&
+            task1.SKOSTL === task2.SKOSTL &&
+            task1.ZZOBJNR === task2.ZZOBJNR)) {  // CATSXT task check
           return true;
       }
       return false;
     };
 
     this.isFixedTask = function(task){
-      if ( task.TASKTYPE === "VACA" ||
+      if ((task.TASKTYPE === "VACA" && task.UNIT === "H") || // There is a valid VACA/TA task in Israel
           (task.TASKTYPE === "ABSE" && task.UNIT === "H") || // There is a valid ABSE/TA task in Israel
-           task.TASKTYPE === "COMP") {
+           task.TASKTYPE === "COMP" ||
+           task.TASKCOUNTER) { // System entered time or CATSXT
         return true;
       }
       return false;
@@ -65,6 +74,10 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
     this.cat2CompliantRounding = function(value) {
       return Math.round(value * 1000) / 1000;
+    };
+
+    this.cat2CompliantRoundingForHours = function(value) {
+      return Math.round(value * 100) / 100;
     };
   }
 );

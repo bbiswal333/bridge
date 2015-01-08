@@ -95,10 +95,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 
 			if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
 				week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 				week = calenderUtils.getWeekNumber(day);
 				week.year = year;
 			} else {
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 			}
 
@@ -106,6 +108,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
 				  (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
 				week = calenderUtils.getWeekNumber(day);
+				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
 				day.setDate(day.getDate() + 7);
 			}
@@ -185,6 +188,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 						if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
 							var task = {};
 							task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
+							task.TASKCOUNTER = ISPtask.DAYS[DayIterator].TASKCOUNTER;
 							task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
 							task.RAUFNR = ISPtask.RAUFNR;
 							task.TASKTYPE = ISPtask.TASKTYPE;
@@ -196,6 +200,15 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
 							task.DESCR = ISPtask.DESCR;
 							this.days[task.WORKDATE].tasks.push( task );
+
+							if (task.UNIT === 'H') {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
+							}
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
+
+							// That coding does not belong here...
 							var block = {};
 							block.desc = task.DESCR;
 							block.fixed = true;
@@ -205,15 +218,41 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
 							}
 							this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
-							if (task.UNIT === 'H') {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-							} else {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
-							}
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 						}
 					}
 				}
+			angular.forEach(this.days,function(day) {
+				// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
+				var totalOfQuantityDay = 0;
+				var biggestTask = {};
+				biggestTask.QUANTITY_DAY = 0;
+				angular.forEach(day.tasks,function(task) {
+					// knowingly doing some data doublication here
+					if (task.UNIT === 'H') {
+						task.QUANTITY_DAY = task.QUANTITY / day.hoursOfWorkingDay;
+					} else {
+						task.QUANTITY_DAY = task.QUANTITY;
+					}
+					if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
+						if (task.UNIT !== 'H') {
+							// Adjusting to acutal part-time and country specific target hours value
+							var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
+						} else {
+							roundedTargetHours = day.targetHours;
+						}
+						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
+					}
+					totalOfQuantityDay = totalOfQuantityDay + task.QUANTITY_DAY;
+					if(task.QUANTITY_DAY > biggestTask.QUANTITY_DAY) {
+						biggestTask = task;
+					}
+				});
+				// Fix rounding issues
+				totalOfQuantityDay = Math.round(totalOfQuantityDay * 1000) / 1000;
+				if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
+					biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
+				}
+			});
 			}
 		} catch(err) {
 			$log.log("convertWeekData(): " + err);
@@ -233,7 +272,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					if(data) {
 						self.convertWeekData(data);
 					}
-					self.reloadInProgress.value = false;
+					catsBackend.CAT2ComplinaceDataPromise
+					.then(function(){
+						self.reloadInProgress.value = false;
+					});
 				}, function() {
 					self.reloadInProgress.value = false;
 					self.reloadInProgress.error = true;

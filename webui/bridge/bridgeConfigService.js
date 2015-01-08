@@ -21,41 +21,24 @@
             }
         }
 
+        function getOnlyChangedMetadata(metadata) {
+            var cleanedMetadata = {};
+            var originalMetadata = bridgeLoaderServiceProvider.findAppByModuleName(metadata.module_name);
+            for (var prop in metadata) {
+                if(originalMetadata[prop] === undefined || JSON.stringify(metadata[prop]) !== JSON.stringify(originalMetadata[prop]) || prop === "module_name" || prop === "guid") {
+                    cleanedMetadata[prop] = metadata[prop];
+                }
+            }
+            return cleanedMetadata;
+        }
+
         function getAppsData(project) {
-            var visible_apps = [];
-            var apps = [];
-
-            if (project.apps) {
-                for (var i = 0; i < project.apps.length; i++) {
-                    if(project.apps[i].metadata.show)
-                    {
-                        visible_apps.push(project.apps[i]);
-                    }
-                }
-            }
-
-            visible_apps.sort(function(app1, app2){
-                if (app1.metadata.order < app2.metadata.order) {
-                    return -1;
-                }
-                if (app1.metadata.order > app2.metadata.order) {
-                    return 1;
-                }
-                return 0;
+            return project.apps.map(function(app) {
+                return {
+                    metadata: getOnlyChangedMetadata(app.metadata),
+                    appConfig: getAppConfig(app)
+                };
             });
-
-            for (var j = 0; j < visible_apps.length; j++)
-            {
-                var appConfig = getAppConfig(visible_apps[j]);
-
-                apps.push({
-                    metadata: {
-                        "module_name": visible_apps[j].metadata.module_name
-                    },
-                    appConfig: appConfig
-                });
-            }
-            return apps;
         }
 
         function isEmpty(obj) {
@@ -91,7 +74,6 @@
         this.decideWhichConfigToUse = function(oConfigFromBackend){
             var oConfigFromStorage = that.getConfigFromStorage();
 
-            $log.log(oConfigFromBackend.savedOn);
             if (oConfigFromStorage !== null) {
                 $log.log(oConfigFromStorage.savedOn);
             } else {
@@ -102,7 +84,7 @@
                 return that.getDefaultConfig(); // return default config if we have have neither backendConfig nor localConfig
             } else if (!angular.isObject(oConfigFromStorage) || isEmpty(oConfigFromStorage)){
                 return oConfigFromBackend;  // use backendConfig if we have no local config
-            } else if (oConfigFromBackend.savedOn > oConfigFromStorage.savedOn){
+            } else if (oConfigFromBackend !== null && oConfigFromBackend.savedOn > oConfigFromStorage.savedOn){
                 return oConfigFromBackend;  // use config from backend if it is newer than the local config
             } else {
                 return oConfigFromStorage;
@@ -113,6 +95,11 @@
             var oConfigFromStorage = angular.fromJson($window.localStorage.getItem(storageKey));
             if (oConfigFromStorage !== null && oConfigFromStorage.savedOn !== null) {
                 oConfigFromStorage.savedOn = new Date(oConfigFromStorage.savedOn);
+            }
+
+            //D049677: This transformation is necessary due to a previous bug in the default config
+            if(oConfigFromStorage && oConfigFromStorage.bridgeSettings && angular.isArray(oConfigFromStorage.bridgeSettings.searchProvider)) {
+                oConfigFromStorage.bridgeSettings.searchProvider = {};
             }
 
             return oConfigFromStorage;
@@ -164,15 +151,8 @@
         this.getDefaultConfig = function () {
             var apps = [];
             for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
-                apps[i] = {};
-                apps[i].metadata = {};
-                apps[i].metadata.id = i;
-                if (bridgeLoaderServiceProvider.apps[i].default_hidden) {
-                    apps[i].metadata.show = false;
-                }
-                else {
-                    apps[i].metadata.module_name = bridgeLoaderServiceProvider.apps[i].module_name;
-                    apps[i].metadata.show = true;
+                if(!bridgeLoaderServiceProvider.apps[i].default_hidden) {
+                    apps.push({metadata: bridgeLoaderServiceProvider.apps[i]});
                 }
             }
 
@@ -185,7 +165,8 @@
                     }
                 ],
                 bridgeSettings: {
-                    readNews: []
+                    readNews: [],
+                    searchProvider: {}
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };

@@ -1,4 +1,4 @@
-angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http', '$window', '$modal', function ($http, $window, $modal) {
+angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http', '$window', 'employeeService', function ($http, $window, employeeService) {
     function getSearchName(username) {
         //support format "Jeschke, Christian" <christian.jeschke@sap.com>' from mail clients like outlook
         var searchname = username;
@@ -19,27 +19,9 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
     };
 
     this.getDetails = function(employee, callback) {
-        $http.get('https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON?id=' + employee.BNAME + '&origin=' + $window.location.origin).then(
-            function(response) {
-                var employeeDetails = response.data.DATA;
-                employeeDetails.TELNR = employeeDetails.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
-                employeeDetails.TELNR_MOB = employeeDetails.TELNR_MOBILE.replace(/ /g, '').replace(/-/g, '');
-
-                $http.get('/bridge/search/buildings.xml').then(function (buildingResponse) {
-                    var data = new X2JS().xml_str2json(buildingResponse.data);
-                    for(var i = 0; i < data.items.item.length; i++)
-                    {
-                        if(data.items.item[i].objidshort === employee.BUILDING && data.items.item[i].geolinkB !== undefined)
-                        {
-                            employeeDetails.building_url = data.items.item[i].geolinkB;
-                            employeeDetails.city = data.items.item[i].city;
-                            employeeDetails.street = data.items.item[i].street;
-                        }
-                    }
-                });
-                return callback(employeeDetails);
-            }
-        );
+        employeeService.getData(employee.BNAME).then(function(employeeDetails){
+            callback(employeeDetails);
+        });
     };
 
     var that = this;
@@ -47,7 +29,8 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
         return {
             icon: "fa fa-user",
             name: "SAP Employees",
-            resultTemplate: "bridge/controls/employeeInput/EmployeeItemTemplate.html"
+            resultTemplate: "bridge/controls/employeeInput/EmployeeItemTemplate.html",
+            defaultSelected: true
         };
     };
     this.findMatches = function(query, resultArray) {
@@ -60,15 +43,8 @@ angular.module('bridge.search').service('bridge.search.employeeSearch', ['$http'
     this.getCallbackFn = function() {
         return function(selectedEmployee) {
             that.getDetails(selectedEmployee.model, function(employeeDetails) {
-                $modal.open({
-                    templateUrl: 'bridge/controls/employeeInput/employeeDetails.html',
-                    controller: function($scope) {
-                        $scope.selectedEmployee = employeeDetails;
-                    },
-                    size: "sm"
-                });
+                employeeService.showEmployeeModal(employeeDetails);
             });
-            /*$window.open("https://people.wdf.sap.corp/profiles/" + selectedEmployee.model.BNAME);*/
         };
     };
 }]);

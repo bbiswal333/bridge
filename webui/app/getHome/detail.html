@@ -3,4 +3,11 @@
 	<div class="app-getHome-detail-legend">
 		{{formatTime(route.summary.trafficTime)}} (+{{formatTime(route.summary.trafficTime - route.summary.baseTime)}})
 	</div>
+	<div>
+		<ul>
+			<li ng-repeat="incident in route.originalRoute.incidents" style="text-align: left">
+				{{incident}}
+			</li>
+		</ul>
+	</div>
 </div>

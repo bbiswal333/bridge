@@ -13,7 +13,8 @@
 				"route"			:	"/detail/cats/",
 				"templateUrl"	:	"app/cats/detail.html"
 			}
-		]	
+		],
+		"description"			:	"With the help of the time recording app it is possible to maintain your CAT2 time recording in a very easy manner. You can select one or multiple days (or even weeks) and select the tasks you were working on. With a few clicks an entire month is maintained and you're compliant."
 	},
 	"modules" : [		
 		"app.cats.allocationBar",

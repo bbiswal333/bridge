@@ -1,5 +1,5 @@
 {
-	"news": [
+	"news": [ 
         {
             "id":       1,
             "header":   "New Design for Bridge",
@@ -39,6 +39,38 @@
             "snapURL":  "bridge/menubar/news/image/jam.png",
             "preview":  "Help to define the JAM Integration",
             "content":  "We target to provide a Bridge App to enable users to configure their Jam input channel personalized and have a smarter solution than mail notifications. Target is to enable users to directly link to and filter the relevant Jam based information they need to follow up on for their daily tasks. To do things right it is key to focus on the right things before! We need <b>YOUR INPUT about YOUR ISSUES</b> enabling you to perform best concerning Jam channeled information. If you are ready to engage to improve your situation, please <b><a target=\"_blank\" href=\"https://profiles.wdf.sap.corp/groups/5458eb5adf15db4575000002/users\">register for the next roll in Workshop (Design Thinking mode)</a></b> planned for CW 48/49 in Wallorf/ Rot or contact <b>Christoph Ehrhardt</b> directly."
+        },
+        {
+            "id":       6,
+            "header":   "Bridge Usability Survey",
+            "date": "2014-11-17",
+            "snapURL":  "bridge/menubar/news/image/Clouds.png",
+            "preview":  "Please let us know your feedback!",
+            "content":  "We are constantly working on improving Bridge. This requires that we understand your experiences with it - something we hope you are willing to share via an online survey. Your anonymous answers will help us evaluate the tool's effectiveness and decide on improvements.<br><br>Please complete the survey before <b>November 28st, 2014</b> by using this <b><a href=\"https://www.sapsurvey.com/cgi-bin/qwebcorporate.dll?idx=B5TZCF\" target=\"_blank\">link</a></b>. We understand that your time is very valuable, so we kept the survey very short: it should only take <b>about 5-10 minutes</b> to complete.<br><br>If you have any questions or are having any difficulties accessing the link, please contact <b>Marian Gunkel</b>.<br><br>Thank you for your input!"
+        },
+        {
+            "id":       7,
+            "header":   "ATC - new features",
+            "date": "2014-11-21",
+            "snapURL":  "bridge/menubar/news/image/ATC_RSS.png",
+            "preview":  "Keep an eye in your new ATC Results with RSS and more",
+            "content":  "From the ATC <b>Result app</b> you can now generate a link to a <b>RSS Feed for ATC Results</b>.<br>You can generate Feed links for your stored selections (all together or single selections).<br>Use your RSS Reader of choice, Outlook for instance.<br><br>There is also a copy function that you can now use to crete new selections based on existing ones."
+        },
+        {
+          "id":       8,
+          "header":   "Customer- and Internal-Incident Apps available",
+          "date": "2014-11-25",
+          "snapURL":  "bridge/menubar/news/image/newDesignSnap.png",
+          "preview":  "New Incident Apps!",
+          "content":  "A lot of you were awaiting these apps for a long time, finally the <b>Customer- and Internal-Incident Apps</b> left the beta status and are available for everyone. The apps connect to the new ticket systems in BCP, reuse your component assignment there and show you the relevant tickets grouped by different categories.<br/><br/>Changed and new tickets will appear in your notifications list and in Chrome and Firefox there is also a popup notification for these messages.<br/><br/>Please note that we retrieve our data from the BCP backup system, which might result in a small delay of 1-5 minutes before Bridge displays changes in tickets and component assignments.<br/><br/> Visit the <a href='https://portal.wdf.sap.corp/go/internal-incidents'>Internal Incident Portal Page</a> for more information."
+        },
+        {
+            "id":       9,
+            "header":   "Multi-Instance Apps out now!",
+            "date":     "2014-12-10",
+            "snapURL":  "bridge/menubar/applications/banner01.svg",
+            "preview":  "It is now possible to add multiple instances of the same app. Click if you want to learn more.",
+            "content":  "During the last weeks we were working on a major improvement that you were longing for: having multiple instances of the same app on bridge.<br /><br />With todays release it is possible to add multiple instances of enabled apps from our new apps section:<br /><img src=\"bridge/menubar/news/image/addRemoveMultiInstance.gif\" width=\"1000\" /><br /><br />In addition to having multiple instances it is possible to rename all apps and give them a more meaningful name. In order to do this just double click the header of an app as shown in the screen recording above.<br /><br />In case you want to remove an app you can either do it via the apps section as shown above or via drag&drop."
         }
 	]
 }

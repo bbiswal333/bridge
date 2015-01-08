@@ -1,0 +1,14 @@
+<script src="lib/asteroidsGame/lina.js"></script>
+<script src="lib/asteroidsGame/arcade.js"></script>
+<script src="lib/asteroidsGame/arcadeControls.js" type="text/javascript"></script>
+
+<script src="lib/asteroidsGame/asteroidsGame.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	// Initialize the game
+	var canvas = $("#asteroidsCanvas")[0];
+	new AsteroidsGame(canvas);
+});
+</script>
+<canvas style="width: 800px; height: 600px" id="asteroidsCanvas">This game requires HTML 5 support.</canvas>

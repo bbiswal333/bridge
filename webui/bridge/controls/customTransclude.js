@@ -1,7 +1,16 @@
-angular.module('bridge.app').directive( 'customTransclude', function() {
+angular.module('bridge.app').directive( 'customTransclude', ["$tooltip", function($tooltip) {
     return {
         restrict: 'EAC',
         link: function( $scope, $element, $attrs, controller, $transclude ) {
+            function addTextTooltip(parent, element, attrs) {
+                if(attrs.addTextTooltip === "true") {
+                    var tooltipScope = $tooltip(parent, {title: element.text(), trigger: "hover", placement: "bottom", container: "body", delay: { show: 400 }}).$scope;
+                    tooltipScope.$on('tooltip.show.before', function() {
+                        tooltipScope.title = element.text();
+                    });
+                }
+            }
+
             if (!$transclude) {
                 throw new Error('customTransclude, orphan',
                     'Illegal use of customTransclude directive in the template! ' +
@@ -14,12 +23,14 @@ angular.module('bridge.app').directive( 'customTransclude', function() {
                 case 'sibling':
                     $transclude( function( clone ) {
                         $element.empty();
+                        addTextTooltip($element, clone, $attrs);
                         $element.append( clone );
                     });
                     break;
                 case 'parent':
                     $transclude( $scope, function( clone ) {
                         $element.empty();
+                        addTextTooltip($element, clone, $attrs);
                         $element.append( clone );
                     });
                     break;
@@ -27,6 +38,7 @@ angular.module('bridge.app').directive( 'customTransclude', function() {
                     var iChildScope = $scope.$new();
                     $transclude( iChildScope, function( clone ) {
                         $element.empty();
+                        addTextTooltip($element, clone, $attrs);
                         $element.append( clone );
                         $element.on( '$destroy', function() {
                             iChildScope.$destroy();
@@ -36,4 +48,4 @@ angular.module('bridge.app').directive( 'customTransclude', function() {
             }
         }
     };
-});
+}]);

@@ -33,18 +33,18 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
 	        $scope.prionr = [1,2,3,4];
 
 	        if (appimtpsConfig.isInitialized === false){
-            	appimtpsConfig.initialize($scope.id);
+            	appimtpsConfig.initialize($scope.metadata.guid);
             }
 
 			msgReaderData.initService( function(messages){
 				if( messages ){
 					$scope.prioarray = [0,0,0,0];
 					angular.forEach(messages["_-QBE_-S_MESSAGES"], function (n) {
-						if( n.MSG_PRIO === 1 ) {
+						if( n.MSG_PRIO === "1" ) {
 							$scope.prioarray[0] = $scope.prioarray[0] + 1;
-						} else if( n.MSG_PRIO === 2 ) {
+						} else if( n.MSG_PRIO === "2" ) {
 							$scope.prioarray[1] = $scope.prioarray[1] + 1;
-						} else if( n.MSG_PRIO === 3 ) {
+						} else if( n.MSG_PRIO === "3" ) {
 							$scope.prioarray[2] = $scope.prioarray[2] + 1;
 						} else {
 							$scope.prioarray[3] = $scope.prioarray[3] + 1;

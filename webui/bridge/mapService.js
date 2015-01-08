@@ -1,5 +1,5 @@
 /*global nokia*/
-angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', function ($q, $http) {
+angular.module('bridge.service').service("bridge.service.maps", ['$q', '$http', function ($q, $http) {
 	var routeColors = ["#418AC9", "#8561C5", "#707070"];
 	var mode = {
 			fastest: {
@@ -119,9 +119,7 @@ angular.module('app.getHome').service("app.getHome.mapservice", ['$q', '$http', 
 		searchManager.addObserver("state", function (observedManager) {
 
 			if (observedManager.state === "finished") {
-				if (observedManager.getLocations().length > 0) {
-					callback(observedManager.getLocations());
-				}
+				callback(observedManager.getLocations());
 			}
 		});
 		searchRequest = {

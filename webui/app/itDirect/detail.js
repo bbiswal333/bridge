@@ -54,6 +54,10 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
             }
         };
 
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
+
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
             function addAndEnhanceTicket(ticket) {

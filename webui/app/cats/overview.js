@@ -6,6 +6,7 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 
 			$scope.box.boxSize = "2";
 			$scope.configService = catsConfigService;
+			$scope.variableThatIsFalse = false;
 
 			$scope.box.settingsTitle = "Configure Work List";
 			$scope.box.settingScreenData = {

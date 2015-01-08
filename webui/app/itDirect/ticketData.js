@@ -29,12 +29,10 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             var promiseArray = [];
             var deferAssignedToMe = $q.defer();
 
-            that.tickets.assigned_me.length = 0;
-            that.tickets.savedSearch.length = 0;
-
             var userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
             $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARTIES_OF_REQ eq '" + userid + "'&$format=json")
                 .success(function(data){
+                    that.tickets.assigned_me.length = 0;
 
                     angular.forEach(data.d.results, function(backendTicket){
                         that.tickets.assigned_me.push(backendTicket);
@@ -51,6 +49,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
 
                 $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/TicketCollection?$filter=PROCESS_TYPE eq 'ZINC,ZSER' and PARAMETER_KEY eq '" + itdirectConfig.sSavedSearchToInclude + "'&$format=json")
                     .success(function(data){
+                        that.tickets.savedSearch.length = 0;
 
                         angular.forEach(data.d.results, function(backendTicket){
                             that.tickets.savedSearch.push(backendTicket);
@@ -95,11 +94,11 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             ticketsToNotify.assigned_me = [];
             ticketsToNotify.savedSearch = [];
 
-            for (var newTicketsCategory in newTicketData){
+            function checkForChangedTickets(newTicketsCategory){
                 angular.forEach(newTicketData[newTicketsCategory], function(ticket){
                     var foundTicket;
                     for (var category in oldTicketData) {
-                         foundTicket = _.find(oldTicketData[category], { GUID: ticket.GUID });
+                        foundTicket = _.find(oldTicketData[category], { GUID: ticket.GUID });
                         if (foundTicket !== undefined){
                             break;
                         }
@@ -117,6 +116,10 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                 });
             }
 
+            for (var newTicketsCategory in newTicketData){
+                checkForChangedTickets(newTicketsCategory);
+            }
+
             if (bNewNotifications === true) {
                 that.ticketsFromNotifications = ticketsToNotify;
             }
@@ -129,10 +132,12 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
             ticketsToNotify.assigned_me = [];
             ticketsToNotify.savedSearch = [];
 
+            function checkIfTicketIsYounger(ticket){
+                return converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
+            }
+
             for (var category in tickets) {
-                foundTickets = _.where(tickets[category], function(ticket){
-                    return converter.getDateFromAbapTimeString(ticket.CHANGED_AT) > lastDataUpdateFromConfig;
-                });
+                foundTickets = _.where(tickets[category], checkIfTicketIsYounger);
                 if (foundTickets.length > 0){
                     ticketsToNotify[category] = foundTickets;
                     bShowNotification = true;

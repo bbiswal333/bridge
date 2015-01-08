@@ -1,20 +1,23 @@
 angular.module("app.cats.dataModule", ["lib.utils"])
-.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils",
-	function($http, $q, $log, $window, calUtils) {
+.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils", "app.cats.catsUtils",
+	function($http, $q, $log, $window, calUtils, catsUtils) {
 		var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
-		var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001&options=CPROWORKLIST";
+		var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
 		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin="	+ $window.location.origin;
 		var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
 		var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
 		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
 
 		this.CAT2ComplinaceDataCache = [];
+		this.CAT2ComplinaceDataPromise = {};
 		this.CPROTaskTextCache = {};
 		this.CPROTaskTextCache.DATA = [];
 		this.CAT2AllocationDataForWeeks = {};
 
 		var catsProfileFromBackendPromise;
 		this.catsProfile = "";
+		this.gracePeriodInMonth = 0;
+		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
 		var that = this;
 
@@ -27,15 +30,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject(status);
+				deferred.reject("HTTP-Status of write posting call is " + status);
 			});
 
 			return deferred.promise;
 		}
 
 		function monthAlreadyCached(year, month) {
-			var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "-" + "15";
+			var middate = "" + year + "-" + calUtils.toNumberOfCharactersString(month + 1, 2) + "-" + "15";
 			if (_.find(that.CAT2ComplinaceDataCache, {
 					"DATEFROM": middate
 				}) !== undefined) {
@@ -125,59 +127,105 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				catsProfileFromBackendPromise = deferred.promise;
 
 				var today = new Date();
-				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + today.getDate();
-				_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + todayString + "&endda=" + todayString)
+				var todayString = "" + today.getFullYear() + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(today.getDate(), 2);
+
+				_httpGetRequest(MYCATSDATA_WEBSERVICE + "PROFILEONLYGRACEPERIOD&begda=" + todayString + "&endda=" + todayString)
 				.then(function(data) {
 					// try to get it from ISP configuration
 					if ( !data ) {
 						deferred.reject();
+						return;
+					}
+					if (data.G_PERIOD) {
+						this.gracePeriodInMonth = data.G_PERIOD * 1;
+					}
+					if (data.F_G_PERIOD) {
+						this.futureGracePeriodInDays = data.F_G_PERIOD * 1;
 					}
 					if (data.PROFILE) {
 						data.PROFILE = data.PROFILE.toUpperCase();
 					}
-					if (data.PROFILE && (data.PROFILE.indexOf("DEV2002") > -1 || data.PROFILE.indexOf("SUP2007") > -1)) {
-						$log.log(data.PROFILE);
+					if (data.PROFILE &&
+					   (data.PROFILE.indexOf("DEV2002") > -1 ||
+						data.PROFILE.indexOf("SUP2012") > -1 ||
+						data.PROFILE.indexOf("SUP2007") > -1 ||
+						data.PROFILE.indexOf("AUSALE") > -1)) {
+
+						$log.log("Time recording profile retrieved from Backend: " + data.PROFILE);
 						that.catsProfile = data.PROFILE;
 						deferred.resolve(data.PROFILE);
+
 					} else {
-						// Now read templates in different profiles
 						var promises = [];
 						var week = calUtils.getWeekNumber(today);
+						// it is all about the template, try to detect most common profiles
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "DEV2002C"));
+						var profileDEV2002C = 0;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007D"));
+						var profileSUP2007D = 1;
 						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007C"));
+						var profileSUP2007C = 2;
+						promises.push(that.getCatsAllocationDataForWeek(week.year, week.weekNo, "SUP2007H"));
+						var profileSUP2007H = 3;
 						var promise = $q.all(promises);
 						promise
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
 
-							// find any subtype?
-							var entriesWithSubtype = 0;
-							var totalEntries = 0;
 							angular.forEach(promisesData, function(data) {
+
+								data.entriesWhichAreNotFixedTasks = 0;
+								data.entriesWithSubtype = 0;
+
 								for (var i = 0; i < data.CATS_EXT.length; i++) {
-									totalEntries += 1;
-									if (data.CATS_EXT[i].ZZSUBTYPE) {
-										entriesWithSubtype += 1;
+									if (!catsUtils.isFixedTask(data.CATS_EXT[i])) {
+										data.entriesWhichAreNotFixedTasks += 1;
+										var entry = _.find(data.CATS_EXT_TASK, {
+											"RAUFNR": data.CATS_EXT[i].RAUFNR,
+											"TASKTYPE": data.CATS_EXT[i].TASKTYPE,
+											"ZZSUBTYPE": data.CATS_EXT[i].ZZSUBTYPE,
+											"ZCPR_OBJGEXTID": data.CATS_EXT[i].ZCPR_OBJGEXTID
+										});
+										// make corrections if tasks are already posted presumingly for a different profile
+										if (entry) {
+											if (data.catsProfile === "DEV2002C") {
+												if (data.CATS_EXT[i].ZZSUBTYPE) {
+													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+												}
+											} else {
+												if (!data.CATS_EXT[i].ZZSUBTYPE) {
+													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+												}
+											}
+										}
+										if (data.CATS_EXT[i].ZZSUBTYPE) {
+											data.entriesWithSubtype += 1;
+										}
 									}
 								}
 								dataForAnalysis.push(data);
 							});
-							if (entriesWithSubtype > 0 && (totalEntries / entriesWithSubtype) <= 2) {
-								if (dataForAnalysis[1].CATS_EXT.length >= dataForAnalysis[2].CATS_EXT.length) {
-									$log.log("SUP2007D " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007D";
-									deferred.resolve("SUP2007D");
-								} else {
-									$log.log("SUP2007C " + totalEntries + " " + entriesWithSubtype);
-									that.catsProfile = "SUP2007C";
-									deferred.resolve("SUP2007C");
-								}
-							} else {
-								$log.log("DEV2002C " + totalEntries + " " + entriesWithSubtype);
-								that.catsProfile = "DEV2002C";
-								deferred.resolve("DEV2002C");
+
+							var profileToUse = "DEV2002C";
+							if (		dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileDEV2002C].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks) {
+								profileToUse = "DEV2002C";
+							} else if (	dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileSUP2007D].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileSUP2007D].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007D";
+							} else if (	dataForAnalysis[profileSUP2007H].entriesWhichAreNotFixedTasks >= dataForAnalysis[profileSUP2007C].entriesWhichAreNotFixedTasks &&
+										dataForAnalysis[profileSUP2007H].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007H";
+							} else if (	dataForAnalysis[profileSUP2007C].entriesWithSubtype > 0) {
+								profileToUse = "SUP2007C";
 							}
+
+							$log.log("Time recording profile " + profileToUse + " determined.");
+							that.catsProfile = profileToUse;
+							deferred.resolve(profileToUse);
+
 						}, deferred.reject);
 					}
 				}, deferred.reject);
@@ -186,11 +234,14 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		};
 
-		function getCAT2ComplianceData(deferred, begdate, enddate) {
-			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + begdate + "&endda=" + enddate)
+		function getCAT2ComplianceData(date) {
+			var deferred = $q.defer();
+			var dateString = "" + date.getFullYear() + calUtils.toNumberOfCharactersString(date.getMonth() + 1, 2) + calUtils.toNumberOfCharactersString(date.getDate(), 2);
+
+			_httpGetRequest(MYCATSDATA_WEBSERVICE + "&begda=" + dateString + "&endda=" + dateString)
 			.then(function(data) {
 				if (data && data.CATSCHK) {
-					data.CATSCHK.forEach(function(CATSCHKforDay) {
+					angular.forEach(data.CATSCHK, function(CATSCHKforDay) {
 						var entry = _.find(that.CAT2ComplinaceDataCache, {
 							"DATEFROM": CATSCHKforDay.DATEFROM
 						});
@@ -208,40 +259,67 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						//   var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
 						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
 						//   if (STADZRounded && QUANTITYHRounded) {
-						//	 if (STADZRounded === QUANTITYHRounded) {
-						//	   CATSCHKforDay.STATUS = "G"; // maintained
-						//	 } else {
-						//	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-						//	 }
+						// 	 if (STADZRounded === QUANTITYHRounded) {
+						// 	   CATSCHKforDay.STATUS = "G"; // maintained
+						// 	 } else {
+						// 	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+						// 	 }
 						//   }
 						// }
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
 					});
 					deferred.resolve(data.CATSCHK);
-				} else {
-					deferred.resolve();
 				}
+				deferred.reject();
 			}, deferred.reject);
+			return deferred.promise;
+		}
+
+		function getCAT2ComplianceForRange(deferred, begDate, endDate) {
+			var promises = [];
+			var date = begDate;
+
+			for (var week = 0; date < endDate; week++) {
+				promises.push(getCAT2ComplianceData(date));
+				date.setDate(date.getDate() + 7);
+			}
+			var promise = $q.all(promises);
+			promise.then(function(promises) {
+				angular.forEach(promises, function(promiseData) {
+					if (!promiseData || promiseData.length !== 7) { // days a week
+						deferred.reject();
+						return;
+					}
+				});
+				deferred.resolve(that.CAT2ComplinaceDataCache);
+			});
 		}
 
 		this.getCAT2ComplianceData4OneMonth = function(year, month, forceUpdate_b) {
 			var deferred = $q.defer();
 
-			this.determineCatsProfileFromBackend(); // trigger profile determination
+			this.determineCatsProfileFromBackend()
+			.then(function() { }, function() { deferred.reject(); }); // trigger profile determination
 
 			if (forceUpdate_b || !monthAlreadyCached(year, month)) {
-				var monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript = month + 1;
-				var begdate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + "01";
-				var enddate = "" + year + calUtils.toNumberOfCharactersString(monthInABAPStartWithOneInsteadOfZeroLikeInJavaScript, 2) + calUtils.getLengthOfMonth(year, month);
-				getCAT2ComplianceData(deferred, begdate, enddate);
+				var begDate = new Date(year,month,1,12);
+				// begDate shall be Monday
+				if (begDate.getDay() === 0) { // Sunday
+					begDate.setDate(begDate.getDate() - 6);
+				} else {
+					begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
+				}
+				var endDate = new Date(year,month,calUtils.getLengthOfMonth(year, month),12);
+				getCAT2ComplianceForRange(deferred, begDate, endDate);
 			} else {
 				deferred.resolve(that.CAT2ComplinaceDataCache);
 			}
+			that.CAT2ComplinaceDataPromise = deferred.promise;
 			return deferred.promise;
 		};
 
-		function processCatsAllocationDataForWeek(year, week, deferred, data, status) {
+		function processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile) {
 			week = calUtils.toNumberOfCharactersString(week, 2);
 			if (!data) {
 				deferred.reject(status);
@@ -249,10 +327,30 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				$log.log("getCatsAllocationDataForWeek() data does not correspond to given week and year.");
 				deferred.resolve();
 			} else {
+				data.catsProfile = catsProfile;
 				if (data && data.TIMESHEETS && data.TIMESHEETS.RECORDS && data.TIMESHEETS.RECORDS.length > 0) {
 					if(data.CATS_EXT.length === data.TIMESHEETS.RECORDS.length) {
-						for (var j = 0; j < data.CATS_EXT.length; j++) {
+						for (var j = 0; j < data.TIMESHEETS.RECORDS.length; j++) {
 							data.TIMESHEETS.RECORDS[j].ZZSUBTYPE = data.CATS_EXT[j].ZZSUBTYPE;
+							data.TIMESHEETS.RECORDS[j].RNPLNR = data.CATS_EXT[j].RNPLNR;
+							data.TIMESHEETS.RECORDS[j].VORNR = data.CATS_EXT[j].VORNR;
+							data.TIMESHEETS.RECORDS[j].AUTYP = data.CATS_EXT[j].AUTYP;
+							data.TIMESHEETS.RECORDS[j].TASKLEVEL = data.CATS_EXT[j].TASKLEVEL;
+							data.TIMESHEETS.RECORDS[j].SKOSTL = data.CATS_EXT[j].SKOSTL;
+							data.TIMESHEETS.RECORDS[j].ZZOBJNR = data.CATS_EXT[j].ZZOBJNR;
+							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
+								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
+							}
+							if(data.CATS_EXT_TASK && data.TIMESHEETS.RECORDS[j].DAYS) {
+								/* eslint-disable no-loop-func */
+								angular.forEach(data.TIMESHEETS.RECORDS[j].DAYS, function(task) {
+								/* eslint-enable no-loop-func */
+									var entry = _.find(data.CATS_EXT_TASK, { "COUNTER": task.COUNTER });
+									if(entry) {
+										task.TASKCOUNTER = entry.TASKCOUNTER;
+									}
+								});
+							}
 						}
 					}
 					that.updateDescriptionsFromCPRO(data.TIMESHEETS.RECORDS)
@@ -267,11 +365,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		}
 
 		function retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfile) {
-			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFY&catsprofile=" + catsProfile)
+			_httpGetRequest(GETCATSDATA_WEBSERVICE + year + "." + week + "&options=CLEANMINIFYSHORTNOTARGETHOURSDESCRDETAILS&catsprofile=" + catsProfile)
 			.then(function(data, status) {
-				processCatsAllocationDataForWeek(year, week, deferred, data, status);
+				processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile);
 			}, deferred.reject);
-			that.CAT2AllocationDataForWeeks[catsProfile + "" + year + "" + week] = deferred.promise;
 		}
 
 		this.getCatsAllocationDataForWeek = function(year, week, catsProfile) {
@@ -284,6 +381,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				.then(function(catsProfileFromBackend) {
 					retrieveCatsAllocationDataForWeek(deferred, year, week, catsProfileFromBackend);
 				}, deferred.reject);
+				if (that.catsProfile) { // cache only if profile is already clear
+					that.CAT2AllocationDataForWeeks[year + "" + week] = deferred.promise;
+				}
 			}
 			return deferred.promise;
 		};
@@ -292,7 +392,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			// this here is important for the app settings
-			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[this.catsProfile + "" + year + "" + week]) {
+			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
 				this.getCatsAllocationDataForWeek(year, week);
 			}
 
@@ -302,22 +402,34 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var tasks = [];
 				angular.forEach(promisesData, function(data) {
 
-					if (that.catsProfile === "DEV2002C") {
+					if (that.catsProfile.indexOf("DEV2002") > -1) {
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "ADMI",
+							RNPLNR: "",
+							VORNR: "",
+							AUTYP: "",
+							TASKLEVEL: "",
+							SKOSTL: "",
+							ZZOBJNR: "",
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Admin"
+							DESCR: "Administrative"
 						});
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "EDUC",
+							RNPLNR: "",
+							VORNR: "",
+							AUTYP: "",
+							TASKLEVEL: "",
+							SKOSTL: "",
+							ZZOBJNR: "",
 							ZCPR_EXTID: "",
 							ZCPR_OBJGEXTID: "",
 							ZZSUBTYPE: "",
-							DESCR: "Education"
+							DESCR: "Personal education"
 						});
 					}
 
@@ -327,6 +439,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							var task = {};
 							task.RAUFNR = (nodes[i].RAUFNR || "");
 							task.TASKTYPE = (nodes[i].TASKTYPE || "");
+							task.RNPLNR = (nodes[i].RNPLNR || "");
+							task.VORNR = (nodes[i].VORNR || "");
+							task.AUTYP = (nodes[i].AUTYP || "");
+							task.TASKLEVEL = (nodes[i].TASKLEVEL || "");
+							task.SKOSTL = (nodes[i].SKOSTL || "");
+							task.ZZOBJNR = (nodes[i].ZZOBJNR || "");
 							task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 							task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 							task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
@@ -352,7 +470,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
-				if (catsProfile !== "DEV2002C") {
+				if (catsProfile !== "DEV2002C") { // That is the only profile where the cPro worklist shall be read
 					deferred.resolve();
 				} else {
 					if (!tasksFromWorklistPromise) {
@@ -371,7 +489,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-								task.UNIT = nodes[i].UNIT;
+								task.UNIT = nodes[i].UNIT || "T"; // T is default unit for cPro
 								task.projectDesc = nodes[i].DISPTEXTW1;
 								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 								tasks.push(task);
@@ -387,8 +505,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.writeCATSData = function(container) {
 			var deferred = $q.defer();
+
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
-				$http.post(WRITECATSDATA_WEBSERVICE + "&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
+				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,
 					'headers': {
 						'Content-Type': 'text/plain'
@@ -396,7 +515,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}).success(function(data) {
 					deferred.resolve(data);
 				}).error(function(data, status) {
-					deferred.reject(status);
+					deferred.reject("HTTP-Status of write posting call is " + status);
 				});
 			});
 			return deferred.promise;
