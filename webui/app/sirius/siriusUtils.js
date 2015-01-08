@@ -8,11 +8,11 @@
 angular.module('app.sirius')
     .factory('app.sirius.utils', function () {
 
-        var _urlforRunningEnv = 'https://ifd.wdf.sap.corp/zprs/json';
-        var _urlforExtSiriusApp = 'https://ifd.wdf.sap.corp/prs';
+        var _urlforRunningEnv = 'https://ifp.wdf.sap.corp/zprs/json';
+        var _urlforExtSiriusApp = 'https://ifp.wdf.sap.corp/prs';
         var _urlDevServer = 'https://ifd.wdf.sap.corp:443';
-        var _urlOldPR = 'https://ifd.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
-        var _hostProdServer = 'ifd.wdf.sap.corp';
+        var _urlOldPR = 'https://ifp.wdf.sap.corp:443/sap/bc/bsp/sap/zpr/default.htm?sap-syscmd=nocookie&iv_prg_id=';
+        var _hostProdServer = 'ifp.wdf.sap.corp';
         var _siriusObject = function () {
             this.WORKING_STATE = null;
             this.LOAD_STATE = null;
