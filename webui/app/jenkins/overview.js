@@ -6,6 +6,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 
 		$scope.box.boxSize = '2';
         $scope.showJobs = false;
+        $scope.statusInfoToDisplay = "";
         $scope.redCount = 0;
         $scope.yellowCount = 0;
         $scope.greenCount = 0;
@@ -34,8 +35,9 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			}
 		};
 
-        $scope.displayJobs = function(){
+        $scope.displayJobs = function(statusInfo){
             $scope.showJobs = true;
+            $scope.statusInfoToDisplay = statusInfo;
         };
 
         $scope.getStatusCount = function(jobsToDisplay){
