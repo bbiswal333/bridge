@@ -17,6 +17,12 @@
 	color: white;
 }
 
+ .settingsInput{
+    width: 25%;
+    min-width: 336px;
+    float:left;
+ }
+
 .leftSideDiv{
   	height: 40px;
 	width: 20px;

@@ -1,6 +1,6 @@
 <div style="width: 100%">
 
-		<form name="newConfigItemForm" class="atc_input" autocomplete="off">
+		<form name="newConfigItemForm" class="settingsInput" autocomplete="off">
 
 			<div class="row" style="margin:15px 0 0 0;">
 				<span class="copy form_head col-xs-12" style="padding:0 0 0 0;">Jenkins URL</span>
@@ -40,9 +40,6 @@
 
 			<div class="row" style="margin:25px 0 0 0;">
 			</div>
-			<!--<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="addJob_click()" ng-disabled="isAddJobButtonDisabled()" value="Add Job" />
-			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="addView_click()" ng-disabled="isAddViewButtonDisabled()" value="Add View" />
-			<input type="submit" class="btn btn-info btn_blue" title="Add" ng-click="addAllJobs_click()" ng-disabled="isAddViewButtonDisabled()" value="Add all jobs of view" />-->
 			<bridge.button state="isAddJobButtonDisabled() === true ? 'disabled' : ''" ng-click="addJob_click()" style="margin-left:0;">
 				Add Job
 			</bridge.button>
@@ -93,7 +90,6 @@
 	</div>
 
 	<div class="row" >
-		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
 		<bridge.button class="save_close_btn" ng-click="save_click()">
 			Save & Close
 		</bridge.button>
