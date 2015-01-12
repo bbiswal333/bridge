@@ -1,0 +1,12 @@
+<div ng-controller="app.securityTesting.detailController" style="box-sizing:border-box;">    
+	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+
+		<br/>
+
+		<bridge.table table-data="results">
+			<bridge.table-column column-id="'1'" header="'Project ID'" column-size-class="'col-sm-3'" order-by="'trkorr'">{{row.projectname}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Open Issues'" column-size-class="'col-sm-3'" order-by="'checksystem'">{{row.open}}</bridge.table-column>
+		</bridge.table>
+
+	</div>
+</div>

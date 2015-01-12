@@ -1,0 +1,18 @@
+﻿<div style="margin-top: 5px;overflow: hidden">
+
+    <div class=" col-xs-12" style="margin-top:10px;">
+        Open Fortify Issues - {{fortify_open_issues}} ({{fortifyIssueProgress}}% of all found issues)
+        <div class="progress" style="margin-top:5px;">
+            <a href="#/detail/securityTesting/fortify">
+                <div class=" progress-bar {{error.inputclass}} has-feedback" role="progressbar" aria-valuenow="{{fortifyIssueProgress}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;width:{{fortifyIssueProgress}}%"></div>
+                </a>
+</div>
+       Open Coverity Issues - {{coverity_open_issues}} ({{coverityIssueProgress}}% of all found issues)
+        <div class="progress" style="margin-top:5px;">
+            <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{coverityIssueProgress}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;width:{{coverityIssueProgress}}%"></div>
+            </a>
+        </div>
+    </div>
+    <img class="pull-right" style="width:30%;height:30%;margin-top:5px;margin-right:10px;" src="https://pulsessc.mo.sap.corp/poweredbypulse.png" />
+</div>
