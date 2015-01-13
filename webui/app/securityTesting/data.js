@@ -8,12 +8,10 @@ angular.module("app.securityTesting.data", [])
 
             this.loadData = function () {
                 var deferred = $q.defer();
-                var url = 'https://localhost:1443/results/count/open?origin=' + $window.location.origin;
+                var url = 'https://pulsecsi.mo.sap.corp:1443/results/count';
                 var that = this;
                 $http.get(url, { withCredentials: false }).success(function (data) {
                     that.data.securityTestingData = data.count;
-                    
-                    
                     deferred.resolve();
                 });
                 return deferred.promise;
@@ -21,7 +19,7 @@ angular.module("app.securityTesting.data", [])
 
             this.loadDataDetailed = function (system) {
                 var deferred = $q.defer();
-                var url = 'https://localhost:1443/results/detail/' +system;
+                var url = 'https://pulsecsi.mo.sap.corp:1443/results/detail/' +system;
                 var that = this;
                 $http.get(url, { withCredentials: false }).success(function (data) {
                     that.data.securityTestingDetail = data.details;

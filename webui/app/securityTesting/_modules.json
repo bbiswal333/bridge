@@ -16,7 +16,7 @@
 				"templateUrl"	:	"app/securityTesting/detail.html"
 			}
 		],
-		"description"			:	"Overviews the number of open issues in different security testing systems."
+		"description"			:	"Overviews the number of findings present in different security testing systems."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "data.js"],

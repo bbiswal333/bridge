@@ -1,6 +1,7 @@
 angular.module('app.securityTesting').controller('app.securityTesting.detailController',['$scope', '$routeParams', 'app.securityTesting.dataService',
 	function Controller($scope, $routeParams, dataService) {
-		$scope.results = [];
+        $scope.results = [];
+        $scope.$parent.titleExtension = " - "+$routeParams.system+" issues"
         $scope.handleResults = function () {
            
 			dataService.loadDataDetailed($routeParams.system).then(function () {
@@ -11,7 +12,7 @@ angular.module('app.securityTesting').controller('app.securityTesting.detailCont
               
                     $scope.results.length = 0;
                     for (var i = 0; i < aResults.length; i++) {
-                        $scope.results.push({ "projectname": aResults[i].projectname, "open": aResults[i].open});
+                        $scope.results.push({ "projectname": aResults[i].projectname, "open": aResults[i].opencount, "closed": aResults[i].closedcount });
                     }
                 });
 		};
