@@ -2,8 +2,14 @@
         <div class="row">
             <div class="col-xs-2 form_head" style="float:none;">Select a View</div>
             <div class="btn-group" style="margin-left:15px;margin-top:10px">
-                <span ng-click="currentConfigValues.showProgramOverview = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.showProgramOverview === true || currentConfigValues.showProgramOverview];" style="margin-right:0;">Program</span>
-                <span ng-click="currentConfigValues.showProgramOverview = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showProgramOverview === false];" style="margin-right:0;">Tasks</span>
+                <!--<span ng-click="currentConfigValues.showProgramOverview = true" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.showProgramOverview === true || currentConfigValues.showProgramOverview];" style="margin-right:0;">Program</span>
+                <span ng-click="currentConfigValues.showProgramOverview = false" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showProgramOverview === false];" style="margin-right:0;">Tasks</span>-->
+                <bridge.button state="(currentConfigValues.showProgramOverview === true || currentConfigValues.showProgramOverview) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.showProgramOverview = true" style="margin-right:0;margin-left:0;width:100px;">
+                    Program
+                </bridge.button>
+                <bridge.button state="(currentConfigValues.showProgramOverview === false) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.showProgramOverview = false" style="margin-right:0;margin-left:0;width:100px;">
+                    Tasks
+                </bridge.button>
             </div>
         </div>
 
@@ -90,6 +96,9 @@
 
     </form>
 	<div class="row" >
-		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+        <bridge.button class="save_close_btn" ng-click="save_click()">
+            Save & Close
+        </bridge.button>
 	</div>
 

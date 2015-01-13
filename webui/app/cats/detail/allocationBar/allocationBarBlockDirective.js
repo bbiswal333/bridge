@@ -72,7 +72,11 @@ function (colorUtils, blockCalculations, calUtils) {
             };
 
             $scope.getValueAbsolute = function () {
-                return calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true, true);
+                if ($scope.selectedHours) {
+                    return "(" + calUtils.getTimeInWords(Math.round($scope.selectedHours * $scope.blockData.localValue * 1000) / 1000 * 60, true, true) + ")";
+                } else {
+                    return "";
+                }
             };
 
             elem.find(".allocation-bar-dragBar").draggable({
@@ -114,9 +118,9 @@ function (colorUtils, blockCalculations, calUtils) {
 ]).run(["$templateCache", function ($templateCache) {
     $templateCache.put("allocationBarBlockDirective.tmpl.html",
         '<div ng-hide="blockData.value == 0">' +
-            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor, height: height - 20}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % ({{getValueAbsolute()}})">' +
+            '<div class="allocation-bar-block" ng-style="{width: (blockData.blockWidth - dragBarWidth), background: blockColor, height: height - 20}" title="{{getDescription()}}&#013;&#010;{{getValueAsPercentage()}} % {{getValueAbsolute()}}">' +
                 '<div ng-if="height == 80" class="allocation-bar-project-text">{{blockData.desc}}</div>' +
-                '<div ng-if="height == 80" class="allocation-bar-time-text">{{getValueAsPercentage()}} % ({{getValueAbsolute()}})</div>' +
+                '<div ng-if="height == 80" class="allocation-bar-time-text">{{getValueAsPercentage()}} % {{getValueAbsolute()}}</div>' +
             '</div>' +
             '<div class="allocation-bar-dragBar" ng-style="{width: dragBarWidth, height: height - 20}">' +
                 '<div ng-style="{background: blockColor, height: height - 20}" style="margin-top: 10px;">' +

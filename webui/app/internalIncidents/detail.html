@@ -4,10 +4,11 @@
     	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
 
         <div class="btn-group" style="height:32px;max-width:100%;">
-        	<span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>
+        	<!--<span ng-repeat="prio in prios" ng-class="{true: 'btn btn_blue', false: 'btn'}[prio.active];" class="btn btn-default" ng-click="prio.active = !prio.active" style="margin-bottom:20px;">{{prio.description}}</span>-->
+        	<bridge.button ng-repeat="prio in prios" state="prio.active === true ? 'active' : ' '" ng-click="prio.active = !prio.active; doAlert()" style="width=100px;margin-top:0">{prio.description}}</bridge.button>
 
         	<div style="position:absolute;right:0">
-				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+				<!--<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
 					style="width:35px;" title="Selected Components">
 					<i class="fa fa-cube"></i>
 				</div>
@@ -22,7 +23,11 @@
 				<div class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
 					style="width:35px;margin-right:0;" title="Created by Me">
 					<i class="fa fa-user"></i>
-				</div>
+				</div>-->
+				<bridge.button state="config.data.selection.sel_components === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Selected Components"><i class="fa fa-cube"></i></bridge.button>
+				<bridge.button state="config.data.selection.colleagues === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Assigned to Colleagues"><i class="fa fa-users"></i></bridge.button>
+				<bridge.button state="config.data.selection.assigned_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
+				<bridge.button state="config.data.selection.created_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.created_me = !config.data.selection.created_me; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Created by Me"><i class="fa fa-user"></i></bridge.button>
       		</div>
       	</div>
 

@@ -1,19 +1,24 @@
 <div style="width: 100%">
-	<p>
+
 		<form name="ConfigItemForm">	
 			<div class="row" style="margin:25px 0 0 0;">
 				You can filter the test plans which show on your Tester's Worklist by their name
 			</div>
-			By Test Plan Name Contains:
+			
 			<div class="row">
 				<!-- <div class="col-xs-1"><b>By Test Case Name (Accept Wildcards)</b></div> -->
 				<div class="col-xs-6 has-feedback">
-					<input type="textarea" class="form form-control" ng-model="data.tcQuery" placeholder="Test Case Name" autofocus/>
+					<br>
+					<!--By Test Plan Name Contains:-->
+					<!--<input type="textarea" class="form form-control" ng-model="data.tcQuery" placeholder="Test Case Name" autofocus/>-->
+					<bridge.input model="data.tcQuery" placeholder="Test Case Name" autofocus="true" ></bridge.input>
 				</div>
 			</div>
-			<div class="row"><br /></div>
-			<button class="btn btn-default" ng-click="save_click()">Save & Close</button>
+			<div class="row"><br />
+				<!--<button class="btn btn-default" ng-click="save_click()">Save & Close</button>-->
+				<bridge.button class="save_close_btn" ng-click="save_click(); doAlert()">Save & Close</bridge.button>
+			</div>
 		</form>
-	</p>
+	
 </div>
 

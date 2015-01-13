@@ -12,6 +12,7 @@
 		"sapedia.js",
 		"playbook.js",
 		"portal.js",
+		"tetris.js",
 		"bridgeSearchSettingsController.js",
 		"locationSearch.js",
         "bridgeBuildingSearchService.js"
@@ -19,5 +20,5 @@
 	"css_files" : [
 	  "search.css"
 	],
-	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch", "bridge.search.locationSearch"]
+	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch","bridge.search.tetris","bridge.search.locationSearch"]
 }

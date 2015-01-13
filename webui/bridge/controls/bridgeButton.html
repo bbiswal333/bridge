@@ -1,4 +1,4 @@
-<button class="button blue" ng-class="{'active': state === 'active', 'disabled': state === 'disabled'}" ng-attr-ng-disabled="state === 'disabled' ? true : false">
+<button class="button blue" ng-class="{'active': state === 'active', 'disabled': state === 'disabled', 'invisible-button': state === 'invisible-button'}" ng-attr-ng-disabled="state === 'disabled' ? true : false">
 	<div ng-transclude></div>
 	<canvas style="width: 100%; height: 100%" width="{{canvas.offsetWidth}}" height="{{canvas.offsetHeight}}" ng-click="canvasClick($event)">
 	</canvas>

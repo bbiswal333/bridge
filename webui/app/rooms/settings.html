@@ -4,14 +4,23 @@
 			<div class="row">
 				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
-					<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
-					<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>
+					<!--<span ng-click="currentConfigValues.boxSize = '1'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.boxSize === '1' || !currentConfigValues.boxSize];" style="margin-right:0;">Small</span>
+					<span ng-click="currentConfigValues.boxSize = '2'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.boxSize === '2'];" style="margin-right:0;">Large</span>-->
+					<bridge.button state="(currentConfigValues.boxSize === '1') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.boxSize = '1'" style="width:100px;margin-left:0;margin-right:0;">
+						Small
+					</bridge.button>
+					<bridge.button state="(currentConfigValues.boxSize === '2') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.boxSize = '2'" style="width:100px;margin-left:0;margin-right:0;">
+						Large
+					</bridge.button>
 				</div>
 			</div>
 		</form>
 	</p>
 
 	<div class="row">
-		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save &amp; Close</div>
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save &amp; Close</div>-->
+		<bridge.button ng-click="save_click()" class="save_close_btn">
+			Save & Close
+		</bridge.button>
 	</div>
 </div>

@@ -1,12 +1,12 @@
 <div style="background: rgba(255, 255, 255, 0.1); position: relative; width: 100%; overflow-x: hidden; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none;" ng-mouseleave="handleMouseLeave()" ng-mouseup="handleMouseUp()" unselectable="on" ng-mousemove="handleMouseMove($event)">
 	<div style="white-space: nowrap; position: relative; height: 40px; margin-top: 10px" ng-style="{left: clockOffset + 'px'}" ng-mouseup="handleMouseUp()">
 		<div ng-repeat="time in timeArray" style="position: absolute; bottom: 0px; display: inline-block" ng-style="{left: $index * oneHourWidth + 'px'}">
-			<div class="grey-60" style="width: 5px; height: 15px; position: absolute; left: -2px; bottom: 18px"/>
-			<div class="grey-60" style="width: 80px; height: 6px; position: absolute; bottom: 19px" ng-style="{left: oneHourWidth + 'px'}"/>
+			<div class="grey-60" style="width: 5px; height: 15px; position: absolute; left: -2px; bottom: 19px"/>
+			<div class="grey-60" style="height: 5px; position: absolute; bottom: 19px" ng-style="{width: oneHourWidth + 'px'}"/>
 
 			<span style="position: absolute; bottom: 0px" ng-style="{left: textOffset + 'px'}">{{useNDigits(time.getHours(), 2)}}:00</span>
 		</div>
 		<span style="position: absolute; top: -12px;" ng-style="{left: (-1 * cursorOffset - 10) + 'px'}">{{useNDigits(now.getHours(), 2)}}:{{useNDigits(now.getMinutes(), 2)}} <a href="" ng-if="timeOffsetInMilliseconds !== 0" ng-click="clearTimeOffset()" style="margin-left: 5px"><i class="fa fa-clock-o"></i> Now</a></span>
-		<span class="fa fa-circle red-font" style="font-size: 20px; position: absolute; cursor: pointer; bottom: 12px" ng-style="{width: cursorWidth + 'px', left: (-1 * cursorOffset) + 'px'}" ng-mousedown="handleMouseDown($event)" ng-mouseup="handleMouseUp()"></span>
+		<span class="fa fa-circle red-font" style="font-size: 20px; position: absolute; cursor: pointer; bottom: 8px" ng-style="{width: cursorWidth + 'px', left: (-1 * cursorOffset) + 'px'}" ng-mousedown="handleMouseDown($event)" ng-mouseup="handleMouseUp()"></span>
 	</div>
 </div>

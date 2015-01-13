@@ -53,9 +53,10 @@ describe("CAT2 config service", function () {
 
 	it("should fill in the right sub description on task enhancement", function () {
 		var taskA = {};
-		taskA.TASKTYPE = 'DEVL';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('');
+		taskA.TASKTYPE = 'MESS';
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('MESS');
 		taskA.DESCR = '';
+		taskA.TASKTYPE = 'DEVL';
 		taskA.RAUFNR = 'RAUF';
 		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('DEVL');
 		taskA.DESCR = '';

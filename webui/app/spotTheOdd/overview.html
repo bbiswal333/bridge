@@ -9,7 +9,10 @@
          <div style="text-align:center"><b class="grey-font-100" style="font-size:60px">{{hits}}</b></div>
       </div>
       <div ng-hide="gamePaused" style="position:absolute;top:130px;right:145px;">
-         <div ng-class="{'spottheodd-startgame':!gameInProgress && !showInfo}" class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">{{buttonText}}</div>
+         <!--<div ng-class="{'spottheodd-startgame':!gameInProgress && !showInfo}" class="btn btn-primary btn_blue save_close_btn" ng-click="startGame()">{{buttonText}}</div>-->
+         <bridge.button ng-click="startGame()" style="left:20px;">
+            {{buttonText}}
+         </bridge.button>
       </div>
    </div>
    <div ng-show="gameInProgress && !gamePaused" style="float:left;margin-right:40px">

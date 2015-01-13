@@ -1,17 +1,21 @@
 <div ng-controller="app.itdirect.settingsController">
     <br/>
-    <button class="btn btn-default" ng-class="{'btn_blue': config.bIncludeSavedSearch}" ng-click="config.bIncludeSavedSearch = !config.bIncludeSavedSearch">Include Tickets from Saved Search</button>
+    <!--<button class="btn btn-default" ng-class="{'btn_blue': config.bIncludeSavedSearch}" ng-click="config.bIncludeSavedSearch = !config.bIncludeSavedSearch">Include Tickets from Saved Search</button>-->
+    <bridge.button state="config.bIncludeSavedSearch === true ? 'active' : ' '" ng-click="config.bIncludeSavedSearch = !config.bIncludeSavedSearch" style="width:210px;">Include Tickets from Saved Search</bridge.button>
 
     <div ng-if="config.bIncludeSavedSearch">
         <h3>Select one of your Saved Searches</h3>
 
-        <button ng-repeat="savedSearch in savedSearches" style="margin-bottom: 8px" class="btn btn-default" ng-class="{'btn_blue': config.sSavedSearchToInclude === savedSearch.key}"
+        <!--<button ng-repeat="savedSearch in savedSearches" style="margin-bottom: 8px" class="btn btn-default" ng-class="{'btn_blue': config.sSavedSearchToInclude === savedSearch.key}"
                 ng-click="config.sSavedSearchToInclude = savedSearch.key">
             {{savedSearch.description}}
-        </button>
+        </button>-->
+        <bridge.button state="(config.sSavedSearchToInclude === savedSearch.key) === true ? 'active' : ' '" ng-repeat="savedSearch in savedSearches" ng-click="config.sSavedSearchToInclude = savedSearch.key">
+            {{savedSearch.description}}</bridge.button>
     </div>
 
     <div class="row">
-        <button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>
+        <!--<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>-->
+        <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
     </div>
 </div>

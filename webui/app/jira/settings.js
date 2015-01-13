@@ -8,10 +8,14 @@ angular.module('app.jira').appJiraSettings = ['$scope', 'app.jira.configservice'
     };
 
     $scope.applyAssignedToMeTemplate = function() {
+        $scope.toMeTemplate = true;
+        $scope.projectTemplate = false;
     	$scope.data.query = "assignee = currentUser()";
     };
 
     $scope.applyIssuesOfProjectTemplate = function() {
+        $scope.projectTemplate = true;
+        $scope.toMeTemplate = false;
     	$scope.data.query = "project = '...' AND status = Open ORDER BY priority DESC";
     };
 }];

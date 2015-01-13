@@ -14,14 +14,16 @@
             </div>
         </div>
         <div class="app-itdirect-btn-container">
-            <div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bPartieOfRequestSelected];" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected"
+            <!--<div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bPartieOfRequestSelected];" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected"
                  style="width:35px;" title="With your involvement">
                 <i class="fa fa-1.5x fa-crosshairs"></i>
             </div>
             <div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bSavedSearchSelected];" ng-click="config.bSavedSearchSelected = !config.bSavedSearchSelected"
                  style="width:35px;" title="From Your Saved Search">
                 <i class="fa fa-users"  style="position: relative;right: 2px;"></i>
-            </div>
+            </div>-->
+             <bridge.button state="config.bPartieOfRequestSelected === true ? 'active' : 'invisible-button'" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="With your involvement"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
+            <bridge.button state="config.bSavedSearchSelected === true ? 'active' : 'invisible-button'" ng-click="config.bSavedSearchSelected = !config.bSavedSearchSelected; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="From Your Saved Search"><i class="fa fa-user"></i></bridge.button>
         </div>
     </div>
 </div>

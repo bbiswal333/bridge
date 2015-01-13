@@ -83,11 +83,16 @@
 
 
 .atc_input{
-    width: 25%;
-    min-width: 336px;
+    width: 100%;
     float:left;
+}
+.atc-input-field{
+    float:left;
+    width:calc(90%/3);
+    margin:15px 10px 0 0;
+    min-width: 250px;
 }
 .atc_btn{
     position: relative;
-    top: 30px;
+    bottom: 30px;
 }

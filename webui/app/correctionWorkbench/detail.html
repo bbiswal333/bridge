@@ -3,8 +3,9 @@
 
     	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
         <div class="btn-group" style="height:32px;max-width:100%;">
-          <span ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
-      	</div>
+          <!--<span ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
+      	</div>-->
+      	<bridge.button ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()"   ng-click="statusMap[category].active = !statusMap[category].active" state="categoryMap[category].active === true ? 'active' : ' '" style="margin-bottom:20px;">{{category}}</bridge.button>
 
 		<br/>
 

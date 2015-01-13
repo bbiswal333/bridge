@@ -10,7 +10,7 @@
     position: absolute;
     height:100%;
     left:60px;
-    width:calc(90% - 60px);
+    width:calc(100% - 150px);
     background-color:white;
     display:none;
 }

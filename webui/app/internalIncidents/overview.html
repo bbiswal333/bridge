@@ -17,7 +17,7 @@
 			</div>
 
 			<div class="ic-btn-container">
-				<div class="btn btn-default ic-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
+				<!--<div class="btn btn-default ic-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.sel_components];" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components"
 					 style="width:35px;" title="Selected Components">
 					<i class="fa fa-cube"></i>
 				</div>
@@ -32,7 +32,11 @@
 				<div class="btn btn-default ic-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.selection.created_me];" ng-click="config.data.selection.created_me = !config.data.selection.created_me"
 					 style="width:35px;" title="Created by Me">
 					<i class="fa fa-user"></i>
-				</div>
+				</div>-->
+				<bridge.button state="config.data.selection.sel_components === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Selected Components"><i class="fa fa-cube"></i></bridge.button>
+				<bridge.button state="config.data.selection.colleagues === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Colleagues"><i class="fa fa-users"></i></bridge.button>
+				<bridge.button state="config.data.selection.assigned_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
+				<bridge.button state="config.data.selection.created_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.created_me = !config.data.selection.created_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Created by Me"><i class="fa fa-user"></i></bridge.button>
 			</div>
 		</div>
 
