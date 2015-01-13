@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.mitosisHana",
+		"title"					:	"Mitosis",
+		"icon_css"				:	"fa fa-database",
+		"overview_directive"	:	"app.mitosisHana",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D049677","D055920","D027515","D028685","D062131","D051804","D024334","D035319","D048820","D043706","D037415","I806095"],
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/Status/:content",
+				"templateUrl"	:	"app/mitosisHana/detail.html"
+			}
+		],
+		"description"			:	"This App shows you the Mitosis HANA content load state"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
+	"css_files" : ["style.css"]
+}

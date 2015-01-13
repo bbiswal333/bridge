@@ -1,0 +1,54 @@
+﻿<div ng-if="noContentSelected()">
+	Select the content you are interested <a href="#/detail/mitosisHana">Mitosis Content</a><br /><br />
+</div>
+<div ng-show="showStatus">
+    <div class="backButton hover" ng-click="showStatus=false;"><i class="changeCursor fa fa-angle-left fa-2x"></i></div>
+    <div class="contentTable" style="margin-top: 0px;margin-right: 0px; overflow-y: auto;">
+    	<table>
+            <tr ng-repeat="content in contentToDisplay">
+    			<td><i class="fa {{content.statusIcon}} {{content.STATUS | lowercase}}-font"></td>
+    			<td class="style" style="width: 100px;"><a class="changeCursor" target="_blank" href="https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/WS SAP IT/SAP runs SAP/IT Business Intelligence/Bi Solution Catalog/Solution_Catalog_NEW/index.htm?bafilter=*&sysfilter=#{{content.CONTENT}}">{{content.CONTENT}}</a></td>
+                <td style="padding-right: 0px;">{{formatDate(content.LAST_REFRESH)}}</td>
+                <td><a title="View details" class="fa fa-table changeCursor" ng-controller="app.mitosisHana.detailController" target="_blank" ng-click="detailStatusView(content.CONTENT)"></a></td>
+    		</tr>
+    	</table>
+    </div>
+</div>
+<div ng-hide="showStatus" class="statusTilesContainer" ng-if="dataService.numberOfContents >= 1">
+    <div class="statusTilesBox">
+        <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('green');" ng-if="dataService.statusCount.green >= 1">
+             <span style="color:white;font-size:6rem;">{{dataService.statusCount.green}}</span>
+        </div>
+        <div class="statusTiles grey-40" ng-if="dataService.statusCount.green < 1">
+            <span style="color:white;font-size:6rem;">{{dataService.statusCount.green}}</span>
+        </div>
+        <div class="statusTiles">
+            <br>
+            <p><i class="fa fa-check green-font-80"></i>   Success</p>
+        </div>
+    </div>
+    <div class="statusTilesBox">
+        <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('yellow');" ng-if="dataService.statusCount.yellow >= 1">
+             <span style="color:white;font-size:6rem;">{{dataService.statusCount.yellow}}</span>
+        </div>
+        <div class="statusTiles grey-40" ng-if="dataService.statusCount.yellow < 1">
+            <span style="color:white;font-size:6rem;">{{dataService.statusCount.yellow}}</span>
+        </div>
+        <div class="statusTiles">
+            <br>
+            <p><i class="fa fa-circle yellow-font-80"></i>   Issues</p>
+        </div>
+    </div>
+    <div class="statusTilesBox">
+         <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('red');" ng-if="dataService.statusCount.red >= 1">
+             <span style="color:white;font-size:6rem;">{{dataService.statusCount.red}}</span>
+        </div>
+        <div class="statusTiles grey-40" ng-if="dataService.statusCount.red < 1">
+            <span style="color:white;font-size:6rem;">{{dataService.statusCount.red}}</span>
+        </div>
+        <div class="statusTiles">
+            <br>
+            <p><i class="fa fa-times red-font-80"></i>   Failed</p>
+        </div>
+    </div>
+</div>     

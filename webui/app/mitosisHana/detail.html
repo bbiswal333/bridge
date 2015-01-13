@@ -1,0 +1,31 @@
+<div ng-controller="app.mitosisHana.detailController" style="box-sizing:border-box;">
+	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+		<p style="padding-bottom:5px;font-size: small">CONTENT: {{detailForContent}}</p>
+		<div ng-if="detailsLoading()" style="position: absolute; left: 47%; z-index: 10">
+        	<i ng-class="{'fa fa-spin fa-spinner fa-2x' : dataService.contentDetails.length == 0}"></i>
+		</div>
+		<table class="detailTable">
+			<tr>               
+                <th style="width: 200px; padding-bottom: 15px;">Sub-Content</th>
+                <th style="width: 100px; padding-bottom: 15px;">Status</th>  
+                <th style="width: 150px; padding-bottom: 15px;">Start Date</th>
+                <th style="width: 200px; padding-bottom: 15px;">Start Time</th>
+                <th style="width: 150px; padding-bottom: 15px;">Source System</th>
+                <th style="width: 150px; padding-bottom: 15px;">Extraction Mode</th>
+                <th style="width: 180px; padding-bottom: 15px;">Number of Data sets</th>
+                <th style="width: 180px; padding-bottom: 15px;">Number of Data Loads</th>           
+            </tr>
+	        <tr ng-repeat="detail in dataService.contentDetails"  class="detailTableAlternate">
+				<td class="detailTableAlternateTd">{{detail.SUB_CONTENT}}</td>
+				<td><i class="fa {{detail.statusIcon}} {{detail.STATUS | lowercase}}-font"></i></td>
+				<td class="detailTableAlternateTd"> {{formatDate(detail.LAST_REFRESH)}}</td>
+				<td class="detailTableAlternateTd"> {{formatTime(detail.LAST_REFRESH)}}</td>
+				<td class="detailTableAlternateTd">{{detail.SOURCE}}</td>
+				<td class="detailTableAlternateTd">{{detail.EXTRACTIONMODE}}</td>
+				<td class="detailTableAlternateTd">{{detail.RECORDS}}</td>
+				<td class="detailTableAlternateTd">{{detail.DATA_LOADS}}</td>
+	
+			</tr>
+		</table>
+	</div>
+</div>
