@@ -102,9 +102,9 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element).css("padding-left", "30px");
             }
 
-            return function($scope, element, attrs) {
-                if(attrs.autofocus && attrs.autofocus === "true") {
-                    $timeout( function () { $('input', element)[0].focus(); } );
+            return function($scope, elem, attributes) {
+                if(attributes.autofocus && attributes.autofocus === "true") {
+                    $timeout( function () { $('input', elem)[0].focus(); } );
                 }
             };
         }

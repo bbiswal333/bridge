@@ -75,7 +75,7 @@ angular.module('bridge.service').service("bridge.service.maps", ['$q', '$http', 
 
 		routingManager.addObserver("state", function(observedRouter, key, value) {
 			if (value === "finished") {
-				routingManagerIncidents.addObserver("state", function(observedRouter, incidentsKey, incidentsValue) {
+				routingManagerIncidents.addObserver("state", function(oObservedRouter, incidentsKey, incidentsValue) {
 					var route = enhanceRouteInformation(routingManager.getRoutes())[0];
 					if (incidentsValue === "finished") {
 						route.incidents = getIncidents(routingManagerIncidents.getRoutes()[0]);

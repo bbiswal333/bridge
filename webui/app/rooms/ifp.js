@@ -81,8 +81,8 @@ angular.module('app.rooms').service('ifpservice', [
 				url: ISP_CANCELROOM + '?' + 'origin=' + location.origin ,
 				transformRequest: __transformRequest,
 				data: data
-			}).success(function(data){
-				return data;
+			}).success(function(oData){
+				return oData;
 			});
 
 		}

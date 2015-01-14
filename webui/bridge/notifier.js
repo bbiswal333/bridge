@@ -160,10 +160,10 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
           body: body_s,
           icon: icon_i,
           app: appIdentifier_s || "",
-          callback: function(notification) {
-              notification.state = 'read';
+          callback: function(oNotification) {
+              oNotification.state = 'read';
               if (onClick_fn) {
-                onClick_fn(notification.app, notification.notificationData);
+                onClick_fn(oNotification.app, oNotification.notificationData);
               }
           },
           timestamp: new Date().getTime(),

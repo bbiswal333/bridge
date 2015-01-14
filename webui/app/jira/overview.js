@@ -45,7 +45,7 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
 
 angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
 
-    var directiveController = ['$scope', 'JiraBox', function ($scope, JiraBox) {
+    var directiveController = ['$scope', function ($scope) {
         var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
         var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
 

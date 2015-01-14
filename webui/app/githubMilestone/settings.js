@@ -39,9 +39,9 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                         url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q=' + repo + '+user:' + user + '+fork:' + $scope.currentConfigValues.fork + '+in:name&per_page=' + limit,
                         headers: {'Accept': 'application/vnd.github.preview+json'},
                         withCredentials: false
-                    }).then(function(res){
+                    }).then(function(response){
                         var results = [];
-                        angular.forEach(res.data.items, function(item){
+                        angular.forEach(response.data.items, function(item){
                             results.push(item.html_url);
                         });
                         return results;

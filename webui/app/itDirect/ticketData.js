@@ -116,8 +116,8 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                 });
             }
 
-            for (var newTicketsCategory in newTicketData){
-                checkForChangedTickets(newTicketsCategory);
+            for (var oNewTicketsCategory in newTicketData){
+                checkForChangedTickets(oNewTicketsCategory);
             }
 
             if (bNewNotifications === true) {

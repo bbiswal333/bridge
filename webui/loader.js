@@ -15,8 +15,8 @@
                             url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
                             withCredentials: "true",
                             method: "GET"
-                        }).success(function (data) {
-                            callback(data.USERINFO.BNAME);
+                        }).success(function (oData) {
+                            callback(oData.USERINFO.BNAME);
                         }).error(function(){
 
                         });
