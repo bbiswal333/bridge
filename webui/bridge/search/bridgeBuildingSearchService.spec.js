@@ -17,14 +17,12 @@ describe("bridgeBuildingSearchService", function() {
 			expect(result[0].latitude).toBeDefined();
 			expect(result[0].longitude).toBeDefined();
 		});
-		httpBackend.flush();
 	});
 
 	it("should find max number of buildings by building ID", function() {
 		buildingSearch.searchBuildingById("BUE", 2).then(function(result) {
 			expect(result.length).toEqual(2);
 		});
-		httpBackend.flush();
 	});
 
 	it("should find buildings by building city", function() {
@@ -33,14 +31,12 @@ describe("bridgeBuildingSearchService", function() {
 			expect(result[0].latitude).toBeDefined();
 			expect(result[0].longitude).toBeDefined();
 		});
-		httpBackend.flush();
 	});
 
 	it("should find max number of buildings by building city", function() {
 		buildingSearch.searchBuildingByCityAndId("BUEnos", 2).then(function(result) {
 			expect(result.length).toEqual(2);
 		});
-		httpBackend.flush();
 	});
 
 	it("should find SAP locations by city name", function() {
@@ -48,6 +44,5 @@ describe("bridgeBuildingSearchService", function() {
 			expect(result.length).toEqual(1);
 			expect(JSON.stringify(result)).toEqual('[{"name":"Buenos Aires","latitude":-34.597333,"longitude":-58.371815}]');
 		});
-		httpBackend.flush();
 	});
 });

@@ -20,7 +20,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser (*.spec.js is redundant)
         files: [
             './webui/lib/jQuery-2_1_0/jquery.min.js',
-            './webui/lib/angular-1_2_25/angular.min.js',
+            './webui/lib/angular-1_3_8/angular.min.js',
             './webui/lib/sigma-1_0_3/sigma.min.js',
             './webui/lib/nokiaHere/jsl.js',
             './webui/lib/nokiaHere/exampleHelpers.js',
@@ -52,7 +52,7 @@ module.exports = function(config) {
             "./webui/Test/**/*",
             "./server/**/*",
             "./client/**/*",
-            "./webui/lib/angular-1_2_25/angular.js",
+            "./webui/lib/angular-1_3_8/angular.js",
             "./webui/lib-bower/**/*",
             "./webui/app/getHome/nokiaHere/**/*"
         ],

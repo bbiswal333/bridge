@@ -1,4 +1,4 @@
-angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', '$modal', function($http, $window, $q, $modal){
+angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', '$modal', 'bridgeBuildingSearch', function($http, $window, $q, $modal, bridgeBuildingSearch){
 	var buffer = [];
 	var url = 'https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON';
 
@@ -14,7 +14,6 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 
 	this.getData = function(user){
 		var defer = $q.defer();
-
 		if( buffer[user] ){
 			defer.resolve(buffer[user]);
 		}else{
@@ -27,22 +26,21 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 				resp.url = 'https://people.wdf.sap.corp/profiles/' + user;
 				resp.mail = resp.SMTP_MAIL;
 
-				$http.get('/bridge/search/buildings.xml').then(function (buildingResponse) {
-					var data = new X2JS().xml_str2json(buildingResponse.data);
-					for(var i = 0; i < data.items.item.length; i++)
-					{
-						if(data.items.item[i].objidshort === resp.BUILDING && data.items.item[i].geolinkB !== undefined)
-						{
-							resp.building_url = data.items.item[i].geolinkB;
-							resp.city = data.items.item[i].city;
-							resp.street = data.items.item[i].street;
+				if (resp.BUILDING !== undefined) {
+					bridgeBuildingSearch.searchBuildingById(resp.BUILDING).then(function (aBuildings) {
+						if (aBuildings.length > 0) {
+							resp.building_url = aBuildings[0].geolinkB;
+							resp.city = aBuildings[0].city;
+							resp.street = aBuildings[0].street;
 						}
-					}
 
+						buffer[user] = resp;
+						defer.resolve(resp);
+					});
+				} else {
 					buffer[user] = resp;
 					defer.resolve(resp);
-				});
-
+				}
 			});
 		}
 

@@ -34,11 +34,11 @@
     <script src="lib/jquery.timeago.js"></script>
     <script src="lib/jquery-ui-touch-0_2_3/jquery-ui-touch-punch.min.js"></script>
     
-    <script src="lib/angular-1_2_25/angular.js"></script>
-    <script src="lib/angular-1_2_25/angular-route.min.js"></script>
-    <script src="lib/angular-1_2_25/angular-resource.min.js"></script>
-    <script src="lib/angular-1_2_25/angular-animate.min.js"></script>
-    <script src="lib/angular-1_2_25/angular-sanitize.min.js"></script>
+    <script src="lib/angular-1_3_8/angular.min.js"></script>
+    <script src="lib/angular-1_3_8/angular-route.min.js"></script>
+    <script src="lib/angular-1_3_8/angular-resource.min.js"></script>
+    <script src="lib/angular-1_3_8/angular-animate.min.js"></script>
+    <script src="lib/angular-1_3_8/angular-sanitize.min.js"></script>
 
     <script src="lib/socket.io.js"></script>
     <script src="lib/fuse/fuse.js"></script>
@@ -115,7 +115,7 @@
         </div>
 
         <div style="position:absolute;bottom:0px;width:100%;">
-            <alert ng-repeat="alert in alerts" style="font-weight:light;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
+            <alert ng-repeat="alert in alerts" style="font-weight:lighter;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
                 <span ng-bind-html="alert.msg"></span>
             </alert>
         </div><!--  -->

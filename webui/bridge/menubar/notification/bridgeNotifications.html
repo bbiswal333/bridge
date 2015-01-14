@@ -18,9 +18,14 @@
           <h4 class="box-title">Notification Popups</h4>
       </div>
       <div ng-if="notificationPopupPermission !== undefined">
-          <button class="btn btn-default activateNotificationButton" ng-class="{'btn_blue': notificationPopupPermission}" ng-click="requestNotificationPermission()">
+          <!--<button class="btn btn-default activateNotificationButton" ng-class="{'btn_blue': notificationPopupPermission}" ng-click="requestNotificationPermission()">
               {{notificationPopupPermissisonButton}}
-          </button>
+          </button>-->
+          <bridge.button style="margin-left:0;" state="notificationPopupPermission === true ? 'active' : ' '" ng-click="requestNotificationPermission()">
+            {{notificationPopupPermissisonButton}}
+          </bridge.button>
+
+
       </div>
     </div>
 
