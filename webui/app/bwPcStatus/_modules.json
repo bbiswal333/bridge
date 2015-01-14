@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.bwPcStatus",
+		"title"					:	"BW Process Chain Status",
+		"beta"					:	true,
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.bwPcStatus",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D047303","D055920","D024334","D049677","D051804"],
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/bwPcStatus/",
+				"templateUrl"	:	"app/bwPcStatus/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
+	"css_files" : ["style.css"]
+}

@@ -1,0 +1,15 @@
+<div style="width: 100%;height:800px; overflow:scroll; ">
+	<div style="width: 200px; margin-top: 20px; height: 50px;">
+		<bridge.input  model="searchText" placeholder="Search..." autofocus></bridge.input>
+	</div>
+	<div ng-repeat="content in values.contents | filter:searchText"> 
+		<button  style="margin-bottom: 8px" class="btn btn-default" ng-class="{'btn_blue': content.active}" ng-click="setActive(content)">
+	        {{content.CONTID}} - {{content.DESCRIPTION}}
+	    </button>
+	    <br>
+    </div>
+</div>
+<br>	
+<div class="row">
+    	<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>
+</div>

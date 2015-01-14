@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.bwContentStatus",
+		"title"					:	"BW Content Status",
+		"beta"					:	true,
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.bwContentStatus",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D047303","D055920","D024334","D049677","D051804"],
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/bwContentStatus/",
+				"templateUrl"	:	""
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"css_files" : ["style.css"]
+}

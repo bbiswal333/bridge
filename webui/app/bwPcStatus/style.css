@@ -1,0 +1,96 @@
+.chainStatusContainer{
+    width: 100%;
+    height: 90%;
+    padding-left: 15px;
+}
+.chainStatusBox{
+    width: calc(95%/5);
+    margin-left: 2px;
+    margin-right: 20px;
+    margin-top: 25px;
+    float: left;
+    height: 100%;
+}
+.chainStatusBox:first-child{
+    margin-left: 0;
+}
+.chainStatusBox:last-child{
+    margin-right: 0;
+}
+.chainStatusTiles{  
+    width: 100%;
+    height: 50%;    
+    text-align: center; 
+}
+.chainStatusTiles p{
+    margin: 0 0 0px;
+    line-height: 1;
+}
+.detailsDiv{
+    margin-top: 10px; 
+    height: 145px;
+}
+.detailsLeftSideDiv{
+    height: 40px;
+    width: 20px;
+    border-radius: 0 90px 90px 0;
+    position: absolute;
+    left: 0;
+    top: 45%;
+    opacity: 0.7;
+}
+.detailsLeftSideDiv i{
+    position: relative;
+    left: 3px;
+}
+.detailsRightSideDiv{
+    position: relative;
+    left: 10px;
+}
+.showDetailsCursor{
+    cursor: pointer;
+}
+.detailsImageSize{
+    margin-top: 4px;
+    margin-right: 3px;
+    width: 18px;
+    float: right;
+    height: 20px;
+    color: white;
+}
+.detailsTableAlternateTd{
+    padding: 5px !important;
+}
+.detailsTableAlternate:nth-child(2n){
+    background-color: #efefef;
+}
+.statusDetailsTable{
+    height: 135px;
+    /*overflow: hidden; */
+}
+.statusDetailsTable table {
+    width: 340px;
+}
+.statusDetailsTable tr:not(:first-of-type) {
+    border-top: 1px solid #e5e5e5;
+}
+.statusDetailsRed{
+    background-color: #DD6551;
+ }
+ .statusDetailsYellow{
+    background-color: #FCC445;
+ }
+ .statusDetailsGreen{
+    background-color: #7AB997;
+ }
+ .statusDetailsNoStatus{
+    background-color: #a489d4;
+ }
+ .setStatusButton{
+    border-radius: 3px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid black;
+    float: left;
+    margin-right: 1px;
+ }

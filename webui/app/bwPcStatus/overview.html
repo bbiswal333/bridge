@@ -1,0 +1,50 @@
+﻿<div class="chainStatusContainer">
+    <div class="chainStatusBox">
+        <a href="#/detail/bwPcStatus">
+            <div class="chainStatusTiles red-80 showDetailsCursor"  ng-click="displayDetails('R');">
+                <span style="color:white;font-size:5rem;">{{values.NUM_RED}}</span>
+            </div>
+        </a>
+        <div class="chainStatusTiles">
+            <br>
+            <p><i class="fa fa-times red-font-80"></i>   Red</p>
+        </div>
+    </div>
+
+   <div class="chainStatusBox">
+        <a href="#/detail/bwPcStatus">
+            <div class="chainStatusTiles yellow-80 showDetailsCursor" href="#/detail/bwPcStatus" ng-click="displayDetails('A');">
+                 <span style="color:white;font-size:5rem;">{{values.NUM_YELLOW}}</span>
+            </div>
+        </a>
+        <div class="chainStatusTiles"> 
+            <br>
+            <p><i class="fa fa-circle yellow-font-80"></i>   Active</p>
+        </div>
+    </div>
+
+    <div class="chainStatusBox">
+        <a href="#/detail/bwPcStatus">
+            <div class="chainStatusTiles green-80 showDetailsCursor" href="#/detail/bwPcStatus" ng-click="displayDetails('G');">
+                 <span style="color:white;font-size:5rem;">{{values.NUM_GREEN}}</span>
+            </div>
+        </a>
+        <div class="chainStatusTiles">
+            <br>
+            <p><i class="fa fa-check green-font-80"></i>   Green</p>
+        </div>
+    </div>
+
+    <div class="chainStatusBox">
+        <a href="#/detail/bwPcStatus">
+            <div class="chainStatusTiles purple-80 showDetailsCursor" href="#/detail/bwPcStatus" ng-click="displayDetails('N');">
+                 <span style="color:white;font-size:5rem;">{{values.NUM_NORUN}}</span>
+            </div>
+        </a>
+        <div class="chainStatusTiles">
+            <br>
+            <p><i class="fa fa-play purple-font-80"></i>   No Run last 24h</p>
+        </div>
+    </div> 
+
+</div>
