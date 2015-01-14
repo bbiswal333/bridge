@@ -1,0 +1,28 @@
+<div ng-controller="app.bwPcStatus.detailController" style="box-sizing:border-box;">
+	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+    	<table>
+            <tr>                
+                <td style="width: 70px;  padding-bottom: 15px;">Content</td>             
+                <td style="width: 400px; padding-bottom: 15px;">Chain</td>
+                <td style="width: 100px; padding-bottom: 15px;">Start Date</td>
+                <td style="width: 100px; padding-bottom: 15px;">Start Time</td>
+                <td style="width: 100px; padding-bottom: 15px;">End Time</td>
+                <td style="width: 100px; padding-bottom: 15px;">Runtime</td>
+                <td style="width: 100px; padding-bottom: 15px;">Chain ID</td>            
+            </tr>
+            <tr ng-repeat="chain in chains | filter:search" class="detailsTableAlternate">                
+                <td style="width: 70px; " class="detailsTableAlternateTd">{{chain.CONTID}}</td>             
+                <td style="width: 400px;" class="detailsTableAlternateTd">
+                    <a class="showDetailsCursor" ng-click="displayChainRun(chain)" >{{chain.TXTLG}}</a>
+                </td>
+                <td style="width: 100px;" class="detailsTableAlternateTd">{{chain.STARTDATUM}}</td>
+                <td style="width: 100px;" class="detailsTableAlternateTd">{{chain.STARTZEIT}}</td>
+                <td style="width: 100px;" class="detailsTableAlternateTd">{{chain.ENDZEIT}}</td>
+                <td style="width: 100px;" class="detailsTableAlternateTd">{{chain.RUNTIME}}</td>
+                <td style="width: 200px;">
+                    <a class="showDetailsCursor" ng-click="displayChainRun(chain)" >{{chain.CHAIN_ID}}</a> 
+                </td>
+    		</tr>
+    	</table>
+	</div>
+</div>
