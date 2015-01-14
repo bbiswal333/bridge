@@ -8,7 +8,7 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 		var deferred = $q.defer();
 		var that = this;
 
-		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllCurrent&origin=https://localhost:8000" )
+		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllCurrent&origin=" + $window.location.origin)
 		.success(function(data) {
 			data = new X2JS().xml_str2json(data);	
 
@@ -73,7 +73,7 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 		var deferred = $q.defer();
 		var that = this;
 
-		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllContents&origin=https://localhost:8000" )
+		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllContents&origin=" + $window.location.origin )
 		.success(function(data) {
 			data = new X2JS().xml_str2json(data);	
 			that.data.configContents = data.abap.values.CONTENTS.ZDEVDB_CONTENTS;
