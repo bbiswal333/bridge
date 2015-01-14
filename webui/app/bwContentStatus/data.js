@@ -10,7 +10,7 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 
 		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllCurrent&origin=" + $window.location.origin)
 		.success(function(data) {
-			data = new X2JS().xml_str2json(data);	
+			data = new X2JS().xml_str2json(data);
 
 			var red = 0;
 			var yellow = 0;
@@ -23,30 +23,32 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 			for (var i = 0; i < configContents.length; i++) {
 				var status_exists = false;
 
-				if (configContents[i].active) assigned++;
+				if(configContents[i].active) {
+					assigned++;
+				}
 
 				for (var n = 0; n < data.abap.values.CONTENTS.ZDEVDB_CNTSTS.length; n++) {
-					if( data.abap.values.CONTENTS.ZDEVDB_CNTSTS[n].CONTENT_ID == configContents[i].CONTID){
-						if(configContents[i].active) { 
+					if( data.abap.values.CONTENTS.ZDEVDB_CNTSTS[n].CONTENT_ID === configContents[i].CONTID){
+						if(configContents[i].active) {
 							that.data.contents[that.data.contents.length] = data.abap.values.CONTENTS.ZDEVDB_CNTSTS[n];
-							that.data.contents[that.data.contents.length-1].CNT_COMMENT_NEW = that.data.contents[that.data.contents.length-1].CNT_COMMENT;
-						};
+							that.data.contents[that.data.contents.length - 1].CNT_COMMENT_NEW = that.data.contents[that.data.contents.length - 1].CNT_COMMENT;
+						}
 						status_exists = true;
-					};
-				};
+					}
+				}
 
 				if (configContents[i].active && !status_exists) {
 					noStatus++;
 					that.data.contents[that.data.contents.length] = configContents[i];
-					that.data.contents[that.data.contents.length-1].CONTENT_ID = configContents[i].CONTID;
-					that.data.contents[that.data.contents.length-1].STATUS = "0";
-					that.data.contents[that.data.contents.length-1].CNT_COMMENT = "No Status/Comment set";
-					that.data.contents[that.data.contents.length-1].CNT_COMMENT_NEW = that.data.contents[that.data.contents.length-1].CNT_COMMENT;
-				};
-			};
+					that.data.contents[that.data.contents.length - 1].CONTENT_ID = configContents[i].CONTID;
+					that.data.contents[that.data.contents.length - 1].STATUS = "0";
+					that.data.contents[that.data.contents.length - 1].CNT_COMMENT = "No Status/Comment set";
+					that.data.contents[that.data.contents.length - 1].CNT_COMMENT_NEW = that.data.contents[that.data.contents.length - 1].CNT_COMMENT;
+				}
+			}
 
-			for (var i = 0 ; i < that.data.contents.length; i++) {
-				switch (that.data.contents[i].STATUS) {
+			for (var s = 0 ; s < that.data.contents.length; s++) {
+				switch (that.data.contents[s].STATUS) {
 					case "1":
 						green++;
 						break;
@@ -59,12 +61,12 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 					default:
 						break;
 				}
-			};
+			}
 
 			that.data.statusObject = { 'red': red , 'yellow': yellow , 'green': green, 'noStatus': noStatus, 'assigned': assigned };
 
 			deferred.resolve();
-		});		
+		});
 		return deferred.promise;
 	};
 
@@ -75,22 +77,21 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 
 		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=getAllContents&origin=" + $window.location.origin )
 		.success(function(data) {
-			data = new X2JS().xml_str2json(data);	
+			data = new X2JS().xml_str2json(data);
 			that.data.configContents = data.abap.values.CONTENTS.ZDEVDB_CONTENTS;
 			deferred.resolve();
-		});		
+		});
 		return deferred.promise;
 	};
 
 	this.setContentStatus = function( content, status ) {
 
 		var deferred = $q.defer();
-		var that = this;
 
 		$http.get("https://ifp.wdf.sap.corp/sap/bc/devdb/MYCONTENTSTATUS?function=setStatus&origin=" + $window.location.origin + "&contentId=" + content.CONTENT_ID + "&status=" + status + "&comment=" + content.CNT_COMMENT )
-		.success(function(data) {
+		.success(function() {
 			deferred.resolve();
-			var text = "";
+			/*var text = "";
 			switch (parseInt(status)) {
 					case 1 :
 						text = "green";
@@ -104,9 +105,8 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 					default:
 						break;
 				}
-			console.log("Status/Comment changed to " + status + "-" +  text  +" for Content " + content.CONTENT_ID + " - " + content.CNT_COMMENT);
-		});		
+			console.log("Status/Comment changed to " + status + "-" +  text  +" for Content " + content.CONTENT_ID + " - " + content.CNT_COMMENT);*/
+		});
 		return deferred.promise;
 	};
 }]);
- 
