@@ -1,4 +1,4 @@
-angular.module('app.mitosisHana').controller('app.mitosisHana.detailController',['$scope', '$location', '$routeParams' ,'app.mitosisHana.dataService','app.mitosisHana.configService', function ($scope,$location,$routeParams,dataService, configService) {
+angular.module('app.mitosisHana').controller('app.mitosisHana.detailController',['$scope', '$location', '$routeParams' ,'app.mitosisHana.dataService', function ($scope,$location,$routeParams,dataService) {
 
 $scope.detailForContent = $routeParams.content;
 $scope.detailContent = dataService.contentDetails;

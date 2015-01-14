@@ -2,7 +2,7 @@ angular.module('app.mitosisHana', []);
 
 angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana.configService', 'app.mitosisHana.dataService', function (configService, dataService) {
 
-	var directiveController = ['$scope', '$window' , 'notifier', function ($scope, $window, notifier) {
+	var directiveController = ['$scope', function ($scope) {
 
 		$scope.box.settingsTitle = "Select Mitosis Contents";
 		$scope.box.boxSize = '2';
@@ -23,7 +23,8 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
 		};
 
 		$scope.noContentSelected = function() {
-			if(!$scope.dataService || $scope.dataService.numberOfContents === 0) {
+			if(!$scope.dataService || $scope.dataService.numberOfContents === 0 ||
+				($scope.dataService.contentToDisplay.red.length === 0 && $scope.dataService.contentToDisplay.green.length === 0 && $scope.dataService.contentToDisplay.yellow.length === 0)) {
 				return true;
 			} else {
 				return false;

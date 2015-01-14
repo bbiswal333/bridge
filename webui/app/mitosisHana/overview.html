@@ -1,5 +1,6 @@
 ﻿<div ng-if="noContentSelected()">
-	Select the content you are interested <a href="#/detail/mitosisHana">Mitosis Content</a><br /><br />
+    The Mitosis App will help you to monitor load status of reporting contents available on the Mitosis HANA System.<br /><br />
+    <b>Getting started</b> : Select a content in the settings<br />
 </div>
 <div ng-show="showStatus">
     <div class="backButton hover" ng-click="showStatus=false;"><i class="changeCursor fa fa-angle-left fa-2x"></i></div>
@@ -14,7 +15,7 @@
     	</table>
     </div>
 </div>
-<div ng-hide="showStatus" class="statusTilesContainer" ng-if="dataService.numberOfContents >= 1">
+<div ng-hide="showStatus" class="statusTilesContainer" ng-if="dataService.numberOfContents >= 1 && !noContentSelected()">
     <div class="statusTilesBox">
         <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('green');" ng-if="dataService.statusCount.green >= 1">
              <span style="color:white;font-size:6rem;">{{dataService.statusCount.green}}</span>
@@ -51,4 +52,4 @@
             <p><i class="fa fa-times red-font-80"></i>   Failed</p>
         </div>
     </div>
-</div>     
+</div>
