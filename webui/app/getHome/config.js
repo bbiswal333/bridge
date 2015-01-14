@@ -20,15 +20,19 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 				that.routes.push(route);
 		}
 
+		function rebuildFromWaypoints() {
+			bridgeRouting.rebuildRouteFromWaypoints(configItem.waypoints, function(rebuildResult) {
+				if(rebuildResult.error) {
+					bridgeInBrowserNotification.addAlert('danger','Unabled to recover your route "' + configItem.name + '"');
+				} else {
+					addRoute(rebuildResult.route);
+				}
+			});
+		}
+
 		function handleRouteResult(result) {
 			if(result.error) {
-				bridgeRouting.rebuildRouteFromWaypoints(configItem.waypoints, function(rebuildResult) {
-					if(rebuildResult.error) {
-						bridgeInBrowserNotification.addAlert('danger','Unabled to recover your route "' + configItem.name + '"');
-					} else {
-						addRoute(rebuildResult.route);
-					}
-				});
+				rebuildFromWaypoints();
 			} else {
 				addRoute(result.route);
 			}
@@ -43,8 +47,9 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 					handleRouteResult(result);
 				}
 			);
+		} else if(configItem.waypoints) {
+			rebuildFromWaypoints();
 		}
-		//this.routes.push(routeFactory.fromWaypoints(configItem.name, configItem.waypoints, configItem.isActive));
 	};
 
 	this.removeRoute = function(route) {
