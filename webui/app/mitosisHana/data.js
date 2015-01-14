@@ -28,9 +28,7 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
                 that.content = data.d.results;
                 that.updateContentToDisplay();
                 mitosisHanaConfig.lastDataUpdate = new Date();
-        })
-    		.error(function (data) {    
-		});
+        });
         return promise;
     };
 
@@ -40,8 +38,6 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
             .success(function (data) {
                 data = that.insertStatusIcon(data);
                 that.contentDetails = data.d.results;
-        })
-            .error(function (data) {
         });
         return promise;
     };
@@ -49,15 +45,18 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
 
     this.insertStatusIcon = function (data){
         for (var i = 0; i < data.d.results.length; i++) {
-                    if(data.d.results[i].STATUS == 'RED')
+                    if(data.d.results[i].STATUS === 'RED'){
                         data.d.results[i].statusIcon = 'fa-exclamation';
-                    else if(data.d.results[i].STATUS == 'GREEN')
+                    }
+                    else if(data.d.results[i].STATUS === 'GREEN'){
                         data.d.results[i].statusIcon = 'fa-check';
-                    else if(data.d.results[i].STATUS == 'YELLOW')
+                    }
+                    else if(data.d.results[i].STATUS === 'YELLOW'){
                         data.d.results[i].statusIcon = 'fa-circle-o';
-                };
-        return data;        
-    }
+                    }
+                }
+        return data;
+    };
 
     this.updateContentToDisplay = function(){
         var data = that.content;
@@ -76,7 +75,7 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
         that.availableContents = [];
         for(var content in data) {
                 that.availableContents.push(data[content]);
-                if(config[data[content].CONTENT] && config[data[content].CONTENT].active ===1){
+                if(config[data[content].CONTENT] && config[data[content].CONTENT].active === 1){
                     if(data[content].STATUS === "RED") {
                         that.statusCount.red += 1;
                         that.contentToDisplay.red.push(data[content]);
@@ -102,6 +101,4 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
 
             return loadContentPromise;
         };
-    
-	
 }]);

@@ -1,9 +1,12 @@
 <div style="width: 100%">
-	<p>
+	<div style="width: 200px; margin-top: 20px; height: 50px;">
+         <bridge.input  model="searchText" placeholder="Search..." autofocus></bridge.input>
+     </div>
+	<div>
 		<form name="form">
 			<div class="row">
 				<div style="margin-top:10px">
-					<ul ng-repeat="content in dataService.availableContents" style="list-style-type: none;">
+					<ul ng-repeat="content in dataService.availableContents | filter:searchText" style="list-style-type: none;">
 						<li display="block">
 							<span ng-click="changeContentStatus(content.CONTENT)" ng-class="{true: 'btn btn_blue',false: 'btn '}[config.content.{{content.CONTENT}}.active === 1];" style="margin-right:0;">{{content.CONTENT}}</span>
 						</li>
@@ -11,7 +14,7 @@
 				</div>
 			</div>
 		</form>
-	</p>
+	</div>
 	<div class="row" >
 		<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
 	</div>
