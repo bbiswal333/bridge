@@ -4,6 +4,6 @@ angular.module('app.internalIncidents')
         $scope.config = configService.getConfigForAppId($scope.boxScope.metadata.guid);
 
         $scope.save_click = function () {
-            $scope.$emit('closeSettingsScreen', {app: 'itdirect'});
+            $scope.$emit('closeSettingsScreen');
         };
 }]);
