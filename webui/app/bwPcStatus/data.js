@@ -10,7 +10,7 @@ angular.module("app.bwPcStatus.data", [] ).service("app.bwPcStatus.dataService",
 		var that = this;
 		that.data.statusObject = {};
 
-		$http.get("https://ifp.wdf.sap.corp/sap/bc/devrep/MYPCSTATUS" + "?origin=https://localhost:8000" ) 
+		$http.get("https://ifp.wdf.sap.corp/sap/bc/devrep/MYPCSTATUS" + "?origin=" + $window.location.origin ) 
 		.success(function(data) {			
 			data = new X2JS().xml_str2json(data);	
 			that.data.statusObject = data.abap.values.PCMON_NUM;
@@ -40,7 +40,7 @@ angular.module("app.bwPcStatus.data", [] ).service("app.bwPcStatus.dataService",
 		var deferred = $q.defer();
 		var that = this;
 
-		$http.get("https://ifp.wdf.sap.corp/sap/bc/devrep/MYPCSTATUS?function=getAllContents" + "&origin=https://localhost:8000" ) 
+		$http.get("https://ifp.wdf.sap.corp/sap/bc/devrep/MYPCSTATUS?function=getAllContents" + "&origin=" + $window.location.origin ) 
 		.success(function(data) {
 			data = new X2JS().xml_str2json(data);	
 			that.data.configContents = data.abap.values.CONTENTS.ZDEVDB_CONTENTS;
@@ -67,7 +67,7 @@ angular.module("app.bwPcStatus.data", [] ).service("app.bwPcStatus.dataService",
 
 		url = url + amountOfContents + "&" + contentsUrl;
 
-		$http.get(url + "&origin=https://localhost:8000")
+		$http.get(url + "&origin=" + $window.location.origin)
 		.success(function(data) {
 			console.log("Config saved in IFP for Process Chain Monitor");
 			deferred.resolve();
