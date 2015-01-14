@@ -102,6 +102,9 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
 
             this.calculateTotals = function () {
                 var tickets = that.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
+                tickets = _.uniq(tickets, function(ticket){
+                   return ticket.OBJECT_GUID;
+                });
                 var totals = _.countBy(tickets, function (ticket) {
                     return ticket.PRIORITY_KEY;
                 });
