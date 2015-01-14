@@ -1,7 +1,7 @@
 /*globals nokia, jQuery*/
 angular.module('app.getHome').appGetHomeSettings =
-	['app.getHome.configservice', 'bridge.service.maps.routing', 'bridge.service.maps.utils', 'app.getHome.routeFactory', '$scope', '$q', 'bridge.search.locationSearch', 'bridge.service.maps.mapService',
-		function (appGetHomeConfig, bridgeRouting, routingUtils, routeFactory, $scope, $q, bridgeLocationSearch, bridgeMap) {
+	['app.getHome.configservice', 'bridge.service.maps.routing', 'bridge.service.maps.utils', '$scope', '$q', 'bridge.search.locationSearch', 'bridge.service.maps.mapService',
+		function (appGetHomeConfig, bridgeRouting, routingUtils, $scope, $q, bridgeLocationSearch, bridgeMap) {
 	var mapInstance;
 	var routeLayer, routerHoverMarker, markerLayer, dragMarker;
 

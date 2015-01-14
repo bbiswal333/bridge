@@ -140,7 +140,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 				loadRouteDataByRouteId(routeThis.routeId, function(data) {
 					if(data.response && data.response.route.length === 1) {
 						routeThis.initializeFromJSON(data.response.route[0]);
-						if(deferred) {
+						if(deferred && deferred.resolve) {
 							deferred.resolve();
 						}
 					} else {

@@ -1,6 +1,6 @@
 ﻿/*global nokia*/
 angular.module('app.getHome', ["bridge.service"]);
-angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'bridge.service.maps', '$modal', '$interval', function (appGetHomeConfig, appGetHomeMap, $modal, $interval) {
+angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'bridge.service.maps.utils', 'bridge.service.maps.mapService', '$modal', '$interval', function (appGetHomeConfig, mapsUtils, mapService, $modal, $interval) {
 
 	var directiveController = ['$scope', function ($scope)
 	{
@@ -9,8 +9,8 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 			templatePath: "getHome/settings.html",
 			controller: angular.module('app.getHome').appGetHomeSettings
 		};
-		$scope.formatTime = appGetHomeMap.formatTime;
-		$scope.formatDistance = appGetHomeMap.formatDistance;
+		$scope.formatTime = mapsUtils.formatTime;
+		$scope.formatDistance = mapsUtils.formatDistance;
 		$scope.routes = appGetHomeConfig.routes;
 
 		$scope.box.returnConfig = function () {
@@ -29,11 +29,11 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
               templateUrl: 'app/getHome/detail.html',
               controller: function($scope) {
               	$scope.route = route;
-              	$scope.formatTime = appGetHomeMap.formatTime;
-              	$scope.formatDistance = appGetHomeMap.formatDistance;
+              	$scope.formatTime = mapsUtils.formatTime;
+              	$scope.formatDistance = mapsUtils.formatDistance;
 
               	$scope.initializeMap = function() {
-	              	var mapInstance = appGetHomeMap.createMap($('#app-getHome-detail-map')[0]);
+	              	var mapInstance = mapService.createMap($('#app-getHome-detail-map')[0]);
 	              	var routeLayer = new nokia.maps.map.Container();
 	              	var markerLayer = new nokia.maps.map.Container();
 					mapInstance.objects.add(routeLayer);
@@ -50,7 +50,7 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 					});
 					markerLayer.objects.add(startMarker);
 					markerLayer.objects.add(endMarker);
-					routeLayer.objects.add(appGetHomeMap.createRoutePolyline(route.originalRoute, {lineWidth: 4}));
+					routeLayer.objects.add(mapService.createRoutePolyline(route.originalRoute, {lineWidth: 4}));
 					$interval(function() {
 						mapInstance.zoomTo(routeLayer.getBoundingBox());
 					}, 200, 1);
