@@ -6,7 +6,7 @@
 	<div>
 		<ul>
 			<li ng-repeat="incident in route.originalRoute.incidents" style="text-align: left">
-				{{incident}}
+				<b>{{incident.roadNumber}} {{incident.roadName}}:</b> {{incident.text}}
 			</li>
 		</ul>
 	</div>
