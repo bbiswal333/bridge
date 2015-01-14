@@ -9,7 +9,6 @@
 		"needs_client"			:	false,
 		"description"			:	"With Beat the Traffic you can set up your daily routes and monitor the traffic jams on this route. If one route home is jammed, you can take another one and get home without troubles."
 	},
-	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js", "routeFactory.js"],
 	"css_files" : ["style.css"]
 }

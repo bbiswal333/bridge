@@ -115,7 +115,7 @@
 				<div  style="padding:0 0 10px 0;">
 					<bridge.input model="newRoute.routeName" placeholder="Route Name" style="width:70%;"></bridge.input>
 					<!--<div class="btn btn-primary btn_blue" style="float: right;margin-bottom:20px;width:23%" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig()">Add</div>-->
-					<bridge.button style="float: right;margin-bottom:20px;margin-top:0;width:70px" ng-disabled="!selectedRoute" ng-click="addSelectedRouteToConfig(); doAlert()">Add</bridge.button>
+					<bridge.button style="float: right;margin-bottom:20px;margin-top:0;width:70px" state="selectedRoute ? 'active' : 'disabled'" ng-click="addSelectedRouteToConfig(); doAlert()">Add</bridge.button>
 				</div>
 			</div>
 		</form>

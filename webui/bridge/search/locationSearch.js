@@ -1,5 +1,5 @@
 /*http://nominatim.openstreetmap.org/search?city=Berlin&format=json&limit=2*/
-angular.module('bridge.search').service('bridge.search.locationSearch', ['$http', "bridge.menubar.weather.weatherData", 'bridgeBuildingSearch', '$window', 'bridge.service.maps', '$q', function ($http, weatherData, bridgeBuildingSearch, $window, mapsService, $q) {
+angular.module('bridge.search').service('bridge.search.locationSearch', ['$http', "bridge.menubar.weather.weatherData", 'bridgeBuildingSearch', '$window', 'bridge.service.maps.routing', '$q', function ($http, weatherData, bridgeBuildingSearch, $window, routingService, $q) {
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-globe",
@@ -16,18 +16,18 @@ angular.module('bridge.search').service('bridge.search.locationSearch', ['$http'
     }
 
     this.findMatches = function(query, resultArray, omitTimeAndWeather) {
-        var mapServiceDeferred = $q.defer();
+        var routingServiceDeferred = $q.defer();
         var buildingSearchDeferred = $q.defer();
         var generalDeferred = $q.defer();
-        mapsService.search(query, function(locations) {
-            locations.map(function(location) {
-                resultArray.push(location);
+        routingService.search(query, function(results) {
+            results.data.map(function(result) {
+                resultArray.push(result.location);
                 if(!omitTimeAndWeather) {
-                    getTimeInfoForItem(location);
-                    weatherData.getWeather(location);
+                    getTimeInfoForItem(result.location);
+                    weatherData.getWeather(result.location);
                 }
             });
-            mapServiceDeferred.resolve(resultArray);
+            routingServiceDeferred.resolve(resultArray);
         });
         bridgeBuildingSearch.searchBuildingByCityAndId(query, 4).then(function(sapLocations) {
             sapLocations.map(function(location) {
@@ -41,7 +41,7 @@ angular.module('bridge.search').service('bridge.search.locationSearch', ['$http'
             buildingSearchDeferred.resolve(resultArray);
         });
 
-        mapServiceDeferred.promise.finally(function() {
+        routingServiceDeferred.promise.finally(function() {
             buildingSearchDeferred.promise.finally(function() {
                 generalDeferred.resolve(resultArray);
             });
