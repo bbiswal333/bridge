@@ -226,25 +226,25 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				var totalOfQuantityDay = 0;
 				var biggestTask = {};
 				biggestTask.QUANTITY_DAY = 0;
-				angular.forEach(day.tasks,function(task) {
+				angular.forEach(day.tasks,function(oTask) {
 					// knowingly doing some data doublication here
-					if (task.UNIT === 'H') {
-						task.QUANTITY_DAY = task.QUANTITY / day.hoursOfWorkingDay;
+					if (oTask.UNIT === 'H') {
+						oTask.QUANTITY_DAY = oTask.QUANTITY / day.hoursOfWorkingDay;
 					} else {
-						task.QUANTITY_DAY = task.QUANTITY;
+						oTask.QUANTITY_DAY = oTask.QUANTITY;
 					}
 					if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
-						if (task.UNIT !== 'H') {
+						if (oTask.UNIT !== 'H') {
 							// Adjusting to acutal part-time and country specific target hours value
 							var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
 						} else {
 							roundedTargetHours = day.targetHours;
 						}
-						task.QUANTITY_DAY = Math.round(task.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
+						oTask.QUANTITY_DAY = Math.round(oTask.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
 					}
-					totalOfQuantityDay = totalOfQuantityDay + task.QUANTITY_DAY;
-					if(task.QUANTITY_DAY > biggestTask.QUANTITY_DAY) {
-						biggestTask = task;
+					totalOfQuantityDay = totalOfQuantityDay + oTask.QUANTITY_DAY;
+					if(oTask.QUANTITY_DAY > biggestTask.QUANTITY_DAY) {
+						biggestTask = oTask;
 					}
 				});
 				// Fix rounding issues

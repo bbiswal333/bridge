@@ -172,38 +172,38 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						.then(function(promisesData) {
 							var dataForAnalysis = [];
 
-							angular.forEach(promisesData, function(data) {
+							angular.forEach(promisesData, function(oData) {
 
-								data.entriesWhichAreNotFixedTasks = 0;
-								data.entriesWithSubtype = 0;
+								oData.entriesWhichAreNotFixedTasks = 0;
+								oData.entriesWithSubtype = 0;
 
-								for (var i = 0; i < data.CATS_EXT.length; i++) {
-									if (!catsUtils.isFixedTask(data.CATS_EXT[i])) {
-										data.entriesWhichAreNotFixedTasks += 1;
-										var entry = _.find(data.CATS_EXT_TASK, {
-											"RAUFNR": data.CATS_EXT[i].RAUFNR,
-											"TASKTYPE": data.CATS_EXT[i].TASKTYPE,
-											"ZZSUBTYPE": data.CATS_EXT[i].ZZSUBTYPE,
-											"ZCPR_OBJGEXTID": data.CATS_EXT[i].ZCPR_OBJGEXTID
+								for (var i = 0; i < oData.CATS_EXT.length; i++) {
+									if (!catsUtils.isFixedTask(oData.CATS_EXT[i])) {
+										oData.entriesWhichAreNotFixedTasks += 1;
+										var entry = _.find(oData.CATS_EXT_TASK, {
+											"RAUFNR": oData.CATS_EXT[i].RAUFNR,
+											"TASKTYPE": oData.CATS_EXT[i].TASKTYPE,
+											"ZZSUBTYPE": oData.CATS_EXT[i].ZZSUBTYPE,
+											"ZCPR_OBJGEXTID": oData.CATS_EXT[i].ZCPR_OBJGEXTID
 										});
 										// make corrections if tasks are already posted presumingly for a different profile
 										if (entry) {
-											if (data.catsProfile === "DEV2002C") {
-												if (data.CATS_EXT[i].ZZSUBTYPE) {
-													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+											if (oData.catsProfile === "DEV2002C") {
+												if (oData.CATS_EXT[i].ZZSUBTYPE) {
+													oData.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
 												}
 											} else {
-												if (!data.CATS_EXT[i].ZZSUBTYPE) {
-													data.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
+												if (!oData.CATS_EXT[i].ZZSUBTYPE) {
+													oData.entriesWhichAreNotFixedTasks -= 1; // Well this shall not be considered for this CAT2 profile
 												}
 											}
 										}
-										if (data.CATS_EXT[i].ZZSUBTYPE) {
-											data.entriesWithSubtype += 1;
+										if (oData.CATS_EXT[i].ZZSUBTYPE) {
+											oData.entriesWithSubtype += 1;
 										}
 									}
 								}
-								dataForAnalysis.push(data);
+								dataForAnalysis.push(oData);
 							});
 
 							var profileToUse = "DEV2002C";
@@ -285,8 +285,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				date.setDate(date.getDate() + 7);
 			}
 			var promise = $q.all(promises);
-			promise.then(function(promises) {
-				angular.forEach(promises, function(promiseData) {
+			promise.then(function(aPromises) {
+				angular.forEach(aPromises, function(promiseData) {
 					if (!promiseData || promiseData.length !== 7) { // days a week
 						deferred.reject();
 						return;

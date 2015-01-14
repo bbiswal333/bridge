@@ -11,7 +11,7 @@
                 <bridge.input ng-keypress="onPressEnter($event)" id="filterTextfield" model="filter.val" placeholder="Type here to filter..." autofocus="true"></bridge.input>
             </div>
         </div>
-        <div style="overflow-y: scroll"  ng-mouseleave="showEditButton(-1)">
+        <div style="overflow-y: scroll" ng-style="{height: heightOfList}"  ng-mouseleave="showEditButton(-1)">
             <div id="app-cats-project-selector-button-container" class="row">
                 <div ng-repeat="item in items | filter:filter.val" ng-class="{'list-header' : item.TASKTYPE === 'BRIDGE_HEADER'}">
                     <span style="margin-bottom:10px;" ng-if="item.TASKTYPE === 'BRIDGE_HEADER'" ><b >{{item.DESCR}}</b></span>

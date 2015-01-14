@@ -572,11 +572,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         // adjust slight deviations in QUANTITY when posting part time
         var totalBookingQuantity = 0;
         var biggestBooking;
-        workdateBookings.forEach(function(booking){
-            if(!biggestBooking || biggestBooking.CATSQUANTITY <= booking.CATSQUANTITY) {
-                biggestBooking = booking;
+        workdateBookings.forEach(function(oBooking){
+            if(!biggestBooking || biggestBooking.CATSQUANTITY <= oBooking.CATSQUANTITY) {
+                biggestBooking = oBooking;
             }
-            totalBookingQuantity += booking.CATSQUANTITY;
+            totalBookingQuantity += oBooking.CATSQUANTITY;
         });
         totalBookingQuantity = catsUtils.cat2CompliantRounding(totalBookingQuantity);
         var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;

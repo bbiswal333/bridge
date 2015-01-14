@@ -387,16 +387,16 @@ angular.module('app.getHome').appGetHomeSettings =
 		});
 	}
 
-	function makeMapRoutesDraggable(mapInstance) {
+	function makeMapRoutesDraggable(oMapInstance) {
 		routeLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(routeLayer);
+		oMapInstance.objects.add(routeLayer);
 
 		createRouteHoverMarker();
 
 		addMouseEvents();
 
 		markerLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(markerLayer);
+		oMapInstance.objects.add(markerLayer);
 	}
 
 	$scope.undoChanges = function(route) {
