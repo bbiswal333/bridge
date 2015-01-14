@@ -6,7 +6,7 @@ angular.module('app.bwPcStatus').controller('app.bwPcStatus.detailController',['
 
 	$scope.displayChainRun = function(chain) {
 		$window.open("https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid=" + chain.CONT_SYS +
-            "&client=&transaction=*RSPC1&parameters=CHAIN=" + chain.CHAIN_ID + 
+            "&client=&transaction=*RSPC1&parameters=CHAIN=" + chain.CHAIN_ID +
             ";L_MODE=PLAN;LOGID=" + chain.LOG_ID + ";DISPLAY=X;");
 	};
 }]);

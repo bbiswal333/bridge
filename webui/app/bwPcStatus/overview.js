@@ -1,7 +1,7 @@
 ﻿angular.module('app.bwPcStatus', ['app.bwPcStatus.data']);
 angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.configService', 'app.bwPcStatus.dataService', function (configService, dataService) {
 
-	var directiveController = ['$scope', '$http', '$window', 'notifier', function ($scope, $http, $window, notifier) {
+	var directiveController = ['$scope', function ($scope) {
 
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure your BW Process Chain Status App";
@@ -12,7 +12,7 @@ angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.co
 				id: $scope.boxId
 		};
 
-		$scope.getData = function() {			
+		$scope.getData = function() {
 			dataService.getChainStatus().then(function() {
 				$scope.values =  dataService.data.statusObject;
 			});
@@ -33,13 +33,13 @@ angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.co
            }
         });
 
-		if(dataService.data.statusObject  === undefined ) { 
+		if(dataService.data.statusObject  === undefined ) {
 			$scope.getData();
 		}
 		else {
 			$scope.values =  dataService.data.statusObject;
-		};
-		
+		}
+
 		$scope.box.reloadApp($scope.getData, 60 * 15);
 
 	}];
@@ -64,4 +64,3 @@ angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.co
 		link: linkFn
 	};
 }]);
- 
