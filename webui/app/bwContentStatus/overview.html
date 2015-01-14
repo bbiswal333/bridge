@@ -1,0 +1,73 @@
+﻿<div ng-if="values.assigned < 1">
+	No jobs selected.
+</div>
+
+<div ng-show="showDetails" class="detailsDiv">
+	<div class="detailsLeftSideDiv hover" ng-click="showDetails=false; " ng-class="{'statusDetailsGreen': search.STATUS == 1 , 'statusDetailsYellow': search.STATUS == 2, 'statusDetailsRed': search.STATUS == 3, 'statusDetailsNoStatus': search.STATUS == 0 }" >
+		<i class="showDetailsCursor detailsImageSize fa fa-angle-left fa-2x"></i>
+	</div>
+    <div class="statusDetailsTable detailsRightSideDiv" style="margin-top: 0px;margin-right: 0px; overflow-y: auto;">
+    	<table>
+            <tr ng-repeat="content in contents | filter:search">                
+                <td style="width: 17px; padding-top: 8px;" class="fa" ng-class="{'fa-gear': content.STATUS_ORIGIN == 'A','fa-user': content.STATUS_ORIGIN == 'M'}" title="Automatic/Manual"></td>
+                <td style="width: 40px;">{{content.CONTENT_ID}}</td>
+                <td class="showDetailsCursor" ng-show="content.editable == false || content.editable == null" style="width: 160px; " ng-click="content.editable = true">
+                    {{content.CNT_COMMENT}}
+                </td>
+                <td class="showDetailsCursor" ng-show="content.editable == true;" style="width: 160px; padding-right: 5px;" >
+                    <bridge.input style="width: 130px" model="content.CNT_COMMENT_NEW" autofocus></bridge.input>                
+                    <i style="width: 17px; padding-left: 5px" class="fa fa-save"  title="Save" ng-click="content.editable = false; content.CNT_COMMENT = content.CNT_COMMENT_NEW; setStatus(content , content.STATUS);"></i>
+                    <i style="width: 17px; padding-left: 5px" class="fa fa-close"  title="Undo Changes" ng-click="content.editable = false; content.CNT_COMMENT_NEW = content.CNT_COMMENT;"></i>
+                </td>
+                <td style="width: 93px;">{{content.CNT_DATE}} {{content.TIME}}</td>
+                <td style="width: 41px;">
+                    <div class="setStatusButton showDetailsCursor statusDetailsGreen" ng-click="setStatus(content , 1)" title="Set Content GREEN"></div>
+                    <div class="setStatusButton showDetailsCursor statusDetailsYellow" ng-click="setStatus(content, 2)" title="Set Content YELLOW"></div>
+                    <div class="setStatusButton showDetailsCursor statusDetailsRed" ng-click="setStatus(content, 3)" title="Set Content RED"></div>
+                </td>
+    		</tr>
+    	</table>
+    </div>
+</div>
+
+<div class="contentStatusContainer" ng-if="values.assigned >= 1" ng-hide="showDetails">
+    <div class="contentStatusBox">
+        <div class="contentStatusTiles red-80 showDetailsCursor" ng-click="displayDetails(3);">
+            <span style="color:white;font-size:5rem;">{{values.red}}</span>
+        </div>
+        <div class="contentStatusTiles">
+            <br>
+            <p><i class="fa fa-times red-font-80"></i>   Red</p>
+        </div>
+    </div>
+
+   <div class="contentStatusBox">
+        <div class="contentStatusTiles yellow-80 showDetailsCursor" ng-click="displayDetails(2);">
+             <span style="color:white;font-size:5rem;">{{values.yellow}}</span>
+        </div>
+        <div class="contentStatusTiles"> 
+            <br>
+            <p><i class="fa fa-circle yellow-font-80"></i>   Yellow</p>
+        </div>
+    </div>
+
+    <div class="contentStatusBox">
+        <div class="contentStatusTiles green-80 showDetailsCursor" ng-click="displayDetails(1);">
+             <span style="color:white;font-size:5rem;">{{values.green}}</span>
+        </div>
+        <div class="contentStatusTiles">
+            <br>
+            <p><i class="fa fa-check green-font-80"></i>   Green</p>
+        </div>
+    </div>
+
+    <div class="contentStatusBox">
+        <div class="contentStatusTiles purple-80 showDetailsCursor" ng-click="displayDetails(0);">
+             <span style="color:white;font-size:5rem;">{{values.noStatus}}</span>
+        </div>
+        <div class="contentStatusTiles">
+            <br>
+            <p><i class="fa fa-play purple-font-80"></i>   No Status</p>
+        </div>
+    </div> 
+</div>
