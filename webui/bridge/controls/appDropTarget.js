@@ -83,14 +83,14 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 						savedNodes = savedNodes.not(excludes);
 					}
 		        },
-		        receive: function(event, dragInfo) {
-		        	dragInfo.item.sortable.received = true;
+		        receive: function(event, oDragInfo) {
+					oDragInfo.item.sortable.received = true;
 
 		        	$('.sortable-item').removeClass('zoomOut');
-		            scope.$apply(function() { dragInfo.appIsDragged = false; });
-		            if($(event.target).hasClass("appDustBin") && appCreator.hasInstanceWithId(dragInfo.item[0].id)) {
-		                appCreator.removeInstanceById(dragInfo.item[0].id);
-		                //bridgeDataService.removeAppById(dragInfo.item[0].id);
+		            scope.$apply(function() { oDragInfo.appIsDragged = false; });
+		            if($(event.target).hasClass("appDustBin") && appCreator.hasInstanceWithId(oDragInfo.item[0].id)) {
+		                appCreator.removeInstanceById(oDragInfo.item[0].id);
+		                //bridgeDataService.removeAppById(oDragInfo.item[0].id);
 		            }
 		        },
 		        remove: function(e, ui) {

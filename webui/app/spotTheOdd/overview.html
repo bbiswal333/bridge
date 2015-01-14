@@ -1,7 +1,7 @@
 ﻿<div>
    <div ng-show="showInfo || !gameInProgress">
       <div ng-show="showInfo">
-         <i class="grey-font-100"><b>INSTRUCTIONS:</b> Click on the <b>TILE</b> with different shade to proceed to the next level.</i></br>
+         <i class="grey-font-100"><b>INSTRUCTIONS:</b> Click on the <b>TILE</b> with different shade to proceed to the next level.</i><br/>
          <i class="grey-font-100"><b>HINT:</b> Tilt the monitor forward or backward..:)</i>
       </div>
       <div ng-show="!showInfo && !gamePaused" style="float:right;position: absolute;right: 25px;text-align:center;width:175px">
@@ -17,7 +17,7 @@
    </div>
    <div ng-show="gameInProgress && !gamePaused" style="float:left;margin-right:40px">
       <ul style="width:140px; height:140px;padding-left:0px">
-         <li ng-click="click($index)" ng-repeat="x in data" class="spottheodd-cube" style="background-color:{{x.X}};width:{{140/counter}}px;height:{{140/counter}}px">
+         <li ng-click="click($index)" ng-repeat="x in data" class="spottheodd-cube" ng-style="{'background-color': x.X, width: 140/counter + 'px', height:140/counter + 'px'}">
          </li>
       </ul>
    </div>
