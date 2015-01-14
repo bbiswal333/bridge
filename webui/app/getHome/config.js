@@ -9,6 +9,7 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 	};
 
 	this.addRouteFromConfig = function(configItem) {
+		configItem = typeof configItem === "string" ? JSON.parse(configItem) : configItem;
 		var that = this;
 
 		function addRoute(route) {
