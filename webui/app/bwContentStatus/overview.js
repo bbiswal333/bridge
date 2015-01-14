@@ -14,10 +14,17 @@ angular.module('app.bwContentStatus').directive('app.bwContentStatus', ['app.bwC
 		};
 
 		$scope.getData = function() {
-			dataService.getContentStatus($scope.appConfig.values.contents).then(function() {
-				$scope.values   =  dataService.data.statusObject;
-				$scope.contents =  dataService.data.contents;
-			});
+			if($scope.appConfig.values === undefined) {
+				$scope.values = [];
+				$scope.values.assigned = 0;
+			} else {
+				dataService.getContentStatus($scope.appConfig.values.contents).then(function() {
+					$scope.values   =  dataService.data.statusObject;
+					$scope.contents =  dataService.data.contents;
+				});
+			};
+
+
 		};
 
 		$scope.setStatus = function(content, status) {
