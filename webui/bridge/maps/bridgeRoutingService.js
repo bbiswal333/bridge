@@ -75,6 +75,8 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 					if(maneuver.note.length > 0) {
 						maneuver.note.map(function(note) {
 							if(note.type === "traffic") {
+								note.roadName = maneuver.roadName;
+								note.roadNumber = maneuver.roadNumber;
 								routeThis.incidents.push(note);
 							}
 						});
