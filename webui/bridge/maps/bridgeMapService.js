@@ -34,6 +34,7 @@ angular.module('bridge.service').service("bridge.service.maps.mapService", ["bri
         				 new nokia.maps.map.component.Traffic()]
         });
         map.set("baseMapType", nokia.maps.map.Display.TRAFFIC);
+        map.TRAFFIC.protocol = "https://";
         return map;
 	};
 }]);
