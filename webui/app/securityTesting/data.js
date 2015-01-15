@@ -1,6 +1,6 @@
 angular.module("app.securityTesting.data", [])
-	.service("app.securityTesting.dataService", ["$http", "$q", "$window",
-	function ($http, $q, $window) {
+	.service("app.securityTesting.dataService", ["$http", "$q",
+	function ($http, $q) {
 		    this.data = {};
 		    this.data.transportData = {};
 		    this.data.fortifyResults = 0;
@@ -19,12 +19,11 @@ angular.module("app.securityTesting.data", [])
 
             this.loadDataDetailed = function (system) {
                 var deferred = $q.defer();
-                var url = 'https://pulsecsi.mo.sap.corp:1443/results/detail/' +system;
+                var url = 'https://pulsecsi.mo.sap.corp:1443/results/detail/' + system;
                 var that = this;
                 $http.get(url, { withCredentials: false }).success(function (data) {
                     that.data.securityTestingDetail = data.details;
-                    
-                    
+
                     deferred.resolve();
                 });
                 return deferred.promise;
