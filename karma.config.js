@@ -22,9 +22,7 @@ module.exports = function(config) {
             './webui/lib/jQuery-2_1_0/jquery.min.js',
             './webui/lib/angular-1_3_8/angular.min.js',
             './webui/lib/sigma-1_0_3/sigma.min.js',
-            './webui/lib/nokiaHere/jsl.js',
-            './webui/lib/nokiaHere/exampleHelpers.js',
-            './webui/lib/nokiaHere/language-en-US.js',
+            'https://js.api.here.com/se/2.5.4/jsl.js',
             './webui/lib/**/*.js',
 
             './webui/loader_mock.js',
@@ -54,7 +52,7 @@ module.exports = function(config) {
             "./client/**/*",
             "./webui/lib/angular-1_3_8/angular.js",
             "./webui/lib-bower/**/*",
-            "./webui/app/getHome/nokiaHere/**/*"
+            "https://js.api.here.com/**/*"
         ],
 
         preprocessors: {
