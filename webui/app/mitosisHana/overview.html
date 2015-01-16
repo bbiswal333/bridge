@@ -18,10 +18,10 @@
 <div ng-hide="showStatus" class="statusTilesContainer" ng-if="dataService.numberOfContents >= 1 && !noContentSelected()">
     <div class="statusTilesBox">
         <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('green');" ng-if="dataService.statusCount.green >= 1">
-             <span style="color:white;font-size:6rem;">{{dataService.statusCount.green}}</span>
+             <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.green}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.green < 1">
-            <span style="color:white;font-size:6rem;">{{dataService.statusCount.green}}</span>
+            <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.green}}</span>
         </div>
         <div class="statusTiles">
             <br>
@@ -30,10 +30,10 @@
     </div>
     <div class="statusTilesBox">
         <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('yellow');" ng-if="dataService.statusCount.yellow >= 1">
-             <span style="color:white;font-size:6rem;">{{dataService.statusCount.yellow}}</span>
+             <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.yellow}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.yellow < 1">
-            <span style="color:white;font-size:6rem;">{{dataService.statusCount.yellow}}</span>
+            <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.yellow}}</span>
         </div>
         <div class="statusTiles">
             <br>
@@ -42,10 +42,10 @@
     </div>
     <div class="statusTilesBox">
          <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('red');" ng-if="dataService.statusCount.red >= 1">
-             <span style="color:white;font-size:6rem;">{{dataService.statusCount.red}}</span>
+             <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.red}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.red < 1">
-            <span style="color:white;font-size:6rem;">{{dataService.statusCount.red}}</span>
+            <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.red}}</span>
         </div>
         <div class="statusTiles">
             <br>
