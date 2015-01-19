@@ -2,8 +2,8 @@
 angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$http", "$location" , "$q",
     function ($scope, $http, $location, $q) {
 
-    var dependancyGraph = { nodes: [], edges: [] };
-    var dependancyData = { dependancy: [] };
+    var dependencyGraph = { nodes: [], edges: [] };
+    var dependencyData = { dependency: [] };
     var parentJob = [];
 
 
@@ -46,41 +46,41 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
 
 
     var getNodeId = function(fromNode){
-        for(var nodeIndex in dependancyGraph.nodes) {
-            if(fromNode === dependancyGraph.nodes[nodeIndex].label){
-                return dependancyGraph.nodes[nodeIndex].id;
+        for(var nodeIndex in dependencyGraph.nodes) {
+            if(fromNode === dependencyGraph.nodes[nodeIndex].label){
+                return dependencyGraph.nodes[nodeIndex].id;
             }
         }
     };
 
-    var formNodes = function(dependancy){
-        for(var nodeIndex in dependancy) {
-               dependancyGraph.nodes.push({
-                                        id: dependancy[nodeIndex].from + nodeIndex,
-                                        label: dependancy[nodeIndex].from,
+    var formNodes = function(dependency){
+        for(var nodeIndex in dependency) {
+               dependencyGraph.nodes.push({
+                                        id: dependency[nodeIndex].from + nodeIndex,
+                                        label: dependency[nodeIndex].from,
                                         x: Math.random(),
                                         y: Math.random(),
                                         size: 10,
-                                        color: getColor(dependancy[nodeIndex].colorFrom)
+                                        color: getColor(dependency[nodeIndex].colorFrom)
                                       }
                                     );
-            dependancyGraph.nodes.push({
-                                        id: dependancy[nodeIndex].to + nodeIndex,
-                                        label: dependancy[nodeIndex].to,
+            dependencyGraph.nodes.push({
+                                        id: dependency[nodeIndex].to + nodeIndex,
+                                        label: dependency[nodeIndex].to,
                                         x: Math.random(),
                                         y: Math.random(),
                                         size: 10,
-                                        color: getColor(dependancy[nodeIndex].colorTo)
+                                        color: getColor(dependency[nodeIndex].colorTo)
                                       });
         }
 
-        dependancyGraph.nodes = removeDuplicate(dependancyGraph.nodes);
+        dependencyGraph.nodes = removeDuplicate(dependencyGraph.nodes);
 
-        for(var dependancyIndex in dependancy) {
-            dependancyGraph.edges.push({
-                                            id: "e" + dependancyIndex,
-                                            source: getNodeId(dependancy[dependancyIndex].from),
-                                            target: getNodeId(dependancy[dependancyIndex].to),
+        for(var dependencyIndex in dependency) {
+            dependencyGraph.edges.push({
+                                            id: "e" + dependencyIndex,
+                                            source: getNodeId(dependency[dependencyIndex].from),
+                                            target: getNodeId(dependency[dependencyIndex].to),
                                             type: "arrow",
                                             arrowSizeRatio: 10,
                                             color: "#707070"
@@ -91,7 +91,7 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
         sigma.renderers.def = sigma.renderers.canvas;
         /*eslint-disable new-cap*/
         var s = new sigma({
-              graph: dependancyGraph,
+              graph: dependencyGraph,
               type: "canvas",
               container: "container"
             });
@@ -117,11 +117,11 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
     };
 
     /*eslint-disable no-use-before-define*/
-    var getDependancyData = function(job){
+    var getDependencyData = function(job){
         var promisses = [];
         var level = 0;
             for(var edgeIndex in job.downstreamProjects) {
-            dependancyData.dependancy.push({
+            dependencyData.dependency.push({
                                 from: job.name,
                                 to: job.downstreamProjects[edgeIndex].name,
                                 level : level,
@@ -140,7 +140,7 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
         var deferred = $q.defer();
         $http({ method: "GET", url: "/api/get?url=" + encodeURIComponent(url + "api/json"), withCredentials: false })
             .success(function(result) {
-                getDependancyData(result).then(function(){
+                getDependencyData(result).then(function(){
                     deferred.resolve();
                 });
 
@@ -182,16 +182,16 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
                 success(function(data) {
                     if(data.upstreamProjects.length >= 1){
                         findParentNodeJob(data).then(function(){
-                            getDependancyData(parentJob).then(function(){
-                                formNodes(dependancyData.dependancy);
+                            getDependencyData(parentJob).then(function(){
+                                formNodes(dependencyData.dependency);
                             });
                         });
                     }else if(data.downstreamProjects.length >= 1){
-                        getDependancyData(data).then(function(){
-                            formNodes(dependancyData.dependancy);
+                        getDependencyData(data).then(function(){
+                            formNodes(dependencyData.dependency);
                         });
                     }else{
-                        dependancyGraph.nodes.push({
+                        dependencyGraph.nodes.push({
                                         id: "n1",
                                         label: data.name,
                                         x: 0,
@@ -202,7 +202,7 @@ angular.module("app.jenkins").controller("app.jenkins.controller", ["$scope", "$
                                     );
                             /*eslint-disable*/
                             new sigma({
-                                graph: dependancyGraph,
+                                graph: dependencyGraph,
                                 container: "container"
                             });
                             /*eslint-enable*/

@@ -9,7 +9,7 @@
     			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
     			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
     			<td style="padding-right: 0px;">{{job.timestamp}}</td>
-                <td><a title="View Dependancy" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
+                <td><a title="View Dependency" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
     		</tr>
     	</table>
     </div>
