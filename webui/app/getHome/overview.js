@@ -64,6 +64,18 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
         $scope.isActive = function(route) {
         	return route.isActive;
         };
+
+        $scope.routeDelayIsLowerThan15Percent = function(summary) {
+        	return (summary.trafficTime  * 100 / summary.baseTime) / 100 <= 1.15;
+        };
+
+        $scope.routeDelayIsBetween15And30Percent = function(summary) {
+        	return (summary.trafficTime  * 100 / summary.baseTime) / 100 > 1.15 && (summary.trafficTime  * 100 / summary.baseTime) / 100 <= 1.30;
+        };
+
+        $scope.routeDelayIsHigherThan30Percent = function(summary) {
+        	return (summary.trafficTime  * 100 / summary.baseTime) / 100 > 1.30;
+        };
 	}];
 
 	return {
