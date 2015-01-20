@@ -1,10 +1,10 @@
 /*global nokia*/
 angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '$http', '$interval', 'bridgeInBrowserNotification', 'bridge.service.maps.utils', function ($q, $http, $interval, bridgeInBrowserNotification, mapUtils) {
-	const GEOCODE_API = "https://geocoder.api.here.com/6.2/geocode.json";
-	const ROUTING_API = "https://route.nlp.nokia.com/routing/7.2/calculateroute.json";
-	const GET_ROUTE_API = "https://route.nlp.nokia.com/routing/7.2/getroute.json";
-	const TWO_AND_A_HALF_MINUTES = 120000;
-	const ROUTE_COLORS = ["#418AC9", "#8561C5", "#707070"];
+	var GEOCODE_API = "https://geocoder.api.here.com/6.2/geocode.json";
+	var ROUTING_API = "https://route.nlp.nokia.com/routing/7.2/calculateroute.json";
+	var GET_ROUTE_API = "https://route.nlp.nokia.com/routing/7.2/getroute.json";
+	var TWO_AND_A_HALF_MINUTES = 120000;
+	var ROUTE_COLORS = ["#418AC9", "#8561C5", "#707070"];
 
 	var appCodeParameter = "&app_code=OvJJVLXUQZGWHmYf1HZCFg";
 	var appIdParameter = "&app_id=TSCNwGZFblBU5DnJLAH8";
