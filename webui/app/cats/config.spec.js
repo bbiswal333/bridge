@@ -54,14 +54,14 @@ describe("CAT2 config service", function () {
 	it("should fill in the right sub description on task enhancement", function () {
 		var taskA = {};
 		taskA.TASKTYPE = 'MESS';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('MESS');
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe(' MESS');
 		taskA.DESCR = '';
 		taskA.TASKTYPE = 'DEVL';
 		taskA.RAUFNR = 'RAUF';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('DEVL');
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe(' (RAUF) DEVL');
 		taskA.DESCR = '';
 		taskA.ZCPR_EXTID = 'Software Eng';
-		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng (RAUF)');
+		expect(catsConfig.enhanceTask(taskA).subDescription).toBe('Software Eng (RAUF) DEVL');
 	});
 
 	it("should be possible to add a last used description", function () {

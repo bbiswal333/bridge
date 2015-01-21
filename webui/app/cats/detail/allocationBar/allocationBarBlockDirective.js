@@ -45,23 +45,23 @@ function (colorUtils, blockCalculations, calUtils) {
                     desc = $scope.blockData.DESCR;
                 }
                 if ($scope.blockData.task.ZCPR_EXTID) {
-                    if (desc) { desc = desc + ",\n"; }
+                    if (desc) { desc = desc + "\n"; }
                     desc = desc + $scope.blockData.task.ZCPR_EXTID;
                 }
                 if ($scope.blockData.task.RAUFNR) {
-                    if (desc) { desc = desc + ",\n"; }
-                    desc = desc + $scope.blockData.task.RAUFNR;
+                    if (desc) { desc = desc + "\nOrder:    "; }
+                    desc = desc + $scope.blockData.task.RAUFNR.replace(/^0+/, '');
                 }
                 if ($scope.blockData.task.ZCPR_OBJGEXTID) {
-                    if (desc) { desc = desc + ",\n"; }
-                    desc = desc + $scope.blockData.task.ZCPR_OBJGEXTID;
+                    if (desc) { desc = desc + "\ncProID:  "; }
+                    desc = desc + $scope.blockData.task.ZCPR_OBJGEXTID.replace(/^0+/, '');
                 }
                 if ($scope.blockData.task.TASKTYPE) {
-                    if (desc) { desc = desc + ",\n"; }
+                    if (desc) { desc = desc + "\nType:     "; }
                     desc = desc + $scope.blockData.task.TASKTYPE;
                 }
                 if ($scope.blockData.task.ZZSUBTYPE) {
-                    if (desc) { desc = desc + ",\n"; }
+                    if (desc) { desc = desc + "\nSubtype: "; }
                     desc = desc + $scope.blockData.task.ZZSUBTYPE;
                 }
                 return desc;

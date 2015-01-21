@@ -61,15 +61,17 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		enhancedTask.subDescription = "";
 
 		if (task.ZCPR_EXTID) {
-			if (task.RAUFNR) {
-				enhancedTask.subDescription = task.ZCPR_EXTID + " (" + task.RAUFNR + ")" || "";
-			} else {
-				enhancedTask.subDescription = task.ZCPR_EXTID;
-			}
+			enhancedTask.subDescription = task.ZCPR_EXTID;
 		}
 
-		if (enhancedTask.subDescription === "") {
-			enhancedTask.subDescription = taskTypeToDisplay || "";
+		if (task.RAUFNR) {
+			var RAUFNRtoDisplay = task.RAUFNR;
+			RAUFNRtoDisplay = RAUFNRtoDisplay.replace(/^0+/, '');
+			enhancedTask.subDescription = enhancedTask.subDescription + " (" + RAUFNRtoDisplay + ")";
+		}
+
+		if (taskTypeToDisplay) {
+			enhancedTask.subDescription = enhancedTask.subDescription + " " + taskTypeToDisplay;
 		}
 
 		if (!enhancedTask.id) {
