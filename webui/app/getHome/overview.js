@@ -65,17 +65,27 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
         	return route.isActive;
         };
 
-        $scope.routeDelayIsLowerThan15Percent = function(summary) {
+        function routeDelayIsLowerThan15Percent(summary) {
         	return (summary.trafficTime  * 100 / summary.baseTime) / 100 <= 1.15;
-        };
+        }
 
-        $scope.routeDelayIsBetween15And30Percent = function(summary) {
+        function routeDelayIsBetween15And30Percent(summary) {
         	return (summary.trafficTime  * 100 / summary.baseTime) / 100 > 1.15 && (summary.trafficTime  * 100 / summary.baseTime) / 100 <= 1.30;
-        };
+        }
 
-        $scope.routeDelayIsHigherThan30Percent = function(summary) {
+        function routeDelayIsHigherThan30Percent(summary) {
         	return (summary.trafficTime  * 100 / summary.baseTime) / 100 > 1.30;
-        };
+        }
+
+		$scope.getRouteColorClass = function(summary){
+			if (routeDelayIsLowerThan15Percent(summary)){
+				return 'green-80';
+			} else if (routeDelayIsBetween15And30Percent(summary)){
+				return 'yellow-80';
+			} else if (routeDelayIsHigherThan30Percent(summary)){
+				return 'red-80';
+			}
+		};
 	}];
 
 	return {
