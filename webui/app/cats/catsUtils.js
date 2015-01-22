@@ -21,9 +21,13 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     };
 
     this.getTaskID = function (task) {
-      if(task.ZCPR_OBJGEXTID) {
+      if(task.ZCPR_OBJGEXTID) { // cPro
         return task.ZCPR_OBJGEXTID;
-      } else {
+      } else if (task.RAUFNR) { // order based
+        return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
+      } else if (task.RNPLNR) { // catsXT
+        return (task.RNPLNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "") + (task.VORNR || "") + (task.AUTYP || "") + (task.TASKLEVEL || "") + (task.SKOSTL || "") + (task.ZZOBJNR || "");
+      } else { // basic stuff like ADMI
         return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
       }
     };
@@ -51,16 +55,6 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       return false;
     };
 
-    this.isFixedTask = function(task){
-      if ((task.TASKTYPE === "VACA" && task.UNIT === "H") || // There is a valid VACA/TA task in Israel
-          (task.TASKTYPE === "ABSE" && task.UNIT === "H") || // There is a valid ABSE/TA task in Israel
-           task.TASKTYPE === "COMP" ||
-           task.TASKCOUNTER) { // System entered time or CATSXT
-        return true;
-      }
-      return false;
-    };
-
     this.isValid = function(task){
       if (!task) {
         return false;
@@ -68,6 +62,16 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       if ((task.ZCPR_OBJGEXTID) || // OBJEXTID exists
           (!task.ZCPR_OBJGEXTID && task.TASKTYPE)) { // unique TASKTYPE RAUFNR combination
           return true;
+      }
+      return false;
+    };
+
+    this.isFixedTask = function(task){
+      if ((task.TASKTYPE === "VACA" && task.UNIT === "H") || // There is a valid VACA/TA task in Israel
+          (task.TASKTYPE === "ABSE" && task.UNIT === "H") || // There is a valid ABSE/TA task in Israel
+           task.TASKTYPE === "COMP" ||
+           task.TASKCOUNTER) { // System entered time or CATSXT
+        return true;
       }
       return false;
     };

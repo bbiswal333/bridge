@@ -2,8 +2,8 @@
 	<p ng-show="routes.length == 0">"Beat the Traffic" will help you to monitor your daily routes and inform you about traffic jams and other traffic incidents.</p>
 	
 	<div ng-show="routes.length > 0"  style="width:390px; height:140px;">
-		<div ng-repeat="route in routes | limitTo: 5 | filter:isActive" class="getHome-route-column hover" ng-class="getRouteColorClass(route.summary)"
-																					   ng-click="openRouteDetails(route)">
+		<div ng-repeat="route in routes | filter:isActive" class="getHome-route-column hover" ng-class="getRouteColorClass(route.summary)"
+																					   ng-click="openRouteDetails(route)" ng-if="$index < 5">
 			<div class="getHome-route-name" style="color:white">
 				<p>{{route.name}}</p>
 			</div>

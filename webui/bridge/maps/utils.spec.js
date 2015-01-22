@@ -13,6 +13,7 @@ describe("map utils", function() {
 		var coord2 = utilsService.parseCoordinate("1.1,2");
 		var coord3 = utilsService.parseCoordinate("1,2.1");
 		var coord4 = utilsService.parseCoordinate("1,2");
+		var coord5 = utilsService.parseCoordinate("40.7145513,-74.0071191");
 
 		expect(coord1).toBeDefined();
 		expect(coord1.latitude).toEqual(49.2931652);
@@ -29,6 +30,10 @@ describe("map utils", function() {
 		expect(coord4).toBeDefined();
 		expect(coord4.latitude).toEqual(1);
 		expect(coord4.longitude).toEqual(2);
+
+		expect(coord5).toBeDefined();
+		expect(coord5.latitude).toEqual(40.7145513);
+		expect(coord5.longitude).toEqual(-74.0071191);
 	});
 
 

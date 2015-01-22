@@ -36,19 +36,19 @@ directive("app.cats.maintenanceView.projectList", [
             $scope.getDescription = function (item) {
                 var desc = item.DESCR;
                 if (item.ZCPR_EXTID) {
-                    desc = desc + ",\n" + item.ZCPR_EXTID;
+                    desc = desc + "\n" + item.ZCPR_EXTID;
                 }
                 if (item.RAUFNR) {
-                    desc = desc + ",\n" + item.RAUFNR;
+                    desc = desc + "\nOrder:    " + item.RAUFNR.replace(/^0+/, '');
                 }
                 if (item.ZCPR_OBJGEXTID) {
-                    desc = desc + ",\n" + item.ZCPR_OBJGEXTID;
+                    desc = desc + "\ncProID:  " + item.ZCPR_OBJGEXTID.replace(/^0+/, '');
                 }
                 if (item.TASKTYPE) {
-                    desc = desc + ",\n" + item.TASKTYPE;
+                    desc = desc + "\nType:     " + item.TASKTYPE;
                 }
                 if (item.ZZSUBTYPE) {
-                    desc = desc + ",\n" + item.ZZSUBTYPE;
+                    desc = desc + "\nSubtype: " + item.ZZSUBTYPE;
                 }
                 return desc;
             };

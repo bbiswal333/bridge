@@ -1,5 +1,5 @@
 angular.module('bridge.service').service("bridge.service.maps.utils", [function () {
-	var COORDINATE_REGEX = /^(\d+(\.\d+)?)(,)(\d+(\.\d+)?)$/;
+	var COORDINATE_REGEX = /^(-?\d+(\.\d+)?)(,)(-?\d+(\.\d+)?)$/;
 
 	this.parseCoordinate = function(coordinate) {
 		if(!COORDINATE_REGEX.test(coordinate)) {
