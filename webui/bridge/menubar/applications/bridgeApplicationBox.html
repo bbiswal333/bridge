@@ -1,7 +1,8 @@
 <span>
 	<div class="bridge-applications-box">
 		<div style="display: table-cell; padding: 25px;">
-			<div style="border-radius: 100%; height: 110px; width: 110px; overflow: hidden; border: 2px solid #bbbbbb; background-image: url('{{app.metadata.appPath}}/_screenshot.png'); background-position: center center; background-size: auto 110px">
+			<div style="border-radius: 100%; height: 110px; width: 110px; overflow: hidden; border: 2px solid #bbbbbb; background-position: center center; background-size: auto 110px"
+					ng-style="{'background-image':'url(' + app.metadata.appPath + '/_screenshot.png)'}">
 				&nbsp;
 			</div>
 		</div>
@@ -13,31 +14,12 @@
 			</p>
 			<span style="text-align: left; float: left" bs-tooltip data-trigger="hover" data-placement="left" data-title="{{app.metadata.description}}"><i>{{app.metadata.description.substring(0, 80)}}...</i></span>
 
-			<!--<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="toggleInstance(app.metadata)" class="btn btn-default bridge-applications-addButton" style="text-align:left;" ng-if="!app.metadata.multiInstance">
-				<p ng-if="!hasInstance(app.metadata)">Add</p>
-				<p ng-if="hasInstance(app.metadata)">Remove</p>
-			</button>-->
-
 			<bridge.button ng-click="doAlert(); toggleInstance(app.metadata)" class="bridge-applications-addButton" style="width:70px;" ng-if="!app.metadata.multiInstance">
 				<p ng-if="!hasInstance(app.metadata)">Add</p>
 				<p ng-if="hasInstance(app.metadata)">Remove</p>
 			</bridge.button>
 			
-
-
-
 			<div ng-if="app.metadata.multiInstance && numberOfInstances() > 0" style="color: #ffffff; border-radius: 100%; width: 25px; height: 25px; font-size: 14px; padding: 2px; position: absolute; right: 52px; bottom: 40px; z-index: 10;text-align:center;" class="red">{{numberOfInstances()}}</div>
-
-			<!--<button type="button" ng-class="{true: 'btn', false: 'btn'}[hasInstance(app.metadata)];" ng-click="removeAppInstance(app.metadata)" class="btn btn-default bridge-applications-addButton" style="text-align:left; right: 75px" ng-if="app.metadata.multiInstance && numberOfInstances() > 0">
-				<p>
-					-1
-				</p>
-			</button>
-			<button type="button" ng-class="{true: 'btn btn_blue', false: 'btn'}[hasInstance(app.metadata)];" ng-click="addAppInstance(app.metadata)" class="btn btn-default bridge-applications-addButton" style="text-align:left;" ng-if="app.metadata.multiInstance">
-				<p>
-					Add
-				</p>
-			</button>-->
 
 			<bridge.button ng-click="doAlert(); removeAppInstance(app.metadata)" class="bridge-applications-addButton" style="width:70px; right: 75px" ng-if="app.metadata.multiInstance && numberOfInstances() > 0">
 				Remove
