@@ -12,6 +12,11 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 		configItem = typeof configItem === "string" ? JSON.parse(configItem) : configItem;
 		var that = this;
 
+		//Old configs don't have the isActive property and will be set to false and thus hidden...
+		if(!configItem.hasOwnProperty("isActive")) {
+			configItem.isActive = true;
+		}
+
 		function addRoute(route) {
 				route.name = configItem.name;
 				if(route.isActive !== configItem.isActive) {
