@@ -1,13 +1,13 @@
 ﻿{
 	"name": "bridge-client",
-	"version": "0.9.1",
+	"version": "0.9.2",
 	"main": "index.html",
 	"bridge_tag": "local",
 	"window": {
 		"show": true,
 		"frame": true,
 		"width": 400,
-		"height": 200,
+		"height": 250,
 		"toolbar": true
 	},
 	"chromium-args": "--ignore-certificate-errors --auth-server-whitelist='*' --auth-negotiate-delegate-whitelist='*'"
