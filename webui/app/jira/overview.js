@@ -8,7 +8,8 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
             var isInitialized = false;
             var config = {
                 query: 'assignee = currentUser()',
-                jira: 'sapjira'
+                jira: 'sapjira',
+                maxHits: '50'
             };
 
             this.initialize = function (sAppId) {
@@ -20,6 +21,7 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
                     {
                         config.jira = persistedConfig.jira;
                     }
+                    config.maxHits = persistedConfig.maxHits;
                 }
 
                 isInitialized = true;
@@ -88,7 +90,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
-                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira).then(function() {
+                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
                     $scope.jiraData = jiraBox.data;
                 });
             }
@@ -161,7 +163,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
             if (config.isInitialized() === false) {
                 config.initialize($scope.metadata.guid);
-                JiraBox.getInstanceForAppId($scope.metadata.guid).getIssuesforQuery(config.getConfig().query, config.getConfig().jira);
+                JiraBox.getInstanceForAppId($scope.metadata.guid).getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits);
             }
             $scope.config = config.getConfig();
         }

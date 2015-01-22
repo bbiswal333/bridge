@@ -1,60 +1,55 @@
 <div style="width: 100%">
-<p>
-<form name="ConfigItemForm">
-	<div class="row">
-		<div class="col-xs-12 copy form_head">Jira Instance</div>
-		<div class="col-xs-6 has-feedback">
-			<!--<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'sapjira'];"ng-click="data.jira = 'sapjira'">SAP Jira</button>
-			<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'issuemanagement'];" ng-click="data.jira = 'issuemanagement'">Issuemanagement</button>
-			<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'issues'];" ng-click="data.jira = 'issues'">Issues</button>-->
-
-			<!--<button class="btn btn-default" ng-class="{true: 'btn btn_blue',false: 'btn '}[data.jira === 'jtrack'];" ng-click="data.jira = 'jtrack'">Jira@NGP</button>-->
-
-			<bridge.button state="(data.jira === 'sapjira')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'sapjira'" style="margin-left:0;margin-right:0;">
-				SAP Jira
-			</bridge.button>
-			<bridge.button state="(data.jira === 'issuemanagement')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'issuemanagement'" style="margin-left:0;margin-right:0;">
-				Issuemanagement
-			</bridge.button>
-			<bridge.button state="(data.jira === 'issues')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'issues'" style="margin-left:0;margin-right:0;">
-				Issues
+	<form name="ConfigItemForm">
+		<div class="row">
+			<div class="col-xs-12 copy form_head">Jira Instance</div>
+			<div class="col-xs-6 has-feedback">
+				<bridge.button state="(data.jira === 'sapjira')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'sapjira'" style="margin-left:0;margin-right:0;">
+					SAP Jira
+				</bridge.button>
+				<bridge.button state="(data.jira === 'issuemanagement')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'issuemanagement'" style="margin-left:0;margin-right:0;">
+					Issuemanagement
+				</bridge.button>
+				<bridge.button state="(data.jira === 'issues')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'issues'" style="margin-left:0;margin-right:0;">
+					Issues
+				</bridge.button>
+			</div>
+		</div>
+		<div class="row">&nbsp;</div>
+		<div class="row">
+			<div class="col-xs-12 copy form_head">Query Templates</div>
+			<div class="col-xs-6 has-feedback">
+				<bridge.button state="toMeTemplate === true ? 'active' : ''" ng-click="applyAssignedToMeTemplate()" style="width:200px;margin-left:0;">
+					Issues assigned to me
+				</bridge.button>
+				<bridge.button state="projectTemplate === true ? 'active' : ''" ng-click="applyIssuesOfProjectTemplate()" style="width:200px;">
+					Open issues of project '...'
+				</bridge.button>
+			</div>
+		</div>
+		<div class="row">&nbsp;</div>
+		<div class="row">
+			<div class="col-xs-12 copy form_head">Jira Query</div>
+			<div class="col-xs-6 has-feedback">
+				<!--<input type="text" class="form form-control" ng-model="data.query" placeholder="Jira Query" autofocus/>-->
+				<bridge.input model="data.query" placeholder="Jira Query" autofocus></bridge.input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 has-feedback">
+				<a target="_blank" href="https://confluence.atlassian.com/display/JIRA/Advanced+Searching">Advanced Searching Documentation (JQL)</a>
+			</div>
+		</div>
+		<div class="row">&nbsp;</div>
+		<div class="row">
+			<div class="col-xs-12 copy form_head">Maximum Number of Results</div>
+			<div class="col-xs-6 has-feedback">
+				<bridge.input model="data.maxHits"></bridge.input>
+			</div>
+		</div>
+		<div class="row">
+			<bridge.button class="save_close_btn" ng-click="save_click()">
+				Save & Close
 			</bridge.button>
 		</div>
-	</div>	
-	<div class="row">&nbsp;</div>
-	<div class="row">
-		<div class="col-xs-12 copy form_head">Query Templates</div>
-		<div class="col-xs-6 has-feedback">
-			<!--<button class="btn btn-default btn_blue" ng-click="applyAssignedToMeTemplate()">Issues assigned to me</button> <button class="btn btn-default btn_blue" ng-click="applyIssuesOfProjectTemplate()">Open issues of project '...'</button>-->
-			<bridge.button state="toMeTemplate === true ? 'active' : ''" ng-click="applyAssignedToMeTemplate()" style="width:200px;margin-left:0;">
-				Issues assigned to me
-			</bridge.button>
-			<bridge.button state="projectTemplate === true ? 'active' : ''" ng-click="applyIssuesOfProjectTemplate()" style="width:200px;">
-				Open issues of project '...'
-			</bridge.button>
-		</div>
-	</div>	
-	<div class="row">&nbsp;</div>
-	<div class="row">
-		<div class="col-xs-12 copy form_head">Jira Query</div>
- 		<div class="col-xs-6 has-feedback">
- 			<!--<input type="text" class="form form-control" ng-model="data.query" placeholder="Jira Query" autofocus/>-->
- 			<bridge.input model="data.query" placeholder="Jira Query" autofocus></bridge.input>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-6 has-feedback">
-			<a target="_blank" href="https://confluence.atlassian.com/display/JIRA/Advanced+Searching">Advanced Searching Documentation (JQL)</a>
-		</div>
-	</div>
-	<div class="row">
-		<!--<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>-->
-		<bridge.button class="save_close_btn" ng-click="save_click()">
-			Save & Close
-		</bridge.button>
-	</div>	
-</form>
-
-
-</p>
+	</form>
 </div>
