@@ -1,7 +1,7 @@
 describe("bridgeMapService", function() {
 	var mapService;
 
-	const TEST_ROUTE = {
+	var TEST_ROUTE = {
 		shape: [new nokia.maps.geo.Coordinate(49.2931652, 8.6422384), new nokia.maps.geo.Coordinate(49.2938519,8.6432683), new nokia.maps.geo.Coordinate(49.295032, 8.6449206), new nokia.maps.geo.Coordinate(49.2960083,8.6463583, 49.2961693)]
 	};
 
