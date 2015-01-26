@@ -18,17 +18,17 @@
 		<p></p>
 
 		<div class="row">
-			<div class="col-xs-2 form_head" style="float:none;">Milestone Duration in Days</div>
-			<div class="col-xs-6" >
-				<bridge.input style="margin-top: 1rem; width: 100px; height: 31px;" model="currentConfigValues.milestoneDuration" placeholder="Duration in day"></bridge.input>
-			</div>
+			<div class="col-xs-12 form_head">Duration in Days</div>
 		</div>
+
 		<div class="row">
 			<div class="btn-group" style="margin-left:15px;">
-				<bridge.button state="(currentConfigValues.milestoneDuration == 7) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 7; doAlert()" style="margin-right:0;margin-left:0;width:100px;">1 week</bridge.button>
-				<bridge.button state="(currentConfigValues.milestoneDuration == 14) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 14; doAlert()" style="margin-right:0;margin-left:0;width:100px;">2 weeks</bridge.button>
-				<bridge.button state="(currentConfigValues.milestoneDuration == 21) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 21; doAlert()" style="margin-right:0;margin-left:0;width:100px;">3 weeks</bridge.button>
-				<bridge.button state="(currentConfigValues.milestoneDuration == 28) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 28; doAlert()" style="margin-right:0;margin-left:0;width:100px;">4 weeks</bridge.button>
+				<bridge.button state="(currentConfigValues.milestoneDuration == 7) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 7; customSelected = false;" style="margin-right:0;margin-left:0;width:100px;">1 week</bridge.button>
+				<bridge.button state="(currentConfigValues.milestoneDuration == 14) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 14; customSelected = false;" style="margin-right:0;margin-left:0;width:100px;">2 weeks</bridge.button>
+				<bridge.button state="(currentConfigValues.milestoneDuration == 21) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 21; customSelected = false;" style="margin-right:0;margin-left:0;width:100px;">3 weeks</bridge.button>
+				<bridge.button state="(currentConfigValues.milestoneDuration == 28) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.milestoneDuration = 28; customSelected = false;" style="margin-right:0;margin-left:0;width:100px;">4 weeks</bridge.button>
+				<bridge.button state="customSelected === true ? 'active' : 'invisible-button'" ng-click="customSelected = !customSelected; doAlert()" style="margin-right:0;margin-left:0;width:100px;">Custom</bridge.button>
+				<bridge.input ng-show="customSelected" style="margin-top: 1.5rem; margin-left: 1rem; width: 100px; height: 31px;" model="currentConfigValues.milestoneDuration" placeholder="Duration"></bridge.input>
 			</div>
 		</div>
 	</form>

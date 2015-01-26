@@ -5,6 +5,22 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 	 $scope.searchResults = [];
 
 
+    function isWeekDuration(sMilestoneDuration){
+        /*eslint eqeqeq:0*/
+        if (sMilestoneDuration == "7" ||
+            sMilestoneDuration == "14" ||
+            sMilestoneDuration == "21" ||
+            sMilestoneDuration == "28") {
+
+            return true;
+        }
+        /*eslint eqeqeq:1*/
+
+        return false;
+    }
+    $scope.customSelected = !isWeekDuration($scope.currentConfigValues.milestoneDuration);
+
+
      function search_repo(limit)
      {
         var repo = "";
