@@ -128,7 +128,7 @@
   cursor: default;
   box-shadow: 0px 0px 2px #707070;
   transition: all ease 0.25s;
-  border:  none;
+  /*border:  none;*/
   border-radius: 0;
   background-color: transparent;
   border: 2px solid #418AC9;
@@ -141,6 +141,7 @@
 }
 .nav-tabs > li > a{
   border-radius: 0;
+  border: 2px solid transparent;
 }
 .nav{
   padding-left:15px;
