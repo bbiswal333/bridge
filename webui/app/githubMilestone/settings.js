@@ -6,7 +6,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 
 
     function isWeekDuration(sMilestoneDuration){
-        /*eslint eqeqeq:0*/
+        /*eslint-disable eqeqeq*/
         if (sMilestoneDuration == "7" ||
             sMilestoneDuration == "14" ||
             sMilestoneDuration == "21" ||
@@ -14,7 +14,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
 
             return true;
         }
-        /*eslint eqeqeq:1*/
+        /*eslint-enable eqeqeq*/
 
         return false;
     }
