@@ -26,6 +26,7 @@ try {
     settings = require(settings_filename);
 } catch (err) {
     console.log("settings file not found");
+    settings = {};
 }
 
 //try to load bridge locally if mentioned in package.json
