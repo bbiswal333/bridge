@@ -1,0 +1,36 @@
+﻿<div style="display: table-cell; width: 50%; padding: 2px">
+	<bridge.input placeholder="Project Profit Center" model="profitCenter"></bridge.input>
+	<br />
+	<bridge.checkbox ng-if="profitCenter" checked-label="active" unchecked-label="inactive" is-checked="isChecked"></bridge.checkbox>
+	<br />
+	<div ng-if="profitCenter">
+		<span><u>Profit Center Responsible:</u></span><br />
+		Hans Dampf (D012345)
+	</div>
+</div>
+<div style="display: table-cell; width: 50%; padding: 2px">
+	<div style="display: table-row" ng-if="profitCenter">
+		<div style="display: table-cell">
+			<b>IP Company Code:</b>
+		</div>
+		<div style="display: table-cell">
+			SAP SE
+		</div>
+	</div>
+	<div style="display: table-row" ng-if="profitCenter">
+		<div style="display: table-cell">
+			<b>Charge Back Receiver:</b>
+		</div>
+		<div style="display: table-cell">
+			SAP SE
+		</div>
+	</div>
+	<div style="display: table-row" ng-if="profitCenter">
+		<div style="display: table-cell">
+			<b>Responsible Controller:</b>
+		</div>
+		<div style="display: table-cell">
+			Dieter Hallervorden
+		</div>
+	</div>
+</div>
