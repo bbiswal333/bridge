@@ -140,8 +140,8 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 
 			this.loadFromRouteId = function(deferred) {
 				loadRouteDataByRouteId(routeThis.routeId, function(data) {
-					if(data.response && data.response.route.length === 1) {
-						routeThis.initializeFromJSON(data.response.route[0]);
+					if(data.response && data.response.route) {
+						routeThis.initializeFromJSON(data.response.route);
 						if(deferred && deferred.resolve) {
 							deferred.resolve();
 						}
@@ -208,7 +208,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 
 	function createRouteObjectsFromWaypoints(waypoints, alternatives, callback) {
 		calculateRouteFromWaypoints(waypoints, alternatives, function(data) {
-			if(data.response && data.response.route && data.response.route.length > 0) {
+			if(data.response && data.response.route) {
 				convertJSONRoutesToRouteObjects(data.response.route).then(function(routes) {
 					callback({error: false, routes: routes});
 				});
@@ -236,8 +236,8 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 
 	this.getRouteByRouteId = function(routeId) {
 		var deferred = loadRouteDataByRouteId(routeId, function(data) {
-			if(data.response && data.response.route && data.response.route.length === 1) {
-				deferred.resolve({error: false, route: new Route(data.response.route[0])});
+			if(data.response && data.response.route) {
+				deferred.resolve({error: false, route: new Route(data.response.route)});
 			} else {
 				deferred.reject({error: true, message: "Failed to load route data"});
 			}
