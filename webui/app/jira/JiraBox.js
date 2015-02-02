@@ -30,6 +30,11 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance) {
         // jira_url = window.client.origin + '/api/get?proxy=true&url=' + encodeURI(jira_url);
     }
 
+    if(jira_instance === 'successfactors')
+    {
+      jira_url = 'https://jira.successfactors.com:443/rest/api/latest/search?jql=';
+    }
+
     this.http.get(jira_url + sQuery
         ).success(function (data) {
 

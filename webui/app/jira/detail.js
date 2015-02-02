@@ -3,18 +3,22 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
         $scope.$watch('JiraConfig.query', function (newVal, oldVal) {
 
-            $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
+            $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
              if(JiraConfig.jira === 'issuemanagement')
              {
-                    $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
+                    $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
              }
 			if(JiraConfig.jira === 'jtrack')
 			{
-				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
+				$scope.data.jira_url = 'https://jira.successfactors.com/browse/';
 			}
             if(JiraConfig.jira === 'issues')
             {
-                $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
+                $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
+            }
+            if(JiraConfig.jira === 'successfactors')
+            {
+                $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
             }
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
