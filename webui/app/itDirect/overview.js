@@ -20,7 +20,7 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
             iconCss: "fa-plus",
             title: "Create Ticket",
             callback: function(){
-                $window.alert("test");
+                $window.open("https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm");
             }
         }];
         $scope.box.returnConfig = function(){
