@@ -8,3 +8,13 @@
 	border-radius: 10px;
 	color: #e6e6e6;
 }
+.clock_removebutton{
+	color:#C6C6C6;
+	cursor:pointer;
+	position:relative;
+	top:62px;
+	left:40px;
+}
+.clock_clock:hover .clock_removebutton{
+	color: #418AC9;
+}
