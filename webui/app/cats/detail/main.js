@@ -379,7 +379,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectChecked = function (desc_s, val_i, task) {
         if (!task.UNIT) {
-            if (catsBackend.catsProfile === "SUP2007H") {
+            if (catsBackend.catsProfile === "SUP2007H" ||
+                catsBackend.catsProfile === "SUP2007B" ||
+                catsBackend.catsProfile === "DEV2012") {
                 task.UNIT = "H";
             } else {
                 task.UNIT = "T";
@@ -531,7 +533,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             // determine amount to post
             if (booking.UNIT === "H" && targetHoursForDay) {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
-                if (catsBackend.catsProfile === "SUP2007H") {
+                if (catsBackend.catsProfile === "SUP2007H" ||
+                    catsBackend.catsProfile === "SUP2007B" ||
+                    catsBackend.catsProfile === "DEV2012") {
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             } else {
