@@ -61,7 +61,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.box.headerIcons = [{
             iconCss: "fa-plus",
-            title: "Create Ticket",
+            title: "Create Issue",
             callback: function(){
                 $window.open("https://sapjira.wdf.sap.corp/secure/CreateIssue!default.jspa");
             }
