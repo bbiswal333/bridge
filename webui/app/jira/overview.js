@@ -45,7 +45,7 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
     };
 }]);
 
-angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', function (JiraConfig, JiraBox) {
+angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'JiraBox', '$window', function (JiraConfig, JiraBox, $window) {
 
     var directiveController = ['$scope', function ($scope) {
         var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
@@ -58,6 +58,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                 controller: angular.module('app.jira').appJiraSettings,
                 id: $scope.boxId
         };
+
+        $scope.box.headerIcons = [{
+            iconCss: "fa-plus",
+            title: "Create Ticket",
+            callback: function(){
+                $window.open("https://sapjira.wdf.sap.corp/secure/CreateIssue!default.jspa");
+            }
+        }];
 
         $scope.jiraData = jiraBox.data;
         $scope.jiraChartData = [];

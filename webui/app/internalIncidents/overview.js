@@ -23,7 +23,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 iconCss: "fa-plus",
                 title: "Create Ticket",
                 callback: function(){
-                    $window.open("https://support.wdf.sap.corp/sap/crm_logon/default.htm");
+                    $window.open("https://support.wdf.sap.corp/sap/bc/dsi/ii/create_zini?sap-language=EN");
                 }
             }];
 
