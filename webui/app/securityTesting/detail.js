@@ -1,10 +1,12 @@
-angular.module('app.securityTesting').controller('app.securityTesting.detailController',['$scope', '$routeParams', 'app.securityTesting.dataService',
-	function Controller($scope, $routeParams, dataService) {
-        $scope.results = [];
+angular.module('app.securityTesting').controller('app.securityTesting.detailController',['$scope', '$routeParams', 'app.securityTesting.dataService', 'app.securityTesting.configservice',	function Controller($scope, $routeParams, dataService, appSecurityTestingConfig) {
+    $scope.results = [];
+
         $scope.$parent.titleExtension = " - " + $routeParams.system + " issues";
         $scope.handleResults = function () {
+            var config = appSecurityTestingConfig.getConfigInstanceForAppId($routeParams.appid);
 
-			dataService.loadDataDetailed($routeParams.system).then(function () {
+
+			dataService.loadDataDetailed($routeParams.system,config).then(function () {
                 var aResults = null;
 
                 aResults = dataService.data.securityTestingDetail;
