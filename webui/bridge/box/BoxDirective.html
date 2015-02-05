@@ -9,8 +9,15 @@
                 <h6 class="box-title app-box-title" style="" ng-dblclick="doSomething()">{{metadata.title}}<i class="grey-font-60" ng-if="beta" style="position: absolute; bottom: 8px; margin-left: 2px; font-size: 10px">beta</i></h6>
                 <span ng-if="box.settingScreenData != undefined && box.headerIcons === undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)" style="min-width: 20px;">&#xe00c;</span>
 
-                <span ng-if="box.headerIcons !== undefined" class="boxIconBar" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
+                <span ng-if="box.headerIcons !== undefined && (!box.boxSize || box.boxSize == 1)" class="boxIconBar" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
                     <span class="fa fa-chevron-circle-left clickable boxOpenIcon" ng-class="{'buttonRotateAnimation': boxIconBarVisible}" ng-click="boxIconBarVisible = !boxIconBarVisible" style="min-width: 20px;;"></span>
+                    <span style="display: flex; flex-wrap: nowrap;">
+                        <span ng-if="box.settingScreenData != undefined" class="boxHeaderIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+                        <span ng-repeat="headerIcon in box.headerIcons" class="boxHeaderIconFa" style="margin-left: 5px;" ng-click="headerIcon.callback()" ng-class="'fa ' + headerIcon.iconCss" title="{{headerIcon.title}}"></span>
+                    </span>
+                </span>
+                
+                <span ng-if="box.headerIcons !== undefined && box.boxSize == 2" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
                     <span style="display: flex; flex-wrap: nowrap;">
                         <span ng-if="box.settingScreenData != undefined" class="boxHeaderIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
                         <span ng-repeat="headerIcon in box.headerIcons" class="boxHeaderIconFa" style="margin-left: 5px;" ng-click="headerIcon.callback()" ng-class="'fa ' + headerIcon.iconCss" title="{{headerIcon.title}}"></span>
