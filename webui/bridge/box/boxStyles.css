@@ -1,3 +1,11 @@
+.boxOpenIcon {
+    display: block;
+    color: #c3c3c3;
+    -moz-transition: 1s ease-in-out;
+    -webkit-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+}
+
 .boxHeaderIconFa {
     color: #c3c3c3;
     transition: all ease 0.1s;
@@ -89,46 +97,5 @@
 .buttonRotateAnimation {
     -moz-transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-    transform:rotate(180deg);
-}
-
-.buttonRotateAnimation-add {
-    -webkit-animation: buttonRotateAdd 1s;
-    -moz-animation: buttonRotateAddAdd 1s;
-    animation: buttonRotateAddAdd 1s;
-}
-.buttonRotateAnimation-remove {
-    -webkit-animation: buttonRotateAddRemove 1s;
-    -moz-animation: buttonRotateAddRemove 1s;
-    animation: buttonRotateAddRemove 1s;
-}
-
-@-moz-keyframes buttonRotateAdd {
-    from { -moz-transform: rotate(0deg); }
-    to { -moz-transform: rotate(180deg); }
-}
-
-@-webkit-keyframes buttonRotateAdd {
-    from { -webkit-transform: rotate(0deg); transform:rotate(0deg); }
-    to { -webkit-transform: rotate(180deg); transform:rotate(180deg); }
-}
-
-@keyframes buttonRotateAdd {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(180deg);}
-}
-
-@-moz-keyframes buttonRotateAddRemove {
-    from { -moz-transform: rotate(180deg); }
-    to { -moz-transform: rotate(0deg); }
-}
-
-@-webkit-keyframes buttonRotateAddRemove {
-    from { -webkit-transform: rotate(180deg); transform:rotate(180deg); }
-    to { -webkit-transform: rotate(0deg); transform:rotate(0deg); }
-}
-
-@keyframes buttonRotateAddRemove {
-    from {transform:rotate(180deg);}
-    to {transform:rotate(0deg);}
+    transform: rotate(180deg);
 }

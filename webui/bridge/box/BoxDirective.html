@@ -10,7 +10,7 @@
                 <span ng-if="box.settingScreenData != undefined && box.headerIcons === undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)" style="min-width: 20px;">&#xe00c;</span>
 
                 <span ng-if="box.headerIcons !== undefined" class="boxIconBar" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
-                    <span class="fa fa-chevron-circle-left clickable settingsIcon" ng-class="{'buttonRotateAnimation': boxIconBarVisible}" ng-click="boxIconBarVisible = !boxIconBarVisible" style="min-width: 20px;;"></span>
+                    <span class="fa fa-chevron-circle-left clickable boxOpenIcon" ng-class="{'buttonRotateAnimation': boxIconBarVisible}" ng-click="boxIconBarVisible = !boxIconBarVisible" style="min-width: 20px;;"></span>
                     <span style="display: flex; flex-wrap: nowrap;">
                         <span ng-if="box.settingScreenData != undefined" class="boxHeaderIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
                         <span ng-repeat="headerIcon in box.headerIcons" class="boxHeaderIconFa" style="margin-left: 5px;" ng-click="headerIcon.callback()" ng-class="'fa ' + headerIcon.iconCss" title="{{headerIcon.title}}"></span>
