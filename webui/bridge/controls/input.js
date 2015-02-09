@@ -64,6 +64,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-blur", attrs.blur);
             }
 
+            if(attrs.cancel) {
+                $('input', element)[0].setAttribute("ng-cancel", attrs.cancel);
+            }
+
             if(attrs.id) {
                 $('input', element)[0].setAttribute("id", attrs.id + "-input");
             }
@@ -76,6 +80,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-disabled", attrs.ngDisabled);
             }
 
+            if(attrs.inputFocusOn) {
+                $('input', element)[0].setAttribute("focus-on", attrs.inputFocusOn);
+            }
+
             if(attrs.ngRequired) {
                 $('input', element)[0].setAttribute("ng-required", attrs.ngRequired);
             }
@@ -84,17 +92,56 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 $('input', element)[0].setAttribute("ng-keypress", attrs.ngKeypress);
             }
 
+            if(attrs.enter) {
+                $('input', element)[0].setAttribute("ng-enter", attrs.enter);
+            }
+
             if(attrs.icon) {
                 element.append(angular.element('<i class="fa ' + attrs.icon + '" style="position: absolute; top: 0px; left: 7px; font-size: 20px" />'));
                 $('input', element).css("background-color", "rgba(0,0,0,0)");
                 $('input', element).css("padding-left", "30px");
             }
 
-            return function($scope, element, attrs) {
-                if(attrs.autofocus && attrs.autofocus === "true") {
-                    $timeout( function () { $('input', element)[0].focus(); } );
+            return function($scope, elem, attributes) {
+                if(attributes.autofocus && attributes.autofocus === "true") {
+                    $timeout( function () { $('input', elem)[0].focus(); } );
                 }
             };
         }
     };
-}]);
+}]).directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+}).directive('ngCancel', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 27) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngCancel);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+}).directive('focusOn',function($timeout) {
+    return {
+        restrict : 'A',
+        link : function($scope, $element, $attr) {
+            $scope.$watch($attr.focusOn, function(_focusVal) {
+                $timeout(function() {
+                    return _focusVal ? $element.focus() : $element.blur();
+                });
+            });
+        }
+    };
+});

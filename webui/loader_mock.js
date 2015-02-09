@@ -8,10 +8,12 @@ angular.module('bridge.app', [
     "ngRoute",
     "bridge.service",
     "lib.utils",
-    "bridge.diagnosis"
+    "bridge.diagnosis",
+    "bridge.search",
+    "bridge.mobileSearch"
 ]);
 
-angular.module('bridge.service', []);
+angular.module('bridge.service', ["ngRoute", "ui.bootstrap.modal"]);
 angular.module('bridge.service').provider("bridge.service.loader", function () {
     this.apps = [{
         icon_css: "icon-wrench",
@@ -34,5 +36,18 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
         routes: null,
         title: "CATS Compliance"
     }];
+
+    this.findAppByModuleName = function(moduleName) {
+        var result;
+        this.apps.map(function(app) {
+            if(app.module_name === moduleName) {
+                result = app;
+            }
+        });
+        if(result === undefined) {
+            throw new Error("App not found: " + moduleName);
+        }
+        return result;
+    };
     this.$get = function () { return this; };
 });

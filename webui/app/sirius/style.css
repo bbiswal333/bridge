@@ -109,7 +109,6 @@
 .popover {
     z-index: 99999999;
     word-wrap: break-word;
-    /*  word-break: break-all;*/
 }
 
 .pseudoTileContent {
@@ -287,11 +286,6 @@
     display: block !important;
 }
 
-.popover {
-    z-index: 99999999;
-    word-wrap: break-word;
-    /*  word-break: break-all;*/
-}
 .table-header {
     background-color:#a4cbe2;
 }

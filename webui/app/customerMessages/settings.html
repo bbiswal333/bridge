@@ -5,19 +5,28 @@
 		<br/>
 		<br/>
 		<div class="row" style="margin:10px 0 0 0;">
-			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.ignore_author_action];" ng-click="config.data.settings.ignore_author_action = !config.data.settings.ignore_author_action" >
+			<!--<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.ignore_author_action];" ng-click="config.data.settings.ignore_author_action = !config.data.settings.ignore_author_action" >
 				Ignore Incidents in Customer Action
-			</button>
+			</button>-->
+			<bridge.button style="width:270px" state="config.data.settings.ignore_author_action === true ? 'active' : ' '" ng-click="config.data.settings.ignore_author_action = !config.data.settings.ignore_author_action; doAlert()">
+				Ignore Incidents in Customer Action
+			</bridge.button>
 		</div>
 		<div class="row" style="margin:10px 0 0 0;">
-			<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[!config.data.settings.notificationDuration || config.data.settings.notificationDuration >= 0];" ng-click="toggleNotificationDuration()">
+			<!--<button class="btn btn-default" style="width: 270px" ng-class="{true: 'btn btn_blue', false: 'btn'}[!config.data.settings.notificationDuration || config.data.settings.notificationDuration >= 0];" ng-click="toggleNotificationDuration()">
 				Hide Notifications Automatically
-			</button>
+			</button>-->
+			<bridge.button style="width:270px" state="(!config.data.settings.notificationDuration || config.data.settings.notificationDuration >= 0) === true ? 'active' : ' '" ng-click="toggleNotificationDuration(); doAlert()">
+				Hide Notifications Automatically
+			</bridge.button>
 		</div>
 		<div class="row" style="margin:10px 0 0 0; display: inline-block;">
-			<button class="btn btn-default" style="width: 270px; vertical-align: top;" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.filterByOrgUnit];" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit">
+			<!--<button class="btn btn-default" style="width: 270px; vertical-align: top;" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.data.settings.filterByOrgUnit];" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit">
 				Filter By Org-Unit
-			</button>
+			</button>-->
+			<bridge.button style="width:270px" state="config.data.settings.filterByOrgUnit === true ? 'active' : ' '" ng-click="config.data.settings.filterByOrgUnit = !config.data.settings.filterByOrgUnit; doAlert()">
+				Filter By Org-Unit
+			</bridge.button>
 
 			<div style="display: inline-block" ng-if="config.data.settings.filterByOrgUnit">
 				Select the Org-Units you would like to include:
@@ -28,7 +37,8 @@
 		</div>
 		<br />
 		<div class="row">
-			<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>
+			<!--<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>-->
+			<bridge.button class="save_close_btn" ng-click="save_click(); doAlert()">Save & Close</bridge.button>
 		</div>
 	</form>
 </div>

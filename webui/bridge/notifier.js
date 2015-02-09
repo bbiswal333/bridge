@@ -154,23 +154,23 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
         $window.localStorage.setItem('notifcations', JSON.stringify(notifications));
     }
 
-  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onClick_fn, kindOf_s, duration_i, routeURL_s) {
+  function showMsg(title_s, body_s, icon_i, appIdentifier_s, onClick_fn, kindOf_s, duration_i, notificationData_o) {
       var notification = {
           title: title_s,
           body: body_s,
           icon: icon_i,
           app: appIdentifier_s || "",
-          callback: function(notification) {
-              notification.state = 'read';
+          callback: function(oNotification) {
+              oNotification.state = 'read';
               if (onClick_fn) {
-                onClick_fn(notification.app, notification.routeURL);
+                onClick_fn(oNotification.app, oNotification.notificationData);
               }
           },
           timestamp: new Date().getTime(),
           kindOf: kindOf_s,
           state: 'new',
           duration: duration_i || DEFAULT_DURATION,
-          routeURL: routeURL_s || ""
+          notificationData: notificationData_o || {}
       };
 
       var notifier = new Notifier(notification);
@@ -183,14 +183,14 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   var instance = new Notifier();
 
   return {
-    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
-      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info", duration_i, routeURL_s);
+    showInfo: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, notificationData_o) {
+      showMsg(title_s, body_s, 0, appIdentifier_s, onClick_fn, "info", duration_i, notificationData_o);
     },
-    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
-      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success", duration_i, routeURL_s);
+    showSuccess: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, notificationData_o) {
+      showMsg(title_s, body_s, 1, appIdentifier_s, onClick_fn, "success", duration_i, notificationData_o);
     },
-    showError: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, routeURL_s) {
-      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error", duration_i, routeURL_s);
+    showError: function (title_s, body_s, appIdentifier_s, onClick_fn, duration_i, notificationData_o) {
+      showMsg(title_s, body_s, 2, appIdentifier_s, onClick_fn, "error", duration_i, notificationData_o);
     },
     chromePreCheckRequestNeeded: function () {
       return instance.chromePreCheckRequestNeeded();

@@ -1,0 +1,7 @@
+{
+	"js_files" : [
+		"bridgeMapService.js",
+		"bridgeRoutingService.js",
+		"utils.js"
+	]
+}

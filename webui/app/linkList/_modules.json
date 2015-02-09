@@ -6,7 +6,9 @@
 		"title"					:	"Links",
 		"icon_css"				:	"fa fa-bookmark",
 		"overview_directive"	:	"app.linklist",
-		"needs_client"			:	false
+		"needs_client"			:	false,
+		"multiInstance"			:	true,
+		"description"			:	"The linklist app lets you maintain your most important links and comes with a set of relevant links, like \"Online payslip\", \"lunch menu\" or \"leave request\". Add several linklist instances if you want to separate private links from corporate links."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "settings.js", "config.js"],

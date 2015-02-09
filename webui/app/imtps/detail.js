@@ -7,6 +7,10 @@ angular.module('app.imtps').controller('app.imtps.detailController', ['$scope', 
         	configservice.initialize($routeParams.appId);
         }
 
+		$scope.userClick = function(employeeDetails){
+			employeeService.showEmployeeModal(employeeDetails);
+		};
+
         msgReaderData.initService( function(messages){
 			if( messages ){
 				$scope.tempobject = messages["_-QBE_-S_MESSAGES"];

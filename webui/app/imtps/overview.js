@@ -33,7 +33,7 @@ angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', f
 	        $scope.prionr = [1,2,3,4];
 
 	        if (appimtpsConfig.isInitialized === false){
-            	appimtpsConfig.initialize($scope.id);
+            	appimtpsConfig.initialize($scope.metadata.guid);
             }
 
 			msgReaderData.initService( function(messages){

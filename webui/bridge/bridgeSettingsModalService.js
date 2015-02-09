@@ -2,12 +2,7 @@ angular.module('bridge.service').service('bridge.service.bridgeSettingsModalServ
     return {
         show_settings: function(appId, templatePath, settingsController, boxScope)
         {
-            var appInstance;
-            if (_.isNumber(appId)) {
-                appInstance = bridgeDataService.getAppById(appId);
-            } else {
-                appInstance = bridgeDataService.getAppByModuleName(appId);
-            }
+            var appInstance = bridgeDataService.getAppById(appId);
 
             return $modal.open({
                 templateUrl: 'view/settings.html',

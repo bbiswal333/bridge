@@ -63,7 +63,7 @@ angular.module('app.rooms').service('ifpservice', [
         function __transformRequest( data, headers ) {
             headers()[ "Content-Type" ] = "application/x-www-form-urlencoded; charset=utf-8";
 
-            if (! _.isObject( data) ) {
+            if (!_.isObject( data) ) {
                 return ( _.isEmpty(data) ? "" : _.toString(data)) ;
             }
             var md = _.values(_.mapValues(data, function(value, key) {
@@ -81,8 +81,8 @@ angular.module('app.rooms').service('ifpservice', [
 				url: ISP_CANCELROOM + '?' + 'origin=' + location.origin ,
 				transformRequest: __transformRequest,
 				data: data
-			}).success(function(data){
-				return data;
+			}).success(function(oData){
+				return oData;
 			});
 
 		}

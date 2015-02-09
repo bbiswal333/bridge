@@ -1,0 +1,20 @@
+.configAddHover {
+	border: 1px dashed #aaaaaa;
+	border-radius: 10px;
+}
+
+.configAddInactive {
+	border: 1px dashed #e6e6e6;
+	border-radius: 10px;
+	color: #e6e6e6;
+}
+.clock_removebutton{
+	color:#C6C6C6;
+	cursor:pointer;
+	position:relative;
+	top:62px;
+	left:40px;
+}
+.clock_clock:hover .clock_removebutton{
+	color: #418AC9;
+}

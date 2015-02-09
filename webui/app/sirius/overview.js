@@ -78,16 +78,18 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
 
 
         var _getUser4UI = function (userID) {
-            return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en&readonly=X').then(function (response) {
-                $scope.programLeads.push(response.data.data);
-                return response.data.data;
-            }).then(function () {
-                $scope.programLeadsString = $scope.programLeads[0].DISPLAY_TEXT;
-                for (var i = 1; i < $scope.programLeads.length; i++) {
-                    $scope.programLeadsString = $scope.programLeadsString + ";" + $scope.programLeads[i].DISPLAY_TEXT;
-                }
-                $scope.programLeadsString = "Program Lead:" + $scope.programLeadsString;
-            });
+            if ((userID !== undefined) && (userID !== "")) {
+                return $http.get(siriusUtils.adjustURLForRunningEnvironment() + '/user/' + userID + '?sap-language=en&readonly=X').then(function (response) {
+                    $scope.programLeads.push(response.data.data);
+                    return response.data.data;
+                }).then(function () {
+                    $scope.programLeadsString = $scope.programLeads[0].DISPLAY_TEXT;
+                    for (var i = 1; i < $scope.programLeads.length; i++) {
+                        $scope.programLeadsString = $scope.programLeadsString + ";" + $scope.programLeads[i].DISPLAY_TEXT;
+                    }
+                    $scope.programLeadsString = "Program Lead:" + $scope.programLeadsString;
+                });
+            }
         };
 
         // differentiate between old and new program.
@@ -110,7 +112,7 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
                 $scope.programLeads = [];
 
                 response.data.data.forEach(function (programLead) {
-                    _getUser4UI(programLead.WORKING_STATE.USER_ID);
+                    _getUser4UI(programLead.LOAD_STATE.USER_ID);
                 });
             });
         };

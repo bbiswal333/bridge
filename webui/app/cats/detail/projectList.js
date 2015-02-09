@@ -36,19 +36,19 @@ directive("app.cats.maintenanceView.projectList", [
             $scope.getDescription = function (item) {
                 var desc = item.DESCR;
                 if (item.ZCPR_EXTID) {
-                    desc = desc + ",\n" + item.ZCPR_EXTID;
+                    desc = desc + "\n" + item.ZCPR_EXTID;
                 }
                 if (item.RAUFNR) {
-                    desc = desc + ",\n" + item.RAUFNR;
+                    desc = desc + "\nOrder:    " + item.RAUFNR.replace(/^0+/, '');
                 }
                 if (item.ZCPR_OBJGEXTID) {
-                    desc = desc + ",\n" + item.ZCPR_OBJGEXTID;
+                    desc = desc + "\ncProID:  " + item.ZCPR_OBJGEXTID.replace(/^0+/, '');
                 }
                 if (item.TASKTYPE) {
-                    desc = desc + ",\n" + item.TASKTYPE;
+                    desc = desc + "\nType:     " + item.TASKTYPE;
                 }
                 if (item.ZZSUBTYPE) {
-                    desc = desc + ",\n" + item.ZZSUBTYPE;
+                    desc = desc + "\nSubtype: " + item.ZZSUBTYPE;
                 }
                 return desc;
             };
@@ -167,19 +167,19 @@ directive("app.cats.maintenanceView.projectList", [
 
 				markItemIfSelected(item);
 
-				var allreadyExists = false;
+				var alreadyExists = false;
 
 				if (catsUtils.isFixedTask(item)) { // don't add "fixed" tasks to favorites
 					return;
 				}
 				configService.catsItems.some(function(oldItem) {
 					if (catsUtils.isSameTask(item, oldItem)) {
-						allreadyExists = true;
+						alreadyExists = true;
 						return exitLoop;
 					}
 				});
 
-				if (!allreadyExists) {
+				if (!alreadyExists) {
 					configService.catsItems.push(newItem);
 				}
 			}
@@ -202,9 +202,11 @@ directive("app.cats.maintenanceView.projectList", [
 						});
 					} else {
 						$scope.hasError = true;
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					}
 				}, function() {
 					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 			}
 
@@ -216,12 +218,31 @@ directive("app.cats.maintenanceView.projectList", [
 				.then(function(itemFromCatsTemplate) {
 					addItemsFromTemplate(itemFromCatsTemplate);
 					deferred.resolve();
-				}, function() {
+				}, function(errorText) {
 					$scope.hasError = true;
-					deferred.reject();
+					if(errorText) {
+						$scope.errorText = errorText;
+					} else {
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					}
+					deferred.reject($scope.errorText);
 				});
 
 				return deferred.promise;
+			}
+
+			function doesOneAdditionalItemExist(list) {
+				for (var i = 0; i < list.length; i++) {
+					var alreadyExists = false;
+					for (var j = 0; j < configService.catsItems.length; j++) {
+						if (catsUtils.isSameTask(list[i], configService.catsItems[j])) {
+							alreadyExists = true;
+						}
+					}
+					if (alreadyExists === false) {
+						return true;
+					}
+				}
 			}
 
 			function getCatsData() {
@@ -236,7 +257,7 @@ directive("app.cats.maintenanceView.projectList", [
 						}
 
 						// Write header
-						if (dataFromWorklist && dataFromWorklist.length > 0) {
+						if (dataFromWorklist && doesOneAdditionalItemExist(dataFromWorklist)) {
 							var header = {};
 							header.DESCR = "Additional tasks from cPro work list...";
 							header.TASKTYPE = "BRIDGE_HEADER";
@@ -249,11 +270,17 @@ directive("app.cats.maintenanceView.projectList", [
 							});
 						}
 						deferred.resolve();
-					}, function() {
+					}, function(errorText) {
 						$scope.hasError = true;
+						if(errorText) {
+							$scope.errorText = errorText;
+						} else {
+							$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						}
 					});
 				}, function() {
 					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
 				return deferred.promise;
 			}
@@ -312,26 +339,35 @@ directive("app.cats.maintenanceView.projectList", [
 			}
 
 			function initProjectItems() {
-				colorUtils.setColorScheme(configService.colorScheme);
-				if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
-					$scope.items = angular.copy(configService.favoriteItems);
-					var header1 = {};
-					header1.DESCR = "Favourite tasks (configured in CAT2 app settings)";
-					header1.TASKTYPE = "BRIDGE_HEADER";
-					header1.RAUFNR = "3";
-					$scope.items.unshift(header1);
-					var header2 = {};
-					header2.DESCR = "Additional tasks for current day";
-					header2.TASKTYPE = "BRIDGE_HEADER";
-					header2.RAUFNR = "4";
-					$scope.items.push(header2);
-				} else {
-					$scope.items = angular.copy(configService.catsItems);
-					addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
-				}
-				$scope.items.forEach(function(item) {
-					configService.updateDescription(item);
+
+				catsBackend.determineCatsProfileFromBackend()
+				.then(function(catsProfile) {
+
+					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
+						$scope.items = angular.copy(configService.favoriteItems);
+						var header1 = {};
+						header1.DESCR = "Favourite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
+						header1.TASKTYPE = "BRIDGE_HEADER";
+						header1.RAUFNR = "3";
+						$scope.items.unshift(header1);
+						var header2 = {};
+						header2.DESCR = "Additional tasks for current day";
+						header2.TASKTYPE = "BRIDGE_HEADER";
+						header2.RAUFNR = "4";
+						$scope.items.push(header2);
+					} else {
+						$scope.items = angular.copy(configService.catsItems);
+						addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
+					}
+					$scope.items.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+
+				}, function() {
+					$scope.hasError = true;
+					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 				});
+
 			}
 
 			function markProjectItems() {
@@ -362,6 +398,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.loaded = true;
 					}, function() {
 						$scope.hasError = true;
+						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
 					});
 				} else {
 					initProjectItems();

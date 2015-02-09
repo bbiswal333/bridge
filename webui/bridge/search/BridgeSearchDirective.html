@@ -1,4 +1,8 @@
-<bridge.input placeholder="Search everything (so we can do anything)..." model="query" style="width:60%" ng-keyup="keyPressed($event)" focus="checkAndShowResults()" blur="hideResults()" autofocus="true"></bridge.input>
+<bridge.input placeholder="Search everything (so we can do anything)..." model="query" ng-keyup="keyPressed($event)" focus="checkAndShowResults()" blur="hideResults()" autofocus="true"></bridge.input>
+<span bs-popover class="bridge-search-settingsButton clickable" data-placement="bottom-right" data-toggle="popover" data-template="bridge/search/bridgeSearchSettings.html">
+	<span class="settingsIcon" style="margin-top:3px;"></span>
+</span>
+
 <div ng-if="displayResults" class="search-results-pane">
 	<table width="100%">
 		<tr ng-repeat="resultProvider in results">

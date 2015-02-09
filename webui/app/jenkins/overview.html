@@ -3,20 +3,24 @@
 </div>
 <div ng-show="showJobs" class="completeDiv">
 <div class="leftSideDiv hover" style="border-" ng-click="showJobs=false;"><i class="changeCursor imageSize fa fa-angle-left fa-2x"></i></div>
-    <div class="jobTable rightSideDiv" style="margin-top: 5px;margin-right: 12px;overflow-y: auto">
+    <div class="jobTable rightSideDiv" style="margin-top: 0px;margin-right: 0px; overflow-y: auto;">
     	<table>
-    		<tr ng-repeat="job in dataService.jobsToDisplay | orderBy:'-lastBuild'">
+            <tr ng-repeat="job in dataService.jobsToDisplay | filter:{ statusInfo: statusInfoToDisplay }">
     			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
-    			<td class="style" style="width: 200px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 28)}}</a></td>
-    			<td style="padding-right: 5px;">{{job.timestamp}}</td>
-                <td><a title="View Dependancy" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
+    			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
+    			<td style="padding-right: 0px;">{{job.timestamp}}</td>
+                <td><a title="View Dependency" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
     		</tr>
     	</table>
     </div>
 </div>
 <div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
+    <div class="clickable basic-blue-font" ng-click="displayJobs('');">
+        Display all
+    </div>
+
     <div class="jobTilesBox">
-        <div class="jobTiles red-80 changeCursor" ng-click="displayJobs();">
+        <div class="jobTiles red-80 changeCursor" ng-click="displayJobs('Failed');">
             <span style="color:white;font-size:5rem;">{{redCount}}</span>
         </div>
         <div class="jobTiles">
@@ -25,8 +29,8 @@
         </div>
     </div>
 
-   <div class="jobTilesBox">
-        <div class="jobTiles yellow-80 changeCursor" ng-click="displayJobs();">
+    <div class="jobTilesBox">
+        <div class="jobTiles yellow-80 changeCursor" ng-click="displayJobs('Unstable');">
 
              <span style="color:white;font-size:5rem;">{{yellowCount}}</span>
         </div>
@@ -38,7 +42,7 @@
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles green-80 changeCursor" ng-click="displayJobs();">
+        <div class="jobTiles green-80 changeCursor" ng-click="displayJobs('Success');">
 
              <span style="color:white;font-size:5rem;">{{greenCount}}</span>
         </div>
@@ -50,7 +54,7 @@
     </div>
 
     <div class="jobTilesBox">
-        <div class="jobTiles purple-80 changeCursor" ng-click="displayJobs();">
+        <div class="jobTiles purple-80 changeCursor" ng-click="displayJobs('Running');">
 
              <span style="color:white;font-size:5rem;">{{runningCount}}</span>
         </div>

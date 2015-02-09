@@ -1,7 +1,7 @@
-/*global nokia*/
+/*globals nokia, jQuery*/
 angular.module('app.getHome').appGetHomeSettings =
-	['app.getHome.configservice', 'app.getHome.mapservice', '$scope', '$q',
-		function (appGetHomeConfig, appGetHomeMap, $scope, $q) {
+	['app.getHome.configservice', 'bridge.service.maps.routing', 'bridge.service.maps.utils', '$scope', '$q', 'bridge.search.locationSearch', 'bridge.service.maps.mapService',
+		function (appGetHomeConfig, bridgeRouting, routingUtils, $scope, $q, bridgeLocationSearch, bridgeMap) {
 	var mapInstance;
 	var routeLayer, routerHoverMarker, markerLayer, dragMarker;
 
@@ -18,8 +18,8 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	$scope.configuredRoutes  = appGetHomeConfig.routes;
 
-	$scope.formatTime = appGetHomeMap.formatTime;
-	$scope.formatDistance = appGetHomeMap.formatDistance;
+	$scope.formatTime = routingUtils.formatTime;
+	$scope.formatDistance = routingUtils.formatDistance;
 
 	function resetNewRoute() {
 		$scope.newRoute = {
@@ -32,11 +32,20 @@ angular.module('app.getHome').appGetHomeSettings =
 
 	$scope.proposedRoutes = [];
 
+	var previouslyDerivedRouteName = "";
 	function deriveRouteNameFromDestinationAndStartCities() {
 		$scope.newRoute.routeName = $scope.newRoute.start.address.city + " - " + $scope.newRoute.destination.address.city;
+		previouslyDerivedRouteName = $scope.newRoute.routeName;
 	}
 
 	function clearMap() {
+		routeLayer.objects.asArray().map(function(object) {
+			if(object === routerHoverMarker) {
+				return;
+			}
+			object.removeAllListeners();
+		});
+
 		routeLayer.objects.clear();
 		routeLayer.objects.add(routerHoverMarker);
 		markerLayer.objects.clear();
@@ -47,13 +56,20 @@ angular.module('app.getHome').appGetHomeSettings =
 			return;
 		}
 
-		appGetHomeMap.rebuildRouteFromWaypoints($scope.selectedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function(route) {
-			$scope.proposedRoutes[$scope.proposedRoutes.indexOf($scope.selectedRoute)] = route;
-			route.markers = $scope.selectedRoute.markers.map(function(marker) { marker.originalRoute = route; return marker; });
-			route.initiallyCalculatedRoute = $scope.selectedRoute.initiallyCalculatedRoute;
-			route.color = $scope.selectedRoute.color;
-			$scope.setSelectedRoute(route, true);
-		});
+		if($scope.editMode) {
+			$scope.editedRoute.updateFromNewWaypoints($scope.editedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function() {
+				$scope.editExistingRoute($scope.editedRoute, true);
+				$scope.editedRoute.modified = true;
+			});
+		} else {
+			bridgeRouting.rebuildRouteFromWaypoints($scope.selectedRoute.markers.map(function(marker) { return {position: marker.coordinate}; }), function(response) {
+				$scope.proposedRoutes[$scope.proposedRoutes.indexOf($scope.selectedRoute)] = response.route;
+				response.route.markers = $scope.selectedRoute.markers.map(function(marker) { marker.originalRoute = response.route; return marker; });
+				response.route.initiallyCalculatedRoute = $scope.selectedRoute.initiallyCalculatedRoute;
+				response.route.color = $scope.selectedRoute.color;
+				$scope.setSelectedRoute(response.route, true);
+			});
+		}
 	}
 
 	function arrayIndexOf(array, element) {
@@ -139,8 +155,9 @@ angular.module('app.getHome').appGetHomeSettings =
 	function displayRouteMarkersInMap(route) {
 		if(!route.markers) {
 			route.markers = [];
-			createWaypointMarker(route, route.waypoints[0].mappedPosition, 1).set("visibility", true);
-			createWaypointMarker(route, route.waypoints[route.waypoints.length - 1].mappedPosition, route.markers.length).set("visibility", true);
+			for(var i = 0; i < route.waypoints.length; i++) {
+				createWaypointMarker(route, route.waypoints[i].position, i + 1).set("visibility", true);
+			}
 		} else {
 			route.markers.map(function(marker) {
 				markerLayer.objects.add(marker);
@@ -149,7 +166,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	}
 
 	function createAndDisplayRoutePolylineInMap(route) {
-		var routePolyline = appGetHomeMap.createRoutePolyline(route, {strokeColor: route.color});
+		var routePolyline = bridgeMap.createRoutePolyline(route, {strokeColor: route.color});
 		routeLayer.objects.add(routePolyline);
 		return routePolyline;
 	}
@@ -212,18 +229,18 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	function updateRouteName() {
-		if($scope.newRoute.routeName === "New Route" && $scope.newRoute.start.address && $scope.newRoute.destination.address) {
+		if(($scope.newRoute.routeName === "New Route" || $scope.newRoute.routeName === previouslyDerivedRouteName) && $scope.newRoute.start.address && $scope.newRoute.destination.address) {
 			deriveRouteNameFromDestinationAndStartCities();
 		}
 
 		if($scope.newRoute.start.displayPosition && $scope.newRoute.destination.displayPosition) {
-			appGetHomeMap.calculateRoutes($scope.newRoute.start.displayPosition, $scope.newRoute.destination.displayPosition).then(function(result) {
+			bridgeRouting.calculateAlternativeRoutesBetween($scope.newRoute.start.displayPosition, $scope.newRoute.destination.displayPosition, function(result) {
 				if(!result.error) {
-					$scope.proposedRoutes = result.routes.map(function(route) {
-						route.initiallyCalculatedRoute = route;
-						return route;
+					$scope.proposedRoutes = result.routes.map(function(routeResponse) {
+						routeResponse.route.initiallyCalculatedRoute = routeResponse.route;
+						return routeResponse.route;
 					});
-					$scope.setSelectedRoute(result.routes[0]);
+					$scope.setSelectedRoute(result.routes[0].route);
 				}// else {
 					//display error
 				//}
@@ -246,10 +263,40 @@ angular.module('app.getHome').appGetHomeSettings =
 		$scope.displayRouteInMap(route, skipCenterRoute);
 	};
 
+	$scope.editExistingRoute = function(route, skipCenterRoute) {
+		$scope.editMode = true;
+		$scope.setSelectedRoute(route, skipCenterRoute);
+		$scope.editedRoute = route;
+		$scope.editedRoute.modified = false;
+		$scope.editedRoute.initiallyCalculatedRoute = $scope.editedRoute.initiallyCalculatedRoute ? $scope.editedRoute.initiallyCalculatedRoute : jQuery.extend(true, {}, route);
+	};
+
+	$scope.quitEditMode = function() {
+		$scope.editMode = false;
+		$scope.selectedRoute = null;
+		$scope.editedRoute = null;
+		clearMap();
+	};
+
+	$scope.undoEditOfExistingRoute = function() {
+		if(!$scope.editMode || !$scope.editedRoute) {
+			return;
+		}
+
+		$scope.editedRoute.updateFromNewWaypoints($scope.editedRoute.initiallyCalculatedRoute.markers.map(function(marker) { return {position: marker.coordinate}; })).then(function() {
+			$scope.editExistingRoute($scope.editedRoute, true);
+			$scope.editedRoute.modified = false;
+		});
+	};
+
 	$scope.addSelectedRouteToConfig = function() {
 		appGetHomeConfig.addRoute($scope.newRoute.routeName, $scope.selectedRoute);
 		$scope.proposedRoutes.splice($scope.proposedRoutes.indexOf($scope.selectedRoute), 1);
 		$scope.selectedRoute = null;
+
+		if($scope.proposedRoutes.length === 0) {
+			resetNewRoute();
+		}
 	};
 
 	$scope.removeRouteFromSettings = function(route) {
@@ -257,14 +304,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.searchAddress = function(searchString) {
-		var addresses = $q.defer();
-		appGetHomeMap.search(searchString, function(locations) {
-			addresses.resolve(locations);
-		});
-		addresses.promise.then(function(data) {
-			return data;
-		});
-		return addresses.promise;
+		return bridgeLocationSearch.findMatches(searchString, [], true);
 	};
 
 	$scope.closeForm = function () {
@@ -297,13 +337,13 @@ angular.module('app.getHome').appGetHomeSettings =
 				return;
 			}
 
-			var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY), nearestIndex = $scope.selectedRoute.routePolyline.getNearestIndex(coord), shape = $scope.selectedRoute.routePolyline.path.asArray(), currentWaypoint = $scope.selectedRoute.waypoints[0].mappedPosition, currentWaypointIdx = 0, i;
+			var coord = mapInstance.pixelToGeo(evt.displayX, evt.displayY), nearestIndex = $scope.selectedRoute.routePolyline.getNearestIndex(coord), shape = $scope.selectedRoute.routePolyline.path.asArray(), currentWaypoint = $scope.selectedRoute.waypoints[0].position, currentWaypointIdx = 0, i;
 
 			// Find the route's waypoint which comes before the point affected by the dragstart operation
 			for (i = 0; i <= ((nearestIndex + 1) * 3); i += 3) {
 				if (currentWaypoint.latitude === shape[i] &&
 				currentWaypoint.longitude === shape[i + 1]) {
-					currentWaypoint = $scope.selectedRoute.waypoints[++currentWaypointIdx].mappedPosition;
+					currentWaypoint = $scope.selectedRoute.waypoints[++currentWaypointIdx].position;
 				}
 			}
 
@@ -347,16 +387,16 @@ angular.module('app.getHome').appGetHomeSettings =
 		});
 	}
 
-	function makeMapRoutesDraggable(mapInstance) {
+	function makeMapRoutesDraggable(oMapInstance) {
 		routeLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(routeLayer);
+		oMapInstance.objects.add(routeLayer);
 
 		createRouteHoverMarker();
 
 		addMouseEvents();
 
 		markerLayer = new nokia.maps.map.Container();
-		mapInstance.objects.add(markerLayer);
+		oMapInstance.objects.add(markerLayer);
 	}
 
 	$scope.undoChanges = function(route) {
@@ -371,7 +411,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.initializeMap = function() {
-		mapInstance = appGetHomeMap.createMap($("#app-getHome-settings-map")[0]);
+		mapInstance = bridgeMap.createMap($("#app-getHome-settings-map")[0]);
 		makeMapRoutesDraggable(mapInstance);
 	};
 }];

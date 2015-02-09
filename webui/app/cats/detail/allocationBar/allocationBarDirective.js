@@ -2,11 +2,11 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
 ]).directive("app.cats.allocationbar", [ "app.cats.allocationBar.utils.colorUtils", "app.cats.allocationBar.utils.blockCalculations", function (colorUtils, blockCalculations) {
 
         var linkFunction = function($scope) {
-            $scope.width = parseInt($scope.width || 810); //deafult width is 810px
+            if ($scope.width > 1111) {
+                $scope.width = 1111;
+            }
+            $scope.width = parseInt($scope.width || 1111);
             $scope.height = parseInt($scope.height || 100);
-
-            // // reset color counter that for each new allocation bar we start with the same colors for the blocks
-            // colorUtils.resetColorCounter();
 
             $scope.getRemainingValue = function () {
                 var remaining = $scope.totalValue;
@@ -108,7 +108,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
         return {
             restrict: "E",
             scope: {
-                width: "@width",
+                width: "=width",
                 height: "@height",
                 blocks: "=blocks",
                 selectedHours: '=selectedHours',
@@ -124,7 +124,13 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
     $templateCache.put("allocationBarDirective.tmpl.html",
         '<div class="allocation-bar-container">' +
             '<div class="allocation-bar-background-panel-hint">{{text}}</div>' +
-            '<div class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
+            '<div ng-if="height != 80" class="allocation-bar-background-panel" ng-style="{width: width, height: height - 20}">' +
+                '<div class="allocation-bar-background-panel-div" ng-style="{height: height - 20}">' +
+                    '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" data-selected-hours="selectedHours" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width" height="height">' +
+                    '</app.cats.allocationbar-block>' +
+                '</div>' +
+            '</div>' +
+            '<div ng-if="height == 80" class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
                 '<div class="allocation-bar-background-panel-div" ng-style="{height: height - 20}">' +
                     '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" data-selected-hours="selectedHours" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width" height="height">' +
                     '</app.cats.allocationbar-block>' +

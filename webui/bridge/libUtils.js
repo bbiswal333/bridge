@@ -411,6 +411,21 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return this.getUTC(date.getUTCFullYear(), date.getUTCMonth(), 1);
     };
 
+    this.now = function() {
+        return new Date();
+    };
+
+    this.utcNowWithOffset = function(millisecondsOffset) {
+        var today = this.now();
+        return this.addOffsetToDate(today, millisecondsOffset);
+    };
+
+    this.addOffsetToDate = function(date, millisecondsOffset) {
+        var returnDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()));
+        returnDate.setUTCMilliseconds(returnDate.getUTCMilliseconds() + millisecondsOffset);
+        return returnDate;
+    };
+
     //Factory-method of provider
     this.$get = function() {
         return self; //This way all methods available at config-Time as provider are also available as factory at runtime

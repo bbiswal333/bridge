@@ -404,29 +404,7 @@ img {
     overflow-y: hidden;
     overflow-x: hidden;
 }
-input[type="checkbox"] {
-    -webkit-appearance: none;
-    background-color: #ffffff;
-    border: 1px solid #cacece;
-    padding: 8px;
-    display: inline-block;
-    position: relative;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-input[type="checkbox"]:checked {
-    background-color: #ffffff;
-    border: 1px solid #adb8c0;
-    color: #99a1a7;
-}
-input[type="checkbox"]:checked:after {
-    content:'\2714';
-    font-size: 12px;
-    position: absolute;
-    top: 0px;
-    left: 3px;
-    color: #99a1a7;
-}
+
 .sortable-list {
     list-style-type: none;
     width: 100%;

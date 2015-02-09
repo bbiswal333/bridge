@@ -1,9 +1,10 @@
 angular.module('app.internalIncidents', ['notifier', 'bridge.service']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
-    var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch',
-        function($scope, $http, $location, ticketData, configservice, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch){
-
+    var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch', '$window',
+        function($scope, $http, $location, ticketDataService, configService, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch, $window){
+            var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+            var config = configService.getConfigForAppId($scope.metadata.guid);
             $scope.box.boxSize = "1";
             $scope.box.settingScreenData = {
                 templatePath: "internalIncidents/settings.html",
@@ -11,12 +12,22 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 id: $scope.boxId
             };
             $scope.box.returnConfig = function() {
-                return configservice.data;
+                return config.data;
             };
 
             $scope.prios = ticketData.prios;
             $scope.dataInitialized = ticketData.isInitialized;
             $scope.showNoMessages = false;
+
+            $scope.box.headerIcons = [{
+                iconCss: "fa-plus",
+                title: "Create Ticket",
+                callback: function(){
+                    $window.open("https://support.wdf.sap.corp/sap/bc/dsi/ii/create_zini?sap-language=EN");
+                }
+            }];
+
+            //$scope.box.errorText = "Blub";
 
             function setNoMessagesFlag() {
                 if (ticketData.isInitialized.value === true && ticketData.tickets.RESULTNODE1 === "" && ticketData.tickets.RESULTNODE2 === "" && ticketData.tickets.RESULTNODE3 === "") {
@@ -37,11 +48,11 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 }
             },true);
 
-            if (configservice.isInitialized === false){
-                configservice.initialize($scope.appConfig);
+            if (config.isInitialized === false){
+                config.initialize($scope.appConfig);
 
-                bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment'}, function() {
-                        return ticketData.getRelevantTickets(configservice.data.selection.sel_components, configservice.data.selection.colleagues, configservice.data.selection.assigned_me, configservice.data.selection.created_me, configservice.data.ignoreAuthorAction);
+                bridgeSearch.addSearchProvider(fuzzySearch({name: "Internal Incidents", icon: 'icon-comment', defaultSelected: true}, function() {
+                        return ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
                     }, {
                         keys: ["CATEGORY", "DESCRIPTION"],
                         mappingFn: function(result) {
@@ -56,19 +67,32 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 ));
             }
 
+            function setErrorText(){
+                $scope.box.errorText = "<div style='width:200px'>Error loading the data from BCP. The BCP-backup system may be temporarily offline.</div>";
+            }
+
             if (ticketData.isInitialized.value === false) {
                 var initPromise = ticketData.initialize($scope.module_name);
                 initPromise.then(function success() {
                     setNoMessagesFlag();
-                    $scope.config = configservice;
+                    $scope.config = config;
+                }, function error(){
+                    setErrorText();
                 });
             } else {
-                $scope.config = configservice;
+                $scope.config = config;
                 setNoMessagesFlag();
                 ticketData.calculateTotals();
             }
 
-            $scope.box.reloadApp(ticketData.loadTicketData, 60 * 20);
+            function reloadTicketData(){
+                ticketData.loadTicketData().then(function success(){
+                }, function error(){
+                    setErrorText();
+                });
+            }
+
+            $scope.box.reloadApp(reloadTicketData, 60 * 20);
         }
     ];
 

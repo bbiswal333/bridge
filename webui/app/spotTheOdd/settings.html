@@ -1,0 +1,45 @@
+<div style="width: 100%">
+	<p>
+		<form name="form">
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select Complexity</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<!--<span ng-click="values.comp = '5'" ng-class="{true: 'btn btn_blue',false: 'btn '}[values.comp === '5' || !values.comp];" style="margin-right:0;">6x6</span>
+					<span ng-click="values.comp = '6'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '6'];" style="margin-right:0;">7x7</span>
+					<span ng-click="values.comp = '7'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '7'];" style="margin-right:0;">8x8</span>
+					<span ng-click="values.comp = '8'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '8'];" style="margin-right:0;">9x9</span>
+					<span ng-click="values.comp = '9'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '9'];" style="margin-right:0;">10x10</span>
+					<span ng-click="values.comp = '10'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '10'];" style="margin-right:0;">11x11</span>
+					<span ng-click="values.comp = '11'" ng-class="{true: 'btn btn_blue', false: 'btn'}[values.comp === '11'];" style="margin-right:0;">12x12</span>-->
+					<bridge.button state="(values.comp === '5' || !values.comp) === true ? 'active' : 'invisible-button'" ng-click="values.comp = '5'" style="width:70px;margin-left:0;margin-right:0;">
+						6x6
+					</bridge.button>
+					<bridge.button state="(values.comp === '6') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '6'" style="width:70px;margin-left:0;margin-right:0;">
+						7x7
+					</bridge.button>
+					<bridge.button state="(values.comp === '7') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '7'" style="width:70px;margin-left:0;margin-right:0;">
+						8x8
+					</bridge.button>
+					<bridge.button state="(values.comp === '8') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '8'" style="width:70px;margin-left:0;margin-right:0;">
+						9x9
+					</bridge.button>
+					<bridge.button state="(values.comp === '9') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '9'" style="width:70px;margin-left:0;margin-right:0;">
+						10x10
+					</bridge.button>
+					<bridge.button state="(values.comp === '10') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '10'" style="width:70px;margin-left:0;margin-right:0;">
+						11x11
+					</bridge.button>
+					<bridge.button state="(values.comp === '11') === true ? 'active' : 'invisible-button'" ng-click="values.comp = '11'" style="width:70px;margin-left:0;margin-right:0;">
+						12x12
+					</bridge.button>
+				</div>
+			</div>
+		</form>
+	</p>
+	<div class="row" >
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+		<bridge.button ng-click="save_click()" class="save_close_btn">
+			Save & Close
+		</bridge.button>
+	</div>
+</div>

@@ -14,8 +14,8 @@
 
         inject(["$httpBackend", "app.atc.configservice", "app.atc.dataservice", function (_$httpBackend, _atcConfigService, _atcDataService) {
             $httpBackend = _$httpBackend;
-            atcConfigService = _atcConfigService;
-            atcDataService = _atcDataService;
+            atcConfigService = _atcConfigService.getConfigForAppId("app.test");
+            atcDataService = _atcDataService.getInstanceForAppId("app.test");
         }]);
 
         $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/devdb\/STAT_CHK_RESULT\?query=/).respond(atcDetailsData);

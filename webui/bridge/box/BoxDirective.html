@@ -1,14 +1,33 @@
-﻿<div ng-class="module_name.replace('.', '-')">
+﻿<div ng-class="module_name.replace('.', '-')" style="display: inline-block">
     <div id="innerbox" class="innerbox" 
-        ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client, 'shake':shaking}"
+        ng-class="{'box-1': !box.boxSize || box.boxSize == 1 , 'box-2': box.boxSize == 2, 'boxDisable': needs_client && !client}"
         ng-mouseenter="hover = true;" ng-mouseleave="hover = false">
-        <!--  {{module_name.replace('.', '-')}}Box -->
+
         <div class="box-heading">
-            <div class="box-heading-content">
-                <h6 class="box-title">{{title}}</h6>
-                <i class="grey-font-60" ng-if="beta">beta</i>
+            <div class="box-heading-content app-box-heading-content" style="display: flex; display: -ms-flexbox" ng-if="!editTitle">
                 <span class="box-icon" ng-class="icon_css"></span>
-                <span ng-show="hover" ng-if="box.settingScreenData != undefined" class="settingsIcon" ng-click="showSettingsModal(id)">&#xe00c;</span>
+                <h6 class="box-title app-box-title" style="" ng-dblclick="doSomething()">{{metadata.title}}<i class="grey-font-60" ng-if="beta" style="position: absolute; bottom: 8px; margin-left: 2px; font-size: 10px">beta</i></h6>
+                <span ng-if="box.settingScreenData != undefined && box.headerIcons === undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)" style="min-width: 20px;">&#xe00c;</span>
+
+                <span ng-if="box.headerIcons !== undefined && (!box.boxSize || box.boxSize == 1)" class="boxIconBar" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
+                    <span class="fa fa-chevron-circle-left clickable boxOpenIcon" ng-class="{'buttonRotateAnimation': boxIconBarVisible}" ng-click="boxIconBarVisible = !boxIconBarVisible" style="min-width: 20px;;"></span>
+                    <span style="display: flex; flex-wrap: nowrap;">
+                        <span ng-if="box.settingScreenData != undefined" class="boxHeaderIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+                        <span ng-repeat="headerIcon in box.headerIcons" class="boxHeaderIconFa" style="margin-left: 5px;" ng-click="headerIcon.callback()" ng-class="'fa ' + headerIcon.iconCss" title="{{headerIcon.title}}"></span>
+                    </span>
+                </span>
+                
+                <span ng-if="box.headerIcons !== undefined && box.boxSize == 2" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
+                    <span style="display: flex; flex-wrap: nowrap;">
+                        <span ng-if="box.settingScreenData != undefined" class="boxHeaderIcon" ng-click="showSettingsModal(metadata.guid)">&#xe00c;</span>
+                        <span ng-repeat="headerIcon in box.headerIcons" class="boxHeaderIconFa" style="margin-left: 5px;" ng-click="headerIcon.callback()" ng-class="'fa ' + headerIcon.iconCss" title="{{headerIcon.title}}"></span>
+                    </span>
+                </span>
+
+                <span ng-if="box.errorText" bs-popover trigger="hover" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
+            </div>
+            <div ng-if="editTitle">
+                <bridge.input enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title" autofocus="true"></bridge.input>
             </div>
         </div>
 
@@ -21,7 +40,7 @@
             <br />
             client to enable content.
             <br />
-            <div style="top: 50%;margin-top: +10px;left: 50%;margin-left: -20px;margin-bottom:10px">
+            <div style="top: 50%;margin-top: 10px;left: 50%;margin-left: -20px;margin-bottom:10px">
             Download here:
             <br />
             <a href="" ng-click="show_download()" class="download-icon" title="Download latest client">&#xe03a;</a>

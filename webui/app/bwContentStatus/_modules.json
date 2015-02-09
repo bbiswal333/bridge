@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.bwContentStatus",
+		"title"					:	"BW Content Status",
+		"beta"					:	true,
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.bwContentStatus",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D047303","D062131","D055920","D024334","D049677","D051804","D028685","D043706","D048820","D027515","D035319","I058333","I038885","I058198","I806095","D037415","D054514"],
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/bwContentStatus/",
+				"templateUrl"	:	""
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"css_files" : ["style.css"]
+}

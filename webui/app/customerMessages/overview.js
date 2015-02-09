@@ -1,22 +1,4 @@
-angular.module('app.customerMessages', []);
-
-angular.module('app.customerMessages').factory("app.customerMessages.configservice", function (){
-    //set the default configuration object
-    var config = {};
-    config.data = {};
-    config.data.settings = {};
-    config.data.settings.ignore_author_action = true;
-    config.data.settings.filterByOrgUnit = false;
-    config.data.settings.selectedOrgUnits = [];
-    config.data.settings.notificationDuration = 5000;
-    config.data.selection = {};
-    config.data.selection.sel_components = true;
-    config.data.selection.assigned_me = false;
-    config.data.selection.colleagues = false;
-    config.lastDataUpdate = null;
-
-    return config;
-});
+angular.module('app.customerMessages', ['notifier', 'bridge.service']);
 
 angular.module('app.customerMessages').directive('app.customerMessages', function ()
 {
@@ -28,7 +10,10 @@ angular.module('app.customerMessages').directive('app.customerMessages', functio
 
 angular.module('app.customerMessages').controller('app.customerMessages.directiveController',
     ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData',
-    function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig, orgUnitData) {
+    function Controller($scope, $http, ticketDataService, configService, bridgeDataService, bridgeConfig, orgUnitDataService) {
+        var config = configService.getInstanceForAppId($scope.metadata.guid);
+        var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+        var orgUnitData = orgUnitDataService.getInstanceForAppId($scope.metadata.guid);
 
         $scope.box.boxSize = "1";
         $scope.box.settingScreenData = {
@@ -38,7 +23,7 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
         };
 
         $scope.box.returnConfig = function(){
-            return configservice;
+            return config.data;
         };
 
         $scope.prios = ticketData.prios;
@@ -74,28 +59,51 @@ angular.module('app.customerMessages').controller('app.customerMessages.directiv
             }
         },true);
 
-        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.data !== undefined){
-            configservice.data = $scope.appConfig.data;
-            configservice.lastDataUpdate = new Date($scope.appConfig.lastDataUpdate);
+        if ($scope.appConfig !== undefined && $scope.appConfig !== {} && config.isInitialized === false){
+            config.initialize();
+        }
+
+        function setErrorText(text){
+            var resultText = "<div style='width:200px'>";
+
+            if (text === undefined) {
+                 resultText += "Error loading the data from BCP. The BCP-backup system may be temporarily offline.";
+            } else {
+                resultText += text;
+            }
+            resultText += "</div>";
+            $scope.box.errorText = resultText;
         }
 
         if (ticketData.isInitialized.value === false) {
             orgUnitData.loadData();
 
             var initPromise = ticketData.initialize();
-            initPromise.then(function success() {
+            initPromise.then(function success(data) {
                 setNoMessagesFlag();
-                $scope.config = configservice;
+                $scope.config = config;
                 ticketData.updatePrioSelectionCounts();
+
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error() {
+                setErrorText();
             });
         }
         else{
-            $scope.config = configservice;
+            $scope.config = config;
             ticketData.updatePrioSelectionCounts();
         }
 
         $scope.box.reloadApp(function() {
-            ticketData.loadTicketData();
+            ticketData.loadTicketData().then(function success(data){
+                if (data.errors !== undefined){
+                    setErrorText(data.errors.BAPIRET2.MESSAGE);
+                }
+            }, function error(){
+                setErrorText();
+            });
             orgUnitData.loadData();
         }, 60 * 10);
 }]);

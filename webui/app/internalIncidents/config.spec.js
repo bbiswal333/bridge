@@ -5,7 +5,7 @@ describe("Internal Incidents config", function(){
         module("app.internalIncidents");
 
         inject(["app.internalIncidents.configservice", function(_config){
-            config = _config;
+            config = _config.getConfigForAppId("test-1");
         }]);
     });
 
@@ -36,7 +36,7 @@ describe("Internal Incidents config", function(){
             columnVisibility: [true, false]
         });
 
-        expect(config.data.columnVisibility.length).toBe(9);
+        expect(config.data.columnVisibility.length).toBe(10);
     });
 
     it("should not use the default column visibility if the column visibility was stored correctly", function(){
@@ -46,7 +46,7 @@ describe("Internal Incidents config", function(){
                 colleagues: false,
                 created_me: false
             },
-            columnVisibility: [false, false, false, false, false, false, false, false, false]
+            columnVisibility: [false, false, false, false, false, false, false, false, false, false]
         });
 
         expect(config.data.columnVisibility[0]).toBe(false);

@@ -12,7 +12,7 @@
                     <div id="app-cats-maintenance-navigation-div" class="col-xs-12 col-md-7 app-cats-box" >
                         <div>
                             <div style="text-align:right">
-                                <b><a href="https://sap.emea.pgiconnect.com/p377wwgy2zk/" target="_blank">Getting Started video</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
+                                <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">Get started!</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
                                 <b><a href="mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=CAT2 time recording">Report a bug</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
                                 <b><a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Create leave request</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
                                 <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2" target="_blank">Frequently asked questions (FAQ)</a></b><br><br>
@@ -25,12 +25,13 @@
                                 data-day-class="app-cats-day-details"
                                 data-selected-dates="selectedDates"
                                 data-maintainable="true"
+                                data-analytics="analytics"
                                 loading="loading">
                             </app.cats.calendar>
                         </div>
                         <div id="app-cats-maintencance-allocation-div" >
                             <app.cats.allocationbar
-                                data-width="{{width}}"
+                                data-width="width"
                                 data-height="80"
                                 data-blocks="blockdata"
                                 data-total-value="{{totalWorkingTime}}"
@@ -39,11 +40,22 @@
                                 onblockremoved=""
                                 handlervaluetodisplay="calcMinutes(perc);">
                             </app.cats.allocationbar>
+                            <!--<div ng-if="isCopyTemplateEnabled()" class="btn btn-default btn_blue" ng-click="copyTemplate()" style="margin:4px">Copy</div>
+                            <div ng-if="!isCopyTemplateEnabled()" class="btn btn-default btn_inactive" ng-click="" style="margin:4px">Copy</div>-->
+                            <bridge.button style="width:70px;position: absolute;left: 20px;" state="isCopyTemplateEnabled() === true ? ' ' : 'disabled'"  ng-click="copyTemplate(); doAlert()">Copy</bridge.button>
+
+                            <!--<div ng-if="isPasteTemplateEnabled()" class="btn btn-default btn_blue" ng-click="pasteTemplate()" style="margin:4px"><i class="fa fa-arrow-up"></i>&nbspPaste&nbsp<i class="fa fa-arrow-up"></i></div>
+                            <div ng-if="!isPasteTemplateEnabled()" class="btn btn-default btn_inactive" style="margin:4px"><i class="fa fa-arrow-up"></i>&nbspPaste&nbsp<i class="fa fa-arrow-up"></i></div>-->
+                            <bridge.button style="width:70px;position: absolute;left: 110px;" state="isPasteTemplateEnabled() === true ? ' ' : 'disabled'"  ng-click="pasteTemplate(); doAlert()">Paste</bridge.button>
+
                         </div>
-                        <div class="save_close_btn" style="text-align: right">
-                            <input ng-if="!reloadInProgress.value" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
-                            <input ng-if="reloadInProgress.value" class="btn btn-default" type="button" value="Apply changes" style="margin:4px"></input><br />
-                        </div>
+                        
+                        <!--<div class="save_close_btn" style="text-align: right">
+                            <input ng-if="!reloadInProgress.value && selectedDates.length > 0" class="btn btn-default btn_blue" type="button" value="Apply changes" ng-click="saveTimesheet()" style="margin:4px"></input>
+                            <input ng-if="!reloadInProgress.value && selectedDates.length === 0" class="btn btn-default btn_inactive" type="button" value="Apply changes" ng-click="" style="margin:4px"></input>
+                            <input ng-if="reloadInProgress.value" class="btn btn-default btn_inactive" type="button" value="Apply changes" style="margin-left:4px"></input><br />
+                        </div>-->
+                        <bridge.button state="(!reloadInProgress.value && selectedDates.length >= 1) === true ? ' ' : 'disabled'"  ng-click="saveTimesheet(); doAlert()" class="save_close_btn">Apply changes</bridge.button>
                     </div>
                 </div>
             </div>

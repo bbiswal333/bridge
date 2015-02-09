@@ -2,7 +2,10 @@
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
 		<div class="btn-group" style="height:32px">
-		  <span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>
+		  <!--<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>-->
+		  <bridge.button state="data.status[status].active === true ? 'active' : 'invisible-button'" ng-click="data.status[status].active = !data.status[status].active" ng-repeat="status in getStatusArray()" style="width:100px;margin-left:0;margin-right:0;">
+		  	{{status}}
+		  </bridge.button>
 		</div>
 
 		<br/>
@@ -11,16 +14,8 @@
 			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-2'" order-by="'key'">
 				<a target="_blank" href="{{parentScope.data.jira_url}}{{row.key}}">{{row.key}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">
-				<div bs-tooltip data-title="{{row.summary}}">
-					{{row.summary}}
-				</div>
-			</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">
-				<div bs-tooltip data-title="{{row.description}}">
-					{{row.description}}
-				</div>
-			</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">{{row.summary}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">{{row.description}}</bridge.table-column>
 			<bridge.table-column column-id="'4'" header="'Status'" column-size-class="'col-sm-2'" order-by="'status'">{{row.status}}</bridge.table-column>
 		</bridge.table>
 

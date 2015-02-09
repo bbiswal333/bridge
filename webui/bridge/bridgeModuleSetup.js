@@ -69,9 +69,19 @@
             controller: 'bridge.diagnosis.statusController'
         });
 
+        $routeProvider.when("/tetris", {
+            templateUrl: 'bridge/search/funtime.html',
+            controller: 'bridge.search.tetris'
+        });
+
         $routeProvider.when("/whatsNew", {
             templateUrl: 'bridge/menubar/news/newsDetail.html',
             controller: 'bridge.newsDetailController'
+        });
+
+        $routeProvider.when("/availableApps", {
+            templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
+            controller: 'bridge.menubar.applicationsController'
         });
 
         //If no valid URL has been entered redirect to main entry point
@@ -85,35 +95,58 @@
 
         //allow blob, tel, mailto links
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
+
+        nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
+        nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
+        nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
+        nokia.Settings.set("secureConnection", "force");
 }]);
 
-angular.module('bridge.app').run(function ($rootScope, $q, $templateCache, $location, bridgeDataService, bridgeInBrowserNotification) {
-    //Receive emitted message and broadcast it.
-    //Event names must be distinct or browser will blow up!
-    $rootScope.$on('bridgeConfigLoaded', function (event, args) {
-        $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
-    });
-    $rootScope.$on("refreshApp", function (event, args) {
-        $rootScope.$broadcast('refreshAppReceived', args);
-    });
-    $rootScope.$on("closeSettingsScreen", function (event, args) {
-        $rootScope.$broadcast('closeSettingsScreenRequested', args);
-    });
-    $rootScope.$on("$locationChangeStart", function (event, args) {
-        $rootScope.$broadcast('closeSettingsScreenRequested', args);
-    });
+angular.module('bridge.app').run(["$rootScope", "$q", "$injector", "$templateCache", "$location", "bridgeDataService", "bridgeInBrowserNotification", "bridge.search", "bridge.mobileSearch", "bridge.service.loader",
+    function($rootScope, $q, $injector, $templateCache, $location, bridgeDataService, bridgeInBrowserNotification, bridgeSearch, bridgeMobileSearch, bridgeLoader) {
+        //Receive emitted message and broadcast it.
+        //Event names must be distinct or browser will blow up!
+        $rootScope.$on('bridgeConfigLoaded', function (event, args) {
+            $rootScope.$broadcast('bridgeConfigLoadedReceived', args);
+        });
+        $rootScope.$on("refreshApp", function (event, args) {
+            $rootScope.$broadcast('refreshAppReceived', args);
+        });
+        $rootScope.$on("closeSettingsScreen", function (event, args) {
+            $rootScope.$broadcast('closeSettingsScreenRequested', args);
+        });
+        $rootScope.$on("$locationChangeStart", function (event, args) {
+            $rootScope.$broadcast('closeSettingsScreenRequested', args);
+        });
 
-    if ($location.search().clientMode === "true") {
-        bridgeDataService.setClientMode(true);
-    }
-    if ($location.search().logMode === "true") {
-        bridgeDataService.setLogMode(true);
-    }
+        if ($location.search().clientMode === "true") {
+            bridgeDataService.setClientMode(true);
+        }
+        if ($location.search().logMode === "true") {
+            bridgeDataService.setLogMode(true);
+        }
 
-    var deferred = $q.defer();
-    bridgeDataService.initialize(deferred).then(function () {
-        $rootScope.$emit('bridgeConfigLoaded', {});
-    }, function () { // promise rejected = config load failed
-        bridgeInBrowserNotification.addAlert("danger", "Bridge could not load your configuration. Most of the times, this is the case when you use Firefox and have not configured it correctly. Please see in our <a href='https://github.wdf.sap.corp/bridge/bridge/wiki/Browser-Support'>Wiki</a> how to do that.", 600);
-    });
-});
+        function instantiateSerachProviders(injector, aSearchProvider) {
+            if(!aSearchProvider) {
+                return;
+            }
+
+            aSearchProvider.map(function(searchProvider) {
+                injector.invoke([searchProvider, function(searchProviderInstance){
+                    bridgeSearch.addSearchProvider(searchProviderInstance);
+                    bridgeMobileSearch.addSearchProvider(searchProviderInstance);
+                }]);
+            });
+        }
+
+        var deferred = $q.defer();
+        bridgeDataService.initialize(deferred).then(function (data) {
+            $rootScope.$emit('bridgeConfigLoaded', {});
+            instantiateSerachProviders($injector, bridgeLoader.aSearchProvider);
+
+            if (data !== undefined && data.bBackendCallFailed === true) {
+                bridgeInBrowserNotification.addAlert("", "Loading the configuration from the backend failed. Bridge is using local settings.", 20);
+            }
+
+        });
+}]);

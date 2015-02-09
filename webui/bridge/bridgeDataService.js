@@ -1,10 +1,11 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window',
-    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification",
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification) {
         this.projects = [];
         this.bridgeSettings = {};
         this.temporaryData = {};
         this.clientMode = false;
         this.logMode = false;
+        this.availableApps = [];
 
         var initialized = false;
         var that = this;
@@ -28,33 +29,15 @@
         function parseApps(project) {
             var apps = [];
 
-            for (var i = 0; i < bridgeLoaderServiceProvider.apps.length; i++) {
-                //initialize metadata from loader service
-                var app = {};
-                app.metadata = bridgeLoaderServiceProvider.apps[i];
-                app.metadata.id = i;
-                app.metadata.show = false;
-
-                //fetch corresponding config from backend
-                for (var j = 0; j < project.apps.length; j++) {
-                    if (project.apps[j].metadata.module_name === app.metadata.module_name) {
-                        app.metadata.show = true;
-                        app.metadata.order = j;
-                        app.appConfig = project.apps[j].appConfig;
-                    }
+            for (var j = 0; j < project.apps.length; j++) {
+                try {
+                    var app = appCreator.createInstance(project.apps[j].metadata, project.apps[j].appConfig);
+                    apps.push(app);
+                } catch(e) {
+                    bridgeInBrowserNotification.addAlert("danger", e.message, 600);
                 }
-                apps.push(app);
             }
 
-            apps.sort(function (app1, app2) {
-                if (app1.metadata.title < app2.metadata.title) {
-                    return -1;
-                }
-                if (app1.metadata.title > app2.metadata.title) {
-                    return 1;
-                }
-                return 0;
-            });
             return apps;
         }
 
@@ -93,13 +76,37 @@
             }
         }
 
+        function _removeAllApps() {
+            that.projects.map(function(project) {
+                project.apps.map(function(app) {
+                    appCreator.removeInstanceById(app.metadata.guid);
+                });
+            });
+        }
         function _toDefault() {
+            _removeAllApps();
             that.projects.length = 0;
             var defaultConfig = bridgeConfig.getDefaultConfig();
             parseProjects(defaultConfig);
             parseSettings(defaultConfig);
 
             initialized = true;
+        }
+
+        function initializeAvailableApps() {
+            bridgeLoaderServiceProvider.apps.map(function(app) {
+                that.availableApps.push(app);
+
+            });
+            that.availableApps.sort(function (app1, app2) {
+                if (app1.title < app2.title) {
+                    return -1;
+                }
+                if (app1.title > app2.title) {
+                    return 1;
+                }
+                return 0;
+            });
         }
 
         var deferrals = [];
@@ -115,10 +122,9 @@
             var configPromise = bridgeConfig.loadFromBackend(deferred);
             var userInfoPromise = _fetchUserInfo();
 
-            var allPromises = $q.all([configPromise, userInfoPromise]);
-            allPromises.then(function (data) {
-                var configFromBackend = data[0];
-                var config = bridgeConfig.decideWhichConfigToUse(configFromBackend);
+            function assignConfig(oConfigFromBackend){
+                initializeAvailableApps();
+                var config = bridgeConfig.decideWhichConfigToUse(oConfigFromBackend);
 
                 parseProjects(config);
                 parseSettings(config);
@@ -127,12 +133,19 @@
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
                 initialized = true;
+            }
+
+            var allPromises = $q.all([configPromise, userInfoPromise]);
+            allPromises.then(function (data) {
+                assignConfig(data[0]);
                 deferrals.map(function(deferral) {
                     deferral.resolve();
                 });
-            }, function (data) {
+            }, function () {
+                assignConfig(null);
+                var initializationResult = { bBackendCallFailed: true };
                 deferrals.map(function(deferral) {
-                    deferral.reject(data);
+                    deferral.resolve(initializationResult);
                 });
             });
 
@@ -143,16 +156,27 @@
             return that.projects;
         }
 
-        function _getAppById(id) {
+        function _getAppLocationById(id) {
             for (var i = 0; i < _getProjects().length; i++) {
                 for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                    if (_getProjects()[i].apps[a].metadata.id.toString() === id.toString()) {
-                        return _getProjects()[i].apps[a];
+                    if (_getProjects()[i].apps[a].metadata.guid.toString() === id.toString()) {
+                        return {projectIndex: i, appIndex: a};
                     }
                 }
             }
 
             throw new Error("App with ID " + id + " could not be found.");
+        }
+
+        function _getAppById(id) {
+            var appLocation = _getAppLocationById(id);
+            return _getProjects()[appLocation.projectIndex].apps[appLocation.appIndex];
+        }
+
+        function _removeAppById(id) {
+            appCreator.removeInstanceById(id);
+            var appLocation = _getAppLocationById(id);
+            return _getProjects()[appLocation.projectIndex].apps.splice(appLocation.appIndex, 1);
         }
 
         function _getAppConfigById(id) {
@@ -164,37 +188,8 @@
             }
         }
 
-        function _getAppByModuleName(module_name) {
-            for (var i = 0; i < _getProjects().length; i++) {
-                for (var a = 0; a < _getProjects()[i].apps.length; a++) {
-                    if (_getProjects()[i].apps[a].metadata.module_name.toString() === module_name.toString()) {
-                        return _getProjects()[i].apps[a];
-                    }
-                }
-            }
-
-            throw new Error("App with module name " + module_name + " could not be found.");
-        }
-
-        function _getAppConfigByModuleName(module_name) {
-            return _getAppConfigById(_getAppByModuleName(module_name).metadata.id);
-        }
-
         function _getUserInfo() {
             return that.userInfo;
-        }
-
-        function _getAppMetadataForProject(projectIndex) {
-            var project = _getProjects()[projectIndex];
-            if (!project) {
-                throw new Error("Project was not found");
-            }
-
-            var appMetadata = [];
-            for (var i = 0; i < project.apps.length; i++) {
-                appMetadata.push(project.apps[i].metadata);
-            }
-            return appMetadata;
         }
 
         function _getBridgeSettings() {
@@ -225,6 +220,10 @@
             return initialized;
         }
 
+        function _getAvailableApps() {
+            return that.availableApps;
+        }
+
         return {
             initialize: _initialize,
             isInitialized: _getInitialized,
@@ -232,14 +231,14 @@
             getTemporaryData: _getTemporaryData,
             getUserInfo: _getUserInfo,
             getProjects: _getProjects,
-            getAppMetadataForProject: _getAppMetadataForProject,
             getAppById: _getAppById,
+            removeAppById: _removeAppById,
             getAppConfigById: _getAppConfigById,
-            getAppConfigByModuleName: _getAppConfigByModuleName,
             toDefault: _toDefault,
             setClientMode: _setClientMode,
             getClientMode: _getClientMode,
             setLogMode: _setLogMode,
-            getLogMode: _getLogMode
+            getLogMode: _getLogMode,
+            getAvailableApps: _getAvailableApps
         };
 }]);

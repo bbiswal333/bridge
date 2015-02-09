@@ -17,25 +17,16 @@ module.exports = function(config) {
         // frameworks to use
         frameworks: ['jasmine'],
 
-        preprocessors: {
-            './webui/app/**/*.html': ['ng-html2js'],
-            './webui/bridge/**/*.html': ['ng-html2js'],
-            './webui/view/**/*.html': ['ng-html2js'],
-            '**/*.html': ['ng-html2js'],
-            // source files, that you wanna generate coverage for
-            // do not include tests or libraries
-            // (these files will be instrumented by Istanbul)
-            './webui/!(*.spec).js': ['coverage'],
-            './webui/!(lib)/**/!(*.spec).js': ['coverage']
+        proxies: {
+            '/web': 'http://proxy:8080'
         },
 
         // list of files / patterns to load in the browser (*.spec.js is redundant)
         files: [
             './webui/lib/jQuery-2_1_0/jquery.min.js',
-            './webui/lib/angular-1_2_25/angular.min.js',
+            './webui/lib/angular-1_3_8/angular.min.js',
             './webui/lib/sigma-1_0_3/sigma.min.js',
-            './webui/lib/nokiaHere/jsl.js',
-            './webui/lib/nokiaHere/exampleHelpers.js',
+            'http://js.api.here.com/se/2.5.4/jsl.js',
             './webui/lib/**/*.js',
 
             './webui/loader_mock.js',
@@ -63,10 +54,21 @@ module.exports = function(config) {
             "./webui/Test/**/*",
             "./server/**/*",
             "./client/**/*",
-            "./webui/lib/angular-1_2_25/angular.js",
+            "./webui/lib/angular-1_3_8/angular.js",
             "./webui/lib-bower/**/*",
-            "./webui/app/getHome/nokiaHere/**/*"
+            "https://js.api.here.com/**/*"
         ],
+
+        preprocessors: {
+            './webui/app/**/*.html': ['ng-html2js'],
+            './webui/bridge/**/*.html': ['ng-html2js'],
+            './webui/view/**/*.html': ['ng-html2js'],
+            // source files, that you wanna generate coverage for
+            // do not include tests or libraries
+            // (these files will be instrumented by Istanbul)
+            './webui/!(*.spec).js': ['coverage'],
+            './webui/!(lib)/**/!(*.spec).js': ['coverage']
+        },
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'

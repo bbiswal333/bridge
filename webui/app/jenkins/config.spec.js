@@ -9,7 +9,7 @@ describe("The Jenkins config service", function() {
 
 	beforeEach(inject(["app.jenkins.configservice", function(_configService_) {
 
-		configService = _configService_;
+		configService = _configService_.getConfigForAppId("app.test");
 
 
 	}]));
@@ -44,14 +44,6 @@ describe("The Jenkins config service", function() {
 
 		configService.clearView();
 		expect(configService.configItem.selectedJob).toEqual("");
-
-	});
-
-	it("can clear the job and the view", function () {
-
-		configService.clearViewAndJob();
-		expect(configService.configItem.selectedJob).toEqual("");
-		expect(configService.configItem.selectedView).toEqual("");
 
 	});
 

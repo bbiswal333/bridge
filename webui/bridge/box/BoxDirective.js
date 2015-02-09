@@ -1,4 +1,4 @@
-﻿angular.module('bridge.box', ['bridge.service']);
+﻿angular.module('bridge.box', ['bridge.service', 'ngAnimate']);
 
 angular.module('bridge.box').directive('bridge.box',
     ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload',
@@ -22,6 +22,8 @@ angular.module('bridge.box').directive('bridge.box',
         directiveController: directiveController,
         scope: true,
         link: function ($scope, $element, $attrs) {
+            $scope.boxIconBarVisible = false;
+
             $scope.box = {};
             if ($attrs.id) {
                 //get app metadata and app config
@@ -32,6 +34,7 @@ angular.module('bridge.box').directive('bridge.box',
                         $scope[attribute] = metadata[attribute];
                     }
                 }
+                $scope.metadata = metadata;
                 $scope.appConfig = bridgeDataService.getAppConfigById($attrs.id);
                 $scope.box.needs_client = $scope.needs_client;
 
@@ -73,6 +76,14 @@ angular.module('bridge.box').directive('bridge.box',
             boxContent.append(newElement);
             var box = $element.find("#innerbox");
             box = $compile(box)($scope);
+
+            $scope.doSomething = function() {
+                $scope.editTitle = true;
+            };
+
+            $scope.quitEditTitleMode = function() {
+                $scope.editTitle = false;
+            };
         }
     };
 }]);

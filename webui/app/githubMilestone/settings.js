@@ -1,8 +1,24 @@
 angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubMilestone.configservice', '$scope', '$http', function (appGithubMilestoneConfig, $scope, $http) {
-
-	 $scope.currentConfigValues = angular.copy(appGithubMilestoneConfig);
+     var config = appGithubMilestoneConfig.getConfigInstanceForAppId($scope.boxScope.metadata.guid);
+	 $scope.currentConfigValues = angular.copy(config);
 	 $scope.error = {inputUrl:"has-success", display: false, msg: "" };
 	 $scope.searchResults = [];
+
+
+    function isWeekDuration(sMilestoneDuration){
+        /*eslint-disable eqeqeq*/
+        if (sMilestoneDuration == "7" ||
+            sMilestoneDuration == "14" ||
+            sMilestoneDuration == "21" ||
+            sMilestoneDuration == "28") {
+
+            return true;
+        }
+        /*eslint-enable eqeqeq*/
+
+        return false;
+    }
+    $scope.customSelected = !isWeekDuration($scope.currentConfigValues.milestoneDuration);
 
 
      function search_repo(limit)
@@ -39,9 +55,9 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
                         url: 'https://github.wdf.sap.corp/api/v3/search/repositories?q=' + repo + '+user:' + user + '+fork:' + $scope.currentConfigValues.fork + '+in:name&per_page=' + limit,
                         headers: {'Accept': 'application/vnd.github.preview+json'},
                         withCredentials: false
-                    }).then(function(res){
+                    }).then(function(response){
                         var results = [];
-                        angular.forEach(res.data.items, function(item){
+                        angular.forEach(response.data.items, function(item){
                             results.push(item.html_url);
                         });
                         return results;
@@ -106,13 +122,13 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         var html_url = copiedConfigItem.repo.html_url.slice(0,28);
         var full_name = copiedConfigItem.repo.html_url.slice(28,copiedConfigItem.repo.html_url.length);
         var api_url = html_url + api;
-        appGithubMilestoneConfig.html_url = html_url;								//Set the Config Item
-        appGithubMilestoneConfig.api_url = api_url;
-        appGithubMilestoneConfig.repo.full_name = full_name;
-        appGithubMilestoneConfig.repo.api_url = api_url + '/' + full_name;
-        appGithubMilestoneConfig.repo.html_url = copiedConfigItem.repo.html_url;
-        appGithubMilestoneConfig.milestoneDuration = copiedConfigItem.milestoneDuration;
-        appGithubMilestoneConfig.fork = copiedConfigItem.fork;
+        config.html_url = html_url;								//Set the Config Item
+        config.api_url = api_url;
+        config.repo.full_name = full_name;
+        config.repo.api_url = api_url + '/' + full_name;
+        config.repo.html_url = copiedConfigItem.repo.html_url;
+        config.milestoneDuration = copiedConfigItem.milestoneDuration;
+        config.fork = copiedConfigItem.fork;
 
         $scope.$emit('closeSettingsScreen');
     };//$scope.save_click

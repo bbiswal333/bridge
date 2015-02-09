@@ -13,13 +13,21 @@ var fs = require('fs');
 var bridge_path = path.join(__dirname, '/');
 var bridge_module = path.join(__dirname, '/node_modules');
 var settings_filename = path.join(__dirname, '/', settings_file);
+var manifest_filename = path.join(__dirname, '/', "package.json");
 var needs_update = false;
 var test_update = false;
-var metaData = {};
 var latest_tag = 'v0.0';
+var settings = null;
 
 checkErrorFileSize();
 registerWindowHandler();
+
+try {
+    settings = require(settings_filename);
+} catch (err) {
+    console.log("settings file not found");
+    settings = {};
+}
 
 //try to load bridge locally if mentioned in package.json
 if (gui.App.manifest.bridge_tag == "local") {
@@ -36,16 +44,11 @@ if (gui.App.manifest.bridge_tag == "local") {
     }
 }
 else {
-    callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data) 
-    {
+    callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data){
         //check if github is not reachable
-        if(data === undefined)
-        {
+        if(data === undefined){
             needs_update = false;            
-        }
-
-        else
-        {
+        } else {
             //parse response from github server
             var gitTags = JSON.parse(data);
 
@@ -64,15 +67,13 @@ else {
                 }
                 console.log("Bridge Version on Server: " + latest_tag);
 
-                try {
-                    metaData = require(settings_filename);
-
-                    console.log("Bridge Version locally: " + metaData.local_tag);
-                    if (latest_tag[1] > metaData.local_tag[1] || (latest_tag[1] == metaData.local_tag[1] && parseInt(latest_tag.substring(3)) > parseInt(metaData.local_tag.substring(3)))) {
+                if (settings !== null && settings.local_tag != undefined){
+                    console.log("Bridge Version locally: " + settings.local_tag);
+                    if (latest_tag[1] > settings.local_tag[1] || (latest_tag[1] == settings.local_tag[1] && parseInt(latest_tag.substring(3)) > parseInt(settings.local_tag.substring(3)))) {
                         needs_update = true;
                     }
 
-                } catch (err) {
+                } else {
                     console.log("No local Bridge Version found.");
                     needs_update = true;
                 }
@@ -109,9 +110,9 @@ else {
                     changeTitle("Starting..");
 
                     //save back metaData
-                    if (!metaData.update_tag) {
-                        metaData.local_tag = latest_tag;
-                        fs.writeFileSync(settings_filename, JSON.stringify(metaData));
+                    if (!settings.update_tag) {
+                        settings.local_tag = latest_tag;
+                        saveSettings();
                     }
 
                     bridge = require('bridge');
@@ -123,11 +124,19 @@ else {
             });
         }
         else {
-            console.log("bridge is already up to date..")
+            console.log("bridge is already up to date..");
             bridge = require('bridge');
             bridgeLoadingFinished();
         }
     });
+}
+
+function saveSettings(){
+    fs.writeFileSync(settings_filename, JSON.stringify(settings));
+}
+
+function saveManifest(){
+    fs.writeFileSync(manifest_filename,JSON.stringify(gui.App.manifest));
 }
 
 function bridgeLoadingFinished() {
@@ -166,12 +175,21 @@ function notifiy_started() {
 
     var button = $("#closeWindowButton");
     button.css("display", "normal");
+
+    var checkbox = $("#checkboxHide");
+    checkbox.css("display", "normal");
 }
 
 function registerWindowHandler() {
     var win = gui.Window.get();
     win.on('close', function () {
-        this.hide(); 
-        //this.close(true);
+        this.hide();
     });
+}
+
+function checkboxHide_changed(){
+    var input = $("#checkboxHideInput")[0];
+
+    gui.App.manifest.window.show = !input.checked;
+    saveManifest();
 }

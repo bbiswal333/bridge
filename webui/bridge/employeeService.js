@@ -1,10 +1,19 @@
-angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', function($http, $window, $q){
+angular.module('bridge.service').service('employeeService', [ '$http', '$window', '$q', '$modal', 'bridgeBuildingSearch', function($http, $window, $q, $modal, bridgeBuildingSearch){
 	var buffer = [];
 	var url = 'https://ifp.wdf.sap.corp:443/sap/bc/zxa/FIND_EMPLOYEE_JSON';
 
+	this.showEmployeeModal = function(oEmployeeDetails){
+		$modal.open({
+			templateUrl: 'bridge/controls/employeeInput/employeeDetails.html',
+			controller: function($scope) {
+				$scope.selectedEmployee = oEmployeeDetails;
+			},
+			size: "sm"
+		});
+	};
+
 	this.getData = function(user){
 		var defer = $q.defer();
-
 		if( buffer[user] ){
 			defer.resolve(buffer[user]);
 		}else{
@@ -12,11 +21,26 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 			$http.get( url + '?id=' + user + '&origin=' + $window.location.origin).then(function (response) {
 				resp = response.data.DATA;
 				resp.TELNR = resp.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
+				resp.TELNR_MOB = resp.TELNR_MOBILE.replace(/ /g, '').replace(/-/g, '');
 				resp.fullName =  resp.VORNA + ' ' + resp.NACHN;
 				resp.url = 'https://people.wdf.sap.corp/profiles/' + user;
-				buffer[user] = resp;
+				resp.mail = resp.SMTP_MAIL;
 
-				defer.resolve(resp);
+				if (resp.BUILDING !== undefined) {
+					bridgeBuildingSearch.searchBuildingById(resp.BUILDING).then(function (aBuildings) {
+						if (aBuildings.length > 0) {
+							resp.building_url = aBuildings[0].geolinkB;
+							resp.city = aBuildings[0].city;
+							resp.street = aBuildings[0].street;
+						}
+
+						buffer[user] = resp;
+						defer.resolve(resp);
+					});
+				} else {
+					buffer[user] = resp;
+					defer.resolve(resp);
+				}
 			});
 		}
 

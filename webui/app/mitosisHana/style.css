@@ -1,0 +1,80 @@
+.contentTable{
+	height: 135px;
+}
+
+.contentTable table {
+	width: 370px;
+}
+
+.contentTable tr:not(:first-of-type) {
+	border-top: 1px solid #e5e5e5;
+}
+
+a.tooltip{
+	position: left;
+}
+
+.status-color{
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+}
+
+.backButton{
+  	height: 40px;
+	width: 20px;
+	border-radius: 0 90px 90px 0;
+	position: absolute;
+	left: 0;
+	top: 45%;
+	background-color:#c3c3c3;
+	opacity: 0.7;
+}
+
+.backButton i{
+	margin-top: 4px;
+	margin-right: 3px;
+	width: 18px;
+	float: right;
+	height: 20px;
+	color: white;
+}
+.statusTilesContainer{
+	width: 100%;
+	height: 98%;
+
+}
+.statusTilesBox{
+	width: 32%;
+	margin-left: 1px;
+	margin-right: 5px;
+	margin-top: 5px;
+	float: left;
+	height: 100%;
+}
+.statusTilesBox:first-child{
+	margin-left: 0;
+}
+.statusTilesBox:last-child{
+	margin-right: 0;
+}
+.statusTiles{	
+	width: 100%;
+	height: 70%;	
+	text-align: center;	
+}
+.statusTiles p{
+	margin: 0 0 0px;
+	line-height: 0.25;
+}
+
+.detailTableAlternateTd{
+    padding: 5px !important;
+}
+.detailTableAlternate:nth-child(2n){
+    background-color: #efefef;
+}
+
+.changeCursor{
+	cursor: pointer;
+}

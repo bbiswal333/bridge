@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.securityTesting",
+		"title"					:	"Security Testing Results",
+		"icon_css"				:	"fa fa-lock",
+		"overview_directive"	:	"app.securityTesting",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+        "multiInstance"			:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/securityTesting/:system/:appid",
+				"templateUrl"	:	"app/securityTesting/detail.html"
+			}
+		],
+		"description"			:	"Overviews the number of findings present in different security testing systems."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "data.js", "config.js","settings.js"],
+	"css_files" : []
+}
