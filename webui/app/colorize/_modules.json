@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Design"],
+		"module_name"			:	"app.colorize",
+		"title"					:	"Colorize",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.colorize",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"beta_users"			:	["D062131","D049677","D050049"],
+		"default_hidden"		:	true,
+		"description"			:	"Colorize Bridge as you want"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["colorize.css"]
+}
