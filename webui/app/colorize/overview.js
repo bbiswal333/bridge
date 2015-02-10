@@ -7,6 +7,7 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 		var bridgeSettings = bridgeDataService.getBridgeSettings();
 		if(!bridgeSettings.backgroundColors) {
 			bridgeSettings.backgroundColors = [
+				'DEFAULT',
                 '#418AC9',
                 '#68A1D4',
                 '#8EB9DF',
@@ -42,6 +43,8 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
                 '#a6a6a6',
                 '#c3c3c3'
             ];
+		} else if (bridgeSettings.backgroundColors[0] !== 'DEFAULT'){
+			bridgeSettings.backgroundColors.splice(0, 0, 'DEFAULT');
 		}
 
 		$scope.backgroundColors = bridgeSettings.backgroundColors;
@@ -64,9 +67,14 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 			return $scope.backgroundColors[index];
 		};
 
-		$scope.setBackgroundColor = function(index){
-			bridgeSettings.selectedBackgroundColorIndex = index;
-			$('body').css('background-color', ($scope.backgroundColors[index]));
+		$scope.setBackgroundColor = function(index) {
+			if ($scope.backgroundColors[index] === 'DEFAULT') {
+				$('body').css('background-image', "url(https://bridge.mo.sap.corp/img/276245_l_srgb_s_gl_2.jpg)");
+			} else {
+				bridgeSettings.selectedBackgroundColorIndex = index;
+				$('body').css("background-image", "");
+				$('body').css('background-color', ($scope.backgroundColors[index]));
+			}
 		};
 
 
