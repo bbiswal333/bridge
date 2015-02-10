@@ -41,7 +41,8 @@
                 "diagnosis/logService.js",
                 "diagnosis/corsTestPageController.js",
                 "diagnosis/mailPreviewController.js",
-                "diagnosis/statusController.js"
+                "diagnosis/statusController.js",
+                "backgroundSetterService.js"
 	],
 	"css_files" : [
                 "diagnosis/diagnosis.css",

@@ -1,5 +1,5 @@
 ﻿angular.module('app.colorize', []);
-angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', '$window', function (bridgeDataService, $window) {
+angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', '$window', 'bridge.service.backgroundSetter', function (bridgeDataService, $window, backgroundSetter) {
 
 	var directiveController = ['$scope', function ($scope) {
 		$scope.appText = "Pretty colorize app.";
@@ -67,16 +67,10 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 			return $scope.backgroundColors[index];
 		};
 
-		$scope.setBackgroundColor = function(index) {
-			if ($scope.backgroundColors[index] === 'DEFAULT') {
-				$('body').css('background-image', "url(https://bridge.mo.sap.corp/img/276245_l_srgb_s_gl_2.jpg)");
-			} else {
-				bridgeSettings.selectedBackgroundColorIndex = index;
-				$('body').css("background-image", "");
-				$('body').css('background-color', ($scope.backgroundColors[index]));
-			}
+		$scope.setBackgroundColor = function(index){
+			bridgeSettings.selectedBackgroundColorIndex = index;
+			backgroundSetter.setBackgroundColor($scope.backgroundColors[index]);
 		};
-
 
 	}];
 
