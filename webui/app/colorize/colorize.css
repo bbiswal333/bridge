@@ -1,0 +1,33 @@
+.backgroundColorDelete{
+	display: none;
+}
+
+.backgroundColorBox{
+	width:25px;
+	height:25px;
+	margin:5px;
+	cursor:pointer;
+}
+
+.backgroundColorBox:hover .backgroundColorDelete{
+	display: block;
+}
+
+.colorPickerContainer{
+	padding: 40px;
+	background-color: #fff;
+	top:-40px!important;
+	width: 100%;
+}
+.colorPickerContainer input{
+	border:none!important;
+}
+.colorPickerContainer input:hover{
+	border: none;
+}
+
+.colorPickerPreview{
+	width: 100%;
+	height: 25px;
+	margin-bottom: 25px;
+}

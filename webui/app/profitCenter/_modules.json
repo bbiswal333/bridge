@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.profitCenter",
+		"title"					:	"Profit Center",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.profitCenter",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"beta_users"			:	["D049677", "D034180", "D047633"],
+		"description"			:	"Controller App"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}

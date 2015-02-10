@@ -1,4 +1,4 @@
-﻿angular.module('bridge.box', ['bridge.service']);
+﻿angular.module('bridge.box', ['bridge.service', 'ngAnimate']);
 
 angular.module('bridge.box').directive('bridge.box',
     ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload',
@@ -22,6 +22,8 @@ angular.module('bridge.box').directive('bridge.box',
         directiveController: directiveController,
         scope: true,
         link: function ($scope, $element, $attrs) {
+            $scope.boxIconBarVisible = false;
+
             $scope.box = {};
             if ($attrs.id) {
                 //get app metadata and app config

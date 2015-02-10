@@ -1,0 +1,61 @@
+.boxHeaderIconFa {
+    color: #c3c3c3;
+    transition: all ease 0.1s;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.boxHeaderIconFa:hover{
+    color: #a6a6a6;
+}
+
+.boxHeaderIcon {
+    color: #c3c3c3;
+    transition: all ease 0.1s;
+    font-family: 'SAP-icons';
+    font-size: 20px;
+    cursor: pointer;
+}
+.boxHeaderIcon:hover {
+    color: #a6a6a6;
+}
+
+.boxIconBar {
+    width: 20px;
+    font-size: 20px;
+
+    display: -ms-flexbox;
+    display:flex;
+
+    -ms-flex-align: center;
+    align-items: center;
+
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow: hidden;
+
+    -moz-transition: width 1s ease-in-out;
+    -webkit-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+}
+
+.boxOpenIcon {
+    display: block;
+    color: #c3c3c3;
+    -moz-transition: 1s ease-in-out;
+    -webkit-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
+}
+
+.boxIconBarAnimation {
+    width: 90%;
+}
+
+.buttonRotateAnimation {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}

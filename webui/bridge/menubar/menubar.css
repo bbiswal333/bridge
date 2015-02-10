@@ -9,6 +9,13 @@
 .menubar-tab-active {
     background-color: white;
 }
+.logo_icon{
+  width: 40px;
+  height: 40px;
+  background-image: url(../img/logo_final.svg);
+  background-size: 25px;
+  background-repeat: no-repeat;
+}
 
 .menuBar-settingsButton {
     /*width: 36px;*/
@@ -35,7 +42,9 @@
 .menuBar-settingsButton:hover {
     color:#0099CC;
 }
-
+.menuBar-settingsButton:hover .logo_icon{
+  background-image: url(../img/logo_final_blue.svg);
+}
 .menubar-popover {
   position: absolute;
   right: 0px;
@@ -186,6 +195,11 @@
   z-index: -1;
   transition: 0.5s 0.25s;
   border-radius: 1rem;
+}
+
+.menuBar-settingsButton:hover .navicon:before,.menuBar-settingsButton:hover .navicon:after{
+  background:#428bca;
+  transition: 0.1s;
 }
 
 .open .navicon:before,

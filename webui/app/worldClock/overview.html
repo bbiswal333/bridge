@@ -2,9 +2,9 @@
 	<app.world-clock.linear-clock time-offset-in-milliseconds="timeOffsetInMilliseconds"></app.world-clock.linear-clock>
 	<!--<div style="width:100%; height: 45px"><timepicker ng-model="now" ng-change="changed()" hour-step="1" minute-step="15" show-meridian="false"></timepicker></div>-->
 
-	<div style="display: inline-block;width:25%; vertical-align: top; text-align: center;position:relative;bottom:8px;" ng-repeat="location in locations | limitTo: 4" >
+	<div style="display: inline-block;width:25%; vertical-align: top; text-align: center;position:relative;bottom:8px;" ng-repeat="location in locations | limitTo: 4" class="clock_clock">
 		<!---->
-		<i  ng-click="removeLocation(location)" class="fa fa-close" style="color:#C6C6C6;cursor:pointer;position:relative;top:62px;left:26px;"></i>
+		<i  ng-click="removeLocation(location)" class="fa fa-close clock_removebutton"></i>
 		<app.world-clock.analog-clock width="40" height="40" timezone-offset="location.timeOffset + timeOffsetInMilliseconds" location-name="{{location.name}}"></app.world-clock.analog-clock>
 		
 	</div>
