@@ -1,17 +1,31 @@
-﻿<div style="display: table-cell; width: 50%; padding: 2px">
+﻿<div style="display: table-cell; width: 60%; padding: 2px">
 	<bridge.input placeholder="Project Profit Center" model="profitCenter"></bridge.input>
 	<br />
-	<bridge.checkbox ng-if="profitCenter" checked-label="active" unchecked-label="inactive" is-checked="isChecked"></bridge.checkbox>
+	<!--<bridge.checkbox ng-if="profitCenter" checked-label="active" unchecked-label="inactive" is-checked="isChecked"></bridge.checkbox>-->
+	<a href="" ng-click="toggleActive()" ng-if="active == false && profitCenter"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> inactive</a>
+	<a href="" ng-click="toggleActive()" ng-if="active == true && profitCenter"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> active</a>
 	<br />
-	<div ng-if="profitCenter">
-		<span><u>Profit Center Responsible:</u></span><br />
-		Hans Dampf (D012345)
+	<div style="display: table-row" ng-if="profitCenter">
+		<div style="display: table-cell">
+			<b>Profit Center Responsible:</b>
+		</div>
+		<div style="display: table-cell">
+			Hans Dampf
+		</div>
+	</div>
+	<div style="display: table-row" ng-if="profitCenter">
+		<div style="display: table-cell">
+			<b>Responsible Controller:</b>
+		</div>
+		<div style="display: table-cell">
+			Dieter Hallervorden
+		</div>
 	</div>
 </div>
 <div style="display: table-cell; width: 50%; padding: 2px">
 	<div style="display: table-row" ng-if="profitCenter">
-		<div style="display: table-cell">
-			<b>IP Company Code:</b>
+		<div style="display: table-cell; width: 90px">
+			<b>IP Owner:</b>
 		</div>
 		<div style="display: table-cell">
 			SAP SE
@@ -25,12 +39,5 @@
 			SAP SE
 		</div>
 	</div>
-	<div style="display: table-row" ng-if="profitCenter">
-		<div style="display: table-cell">
-			<b>Responsible Controller:</b>
-		</div>
-		<div style="display: table-cell">
-			Dieter Hallervorden
-		</div>
-	</div>
+
 </div>

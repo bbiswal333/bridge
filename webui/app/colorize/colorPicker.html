@@ -1,0 +1,17 @@
+﻿<div class="popover colorPickerContainer">
+	
+	<div class="colorPickerPreview" style="background-color:rgba({{r}},{{g}},{{b}},{{a}});">
+		
+	</div>
+
+	<input type="range" min="0" max="255" step="1" ng-model="r"/>
+	<br>
+	<input type="range" min="0" max="255" step="1" ng-model="g"/>
+	<br>
+	<input type="range" min="0" max="255" step="1" ng-model="b"/>
+	<br>
+	<input type="range" min="0" max="1" step="0.1" ng-model="a"/>
+	
+	<bridge.button ng-click="addColor(r,g,b,a);$hide()" state="'invisible-button'" style="left:7%;margin-top:25px;margin-bottom:0;">Add Color</bridge.button>
+
+</div>

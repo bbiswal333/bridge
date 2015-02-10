@@ -223,6 +223,7 @@
         function _getAvailableApps() {
             return that.availableApps;
         }
+        
 
         return {
             initialize: _initialize,
