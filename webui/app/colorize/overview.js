@@ -69,9 +69,7 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 			$('body').css('background-color', ($scope.backgroundColors[index]));
 		};
 
-		if(bridgeSettings.selectedBackgroundColorIndex) {
-			$scope.setBackgroundColor(bridgeSettings.selectedBackgroundColorIndex);
-		};
+
 	}];
 
 

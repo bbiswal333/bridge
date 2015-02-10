@@ -148,10 +148,18 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
+        $scope.setBackgroundColor = function(index){
+            $scope.bridgeSettings.selectedBackgroundColorIndex = index;
+            $('body').css('background-color', ($scope.bridgeSettings.backgroundColors[index]));
+        };
+
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
+            if($scope.bridgeSettings.selectedBackgroundColorIndex !== undefined) {
+                $scope.setBackgroundColor($scope.bridgeSettings.selectedBackgroundColorIndex);
+            };
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.projects = bridgeDataService.getProjects();
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
