@@ -1,5 +1,5 @@
 ﻿angular.module('app.colorize', []);
-angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', function (bridgeDataService) {
+angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', '$window', function (bridgeDataService, $window) {
 
 	var directiveController = ['$scope', function ($scope) {
 		$scope.appText = "Pretty colorize app.";
@@ -8,7 +8,7 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 		if(!bridgeSettings.backgroundColors) {
 			bridgeSettings.backgroundColors = [
                 '#418AC9',
-                '#68A1D4', 
+                '#68A1D4',
                 '#8EB9DF',
                 '#B3D0E9',
 
@@ -40,7 +40,7 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
                 '#707070',
                 '#8a8a8a',
                 '#a6a6a6',
-                '#c3c3c3' 
+                '#c3c3c3'
             ];
 		}
 
@@ -52,13 +52,13 @@ angular.module('app.colorize').directive('app.colorize', [ 'bridgeDataService', 
 		$scope.a = 1;
 
 		$scope.addColor = function(r,g,b,a){
-			$scope.backgroundColors.push('rgba('+ r + ',' + g + ',' + b + ',' + a + ')');
+			$scope.backgroundColors.push('rgba(' + r + ',' + g + ',' + b + ',' + a + ')');
 		};
 
 		$scope.removeColor = function(index){
 			$scope.backgroundColors.splice(index, 1);
-			console.log(index);
-		}
+			$window.console.log(index);
+		};
 
 		$scope.getbackgroundColors = function(index){
 			return $scope.backgroundColors[index];
