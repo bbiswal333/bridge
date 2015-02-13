@@ -40,6 +40,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
             angular.forEach(data.issues, function(issue) {
               that.data.push({
                 key:            issue.key,
+                id:             issue.id,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
                 components:     issue.fields.components,
