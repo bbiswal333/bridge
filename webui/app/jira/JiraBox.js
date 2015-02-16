@@ -5,9 +5,46 @@ var IJiraBox = {
 var JiraBox = function(http){
     this.http = http;
     this.data = [];
+    this.authenticated = true;
 };
 
 JiraBox.prototype = Object.create(IJiraBox);
+
+JiraBox.prototype.login = function (username, pwd) {
+  var req = {
+   method: 'GET',
+   url: 'https://jira-staging.successfactors.com:443',
+   headers: {
+     'Content-Type': 'application/json',
+     'Authorization': 'Basic ' + window.btoa(username+':'+pwd),
+   },
+  }
+
+  return this.http(req);
+};
+
+JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
+
+  var that = this;
+
+  if(jira_instance === 'successfactors'){
+
+    return this.http.get('https://jira-staging.successfactors.com:443').success(function(data, status, headers, config){
+
+          if((headers()['x-ausername'] == 'anonymous') ||
+            status == '401'){
+            that.authenticated = false;
+            that.data = [];
+            return;
+          } 
+          that.authenticated = true;
+        });
+  }
+
+  that.authenticated = true;
+
+  return this.http.get('https://sapjira.wdf.sap.corp:443');
+};
 
 JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResults) {
     var that = this;
@@ -34,11 +71,11 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
 
     if(jira_instance === 'successfactors')
     {
-      jira_url = 'https://jira.successfactors.com:443/rest/api/latest/search?jql=';
+      jira_url = 'https://jira-staging.successfactors.com:443/rest/api/latest/search?jql=';
     }
 
     return this.http.get(jira_url + sQuery + sMaxResults
-        ).success(function (data) {
+        ).success(function (data, status, headers, config) {
 
             that.data.length = 0;
 
@@ -90,8 +127,9 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
               task.colorClass = 'taskColor_' + colorIndex;
             });
 
-        }).error(function() {
+        }).error(function(data, status, headers, config) {
             that.data = [];
+            that.authenticated = true; // in this case don't show login view
         });
 };
 

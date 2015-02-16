@@ -68,6 +68,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         }];
 
         $scope.jiraData = jiraBox.data;
+        $scope.authenticated = jiraBox.authenticated;
         $scope.jiraChartData = [];
 
         $scope.config = {};
@@ -86,6 +87,20 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             "#ffa317"
         ];
 
+        $scope.login = function() {
+            jiraBox.login(this.username, this.userpwd).then(function(){
+                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
+                    $scope.authenticated = jiraBox.authenticated;
+                    console.log(jiraBox.authenticated);
+                    if(jiraBox.isUserAuthenticated){
+                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
+                            $scope.jiraData = jiraBox.data;
+                        });
+                    }
+                });
+            });
+        };
+
         $scope.colorFunction = function() {
             return function(d, i) {
                 return $scope.colors[i];
@@ -98,8 +113,15 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
-                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
-                    $scope.jiraData = jiraBox.data;
+
+                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
+                    $scope.authenticated = jiraBox.authenticated;
+                    console.log(jiraBox.authenticated);
+                    if(jiraBox.isUserAuthenticated){
+                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
+                            $scope.jiraData = jiraBox.data;
+                        });
+                    }
                 });
             }
         },true);
@@ -171,7 +193,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
             if (config.isInitialized() === false) {
                 config.initialize($scope.metadata.guid);
-                JiraBox.getInstanceForAppId($scope.metadata.guid).getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits);
+                var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
+                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
+                    $scope.authenticated = jiraBox.authenticated;
+
+                    if(jiraBox.authenticated){
+                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits);
+                    }
+                });
             }
             $scope.config = config.getConfig();
         }

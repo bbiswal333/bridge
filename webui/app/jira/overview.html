@@ -17,7 +17,29 @@
     </div>
 </div>
 
-<div ng-if="jiraChartData.length <= 0">
+<div ng-if="!authenticated">
+    Please log into Jira.
+
+        <div class="row">
+            <div class="col-xs-6 has-feedback">
+                <bridge.input model="username" placeholder="User" autofocus></bridge.input>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-xs-6 has-feedback">
+                <bridge.input type="password" model="userpwd" placeholder="Password"></bridge.input>
+            </div>
+        </div>
+        <div class="row">
+            <bridge.button class="save_close_btn" ng-click="login()">
+                Login
+            </bridge.button>
+        </div>
+
+</div>
+
+<div ng-if="authenticated && jiraChartData.length <= 0">
     <span>no data for the gojira...</span>
     <img class="pixel_art" src="/../../img/j-rex.gif" width="400">
 </div>
