@@ -2,6 +2,7 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
 
     var configBackend =
     {
+        
         "WDF": {
             portalLink:  "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df",
             portalLinkText: "Lunch menu in the portal",
