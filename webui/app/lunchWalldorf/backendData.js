@@ -16,7 +16,48 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
             portalLink:  "https://lunchmenudresden-p1940757062trial.dispatcher.hanatrial.ondemand.com",
             portalLinkText: "Lunch menu online",
             portalBackend: ''
+        },
+        "BEN": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Bensheim",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "BER": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "DUE": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Duesseldorf",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "POT": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Potsdam",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "HAM": {
+            portalLink: "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Hamburg",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "MAK": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Markdorf",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "MUE": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Muenchen",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
+        },
+        "STI": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20St.%20Ingbert",
+            portalLinkText: "Lunch menu in the portal",
+            portalBackend: ''
         }
+
     };
     this.isValidBackend = function(backend) {
         return typeof configBackend[backend] !== "undefined";
