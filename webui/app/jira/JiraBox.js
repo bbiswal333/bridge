@@ -35,11 +35,17 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
     return this.http.get(jira_url + sQuery + sMaxResults
         ).success(function (data) {
 
+            if (jira_instance === undefined){
+                jira_instance = 'sapjira';
+            }
+
             that.data.length = 0;
 
             angular.forEach(data.issues, function(issue) {
+
               that.data.push({
                 key:            issue.key,
+                instance:       jira_instance,
                 id:             issue.id,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
@@ -48,6 +54,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
                 parentSummary:  (issue.fields.parent !== undefined ? issue.fields.parent.fields.summary : null),
                 effortEstimate: issue.fields.customfield_10005,
                 status:         issue.fields.status.name
+
               });
             });
 
