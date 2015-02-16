@@ -14,13 +14,12 @@ angular.module('bridge.search').service('bridge.search.calc', ['$http', '$window
         var success = true;
         var erg;
 
-        console.log(query);
+
 
         try {
             math.eval(query);
 
         } catch (e) {
-            console.log(e);
             if(e instanceof SyntaxError || e instanceof ReferenceError || e instanceof TypeError || e instanceof Error){
                 erg = "NaN";
                 success = false;
