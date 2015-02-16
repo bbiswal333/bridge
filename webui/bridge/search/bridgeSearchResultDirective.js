@@ -26,6 +26,10 @@ angular.module("bridge.search").directive("bridge.search.searchResult", ['$compi
 		});
     };
 
+	function escapeRegExp(str) {
+		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	}
+
 	return {
 		restrict: 'E',
 		scope: {
@@ -35,7 +39,7 @@ angular.module("bridge.search").directive("bridge.search.searchResult", ['$compi
 		},
 		controller: function($scope) {
 			$scope.highlight = function(text) {
-				return text.replace(new RegExp($scope.query, 'gi'), '<b>$&</b>');
+				return text.replace(new RegExp(escapeRegExp($scope.query), 'gi'), '<b>$&</b>');
 			};
 		},
 		link: linker

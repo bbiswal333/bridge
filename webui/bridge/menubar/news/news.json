@@ -71,6 +71,13 @@
             "snapURL":  "bridge/menubar/applications/banner01.svg",
             "preview":  "It is now possible to add multiple instances of the same app. Click if you want to learn more.",
             "content":  "During the last weeks we were working on a major improvement that you were longing for: having multiple instances of the same app on bridge.<br /><br />With todays release it is possible to add multiple instances of enabled apps from our new apps section:<br /><img src=\"bridge/menubar/news/image/addRemoveMultiInstance.gif\" width=\"1000\" /><br /><br />In addition to having multiple instances it is possible to rename all apps and give them a more meaningful name. In order to do this just double click the header of an app as shown in the screen recording above.<br /><br />In case you want to remove an app you can either do it via the apps section as shown above or via drag&drop."
+        },
+        {
+            "id":       10,
+            "header":   "New apps and bug fixes",
+            "preview":  "Since our last post in December 2014 some new apps were released and we also fixed some bugs.",
+            "date":     "2015-02-11",
+            "content":  "Since our last post in December 2014, our collaborators and we worked on several new features:<br /><h4>World Clock App</h4>The world clock app is now available for testing to every user. With the help of this app you can easily track the local time of up to four locations and simulate the time using the slider.<h4>Colorize Bridge!</h4>With the new \"Colorize\" app you are now able to select the background color of bridge as you prefer.<h4>Security Testing Results</h4> The Pulse CSI team provided this new app, which helps to keep track on your open security related findings. Many thanks to Philip Miseldine for his contributions!<h4>Fixed bugs in Beat the Traffic App</h4>Two bugs in the beat the traffic app were fixed:<ol><li>In some special cases the routes were calculated wrong.</li><li>Nokia Here changed the underlying API, thus the app was not working anymore.</li></ol><br /><br /><h4>Upcoming changes</h4>There's currently a pull request which needs to be checked. It contains an app that was created by Guilherme Dellagustine, which deals with displaying JUnit results.<br /><br />Stay tuned."
         }
 	]
 }
