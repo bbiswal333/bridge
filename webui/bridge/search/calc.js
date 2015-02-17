@@ -1,3 +1,4 @@
+/*global math*/
 /**
  * Created by D062753 on 16.02.2015.
  */
@@ -42,6 +43,6 @@ angular.module('bridge.search').service('bridge.search.calc', ['$http', '$window
 
                 $window.prompt("Copy result", "" + selectedItem.title);
 
-            }
+            };
         };
 }]);
