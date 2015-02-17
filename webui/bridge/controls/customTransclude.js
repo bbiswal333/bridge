@@ -1,4 +1,4 @@
-angular.module('bridge.app').directive( 'customTransclude', ["$tooltip", function($tooltip) {
+angular.module('bridge.controls').directive( 'customTransclude', ["$tooltip", function($tooltip) {
     return {
         restrict: 'EAC',
         link: function( $scope, $element, $attrs, controller, $transclude ) {

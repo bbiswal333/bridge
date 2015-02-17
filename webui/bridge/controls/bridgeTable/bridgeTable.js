@@ -1,4 +1,4 @@
-angular.module('bridge.controls', []);
+angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip"]);
 angular.module('bridge.controls').directive('bridge.table', function() {
     return {
         restrict: 'E',
