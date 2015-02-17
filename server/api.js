@@ -89,6 +89,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 				'Content-Length': (postData !== undefined ? postData.length : 0)
 			};
 		}
+		
+		if(!('headers' in options)) {
+			options.headers = {}
+		}
+		
+		options.headers['User-Agent'] = 'bridge';
 
 		var data = "";
 		console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
