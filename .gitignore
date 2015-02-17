@@ -228,3 +228,7 @@ webui/Test_Modules.html
 # CoverageResults
 #==========================
 coverage/**/*
+
+webui/app/colorize/overview.js
+
+webui/app/colorize/overview.html

@@ -3,7 +3,7 @@ angular.module('bridge.app').
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, appCreator){
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app};});
-	    $scope.categories = [];//{name: "All Apps", apps: []}];
+	    $scope.categories = [{name: "All Apps", apps: []}];
 	    $scope.appFilter = '';
 
 	    function findCategoryInList(name) {
@@ -25,7 +25,7 @@ angular.module('bridge.app').
 	    			}
 	    		});
 	    	}
-	    	//$scope.categories[0].apps.push(app);
+	    	$scope.categories[0].apps.push(app);
 	    });
 
 	    $scope.adjustModalSize = function() {
