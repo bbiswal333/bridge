@@ -30,14 +30,14 @@
 			</div>
 			<br />
 			<div class="row">
-				<div class="col-xs-2 form_head" style="float:none;">Choose Backend</div>
+				<div class="col-xs-2 form_head" style="float:none;">Choose Location</div>
 				<div class="btn-group" style="margin-left:15px;margin-top:10px">
 					<!--<span ng-click="currentConfigValues.chosenbackend = 'WDF'" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.chosenbackend === 'WDF' || !currentConfigValues.chosenbackend];" style="margin-right:0;">WDF</span>
 					<span ng-click="currentConfigValues.chosenbackend = 'KAR'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.chosenbackend === 'KAR'];" style="margin-right:0;">KAR</span>
 					<span ng-click="currentConfigValues.chosenbackend = 'DRE'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.chosenbackend === 'DRE'];" style="margin-right:0;">DRE</span>
 					<span ng-click="currentConfigValues.chosenbackend = 'Building'" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.chosenbackend === 'Building'];" style="margin-right:0;">based on my Building</span>-->
-					<bridge.button state="(currentConfigValues.chosenbackend === 'WDF' || !currentConfigValues.chosenbackend) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'WDF'" style="margin-right:0;width:100px;">
-						WDF
+					<bridge.button state="(currentConfigValues.chosenbackend === 'WDF/ROT' || !currentConfigValues.chosenbackend) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'WDF/ROT'" style="margin-right:0;width:100px;">
+						WDF/ROT
 					</bridge.button>
 					<bridge.button state="(currentConfigValues.chosenbackend === 'KAR') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'KAR'" style="margin-right:0;margin-left:0;width:100px;">
 						KAR
@@ -45,8 +45,32 @@
 					<bridge.button state="(currentConfigValues.chosenbackend === 'DRE') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'DRE'" style="margin-right:0;margin-left:0;width:100px;">
 						DRE
 					</bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'BER') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'BER'" style="margin-right:0;margin-left:0;width:100px;">
+                        BER
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'BEN') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'BEN'" style="margin-right:0;margin-left:0;width:100px;">
+                        BEN
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'DUE') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'DUE'" style="margin-right:0;margin-left:0;width:100px;">
+                        DUE
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'HAM') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'HAM'" style="margin-right:0;margin-left:0;width:100px;">
+                        HAM
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'MUE') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'MUE'" style="margin-right:0;margin-left:0;width:100px;">
+                       MUE
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'MAK') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'MAK'" style="margin-right:0;margin-left:0;width:100px;">
+                        MAK
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'POT') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'POT'" style="margin-right:0;margin-left:0;width:100px;">
+                       POT
+                    </bridge.button>
+                    <bridge.button state="(currentConfigValues.chosenbackend === 'STI') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'STI'" style="margin-right:0;margin-left:0;width:100px;">
+                        STI
+                    </bridge.button>
 					<bridge.button state="(currentConfigValues.chosenbackend === 'Building') === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.chosenbackend = 'Building'" style="margin-right:0;margin-left:0;width:100px;">
-						based on my Building
+						my Location
 					</bridge.button>
 				</div>
 			</div>

@@ -21,14 +21,10 @@ angular.module("app.worldClock").directive("app.worldClock.analogClock", ["lib.u
 			calculateRotation();
 
 			$scope.getWeekday = calUtils.getWeekday;
-			console.log($scope.getWeekday(2, 1));
+			// console.log($scope.getWeekday(2, 1));
 
 			$scope.useNDigits = calUtils.useNDigits;
 		},
 		templateUrl: "app/worldClock/analogClockTemplate.html"
 	};
 }]);
-
-
-
-
