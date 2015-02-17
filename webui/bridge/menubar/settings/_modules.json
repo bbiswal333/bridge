@@ -1,5 +1,5 @@
 {
-	"modules" : [],
+	"modules" : ["ui.bootstrap.accordion"],
 	"js_files" : ["menubarBridgeSettings.js"],
-	"css_files" : ["style.css"]
+	"css_files" : ["style.css", "colorize.css"]
 }

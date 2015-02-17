@@ -1,9 +1,6 @@
-angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsController',  [ 'bridgeDataService', '$window', 'bridge.service.backgroundSetter', function (bridgeDataService, $window, backgroundSetter) {
+angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsController',  [ '$scope', 'bridgeDataService', '$window', 'bridge.service.backgroundSetter', function ($scope, bridgeDataService, $window, backgroundSetter) {
 
-	var directiveController = ['$scope', function ($scope) {
-		$scope.appText = "Pretty colorize app.";
-		$scope.box.boxSize = "2";
-		var bridgeSettings = bridgeDataService.getBridgeSettings();
+	var bridgeSettings = bridgeDataService.getBridgeSettings();
 		if(!bridgeSettings.backgroundColors) {
 			bridgeSettings.backgroundColors = [
 				'DEFAULT',
@@ -70,15 +67,4 @@ angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsCon
 			bridgeSettings.selectedBackgroundColorIndex = index;
 			backgroundSetter.setBackgroundColor($scope.backgroundColors[index]);
 		};
-
-	}];
-
-
-
-
-	return {
-		restrict: 'E',
-		templateUrl: 'app/colorize/overview.html',
-		controller: directiveController
-	};
 }]);
