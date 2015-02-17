@@ -1,10 +1,10 @@
 <div class="bridgeSettingsContainer" ng-controller="bridge.menubar.menubarBridgeSettingsController">
 	<div class="bridgeSettingsBox">
 		<accordion>
-			<accordion-group is-open="true">
+			<accordion-group is-open="colorizeSettingsOpen">
 				<accordion-heading>
 					<div>
-						Colorize
+						Set Background Color<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': colorizeSettingsOpen, 'glyphicon-chevron-right': !colorizeSettingsOpen}"></i>
 					</div>
 				</accordion-heading>
 				<div style="display:flex;flex-wrap:wrap;">
@@ -22,10 +22,10 @@
 					</span>
 				</div>
 			</accordion-group>
-			<accordion-group>
+			<accordion-group is-open="weatherSettingsOpen">
 				<accordion-heading>
 					<div>
-						Weather
+						Weather<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': weatherSettingsOpen, 'glyphicon-chevron-right': !weatherSettingsOpen}"></i>
 					</div>
 				</accordion-heading>
 				<div ng-controller="bridge.menubar.weatherSettingsController" class="weather-sett">
@@ -53,10 +53,10 @@
 					</form>
 				</div>
 			</accordion-group>
-			<accordion-group>
+			<accordion-group is-open="searchSettingsOpen">
 				<accordion-heading>
 					<div>
-						Search Settings
+						Search Settings<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': searchSettingsOpen, 'glyphicon-chevron-right': !searchSettingsOpen}"></i>
 					</div>
 				</accordion-heading>
 				<div ng-controller="bridge.search.searchSettingsController">

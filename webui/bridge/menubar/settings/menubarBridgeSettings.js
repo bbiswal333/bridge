@@ -1,5 +1,9 @@
 angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsController',  [ '$scope', 'bridgeDataService', '$window', 'bridge.service.backgroundSetter', function ($scope, bridgeDataService, $window, backgroundSetter) {
 
+    $scope.colorizeSettingsOpen = true;
+    $scope.weatherSettingsOpen = false;
+    $scope.searchSettingsOpen = false;
+
 	var bridgeSettings = bridgeDataService.getBridgeSettings();
 		if(!bridgeSettings.backgroundColors) {
 			bridgeSettings.backgroundColors = [
