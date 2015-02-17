@@ -1,7 +1,12 @@
 <div class="bridgeSettingsContainer" ng-controller="bridge.menubar.menubarBridgeSettingsController">
 	<div class="bridgeSettingsBox">
 		<accordion>
-			<accordion-group heading="Colorize" is-open="true">
+			<accordion-group is-open="true">
+				<accordion-heading>
+					<div>
+						Colorize
+					</div>
+				</accordion-heading>
 				<div style="display:flex;flex-wrap:wrap;">
 					<div ng-repeat="item in backgroundColors track by $index">
 						<div ng-if="item !== 'DEFAULT'" ng-style="{'background-color': getbackgroundColors($index)}" class="backgroundColorBox" ng-click="setBackgroundColor($index);">
@@ -17,7 +22,12 @@
 					</span>
 				</div>
 			</accordion-group>
-			<accordion-group heading="Weather">
+			<accordion-group>
+				<accordion-heading>
+					<div>
+						Weather
+					</div>
+				</accordion-heading>
 				<div ng-controller="bridge.menubar.weatherSettingsController" class="weather-sett">
 					<form name="ConfigItemForm">
 						<div class="row">
@@ -43,7 +53,12 @@
 					</form>
 				</div>
 			</accordion-group>
-			<accordion-group heading="Search Settings">
+			<accordion-group>
+				<accordion-heading>
+					<div>
+						Search Settings
+					</div>
+				</accordion-heading>
 				<div ng-controller="bridge.search.searchSettingsController">
 					<div ng-repeat="provider in searchProvider">
 			            <bridge.checkbox checked-label="{{provider.getSourceInfo().name}}" unchecked-label="{{provider.getSourceInfo().name}}"
