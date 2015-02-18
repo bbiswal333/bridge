@@ -1,2 +1,2 @@
 <div ng-dblclick="toggleEditMode()" ng-if="editMode === false" style="display: inline-block; padding: 7px 13px">{{text}}</div>
-<bridge.input model="text" ng-show="editMode === true" enter="deactivateEditMode()" blur="deactivateEditMode()"></bridge.input>
+<bridge.input model="text" ng-if="editMode === true" enter="deactivateEditMode()" blur="deactivateEditMode()" autofocus="true"></bridge.input>
