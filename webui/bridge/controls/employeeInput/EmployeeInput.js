@@ -21,6 +21,7 @@ angular.module('bridge.employeeInput').directive('bridge.employeeInput', ['$http
             selectedEmployee: '=?selectedEmployee',
             placeholder: '=?placeholder',
             setRequired: '=?required',
+            autofocus: '=?',
             onSelect: '=?onSelect'
         }
     };
