@@ -31,16 +31,17 @@ angular.module('bridge.search').service('bridge.search.calc', ['$http', '$window
             erg = math.eval(query);
         }
 
+        if(!isNaN(erg) || erg != "NaN"){
         resultArray.push({title: '' + erg });
-
+    }
 
     };
 
 
     this.getCallbackFn = function() {
-        return function(selectedItem) {
+        return function(selectedItem, scope) {
 
-                $window.prompt("Copy result", "" + selectedItem.title);
+               scope.query = selectedItem.title;
 
             }
         };
