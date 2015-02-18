@@ -1,0 +1,7 @@
+<div ng-dblclick="toggleEditMode()" style="white-space: nowrap">
+	<span  ng-if="employee && !editMode">
+		<bridge.employee-picture employee-user="{{employee.BNAME}}"></bridge.employee-picture> {{employee.VORNA}}, {{employee.NACHN}}
+	</span>
+	<bridge.employee-input ng-show="editMode == true" selected-employee="employee" on-select="handleEmployeeSelection"></bridge.employee-input>
+	&nbsp;
+</div>

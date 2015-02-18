@@ -18,10 +18,10 @@ angular.module('bridge.employeeInput').directive('bridge.employeeInput', ['$http
         templateUrl: 'bridge/controls/employeeInput/EmployeeInputDirective.html',
         controller: directiveController,
         scope: {
-            selectedEmployee: '=selectedEmployee',
-            placeholder: '=placeholder',
-            setRequired: '=required',
-            onSelect: '=onSelect'
+            selectedEmployee: '=?selectedEmployee',
+            placeholder: '=?placeholder',
+            setRequired: '=?required',
+            onSelect: '=?onSelect'
         }
     };
 }]);
