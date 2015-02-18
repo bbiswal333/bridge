@@ -1,19 +1,71 @@
-<div class="bridgeSettingsContainer">
+<div class="bridgeSettingsContainer" ng-controller="bridge.menubar.menubarBridgeSettingsController">
 	<div class="bridgeSettingsBox">
-		<div class="bridgeSettingsColorize">
-			<!-- -->
-		</div>
+		<accordion>
+			<accordion-group is-open="colorizeSettingsOpen">
+				<accordion-heading>
+					<div>
+						Set Background Color<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': colorizeSettingsOpen, 'glyphicon-chevron-right': !colorizeSettingsOpen}"></i>
+					</div>
+				</accordion-heading>
+				<div style="display:flex;flex-wrap:wrap;">
+					<div ng-repeat="item in backgroundColors track by $index">
+						<div ng-if="item !== 'DEFAULT'" ng-style="{'background-color': getbackgroundColors($index)}" class="backgroundColorBox" ng-click="setBackgroundColor($index);">
+							<i class="fa fa-minus-circle backgroundColorDelete" style="position:relative;top:15px;left:18px;cursor:pointer;" ng-click="removeColor($index);"></i>
+						</div>
+						<div ng-if="item == 'DEFAULT'" class="backgroundColorBox" ng-click="setBackgroundColor($index);">
+							<i class="fa fa-image" style="font-size:2rem;"></i>
+						</div>
+					</div>
 
-		<div class="bridgeSettingsWeather">
-			<!-- -->
-		</div>
+					<span  ng-if="backgroundColors.length <= 43" bs-popover class="clickable"  data-toggle="popover" data-template="bridge/menubar/settings/colorPicker.html">
+						<div class="settingsIcon fa fa-plus fa-2x " style="width:25px;height:25px;margin:5px;text-align:center;line-height:25px!important;"></div>
+					</span>
+				</div>
+			</accordion-group>
+			<accordion-group is-open="weatherSettingsOpen">
+				<accordion-heading>
+					<div>
+						Weather<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': weatherSettingsOpen, 'glyphicon-chevron-right': !weatherSettingsOpen}"></i>
+					</div>
+				</accordion-heading>
+				<div ng-controller="bridge.menubar.weatherSettingsController" class="weather-sett">
+					<form name="ConfigItemForm">
+						<div class="row">
+							<div class="btn-group" style="margin-left:15px;margin-top:10px">
 
-		<div class="bridgeSettingsSearch">
-			<!-- -->
-		</div>
+								<bridge.button style="margin-left:0; width:68px;" state="currentConfigValues.fahrenheit === true ? 'active' : ' '" ng-click="currentConfigValues.fahrenheit = !currentConfigValues.fahrenheit">
+									&#8457;
+								</bridge.button>
+								<bridge.button style="margin-left:0; width:68px;" state="!currentConfigValues.fahrenheit === true ? 'active' : ' '" ng-click="currentConfigValues.fahrenheit = !currentConfigValues.fahrenheit">
+									&#8451;
+								</bridge.button>
 
-		<div class="bridgeSettingsNotifications">
-			<!-- -->
-		</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-xs-12 form_head" style="float:none;text-align:left;">Choose SAP Location</div>
+							<div class="col-xs-12 has-feedback">
+								<bridge.input model="currentConfigValues.location" style="margin-bottom:20px;" input-typeahead="weatherLocation as weatherLocation.name for weatherLocation in searchLocation($viewValue) | filter:{name:$viewValue}" placeholder="Location.."></bridge.input>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</accordion-group>
+			<accordion-group is-open="searchSettingsOpen">
+				<accordion-heading>
+					<div>
+						Search Settings<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': searchSettingsOpen, 'glyphicon-chevron-right': !searchSettingsOpen}"></i>
+					</div>
+				</accordion-heading>
+				<div ng-controller="bridge.search.searchSettingsController">
+					<div ng-repeat="provider in searchProvider">
+			            <bridge.checkbox checked-label="{{provider.getSourceInfo().name}}" unchecked-label="{{provider.getSourceInfo().name}}"
+			                             is-checked="bridgeSettings.searchProvider[provider.getSourceInfo().name].selected"></bridge.checkbox>
+			        </div>
+			    </div>
+			</accordion-group>
+		</accordion>
 	</div>
 </div>

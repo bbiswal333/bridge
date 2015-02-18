@@ -1,0 +1,91 @@
+body{
+	color: black;
+}
+.box-content{
+	color:black;
+}
+.box-heading{
+	color: black;
+}
+.settingsIcon{
+	color:black;
+}
+.boxHeaderIcon{
+	color: black!important;
+}
+.boxHeaderIconFa{
+	color: black!important;
+}
+.menuBar-settingsButton{
+	background-color: #fff!important;
+	color: black!important;
+}
+.navicon:before, .navicon:after{
+	background:black!important;
+}
+.button{
+	border:2px solid black!important;
+}
+.button.blue{
+	color: black;
+}
+.button.blue.active{
+	background-color: black;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+	color:black!important;
+	border: 2px solid black!important;
+}
+.nav-tabs .link,.nav-tabs a{
+	color: black!important;
+}
+.bridge-applications-box{
+	border: 1px solid black!important;
+}
+input[type="text"], textarea{
+	border: 1px solid black;
+}
+.checkbox.checked .second-icon, .radio.checked .second-icon{
+	color: black;
+}
+.checkbox.checked .checked-content{
+	color: black;
+}
+.link, a {
+	color: black;
+	text-decoration: underline!important;
+}
+.app-cats-stateG{
+	background: #fff!important;
+}
+.app-cats-stateR_INTHEFUTURE{
+	background:#EEB2A8!important;
+}
+.app-cats-stateR{
+	background: black!important;
+	color: white!important;
+}
+.app-cats-stateR_INTHEFUTURE{
+	background: black!important;
+	color: white!important;
+}
+.app-cats-stateN{
+	color: black!important;
+}
+.app-cats-day-text-small{
+	color: inherit!important;
+}
+.app-cats-week .app-cats-day{
+	color: black!important;
+}
+.prio_col{
+	border:2px solid black;
+
+	background-color: black!important;
+}
+.boxOpenIcon{
+	color: black!important;
+}
+.app-linkList-addLink{
+	color: black;
+}

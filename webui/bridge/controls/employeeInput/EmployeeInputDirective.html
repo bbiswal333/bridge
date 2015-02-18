@@ -7,7 +7,7 @@
 </script>
 
 <bridge.input ng-if="setRequired" required="true" placeholder="{{placeholder}}" model="selectedEmployee" 
-    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)" autofocus="{{autofocus}}"></bridge.input>
     
 <bridge.input ng-if="!setRequired" placeholder="{{placeholder}}" model="$parent.selectedEmployee" 
-    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)"></bridge.input>
+    input-typeahead-template-url="bridge/controls/employeeInput/EmployeeItemTemplate.html" input-typeahead="employee as employee.NACHN + ', ' + employee.VORNA + ' (' + employee.BNAME + ', ' + employee.SAPNA + ')' for employee in doSearch($viewValue)" input-typeahead-on-select="onSelect($item, $model, $label)" autofocus="{{autofocus}}"></bridge.input>

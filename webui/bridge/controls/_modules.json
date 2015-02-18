@@ -13,7 +13,9 @@
     "infinitescroll.js",
     "bridgeButton.js",
     "appDropTarget.js",
-    "conditionalLink.js"
+    "conditionalLink.js",
+    "editableLabel.js",
+    "editableEmployee.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"
