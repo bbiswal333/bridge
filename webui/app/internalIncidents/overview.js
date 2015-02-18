@@ -1,4 +1,4 @@
-angular.module('app.internalIncidents', ['notifier', 'bridge.service']);
+angular.module('app.internalIncidents', ['notifier', 'bridge.service', 'bridge.ticketAppUtils']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
     var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch', '$window',

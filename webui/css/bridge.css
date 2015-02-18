@@ -791,6 +791,13 @@ h3{
     text-transform:uppercase;
 }
 
+h5{
+    font-size:1.2rem;
+    font-weight:600;
+    font-style:italic;
+    text-transform:uppercase;
+}
+
 .testInstanceBar {
     position: absolute;
     z-index: 1000;

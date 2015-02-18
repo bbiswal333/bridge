@@ -1,0 +1,32 @@
+<div ng-controller="app.premiumEngagement.settingsController">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Configure which Customers you want to monitor</h3>
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+            <div class="col-md-4">
+                <bridge.input placeholder="Enter Customer ID" model="currentCustomerId"></bridge.input>
+            </div>
+            <div class="col-md-2">
+                <bridge.button ng-click="addCustomer(currentCustomerId)" style="margin:0px; height: 30px; line-height: initial;">Add</bridge.button>
+            </div>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+        <div class="col-md-4">
+            <h5>Customers</h5>
+        </div>
+    </div>
+    <div class="row" ng-repeat="customerId in config.data.aConfiguredCustomers track by $index">
+        <div class="col-md-3 premiumEngagement-settings-row">
+            <div class="col-md-8">{{customerId}}</div>
+            <div class="col-md-4" style="text-align: right">
+                <span class="fa fa-remove clickable" ng-click="removeCustomer(customerId)" ></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
+    </div>
+</div>

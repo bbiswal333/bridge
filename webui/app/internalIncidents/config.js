@@ -1,4 +1,4 @@
-angular.module('app.internalIncidents').service("app.internalIncidents.configservice", function (){
+angular.module('app.internalIncidents').service("app.internalIncidents.configservice", ["bridge.ticketAppUtils.configUtils", function (configUtils){
     var Config = function() {
         this.data = {};
         this.data.lastDataUpdate = null;
@@ -12,19 +12,8 @@ angular.module('app.internalIncidents').service("app.internalIncidents.configser
 
         this.isInitialized = false;
         this.initialize = function (oConfigFromBackend) {
-            var property;
-
             this.isInitialized = true;
-
-            for (property in oConfigFromBackend) {
-                if (property === "columnVisibility" && this.data.columnVisibility.length !== oConfigFromBackend.columnVisibility.length) {
-                    // if the length of the columnVisibility attribute changed, reset to default. This happens for example if a new column is introduced
-                    continue;
-                } else {
-                    this.data[property] = oConfigFromBackend[property];
-                }
-            }
-
+            configUtils.applyBackendConfig(this.data, oConfigFromBackend);
             this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
         };
     };
@@ -36,4 +25,4 @@ angular.module('app.internalIncidents').service("app.internalIncidents.configser
         }
         return instances[appId];
     };
-});
+}]);
