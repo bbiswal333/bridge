@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.junit",
+		"title"					  :	"JUnit Results",
+		"icon_css"				:	"icon-wrench",
+		"overview_directive"	:	"app.junit",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+    "multiInstance"			:	true,
+		"description"			:	"App to show JUnit results."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"css_files" : []
+}
