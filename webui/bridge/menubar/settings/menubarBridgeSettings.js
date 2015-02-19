@@ -71,4 +71,9 @@ angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsCon
 			bridgeSettings.selectedBackgroundColorIndex = index;
 			backgroundSetter.setBackgroundColor($scope.backgroundColors[index]);
 		};
+
+        $scope.killTheOverflow = function(){
+            $('.bridgeSettingsContainer').parent().css('overflow','visible');
+        };
+      
 }]);

@@ -89,3 +89,6 @@ input[type="text"], textarea{
 .app-linkList-addLink{
 	color: black;
 }
+.chainStatusBox a{
+	text-decoration: none!important;
+}
