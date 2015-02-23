@@ -30,6 +30,8 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 			bridgeRouting.rebuildRouteFromWaypoints(configItem.waypoints, function(rebuildResult) {
 				if(rebuildResult.error) {
 					bridgeInBrowserNotification.addAlert('danger','Unabled to recover your route "' + configItem.name + '"');
+					configItem.calculatedWaypoints = configItem.waypoints;
+					that.routes.push(configItem);
 				} else {
 					addRoute(rebuildResult.route);
 				}
