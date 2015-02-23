@@ -72,6 +72,10 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
         return configBackend[sSelectedBackend];
     };
 
+    this.getBackendData = function(){
+        return configBackend;
+    };
+
     this.getLunchData = function(chosenbackend) {
         var deferred = $q.defer();
 
