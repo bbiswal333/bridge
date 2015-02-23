@@ -124,8 +124,8 @@
 
             this.loadTicketData = function () {
                 var deferred = $q.defer();
-                //var requestUrl = 'https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&max_hits=1000&sap-language=EN';
-                var requestUrl = 'https://bcdmain.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN';
+                var requestUrl = 'https://backup-support.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&max_hits=1000&sap-language=EN';
+                //var requestUrl = 'https://bcdmain.wdf.sap.corp/sap/bc/devdb/customer_incid?sap-client=001&sap-language=EN';
                 if (config.data.settings.filterByOrgUnit) {
                     angular.forEach(config.data.settings.selectedOrgUnits, function (oOrgUnit) {
                         requestUrl += '&orgunit=' + oOrgUnit.ORGUNIT;
