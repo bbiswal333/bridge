@@ -76,5 +76,4 @@ angular.module('bridge.app').controller('bridge.menubar.menubarBridgeSettingsCon
             $('.bridgeSettingsContainer').parent().css('overflow','visible');
             $('.killMoreOverflow').parent().parent().parent().parent().css('overflow','visible');
         };
-      
 }]);
