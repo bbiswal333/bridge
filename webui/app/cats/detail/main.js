@@ -17,6 +17,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
+    $scope.blockdataRemembered = null;
     $scope.blockdataTemplate = [];
     $scope.loaded = false;
     $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
@@ -338,6 +339,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     targetHours + "'!");
             }
 
+            $scope.blockdataRemembered = angular.copy($scope.blockdata);
+
         } catch(err) {
             $log.log("displayCATSDataForDay(): " + err);
         }
@@ -420,8 +423,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.hintText = hintText;
     };
 
+    function blockdataHasChanged() {
+        if ($scope.blockdataRemembered === null) { // first selection, no check possible
+            return false;
+        } else if ($scope.blockdataRemembered.length !== $scope.blockdata.length) { // apparently some block added
+            return true;
+        } else if ($scope.blockdata.length > 0 &&
+                   $scope.blockdataRemembered.length === $scope.blockdata.length) {
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                if($scope.blockdata[i].value !== $scope.blockdataRemembered[i].value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     $scope.selectionCompleted = function() {
         try {
+            if ($scope.selectedDates.length <= 1 &&
+                blockdataHasChanged()) {
+                bridgeInBrowserNotification.addAlert('', 'Please dont forget to save your changes! Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
+            }
             angular.forEach($scope.selectedDates, function(dayString) {
                 checkGracePeriods(dayString);
             });
@@ -434,6 +457,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else { // Range selected
                 $scope.totalWorkingTime = 1;
             }
+            $scope.blockdataRemembered = angular.copy($scope.blockdata);
         } catch(err) {
             $log.log("selectionCompleted(): " + err);
         }
