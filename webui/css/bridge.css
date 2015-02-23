@@ -271,7 +271,14 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-
+.box-errorIcon {
+    color: red;
+    float: right;
+    font-weight: bold;
+    font-size: 21px;
+    width: 12px;
+    padding: 0 10px;
+}
 .animation-container{
     height: 100%;
 }

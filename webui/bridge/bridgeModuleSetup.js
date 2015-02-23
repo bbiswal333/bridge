@@ -1,4 +1,5 @@
-﻿angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", "bridge.service.loaderProvider",
+﻿/*global window*/
+angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", "bridge.service.loaderProvider",
     function ($provide, $routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils, bridgeLoaderServiceProvider) {
 
         //main overview page
@@ -96,10 +97,12 @@
         //allow blob, tel, mailto links
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
 
-        nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
-        nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
-        nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
-        nokia.Settings.set("secureConnection", "force");
+        if(!angular.isUndefined(window.nokia)) {
+            nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
+            nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
+            nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
+            nokia.Settings.set("secureConnection", "force");
+        }
 }]);
 
 angular.module('bridge.app').run(["$rootScope", "$q", "$injector", "$templateCache", "$location", "bridgeDataService", "bridgeInBrowserNotification", "bridge.search", "bridge.mobileSearch", "bridge.service.loader",

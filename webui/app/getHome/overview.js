@@ -1,4 +1,4 @@
-﻿/*global nokia*/
+﻿/*global nokia, window*/
 angular.module('app.getHome', ["bridge.service"]);
 angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configservice', 'bridge.service.maps.utils', 'bridge.service.maps.mapService', '$modal', '$interval', function (appGetHomeConfig, mapsUtils, mapService, $modal, $interval) {
 
@@ -12,6 +12,10 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		$scope.formatTime = mapsUtils.formatTime;
 		$scope.formatDistance = mapsUtils.formatDistance;
 		$scope.routes = appGetHomeConfig.routes;
+
+		if(!window.nokia) {
+			$scope.nokiaLibrariesNotLoaded = true;
+		}
 
 		$scope.box.returnConfig = function () {
 			return appGetHomeConfig.routes.map(function(route) {

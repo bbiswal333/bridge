@@ -1,4 +1,4 @@
-<div>
+<div ng-show="!nokiaLibrariesNotLoaded">
 	<p ng-show="routes.length == 0">"Beat the Traffic" will help you to monitor your daily routes and inform you about traffic jams and other traffic incidents.</p>
 	
 	<div ng-show="routes.length > 0"  style="width:390px; height:140px;">
@@ -12,4 +12,8 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div ng-show="nokiaLibrariesNotLoaded">
+The necessary libraries from Nokia Here could not be loaded.<br />
+Please check your proxy settings.
 </div>

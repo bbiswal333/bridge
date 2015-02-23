@@ -1,0 +1,32 @@
+<div style="width: 100%;min-height: 500px;height: auto !important;height: 600px;"> 
+  <form name="newConfigItemForm" class="atc_input">
+    <div class="atc-input-field">
+      <span class="copy form_head col-xs-12" style="padding:0 0 0 0;">URL</span>
+      <bridge.input style="float:left;" model="currentConfigValues.url" placeholder="URL..." autofocus></bridge.input>
+    </div>  
+    <div style="float:right;position:relative;top:25px;">
+      <bridge.button ng-click="doAlert(); add_click()">Add New Result Source</bridge.button>
+    </div>
+  </form>
+  <div >
+    <table ng-table="tableParams" class="table tableTransparentBorder" >
+      <thead style="background-color: #ECECEC;">
+        <tr>
+          <th>URL</th>
+          <th>Functions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false" class="hover">
+          <td data-title="'URL'">{{configItem.url}}</td>
+          <td data-title="'Functions'">
+            <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-times"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row atc_btn" style="float:right;">
+    <bridge.button  ng-click="doAlert(); closeForm()">Save & Close</bridge.button>
+  </div>
+</div>

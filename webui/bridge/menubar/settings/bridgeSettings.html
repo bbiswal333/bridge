@@ -24,7 +24,7 @@
 			</accordion-group>
 			<accordion-group is-open="weatherSettingsOpen">
 				<accordion-heading>
-					<div>
+					<div ng-click="killTheOverflow()" class="killMoreOverflow">
 						Weather<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': weatherSettingsOpen, 'glyphicon-chevron-right': !weatherSettingsOpen}"></i>
 					</div>
 				</accordion-heading>
