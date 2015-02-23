@@ -443,7 +443,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             if ($scope.selectedDates.length <= 1 &&
                 blockdataHasChanged()) {
-                bridgeInBrowserNotification.addAlert('', 'Please dont forget to save your changes! Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
+                bridgeInBrowserNotification.addAlert('', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
             }
             angular.forEach($scope.selectedDates, function(dayString) {
                 checkGracePeriods(dayString);
