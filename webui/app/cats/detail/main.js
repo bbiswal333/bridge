@@ -462,16 +462,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function checkPostReply(data) {
         try {
             var replyMessages = [];
-            var alertDuration = 5;
             var maxMessageCount = 5;
             for (var i = 0; i < data.CHECKMESSAGES.length; i++) {
                 if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
                     replyMessages.push(data.CHECKMESSAGES[i].TEXT);
                     if (replyMessages.length <= maxMessageCount) {
                         if(data.CHECKMESSAGES[i].TEXT.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
+                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.');
                         } else {
-                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT,alertDuration);
+                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
                         }
                     }
                 }
@@ -479,9 +478,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (replyMessages.length > maxMessageCount) {
                 var additionalMessagesCount = replyMessages.length - maxMessageCount;
                 if (additionalMessagesCount === 1) {
-                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.',alertDuration);
+                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.');
                 } else {
-                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.',alertDuration);
+                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.');
                 }
             }
             if (!replyMessages.length) {

@@ -43,6 +43,8 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 
 		if (alertDuration) {
 			getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
+		} else if (alertType === "danger") { // actual errors shall be displayed much longer
+			getAlert(alertID).closingTimer = closeAlert(alertID, 15);
 		} else {
 			getAlert(alertID).closingTimer = closeAlert(alertID, 8);
 		}
