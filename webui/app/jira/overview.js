@@ -63,7 +63,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             iconCss: "fa-plus",
             title: "Create Issue",
             callback: function(){
-                $window.open("https://sapjira.wdf.sap.corp/secure/CreateIssue!default.jspa");
+                $window.open(jiraBox.getCreateIssueUrl(config.getConfig().jira));
             }
         }];
 
@@ -88,11 +88,15 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         ];
 
         $scope.login = function() {
+
+            console.log("..login pressed");
+
             jiraBox.login(this.username, this.userpwd).then(function(){
                 jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
                     $scope.authenticated = jiraBox.authenticated;
-                    console.log(jiraBox.authenticated);
-                    if(jiraBox.isUserAuthenticated){
+
+                    if(jiraBox.authenticated){
+                        console.log("user is authenticated");
                         jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
                             $scope.jiraData = jiraBox.data;
                         });
@@ -114,10 +118,13 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
 
+                console.log("..config changed");
+
                 jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
                     $scope.authenticated = jiraBox.authenticated;
-                    console.log(jiraBox.authenticated);
-                    if(jiraBox.isUserAuthenticated){
+
+                    if(jiraBox.authenticated){
+                        console.log("user is authenticated");
                         jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
                             $scope.jiraData = jiraBox.data;
                         });
@@ -192,12 +199,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         link: function ($scope) {
             var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
             if (config.isInitialized() === false) {
+                console.log("..init");
                 config.initialize($scope.metadata.guid);
                 var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
                 jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
                     $scope.authenticated = jiraBox.authenticated;
 
                     if(jiraBox.authenticated){
+                        console.log("user is authenticated");
                         jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits);
                     }
                 });

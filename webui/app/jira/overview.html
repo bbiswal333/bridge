@@ -1,4 +1,4 @@
-﻿<div class="jira_container" ng-if="jiraChartData.length > 0">
+﻿<div class="jira_container" ng-if="authenticated && jiraChartData.length > 0">
     <div ng-repeat="data in jiraChartData" class="status_container">
         <div class="status_bar_container">
             <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}">         
@@ -20,6 +20,7 @@
 <div ng-if="!authenticated">
     Please log into Jira.
 
+    <form ng-submit="login()">
         <div class="row">
             <div class="col-xs-6 has-feedback">
                 <bridge.input model="username" placeholder="User" autofocus></bridge.input>
@@ -32,11 +33,11 @@
             </div>
         </div>
         <div class="row">
-            <bridge.button class="save_close_btn" ng-click="login()">
+            <bridge.button class="save_close_btn">
                 Login
             </bridge.button>
         </div>
-
+    </form>
 </div>
 
 <div ng-if="authenticated && jiraChartData.length <= 0">

@@ -11,6 +11,9 @@ var JiraBox = function(http){
 JiraBox.prototype = Object.create(IJiraBox);
 
 JiraBox.prototype.login = function (username, pwd) {
+
+    console.log("login");
+
   var req = {
    method: 'GET',
    url: 'https://jira-staging.successfactors.com:443',
@@ -18,7 +21,7 @@ JiraBox.prototype.login = function (username, pwd) {
      'Content-Type': 'application/json',
      'Authorization': 'Basic ' + window.btoa(username+':'+pwd),
    },
-  }
+  };
 
   return this.http(req);
 };
@@ -29,14 +32,20 @@ JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
 
   if(jira_instance === 'successfactors'){
 
-    return this.http.get('https://jira-staging.successfactors.com:443').success(function(data, status, headers, config){
+    console.log("check if user is authenticated");
+
+    return this.http.get('https://jira-staging.successfactors.com').success(function(data, status, headers, config){
 
           if((headers()['x-ausername'] == 'anonymous') ||
+            (headers()['X-AUSERNAME'] == 'anonymous') ||
             status == '401'){
             that.authenticated = false;
             that.data = [];
+            console.log("response: user is not authenticated");
             return;
-          } 
+          }
+          console.log(headers());
+          console.log("response: user is authenticated");
           that.authenticated = true;
         });
   }
@@ -44,6 +53,17 @@ JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
   that.authenticated = true;
 
   return this.http.get('https://sapjira.wdf.sap.corp:443');
+};
+
+JiraBox.prototype.getCreateIssueUrl = function (jira_instance) {
+  if(jira_instance == 'successfactors'){
+    if(this.authenticated){
+      return "https://jira.successfactors.com/secure/CreateIssue!default.jspa";
+    }
+    return "https://jira.successfactors.com";
+  } else {
+    return "https://sapjira.wdf.sap.corp/secure/CreateIssue!default.jspa";
+  }
 };
 
 JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResults) {
@@ -74,8 +94,13 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
       jira_url = 'https://jira-staging.successfactors.com:443/rest/api/latest/search?jql=';
     }
 
+    console.log("fire query: " + jira_url + sQuery + sMaxResults);
+
     return this.http.get(jira_url + sQuery + sMaxResults
         ).success(function (data, status, headers, config) {
+
+          console.log("response from server: ");
+          console.log(headers());
 
             that.data.length = 0;
 
