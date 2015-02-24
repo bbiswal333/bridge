@@ -4,9 +4,10 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"$q",
 	"lib.utils.calUtils",
 	"app.cats.cat2BackendZDEVDB",
+	"app.cats.catsUtils",
 	"$log",
 
-	function ($http, $q, calenderUtils, catsBackend, $log) {
+	function ($http, $q, calenderUtils, catsBackend, catsUtils, $log) {
 
 	this.days = {};
 	this.promiseForMonth = {};
@@ -227,28 +228,18 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 				var biggestTask = {};
 				biggestTask.QUANTITY_DAY = 0;
 				angular.forEach(day.tasks,function(oTask) {
+
 					// knowingly doing some data doublication here
-					if (oTask.UNIT === 'H') {
-						oTask.QUANTITY_DAY = oTask.QUANTITY / day.hoursOfWorkingDay;
-					} else {
-						oTask.QUANTITY_DAY = oTask.QUANTITY;
-					}
-					if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
-						if (oTask.UNIT !== 'H') {
-							// Adjusting to acutal part-time and country specific target hours value
-							var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
-						} else {
-							roundedTargetHours = day.targetHours;
-						}
-						oTask.QUANTITY_DAY = Math.round(oTask.QUANTITY_DAY * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
-					}
-					totalOfQuantityDay = totalOfQuantityDay + oTask.QUANTITY_DAY;
-					if(oTask.QUANTITY_DAY > biggestTask.QUANTITY_DAY) {
+					oTask.QUANTITY_DAY = catsUtils.calculateDAY(oTask,day);
+
+					totalOfQuantityDay = Math.round((totalOfQuantityDay + oTask.QUANTITY_DAY) * 1000) / 1000;
+
+					// remember biggest task for rounding adjustments
+					if(oTask.QUANTITY_DAY >= biggestTask.QUANTITY_DAY) {
 						biggestTask = oTask;
 					}
 				});
-				// Fix rounding issues
-				totalOfQuantityDay = Math.round(totalOfQuantityDay * 1000) / 1000;
+
 				if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
 					biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
 				}
