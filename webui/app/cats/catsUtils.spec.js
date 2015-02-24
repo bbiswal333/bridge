@@ -103,3 +103,122 @@ describe("Timesheet tools", function () {
 		expect(catsUtils.isValid(taskA)).toEqual(false);
 	});
 });
+
+describe("Conversion function", function () {
+	var catsUtils;
+	var task = {};
+	var day = {};
+
+	beforeEach(module("app.cats.utilsModule"));
+	beforeEach(inject(["app.cats.catsUtils", function (_catsUtils_) {
+		catsUtils = _catsUtils_;
+		task = {};
+		day = {};
+	}]));
+
+	it("should calculate for 1 DAY for full-time German employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 1;
+		day.hoursOfWorkingDay = 8;
+		day.targetHours = 8;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+	it("should calculate for 8 hours for full-time German employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 8;
+		day.hoursOfWorkingDay = 8;
+		day.targetHours = 8;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+
+	it("should calculate for 0.5 DAY for full-time German employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 0.5;
+		day.hoursOfWorkingDay = 8;
+		day.targetHours = 8;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(0.5);
+	});
+	it("should calculate for 4 hours for full-time German employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 4;
+		day.hoursOfWorkingDay = 8;
+		day.targetHours = 8;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(0.5);
+	});
+
+	it("should calculate for 1 DAY for part-time French employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 0.956;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 0.956;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+	it("should calculate for 4 hours for part-time French employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 7.55;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 0.956;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+
+	it("should calculate for 0.5 DAY for part-time French employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 0.478;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 0.478;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(0.5);
+	});
+	it("should calculate for 4 hours for part-time French employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 3.778;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 0.478;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(0.5);
+	});
+
+	it("should calculate for OVERBOOKED DAY for part-time French employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 1;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 1;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+	it("should calculate for OVERBOOKED hours for part-time French employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 7.9;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 7.55;
+		day.actualTimeInPercentageOfDay = 1;
+		day.targetTimeInPercentageOfDay = 0.956;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+
+	it("should calculate for OVERBOOKED SPECIAL DAY for part-time French employee", function () {
+		task.UNIT = "TA";
+		task.QUANTITY = 1;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 8.2;
+		day.actualTimeInPercentageOfDay = 1;
+		day.targetTimeInPercentageOfDay = 1.038;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+	it("should calculate for OVERBOOKED SPECIAL hours for part-time French employee", function () {
+		task.UNIT = "H";
+		task.QUANTITY = 8.2;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 8.2;
+		day.actualTimeInPercentageOfDay = 1;
+		day.targetTimeInPercentageOfDay = 1.038;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
+});

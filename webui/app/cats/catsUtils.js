@@ -83,5 +83,26 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     this.cat2CompliantRoundingForHours = function(value) {
       return Math.round(value * 100) / 100;
     };
+
+    this.calculateDAY = function(task, day) {
+      var value;
+      if (task.UNIT === 'H') {
+        value = task.QUANTITY / day.hoursOfWorkingDay;
+      } else {
+        value = task.QUANTITY;
+      }
+      if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
+        if (task.UNIT !== 'H') {
+          // Adjusting to acutal part-time and country specific target hours value
+          var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
+        } else {
+          roundedTargetHours = day.targetHours;
+        }
+        if(day.targetTimeInPercentageOfDay <= 1 || task.UNIT === 'H') {
+          value = Math.round(value * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
+        }
+      }
+      return Math.round(value * 1000) / 1000;
+    };
   }
 );

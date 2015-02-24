@@ -2,7 +2,7 @@
 /**
  * Created by D062753 on 16.02.2015.
  */
-angular.module('bridge.search').service('bridge.search.calc', ['$http', '$window', function ($http, $window) {
+angular.module('bridge.search').service('bridge.search.calc', [function () {
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-calculator",
@@ -32,7 +32,7 @@ angular.module('bridge.search').service('bridge.search.calc', ['$http', '$window
             erg = math.eval(query);
         }
 
-        if(!isNaN(erg) || erg != "NaN"){
+        if(!isNaN(erg) || erg !== "NaN"){
         resultArray.push({title: '' + erg });
     }
 

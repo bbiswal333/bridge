@@ -255,16 +255,16 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// // test test test: uncomment to be a part-time colleague
 						// CATSCHKforDay.CONVERT_H_T = 7.9;
 						// if (CATSCHKforDay.STDAZ) {
-						//   CATSCHKforDay.STDAZ = 7.55;
-						//   var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
-						//   var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
-						//   if (STADZRounded && QUANTITYHRounded) {
-						// 	 if (STADZRounded === QUANTITYHRounded) {
-						// 	   CATSCHKforDay.STATUS = "G"; // maintained
-						// 	 } else {
-						// 	   CATSCHKforDay.STATUS = "Y"; // part time or overbooked
-						// 	 }
-						//   }
+						// 	CATSCHKforDay.STDAZ = 7.55;
+						// 	var QUANTITYHRounded = Math.round(CATSCHKforDay.QUANTITYH * 100) / 100;
+						// 	var STADZRounded = Math.round(CATSCHKforDay.STDAZ * 8 / CATSCHKforDay.CONVERT_H_T * 100) / 100;
+						// 	if (STADZRounded && QUANTITYHRounded) {
+						// 		if (STADZRounded === QUANTITYHRounded) {
+						// 			CATSCHKforDay.STATUS = "G"; // maintained
+						// 		} else {
+						// 			CATSCHKforDay.STATUS = "Y"; // part time or overbooked
+						// 		}
+						// 	}
 						// }
 						// ////////////////////////////////////////////////////////
 						that.CAT2ComplinaceDataCache.push(CATSCHKforDay);
