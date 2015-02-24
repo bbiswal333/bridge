@@ -5,14 +5,14 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.settin
         $scope.config = configService.getInstanceForAppId($scope.boxScope.metadata.guid);
 
         $scope.addCustomer = function(sCustomerId){
-            if (!_.contains($scope.config.data.aConfiguredCustomers, sCustomerId)){
-                $scope.config.data.aConfiguredCustomers.push(sCustomerId);
+            if (_.find($scope.config.data.aConfiguredCustomers, { sId: sCustomerId }) === undefined){
+                $scope.config.data.aConfiguredCustomers.push({ sId: sCustomerId, sName: ""});
                 ticketData.loadTicketData();
             }
         };
         $scope.removeCustomer = function(sCustomerId){
-            _.remove($scope.config.data.aConfiguredCustomers, function(sId){
-                return sId === sCustomerId;
+            _.remove($scope.config.data.aConfiguredCustomers, function(oCustomer){
+                return oCustomer.sId === sCustomerId;
             });
 
             ticketData.loadTicketData();

@@ -1,10 +1,13 @@
 angular.module("app.premiumEngagement").service("app.premiumEngagement.configService",
     ["bridge.ticketAppUtils.configUtils", function(configUtils){
     var Config = function() {
+        this.DEFAULT_CUSTOMER_SELECTION = "Show All";
+        this.isInitialized = false;
+
         this.data = {};
         this.data.aConfiguredCustomers = [];
+        this.data.sSelectedCustomer = this.DEFAULT_CUSTOMER_SELECTION;
 
-        this.isInitialized = false;
         this.initialize = function(oConfigFromBackend){
             this.isInitialized = true;
             configUtils.applyBackendConfig(this, oConfigFromBackend);

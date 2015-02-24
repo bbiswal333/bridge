@@ -21,12 +21,25 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
             };
 
             $scope.prios = ticketData.prios;
+            $scope.aCustomerSelectionOptions = [];
+            $scope.customerSelectionChanged = function(oCustomerSelection){
+                config.data.sSelectedCustomer = oCustomerSelection.sId;
+                ticketData.calculateTotals();
+            };
 
             $scope.$watch("config.data.aConfiguredCustomers", function(newValue){
                 if (newValue !== undefined && newValue.length === 0){
                     $scope.noConfiguration = true;
                 } else {
                     $scope.noConfiguration = false;
+                    $scope.aCustomerSelectionOptions = [{ sText: config.DEFAULT_CUSTOMER_SELECTION, sId: config.DEFAULT_CUSTOMER_SELECTION }];
+                    config.data.aConfiguredCustomers.forEach(function(oCustomer){
+                        $scope.aCustomerSelectionOptions.push({ sText: oCustomer.sId + " - " + oCustomer.sName, sId: oCustomer.sId });
+                    });
+
+                    if (_.find($scope.aCustomerSelectionOptions, { sId: config.data.sSelectedCustomer }) === undefined || config.data.sSelectedCustomer === undefined){
+                        config.data.sSelectedCustomer = config.DEFAULT_CUSTOMER_SELECTION;
+                    }
                 }
             }, true);
 

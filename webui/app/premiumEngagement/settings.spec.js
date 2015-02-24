@@ -33,7 +33,7 @@ describe("The premiumEngagement settings controller", function(){
 
         $rootScope.addCustomer("12345");
         expect(config.data.aConfiguredCustomers.length).toBe(1);
-        expect(config.data.aConfiguredCustomers[0]).toBe("12345");
+        expect(config.data.aConfiguredCustomers[0].sId).toBe("12345");
     });
 
     it("should not be able to add duplicate customers", function(){
@@ -41,8 +41,8 @@ describe("The premiumEngagement settings controller", function(){
             "$scope": $rootScope
         });
 
-        $rootScope.addCustomer("12345");
-        $rootScope.addCustomer("12345");
+        $rootScope.addCustomer({ sId: "12345", sName: "" });
+        $rootScope.addCustomer({ sId: "12345", sName: "" });
 
         expect(config.data.aConfiguredCustomers.length).toBe(1);
     });
@@ -57,7 +57,7 @@ describe("The premiumEngagement settings controller", function(){
         $rootScope.removeCustomer("12345");
 
         expect(config.data.aConfiguredCustomers.length).toBe(1);
-        expect(config.data.aConfiguredCustomers[0]).toBe("45678");
+        expect(config.data.aConfiguredCustomers[0].sId).toBe("45678");
     });
 
     it("should reload the ticket data when the config changes", function(){
@@ -65,7 +65,7 @@ describe("The premiumEngagement settings controller", function(){
             "$scope": $rootScope
         });
 
-        $rootScope.addCustomer("12345");
+        $rootScope.addCustomer({ sId: "12345", sName: ""});
         expect(ticketData.loadTicketData).toHaveBeenCalled();
     });
 });

@@ -15,8 +15,8 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             this.loadTicketData = function(){
                 var defer = $q.defer();
                 var sServiceUrl = "https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/customer_i_tqm?sap-client=001&sap-language=en&max_hits=1000&origin=" + $window.location.origin;
-                config.data.aConfiguredCustomers.forEach(function(sCustomerId){
-                    sServiceUrl += "&customer=" + sCustomerId;
+                config.data.aConfiguredCustomers.forEach(function(oCustomer){
+                    sServiceUrl += "&customer=" + oCustomer.sId;
                 });
 
                 $http.get(sServiceUrl)
@@ -27,6 +27,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
 
                             if (that.tickets.length > 0) {
                                 that.calculateTotals();
+                                that.fillCustomerName(that.tickets);
                             }
                         } else {
                             that.resetTotals();
@@ -52,8 +53,20 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                 return defer.promise;
             };
 
+            this.getTicketsForCustomerSelection = function(){
+                if (config.data.sSelectedCustomer === config.DEFAULT_CUSTOMER_SELECTION){
+                    return that.tickets;
+                } else {
+                    return _.where(that.tickets, function(oTicket){
+                        return parseInt(oTicket.CUST_NO) === parseInt(config.data.sSelectedCustomer);
+                    });
+                }
+            };
+
             this.calculateTotals = function () {
-                var totals = _.countBy(that.tickets, function (ticket) {
+                var tickets = that.getTicketsForCustomerSelection();
+
+                var totals = _.countBy(tickets, function (ticket) {
                     return ticket.PRIORITY_KEY;
                 });
                 that.prios[0].total = totals[that.prios[0].key] === undefined ? 0 : totals[that.prios[0].key];
@@ -67,6 +80,19 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                 that.prios[1].total = 0;
                 that.prios[2].total = 0;
                 that.prios[3].total = 0;
+            };
+
+            this.fillCustomerName = function(aTickets){
+                var oCorrespondingTicket;
+                config.data.aConfiguredCustomers.forEach(function(oCustomer){
+                    oCorrespondingTicket = _.find(aTickets, function(oTicket){
+                        return parseInt(oTicket.CUST_NO) === parseInt(oCustomer.sId);
+                    });
+
+                    if (oCorrespondingTicket !== undefined) {
+                        oCustomer.sName = oCorrespondingTicket.CUST_NAME;
+                    }
+                });
             };
 
             this.initialize = function(sAppIdentifier){
