@@ -1,5 +1,5 @@
 {
   "modules" : ["bridge.ticketAppUtils"],
-  "js_files" : ["configUtils.js", "ticketUtils.js"],
+  "js_files" : ["configUtils.js", "ticketUtils.js", "detailUtils.js"],
   "css_files" : []
 }

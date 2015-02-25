@@ -10,7 +10,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
 
         this.initialize = function(oConfigFromBackend){
             this.isInitialized = true;
-            configUtils.applyBackendConfig(this, oConfigFromBackend);
+            configUtils.applyBackendConfig(this.data, oConfigFromBackend);
         };
     };
 

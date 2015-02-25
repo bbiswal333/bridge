@@ -17,7 +17,7 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
             };
 
             $scope.box.returnConfig = function(){
-                return config;
+                return config.data;
             };
 
             $scope.prios = ticketData.prios;
