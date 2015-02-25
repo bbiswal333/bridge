@@ -147,7 +147,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					}
 					if (data.PROFILE &&
 					   (data.PROFILE.indexOf("DEV2002") > -1 ||
-						data.PROFILE.indexOf("SUP2012") > -1 ||
+						data.PROFILE.indexOf("DEV2012") > -1 ||
 						data.PROFILE.indexOf("SUP2007") > -1 ||
 						data.PROFILE.indexOf("AUSALE") > -1)) {
 
