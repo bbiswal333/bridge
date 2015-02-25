@@ -54,10 +54,16 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             };
 
             this.getTicketsForCustomerSelection = function(){
+                var filteredTickets = angular.copy(that.tickets);
+                if (config.data.bIgnoreCustomerAction){
+                    _.remove(filteredTickets, {STATUS_KEY: "E0004"}); // Customer Action
+                    _.remove(filteredTickets, {STATUS_KEY: "E0005"}); // Solution Provided
+                }
+
                 if (config.data.sSelectedCustomer === config.DEFAULT_CUSTOMER_SELECTION){
-                    return that.tickets;
+                    return filteredTickets;
                 } else {
-                    return _.where(that.tickets, function(oTicket){
+                    return _.where(filteredTickets, function(oTicket){
                         return parseInt(oTicket.CUST_NO) === parseInt(config.data.sSelectedCustomer);
                     });
                 }

@@ -18,6 +18,11 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.settin
             ticketData.loadTicketData();
         };
 
+        $scope.ignoreCustomerAction_click = function(){
+            $scope.config.data.bIgnoreCustomerAction = !$scope.config.data.bIgnoreCustomerAction;
+            ticketData.calculateTotals();
+        };
+
         $scope.save_click = function () {
             $scope.$emit('closeSettingsScreen');
         };

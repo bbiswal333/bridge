@@ -40,6 +40,8 @@ describe("The PremiumEngagement details controller", function(){
             ticketData = _ticketDataService.getInstanceForAppId(DUMMY_APPID);
             configService = _configService;
             config = _configService.getInstanceForAppId(DUMMY_APPID);
+
+            config.data.bIgnoreCustomerAction = false;
         }]);
     });
 

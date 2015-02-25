@@ -1,5 +1,11 @@
 <div ng-controller="app.premiumEngagement.settingsController">
     <div class="row">
+        <bridge.button state="config.data.bIgnoreCustomerAction === true ? 'active' : ' '" ng-click="ignoreCustomerAction_click()" style="width:210px">
+            Ignore Tickets In Author Action
+        </bridge.button>
+    </div>
+
+    <div class="row">
         <div class="col-md-4">
             <h3>Configure which Customers you want to monitor</h3>
         </div>

@@ -20,6 +20,7 @@ describe("The Premium Engagement Ticket Data", function(){
             ticketData = _ticketData.getInstanceForAppId(dummyAppId);
             config = _config.getInstanceForAppId(dummyAppId);
             config.data.aConfiguredCustomers.push({ sId: "32914", sName: "" });
+            config.data.bIgnoreCustomerAction = false;
         }]);
 
     });
@@ -97,5 +98,30 @@ describe("The Premium Engagement Ticket Data", function(){
         expect(ticketData.prios[1].total).toBe(0);
         expect(ticketData.prios[2].total).toBe(1);
         expect(ticketData.prios[3].total).toBe(0);
+    });
+
+    it("should filter tickets in CustomerAction if configured", function(){
+        config.data.bIgnoreCustomerAction = true;
+
+        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        ticketData.loadTicketData();
+        $httpBackend.flush();
+
+        expect(ticketData.prios[0].total).toBe(1);
+        expect(ticketData.prios[1].total).toBe(2);
+        expect(ticketData.prios[2].total).toBe(26);
+        expect(ticketData.prios[3].total).toBe(5);
+    });
+
+    it("should not modify the original tickets array when filtering", function(){
+        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        ticketData.loadTicketData();
+        $httpBackend.flush();
+
+        expect(ticketData.tickets.length).toBe(38);
+        config.data.bIgnoreCustomerAction = true;
+        ticketData.calculateTotals();
+
+        expect(ticketData.tickets.length).toBe(38);
     });
 });

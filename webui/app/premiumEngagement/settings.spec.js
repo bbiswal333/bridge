@@ -22,8 +22,6 @@ describe("The premiumEngagement settings controller", function(){
             config = configService.getInstanceForAppId($rootScope.boxScope.metadata.guid);
             ticketData = ticketDataService.getInstanceForAppId($rootScope.boxScope.metadata.guid);
         }]);
-
-        spyOn(ticketData, "loadTicketData");
     });
 
     it("should add the current customerId to the list of configured customers on click", function(){
@@ -60,12 +58,26 @@ describe("The premiumEngagement settings controller", function(){
         expect(config.data.aConfiguredCustomers[0].sId).toBe("45678");
     });
 
-    it("should reload the ticket data when the config changes", function(){
+    it("should reload the ticket data when the customer-config changes", function(){
+        spyOn(ticketData, "loadTicketData");
         $controller("app.premiumEngagement.settingsController", {
             "$scope": $rootScope
         });
 
         $rootScope.addCustomer({ sId: "12345", sName: ""});
         expect(ticketData.loadTicketData).toHaveBeenCalled();
+    });
+
+    it("should calculate the totals when the Ignore-Tickets-config changes", function(){
+        spyOn(ticketData, "calculateTotals");
+
+        $controller("app.premiumEngagement.settingsController", {
+            "$scope": $rootScope
+        });
+
+        expect(config.data.bIgnoreCustomerAction).toBe(true);
+        $rootScope.ignoreCustomerAction_click();
+        expect(ticketData.calculateTotals).toHaveBeenCalled();
+        expect(config.data.bIgnoreCustomerAction).toBe(false);
     });
 });
