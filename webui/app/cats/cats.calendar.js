@@ -35,6 +35,11 @@ angular.module("app.cats")
 					var statusStr = days[i].STATUS;
 					var time = parseDateToTime(dateStr);
 
+					// special handling for popular frensh part time contract days
+					if (days[i].STATUS === "Y" && days[i].QUANTITYH === 7.9 && days[i].STDAZ === 8.2 && days[i].CONVERT_H_T === 7.9) {
+						statusStr = "G";
+						days[i].STATUS = "G";
+					}
 					// special handling for overbooked days
 					if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
 						statusStr = "OVERBOOKED";
