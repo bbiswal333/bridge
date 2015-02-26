@@ -93,7 +93,6 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             };
 
             this.fillCustomerName = function(aTickets){
-                console.log
                 var oCorrespondingTicket;
                 config.data.aConfiguredCustomers.forEach(function(oCustomer){
                     oCorrespondingTicket = _.find(aTickets, function(oTicket){
