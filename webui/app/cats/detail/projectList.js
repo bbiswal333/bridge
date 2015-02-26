@@ -192,7 +192,7 @@ directive("app.cats.maintenanceView.projectList", [
 						// Write header
 						if (items.length > 0) {
 							var header = {};
-							header.DESCR = "Tasks from CAT2 template using profile " + catsProfile + "...";
+							header.DESCR = "Tasks from CAT2 using profile " + catsProfile + "...";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "1";
 							addNewProjectItem(header);
