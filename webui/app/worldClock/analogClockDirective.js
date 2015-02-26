@@ -5,7 +5,8 @@ angular.module("app.worldClock").directive("app.worldClock.analogClock", ["lib.u
 			"width": "@",
 			"height": "@",
 			"timezoneOffset": "=",
-			"locationName": "@"
+			"locationName": "@",
+			"clockIsPaused": "="
 		},
 		controller: function($scope, $interval) {
 			function calculateRotation() {
@@ -14,16 +15,22 @@ angular.module("app.worldClock").directive("app.worldClock.analogClock", ["lib.u
 				$scope.hourRotation   = 360 * $scope.now.getHours()   / 12;
 				$scope.minuteRotation = 360 * $scope.now.getMinutes() / 60;
 				$scope.secondRotation = 360 * $scope.now.getSeconds() / 60;
-
-
 			}
-			$interval(calculateRotation, 1000);
-			calculateRotation();
+
+			function updateClock() {
+				if(!$scope.clockIsPaused) {
+					calculateRotation();
+				}
+			}
+			$interval(updateClock, 1000);
+			updateClock();
 
 			$scope.getWeekday = calUtils.getWeekday;
 			// console.log($scope.getWeekday(2, 1));
 
 			$scope.useNDigits = calUtils.useNDigits;
+
+			$scope.$watch("timezoneOffset", calculateRotation);
 		},
 		templateUrl: "app/worldClock/analogClockTemplate.html"
 	};

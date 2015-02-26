@@ -58,15 +58,6 @@
 	width: 60%;
 }
 
-.bridge-search-settingsButton {
-	float: left;
-	margin-left: -27px;
-	margin-top: -1px;
-	z-index: 1000;
-	position: absolute;
-	color: rgba(0,0,0,0.2);
-}
-
 @media (max-width:600px){
   .bridge-search-input {
     width: 85%;
