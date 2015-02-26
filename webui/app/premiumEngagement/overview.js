@@ -1,8 +1,8 @@
 angular.module("app.premiumEngagement", ["bridge.ticketAppUtils", 'notifier', 'bridge.service']);
 
 angular.module('app.premiumEngagement').directive('app.premiumEngagement', function (){
-    var overviewController = ['$scope', '$http', 'app.premiumEngagement.configService', 'app.premiumEngagement.ticketData',
-        function Controller($scope, $http, configService, ticketDataService) {
+    var overviewController = ['$scope', '$http', '$location', 'app.premiumEngagement.configService', 'app.premiumEngagement.ticketData', 'bridge.search', 'bridge.search.fuzzySearch',
+        function Controller($scope, $http, $location, configService, ticketDataService, bridgeSearch, fuzzySearch) {
 
             var config = configService.getInstanceForAppId($scope.metadata.guid),
                 ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
@@ -49,6 +49,21 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
 
             if (config.isInitialized === false) {
                 config.initialize($scope.appConfig);
+
+                bridgeSearch.addSearchProvider(fuzzySearch({name: "PE Customer Incidents", icon: 'icon-comment', defaultSelected: true}, function() {
+                        return ticketData.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION);
+                    }, {
+                        keys: ["CUSTOMER", "DESCRIPTION"],
+                        mappingFn: function(result) {
+                            return {title: result.item.CUST_NAME, description: result.item.DESCRIPTION, score: result.score, ticket: result.item};
+                        },
+                        callbackFn: function(data){
+                            ticketData.ticketsFromNotifications.length = 0;
+                            ticketData.ticketsFromNotifications.push(data.ticket);
+                            $location.path("/detail/premiumEngagement/" + $scope.metadata.guid + "/null/true");
+                        }
+                    }
+                ));
             }
 
             if (ticketData.isInitialized.value === false) {
