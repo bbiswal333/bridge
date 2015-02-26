@@ -1,11 +1,15 @@
 angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketData", [
-    "$q", "$http", "$window", "bridge.ticketAppUtils.ticketUtils", "app.premiumEngagement.configService", function($q, $http, $window, ticketUtils, configService){
+    "$q", "$http", "$window", "$rootScope", "$location", "bridge.ticketAppUtils.ticketUtils", "app.premiumEngagement.configService", "notifier", "bridge.converter",
+    function($q, $http, $window, $rootScope, $location, ticketUtils, configService, notifier, converter){
 
         var Data = function(appId){
             var that = this,
                 config = configService.getInstanceForAppId(appId);
 
             this.isInitialized = { value: false };
+            this.appId = appId;
+            this.lastTickets = null;
+            this.ticketsFromNotifications = [];
             this.selectedSourceSystem = ticketUtils.ticketSourceSystems[0];
             this.prios = [  { key: "1", description: "Very High", active: false, total: 0 },
                             { key: "3", description: "High", active: false, total: 0 },
@@ -40,37 +44,37 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
 
                 defer.promise.then(function () {
 
-                    //if (that.lastTickets !== null) {
-                    //    that.notifyChanges(that.getRelevantTickets(true, true, true, true, false), that.lastTickets);
-                    //} else if (config.data.lastDataUpdate !== null) {
-                    //    that.notifyOfflineChanges(that.getRelevantTickets(true, true, true, true, false), config.data.lastDataUpdate);
-                    //}
-                    //
-                    //config.data.lastDataUpdate = new Date();
-                    //that.lastTickets = angular.copy(that.tickets);
+                    if (that.lastTickets !== null) {
+                        that.notifyChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), that.lastTickets);
+                    } else if (config.data.lastDataUpdate !== null) {
+                        that.notifyOfflineChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), config.data.lastDataUpdate);
+                    }
+
+                    config.data.lastDataUpdate = new Date();
+                    that.lastTickets = angular.copy(that.tickets);
                 });
 
                 return defer.promise;
             };
 
-            this.getTicketsForCustomerSelection = function(){
+            this.getTicketsForCustomerSelection = function(sSelectedCustomerNo){
                 var filteredTickets = angular.copy(that.tickets);
                 if (config.data.bIgnoreCustomerAction){
                     _.remove(filteredTickets, {STATUS_KEY: "E0004"}); // Customer Action
                     _.remove(filteredTickets, {STATUS_KEY: "E0005"}); // Solution Provided
                 }
 
-                if (config.data.sSelectedCustomer === config.DEFAULT_CUSTOMER_SELECTION){
+                if (sSelectedCustomerNo === config.DEFAULT_CUSTOMER_SELECTION){
                     return filteredTickets;
                 } else {
                     return _.where(filteredTickets, function(oTicket){
-                        return parseInt(oTicket.CUST_NO) === parseInt(config.data.sSelectedCustomer);
+                        return parseInt(oTicket.CUST_NO) === parseInt(sSelectedCustomerNo);
                     });
                 }
             };
 
             this.calculateTotals = function () {
-                var tickets = that.getTicketsForCustomerSelection();
+                var tickets = that.getTicketsForCustomerSelection(config.data.sSelectedCustomer);
 
                 var totals = _.countBy(tickets, function (ticket) {
                     return ticket.PRIORITY_KEY;
@@ -97,6 +101,41 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
 
                     if (oCorrespondingTicket !== undefined) {
                         oCustomer.sName = oCorrespondingTicket.CUST_NAME;
+                    }
+                });
+            };
+
+            function notifierClickCallback(sApp, oNotificationData) {
+                that.ticketsFromNotifications = oNotificationData.tickets;
+                // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
+                _.defer(function () {
+                    $rootScope.$apply(function () {
+                        $location.path("/detail/premiumEngagement/" + that.appId + "/null/true");
+                    });
+                });
+            }
+
+            this.notifyOfflineChanges = function (tickets, lastDataUpdateFromConfig) {
+                var foundTickets;
+
+                foundTickets = _.where(tickets, function (ticket) {
+                    return converter.getDateFromAbapTimeString(ticket.CHANGE_DATE) > lastDataUpdateFromConfig;
+                });
+
+                if (angular.isArray(foundTickets) && foundTickets.length > 0) {
+                    notifier.showInfo('Customer Incidents Changed', 'Some of your Customer Incidents changed since your last visit of Bridge', that.sAppIdentifier,
+                        notifierClickCallback, null, {tickets: foundTickets});
+                }
+            };
+
+            this.notifyChanges = function (newTicketData, oldTicketData) {
+                angular.forEach(newTicketData, function (ticket) {
+                    var foundTicket = _.find(oldTicketData, {OBJECT_GUID: ticket.OBJECT_GUID});
+
+                    if (foundTicket === undefined) {
+                        notifier.showInfo('New Customer Incident', 'There is a new Customer Incident"' + ticket.DESCRIPTION + '"', that.sAppIdentifier, notifierClickCallback, null, {tickets: [ticket]});
+                    } else if (converter.getDateFromAbapTimeString(ticket.CHANGE_DATE) > converter.getDateFromAbapTimeString(foundTicket.CHANGE_DATE)) {
+                        notifier.showInfo('Customer Incident Changed', 'The Customer Incident "' + ticket.DESCRIPTION + '" changed', that.sAppIdentifier, notifierClickCallback, null, {tickets: [ticket]});
                     }
                 });
             };

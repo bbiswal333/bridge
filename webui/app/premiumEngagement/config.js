@@ -5,6 +5,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
         this.isInitialized = false;
 
         this.data = {};
+        this.data.lastDataUpdate = null;
         this.data.aConfiguredCustomers = [];
         this.data.bIgnoreCustomerAction = true;
         this.data.sSelectedCustomer = this.DEFAULT_CUSTOMER_SELECTION;
@@ -12,6 +13,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
         this.initialize = function(oConfigFromBackend){
             this.isInitialized = true;
             configUtils.applyBackendConfig(this.data, oConfigFromBackend);
+            this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
         };
     };
 

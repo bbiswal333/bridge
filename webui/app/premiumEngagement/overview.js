@@ -1,4 +1,4 @@
-angular.module("app.premiumEngagement", ["bridge.ticketAppUtils"]);
+angular.module("app.premiumEngagement", ["bridge.ticketAppUtils", 'notifier', 'bridge.service']);
 
 angular.module('app.premiumEngagement').directive('app.premiumEngagement', function (){
     var overviewController = ['$scope', '$http', 'app.premiumEngagement.configService', 'app.premiumEngagement.ticketData',
@@ -65,6 +65,14 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
                 $scope.dataInitialized = true;
             }
 
+            function reloadTicketData(){
+                ticketData.loadTicketData().then(function success(){
+                }, function error(){
+                    setErrorText();
+                });
+            }
+
+            $scope.box.reloadApp(reloadTicketData, 60 * 20);
         }];
 
     return {

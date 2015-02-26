@@ -11,6 +11,9 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.detail
         $scope.filterTable = function(oTicket){
             return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
         };
+        $scope.userClick = function(employeeDetails){
+            employeeService.showEmployeeModal(employeeDetails);
+        };
 
         function enhanceMessage(message){
             if(message.PROCESSOR_ID !== "") {
@@ -24,7 +27,7 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.detail
             if ($scope.detailForNotifications === true){
                 $scope.messages = ticketData.ticketsFromNotifications;
             } else {
-                $scope.messages = ticketData.getTicketsForCustomerSelection();
+                $scope.messages = ticketData.getTicketsForCustomerSelection(config.data.sSelectedCustomer);
             }
             $scope.messages.forEach(enhanceMessage);
         }
