@@ -22,7 +22,7 @@ describe("Linear Clock Directive", function() {
 		inject(function($rootScope, $compile, $interval) {
 			interval = $interval;
 			$rootScope.timeOffset = 0;
-			var element = angular.element("<app.world-clock.linear-clock time-offset-in-milliseconds='timeOffset'><div width='200'></div></app.world-clock.linear-clock>");
+			var element = angular.element("<app.world-clock.linear-clock time-offset-in-milliseconds='timeOffset' clock-is-paused='false'><div width='200'></div></app.world-clock.linear-clock>");
 			var template = $compile(element)($rootScope.$new());
 			$rootScope.$apply();
 			$scope = template.isolateScope();
@@ -153,5 +153,22 @@ describe("Linear Clock Directive", function() {
 		expect($scope.timeArray[0].getUTCHours()).toEqual(21);
 		expect($scope.timeArray[24].getUTCDate()).toEqual(11);
 		expect($scope.timeArray[24].getUTCHours()).toEqual(21);
+	});
+
+	it("should stop the clock if it is manually moved", function() {
+		expect($scope.now.toISOString()).toEqual(calUtils.now().toISOString());
+		$scope.handleMouseDown({clientX: 500});
+		$scope.handleMouseMove({clientX: 400});
+		$scope.$digest();
+		expect($scope.now.toISOString()).toEqual("2014-12-11T09:45:00.000Z");
+		var oldNow = calUtils.now;
+		calUtils.now = function() {
+			var date = oldNow();
+			date.setMilliseconds(date.getMilliseconds() + 50000);
+			return date;
+		};
+		$scope.$digest();
+		interval.flush(50000);
+		expect($scope.now.toISOString()).toEqual("2014-12-11T09:45:00.000Z");
 	});
 });
