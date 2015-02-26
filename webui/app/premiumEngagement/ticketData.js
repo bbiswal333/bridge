@@ -68,7 +68,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                     return filteredTickets;
                 } else {
                     return _.where(filteredTickets, function(oTicket){
-                        return parseInt(oTicket.CUST_NO) === parseInt(sSelectedCustomerNo);
+                        return parseInt(oTicket.CUST_NO, 10) === parseInt(sSelectedCustomerNo, 10);
                     });
                 }
             };
@@ -93,10 +93,11 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             };
 
             this.fillCustomerName = function(aTickets){
+                console.log
                 var oCorrespondingTicket;
                 config.data.aConfiguredCustomers.forEach(function(oCustomer){
                     oCorrespondingTicket = _.find(aTickets, function(oTicket){
-                        return parseInt(oTicket.CUST_NO) === parseInt(oCustomer.sId);
+                        return parseInt(oTicket.CUST_NO, 10) === parseInt(oCustomer.sId, 10);
                     });
 
                     if (oCorrespondingTicket !== undefined) {
