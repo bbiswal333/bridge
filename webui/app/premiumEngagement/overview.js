@@ -1,8 +1,8 @@
 angular.module("app.premiumEngagement", ["bridge.ticketAppUtils", 'notifier', 'bridge.service']);
 
 angular.module('app.premiumEngagement').directive('app.premiumEngagement', function (){
-    var overviewController = ['$scope', '$http', '$location', 'app.premiumEngagement.configService', 'app.premiumEngagement.ticketData', 'bridge.search', 'bridge.search.fuzzySearch',
-        function Controller($scope, $http, $location, configService, ticketDataService, bridgeSearch, fuzzySearch) {
+    var overviewController = ['$scope', '$http', '$window', '$location', 'app.premiumEngagement.configService', 'app.premiumEngagement.ticketData', 'bridge.search', 'bridge.search.fuzzySearch', 'bridge.ticketAppUtils.configUtils',
+        function Controller($scope, $http, $window, $location, configService, ticketDataService, bridgeSearch, fuzzySearch, configUtils) {
 
             var config = configService.getInstanceForAppId($scope.metadata.guid),
                 ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
@@ -19,6 +19,14 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
             $scope.box.returnConfig = function(){
                 return config.data;
             };
+
+            $scope.box.headerIcons = [{
+                iconCss: "fa-plus",
+                title: "Create Ticket",
+                callback: function () {
+                    $window.open("https://support.wdf.sap.corp/sap/bc/dsi/ii/create_zini?sap-language=EN");
+                }
+            }, configUtils.goToTicketButtonConfig ];
 
             $scope.prios = ticketData.prios;
             $scope.aCustomerSelectionOptions = [];

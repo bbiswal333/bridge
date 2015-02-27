@@ -1,5 +1,5 @@
-angular.module("bridge.ticketAppUtils", []);
-angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.configUtils", function(){
+angular.module("bridge.ticketAppUtils", ["mgcrea.ngStrap.popover"]);
+angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.configUtils", ['$popover', function($popover){
 
     this.applyBackendConfig = function(oTarget, oBackendConfig){
         var property;
@@ -14,4 +14,19 @@ angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.configUti
         }
     };
 
-});
+    this.goToTicketButtonConfig = {
+        iconCss: "fa-external-link",
+        title: "Open Ticket",
+        callback: function (eventClick) {
+            var myPopover = $popover(angular.element(eventClick.currentTarget), {
+                template: 'bridge/ticketAppUtils/enterIncidentTemplate.html',
+                trigger: 'manual',
+                placement: 'right'
+            });
+            myPopover.$promise.then(function () {
+                myPopover.show();
+            });
+        }
+    };
+
+}]);

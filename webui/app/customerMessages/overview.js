@@ -2,8 +2,8 @@ angular.module('app.customerMessages', ['notifier', 'bridge.service']);
 
 angular.module('app.customerMessages').directive('app.customerMessages', function ()
 {
-    var overviewController = ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData',
-        function Controller($scope, $http, ticketDataService, configService, bridgeDataService, bridgeConfig, orgUnitDataService) {
+    var overviewController = ['$scope', '$http', 'app.customerMessages.ticketData', 'app.customerMessages.configservice','bridgeDataService', 'bridgeConfig', 'app.customerMessages.orgUnitData', 'bridge.ticketAppUtils.configUtils',
+        function Controller($scope, $http, ticketDataService, configService, bridgeDataService, bridgeConfig, orgUnitDataService, configUtils) {
 
             var config = configService.getInstanceForAppId($scope.metadata.guid);
             var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
@@ -15,6 +15,8 @@ angular.module('app.customerMessages').directive('app.customerMessages', functio
                 controller: angular.module('app.customerMessages').appImSettings,
                 id: $scope.boxId
             };
+
+            $scope.box.headerIcons = [configUtils.goToTicketButtonConfig ];
 
             $scope.box.returnConfig = function(){
                 return config.data;

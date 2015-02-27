@@ -37,17 +37,17 @@
     flex-wrap: nowrap;
     overflow: hidden;
 
-    -moz-transition: width 1s ease-in-out;
-    -webkit-transition: width 1s ease-in-out;
-    transition: width 1s ease-in-out;
+    -moz-transition: width 0.7s ease-in-out;
+    -webkit-transition: width 0.7s ease-in-out;
+    transition: width 0.7s ease-in-out;
 }
 
 .boxOpenIcon {
     display: block;
     color: #c3c3c3;
-    -moz-transition: 1s ease-in-out;
-    -webkit-transition: 1s ease-in-out;
-    transition: 1s ease-in-out;
+    -moz-transition: 0.7s ease-in-out;
+    -webkit-transition: 0.7s ease-in-out;
+    transition: 0.7s ease-in-out;
 }
 
 .boxIconBarAnimation {

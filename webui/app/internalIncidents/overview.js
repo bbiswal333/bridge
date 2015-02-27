@@ -1,8 +1,8 @@
 angular.module('app.internalIncidents', ['notifier', 'bridge.service', 'bridge.ticketAppUtils']);
 
 angular.module('app.internalIncidents').directive('app.internalIncidents', function (){
-    var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch', '$window',
-        function($scope, $http, $location, ticketDataService, configService, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch, $window){
+    var controller = ['$scope', '$http', '$location', 'app.internalIncidents.ticketData', 'app.internalIncidents.configservice','bridgeDataService', 'bridgeConfig', 'bridge.search', 'bridge.search.fuzzySearch', '$window', 'bridge.ticketAppUtils.configUtils',
+        function($scope, $http, $location, ticketDataService, configService, bridgeDataService, bridgeConfig, bridgeSearch, fuzzySearch, $window, configUtils){
             var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
             var config = configService.getConfigForAppId($scope.metadata.guid);
             $scope.box.boxSize = "1";
@@ -22,12 +22,10 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.box.headerIcons = [{
                 iconCss: "fa-plus",
                 title: "Create Ticket",
-                callback: function(){
+                callback: function () {
                     $window.open("https://support.wdf.sap.corp/sap/bc/dsi/ii/create_zini?sap-language=EN");
                 }
-            }];
-
-            //$scope.box.errorText = "Blub";
+            }, configUtils.goToTicketButtonConfig ];
 
             function setNoMessagesFlag() {
                 if (ticketData.isInitialized.value === true && ticketData.tickets.RESULTNODE1 === "" && ticketData.tickets.RESULTNODE2 === "" && ticketData.tickets.RESULTNODE3 === "") {
