@@ -20,13 +20,7 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
                 return config.data;
             };
 
-            $scope.box.headerIcons = [{
-                iconCss: "fa-plus",
-                title: "Create Ticket",
-                callback: function () {
-                    $window.open("https://support.wdf.sap.corp/sap/bc/dsi/ii/create_zini?sap-language=EN");
-                }
-            }, configUtils.goToTicketButtonConfig ];
+            $scope.box.headerIcons = [ configUtils.goToTicketButtonConfig ];
 
             $scope.prios = ticketData.prios;
             $scope.aCustomerSelectionOptions = [];

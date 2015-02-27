@@ -1,7 +1,7 @@
 <div class="popover" style="width:300px; max-width: 300px; height: 70px;" ng-controller="bridge.ticketAppUtils.enterIncidentsController">
     <div class="arrow"></div>
     <div class="popover-content">
-        <bridge.input style="width:200px" placeholder="Enter Incident ID" model="enteredId"></bridge.input>
+        <bridge.input ng-keypress="input_keypress($event)" style="width:200px" placeholder="Enter Incident ID" model="enteredId"></bridge.input>
         <bridge.button style="width:42px; height: 42px; margin-top: 0px; line-height: initial;" ng-click="go_click(enteredId)">Go</bridge.button>
     </div>
 </div>
