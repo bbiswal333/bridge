@@ -165,4 +165,16 @@ describe("The Premium Engagement Ticket Data", function(){
 
         expect(notifier.showInfo).toHaveBeenCalled();
     });
+
+    it("should throw a notification if I set the suppress flag", function(){
+        spyOn(notifier, "showInfo");
+        config.data.lastDataUpdate = new Date(1972, 1, 1);
+
+        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
+        expectGet.respond(mockTicketDataSingle);
+        ticketData.loadTicketData(true);
+        $httpBackend.flush();
+
+        expect(notifier.showInfo).not.toHaveBeenCalled();
+    });
 });

@@ -7,7 +7,7 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.settin
         $scope.addCustomer = function(sCustomerId){
             if (_.find($scope.config.data.aConfiguredCustomers, { sId: sCustomerId }) === undefined){
                 $scope.config.data.aConfiguredCustomers.push({ sId: sCustomerId, sName: ""});
-                ticketData.loadTicketData();
+                ticketData.loadTicketData(true);
             }
         };
         $scope.removeCustomer = function(sCustomerId){
@@ -15,7 +15,7 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.settin
                 return oCustomer.sId === sCustomerId;
             });
 
-            ticketData.loadTicketData();
+            ticketData.loadTicketData(true);
         };
 
         $scope.ignoreCustomerAction_click = function(){

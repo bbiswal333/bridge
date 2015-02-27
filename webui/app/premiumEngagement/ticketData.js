@@ -16,7 +16,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                             { key: "5", description: "Medium", active: false, total: 0 },
                             { key: "9", description: "Low", active: false, total: 0 }];
 
-            this.loadTicketData = function(){
+            this.loadTicketData = function(bSuppressNotifications){
                 var defer = $q.defer();
                 var sServiceUrl = "https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/customer_i_tqm?sap-client=001&sap-language=en&max_hits=1000&origin=" + $window.location.origin;
                 config.data.aConfiguredCustomers.forEach(function(oCustomer){
@@ -44,10 +44,12 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
 
                 defer.promise.then(function () {
 
-                    if (that.lastTickets !== null) {
-                        that.notifyChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), that.lastTickets);
-                    } else if (config.data.lastDataUpdate !== null) {
-                        that.notifyOfflineChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), config.data.lastDataUpdate);
+                    if (bSuppressNotifications !== true) {
+                        if (that.lastTickets !== null) {
+                            that.notifyChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), that.lastTickets);
+                        } else if (config.data.lastDataUpdate !== null) {
+                            that.notifyOfflineChanges(that.getTicketsForCustomerSelection(config.DEFAULT_CUSTOMER_SELECTION), config.data.lastDataUpdate);
+                        }
                     }
 
                     config.data.lastDataUpdate = new Date();
