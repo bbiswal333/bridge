@@ -10,11 +10,19 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
 			templatePath: "junit/settings.html",
       controller: angular.module('app.junit').appJUnitSettings
 		};
+    
+    $scope.box.headerIcons = [{
+        iconCss: "fa-refresh",
+        title: "Refresh",
+        callback: function() {
+            $scope.getData();
+        }
+    }];
 
     $scope.numSuccessTestCases = 0;
     $scope.numFailedTestCases = 0;
     $scope.numErrorTestCases = 0;
-
+    
 		$scope.getData = function() {
       $scope.numSuccessTestCases = 0;
       $scope.numFailedTestCases = 0;
