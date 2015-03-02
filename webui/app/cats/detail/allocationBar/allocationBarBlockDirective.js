@@ -80,6 +80,7 @@ function (colorUtils, blockCalculations, calUtils) {
             };
 
             elem.find(".allocation-bar-dragBar").draggable({
+                cursor: 'e-resize',
                 axis: 'x',
                 drag: function (event, ui) {
                     $scope.$apply(function () {
