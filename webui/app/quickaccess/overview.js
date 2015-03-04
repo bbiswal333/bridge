@@ -2,7 +2,7 @@
 angular.module('app.quickaccess').directive('app.quickaccess',[function () {
 
 	var directiveController = ['$scope', function ($scope) {
-		$scope.notetxt = "Notes";
+		$scope.notetxt = "SAP Notes";
 		$scope.inctxt = "Internal Incidents";
 		$scope.openNote = function() {
 			window.open("https://css.wdf.sap.corp/sap/support/notes/"+$scope.notenr, '_blank');
