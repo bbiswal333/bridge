@@ -18,10 +18,24 @@ body{
 }
 .menuBar-settingsButton{
 	background-color: #fff!important;
-	color: black!important;
+}
+.menuBar-settingsButton span{
+	color: black;
+}
+.menuBar-settingsButton:hover span{
+	color: #fff;
+}
+.menuBar-settingsButton:hover .navicon:before,.menuBar-settingsButton:hover .navicon:after{
+	background: #fff!important;
+}
+.menuBar-settingsButton:hover{
+	background-color: rgba(73,73,73,1)!important;
 }
 .navicon:before, .navicon:after{
 	background:black!important;
+}
+.navicon-button .navicon{
+	background:black;
 }
 .button{
 	border:2px solid black!important;
@@ -55,29 +69,6 @@ input[type="text"], textarea{
 	color: black;
 	text-decoration: underline!important;
 }
-.app-cats-stateG{
-	background: #fff!important;
-}
-.app-cats-stateR_INTHEFUTURE{
-	background:#EEB2A8!important;
-}
-.app-cats-stateR{
-	background: black!important;
-	color: white!important;
-}
-.app-cats-stateR_INTHEFUTURE{
-	background: black!important;
-	color: white!important;
-}
-.app-cats-stateN{
-	color: black!important;
-}
-.app-cats-day-text-small{
-	color: inherit!important;
-}
-.app-cats-week .app-cats-day{
-	color: black!important;
-}
 .prio_col{
 	border:2px solid black;
 
@@ -91,4 +82,272 @@ input[type="text"], textarea{
 }
 .chainStatusBox a{
 	text-decoration: none!important;
+}
+.progress-bar{
+	background:black;
+}
+.contentStatusBox .showDetailsCursor{
+	background:black;
+}
+.contentStatusTiles i{
+	color: black;
+}
+.chainStatusBox .showDetailsCursor{
+	background:black;
+}
+.chainStatusTiles i{
+	color: black;
+}
+.getHome-route-name{
+	width: 200px;
+}
+.getHome-route-column.green-80{
+	background:black;
+}
+.getHome-route-column.yellow-80{
+	background:
+		repeating-linear-gradient(
+			-45deg,
+			black,
+			black 3px,
+			black 3px,
+			rgb(100,100,100) 6px
+		)
+	;
+}
+.getHome-route-column.yellow-80 .getHome-route-name:before{
+	content:'!';
+	float: left;
+	margin-right: 5px;
+}
+.getHome-route-column.red-80{
+	background:
+		repeating-linear-gradient(
+			-45deg,
+			black,
+			black 3px,
+			black 3px,
+			rgb(150,150,150) 6px
+		)
+	;
+}
+.getHome-route-column.red-80 .getHome-route-name:before{
+	content:'! ! !';
+	float: left;
+	margin-right: 5px;
+}
+/*
+.progress-bar{
+	background: 
+		repeating-linear-gradient(
+			-45deg,
+			#428bca,
+			#428bca 3px,
+			#428bca 3px,
+			#68A1D4 6px
+		)
+	;
+}
+*/
+
+/* CATS COLORS
+
+#calendarDay .app-cats-day-text-big{
+    position: relative;
+}
+#calendarDay .app-cats-stateR { 
+    background:
+        repeating-linear-gradient(
+            45deg,
+              #EEB2A8,
+              #EEB2A8 3px,
+              #EEB2A8 3px,
+              #333 6px
+        )
+    ;
+    
+}
+#calendarDay .app-cats-stateR span, #calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint span, .app-cats-stateY_TODAY span{
+    color: #fff!important;
+    text-shadow:1px 1px black;
+    font-weight: 900;
+}
+#calendarDay .app-cats-stateR_INTHEFUTURE span {
+    color: #333!important;
+    text-shadow:1px 1px white;
+    font-weight: 900;
+}
+#calendarDay .app-cats-stateR.hover:hover, #calendarDay .app-cats-stateY.hover:hover, #calendarDay .app-cats-stateY_TODAY.hover:hover, .app-cats-stateY_INTHEFUTURE_part_maint.hover:hover{
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #E68C7D,
+            #E68C7D 3px,
+            #E68C7D 3px,
+            #333 6px
+        )
+    ;
+}
+
+
+#calendarDay .app-cats-stateY, #calendarDay .app-cats-stateY_TODAY, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint{ 
+    position: relative;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            #EEB2A8,
+            #EEB2A8 3px,
+            #EEB2A8 3px,
+            #333 6px
+        )
+    ;
+}
+#calendarDay .app-cats-stateY:before, #calendarDay .app-cats-stateY_TODAY:before, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint:before{
+    content:'';
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(
+            to right, 
+            #A7D0BA 0%, 
+            #A7D0BA 50%, 
+            rgba(0,0,0,0) 50%, 
+            rgba(0,0,0,0) 100%
+        )
+    ;
+}
+.popover-content.app-cats-legend-popover .app-cats-stateY:before, .popover-content.popover .app-cats-legend-popover .app-cats-stateY_INTHEFUTURE_part_maint:before{
+    content:'';
+    position: absolute;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: 
+        linear-gradient(
+            to right, 
+            #A7D0BA 0%, 
+            #A7D0BA 50%, 
+            rgba(0,0,0,0) 50%, 
+            rgba(0,0,0,0) 100%
+        )
+    ;
+}
+
+
+#calendarDay .app-cats-stateR_INTHEFUTURE {
+    position: relative;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            #F3F2F2,
+            #F3F2F2 3px,
+            #F3F2F2 3px,
+            #BEBEBE 6px
+        )
+    ;
+}
+#calendarDay .app-cats-stateR_INTHEFUTURE.hover:hover{
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            #F3F2F2,
+            #F3F2F2 3px,
+            #F3F2F2 3px,
+            #BEBEBE 6px
+        )
+    ;
+}
+
+#calendarDay .app-cats-stateG { 
+    background: #A7D0BA;
+}
+#calendarDay .app-cats-stateOVERBOOKED { 
+    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #4EA175 50%, #4EA175 100%);
+}
+
+
+
+
+
+*/
+#calendarDay span{
+	font-weight: 700;
+}
+#calendarDay .app-cats-stateR{
+	position: relative;
+}
+#calendarDay .app-cats-stateR:after, #calendarDay .app-cats-stateY:after, #calendarDay .app-cats-stateY_TODAY:after, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint:after{
+	content: '';
+	display: inline-block;
+	font: normal normal normal 12px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	color: #fff;
+	right: 5px;
+	top: 3px;
+	font-size: 1rem;
+	text-shadow:1px 1px black;
+}
+#calendarDay .app-cats-stateG{
+	position: relative;
+}
+/*#calendarDay .app-cats-stateG:after{
+	content: '';
+	display: inline-block;
+	font: normal normal normal 12px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	right: 5px;
+	top: 3px;
+	font-size: 1rem;
+	color: #333;
+}*/
+#calendarDay .app-cats-stateOVERBOOKED{
+	position: relative;
+}
+#calendarDay .app-cats-stateOVERBOOKED:after{
+	content: '';
+	display: inline-block;
+	font: normal normal normal 12px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	color: #fff;
+	right: 5px;
+	top: 3px;
+	font-size: 1rem;
+	text-shadow:1px 1px black;
+}
+
+
+
+/* SPECIAL */
+
+#calendarDay .app-cats-stateN { 
+    background: transparent;
+}
+#calendarDay .app-cats-stateR{
+	background-color: black;
+}
+#calendarDay .hover:hover{
+	background:black;
+}
+#calendarDay .hover:hover span, #calendarDay .hover:hover:after{
+	color: #fff!important;
+}
+#calendarDay .app-cats-today {
+	background:black;
+}
+#calendarDay .app-cats-today span, #calendarDay .app-cats-today:after{
+	color: #fff!important;
 }

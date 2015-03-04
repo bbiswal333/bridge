@@ -13,7 +13,7 @@
             {{milestone.closed_issues}} closed - {{milestone.open_issues}} open
             <div class="progress">
                 <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank">
-                    <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.issueProgress}}" aria-valuemin="0" aria-valuemax="100" style="background-color:#428bca;" ng-style="{width: milestone.issueProgress + '%'}">
+                    <div class="progress-bar {{error.inputClass}} has-feedback" role="progressbar" aria-valuenow="{{milestone.issueProgress}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: milestone.issueProgress + '%'}">
                
                     </div>
                 </a>
@@ -21,7 +21,7 @@
             {{ milestone.passedDays}} days passed - {{milestone.remainingDays}} days remaining
             <div class="progress">
                 <a href="{{config.repo.html_url}}/issues?milestone={{milestone.number}}&state=open" target="_blank">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.timeProgress}}" aria-valuemin="0" aria-valuemax="100" style=" background-color: #428bca;" ng-style="{width: milestone.timeProgress + '%'}"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{milestone.timeProgress}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: milestone.timeProgress + '%'}"></div>
                 </a>
             </div>
         </div>
