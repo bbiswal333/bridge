@@ -27,12 +27,15 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
       $scope.numSuccessTestCases = 0;
       $scope.numFailedTestCases = 0;
       $scope.numErrorTestCases = 0;
+      $scope.box.errorText = '';
 
 			dataService.getInstanceForAppId($scope.metadata.guid).loadData().forEach(function(promise) {
         promise.then(function(value) {
           $scope.numSuccessTestCases += value.result.numSuccessTestCases;
           $scope.numFailedTestCases += value.result.numFailedTestCases;
           $scope.numErrorTestCases += value.result.numErrorTestCases;
+        }, function() {
+          $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
         });
 			});
 		};
