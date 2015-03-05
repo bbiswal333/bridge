@@ -15,8 +15,8 @@ angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.configUti
     };
 
     this.goToTicketButtonConfig = {
-        iconCss: "fa-external-link",
-        title: "Open Ticket",
+        iconCss: "fa-eye",
+        title: "View Ticket in new Tab",
         callback: function (eventClick) {
             var myPopover = $popover(angular.element(eventClick.currentTarget), {
                 template: 'bridge/ticketAppUtils/enterIncidentTemplate.html',
