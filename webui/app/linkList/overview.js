@@ -126,7 +126,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
                 setDefaultConfig();
             }
 
-            for (;linklistConfig.data.listCollection.length < 3;) {
+            for (; linklistConfig.data.listCollection.length < 3; ) {
                 linklistConfig.data.listCollection.push([]);
             }
 
@@ -174,7 +174,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
 
     return {
         restrict: 'E',
-        templateUrl: function() { return 'app/linkList/overview.html';},
+        templateUrl: function() { return 'app/linkList/overview.html'; },
         controller: directiveController
     };
 }]);

@@ -47,7 +47,7 @@ angular.module("app.bwContentStatus.data", [] ).service("app.bwContentStatus.dat
 				}
 			}
 
-			for (var s = 0 ; s < that.data.contents.length; s++) {
+			for (var s = 0; s < that.data.contents.length; s++) {
 				switch (that.data.contents[s].STATUS) {
 					case "1":
 						green++;

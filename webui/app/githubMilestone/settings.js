@@ -133,7 +133,7 @@ angular.module('app.githubMilestone').appGithubMilestoneSettings = ['app.githubM
         $scope.$emit('closeSettingsScreen');
     };//$scope.save_click
 
-    $scope.getTypeaheadData = function() { /* eslint no_undef */
+    $scope.getTypeaheadData = function() {
         var copiedConfigItem = angular.copy($scope.currentConfigValues);
         //$scope.searchResults = [];
         if(copiedConfigItem.repo.html_url !== undefined && copiedConfigItem.repo.html_url !== null && copiedConfigItem.repo.html_url !== '')

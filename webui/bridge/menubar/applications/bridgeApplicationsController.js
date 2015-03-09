@@ -2,7 +2,7 @@ angular.module('bridge.app').
 	controller('bridge.menubar.applicationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', 'bridge.service.appCreator',
 	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, appCreator){
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
-	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app};});
+	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app}; });
 	    $scope.categories = [{name: "All Apps", apps: []}];
 	    $scope.appFilter = '';
 
