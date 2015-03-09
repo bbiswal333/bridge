@@ -11,7 +11,6 @@
 		"default_hidden"		:	true,
 	    "description"			:	"Shows Customer Incidents of a specific customer from the BCP system. The data is retrieved from the backup system, so there is a minor delay of 1-5 minutes for changes.",
 	  	"multiInstance"			:	true,
-	  	"beta_users"			:	["D051804", "D046176", "D025786"],
 		"routes"		:
 		[
 			{

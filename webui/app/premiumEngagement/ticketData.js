@@ -10,7 +10,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             this.appId = appId;
             this.lastTickets = null;
             this.ticketsFromNotifications = [];
-            this.selectedSourceSystem = ticketUtils.ticketSourceSystems[0];
+            this.selectedSourceSystem = ticketUtils.ticketSourceSystems[4];
             this.prios = [  { key: "1", description: "Very High", active: false, total: 0 },
                             { key: "3", description: "High", active: false, total: 0 },
                             { key: "5", description: "Medium", active: false, total: 0 },
