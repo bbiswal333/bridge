@@ -33,6 +33,8 @@ angular.module("app.junit.data", []).service("app.junit.dataService", ["$http", 
               url : config.url,
               result : result
             });
+          }).error(function() {
+            deferred.reject();
           });
 
           promises.push(deferred.promise);
