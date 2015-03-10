@@ -102,6 +102,13 @@ describe("Timesheet tools", function () {
 		taskA.ZCPR_EXTID = 'abc';
 		expect(catsUtils.isValid(taskA)).toEqual(false);
 	});
+	it("should identify hourly profiles", function () {
+		expect(catsUtils.isHourlyProfil("DEV2012")).toEqual(true);
+		expect(catsUtils.isHourlyProfil("SUP2007H")).toEqual(true);
+		expect(catsUtils.isHourlyProfil("SUP2007B")).toEqual(true);
+		expect(catsUtils.isHourlyProfil("DEV2002C")).toEqual(false);
+		expect(catsUtils.isHourlyProfil("SUP2007D")).toEqual(false);
+	});
 });
 
 describe("Conversion function", function () {

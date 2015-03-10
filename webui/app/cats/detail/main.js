@@ -381,9 +381,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectChecked = function (desc_s, val_i, task) {
         if (!task.UNIT) {
-            if (catsBackend.catsProfile === "SUP2007H" ||
-                catsBackend.catsProfile === "SUP2007B" ||
-                catsBackend.catsProfile === "DEV2012") {
+            if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
                 task.UNIT = "H";
             } else {
                 task.UNIT = "T";
@@ -548,18 +546,31 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.QUANTITY_DAY;
             delete booking.STATUS;
 
-            // determine amount to post
+            // assume task has correct unit and calculate best possible values
             if (booking.UNIT === "H" && targetHoursForDay) {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
-                if (catsBackend.catsProfile === "SUP2007H" ||
-                    catsBackend.catsProfile === "SUP2007B" ||
-                    catsBackend.catsProfile === "DEV2012") {
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             } else {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
             }
             delete booking.QUANTITY;
+
+            // correct some special case where ADMI and EDUC are obviously incorrect
+            // That can happen when switching CAT2 profiles or when using the CAT2 app favourites
+            if (booking.TASKTYPE === "ADMI" || booking.TASKTYPE === "EDUC") {
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === false && booking.UNIT === "H") {
+                    booking.UNIT = "TA";
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+                    booking.CATSHOURS = "";
+                }
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true && booking.UNIT !== "H") {
+                    booking.UNIT = "H";
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
+                    booking.CATSHOURS = booking.CATSQUANTITY;
+                }
+            }
 
             // Don't sent tasks which are already in the Backend with the exact same amount
             if (taskInBackend &&
