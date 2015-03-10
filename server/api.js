@@ -449,8 +449,8 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			    modulesPacked = JSON.stringify(files);
 				
 				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
-				buildifyJS.concat(files.js_files);
-				javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently		
+				javascriptPacked = buildifyJS.concat(files.js_files).getContent();
+				//javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently		
 				
 				var buildifyCSS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
 				buildifyCSS.concat(files.css_files);

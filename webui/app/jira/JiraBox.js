@@ -35,16 +35,21 @@ JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
     console.log("check if user is authenticated");
 
     return this.http.get('https://jira-staging.successfactors.com').success(function(data, status, headers, config){
+      console.log("Check if user is authenticated and response from jira is:");
+      console.log(headers());
+
+         var html = $.parseHTML(data); 
 
           if((headers()['x-ausername'] == 'anonymous') ||
             (headers()['X-AUSERNAME'] == 'anonymous') ||
-            status == '401'){
+            status == '401' ||
+            $(data).filter("meta[name='ajs-remote-user']").attr("content") == ""){
             that.authenticated = false;
             that.data = [];
             console.log("response: user is not authenticated");
+            console.log(headers());
             return;
           }
-          console.log(headers());
           console.log("response: user is authenticated");
           that.authenticated = true;
         });
