@@ -484,11 +484,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
                     replyMessages.push(data.CHECKMESSAGES[i].TEXT);
                     if (replyMessages.length <= maxMessageCount) {
-                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.');
-                        } else {
-                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
-                        }
+                        bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
                     }
                 }
             }
