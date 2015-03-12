@@ -15,7 +15,7 @@ describe("Timesheet tools", function () {
 		taskA.ZZSUBTYPE = 'MGT';
 		expect(catsUtils.getTaskID(taskA)).toEqual('RAUFDEVLMGT');
 		taskA.ZCPR_OBJGEXTID = 'UNIQUE_ID_01';
-		expect(catsUtils.getTaskID(taskA)).toEqual(taskA.ZCPR_OBJGEXTID);
+		expect(catsUtils.getTaskID(taskA)).toEqual('UNIQUE_ID_01DEVLMGT');
 	});
 
 	it("should map the name to the state descriptor", function () {
@@ -51,6 +51,39 @@ describe("Timesheet tools", function () {
 		expect(catsUtils.isSameTask(taskB, taskA)).toEqual(false);
 		expect(catsUtils.isSameTask(taskB, "")).toEqual(false);
 		taskB.ZCPR_OBJGEXTID = 'efg';
+		expect(catsUtils.isSameTask(taskA, taskB)).toEqual(false);
+	});
+
+	it("should identify equal tasks for support profile with cProject stuff", function () {
+		var taskA = {};
+		taskA.ZCPR_OBJGEXTID = 'abc';
+		taskA.TASKTYPE = 'A';
+		taskA.ZZSUBTYPE = 'SUBA';
+		var taskB = {};
+		taskB.ZCPR_OBJGEXTID = 'abc';
+		taskB.TASKTYPE = 'A';
+		taskB.ZZSUBTYPE = 'SUBB';
+		expect(catsUtils.isSameTask(taskA, taskA)).toEqual(true);
+		expect(catsUtils.isSameTask(taskB, taskB)).toEqual(true);
+		taskB.RAUFNR = '1';
+		expect(catsUtils.isSameTask(taskB, taskB)).toEqual(true);
+		taskB.ZZSUBTYPE = 'SUBA';
+		expect(catsUtils.isSameTask(taskA, taskB)).toEqual(true);
+	});
+
+	it("should identify UNequal tasks for support profile with cProject stuff", function () {
+		var taskA = {};
+		taskA.ZCPR_OBJGEXTID = 'abc';
+		taskA.TASKTYPE = 'A';
+		taskA.ZZSUBTYPE = 'SUBA';
+		var taskB = {};
+		taskB.ZCPR_OBJGEXTID = 'abc';
+		taskB.TASKTYPE = 'A';
+		taskB.ZZSUBTYPE = 'SUBB';
+		expect(catsUtils.isSameTask(taskA, taskB)).toEqual(false);
+		expect(catsUtils.isSameTask(taskB, taskA)).toEqual(false);
+		taskB.ZCPR_OBJGEXTID = 'def';
+		taskB.ZZSUBTYPE = 'SUBA';
 		expect(catsUtils.isSameTask(taskA, taskB)).toEqual(false);
 	});
 
