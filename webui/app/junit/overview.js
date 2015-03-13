@@ -1,5 +1,8 @@
 ﻿angular.module('app.junit', ['app.junit.data']);
-angular.module('app.junit').directive('app.junit', ['app.junit.configService', 'app.junit.dataService', function (configService, dataService) {
+
+angular.module('app.junit').directive('app.junit',
+  ['app.junit.configService', 'app.junit.dataService', 'trafficLightService',
+	function (configService, dataService, trafficLightService) {
 
 	var directiveController = ['$scope', function ($scope) {
 
@@ -23,6 +26,15 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
     $scope.numFailedTestCases = 0;
     $scope.numErrorTestCases = 0;
 
+		$scope.updateTrafficLight = function() {
+			if ( $scope.numFailedTestCases || $scope.numErrorTestCases) {
+				trafficLightService.red( );
+			}
+			else {
+				trafficLightService.green( );
+			}
+		};
+
 		$scope.getData = function() {
       $scope.numSuccessTestCases = 0;
       $scope.numFailedTestCases = 0;
@@ -34,6 +46,8 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
           $scope.numSuccessTestCases += value.result.numSuccessTestCases;
           $scope.numFailedTestCases += value.result.numFailedTestCases;
           $scope.numErrorTestCases += value.result.numErrorTestCases;
+
+					$scope.updateTrafficLight( );
         }, function() {
           $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
         });
