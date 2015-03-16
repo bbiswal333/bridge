@@ -36,22 +36,32 @@ angular.module('app.junit').directive('app.junit',
 		};
 
 		$scope.getData = function() {
+
+      var promises = [];
       $scope.numSuccessTestCases = 0;
       $scope.numFailedTestCases = 0;
       $scope.numErrorTestCases = 0;
       $scope.box.errorText = '';
 
-			dataService.getInstanceForAppId($scope.metadata.guid).loadData().forEach(function(promise) {
-        promise.then(function(value) {
-          $scope.numSuccessTestCases += value.result.numSuccessTestCases;
-          $scope.numFailedTestCases += value.result.numFailedTestCases;
-          $scope.numErrorTestCases += value.result.numErrorTestCases;
+      promises = dataService.getInstanceForAppId($scope.metadata.guid).loadData();
 
-					$scope.updateTrafficLight( );
-        }, function() {
-          $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
-        });
-			});
+      if(promises.length !== 0) {
+        promises.forEach(function(promise) {
+          promise.then(function(value) {
+            $scope.numSuccessTestCases += value.result.numSuccessTestCases;
+            $scope.numFailedTestCases += value.result.numFailedTestCases;
+            $scope.numErrorTestCases += value.result.numErrorTestCases;
+
+  					$scope.updateTrafficLight( );
+          }, function() {
+            $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
+          });
+  			});
+      }
+      else {
+        // No URL is configured, we have to set the traffic light to green
+        this.updateTrafficLight( );
+      }
 		};
 
 		// Bridge framework function to enable saving the config
