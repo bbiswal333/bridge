@@ -6,31 +6,42 @@ var JiraBox = function(http){
     this.http = http;
     this.data = [];
     this.authenticated = true;
+    this.jira_instance = null;
+    this.jira_url = 'https://sapjira.wdf.sap.corp:443';
 };
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.login = function (username, pwd) {
+JiraBox.prototype.setInstance = function(jira_instance) {
+  this.jira_instance = jira_instance;
 
-    console.log("login");
+  this.jira_url = 'https://sapjira.wdf.sap.corp:443'
 
-  var req = {
-   method: 'GET',
-   url: 'https://jira-staging.successfactors.com:443',
-   headers: {
-     'Content-Type': 'application/json',
-     'Authorization': 'Basic ' + window.btoa(username+':'+pwd),
-   },
-  };
+  if(jira_instance === 'issuemanagement')
+  {
+    this.jira_url = 'https://issuemanagement.wdf.sap.corp';
+  }
+  if(jira_instance === 'issues')
+  {
+    this.jira_url = 'https://issues.wdf.sap.corp';
+  }
 
-  return this.http(req);
+  if(jira_instance === 'jtrack')
+  {
+      this.jira_url = 'https://jtrack.wdf.sap.corp';
+  }
+
+  if(jira_instance === 'successfactors')
+  {
+    this.jira_url = 'https://jira-staging.successfactors.com:443';
+  }
 };
 
-JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
+JiraBox.prototype.isUserAuthenticated = function () {
 
   var that = this;
 
-  if(jira_instance === 'successfactors'){
+  if(this.jira_instance === 'successfactors'){
 
     console.log("check if user is authenticated");
 
@@ -60,48 +71,26 @@ JiraBox.prototype.isUserAuthenticated = function (jira_instance) {
   return this.http.get('https://sapjira.wdf.sap.corp:443');
 };
 
-JiraBox.prototype.getCreateIssueUrl = function (jira_instance) {
-  if(jira_instance == 'successfactors'){
+JiraBox.prototype.getCreateIssueUrl = function () {
+  if(this.jira_instance == 'successfactors'){
     if(this.authenticated){
-      return "https://jira.successfactors.com/secure/CreateIssue!default.jspa";
+      return this.jira_url + "/secure/CreateIssue!default.jspa";
     }
-    return "https://jira.successfactors.com";
+    return this.jira_url;
   } else {
-    return "https://sapjira.wdf.sap.corp/secure/CreateIssue!default.jspa";
+    return this.jira_url + "/secure/CreateIssue!default.jspa";
   }
 };
 
-JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResults) {
+JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     var that = this;
-    var jira_url = 'https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=';
 
     if (!sMaxResults || angular.isNumber(sMaxResults)){
         sMaxResults = "50";
     }
     sMaxResults = "&maxResults=" + sMaxResults;
 
-    if(jira_instance === 'issuemanagement')
-    {
-      jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-    if(jira_instance === 'issues')
-    {
-      jira_url = 'https://issues.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-
-    if(jira_instance === 'jtrack')
-    {
-        jira_url = 'https://jtrack.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-
-    if(jira_instance === 'successfactors')
-    {
-      jira_url = 'https://jira-staging.successfactors.com:443/rest/api/latest/search?jql=';
-    }
-
-    console.log("fire query: " + jira_url + sQuery + sMaxResults);
-
-    return this.http.get(jira_url + sQuery + sMaxResults
+    return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
         ).success(function (data, status, headers, config) {
 
           console.log("response from server: ");
@@ -166,10 +155,12 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
 angular.module('app.jira').service('JiraBox', ['$http', function($http) {
   var instances = {};
 
-  this.getInstanceForAppId = function(appId) {
+  this.getInstanceForAppId = function(appId, jira_instance) {
     if(instances[appId] === undefined) {
       instances[appId] = new JiraBox($http);
     }
+
+    instances[appId].setInstance(jira_instance);
 
     return instances[appId];
   };

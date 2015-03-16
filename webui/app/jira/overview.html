@@ -18,26 +18,7 @@
 </div>
 
 <div ng-if="!authenticated">
-    Please log into Jira.
-
-    <form ng-submit="login()">
-        <div class="row">
-            <div class="col-xs-6 has-feedback">
-                <bridge.input model="username" placeholder="User" autofocus></bridge.input>
-            </div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-xs-6 has-feedback">
-                <bridge.input type="password" model="userpwd" placeholder="Password"></bridge.input>
-            </div>
-        </div>
-        <div class="row">
-            <bridge.button class="save_close_btn">
-                Login
-            </bridge.button>
-        </div>
-    </form>
+    Please log into <a target="_blank" href="{{jira_url}}">Jira</a>.
 </div>
 
 <div ng-if="authenticated && jiraChartData.length <= 0">

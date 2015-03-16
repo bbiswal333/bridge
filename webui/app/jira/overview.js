@@ -49,7 +49,7 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
     var directiveController = ['$scope', function ($scope) {
         var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
-        var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
+        var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid, config.getConfig().jira);
 
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Configure JIRA Query";
@@ -63,12 +63,13 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             iconCss: "fa-plus",
             title: "Create Issue",
             callback: function(){
-                $window.open(jiraBox.getCreateIssueUrl(config.getConfig().jira));
+                $window.open(jiraBox.getCreateIssueUrl());
             }
         }];
 
         $scope.jiraData = jiraBox.data;
         $scope.authenticated = jiraBox.authenticated;
+        $scope.jira_url = jiraBox.jira_url;
         $scope.jiraChartData = [];
 
         $scope.config = {};
@@ -87,24 +88,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             "#ffa317"
         ];
 
-        $scope.login = function() {
-
-            console.log("..login pressed");
-
-            jiraBox.login(this.username, this.userpwd).then(function(){
-                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
-                    $scope.authenticated = jiraBox.authenticated;
-
-                    if(jiraBox.authenticated){
-                        console.log("user is authenticated");
-                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
-                            $scope.jiraData = jiraBox.data;
-                        });
-                    }
-                });
-            });
-        };
-
         $scope.colorFunction = function() {
             return function(d, i) {
                 return $scope.colors[i];
@@ -120,12 +103,15 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
 
                 console.log("..config changed");
 
-                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
+                jiraBox.setInstance(config.getConfig().jira);
+                $scope.jira_url = jiraBox.jira_url;
+
+                jiraBox.isUserAuthenticated().then(function() {
                     $scope.authenticated = jiraBox.authenticated;
 
                     if(jiraBox.authenticated){
                         console.log("user is authenticated");
-                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits).then(function() {
+                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().maxHits).then(function() {
                             $scope.jiraData = jiraBox.data;
                         });
                     }
@@ -201,13 +187,14 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             if (config.isInitialized() === false) {
                 console.log("..init");
                 config.initialize($scope.metadata.guid);
-                var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid);
-                jiraBox.isUserAuthenticated(config.getConfig().jira).then(function() {
+                var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid, config.getConfig().jira);
+                jiraBox.isUserAuthenticated().then(function() {
                     $scope.authenticated = jiraBox.authenticated;
+                    $scope.jira_url = jiraBox.jira_url;
 
                     if(jiraBox.authenticated){
                         console.log("user is authenticated");
-                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira, config.getConfig().maxHits);
+                        jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().maxHits);
                     }
                 });
             }

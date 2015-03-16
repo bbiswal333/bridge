@@ -1,32 +1,32 @@
 angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
         var config = JiraConfig.getConfigInstanceForAppId("app.jira-" + $routeParams);
-        var jiraBox = JiraBox.getInstanceForAppId("app.jira-" + $routeParams.instanceNumber);
+        var jiraBox = JiraBox.getInstanceForAppId("app.jira-" + $routeParams.instanceNumber, config.getConfig().jira);
 
         $scope.$watch('config.query', function (newVal, oldVal) {
 
 
             $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
-             if(config.jira === 'issuemanagement')
+             if(config.getConfig().jira === 'issuemanagement')
              {
                 $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
              }
-			if(config.jira === 'jtrack')
+			if(config.getConfig().jira === 'jtrack')
 			{
 				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
 			}
-            if(config.jira === 'issues')
+            if(config.getConfig().jira === 'issues')
             {
                 $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
             }
-            if(config.jira === 'successfactors')
+            if(config.getConfig().jira === 'successfactors')
             {
                 $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
             }
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
                 $scope.config = config.getConfig();
-                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira);
+                jiraBox.getIssuesforQuery(config.getConfig().query);
             }
         },true);
 
