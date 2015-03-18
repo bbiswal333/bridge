@@ -42,6 +42,7 @@ module.exports = function(config) {
             './webui/bridge/diagnosis/logService.js',
             './webui/bridge/mobileSearch/bridgeMobileSearchResults.js',
             './webui/bridge/controls/bridgeTable/bridgeTable.js',
+            './webui/bridge/ticketAppUtils/configUtils.js',
 
             './webui/app/**/overview.js',
 

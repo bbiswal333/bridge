@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Service & Support"],
+		"module_name"			:	"app.premiumEngagement",
+		"title"					:	"Prem. Eng.",
+		"icon_css"				:	"icon-comment",
+		"overview_directive"	:	"app.premiumEngagement",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+	    "description"			:	"Shows Customer Incidents of a specific customer from the BCP system. The data is retrieved from the backup system, so there is a minor delay of 1-5 minutes for changes.",
+	  	"multiInstance"			:	true,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/premiumEngagement/:appId/:prio/:calledFromNotifications",
+				"templateUrl"	:	"app/premiumEngagement/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "settings.js", "config.js", "ticketData.js", "detail.js"],
+	"css_files" : ["style.css"]
+}

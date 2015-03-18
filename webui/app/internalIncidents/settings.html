@@ -1,15 +1,11 @@
 <div ng-controller="app.internalIncidents.settingsController">
     <br/>
 
-    <!--<button style="margin-bottom: 8px" class="btn btn-default" ng-class="{'btn_blue': config.data.ignoreAuthorAction}" ng-click="config.data.ignoreAuthorAction = !config.data.ignoreAuthorAction">
-        Ignore Tickets In Author Action
-    </button>-->
     <bridge.button state="config.data.ignoreAuthorAction === true ? 'active' : ' '" ng-click="config.data.ignoreAuthorAction = !config.data.ignoreAuthorAction" style="width:210px">
     	Ignore Tickets In Author Action
     </bridge.button>
 
     <div class="row">
-        <!--<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>-->
         <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
     </div>
 </div>

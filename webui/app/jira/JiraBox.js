@@ -15,7 +15,7 @@ JiraBox.prototype = Object.create(IJiraBox);
 JiraBox.prototype.setInstance = function(jira_instance) {
   this.jira_instance = jira_instance;
 
-  this.jira_url = 'https://sapjira.wdf.sap.corp:443'
+  this.jira_url = 'https://sapjira.wdf.sap.corp:443';
 
   if(jira_instance === 'issuemanagement')
   {
@@ -49,12 +49,8 @@ JiraBox.prototype.isUserAuthenticated = function () {
       console.log("Check if user is authenticated and response from jira is:");
       console.log(headers());
 
-         var html = $.parseHTML(data); 
-
-          if((headers()['x-ausername'] == 'anonymous') ||
-            (headers()['X-AUSERNAME'] == 'anonymous') ||
-            status == '401' ||
-            $(data).filter("meta[name='ajs-remote-user']").attr("content") == ""){
+          if(status == '401' ||
+            $(data).filter("meta[name='ajs-remote-user']").attr("content") === ""){
             that.authenticated = false;
             that.data = [];
             console.log("response: user is not authenticated");
@@ -93,14 +89,14 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
         ).success(function (data, status, headers, config) {
 
-          console.log("response from server: ");
-          console.log(headers());
-
             that.data.length = 0;
 
             angular.forEach(data.issues, function(issue) {
+
               that.data.push({
                 key:            issue.key,
+                jira_url:       that.jira_url,
+                id:             issue.id,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
                 components:     issue.fields.components,
@@ -108,6 +104,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
                 parentSummary:  (issue.fields.parent !== undefined ? issue.fields.parent.fields.summary : null),
                 effortEstimate: issue.fields.customfield_10005,
                 status:         issue.fields.status.name
+
               });
             });
 

@@ -43,6 +43,7 @@ body {
     font-weight: 500;
     margin-left: auto;
     margin-right: auto;
+    transition: background-color ease 1s;
 }
 img {
     pointer-events: none;
@@ -270,7 +271,14 @@ img {
     padding-left: 13px;
     vertical-align: middle;
 }
-
+.box-errorIcon {
+    color: red;
+    float: right;
+    font-weight: bold;
+    font-size: 21px;
+    width: 12px;
+    padding: 0 10px;
+}
 .animation-container{
     height: 100%;
 }
@@ -786,6 +794,13 @@ h1{
 }
 h3{
     font-size:1.4rem;
+    font-weight:600;
+    font-style:italic;
+    text-transform:uppercase;
+}
+
+h5{
+    font-size:1.2rem;
     font-weight:600;
     font-style:italic;
     text-transform:uppercase;

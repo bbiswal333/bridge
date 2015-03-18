@@ -22,13 +22,13 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
     this.getTaskID = function (task) {
       if(task.ZCPR_OBJGEXTID) { // cPro
-        return task.ZCPR_OBJGEXTID;
+        return task.ZCPR_OBJGEXTID + (task.TASKTYPE || "") + (task.ZZSUBTYPE || "");
       } else if (task.RAUFNR) { // order based
-        return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
+        return (task.RAUFNR || "") + (task.TASKTYPE || "") + (task.ZZSUBTYPE || "");
       } else if (task.RNPLNR) { // catsXT
-        return (task.RNPLNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "") + (task.VORNR || "") + (task.AUTYP || "") + (task.TASKLEVEL || "") + (task.SKOSTL || "") + (task.ZZOBJNR || "");
+        return (task.RNPLNR || "") + (task.TASKTYPE || "") + (task.ZZSUBTYPE || "") + (task.VORNR || "") + (task.AUTYP || "") + (task.TASKLEVEL || "") + (task.SKOSTL || "") + (task.ZZOBJNR || "");
       } else { // basic stuff like ADMI
-        return (task.RAUFNR || "") + task.TASKTYPE + (task.ZZSUBTYPE || "");
+        return (task.RAUFNR || "") + (task.TASKTYPE || "") + (task.ZZSUBTYPE || "");
       }
     };
 
@@ -37,19 +37,30 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
         return false;
       }
 
-      if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID) || // OBJEXTID exists
+      if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
+           task1.ZCPR_OBJGEXTID &&
+          !task1.ZZSUBTYPE && !task2.ZZSUBTYPE) || // OBJEXTID for non SUP2007C exists
+
+          (task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
+           task1.ZCPR_OBJGEXTID &&
+           task1.ZZSUBTYPE && task2.ZZSUBTYPE &&
+           task1.TASKTYPE === task2.TASKTYPE &&
+           task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // OBJEXTID for SUP2007C exists
+
           (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID &&
            !task1.RNPLNR && !task2.RNPLNR &&
             task1.RAUFNR === task2.RAUFNR &&
             task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
             task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // CAT2 task check
-           (task1.RNPLNR === task2.RNPLNR && task1.RNPLNR &&
+
+          ( task1.RNPLNR === task2.RNPLNR && task1.RNPLNR &&
             task1.VORNR === task2.VORN &&
             task1.AUTYP === task2.AUTYP &&
             task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
             task1.TASKLEVEL === task2.TASKLEVEL &&
             task1.SKOSTL === task2.SKOSTL &&
             task1.ZZOBJNR === task2.ZZOBJNR)) {  // CATSXT task check
+
           return true;
       }
       return false;
@@ -64,6 +75,16 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
           return true;
       }
       return false;
+    };
+
+    this.isHourlyProfil = function(catsProfile){
+            if (catsProfile === "SUP2007H" ||
+                catsProfile === "SUP2007B" ||
+                catsProfile === "DEV2012") {
+                return true;
+            } else {
+                return false;
+            }
     };
 
     this.isFixedTask = function(task){
@@ -82,6 +103,27 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
     this.cat2CompliantRoundingForHours = function(value) {
       return Math.round(value * 100) / 100;
+    };
+
+    this.calculateDAY = function(task, day) {
+      var value;
+      if (task.UNIT === 'H') {
+        value = task.QUANTITY / day.hoursOfWorkingDay;
+      } else {
+        value = task.QUANTITY;
+      }
+      if(day.actualTimeInPercentageOfDay <= day.targetTimeInPercentageOfDay) {
+        if (task.UNIT !== 'H') {
+          // Adjusting to acutal part-time and country specific target hours value
+          var roundedTargetHours = Math.round(Math.round(day.targetHours / day.hoursOfWorkingDay * 1000) / 1000 * day.hoursOfWorkingDay * 1000) / 1000;
+        } else {
+          roundedTargetHours = day.targetHours;
+        }
+        if(day.targetTimeInPercentageOfDay <= 1 || task.UNIT === 'H') {
+          value = Math.round(value * day.hoursOfWorkingDay / roundedTargetHours * 1000) / 1000;
+        }
+      }
+      return Math.round(value * 1000) / 1000;
     };
   }
 );

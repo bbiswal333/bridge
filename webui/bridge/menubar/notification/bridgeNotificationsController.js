@@ -85,7 +85,7 @@ angular.module('bridge.app').
 		    case 'error':
 		        return 'fa fa-times';
 		    default:
-		        throw new Error('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app)
+		        throw new Error('Unknown State and module name: ' + notification.kindOf + '/ ' + notification.app);
 		}
 	};
 

@@ -1,0 +1,30 @@
+<div ng-controller="app.premiumEngagement.detailController" style="box-sizing:border-box;">
+    <div style="padding:30px;box-sizing:border-box;">
+
+        <bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+        <div class="btn-group" style="height:32px;max-width:100%;">
+            <bridge.button ng-repeat="prio in prios" ng-click="prio.active = !prio.active" state="prio.active === true ? 'active' : ' '" style="width:100px;margin-top:0;">{{prio.description}}</bridge.button>
+        </div>
+
+        <br/>
+
+        <bridge.table table-data="messages" filter="filterTable">
+            <bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'">{{row.PRIORITY_DESCR}}</bridge.table-column>
+            <bridge.table-column column-id="'2'" header="'Customer'" column-size-class="'col-sm-2'" order-by="'CUST_NAME'">{{row.CUST_NAME}}</bridge.table-column>
+            <bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUS_DESCR'">{{row.STATUS_DESCR}}</bridge.table-column>
+            <bridge.table-column column-id="'4'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'">
+                <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
+                     class="im-reporter-img"
+                     style="height: 32px; vertical-align: initial; vertical-align: auto;"
+                     ng-if="row.PROCESSOR_ID"></img>
+                <a href="mailto:{{row.processor_enh.mail}}"><p class="table-icon-small icon-mail"></p></a>
+                <a href="tel:{{row.processor_enh.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+                <a class="trunctedText clickable" ng-click="parentScope.userClick(row.processor_enh)">{{row.processor_enh.fullName}}</a>
+            </bridge.table-column>
+            <bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'">
+                <a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
+            </bridge.table-column>
+        </bridge.table>
+
+    </div>
+</div>

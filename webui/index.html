@@ -5,12 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <!-- Use UTF-8 as charset to display special chars like ß -->
-<!--     <meta charset="utf-8"> -->
-
-    <!-- browser test -->
-    <script src="lib/modernizr-2_7_1/modernizr.js"></script>
-    <script src="browser.js"></script>
-    <script src="browser_redirect.js"></script>
+    <!-- <meta charset="utf-8"> -->
 
     <!-- external css -->
     <link href="lib/bootstrap-3_1_1/css/bootstrap.css" rel="stylesheet" />
@@ -29,6 +24,22 @@
     <link href="css/bridgeInput.css" rel="stylesheet" />
     <link href="css/bridgeButtons.css" rel="stylesheet" />
     
+    <!--<link rel="stylesheet" type="text/css" href="css/highcontrast.css">-->
+
+    <link rel="stylesheet" type="text/css" href="lib/nvd3_1_1/nv.d3.css">
+    <!-- icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo_final-01.ico" />
+    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
+    <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" /> 
+     
+    <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">  
+
+    <!-- browser test -->
+    <script src="lib/modernizr-2_7_1/modernizr.js"></script>
+    <script src="browser.js"></script>
+    <script src="browser_redirect.js"></script>
+
+    <!-- libraries -->
     <script src="lib/jQuery-2_1_0/jquery.min.js"></script>
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
     <script src="lib/jquery.timeago.js"></script>
@@ -46,19 +57,11 @@
     <script src="lib/d3_3_4_6/d3.min.js"></script>
     <script src="lib/nvd3_1_1/nv.d3.min.js"></script>
     <script src="lib/angularjs-nvd3-directives_0_0_7-6/angularjs-nvd3-directives.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="lib/nvd3_1_1/nv.d3.css">
 
     <script src="bridge/piwik.js"></script>
     <script src="lib/xml2json.js"></script>
 
     <script src="lib/jQueryHitTest.js"></script>
-
-    <!-- icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/logo_final-01.ico" />
-    <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
-    <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" /> 
-     
-    <link rel="stylesheet" type="text/css" href="css/fonts/weather-icons-master/css/weather-icons.css">  
 
     <!-- external packed libs -->
     <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
@@ -89,12 +92,14 @@
     <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"
             type="text/javascript" charset="utf-8"></script>-->
 
-    <script src="loader.js"></script>   
+    <script src="loader.js"></script>
+
+    <!--Math library for integrated calculator-->
+    <script src="lib/math.js"></script>
 
     <title>Bridge</title>
 </head>
-
-<body class="noselect grey-60" style="background-image: url('img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
+<body class="noselect" style="background-image: url('https://bridge.mo.sap.corp/img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
     <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <bridge.menubar></bridge.menubar>
         
@@ -114,10 +119,10 @@
         </div>
 
         <div style="position:absolute;bottom:0px;width:100%;">
-            <alert ng-repeat="alert in alerts" style="font-weight:lighter;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
+            <alert ng-repeat="alert in alerts" style="font-weight:bold;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
                 <span ng-bind-html="alert.msg"></span>
             </alert>
-        </div><!--  -->
+        </div>
         <div style="position: fixed; bottom: 20px;right:45%; text-align:center; width: 138px; height: 138px" ng-class="{'invisible': !appDragInfo.appIsDragged}">
             <div style="border-radius: 100%;text-align:center; box-shadow: 0px 0px 20px rgba(31,31,31,0.8); position: absolute" class="appDustBinIcon grey-60 hover">
                 <i class="fa fa-trash fa-4x" style="color: white;padding:35px 50px;"></i>

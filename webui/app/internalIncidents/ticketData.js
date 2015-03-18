@@ -1,6 +1,6 @@
 angular.module("app.internalIncidents").service("app.internalIncidents.ticketData",
-    ["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "app.internalIncidents.configservice", "notifier", "bridge.converter",
-    function($rootScope, $http, $q, $window, $location, bridgeDataService, configService, notifier, converter){
+    ["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "app.internalIncidents.configservice", "notifier", "bridge.converter", "bridge.ticketAppUtils.ticketUtils",
+    function($rootScope, $http, $q, $window, $location, bridgeDataService, configService, notifier, converter, ticketUtils){
         var Data = function(appId) {
             var config = configService.getConfigForAppId(appId);
             var that = this;
@@ -17,31 +17,12 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 key: "9", description: "Low", active: false, total: 0
             }];
 
-            this.ticketSourceSystems = [{
-                urlPart: "bcdmain", name: "BCD"
-            }, {
-                urlPart: "bctmain", name: "BCT"
-            }, {
-                urlPart: "bcqmain", name: "BCQ"
-            }, {
-                urlPart: "bcvmain", name: "BCV"
-            }, {
-                urlPart: "backup-support", name: "BCP"
-            }];
-            this.selectedSourceSystem = this.ticketSourceSystems[4];
+            this.selectedSourceSystem = ticketUtils.ticketSourceSystems[4];
             this.tickets = {};
             this.lastTickets = null;
             this.ticketsFromNotifications = [];
 
             this.sAppIdentifier = "";
-
-            function objectToArray(object, property) {
-                if (angular.isObject(object) && !angular.isArray(object[property])) {
-                    var dataCopy = angular.copy(object[property]);
-                    object[property] = [];
-                    object[property].push(dataCopy);
-                }
-            }
 
             this.loadTicketData = function () {
                 var defer = $q.defer();
@@ -49,9 +30,9 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 $http.get("https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/internal_incid?sap-client=001&sap-language=en&max_hits=1000&origin=" + $window.location.origin)
                     .success(function (data) {
                         that.tickets = new X2JS().xml_str2json(data).abap.values;
-                        objectToArray(that.tickets.RESULTNODE1, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
-                        objectToArray(that.tickets.RESULTNODE2, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
-                        objectToArray(that.tickets.RESULTNODE3, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
+                        ticketUtils.objectToArray(that.tickets.RESULTNODE1, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
+                        ticketUtils.objectToArray(that.tickets.RESULTNODE2, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
+                        ticketUtils.objectToArray(that.tickets.RESULTNODE3, "_-SID_-CN_IF_DEVDB_INC_OUT_S");
 
                         that.calculateTotals();
 

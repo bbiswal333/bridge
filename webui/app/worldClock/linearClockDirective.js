@@ -15,7 +15,8 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 	return {
 		restrict: 'E',
 		scope: {
-			"timeOffsetInMilliseconds": "="
+			"timeOffsetInMilliseconds": "=",
+			"clockIsPaused": "="
 		},
 		controller: function($scope, $element) {
 			var dragInfo;
@@ -32,7 +33,9 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			}
 
 			function calculateNowFromOffset() {
-				$scope.now = calUtils.utcNowWithOffset($scope.timeOffsetInMilliseconds);
+				if(!$scope.clockIsPaused) {
+					$scope.now = calUtils.utcNowWithOffset($scope.timeOffsetInMilliseconds);
+				}
 			}
 
 			function getDiffBetweenNowAndStartOfClockInMilliseconds() {
@@ -100,6 +103,11 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 			calculateNowFromOffset();
 			calculateClockVariables();
 			$interval(calculateNowFromOffset, C_10_SECONDS);
+
+			function startClock() {
+				$scope.clockIsPaused = false;
+			}
+			startClock();
 
 			var addedInTotal = 0;
 			function checkEasterEgg() {
@@ -224,9 +232,14 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 				dragInfo.clockOffsetAtStart = $scope.clockOffset;
 			};
 
+			function stopClock() {
+				$scope.clockIsPaused = true;
+			}
+
 			$scope.handleMouseMove = function($event) {
 				if(dragInfo.active) {
 					stopIncrementInterval();
+					stopClock();
 
 					dragInfo.mouseMoveEvent = {clientX: $event.clientX};
 					$scope.now = calculateNowFrom($event);
@@ -245,6 +258,7 @@ angular.module("app.worldClock").directive("app.worldClock.linearClock", ["lib.u
 				$scope.now = calUtils.now();
 				calculateClockOffset();
 				calculateClockVariables();
+				startClock();
 			};
 		},
 		templateUrl: "app/worldClock/linearClockTemplate.html"

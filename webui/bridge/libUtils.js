@@ -392,11 +392,11 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
     };
 
     this.transformDateToABAPFormat = function (date) {
-        return date.getFullYear() + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + this.toNumberOfCharactersString(date.getDate(), 2);
+        return date.getUTCFullYear() + this.toNumberOfCharactersString((date.getUTCMonth() + 1), 2) + this.toNumberOfCharactersString(date.getUTCDate(), 2);
     };
 
     this.transformDateToABAPFormatWithHyphen = function (date) {
-        return date.getFullYear() + "-" + this.toNumberOfCharactersString((date.getMonth() + 1), 2) + "-" + this.toNumberOfCharactersString(date.getDate(), 2);
+        return date.getUTCFullYear() + "-" + this.toNumberOfCharactersString((date.getUTCMonth() + 1), 2) + "-" + this.toNumberOfCharactersString(date.getUTCDate(), 2);
     };
 
     this.toNumberOfCharactersString = function (str, numberOfCharacters) {

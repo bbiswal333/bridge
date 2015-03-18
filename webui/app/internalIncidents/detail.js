@@ -1,6 +1,6 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService",
-    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService", "bridge.ticketAppUtils.detailUtils",
+    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService, detailUtils) {
         var config = configService.getConfigForAppId($routeParams.appId);
         var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
         $scope.filterText = '';
@@ -9,26 +9,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
         $scope.detailForNotifications = false;
 
         $scope.filterTable = function(oTicket){
-            var bTicketPriorityMatches = false;
-            angular.forEach($scope.prios, function(prio){
-                if (prio.active === true && oTicket.PRIORITY_KEY === prio.key){
-                    bTicketPriorityMatches = true;
-                }
-            });
-
-            var bTicketContainsFilterString = false;
-            if ($scope.filterText === "" || $scope.filterText === undefined){
-                bTicketContainsFilterString = true;
-            } else {
-                var property;
-                for (property in oTicket){
-                    if (oTicket[property].toString().toUpperCase().indexOf($scope.filterText.toUpperCase()) !== -1){
-                        bTicketContainsFilterString = true;
-                    }
-                }
-            }
-
-            return bTicketPriorityMatches && bTicketContainsFilterString;
+            return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
         };
 
         $scope.userClick = function(employeeDetails){

@@ -99,15 +99,15 @@ describe("Test the color utils for the allocation bar", function () {
     });
 
     it("should reset both colorCounter AND remebered colors on reset function", function(){
-        var block1 = {'task':{'TASKTYPE':'ABC','RAUFNR':'ABC','ZCPR_OBJGEXTID':'ABC', 'ZZSUBTYPE':''}};
+        var block1 = {'task':{'TASKTYPE':'A','RAUFNR':'B','ZCPR_OBJGEXTID':'C', 'ZZSUBTYPE':'D'}};
 
         colorUtils.getColorForBlock(block1);
 
-        expect(colorUtils.blockColors.ABC).toBeDefined();
+        expect(colorUtils.blockColors.CAD).toBeDefined();
         expect(colorUtils.colorCounter).toBe(1);
 
         colorUtils.resetColorCounter();
-        expect(colorUtils.blockColors.ABC).toBeUndefined();
+        expect(colorUtils.blockColors.CAD).toBeUndefined();
         expect(colorUtils.colorCounter).toBe(0);
 
     });

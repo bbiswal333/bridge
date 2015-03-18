@@ -1,7 +1,8 @@
 angular.module('app.customerMessages').appImSettings = ['$scope','app.customerMessages.configservice', 'app.customerMessages.orgUnitData', 'app.customerMessages.ticketData',
-	function ($scope, configService, orgUnitDataService, ticketData) {
+	function ($scope, configService, orgUnitDataService, ticketDataService) {
 		var config = configService.getInstanceForAppId($scope.boxScope.metadata.guid);
 		var orgUnitData = orgUnitDataService.getInstanceForAppId($scope.boxScope.metadata.guid);
+		var ticketData = ticketDataService.getInstanceForAppId($scope.boxScope.metadata.guid);
 		$scope.config = config;
 		$scope.orgUnits = orgUnitData.orgUnits;
 

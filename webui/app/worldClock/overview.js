@@ -27,13 +27,6 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 		$scope.box.boxSize = "2";
 		$scope.timeOffsetInMilliseconds = 0;
 
-		/*$scope.now = new Date();
-		$scope.timeOffsetInMilliseconds = 0;
-		$scope.changed = function() {
-			var offset = $scope.now - calUtils.now();
-			$scope.timeOffsetInMilliseconds = Math.abs(offset) >= 500 ? offset : 0;
-		};*/
-
 		configService.initialize($scope.metadata.guid);
 		$scope.locations = configService.locations;
 

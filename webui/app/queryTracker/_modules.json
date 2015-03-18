@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.querytracker",
+		"title"					:	"Query Tracker",
+		"icon_css"				:	"fa fa-check-square-o",
+		"overview_directive"	:	"app.querytracker",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"beta_users"			:	["I823282","D050049","D050570"],
+		"default_hidden"		:	true,
+		"description"			:	"Query Tracker",
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/queryTracker/",
+				"templateUrl"	:	"app/queryTracker/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js","detail.js"],
+	"css_files" : []
+}

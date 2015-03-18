@@ -152,38 +152,38 @@
                 if (ticket.PRIO === prioString){
                     addTicket(selectedTickets,ticket);
                 }
-            });}
+            }); }
             if (configservice.data.selection.colleagues) { that.backendTickets.colleagues.forEach(function(ticket){
                 if (ticket.PRIO === prioString){
                     addTicket(selectedTickets,ticket);
                 }
-            });}
+            }); }
             if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me.forEach(function(ticket){
                 if (ticket.PRIO === prioString){
                     addTicket(selectedTickets,ticket);
                 }
-            });}
+            }); }
             if (configservice.data.selection.created_me) { that.backendTickets.created_me.forEach(function(ticket){
                 if (ticket.PRIO === prioString){
                     addTicket(selectedTickets,ticket);
                 }
-            });}
+            }); }
             if (!configservice.data.settings.ignore_author_action) {
                 if (configservice.data.selection.sel_components) { that.backendTickets.sel_components_aa.forEach(function(ticket){
                     if (ticket.PRIO === prioString){
                         addTicket(selectedTickets,ticket);
                     }
-                });}
+                }); }
                 if (configservice.data.selection.colleagues) { that.backendTickets.colleagues_aa.forEach(function(ticket){
                     if (ticket.PRIO === prioString){
                         addTicket(selectedTickets,ticket);
                     }
-                });}
+                }); }
                 if (configservice.data.selection.assigned_me) { that.backendTickets.assigned_me_aa.forEach(function(ticket){
                     if (ticket.PRIO === prioString){
                         addTicket(selectedTickets,ticket);
                     }
-                });}
+                }); }
             }
             prio.selected = selectedTickets.length;
         });

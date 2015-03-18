@@ -1,0 +1,9 @@
+<div class="popover" style="width:250px">
+    <div class="arrow"></div>
+    <h3 class="popover-title" ng-show="title">{{title}}<span class="app-cats-legend-closeBtn glyphicon glyphicon-remove-circle clickable " ng-click="$hide();"></span></h3>
+    <div class="popover-content">
+        <div ng-repeat='oCustomerSelection in aCustomerSelectionOptions'>
+            <bridge.radio label="{{oCustomerSelection.sText}}" is-checked="config.data.sSelectedCustomer == oCustomerSelection.sId" check-toggle="customerSelectionChanged(oCustomerSelection)"></bridge.radio>
+        </div>
+    </div>
+</div>

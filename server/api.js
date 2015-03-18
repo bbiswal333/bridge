@@ -4,11 +4,10 @@ var url 		= require('url');
 var fs          = require('fs');
 var path 		= require('path');
 var setHeader	= require('./cors.js');
-var npm_load	= require('./npm_load.js');
 
 exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 {
-	//get api modules	
+	//get api modules
 	var xml2js 	  	  = require("xml2js").parseString;
 	var iconv 	  	  = require("iconv-lite");
 	var EWSClient 	  = require("./ews/ewsClient.js").EWSClient;
@@ -38,12 +37,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 		var d = new Date(year, month, day, hour, minute, second);
 
 		return new Date(d.getTime() + (offsetUTC_i * 3600000)); //3600000 milliseconds are one hour
-	}	
-	
-	function parseEWSDateStringAutoTimeZone(ewsDateStr_s) {
-			return _parseEWSDateString(ewsDateStr_s, (new Date().getTimezoneOffset() / -60));			
 	}
-	
+
+	function parseEWSDateStringAutoTimeZone(ewsDateStr_s) {
+		return _parseEWSDateString(ewsDateStr_s, (new Date().getTimezoneOffset() / -60));
+	}
+
 	function callBackend(protocol, hostname, port, path, method, proxy, decode, callback, postData){
 
 		if( port === null && protocol === 'http:')
@@ -56,7 +55,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			port = 443;
 		}
 
-		var options = 
+		var options =
 		{
 			hostname: hostname,
 			port: port,
@@ -90,6 +89,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			};
 		}
 
+		if(!('headers' in options)) {
+			options.headers = { };
+		}
+
+		options.headers['User-Agent'] = 'bridge';
+
 		var data = "";
 		console.log(method.toUpperCase() + ": " + protocol + "//" + hostname + ":" + port + path);
 
@@ -102,7 +107,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 				var contentType = res.headers['content-type'];
 				if (decode !== "none")
-				{ 
+				{
 					res.setEncoding('binary');
 				}
 				res.on('data', function(chunk) { data += chunk; });
@@ -132,10 +137,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			    });
 			});
 		}
-		
 
-		if (method.toLowerCase() === "post" && postData !== undefined) 
-		{			
+		if (method.toLowerCase() === "post" && postData !== undefined)
+		{
 			req.write(postData);
 		}
 
@@ -147,7 +151,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 	//api to check if client is existing
 	app.get('/client', function (request, response) {
-		response = setHeader( request, response );			
+		response = setHeader( request, response );
 		response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.version + '"}');
 	});
 
@@ -162,7 +166,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		if (typeof request.query.url === "undefined" || request.query.url === "")
 		{
-			response = setHeader( request, response );	
+			response = setHeader( request, response );
 			response.send("Paramter url needs to be set!");
 			return;
 		}
@@ -178,17 +182,17 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			proxy = true;
 		}
 
-		var service_url = url.parse(request.query.url);	
+		var service_url = url.parse(request.query.url);
 
 		var decode = "none";
 		if(typeof request.query.decode !== "undefined")
-		{				
+		{
 			decode = request.query.decode;
 		}
 
 
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, 'GET', proxy, decode, function (data, contentType) {
-			response = setHeader( request, response );	
+			response = setHeader( request, response );
 			//console.log(contentType);
 			//response.setHeader('Content-Type', contentType);
 			response.set({ 'Content-Type': contentType + '; charset=UTF-8'});
@@ -210,7 +214,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 					response.send("Could not convert XML to JSON.");
 				}
 			}
-			else 
+			else
 			{
 				response.send(data);
 			}
@@ -220,40 +224,38 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	app.get('/api/client/get', function(request, response)
 	{
 		if (typeof webkitClient !== 'undefined' && webkitClient)
-            {                
+            {
 
                 webkitClient.jQuery.ajax({
-                    url: request.query.url, 
-                    type: "GET",                    
-                    success: 
+                    url: request.query.url,
+                    type: "GET",
+                    success:
                         function(data)
-                        {                                        
+                        {
                             response.send(data);
                         },
-                    error: 
+                    error:
                         function() {
-                            response.send("error calling " + request.query.url);                            
+                            response.send("error calling " + request.query.url);
                         }
                 });
-
-            }  
-            else response.send("no client");      
+            }
+            else response.send("no client");
 	});
-
 
 	app.get('/api/client/copy', function(request, response)
 	{
 		if (typeof webkitClient !== 'undefined' && webkitClient)
-            {        
-            	webkitClient.gui.Clipboard.get().set(request.query.text);        
-            	response.send("done");      
-            }  
-            else response.send("no client");      
+            {
+            	webkitClient.gui.Clipboard.get().set(request.query.text);
+            	response.send("done");
+            }
+            else response.send("no client");
 	});
 
 	//generic api call post
 	app.options("/api/post", function(request, response){
-		response = setHeader( request, response );	
+		response = setHeader( request, response );
 		response.send();
 		return;
 	});
@@ -261,41 +263,40 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	app.post("/api/post", function (request, response) {
 		if (typeof request.query.url === "undefined" || request.query.url === "")
 		{
-			response = setHeader( request, response );	
+			response = setHeader( request, response );
 			response.send("Paramter url needs to be set!");
 			return;
 		}
 
-		var service_url = url.parse(request.query.url);	
+		var service_url = url.parse(request.query.url);
 	    //var postData = request.rawBody;
 		var postData = JSON.stringify(request.body);
 
 		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", false, "none", function(data) {
-			response = setHeader( request, response );		
+			response = setHeader( request, response );
 			response.send(data);
 		}, postData);
-	}); 
-
+	});
 
 	var concatAttributes = function(array, object, mapFunction)
 	{
 		for (var attribute in object) {
-			if (object.hasOwnProperty(attribute)) 
+			if (object.hasOwnProperty(attribute))
 			{
 			 	if(!array[attribute])
 				{
 				 	array[attribute] = [];
 				}
-				
+
 				var value = object[attribute];
 				if( mapFunction !== undefined )
 				{
 					value = mapFunction(attribute, value);
-				}		
+				}
 
 				if( value !== undefined )
-				{				
-					array[attribute] = array[attribute].concat(value); 				
+				{
+					array[attribute] = array[attribute].concat(value);
 				}
 			}
 		}
@@ -307,7 +308,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 		if( proxy )
 		{
-			if(process.platform == "win32") {
+			if(process.platform === "win32") {
 				set_proxy = "set http_proxy http_proxy=http://proxy:8080 && set https_proxy=http://proxy:8080";
 			}
 			else {
@@ -336,7 +337,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 							console.log("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
 							require('child_process').exec("cd " + path.dirname(packagePath) + " && " + getProxyCommands() + " && " + path.join(path.dirname(process.execPath), npm) + " install");
 						});
-					}					
+					}
 					for(var i = 0; i < module.nodeModules.length; i++) {
 						require(path.join(modulePath, '../../../../server/app', path.basename(path.dirname(modulePath)), module.nodeModules[i]))(app);
 					}
@@ -348,22 +349,22 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	};
 
 	var findFilesByName = function(dir, filename, moduleHandler)
-	{		
+	{
 		var files = fs.readdirSync(dir);
-		    
-		for (var i = 0; i < files.length; i++){	    
-		    var name = path.join(dir, '/', files[i]);			    		    
+
+		for (var i = 0; i < files.length; i++){
+		    var name = path.join(dir, '/', files[i]);
 
 		    if (fs.statSync(name).isDirectory() && path.basename(name) !== "node_modules")
-		    {		    	
-		    	findFilesByName(name, filename, moduleHandler);		    	    
+		    {
+		    	findFilesByName(name, filename, moduleHandler);
 		    }
 		    else
 		    {
 		    	if (path.basename(name) === filename)
 		    	{
 		    		moduleHandler(name);
-		    	}		        
+		    	}
 		    }
 		}
 	};
@@ -382,11 +383,11 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 	    		out_files = concatAttributes(out_files, module, function(attribute_name, value)
 	    		{
 	    			if( attribute_name.length > 6 && attribute_name.substring(attribute_name.length - 6) === "_files" )
-	    			{								
+	    			{
 	    				for (var i = 0; i < value.length; i++)
 	    				{
-							var filename = path.join(path.dirname(modulePath), value[i]);	
-							value[i] = path.relative(path.join(__dirname, '../webui'), filename);	    			
+							var filename = path.join(path.dirname(modulePath), value[i]);
+							value[i] = path.relative(path.join(__dirname, '../webui'), filename);
 						}
 						return value;
 	    			} else {
@@ -404,12 +405,12 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 	loadAppNodeModules();
 
-	app.get("/api/modules", function (request, response) 
+	app.get("/api/modules", function (request, response)
 	{
 		response = setHeader( request, response );
 
 		//cache module files for etag if existing
-		var getResponse = true;		
+		var getResponse = true;
 		if(eTag !== undefined)
 		{
 			//response.setHeader('Cache-Control', 'no-cache, max-age=2592000');	// 30 days
@@ -428,10 +429,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
             response.setHeader('Cache-Control', 'must-revalidate, private');
 			response.setHeader('Last-Modified', (new Date()).toUTCString());
 			response.removeHeader('Etag');
-		}	
-		
-		//console.log(eTag);
-		//console.log(request.headers['if-none-match']);		
+		}
 
 		if( getResponse )
 		{
@@ -443,41 +441,42 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			    files = concatAttributes(files, bridge_files);
 
 				var app_path = path.join(__dirname, '../webui/app');
-			    var app_files = getFiles(app_path);	
+			    var app_files = getFiles(app_path);
 			    files = concatAttributes(files, app_files);
 
 			    modulesPacked = JSON.stringify(files);
-				
-				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });			
-				javascriptPacked = buildifyJS.concat(files.js_files).getContent();
-				//javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently		
-				
-				var buildifyCSS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });	
+
+				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
+				buildifyJS.concat(files.js_files);
+				//javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently
+				javascriptPacked = buildifyJS.getContent();
+
+				var buildifyCSS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
 				buildifyCSS.concat(files.css_files);
 				stylesheetsPacked = buildifyCSS.cssmin().getContent();
 			}
 
 			if (typeof request.query.format === "undefined")
 			    {
-			    	response.setHeader('Content-Type', 'text/plain;');						    	   
-					response.send(modulesPacked);		
+			    	response.setHeader('Content-Type', 'text/plain;');
+					response.send(modulesPacked);
 				}
 				else if( request.query.format === "js")
-				{	
+				{
 					response.setHeader('Content-Type', 'text/javascript; charset=utf-8');
 					response.send(javascriptPacked);
 				}
 				else if( request.query.format === "css")
-				{			
+				{
 					response.setHeader('Content-Type', 'text/css; charset=utf-8');
 					response.send(stylesheetsPacked);
-			}   
+			}
 		}
 		else
 		{
 			response.send();
 		}
-	});	
+	});
 
 	//ms-exchange calendar data request
 	if( local )
@@ -498,11 +497,11 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 				if (dateFrom === undefined || dateTo === undefined) {
 					throw new Error("dateFrom_s and dateTo_s must not be undefined.");
 				}
-				
+
 				if (dateFrom === "" || dateTo === "") {
 					throw new Error("dateFrom_s and dateTo_s must not ne empty.");
 				}
-				
+
 				if (dateFrom.length !== 20 || dateTo.length !== 20) {
 					throw new Error("dateFrom_s and dateTo_s must follow the scheme \"YYYY-MM-DDTHH:MM:SSZ\", e.g. \"1789-08-04T23:59:00Z\"");
 				}
@@ -511,7 +510,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);
-				response.send(ans);				
+				response.send(ans);
 				return;
 			}
 
@@ -530,9 +529,9 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			});
 
 		});
-	
+
 		app.get("/api/calGetItemSSO", function (request, response) {
-			response = setHeader( request, response );	
+			response = setHeader( request, response );
 			var json = function () {
 				if (typeof request.query.format !== "undefined") {
 					return (request.query.format.toLowerCase() === "json") ? true : false;
@@ -545,7 +544,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			} catch (e) {
 				var ans = "Initialization of EWSClient resulted in an error:\n" + e.toString();
 				console.log(ans);
-				response.send(ans);				
+				response.send(ans);
 				return;
 			}
 
@@ -564,7 +563,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 			});
 
 		});
-					
+
 		// delete booked Room
 		// Pseudocode:
 		// - First we need to termine, given the start and end time the echangeUid and 

@@ -7,19 +7,19 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
 
             $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
-             if(config.getConfig().jira === 'issuemanagement')
+             if(config.jira === 'issuemanagement')
              {
                 $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
              }
-			if(config.getConfig().jira === 'jtrack')
+			if(config.jira === 'jtrack')
 			{
 				$scope.data.jira_url = 'https://jtrack.wdf.sap.corp/browse/';
 			}
-            if(config.getConfig().jira === 'issues')
+            if(config.jira === 'issues')
             {
                 $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
             }
-            if(config.getConfig().jira === 'successfactors')
+            if(config.jira === 'successfactors')
             {
                 $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
             }

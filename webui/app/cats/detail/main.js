@@ -17,6 +17,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
 
     $scope.blockdata = [];
+    $scope.blockdataRemembered = null;
     $scope.blockdataTemplate = [];
     $scope.loaded = false;
     $scope.width = $window.document.getElementById('app-cats-maintencance-allocation-div').offsetWidth;
@@ -25,7 +26,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.totalWorkingTime = 0;
     $scope.hintText = "";
     $scope.analytics = false;
-    // var lastSelectedDaysLength = 0;
 
     var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
     configService.copyConfigIfLoaded(catsConfigService);
@@ -339,6 +339,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     targetHours + "'!");
             }
 
+            $scope.blockdataRemembered = angular.copy($scope.blockdata);
+
         } catch(err) {
             $log.log("displayCATSDataForDay(): " + err);
         }
@@ -379,9 +381,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
     $scope.handleProjectChecked = function (desc_s, val_i, task) {
         if (!task.UNIT) {
-            if (catsBackend.catsProfile === "SUP2007H" ||
-                catsBackend.catsProfile === "SUP2007B" ||
-                catsBackend.catsProfile === "DEV2012") {
+            if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
                 task.UNIT = "H";
             } else {
                 task.UNIT = "T";
@@ -421,8 +421,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.hintText = hintText;
     };
 
+    function blockdataHasChanged() {
+        if ($scope.blockdataRemembered === null) { // first selection, no check possible
+            return false;
+        } else if ($scope.blockdataRemembered.length !== $scope.blockdata.length) { // apparently some block added
+            return true;
+        } else if ($scope.blockdata.length > 0 &&
+                   $scope.blockdataRemembered.length === $scope.blockdata.length) {
+            for (var i = 0; i < $scope.blockdata.length; i++) {
+                if($scope.blockdata[i].value !== $scope.blockdataRemembered[i].value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     $scope.selectionCompleted = function() {
         try {
+            if ($scope.selectedDates.length <= 1 &&
+                blockdataHasChanged()) {
+                bridgeInBrowserNotification.addAlert('', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
+            }
             angular.forEach($scope.selectedDates, function(dayString) {
                 checkGracePeriods(dayString);
             });
@@ -433,15 +453,12 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
-                // if (lastSelectedDaysLength === 1) {
-                    // $scope.blockdata = []; // One potential step for new templating functionality
-                // }
                 $scope.totalWorkingTime = 1;
             }
+            $scope.blockdataRemembered = angular.copy($scope.blockdata);
         } catch(err) {
             $log.log("selectionCompleted(): " + err);
         }
-        // lastSelectedDaysLength = $scope.selectedDates.length;
     };
 
     $scope.handleSelectedDate = function(dayString){
@@ -462,26 +479,21 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function checkPostReply(data) {
         try {
             var replyMessages = [];
-            var alertDuration = 5;
             var maxMessageCount = 5;
             for (var i = 0; i < data.CHECKMESSAGES.length; i++) {
                 if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
                     replyMessages.push(data.CHECKMESSAGES[i].TEXT);
                     if (replyMessages.length <= maxMessageCount) {
-                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Unit TA not permitted with an attendance or absence') !== -1) {
-                            bridgeInBrowserNotification.addAlert('danger', 'CAT2 maintenance is not required for your user.',alertDuration);
-                        } else {
-                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT,alertDuration);
-                        }
+                        bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
                     }
                 }
             }
             if (replyMessages.length > maxMessageCount) {
                 var additionalMessagesCount = replyMessages.length - maxMessageCount;
                 if (additionalMessagesCount === 1) {
-                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.',alertDuration);
+                    bridgeInBrowserNotification.addAlert('danger', 'There is ' + additionalMessagesCount + ' more error message.');
                 } else {
-                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.',alertDuration);
+                    bridgeInBrowserNotification.addAlert('danger', 'There are ' + additionalMessagesCount + ' more error messages.');
                 }
             }
             if (!replyMessages.length) {
@@ -530,18 +542,31 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.QUANTITY_DAY;
             delete booking.STATUS;
 
-            // determine amount to post
+            // assume task has correct unit and calculate best possible values
             if (booking.UNIT === "H" && targetHoursForDay) {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
-                if (catsBackend.catsProfile === "SUP2007H" ||
-                    catsBackend.catsProfile === "SUP2007B" ||
-                    catsBackend.catsProfile === "DEV2012") {
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             } else {
                 booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
             }
             delete booking.QUANTITY;
+
+            // correct some special case where ADMI and EDUC are obviously incorrect
+            // That can happen when switching CAT2 profiles or when using the CAT2 app favourites
+            if (booking.TASKTYPE === "ADMI" || booking.TASKTYPE === "EDUC") {
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === false && booking.UNIT === "H") {
+                    booking.UNIT = "TA";
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRounding($scope.blockdata[i].value * totalWorkingTimeForDay);
+                    booking.CATSHOURS = "";
+                }
+                if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true && booking.UNIT !== "H") {
+                    booking.UNIT = "H";
+                    booking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours($scope.blockdata[i].value * targetHoursForDay);
+                    booking.CATSHOURS = booking.CATSQUANTITY;
+                }
+            }
 
             // Don't sent tasks which are already in the Backend with the exact same amount
             if (taskInBackend &&

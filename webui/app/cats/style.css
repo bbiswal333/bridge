@@ -219,37 +219,64 @@
 
 .app-cats-stateR { 
     /* Not maintained */
-    background: #EEB2A8;
-    /*background: #F5C099;*/
-
+    background: #DD6551;
+}
+#calendarDay .app-cats-stateR span{
+    color:white;
+    text-shadow:1px 1px black;
 }
 .app-cats-stateR_INTHEFUTURE {
+    /* Not maintained in future */
     background: #F3F2F2;
 }
-.app-cats-stateY_INTHEFUTURE_part_maint {
-    /*background-image: url('/../../img/part_maint_FUTURE.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;*/
-    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100%);
+
+.app-cats-stateY, .app-cats-stateY_TODAY, .app-cats-stateY_INTHEFUTURE_part_maint { 
+    background: linear-gradient(
+        to right, 
+        #A7D0BA 0%, 
+        #A7D0BA 30%, 
+        #DD6551 30%, 
+        #DD6551 100% 
+    );
 }
-.app-cats-stateY { /* partially maintained, currently the same as app-cats-stateR */
-    /*background-image: url('/../../img/part_maint_B.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;*/
-    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
+.app-cats-stateY.hover:hover, .app-cats-stateY_TODAY.hover:hover, .app-cats-stateY_INTHEFUTURE_part_maint.hover:hover { 
+    background: linear-gradient(
+        to right, 
+        #7AB997 0%, 
+        #7AB997 30%, 
+        #D53F26 30%, 
+        #D53F26 100% 
+    );
 }
+#calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_TODAY span , #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint span {
+    color: white;
+    text-shadow:1px 1px black;
+}
+
 .app-cats-stateG { /* maintained */
     background: #A7D0BA;
 }
-.app-cats-stateOVERBOOKED { /*overbooked*/
-    /*background: #A7D0BA;*/
-    /*background-image: url('/../../img/over_booked.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;*/
-    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
+.app-cats-stateOVERBOOKED, .app-cats-stateOVERBOOKED_TODAY { /*overbooked*/
+    background: linear-gradient(
+        to right, 
+        #A7D0BA 0%, 
+        #A7D0BA 30%, 
+        #4EA175 30%, 
+        #4EA175 100%
+    );
+}
+.app-cats-stateOVERBOOKED.hover:hover, .app-cats-stateOVERBOOKED_TODAY.hover:hover { /*overbooked*/
+    background: linear-gradient(
+        to right, 
+        #7AB997 0%, 
+        #7AB997 30%, 
+        #367B56 30%, 
+        #367B56 100%
+    );
+}
+#calendarDay .app-cats-stateOVERBOOKED span, #calendarDay .app-cats-stateOVERBOOKED_TODAY span{
+    color :white;
+    text-shadow:1px 1px black;
 }
 .app-cats-stateN { /* no need for maintainance */
     background: #e1e1e1;
@@ -276,6 +303,55 @@
     font-weight: 900;
     font-style: italic;
 }
+
+
+/* ###### PATTERN ###### 
+.app-cats-stateR{
+     background:
+        repeating-linear-gradient(
+            -45deg,
+            #DD6551,
+            #DD6551 3px,
+            #DD6551 3px,
+            #E68C7D 6px
+        )
+    ;
+}
+.app-cats-stateY, .app-cats-stateY_TODAY, .app-cats-stateY_INTHEFUTURE_part_maint{ 
+    position: relative;
+    background: 
+        repeating-linear-gradient(
+            -45deg,
+            #DD6551,
+            #DD6551 3px,
+            #DD6551 3px,
+            #E68C7D 6px
+        )
+    ;
+}
+.app-cats-stateY:before, .app-cats-stateY_TODAY:before, .app-cats-stateY_INTHEFUTURE_part_maint:before{
+    content:'';
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(
+            to right, 
+            #A7D0BA 0%, 
+            #A7D0BA 30%, 
+            rgba(0,0,0,0) 30%, 
+            rgba(0,0,0,0) 100%
+        )
+    ;
+}
+
+
+
+*/
+
+
+
 .selected_day span{
     position: relative;
     top: -3px;
@@ -287,26 +363,8 @@
     color: #707070!important;
  
 }
-.app-cats-stateY_TODAY { 
-    /*background-color:#FEE0A1;
-    background-image: url('/../../img/part_maint_TODAY_B.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
-    font-weight: 900;
-    font-style: italic;
-    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #EEB2A8 50%, #EEB2A8 100% );
-}
-.app-cats-stateOVERBOOKED_TODAY { 
-    /*background-color:#A7D0BA;
-    background-image: url('/../../img/over_booked_TODAY.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
-    font-weight: 900;
-    font-style: italic;
-    background: linear-gradient(to right, #A7D0BA 0%, #A7D0BA 50%, #7AB997 50%, #7AB997 100%);
-} 
+
+
 .app-cats-icon {
     font-family: 'SAP-icons';
 }

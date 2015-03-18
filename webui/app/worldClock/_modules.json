@@ -9,7 +9,6 @@
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
-		"beta_users"			:	["D049677", "D062131", "D051804", "D050049", "D049583", "D039490"],
 		"description"			:	"Ever wondered what time it is in other SAP office locations? With the world clock app you can select your relevant locations and monitor the current times. You can even simulate the time by using drag&drop on the linear clock."
 	},
 	"modules" : [],

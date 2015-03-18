@@ -2,6 +2,7 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
 
     var configBackend =
     {
+
         "WDF": {
             portalLink:  "https://portal.wdf.sap.corp/irj/servlet/prt/portal/prtroot/com.sap.sen.wcms.Cockpit.Main?url=/guid/3021bb0d-ed8d-2910-5aa6-cbed615328df",
             portalLinkText: "Lunch menu in the portal",
@@ -14,9 +15,50 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
         },
         "DRE": {
             portalLink:  "https://lunchmenudresden-p1940757062trial.dispatcher.hanatrial.ondemand.com",
-            portalLinkText: "Lunch menu online",
+            portalLinkText: "Dresden lunch menu online",
+            portalBackend: ''
+        },
+        "BEN": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Bensheim",
+            portalLinkText: "Bensheim lunch menu in the portal",
+            portalBackend: ''
+        },
+        "BER": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin",
+            portalLinkText: "Berlin lunch menu in the portal",
+            portalBackend: ''
+        },
+        "DUE": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Duesseldorf",
+            portalLinkText: "Duesseldorf lunch menu in the portal",
+            portalBackend: ''
+        },
+        "POT": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Potsdam",
+            portalLinkText: "Potsdamm lunch menu in the portal",
+            portalBackend: ''
+        },
+        "HAM": {
+            portalLink: "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Hamburg",
+            portalLinkText: "Hamburg lunch menu in the portal",
+            portalBackend: ''
+        },
+        "MAK": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Markdorf",
+            portalLinkText: "Markdorf lunch menu in the portal",
+            portalBackend: ''
+        },
+        "MUE": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Muenchen",
+            portalLinkText: "Munich lunch menu in the portal",
+            portalBackend: ''
+        },
+        "STI": {
+            portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20St.%20Ingbert",
+            portalLinkText: "St. Ingbert lunch menu in the portal",
             portalBackend: ''
         }
+
     };
     this.isValidBackend = function(backend) {
         return typeof configBackend[backend] !== "undefined";
@@ -28,6 +70,10 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
 
     this.getBackendMetadata = function(sSelectedBackend) {
         return configBackend[sSelectedBackend];
+    };
+
+    this.getBackendData = function(){
+        return configBackend;
     };
 
     this.getLunchData = function(chosenbackend) {

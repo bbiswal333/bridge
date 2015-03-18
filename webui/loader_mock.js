@@ -10,10 +10,13 @@ angular.module('bridge.app', [
     "lib.utils",
     "bridge.diagnosis",
     "bridge.search",
-    "bridge.mobileSearch"
+    "bridge.mobileSearch",
+    "ui.bootstrap",
+    "mgcrea.ngStrap",
+    "mgcrea.ngStrap.tooltip"
 ]);
 
-angular.module('bridge.service', ["ngRoute", "ui.bootstrap.modal"]);
+angular.module('bridge.service', ["ngRoute", "ui.bootstrap.modal", "ui.bootstrap.tpls", "ngRoute"]);
 angular.module('bridge.service').provider("bridge.service.loader", function () {
     this.apps = [{
         icon_css: "icon-wrench",

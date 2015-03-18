@@ -1,0 +1,17 @@
+{
+	"app":
+	{
+		"categories"			:	["Service & Support"],
+		"module_name"			:	"app.quickaccess",
+		"title"					:	"Quick Access",
+		"icon_css"				:	"fa fa-bookmark",
+		"overview_directive"	:	"app.quickaccess",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"Open SAP notes and internal incidents quickly"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : []
+}

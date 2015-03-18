@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo",
-    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo) {
+    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo", "bridge.service.backgroundSetter",
+    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo, backgroundSetter) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -152,6 +152,9 @@ angular.module('bridge.app').controller('bridgeController',
             bridgeInBrowserNotification.setScope($scope);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
+            if($scope.bridgeSettings.selectedBackgroundColorIndex !== undefined) {
+                backgroundSetter.setBackgroundColor($scope.bridgeSettings.backgroundColors[$scope.bridgeSettings.selectedBackgroundColorIndex]);
+            }
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.projects = bridgeDataService.getProjects();
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
@@ -165,6 +168,7 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.appDragInfo = dragInfo;
+
     }
 ]);
 
