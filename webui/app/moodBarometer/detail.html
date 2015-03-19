@@ -6,7 +6,7 @@
             <div ng-if="!(dataQ=='')">
                 <div class="row-fluid" ng-repeat="x in dataQ">
                    <p>
-                       <img height="25px" width="25px" src="/app/moodBArometer/mood{{x.mood}}.svg">
+                       <img height="25px" width="25px" ng-src="/app/moodBarometer/mood{{x.mood}}.svg">
                         {{x.mood | lowercase}}: {{ x.perc}} % - {{x.count}} total
                    </p>
                         <div class="progress">
