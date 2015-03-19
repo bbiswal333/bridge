@@ -1,0 +1,21 @@
+<div ng-controller="app.moodBarometer.detailController" style="box-sizing:inherit;">
+        <div class="container-fluid">
+            <div ng-if="dataQ==''">
+                There are no statistics because no one has voted!
+            </div>
+            <div ng-if="!(dataQ=='')">
+                <div class="row-fluid" ng-repeat="x in dataQ">
+                   <p>
+                       <img height="25px" width="25px" src="/app/moodBArometer/mood{{x.mood}}.svg">
+                        {{x.mood | lowercase}}: {{ x.perc}} % - {{x.count}} total
+                   </p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{x.perc}}" aria-valuemin="0" aria-valuemax="100"
+                                 style=" background-color: #428bca; height: 20px; padding-left: 0px; padding-right: 0px;" ng-style="{width: x.perc + '%'}">
+                            </div>
+                        </div>
+                    </br>
+                </div>
+            </div>
+        </div>
+</div>
