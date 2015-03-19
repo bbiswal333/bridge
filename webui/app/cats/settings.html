@@ -16,7 +16,7 @@
 						data-onprojectedit="handleEditTask(id)"
 						data-heightoflist="600px"
 						data-for-settings-view="true">
-					</app.cats.maintenance-view.project-list>		
+					</app.cats.maintenance-view.project-list>
 				</div>
 				<div class="col-xs-12 col-md-6" style="margin-top:45px">
 					<div class="row settings_input_row">
@@ -42,7 +42,7 @@
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">Project</span>
-						<div class="col-md-8">			
+						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_EXTID || "Project Id"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.ZCPR_EXTID" 
@@ -53,13 +53,12 @@
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">cPro Task ID
-							<span class="settings_required_label_mark red-font" ng-show="(!configService.selectedTask.TASKTYPE || configService.selectedTask.ZCPR_OBJGEXTID) && configService.selectedTask.custom">*</span>
-						</span>
-						<div class="col-md-8">	
+<!-- 							<span class="settings_required_label_mark red-font" ng-show="(!configService.selectedTask.TASKTYPE || configService.selectedTask.ZCPR_OBJGEXTID) && configService.selectedTask.custom">*</span>
+ -->						</span>
+						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.ZCPR_OBJGEXTID" 
-								ng-required="!configService.selectedTask.TASKTYPE"
 								placeholder="Task Id"
 								ng-show="configService.selectedTask.custom"></bridge.input>
 						</div>
@@ -67,13 +66,12 @@
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">Type
-							<span class="settings_required_label_mark red-font" ng-show="!configService.selectedTask.ZCPR_OBJGEXTID && configService.selectedTask.custom">*</span>
+							<span class="settings_required_label_mark red-font">*</span>
 						</span>
-						<div class="col-md-8">	
+						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.TASKTYPE"
-								ng-required="!configService.selectedTask.ZCPR_OBJGEXTID"
 								placeholder="Task Type"
 								ng-show="configService.selectedTask.custom"></bridge.input>
 						</div>
@@ -81,7 +79,7 @@
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">Sub Type</span>
-						<div class="col-md-8">	
+						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZZSUBTYPE || "Sub Type"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.ZZSUBTYPE"
