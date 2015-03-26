@@ -136,6 +136,29 @@ input[type="text"], textarea{
 	float: left;
 	margin-right: 5px;
 }
+.statusTiles.grey-40{
+	background:black!important;
+}
+.statusTiles i{
+	color: black;
+}
+.pull-right.button.blue{
+	border: none!important;
+}
+.search-category-source{
+	color: black!important;
+}
+.search-category-column span{
+	color: black!important;
+}
+.fa-inbox.green-font{
+	color: rgb(150,150,150);
+}
+.panel-default > .panel-heading{
+    color: #fff;
+    background-color: rgb(50,50,50);
+}
+
 /*
 .progress-bar{
 	background: 
@@ -272,6 +295,53 @@ input[type="text"], textarea{
 
 
 */
+
+/* ###### PATTERN ###### */
+
+#calendarDay .app-cats-stateR{
+     background:
+        repeating-linear-gradient(
+            -45deg,
+            #DD6551,
+            #DD6551 3px,
+            #DD6551 3px,
+            #E68C7D 6px
+        )
+    ;
+}
+#calendarDay .app-cats-stateY, #calendarDay .app-cats-stateY_TODAY, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint{ 
+    position: relative;
+    background: 
+        repeating-linear-gradient(
+            -45deg,
+            #DD6551,
+            #DD6551 3px,
+            #DD6551 3px,
+            #E68C7D 6px
+        )
+    ;
+}
+#calendarDay .app-cats-stateY:before, #calendarDay .app-cats-stateY_TODAY:before, #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint:before{
+    content:'';
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(
+            to right, 
+            #A7D0BA 0%, 
+            #A7D0BA 30%, 
+            rgba(0,0,0,0) 30%, 
+            rgba(0,0,0,0) 100%
+        )
+    ;
+}
+
+
+
+
+
 #calendarDay span{
 	font-weight: 700;
 }

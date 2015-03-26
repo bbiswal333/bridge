@@ -5,18 +5,23 @@
 	z-index: 100;
 	position: absolute;
 }
-
 .menubar-tab-active {
     background-color: white;
 }
 .logo_icon{
   width: 40px;
-  height: 40px;
-  background-image: url(../img/logo_final.svg);
-  background-size: 25px;
+  height: 20px;
+  background-image: url(../img/bridge-logo.svg);
+  background-size: 30px;
   background-repeat: no-repeat;
 }
-
+.menuBar-settingsButton:hover .logo_icon{
+  width: 40px;
+  height: 40px;
+  background-image: url(../img/bridge-logo-blue.svg);
+  background-size: 30px;
+  background-repeat: no-repeat;
+}
 .menuBar-settingsButton {
     /*width: 36px;*/
     height: 40px;
@@ -42,8 +47,14 @@
 .menuBar-settingsButton:hover {
     color:#0099CC;
 }
-.menuBar-settingsButton:hover .logo_icon{
-  background-image: url(../img/logo_final_blue.svg);
+.home{
+  position:relative;
+  width:40px;
+  padding-left:6px;
+  padding-top:12px
+}
+.home:hover {
+    padding-top: 1px;
 }
 .menubar-popover {
   position: absolute;
@@ -91,7 +102,7 @@
 }
 
 .menubar-applications-modal {
-  width: 100%;
+  width: 90%;
   max-width: 1400px;
   top:10px;
 }
@@ -158,6 +169,7 @@
 .tab-content{
   margin-top: 50px;
   text-align: left;
+  text-align: center;
 }
 /* ========================= *\
 |* -----     ICON      ----- *|
