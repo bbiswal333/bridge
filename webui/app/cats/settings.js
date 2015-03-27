@@ -89,14 +89,21 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return allreadyExists;
     }
 
+    $scope.saveIsAvailable = function(){
+        return !isInList(catsConfigService.selectedTask,catsConfigService.favoriteItems);
+    };
+
     $scope.saveNewTask = function(){
-        var allreadyExists = isInList(catsConfigService.selectedTask, catsConfigService.favoriteItems) || isInList(catsConfigService.selectedTask, catsConfigService.catsItems);
-        if (!allreadyExists) {
-            catsConfigService.selectedTask = catsConfigService.enhanceTask(catsConfigService.selectedTask);
-            addSelectedItemToFavorites();
-        } else {
-            bridgeInBrowserNotification.addAlert('','No task could be created because there is allready another task in your worklist with the same key values!');
+        if (!catsUtils.isValid(catsConfigService.selectedTask)) {
+            bridgeInBrowserNotification.addAlert('danger','The task appears to not be a valid CAT2 task. Please fill out mandatory field(s).');
+            return;
         }
+        if (isInList(catsConfigService.selectedTask, catsConfigService.favoriteItems) || isInList(catsConfigService.selectedTask, catsConfigService.catsItems)) {
+            bridgeInBrowserNotification.addAlert('danger','No task could be created because there is allready another task in your worklist with the same key values!');
+            return;
+        }
+        catsConfigService.selectedTask = catsConfigService.enhanceTask(catsConfigService.selectedTask);
+        addSelectedItemToFavorites();
     };
 
     $scope.cancel = function(){

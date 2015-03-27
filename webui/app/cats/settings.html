@@ -92,13 +92,10 @@
 						<span class="col-md-4 settings_input settings_input_label"></span>
 						<div class="col-md-8">
 
-							<!--<div ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="btn btn-primary btn_blue settings_add_task_button" ng-click="createTask()">Add New</div>
-							<div ng-show="configService.selectedTask.custom && !configService.selectedTask.id" ng-disabled="ConfigItemForm.$invalid" class="btn btn-primary btn_blue settings_add_task_button" ng-click="saveNewTask()">Save</div>
-							<div ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>-->
 
 							<bridge.button style="width:100px" ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="settings_add_task_button" ng-click="createTask()">Add New</bridge.button>
 
-							<bridge.button style="width:100px" ng-show="configService.selectedTask.custom && !configService.selectedTask.id" class="settings_add_task_button" ng-click="saveNewTask()">Save</bridge.button>
+							<bridge.button style="width:100px" ng-show="configService.selectedTask.custom && saveIsAvailable()" class="settings_add_task_button" ng-click="saveNewTask()">Save</bridge.button>
 
 							<bridge.button style="width:100px" ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" ng-click="cancel()">Cancel</bridge.button>
 						</div>

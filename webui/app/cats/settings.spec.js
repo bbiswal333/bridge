@@ -53,6 +53,7 @@ describe("Settings view of cats app", function () {
 	it("should add new task to favorites on save", function(){
 		$scope.createTask();
 		expect(config.favoriteItems.length).toEqual(1);
+		config.selectedTask.TASKTYPE = "something different";
 		$scope.saveNewTask();
 		expect(config.favoriteItems.length).toEqual(2);
 	});
@@ -65,6 +66,7 @@ describe("Settings view of cats app", function () {
 
 	it("should generate task id for created task on save", function(){
 		$scope.createTask();
+		config.selectedTask.TASKTYPE = "something different";
 		$scope.saveNewTask();
 		expect(config.selectedTask.id).toBeDefined();
 	});
@@ -115,11 +117,13 @@ describe("Settings view of cats app", function () {
 
 	it("should notify user if he creates allready existing task", function(){
 		$scope.createTask();
+		config.selectedTask.TASKTYPE = "something different";
 		$scope.saveNewTask();
 		expect(bridgeInBrowserNotification.allertCalled).toBe(false);
 
 		$scope.createTask();
 		config.selectedTask = angular.copy(favoriteItemsMock[0]);
+		config.selectedTask.TASKTYPE = "something different";
 		$scope.saveNewTask();
 		expect(bridgeInBrowserNotification.allertCalled).toBe(true);
 	});
