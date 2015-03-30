@@ -87,8 +87,8 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
         $scope.$parent.titleExtension = " - Jira Details";
 
-        if (config.isInitialized() === false) {
-            config.initialize("app.jira-" + $routeParams.instanceNumber);
-            jiraBox.getIssuesforQuery(config.getConfig().query);
-        }
+//        if (config.isInitialized() === false) {
+//            config.initialize("app.jira-" + $routeParams.instanceNumber);
+ //           jiraBox.getIssuesforQuery(config.getConfig().query);
+ //       }
 }]);
