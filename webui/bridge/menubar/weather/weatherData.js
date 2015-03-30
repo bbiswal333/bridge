@@ -129,6 +129,36 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
     //     return calUtils.getWeekdays()[dayInWeek % 7].medium;
     // }
 
+    var aprilFoolsJokeData = [
+        {
+            description: "Alien Invasion",
+            weatherIcon: "wi wi-alien"
+        },
+        {
+            description: "Meteor",
+            weatherIcon: "wi wi-meteor"
+        },
+        {
+            description: "Tornado",
+            weatherIcon: "wi wi-tornado"
+        }
+    ];
+
+    function extractDataFromWeatherDataToTargetObject(weatherData, targetObject) {
+        if(new Date().getMonth() === 3 && new Date().getDate() === 1) {
+            var data = aprilFoolsJokeData[Math.round(Math.random() * 2)];
+            targetObject.description = data.description;
+            targetObject.weatherIcon = data.weatherIcon;
+            targetObject.weatherIco = data.weatherIcon;
+        } else {
+            targetObject.description = weatherData.description;
+            targetObject.weatherIcon = weatherData.icon;
+            targetObject.weatherIco = weatherData.icon;
+            targetObject.rain = weatherData.rain;
+            targetObject.clouds = weatherData.clouds;
+        }
+    }
+
 
     function getWeather(targetObject) {
 
@@ -149,8 +179,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
             targetObject.city = weatherDataJSON.name;
             targetObject.city_id = weatherDataJSON.id;
 
-            targetObject.description = weatherData.description;
-            targetObject.weatherIcon = weatherData.icon;
+            extractDataFromWeatherDataToTargetObject(weatherData, targetObject);
         });
     }
     this.getWeather = getWeather;
@@ -175,22 +204,18 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
                 {
                     data.forecastDays[i] = {
                         temperatureMin: (((forecastData.list[i].temp.min - 273)  * 1.8) + 32).toFixed(0),
-                        temperatureMax: (((forecastData.list[i].temp.max - 273)  * 1.8) + 32).toFixed(0),
-                        rain: weatherData.rain,
-                        clouds: weatherData.clouds,
-                        weatherIco : weatherData.icon
+                        temperatureMax: (((forecastData.list[i].temp.max - 273)  * 1.8) + 32).toFixed(0)
                     };
                 }
 
                 if(!data.fahrenheit){
                     data.forecastDays[i] = {
                         temperatureMin: (forecastData.list[i].temp.min - 273).toFixed(0),
-                        temperatureMax: (forecastData.list[i].temp.max - 273).toFixed(0),
-                        rain: weatherData.rain,
-                        clouds: weatherData.clouds,
-                        weatherIco : weatherData.icon
+                        temperatureMax: (forecastData.list[i].temp.max - 273).toFixed(0)
                     };
                 }
+
+                extractDataFromWeatherDataToTargetObject(weatherData, data.forecastDays[i]);
             }
         });
     }
