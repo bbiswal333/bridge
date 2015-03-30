@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" type="text/css" href="lib/nvd3_1_1/nv.d3.css">
     <!-- icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/logo_final-01.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="img/fav.ico" />
     <link href="css/fonts/bridge-icons.css" rel="stylesheet" />
     <link href="css/fonts/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" /> 
      
@@ -118,7 +118,7 @@
         <div id="main-container" class="mainContainer centeredContent" ng-view>
         </div>
 
-        <div style="position:absolute;bottom:0px;width:100%;">
+        <div style="position:absolute;bottom:0px;width:100%;z-index:99999">
             <alert ng-repeat="alert in alerts" style="font-weight:bold;border-style:solid;border-width:2px;" type="alert.type" close="alert.close(alert.id)">
                 <span ng-bind-html="alert.msg"></span>
             </alert>

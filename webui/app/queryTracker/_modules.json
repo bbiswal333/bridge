@@ -8,7 +8,7 @@
 		"overview_directive"	:	"app.querytracker",
 		"needs_client"			:	false,
 		"beta"					:	true,
-		"beta_users"			:	["I823282","D050049","D050570"],
+		"beta_users"			:	["I823282","D050049","D050570","D053704","I818570","D025019","I055385","D025019","D053704","I055385","I819800","I818570"],
 		"default_hidden"		:	true,
 		"description"			:	"Query Tracker",
 		"routes"				:

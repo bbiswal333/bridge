@@ -448,6 +448,7 @@ exports.register = function(app, user, local, proxy, npm, eTag, sso_enable)
 
 				var buildifyJS = require('buildify')(path.join(__dirname, '..', '/webui'),{ encoding: 'utf-8', eol: '\n' });
 				buildifyJS.concat(files.js_files);
+				// compression here only saves 60 KB as per detailed analysis
 				//javascriptPacked = buildifyJS.uglify({ mangle: false }).getContent(); //mangle does not work with angular currently
 				javascriptPacked = buildifyJS.getContent();
 

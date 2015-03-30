@@ -38,14 +38,12 @@ angular.module('app.sirius')
             return _siriusObject;
         };
         var _createDate = function (dateString) {
-            var date = null;
+            var date;
             if (dateString === '0000-00-00') {
-                return date;
+                return date = null;
             } else {
                 try {
-                    date = new Date(dateString);
-                    date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
-
+                    date = dateString.substring(8,10) + "." + dateString.substring(5,7) + "." + dateString.substring(0,4);
                 } catch (e) {
                     date = null;
                 }
