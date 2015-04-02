@@ -40,7 +40,7 @@ angular.module('app.sirius')
         var _createDate = function (dateString) {
             var date;
             if (dateString === '0000-00-00') {
-                return date = null;
+                return null;
             } else {
                 try {
                     date = dateString.substring(8,10) + "." + dateString.substring(5,7) + "." + dateString.substring(0,4);
