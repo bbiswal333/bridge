@@ -18,18 +18,22 @@ $scope.dataService = dataService;
 
 	$scope.formatDate = function(date) {
 			if(date) {
+				var TZOffsetMs = new Date().getTimezoneOffset()*60*1000;
 				date = date.replace("/Date(", "");
                 date = date.replace(")/", "");
-				return new Date(parseInt(date,10)).toDateString();
+				date = new Date((new Date(parseInt(date,10)).getTime() + TZOffsetMs));
+				return date.toDateString();
 			}
 			return "";
 		};
 
 	$scope.formatTime = function(date) {
 			if(date) {
+				var TZOffsetMs = new Date().getTimezoneOffset()*60*1000;
 				date = date.replace("/Date(", "");
                 date = date.replace(")/", "");
-				return new Date(parseInt(date,10)).toTimeString();
+				date = new Date((new Date(parseInt(date,10)).getTime() + TZOffsetMs));
+				return date.toLocaleTimeString();
 			}
 			return "";
 		};
