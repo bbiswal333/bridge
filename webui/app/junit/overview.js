@@ -55,6 +55,8 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
         $scope.getData();
       }
     }, true);
+
+    $scope.getData();
 	}];
 
 	var linkFn = function ($scope) {
