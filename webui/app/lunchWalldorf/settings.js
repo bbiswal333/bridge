@@ -1,5 +1,4 @@
-angular.module('app.lunchWalldorf').applunchWalldorfSettings =
-['$scope', "app.lunchWalldorf.configservice", "app.lunchWalldorf.backendData", function ($scope, lunchConfigService, backendService) {
+angular.module('app.lunchWalldorf').applunchWalldorfSettings = ['$scope', "app.lunchWalldorf.configservice", "app.lunchWalldorf.backendData", function ($scope, lunchConfigService, backendService) {
 	$scope.currentConfigValues = lunchConfigService.configItem;
 
     $scope.backendData = backendService.getBackendData();

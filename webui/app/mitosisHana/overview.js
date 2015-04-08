@@ -47,9 +47,12 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
 
 		$scope.formatDate = function(date) {
 			if(date) {
+				var TZOffsetMs = new Date().getTimezoneOffset() * 60 * 1000;
 				date = date.replace("/Date(", "");
                 date = date.replace(")/", "");
-				return new Date(parseInt(date,10)).toUTCString();
+				date = new Date((new Date(parseInt(date,10)).getTime() + TZOffsetMs));
+
+				return date.toDateString() + " " + date.toLocaleTimeString();
 			}
 			return "";
 		};

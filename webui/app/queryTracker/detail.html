@@ -1,0 +1,21 @@
+<div ng-controller="app.querytracker.detailController" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
+	    <br/><br/>
+
+		<bridge.table table-data="data" filter="filterText">
+			<bridge.table-column column-id="'1'" header="'Deadline'" column-size-class="'col-sm-3'" order-by="'Deadline'" ng-class="{true: 'orange-font-100', false: ''}[row.deadline_marker];">{{row.Deadline}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Query Number'" column-size-class="'col-sm-3'" order-by="'ID'"><a target="_blank" href="https://querytrackerqa.pgdev.sap.corp/QueryDetails.aspx?queryid={{row.ID}}&actionid=2">{{row.ID}}</a></bridge.table-column>			
+			<bridge.table-column column-id="'3'" header="'Project'" column-size-class="'col-sm-3'" order-by="'Project'">{{row.Project}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Submitter Name'" column-size-class="'col-sm-3'" order-by="'SubmitterName'">{{row.SubmitterName}}</bridge.table-column>			
+		</bridge.table>
+
+	</div>
+</div>
+
+
+
+
+
+
+

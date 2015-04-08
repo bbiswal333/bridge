@@ -189,22 +189,32 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
             {
                 var lunchMenu = {};
                 var date_menu = data.menu[i].counters;
+                var menu_items = 0;
 
                 for(var j = 0; j < date_menu.length; j++)
                 {
                     if(date_menu[j].title.en === "Soup")
                     {
+                        if(date_menu[j].dishes[0] !== undefined) {
+                            menu_items++;
                             lunchMenu.soup = date_menu[j].dishes;
+                        }
                     }
                     else if(date_menu[j].title.en === "Side dish")
                     {
-                        lunchMenu.sideDishes = [];
-                        lunchMenu.sideDishes.push( this.getListAsSingleDish(date_menu[j].dishes) );
+                        if(date_menu[j].dishes[0] !== undefined) {
+                            menu_items++;
+                            lunchMenu.sideDishes = [];
+                            lunchMenu.sideDishes.push( this.getListAsSingleDish(date_menu[j].dishes) );
+                        }
                     }
                     else if(date_menu[j].title.en === "Dessert")
                     {
-                        lunchMenu.dessert = [];
-                        lunchMenu.dessert.push( this.getListAsSingleDish(date_menu[j].dishes) );
+                        if(date_menu[j].dishes[0] !== undefined) {
+                            menu_items++;
+                            lunchMenu.dessert = [];
+                            lunchMenu.dessert.push( this.getListAsSingleDish(date_menu[j].dishes) );
+                        }
                     }
                     else
                     {
@@ -213,12 +223,17 @@ angular.module("app.lunchWalldorf").service('app.lunchWalldorf.dataProcessor', f
                             lunchMenu.mainCourse = [];
                         }
                         if(date_menu[j].dishes[0] !== undefined) {
+                            menu_items++;
                             lunchMenu.mainCourse.push( date_menu[j].dishes[0] );
                         }
                     }
 
                 }
-                return lunchMenu;
+                if (menu_items > 1) {
+                    return lunchMenu;
+                } else {
+                    return "Not a displayable menu";
+                }
             }
         }
     };

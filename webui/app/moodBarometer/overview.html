@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<div class="emo_container">
+   <p> What's Your mood today?</p>
+        <div ng-if="!(mood =='Happy')" class="emoticons" ng-click="setMood('Happy');">
+            <img src="/app/moodBarometer/moodHappy.svg" width="60">
+        </div>
+
+        <div ng-if="(mood == 'Happy')" class="emoticons clicked_emoticons" ng-click="deleteMood();" >
+            <img src="/app/moodBarometer/moodHappy.svg" width="60">
+        </div>
+        <div ng-if="!(mood == 'OK')" class="emoticons" ng-click="setMood('OK');">
+            <img src="/app/moodBarometer/moodOK.svg" width="60">
+        </div>
+        
+        <div ng-if="(mood == 'OK')" class="emoticons clicked_emoticons" ng-click="deleteMood();">
+            <img src="/app/moodBarometer/moodOK.svg" width="60">
+        </div>
+        <div ng-if="!(mood =='Worried')" class="emoticons" ng-click="setMood('Worried');">
+            <img src="/app/moodBarometer/moodWorried.svg" width="60">
+        </div>
+        
+        <div ng-if="(mood == 'Worried')" class="emoticons clicked_emoticons" ng-click="deleteMood();" >
+            <img src="/app/moodBarometer/moodWorried.svg" width="60">
+        </div>
+        <div ng-if="!(mood == 'Sad')" class="emoticons" ng-click="setMood('Sad');">
+            <img src="/app/moodBarometer/moodSad.svg" width="60">
+        </div>
+        
+        <div ng-if="(mood == 'Sad')" class="emoticons clicked_emoticons"  ng-click="deleteMood();">
+            <img src="/app/moodBarometer/moodSad.svg" width="60">
+        </div>
+    </div>
+
+
+
+
+
+
+
+

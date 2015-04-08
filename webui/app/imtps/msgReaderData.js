@@ -59,11 +59,11 @@ angular.module('app.imtps').service('app.imtps.msgReaderData',
         });
 
 		if( prioarray[0] ){
-			trafficLightService.red();
+			trafficLightService.forApp('app.imtps').red();
 		}else if( prioarray[1] ){
-			trafficLightService.yellow();
+			trafficLightService.forApp('app.imtps').yellow();
 		}else{
-			trafficLightService.green();
+			trafficLightService.forApp('app.imtps').green();
 		}
 	}
 
