@@ -1,0 +1,45 @@
+form {
+	text-align: center;
+}
+
+#translatorInput {
+	height: 20px;
+}
+
+#translatorTable {
+	width: 75%;
+	margin: 0 auto;
+	margin: 0 auto;
+	text-align : left;
+}
+
+textarea {
+	border: none; 
+	text-align: center; 
+	margin-top: 5px; 
+	height: 35px;
+	resize: none; 
+}
+
+textarea:hover {
+	border:none;
+}
+
+table td {
+	padding: 5px;
+}
+
+table tr {
+	width: 50%;
+}
+
+.translatorSelect {
+	width: 100%;
+}
+
+#translatorButton {
+	margin: 0 auto; 
+	width: 100%; 
+	height: 25px; 
+	line-height: 25px;
+}

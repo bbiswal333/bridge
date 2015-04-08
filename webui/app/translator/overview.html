@@ -1,0 +1,25 @@
+﻿<form id="translatorContainer" ng-submit="translateText()">
+	<input id="translatorInput" class="form form-control" ng-model="textToTranslate" type="text" placeholder="Your text" text={{inputText}}>
+
+	<table id="translatorTable">
+		<tbody>
+			<tr>
+				<td><span> From: </span></td>
+				<td>			
+			    	<select class="translatorSelect" ng-model="selectedLanguageFrom" ng-options="language as language.label for language in languages"></select>
+				</td>
+			</tr>
+			<tr>
+				<td><span> To: </span></td>
+				<td>
+					<select class="translatorSelect" ng-model="selectedLanguageTo" ng-options="language as language.label for language in languages"></select>	
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<bridge.button id ="translatorButton" type="submit" state="'active'" title="Powered by Yandex.Translate">Translate</bridge.button>
+	
+	<textarea id="translatorOutput" readonly>{{translatedText}}</textarea>
+	
+</form>
