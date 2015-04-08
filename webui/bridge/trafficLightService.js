@@ -68,8 +68,6 @@ angular.module('bridge.service').service('trafficLightService',
   };
 
   this.forApp = function(appId) {
-    var fullModuleId = appId;
-
     return new TrafficLightServiceForApp(appId);
   };
 

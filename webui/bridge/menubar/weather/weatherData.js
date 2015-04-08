@@ -52,18 +52,6 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
             case 622:
                 resultData.icon = 'wi wi-snow';
                 break;
-            case 600:
-            case 601:
-            case 602:
-            case 611:
-            case 612:
-            case 615:
-            case 616:
-            case 620:
-            case 621:
-            case 622:
-                resultData.icon = 'wi wi-snow';
-                break;
             case 701:
             case 711:
             case 721:

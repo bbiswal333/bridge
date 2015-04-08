@@ -18,7 +18,7 @@ $scope.dataService = dataService;
 
 	$scope.formatDate = function(date) {
 			if(date) {
-				var TZOffsetMs = new Date().getTimezoneOffset()*60*1000;
+				var TZOffsetMs = new Date().getTimezoneOffset() * 60 * 1000;
 				date = date.replace("/Date(", "");
                 date = date.replace(")/", "");
 				date = new Date((new Date(parseInt(date,10)).getTime() + TZOffsetMs));
@@ -29,7 +29,7 @@ $scope.dataService = dataService;
 
 	$scope.formatTime = function(date) {
 			if(date) {
-				var TZOffsetMs = new Date().getTimezoneOffset()*60*1000;
+				var TZOffsetMs = new Date().getTimezoneOffset() * 60 * 1000;
 				date = date.replace("/Date(", "");
                 date = date.replace(")/", "");
 				date = new Date((new Date(parseInt(date,10)).getTime() + TZOffsetMs));
