@@ -28,10 +28,10 @@ angular.module('app.junit').directive('app.junit',
 
 		$scope.updateTrafficLight = function() {
 			if ( $scope.numFailedTestCases || $scope.numErrorTestCases) {
-				trafficLightService.red( );
+				trafficLightService.forApp($scope.metadata.guid).red( );
 			}
 			else {
-				trafficLightService.green( );
+				trafficLightService.forApp($scope.metadata.guid).green( );
 			}
 		};
 
