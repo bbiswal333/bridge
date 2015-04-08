@@ -3,7 +3,7 @@
 var gui = require('nw.gui');
 var tray;
 var bridge = {};
-var bridge_repo = 'https://github.wdf.sap.corp/_nodeload/bridge/bridge/tar.gz/';
+var bridge_repo = 'https://github.wdf.sap.corp/bridge/bridge/archive/';
 var settings_file = "settings.json";
 var path = require('path');
 var exec = require('child_process').exec;
@@ -89,7 +89,7 @@ else {
                 changeTitle("Updating..");
             }
 
-            bridge_repo = bridge_repo + latest_tag;
+            bridge_repo = bridge_repo + latest_tag + ".tar.gz";
             console.log('updating bridge..');
 
             if (!fs.existsSync(bridge_module)) {
