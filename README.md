@@ -1,5 +1,4 @@
-[![Build Status](https://bridge-ci.mo.sap.corp/job/BridgePush/badge/icon)](https://bridge-ci.mo.sap.corp/job/BridgePush/) [![Build Status](https://bridge-ci.mo.sap.corp/job/BridgeChecksBadge/ws/badge/eslint.svg)](https://bridge-ci.mo.sap.corp/job/BridgeChecks/)
-[![Coverage](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/badge/coverage.svg)](https://bridge-ci.mo.sap.corp/job/BridgePush/ws/coverage/results/coverage.txt)
+[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
 
 [![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
