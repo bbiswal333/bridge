@@ -2,3 +2,7 @@ env: http_proxy=http://proxy.wdf.sap.corp:8080 HTTP_PROXY=http://proxy.wdf.sap.c
 language: node_js
 node_js:
   - "0.12"
+before_script:
+  - npm install -g eslint
+script:
+  - npm run lint
