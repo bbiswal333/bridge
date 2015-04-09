@@ -1,5 +1,8 @@
 ﻿angular.module('app.junit', ['app.junit.data']);
-angular.module('app.junit').directive('app.junit', ['app.junit.configService', 'app.junit.dataService', function (configService, dataService) {
+
+angular.module('app.junit').directive('app.junit',
+  ['app.junit.configService', 'app.junit.dataService', 'trafficLightService',
+	function (configService, dataService, trafficLightService) {
 
 	var directiveController = ['$scope', function ($scope) {
 
@@ -23,21 +26,42 @@ angular.module('app.junit').directive('app.junit', ['app.junit.configService', '
     $scope.numFailedTestCases = 0;
     $scope.numErrorTestCases = 0;
 
+		$scope.updateTrafficLight = function() {
+			if ( $scope.numFailedTestCases || $scope.numErrorTestCases) {
+				trafficLightService.forApp($scope.metadata.guid).red( );
+			}
+			else {
+				trafficLightService.forApp($scope.metadata.guid).green( );
+			}
+		};
+
 		$scope.getData = function() {
+
+      var promises = [];
       $scope.numSuccessTestCases = 0;
       $scope.numFailedTestCases = 0;
       $scope.numErrorTestCases = 0;
       $scope.box.errorText = '';
 
-			dataService.getInstanceForAppId($scope.metadata.guid).loadData().forEach(function(promise) {
-        promise.then(function(value) {
-          $scope.numSuccessTestCases += value.result.numSuccessTestCases;
-          $scope.numFailedTestCases += value.result.numFailedTestCases;
-          $scope.numErrorTestCases += value.result.numErrorTestCases;
-        }, function() {
-          $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
-        });
-			});
+      promises = dataService.getInstanceForAppId($scope.metadata.guid).loadData();
+
+      if(promises.length !== 0) {
+        promises.forEach(function(promise) {
+          promise.then(function(value) {
+            $scope.numSuccessTestCases += value.result.numSuccessTestCases;
+            $scope.numFailedTestCases += value.result.numFailedTestCases;
+            $scope.numErrorTestCases += value.result.numErrorTestCases;
+
+  					$scope.updateTrafficLight( );
+          }, function() {
+            $scope.box.errorText = 'Failed to fetch results from one or more source(s).';
+          });
+  			});
+      }
+      else {
+        // No URL is configured, we have to set the traffic light to green
+        this.updateTrafficLight( );
+      }
 		};
 
 		// Bridge framework function to enable saving the config
