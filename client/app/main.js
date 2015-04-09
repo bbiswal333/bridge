@@ -1,15 +1,16 @@
-﻿var __dirname = getCurrentDirectory();
-
-var gui = require('nw.gui');
-var tray;
-var bridge = {};
-var bridge_repo = 'https://github.wdf.sap.corp/bridge/bridge/archive/';
-var settings_file = "settings.json";
+﻿var gui = require('nw.gui');
 var path = require('path');
 var exec = require('child_process').exec;
 var https = require('https');
 var fs = require('fs');
+var utils = require('./utils.js');
+var localProxyServer = require('./localProxyServer.js');
 
+var __dirname = utils.getCurrentDirectory();
+var tray;
+var bridge = {};
+var bridge_repo = 'https://github.wdf.sap.corp/bridge/bridge/archive/';
+var settings_file = "settings.json";
 var bridge_path = path.join(__dirname, '/');
 var bridge_module = path.join(__dirname, '/node_modules');
 var settings_filename = path.join(__dirname, '/', settings_file);
@@ -19,7 +20,7 @@ var test_update = false;
 var latest_tag = 'v0.0';
 var settings = null;
 
-checkErrorFileSize();
+utils.checkErrorFileSize();
 registerWindowHandler();
 
 try {
@@ -29,8 +30,10 @@ try {
     settings = {};
 }
 
+localProxyServer.start();
+
 //try to load bridge locally if mentioned in package.json
-if (gui.App.manifest.bridge_tag == "local") {
+/*if (gui.App.manifest.bridge_tag == "local") {
     try {
         if (process.platform == "win32") {
             bridge = require('../../../');
@@ -44,7 +47,7 @@ if (gui.App.manifest.bridge_tag == "local") {
     }
 }
 else {
-    callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data){
+    utils.callBackend('github.wdf.sap.corp', 443, '/api/v3/repos/bridge/bridge/tags', 'GET', function (data){
         //check if github is not reachable
         if(data === undefined){
             needs_update = false;            
@@ -103,7 +106,7 @@ else {
                 npmPath = "node/bin/npm";
             }
             exec('cd "' + bridge_path + '" && "' + npmPath + '" install ' + bridge_repo + ' --strict-ssl=false --proxy=null --https-proxy=null', function (error, stdout, stderr) {
-                logError(stderr);
+                utils.logError(stderr);
 
                 if (error == null) {
                     console.log("bridge installed..");
@@ -119,7 +122,7 @@ else {
                     bridgeLoadingFinished();
                 }
                 else {
-                    logError(error);
+                    utils.logError(error);
                 }
             });
         }
@@ -129,7 +132,20 @@ else {
             bridgeLoadingFinished();
         }
     });
-}
+}*/
+
+function notifiy_started(){
+    changeTitle("Bridge Client is now running.<br />Refresh Bridge in your browser or<br/>");
+
+    var link = $("#openBridgeLink");
+    link.css("display", "normal");
+
+    var button = $("#closeWindowButton");
+    button.css("display", "normal");
+
+    var checkbox = $("#checkboxHide");
+    checkbox.css("display", "normal");
+};
 
 function saveSettings(){
     fs.writeFileSync(settings_filename, JSON.stringify(settings));
@@ -148,7 +164,7 @@ function bridgeLoadingFinished() {
         }
     }
     catch (err) {
-        logError(err);
+        utils.logError(err);
     }
 }
 
@@ -165,19 +181,6 @@ function hideWindow() {
 function gotoBridge() {
     gui.Shell.openExternal('https://bridge.mo.sap.corp');
     hideWindow();
-}
-
-function notifiy_started() {
-    changeTitle("Bridge Client is now running.<br />Refresh Bridge in your browser or<br/>");
-
-    var link = $("#openBridgeLink");
-    link.css("display", "normal");
-
-    var button = $("#closeWindowButton");
-    button.css("display", "normal");
-
-    var checkbox = $("#checkboxHide");
-    checkbox.css("display", "normal");
 }
 
 function registerWindowHandler() {

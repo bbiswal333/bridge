@@ -1,4 +1,5 @@
-﻿global.webkitClient = {};
+﻿var utils = require('./utils.js');
+global.webkitClient = {};
 global.webkitClient.showInTaskbar = true;
 
 //make version available from package.json
@@ -6,10 +7,9 @@ global.webkitClient.version = gui.App.manifest.version;
 
 global.webkitClient.jQuery = jQuery;
 global.webkitClient.gui = gui;
-global.webkitClient.serverStarted = function () 
-{
-    var win = gui.Window.get();    
-    createTrayIcon();
+global.webkitClient.serverStarted = function (){
+    //var win = gui.Window.get();
+    utils.createTrayIcon();
     notifiy_started();
 };
 /*

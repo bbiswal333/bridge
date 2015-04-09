@@ -10,6 +10,8 @@ module.exports = function (grunt) {
     var webkitInfo = {
         winFilename: "nwjs-v" + webkitVersion + "-win-x64.zip",
         macFilename: "nwjs-v" + webkitVersion + "-osx-x64.zip",
+        winUnzipFolder: "nwjs-v" + webkitVersion + "-win-x64",
+        macUnzipFolder: "nwjs-v" + webkitVersion + "-osx-x64",
         source: "http://dl.nwjs.io/v" + webkitVersion + "/",
         destination: "webkit_download/",
     };
@@ -31,13 +33,13 @@ module.exports = function (grunt) {
             win: {
                 files: [
                   { expand: true, cwd: 'app/', src: ['**'], dest: 'build/win' },
-                  { expand: true, cwd: 'webkit_download/win/unzip', src: ['nw.exe', 'nw.pak', 'icudt.dll', ' libEGL.dll', ' libGLESv2.dll', 'credits.html'], dest: 'build/win' },
+                  { expand: true, cwd: webkitInfo.destination + 'win/unzip/' + webkitInfo.winUnzipFolder, src: ['nw.exe', 'nw.pak', 'icudtl.dat', ' libEGL.dll', ' libGLESv2.dll', 'credits.html'], dest: 'build/win' },
                 ]
             },
             mac: {
                 files: [
-                  { expand: true, cwd: 'webkit_download/mac/unzip/', src: ['node-webkit.app/**', 'credits.html'], dest: 'build/mac' },
-                  { expand: true, src: ['app/**'], dest: 'build/mac/node-webkit.app/Contents/Resources' },
+                  { expand: true, cwd: webkitInfo.destination + 'mac/unzip/' + webkitInfo.macUnzipFolder, src: ['nwjs.app/**', 'credits.html'], dest: 'build/mac' },
+                  { expand: true, src: ['app/**'], dest: 'build/mac/nwjs.app/Contents/Resources' },
                 ],
                 options: {
                     mode: '777',
@@ -66,7 +68,7 @@ module.exports = function (grunt) {
         rename: {
             mac_rename: {
                 files: [
-                    { src: ['build/mac/node-webkit.app'], dest: 'build/mac/bridge.app' },
+                    { src: ['build/mac/nwjs.app'], dest: 'build/mac/bridge.app' },
                     { src: ['build/mac/bridge.app/Contents/Resources/app'], dest: 'build/mac/bridge.app/Contents/Resources/app.nw' }
                 ]
             },
@@ -113,8 +115,12 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('setRights', 'Set file access rights for mac', function () {
-        var oldRights = fs.lstatSync(webkitInfo.destination + 'mac/unzip/node-webkit.app');
-        fs.chmodSync('build/mac/node-webkit.app', oldRights.mode);
+        var oldRights = fs.lstatSync(webkitInfo.destination + 'mac/unzip/' + webkitInfo.macUnzipFolder + '/nwjs.app');
+        fs.chmodSync('build/mac/nwjs.app', oldRights.mode);
+    });
+
+    grunt.registerTask('npmInstall', 'Run npm install in mac and win build folder', function() {
+
     });
 
     grunt.loadNpmTasks('grunt-node-webkit-builder');
@@ -123,7 +129,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-rename');
     grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask('default', ['clean:build', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'setRights', 'rename:mac_rename']);
+    grunt.registerTask('default', ['clean:build', 'createDownloadFolder', 'downloadResources', 'copy:win', 'copy:mac', 'setRights', 'rename:mac_rename', 'npmInstall']);
     grunt.registerTask('src', ['copy:src_only_win', 'copy:src_only_mac']);
     grunt.registerTask('deploy', ['default', 'clean:package', 'rename:package_rename']);
 };

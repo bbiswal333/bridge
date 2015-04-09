@@ -2,12 +2,11 @@
 var fs = require('fs');
 
 // unlike in node.js, __dirname is not available in node-webkit, this is our workaround. On mac/linux we have a slash, in windows a backslash
-function getCurrentDirectory() {
+exports.getCurrentDirectory = function() {
     return process.cwd()
-}
+};
 
-function createTrayIcon() {
-
+exports.createTrayIcon = function() {
     // Create a tray icon
     tray = new gui.Tray({
         title: '',
@@ -45,9 +44,9 @@ function createTrayIcon() {
     menu.append(item);
 
     tray.menu = menu;
-}
+};
 
-function callBackend(hostname, port, path, method, callback) {
+exports.callBackend = function(hostname, port, path, method, callback) {
     var options = {
         hostname: hostname,
         port: port,
@@ -75,12 +74,12 @@ function callBackend(hostname, port, path, method, callback) {
     });
 }
 
-var errorLogfile = path.join(getCurrentDirectory(), '/error.log');
-function logError(message) {
+var errorLogfile = path.join(exports.getCurrentDirectory(), '/error.log');
+exports.logError = function(message) {
     fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
-}
+};
 
-function checkErrorFileSize() {
+exports.checkErrorFileSize = function() {
     if (fs.existsSync(errorLogfile)) {
         var fileStats = fs.statSync(errorLogfile);
 
@@ -89,4 +88,4 @@ function checkErrorFileSize() {
             fs.unlinkSync(errorLogfile);
         }
     }
-}
+};
