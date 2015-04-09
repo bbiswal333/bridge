@@ -7,4 +7,3 @@ angular.module('app.translator').appTestSettings =
 		$scope.$emit('closeSettingsScreen'); // Persisting the settings
 	};
 }];
-

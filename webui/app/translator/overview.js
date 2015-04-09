@@ -5,13 +5,12 @@ angular
 				'app.translator',
 				[
 						'app.translator.configService',
-						'app.translator.dataService',
-						function(configService, dataService) {
+						function(configService) {
 
 							var directiveController = [
 									'$scope',
-									function($scope, element) {
-										
+									function($scope) {
+
 										// Required information to get settings
 										// icon/ screen
 										$scope.box.settingsTitle = "Configure Translator App";
@@ -21,10 +20,10 @@ angular
 													.module('app.translator').appTestSettings,
 											id : $scope.boxId
 										};
-																				
+
 										$scope.isWarning = false;
-										$scope.translatedText = "Never translate sensitive data! \n For further information, please check https://go.sap.corp/l02"
-										
+										$scope.translatedText = "Never translate sensitive data! \n For further information, please check https://go.sap.corp/l02";
+
 										$scope.languages = [ {
 											value : 'english',
 											label : 'en'
@@ -50,7 +49,7 @@ angular
 										$scope.box.returnConfig = function() {
 											return angular.copy(configService);
 										};
-										
+
 										// Translate
 										$scope.translateText = function() {
 
@@ -74,14 +73,12 @@ angular
 																$scope.translatedText = response.text[0];
 															})
 													.done(
-															function(response) {
-																console
-																		.log("Translation succeeded.");
+															function() {
+																//console.log("Translation succeeded.");
 															})
 													.fail(
-															function(response) {
-																console
-																		.log("Translation failed.")
+															function() {
+																//console.log("Translation failed.")
 															});
 
 										};
