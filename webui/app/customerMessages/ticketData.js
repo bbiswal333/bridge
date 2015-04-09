@@ -35,8 +35,8 @@
                             prio[category_aa]++;
                             that.backendTickets[category_aa].push(backendTicket);
                         }
-                        // incidents with status Solution Provided are not considered at all
-                        else if (backendTicket.STATUS_KEY === "E0005") {
+                        // incidents with status Solution Provided/Confirmed Automatically are not considered at all
+                        else if (backendTicket.STATUS_KEY === "E0005" || backendTicket.STATUS_KEY === "E0010") {
                             return; //continue forEach loop
                         }
                         else {
