@@ -8,4 +8,4 @@ script:
   - npm test
   - npm run lint
 notifications:
-  slack: $slack-notification
+  slack: sap-tools:JuVwk2TC9gi5upWdnkfs7Eu7
