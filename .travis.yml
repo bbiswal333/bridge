@@ -1,0 +1,11 @@
+env: http_proxy=http://proxy.wdf.sap.corp:8080 HTTP_PROXY=http://proxy.wdf.sap.corp:8080 https_proxy=http://proxy.wdf.sap.corp:8080 HTTPS_PROXY=http://proxy.wdf.sap.corp:8080 ftp_proxy=http://proxy.wdf.sap.corp:8080 FTP_PROXY=http://proxy.wdf.sap.corp:8080 no_proxy="*.local,169.254/16,*.sap.corp,*.corp.sap" NO_PROXY="*.local,169.254/16,*.sap.corp,*.corp.sap"
+language: node_js
+node_js:
+  - "0.12"
+before_script:
+  - npm install -g eslint
+script:
+  - npm test
+  - npm run lint
+notifications:
+  slack: sap-tools:JuVwk2TC9gi5upWdnkfs7Eu7
