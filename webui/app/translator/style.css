@@ -4,6 +4,16 @@ form {
 
 #translatorInput {
 	height: 20px;
+	width:100%;
+}
+
+.translateWarning {
+	font-size:1.5em;
+	vertical-align:middle;
+}
+
+.translateWarning:hover {
+	color:#D53F26;
 }
 
 #translatorTable {
@@ -16,8 +26,6 @@ form {
 textarea {
 	border: none; 
 	text-align: center; 
-	margin-top: 5px; 
-	height: 35px;
 	resize: none; 
 }
 
@@ -42,4 +50,18 @@ table tr {
 	width: 100%; 
 	height: 25px; 
 	line-height: 25px;
+}
+
+.settingsWarning {
+	color: #D53F26;
+}
+
+.warningDisabled {
+	margin-top: 5px; 
+	height: 35px;
+}
+
+.warningEnabled {
+	margin-top: -4px; 
+	height: 40px;
 }

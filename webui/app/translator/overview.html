@@ -1,6 +1,5 @@
 ﻿<form id="translatorContainer" ng-submit="translateText()">
 	<input id="translatorInput" class="form form-control" ng-model="textToTranslate" type="text" placeholder="Your text" text={{inputText}}>
-
 	<table id="translatorTable">
 		<tbody>
 			<tr>
@@ -17,9 +16,6 @@
 			</tr>
 		</tbody>
 	</table>
-
-	<bridge.button id ="translatorButton" type="submit" state="'active'" title="Powered by Yandex.Translate">Translate</bridge.button>
-	
-	<textarea id="translatorOutput" readonly>{{translatedText}}</textarea>
-	
+	<bridge.button id ="translatorButton" type="submit" state="'active'" title="Powered by Yandex.Translate">Translate</bridge.button>	
+	<textarea id="translatorOutput" ng-class="{true: 'warningDisabled', false: 'warningEnabled'}[isWarning]" readonly>{{translatedText}}</textarea>	
 </form>
