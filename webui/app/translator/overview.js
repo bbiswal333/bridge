@@ -10,8 +10,8 @@ angular
 
 							var directiveController = [
 									'$scope',
-									function($scope) {
-
+									function($scope, element) {
+										
 										// Required information to get settings
 										// icon/ screen
 										$scope.box.settingsTitle = "Configure Translator App";
@@ -21,7 +21,10 @@ angular
 													.module('app.translator').appTestSettings,
 											id : $scope.boxId
 										};
-
+																				
+										$scope.isWarning = false;
+										$scope.translatedText = "Never translate sensitive data! \n For further information, please check https://go.sap.corp/l02"
+										
 										$scope.languages = [ {
 											value : 'english',
 											label : 'en'
@@ -47,11 +50,12 @@ angular
 										$scope.box.returnConfig = function() {
 											return angular.copy(configService);
 										};
-
-										// Example function for notifications
+										
+										// Translate
 										$scope.translateText = function() {
 
-											if ($scope.textToTranslate.length < 1) {
+											if ($scope.textToTranslate === undefined || $scope.textToTranslate.length < 1) {
+												$scope.translatedText = "";
 												return;
 											}
 
@@ -66,6 +70,7 @@ angular
 													.get(
 															url,
 															function(response) {
+																$scope.isWarning = true;
 																$scope.translatedText = response.text[0];
 															})
 													.done(
