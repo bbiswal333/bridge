@@ -3,6 +3,7 @@
 
 [![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
 
+
 # Bridge
 
 This is **Bridge**, the internal Inner Source Dashboard & Platform for Developers, 
