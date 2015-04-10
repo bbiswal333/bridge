@@ -11,7 +11,7 @@ exports.run = function(npm)
 
 	function update_repo()
 	{
-		helper.wrappedExec('cd /srv/bridge/ && git pull origin ' + branch + ' && forever restart server', function (error, stdout, stderr) {
+		helper.wrappedExec('cd /srv/bridge/ && git fetch --all && git reset --hard origin/' + branch + ' && forever restart server', function (error, stdout, stderr) {
 			console.log('updated');			
 		});
 
