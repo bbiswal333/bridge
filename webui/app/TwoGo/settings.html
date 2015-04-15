@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>"TwoGoSettings Screen"</title>
+</head>
+<body>
+<div style="width: 100%">
+    </br>
+    </br>
+    <table align="left" width="30%" >
+
+        <tr height="40">
+            <td><label id="fromOrigin">Distance from Origin in kilometer:</label></td>
+            <td> <select name="Km" id="Km"onmousedown="if(options.length>=3){size=3;}" onchange='size=0;' onblur="size=0;">
+                <option value="500">0,5 km</option>
+                <option value="1000">1 km</option>
+                <option value="2000">2 km</option>
+                <option value="5000">5 km</option>
+            </select></td>
+        </tr>
+        </br>
+        <tr height="40">
+            <td><label id="fromDestination">Distance from destination in kilometer:</label></td>
+            <td>
+                <select name="Km1" id="Km1" onmousedown="if(options.length>=3){size=3;}" onchange='size=0;' onblur="size=0;">
+                <option value="500">0,5 km</option>
+                <option value="1000">1 km</option>
+                <option value="2000">2 km</option>
+                <option value="5000">5 km</option>
+                </select>
+
+
+
+
+            </td>
+        </tr>
+    </table>
+ </br>
+        <div class="row">
+        <!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+        <bridge.button ng-click="save_click()" class="save_close_btn">
+            Save & Close
+        </bridge.button>
+    </div>
+</div>
+</body>
+</html>
+
