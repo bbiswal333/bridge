@@ -96,7 +96,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                             PARAMS.checkBrowser();
 
 
-                        }, 240000);
+                        },  3600000);
                     }
                     else {
 
@@ -155,13 +155,17 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                             PARAMS.checkBrowser();
 
 
-                        }, 240000);
+                        }, 3600000);
                     }
                 }),
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
                     alert(thrownError);
+                    setTimeout(function () {
+                        PARAMS.checkBrowser();
 
+
+                    }, 3600000);
 
                 }
 
