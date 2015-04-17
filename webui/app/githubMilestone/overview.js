@@ -27,8 +27,8 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
             var currentDate = new Date();
 
             var due_on = new Date(Date.parse(due_on_str));
-            due_on.setHours(due_on.getHours() + 1); // dirty hack for winter time (might be a problem exactly one hour per day)
-            due_on.setHours(due_on.getHours() + (due_on.getTimezoneOffset() / 60)); // adjust due to timezone
+            // due_on.setHours(due_on.getHours() + 1); // dirty hack for winter time (might be a problem exactly one hour per day)
+            // due_on.setHours(due_on.getHours() + (due_on.getTimezoneOffset() / 60)); // adjust due to timezone
             var start = new Date(due_on.getTime() - (config.milestoneDuration * 1000 * 60 * 60 * 24));
 
             var due_in = calUtils.calcBusinessDays(start, due_on);
