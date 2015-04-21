@@ -13,5 +13,6 @@
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "linearClockDirective.js", "analogClockDirective.js", "config.js"],
-	"css_files" : ["worldClock.css"]
+	"css_files" : ["worldClock.css"],
+	"nodeModules" : ["server.js"]
 }
