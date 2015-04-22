@@ -5,6 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "test": "karma start karma.config.js -stealth --single-run",
     "uiTest": "karma start karma.config.js -stealth --single-run",
     "backendTest": "mocha -t 8000 -R list ./server/**/*.spec.js",
     "lint": "eslint webui"

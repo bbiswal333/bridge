@@ -45,8 +45,10 @@ var TimeService = (function() {
 
 		function sortTimeZones() {
 			timeZones = timeZones.sort(function(a, b) {
-				var aLabel = a.country + a.city;
-				var bLabel = b.country + b.city;
+				var aLabel = a.country + " - " + a.city;
+				var bLabel = b.country + " - " + b.city;
+				a.label = aLabel;
+				b.label = bLabel;
 				if(aLabel > bLabel) {
 					return 1;
 				} else if(aLabel < bLabel) {

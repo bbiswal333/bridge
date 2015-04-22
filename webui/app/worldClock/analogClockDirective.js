@@ -5,7 +5,7 @@ angular.module("app.worldClock").directive("app.worldClock.analogClock", ["lib.u
 			"width": "@",
 			"height": "@",
 			"timezoneOffset": "=",
-			"locationName": "@",
+			"locationName": "=",
 			"clockIsPaused": "="
 		},
 		controller: function($scope, $interval) {
