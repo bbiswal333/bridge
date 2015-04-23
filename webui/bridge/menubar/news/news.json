@@ -85,6 +85,13 @@
             "preview":  "Due to a bug in the daylight savings time calculation the world clock app needed some alignment. Additionally two new apps were introduced.",
             "date":     "2015-04-22",
             "content":  "With the help of some colleagues we are able to present you two new apps:<ul><li><b>Mood Barometer</b> - You can pick every day from a list of 4 available moods and vote. In a statistic you can see what the mood of other colleagues is.<br />Thanks to Philipp de Sombre and Fabian Hilz for contributing!</li><li><b>Translator</b> - The translator app will translate words from one language into another using yandex.<br />Thanks to Christoph Thüring</li></ul><br />Additionally a huge bug in the world clock app was fixed. The bug was related to incorrect daylight savings time information. Unfortunately you have to reconfigure your world clock. But it is now possible to rename the locations by double clicking on the label."
+        },
+        {
+            "id":       12,
+            "header":   "DevXchange - Build your own apps",
+            "preview":  "Are you located in Shanghai or Bangalore and would like to build your own apps in a one day hackathon?",
+            "date":     "2015-04-23", 
+            "content":  "DevXchange is the face of Development Culture, Framework Tools in collaboration with the Development University to the SAP Development Units. With DevXchange we will offer employees in development areas interactive workshops and knowledge sharing in order to create better products for the Cloud. The event will cover a broad variety of topics including Business Model Innovation, Design Thinking, Agile Software Engineering, Process Improvements and new tools like GitHub.<br /><br />As part of this, we will offer a Toolathon, which is a one day hackathon where you can get creative an build your own apps in bridge or create something completely new. <br /><br /><b>Click <a target=\"_blank\" href=\"https://jam4.sapjam.com/groups/about_page/NImyCEaAQWRZ43UnjBkUGe\">here</a> to find out more and register for the individual events.</b>"
         }
 	]
 }
