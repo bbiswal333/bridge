@@ -1,91 +1,71 @@
 ﻿var path = require('path');
 var fs = require('fs');
+var gui = require('nw.gui');
 
-// unlike in node.js, __dirname is not available in node-webkit, this is our workaround. On mac/linux we have a slash, in windows a backslash
-exports.getCurrentDirectory = function() {
-    return process.cwd()
-};
+var Utils = null;
 
-exports.createTrayIcon = function() {
-    // Create a tray icon
-    tray = new gui.Tray({
-        title: '',
-        icon: 'img/bridge-icon.png',
-    });
+(function(){
+    Utils = function(){
 
-    tray.tooltip = 'Bridge Client';
-
-    var menu = new gui.Menu();
-
-    var item = new gui.MenuItem({
-        label: "Go to Bridge",
-        click: function () {
-            gui.Shell.openExternal("https://bridge.mo.sap.corp/")
-        }
-    });
-    menu.append(item);
-
-    item = new gui.MenuItem({
-        label: "Stop Bridge Client",
-        click: function () {
-            gui.App.quit();
-        }
-    });
-    menu.append(item);
-
-    item = new gui.MenuItem({
-        label: "Show/ Hide In Task Bar",
-        click: function () {
-            var win = gui.Window.get();
-            global.webkitClient.showInTaskbar = !global.webkitClient.showInTaskbar;
-            win.setShowInTaskbar(global.webkitClient.showInTaskbar);
-        }
-    });
-    menu.append(item);
-
-    tray.menu = menu;
-};
-
-exports.callBackend = function(hostname, port, path, method, callback) {
-    var options = {
-        hostname: hostname,
-        port: port,
-        path: path,
-        method: method,
-        rejectUnauthorized: false
+    };
+    // unlike in node.js, __dirname is not available in node-webkit, this is our workaround. On mac/linux we have a slash, in windows a backslash
+    Utils.prototype.getCurrentDirectory = function() {
+        return process.cwd()
     };
 
-    var data = "";
-    console.log(method.toUpperCase() + ": https://" + hostname + ":" + port + path);
+    Utils.prototype.createTrayIcon = function() {
+        // Create a tray icon
+        var tray = new gui.Tray({
+            title: '',
+            icon: 'img/bridge-icon.png',
+        });
 
-    var req = https.request(options, function (res) {
-        res.on('data', function (chunk) { data += chunk; });
-        res.on('end', function () { callback(data); });
-    });
+        tray.tooltip = 'Bridge Client';
 
-    if (method.toLowerCase() == "post" && postData != undefined) {
-        req.write(postData);
-    }
+        var menu = new gui.Menu();
 
-    req.end();
-    req.on('error', function (e) {
-        console.error(e);
-        callback();
-    });
-}
+        var item = new gui.MenuItem({
+            label: "Go to Bridge",
+            click: function () {
+                gui.Shell.openExternal("https://bridge.mo.sap.corp/")
+            }
+        });
+        menu.append(item);
 
-var errorLogfile = path.join(exports.getCurrentDirectory(), '/error.log');
-exports.logError = function(message) {
-    fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
-};
+        item = new gui.MenuItem({
+            label: "Stop Bridge Client",
+            click: function () {
+                gui.App.quit();
+            }
+        });
+        menu.append(item);
 
-exports.checkErrorFileSize = function() {
-    if (fs.existsSync(errorLogfile)) {
-        var fileStats = fs.statSync(errorLogfile);
+        item = new gui.MenuItem({
+            label: "Show/ Hide In Task Bar",
+            click: function () {
+                var win = gui.Window.get();
+                global.webkitClient.showInTaskbar = !global.webkitClient.showInTaskbar;
+                win.setShowInTaskbar(global.webkitClient.showInTaskbar);
+            }
+        });
+        menu.append(item);
 
-        // logfileSize bigger than 2 MB -> delete
-        if (fileStats.size > 2 * 1024 * 1024) {
-            fs.unlinkSync(errorLogfile);
+        tray.menu = menu;
+    };
+
+    var errorLogfile = path.join(Utils.prototype.getCurrentDirectory(), '/error.log');
+    Utils.prototype.logError = function(message) {
+        fs.appendFileSync(errorLogfile, (new Date()).toUTCString() + " : " + message + "\n");
+    };
+
+    Utils.prototype.checkErrorFileSize = function() {
+        if (fs.existsSync(errorLogfile)) {
+            var fileStats = fs.statSync(errorLogfile);
+
+            // logfileSize bigger than 2 MB -> delete
+            if (fileStats.size > 2 * 1024 * 1024) {
+                fs.unlinkSync(errorLogfile);
+            }
         }
-    }
-};
+    };
+})();
