@@ -1,6 +1,7 @@
 ﻿var fs = require('fs'),
     Q = require('q'),
-    async = require('async');
+    async = require('async'),
+    exec = require('child_process').exec;
 
 
 module.exports = function (grunt) {
@@ -120,7 +121,14 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('npmInstall', 'Run npm install in mac and win build folder', function() {
-
+        var cb = this.async();
+        exec('npm install', {cwd: './build/win'}, function(err, stdout, stderr) {
+            console.log(stdout);
+            exec('npm install', {cwd: './build/mac/bridge.app/Contents/Resources/app.nw'}, function(err, stdout, stderr) {
+                console.log(stdout);
+                cb();
+            });
+        });
     });
 
     grunt.loadNpmTasks('grunt-node-webkit-builder');
