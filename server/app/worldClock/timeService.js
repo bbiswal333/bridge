@@ -29,7 +29,7 @@ var TimeService = (function() {
 		}
 
 		function initializeCountries() {
-			fs.readFile(path.join(__dirname, 'timezonedb.csv', 'country.csv'), {encoding: "utf8"}, function(error, data) {
+			fs.readFile(path.join(__dirname, 'timezonedb', 'country.csv'), {encoding: "utf8"}, function(error, data) {
 				if(error) {
 					throw new Error(error);
 				}
@@ -60,7 +60,7 @@ var TimeService = (function() {
 		}
 
 		function initializeTimeZones() {
-			fs.readFile(path.join(__dirname, 'timezonedb.csv', 'zone.csv'), {encoding: "utf8"}, function(error, data) {
+			fs.readFile(path.join(__dirname, 'timezonedb', 'zone.csv'), {encoding: "utf8"}, function(error, data) {
 				if(error) {
 					throw new Error(error);
 				}
@@ -94,7 +94,7 @@ var TimeService = (function() {
 		}
 
 		function initializeTimeZoneDetails() {
-			fs.readFile(path.join(__dirname, 'timezonedb.csv', 'timezone.csv'), {encoding: "utf8"}, function(error, data) {
+			fs.readFile(path.join(__dirname, 'timezonedb', 'timezone.csv'), {encoding: "utf8"}, function(error, data) {
 				if(error) {
 					throw new Error(error);
 				}
