@@ -1,28 +1,45 @@
 ﻿angular.module('app.TwoGo', []);
-angular.module('app.TwoGo').directive('app.TwoGo', function () {
+angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', function (configService) {
 
     var directiveController = ['$scope', function ($scope) {
-        Distance = {
-            distancefromorigin: 0,
-            distancefromdestination: 0
-        };
-        Distance.set = function () {
-            if (localStorage.getItem('distancefromorigin') == null &&
-                localStorage.getItem('distancefromdestination') == null) {
-                Distance.distancefromorigin = 5000;
-                Distance.distancefromdestination = 5000;
+
+        var startDay = 0;
+        var endDay = 0;
+        var endDaySecond = 0;
+
+        var BASE_URL = "https://twogo-sap-internal.cld.ondemand.com/web/rpc/";
+        var csrf_token = "";
+        $scope.ridesTomorrowMorning = "-";
+        $scope.ridesTomorrowEvening = "-";
+        $scope.ridesToday = "-";
+        $scope.tomorrowh = "To HOME";
+        $scope.today = "To HOME";
+        $scope.tomorrow = "From HOME";
+        $scope.checkBrowser = function () {
+
+            startDay = new Date();
+            endDay = new Date();
+            endDay.setHours(0, 0, 0, 0);
+            endDay.setDate(endDay.getDate() + 1);
+            endDaySecond = new Date();
+            endDaySecond.setHours(0, 0, 0, 0);
+            endDaySecond.setDate(endDaySecond.getDate() + 2);
+            if ($scope.checkBrowserName('MSIE')) {
+
+                $(function () {
+
+                    $scope.http();
+
+                });
             } else {
-                Distance.distancefromorigin = localStorage.getItem('distancefromorigin');
-                Distance.distancefromdestination = localStorage.getItem('distancefromdestination');
+                $(function () {
+
+                    $scope.loginOther();
+
+                });
             }
 
         }
-        PARAMS = {
-            BASE_URL: "https://twogo-sap-internal.cld.ondemand.com/web/rpc/",
-            csrf_token: ""
-
-        };
-
 
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Options";
@@ -31,13 +48,27 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
             controller: angular.module('app.TwoGo').appTwoGoSettings
 
         };
+        $scope.box.returnConfig = function () {
+           debugger;
+            if($scope.change ==true) {
+                $scope.ridesTomorrowMorning = "-";
+                $scope.ridesTomorrowEvening = "-";
+                $scope.ridesToday = "-";
+
+                $(function () {
+
+                    $scope.checkBrowser();
+                })
+
+                return angular.copy(configService);
+            }else{
+
+            }
+        };
+
+        $scope.getRides = function () {
 
 
-        function getRides() {
-
-            document.getElementById("ridesTomorrowMorning").innerHTML = "updating...";
-            document.getElementById("ridesTomorrowEvening").innerHTML = "updating...";
-            document.getElementById("ridesToday").innerHTML = "updating...";
             var data = {
                 "method": "execute",
                 "params": [
@@ -56,10 +87,10 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                         "service": "Rippler",
                         "method": "getRideProposals",
                         "params": [
-                            Dates.startDay.toISOString(),
-                            Dates.endDaySecond.toISOString(),
-                            Distance.distancefromorigin,
-                            Distance.distancefromdestination
+                            startDay.toISOString(),
+                            endDaySecond.toISOString(),
+                            $scope.distancefromorigin,
+                            $scope.distancefromorigin
                         ]
                     }
                 ],
@@ -72,7 +103,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
 
             $.ajax({
 
-                url: PARAMS.BASE_URL + "Batch",
+                url: BASE_URL + "Batch",
                 type: 'POST',
                 dataType: 'json',
                 data: data,
@@ -82,25 +113,20 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                 },
                 crossDomain: true,
                 beforeSend: $.proxy(function (xhr) {
-                    xhr.setRequestHeader("X-CSRF-Token", PARAMS.csrf_token);
+                    xhr.setRequestHeader("X-CSRF-Token", csrf_token);
                     xhr.setRequestHeader("X-Authentication", "LogoutAfterRequestProcessing");
 
-                    // xhr.setRequestHeader("Authorization", "Basic " + $.base64.encode($("#auth_username").val() + ":" + $("#auth_password").val()));
                 }),
                 success: $.proxy(function (response) {
 
                     if (response.error) {
 
                         alert("ERROR:" + JSON.stringify(response.error));
-                        setTimeout(function () {
-                            PARAMS.checkBrowser();
 
-
-                        },  3600000);
                     }
                     else {
 
-                        // var toWork= response["result"][0]["origin"]["shortName"].value;
+
 
                         var toHometoday = 0;
                         var toWork = 0;
@@ -109,24 +135,24 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                             for (var i = 0; i < response.result[1].result.length; i++) {
 
 
-                                if (Dates.endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
+                                if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
                                     toHometoday++;
                                 }
                                 else {
 
 
-                                    if (Dates.endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
+                                    if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
 
                                         toHome++;
                                     }
                                     else {
-                                        if (Dates.endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "WORK" && response.result[0].result !== null) {
+                                        if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "WORK" && response.result[0].result !== null) {
 
                                             toWork++;
 
                                         }
                                         else {
-                                            if (Dates.endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] == "HOME" && response.result[0].result == null) {
+                                            if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] == "HOME" && response.result[0].result == null) {
                                                 toWork++;
 
                                             }
@@ -141,31 +167,22 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                             }
                         }
                         if (response.result[0].result == null) {
-                            document.getElementById("tomorrow").innerHTML = "From HOME";
+                            $scope.tomorrow = "From HOME";
                         } else {
-                            document.getElementById("tomorrow").innerHTML = "To WORK";
+                            $scope.tomorrow = "To WORK";
                         }
 
-                        document.getElementById("tomorrowh").innerHTML = "To HOME";
-                        document.getElementById("today").innerHTML = "To HOME";
-                        document.getElementById("ridesToday").innerHTML = toHometoday.toString();
-                        document.getElementById("ridesTomorrowMorning").innerHTML = toWork.toString();
-                        document.getElementById("ridesTomorrowEvening").innerHTML = toHome.toString();
-                        setTimeout(function () {
-                            PARAMS.checkBrowser();
 
+                        $scope.ridesToday = toHometoday.toString();
+                        $scope.ridesTomorrowMorning = toWork.toString();
+                        $scope.ridesTomorrowEvening = toHome.toString();
 
-                        }, 3600000);
                     }
                 }),
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
                     alert(thrownError);
-                    setTimeout(function () {
-                        PARAMS.checkBrowser();
 
-
-                    }, 3600000);
 
                 }
 
@@ -174,7 +191,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
 
         }
 
-        function loginOther() {
+        $scope.loginOther = function () {
             var data = {
                 "method": "login",
                 "params": [],
@@ -187,7 +204,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
             // make a Ajax POST call via the jQuery Ajax interface
 
             $.ajax({
-                url: PARAMS.BASE_URL + "Authentication", //+this.currentMethod.className,
+                url: BASE_URL + "Authentication", //+this.currentMethod.className,
                 type: 'POST',
                 data: data,
                 contentType: "application/json; charset=utf-8",
@@ -212,12 +229,12 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
-                        PARAMS.csrf_token = response["result"]["csrf"]["header"].value;
+                        csrf_token = response["result"]["csrf"]["header"].value;
 
 
                         $(function () {
 
-                            getRides();
+                            $scope.getRides();
 
                         });
 
@@ -234,7 +251,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
 
         }
 
-        function loginIE() {
+        $scope.loginIE = function () {
 
             var data = {
                 "method": "login",
@@ -248,7 +265,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
             // make a Ajax POST call via the jQuery Ajax interface
 
             $.ajax({
-                url: PARAMS.BASE_URL + "Authentication", //+this.currentMethod.className,
+                url: BASE_URL + "Authentication", //+this.currentMethod.className,
                 type: 'POST',
                 data: data,
                 contentType: "application/json; charset=utf-8",
@@ -272,12 +289,12 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
-                        PARAMS.csrf_token = response["result"]["csrf"]["header"].value;
+                        csrf_token = response["result"]["csrf"]["header"].value;
 
 
                         $(function () {
 
-                            getRides();
+                            $scope.getRides();
 
                         });
 
@@ -294,9 +311,9 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
 
         }
 
-        function http() {
+        $scope.http = function () {
             var http = new XMLHttpRequest();
-             var url = PARAMS.BASE_URL + "Authentication";
+            var url = BASE_URL + "Authentication";
             var params = "";
 
             http.open("POST", url, true);
@@ -310,7 +327,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
 
                     $(function () {
                         debugger;
-                        loginIE();
+                        $scope.loginIE();
 
                     });
                 }
@@ -320,7 +337,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
         }
 
 
-        function checkBrowserName(name) {
+        $scope.checkBrowserName = function (name) {
             var agent = navigator.userAgent.toLowerCase();
             if (agent.indexOf(name.toLowerCase()) > -1) {
                 return true;
@@ -328,56 +345,36 @@ angular.module('app.TwoGo').directive('app.TwoGo', function () {
             return false;
         }
 
-        Dates = {
-            startDay: 0,
-            endDay: 0,
-            endDaySecond: 0
 
-        };
-        PARAMS.checkBrowser=function () {
-
-            Dates.startDay = new Date();
-            Dates.endDay = new Date();
-            Dates.endDay.setHours(0, 0, 0, 0);
-            Dates.endDay.setDate(Dates.endDay.getDate() + 1);
-            Dates.endDaySecond = new Date();
-            Dates.endDaySecond.setHours(0, 0, 0, 0);
-            Dates.endDaySecond.setDate(Dates.endDaySecond.getDate() + 2);
-            if (checkBrowserName('MSIE')) {
-
-                $(function () {
-
-                    http();
-
-                });
-            } else {
-                $(function () {
-
-                    loginOther();
-
-                });
-            }
-
-        }
         $(function () {
 
-            Distance.set();
+            $scope.checkBrowser();
+        })
 
-        });
-        $(function () {
-
-            PARAMS.checkBrowser();
-
-        });
+        $scope.box.reloadApp($scope.checkBrowser, 3600);
 
     }];
 
+    var linkFn = function ($scope) {
 
+        // get own instance of config service, $scope.appConfig contains the configuration from the backend
+        configService.initialize($scope.appConfig);
+
+        // watch on any changes in the settings screen
+        $scope.$watch("appConfig.values", function () {
+
+            $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
+            $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
+            $scope.change=$scope.appConfig.values.change;
+        }, true);
+
+    };
     return {
         restrict: 'E',
         templateUrl: "app/TwoGo/overview.html",
-        controller: directiveController
+        controller: directiveController,
+        link: linkFn
 
     };
 
-});
+}]);

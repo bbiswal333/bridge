@@ -1,23 +1,23 @@
 angular.module('app.TwoGo').appTwoGoSettings =
-	['$scope', function ($scope) {
+    ['$scope', "app.TwoGo.configService", function ($scope, configService) {
+
+        $scope.setDistanceO = function (m) {
+debugger;
+            configService.values.distancefromorigin = m;
+            configService.values.change=true;
+
+        };
+        $scope.setDistanceD = function (k) {
+
+            configService.values.distancefromdestination = k;
+            configService.values.change=true;
+        };
+        $scope.values = configService.values;
+        $scope.save_click = function () {
 
 
-
-	$scope.save_click = function () {
-        Distance.distancefromorigin=  document.getElementById("Km").options[document.getElementById("Km").selectedIndex].value;
-        localStorage.setItem("distancefromorigin", Distance.distancefromorigin);
-        Distance.distancefromdestination = document.getElementById("Km1").options[document.getElementById("Km1").selectedIndex].value;
-        localStorage.setItem("distancefromdestination", Distance.distancefromdestination);
+            $scope.$emit('closeSettingsScreen'); // Persisting the settings
 
 
-        $(function (){
-
-            PARAMS.checkBrowser();
-
-        });
-
-		$scope.$emit('closeSettingsScreen'); // Persisting the settings
-
-
-	};
-}];
+        };
+    }];

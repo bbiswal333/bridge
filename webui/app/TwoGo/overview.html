@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app>
 <head lang="en">
     <meta charset="UTF-8">
     <title>TwoGoapp Screen</title>
@@ -11,10 +11,10 @@
         <th><h4>Today</h4></th>
     </tr>
     <tr>
-        <td><label id="today"></label></td>
+        <td>{{today}}</td>
     </tr>
     <tr>
-        <td><label id="ridesToday"></label></td>
+        <td>{{ridesToday}}</td>
     </tr>
 </table>
 
@@ -23,12 +23,12 @@
         <th colspan="2"><h4>Tomorrow</h4></th>
     </tr>
     <tr>
-        <td><label id="tomorrow"></label></td>
-        <td><label id="tomorrowh"></label></td>
+        <td>{{tomorrow}}</td>
+        <td>{{tomorrowh}}</td>
     </tr>
     <tr>
-        <td><label id="ridesTomorrowMorning"></label></td>
-        <td><label id="ridesTomorrowEvening"></label></td>
+        <td>{{ridesTomorrowMorning}}</td>
+        <td>{{ridesTomorrowEvening}}</td>
     </tr>
 </table>
 </body>

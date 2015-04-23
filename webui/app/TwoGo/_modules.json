@@ -1,17 +1,20 @@
 {
-	"app":
-	{
-		"categories"			:	["Productivity"],
-		"module_name"			:	"app.TwoGo",
-		"title"					:	"TwoGo",
-		"icon_css"				:	"fa fa-cab",
-		"overview_directive"	:	"app.TwoGo",
-		"needs_client"			:	false,
-		"beta"					:	false,
-		"default_hidden"		:	true,
-		"description"			:	"This app shows possible TwoGo Ride Proposals for you"
-	},
-	"modules" : [],
-	"js_files" : ["overview.js", "settings.js"],
-	"css_files" : ["TwoGoStyles.css"]
+  "app": {
+    "categories": ["Productivity"],
+    "module_name": "app.TwoGo",
+    "title": "TwoGo",
+    "icon_css": "fa fa-cab",
+    "overview_directive": "app.TwoGo",
+    "needs_client": false,
+    "beta": false,
+    "default_hidden": true,
+    "description": "This app shows possible TwoGo Ride Proposals for you"
+  },
+  "modules": [],
+  "js_files": [
+    "overview.js",
+    "settings.js",
+    "config.js"
+  ],
+  "css_files": ["TwoGoStyles.css"]
 }
