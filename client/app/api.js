@@ -1,12 +1,13 @@
 var setHeader	= require('./cors.js'),
+    EWSClient 	= require("./ews/ewsClient.js").EWSClient,
     path        = require("path");
 
-exports.register = function(app, gui, jQuery) {
+exports.register = function(app) {
     var pathTrafLight = path.join( __dirname , 'trafficlight');
 
     // generic api call get
     app.get('/api/get', function (request, response) {
-        jQuery.ajax({
+        webkitClient.jQuery.ajax({
             url: request.query.url,
             type: "GET",
             success: function (data) {
@@ -35,7 +36,7 @@ exports.register = function(app, gui, jQuery) {
         var service_url = url.parse(request.query.url);
         var postData = JSON.stringify(request.body);
 
-        jQuery.ajax({
+        webkitClient.jQuery.ajax({
             url: service_url,
             type: "POST",
             data: postData,
@@ -49,13 +50,13 @@ exports.register = function(app, gui, jQuery) {
     });
 
     app.get('/api/client/copy', function (request, response) {
-        gui.Clipboard.get().set(request.query.text);
+        webkitClient.gui.Clipboard.get().set(request.query.text);
         response.send("done");
     });
 
     app.get('/client', function (request, response) {
         response = setHeader( request, response );
-        response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + gui.App.manifest.version + '"}');
+        response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.gui.App.manifest.version + '"}');
     });
 
     app.get("/api/trafficLight" , function (request, response) {

@@ -4,7 +4,7 @@ var express = require("express"),
     api		= require('./api.js');
     fs      = require('fs');
 
-exports.start = function(gui, jQuery){
+exports.start = function(){
     var options = {
         key: fs.readFileSync(path.join(__dirname, "certs", 'bridge.key')),
         cert: fs.readFileSync(path.join(__dirname, "certs", 'bridge.crt'))
@@ -12,7 +12,7 @@ exports.start = function(gui, jQuery){
 
     var app = express();
     var server = https.createServer(options, app);
-    server.listen(8000, "127.0.0.1");
+    server.listen(1972, "127.0.0.1");
 
-    api.register(app, gui, jQuery);
+    api.register(app);
 };

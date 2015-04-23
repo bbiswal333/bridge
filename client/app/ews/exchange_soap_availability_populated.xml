@@ -1,0 +1,67 @@
+<Trace Tag="EwsRequest" Tid="1" Time="2014-07-18 11:50:36Z" Version="15.00.0847.030">
+  <?xml version="1.0" encoding="utf-8"?>
+  <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header>
+      <t:RequestServerVersion Version="Exchange2010" />
+      <t:TimeZoneContext>
+        <t:TimeZoneDefinition Name="(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" Id="W. Europe Standard Time">
+          <t:Periods>
+            <t:Period Bias="-P0DT1H0M0.0S" Name="Standard" Id="Std" />
+            <t:Period Bias="-P0DT2H0M0.0S" Name="Daylight" Id="Dlt/1" />
+          </t:Periods>
+          <t:TransitionsGroups>
+            <t:TransitionsGroup Id="0">
+              <t:RecurringDayTransition>
+                <t:To Kind="Period">Dlt/1</t:To>
+                <t:TimeOffset>P0DT2H0M0.0S</t:TimeOffset>
+                <t:Month>3</t:Month>
+                <t:DayOfWeek>Sunday</t:DayOfWeek>
+                <t:Occurrence>-1</t:Occurrence>
+              </t:RecurringDayTransition>
+              <t:RecurringDayTransition>
+                <t:To Kind="Period">Std</t:To>
+                <t:TimeOffset>P0DT3H0M0.0S</t:TimeOffset>
+                <t:Month>10</t:Month>
+                <t:DayOfWeek>Sunday</t:DayOfWeek>
+                <t:Occurrence>-1</t:Occurrence>
+              </t:RecurringDayTransition>
+            </t:TransitionsGroup>
+          </t:TransitionsGroups>
+          <t:Transitions>
+            <t:Transition>
+              <t:To Kind="Group">0</t:To>
+            </t:Transition>
+          </t:Transitions>
+        </t:TimeZoneDefinition>
+      </t:TimeZoneContext>
+    </soap:Header>
+    <soap:Body>
+      <m:GetUserAvailabilityRequest>
+        <m:MailboxDataArray>
+          <t:MailboxData>
+            <t:Email>
+              <t:Address>VR000000001576@exchange.sap.corp</t:Address>
+            </t:Email>
+            <t:AttendeeType>Required</t:AttendeeType>
+            <t:ExcludeConflicts>false</t:ExcludeConflicts>
+          </t:MailboxData>
+          <t:MailboxData>
+            <t:Email>
+              <t:Address>VR000000001577@exchange.sap.corp</t:Address>
+            </t:Email>
+            <t:AttendeeType>Required</t:AttendeeType>
+            <t:ExcludeConflicts>false</t:ExcludeConflicts>
+          </t:MailboxData>
+        </m:MailboxDataArray>
+        <t:FreeBusyViewOptions>
+          <t:TimeWindow>
+            <t:StartTime>2014-07-18T00:00:00</t:StartTime>
+            <t:EndTime>2014-07-19T00:00:00</t:EndTime>
+          </t:TimeWindow>
+          <t:MergedFreeBusyIntervalInMinutes>30</t:MergedFreeBusyIntervalInMinutes>
+          <t:RequestedView>Detailed</t:RequestedView>
+        </t:FreeBusyViewOptions>
+      </m:GetUserAvailabilityRequest>
+    </soap:Body>
+  </soap:Envelope>
+</Trace>

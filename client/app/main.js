@@ -30,7 +30,7 @@ try {
     settings = {};
 }
 
-localProxyServer.start(gui, jQuery);
+localProxyServer.start();
 
 //try to load bridge locally if mentioned in package.json
 /*if (gui.App.manifest.bridge_tag == "local") {
