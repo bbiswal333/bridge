@@ -2,18 +2,15 @@ var https		= require('https');
 var path        = require('path');
 var fs          = require('fs');
 var crypto 		= require('crypto');
-var sso 		= require('./sso.js');
 var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
 
-exports.run = function(npm, port)
-{
+exports.run = function(npm, port) {
 	var proxy       = param.get("proxy", true);
 	var local       = param.get("local", true);
 	var cache 	    = param.get("cache", false);
-	var sso_enable  = param.get("sso", false);
 	var host_filter = param.get("host_filter", "127.0.0.1");
 
 	helper.checkErrorFileSize();
@@ -46,7 +43,7 @@ exports.run = function(npm, port)
 		};
 
 		var server = https.createServer(options, app);
-		api.register(app, user, local, proxy, npm, eTag, sso_enable);
+		api.register(app, user, proxy, npm, eTag);
 		if( host_filter === "")
 		{
 			server.listen(port);
@@ -58,11 +55,6 @@ exports.run = function(npm, port)
 
 		helper.printConsole(port);
 		helper.handleException(port);
-
-		if (typeof webkitClient !== 'undefined' && webkitClient)
-		{
-		    webkitClient.serverStarted();
-		}
 
 		if(!local)
 		{
@@ -76,30 +68,8 @@ exports.run = function(npm, port)
 		}
 	}
 
-	function sso_start_server()
-	{
-		if (!local)
-		{
-			start_server();
-		}
-		else
-		{
-			if( !sso_enable )
-			{
-				start_server();
-			}
-			else
-			{
-				//removed SSO in default due to missing possibility to export the client certificate on MAC
-				sso.execute( start_server );
-			}
-
-
-		}
-	}
-
-	npm_load.get(proxy, npm, sso_start_server);
-}
+	npm_load.get(proxy, npm, start_server);
+};
 
 if(require.main === module){
 	exports.run('npm', 8000);
