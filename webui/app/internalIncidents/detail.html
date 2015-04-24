@@ -43,7 +43,9 @@
 			<bridge.table-column column-id="'7'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]">
 				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]">{{row.OBJECT_ID}}</bridge.table-column>
+			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]">
+				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.OBJECT_ID}}</a>
+			</bridge.table-column>
 			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
 		</bridge.table>
 

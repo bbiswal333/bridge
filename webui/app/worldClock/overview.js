@@ -23,7 +23,7 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
     "</table>\n" +
     "");
 
-	var directiveController = ['$scope', function ($scope) {
+	var directiveController = ['$scope', '$http', function ($scope, $http) {
 		$scope.box.boxSize = "2";
 		$scope.timeOffsetInMilliseconds = 0;
 
@@ -33,6 +33,10 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 		$scope.box.returnConfig = function(){
 			return angular.copy(configService);
 		};
+
+		$http.get('/api/worldClock/getTimeZones').then(function(response) {
+			$scope.timeZones = response.data.timeZones;
+		});
 
 		$scope.searchLocation = bridgeBuildingSearch.searchLocation;
 		$scope.addLocation = function(location) {

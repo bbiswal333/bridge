@@ -2,14 +2,13 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 	var Location = (function() {
 		return function(data) {
 			var that = this;
-			this.name = data.name;
-			this.latitude = data.latitude;
-			this.longitude = data.longitude;
+			this.name = data.city ? data.city : data.name;
+			this.zoneID = data.zoneID;
 			this.timeOffset = data.timeOffset ? data.timeOffset : 0;
 
 			(function loadTimeOffset() {
-				$http.get('/api/get?proxy=true&url=' + encodeURIComponent("http://www.earthtools.org/timezone/" + that.latitude + "/" + that.longitude)).then(function(timezoneData) {
-        			that.timeOffset = (parseFloat(/<offset>(.*)<\/offset>/gi.exec(timezoneData.data)[1]) + (calUtils.now().getTimezoneOffset() / 60)) * 1000 * 60 * 60;
+				$http.get('/api/worldClock/getOffset/?zoneID=' + data.zoneID).then(function(response) {
+        			that.timeOffset = (response.data.offset * 1000) + (calUtils.now().getTimezoneOffset() / 60) * 1000 * 60 * 60;
         		});
 			})();
 		};
@@ -34,7 +33,9 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 	};
 
 	this.addLocation = function(data) {
-		this.locations.push(new Location(data));
+		if(data.zoneID) {
+			this.locations.push(new Location(data));
+		}
 	};
 
 	this.removeLocation = function(location) {

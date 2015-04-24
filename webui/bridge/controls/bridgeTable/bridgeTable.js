@@ -6,13 +6,14 @@ angular.module('bridge.controls').directive('bridge.table', function() {
         transclude: true,
         scope: {
             tableData: "=",
-            filter: "&"
+            filter: "&",
+            defaultSortBy: "&?"
         },
         controller: ["$scope", function($scope){
             var infinityLimitStep = 50;
             $scope.infinityLimit = infinityLimitStep;
-            $scope.reverse = true;
-            $scope.predicate = null;
+            $scope.reverse = $scope.defaultSortBy() ? false : true;
+            $scope.predicate = $scope.defaultSortBy() || null;
 
             $scope.zebraCell = function (index) {
                 return 'row' + index % 2;
