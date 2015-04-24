@@ -11,6 +11,8 @@
 	},
 	"chromium-args": "--ignore-certificate-errors --auth-server-whitelist='*' --auth-negotiate-delegate-whitelist='*'",
 	"dependencies": {
-	  "express": "3.2.2"
+	  "express": "3.2.2",
+	  "xml2js": "0.4.1",
+	  "underscore":"1.6.0"
 	}
 }
