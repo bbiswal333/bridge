@@ -1,6 +1,7 @@
 var setHeader	= require('./cors.js'),
     EWSClient 	= require("./ews/ewsClient.js").EWSClient,
-    path        = require("path");
+    path        = require("path"),
+    execFile  	  = require('child_process').execFile;
 
 exports.register = function(app) {
     var pathTrafLight = path.join( __dirname , 'trafficlight');

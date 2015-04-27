@@ -10,7 +10,6 @@ exports.register = function(app, user, proxy, npm, eTag)
 	//get api modules
 	var xml2js 	  	  = require("xml2js").parseString;
 	var iconv 	  	  = require("iconv-lite");
-	var execFile  	  = require('child_process').execFile;
 
 	var modulesPacked;
 	var javascriptPacked;
@@ -116,12 +115,6 @@ exports.register = function(app, user, proxy, npm, eTag)
 		});
 	}
 
-	//api to check if client is existing
-	app.get('/client', function (request, response) {
-		response = setHeader( request, response );
-		response.send('{"client":"true", "os": "' + process.platform + '", "version": "' + webkitClient.version + '"}');
-	});
-
 	app.get('/api/status', function(request, response) {
 
 	});
@@ -186,38 +179,6 @@ exports.register = function(app, user, proxy, npm, eTag)
 				response.send(data);
 			}
 		});
-	});
-
-	app.get('/api/client/get', function(request, response)
-	{
-		if (typeof webkitClient !== 'undefined' && webkitClient)
-            {
-
-                webkitClient.jQuery.ajax({
-                    url: request.query.url,
-                    type: "GET",
-                    success:
-                        function(data)
-                        {
-                            response.send(data);
-                        },
-                    error:
-                        function() {
-                            response.send("error calling " + request.query.url);
-                        }
-                });
-            }
-            else response.send("no client");
-	});
-
-	app.get('/api/client/copy', function(request, response)
-	{
-		if (typeof webkitClient !== 'undefined' && webkitClient)
-            {
-            	webkitClient.gui.Clipboard.get().set(request.query.text);
-            	response.send("done");
-            }
-            else response.send("no client");
 	});
 
 	//generic api call post
