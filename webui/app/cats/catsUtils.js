@@ -37,35 +37,33 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
         return false;
       }
 
-      if ((task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
-           task1.ZCPR_OBJGEXTID &&
-           task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
-          !task1.ZZSUBTYPE && !task2.ZZSUBTYPE) || // OBJEXTID for non SUP2007C exists
+      if (// cPro task
+          ( task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID &&
+           ((task1.TASKTYPE      === task2.TASKTYPE && task1.TASKTYPE) ||
+            !task1.TASKTYPE ||
+            !task2.TASKTYPE) &&
+           !task1.ZZSUBTYPE      && !task2.ZZSUBTYPE) ||
 
-          (task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
-           task1.ZCPR_OBJGEXTID &&
-          !task1.TASKTYPE && !task2.TASKTYPE &&
-          !task1.ZZSUBTYPE && !task2.ZZSUBTYPE) || // OBJEXTID for non SUP2007C exists
+          // cPro task of support profile SUP2007C
+          ( task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID && task1.ZCPR_OBJGEXTID &&
+            task1.TASKTYPE       === task2.TASKTYPE && task1.TASKTYPE &&
+            task1.ZZSUBTYPE      === task2.ZZSUBTYPE && task1.ZZSUBTYPE) ||
 
-          (task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
-           task1.ZCPR_OBJGEXTID &&
-           task1.ZZSUBTYPE && task2.ZZSUBTYPE &&
-           task1.TASKTYPE === task2.TASKTYPE &&
-           task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // OBJEXTID for SUP2007C exists
-
+          // classical support task non cPro related
           (!task1.ZCPR_OBJGEXTID && !task2.ZCPR_OBJGEXTID &&
-           !task1.RNPLNR && !task2.RNPLNR &&
-            task1.RAUFNR === task2.RAUFNR &&
-            task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
-            task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // CAT2 task check
+           !task1.RNPLNR         && !task2.RNPLNR &&
+            task1.RAUFNR         === task2.RAUFNR &&
+            task1.TASKTYPE       === task2.TASKTYPE && task1.TASKTYPE &&
+            task1.ZZSUBTYPE      === task2.ZZSUBTYPE) ||
 
-          ( task1.RNPLNR === task2.RNPLNR && task1.RNPLNR &&
-            task1.VORNR === task2.VORN &&
-            task1.AUTYP === task2.AUTYP &&
-            task1.TASKTYPE === task2.TASKTYPE && task1.TASKTYPE &&
-            task1.TASKLEVEL === task2.TASKLEVEL &&
-            task1.SKOSTL === task2.SKOSTL &&
-            task1.ZZOBJNR === task2.ZZOBJNR)) {  // CATSXT task check
+          // CATSXT task
+          ( task1.RNPLNR         === task2.RNPLNR && task1.RNPLNR &&
+            task1.VORNR          === task2.VORN &&
+            task1.AUTYP          === task2.AUTYP &&
+            task1.TASKTYPE       === task2.TASKTYPE && task1.TASKTYPE &&
+            task1.TASKLEVEL      === task2.TASKLEVEL &&
+            task1.SKOSTL         === task2.SKOSTL &&
+            task1.ZZOBJNR        === task2.ZZOBJNR)) {
 
           return true;
       }
