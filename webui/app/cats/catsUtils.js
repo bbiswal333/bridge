@@ -44,6 +44,11 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
 
           (task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
            task1.ZCPR_OBJGEXTID &&
+          !task1.TASKTYPE && !task2.TASKTYPE &&
+          !task1.ZZSUBTYPE && !task2.ZZSUBTYPE) || // OBJEXTID for non SUP2007C exists
+
+          (task1.ZCPR_OBJGEXTID === task2.ZCPR_OBJGEXTID &&
+           task1.ZCPR_OBJGEXTID &&
            task1.ZZSUBTYPE && task2.ZZSUBTYPE &&
            task1.TASKTYPE === task2.TASKTYPE &&
            task1.ZZSUBTYPE === task2.ZZSUBTYPE) || // OBJEXTID for SUP2007C exists
