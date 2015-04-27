@@ -33,7 +33,7 @@ JiraBox.prototype.setInstance = function(jira_instance) {
 
   if(jira_instance === 'successfactors')
   {
-    this.jira_url = 'https://jira-staging.successfactors.com:443';
+    this.jira_url = 'https://jira.successfactors.com:443';
   }
 };
 
@@ -45,7 +45,7 @@ JiraBox.prototype.isUserAuthenticated = function () {
 
     console.log("check if user is authenticated");
 
-    return this.http.get('https://jira-staging.successfactors.com').success(function(data, status, headers, config){
+    return this.http.get('https://jira.successfactors.com').success(function(data, status, headers, config){
       console.log("Check if user is authenticated and response from jira is:");
       console.log(headers());
 
