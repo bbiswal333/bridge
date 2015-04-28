@@ -101,8 +101,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         $scope.$watch('config', function (newVal, oldVal) {
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
 
-                console.log("..config changed");
-
                 jiraBox.setInstance(config.getConfig().jira);
                 $scope.jira_url = jiraBox.jira_url;
 
@@ -110,7 +108,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                     $scope.authenticated = jiraBox.authenticated;
 
                     if(jiraBox.authenticated){
-                        console.log("user is authenticated");
                         jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().maxHits).then(function() {
                             $scope.jiraData = jiraBox.data;
                         });
@@ -185,7 +182,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
         link: function ($scope) {
             var config = JiraConfig.getConfigInstanceForAppId($scope.metadata.guid);
             if (config.isInitialized() === false) {
-                console.log("..init");
                 config.initialize($scope.metadata.guid);
                 var jiraBox = JiraBox.getInstanceForAppId($scope.metadata.guid, config.getConfig().jira);
                 jiraBox.isUserAuthenticated().then(function() {
@@ -193,7 +189,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
                     $scope.jira_url = jiraBox.jira_url;
 
                     if(jiraBox.authenticated){
-                        console.log("user is authenticated");
                         jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().maxHits);
                     }
                 });
