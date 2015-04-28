@@ -80,7 +80,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     sMaxResults = "&maxResults=" + sMaxResults;
 
     return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
-        ).success(function (data, status) {
+        ).success(function (data) {
 
             that.data.length = 0;
 
@@ -136,7 +136,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
               task.colorClass = 'taskColor_' + colorIndex;
             });
 
-        }).error(function(data) {
+        }).error(function() {
             that.data = [];
             that.authenticated = true; // in this case don't show login view
         });
