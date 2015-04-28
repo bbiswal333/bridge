@@ -43,7 +43,7 @@ JiraBox.prototype.isUserAuthenticated = function () {
 
   if(this.jira_instance === 'successfactors'){
 
-    return this.http.get('https://jira.successfactors.com').success(function(data, status, headers, config){
+    return this.http.get('https://jira.successfactors.com').success(function(data, status){
 
           if(status === '401' ||
             $(data).filter("meta[name='ajs-remote-user']").attr("content") === ""){
@@ -80,7 +80,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     sMaxResults = "&maxResults=" + sMaxResults;
 
     return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
-        ).success(function (data, status, headers) {
+        ).success(function (data, status) {
 
             that.data.length = 0;
 
@@ -136,7 +136,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
               task.colorClass = 'taskColor_' + colorIndex;
             });
 
-        }).error(function(data, status, headers) {
+        }).error(function(data) {
             that.data = [];
             that.authenticated = true; // in this case don't show login view
         });
