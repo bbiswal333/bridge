@@ -43,21 +43,14 @@ JiraBox.prototype.isUserAuthenticated = function () {
 
   if(this.jira_instance === 'successfactors'){
 
-    console.log("check if user is authenticated");
-
     return this.http.get('https://jira.successfactors.com').success(function(data, status, headers, config){
-      console.log("Check if user is authenticated and response from jira is:");
-      console.log(headers());
 
-          if(status == '401' ||
+          if(status === '401' ||
             $(data).filter("meta[name='ajs-remote-user']").attr("content") === ""){
             that.authenticated = false;
             that.data = [];
-            console.log("response: user is not authenticated");
-            console.log(headers());
             return;
           }
-          console.log("response: user is authenticated");
           that.authenticated = true;
         });
   }
@@ -68,7 +61,7 @@ JiraBox.prototype.isUserAuthenticated = function () {
 };
 
 JiraBox.prototype.getCreateIssueUrl = function () {
-  if(this.jira_instance == 'successfactors'){
+  if(this.jira_instance === 'successfactors'){
     if(this.authenticated){
       return this.jira_url + "/secure/CreateIssue!default.jspa";
     }
@@ -87,7 +80,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     sMaxResults = "&maxResults=" + sMaxResults;
 
     return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
-        ).success(function (data, status, headers, config) {
+        ).success(function (data, status, headers) {
 
             that.data.length = 0;
 
@@ -143,7 +136,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
               task.colorClass = 'taskColor_' + colorIndex;
             });
 
-        }).error(function(data, status, headers, config) {
+        }).error(function(data, status, headers) {
             that.data = [];
             that.authenticated = true; // in this case don't show login view
         });
