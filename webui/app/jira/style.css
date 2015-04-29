@@ -69,7 +69,15 @@ svg{
 }
 .status_title{
 	width: 80px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
+
+.status_count{
+	width: 80px;
+}
+
 .ngSortButtonDown{
  	top:10px;
     right: 10px;
