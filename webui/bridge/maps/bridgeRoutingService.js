@@ -25,7 +25,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 	function waypointArrayToGETParameter(waypoints) {
 		var convertedWaypoints = waypoints.map(function(waypoint) {
 			if(waypoint.linkId) {
-				return "link!!" + waypoint.linkId;
+				return "link!!" + waypoint.linkId.replace(/\+/gi, "%20");
 			} else if(waypoint.position) {
 				return "geo!" + waypoint.position.latitude + "," + waypoint.position.longitude;
 			} else if(waypoint.latitude && waypoint.longitude) {
