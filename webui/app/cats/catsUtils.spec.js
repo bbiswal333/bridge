@@ -32,6 +32,7 @@ describe("Timesheet tools", function () {
 		var taskA = {};
 		taskA.ZCPR_OBJGEXTID = 'abc';
 		var taskB = {};
+		taskA.TASKTYPE = 'A';
 		taskB.TASKTYPE = 'A';
 		expect(catsUtils.isSameTask(taskA, taskA)).toEqual(true);
 		expect(catsUtils.isSameTask(taskB, taskB)).toEqual(true);

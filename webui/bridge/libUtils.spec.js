@@ -87,6 +87,45 @@ describe("The calUtils-Lib provides various functions for working with dates", f
     expect(dateFromLib.toDateString()).toEqual(date.toDateString());
   });
 
+  // // var Wed = "2015-12-31T23:00:00Z"; // Winter time
+
+  // var Mon = "2015-04-12T22:00:00Z"; // Summer time
+  // var Tue = "2015-04-13T22:00:00Z"; // Summer time
+  // var Wed = "2015-04-14T22:00:00Z"; // Summer time
+  // var Thu = "2015-04-15T22:00:00Z"; // Summer time
+  // var Fri = "2015-04-16T22:00:00Z"; // Summer time
+  // var Sat = "2015-04-17T22:00:00Z"; // Summer time
+  // var Sun = "2015-04-18T22:00:00Z"; // Summer time
+
+  // it("should calculate business days for Mon to Mon", function() {
+  //   var date1 = new Date(Date.parse(Mon));
+  //   console.log(date1);
+  //   console.log(date1.getTime());
+  //   console.log(date1.getTimezoneOffset());
+  //   console.log(date1.getUTCHours());
+  //   console.log(date1.getUTCDate());
+  //   console.log(date1.getUTCMonth());
+  //   console.log(date1.getUTCFullYear());
+  //   var date2 = new Date(Date.parse(Mon));
+  //   console.log(date2);
+  //   var dayDiff = calUtils.calcBusinessDays(date1, date2);
+  //   expect(dayDiff).toEqual(0);
+  // });
+
+  // it("should calculate business days for Mon to Tue", function() {
+  //   var date1 = new Date(Date.parse(Mon));
+  //   var date2 = new Date(Date.parse(Tue));
+  //   var dayDiff = calUtils.calcBusinessDays(date1, date2);
+  //   expect(dayDiff).toEqual(1);
+  // });
+
+  // it("should calculate business days for Mon to Fri", function() {
+  //   var date1 = new Date(Date.parse(Mon));
+  //   var date2 = new Date(Date.parse(Fri));
+  //   var dayDiff = calUtils.calcBusinessDays(date1, date2);
+  //   expect(dayDiff).toEqual(4);
+  // });
+
   // it("should get the current time with offset", function() {  // That unit test fails after 10 pm Walldorf time (winter time)
   //   var date = new Date();
   //   var dateFromLib = calUtils.utcNowWithOffset(3600000);

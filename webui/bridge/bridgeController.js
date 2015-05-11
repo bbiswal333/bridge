@@ -72,7 +72,7 @@ angular.module('bridge.app').controller('bridgeController',
         $http.get($window.client.origin + '/client').success(function (data)
         {
             //version which is needed by the application
-            var needs_version = "0.9.4";
+            var needs_version = "0.9.5";
             var has_version = "0.0.1";
             if(data.version !== undefined)
             {

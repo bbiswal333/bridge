@@ -5,39 +5,82 @@ var IJiraBox = {
 var JiraBox = function(http){
     this.http = http;
     this.data = [];
+    this.authenticated = true;
+    this.jira_instance = null;
+    this.jira_url = 'https://sapjira.wdf.sap.corp:443';
 };
 
 JiraBox.prototype = Object.create(IJiraBox);
 
-JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResults) {
+JiraBox.prototype.setInstance = function(jira_instance) {
+  this.jira_instance = jira_instance;
+
+  this.jira_url = 'https://sapjira.wdf.sap.corp:443';
+
+  if(jira_instance === 'issuemanagement')
+  {
+    this.jira_url = 'https://issuemanagement.wdf.sap.corp';
+  }
+  if(jira_instance === 'issues')
+  {
+    this.jira_url = 'https://issues.wdf.sap.corp';
+  }
+
+  if(jira_instance === 'jtrack')
+  {
+      this.jira_url = 'https://jtrack.wdf.sap.corp';
+  }
+
+  if(jira_instance === 'successfactors')
+  {
+    this.jira_url = 'https://jira.successfactors.com:443';
+  }
+};
+
+JiraBox.prototype.isUserAuthenticated = function () {
+
+  var that = this;
+
+  if(this.jira_instance === 'successfactors'){
+
+    return this.http.get('https://jira.successfactors.com').success(function(data, status){
+
+          if(status === '401' ||
+            $(data).filter("meta[name='ajs-remote-user']").attr("content") === ""){
+            that.authenticated = false;
+            that.data = [];
+            return;
+          }
+          that.authenticated = true;
+        });
+  }
+
+  that.authenticated = true;
+
+  return this.http.get('https://sapjira.wdf.sap.corp:443');
+};
+
+JiraBox.prototype.getCreateIssueUrl = function () {
+  if(this.jira_instance === 'successfactors'){
+    if(this.authenticated){
+      return this.jira_url + "/secure/CreateIssue!default.jspa";
+    }
+    return this.jira_url;
+  } else {
+    return this.jira_url + "/secure/CreateIssue!default.jspa";
+  }
+};
+
+JiraBox.prototype.getIssuesforQuery = function (sQuery, sMaxResults) {
     var that = this;
-    var jira_url = 'https://sapjira.wdf.sap.corp:443/rest/api/latest/search?jql=';
 
     if (!sMaxResults || angular.isNumber(sMaxResults)){
         sMaxResults = "50";
     }
     sMaxResults = "&maxResults=" + sMaxResults;
 
-    if(jira_instance === 'issuemanagement')
-    {
-      jira_url = 'https://issuemanagement.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-    if(jira_instance === 'issues')
-    {
-      jira_url = 'https://issues.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-
-    if(jira_instance === 'jtrack')
-    {
-        jira_url = 'https://jtrack.wdf.sap.corp/rest/api/latest/search?jql=';
-    }
-
-    return this.http.get(jira_url + sQuery + sMaxResults
+    return this.http.get(that.jira_url + "/rest/api/latest/search?jql=" + sQuery + sMaxResults
         ).success(function (data) {
-
-            if (jira_instance === undefined){
-                jira_instance = 'sapjira';
-            }
 
             that.data.length = 0;
 
@@ -45,7 +88,7 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
 
               that.data.push({
                 key:            issue.key,
-                instance:       jira_instance,
+                jira_url:       that.jira_url,
                 id:             issue.id,
                 summary:        issue.fields.summary,
                 description:    issue.fields.description,
@@ -95,16 +138,19 @@ JiraBox.prototype.getIssuesforQuery = function (sQuery, jira_instance, sMaxResul
 
         }).error(function() {
             that.data = [];
+            that.authenticated = true; // in this case don't show login view
         });
 };
 
 angular.module('app.jira').service('JiraBox', ['$http', function($http) {
   var instances = {};
 
-  this.getInstanceForAppId = function(appId) {
+  this.getInstanceForAppId = function(appId, jira_instance) {
     if(instances[appId] === undefined) {
       instances[appId] = new JiraBox($http);
     }
+
+    instances[appId].setInstance(jira_instance);
 
     return instances[appId];
   };
