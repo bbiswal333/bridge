@@ -1,8 +1,8 @@
-var chai = require('chai'),
-	expect = chai.expect,
-	should = chai.should(),
-	TimeService = require("./timeService.js"),
-	sinon = require('sinon');
+	var chai = require('chai'),
+		expect = chai.expect,
+		should = chai.should(),
+		TimeService = require("./timeService.js"),
+		sinon = require('sinon');
 
 describe.only("Time Service", function() {
 	var ts = new TimeService();

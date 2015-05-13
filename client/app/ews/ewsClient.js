@@ -35,32 +35,27 @@ exports.EWSClient = function(clientType, query2, json) {
            }
             
             var myresult;
-				  
-				  
-            if (typeof webkitClient !== 'undefined' && webkitClient)
-            {                
 
-                webkitClient.jQuery.ajax({
-                    url: EWS_URI, 
-                    type: "POST",
-                    dataType: "xml", 
-                    data: data, 
-                    processData: false,
-                    contentType: "text/xml; charset=\"utf-8\"",
-                    success: 
-                        function(data)
-                        {                                        
-				
-                            handleData(data.children[0].childNodes[1].innerHTML);
-                        },
-                    error: 
-                        function() {
-                            console.log('6' + ERR_MSG_CONNECTION_TO_EXCHANGE);
-                            callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
-                        }
-                });
+            webkitClient.jQuery.ajax({
+                url: EWS_URI,
+                type: "POST",
+                dataType: "xml",
+                data: data,
+                processData: false,
+                contentType: "text/xml; charset=\"utf-8\"",
+                success:
+                    function(data)
+                    {
 
-            } 
+                        handleData(data.children[0].childNodes[1].innerHTML);
+                    },
+                error:
+                    function() {
+                        console.log('6' + ERR_MSG_CONNECTION_TO_EXCHANGE);
+                        callback_fn(new Error(ERR_MSG_CONNECTION_TO_EXCHANGE));
+                    }
+            });
+
 
             function handleData(ews_xml) {
                 if (json) {

@@ -1,7 +1,7 @@
 var TimeService = require("./timeService.js");
 
 module.exports = function(app) {
-	var ts = new TimeService();
+		var ts = new TimeService();
 	app.get("/api/worldClock/getOffset", function(request, response) {
 		ts.getTimeOffsetFor(request.query.zoneID, function(offset) {
 			response.send({

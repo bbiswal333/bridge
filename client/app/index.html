@@ -8,28 +8,27 @@
         <script src="utils.js"></script>
         <script src="main.js"></script>
         <script src="globalDefinitions.js"></script>
-    </head> 
+    </head>
     
-<body style="margin: 0px; overflow: hidden;">
-    <div class="headerline">
-        <div class="blueTitleBar"></div>
-        <span class="headertext" style="top:12px"><img src="img/bridge-logo-text.png" height="24" alt="Bridge Logo"></span>
-        <button id="closeWindowButton" class="btn btn_blue" style="position:absolute;top:10px;right:0px;height:25px;width:50px;z-index:3000;display:none" onclick="hideWindow()">Hide</button>
-    </div>
+    <body style="margin: 0px; overflow: hidden;">
+        <div class="headerline">
+            <div class="blueTitleBar"></div>
+            <span class="headertext" style="font-weight: bold"><img src="img/bridge-icon.png" height="24" alt="Bridge Logo"> Bridge</span>
+            <button id="closeWindowButton" class="btn btn_blue" style="position:absolute;top:10px;right:0px;height:25px;width:50px;z-index:3000;display:normal" onclick="hideWindow()">Hide</button>
+        </div>
 
-    <div style="margin:0px;padding:5px;background-color:white;width:100%;height:100%" class="centeredContent">
-        <span id="titleText">Initializing..</span>
-        <a id="openBridgeLink" onclick="gotoBridge()" style="display:none; cursor:pointer">open it here.</a>
-    </div>
+        <div style="margin:0px;padding:5px;background-color:white;width:100%;height:100%" class="centeredContent">
+            <span id="titleText">Bridge Client is now running.<br />Refresh Bridge in your browser or<br/></span>
+            <a id="openBridgeLink" onclick="gotoBridge()" style="display:normal; cursor:pointer">open it here.</a>
+        </div>
 
-    <label style="bottom: 10px; position: absolute; display: none; font-size: small;" id="checkboxHide" >
-        <input type="checkbox" id="checkboxHideInput" onclick="checkboxHide_changed()">
-        <span>
-            Hide this screen the next time bridge starts
-        </span>
-    </label>
-
-</body>
+        <label style="bottom: 10px; position: absolute; display: normal; font-size: small;" id="checkboxHide" >
+            <input type="checkbox" id="checkboxHideInput" onclick="checkboxHide_changed()">
+            <span>
+                Hide this screen the next time bridge starts
+            </span>
+        </label>
+    </body>
 </html>
 
 
