@@ -1,7 +1,7 @@
 angular.module("app.jenkins", ["notifier"]);
 angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", "$q", function (jenkinsConfigService, jenkinsDataService, $q) {
 
-	var directiveController = ["$scope", function ($scope) {
+	var directiveController = ["$scope", "trafficLightService", function ($scope, trafficLightService) {
 		var config = jenkinsConfigService.getConfigForAppId($scope.metadata.guid);
 
 		$scope.box.boxSize = '2';
@@ -21,6 +21,36 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			templatePath: "/jenkins/settings.html",
 			controller: angular.module("app.jenkins").appJenkinsSettings,
 			id: $scope.boxId
+		};
+
+		// Enable traffic light
+		$scope.timerId = null;
+		$scope.startTimer = function() {
+			if ($scope.timerId) return;
+			$scope.timerId = setInterval(updateLight, 5 * 60 * 1000);
+			updateLight();
+		};
+
+		$scope.stopTimer = function() {
+			clearInterval($scope.timerId);
+			$scope.timerId = null;
+			turnOffLight();
+		};
+
+		function updateLight() {
+			if ($scope.redCount !== 0) {
+				trafficLightService.forApp("app.jenkins").red();
+			}
+			else if ($scope.greenCount !==0) {
+				trafficLightService.forApp("app.jenkins").green();
+			}
+			else {
+				trafficLightService.forApp("app.jenkins").yellow();
+			};
+		};
+
+		function turnOffLight() {
+			trafficLightService.forApp("app.jenkins").off();
 		};
 
 		$scope.box.returnConfig = function() {

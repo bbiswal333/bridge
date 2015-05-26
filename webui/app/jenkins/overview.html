@@ -15,9 +15,25 @@
     </div>
 </div>
 <div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
-    <div class="clickable basic-blue-font" ng-click="displayJobs('');">
-        Display all
-    </div>
+    <table>
+        <tr>
+            <td>
+                <div class="clickable basic-blue-font" ng-click="displayJobs('');">
+                    Display all
+                </div>
+            </td>
+             <td>
+                <div class="clickable basic-blue-font" ng-click="startTimer();">
+                    Start
+                </div>
+            </td>
+             <td>
+                <div class="clickable basic-blue-font" ng-click="stopTimer();">
+                    Stop
+                </div>
+            </td>                      
+        </tr>
+    </table>
 
     <div class="jobTilesBox">
         <div class="jobTiles red-80 changeCursor" ng-click="displayJobs('Failed');">
