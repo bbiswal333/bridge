@@ -28,6 +28,13 @@ angular.module('bridge.service').service('trafficLightService',
 		}
 	}
 
+  function off(){
+    if( isClientOn() ){
+      $log.log('Traffic Light: Off');
+      $http.get($window.client.origin + '/api/trafficLight?color=o');
+    }   
+  }
+
   function updateTrafficLight() {
 
     var colorFunction = green;
@@ -40,6 +47,9 @@ angular.module('bridge.service').service('trafficLightService',
       }
       else if(modulesState[key] === 'Y') {
         colorFunction = yellow;
+      }
+      else if(modulesState[key] === 'O') {
+        colorFunction = off;
       }
     }
 
@@ -64,6 +74,10 @@ angular.module('bridge.service').service('trafficLightService',
 
     this.yellow = function() {
       setModuleState(appId, 'Y');
+    };
+
+    this.off = function() {
+      setModuleState(appId, 'O');
     };
   };
 
