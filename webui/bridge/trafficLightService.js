@@ -32,7 +32,7 @@ angular.module('bridge.service').service('trafficLightService',
     if( isClientOn() ){
       $log.log('Traffic Light: Off');
       $http.get($window.client.origin + '/api/trafficLight?color=o');
-    }   
+    }
   }
 
   function updateTrafficLight() {
