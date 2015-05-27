@@ -26,7 +26,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 		// Enable traffic light
 		var timerId;
 		$scope.startTimer = function() {
-			if ( angular.isDefined(timerId) ) {
+			if (angular.isDefined(timerId)) {
 				return;
 			}
 			var updateLight = function() {
@@ -43,7 +43,10 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			// be default set to every 5 minutes
 			timerId = $interval(updateLight, 5 * 60 * 1000);
 			updateLight();
+			$scope.isMonitoring = true;
 		};
+		// Start monitoring by default
+		$scope.startTimer();
 
 		$scope.stopTimer = function() {
 			if (angular.isDefined(timerId)) {
@@ -54,6 +57,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 					trafficLightService.forApp("app.jenkins").off();
 				};
 				turnOffLight();
+				$scope.isMonitoring = false;
 			}
 		};
 

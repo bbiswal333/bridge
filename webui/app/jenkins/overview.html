@@ -15,22 +15,19 @@
     </div>
 </div>
 <div ng-hide="showJobs" class="jobTilesContainer" ng-if="dataService.jobsToDisplay.length >= 1">
-    <table>
+    <table width="100%">
         <tr>
-            <td>
+            <td width="75%">
                 <div class="clickable basic-blue-font" ng-click="displayJobs('');">
                     Display all
                 </div>
             </td>
-             <td>
-                <div class="clickable basic-blue-font" ng-click="startTimer();">
-                    Start
-                </div>
+            <td width="20%">
+                Traffic Light
             </td>
-             <td>
-                <div class="clickable basic-blue-font" ng-click="stopTimer();">
-                    Stop
-                </div>
+            <td>
+                <i class="clickable fa fa-play" ng-hide="isMonitoring" ng-click="startTimer();"/>
+                <i class="clickable fa fa-stop" ng-hide="!isMonitoring" ng-click="stopTimer();"/>
             </td>                      
         </tr>
     </table>
