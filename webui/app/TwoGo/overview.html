@@ -5,31 +5,32 @@
     <title>TwoGoapp Screen</title>
 </head>
 <body>
-<h3>TwoGo Rides in your neighbourhood</h3><br/>
+<h3>TwoGo Rides in your neighbourhood</h3><br/><!--Heading of the application-->
 <table align="left" width="20%">
     <tr>
-        <th><h4>Today</h4></th>
+        <th><h4>Today</h4></th><!--tableheading for left table-->
     </tr>
     <tr>
-        <td>{{today}}</td>
+        <td>{{today}}</td><!--variable for the number of rides-->
     </tr>
     <tr>
-        <td>{{ridesToday}}</td>
+        <td><a href="#/detail/TwoGo">{{ridesToday}}</a></td>
     </tr>
 </table>
 
 <table align="right" width="50%">
     <tr>
-        <th colspan="2"><h4>Tomorrow</h4></th>
+        <th colspan="2"><h4>Tomorrow</h4></th> <!--tableheading for right table-->
     </tr>
     <tr>
-        <td>{{tomorrow}}</td>
+        <td>{{tomorrow}}</td> <!--variables for the number of rides-->
         <td>{{tomorrowh}}</td>
     </tr>
     <tr>
-        <td>{{ridesTomorrowMorning}}</td>
-        <td>{{ridesTomorrowEvening}}</td>
+        <td><a href="#/detail/TwoGo">{{ridesTomorrowMorning}}</a></td>
+        <td><a href="#/detail/TwoGo">{{ridesTomorrowEvening}}</a></td>
     </tr>
 </table>
+
 </body>
 </html>

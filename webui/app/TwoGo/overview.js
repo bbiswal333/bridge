@@ -1,14 +1,15 @@
-﻿angular.module('app.TwoGo', []);
-angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', function (configService) {
+﻿angular.module('app.TwoGo', ['app.TwoGo.data']);
+angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','app.TwoGo.dataService', function (configService,dataService) {
 
     var directiveController = ['$scope', function ($scope) {
-
+//variable for the Dates
         var startDay = 0;
         var endDay = 0;
         var endDaySecond = 0;
-
+//Url from the TwoGo server
         var BASE_URL = "https://twogo-sap-internal.cld.ondemand.com/web/rpc/";
         var csrf_token = "";
+        //initialisation of the Tables
         $scope.ridesTomorrowMorning = "-";
         $scope.ridesTomorrowEvening = "-";
         $scope.ridesToday = "-";
@@ -16,7 +17,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
         $scope.today = "To HOME";
         $scope.tomorrow = "From HOME";
         $scope.checkBrowser = function () {
-
+//setting the Dates
             startDay = new Date();
             endDay = new Date();
             endDay.setHours(0, 0, 0, 0);
@@ -24,6 +25,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
             endDaySecond = new Date();
             endDaySecond.setHours(0, 0, 0, 0);
             endDaySecond.setDate(endDaySecond.getDate() + 2);
+            //check if InternetExplorer or any other browser
             if ($scope.checkBrowserName('MSIE')) {
 
                 $(function () {
@@ -49,7 +51,6 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
         };
         $scope.box.returnConfig = function () {
-           debugger;
             if($scope.change ==true) {
                 $scope.ridesTomorrowMorning = "-";
                 $scope.ridesTomorrowEvening = "-";
@@ -59,16 +60,15 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
                     $scope.checkBrowser();
                 })
+                $scope.change=false;
 
-                return angular.copy(configService);
-            }else{
-
-            }
+          }
+            return angular.copy(configService);
         };
 
         $scope.getRides = function () {
 
-
+//Setting the wanted Methods and the parameters
             var data = {
                 "method": "execute",
                 "params": [
@@ -89,8 +89,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
                         "params": [
                             startDay.toISOString(),
                             endDaySecond.toISOString(),
-                            $scope.distancefromorigin,
-                            $scope.distancefromorigin
+                          $scope.distancefromorigin,
+                           $scope.distancefromdestination
                         ]
                     }
                 ],
@@ -100,7 +100,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
 
             data = JSON.stringify(data, undefined, 2);
-
+//ajaxcall for getting the Rides and the WORKPOI if exists
             $.ajax({
 
                 url: BASE_URL + "Batch",
@@ -127,23 +127,31 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
                     else {
 
 
-
+//Counting the Rides
                         var toHometoday = 0;
                         var toWork = 0;
                         var toHome = 0;
+
+
+
                         if (response.result[1].result !== null) {
                             for (var i = 0; i < response.result[1].result.length; i++) {
 
 
                                 if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
                                     toHometoday++;
+$scope.arrayToHomeToday =[response.result[1].result[i]["earliestDeparture"],response.result[1].result[i]["latestArrival"],response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"]];
+alert ($scope.arrayToHomeToday);
                                 }
                                 else {
 
 
                                     if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
-
+                                        $scope.arrayToHome =[response.result[1].result[i]["earliestDeparture"],response.result[1].result[i]["latestArrival"],response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"]];
                                         toHome++;
+dataService.array=$scope.arrayToHome;
+                                        alert($scope.arrayToHome);
+
                                     }
                                     else {
                                         if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "WORK" && response.result[0].result !== null) {
@@ -166,13 +174,14 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
                             }
                         }
+                        //changing one heading if nor WORKPOI exists
                         if (response.result[0].result == null) {
                             $scope.tomorrow = "From HOME";
                         } else {
                             $scope.tomorrow = "To WORK";
                         }
 
-
+                       // and writing the number into the right tables
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();
                         $scope.ridesTomorrowEvening = toHome.toString();
@@ -190,14 +199,16 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
 
         }
-
+//function which includes the Ajax call for the login of the user
         $scope.loginOther = function () {
             var data = {
                 "method": "login",
                 "params": [],
                 "id": 1
             };
-
+$scope.url=function(response){
+    alert(response.result[1].result[0]["createAsPassengerUrl"])
+}
 
             // convert the javascript data object to a pretty printed JSON string
             data = JSON.stringify(data, undefined, 2);
@@ -250,7 +261,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
             });
 
         }
-
+//function which includes the Ajax call for the login of the user using the created http value instat of the Xhr otherwise it wont work
         $scope.loginIE = function () {
 
             var data = {
@@ -310,7 +321,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
             });
 
         }
-
+//functin which creates an new xhr called http
         $scope.http = function () {
             var http = new XMLHttpRequest();
             var url = BASE_URL + "Authentication";
@@ -318,7 +329,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
             http.open("POST", url, true);
 
-//Send the proper header information along with the request
+
             http.setRequestHeader("Content-type", "application/json; charset=utf-8");
 
 
@@ -355,7 +366,12 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
 
     }];
 
-    var linkFn = function ($scope) {
+
+    return {
+        restrict: 'E',
+        templateUrl: "app/TwoGo/overview.html",
+        controller: directiveController,
+        link: function ($scope) {
 
         // get own instance of config service, $scope.appConfig contains the configuration from the backend
         configService.initialize($scope.appConfig);
@@ -368,12 +384,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', f
             $scope.change=$scope.appConfig.values.change;
         }, true);
 
-    };
-    return {
-        restrict: 'E',
-        templateUrl: "app/TwoGo/overview.html",
-        controller: directiveController,
-        link: linkFn
+    }
 
     };
 
