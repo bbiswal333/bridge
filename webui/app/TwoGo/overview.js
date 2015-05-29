@@ -2,6 +2,13 @@
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','app.TwoGo.dataService', function (configService,dataService) {
 
     var directiveController = ['$scope', function ($scope) {
+
+        $scope.setLinkClicked = function (i) {
+
+            dataService.setWhichLinkClicked(i);
+
+
+        };
 //variable for the Dates
         var startDay = 0;
         var endDay = 0;
@@ -133,28 +140,47 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                         var toHome = 0;
 
 
-
+$scope.arrayToHome=[];
+                        $scope.arrayToHomeToday=[];
+                        $scope.arrayToWork=[];
+var v=[];
                         if (response.result[1].result !== null) {
+
                             for (var i = 0; i < response.result[1].result.length; i++) {
+                                if( response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
+                                    v=["true","true"];
+                                }
+                                else{if(response.result[1].result[i]["createAsDriverUrl"]==null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
+                                    v=["false","true"];
+                                }else{if(response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]==null){
+                                    v=["true","false"];
+                                }
+
+
+                                }
+
+                                }
 
 
                                 if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
                                     toHometoday++;
-$scope.arrayToHomeToday =[response.result[1].result[i]["earliestDeparture"],response.result[1].result[i]["latestArrival"],response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"]];
-alert ($scope.arrayToHomeToday);
+$scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(),new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(),response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+
                                 }
                                 else {
 
 
                                     if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
-                                        $scope.arrayToHome =[response.result[1].result[i]["earliestDeparture"],response.result[1].result[i]["latestArrival"],response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"]];
+                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
                                         toHome++;
-dataService.array=$scope.arrayToHome;
-                                        alert($scope.arrayToHome);
+
 
                                     }
                                     else {
                                         if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "WORK" && response.result[0].result !== null) {
+
+                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+
 
                                             toWork++;
 
@@ -163,16 +189,17 @@ dataService.array=$scope.arrayToHome;
                                             if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] == "HOME" && response.result[0].result == null) {
                                                 toWork++;
 
+                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+
+
                                             }
                                         }
 
                                     }
-
+                                }
 
                                 }
 
-
-                            }
                         }
                         //changing one heading if nor WORKPOI exists
                         if (response.result[0].result == null) {
@@ -180,7 +207,9 @@ dataService.array=$scope.arrayToHome;
                         } else {
                             $scope.tomorrow = "To WORK";
                         }
-
+                        dataService.setArrayToday($scope.arrayToHomeToday);
+                        dataService.setArrayTomorrowH($scope.arrayToHome);
+                        dataService.setArrayTomorrow($scope.arrayToWork);
                        // and writing the number into the right tables
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();

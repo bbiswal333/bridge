@@ -6,7 +6,7 @@
     "icon_css": "fa fa-cab",
     "overview_directive": "app.TwoGo",
     "needs_client": false,
-    "beta": false,
+    "beta": true,
 	"routes"				:
 		[
 			{
@@ -22,6 +22,7 @@
     "overview.js",
     "settings.js",
     "config.js",
+	"data.js",
 	"detail.js"
   ],
   "css_files": ["TwoGoStyles.css"]
