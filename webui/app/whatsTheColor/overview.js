@@ -3,9 +3,9 @@ angular.module('app.whatsTheColor').directive('app.whatsTheColor',[function () {
 
 	//inspired by http://whatcolourisit.scn9a.org/, though this algorithm uses the full domain of RGB.
 
-	var directiveController = ['$scope', function ($scope) {
+	var directiveController = ['$timeout', function ($timeout) {
 
-		$scope.timeToRGB = function(hours,mins,secs){
+		var timeToRGB = function(hours,mins,secs){
 			var rgb1 = parseInt(hours / 24 * 255);
 			var rgb2 = parseInt(mins / 60 * 255);
 			var rgb3 = parseInt(secs / 60 * 255);
@@ -13,7 +13,7 @@ angular.module('app.whatsTheColor').directive('app.whatsTheColor',[function () {
 			return [rgb1,rgb2,rgb3];
 		};
 
-		$scope.rgbToHex = function(R,G,B) {
+		var rgbToHex = function(R,G,B) {
 			// taken from http://www.javascripter.net/faq/rgbtohex.htm
 			var toHex = function(n){
 				n = parseInt(n,10);
@@ -24,14 +24,14 @@ angular.module('app.whatsTheColor').directive('app.whatsTheColor',[function () {
 			return toHex(R) + toHex(G) + toHex(B);
 		};
 
-		$scope.updateColor = function(){
+		var updateColor = function(){
 			var oDate = new Date();
 			var iHours = oDate.getHours();
 			var iMins = oDate.getMinutes();
 			var iSecs = oDate.getSeconds();
 
-			var aColor = $scope.timeToRGB(iHours,iMins,iSecs);
-			var sHex = "#" + $scope.rgbToHex(aColor[0],aColor[1],aColor[2]);
+			var aColor = timeToRGB(iHours,iMins,iSecs);
+			var sHex = "#" + rgbToHex(aColor[0],aColor[1],aColor[2]);
 			var sRgbText = "rgb(" + aColor[0] + "," + aColor[1] + "," + aColor[2] + ")";
 
 			if (iHours < 10){iHours = "0" + iHours; }
@@ -43,11 +43,10 @@ angular.module('app.whatsTheColor').directive('app.whatsTheColor',[function () {
 
 			$("#whats-the-color-b").css("background-color", sHex);
 
-			/*global setTimeout*/
-			setTimeout(function(){ $scope.updateColor(); }, 1000);
+			$timeout(updateColor, 1000);
     	};
 
-		$scope.updateColor();
+		updateColor();
 	}];
 
 	return {
