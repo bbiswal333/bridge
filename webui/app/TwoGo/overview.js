@@ -148,12 +148,12 @@ var v=[];
 
                             for (var i = 0; i < response.result[1].result.length; i++) {
                                 if( response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
-                                    v=["true","true"];
+                                    v=["active","active"];
                                 }
                                 else{if(response.result[1].result[i]["createAsDriverUrl"]==null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
-                                    v=["false","true"];
+                                    v=["disabled","active"];
                                 }else{if(response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]==null){
-                                    v=["true","false"];
+                                    v=["active","disabled"];
                                 }
 
 
