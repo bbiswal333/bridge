@@ -4,26 +4,25 @@
 angular.module("app.TwoGo.data", []).service("app.TwoGo.dataService", function () {
 
 
-
-var arrayToday;
+    var arrayToday;
     var arrayTomorrow;
     var arrayTomorrowH;
     var whichLinkClicked;
     var v = [];
 
- this.setArrayToday = function (array1) {
+    this.setArrayToday = function (array1) {
 
         arrayToday = array1;
 
 
     };
-  this.setArrayTomorrow = function (array2) {
+    this.setArrayTomorrow = function (array2) {
 
         arrayTomorrow = array2;
 
 
     };
-   this.setArrayTomorrowH = function (array3) {
+    this.setArrayTomorrowH = function (array3) {
 
         arrayTomorrowH = array3;
 
@@ -37,13 +36,13 @@ var arrayToday;
     };
     this.getArrayTomorrow = function () {
 
-       return arrayTomorrow;
+        return arrayTomorrow;
 
 
     };
     this.getArrayTomorrowH = function () {
 
-    return arrayTomorrowH;
+        return arrayTomorrowH;
 
 
     };
@@ -60,16 +59,16 @@ var arrayToday;
 
 
     };
-    this.setPv = function(){
+    this.setPv = function () {
         v.push("pv");
     };
-    this.setDv = function(){
-v.push("dv");
+    this.setDv = function () {
+        v.push("dv");
     };
-    this.setBoth = function(){
+    this.setBoth = function () {
         v.push("both");
     };
-    this.getV = function() {
+    this.getV = function () {
         return v;
     };
 

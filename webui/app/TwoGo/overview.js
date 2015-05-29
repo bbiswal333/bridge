@@ -1,6 +1,6 @@
 ﻿/*eslint-disable no-alert, no-undef, dot-notation */
 angular.module('app.TwoGo', ['app.TwoGo.data']);
-angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','app.TwoGo.dataService', function (configService,dataService) {
+angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', 'app.TwoGo.dataService', function (configService, dataService) {
 
     var directiveController = ['$scope', function ($scope) {
 
@@ -62,7 +62,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
 
         };
         $scope.box.returnConfig = function () {
-            if($scope.change === true) {
+            if ($scope.change === true) {
                 $scope.ridesTomorrowMorning = "-";
                 $scope.ridesTomorrowEvening = "-";
                 $scope.ridesToday = "-";
@@ -73,7 +73,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                 });
                 $scope.change = false;
 
-          }
+            }
             return angular.copy(configService);
         };
 
@@ -100,8 +100,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                         "params": [
                             startDay.toISOString(),
                             endDaySecond.toISOString(),
-                          $scope.distancefromorigin,
-                           $scope.distancefromdestination
+                            $scope.distancefromorigin,
+                            $scope.distancefromdestination
                         ]
                     }
                 ],
@@ -151,31 +151,33 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                         if (response.result[1].result !== null) {
 
                             for (var i = 0; i < response.result[1].result.length; i++) {
-                                if( response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] != null){
-                                    v = ["active","active"];
+                                if (response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] != null) {
+                                    v = ["invisible-button", "invisible-button"];
                                 }
-                                else{if(response.result[1].result[i]["createAsDriverUrl"] == null && response.result[1].result[i]["createAsPassengerUrl"] != null){
-                                    v = ["disabled","active"];
-                                }else{if(response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] == null){
-                                    v = ["active","disabled"];
-                                }
+                                else {
+                                    if (response.result[1].result[i]["createAsDriverUrl"] == null && response.result[1].result[i]["createAsPassengerUrl"] != null) {
+                                        v = ["disabled", "invisible-button"];
+                                    } else {
+                                        if (response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] == null) {
+                                            v = ["invisible-button", "disabled"];
+                                        }
 
 
-                                }
+                                    }
 
                                 }
 
 
                                 if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
                                     toHometoday++;
-$scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(),new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(),response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+                                    $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
                                 }
                                 else {
 
 
                                     if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
-                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
                                         toHome++;
 
 
@@ -183,7 +185,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                                     else {
                                         if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
 
-                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
 
                                             toWork++;
@@ -193,7 +195,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                                             if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
 
-                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
+                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
 
                                             }
@@ -202,7 +204,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                                     }
                                 }
 
-                                }
+                            }
 
                         }
                         //changing one heading if nor WORKPOI exists
@@ -214,7 +216,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                         dataService.setArrayToday($scope.arrayToHomeToday);
                         dataService.setArrayTomorrowH($scope.arrayToHome);
                         dataService.setArrayTomorrow($scope.arrayToWork);
-                       // and writing the number into the right tables
+                        // and writing the number into the right tables
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();
                         $scope.ridesTomorrowEvening = toHome.toString();
@@ -239,9 +241,9 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                 "params": [],
                 "id": 1
             };
-$scope.url = function(response){
-    alert(response.result[1].result[0]["createAsPassengerUrl"]);
-};
+            $scope.url = function (response) {
+                alert(response.result[1].result[0]["createAsPassengerUrl"]);
+            };
 
             // convert the javascript data object to a pretty printed JSON string
             data = JSON.stringify(data, undefined, 2);
@@ -268,10 +270,10 @@ $scope.url = function(response){
                 success: $.proxy(function (response) {
 
 
-                    if (response.error){
+                    if (response.error) {
                         $scope.Header = ("You First need to create a TwoGo User ");
                         $scope.linked = ("https://www.twogo.com/#signup");
-                        $scope.here    = ("here");
+                        $scope.here = ("here");
                         $scope.ridesTomorrowMorning = "";
                         $scope.ridesTomorrowEvening = "";
                         $scope.ridesToday = "";
@@ -280,7 +282,7 @@ $scope.url = function(response){
                         $scope.tomorrow = "";
                         $scope.HeaderToday = "";
                         $scope.HeaderTomorrow = "";
-                }
+                    }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
@@ -342,7 +344,7 @@ $scope.url = function(response){
                     if (response.error) {
                         $scope.Header = ("You First need to create a TwoGo User ");
                         $scope.linked = ("https://www.twogo.com/#signup");
-                        $scope.here    = ("here");
+                        $scope.here = ("here");
                         $scope.ridesTomorrowMorning = "";
                         $scope.ridesTomorrowEvening = "";
                         $scope.ridesToday = "";
@@ -351,7 +353,7 @@ $scope.url = function(response){
                         $scope.tomorrow = "";
                         $scope.HeaderToday = "";
                         $scope.HeaderTomorrow = "";
-                }
+                    }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
@@ -427,18 +429,20 @@ $scope.url = function(response){
         controller: directiveController,
         link: function ($scope) {
 
-        // get own instance of config service, $scope.appConfig contains the configuration from the backend
-        configService.initialize($scope.appConfig);
+            // get own instance of config service, $scope.appConfig contains the configuration from the backend
+            configService.initialize($scope.appConfig);
 
-        // watch on any changes in the settings screen
-        $scope.$watch("appConfig.values", function () {
+            // watch on any changes in the settings screen
+            $scope.$watch("appConfig.values", function () {
 
-            $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
-            $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
-            $scope.change = $scope.appConfig.values.change;
-        }, true);
+                $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
+                $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
+                $scope.change = $scope.appConfig.values.change;
+                $scope.state = $scope.appConfig.values.state;
+                $scope.stateD = $scope.appConfig.values.stateD;
+            }, true);
 
-    }
+        }
 
     };
 
