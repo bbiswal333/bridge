@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>"TwoGoSettings Screen"</title>
+</head>
+<body>
+<div class="row"><div style="width: 100%">
+    </br>
+    </br>
+    <table align="left" width="100%">
+
+        <tr height="40">
+            <td><label id="fromOrigin">Distance from Origin in kilometer:</label></td>
+            <td>
+                <bridge.button ng-click="setDistanceO(500)" class="0,5">
+                    0,5 Km
+                </bridge.button>
+                </td>
+            <td>
+                <bridge.button ng-click="setDistanceO(1000)" class="1">
+                    1 Km
+                </bridge.button>
+                </td>
+            <td>
+                <bridge.button ng-click="setDistanceO(2000)" class="2">
+                    2 Km
+                </bridge.button>
+                </td>
+            <td>
+                <bridge.button ng-click="setDistanceO(5000)" class="5">
+                    5 Km
+                </bridge.button>
+
+
+            </td>
+        </tr>
+        </br>
+        <tr height="40">
+            <td><label id="fromDestination">Distance from destination in kilometer:</label></td>
+            <td>
+                <bridge.button ng-click="setDistanceD(500)" class="0,5">
+                    0,5 Km
+                </bridge.button>
+                </td>
+            <td>
+                <bridge.button ng-click="setDistanceD(1000)" class="1">
+                    1 Km
+                </bridge.button></td>
+            <td>
+                <bridge.button ng-click="setDistanceD(2000)" class="2">
+                    2 Km
+                </bridge.button></td>
+            <td>
+                <bridge.button ng-click="setDistanceD(5000)" class="5">
+                    5 Km
+                </bridge.button>
+</td>
+<td>
+
+                    <!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+                    <bridge.button ng-click="save_click()" class="save_close_btn">
+                        Save & Close
+                    </bridge.button>
+
+
+            </td>
+        </tr>
+    </table>
+    </br>
+</div>
+</div>
+</body>
+</html>
+
