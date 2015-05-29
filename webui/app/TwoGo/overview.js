@@ -24,6 +24,9 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
         $scope.tomorrowh = "To HOME";
         $scope.today = "To HOME";
         $scope.tomorrow = "From HOME";
+        $scope.Header = "TWOGO RIDES IN YOUR NEIGHBOURHOOD";
+        $scope.HeaderToday = "Today";
+        $scope.HeaderTomorrow = "Tomorrow";
         $scope.checkBrowser = function () {
 //setting the Dates
             startDay = new Date();
@@ -266,7 +269,17 @@ $scope.url = function(response){
 
 
                     if (response.error){
-                        alert("ERROR:" + JSON.stringify(response.error));
+                        $scope.Header = ("You First need to create a TwoGo User ");
+                        $scope.linked = ("https://www.twogo.com/#signup");
+                        $scope.here    = ("here");
+                        $scope.ridesTomorrowMorning = "";
+                        $scope.ridesTomorrowEvening = "";
+                        $scope.ridesToday = "";
+                        $scope.tomorrowh = "";
+                        $scope.today = "";
+                        $scope.tomorrow = "";
+                        $scope.HeaderToday = "";
+                        $scope.HeaderTomorrow = "";
                 }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
@@ -327,7 +340,17 @@ $scope.url = function(response){
 
 
                     if (response.error) {
-                        alert("ERROR:" + JSON.stringify(response.error));
+                        $scope.Header = ("You First need to create a TwoGo User ");
+                        $scope.linked = ("https://www.twogo.com/#signup");
+                        $scope.here    = ("here");
+                        $scope.ridesTomorrowMorning = "";
+                        $scope.ridesTomorrowEvening = "";
+                        $scope.ridesToday = "";
+                        $scope.tomorrowh = "";
+                        $scope.today = "";
+                        $scope.tomorrow = "";
+                        $scope.HeaderToday = "";
+                        $scope.HeaderTomorrow = "";
                 }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
