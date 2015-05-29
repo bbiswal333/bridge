@@ -1,4 +1,5 @@
-﻿angular.module('app.TwoGo', ['app.TwoGo.data']);
+﻿/*eslint-disable no-alert, no-undef, dot-notation */
+angular.module('app.TwoGo', ['app.TwoGo.data']);
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','app.TwoGo.dataService', function (configService,dataService) {
 
     var directiveController = ['$scope', function ($scope) {
@@ -419,3 +420,4 @@ $scope.url = function(response){
     };
 
 }]);
+/*eslint-enable no-alert, no-undef, dot-notation*/
