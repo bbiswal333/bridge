@@ -5,13 +5,15 @@
     <title>TwoGoapp Screen</title>
 </head>
 <body>
-<h3>{{Header}}<a href="{{linked}}" >{{here}}</a></h3><br/><!--Heading of the application-->
+<h3>{{Header}}<a href="{{linked}}">{{here}}</a></h3><br/><!--Heading of the application-->
 <table align="left" width="20%">
     <tr>
-        <th><h4>{{HeaderToday}}</h4></th><!--tableheading for left table-->
+        <th><h4>{{HeaderToday}}</h4></th>
+        <!--tableheading for left table-->
     </tr>
     <tr>
-        <td>{{today}}</td><!--variable for the number of rides-->
+        <td>{{today}}</td>
+        <!--variable for the number of rides-->
     </tr>
     <tr>
         <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(1)">{{ridesToday}}</a></td>
@@ -20,14 +22,16 @@
 
 <table align="right" width="50%">
     <tr>
-        <th colspan="2"><h4>{{HeaderTomorrow}}</h4></th> <!--tableheading for right table-->
+        <th colspan="2"><h4>{{HeaderTomorrow}}</h4></th>
+        <!--tableheading for right table-->
     </tr>
     <tr>
-        <td>{{tomorrow}}</td> <!--variables for the number of rides-->
+        <td>{{tomorrow}}</td>
+        <!--variables for the number of rides-->
         <td>{{tomorrowh}}</td>
     </tr>
     <tr>
-        <td><a  href="#/detail/TwoGo" ng-click="setLinkClicked(2)">{{ridesTomorrowMorning}} </a></td>
+        <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(2)">{{ridesTomorrowMorning}} </a></td>
         <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(3)">{{ridesTomorrowEvening}}</a></td>
     </tr>
 </table>

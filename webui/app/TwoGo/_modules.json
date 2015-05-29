@@ -7,13 +7,12 @@
     "overview_directive": "app.TwoGo",
     "needs_client": false,
     "beta": true,
-	"routes"				:
-		[
-			{
-				"route"			:	"/detail/TwoGo/",
-				"templateUrl"	:	"app/TwoGo/detail.html"
-			}
-		],
+    "routes": [
+      {
+        "route": "/detail/TwoGo/",
+        "templateUrl": "app/TwoGo/detail.html"
+      }
+    ],
     "default_hidden": true,
     "description": "This app shows possible TwoGo Ride Proposals for you"
   },
@@ -22,8 +21,8 @@
     "overview.js",
     "settings.js",
     "config.js",
-	"data.js",
-	"detail.js"
+    "data.js",
+    "detail.js"
   ],
   "css_files": ["TwoGoStyles.css"]
 }
