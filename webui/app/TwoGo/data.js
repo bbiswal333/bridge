@@ -9,23 +9,23 @@ var arrayToday;
     var arrayTomorrow;
     var arrayTomorrowH;
     var whichLinkClicked;
-    var v=[];
+    var v = [];
 
  this.setArrayToday = function (array1) {
 
-        arrayToday=array1;
+        arrayToday = array1;
 
 
     };
   this.setArrayTomorrow = function (array2) {
 
-        arrayTomorrow=array2;
+        arrayTomorrow = array2;
 
 
     };
    this.setArrayTomorrowH = function (array3) {
 
-        arrayTomorrowH=array3;
+        arrayTomorrowH = array3;
 
 
     };
@@ -50,7 +50,7 @@ var arrayToday;
 
     this.setWhichLinkClicked = function (i) {
 
-        whichLinkClicked=i;
+        whichLinkClicked = i;
 
 
     };
@@ -67,7 +67,7 @@ var arrayToday;
 v.push("dv");
     };
     this.setBoth = function(){
-        v.push("both")
+        v.push("both");
     };
     this.getV = function() {
         return v;

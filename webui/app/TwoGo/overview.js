@@ -48,7 +48,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                 });
             }
 
-        }
+        };
 
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Options";
@@ -58,7 +58,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
 
         };
         $scope.box.returnConfig = function () {
-            if($scope.change ==true) {
+            if($scope.change === true) {
                 $scope.ridesTomorrowMorning = "-";
                 $scope.ridesTomorrowEvening = "-";
                 $scope.ridesToday = "-";
@@ -66,8 +66,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                 $(function () {
 
                     $scope.checkBrowser();
-                })
-                $scope.change=false;
+                });
+                $scope.change = false;
 
           }
             return angular.copy(configService);
@@ -103,7 +103,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                 ],
                 "id": 0,
                 "parallelProcessing": true
-            }
+            };
 
 
             data = JSON.stringify(data, undefined, 2);
@@ -140,29 +140,29 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService','a
                         var toHome = 0;
 
 
-$scope.arrayToHome=[];
-                        $scope.arrayToHomeToday=[];
-                        $scope.arrayToWork=[];
-var v=[];
+                        $scope.arrayToHome = [];
+                        $scope.arrayToHomeToday = [];
+                        $scope.arrayToWork = [];
+                        var v = [];
                         if (response.result[1].result !== null) {
 
                             for (var i = 0; i < response.result[1].result.length; i++) {
-                                if( response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
-                                    v=["active","active"];
+                                if( response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] != null){
+                                    v = ["active","active"];
                                 }
-                                else{if(response.result[1].result[i]["createAsDriverUrl"]==null && response.result[1].result[i]["createAsPassengerUrl"]!=null){
-                                    v=["disabled","active"];
-                                }else{if(response.result[1].result[i]["createAsDriverUrl"]!=null && response.result[1].result[i]["createAsPassengerUrl"]==null){
-                                    v=["active","disabled"];
-                                }
-
-
-                                }
-
+                                else{if(response.result[1].result[i]["createAsDriverUrl"] == null && response.result[1].result[i]["createAsPassengerUrl"] != null){
+                                    v = ["disabled","active"];
+                                }else{if(response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] == null){
+                                    v = ["active","disabled"];
                                 }
 
 
-                                if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
+                                }
+
+                                }
+
+
+                                if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
                                     toHometoday++;
 $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(),new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(),response.result[1].result[i]["origin"]["shortName"],response.result[1].result[i]["destination"]["shortName"],response.result[1].result[i]["createAsDriverUrl"],response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
 
@@ -170,14 +170,14 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                                 else {
 
 
-                                    if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "HOME") {
+                                    if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
                                         $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
                                         toHome++;
 
 
                                     }
                                     else {
-                                        if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] == "WORK" && response.result[0].result !== null) {
+                                        if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
 
                                             $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
 
@@ -186,7 +186,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
 
                                         }
                                         else {
-                                            if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] == "HOME" && response.result[0].result == null) {
+                                            if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
 
                                                 $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"],v[0],v[1]]);
@@ -227,7 +227,7 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
             });
 
 
-        }
+        };
 //function which includes the Ajax call for the login of the user
         $scope.loginOther = function () {
             var data = {
@@ -235,9 +235,9 @@ $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDep
                 "params": [],
                 "id": 1
             };
-$scope.url=function(response){
-    alert(response.result[1].result[0]["createAsPassengerUrl"])
-}
+$scope.url = function(response){
+    alert(response.result[1].result[0]["createAsPassengerUrl"]);
+};
 
             // convert the javascript data object to a pretty printed JSON string
             data = JSON.stringify(data, undefined, 2);
@@ -264,8 +264,9 @@ $scope.url=function(response){
                 success: $.proxy(function (response) {
 
 
-                    if (response.error)
+                    if (response.error){
                         alert("ERROR:" + JSON.stringify(response.error));
+                }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
@@ -289,7 +290,7 @@ $scope.url=function(response){
 
             });
 
-        }
+        };
 //function which includes the Ajax call for the login of the user using the created http value instat of the Xhr otherwise it wont work
         $scope.loginIE = function () {
 
@@ -324,8 +325,9 @@ $scope.url=function(response){
                 success: $.proxy(function (response) {
 
 
-                    if (response.error)
+                    if (response.error) {
                         alert("ERROR:" + JSON.stringify(response.error));
+                }
                     else {
                         //  alert("SUCCESS:"+JSON.stringify(response.result));
                         // csrf_token = response["result"]["csrf"]["header"].value;
@@ -344,12 +346,11 @@ $scope.url=function(response){
                     alert(http.status);
                     alert(error);
                     alert(status);
-
                 }
 
             });
 
-        }
+        };
 //functin which creates an new xhr called http
         $scope.http = function () {
             var http = new XMLHttpRequest();
@@ -363,18 +364,18 @@ $scope.url=function(response){
 
 
             http.onreadystatechange = function () {//Call a function when the state changes.
-                if (http.readyState == 4 && http.status == 200) {
+                if (http.readyState === 4 && http.status === 200) {
 
                     $(function () {
-                        debugger;
+
                         $scope.loginIE();
 
                     });
                 }
-            }
+            };
             http.send(params);
 
-        }
+        };
 
 
         $scope.checkBrowserName = function (name) {
@@ -383,13 +384,13 @@ $scope.url=function(response){
                 return true;
             }
             return false;
-        }
+        };
 
 
         $(function () {
 
             $scope.checkBrowser();
-        })
+        });
 
         $scope.box.reloadApp($scope.checkBrowser, 3600);
 
@@ -410,7 +411,7 @@ $scope.url=function(response){
 
             $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
             $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
-            $scope.change=$scope.appConfig.values.change;
+            $scope.change = $scope.appConfig.values.change;
         }, true);
 
     }

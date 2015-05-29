@@ -4,13 +4,13 @@ angular.module('app.TwoGo').appTwoGoSettings =
         $scope.setDistanceO = function (m) {
 
             $scope.values.distancefromorigin = m;
-           $scope.values.change=true;
+           $scope.values.change = true;
 
         };
         $scope.setDistanceD = function (k) {
 
            $scope.values.distancefromdestination = k;
-            $scope.values.change=true;
+            $scope.values.change = true;
         };
 
         $scope.save_click = function () {

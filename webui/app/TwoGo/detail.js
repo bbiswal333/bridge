@@ -5,24 +5,23 @@
 angular.module('app.TwoGo').controller('app.TwoGo.detailController',['$scope','app.TwoGo.dataService',
     function Controller($scope, dataService) {
 
-        if(dataService.getWhichLinkClicked()==1){
-            $scope.Heading="To Home Today"
+        if(dataService.getWhichLinkClicked() === 1){
+            $scope.Heading = "To Home Today";
 
-            $scope.array=dataService.getArrayToday();
+            $scope.array = dataService.getArrayToday();
 
         }
             else{
-                if(dataService.getWhichLinkClicked()==2){
-                  debugger;
-                    $scope.state="disabled";
-                    $scope.Heading="To Work Tomorrow";
-                    $scope.array=dataService.getArrayTomorrow();
+                if(dataService.getWhichLinkClicked() === 2){
+                    $scope.state = "disabled";
+                    $scope.Heading = "To Work Tomorrow";
+                    $scope.array = dataService.getArrayTomorrow();
 
 
             }else{
 
-                    $scope.Heading="To Home Tomorrow";
-                    $scope.array=dataService.getArrayTomorrowH()
+                    $scope.Heading = "To Home Tomorrow";
+                    $scope.array = dataService.getArrayTomorrowH();
 
             }
 
