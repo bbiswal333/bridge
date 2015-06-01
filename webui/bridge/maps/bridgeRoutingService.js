@@ -23,16 +23,26 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 	}
 
 	function waypointArrayToGETParameter(waypoints) {
+		var result, index = 0;
+		var radius = "";
+		var type = "stopOver!";
 		var convertedWaypoints = waypoints.map(function(waypoint) {
-			if(waypoint.linkId) {
-				return "link!!" + waypoint.linkId.replace(/\+/gi, "%2B");
-			} else if(waypoint.position) {
-				return "geo!" + waypoint.position.latitude + "," + waypoint.position.longitude;
+			if(index > 0 && index < waypoints.length - 1) {
+				radius = ";1000";
+				type = "passThrough!";
+			} else {
+				radius = "";
+				type = "stopOver!";
+			}
+			if(waypoint.position) {
+				result = "geo!" + type + waypoint.position.latitude + "," + waypoint.position.longitude + radius;
 			} else if(waypoint.latitude && waypoint.longitude) {
-				return "geo!" + waypoint.latitude + "," + waypoint.longitude;
+				result = "geo!" + type + waypoint.latitude + "," + waypoint.longitude + radius;
 			} else {
 				throw new Error("Invalid waypoint");
 			}
+			index++;
+			return result;
 		});
 		var parameter = "";
 		for(var i = 0, length = convertedWaypoints.length; i < length; i++) {
