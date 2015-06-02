@@ -1,7 +1,7 @@
 angular.module("app.jenkins", ["notifier"]);
 angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservice", "app.jenkins.dataService", "$q", function (jenkinsConfigService, jenkinsDataService, $q) {
 
-	var directiveController = ["$scope", "$interval", "trafficLightService", function ($scope, $interval, trafficLightService) {
+	var directiveController = ["$scope", "trafficLightService", function ($scope, trafficLightService) {
 		var config = jenkinsConfigService.getConfigForAppId($scope.metadata.guid);
 
 		$scope.box.boxSize = '2';
@@ -21,44 +21,6 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			templatePath: "/jenkins/settings.html",
 			controller: angular.module("app.jenkins").appJenkinsSettings,
 			id: $scope.boxId
-		};
-
-		// Enable traffic light
-		var timerId;
-		$scope.startTimer = function() {
-			if (angular.isDefined(timerId)) {
-				return;
-			}
-			var updateLight = function() {
-				if ($scope.redCount !== 0) {
-					trafficLightService.forApp("app.jenkins").red();
-				}
-				else if ($scope.greenCount !== 0) {
-					trafficLightService.forApp("app.jenkins").green();
-				}
-				else {
-					trafficLightService.forApp("app.jenkins").yellow();
-				}
-			};
-			// be default set to every 5 minutes
-			timerId = $interval(updateLight, 5 * 60 * 1000);
-			updateLight();
-			$scope.isMonitoring = true;
-		};
-		// Start monitoring by default
-		$scope.startTimer();
-
-		$scope.stopTimer = function() {
-			if (angular.isDefined(timerId)) {
-				$interval.cancel(timerId);
-				timerId = undefined;
-
-				var turnOffLight = function() {
-					trafficLightService.forApp("app.jenkins").off();
-				};
-				turnOffLight();
-				$scope.isMonitoring = false;
-			}
 		};
 
 		$scope.box.returnConfig = function() {
@@ -99,6 +61,21 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			return name;
 		};
 
+		function updateTrafficLight() {
+			if ($scope.redCount !== 0) {
+				trafficLightService.forApp($scope.metadata.guid).red();
+			}
+			else if ($scope.yellowCount !== 0 || $scope.runningCount !== 0) {
+				trafficLightService.forApp($scope.metadata.guid).yellow();
+			}
+			else if ($scope.greenCount !== 0) {
+				trafficLightService.forApp($scope.metadata.guid).green();
+			}
+			else {
+				trafficLightService.forApp($scope.metadata.guid).off();
+			}
+		}
+
 		function updateStatus() {
 			for(var jobIndex in $scope.dataService.jobsToDisplay) {
 				$scope.dataService.jobsToDisplay[jobIndex].timestamp = "loading...";
@@ -106,6 +83,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			}
 			$scope.dataService.updateJobs().then(function(){
 				$scope.getStatusCount($scope.dataService.jobsToDisplay);
+				updateTrafficLight();
 			});
 		}
 
@@ -142,7 +120,7 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			}
 		};
 
-		$scope.box.reloadApp($scope.dataService.updateJobs, 60 * 2);
+		$scope.box.reloadApp(updateStatus, 60 * 2);
 	}];
 
 	return {
