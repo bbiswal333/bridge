@@ -18,7 +18,6 @@ angular.module('app.TwoGo').controller('app.TwoGo.detailController', ['$scope', 
         }
         else {
             if (dataService.getWhichLinkClicked() === 2) {
-                $scope.state = "disabled";
                 $scope.Heading = "To Work Tomorrow";
                 $scope.array = dataService.getArrayTomorrow();
 

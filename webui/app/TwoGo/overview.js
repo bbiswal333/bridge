@@ -1,4 +1,4 @@
-﻿/*eslint-disable no-alert, no-undef, dot-notation */
+/*eslint-disable no-alert, no-undef, dot-notation */
 angular.module('app.TwoGo', ['app.TwoGo.data']);
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', 'app.TwoGo.dataService', function (configService, dataService) {
 
@@ -62,18 +62,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
         };
         $scope.box.returnConfig = function () {
-            if ($scope.change === true) {
-                $scope.ridesTomorrowMorning = "-";
-                $scope.ridesTomorrowEvening = "-";
-                $scope.ridesToday = "-";
 
-                $(function () {
-
-                    $scope.checkBrowser();
-                });
-                $scope.change = false;
-
-            }
             return angular.copy(configService);
         };
 
@@ -170,14 +159,26 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                                 if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
                                     toHometoday++;
-                                    $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                    $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
                                 }
                                 else {
 
 
                                     if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
-                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
                                         toHome++;
 
 
@@ -185,7 +186,13 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                     else {
                                         if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
 
-                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
 
                                             toWork++;
@@ -195,7 +202,13 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                             if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
 
-                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
 
 
                                             }
@@ -412,37 +425,36 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             return false;
         };
 
-
-        $(function () {
-
-            $scope.checkBrowser();
-        });
-
         $scope.box.reloadApp($scope.checkBrowser, 3600);
 
     }];
 
+    var linkFn = function ($scope) {
 
+        // get own instance of config service, $scope.appConfig contains the configuration from the backend
+        configService.initialize($scope.appConfig);
+
+        // watch on any changes in the settings screen
+        $scope.$watch("appConfig.values", function () {
+            $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
+            $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
+            $scope.ridesTomorrowMorning = "-";
+            $scope.ridesTomorrowEvening = "-";
+            $scope.ridesToday = "-";
+
+            $(function () {
+
+                $scope.checkBrowser();
+            });
+        }, true);
+
+
+    };
     return {
         restrict: 'E',
         templateUrl: "app/TwoGo/overview.html",
         controller: directiveController,
-        link: function ($scope) {
-
-            // get own instance of config service, $scope.appConfig contains the configuration from the backend
-            configService.initialize($scope.appConfig);
-
-            // watch on any changes in the settings screen
-            $scope.$watch("appConfig.values", function () {
-
-                $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
-                $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
-                $scope.change = $scope.appConfig.values.change;
-                $scope.state = $scope.appConfig.values.state;
-                $scope.stateD = $scope.appConfig.values.stateD;
-            }, true);
-
-        }
+        link: linkFn
 
     };
 
