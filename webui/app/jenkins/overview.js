@@ -41,6 +41,10 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
         };
 
         $scope.getStatusCount = function(jobsToDisplay){
+        	$scope.redCount = 0;
+        	$scope.greenCount = 0;
+        	$scope.yellowCount = 0;
+        	$scope.runningCount - 0;
             for(var jobIndex in jobsToDisplay) {
                 if(jobsToDisplay[jobIndex].statusInfo === "Failed") {
                     $scope.redCount = $scope.redCount + 1;
