@@ -1,15 +1,15 @@
 
-th, td {
+.twogo th,.twogo td {
     text-align: center;
     height: 25px;
 
 }
 
-label {
+.twogo label {
     text-align: center;
 }
 
-h3 {
+.twogo h3 {
     text-align: center;
 }
 
