@@ -598,7 +598,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        // adjust slight deviations in QUANTITY when posting part time
+        // adjust slight deviations in QUANTITY to reach 100%
         var totalBookingQuantity = 0;
         var biggestBooking;
         workdateBookings.forEach(function(oBooking){
@@ -608,11 +608,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             totalBookingQuantity += oBooking.CATSQUANTITY;
         });
         totalBookingQuantity = catsUtils.cat2CompliantRounding(totalBookingQuantity);
-        var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
-        if((bookingDif > 0 && bookingDif < 0.03) ||
-           (bookingDif < 0 && bookingDif > -0.03)) {
-            biggestBooking.CATSQUANTITY -= bookingDif;
-            biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRounding(biggestBooking.CATSQUANTITY);
+
+        if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
+            var bookingDifference = catsUtils.cat2CompliantRoundingForHours(totalBookingQuantity - targetHoursForDay);
+            if((bookingDifference > 0 && bookingDifference < 0.03) ||
+               (bookingDifference < 0 && bookingDifference > -0.03)) {
+                biggestBooking.CATSQUANTITY -= bookingDifference;
+                biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours(biggestBooking.CATSQUANTITY);
+                biggestBooking.CATSHOURS    = biggestBooking.CATSQUANTITY;
+            }
+        } else {
+            bookingDifference = totalBookingQuantity - totalWorkingTimeForDay;
+            if((bookingDifference > 0 && bookingDifference < 0.03) ||
+               (bookingDifference < 0 && bookingDifference > -0.03)) {
+                biggestBooking.CATSQUANTITY -= bookingDifference;
+                biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRounding(biggestBooking.CATSQUANTITY);
+            }
         }
 
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);
