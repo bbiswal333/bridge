@@ -548,7 +548,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.QUANTITY;
 
             // correct some special case where ADMI and EDUC are obviously incorrect
-            // That can happen when switching CAT2 profiles or when using the CAT2 app favourites
+            // That can happen when switching CAT2 profiles or when using the CAT2 app favorites
             if (booking.TASKTYPE === "ADMI" || booking.TASKTYPE === "EDUC") {
                 if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === false && booking.UNIT === "H") {
                     booking.UNIT = "TA";
