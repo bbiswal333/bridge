@@ -86,7 +86,7 @@ angular.module("app.itdirect").service("app.itdirect.ticketData",
                 // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
                 _.defer(function () {
                     $rootScope.$apply(function () {
-                        $location.path("/detail/itdirect/"+ that.appId + "/null/true");
+                        $location.path("/detail/itdirect/" + that.appId + "/null/true");
                     });
                 });
             }

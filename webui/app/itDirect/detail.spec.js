@@ -11,7 +11,7 @@ describe("IT Direct details controller", function(){
                 },
                 activatePrio: function(){
                 }
-            }
+            };
         }
     };
 
