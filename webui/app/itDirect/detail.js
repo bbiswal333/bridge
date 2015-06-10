@@ -1,7 +1,10 @@
 angular.module('app.itdirect').controller('app.itdirect.detailController', ["$scope", "$routeParams", "bridgeDataService", "app.itdirect.ticketData", "app.itdirect.config", "bridge.converter", "employeeService",
-    function($scope, $routeParams, bridgeDataService, ticketData, config, converter, employeeService){
+    function($scope, $routeParams, bridgeDataService, ticketDataService, configService, converter, employeeService){
 
         var that = this;
+        var config = configService.getConfigForAppId($routeParams.appId);
+        var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
+
         $scope.prios = ticketData.prios;
         $scope.config = config;
         $scope.tickets = [];
