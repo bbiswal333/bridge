@@ -567,6 +567,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             }
+            // remember value in Blockdata itself
+            $scope.blockdata[i].CATSQUANTITY = booking.CATSQUANTITY;
 
             // Don't sent tasks which are already in the Backend with the exact same amount
             if (taskInBackend &&
@@ -598,17 +600,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        // adjust slight deviations in QUANTITY to reach 100%
-        var totalBookingQuantity = 0;
+        // determine the biggest booking (which is subject to change)
         var biggestBooking;
         workdateBookings.forEach(function(oBooking){
             if(!biggestBooking || biggestBooking.CATSQUANTITY <= oBooking.CATSQUANTITY) {
                 biggestBooking = oBooking;
             }
-            totalBookingQuantity += oBooking.CATSQUANTITY;
+        });
+
+        // determine the total of all blocks
+        var totalBookingQuantity = 0;
+        $scope.blockdata.forEach(function(block){
+            totalBookingQuantity += block.CATSQUANTITY;
         });
         totalBookingQuantity = catsUtils.cat2CompliantRounding(totalBookingQuantity);
 
+        // adjust block size so that minimal rounding issues get corrected
         if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
             var bookingDifference = catsUtils.cat2CompliantRoundingForHours(totalBookingQuantity - targetHoursForDay);
             if((bookingDifference > 0 && bookingDifference < 0.03) ||
