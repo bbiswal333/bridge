@@ -17,7 +17,7 @@
 </div>
 <div ng-hide="showStatus" class="statusTilesContainer" ng-if="dataService.numberOfContents >= 1 && !noContentSelected()">
     <div class="statusTilesBox">
-        <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('green');" ng-if="dataService.statusCount.green >= 1">
+        <div class="statusTiles green-80 changeCursor" ng-click="displayContents('green');" ng-if="dataService.statusCount.green >= 1">
              <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.green}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.green < 1">
@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="statusTilesBox">
-        <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('yellow');" ng-if="dataService.statusCount.yellow >= 1">
+        <div class="statusTiles yellow-80 changeCursor" ng-click="displayContents('yellow');" ng-if="dataService.statusCount.yellow >= 1">
              <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.yellow}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.yellow < 1">
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="statusTilesBox">
-         <div class="statusTiles grey-40 changeCursor" ng-click="displayContents('red');" ng-if="dataService.statusCount.red >= 1">
+         <div class="statusTiles red-80 changeCursor" ng-click="displayContents('red');" ng-if="dataService.statusCount.red >= 1">
              <span style="color:white;font-size:6rem;line-height:100px;">{{dataService.statusCount.red}}</span>
         </div>
         <div class="statusTiles grey-40" ng-if="dataService.statusCount.red < 1">

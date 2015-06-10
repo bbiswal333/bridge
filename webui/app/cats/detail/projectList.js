@@ -140,7 +140,7 @@ directive("app.cats.maintenanceView.projectList", [
 				//  taskDesc: "I2M Research & Innovation"
 				var found = false;
 				var color = null;
-				$scope.blocks.some(function(block) { // is allocation bar block or a favourite item
+				$scope.blocks.some(function(block) { // is allocation bar block or a favorite item
 					if (!block) {
 						return found;
 					}
@@ -346,7 +346,7 @@ directive("app.cats.maintenanceView.projectList", [
 					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
 						$scope.items = angular.copy(configService.favoriteItems);
 						var header1 = {};
-						header1.DESCR = "Favourite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
+						header1.DESCR = "Favorite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
 						header1.TASKTYPE = "BRIDGE_HEADER";
 						header1.RAUFNR = "3";
 						$scope.items.unshift(header1);

@@ -1,15 +1,14 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Development"],
 		"module_name"			:	"app.mitosisHana",
-		"title"					:	"Mitosis",
+		"title"					:	"Mitosis - Content Status",
 		"icon_css"				:	"fa fa-database",
 		"overview_directive"	:	"app.mitosisHana",
 		"needs_client"			:	false,
-		"beta"					:	true,
+		"beta"					:	false,
 		"default_hidden"		:	true,
-		"beta_users"			:	["D049677","D055920","D027515","D028685","D062131","D051804","D024334","D035319","D048820","D043706","D037415","I806095","D047303"],
 		"routes"				:
 		[
 			{

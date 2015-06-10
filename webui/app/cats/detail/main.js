@@ -324,19 +324,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
-                if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+                // Some rounding here prevents problems for rounding issues of many hourly tasks
+                if(Math.round(day.actualTimeInPercentageOfDay * 100 / 100) >
+                   Math.round(day.targetTimeInPercentageOfDay * 100 / 100)) {
                     $scope.hintText = "All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours. Please apply changes.";
                 } else {
                     $scope.hintText = "All entries will be scaled so that 100% are reflecting your personal target hours.";
                 }
-            }
-
-            if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
-                var actualHours = Math.round(day.actualTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                var targetHours = Math.round(day.targetTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
-                    actualHours + "'' but target hours are only '" +
-                    targetHours + "'!");
             }
 
             $scope.blockdataRemembered = angular.copy($scope.blockdata);
@@ -554,7 +548,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.QUANTITY;
 
             // correct some special case where ADMI and EDUC are obviously incorrect
-            // That can happen when switching CAT2 profiles or when using the CAT2 app favourites
+            // That can happen when switching CAT2 profiles or when using the CAT2 app favorites
             if (booking.TASKTYPE === "ADMI" || booking.TASKTYPE === "EDUC") {
                 if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === false && booking.UNIT === "H") {
                     booking.UNIT = "TA";
@@ -567,6 +561,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             }
+            // remember value in Blockdata itself
+            $scope.blockdata[i].CATSQUANTITY = booking.CATSQUANTITY;
 
             // Don't sent tasks which are already in the Backend with the exact same amount
             if (taskInBackend &&
@@ -598,21 +594,37 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        // adjust slight deviations in QUANTITY when posting part time
-        var totalBookingQuantity = 0;
+        // determine the biggest booking (which is subject to change)
         var biggestBooking;
         workdateBookings.forEach(function(oBooking){
             if(!biggestBooking || biggestBooking.CATSQUANTITY <= oBooking.CATSQUANTITY) {
                 biggestBooking = oBooking;
             }
-            totalBookingQuantity += oBooking.CATSQUANTITY;
+        });
+
+        // determine the total of all blocks
+        var totalBookingQuantity = 0;
+        $scope.blockdata.forEach(function(block){
+            totalBookingQuantity += block.CATSQUANTITY;
         });
         totalBookingQuantity = catsUtils.cat2CompliantRounding(totalBookingQuantity);
-        var bookingDif = totalBookingQuantity - totalWorkingTimeForDay;
-        if((bookingDif > 0 && bookingDif < 0.03) ||
-           (bookingDif < 0 && bookingDif > -0.03)) {
-            biggestBooking.CATSQUANTITY -= bookingDif;
-            biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRounding(biggestBooking.CATSQUANTITY);
+
+        // adjust block size so that minimal rounding issues get corrected
+        if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
+            var bookingDifference = catsUtils.cat2CompliantRoundingForHours(totalBookingQuantity - targetHoursForDay);
+            if((bookingDifference > 0 && bookingDifference < 0.03) ||
+               (bookingDifference < 0 && bookingDifference > -0.03)) {
+                biggestBooking.CATSQUANTITY -= bookingDifference;
+                biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRoundingForHours(biggestBooking.CATSQUANTITY);
+                biggestBooking.CATSHOURS    = biggestBooking.CATSQUANTITY;
+            }
+        } else {
+            bookingDifference = totalBookingQuantity - totalWorkingTimeForDay;
+            if((bookingDifference > 0 && bookingDifference < 0.03) ||
+               (bookingDifference < 0 && bookingDifference > -0.03)) {
+                biggestBooking.CATSQUANTITY -= bookingDifference;
+                biggestBooking.CATSQUANTITY = catsUtils.cat2CompliantRounding(biggestBooking.CATSQUANTITY);
+            }
         }
 
         container.BOOKINGS = container.BOOKINGS.concat(workdateBookings);

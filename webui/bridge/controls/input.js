@@ -103,8 +103,10 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             }
 
             return function($scope, elem, attributes) {
-                if(attributes.autofocus && attributes.autofocus === "true") {
-                    $timeout( function () { $('input', elem)[0].focus(); } );
+                if(attributes.autofocus && (attributes.autofocus === "true" || attributes.autofocus === true)) {
+                    $timeout( function () {
+                        $('input', elem)[0].focus();
+                    }, 1000);
                 }
             };
         }
