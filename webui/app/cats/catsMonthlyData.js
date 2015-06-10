@@ -207,8 +207,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							} else {
 								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
 							}
-							// This value must not be rounded!
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = this.days[task.WORKDATE].actualTimeInPercentageOfDay;
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 
 							// That coding does not belong here...
 							var block = {};
