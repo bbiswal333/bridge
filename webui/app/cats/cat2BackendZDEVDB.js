@@ -149,6 +149,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					   (data.PROFILE.indexOf("DEV2002") > -1 ||
 						data.PROFILE.indexOf("DEV2012") > -1 ||
 						data.PROFILE.indexOf("SUP2007") > -1 ||
+						data.PROFILE.indexOf("IN") > -1 ||
 						data.PROFILE.indexOf("AUSALE") > -1)) {
 
 						$log.log("Time recording profile retrieved from Backend: " + data.PROFILE);

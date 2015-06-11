@@ -12,13 +12,13 @@
 
 		<bridge.table table-data="data.filteredJiraData" filter="filterText">
 			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-2'" order-by="'key'">
-				<a target="_blank" href="{{parentScope.data.jira_url}}{{row.key}}">{{row.key}}</a>
+				<a target="_blank" href="{{row.jira_url}}/browse/{{row.key}}">{{row.key}}</a>
 			</bridge.table-column>
 
 
             <bridge.table-column column-id="'2'" header="'Log'" column-size-class="'col-sm-1'">
 
-                    <a  target="_blank" href="https://{{row.instance}}.wdf.sap.corp/secure/CreateWorklog!default.jspa?id={{row.id}}">
+                    <a  target="_blank" href="{{row.jira_url}}/secure/CreateWorklog!default.jspa?id={{row.id}}">
                         Log Hours
                     </a>
            

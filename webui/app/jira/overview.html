@@ -1,4 +1,4 @@
-﻿<div class="jira_container" ng-if="jiraChartData.length > 0">
+﻿<div class="jira_container" ng-if="authenticated && jiraChartData.length > 0">
     <div ng-repeat="data in jiraChartData" class="status_container">
         <div class="status_bar_container">
             <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}">         
@@ -6,7 +6,7 @@
                 </div>   
             </a>         
         </div>
-        <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}">
+        <a href="#/detail/jira/{{metadata.instanceNumber}}/{{data.status_filter}}" title="{{data.status}}">
             <div class="status_title">
                 {{data.status}}
             </div>
@@ -17,7 +17,11 @@
     </div>
 </div>
 
-<div ng-if="jiraChartData.length <= 0">
+<div ng-if="!authenticated">
+    Please log into <a target="_blank" href="{{jira_url}}">Jira</a>.
+</div>
+
+<div ng-if="authenticated && jiraChartData.length <= 0">
     <span>no data for the gojira...</span>
     <img class="pixel_art" src="/../../img/j-rex.gif" width="400">
 </div>

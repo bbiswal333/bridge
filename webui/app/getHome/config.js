@@ -34,6 +34,7 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 					that.routes.push(configItem);
 				} else {
 					addRoute(rebuildResult.route);
+					rebuildResult.route.updateFromNewWaypoints(rebuildResult.route.waypoints); //reload route to remove errors in the route
 				}
 			});
 		}
@@ -41,6 +42,7 @@ angular.module('app.getHome').service("app.getHome.configservice", ["bridge.serv
 		function handleRouteResult(result) {
 			if(result.error) {
 				rebuildFromWaypoints();
+				bridgeInBrowserNotification.addAlert('success','Your route "' + configItem.name + '" had to be restored from coordinates. Please check the route in the app config.');
 			} else {
 				addRoute(result.route);
 			}

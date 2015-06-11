@@ -4,7 +4,7 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
 
 	var directiveController = ['$scope', function ($scope) {
 
-		$scope.box.settingsTitle = "Select Mitosis Contents";
+		$scope.box.settingsTitle = "Available Contents:";
 		$scope.box.boxSize = '2';
 		$scope.box.settingScreenData = {
 			templatePath: "mitosisHana/settings.html",

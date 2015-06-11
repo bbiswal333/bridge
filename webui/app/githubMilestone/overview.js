@@ -20,18 +20,17 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
 
 
         $scope.box.returnConfig = function () {
-                return config;
-            };
+            return config;
+        };
 
         function getTimeDimensions(due_on_str) {
+
             var currentDate = new Date();
-
             var due_on = new Date(Date.parse(due_on_str));
-            due_on.setHours(due_on.getHours() + 1); // dirty hack for winter time (might be a problem exactly one hour per day)
-            due_on.setHours(due_on.getHours() + (due_on.getTimezoneOffset() / 60)); // adjust due to timezone
-            var start = new Date(due_on.getTime() - (config.milestoneDuration * 1000 * 60 * 60 * 24));
-
-            var due_in = calUtils.calcBusinessDays(start, due_on);
+            var dueOnDate = new Date(due_on.getUTCFullYear(), due_on.getUTCMonth(), due_on.getUTCDate() + 1);
+            var milestoneDuration = config.milestoneDuration * 1000 * 60 * 60 * 24;
+            var start = new Date(dueOnDate - milestoneDuration);
+            var due_in = calUtils.calcBusinessDays(start, dueOnDate) - 1;
 
             var passedDays = calUtils.calcBusinessDays(start, currentDate);
             if (passedDays < 0)

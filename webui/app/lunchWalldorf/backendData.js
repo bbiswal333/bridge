@@ -35,7 +35,7 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
         },
         "POT": {
             portalLink:  "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20&%20Catering/Menu%20Gesch%C3%A4ftsstellen%20(TeaserBox)/Speiseplan%20Potsdam",
-            portalLinkText: "Potsdamm lunch menu in the portal",
+            portalLinkText: "Potsdam lunch menu in the portal",
             portalBackend: ''
         },
         "HAM": {

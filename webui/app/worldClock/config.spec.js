@@ -1,6 +1,6 @@
 describe("Worldclock config", function() {
-	var testLocation = {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333, timeOffset: 1};
-	var testLocationWithoutTimeOffset =  {name: "Berlin", longitude: 52.518611111111, latitude: 13.408333333333};
+	var testLocation = {name: "Berlin", zoneID: "132", timeOffset: 1};
+	var testLocationWithoutTimeOffset =  {name: "Berlin", zoneID: "132"};
 
 	var config;
 	var httpBackend;
@@ -14,7 +14,7 @@ describe("Worldclock config", function() {
 				return {locations: [testLocation]};
 			};
 			httpBackend = $httpBackend;
-			$httpBackend.when('GET').respond("<offset>10</offset>");
+			$httpBackend.when('GET').respond('{"offset": 36000}');
 
 			calUtils.now = function() {
 				var date = new Date();

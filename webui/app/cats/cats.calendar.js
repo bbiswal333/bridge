@@ -310,7 +310,7 @@ angular.module("app.cats")
 				$scope.selectedDates.forEach(function(selectedDayString){
 					if (hasFixedTask(selectedDayString)) {
 						unSelectDay(selectedDayString);
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
 					}
 				});
 			}
@@ -330,7 +330,7 @@ angular.module("app.cats")
 				clearSelectionFromDaysWithFixedTasks();
 
 				if(containsDayWithAFixedTask(daysStringsArray)) {
-					bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+					bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
 				}
 
 				return promises;
@@ -523,7 +523,7 @@ angular.module("app.cats")
 						clearSelectionFromDaysWithFixedTasks();
 					}
 					else{
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangable tasks (e.g. vacation or absence) could not be selected.');
+						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
 					}
 
 				} else if (range_click) {

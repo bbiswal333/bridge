@@ -9,6 +9,7 @@
 		"needs_client"			:	false,
 		"default_hidden"		:   true,
 	    "description"			:	"Shows all IT-Direct tickets with your involvement and optionally all tickets from one of your saved searches.",
+	  	"multiInstance"			:	true,
 		"routes"		:
 			[
 				{

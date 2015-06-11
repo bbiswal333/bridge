@@ -8,7 +8,8 @@
 		"grunt-contrib-clean": "~0.5.0",
 		"grunt-contrib-rename": "~0.0.3",
 		"grunt-chmod": "~1.0.3",
-		"grunt-shell": "0.6.4"
+		"grunt-shell": "0.6.4",
+	  	"grunt-install-dependencies": "~0.2.0"
 	},
 	"dependencies": {
 		"request": "~2.33.0",

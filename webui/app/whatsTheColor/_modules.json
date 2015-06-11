@@ -1,0 +1,17 @@
+{
+	"app":
+	{
+		"categories"			:	["Fun","Design"],
+		"module_name"			:	"app.whatsTheColor",
+		"title"					:	"What's the Color",
+		"icon_css"				:	"fa fa-history",
+		"overview_directive"	:	"app.whatsTheColor",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"\"Hey excuse me, what's the time?\" - \"Oh, well.. It's around lime green.\""
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["style.css"]
+}

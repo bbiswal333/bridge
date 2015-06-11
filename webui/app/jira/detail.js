@@ -1,14 +1,15 @@
 angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$http', '$filter', '$route', '$routeParams', 'ngTableParams', 'JiraBox', 'app.jira.configservice',
     function Controller($scope, $http, $filter, $route, $routeParams, ngTableParams, JiraBox, JiraConfig) {
         var config = JiraConfig.getConfigInstanceForAppId("app.jira-" + $routeParams);
-        var jiraBox = JiraBox.getInstanceForAppId("app.jira-" + $routeParams.instanceNumber);
+        var jiraBox = JiraBox.getInstanceForAppId("app.jira-" + $routeParams.instanceNumber, config.getConfig().jira);
 
         $scope.$watch('config.query', function (newVal, oldVal) {
+
 
             $scope.data.jira_url = 'https://sapjira.wdf.sap.corp/browse/';
              if(config.jira === 'issuemanagement')
              {
-                    $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
+                $scope.data.jira_url = 'https://issuemanagement.wdf.sap.corp/browse/';
              }
 			if(config.jira === 'jtrack')
 			{
@@ -18,10 +19,14 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
             {
                 $scope.data.jira_url = 'https://issues.wdf.sap.corp/browse/';
             }
+            if(config.jira === 'successfactors')
+            {
+                $scope.data.jira_url = 'https://jira.successfactors.com/browse/';
+            }
 
             if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
                 $scope.config = config.getConfig();
-                jiraBox.getIssuesforQuery(config.getConfig().query, config.getConfig().jira);
+                jiraBox.getIssuesforQuery(config.getConfig().query);
             }
         },true);
 
@@ -82,8 +87,8 @@ angular.module('app.jira').controller('app.jira.detailController', ['$scope', '$
 
         $scope.$parent.titleExtension = " - Jira Details";
 
-        if (config.isInitialized() === false) {
-            config.initialize("app.jira-" + $routeParams.instanceNumber);
-            jiraBox.getIssuesforQuery(config.getConfig().query);
-        }
+//        if (config.isInitialized() === false) {
+//            config.initialize("app.jira-" + $routeParams.instanceNumber);
+ //           jiraBox.getIssuesforQuery(config.getConfig().query);
+ //       }
 }]);

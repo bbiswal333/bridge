@@ -12,6 +12,9 @@
 				<bridge.button state="(data.jira === 'issues')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'issues'" style="margin-left:0;margin-right:0;">
 					Issues
 				</bridge.button>
+				<bridge.button state="(data.jira === 'successfactors')=== true ? 'active' : 'invisible-button'" ng-click="data.jira = 'successfactors'" style="margin-left:0;margin-right:0;">
+					Successfactors Jira
+				</bridge.button>
 			</div>
 		</div>
 		<div class="row">&nbsp;</div>
@@ -41,7 +44,7 @@
 		</div>
 		<div class="row">&nbsp;</div>
 		<div class="row">
-			<div class="col-xs-12 copy form_head">Maximum Number of Results</div>
+			<div class="col-xs-12 copy form_head">Maximum Number of Results (default: 50)</div>
 			<div class="col-xs-6 has-feedback">
 				<bridge.input model="data.maxHits"></bridge.input>
 			</div>

@@ -1,6 +1,7 @@
 angular.module('app.itdirect')
-    .controller('app.itdirect.settingsController', ["$scope", "$http", "app.itdirect.config", function($scope, $http, config){
-        $scope.config = config;
+    .controller('app.itdirect.settingsController', ["$scope", "$http", "app.itdirect.config", function($scope, $http, configService){
+
+        $scope.config = configService.getConfigForAppId($scope.boxScope.metadata.guid);
         $scope.savedSearches = [];
 
         $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZMOB_INCIDENT;v=2/SavedSearchCollection?$format=json")
