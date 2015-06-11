@@ -1,13 +1,5 @@
 angular.module('bridge.search').service('bridge.search.quicklinkSearch', ['$http', '$window', '$log', function ($http, $window, $log) {
 
-    function findInArray(query, quickLinks, resultArray) {
-      for (var i = 0; i < quickLinks.length; i++) {
-        if(quickLinks[i].search(query) >= 0) {
-          resultArray.push({title: quickLinks[i], link: 'https://portal.wdf.sap.corp/go/' + quickLinks[i]});
-        }
-      }
-    }
-
     var quickLinks = {};
     var quickLinksAvailable = true;
 
@@ -17,11 +9,19 @@ angular.module('bridge.search').service('bridge.search.quicklinkSearch', ['$http
       return $http({method: "GET", url: q, withCredentials: false}).then(
         function(response) {
           quickLinks = response.data.split(',');
-        }, function(reason) {
+        }, function() {
           $log.log('[search_quicklinks] Unable to read quicklink list');
           quickLinksAvailable = false;
         }
       );
+    }
+
+    function findInQuickLinks(query, resultArray) {
+      for (var i = 0; i < quickLinks.length; i++) {
+        if(quickLinks[i].search(query) >= 0) {
+          resultArray.push({title: quickLinks[i], link: 'https://portal.wdf.sap.corp/go/' + quickLinks[i]});
+        }
+      }
     }
 
     this.getSourceInfo = function() {
@@ -36,18 +36,18 @@ angular.module('bridge.search').service('bridge.search.quicklinkSearch', ['$http
       // if it failed once it will most likely fail again
       // (CORS restriction for instance)
       // We don't want to keep calling the service every search then.
-      if(!quickLinksAvailable)
-        return;
+      if(quickLinksAvailable) {
 
-      if(quickLinks.lenght > 0) {
-        findInArray(query, quicklinks, resultArray)
-      }
-      else {
-        return getQuickLinks().then(
-          function(response) {
-            findInArray(query, quickLinks, resultArray)
-          }
-        );
+        if(quickLinks.lenght > 0) {
+          findInQuickLinks(query, resultArray);
+        }
+        else {
+          return getQuickLinks().then(
+            function() {
+              findInQuickLinks(query, resultArray);
+            }
+          );
+        }
       }
     };
 
