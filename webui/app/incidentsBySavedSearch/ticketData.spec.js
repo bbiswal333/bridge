@@ -10,7 +10,8 @@ describe("Incident By Saved Search ticket data", function(){
         newMockTicketData,
         changedMockTicketData,
         sNotificationText,
-        oNotificationData;
+        oNotificationData,
+        emptyMockTicketData;
 
     var loadDataMock = function() {
         loadDataCalled = true;
