@@ -24,7 +24,7 @@ angular.module("app.incidentSavedSearch").service("app.incidentSavedSearch.ticke
 
             this.sAppIdentifier = "";
 
-            this.loadTicketData = function () {
+            this.loadTicketData = function (bNoNotifications) {
                 var defer = $q.defer();
 
                 $http.get("https://" + that.selectedSourceSystem.urlPart + ".wdf.sap.corp/sap/bc/devdb/saved_search?sap-client=001&sap-language=en&search_id=" + config.data.selectedSearchGuid +
@@ -47,10 +47,12 @@ angular.module("app.incidentSavedSearch").service("app.incidentSavedSearch.ticke
 
                 defer.promise.then(function () {
 
-                    if (that.lastTickets !== null) {
-                        that.notifyChanges(that.tickets, that.lastTickets);
-                    } else if (config.data.lastDataUpdate !== null) {
-                        that.notifyOfflineChanges(that.tickets, config.data.lastDataUpdate);
+                    if (bNoNotifications !== true) {
+                        if (that.lastTickets !== null) {
+                            that.notifyChanges(that.tickets, that.lastTickets);
+                        } else if (config.data.lastDataUpdate !== null) {
+                            that.notifyOfflineChanges(that.tickets, config.data.lastDataUpdate);
+                        }
                     }
 
                     config.data.lastDataUpdate = new Date();

@@ -27,7 +27,7 @@ angular.module('app.incidentSavedSearch')
 
                 clickedSavedSearch.isSelected = true;
                 $scope.config.data.selectedSearchGuid = clickedSavedSearch.GUID;
-                ticketData.loadTicketData();
+                ticketData.loadTicketData(true);
             };
         }
     ]);
