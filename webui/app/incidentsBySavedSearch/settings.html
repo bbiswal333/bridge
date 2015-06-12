@@ -1,0 +1,13 @@
+<div ng-controller="app.incidentSavedSearch.settingsController">
+    <br/>
+    Select the saved search based on which the tickets are displayed:
+    <br/>
+    <br/>
+    <div ng-repeat="savedSearch in savedSearches">
+        <bridge.radio is-checked="savedSearch.isSelected" label="{{savedSearch.DESCRIPTION}}" check-toggle="searchRadio_clicked(savedSearch)"></bridge.radio>
+    </div>
+
+    <div class="row">
+        <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
+    </div>
+</div>
