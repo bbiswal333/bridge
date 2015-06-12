@@ -62,7 +62,7 @@ angular.module('app.incidentSavedSearch').directive('app.incidentSavedSearch', f
                         callbackFn: function(data){
                             ticketData.ticketsFromNotifications.length = 0;
                             ticketData.ticketsFromNotifications.push(data.ticket);
-                            $location.path("/detail/incidentSavedSearch/null/null/true");
+                            $location.path("/detail/incidentSavedSearch/" + $scope.metadata.guid + "/null/true");
                         }
                     }
                 ));
