@@ -1,15 +1,21 @@
 .app-lunchWalldorf-container {
 	margin-top: 10px; 
 	height: 145px;
-	overflow: hidden;	
+	overflow: hidden;
+    background: url("/app/lunchWalldorf/pic/lunch_background.png");
+
 }
 
 	.app-lunchWalldorf-container table {
 		margin-right: 10px;
+
+
 	}
 
 	.app-lunchWalldorf-container tr:not(:first-of-type) {
 		border-top: 1px solid #e5e5e5;
+        background-color: #ffffff;
+
 	}
 
 	.app-lunchWalldorf-icon {
@@ -18,5 +24,9 @@
 	}
 
 	.app-lunchWalldorf-box-icon {
-	    font-size: 15px;
+	    font-size: 17px;
 	}
+
+.link {
+    text-align: center;
+}
