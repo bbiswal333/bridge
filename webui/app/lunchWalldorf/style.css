@@ -12,7 +12,7 @@
 
 	}
 
-	.app-lunchWalldorf-container tr:not(:first-of-type) {
+	.app-lunchWalldorf-container tr {
 		border-top: 1px solid #e5e5e5;
         background-color: #ffffff;
 
@@ -28,5 +28,10 @@
 	}
 
 .link {
+    margin-top: 30px;
     text-align: center;
+    font-size: larger;
+}
+.date {
+    font-size: larger;
 }
