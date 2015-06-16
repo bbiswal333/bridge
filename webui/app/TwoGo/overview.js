@@ -140,6 +140,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         $scope.arrayToWork = [];
                         var rideProposals = response.result[1].result;
                         var v = [];
+                        //function to create the Arrays for Today Tomorrow To Work and Tomorrow to Home
                         $scope.createArray = function (arrayToCreate) {
                             arrayToCreate.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
                                 hour: '2-digit',
@@ -149,6 +150,22 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                 minute: '2-digit'
                             }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
                         };
+//sets the Value for the check if there are duplicates
+                        $scope.setConcatValue = function (concatValue) {
+
+
+                            concatValue = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                            return concatValue;
+
+                        };
+
+                        //sorting the rideProposals
                         if (rideProposals !== null) {
 
                             rideProposals.sort(function (a, b) {
@@ -160,7 +177,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
 
                             });
-
+//Adding the State for the UrlButton
                             for (i = 0; i < rideProposals.length; i++) {
 
                                 if (rideProposals[i]["createAsDriverUrl"] != null && rideProposals[i]["createAsPassengerUrl"] != null) {
@@ -184,13 +201,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                                     if ($scope.arrayToHomeToday.length === 0) {
 
-                                        duplicate1 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                        duplicate1 = $scope.setConcatValue(duplicate1);
                                         toHometoday++;
                                         $scope.createArray($scope.arrayToHomeToday);
                                     } else {
@@ -203,13 +214,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                             }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
                                             toHometoday++;
                                             $scope.createArray($scope.arrayToHomeToday);
-                                            duplicate1 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                            duplicate1 = $scope.setConcatValue(duplicate1);
                                         }
                                     }
                                 }
@@ -220,13 +225,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                                         if ($scope.arrayToHome.length === 0) {
 
-                                            duplicate2 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                            duplicate2 = $scope.setConcatValue(duplicate2);
                                             toHome++;
                                             $scope.createArray($scope.arrayToHome);
                                         } else {
@@ -239,13 +238,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                                 }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
                                                 $scope.createArray($scope.arrayToHome);
                                                 toHome++;
-                                                duplicate2 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                duplicate2 = $scope.setConcatValue(duplicate2);
                                             }
 
                                         }
@@ -256,13 +249,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                         if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
                                             if ($scope.arrayToWork.length === 0) {
 
-                                                duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                duplicate3 = $scope.setConcatValue(duplicate3);
                                                 toWork++;
                                                 $scope.createArray($scope.arrayToWork);
                                             } else {
@@ -275,13 +262,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                                     }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
                                                     toWork++;
                                                     $scope.createArray($scope.arrayToWork);
-                                                    duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                    duplicate3 = $scope.setConcatValue(duplicate3);
                                                 }
 
 
@@ -295,13 +276,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                                                 if ($scope.arrayToWork.length === 0) {
 
-                                                    duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit'
-                                                    }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                    duplicate3 = $scope.setConcatValue(duplicate3);
                                                     toWork++;
                                                     $scope.createArray($scope.arrayToWork);
                                                 } else {
@@ -314,13 +289,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                                         }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
                                                         toWork++;
                                                         $scope.createArray($scope.arrayToWork);
-                                                        duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                        duplicate3 = $scope.setConcatValue(duplicate3);
                                                     }
 
                                                 }
