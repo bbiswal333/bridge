@@ -12,7 +12,7 @@
         <table align="left" width="100%">
 
             <tr height="40">
-                <td><label id="fromOrigin">Distance from Origin in kilometer:</label></td>
+                <td><label id="fromOrigin">Find rides within this distance of origin</label></td>
                 <td>
                     <bridge.button ng-click="setDistanceO(500)"
                                    state="(values.state === 500) ? 'active' : 'invisible-button'" class="0,5">
@@ -42,7 +42,7 @@
             </tr>
             </br>
             <tr height="40">
-                <td><label id="fromDestination">Distance from destination in kilometer:</label></td>
+                <td><label id="fromDestination">Find rides within this distance of destination</label></td>
                 <td>
                     <bridge.button state="(values.stateD === 500) ? 'active' : 'invisible-button'"
                                    ng-click="setDistanceD(500)" class="0,5">
