@@ -19,7 +19,7 @@ angular.module('app.TwoGo').service("app.TwoGo.configService", function () {
 
         } else {
             // Use default config on first load
-               configLoadedFromBackend.values = this.values;
+            configLoadedFromBackend.values = this.values;
 
 
         }

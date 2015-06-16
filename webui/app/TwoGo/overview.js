@@ -132,22 +132,44 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         var toWork = 0;
                         var toHome = 0;
 
-
+                        var duplicate1 = "";
+                        var duplicate2 = "";
+                        var duplicate3 = "";
                         $scope.arrayToHome = [];
                         $scope.arrayToHomeToday = [];
                         $scope.arrayToWork = [];
+                        var rideProposals = response.result[1].result;
                         var v = [];
-                        if (response.result[1].result !== null) {
+                        if (rideProposals !== null) {
 
-                            for (var i = 0; i < response.result[1].result.length; i++) {
-                                if (response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] != null) {
+                            rideProposals.sort(function (a, b) {
+                                var vergleich1 = new Date(a.earliestDeparture).toISOString() + a.destination.shortName;
+
+                                var vergleich2 = new Date(b.earliestDeparture).toISOString() + b.destination.shortName;
+//if(vergleich1 > vergleich2){
+                                return vergleich1 > vergleich2 ? 1 : -1;
+///}else{if(vergleich1 < vergleich2){
+                                //   return a.earliestDeparture < b.earliestDeparture ? -1 : 1;
+//}
+                                //  else{
+                                //  return a.earliestDeparture === b.earliestDeparture ? 1 : 1;
+//}
+
+//}
+
+
+                            });
+
+                            for (var i = 0; i < rideProposals.length; i++) {
+
+                                if (rideProposals[i]["createAsDriverUrl"] != null && rideProposals[i]["createAsPassengerUrl"] != null) {
                                     v = ["invisible-button", "invisible-button"];
                                 }
                                 else {
-                                    if (response.result[1].result[i]["createAsDriverUrl"] == null && response.result[1].result[i]["createAsPassengerUrl"] != null) {
+                                    if (rideProposals[i]["createAsDriverUrl"] == null && rideProposals[i]["createAsPassengerUrl"] != null) {
                                         v = ["disabled", "invisible-button"];
                                     } else {
-                                        if (response.result[1].result[i]["createAsDriverUrl"] != null && response.result[1].result[i]["createAsPassengerUrl"] == null) {
+                                        if (rideProposals[i]["createAsDriverUrl"] != null && rideProposals[i]["createAsPassengerUrl"] == null) {
                                             v = ["invisible-button", "disabled"];
                                         }
 
@@ -157,65 +179,206 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                 }
 
 
-                                if (endDay.toISOString() >= response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
-                                    toHometoday++;
-                                    $scope.arrayToHomeToday.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                if (endDay.toISOString() >= rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "HOME") {
 
+                                    if ($scope.arrayToHomeToday.length === 0) {
+
+                                        duplicate1 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                        toHometoday++;
+                                        $scope.arrayToHomeToday.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                    } else {
+                                        if (duplicate1 !== new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
+                                            toHometoday++;
+                                            $scope.arrayToHomeToday.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                            duplicate1 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                        }
+                                    }
                                 }
                                 else {
 
 
-                                    if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "HOME") {
-                                        $scope.arrayToHome.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
-                                        toHome++;
+                                    if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "HOME") {
+
+                                        if ($scope.arrayToHome.length === 0) {
+
+                                            duplicate2 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                            toHome++;
+                                            $scope.arrayToHome.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+
+                                        } else {
+                                            if (duplicate2 !== new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
+                                                $scope.arrayToHome.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                toHome++;
+                                                duplicate2 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                            }
+
+                                        }
 
 
                                     }
                                     else {
-                                        if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
+                                        if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
+                                            if ($scope.arrayToWork.length === 0) {
 
-                                            $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                toWork++;
+                                                $scope.arrayToWork.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                            } else {
+                                                if (duplicate3 !== new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
+                                                    toWork++;
+                                                    $scope.arrayToWork.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                    duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                }
 
 
-                                            toWork++;
+                                            }
+
 
                                         }
                                         else {
-                                            if (endDay.toISOString() < response.result[1].result[i]["earliestDeparture"] && response.result[1].result[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
+                                            if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
 
-                                                $scope.arrayToWork.push([new Date(response.result[1].result[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }), new Date(response.result[1].result[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                }), response.result[1].result[i]["origin"]["shortName"], response.result[1].result[i]["destination"]["shortName"], response.result[1].result[i]["createAsDriverUrl"], response.result[1].result[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                if ($scope.arrayToWork.length === 0) {
 
+                                                    duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                    toWork++;
+                                                    $scope.arrayToWork.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                } else {
+                                                    if (duplicate3 !== new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1]) {
+                                                        toWork++;
+                                                        $scope.arrayToWork.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                                                        duplicate3 = new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }) + "" + new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }) + "" + rideProposals[i]["origin"]["shortName"] + "" + rideProposals[i]["destination"]["shortName"] + "" + v[0] + "" + v[1];
+                                                    }
+
+                                                }
 
                                             }
                                         }
 
                                     }
                                 }
+
 
                             }
 
@@ -226,9 +389,17 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         } else {
                             $scope.tomorrow = "To WORK";
                         }
-                        dataService.setArrayToday($scope.arrayToHomeToday);
-                        dataService.setArrayTomorrowH($scope.arrayToHome);
-                        dataService.setArrayTomorrow($scope.arrayToWork);
+
+
+                        dataService.setArrayToday(
+                            $scope.arrayToHomeToday);
+
+                        dataService.setArrayTomorrowH(
+                            $scope.arrayToHome
+                        );
+                        dataService.setArrayTomorrow(
+                            $scope.arrayToWork
+                        );
                         // and writing the number into the right tables
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();
