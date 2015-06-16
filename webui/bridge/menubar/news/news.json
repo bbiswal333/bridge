@@ -99,6 +99,13 @@
             "preview":  "It should now no longer happen that your configured routes disappear.",
             "date":     "2015-06-03", 
             "content":  "In the past many users had to deal with lost routes in their Beat the Traffic app.<br />This happened due to updates in the nokia map data and the underlying APIs and should not happen anymore. The routes will now be restored by geo coordinates. If a route has to be restored, you will be notified and it is recommended to check the route in the app config, as it is not always ensured that the route is reconstructed correctly. Instructions on how to change an existing route can be found in the app configuration screen."
+        },
+        {
+            "id":       14,
+            "header":   "New App for BCP Saved Searches",
+            "preview":  "App 'Incident Search' shows tickets of your saved searches.",
+            "date":     "2015-06-16",
+            "content":  "Since today, the new app 'Incident Search' is available which shows Internal- or Customer Incidents by your saved searches in BCP. Just configure a saved search in the system, select it in the app settings, and the corresponding tickets are displayed."
         }
 	]
 }
