@@ -18,6 +18,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         var BASE_URL = "https://twogo-sap-internal.cld.ondemand.com/web/rpc/";
         var csrf_token = "";
         //initialisation of the Tables
+        $scope.tableSize = "40%";
+        $scope.spinner = "fa fa-spin fa-spinner  fa-4x";
         $scope.ridesTomorrowMorning = "";
         $scope.ridesTomorrowEvening = "";
         $scope.ridesToday = "";
@@ -118,7 +120,6 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                 }),
                 success: $.proxy(function (response) {
-                    $scope.visible = "true";
                     if (response.error) {
 
                         alert("ERROR:" + JSON.stringify(response.error));
@@ -304,7 +305,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             }
 
                         }
-                 
+
                         //changing one heading if nor WORKPOI exists
                         if (response.result[0].result == null) {
                             $scope.tomorrow = "From HOME";
@@ -322,8 +323,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             $scope.arrayToWork
                         );
                         // and writing the number into the right tables
-
-
+                        $scope.spinner = "";
+                        $scope.tableSize = "20%";
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();
                         $scope.ridesTomorrowEvening = toHome.toString();
@@ -534,7 +535,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
         // watch on any changes in the settings screen
         $scope.$watch("appConfig.values", function () {
-            $scope.visible = "";
+            $scope.spinner = "fa fa-spin fa-spinner  fa-4x";
+            $scope.tableSize = "40%";
             $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
             $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
             $scope.ridesTomorrowMorning = "";
