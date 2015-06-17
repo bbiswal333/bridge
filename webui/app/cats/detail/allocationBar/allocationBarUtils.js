@@ -34,7 +34,7 @@ function (catsUtils) {
 
         if (!this.blockColors[blockId]) {
             this.blockColors[blockId] = this.colors[this.colorCounter % len];
-            this.colorCounter++;
+            this.colorCounter = this.colorCounter + 1;
         }
         return this.blockColors[blockId];
     };
