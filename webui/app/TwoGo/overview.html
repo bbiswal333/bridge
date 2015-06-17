@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<!DOCTYPE html>
 <html ng-app>
 <head lang="en">
@@ -7,6 +8,10 @@
 <body>
 <h3>{{Header}}<a href="{{linked}}">{{here}}</a></h3><br/><!--Heading of the application-->
 <table align="left" width="20%" class="twogo">
+=======
+﻿<h3>{{Header}}<a href="{{linked}}">{{here}}</a></h3><br/><!--Heading of the application-->
+<table align="left" width="20%">
+>>>>>>> added spinner
     <tr>
         <th><h4>{{HeaderToday}}</h4></th>
         <!--tableheading for left table-->
@@ -19,8 +24,13 @@
         <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(1)">{{ridesToday}}</a></td>
     </tr>
 </table>
+<<<<<<< HEAD
 
 <table align="right" width="50%" class="twogo">
+=======
+<i class="fa fa-spinner fa-spin fa-4x" ng-hide="visible" align="right"></i>
+<table align="right" width="50%">
+>>>>>>> added spinner
     <tr>
         <th colspan="2"><h4>{{HeaderTomorrow}}</h4></th>
         <!--tableheading for right table-->
@@ -35,6 +45,3 @@
         <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(3)">{{ridesTomorrowEvening}}</a></td>
     </tr>
 </table>
-
-</body>
-</html>

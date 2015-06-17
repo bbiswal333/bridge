@@ -18,15 +18,15 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         var BASE_URL = "https://twogo-sap-internal.cld.ondemand.com/web/rpc/";
         var csrf_token = "";
         //initialisation of the Tables
-        $scope.ridesTomorrowMorning = "-";
-        $scope.ridesTomorrowEvening = "-";
-        $scope.ridesToday = "-";
-        $scope.tomorrowh = "To HOME";
-        $scope.today = "To HOME";
-        $scope.tomorrow = "From HOME";
-        $scope.Header = "TWOGO RIDES IN YOUR NEIGHBOURHOOD";
-        $scope.HeaderToday = "Today";
-        $scope.HeaderTomorrow = "Tomorrow";
+        $scope.ridesTomorrowMorning = "";
+        $scope.ridesTomorrowEvening = "";
+        $scope.ridesToday = "";
+        $scope.tomorrowh = "";
+        $scope.today = "";
+        $scope.tomorrow = "";
+        $scope.Header = "TWOGO RIDES IN YOUR NEIGHBORHOOD";
+        $scope.HeaderToday = "";
+        $scope.HeaderTomorrow = "";
         $scope.checkBrowser = function () {
 //setting the Dates
             startDay = new Date();
@@ -118,7 +118,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
                 }),
                 success: $.proxy(function (response) {
-
+                    $scope.visible = "true";
                     if (response.error) {
 
                         alert("ERROR:" + JSON.stringify(response.error));
@@ -304,13 +304,13 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             }
 
                         }
+                 
                         //changing one heading if nor WORKPOI exists
                         if (response.result[0].result == null) {
                             $scope.tomorrow = "From HOME";
                         } else {
                             $scope.tomorrow = "To WORK";
                         }
-
 
                         dataService.setArrayToday(
                             $scope.arrayToHomeToday);
@@ -322,9 +322,15 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             $scope.arrayToWork
                         );
                         // and writing the number into the right tables
+
+
                         $scope.ridesToday = toHometoday.toString();
                         $scope.ridesTomorrowMorning = toWork.toString();
                         $scope.ridesTomorrowEvening = toHome.toString();
+                        $scope.tomorrowh = "To HOME";
+                        $scope.today = "To HOME";
+                        $scope.HeaderToday = "Today";
+                        $scope.HeaderTomorrow = "Tomorrow";
 
                     }
                 }),
@@ -528,11 +534,17 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
         // watch on any changes in the settings screen
         $scope.$watch("appConfig.values", function () {
+            $scope.visible = "";
             $scope.distancefromdestination = $scope.appConfig.values.distancefromdestination;
             $scope.distancefromorigin = $scope.appConfig.values.distancefromorigin;
-            $scope.ridesTomorrowMorning = "-";
-            $scope.ridesTomorrowEvening = "-";
-            $scope.ridesToday = "-";
+            $scope.ridesTomorrowMorning = "";
+            $scope.ridesTomorrowEvening = "";
+            $scope.ridesToday = "";
+            $scope.tomorrowh = "";
+            $scope.today = "";
+            $scope.tomorrow = "";
+            $scope.HeaderToday = "";
+            $scope.HeaderTomorrow = "";
 
             $(function () {
 
