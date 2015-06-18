@@ -151,7 +151,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                         }
                                     }
                                 }
-                                if (endDay.toISOString() >= rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "HOME") {
+                                if (endDay >= new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "HOME") {
                                     if ($scope.arrayToHomeToday.length === 0) {
                                         duplicate1 = $scope.setConcatValue(duplicate1);
                                         toHometoday++;
@@ -171,7 +171,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                     }
                                 }
                                 else {
-                                    if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "HOME") {
+                                    if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "HOME") {
                                         if ($scope.arrayToHome.length === 0) {
                                             duplicate2 = $scope.setConcatValue(duplicate2);
                                             toHome++;
@@ -191,7 +191,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                         }
                                     }
                                     else {
-                                        if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
+                                        if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
                                             if ($scope.arrayToWork.length === 0) {
                                                 duplicate3 = $scope.setConcatValue(duplicate3);
                                                 toWork++;
@@ -211,7 +211,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                             }
                                         }
                                         else {
-                                            if (endDay.toISOString() < rideProposals[i]["earliestDeparture"] && rideProposals[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
+                                            if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
                                                 if ($scope.arrayToWork.length === 0) {
                                                     duplicate3 = $scope.setConcatValue(duplicate3);
