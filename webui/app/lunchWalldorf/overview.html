@@ -1,4 +1,4 @@
-<div class="app-lunchWalldorf-container" style="overflow-y: auto">
+<div class="app-lunchWalldorf-container" ng-class="{'backPic':(chosenbackend!='WDF' && chosenbackend!='KAR')}" style="overflow-y: auto">
     <div ng-if="contentLoaded">
         <b><div ng-class="{'date':(chosenbackend!='WDF' && chosenbackend!='KAR')}">{{screendate}}</div></b>
         <table>
