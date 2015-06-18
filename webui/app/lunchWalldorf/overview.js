@@ -10,6 +10,7 @@ angular.
 
         $scope.boxIcon = '&#xe824;';
         $scope.boxSize = "1";
+        $scope.isWDF = false;
         $scope.contentLoaded = false;
         $scope.customCSSFile = "app/lunchWalldorf/style.css";
 
