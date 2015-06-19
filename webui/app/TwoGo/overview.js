@@ -34,6 +34,18 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             endDaySecond = new Date();
             endDaySecond.setHours(0, 0, 0, 0);
             endDaySecond.setDate(endDaySecond.getDate() + 2);
+            if (endDaySecond.getUTCDay() === 5) {
+
+                endDaySecond.setDate(endDaySecond.getDate() + 2);
+
+            } else {
+
+                if (endDaySecond.getUTCDay() === 6) {
+
+                    endDaySecond.setDate(endDaySecond.getDate() + 1);
+
+                }
+            }
             //check if InternetExplorer or any other browser
             if ($scope.checkBrowserName('MSIE')) {
                 $(function () {
@@ -104,6 +116,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         var duplicate1 = "";
                         var duplicate2 = "";
                         var duplicate3 = "";
+                        endDaySecond.setDate(endDaySecond.getDate() - 1);
                         $scope.arrayToHome = [];
                         $scope.arrayToHomeToday = [];
                         $scope.arrayToWork = [];
@@ -171,7 +184,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                     }
                                 }
                                 else {
-                                    if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "HOME") {
+                                    if (endDaySecond < new Date(rideProposals[i]["earliestDeparture"]) && endDaySecond > new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "HOME") {
                                         if ($scope.arrayToHome.length === 0) {
                                             duplicate2 = $scope.setConcatValue(duplicate2);
                                             toHome++;
@@ -191,7 +204,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                         }
                                     }
                                     else {
-                                        if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
+                                        if (endDaySecond < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "WORK" && response.result[0].result !== null) {
                                             if ($scope.arrayToWork.length === 0) {
                                                 duplicate3 = $scope.setConcatValue(duplicate3);
                                                 toWork++;
@@ -211,7 +224,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                             }
                                         }
                                         else {
-                                            if (endDay < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
+                                            if (endDaySecond < new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["origin"]["shortName"] === "HOME" && response.result[0].result === null) {
                                                 toWork++;
                                                 if ($scope.arrayToWork.length === 0) {
                                                     duplicate3 = $scope.setConcatValue(duplicate3);
@@ -261,11 +274,16 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         $scope.tomorrowh = "To HOME";
                         $scope.today = "To HOME";
                         $scope.HeaderToday = "Today";
-                        $scope.HeaderTomorrow = "Tomorrow";
+                        if (endDaySecond.getUTCDay() === 6) {
+                            $scope.HeaderTomorrow = "Monday";
+                        } else {
+                            $scope.HeaderTomorrow = "Tomorrow";
+                        }
+
                     }
                 })).
                 error(function (status) {
-                  "Request failed";
+                    "Request failed";
                     $scope.status = status;
                 });
         };
@@ -360,7 +378,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                 }
             })).
                 error(function (status) {
-                   "Request failed";
+                    "Request failed";
                     $scope.status = status;
                 });
         };
