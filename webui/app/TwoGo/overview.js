@@ -116,7 +116,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         var duplicate1 = "";
                         var duplicate2 = "";
                         var duplicate3 = "";
-                        var startOfTomorrowOrMonday = endDaySecond.setDate(endDaySecond.getDate() - 1);
+                        var startOfTomorrowOrMonday = new Date(endDaySecond);
+                    startOfTomorrowOrMonday.setDate(endDaySecond.getDate() - 1);
                         $scope.arrayToHome = [];
                         $scope.arrayToHomeToday = [];
                         $scope.arrayToWork = [];
