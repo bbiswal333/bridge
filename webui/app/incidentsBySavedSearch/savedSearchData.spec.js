@@ -14,15 +14,18 @@ describe("Incidents By Saved Search SavedSearch-Data", function(){
         }]);
     });
 
-    it("should load the savedSearches from the backend", function(){
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search/).respond(mockData);
+    it("should load the savedSearches from the backend and should not add the same search twice", function(){
+        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSNEXTPROC/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSINTPROC/).respond(mockData);
         savedSearchData.loadData();
         $httpBackend.flush();
 
         expect(savedSearchData.savedSearches.length).toBe(2);
         expect(savedSearchData.savedSearches[0].GUID).toBe("0050568140981ED497BC89D47C4155D9");
         expect(savedSearchData.savedSearches[0].DESCRIPTION).toBe("Middleware Component");
+        expect(savedSearchData.savedSearches[0].bIsFromDevProfile).toBe(false);
         expect(savedSearchData.savedSearches[1].GUID).toBe("005056810DCB1EE499981630E53A9851");
         expect(savedSearchData.savedSearches[1].DESCRIPTION).toBe("Employee Dashboard");
+        expect(savedSearchData.savedSearches[1].bIsFromDevProfile).toBe(false);
     });
 });

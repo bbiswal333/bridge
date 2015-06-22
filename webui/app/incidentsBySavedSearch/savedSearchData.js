@@ -5,12 +5,18 @@ angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.saved
             this.savedSearches = [];
 
             this.loadData = function () {
-                var deferred = $q.defer();
 
-                $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&origin=' + $window.location.origin, {withCredentials: true})
-                    .success(function (data) {
+                var promiseDevelopment = $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSNEXTPROC&origin=' + $window.location.origin,
+                    { withCredentials: true });
 
-                        data = new X2JS().xml_str2json(data);
+                var promiseSupport = $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSINTPROCE&origin=' + $window.location.origin,
+                    { withCredentials: true });
+
+                var promiseAll = $q.all([promiseDevelopment, promiseSupport]);
+                promiseAll.then(function (aPromiseResponse) {
+
+                    function extractSavedSearches(oPromiseResponse, bIsFromDevProfile) {
+                        var data = new X2JS().xml_str2json(oPromiseResponse.data);
 
                         var savedSearches;
                         if (data.abap.values.RESULTNODE1["_-SID_-SAVED_SEARCH_LINE"] !== undefined && !angular.isArray(data.abap.values.RESULTNODE1["_-SID_-SAVED_SEARCH_LINE"])) {
@@ -20,16 +26,18 @@ angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.saved
                         }
 
                         angular.forEach(savedSearches, function (savedSearch) {
-                            that.savedSearches.push(savedSearch);
+                            if (_.find(that.savedSearches, { GUID: savedSearch.GUID }) === undefined) {
+                                savedSearch.bIsFromDevProfile = bIsFromDevProfile;
+                                that.savedSearches.push(savedSearch);
+                            }
                         });
+                    }
 
-                        deferred.resolve();
+                    extractSavedSearches(aPromiseResponse[0], false);
+                    extractSavedSearches(aPromiseResponse[1], true);
+                });
 
-                    }).error(function () {
-                        deferred.reject();
-                    });
-
-                return deferred.promise;
+                return promiseAll;
             };
         };
 

@@ -3,7 +3,13 @@
     Select the saved search based on which the tickets are displayed:
     <br/>
     <br/>
-    <div ng-repeat="savedSearch in savedSearches">
+    Saved Searches From your Development Support Profile:
+    <div ng-repeat="savedSearch in savedSearches | filter:{bIsFromDevProfile: true}">
+        <bridge.radio is-checked="savedSearch.isSelected" label="{{savedSearch.DESCRIPTION}}" check-toggle="searchRadio_clicked(savedSearch)"></bridge.radio>
+    </div>
+    <br/>
+    Saved Searches From your Customer Support Profile:
+    <div ng-repeat="savedSearch in savedSearches | filter:{bIsFromDevProfile: false}">
         <bridge.radio is-checked="savedSearch.isSelected" label="{{savedSearch.DESCRIPTION}}" check-toggle="searchRadio_clicked(savedSearch)"></bridge.radio>
     </div>
 
