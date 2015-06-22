@@ -273,7 +273,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         $scope.tomorrowh = "To HOME";
                         $scope.today = "To HOME";
                         $scope.HeaderToday = "Today";
-                        if (endDaySecond.getUTCDay() === 6) {
+                        if (startOfTomorrowOrMonday.getUTCDay() === 6) {
                             $scope.HeaderTomorrow = "Monday";
                         } else {
                             $scope.HeaderTomorrow = "Tomorrow";
