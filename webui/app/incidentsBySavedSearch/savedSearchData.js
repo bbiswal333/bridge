@@ -1,6 +1,6 @@
 angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.savedSearchData',
     ['$http', '$window', '$q', function ($http, $window, $q) {
-        var SavedSearchData = function() {
+        var SavedSearchData = function(appId) {
             var that = this;
             this.savedSearches = [];
 
@@ -44,7 +44,7 @@ angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.saved
         var instances = {};
         this.getInstanceForAppId = function(appId) {
             if(instances[appId] === undefined) {
-                instances[appId] = new SavedSearchData();
+                instances[appId] = new SavedSearchData(appId);
             }
             return instances[appId];
         };
