@@ -1,6 +1,6 @@
 angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.savedSearchData',
     ['$http', '$window', '$q', function ($http, $window, $q) {
-        var SavedSearchData = function(appId) {
+        var SavedSearchData = function() {
             var that = this;
             this.savedSearches = [];
 

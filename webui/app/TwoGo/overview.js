@@ -435,6 +435,5 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         controller: directiveController,
         link: linkFn
     };
-}])
-;
+}]);
 /*eslint-enable no-alert, no-undef, dot-notation*/
