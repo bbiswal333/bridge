@@ -6,7 +6,7 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 			this.configItem = {
 				boxSize : '1',
 				system : 'PROD',
-				components : '',
+				components : ''
 			};
 		}
 
@@ -15,9 +15,9 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 		};
 
 		this.getSystemName = function() {
-			return ((this.configItem.system === "PROD") ? "Prod" : "Verilab" ).split(""); 
+			return ((this.configItem.system === "PROD") ? "Prod" : "Verilab" ).split("");
 		};
-	}
+	};
 
 	var instances = {};
 	this.getConfigForAppId = function(appId) {
@@ -26,5 +26,5 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 		}
 		return instances[appId];
 	};
-	
+
 }]);

@@ -1,8 +1,9 @@
+/*jslint browser:true*/
 angular.module('app.dumps', ['bridge.service']);
 angular.module('app.dumps').directive('app.dumps',[function () {
 
-	var directiveController = ['$scope', 'app.dumps.dumpData','app.dumps.configservice',
-		function ($scope, oDumpDataService,oDumpsConfigService) {
+	var directiveController = ['$scope', 'app.dumps.dumpData','app.dumps.configservice', '$window',
+		function ($scope, oDumpDataService,oDumpsConfigService, $window) {
             $scope.configService = oDumpsConfigService.getConfigForAppId($scope.metadata.guid);
 
 			var oDumpData = oDumpDataService.getInstanceForAppId($scope.metadata.guid);
@@ -17,7 +18,7 @@ angular.module('app.dumps').directive('app.dumps',[function () {
 
 
         	$scope.box.settingsTitle = "Configure";
-        	$scope.box.settingScreenData = { 
+        	$scope.box.settingScreenData = {
             	templatePath: "dumps/settings.html",
                 controller: angular.module('app.dumps').appDumpsSettings,
                 id: $scope.boxId,
@@ -38,7 +39,7 @@ angular.module('app.dumps').directive('app.dumps',[function () {
 
             $scope.$watch("[configService.configItem.system,configService.configItem.components]", function() {
                 oDumpData.loadOverview();
-            });    
+            });
 
             $scope.$watch("configService.configItem.system", function() {
                 $scope.systemName = $scope.configService.getSystemName();
@@ -84,7 +85,7 @@ angular.module('app.dumps').directive('app.dumps',[function () {
                     sUrl += "&app_comp=" + $scope.configService.configItem.components;
                 }
 
-                window.open(sUrl, "_blank");
+                $window.open(sUrl, "_blank");
             };
 	}];
 

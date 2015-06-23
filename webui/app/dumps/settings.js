@@ -1,5 +1,5 @@
 angular.module('app.dumps').appDumpsSettings =
-['$scope', "app.dumps.configservice", 
+['$scope', "app.dumps.configservice",
 	function ($scope, dumpsConfigService) {
 	$scope.currentConfigValues = dumpsConfigService.getConfigForAppId($scope.boxScope.metadata.guid);
 

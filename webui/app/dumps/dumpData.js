@@ -1,5 +1,5 @@
 angular.module("app.dumps").service("app.dumps.dumpData",
-	["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "notifier", "bridge.converter","app.dumps.configservice", 
+	["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "notifier", "bridge.converter","app.dumps.configservice",
 	function($rootScope, $http, $q, $window, $location, bridgeDataService, notifier, converter, oConfigService){
 		var Data = function(appId) {
 			var that = this;
@@ -7,12 +7,11 @@ angular.module("app.dumps").service("app.dumps.dumpData",
 			this.appId = appId;
 			this.isInitialized = {value:false};
 			this.mode = "day";
-	
+
             this.dumps = [
-            	{ key: "day"  , description: "24 hrs", count: 0 }, 
+            	{ key: "day"  , description: "24 hrs", count: 0 },
             	{ key: "week" , description: "7 days" , count: 0 },
-            	{ key: "month", description: "30 days"   , count: 0 }]; 
-            	//{ key: "others", description: "Unsolved 24 hrs",  count: 0 }];
+            	{ key: "month", description: "30 days"   , count: 0 }];
 
             this.dumpList = { "day"		: [],
                               "week"	: [],
@@ -23,7 +22,7 @@ angular.module("app.dumps").service("app.dumps.dumpData",
 			var fnUpdate = function() {
 			 	that.currentDumpList.length = 0;
 			 	var aList = that.dumpList[that.mode];
-			 	for(var i=0; i<Math.min(aList.length,8);i++ ) {
+			 	for(var i = 0; i < Math.min(aList.length,8); i++ ) {
 			 		that.currentDumpList.push(aList[i]);
 			 	}
 			};
@@ -33,7 +32,7 @@ angular.module("app.dumps").service("app.dumps.dumpData",
            		var sUrl = oConfig.getUrl();//(oConfig.configItem.system && oConfig.configItem.system === "VERILAB") ? 'https://vns.wdf.sap.corp/sap' : 'https://ace-cust002.dev.sapbydesign.com/sap/public';
            		var sComponents = oConfig.configItem.components || '';
 
-			 	$http.get(sUrl + '/bc/mdrs/cdo?type=crp_dump_rep&mode=bridge&app_comp=' + sComponents + '&origin=' + window.location.origin).success(function(oData) {
+			 	$http.get(sUrl + '/bc/mdrs/cdo?type=crp_dump_rep&mode=bridge&app_comp=' + sComponents + '&origin=' + $window.location.origin).success(function(oData) {
 			 		var oResult = oData.S_RESULT;
 			 		that.dumps[0].count = oResult.LAST_DAY;
 			 		that.dumps[1].count = oResult.LAST_SEVEN_DAYS;
@@ -45,7 +44,7 @@ angular.module("app.dumps").service("app.dumps.dumpData",
 
 			 		fnUpdate();
 			 	});
-			}; 	
+			};
 
 			this.updateDumpList = function(iIndex) {
 				switch(iIndex) {
@@ -63,7 +62,7 @@ angular.module("app.dumps").service("app.dumps.dumpData",
 			};
 
             this.isInitialized.value = true;
-		}
+		};
 
 		var oInstances = {};
 		this.getInstanceForAppId = function(appId) {
