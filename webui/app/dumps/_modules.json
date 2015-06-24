@@ -1,13 +1,13 @@
 {
 	"app":
 	{
-		"categories"			:	["Sample Apps"],
+		"categories"			:	["Beta"],
 		"module_name"			:	"app.dumps",
 		"title"					:	"Dumps S4H Cloud",
 		"icon_css"				:	"fa fa-stethoscope",
 		"overview_directive"	:	"app.dumps",
 		"needs_client"			:	false,
-		"beta"					:	false,
+		"beta"					:	true,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
 		"description"			:	"This is the simplest app you could take as a blueprint."

@@ -72,4 +72,3 @@ angular.module("app.dumps").service("app.dumps.dumpData",
 			return oInstances[appId];
 		};
 }]);
-
