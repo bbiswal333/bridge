@@ -34,13 +34,13 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             endDaySecond = new Date();
             endDaySecond.setHours(0, 0, 0, 0);
             endDaySecond.setDate(endDaySecond.getDate() + 2);
-            if (endDaySecond.getUTCDay() === 5) {
+            if (endDaySecond.getUTCDay() === 6) {
 
                 endDaySecond.setDate(endDaySecond.getDate() + 2);
 
             } else {
 
-                if (endDaySecond.getUTCDay() === 6) {
+                if (endDaySecond.getUTCDay() === 0) {
 
                     endDaySecond.setDate(endDaySecond.getDate() + 1);
 
@@ -131,7 +131,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             }), new Date(rideProposals[i]["latestArrival"]).toLocaleTimeString(navigator.language, {
                                 hour: '2-digit',
                                 minute: '2-digit'
-                            }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"], rideProposals[i]["createAsPassengerUrl"], v[0], v[1]]);
+                            }), rideProposals[i]["origin"]["shortName"], rideProposals[i]["destination"]["shortName"], rideProposals[i]["createAsDriverUrl"] + "&source=bridge", rideProposals[i]["createAsPassengerUrl"] + "&source=bridge", v[0], v[1]]);
                         };
 //sets the Value for the check if there are duplicates
                         $scope.setConcatValue = function (concatValue) {
@@ -153,14 +153,14 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                             });
 //Adding the State for the UrlButton
                             for (i = 0; i < rideProposals.length; i++) {
-                                if (rideProposals[i]["createAsDriverUrl"] != null && rideProposals[i]["createAsPassengerUrl"] != null) {
+                                if (rideProposals[i]["role"] === "DriverOrPassenger") {
                                     v = ["invisible-button", "invisible-button"];
                                 }
                                 else {
-                                    if (rideProposals[i]["createAsDriverUrl"] == null && rideProposals[i]["createAsPassengerUrl"] != null) {
+                                    if (rideProposals[i]["role"] === "Passenger") {
                                         v = ["disabled", "invisible-button"];
                                     } else {
-                                        if (rideProposals[i]["createAsDriverUrl"] != null && rideProposals[i]["createAsPassengerUrl"] == null) {
+                                        if (rideProposals[i]["role"] === "Driver") {
                                             v = ["invisible-button", "disabled"];
                                         }
                                     }
@@ -274,7 +274,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         $scope.tomorrowh = "To HOME";
                         $scope.today = "To HOME";
                         $scope.HeaderToday = "Today";
-                        if (startOfTomorrowOrMonday.getUTCDay() === 6) {
+                        if (startOfTomorrowOrMonday.getUTCDay() === 0) {
                             $scope.HeaderTomorrow = "Monday";
                         } else {
                             $scope.HeaderTomorrow = "Tomorrow";
