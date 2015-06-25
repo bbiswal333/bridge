@@ -1,5 +1,5 @@
-angular.module('app.test').appTestSettings =
-	['$scope', "app.test.configService", function ($scope, configService) {
+angular.module('app.myFirstApp').appTestSettings =
+	['$scope', "app.myFirstApp.configService", function ($scope, configService) {
 
 	$scope.values = configService.values;
 

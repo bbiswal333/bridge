@@ -1,8 +1,8 @@
-describe("Testing test.app data service", function () {
+describe("Testing myFirstApp.app data service", function () {
 	var dataService;
 
-	beforeEach(module("app.test.data"));
-	beforeEach(inject(["app.test.dataService", function (_dataService_) {
+	beforeEach(module("app.myFirstApp.data"));
+	beforeEach(inject(["app.myFirstApp.dataService", function (_dataService_) {
 		 dataService = _dataService_;
 	}]));
 

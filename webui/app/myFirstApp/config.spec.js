@@ -1,8 +1,8 @@
-describe("Testing test.app config service", function () {
+describe("Testing myFirstApp.app config service", function () {
 	var configService;
 
-	beforeEach(module("app.test"));
-	beforeEach(inject(["app.test.configService", function (_configService_) {
+	beforeEach(module("app.myFirstApp"));
+	beforeEach(inject(["app.myFirstApp.configService", function (_configService_) {
 		 configService = _configService_;
 	}]));
 

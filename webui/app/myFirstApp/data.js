@@ -1,4 +1,4 @@
-angular.module("app.test.data", []).service("app.test.dataService", function () {
+angular.module("app.myFirstApp.data", []).service("app.myFirstApp.dataService", function () {
 
 	var text = "Text from DataService";
 	var reloadCounter = 0;

@@ -1,13 +1,13 @@
-﻿angular.module('app.test', ['app.test.data']);
-angular.module('app.test').directive('app.test', ['app.test.configService', 'app.test.dataService', function (configService, dataService) {
+﻿angular.module('app.myFirstApp', ['app.myFirstApp.data']);
+angular.module('app.myFirstApp').directive('app.myFirstApp', ['app.myFirstApp.configService', 'app.myFirstApp.dataService', function (configService, dataService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure Test App";
 		$scope.box.settingScreenData = {
-			templatePath: "test/settings.html",
-				controller: angular.module('app.test').appTestSettings,
+			templatePath: "myFirstApp/settings.html",
+				controller: angular.module('app.myFirstApp').appTestSettings,
 				id: $scope.boxId
 		};
 
@@ -49,7 +49,7 @@ angular.module('app.test').directive('app.test', ['app.test.configService', 'app
 
 	return {
 		restrict: 'E',
-		templateUrl: 'app/test/overview.html',
+		templateUrl: 'app/myFirstApp/overview.html',
 		controller: directiveController,
 		link: linkFn
 	};
