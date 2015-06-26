@@ -19,6 +19,6 @@
 		"description"			:	"This is a wrapper app for the dict.cc tranlator."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
 	"css_files" : []
 }
