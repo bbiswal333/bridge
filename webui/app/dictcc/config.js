@@ -1,4 +1,4 @@
-angular.module("app.myFirstApp").service("app.myFirstApp.configService", function () {
+angular.module("app.dictcc").service("app.dictcc.configService", function () {
 
 	this.values = {
 		boxSize : '1'

@@ -1,5 +1,5 @@
-angular.module("app.myFirstApp.data", []).service(
-	"app.myFirstApp.dataService", 
+angular.module("app.dictcc.data", []).service(
+	"app.dictcc.dataService", 
 	function () {
 		var data = "bridge";
 	

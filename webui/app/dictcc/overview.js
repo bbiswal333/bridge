@@ -1,8 +1,8 @@
-﻿angular.module("app.myFirstApp", ["app.myFirstApp.data"]);
-angular.module("app.myFirstApp").directive(
-	"app.myFirstApp", 
+﻿angular.module("app.dictcc", ["app.dictcc.data"]);
+angular.module("app.dictcc").directive(
+	"app.dictcc", 
 	[
-		"app.myFirstApp.configService", "app.myFirstApp.dataService", 
+		"app.dictcc.configService", "app.dictcc.dataService", 
 		function (configService, dataService) {
 
 			var directiveController = ["$scope", function ($scope) {
@@ -10,8 +10,8 @@ angular.module("app.myFirstApp").directive(
 				// Required information to get settings icon/ screen
 				$scope.box.settingsTitle = "Configure dict.cc app";
 				$scope.box.settingScreenData = {
-					templatePath: "myFirstApp/settings.html",
-						controller: angular.module("app.myFirstApp").appTestSettings,
+					templatePath: "dictcc/settings.html",
+						controller: angular.module("app.dictcc").appTestSettings,
 						id: $scope.boxId
 				};
 		
@@ -39,7 +39,7 @@ angular.module("app.myFirstApp").directive(
 		
 			return {
 				restrict: "E",
-				templateUrl: "app/myFirstApp/overview.html",
+				templateUrl: "app/dictcc/overview.html",
 				controller: directiveController,
 				link: linkFn
 			};
