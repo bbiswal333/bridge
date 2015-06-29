@@ -1,0 +1,27 @@
+<div style="box-sizing:inherit;" ng-controller="addCtrl">
+    <div class="container-fluid">
+        <div class="modal-header"><h1>Add Answer!</h1></div>
+        <div class="modal-body"><h4><p class="question">{{question}}</p></h4></div>
+        <div class="modal-body">
+            <label for="answer">Your Answer:</label>
+            <textarea class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>
+            <i class="fa fa-tags"></i>
+            <select>
+                <option>culture</option>
+                <option>lunch</option>
+                <option>sap</option>
+                <option>HR</option>
+            </select><br><br>
+            <label for="employee"><i class="fa fa-user"></i></label>
+            <input id="employee" style="max-width: 20%"type="text" placeholder="anonymous" readonly/>
+            <bridge.button ng-active="true">Anonym</bridge.button>
+        </div>
+        <div class="modal-footer">
+
+            <bridge.button ng-click="add()"><i class="fa fa-plus"></i> Submit</bridge.button>
+        </div>
+
+    </div>
+
+</div>
+
