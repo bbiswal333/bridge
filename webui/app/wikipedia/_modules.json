@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.wikipedia",
+		"title"					:	"Wikipedia",
+		"icon_css"				:	"fa fa-book",
+		"overview_directive"	:	"app.wikipedia",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/wikipedia/",
+				"templateUrl"	:	"app/wikipedia/detail.html"
+			}
+		],
+		"description"			:	"This is a wrapper app for wikipedia."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "data.js"],
+	"css_files" : []
+}

@@ -16,9 +16,9 @@
 				"templateUrl"	:	"app/dictcc/detail.html"
 			}
 		],
-		"description"			:	"This is a wrapper app for the dict.cc tranlator."
+		"description"			:	"This is a wrapper app for dict.cc"
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
+	"js_files" : ["overview.js", "detail.js", "data.js"],
 	"css_files" : []
 }

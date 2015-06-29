@@ -1,8 +1,8 @@
-﻿angular.module("app.dictcc", ["app.dictcc.data"]);
-angular.module("app.dictcc").directive(
-	"app.dictcc", 
+﻿angular.module("app.wikipedia", ["app.wikipedia.data"]);
+angular.module("app.wikipedia").directive(
+	"app.wikipedia", 
 	[
-		"app.dictcc.dataService", 
+		"app.wikipedia.dataService", 
 		function (dataService) {
 
 			var controller = ["$scope", function ($scope) {
@@ -15,7 +15,7 @@ angular.module("app.dictcc").directive(
 		
 			return {
 				restrict: "E",
-				templateUrl: "app/dictcc/overview.html",
+				templateUrl: "app/wikipedia/overview.html",
 				controller: controller
 			};
 		}
