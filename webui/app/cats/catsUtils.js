@@ -84,6 +84,7 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
     this.isHourlyProfil = function(catsProfile){
             if (catsProfile === "SUP2007H" ||
                 catsProfile === "SUP2007B" ||
+                catsProfile === "DEV2012C" ||
                 catsProfile === "DEV2012") {
                 return true;
             } else {
