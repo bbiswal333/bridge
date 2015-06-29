@@ -3,10 +3,6 @@ angular.module("app.test.data", []).service("app.test.dataService", function () 
 	var text = "Text from DataService";
 	var reloadCounter = 0;
 
-	this.setText = function(input) {
-		text = input;
-	};
-	
 	this.reload = function() {
 		reloadCounter += 1;
 	};
