@@ -887,7 +887,7 @@ h5{
         width: 200px;
     }
     .menubar-search{
-        width: calc(100% - 40px)!important;
+        width: calc(100% - 60px)!important;
     }
     .centeredContent.innerbox.news-container{
         min-width: 0!important;
@@ -943,7 +943,7 @@ h5{
         width: 200px;
     }
     .menubar-search{
-        width: calc(100% - 40px)!important;
+        width: calc(100% - 60px)!important;
     }
     .search-results-pane{
         position: absolute;
