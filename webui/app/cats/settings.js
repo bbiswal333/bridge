@@ -2,6 +2,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
 
 	$scope.configService = catsConfigService;
+    catsConfigService.removeInvalidTasks(catsConfigService.favoriteItems);
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
 
     function getIndexForId(list, id) {
@@ -57,6 +58,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
         $scope.selectedTask = catsConfigService.selectedTask;
         sortFavoriteItemsAccordingToCatsItems();
+        catsConfigService.removeInvalidTasks($scope.configService.favoriteItems);
     }
 
     $scope.isUnchanged = function(item){

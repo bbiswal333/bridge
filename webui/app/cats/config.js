@@ -25,6 +25,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
+				this.removeInvalidTasks(catsConfigService.favoriteItems);
 				this.favoriteItems = catsConfigService.favoriteItems;
 				this.favoriteItems.forEach(function(favoriteItem) {
 					that.enhanceTask(favoriteItem);
@@ -85,6 +86,17 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		tasks.forEach(function(task) {
 			task.id = catsUtils.getTaskID(task);
 		});
+	};
+
+	this.removeInvalidTasks = function (tasks) {
+		var wrongItem =
+			_.find(tasks, {
+				"TASKTYPE": "BRIDGE_HEADER"
+			});
+		var index = tasks.indexOf(wrongItem);
+		if (index >= 0) {
+			tasks.splice( index, 1 );
+		}
 	};
 
 	this.updateLastUsedDescriptions = function (task, onlyAddDoNotUpdate) {
