@@ -110,6 +110,19 @@ directive("app.cats.maintenanceView.projectList", [
 				$scope.filter.val = "";
 			};
 
+			$scope.refreshDescriptions = function() {
+				// remove all old descriptions
+				configService.lastUsedDescriptions = [];
+				// update descriptions from items from the backend
+				for (var i = 0; i < configService.favoriteItems.length; i++) {
+					for (var j = 0; j < configService.catsItems.length; j++) {
+						if (catsUtils.isSameTask(configService.favoriteItems[i], configService.catsItems[j])) {
+							configService.favoriteItems[i].DESCR = configService.catsItems[j].DESCR;
+						}
+					}
+				}
+			};
+
 			function markItemIfSelected(item) {
 				// The items we get here can be of really bad data quality
 
@@ -438,21 +451,6 @@ directive("app.cats.maintenanceView.projectList", [
 					loadProjects(true);
 				}
 			}, true);
-
-			$scope.refreshDescriptions = function() {
-				// remove all old descriptions
-				configService.lastUsedDescriptions = [];
-				// update descriptions from items from the backend
-				for (var i = 0; i < configService.favoriteItems.length; i++) {
-					for (var j = 0; j < configService.catsItems.length; j++) {
-						if (catsUtils.isSameTask(configService.favoriteItems[i], configService.catsItems[j])) {
-							configService.favoriteItems[i].DESCR = configService.catsItems[j].DESCR;
-						}
-					}
-				}
-
-				loadProjects(true);
-			};
 
 			loadProjects(true);
 
