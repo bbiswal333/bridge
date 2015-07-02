@@ -1,0 +1,38 @@
+.app-bensmatrix-container {
+    margin-top: 10px;
+    height: 145px;
+    overflow: hidden;
+}
+
+.app-bensmatrix-container table {
+    margin-right: 10px;
+
+}
+
+.app-bensmatrix-container tr {
+    border-top: 1px solid #e5e5e5;
+
+}
+
+.app-bensmatrix-icon {
+    text-align: center;
+    width: 40px;
+}
+
+.app-bensmatrix-box-icon {
+    font-size: 17px;
+}
+
+.link {
+    margin-top: 30px;
+    text-align: center;
+    font-size: larger;
+}
+
+.date {
+    font-size: larger;
+}
+
+.backPic {
+    background: url("/app/bensmatrix/pic/lunch_background.png");
+}

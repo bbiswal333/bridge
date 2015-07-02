@@ -4,12 +4,13 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
 		// Required information to get settings icon/ screen
-		$scope.box.settingsTitle = "Configure bensmatrix App";
-		$scope.box.settingScreenData = {
+		//$scope.box.settingsTitle = "Configure bensmatrix App";
+		$scope.box.sSize = 2;
+		/*$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
 				id: $scope.boxId
-		};
+		};*/
 
 		$scope.many = dataService.getReloadCounter();
 
@@ -19,10 +20,11 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		};
 
 		// Bridge framework function to enable saving the config
+		/*
 		$scope.box.returnConfig = function(){
 			return angular.copy(configService);
 		};
-
+		*/
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData,60);
 
@@ -57,7 +59,13 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 	};
 }]);
 
+	var updatePixels = function ($scope) {
+		var pxlength = document.getElementById("output").getBoundingClientRect().width;
+		document.getElementById("pxlength").innerHTML = Math.round(pxlength);
+	}
+
 	var updateLength = function ($scope){
+		var sInput = document.getElementById("input").value;
 		var enlength = document.getElementById("input").value.length ;
 		var tlength;
 		var c_bracket_count = 3;
@@ -69,6 +77,28 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 ));}
 		else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) );}
 		
+		var emlength = Math.round((tlength * 2) / 3);
+
+		document.getElementById("emlength").innerHTML = emlength;
 		document.getElementById("slength").innerHTML = enlength;
 		document.getElementById("tlength").innerHTML = tlength;
+		
+		var sFamily = document.getElementById("family").value;
+		document.getElementById("output").style.fontFamily = sFamily;
+
+		var sSize = document.getElementById("size").value;
+		document.getElementById("output").style.fontSize = sSize;
+
+		var sWeight = document.getElementById("weight").value;
+		document.getElementById("output").style.fontWeight = sWeight;
+
+		var sStyle = document.getElementById("style").value;
+		document.getElementById("output").style.fontStyle = sStyle;
+
+		var sVariant = document.getElementById("variant").value;
+		document.getElementById("output").style.fontVariant = sVariant;
+
+		document.getElementById("output").innerHTML = sInput;
+	
 };
+
