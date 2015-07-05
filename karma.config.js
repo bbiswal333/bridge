@@ -44,6 +44,7 @@ module.exports = function(config) {
             './webui/bridge/controls/bridgeTable/bridgeTable.js',
             './webui/bridge/ticketAppUtils/configUtils.js',
 
+            './webui/app/**/module.js',
             './webui/app/**/overview.js',
 
             './webui/**/!(browser_redirect).js',
