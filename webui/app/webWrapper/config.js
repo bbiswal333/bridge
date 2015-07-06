@@ -1,6 +1,6 @@
 angular.module("app.webWrapper").service(
-	"app.webWrapper.configService", 
-	
+	"app.webWrapper.configService",
+
 	function () {
 
 		this.values = {
@@ -9,11 +9,11 @@ angular.module("app.webWrapper").service(
 			url: "https://search.wdf.sap.corp/ui#query=%P%",
 			buttonTitle: "Go!"
 		};
-	
+
 		this.initialize = function(configLoadedFromBackend) {
-		
-			if (configLoadedFromBackend !== undefined 
-			&&	configLoadedFromBackend !== {} 
+
+			if (configLoadedFromBackend !== undefined
+			&&	configLoadedFromBackend !== {}
 			&&	configLoadedFromBackend.values) {
 				// Standard case: Get config from backend
 				this.values = configLoadedFromBackend.values;
