@@ -81,7 +81,7 @@ hr.bottom {
     background-color: #f9f9f9;
     color: #428BCA;
     padding: 5px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     text-align: center;
     display: inline-block;
     line-height: 1em;
@@ -98,7 +98,7 @@ hr.bottom {
 .like {
     width: 75px;
     display: inline;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 }
 
 .btn-foot {
@@ -106,7 +106,7 @@ hr.bottom {
 }
 
 .addBtn {
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 }
 
 /*Arrows beside the question*/

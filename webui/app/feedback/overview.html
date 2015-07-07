@@ -1,5 +1,5 @@
 ﻿<div class="well-custom well-custom-head">
-    <i class="fa fa-arrow-left arrow arrow-left" ng-click="prevQuestion(getAnswer())"></i>
+    <i class="fa fa-arrow-left arrow arrow-left" ng-click="prevQuestion()"></i>
     <a href="https://culturewall.mo.sap.corp"><b>{{question}}</b></a>
     <i class="fa fa-arrow-right arrow arrow-right" ng-click="nextQuestion()"></i>
 </div>
@@ -15,7 +15,7 @@
     </div>
     <div class="text-right">
         <div class="btn-foot" ng-show="!liked">
-            <bridge.button class="like btn-bottom" ng-click="count();">{{like_count}} <i class="fa fa-thumbs-o-up"></i>
+            <bridge.button class="like btn-bottom" ng-click="count();"><i class="fa fa-thumbs-o-up"></i>
                 Like
             </bridge.button>
         </div>
