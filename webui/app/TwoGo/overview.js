@@ -417,7 +417,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             return false;
         };
         //function that refreches the app after one hour(Time is set in seconds)
-        $scope.box.reloadApp($scope.checkBrowser, 3600);
+        $scope.box.reloadApp($scope.checkBrowser, 900);
     }];
 
     //function that saves the configuration
