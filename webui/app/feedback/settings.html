@@ -1,17 +1,28 @@
-<div style="width: 100%">
-	<p>
-		<form name="form">
-			<div class="row">
-				<div class="col-xs-2 form_head" style="float:none;">Feedback <sub>by CultureWall</sub> - Settings</div>
-
-
-			</div>
-		</form>
-	</p>
-	<div class="row" >
-		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
-		<bridge.button ng-click="save_click()" class="save_close_btn">
-			Save & Close
-		</bridge.button>
+<p>
+<form name="form">
+	<div class="row">
+		<div class="col-xs-2 form_head" style="float:none;">Select Refresh-delay</div>
+		<div class="btn-group" style="margin-left:15px;margin-top:10px">
+			<bridge.button state="(values.delay === '10') === true ? 'active':'invisible-button'" ng-click="values.delay='10'" style="width:100px;margin-left:0;margin-right:0;">
+				10s
+			</bridge.button>
+			<bridge.button state="(values.delay === '20') === true ? 'active':'invisible-button'" ng-click="values.delay='20'" style="width:100px;margin-left:0;margin-right:0;">
+				20s
+			</bridge.button>
+			<bridge.button state="(values.delay === '30') === true ? 'active':'invisible-button'" ng-click="values.delay='30'" style="width:100px;margin-left:0;margin-right:0;">
+				30s
+			</bridge.button>
+			<bridge.button state="(values.delay === '60') === true ? 'active':'invisible-button'" ng-click="values.delay='60'" style="width:100px;margin-left:0;margin-right:0;">
+				60s
+			</bridge.button>
+		</div>
 	</div>
-</div>
+</form>
+</p>
+<hr>
+
+<div class="row" >
+	<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
+	<bridge.button ng-click="save_click()" class="save_close_btn">
+		Save & Close
+	</bridge.button></div>

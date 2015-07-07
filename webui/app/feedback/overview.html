@@ -1,13 +1,32 @@
-﻿<div class="content">
-    <div class="row">
-        <div style="color:#428BCA;"><b>{{question}}</b></div>
-    </div>
-    <div class="row">
-        <hr>
-        <blockquote>
-            <p>{{text}}</p>
-            <p><small>Fabi</small></p>
-        </blockquote>
-    </div>
+﻿<div class="well-custom well-custom-head">
+    <i class="fa fa-arrow-left arrow arrow-left" ng-click="prevQuestion(getAnswer())"></i>
+    <a href="https://culturewall.mo.sap.corp"><b>{{question}}</b></a>
+    <i class="fa fa-arrow-right arrow arrow-right" ng-click="nextQuestion()"></i>
 </div>
+<hr>
+<div class="well-custom well-custom-body">
+    "{{answer}}"
+    <div class="employee">(Employee: {{employee}})</div>
+</div>
+<hr class="bottom">
+<div class="well-custom">
+    <div class="text-left">
+        <span class="hashtag">#Culture</span>
+    </div>
+    <div class="text-right">
+        <div class="btn-foot" ng-show="!liked">
+            <bridge.button class="like btn-bottom" ng-click="count();">{{like_count}} <i class="fa fa-thumbs-o-up"></i>
+                Like
+            </bridge.button>
+        </div>
+        <div class="btn-foot " ng-show="liked">
+            <bridge.button state="(liked) === true ? 'active':'visible-button'" class="like btn-bottom"
+                           ng-click="count()"><i
+                    class="fa fa-thumbs-o-down"></i> Unlike
+            </bridge.button>
+        </div>
 
+        <bridge.button class="addBtn btn-bottom" ng-click="add()"><i class="fa fa-plus"></i> Add Answer</bridge.button>
+    </div>
+
+</div>

@@ -1,10 +1,13 @@
 <div style="box-sizing:inherit;" ng-controller="addCtrl">
     <div class="container-fluid">
-        <div class="modal-header"><h1>Add Answer!</h1></div>
+        <div class="modal-header"><h3>Add Answer!</h3></div>
         <div class="modal-body"><h4><p class="question">{{question}}</p></h4></div>
         <div class="modal-body">
             <label for="answer">Your Answer:</label>
             <textarea class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>
+
+           <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
+            <!--http://sliptree.github.io/bootstrap-tokenfield/-->
             <i class="fa fa-tags"></i>
             <select>
                 <option>culture</option>

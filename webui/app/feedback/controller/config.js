@@ -1,7 +1,10 @@
 angular.module('app.feedback').service("app.feedback.configService", function () {
 
 	this.values = {
-		boxSize : '2'
+		boxSize : '2',
+		delay : '10',
+		question: 'What drives success at SAP?',
+		count: '0'
 	};
 
 

@@ -10,4 +10,5 @@ angular.module('app.feedback').service('feedback', function () {
     this.getQuestion = function (gQ) {
         gQ.question = question;
     };
+
 });

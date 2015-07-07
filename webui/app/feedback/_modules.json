@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.feedback",
-		"title"					:	"Feedback",
+		"title"					:	"Culture Wall",
 		"icon_css"				:	"fa fa-rss",
 		"overview_directive"	:	"app.feedback",
 		"needs_client"			:	false,
@@ -19,7 +19,7 @@
 		"description"			:	"First Version!"
 	},
 	"modules" : [],
-	"js_files" : ["/controller/overview.js","/controller/config.js","/controller/settings.js","/controller/addAnswer.js",
+	"js_files" : ["/controller/ng-tags-input.js","/controller/overview.js","/controller/config.js","/controller/settings.js","/controller/addAnswer.js",
 	"/controller/service.js"],
-	"css_files" : ["/style/index.css"]
+	"css_files" : ["/style/index.css","/style/ng-tags-input.bootstrap.css","/style/ng-tags-input.css"]
 }
