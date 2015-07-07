@@ -16,7 +16,7 @@
 				"templateUrl"	:	"app/wikipedia/detail.html"
 			}
 		],
-		"description"			:	"This is a wrapper app for wikipedia."
+		"description"			:	"Enter a term and look it up on Wikipedia."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js", "data.js"],
