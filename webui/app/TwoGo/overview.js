@@ -2,7 +2,7 @@
 angular.module('app.TwoGo', ['app.TwoGo.data']);
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', 'app.TwoGo.dataService', function (configService, dataService) {
     var directiveController;
-    directiveController = ['$scope', '$http', function ($scope, $http) {
+    directiveController = ['$scope', '$http','$log', function ($scope, $http, $log) {
         $scope.setLinkClicked = function (i) {
             dataService.setWhichLinkClicked(i);
         };
@@ -294,7 +294,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                     }
                 })).
                 error(function (status) {
-                    alert("GetRideProposals failed");
+                    $log.error("GetRideProposals failed");
                     $scope.status = status;
                 });
         };
@@ -343,7 +343,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
 
 
                     $scope.status = status;
-                    alert("login failed");
+                    $log.error("login failed");
                 });
         };
 //function which includes the http call for the login of the user using the created http value instat of the Xhr otherwise it wont work
@@ -388,7 +388,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                 }
             })).
                 error(function (status) {
-                    alert("login failed");
+                  $log.error("login failed");
                     $scope.status = status;
                 });
         };
