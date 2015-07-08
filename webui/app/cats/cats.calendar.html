@@ -11,7 +11,6 @@
             <h1 ng-if="maintainable" class="app-cats-current-year col-xs-12">{{year}}</h1>
 			<span class="app-cats-text-button app-cats-icon" ng-class="{'app-cats-text-button-disabled': !canGoBackward()}" ng-click="prevMonth();"><i class="fa fa-arrow-left"></i></span>
 
-            <!--<button ng-if="maintainable" class="btn btn-default" ng-click="toggleMonth()" ng-class="{true:'btn btn_blue',false:'btn'}[monthIsSelected()]" style="margin-right:0">{{currentMonth}}</button>-->
             <bridge.button state="monthIsSelected() === true ? 'active' : 'invisible-button'" style="margin-right:0" ng-if="maintainable" ng-click="toggleMonth(); doAlert()">{{currentMonth}}</bridge.button>
 
             <b ng-if="!maintainable" class="app-cats-current-month">{{currentMonth}}</b>
@@ -28,10 +27,6 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
-
-                        <!--<button ng-if="calUtils.getWeekNumber(week[0].date).weekNo > 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</button>
-                        <button ng-if="calUtils.getWeekNumber(week[0].date).weekNo <= 9" class="btn btn-default" ng-click="toggleWeek($index)" ng-class="{true:'btn btn_blue',false:'btn'}[weekIsSelected($index)];" style="margin-right:0">CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</button>-->
-
                         <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')" style="margin:0;width:66px;height:34px;line-height:34px;" ng-if="calUtils.getWeekNumber(week[0].date).weekNo > 9" ng-click="toggleWeek($index); doAlert()"  >CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
 
                         <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')"  style="margin:0;width:66px;height:34px;line-height:34px;"ng-if="calUtils.getWeekNumber(week[0].date).weekNo <= 9" ng-click="toggleWeek($index); doAlert()"  >CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>

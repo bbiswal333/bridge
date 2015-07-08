@@ -25,12 +25,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			$http.get(url, {
-				timeout: 25000
+				timeout: 30000
 			}).success(function(data, status) {
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject("HTTP-Status of write posting call is " + status);
+				deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
 			});
 
 			return deferred.promise;
@@ -516,7 +516,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}).success(function(data) {
 					deferred.resolve(data);
 				}).error(function(data, status) {
-					deferred.reject("HTTP-Status of write posting call is " + status);
+					$log.log("POST-Request to " + WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile + " failed. HTTP-Status: " + status);
+					deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
 				});
 			});
 			return deferred.promise;
