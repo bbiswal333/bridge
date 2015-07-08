@@ -11,6 +11,7 @@ directive("app.cats.maintenanceView.projectList", [
 	function(catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q, $window) {
 		var linkFn = function($scope) {
 			$scope.items = [];
+			$scope.itemsFromBlocks = [];
 			$scope.filter = {};
 			$scope.filter.val = "";
 			$scope.loaded = false;
@@ -317,6 +318,7 @@ directive("app.cats.maintenanceView.projectList", [
 					});
 					if (!allreadyExists) {
 						$scope.items.push(configService.enhanceTask(blockItem.task));
+						$scope.itemsFromBlocks.push(configService.enhanceTask(blockItem.task));
 					}
 				});
 			}
@@ -355,7 +357,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 				catsBackend.determineCatsProfileFromBackend()
 				.then(function(catsProfile) {
-
+					// IF using favorite list
 					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
 						$scope.items = angular.copy(configService.favoriteItems);
 						var header1 = {};
@@ -363,11 +365,30 @@ directive("app.cats.maintenanceView.projectList", [
 						header1.TASKTYPE = "BRIDGE_HEADER";
 						header1.RAUFNR = "3";
 						$scope.items.unshift(header1);
-						var header2 = {};
-						header2.DESCR = "Additional tasks for current day";
-						header2.TASKTYPE = "BRIDGE_HEADER";
-						header2.RAUFNR = "4";
-						$scope.items.push(header2);
+
+						if ($scope.itemsFromBlocks.length > 0) {
+
+							var header2 = {};
+							header2.DESCR = "Additional tasks";
+							header2.TASKTYPE = "BRIDGE_HEADER";
+							header2.RAUFNR = "4";
+							$scope.items.push(header2);
+
+							$scope.itemsFromBlocks.forEach(function(itemFromBlock) {
+								var allreadyExists = false;
+								$scope.items.some(function(item) {
+									if (catsUtils.isSameTask(itemFromBlock, item)) {
+										allreadyExists = true;
+										return exitLoop;
+									}
+								});
+								if (!allreadyExists) {
+									$scope.items.push(configService.enhanceTask(itemFromBlock));
+								}
+							});
+
+						}
+					// ELSE using CAT2 data
 					} else {
 						$scope.items = angular.copy(configService.catsItems);
 						addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
