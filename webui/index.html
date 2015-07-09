@@ -108,8 +108,9 @@
         </div>
 
         <div style="position:absolute;top:40px;width:100%;z-index:99999">
-            <alert ng-repeat="alert in alerts" style="font-weight:bold;border-style:solid;border-width:2px;margin-bottom:5px;" type="alert.type" close="alert.close(alert.id)">
-                <span ng-bind-html="alert.msg"></span>
+            <alert ng-click="alert.close(alert.id)" ng-repeat="alert in alerts" style="font-weight:bold;border-style:solid;border-width:2px;margin-bottom:5px;" type="alert.type">
+                <span style="display:block; text-align:left; float:left;" ng-bind-html="alert.msg"></span>
+                <span style="display:block; text-align:right;">click anywhere on this banner to close</span>
             </alert>
         </div>
         <div style="position: fixed; bottom: 20px;right:45%; text-align:center; width: 138px; height: 138px" ng-class="{'invisible': !appDragInfo.appIsDragged}">
