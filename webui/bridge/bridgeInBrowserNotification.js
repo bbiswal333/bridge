@@ -49,4 +49,12 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 			getAlert(alertID).closingTimer = closeAlert(alertID, 6);
 		}
 	};
+
+	this.removeAllAlerts = function () {
+		angular.forEach(scopeForDisplay.alerts, function(alert) {
+			$timeout.cancel(alert.closingTimer);
+		});
+		scopeForDisplay.alerts = [];
+	};
+
 }]);
