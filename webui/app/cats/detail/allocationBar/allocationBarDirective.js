@@ -130,7 +130,7 @@ angular.module("app.cats.allocationBar", ["app.cats.allocationBarBlock", "app.ca
                     '</app.cats.allocationbar-block>' +
                 '</div>' +
             '</div>' +
-            '<div ng-if="height == 80" class="allocation-bar-background-panel" style="padding-top: 10px" ng-style="{width: width, height: height}">' +
+            '<div ng-if="height == 80" class="allocation-bar-background-panel" style="padding-top: 10px;height: 130px" ng-style="{width: width}">' +
                 '<div class="allocation-bar-background-panel-div" ng-style="{height: height - 20}">' +
                     '<app.cats.allocationbar-block ng-repeat="block in blocks" block-data="block" data-selected-hours="selectedHours" total-value="totalValue" get-remaining-value="getRemainingValue" get-block-index="getBlockIndex" block-size-change-requested="blockSizeChangeRequested" apply-changes-in-blocks="applyChangesInBlocks" total-width="width" height="height">' +
                     '</app.cats.allocationbar-block>' +
