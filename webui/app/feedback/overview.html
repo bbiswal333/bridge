@@ -1,7 +1,7 @@
 ﻿<div class="well-custom well-custom-head">
-    <i class="fa fa-arrow-left arrow arrow-left" ng-click="prevQuestion()"></i>
-    <a href="https://culturewall.mo.sap.corp"><b>{{question}}</b></a>
-    <i class="fa fa-arrow-right arrow arrow-right" ng-click="nextQuestion()"></i>
+    <div class="backButton hover" ng-click="prevQuestion()"><i class="changeCursor fa fa-angle-left fa-2x"></i></div>
+    <a href="https://culturewall.mo.sap.corp"><b ng-class="{'question-flow-out' : flowOut, 'question-flow-in' : !flowOut}" class="question">{{question}}</b></a>
+    <div class="forButton hover" ng-click="nextQuestion();"><i class="changeCursor fa fa-angle-right fa-2x"></i></div>
 </div>
 <hr>
 <div class="well-custom well-custom-body">

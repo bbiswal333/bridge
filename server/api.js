@@ -50,13 +50,13 @@ exports.register = function(app, user, proxy, npm, eTag)
 
 		if (method.toLowerCase() === "post" && postData !== undefined) {
 			options.headers = {
-				'Content-Type': 'text/xml; charset=UTF-8',
+				'Content-Type': 'application/json; charset=UTF-8',
 				'Content-Length': (postData !== undefined ? postData.length : 0)
 			};
 		}
 
 		if(!('headers' in options)) {
-			options.headers = { };
+			options.headers = {};
 		}
 
 		options.headers['User-Agent'] = 'bridge';
@@ -189,21 +189,31 @@ exports.register = function(app, user, proxy, npm, eTag)
 	});
 
 	app.post("/api/post", function (request, response) {
+		console.log(request);
+		var body = '';
+		request.on('data', function (data) {
+			body += data;
+
+			// Too much POST data, kill the connection!
+			if (body.length > 1e6)
+				request.connection.destroy();
+		});
+		request.on('end', function () {
+			var service_url = url.parse(request.query.url);
+			//var postData = request.rawBody;
+			var postData = body;
+
+			callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", false, "none", function(data) {
+				response = setHeader( request, response );
+				response.send(data);
+			}, postData);
+		});
 		if (typeof request.query.url === "undefined" || request.query.url === "")
 		{
 			response = setHeader( request, response );
 			response.send("Paramter url needs to be set!");
 			return;
 		}
-
-		var service_url = url.parse(request.query.url);
-	    //var postData = request.rawBody;
-		var postData = JSON.stringify(request.body);
-
-		callBackend(service_url.protocol, service_url.hostname, service_url.port, service_url.path, "POST", false, "none", function(data) {
-			response = setHeader( request, response );
-			response.send(data);
-		}, postData);
 	});
 
 	var concatAttributes = function(array, object, mapFunction)

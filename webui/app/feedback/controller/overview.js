@@ -1,13 +1,14 @@
 ﻿angular.module('app.feedback', ['ngTagsInput']);
 angular.module('app.feedback').directive('app.feedback', ['app.feedback.configService', function (configService) {
 
-    var directiveController = ['$scope', '$location', 'feedback','$interval', function ($scope, $location, feedback, $interval) {
+    var directiveController = ['$scope', '$location', 'feedback','$interval','$timeout', function ($scope, $location, feedback, $interval,$timeout) {
         $scope.like_count = 1;
         $scope.liked = false;
         $scope.btn = true;
         $scope.text = "Meine Antwort!";
         $scope.box.boxSize = 2;
         $scope.delay = '10';
+        $scope.flowDelay = 700;
         $scope.allAnswersArray = [];
         $scope.questionsArray = [];
         var start = 0;
@@ -21,12 +22,18 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             id: $scope.boxId
 
         };
-
         $interval($scope.displayAnswer = function () {
             console.log("Mein Array beim display:");
             console.log($scope.allAnswersArray);
             var rand = (Math.random()) * ($scope.allAnswersArray.length);
-            $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text;
+            if($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200)
+            {
+                $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text.substring(0,197) + '...';
+            }
+            else
+            {
+                $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text;
+            }
             if ($scope.allAnswersArray[Math.floor(rand)].name == undefined) {
                 $scope.employee = "anonymous";
             }
@@ -69,6 +76,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             console.log($scope.questionsArray);
             $scope.qId = $scope.questionsArray[start].question_ids;
             $scope.question = $scope.questionsArray[start]._id;
+            feedback.setQuestion($scope);
             $scope.getAnswer();
         };
 
@@ -120,12 +128,15 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             if (start == 0) {
                 var prev = start + ($scope.questionsArray.length - 1);
                 $scope.qId = $scope.questionsArray[prev].question_ids;
-                $scope.question = $scope.questionsArray[prev]._id;
                 p = 1;
                 $scope.getAnswer();
-
-
                 start = prev;
+                $scope.flowOut = true;
+                $timeout(function(){
+                    $scope.question = $scope.questionsArray[prev]._id;
+                    feedback.setQuestion($scope);
+                    $scope.flowOut = false;
+                },$scope.flowDelay);
                 console.log(start);
                 console.log($scope.allAnswersArray);
 
@@ -133,9 +144,15 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             else {
                 start--;
                 $scope.qId = $scope.questionsArray[start].question_ids;
-                $scope.question = $scope.questionsArray[start]._id;
+
                 p = 1;
                 $scope.getAnswer();
+                $scope.flowOut = true;
+                $timeout(function(){
+                    $scope.question = $scope.questionsArray[start]._id;
+                    feedback.setQuestion($scope);
+                    $scope.flowOut = false;
+                },$scope.flowDelay);
                 console.log(start);
                 console.log($scope.allAnswersArray);
                 console.log($scope.qId);
@@ -146,11 +163,17 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             if (start == $scope.questionsArray.length - 1) {
                 var next = 0;
                 $scope.qId = $scope.questionsArray[next].question_ids;
-                $scope.question = $scope.questionsArray[next]._id;
+
                 p = 1;
                 $scope.getAnswer();
 
                 start = next;
+                $scope.flowOut = true;
+                $timeout(function(){
+                    $scope.question = $scope.questionsArray[next]._id;
+                    feedback.setQuestion($scope);
+                    $scope.flowOut = false;
+                },$scope.flowDelay);
                 console.log(start);
                 console.log($scope.allAnswersArray);
                 console.log($scope.qId);
@@ -158,9 +181,15 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             else {
                 start++;
                 $scope.qId = $scope.questionsArray[start].question_ids;
-                $scope.question = $scope.questionsArray[start]._id;
+
                 p = 1;
                 $scope.getAnswer();
+                $scope.flowOut = true;
+                $timeout(function(){
+                    $scope.question = $scope.questionsArray[start]._id;
+                    feedback.setQuestion($scope);
+                    $scope.flowOut = false;
+                },$scope.flowDelay);
 
                 console.log(start);
                 console.log($scope.allAnswersArray);

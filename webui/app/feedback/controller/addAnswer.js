@@ -5,25 +5,32 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
     $scope.text2 = "Mein erster Satz!";
     feedback.getQuestion($scope);
 
+
     $scope.addAnswer = {
-        answer_text: "Test",
-        question_id: ""
+        question_id: "54e9da9618a309b454968b80",
+        answer_text: "Ich bin Fabian!"
+
     };
     $scope.add = function () {
-        $.ajax({
-            type: 'POST',
-            url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/answers'),
-            contentType: 'application/json; charset=UTF-8',
+        var test = {
+            question_id: "54e9da9618a309b454968b80",
+            answer_text: "Ich bin Fabian!"
+
+        };
+        $http({
+            url: 'api/post?proxy=true&url='+encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             dataType: 'json',
-            data: $scope.addAnswer,
             timeout: 3000,
             retry_max: 3,
-            success: function (res) {
-                console.log(res)
-            },
-            error: function (err) {
-                console.log(err);
-            }
+            data: test
+        }).success(function (res) {
+            console.log(res);
+        }).error(function (err) {
+            console.log(err);
         });
     }
 }]);
