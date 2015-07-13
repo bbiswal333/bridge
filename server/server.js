@@ -35,7 +35,7 @@ exports.run = function(npm, port) {
 		});
 		app.use('/docs', express.static(path.join(__dirname, '../docs')));
 		app.use('/badge', express.static(path.join(__dirname, '../badge')));
-		app.use(express.bodyParser());
+		//app.use(express.bodyParser());
 
 		var options = {
 		    key: fs.readFileSync(path.join(__dirname, 'bridge.key')),
