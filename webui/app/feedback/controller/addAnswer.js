@@ -4,24 +4,18 @@
 angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', function ($scope, feedback, $http, $window) {
     $scope.text2 = "Mein erster Satz!";
     feedback.getQuestion($scope);
-
-
-    $scope.addAnswer = {
-        question_id: "54e9da9618a309b454968b80",
-        answer_text: "Ich bin Fabian!"
-
-    };
+    $scope.values = feedback.values;
+    $scope.newAnswer = "";
     $scope.add = function () {
         var test = {
-            question_id: "54e9da9618a309b454968b80",
-            answer_text: "Ich bin Fabian!"
-
+                question_id: $scope.question_id[0],
+                answer_text: $scope.newAnswer
         };
         $http({
-            url: 'api/post?proxy=true&url='+encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
+            url: 'api/post?&url='+encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             },
             dataType: 'json',
             timeout: 3000,
@@ -32,5 +26,8 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         }).error(function (err) {
             console.log(err);
         });
+    };
+    $scope.changeStatus = function(){
+        $scope.values.anonym = !$scope.values.anonym;
     }
 }]);

@@ -23,8 +23,6 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
         };
         $interval($scope.displayAnswer = function () {
-            console.log("Mein Array beim display:");
-            console.log($scope.allAnswersArray);
             var rand = (Math.random()) * ($scope.allAnswersArray.length);
             if($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200)
             {
@@ -45,8 +43,6 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         $scope.getAnswer = function () {
             $scope.allAnswersArray = [];
             while (p <= $scope.reply) {
-                console.log("Vor dem Request:");
-                console.log($scope.qId);
                 $.ajax({
 
                     type: 'GET',
@@ -72,8 +68,6 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         };
 
         $scope.setIndex = function () {
-            console.log("FragenArray:");
-            console.log($scope.questionsArray);
             $scope.qId = $scope.questionsArray[start].question_ids;
             $scope.question = $scope.questionsArray[start]._id;
             feedback.setQuestion($scope);
@@ -93,16 +87,12 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 success: function (data) {
                     for (var i = 0; i < data.result.length; i++) {
                         $scope.questionsArray.push(data.result[i]);
-                        console.log("in der getQuestion-Schleife:");
-                        console.log($scope.questionsArray);
                     }
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
-            console.log("in der getQuestion:");
-            console.log($scope.questionsArray);
 
             $.ajax({
                 type: 'GET',
@@ -114,9 +104,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 async: false,
                 retry_max: 3,
                 success: function (data) {
-                    console.log("Reply wurde gesetzt!");
                     $scope.reply = Math.round(data._meta.total / data._meta.max_results);
-                    console.log($scope.reply);
                 },
                 error: function (err) {
                     console.log(err);
@@ -137,9 +125,6 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
                 },$scope.flowDelay);
-                console.log(start);
-                console.log($scope.allAnswersArray);
-
             }
             else {
                 start--;
@@ -153,9 +138,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
                 },$scope.flowDelay);
-                console.log(start);
-                console.log($scope.allAnswersArray);
-                console.log($scope.qId);
+
             }
         };
 
@@ -174,9 +157,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
                 },$scope.flowDelay);
-                console.log(start);
-                console.log($scope.allAnswersArray);
-                console.log($scope.qId);
+
             }
             else {
                 start++;
@@ -190,10 +171,6 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
                 },$scope.flowDelay);
-
-                console.log(start);
-                console.log($scope.allAnswersArray);
-                console.log($scope.qId);
 
             }
         };

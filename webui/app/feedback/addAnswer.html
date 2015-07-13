@@ -4,7 +4,7 @@
         <div class="modal-body"><h4><p class="question">{{question}}</p></h4></div>
         <div class="modal-body">
             <label for="answer">Your Answer:</label>
-            <textarea class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>
+            <textarea ng-model="newAnswer" class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>
 
            <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
             <!--http://sliptree.github.io/bootstrap-tokenfield/-->
@@ -16,12 +16,14 @@
                 <option>HR</option>
             </select><br><br>
             <label for="employee"><i class="fa fa-user"></i></label>
-            <input id="employee" style="max-width: 20%"type="text" placeholder="anonymous" readonly/>
-            <bridge.button ng-active="true">Anonym</bridge.button>
+            <input id="employee" style="max-width: 20%" type="text" placeholder="anonymous" readonly/>
+            <bridge.button state="(values.anonym === true) === true ? 'active':'invisible-button'" ng-click="changeStatus()" style="width:100px;height:30px;margin-left:0;margin-right:0;">
+                Anonym
+            </bridge.button>
         </div>
         <div class="modal-footer">
 
-            <bridge.button ng-click="add()"><i class="fa fa-plus"></i> Submit</bridge.button>
+            <bridge.button ng-click="add()"><i class="fa fa-rss"></i> POST</bridge.button>
         </div>
 
     </div>
