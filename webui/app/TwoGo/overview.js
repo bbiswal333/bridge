@@ -2,7 +2,7 @@
 angular.module('app.TwoGo', ['app.TwoGo.data']);
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', 'app.TwoGo.dataService', function (configService, dataService) {
     var directiveController;
-    directiveController = ['$scope', '$http','$log', function ($scope, $http, $log) {
+    directiveController = ['$scope', '$http', '$log', function ($scope, $http, $log) {
         $scope.setLinkClicked = function (i) {
             dataService.setWhichLinkClicked(i);
         };
@@ -27,38 +27,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         $scope.HeaderToday = "";
         $scope.HeaderTomorrow = "";
         //function which checks which Browser is used
-        $scope.checkBrowser = function () {
-//setting the Dates
-            startDay = new Date();
-            endDay = new Date();
-            endDay.setHours(0, 0, 0, 0);
-            endDay.setDate(endDay.getDate() + 1);
-            endDaySecond = new Date();
-            endDaySecond.setHours(0, 0, 0, 0);
-            endDaySecond.setDate(endDaySecond.getDate() + 2);
-            if (endDaySecond.getUTCDay() === 6) {
 
-                endDaySecond.setDate(endDaySecond.getDate() + 2);
-
-            } else {
-
-                if (endDaySecond.getUTCDay() === 0) {
-
-                    endDaySecond.setDate(endDaySecond.getDate() + 1);
-
-                }
-            }
-            //check if InternetExplorer or any other browser
-            if ($scope.checkBrowserName('MSIE')) {
-                $(function () {
-                    $scope.http();
-                });
-            } else {
-                $(function () {
-                    $scope.loginOther();
-                });
-            }
-        };
         //Initilisation of start screen(setting box size etc.)
         //Setting Data for the SettingsScreen
         $scope.box.boxSize = "2";
@@ -299,7 +268,26 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                 });
         };
 //function which includes the http.call for the login of the user when no IE is used
-        $scope.loginOther = function () {
+        $scope.login = function () {
+            startDay = new Date();
+            endDay = new Date();
+            endDay.setHours(0, 0, 0, 0);
+            endDay.setDate(endDay.getDate() + 1);
+            endDaySecond = new Date();
+            endDaySecond.setHours(0, 0, 0, 0);
+            endDaySecond.setDate(endDaySecond.getDate() + 2);
+            if (endDaySecond.getUTCDay() === 6) {
+
+                endDaySecond.setDate(endDaySecond.getDate() + 2);
+
+            } else {
+
+                if (endDaySecond.getUTCDay() === 0) {
+
+                    endDaySecond.setDate(endDaySecond.getDate() + 1);
+
+                }
+            }
             //Data for the call is set
             var data = {
                 "method": "login",
@@ -346,78 +334,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                     $log.error("login failed");
                 });
         };
-//function which includes the http call for the login of the user using the created http value instat of the Xhr otherwise it wont work
-        $scope.loginIE = function () {
-            var data = {
-                "method": "login",
-                "params": [],
-                "id": 1
-            };
-            // convert the javascript data object to a pretty printed JSON string
-            data = JSON.stringify(data, undefined, 2);
-            // make a http POST call
-            $http.post(BASE_URL_LOGIN + "Authentication", data, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": "Fetch"
-                }
-            }, {
-                withCredentials: true
-            }).success($.proxy(function (response) {
-                if (response.error) {
-                    $scope.Header = ("You First need to create a TwoGo User ");
-                    $scope.linked = ("https://www.twogo.com/#signup");
-                    $scope.here = ("here");
-                    $scope.ridesTomorrowMorning = "";
-                    $scope.ridesTomorrowEvening = "";
-                    $scope.ridesToday = "";
-                    $scope.tomorrowh = "";
-                    $scope.today = "";
-                    $scope.tomorrow = "";
-                    $scope.HeaderToday = "";
-                    $scope.HeaderTomorrow = "";
-                    $scope.spinner = "";
-                }
-                else {
-                    //  alert("SUCCESS:"+JSON.stringify(response.result));
-                    // csrf_token = response["result"]["csrf"]["header"].value;
-                    csrf_token = response["result"]["csrf"]["header"].value;
-                    $(function () {
-                        $scope.getRides();
-                    });
-                }
-            })).
-                error(function (status) {
-                  $log.error("login failed");
-                    $scope.status = status;
-                });
-        };
-//function which creates an new xhr called http
-        $scope.http = function () {
-            var http = new XMLHttpRequest();
-            var url = BASE_URL_LOGIN + "Authentication";
-            var params = "";
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-            http.onreadystatechange = function () {//Call a function when the state changes.
-                if (http.readyState === 4 && http.status === 200) {
-                    $(function () {
-                        $scope.loginIE();
-                    });
-                }
-            };
-            http.send(params);
-        };
-        //converts Browser name taht it can be checked right
-        $scope.checkBrowserName = function (name) {
-            var agent = navigator.userAgent.toLowerCase();
-            if (agent.indexOf(name.toLowerCase()) > -1) {
-                return true;
-            }
-            return false;
-        };
-        //function that refreches the app after one hour(Time is set in seconds)
-        $scope.box.reloadApp($scope.checkBrowser, 900);
+
     }];
 
     //function that saves the configuration
@@ -438,9 +355,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             $scope.tomorrow = "";
             $scope.HeaderToday = "";
             $scope.HeaderTomorrow = "";
-            $(function () {
-                $scope.checkBrowser();
-            });
+            //function that refreches the app after one hour(Time is set in seconds)
+            $scope.box.reloadApp($scope.login(), 900);
         }, true);
     };
     return {
