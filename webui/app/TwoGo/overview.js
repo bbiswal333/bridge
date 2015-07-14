@@ -296,8 +296,10 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             };
             // convert the javascript data object to a pretty printed JSON string
             data = JSON.stringify(data, undefined, 2);
-            // make a http POST call (means same as ajax call but ist like this in angularjs)
-            $http.post(BASE_URL_LOGIN + "Authentication", data, {
+            // make a strange http POST call without any Data (means same as ajax call but its like this in angularjs)
+            //because IE needs That(looks strange but there is no other was that this will work seems to be a bug in IE)
+            //When there is a workaround presented for this please insert hear
+            $http.post(BASE_URL_LOGIN + "Authentication", "", {
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-Token": "Fetch"
@@ -305,34 +307,49 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                 }
             }, {
                 withCredentials: true
-            }).success($.proxy(function (response) {
-                if (response.error) {
-                    $scope.Header = ("You First need to create a TwoGo User ");
-                    $scope.linked = ("https://www.twogo.com/#signup");
-                    $scope.here = ("here");
-                    $scope.ridesTomorrowMorning = "";
-                    $scope.ridesTomorrowEvening = "";
-                    $scope.ridesToday = "";
-                    $scope.tomorrowh = "";
-                    $scope.today = "";
-                    $scope.tomorrow = "";
-                    $scope.HeaderToday = "";
-                    $scope.HeaderTomorrow = "";
-                    $scope.spinner = "";
-                }
-                else {
-                    csrf_token = response["result"]["csrf"]["header"].value;
-                    $(function () {
-                        $scope.getRides();
+            }).success($.proxy(function () {
+                $http.post(BASE_URL_LOGIN + "Authentication", data, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": "Fetch"
+
+                    }
+                }, {
+                    withCredentials: true
+                }).success($.proxy(function (response) {
+                    if (response.error) {
+                        $scope.Header = ("You First need to create a TwoGo User ");
+                        $scope.linked = ("https://www.twogo.com/#signup");
+                        $scope.here = ("here");
+                        $scope.ridesTomorrowMorning = "";
+                        $scope.ridesTomorrowEvening = "";
+                        $scope.ridesToday = "";
+                        $scope.tomorrowh = "";
+                        $scope.today = "";
+                        $scope.tomorrow = "";
+                        $scope.HeaderToday = "";
+                        $scope.HeaderTomorrow = "";
+                        $scope.spinner = "";
+                    }
+                    else {
+                        csrf_token = response["result"]["csrf"]["header"].value;
+                        $(function () {
+                            $scope.getRides();
+                        });
+                    }
+                })).
+                    error(function (status) {
+
+
+                        $scope.status = status;
+                        $log.error("login failed");
                     });
-                }
-            })).
-                error(function (status) {
+            })).error(function (status) {
 
 
-                    $scope.status = status;
-                    $log.error("login failed");
-                });
+                $scope.status = status;
+                $log.error("login failed");
+            });
         };
 
     }];
@@ -356,6 +373,8 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             $scope.HeaderToday = "";
             $scope.HeaderTomorrow = "";
             //function that refreches the app after one hour(Time is set in seconds)
+
+
             $scope.box.reloadApp($scope.login(), 900);
         }, true);
     };
