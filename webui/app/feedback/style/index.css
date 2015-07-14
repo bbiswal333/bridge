@@ -177,6 +177,10 @@ hr.bottom {
 }
 .countLetters{
     display: inline;
-    float:right;
+    float: right;
+    width: 54%
+}
+#answer{
+    width: 50%;
 }
 
