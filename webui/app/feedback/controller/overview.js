@@ -1,7 +1,7 @@
 ﻿angular.module('app.feedback', ['ngTagsInput']);
 angular.module('app.feedback').directive('app.feedback', ['app.feedback.configService', function (configService) {
 
-    var directiveController = ['$scope', '$location', 'feedback','$interval','$timeout', function ($scope, $location, feedback, $interval,$timeout) {
+    var directiveController = ['$scope', '$location', 'feedback', '$interval', '$timeout', function ($scope, $location, feedback, $interval, $timeout) {
         $scope.like_count = 1;
         $scope.liked = false;
         $scope.btn = true;
@@ -24,12 +24,10 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         };
         $interval($scope.displayAnswer = function () {
             var rand = (Math.random()) * ($scope.allAnswersArray.length);
-            if($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200)
-            {
-                $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text.substring(0,197) + '...';
+            if ($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200) {
+                $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text.substring(0, 197) + '...';
             }
-            else
-            {
+            else {
                 $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text;
             }
             if ($scope.allAnswersArray[Math.floor(rand)].name == undefined) {
@@ -38,7 +36,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             else {
                 $scope.employee = $scope.allAnswersArray[Math.floor(rand)].name;
             }
-        },3000);
+        }, 3000);
 
         $scope.getAnswer = function () {
             $scope.allAnswersArray = [];
@@ -64,7 +62,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 });
                 p++;
             }
-           $scope.displayAnswer();
+            $scope.displayAnswer();
         };
 
         $scope.setIndex = function () {
@@ -120,11 +118,11 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 $scope.getAnswer();
                 start = prev;
                 $scope.flowOut = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.question = $scope.questionsArray[prev]._id;
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
-                },$scope.flowDelay);
+                }, $scope.flowDelay);
             }
             else {
                 start--;
@@ -133,11 +131,11 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 p = 1;
                 $scope.getAnswer();
                 $scope.flowOut = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.question = $scope.questionsArray[start]._id;
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
-                },$scope.flowDelay);
+                }, $scope.flowDelay);
 
             }
         };
@@ -152,11 +150,11 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
                 start = next;
                 $scope.flowOut = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.question = $scope.questionsArray[next]._id;
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
-                },$scope.flowDelay);
+                }, $scope.flowDelay);
 
             }
             else {
@@ -166,11 +164,11 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 p = 1;
                 $scope.getAnswer();
                 $scope.flowOut = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.question = $scope.questionsArray[start]._id;
                     feedback.setQuestion($scope);
                     $scope.flowOut = false;
-                },$scope.flowDelay);
+                }, $scope.flowDelay);
 
             }
         };
@@ -196,7 +194,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             $location.path("/add/feedback");
         };
 
-        $interval($scope.displayAnswer(),5000);
+        $interval($scope.displayAnswer(), 5000);
 
 
     }];
