@@ -3,6 +3,7 @@
  */
 angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', function ($scope, feedback, $http, $window) {
     $scope.text2 = "Mein erster Satz!";
+    $scope.maxLetters = 500;
     feedback.getQuestion($scope);
     $scope.values = feedback.values;
     $scope.newAnswer = "";

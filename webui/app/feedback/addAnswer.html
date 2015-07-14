@@ -5,8 +5,8 @@
         <div class="modal-body">
             <label for="answer">Your Answer:</label>
             <!--<textarea ng-model="newAnswer" class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>-->
-            <bridge.textarea id="answer" placeholder="Type in your answer..." ></bridge.textarea>
-            <div class="countLetters">{{test}}/500</div>
+            <bridge.textarea id="answer" model="currentLetters" placeholder="Type in your answer..." ng-trim="false" maxlength="500"></bridge.textarea>
+            <div class="countLetters">{{maxLetters-currentLetters.length}}/500</div>
 
            <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
             <!--http://sliptree.github.io/bootstrap-tokenfield/-->

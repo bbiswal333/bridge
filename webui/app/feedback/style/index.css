@@ -175,4 +175,8 @@ hr.bottom {
     height: 20px;
     color: white;
 }
+.countLetters{
+    display: inline;
+    float:right;
+}
 
