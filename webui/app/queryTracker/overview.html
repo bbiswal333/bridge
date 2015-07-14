@@ -1,14 +1,24 @@
-﻿<div class="prio_col prio_bg_1" style="height:90%;width:100%">
-
-	<bridge.conditional-link navigate-to="/detail/queryTracker/" navigate-if="data.length!==0">
-		<div class="prio_box" style="color:white">
-			<p>Queries</p>
-		</div>
-		<div class="prio_content_box" style="color: white;bottom:10px">
-			<div style="position:absolute;right:35px;bottom:20px" ng-if="data.length<=999">{{data.length}}</div>
-			<div style="position:absolute;right:35px;bottom:20px" ng-if="data.length>=999" title="{{data.length}}">+999</div>
-		</div>
-	</bridge.conditional-link>
-
-	
+﻿<div style="height: 100%">
+	<div class="prio_bg_1" style="width:100%; height: 42%;">
+		<bridge.conditional-link navigate-to="/detail/queryTracker/true" navigate-if="getAmountDueQueries() !== 0">
+			<div class="prio_box" style="color:white">
+				<p>Due in 48 hours</p>
+			</div>
+			<div class="prio_content_box" style="color: white;bottom:10px">
+				<div ng-if="getAmountDueQueries()<=999">{{getAmountDueQueries()}}</div>
+				<div ng-if="getAmountDueQueries()>=999" title="{{getAmountDueQueries()}}">+999</div>
+			</div>
+		</bridge.conditional-link>
+	</div>
+	<div class="prio_bg_1" style="margin-top: 10px; width:100%; height: 42%;">
+		<bridge.conditional-link navigate-to="/detail/queryTracker/false" navigate-if="data.length!==0">
+			<div class="prio_box" style="color:white">
+				<p>All Queries</p>
+			</div>
+			<div class="prio_content_box" style="color: white;bottom:10px">
+				<div ng-if="data.length<=999">{{data.length}}</div>
+				<div ng-if="data.length>=999" title="{{data.length}}">+999</div>
+			</div>
+		</bridge.conditional-link>
+	</div>
 </div>
