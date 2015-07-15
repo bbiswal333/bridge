@@ -1,15 +1,14 @@
 {
     "app": {
         "categories": [
-            "Fun",
-            "Beta"
+            "Fun"
         ],
         "module_name": "app.spotTheOdd",
         "title": "Spot The Odd",
         "icon_css": "fa fa-th-large",
         "overview_directive": "app.spotTheOdd",
         "needs_client": false,
-        "beta": true,
+        "beta": false,
         "default_hidden": true,
         "description"   :   "Spot the Odd is a game in which you must spot the difference between colored boxes in a matrix. Depending on the chosen difficulty you have to find the differently colored box in matrix of up to 12x12 boxes."
     },
