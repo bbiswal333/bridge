@@ -1,25 +1,22 @@
-.app-bensmatrix-container {
-    margin-top: 10px;
+.app-bensMatrix-container {
+	margin-top: 10px;
     height: 145px;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 
-.app-bensmatrix-container table {
-    margin-right: 10px;
 
-}
 
-.app-bensmatrix-container tr {
+.app-bensMatrix-container tr {
     border-top: 1px solid #e5e5e5;
 
 }
 
-.app-bensmatrix-icon {
+.app-bensMatrix-icon {
     text-align: center;
     width: 40px;
 }
 
-.app-bensmatrix-box-icon {
+.app-bensMatrix-box-icon {
     font-size: 17px;
 }
 
@@ -33,6 +30,33 @@
     font-size: larger;
 }
 
-.backPic {
-    background: url("/app/bensmatrix/pic/lunch_background.png");
+.app-bensMatrix-textarea {
+	border: 0px solid;
+	margin: 0px;
+	padding: 0px;
+
 }
+
+.app-bensMatrix-internalDivFloat {
+	border: 0px solid;
+	float: left;
+	margin-right: 5px;
+}
+
+.app-bensMatrix-internalDiv {
+	border: 0px solid;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right : 0px;	
+	padding: 0px;
+}
+
+.app-bensMatrix-table {
+	border-top: 0px solid;
+	margin: 0px;
+	padding: 0px;
+	
+}
+
+
+

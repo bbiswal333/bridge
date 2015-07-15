@@ -6,6 +6,12 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		// Required information to get settings icon/ screen
 		//$scope.box.settingsTitle = "Configure bensmatrix App";
 		$scope.box.sSize = 2;
+		$scope.family = "Arial,Helvetica,sans-serif";
+		$scope.size = "10pt";
+		$scope.weight = "900";
+		$scope.style = "normal";
+		$scope.variant = "normal";
+			
 		/*$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
@@ -30,7 +36,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 
 		// Example function for notifications
 		$scope.bensmatrixNotification = function() {
-			notifier.showInfo("This is just a bensmatrix",
+			notifier.showInfo("This is just Ben's matrix",
 				"As the title says: nothing to do here :-)",
 				$scope.$parent.module_name,
 				function() {},
@@ -38,13 +44,14 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		};
 
 		$scope.updatePixels = function () {
-			var pxlength = angular.element("output").getBoundingClientRect().width;
-			angular.element("pxlength").innerHTML = Math.round(pxlength);
+			var ele = angular.element("#output");
+			var pxlength = ele[0].getBoundingClientRect().width;
+			$scope.pxlength = Math.round(pxlength);
 		};
 
 		$scope.updateLength = function (){
-			var sInput = angular.element("input").value;
-			var enlength = angular.element("input").value.length;
+			var sInput = $scope.input;
+			var enlength = sInput.length;
 			var tlength;
 			if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
 			else if (enlength >= 5 && enlength <= 10) 	{ tlength = 20; }
@@ -53,28 +60,26 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
 			else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
 			var emlength = Math.round((tlength * 2) / 3);
-
-			angular.element("emlength").innerHTML = emlength;
-			angular.element("slength").innerHTML = enlength;
-			angular.element("tlength").innerHTML = tlength;
-
-			var sFamily = angular.element("family").value;
-			angular.element("output").style.fontFamily = sFamily;
-
-			var sSize = angular.element("size").value;
-			angular.element("output").style.fontSize = sSize;
-
-			var sWeight = angular.element("weight").value;
-			angular.element("output").style.fontWeight = sWeight;
-
-			var sStyle = angular.element("style").value;
-			angular.element("output").style.fontStyle = sStyle;
-
-			var sVariant = angular.element("variant").value;
-			angular.element("output").style.fontVariant = sVariant;
-
-			angular.element("output").innerHTML = sInput;
+			
+			
+			$scope.emlength = emlength;
+			$scope.slength = enlength;
+			$scope.tlength = tlength;
+			$scope.output = sInput;
 	};
+	
+	$scope.getStyle = function(){
+		return { 
+			"font-family" : $scope.family,
+			"font-size" : $scope.size,
+			"font-weight" : $scope.weight,
+			"font-style" : $scope.style,
+			"font-variant" : $scope.variant
+			
+		}
+		
+	};
+	
 
 	}];
 
