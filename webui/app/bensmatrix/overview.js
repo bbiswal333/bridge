@@ -36,6 +36,46 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 				function() {},
 				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
 		};
+
+		$scope.updatePixels = function () {
+			var pxlength = angular.element("output").getBoundingClientRect().width;
+			angular.element("pxlength").innerHTML = Math.round(pxlength);
+		};
+
+		$scope.updateLength = function (){
+			var sInput = angular.element("input").value;
+			var enlength = angular.element("input").value.length;
+			var tlength;
+			if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
+			else if (enlength >= 5 && enlength <= 10) 	{ tlength = 20; }
+			else if (enlength >= 11 && enlength <= 15) 	{ tlength = 25; }
+			else if (enlength >= 16 && enlength <= 20) 	{ tlength = 30; }
+			else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
+			else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
+			var emlength = Math.round((tlength * 2) / 3);
+
+			angular.element("emlength").innerHTML = emlength;
+			angular.element("slength").innerHTML = enlength;
+			angular.element("tlength").innerHTML = tlength;
+
+			var sFamily = angular.element("family").value;
+			angular.element("output").style.fontFamily = sFamily;
+
+			var sSize = angular.element("size").value;
+			angular.element("output").style.fontSize = sSize;
+
+			var sWeight = angular.element("weight").value;
+			angular.element("output").style.fontWeight = sWeight;
+
+			var sStyle = angular.element("style").value;
+			angular.element("output").style.fontStyle = sStyle;
+
+			var sVariant = angular.element("variant").value;
+			angular.element("output").style.fontVariant = sVariant;
+
+			angular.element("output").innerHTML = sInput;
+	};
+
 	}];
 
 	var linkFn = function ($scope) {
@@ -48,8 +88,6 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			$scope.box.boxSize = $scope.appConfig.values.boxSize;
 		}, true);
 	};
-	
-
 
 	return {
 		restrict: 'E',
@@ -59,46 +97,4 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 	};
 }]);
 
-	var updatePixels = function ($scope) {
-		var pxlength = document.getElementById("output").getBoundingClientRect().width;
-		document.getElementById("pxlength").innerHTML = Math.round(pxlength);
-	}
-
-	var updateLength = function ($scope){
-		var sInput = document.getElementById("input").value;
-		var enlength = document.getElementById("input").value.length ;
-		var tlength;
-		var c_bracket_count = 3;
-		
-		if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10;}
-		else if (enlength >= 5 && enlength <= 10) 	{ tlength = 20;}
-		else if (enlength >= 11 && enlength <= 15) 	{ tlength = 25;}
-		else if (enlength >= 16 && enlength <= 20) 	{ tlength = 30;}
-		else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 ));}
-		else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) );}
-		
-		var emlength = Math.round((tlength * 2) / 3);
-
-		document.getElementById("emlength").innerHTML = emlength;
-		document.getElementById("slength").innerHTML = enlength;
-		document.getElementById("tlength").innerHTML = tlength;
-		
-		var sFamily = document.getElementById("family").value;
-		document.getElementById("output").style.fontFamily = sFamily;
-
-		var sSize = document.getElementById("size").value;
-		document.getElementById("output").style.fontSize = sSize;
-
-		var sWeight = document.getElementById("weight").value;
-		document.getElementById("output").style.fontWeight = sWeight;
-
-		var sStyle = document.getElementById("style").value;
-		document.getElementById("output").style.fontStyle = sStyle;
-
-		var sVariant = document.getElementById("variant").value;
-		document.getElementById("output").style.fontVariant = sVariant;
-
-		document.getElementById("output").innerHTML = sInput;
-	
-};
 

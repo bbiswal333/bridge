@@ -1,14 +1,14 @@
-﻿<div class="app-lunchWalldorf-container" style="overflow-y: auto">
-<div><input onkeyup="updateLength()" id="input" name="input" value=""/></div>
+<div class="app-lunchWalldorf-container" style="overflow-y: auto">
+<div><input ng-keyup="updateLength()" id="input" name="input" value=""/></div>
 <div>Actual length: <td><span id="slength"/></div>
 <div>EMs: <span id="emlength"/></div>
 <div>Calculated length: <span id="tlength"/></div>
 <div>Pixels: <span id="pxlength"/></div>
-<div><input type="button" value="Update" onclick="updatePixels()"/></div>
+<div><input type="button" value="Update" ng-click="updatePixels()"/></div>
 <div><span id="output"/></div>
-<div><input onkeyup="updateLength()" id="family" name="family" value="Arial,Helvetica,sans-serif" size="60"/></div>
-<div><input onkeyup="updateLength()" id="size" name="size" value="10pt" size="60"/></div>
-<div><input onkeyup="updateLength()" id="weight" name="weight" value="900" size="60"/></div>
-<div><input onkeyup="updateLength()" id="style" name="style" value="normal" size="60"/></div>
-<div><input onkeyup="updateLength()" id="variant" name="variant" value="normal" size="60"/></div>
+<div><input ng-keyup="updateLength()" id="family" name="family" value="Arial,Helvetica,sans-serif" size="60"/></div>
+<div><input ng-keyup="updateLength()" id="size" name="size" value="10pt" size="60"/></div>
+<div><input ng-keyup="updateLength()" id="weight" name="weight" value="900" size="60"/></div>
+<div><input ng-keyup="updateLength()" id="style" name="style" value="normal" size="60"/></div>
+<div><input ng-keyup="updateLength()" id="variant" name="variant" value="normal" size="60"/></div>
 </div>
