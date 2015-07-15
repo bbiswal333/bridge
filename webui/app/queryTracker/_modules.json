@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Development"],
+		"categories"			:	["Development", "Beta"],
 		"module_name"			:	"app.querytracker",
 		"title"					:	"Query Tracker",
 		"icon_css"				:	"fa fa-check-square-o",
