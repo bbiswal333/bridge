@@ -1,0 +1,32 @@
+﻿<div class="well-custom well-custom-head">
+    <div class="backButton hover" ng-click="prevQuestion()"><i class="changeCursor fa fa-angle-left fa-2x"></i></div>
+    <a href="https://culturewall.mo.sap.corp"><b ng-class="{'question-flow-out' : flowOut, 'question-flow-in' : !flowOut}" class="question">{{question}}</b></a>
+    <div class="forButton hover" ng-click="nextQuestion();"><i class="changeCursor fa fa-angle-right fa-2x"></i></div>
+</div>
+<hr>
+<div class="well-custom well-custom-body">
+    "{{answer}}"
+    <div class="employee">(Employee: {{employee}})</div>
+</div>
+<hr class="bottom">
+<div class="well-custom">
+    <div class="text-left">
+        <span class="hashtag">#Culture</span>
+    </div>
+    <div class="text-right">
+        <div class="btn-foot" ng-show="!liked">
+            <bridge.button class="like btn-bottom" ng-click="count();"><i class="fa fa-thumbs-o-up"></i>
+                Like
+            </bridge.button>
+        </div>
+        <div class="btn-foot " ng-show="liked">
+            <bridge.button state="(liked) === true ? 'active':'visible-button'" class="like btn-bottom"
+                           ng-click="count()"><i
+                    class="fa fa-thumbs-o-down"></i> Unlike
+            </bridge.button>
+        </div>
+
+        <bridge.button class="addBtn btn-bottom" ng-click="add()"><i class="fa fa-plus"></i> Add Answer</bridge.button>
+    </div>
+
+</div>
