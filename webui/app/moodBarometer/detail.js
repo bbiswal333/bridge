@@ -21,7 +21,7 @@ angular.module('app.moodBarometer').controller('app.moodBarometer.detailControll
                     a.index = 3;
                     break;
                 default :
-                    //console.log(a.mood);
+                    a.index = 4;
                     break;
             }
         };
@@ -44,9 +44,9 @@ angular.module('app.moodBarometer').controller('app.moodBarometer.detailControll
                 $scope.allMoods.splice($scope.dataQ[i].index, 1, null);
             }
 
-            for (var i = 0; i < $scope.allMoods.length; i++) {
+            for (i = 0; i < $scope.allMoods.length; i++) {
                 if ($scope.allMoods[i] != null) {
-                    var a = {
+                    a = {
                         mood: $scope.allMoods[i],
                         count: 0,
                         perc: 0,
