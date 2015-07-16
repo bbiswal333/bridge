@@ -11,7 +11,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		$scope.weight = "900";
 		$scope.style = "normal";
 		$scope.variant = "normal";
-			
+
 		/*$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
@@ -43,12 +43,6 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
 		};
 
-		$scope.updatePixels = function () {
-			var ele = angular.element("#output");
-			var pxlength = ele[0].getBoundingClientRect().width;
-			$scope.pxlength = Math.round(pxlength);
-		};
-
 		$scope.updateLength = function (){
 			var sInput = $scope.input;
 			var enlength = sInput.length;
@@ -60,26 +54,31 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
 			else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
 			var emlength = Math.round((tlength * 2) / 3);
-			
-			
+
 			$scope.emlength = emlength;
 			$scope.slength = enlength;
 			$scope.tlength = tlength;
+
+			//set text to dummy span to get the pixels
+			var elDummy = angular.element("#dummySpan");
+			elDummy.html(sInput);
+			//var pxlength = elDummy.getBoundingClientRect().width;
+			$scope.pxlength = Math.round($(elDummy).width());
 			$scope.output = sInput;
+
 	};
-	
+
 	$scope.getStyle = function(){
-		return { 
+		return {
 			"font-family" : $scope.family,
 			"font-size" : $scope.size,
 			"font-weight" : $scope.weight,
 			"font-style" : $scope.style,
 			"font-variant" : $scope.variant
-			
-		}
-		
+		};
+
 	};
-	
+
 
 	}];
 
