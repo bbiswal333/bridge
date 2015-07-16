@@ -90,7 +90,9 @@ describe('Gunning Fog Index - Text Directive', function () {
     describe('Text editing', function() {
 
         function MockString(str) {
-            this.valueOf = function() { return str;};
+            this.valueOf = function() {
+                return str;
+            };
             this.toString = this.valueOf;
             this.sentences = [];
             this.words = [];
