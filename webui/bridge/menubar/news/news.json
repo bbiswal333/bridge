@@ -106,6 +106,13 @@
             "preview":  "App 'Incident Search' shows tickets of your saved searches.",
             "date":     "2015-06-16",
             "content":  "Since today, the new app 'Incident Search' is available which shows Internal- or Customer Incidents by your saved searches in BCP. Just configure a saved search in the system, select it in the app settings, and the corresponding tickets are displayed."
+        },
+        {
+            "id":       15,
+            "header":   "5 new apps contributed!",
+            "preview":  "Click to see which apps are new.",
+            "date":     "2015-07-16",
+            "content":  "A big thank you to all the contributers to Bridge! Over the last couple of weeks, 5 new apps made it to Bridge which were not built by the Bridge Team.</br><ul><li>S/4 Dumps shows you dumps of the S/4 Hana Cloud, thanks to Dirk Baumgaertel</li><li>Dict.cc and Wikipedia give you a shortcut to your favorite translation engine and encyclopedia, thanks to Kai Roesner</li><li>Gunning Fog Index gives you an estimation about how easy it is to understand your text, thanks to Vadim Tomnikov</li><li>The Text Length Optimizer will make it easier for developers to built UIs that are translatable, thanks to Benjamin Schork</li></ul>"
         }
 	]
 }
