@@ -1,0 +1,28 @@
+.fog-table {
+    width: 100%;
+}
+
+.fog-table__th {
+    padding: 0 0.5em;
+}
+
+.fog-table__th_center {
+    text-align: center;
+}
+
+.fog-table__td_center {
+    text-align: center;
+}
+
+.fog-table__td_checkbox {
+    width: 2em;
+}
+
+.fog-textarea {
+    text-align: left;
+}
+
+.fog-h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}

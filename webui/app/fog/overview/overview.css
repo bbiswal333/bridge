@@ -1,0 +1,52 @@
+/* Using BEM principals:
+ *  - Block__Element_Modifier dialect
+ *  - single class selectors
+ */
+
+.fog-container {
+    position: relative;
+}
+
+.fog-container__text {
+    text-align: left;
+    overflow: auto;
+}
+
+.fog-container__text_overview {
+    height: 8em;
+}
+
+.fog-container__footer {
+    width: 100%;
+    margin-top: 0.7em;
+}
+
+.fog-footer__item {
+    margin-top: 0;
+}
+
+.fog-footer__item_left {
+    margin-left: 0;
+    float: left;
+}
+
+.fog-footer__item_right {
+    margin-right: 0;
+    float: right;
+}
+
+.fog-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.fog-list__item {
+    display: inline-block;
+    border-left: 1px solid currentColor;
+    padding: 0 0.5em;
+}
+
+.fog-list__item:first-child {
+    border-left: none;
+    padding-left: 0;
+}

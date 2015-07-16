@@ -1,0 +1,26 @@
+<div class="fog-container" ng-if="config.welcome">
+    <p>
+        This is a tool that calculates the <a href="https://en.wikipedia.org/wiki/Gunning_fog_index">Gunning Fog Index</a>.
+        It is a weighted average of the number of words per sentence, and the number of long words per word.
+        An interpretation is that the text can be understood by someone who left full-time education at a later age than the index.
+    </p>
+    <div class="row">
+        <bridge.button ng-click="fog.hideWelcome()" class="pull-right">
+            Got it!
+        </bridge.button>
+    </div>
+</div>
+<form class="fog-container" name="overview" ng-if="!config.welcome">
+    <app.fog.text class="form form-control fog-container__text fog-container__text_overview" ng-model="text">
+    </app.fog.text>
+    <footer class="fog-container__footer fog-footer">
+        <ul class="fog-footer__item fog-footer__item_left fog-list" ng-if="overview.$valid">
+            <li ng-repeat="metric in ::config.metrics" class="fog-list__item" ng-if="metric.display.overview">
+                <app.fog.metric metric="metric" data="text"></app.fog.metric>
+            </li>
+        </ul>
+        <a class="fog-footer__item fog-footer__item_right" ng-click="fog.clear()">
+            <i class="fa fa-times"></i> Clear
+        </a>
+    </footer>
+</form>
