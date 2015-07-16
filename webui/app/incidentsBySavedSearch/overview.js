@@ -30,6 +30,10 @@ angular.module('app.incidentSavedSearch').directive('app.incidentSavedSearch', f
                 }
             }, configUtils.goToTicketButtonConfig ];
 
+            $scope.navigateToDetailAllTickets = function(){
+                $location.path("/detail/incidentSavedSearch/" + $scope.metadata.guid + "/All/false");
+            };
+
             function setNoMessagesFlag() {
                 if (ticketData.isInitialized.value === true && !(ticketData.tickets.length > 0) ) {
                     $scope.showNoMessages = true;

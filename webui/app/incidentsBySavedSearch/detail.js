@@ -70,8 +70,12 @@ angular.module('app.incidentSavedSearch').controller('app.incidentSavedSearch.de
                 enhanceAllMessages();
             }
 
-            setPrioSelections(false);
-            _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            if ($routeParams.prio === 'All'){
+                setPrioSelections(true);
+            }else {
+                setPrioSelections(false);
+                _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            }
         }
 
 }]);

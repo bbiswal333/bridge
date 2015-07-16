@@ -1,0 +1,51 @@
+.table-cell{
+    padding-top:8px;
+}
+.ngCellText{
+	border:2px solid white;
+	height:30px;
+}
+.dump-prio_col{
+	width: 43%;
+	height: 48%;
+}
+.dump-prio_col:nth-child(2), .dump-prio_col:nth-child(4) {
+	margin-left: 5px;
+	width: 43%;
+	float: left;
+	
+}
+.dump-prio_col:nth-child(3), .dump-prio_col:nth-child(4) {
+	margin-top: 5px;
+}
+
+.dump-prio_container-1{
+	width: 97%;
+	height: 94%;
+	float: left;
+}
+
+.dump-prio_container-2{
+	width: 47%;
+	height: 94%;
+	float: left;
+}
+
+.dump-prio_content_box {
+	text-align:right;
+	font-size:20px;
+	margin-right: 3px;
+}
+
+.dump-btn-box{
+    
+    height: 25%;
+    margin-right: 0;
+    margin-bottom: 5px;
+    float: right;
+}
+
+.dump-list_container{
+	width: 50%;
+	float:left;
+}

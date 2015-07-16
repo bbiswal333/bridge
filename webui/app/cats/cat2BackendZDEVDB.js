@@ -281,7 +281,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var promises = [];
 			var date = begDate;
 
-			for (var week = 0; date < endDate; week++) {
+			for (var week = 0; date <= endDate; week++) {
 				promises.push(getCAT2ComplianceData(date));
 				date.setDate(date.getDate() + 7);
 			}
