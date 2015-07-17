@@ -8,7 +8,8 @@ angular.module('app.quickaccess').directive('app.quickaccess',[ "$window", funct
 			$window.open("https://css.wdf.sap.corp/sap/support/notes/" + $scope.notenr, '_blank');
 		};
 		$scope.openIntInc = function() {
-			$window.open("https://support.wdf.sap.corp/sap/support/message/" + $scope.incnr, '_blank');
+			$scope.incnr.replace('/[^0-9]/', "");
+			$window.open("http://ims2crm1.wdf.sap.corp:1080/ngcss/index.php?incident=" + $scope.incnr, '_blank');
 		};
 		$scope.noteFocus = function() {
 			$scope.notenr = "";

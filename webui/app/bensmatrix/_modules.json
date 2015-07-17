@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.bensmatrix",
+		"title"					:	"Ben's Matrix",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.bensmatrix",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/test/",
+				"templateUrl"	:	"app/bensmatrix/detail.html"
+			}
+		],
+		"description"			:	"Ben's Matrix"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],
+	"css_files" : ["style.css"]
+}

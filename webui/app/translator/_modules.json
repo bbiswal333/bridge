@@ -1,13 +1,13 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.translator",
 		"title"					:	"Translator",
 		"icon_css"				:	"fa fa-exchange",
 		"overview_directive"	:	"app.translator",
 		"needs_client"			:	false,
-		"beta"					:	true,
+		"beta"					:	false,
 		"default_hidden"		:	true,
 		"routes"				:
 		[

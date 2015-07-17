@@ -10,6 +10,7 @@
 		"googleProposals.js",
 		"stackoverflowSearch.js",
 		"sapedia.js",
+		"sapterm.js",
 		"playbook.js",
 		"portal.js",
 		"tetris.js",
@@ -21,5 +22,5 @@
 	"css_files" : [
 	  "search.css"
 	],
-	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch","bridge.search.tetris","bridge.search.locationSearch", "bridge.search.calc"]
+	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch","bridge.search.tetris","bridge.search.locationSearch", "bridge.search.calc","bridge.search.saptermSearch"]
 }
