@@ -11,12 +11,12 @@
     </div>
 </div>
 <form class="fog-container" name="overview" ng-if="!config.welcome">
-    <app.fog.text class="form form-control fog-container__text fog-container__text_overview" ng-model="text">
+    <app.fog.text class="form form-control fog-container__text fog-container__text_overview" ng-model="fog.text">
     </app.fog.text>
     <footer class="fog-container__footer fog-footer">
         <ul class="fog-footer__item fog-footer__item_left fog-list" ng-if="overview.$valid">
             <li ng-repeat="metric in ::config.metrics" class="fog-list__item" ng-if="metric.display.overview">
-                <app.fog.metric metric="metric" data="text"></app.fog.metric>
+                <app.fog.metric metric="metric" data="fog.text"></app.fog.metric>
             </li>
         </ul>
         <a class="fog-footer__item fog-footer__item_right" ng-click="fog.clear()">
