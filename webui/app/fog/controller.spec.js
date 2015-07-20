@@ -44,7 +44,7 @@ describe('Gunning Fog Index - Controller', function () {
         });
 
         it('should set $scope.text', function () {
-            expect(scope.text).toBe('text');
+            expect(controller.text).toBe('text');
         });
 
         describe('Settings', function () {
@@ -90,7 +90,7 @@ describe('Gunning Fog Index - Controller', function () {
         });
 
         it('should set $scope.text', function () {
-            expect(scope.text).toBe('text');
+            expect(controller.text).toBe('text');
         });
 
     });

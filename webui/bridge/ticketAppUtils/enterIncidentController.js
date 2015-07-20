@@ -1,6 +1,8 @@
 angular.module("bridge.ticketAppUtils").controller("bridge.ticketAppUtils.enterIncidentsController", ["$scope", "$window", function($scope, $window){
     $scope.go_click = function(sId){
-        $window.open("https://support.wdf.sap.corp/sap/support/message/" + sId);
+        sId.replace('/[^0-9]/', "");
+        //$window.open("https://support.wdf.sap.corp/sap/support/message/" + sId);
+        $window.open("http://ims2crm1.wdf.sap.corp:1080/ngcss/index.php?incident=" + sId);
     };
 
     $scope.input_keypress = function($event){
