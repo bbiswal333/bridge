@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.bensmatrix",
-		"title"					:	"Ben's Matrix",
+		"title"					:	"UI Space Matrix",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.bensmatrix",
 		"needs_client"			:	false,
@@ -16,7 +16,7 @@
 				"templateUrl"	:	"app/bensmatrix/detail.html"
 			}
 		],
-		"description"			:	"Ben's Matrix"
+		"description"			:	"A matrix that developers can refer to in order to avoid string length problems during the translation."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],

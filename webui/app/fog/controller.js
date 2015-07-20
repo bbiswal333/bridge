@@ -32,7 +32,7 @@
 
         // Get cached text or calculate initial value.
         // Allows to share text between overview and detail views.
-        $scope.text = data.get();
+        this.text = data.get();
 
         // Read persisted configuration and merge it with defaults
         if($scope.appConfig) {
@@ -49,7 +49,7 @@
 
         this.clear = function () {
             // Clear model/view
-            $scope.text = '';
+            this.text = '';
             // Clear data service cache
             data.clear();
         };

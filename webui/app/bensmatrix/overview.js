@@ -4,19 +4,19 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
 		// Required information to get settings icon/ screen
-		//$scope.box.settingsTitle = "Configure bensmatrix App";
+		$scope.box.settingsTitle = "Configure";
 		$scope.box.sSize = 2;
 		$scope.family = "Arial,Helvetica,sans-serif";
-		$scope.size = "10pt";
-		$scope.weight = "900";
+		$scope.size = "14pt";
+		$scope.weight = "400";
 		$scope.style = "normal";
 		$scope.variant = "normal";
 
-		/*$scope.box.settingScreenData = {
+		$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
 				id: $scope.boxId
-		};*/
+		};
 
 		$scope.many = dataService.getReloadCounter();
 
