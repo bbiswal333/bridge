@@ -1,22 +1,23 @@
 /**
  * Created by D062653 on 29.06.2015.
  */
-angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', "bridgeInBrowserNotification", "$location","bridgeDataService", function ($scope, feedback, $http, $window, bridgeInBrowserNotification, $location,bridgeDataService) {
+angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', "bridgeInBrowserNotification", "$location", "bridgeDataService", function ($scope, feedback, $http, $window, bridgeInBrowserNotification, $location, bridgeDataService) {
     $scope.text2 = "Mein erster Satz!";
     $scope.maxLetters = 500;
+
     feedback.getQuestion($scope);
+    feedback.setQuestion($scope);
     $scope.values = feedback.values;
     $scope.currentLetters = "";
     $scope.registered = false;
 
-    $scope.nutzer ={
+    $scope.nutzer = {
         "nummer": bridgeDataService.getUserInfo().BNAME,
         "name": bridgeDataService.getUserInfo().NACHN,
-        "vorname":bridgeDataService.getUserInfo().VORNA
+        "vorname": bridgeDataService.getUserInfo().VORNA
     };
-    $scope.userInfo =( ""+$scope.nutzer.name +", "+$scope.nutzer.vorname+" ("+$scope.nutzer.nummer+")");
+    $scope.userInfo = ( "" + $scope.nutzer.name + ", " + $scope.nutzer.vorname + " (" + $scope.nutzer.nummer + ")");
     console.log($scope.userInfo);
-
 
 
     //check registration on CultureWall
@@ -32,7 +33,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         retry_max: 3
     }).success(function (res) {
         //console.log($scope.nutzer.nummer);
-        $scope.registered = res.user_registered;
+        //$scope.registered = res.user_registered;
 
     }).error(function (err) {
         bridgeInBrowserNotification.addAlert('danger', "Something went wrong: " + err, 10);

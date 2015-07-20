@@ -1,37 +1,60 @@
-
 <div style="box-sizing:inherit;" ng-controller="addCtrl">
     <div class="container-fluid">
         <div class="modal-header"><h3>Add Answer!</h3></div>
-        <div class="modal-body"><h4><p class="question">{{question}}</p></h4></div>
-        <div class="modal-body">
-            <label for="answer">Your Answer:</label>
-            <!--<textarea ng-model="newAnswer" class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>-->
-            <bridge.textarea id="answer" model="currentLetters" placeholder="Type in your answer..." ng-trim="false" maxlength="500"></bridge.textarea>
-            <div class="countLetters">{{maxLetters-currentLetters.length}}/500</div>
-
-           <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
-            <!--http://sliptree.github.io/bootstrap-tokenfield/-->
-            <i class="fa fa-tags"></i>
-            <select>
-                <option>culture</option>
-                <option>lunch</option>
-                <option>sap</option>
-                <option>HR</option>
-            </select><br><br>
-            <label for="employee"><i class="fa fa-user"></i></label>
-            <input ng-if="anonym && registered" id="employee2" style="max-width: 20%" type="text" value="anonymous" readonly/>
-            <input ng-if="!anonym || !registered" id="employee" style="max-width: 20%" type="text" ng-value=(userInfo) readonly/>
-            <!--<bridge.button state="(values.anonym === true) === true ? 'active':'invisible-button'" ng-click="changeStatus()" style="width:100px;height:33px;margin-left:0;margin-right:0;margin-top: 2px;margin-bottom: 2px;">-->
-                <!--Anonym-->
-            <!--</bridge.button>-->
-
+        <div class="modal-body question-body">
+            <h4><p class="question">{{question}}</p></h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body ">
+            <div class="answer-body">
+                <label for="answer">Your Answer:</label>
+                <!--<textarea ng-model="newAnswer" class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>-->
+                <bridge.textarea id="answer" model="currentLetters" placeholder="Type in your answer..." ng-trim="false"
+                                 maxlength="500"></bridge.textarea>
 
-            <div class="anonymCheck"><label id="check" for="test">post this anwer anonymously?</label><input type="checkbox" ng-model="anonym" ng-disabled=!registered  id="test">
-                <div ng-show=!registered class="note">You have to be registered <a  title="register your user!" id="noteRef" href="https://culturewall-demo.mo.sap.corp/?reg_user">here </a>to post anonymously</div>
+                <div class="countLetters">{{maxLetters-currentLetters.length}}/500</div>
+                <bridge.button class="submit">Send</bridge.button>
+            </div>
+
+
+            <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
+            <!--http://sliptree.github.io/bootstrap-tokenfield/-->
+            <div class="option-body">
+                <!--<i class="fa fa-tags"></i>-->
+                <div class="tags">
+                    <label for="tags">Tags</label><br>
+                    <select id="tags">
+                        <option>culture</option>
+                        <option>lunch</option>
+                        <option>sap</option>
+                        <option>HR</option>
+                    </select>
+                </div>
+
+
+                <div class="employeeInfo">
+                    <label for="employee"><i class="fa fa-user"></i> Employee</label><br>
+                    <input ng-if="anonym && registered" id="test22" style="max-width: 20%" type="text"
+                           value="anonymous"
+                           readonly/>
+                    <input ng-if="!anonym || !registered" id="employee" style="max-width: 20%" type="text"
+                           ng-value=(userInfo)
+                           readonly/>
+                </div>
+
             </div>
         </div>
+        <!--<div class="modal-body">-->
+
+        <!--<div class="anonymCheck"><label id="check" for="test">post this anwer anonymously?</label><input-->
+        <!--type="checkbox" ng-model="anonym" ng-disabled=!registered id="test">-->
+
+        <!--<div ng-show=!registered class="note">You have to be registered <a title="register your user!"-->
+        <!--id="noteRef"-->
+        <!--href="https://culturewall-demo.mo.sap.corp/?reg_user">here </a>-->
+        <!--to post anonymously-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
 
     </div>
 

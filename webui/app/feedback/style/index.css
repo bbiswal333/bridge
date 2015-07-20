@@ -4,6 +4,13 @@
 
 .question {
     color: #428BCA;
+
+}
+.question-body{
+
+    padding-bottom: 0;
+
+
 }
 
 .well-custom {
@@ -183,11 +190,16 @@ hr.bottom {
 
 .countLetters {
     display: inline;
-    float: right;
-    width: 54%
+    float: left;
+    text-align: left;
 }
 
 #answer {
+    width: 100%;
+}
+.answer-body{
+    display: inline;
+    float:left;
     width: 50%;
 }
 
@@ -224,6 +236,28 @@ hr.bottom {
 }
 #noteRef:hover{
     color:red;
+}
+.submit{
+    display: inline;
+    float: right;
+    margin-top: 0;
+    margin-right:0;
+}
+
+.option-body{
+    display:inline;
+    float:right;
+    width: 50%;
+    padding: 20px;
+}
+#tags{
+    width: 100%;
+}
+.employeeInfo{
+    margin-top: 10px;
+}
+#test22{
+    width: 100%;
 }
 
 
