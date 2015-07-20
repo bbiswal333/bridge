@@ -34,12 +34,12 @@ describe("Incidents By Saved Search config", function(){
             columnVisibility: [true, false]
         });
 
-        expect(config.data.columnVisibility.length).toBe(10);
+        expect(config.data.columnVisibility.length).toBe(11);
     });
 
     it("should not use the default column visibility if the column visibility was stored correctly", function(){
         config.initialize({
-            columnVisibility: [false, false, false, false, false, false, false, false, false, false]
+            columnVisibility: [false, false, false, false, false, false, false, false, false, false, false]
         });
 
         expect(config.data.columnVisibility[0]).toBe(false);

@@ -7,7 +7,7 @@ angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.confi
             this.data = {};
             this.data.lastDataUpdate = null;
             this.data.selectedSearchGuid = null;
-            this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false];
+            this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false, false];
 
             this.isInitialized = false;
             this.initialize = function (oConfigFromBackend) {

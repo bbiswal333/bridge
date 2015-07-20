@@ -34,7 +34,21 @@
 	border: 0px solid;
 	margin: 0px;
 	padding: 0px;
+	height: 20px;
 
+}
+
+.app-bensMatrix-textarea-input {
+	border: 1px solid;
+	margin: 0px;
+	padding: 0px;
+	height: 20px;
+}
+
+.app-bensMatrix-textarea-output {
+	border: 0px solid;
+	margin: 0px;
+	padding: 0px;
 }
 
 .app-bensMatrix-internalDivFloat {
