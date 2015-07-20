@@ -130,82 +130,100 @@ hr.bottom {
     float: right;
 }
 
-.question{
+.question {
     transition: all 1s;
 }
-.question-flow-out{
+
+.question-flow-out {
     color: white;
 }
-.question-flow-in{
-  color: #428BCA;
+
+.question-flow-in {
+    color: #428BCA;
 }
-.backButton{
+
+.backButton {
     height: 40px;
     width: 20px;
     border-radius: 0 90px 90px 0;
     position: absolute;
     left: 0;
     top: 45%;
-    background-color:#c3c3c3;
+    background-color: #c3c3c3;
     opacity: 0.7;
 }
 
-.backButton i{
+.backButton i {
     margin-top: 4px;
     margin-right: 3px;
     width: 18px;
     float: right;
     height: 20px;
     color: white;
-}.forButton{
-     height: 40px;
-     width: 20px;
-     border-radius: 90px 0 0 90px;
-     position: absolute;
-     right: 0;
-     top: 45%;
-     background-color:#c3c3c3;
-     opacity: 0.7;
- }
+}
 
-.forButton i{
+.forButton {
+    height: 40px;
+    width: 20px;
+    border-radius: 90px 0 0 90px;
+    position: absolute;
+    right: 0;
+    top: 45%;
+    background-color: #c3c3c3;
+    opacity: 0.7;
+}
+
+.forButton i {
     margin-top: 4px;
 
     float: right;
     height: 20px;
     color: white;
 }
-.countLetters{
+
+.countLetters {
     display: inline;
     float: right;
     width: 54%
 }
-#answer{
+
+#answer {
     width: 50%;
 }
-.anonymCheck{
-    border-top: dashed 1px lightgray;
+
+.anonymCheck {
+    border-top: solid 1px lightgray;
     padding-top: 8px;
-    display:inline-block;
+    display: inline-block;
     float: left;
     width: 50%;
-    margin-top:0;
-    margin-bottom: 0;
-}
-#test{
-    display:inline;
-    float:right;
     margin-top: 0;
     margin-bottom: 0;
 }
-.note{
-    color:darkred;
+
+#test {
     display: inline;
-    float:left;
-  margin-left: 5px;
+    float: right;
+    margin-top: 0;
+    margin-bottom: 0;
 }
-#check{
-    float:left;
+
+.note
+{
+    color: red;
+    display: inline;
+    float: left;
+    margin-left: 5px;
+}
+
+#check {
+    float: left;
+}
+#noteRef{
+    color:darkred;
+}
+#noteRef:hover{
+    color:red;
 }
 
 
