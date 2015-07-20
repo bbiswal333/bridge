@@ -183,4 +183,29 @@ hr.bottom {
 #answer{
     width: 50%;
 }
+.anonymCheck{
+    border-top: dashed 1px lightgray;
+    padding-top: 8px;
+    display:inline-block;
+    float: left;
+    width: 50%;
+    margin-top:0;
+    margin-bottom: 0;
+}
+#test{
+    display:inline;
+    float:right;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.note{
+    color:darkred;
+    display: inline;
+    float:left;
+  margin-left: 5px;
+}
+#check{
+    float:left;
+}
+
 

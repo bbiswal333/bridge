@@ -44,8 +44,8 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 $.ajax({
 
                     type: 'GET',
-                    //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p,
-                    url: '/api/get?url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?page=' + p + '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}'),
+                    url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p+ '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}',
+                    //url: '/api/get?url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?page=' + p + '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}'),
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     timeout: 3000,
@@ -75,8 +75,8 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         $scope.getQuestion = function () {
             $.ajax({
                 type: 'GET',
-                //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/questions/topics',
-                url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/questions/topics'),
+                url:         'https://culturewall-demo.mo.sap.corp/api/2.0/questions/topics',
+                //url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/questions/topics'),
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 timeout: 3000,
@@ -94,8 +94,8 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
             $.ajax({
                 type: 'GET',
-                //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p,
-                url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/answers'),
+                url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
+                //url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/answers'),
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 timeout: 3000,
