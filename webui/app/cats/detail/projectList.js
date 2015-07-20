@@ -115,13 +115,25 @@ directive("app.cats.maintenanceView.projectList", [
 				// remove all old descriptions
 				configService.lastUsedDescriptions = [];
 				// update descriptions from items from the backend
-				for (var i = 0; i < configService.favoriteItems.length; i++) {
-					for (var j = 0; j < configService.catsItems.length; j++) {
-						if (catsUtils.isSameTask(configService.favoriteItems[i], configService.catsItems[j])) {
-							configService.favoriteItems[i].DESCR = configService.catsItems[j].DESCR;
-						}
-					}
-				}
+				// actually ask the backend :-)
+				catsBackend.requestTasksFromWorklist().then(function(taskFromWorklist) {
+					configService.recalculateTaskIDs(taskFromWorklist);
+					taskFromWorklist.forEach(function(item) {
+						configService.updateLastUsedDescriptions(item);
+					});
+					configService.catsItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					configService.favoriteItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.items.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.itemsFromBlocks.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+				});
 			};
 
 			function markItemIfSelected(item) {
