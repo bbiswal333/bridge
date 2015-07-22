@@ -24,6 +24,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         };
         $interval($scope.displayAnswer = function () {
             var rand = (Math.random()) * ($scope.allAnswersArray.length);
+
             if ($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200) {
                 $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text.substring(0, 197) + '...';
             }
@@ -44,7 +45,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 $.ajax({
 
                     type: 'GET',
-                    //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p,
+                    //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p+ '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}',
                     url: '/api/get?url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?page=' + p + '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}'),
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
@@ -54,6 +55,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     success: function (data) {
                         for (var i = 0; i < data._items.length; i++) {
                             $scope.allAnswersArray.push(data._items[i]);
+                            console.log($scope.allAnswersArray);
                         }
                     },
                     error: function (err) {
@@ -85,6 +87,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 success: function (data) {
                     for (var i = 0; i < data.result.length; i++) {
                         $scope.questionsArray.push(data.result[i]);
+                        console.log($scope.questionsArray);
                     }
                 },
                 error: function (err) {
@@ -94,7 +97,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
             $.ajax({
                 type: 'GET',
-                //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p,
+                //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
                 url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/answers'),
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
