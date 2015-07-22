@@ -4,7 +4,7 @@
 angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', "bridgeInBrowserNotification", "$location", "bridgeDataService", function ($scope, feedback, $http, $window, bridgeInBrowserNotification, $location, bridgeDataService) {
     $scope.text2 = "Mein erster Satz!";
     $scope.maxLetters = 500;
-
+$scope.anonym = false;
     feedback.getQuestion($scope);
     feedback.setQuestion($scope);
     $scope.values = feedback.values;
@@ -33,7 +33,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         retry_max: 3
     }).success(function (res) {
         //console.log($scope.nutzer.nummer);
-        //$scope.registered = res.user_registered;
+        $scope.registered = res.user_registered;
 
     }).error(function (err) {
         bridgeInBrowserNotification.addAlert('danger', "Something went wrong: " + err, 10);
@@ -46,11 +46,13 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
             answer_text: $scope.currentLetters
         };
         $http({
+           // url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?anon=true'),
             url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
             //url: 'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
             method: "POST",
             headers: {
-                'Content-Type': 'application/json; charset=UTF-8'
+                'Content-Type': 'application/json; charset=UTF-8',
+                'anon': $scope.anonym
             },
             dataType: 'json',
             timeout: 3000,
@@ -59,7 +61,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         }).success(function (res) {
 
             if (postObject.answer_text == "") {
-                bridgeInBrowserNotification.addAlert('danger', "Please enter a message: ", 10);
+                bridgeInBrowserNotification.addAlert('danger', "Please enter a message! ", 10);
             }
             else {
                 $location.path("/");

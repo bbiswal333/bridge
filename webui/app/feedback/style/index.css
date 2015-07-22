@@ -7,9 +7,9 @@
 
 }
 .question-body{
-
+    padding-left: 20px;
     padding-bottom: 0;
-
+    width: 50%;
 
 }
 
@@ -204,10 +204,9 @@ hr.bottom {
 }
 
 .anonymCheck {
-    border-top: solid 1px lightgray;
     padding-top: 8px;
     display: inline-block;
-    float: left;
+    float: right;
     width: 50%;
     margin-top: 0;
     margin-bottom: 0;
@@ -224,12 +223,13 @@ hr.bottom {
 {
     color: red;
     display: inline;
-    float: left;
+    float: right;
     margin-left: 5px;
 }
 
 #check {
-    float: left;
+    float:left;
+    margin-left: 5px;
 }
 #noteRef{
     color:darkred;
@@ -248,16 +248,11 @@ hr.bottom {
     display:inline;
     float:right;
     width: 50%;
-    padding: 20px;
 }
 #tags{
-    width: 100%;
+    width: 50%;
 }
 .employeeInfo{
     margin-top: 10px;
 }
-#test22{
-    width: 100%;
-}
-
 

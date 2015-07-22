@@ -24,6 +24,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         };
         $interval($scope.displayAnswer = function () {
             var rand = (Math.random()) * ($scope.allAnswersArray.length);
+
             if ($scope.allAnswersArray[Math.floor(rand)].answer_text.length > 200) {
                 $scope.answer = $scope.allAnswersArray[Math.floor(rand)].answer_text.substring(0, 197) + '...';
             }
@@ -54,6 +55,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                     success: function (data) {
                         for (var i = 0; i < data._items.length; i++) {
                             $scope.allAnswersArray.push(data._items[i]);
+                            console.log($scope.allAnswersArray);
                         }
                     },
                     error: function (err) {
@@ -85,6 +87,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
                 success: function (data) {
                     for (var i = 0; i < data.result.length; i++) {
                         $scope.questionsArray.push(data.result[i]);
+                        console.log($scope.questionsArray);
                     }
                 },
                 error: function (err) {
