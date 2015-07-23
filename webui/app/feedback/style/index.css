@@ -255,4 +255,9 @@ hr.bottom {
 .employeeInfo{
     margin-top: 10px;
 }
+.mySpinner{
+    position: absolute;
+    right: 50%;
+    bottom: 50%;
+}
 

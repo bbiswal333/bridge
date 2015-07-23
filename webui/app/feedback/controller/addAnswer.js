@@ -2,14 +2,17 @@
  * Created by D062653 on 29.06.2015.
  */
 angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$http', '$window', "bridgeInBrowserNotification", "$location", "bridgeDataService", function ($scope, feedback, $http, $window, bridgeInBrowserNotification, $location, bridgeDataService) {
+
     $scope.text2 = "Mein erster Satz!";
     $scope.maxLetters = 500;
-$scope.anonym = false;
+    $scope.anonym = false;
     feedback.getQuestion($scope);
     feedback.setQuestion($scope);
     $scope.values = feedback.values;
-    $scope.currentLetters = "";
     $scope.registered = false;
+    $scope.currentLetters = "";
+    $scope.noLetters = true;
+
 
     $scope.nutzer = {
         "nummer": bridgeDataService.getUserInfo().BNAME,
@@ -46,7 +49,7 @@ $scope.anonym = false;
             answer_text: $scope.currentLetters
         };
         $http({
-           // url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?anon=true'),
+            // url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?anon=true'),
             url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
             //url: 'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
             method: "POST",
@@ -74,5 +77,17 @@ $scope.anonym = false;
     };
     $scope.changeStatus = function () {
         $scope.values.anonym = !$scope.values.anonym;
-    }
+    };
+
+    $scope.$watch(function (scope) {
+            return scope.currentLetters;
+        },
+        function () {
+            if ($scope.currentLetters != "" && $scope.currentLetters.length > 3) {
+                $scope.noLetters = false;
+            }
+            else if ($scope.currentLetters == "" || $scope.currentLetters.length <= 3 ) {
+                $scope.noLetters = true;
+            }
+        });
 }]);
