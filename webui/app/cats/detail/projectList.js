@@ -114,14 +114,47 @@ directive("app.cats.maintenanceView.projectList", [
 			$scope.refreshDescriptions = function() {
 				// remove all old descriptions
 				configService.lastUsedDescriptions = [];
-				// update descriptions from items from the backend
-				for (var i = 0; i < configService.favoriteItems.length; i++) {
-					for (var j = 0; j < configService.catsItems.length; j++) {
-						if (catsUtils.isSameTask(configService.favoriteItems[i], configService.catsItems[j])) {
-							configService.favoriteItems[i].DESCR = configService.catsItems[j].DESCR;
-						}
-					}
-				}
+
+				var week = calenderUtils.getWeekNumber(new Date());
+				catsBackend.requestTasksFromTemplate(week.year, week.weekNo)
+				.then(function(itemFromCatsTemplate) {
+					configService.recalculateTaskIDs(itemFromCatsTemplate);
+					itemFromCatsTemplate.forEach(function(item) {
+						configService.updateLastUsedDescriptions(item);
+					});
+					configService.catsItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					configService.favoriteItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.items.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.itemsFromBlocks.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+				});
+
+				catsBackend.requestTasksFromWorklist()
+				.then(function(taskFromWorklist) {
+					configService.recalculateTaskIDs(taskFromWorklist);
+					taskFromWorklist.forEach(function(item) {
+						configService.updateLastUsedDescriptions(item);
+					});
+					configService.catsItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					configService.favoriteItems.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.items.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+					$scope.itemsFromBlocks.forEach(function(item) {
+						configService.updateDescription(item);
+					});
+				});
 			};
 
 			function markItemIfSelected(item) {
