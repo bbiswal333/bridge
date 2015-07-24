@@ -339,8 +339,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							data.TIMESHEETS.RECORDS[j].TASKLEVEL = data.CATS_EXT[j].TASKLEVEL;
 							data.TIMESHEETS.RECORDS[j].SKOSTL = data.CATS_EXT[j].SKOSTL;
 							data.TIMESHEETS.RECORDS[j].ZZOBJNR = data.CATS_EXT[j].ZZOBJNR;
-							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
-								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
+							if (data.TIMESHEETS.RECORDS[j].DESCR === "" && data.CATS_EXT[j].LTXA1 !== "") {
+								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].LTXA1;
 							}
 							if(data.CATS_EXT_TASK && data.TIMESHEETS.RECORDS[j].DAYS) {
 								/* eslint-disable no-loop-func */

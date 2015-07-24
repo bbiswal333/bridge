@@ -72,7 +72,7 @@ angular.module('bridge.app').directive('bridge.textarea', ['$timeout', function 
                 $('textarea', element)[0].setAttribute("required", "required");
             }
 
-            if (attrs.ngDisabled) {
+            if(attrs.ngDisabled) {
                 $('textarea', element)[0].setAttribute("ng-disabled", attrs.ngDisabled);
             }
 

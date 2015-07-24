@@ -6,18 +6,21 @@
         </div>
         <div class="modal-body answer-body ">
 
-                <label for="answer">Your Answer:</label>
+                <label for="answer">Your Answer: </label>
                 <!--<textarea ng-model="newAnswer" class="form-control custom-control" rows="3" style="resize:none" id="answer"></textarea><br>-->
 
                     <bridge.textarea id="answer" model="currentLetters" placeholder="Type in your answer..."
                                      ng-trim="false"
-                                     maxlength="500"></bridge.textarea>
+                                     maxlength="500"
+                                     ng-disabled = waitUntilSuccess >
+                    </bridge.textarea>
+                    <div class="countLetters">|{{maxLetters-currentLetters.length}}/500 | min. 4 letters | <span ng-if="sent && !waitUntilSuccess" ><i style="color:green;" class="fa fa-check"></i> sent  |</span></div>
 
-                    <div class="countLetters">{{maxLetters-currentLetters.length}}/500</div>
-                    <bridge.button class="submit" ng-click="add()" >Send</bridge.button>
+                    <bridge.button ng-show="noLetters "  class="submit" state="'disabled'">Send</bridge.button>
+                    <bridge.button ng-show="!noLetters" ng-hide="!waitUntilSuccess" class="submit" ng-click="add()" >Send</bridge.button>
 
-
-
+                      <div ng-class="{'fa fa-spin fa-spinner fa-2x mySpinner' : waitUntilSuccess}">
+            </div>
 
             <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
             <!--http://sliptree.github.io/bootstrap-tokenfield/-->
@@ -64,5 +67,8 @@
 
             </div>
 
+
         </div>
+
+    <button ng-click="changeStatus()">test</button>
 
