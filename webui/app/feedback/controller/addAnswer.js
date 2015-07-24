@@ -10,8 +10,10 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
     feedback.setQuestion($scope);
     $scope.values = feedback.values;
     $scope.registered = false;
-    $scope.currentLetters = "";
+    $scope.currentLetters = '';
     $scope.noLetters = true;
+    $scope.waitUntilSuccess = false;
+    $scope.sent = false;
 
 
     $scope.nutzer = {
@@ -22,7 +24,6 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
     $scope.userInfo = ( "" + $scope.nutzer.name + ", " + $scope.nutzer.vorname + " (" + $scope.nutzer.nummer + ")");
     console.log($scope.userInfo);
 
-
     //check registration on CultureWall
     $http({
         url: 'api/get?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/user'),
@@ -32,8 +33,10 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
             'Content-Type': 'application/json; charset=UTF-8'
         },
         dataType: 'json',
-        timeout: 3000,
-        retry_max: 3
+        timeout: 1000,
+        async: false,
+
+        retry_max: 1
     }).success(function (res) {
         //console.log($scope.nutzer.nummer);
         $scope.registered = res.user_registered;
@@ -44,6 +47,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
 
 
     $scope.add = function () {
+        $scope.waitUntilSuccess = true;
         var postObject = {
             question_id: $scope.question_id[0],
             answer_text: $scope.currentLetters
@@ -58,8 +62,9 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
                 'anon': $scope.anonym
             },
             dataType: 'json',
-            timeout: 3000,
-            retry_max: 3,
+            timeout: 1000,
+            retry_max: 1,
+            async: false,
             data: postObject
         }).success(function (res) {
 
@@ -67,8 +72,16 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
                 bridgeInBrowserNotification.addAlert('danger', "Please enter a message! ", 10);
             }
             else {
-                $location.path("/");
-                bridgeInBrowserNotification.addAlert('success', "Answer posted successfully -->" + "'" + postObject.answer_text + "'", 10);
+                $scope.waitUntilSuccess = false;
+                $scope.currentLetters = "";
+                $scope.sent = true;
+
+                //console.log("waitUntilSuccess:");
+                //console.log($scope.waitUntilSuccess);
+                //console.log("currentLetters:");
+                //console.log($scope.currentLetters);
+                //console.log("sent:");
+                //console.log( $scope.sent);
             }
 
         }).error(function (err) {
@@ -76,7 +89,8 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         });
     };
     $scope.changeStatus = function () {
-        $scope.values.anonym = !$scope.values.anonym;
+        //$scope.values.anonym = !$scope.values.anonym;
+        $scope.currentLetters = "sd";
     };
 
     $scope.$watch(function (scope) {

@@ -12,14 +12,14 @@
                     <bridge.textarea id="answer" model="currentLetters" placeholder="Type in your answer..."
                                      ng-trim="false"
                                      maxlength="500"
-                                     ng-disabled = anonym >
+                                     ng-disabled = waitUntilSuccess >
                     </bridge.textarea>
-                    <div class="countLetters">|{{maxLetters-currentLetters.length}}/500 | min. 4 letters | <span ng-if="anonym" ><i  class="fa fa-check"></i> sent  |</span></div>
+                    <div class="countLetters">|{{maxLetters-currentLetters.length}}/500 | min. 4 letters | <span ng-if="sent && !waitUntilSuccess" ><i style="color:green;" class="fa fa-check"></i> sent  |</span></div>
 
-            <bridge.button ng-if="noLetters" class="submit" state="'disabled'" ng-click="add()" >Send</bridge.button>
-                    <bridge.button ng-if="!noLetters" class="submit" ng-click="add()" >Send</bridge.button>
+                    <bridge.button ng-show="noLetters "  class="submit" state="'disabled'">Send</bridge.button>
+                    <bridge.button ng-show="!noLetters" ng-hide="!waitUntilSuccess" class="submit" ng-click="add()" >Send</bridge.button>
 
-                      <div ng-class="{'fa fa-spin fa-spinner fa-2x mySpinner' : anonym}">
+                      <div ng-class="{'fa fa-spin fa-spinner fa-2x mySpinner' : waitUntilSuccess}">
             </div>
 
             <!--Auf jeden Fall hier die Tokenfields von Bootstrap benutzen!!-->
@@ -69,4 +69,6 @@
 
 
         </div>
-    <textarea readonly></textarea>
+
+    <button ng-click="changeStatus()">test</button>
+
