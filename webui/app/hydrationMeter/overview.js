@@ -14,11 +14,13 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 
 		$scope.many = dataService.getReloadCounter();
 		$scope.values = configService.values;
+		$scope.rating = "red";
 
 		$scope.getData = function() {
 			dataService.reload();
 			$scope.many = dataService.getReloadCounter();
 			$scope.values = configService.values;
+			$scope.calculateRating($scope.values.targetCups, $scope.values.currentCups);
 		};
 
 		// Bridge framework function to enable saving the config
@@ -49,6 +51,25 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			configService.resetData();
 			$scope.getData();
 		};
+
+		$scope.calculateRating = function(target, current) {
+			var percentage = (current * 100) / target;
+			if ( percentage >= 100 ) {
+				$scope.rating = "green-60";
+			} else if ( percentage >= 85 ) {
+				$scope.rating = "basic-blue-60";
+			} else if ( percentage >= 50 ) {
+				$scope.rating = "orange-60";
+			} else if ( percentage < 50 || current == 0 ) {
+				$scope.rating = "red-60";
+			} else {
+				$scope.rating = "red-60";
+			};
+		};
+
+		$scope.getRating = function() {
+			return $scope.rating;
+		};
 	}];
 
 	var linkFn = function ($scope) {
@@ -64,6 +85,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.$watch("appConfig.values.targetCups", function () {
 			$scope.box.targetCups = $scope.appConfig.values.targetCups;
 		}, true);
+		$scope.calculateRating($scope.appConfig.values.targetCups, $scope.appConfig.values.currentCups);
 	};
 
 	return {

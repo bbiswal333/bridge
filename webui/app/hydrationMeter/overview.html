@@ -2,7 +2,7 @@
 <div>
 	<a target="_blank" href="" ng-click="testNotification()">Test Notification</a>
 </div>
-Target number of cups today {{values.targetCups}} and today only drank {{values.currentCups}} date is {{values.date}}
+<div ng-class="getRating()">Target number of cups today {{values.targetCups}} and today only drank {{values.currentCups}} date is {{values.date}}</div>
 <div class="btn-group">
   <bridge.button class="dropdown-toggle" data-toggle="dropdown">I drank</bridge.button>
   <ul class="dropdown-menu">
