@@ -1,15 +1,12 @@
-﻿App refreshed {{many}} time(s). Refresh every minute.<br />
-<div>
-	<a target="_blank" href="" ng-click="testNotification()">Test Notification</a>
-</div>
-<div ng-class="getRating()">Target number of cups today {{values.targetCups}} and today only drank {{values.currentCups}} date is {{values.date}}</div>
+﻿<div>{{getMessage()}}</div>
+<div ><i ng-class="getCupStyle()"></i></div>
 <div class="btn-group">
   <bridge.button class="dropdown-toggle" data-toggle="dropdown">I drank</bridge.button>
   <ul class="dropdown-menu">
-    <div><a target="_blank" href="" ng-click="drankCups(1)"><i class="fa fa-glass" ng-click="drankCups(1)"></i>1 cup ( 250 mL )</a></div>
-    <div><a target="_blank" href="" ng-click="drankCups(2)"><i class="fa fa-glass fa-2x" ng-click="drankCups(2)"></i>2 cups ( 500 mL )</a></div>
-    <div><a target="_blank" href="" ng-click="drankCups(3)"><i class="fa fa-glass fa-3x" ng-click="drankCups(3)"></i>3 cups ( 750 mL )</a></div>
-    <div><a target="_blank" href="" ng-click="drankCups(4)"><i class="fa fa-glass fa-4x" ng-click="drankCups(4)"></i>4 cups ( 1 L )</a></div>
+    <div><a target="_blank" href="" ng-click="drankCups(1)"><i class="fa fa-glass"></i>1 cup ( 250 mL )</a></div>
+    <div><a target="_blank" href="" ng-click="drankCups(2)"><i class="fa fa-glass fa-2x"></i>2 cups ( 500 mL )</a></div>
+    <div><a target="_blank" href="" ng-click="drankCups(3)"><i class="fa fa-glass fa-3x"></i>3 cups ( 750 mL )</a></div>
+    <div><a target="_blank" href="" ng-click="drankCups(4)"><i class="fa fa-glass fa-4x"></i>4 cups ( 1 L )</a></div>
   </ul>
   <bridge.button ng-click="resetData()">Reset</bridge.button>
 </div>

@@ -14,13 +14,27 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 
 		$scope.many = dataService.getReloadCounter();
 		$scope.values = configService.values;
-		$scope.rating = "red";
+		$scope.defaultColor = "red-font";
+		$scope.defaultSize = "";
+		$scope.rating = {};
+		$scope.rating.color = $scope.defaultColor;
+		$scope.rating.size = $scope.defaultSize;
+		$scope.messages = [
+			"You didn't drink anything... what happened?",
+			"Glad you started drinking, how do you feel now?",
+			"Half way there! You go, buddy ;-)",
+			"You can do it! Go for it {{userName}}",
+			"Champion!",
+			"Don't drink too much, you might get a tummy ache!"
+		];
+		$scope.message = $scope.messages[0];
 
 		$scope.getData = function() {
 			dataService.reload();
 			$scope.many = dataService.getReloadCounter();
 			$scope.values = configService.values;
-			$scope.calculateRating($scope.values.targetCups, $scope.values.currentCups);
+			$scope.calculateRating();
+			$scope.updateMessage();
 		};
 
 		// Bridge framework function to enable saving the config
@@ -52,23 +66,47 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			$scope.getData();
 		};
 
-		$scope.calculateRating = function(target, current) {
-			var percentage = (current * 100) / target;
-			if ( percentage >= 100 ) {
-				$scope.rating = "green-60";
+		$scope.getPercentage = function() {
+			var percentage = ($scope.values.currentCups * 100) / $scope.values.targetCups;
+			if ($scope.values.currentCups == 0) {
+				percentage = 0;
+			};
+			return percentage;
+		};
+
+		$scope.calculateRating = function() {
+			var percentage = $scope.getPercentage();
+			if ( percentage > 100 ) {
+				$scope.rating.color = "green-font fa-flip-vertical";
+				$scope.rating.size = "fa-3x";
 			} else if ( percentage >= 85 ) {
-				$scope.rating = "basic-blue-60";
+				$scope.rating.color = "basic-blue-font";
+				$scope.rating.size = "fa-2x";
 			} else if ( percentage >= 50 ) {
-				$scope.rating = "orange-60";
-			} else if ( percentage < 50 || current == 0 ) {
-				$scope.rating = "red-60";
+				$scope.rating.color = "orange-font";
+				$scope.rating.size = "fa-lg";
 			} else {
-				$scope.rating = "red-60";
+				$scope.rating.color = $scope.defaultColor;
+				$scope.rating.size = $scope.defaultSize;
 			};
 		};
 
-		$scope.getRating = function() {
-			return $scope.rating;
+		$scope.getCupStyle = function() {
+			return "fa fa-glass " + $scope.rating.size + " " + $scope.rating.color;
+		};
+
+		$scope.updateMessage = function() {
+			var percentage = $scope.getPercentage();
+			var position = Math.round( $scope.messages.length * percentage / 100 ) - 1;
+			if (position < 0) {
+				position = 0;
+			} else if ( position >= $scope.messages.length) {
+				position = $scope.messages.length - 1;
+			};
+			$scope.message = $scope.messages[position];
+		};
+		$scope.getMessage = function() {
+			return $scope.message;
 		};
 	}];
 
@@ -85,7 +123,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.$watch("appConfig.values.targetCups", function () {
 			$scope.box.targetCups = $scope.appConfig.values.targetCups;
 		}, true);
-		$scope.calculateRating($scope.appConfig.values.targetCups, $scope.appConfig.values.currentCups);
+		$scope.calculateRating();
 	};
 
 	return {
