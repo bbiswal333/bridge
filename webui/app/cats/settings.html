@@ -53,8 +53,7 @@
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">cPro Task ID
-<!-- 							<span class="settings_required_label_mark red-font" ng-show="(!configService.selectedTask.TASKTYPE || configService.selectedTask.ZCPR_OBJGEXTID) && configService.selectedTask.custom">*</span>
- -->						</span>
+						</span>
 						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZCPR_OBJGEXTID || "Task Id"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
@@ -101,7 +100,6 @@
 						</div>
 					</div>
 					<div class="row settings_input_row">
-						<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>-->
 						<bridge.button state="active" class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
 					</div>
 				</div>

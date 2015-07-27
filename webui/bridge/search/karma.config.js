@@ -24,7 +24,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser (*.spec.js is redundant)
     files: [
         '../../lib/jQuery-2_1_0/jquery.min.js',
-        '../../lib/angular-1_2_13/angular.min.js',
+        '../../lib/angular-1_3_8/angular.min.js',
         '../../lib/**/*.js',
         './*.js'
     ],

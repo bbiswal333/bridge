@@ -25,12 +25,12 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			$http.get(url, {
-				timeout: 25000
+				timeout: 30000
 			}).success(function(data, status) {
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject("HTTP-Status of write posting call is " + status);
+				deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
 			});
 
 			return deferred.promise;
@@ -281,7 +281,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var promises = [];
 			var date = begDate;
 
-			for (var week = 0; date < endDate; week++) {
+			for (var week = 0; date <= endDate; week++) {
 				promises.push(getCAT2ComplianceData(date));
 				date.setDate(date.getDate() + 7);
 			}
@@ -339,8 +339,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							data.TIMESHEETS.RECORDS[j].TASKLEVEL = data.CATS_EXT[j].TASKLEVEL;
 							data.TIMESHEETS.RECORDS[j].SKOSTL = data.CATS_EXT[j].SKOSTL;
 							data.TIMESHEETS.RECORDS[j].ZZOBJNR = data.CATS_EXT[j].ZZOBJNR;
-							if (data.TIMESHEETS.RECORDS[j].DESCR === "") {
-								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].ZZCATSSHORTT;
+							if (data.TIMESHEETS.RECORDS[j].DESCR === "" && data.CATS_EXT[j].LTXA1 !== "") {
+								data.TIMESHEETS.RECORDS[j].DESCR = data.CATS_EXT[j].LTXA1;
 							}
 							if(data.CATS_EXT_TASK && data.TIMESHEETS.RECORDS[j].DAYS) {
 								/* eslint-disable no-loop-func */
@@ -516,7 +516,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}).success(function(data) {
 					deferred.resolve(data);
 				}).error(function(data, status) {
-					deferred.reject("HTTP-Status of write posting call is " + status);
+					$log.log("POST-Request to " + WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile + " failed. HTTP-Status: " + status);
+					deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
 				});
 			});
 			return deferred.promise;

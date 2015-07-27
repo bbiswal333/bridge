@@ -43,6 +43,7 @@ angular.module('bridge.app').
 	    		} else {
 	    			bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
 	    		}
+				bridgeConfig.store(bridgeDataService);
 	    	}
 	    };
 
@@ -57,10 +58,12 @@ angular.module('bridge.app').
 
 	    $scope.addAppInstance = function(metadata) {
 	    	bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
+			bridgeConfig.store(bridgeDataService);
 	    };
 
 	    $scope.removeAppInstance = function(metadata) {
 	    	var lastInstance = appCreator.getInstancesByType(metadata.module_name)[appCreator.getInstancesByType(metadata.module_name).length - 1];
 	    	bridgeDataService.removeAppById(lastInstance.metadata.guid);
+			bridgeConfig.store(bridgeDataService);
 	    };
 }]);

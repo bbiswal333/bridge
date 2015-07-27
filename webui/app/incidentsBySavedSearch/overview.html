@@ -1,0 +1,34 @@
+<div>
+	<div ng-if="dataInitialized.value" style="height:140px">
+		<div title="{{config.getSelectedSavedSearch().DESCRIPTION}}" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden; margin-bottom: 3px;">
+			Search: {{config.getSelectedSavedSearch().DESCRIPTION}}
+		</div>
+		<div ng-if="showNoMessages == false" style="height: 90%">
+			<div class="ic-prio_container" >
+				<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
+					<bridge.conditional-link navigate-to="/detail/incidentSavedSearch/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
+						<div class="prio_box" style="color:white">
+							<p>{{prios[$index].description}}</p>
+						</div>
+						<div class="prio_content_box" style="color:white">
+							<p ng-if="prios[$index].total<=99">{{prios[$index].total}}</p>
+							<p ng-if="prios[$index].total>=100">+99</p>
+						</div>
+					</bridge.conditional-link>
+				</div>
+			</div>
+			<div class="ic-btn-container">
+				<bridge.button ng-click="navigateToDetailAllTickets()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Show All Tickets of Saved Search"><i class="fa fa-cubes"></i></bridge.button>
+			</div>
+		</div>
+
+		<div ng-if="showNoMessages">
+			You have no incidents to display!
+		</div>
+
+	</div>
+	<div ng-if="dataInitialized.value == false && box.errorText != ''">
+		<a style="font-weight: bold;" href="https://support.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-language=EN">Go to BCP</a>
+	</div>
+
+</div>

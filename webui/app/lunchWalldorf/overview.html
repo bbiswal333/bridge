@@ -1,6 +1,6 @@
-<div class="app-lunchWalldorf-container" style="overflow-y: auto">
+<div class="app-lunchWalldorf-container" ng-class="{'backPic':(chosenbackend!='WDF' && chosenbackend!='KAR')}" style="overflow-y: auto">
     <div ng-if="contentLoaded">
-        <b>{{screendate}}</b>
+        <b><div ng-class="{'date':(chosenbackend!='WDF' && chosenbackend!='KAR')}">{{screendate}}</div></b>
         <table>
             <tr ng-repeat="soup in lunch.soup">
                 <td class="app-lunchWalldorf-icon" ng-if="$index === 0" rowspan="{{lunch.soup.length}}">
@@ -35,7 +35,7 @@
                 </td>
             </tr>
         </table>
-        <b><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></b>
+        <b><div ng-class="{'link' : (chosenbackend!='WDF' && chosenbackend!='KAR')}"><a href="{{portalLink}}" target="_blank">{{portalLinkText}}</a></div></b>
     </div>
     <div ng-if="!contentLoaded">
         {{noDataString}}<br>

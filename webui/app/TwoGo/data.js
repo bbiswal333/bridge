@@ -8,7 +8,6 @@ angular.module("app.TwoGo.data", []).service("app.TwoGo.dataService", function (
     var arrayTomorrow;
     var arrayTomorrowH;
     var whichLinkClicked;
-    var v = [];
 
     this.setArrayToday = function (array1) {
 
@@ -59,18 +58,4 @@ angular.module("app.TwoGo.data", []).service("app.TwoGo.dataService", function (
 
 
     };
-    this.setPv = function () {
-        v.push("pv");
-    };
-    this.setDv = function () {
-        v.push("dv");
-    };
-    this.setBoth = function () {
-        v.push("both");
-    };
-    this.getV = function () {
-        return v;
-    };
-
-
 });

@@ -18,7 +18,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 			url: GET_ROUTE_API + "?routeId=" + routeId + "&mode=fastest;car;traffic:enabled&routeattributes=wp,sm,sh,bb,lg,no,shape&legattributes=wp,mn,le,tt&maneuverattributes=tt,le,ti,li,pt,pl,rn,nr,no,ru&instructionformat=text" + appCodeParameter + appIdParameter + jsonAttributesParameter,
 			method: "GET",
 			withCredentials: false
-		}).success(successCallback).error(errorCallback);
+		}).success(successCallback).error(errorCallback !== undefined ? errorCallback : function(){});
 		return deferred;
 	}
 

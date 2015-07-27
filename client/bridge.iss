@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=Bridge
-AppVersion=0.9.5
+AppVersion=0.9.6
 DefaultDirName={userappdata}\bridge
 DisableDirPage=true
 DisableProgramGroupPage=true

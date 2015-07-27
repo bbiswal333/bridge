@@ -1,13 +1,13 @@
 {
     "app":
     {
-        "categories"            :   ["Beta"],
+        "categories"            :   ["Productivity"],
         "module_name"			:	"app.sirius",
         "title"					:	"Sirius",
         "icon_css"				:	"sirius-icon",
         "overview_directive"	:	"app.sirius",
         "needs_client"          :   false,
-        "beta"                  :   true,
+        "beta"                  :   false,
         "default_hidden"        :   true
     },
 	"modules" : [],

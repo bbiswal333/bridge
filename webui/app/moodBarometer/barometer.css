@@ -3,7 +3,8 @@
 }
 .emoticons{
 	float: left;
-    width:calc(100%/4);
+    /*width:calc(100%/4); does not work in IE10 when zooming to 125% */
+    width:calc(99%/4);
     height:100%;
     line-height: 95px;
     text-align: center;

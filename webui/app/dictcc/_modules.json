@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.dictcc",
+		"title"					:	"dict.cc",
+		"icon_css"				:	"fa fa-exchange",
+		"overview_directive"	:	"app.dictcc",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/dictcc/",
+				"templateUrl"	:	"app/dictcc/detail.html"
+			}
+		],
+		"description"			:	"Enter a text and translate it on dict.cc"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "data.js"],
+	"css_files" : []
+}
