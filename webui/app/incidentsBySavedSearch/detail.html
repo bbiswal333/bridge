@@ -19,9 +19,10 @@
 					 class="im-reporter-img"
 					 style="height: 32px;"
 					 ng-if="row.REPORTER_ID"/>
-				<a class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
-				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+				<a ng-if="row.REPORTER_ID" class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
+				<span ng-if="row.REPORTER_ID == ''">{{row.REPORTER_NAME}}</span>
+				<a ng-if="row.REPORTER_ID" href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a ng-if="row.REPORTER_ID" href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
 			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
 				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
