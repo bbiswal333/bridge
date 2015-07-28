@@ -1,0 +1,65 @@
+﻿<div id = gameBox style="float:left ;margin-left: 30px;">
+<!--First row-->
+<div id = "cell00" width = "50px" height = "35px" style="float:left" ng-click="markIt(0,0)"><img ng-src="{{tile[0][0].src}}" width = "30px" height = "30px"></img></div>
+
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencilupper.jpg" width = "10px" height = "35px"></img>
+</div>
+
+<div id = "cell01" width = "50px" height = "35px" style="float:left" ng-click="markIt(0,1)"><img ng-src="{{tile[0][1].src}}" width = "30px" height = "30px"></img></div>
+
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencilupper.jpg" width = "10px" height = "35px"></img>
+</div>
+
+<div id = "cell02" width = "50px" height = "35px"   ng-click="markIt(0,2)"><img ng-src="{{tile[0][2].src}}" width = "30px" height = "30px"></img></div>
+
+<div id = "partition">
+<img src="../../app/tictactoe/images/pencil.jpg" width = "115px" height = "10px"></img>
+</div>
+
+<!--Second row-->
+<div id = "cell10" width = "50px" height = "35px" style="float:left" ng-click="markIt(1,0)"><img ng-src="{{tile[1][0].src}}" width = "30px" height = "30px"></img></div>
+
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencilmid.jpg" width = "10px" height = "35px"></img>
+</div>
+
+<div id = "cell11" width = "50px" height = "35px" style="float:left" ng-click="markIt(1,1)"><img ng-src="{{tile[1][1].src}}" width = "30px" height = "30px"></img></div>
+
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencilmid.jpg" width = "10px" height = "35px"></img>
+</div>
+
+<div id = "cell12" width = "50px" height = "35px"  ng-click="markIt(1,2)"><img ng-src="{{tile[1][2].src}}" width = "30px" height = "30px"></img></div>
+
+<div>
+<img src="../../app/tictactoe/images/pencil.jpg" width = "115px" height = "10px"></img>
+</div>
+
+<!--Third row-->
+<div id = "cell20" width = "50px" height = "35px" style="float:left" ng-click="markIt(2,0)"><img ng-src="{{tile[2][0].src}}" width = "30px" height = "30px"></img></div>
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencildown.jpg" width = "10px" height = "35px"></img>
+</div>
+<div id = "cell21" width = "50px" height = "35px" style="float:left" ng-click="markIt(2,1)"><img ng-src="{{tile[2][1].src}}" width = "30px" height = "30px"></img></div>
+<div style="float:left">
+<img src="../../app/tictactoe/images/pencildown.jpg" width = "10px" height = "35px"></img>
+</div>
+<div id = "cell22" width = "50px" height = "35px"  ng-click="markIt(2,2)"><img ng-src="{{tile[2][2].src}}" width = "30px" height = "30px"></img></div>
+</div>
+
+<div style="font-size: 20px; font-weight: bold;float:left ; margin-left: 20px;">{{result}} <br/>
+<img ng-src="{{resultImg}}" height="100px" width="100px"style="margin-left: 10px;"></div>
+
+<div id = "resetBTN">
+  <div> <img src="../../app/tictactoe/images/winner.png" height="25px" width="25px"> </img> <b>{{countUser}} </b></div>
+  <div> <img src="../../app/tictactoe/images/loser.png" height="25px" width="25px"> </img><b>{{countComputer}}</b> </div>
+  <div> <img src="../../app/tictactoe/images/draw.png" height="25px" width="25px"> </img> <b>{{countDraw}}</b></div>
+  <div ng-click="reset()" style="margin-top: 30px;">
+<img src ="../../app/tictactoe/images/restart.png" alt="Restart" width="36" height="36" />
+</div>
+</div>
+
+
+

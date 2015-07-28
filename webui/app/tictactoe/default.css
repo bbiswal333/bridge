@@ -1,0 +1,37 @@
+#gameBox{
+
+}
+#cell00{
+margin : none;
+}
+#cell01{
+margin : none;
+}
+#cell02{
+margin : none;
+}
+#cell10{
+margin : none;
+}
+#cell11{
+margin : none;
+}
+#cell12{
+margin : none;
+}
+#cell20{
+margin : none;
+}
+#cell21{
+margin : none;
+}
+#cell22{
+margin : none;
+}
+#partition{
+margin : none;
+}
+#resetBTN{
+float : right;
+  margin-right: 18px;
+}
