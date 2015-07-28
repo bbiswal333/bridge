@@ -1,4 +1,4 @@
-angular.module('app.customerMessages').service("app.customerMessages.configservice", ["bridgeDataService", function (bridgeDataService){
+angular.module('app.customerMessages').service("app.customerMessages.configservice", ["bridgeDataService", "bridge.ticketAppUtils.configUtils", function (bridgeDataService, configUtils){
     //set the default configuration object
     var Config = function(appId){
         this.data = {};
@@ -12,23 +12,14 @@ angular.module('app.customerMessages').service("app.customerMessages.configservi
         this.data.selection.assigned_me = false;
         this.data.selection.colleagues = false;
         this.data.lastDataUpdate = null;
+        this.data.columnVisibility = [true, true, false, true, true, true];
 
         this.appId = appId;
         this.isInitialized = false;
         this.initialize = function () {
-            var property;
             this.isInitialized = true;
             var oConfigFromBackend = bridgeDataService.getAppConfigById(this.appId);
-
-            if (oConfigFromBackend.hasOwnProperty("data")){
-                for (property in oConfigFromBackend.data) {
-                    this.data[property] = oConfigFromBackend.data[property];
-                }
-            } else {
-                for (property in oConfigFromBackend) {
-                    this.data[property] = oConfigFromBackend[property];
-                }
-            }
+            configUtils.applyBackendConfig(this.data, oConfigFromBackend);
 
             this.data.lastDataUpdate = new Date(this.data.lastDataUpdate);
         };
