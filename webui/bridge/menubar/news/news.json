@@ -120,7 +120,7 @@
             "preview":  "Quick links are now available in the bridge search.",
             "date":     "2015-07-27",
 						"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
-            "content":  "Now you can search for quicklinks (a.k.a. /go in the portal) using the search bar on bridge. <br/> Currently it works only in Internet Explorer and searches only on the quick link itself, not the description."
+            "content":  "Now you can search for quicklinks (a.k.a. /go in the portal) using the search bar on bridge. <br/> Currently searches only on the quick link itself, not the description."
         }
 	]
 }
