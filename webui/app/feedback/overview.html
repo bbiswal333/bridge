@@ -8,7 +8,7 @@
     "{{answer}}"
 </div>
 <div class="employee-layer">
-    <i class="fa fa-heart-o"></i>
+    <span><i ng-click="myLike = !myLike" ng-class="{'fa fa-heart-o' : myLike,'fa fa-heart':!myLike}"></i> 123</span>
     <span class="employee">(Employee: {{employee}})</span>
 
 </div>
@@ -30,7 +30,7 @@
             <!--</bridge.button>-->
         <!--</div>-->
 
-        <bridge.button class="addBtn btn-bottom" ng-click="add()"><i class="fa fa-plus"></i> Add Answer</bridge.button>
+        <bridge.button state="'invisible-button'" class="addBtn btn-bottom" ng-click="add()"><i class="fa fa-plus"></i></bridge.button>
     </div>
 
 </div>

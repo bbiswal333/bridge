@@ -14,7 +14,7 @@
 }
 
 .well-custom {
-    min-height: 20px;
+    /*min-height: 20px;*/
     border-radius: 5px;
     margin-bottom: 2px;
 }
@@ -59,11 +59,12 @@ hr.bottom {
     background-color: #f5f5f5;
     color: #428BCA;
     padding: 5px;
-    padding-right: 10px;
+    /*padding-right: 10px;*/
     border-radius: 5px;
     text-align: center;
     display: inline-block;
     line-height: 1em;
+    margin-top:.2em;
     /*margin-top: 0.4em;*/
 }
 
@@ -75,9 +76,9 @@ hr.bottom {
     display: inline-block;
     line-height: 1em;
     margin: 0.1em;
-    /*margin-top: 0.3em;*/
-    width: 100px;
-    height: 25px;
+    margin-top: 0.2em;
+    width: 30px;
+    height: 22px;
 }
 
 .btn-bottom:hover {
@@ -260,4 +261,14 @@ hr.bottom {
     right: 50%;
     bottom: 50%;
 }
+
+.fa-heart{
+    
+    transition-duration: 4s;
+    transition-timing-function: linear;
+}
+.fa-heart-o{
+ color: #418AC9;
+}
+
 
