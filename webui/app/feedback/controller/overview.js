@@ -3,6 +3,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
     var directiveController = ['$scope', '$location', 'feedback', '$interval', '$timeout', function ($scope, $location, feedback, $interval, $timeout) {
         $scope.like_count = 1;
+        var ip = "10.18.170.23:5000";
         $scope.liked = false;
         $scope.btn = true;
         $scope.text = "Meine Antwort!";
@@ -46,7 +47,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
 
                     type: 'GET',
                     //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers?page='+p+ '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}',
-                    url: '/api/get?url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?page=' + p + '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}'),
+                    url: '/api/get?url=' + encodeURIComponent('http://'+ip+'/api/2.0/answers?page=' + p + '&max_results=40&where={"question_id":' + '"' + $scope.qId + '"' + '}'),
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     timeout: 3000,
@@ -78,7 +79,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             $.ajax({
                 type: 'GET',
                 //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/questions/topics',
-                url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/questions/topics'),
+                url: '/api/get?url=' + encodeURI('http://'+ip+'/api/2.0/questions/topics'),
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 timeout: 3000,
@@ -98,7 +99,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
             $.ajax({
                 type: 'GET',
                 //url:         'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
-                url: '/api/get?url=' + encodeURI('http://10.18.170.23:5000/api/2.0/answers'),
+                url: '/api/get?url=' + encodeURI('http://'+ip+'/api/2.0/answers'),
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 timeout: 3000,
