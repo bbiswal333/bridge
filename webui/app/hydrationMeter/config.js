@@ -15,10 +15,10 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 	this.initialize = function(configLoadedFromBackend) {
 		var today = new Date();
 		var todayString = "" + today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
+		//this.values.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
 		if (this.values.date == "") {
 			this.values.date = todayString;
 		};
-		console.log(configLoadedFromBackend.values.date);
 		if (configLoadedFromBackend !== undefined && configLoadedFromBackend !== {} &&	configLoadedFromBackend.values && configLoadedFromBackend.values.date !== todayString )
 		{
 			// Standard case: Get config from backend
@@ -43,5 +43,6 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 		this.values.targetCups = oldValues.targetCups;
 		this.values.currentCups = oldValues.currentCups;
 		this.values.date = oldValues.date;
+		//this.values.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
 	};
 });

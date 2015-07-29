@@ -1,5 +1,5 @@
-﻿angular.module('app.hydrationMeter', ['app.hydrationMeter.data']);
-angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydrationMeter.configService', 'app.hydrationMeter.dataService', function (configService, dataService) {
+﻿angular.module('app.hydrationMeter', []);
+angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydrationMeter.configService', function (configService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
@@ -12,7 +12,6 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		};
 		$scope.box.boxSize = "2";
 
-		$scope.many = dataService.getReloadCounter();
 		$scope.values = configService.values;
 		$scope.defaultColor = "red-font";
 		$scope.defaultSize = "";
@@ -30,8 +29,6 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.message = $scope.messages[0];
 
 		$scope.getData = function() {
-			dataService.reload();
-			$scope.many = dataService.getReloadCounter();
 			$scope.values = configService.values;
 			$scope.calculateRating();
 			$scope.updateMessage();
@@ -45,7 +42,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData,60);
 
-		// Example function for notifications
+	/*	// Example function for notifications
 		$scope.testNotification = function() {
 			notifier.showInfo("This is just a test",
 				"As the title says: nothing to do here :-)",
@@ -53,7 +50,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 				function() {},
 				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
 		};
-
+*/
 		//Drank another cup
 		$scope.drankCups = function(cups) {
 			configService.drankCup(cups);
@@ -103,7 +100,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			} else if ( position >= $scope.messages.length) {
 				position = $scope.messages.length - 1;
 			};
-			$scope.message = $scope.messages[position];
+			$scope.message = $scope.messages[position] + " " + $scope.values.userid;
 		};
 		$scope.getMessage = function() {
 			return $scope.message;
