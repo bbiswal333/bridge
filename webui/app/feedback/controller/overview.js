@@ -12,6 +12,7 @@ angular.module('app.feedback').directive('app.feedback', ['app.feedback.configSe
         $scope.flowDelay = 700;
         $scope.allAnswersArray = [];
         $scope.questionsArray = [];
+        $scope.myLike = true;
         var start = 0;
         var p = 1;
 

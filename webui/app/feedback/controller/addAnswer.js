@@ -62,8 +62,6 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
             },
             dataType: 'json',
             timeout: 1000,
-            retry_max: 1,
-            async: false,
             data: postObject
         }).success(function (res) {
 
@@ -73,6 +71,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
             else {
                 $scope.waitUntilSuccess = false;
                 $scope.currentLetters = "";
+                $scope.noLetters = true;
                 $scope.sent = true;
 
                 //console.log("waitUntilSuccess:");
