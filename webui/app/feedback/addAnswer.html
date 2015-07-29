@@ -16,8 +16,11 @@
                     </bridge.textarea>
                     <div class="countLetters">|{{maxLetters-currentLetters.length}}/500 | min. 4 letters | <span ng-if="sent && !waitUntilSuccess" ><i style="color:green;" class="fa fa-check"></i> sent  |</span></div>
 
-                    <bridge.button ng-show="noLetters "  class="submit" state="'disabled'">Send</bridge.button>
-                    <bridge.button ng-show="!noLetters" ng-hide="!waitUntilSuccess" class="submit" ng-click="add()" >Send</bridge.button>
+                    <bridge.button ng-if="!noLetters"  class="submit" ng-click="add()">Send</bridge.button>
+                    <bridge.button ng-if="noLetters"  class="submit" state="'disabled'" >Send</bridge.button>
+
+            {{noLetters}}
+
 
                       <div ng-class="{'fa fa-spin fa-spinner fa-2x mySpinner' : waitUntilSuccess}">
             </div>
@@ -70,5 +73,5 @@
 
         </div>
 
-    <button ng-click="changeStatus()">test</button>
+
 

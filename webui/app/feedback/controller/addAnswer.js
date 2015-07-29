@@ -5,13 +5,14 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
 
     $scope.text2 = "Mein erster Satz!";
     $scope.maxLetters = 500;
+    var ip = "10.18.170.23:5000";
     $scope.anonym = false;
     feedback.getQuestion($scope);
     feedback.setQuestion($scope);
     $scope.values = feedback.values;
     $scope.registered = false;
     $scope.currentLetters = '';
-    $scope.noLetters = true;
+    $scope.noLetters =true;
     $scope.waitUntilSuccess = false;
     $scope.sent = false;
 
@@ -26,17 +27,15 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
 
     //check registration on CultureWall
     $http({
-        url: 'api/get?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/user'),
+        url: 'api/get?&url=' + encodeURIComponent('http://'+ip+'/api/2.0/user'),
         //url: 'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
         method: "GET",
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
         },
         dataType: 'json',
-        timeout: 1000,
-        async: false,
-
-        retry_max: 1
+        timeout: 3000,
+        retry_max: 3
     }).success(function (res) {
         //console.log($scope.nutzer.nummer);
         $scope.registered = res.user_registered;
@@ -54,7 +53,7 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         };
         $http({
             // url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers?anon=true'),
-            url: 'api/post?&url=' + encodeURIComponent('http://10.18.170.23:5000/api/2.0/answers'),
+            url: 'api/post?&url=' + encodeURIComponent('http://'+ip+'/api/2.0/answers'),
             //url: 'https://culturewall-demo.mo.sap.corp/api/2.0/answers',
             method: "POST",
             headers: {
@@ -92,6 +91,13 @@ angular.module('app.feedback').controller('addCtrl', ['$scope', 'feedback', '$ht
         //$scope.values.anonym = !$scope.values.anonym;
         $scope.currentLetters = "sd";
     };
+//$scope.changeState = function(){
+//    var h1 = document.getElementsByTagName("button")[0];
+//    var att = document.createAttribute("disabled");
+//    console.log(h1);
+//h1.setAttributeNode(att);
+//};
+
 
     $scope.$watch(function (scope) {
             return scope.currentLetters;
