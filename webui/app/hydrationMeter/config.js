@@ -3,19 +3,20 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 	this.values = {
 		targetCups : 10,
 		currentCups : 0,
-		date: ""
+		date: "",
+		notify : true
 	};
 
 	this.defaultValues = {
 		targetCups : 10,
 		currentCups : 0,
-		date: ""
+		date: "",
+		notify : true
 	};
 
 	this.initialize = function(configLoadedFromBackend) {
 		var today = new Date();
 		var todayString = "" + today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
-		//this.values.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
 		if (this.values.date == "") {
 			this.values.date = todayString;
 		};
@@ -43,6 +44,5 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 		this.values.targetCups = oldValues.targetCups;
 		this.values.currentCups = oldValues.currentCups;
 		this.values.date = oldValues.date;
-		//this.values.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
 	};
 });

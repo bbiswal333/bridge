@@ -4,11 +4,10 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
 
 		// Required information to get settings icon/ screen
-		$scope.box.settingsTitle = "Configure Test App";
+		$scope.box.settingsTitle = "Set configurations";
 		$scope.box.settingScreenData = {
 			templatePath: "hydrationMeter/settings.html",
-				controller: angular.module('app.hydrationMeter').appTestSettings,
-				id: $scope.boxId
+				controller: angular.module('app.hydrationMeter').appTestSettings
 		};
 		$scope.box.boxSize = "2";
 
@@ -22,35 +21,44 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			"You didn't drink anything... what happened?",
 			"Glad you started drinking, how do you feel now?",
 			"Half way there! You go, buddy ;-)",
-			"You can do it! Go for it {{userName}}",
+			"You can do it! Go for it",
 			"Champion!",
 			"Don't drink too much, you might get a tummy ache!"
 		];
 		$scope.message = $scope.messages[0];
 
+		$scope.addNotification = function() {
+			if ($scope.canNotify()) {
+				notifier.showInfo(
+					"Psssst, It's been a while you didn't drink water!",
+					"Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?",
+					$scope.$parent.module_name, function() {}, 5000, null);
+			};
+
+		};
+
+		$scope.canNotify = function() {
+			if ($scope.values.notify == false) {
+				return false;
+			};
+			return true;
+		}
+		
 		$scope.getData = function() {
 			$scope.values = configService.values;
 			$scope.calculateRating();
 			$scope.updateMessage();
+			$scope.addNotification();
 		};
 
 		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
+		$scope.box.returnConfig = function() {
 			return angular.copy(configService);
 		};
 
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData,60);
 
-	/*	// Example function for notifications
-		$scope.testNotification = function() {
-			notifier.showInfo("This is just a test",
-				"As the title says: nothing to do here :-)",
-				$scope.$parent.module_name,
-				function() {},
-				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
-		};
-*/
 		//Drank another cup
 		$scope.drankCups = function(cups) {
 			configService.drankCup(cups);
@@ -100,7 +108,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			} else if ( position >= $scope.messages.length) {
 				position = $scope.messages.length - 1;
 			};
-			$scope.message = $scope.messages[position] + " " + $scope.values.userid;
+			$scope.message = $scope.messages[position];
 		};
 		$scope.getMessage = function() {
 			return $scope.message;

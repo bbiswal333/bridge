@@ -1,9 +1,15 @@
 <div style="width: 100%">
 	<p>
 		<form name="form">
-			<div class="row">
-					<bridge.input model="values.targetCups" placeholder="Target number of cups per day"></bridge.input>
+			<div class="form-group">
+				<div>Target number of cups per day</div>
+				<bridge.input placeholder="Target number of cups per day" model="values.targetCups"></bridge.input>
 			</div>
+			<div class="form-group">
+				<div>Notifications</div>
+				<bridge.checkbox checked-label="Notification active" unchecked-label="Notification inactive" is-checked="values.notify"></bridge.checkbox>
+			</div>
+
 		</form>
 	</p>
 	<div class="row" >
