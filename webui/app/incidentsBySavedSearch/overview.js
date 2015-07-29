@@ -100,7 +100,7 @@ angular.module('app.incidentSavedSearch').directive('app.incidentSavedSearch', f
                 savedSearchData.loadData();
             }
 
-            $scope.box.reloadApp(reloadAppData, 60 * 20);
+            $scope.box.reloadApp(reloadAppData, 60 * 10);
         }
     ];
 

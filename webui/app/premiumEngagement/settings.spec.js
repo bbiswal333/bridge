@@ -39,8 +39,8 @@ describe("The premiumEngagement settings controller", function(){
             "$scope": $rootScope
         });
 
-        $rootScope.addCustomer({ sId: "12345", sName: "" });
-        $rootScope.addCustomer({ sId: "12345", sName: "" });
+        $rootScope.addCustomer("12345");
+        $rootScope.addCustomer("12345");
 
         expect(config.data.aConfiguredCustomers.length).toBe(1);
     });
@@ -64,7 +64,7 @@ describe("The premiumEngagement settings controller", function(){
             "$scope": $rootScope
         });
 
-        $rootScope.addCustomer({ sId: "12345", sName: ""});
+        $rootScope.addCustomer("12345");
         expect(ticketData.loadTicketData).toHaveBeenCalled();
     });
 
