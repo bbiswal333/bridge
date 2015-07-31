@@ -1,14 +1,12 @@
 ﻿<div>{{getMessage()}}</div>
-<div ><i ng-class="getCupStyle()"></i></div>
+<div style="float:right;" ><i ng-class="getCupStyle()"></i></div>
 <div class="btn-group">
-  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">I drank</button>
+  <button title="Click to select the number of cups you drank" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><div class="fa fa-plus-circle"></div></button>
   <ul class="dropdown-menu">
     <div><a target="_blank" href="" ng-click="drankCups(1)"><i class="fa fa-glass"></i>1 cup ( 250 mL )</a></div>
     <div><a target="_blank" href="" ng-click="drankCups(2)"><i class="fa fa-glass fa-2x"></i>2 cups ( 500 mL )</a></div>
     <div><a target="_blank" href="" ng-click="drankCups(3)"><i class="fa fa-glass fa-3x"></i>3 cups ( 750 mL )</a></div>
     <div><a target="_blank" href="" ng-click="drankCups(4)"><i class="fa fa-glass fa-4x"></i>4 cups ( 1 L )</a></div>
   </ul>
-  <!-- This button is not needed here, taking it to the setting page 
-  	<button class="btn" ng-click="resetData()">Reset</button>
-  	-->
+    <button title="Reset App Data" class="btn" ng-click="resetData()"><div class="fa fa-refresh"></div></button>
 </div>

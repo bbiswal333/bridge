@@ -9,7 +9,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			templatePath: "hydrationMeter/settings.html",
 				controller: angular.module('app.hydrationMeter').appTestSettings
 		};
-		$scope.box.boxSize = "2";
+		$scope.box.boxSize = "1";
 
 		$scope.values = configService.values;
 		$scope.defaultColor = "red-font";
@@ -17,11 +17,12 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.rating = {};
 		$scope.rating.color = $scope.defaultColor;
 		$scope.rating.size = $scope.defaultSize;
+		var noWaterYetMessage =	"You didn't drink anything... what happened?";
 		$scope.messages = [
-			"You didn't drink anything... what happened?",
 			"Glad you started drinking, how do you feel now?",
-			"Half way there! You go, buddy ;-)",
 			"You can do it! Go for it",
+			"Half way there! You go, buddy ;-)",
+			"Almost there! Just a few cups more to go.",
 			"Champion!",
 			"Don't drink too much, you might get a tummy ache!"
 		];
@@ -29,9 +30,13 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 
 		$scope.addNotification = function() {
 			if ($scope.canNotify()) {
+				var msg = "Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?";
+				if( $scope.values.currentCups == 0 ) {
+					msg = "Aren't you feeling dehydrated? You haven't drank any water today yet. How about you go get yourself a cup?";
+				} 
 				notifier.showInfo(
 					"Psssst, It's been a while you didn't drink water!",
-					"Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?",
+					msg,
 					$scope.$parent.module_name, function() {}, 5000, null);
 			};
 
@@ -40,8 +45,11 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.canNotify = function() {
 			if ($scope.values.notify == false) {
 				return false;
-			};
-			return true;
+			} else if ( ( $scope.values.lastTimeDrank + 3600000 ) <= ( new Date() ).getTime()) {
+				// Notify only if it has been more than one hour without drinking or haven't drank at all
+				$scope.values.lastTimeDrank = ( new Date() ).getTime();
+				return true;
+			}
 		}
 		
 		$scope.getData = function() {
@@ -83,13 +91,13 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			var percentage = $scope.getPercentage();
 			if ( percentage > 100 ) {
 				$scope.rating.color = "green-font fa-flip-vertical";
-				$scope.rating.size = "fa-3x";
-			} else if ( percentage >= 85 ) {
+				$scope.rating.size = "fa-4x";
+			} else if ( percentage >= 75 ) {
 				$scope.rating.color = "basic-blue-font";
-				$scope.rating.size = "fa-2x";
-			} else if ( percentage >= 50 ) {
+				$scope.rating.size = "fa-3x";
+			} else if ( percentage >= 40 ) {
 				$scope.rating.color = "orange-font";
-				$scope.rating.size = "fa-lg";
+				$scope.rating.size = "fa-2x";
 			} else {
 				$scope.rating.color = $scope.defaultColor;
 				$scope.rating.size = $scope.defaultSize;
@@ -104,11 +112,12 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			var percentage = $scope.getPercentage();
 			var position = Math.round( $scope.messages.length * percentage / 100 ) - 1;
 			if (position < 0) {
-				position = 0;
+				$scope.message = noWaterYetMessage;
 			} else if ( position >= $scope.messages.length) {
-				position = $scope.messages.length - 1;
+				$scope.message = $scope.messages[$scope.messages.length - 1];
+			} else {
+				$scope.message = $scope.messages[position];
 			};
-			$scope.message = $scope.messages[position];
 		};
 		$scope.getMessage = function() {
 			return $scope.message;
