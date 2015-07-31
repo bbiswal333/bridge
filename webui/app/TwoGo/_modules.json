@@ -6,23 +6,7 @@
     "icon_css": "fa fa-cab",
     "overview_directive": "app.TwoGo",
     "needs_client": false,
-    "beta": true,
-    "beta_users": [
-      "D059391",
-      "D023280",
-      "D036774",
-      "D054777",
-      "I824297",
-      "D061708",
-      "D053915",
-      "D026602",
-      "D024908",
-      "D023374",
-      "D032841",
-      "D046838",
-      "D053838",
-      "C5136476"
-    ],
+    "beta": false,
     "routes": [
       {
         "route": "/detail/TwoGo/",

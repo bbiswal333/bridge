@@ -100,5 +100,3 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		link: linkFn
 	};
 }]);
-
-

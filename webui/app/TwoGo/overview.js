@@ -2,18 +2,19 @@
 angular.module('app.TwoGo', ['app.TwoGo.data']);
 angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', 'app.TwoGo.dataService', function (configService, dataService) {
     var directiveController;
-    directiveController = ['$scope', '$http', function ($scope, $http) {
+    directiveController = ['$scope', '$http', '$log', function ($scope, $http, $log) {
         $scope.setLinkClicked = function (i) {
             dataService.setWhichLinkClicked(i);
         };
-//variable for the Dates
+//variables for the Dates
         var startDay = 0;
         var endDay = 0;
         var endDaySecond = 0;
-//Url from the TwoGo server
-        var BASE_URL = "https://twogo-sap-internal.cld.ondemand.com/web/rpc/";
+//Urls from the TwoGo server
+        var BASE_URL_LOGIN = "https://access.twogo.com/web/rpc/";
+        var BASE_URL_BACKEND = "https://www.twogo.com/web/rpc/";
         var csrf_token = "";
-        //initialisation of the Tables
+        //initialisation of the Tables in the start screen
         $scope.tableSize = "40%";
         $scope.spinner = "fa fa-pulse fa-spinner  fa-4x";
         $scope.ridesTomorrowMorning = "";
@@ -25,47 +26,21 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         $scope.Header = "TWOGO RIDES IN YOUR NEIGHBORHOOD";
         $scope.HeaderToday = "";
         $scope.HeaderTomorrow = "";
-        $scope.checkBrowser = function () {
-//setting the Dates
-            startDay = new Date();
-            endDay = new Date();
-            endDay.setHours(0, 0, 0, 0);
-            endDay.setDate(endDay.getDate() + 1);
-            endDaySecond = new Date();
-            endDaySecond.setHours(0, 0, 0, 0);
-            endDaySecond.setDate(endDaySecond.getDate() + 2);
-            if (endDaySecond.getUTCDay() === 6) {
+        //function which checks which Browser is used
 
-                endDaySecond.setDate(endDaySecond.getDate() + 2);
-
-            } else {
-
-                if (endDaySecond.getUTCDay() === 0) {
-
-                    endDaySecond.setDate(endDaySecond.getDate() + 1);
-
-                }
-            }
-            //check if InternetExplorer or any other browser
-            if ($scope.checkBrowserName('MSIE')) {
-                $(function () {
-                    $scope.http();
-                });
-            } else {
-                $(function () {
-                    $scope.loginOther();
-                });
-            }
-        };
+        //Initilisation of start screen(setting box size etc.)
+        //Setting Data for the SettingsScreen
         $scope.box.boxSize = "2";
         $scope.box.settingsTitle = "Options";
         $scope.box.settingScreenData = {
             templatePath: "TwoGo/settings.html",
             controller: angular.module('app.TwoGo').appTwoGoSettings
         };
+        //function for getting the config after Page Reload
         $scope.box.returnConfig = function () {
             return angular.copy(configService);
         };
+        //Batchcall for getting the Work POI and the Rideproposals of the USer
         $scope.getRides = function () {
 //Setting the wanted Methods and the parameters
             var data = {
@@ -96,10 +71,11 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             };
             data = JSON.stringify(data, undefined, 2);
 //call for getting the Rides and the WORKPOI if exists
-            $http.post(BASE_URL + "Batch", data, {
+            $http.post(BASE_URL_BACKEND + "Batch", data, {
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-Token": csrf_token
+
                 }
             }, {
                 withCredentials: true
@@ -109,21 +85,24 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         alert("ERROR:" + JSON.stringify(response.error));
                     }
                     else {
+                        //variable for counting the rideProposals
                         var toHometoday = 0;
                         var toWork = 0;
                         var toHome = 0;
                         var i = 0;
+                        //Variable to check for dublicates
                         var duplicate1 = "";
                         var duplicate2 = "";
                         var duplicate3 = "";
                         var startOfTomorrowOrMonday = new Date(endDaySecond);
-                    startOfTomorrowOrMonday.setDate(endDaySecond.getDate() - 1);
+                        startOfTomorrowOrMonday.setDate(endDaySecond.getDate() - 1);
+                        //Arrays for the different Times(Toda to Home, Tomorroe To Work, Tomorrow to Home)
                         $scope.arrayToHome = [];
                         $scope.arrayToHomeToday = [];
                         $scope.arrayToWork = [];
                         var rideProposals = response.result[1].result;
                         var v = [];
-                        //function to create the Arrays for Today Tomorrow To Work and Tomorrow to Home
+                        //function to create the Arrays for Today to Home, Tomorrow To Work and Tomorrow to Home
                         $scope.createArray = function (arrayToCreate) {
                             arrayToCreate.push([new Date(rideProposals[i]["earliestDeparture"]).toLocaleTimeString(navigator.language, {
                                 hour: '2-digit',
@@ -165,6 +144,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                         }
                                     }
                                 }
+                                //Counting the rideproposals an checking for dublicates
                                 if (endDay >= new Date(rideProposals[i]["earliestDeparture"]) && rideProposals[i]["destination"]["shortName"] === "HOME") {
                                     if ($scope.arrayToHomeToday.length === 0) {
                                         duplicate1 = $scope.setConcatValue(duplicate1);
@@ -249,13 +229,13 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                                 }
                             }
                         }
-                        //changing one heading if nor WORKPOI exists
+                        //changing one header if no WORKPOI exists
                         if (response.result[0].result == null) {
                             $scope.tomorrow = "From HOME";
                         } else {
                             $scope.tomorrow = "To WORK";
                         }
-
+//the which angularjs reads(See in data.html) gets the values of the arrays where the right ride poposals are sorted an wihtout dublicates
                         dataService.setArrayToday(
                             $scope.arrayToHomeToday);
 
@@ -265,7 +245,7 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         dataService.setArrayTomorrow(
                             $scope.arrayToWork
                         );
-                        // and writing the number into the right tables
+                        //  writing the values into the right tables(deleting spinner etc.)
                         $scope.spinner = "";
                         $scope.tableSize = "20%";
                         $scope.ridesToday = toHometoday.toString();
@@ -283,130 +263,98 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                     }
                 })).
                 error(function (status) {
-                    "Request failed";
+                    $log.error("GetRideProposals failed");
                     $scope.status = status;
                 });
         };
-//function which includes the Ajax call for the login of the user
-        $scope.loginOther = function () {
-            var data = {
-                "method": "login",
-                "params": [],
-                "id": 1
-            };
-            $scope.url = function (response) {
-                alert(response.result[1].result[0]["createAsPassengerUrl"]);
-            };
-            // convert the javascript data object to a pretty printed JSON string
-            data = JSON.stringify(data, undefined, 2);
-            // make a Ajax POST call via the jQuery Ajax interface
-            $http.post(BASE_URL + "Authentication", data, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": "Fetch"
+//function which includes the http.call for the login of the user when no IE is used
+        $scope.login = function () {
+            startDay = new Date();
+            endDay = new Date();
+            endDay.setHours(0, 0, 0, 0);
+            endDay.setDate(endDay.getDate() + 1);
+            endDaySecond = new Date();
+            endDaySecond.setHours(0, 0, 0, 0);
+            endDaySecond.setDate(endDaySecond.getDate() + 2);
+            if (endDaySecond.getUTCDay() === 6) {
+
+                endDaySecond.setDate(endDaySecond.getDate() + 2);
+
+            } else {
+
+                if (endDaySecond.getUTCDay() === 0) {
+
+                    endDaySecond.setDate(endDaySecond.getDate() + 1);
+
                 }
-            }, {
-                withCredentials: true
-            }).success($.proxy(function (response) {
-                if (response.error) {
-                    $scope.Header = ("You First need to create a TwoGo User ");
-                    $scope.linked = ("https://www.twogo.com/#signup");
-                    $scope.here = ("here");
-                    $scope.ridesTomorrowMorning = "";
-                    $scope.ridesTomorrowEvening = "";
-                    $scope.ridesToday = "";
-                    $scope.tomorrowh = "";
-                    $scope.today = "";
-                    $scope.tomorrow = "";
-                    $scope.HeaderToday = "";
-                    $scope.HeaderTomorrow = "";
-                    $scope.spinner = "";
-                }
-                else {
-                    //  alert("SUCCESS:"+JSON.stringify(response.result));
-                    // csrf_token = response["result"]["csrf"]["header"].value;
-                    csrf_token = response["result"]["csrf"]["header"].value;
-                    $(function () {
-                        $scope.getRides();
-                    });
-                }
-            })).
-                error(function (status) {
-                    "Request failed";
-                    $scope.status = status;
-                });
-        };
-//function which includes the Ajax call for the login of the user using the created http value instat of the Xhr otherwise it wont work
-        $scope.loginIE = function () {
-            var data = {
-                "method": "login",
-                "params": [],
-                "id": 1
-            };
-            // convert the javascript data object to a pretty printed JSON string
-            data = JSON.stringify(data, undefined, 2);
-            // make a Ajax POST call via the jQuery Ajax interface
-            $http.post(BASE_URL + "Authentication", data, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-Token": "Fetch"
-                }
-            }, {
-                withCredentials: true
-            }).success($.proxy(function (response) {
-                if (response.error) {
-                    $scope.Header = ("You First need to create a TwoGo User ");
-                    $scope.linked = ("https://www.twogo.com/#signup");
-                    $scope.here = ("here");
-                    $scope.ridesTomorrowMorning = "";
-                    $scope.ridesTomorrowEvening = "";
-                    $scope.ridesToday = "";
-                    $scope.tomorrowh = "";
-                    $scope.today = "";
-                    $scope.tomorrow = "";
-                    $scope.HeaderToday = "";
-                    $scope.HeaderTomorrow = "";
-                    $scope.spinner = "";
-                }
-                else {
-                    //  alert("SUCCESS:"+JSON.stringify(response.result));
-                    // csrf_token = response["result"]["csrf"]["header"].value;
-                    csrf_token = response["result"]["csrf"]["header"].value;
-                    $(function () {
-                        $scope.getRides();
-                    });
-                }
-            })).
-                error(function (status) {
-                    "Request failed";
-                    $scope.status = status;
-                });
-        };
-//functin which creates an new xhr called http
-        $scope.http = function () {
-            var http = new XMLHttpRequest();
-            var url = BASE_URL + "Authentication";
-            var params = "";
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-            http.onreadystatechange = function () {//Call a function when the state changes.
-                if (http.readyState === 4 && http.status === 200) {
-                    $(function () {
-                        $scope.loginIE();
-                    });
-                }
-            };
-            http.send(params);
-        };
-        $scope.checkBrowserName = function (name) {
-            var agent = navigator.userAgent.toLowerCase();
-            if (agent.indexOf(name.toLowerCase()) > -1) {
-                return true;
             }
-            return false;
+            //Data for the call is set
+            var data = {
+                "method": "login",
+                "params": [],
+                "id": 1
+            };
+            // convert the javascript data object to a pretty printed JSON string
+            data = JSON.stringify(data, undefined, 2);
+            // make a strange http POST call without any Data (means same as ajax call but its like this in angularjs)
+            //because IE needs That(looks strange but there is no other was that this will work seems to be a bug in IE)
+            //When there is a workaround presented for this please insert hear
+            $http.post(BASE_URL_LOGIN + "Authentication", "", {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": "Fetch"
+
+                }
+            }, {
+                withCredentials: true
+            }).success($.proxy(function () {
+                $http.post(BASE_URL_LOGIN + "Authentication", data, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": "Fetch"
+
+                    }
+                }, {
+                    withCredentials: true
+                }).success($.proxy(function (response) {
+                    if (response.error) {
+                        $scope.Header = ("You First need to create a TwoGo User ");
+                        $scope.linked = ("https://www.twogo.com/#signup");
+                        $scope.here = ("here");
+                        $scope.ridesTomorrowMorning = "";
+                        $scope.ridesTomorrowEvening = "";
+                        $scope.ridesToday = "";
+                        $scope.tomorrowh = "";
+                        $scope.today = "";
+                        $scope.tomorrow = "";
+                        $scope.HeaderToday = "";
+                        $scope.HeaderTomorrow = "";
+                        $scope.spinner = "";
+                    }
+                    else {
+                        csrf_token = response["result"]["csrf"]["header"].value;
+                        $(function () {
+                            $scope.getRides();
+                        });
+                    }
+                })).
+                    error(function (status) {
+
+
+                        $scope.status = status;
+                        $log.error("login failed");
+                    });
+            })).error(function (status) {
+
+
+                $scope.status = status;
+                $log.error("login failed");
+            });
         };
-        $scope.box.reloadApp($scope.checkBrowser, 3600);
+
     }];
+
+    //function that saves the configuration
     var linkFn = function ($scope) {
         // get own instance of config service, $scope.appConfig contains the configuration from the backend
         configService.initialize($scope.appConfig);
@@ -424,9 +372,10 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             $scope.tomorrow = "";
             $scope.HeaderToday = "";
             $scope.HeaderTomorrow = "";
-            $(function () {
-                $scope.checkBrowser();
-            });
+            //function that refreches the app after one hour(Time is set in seconds)
+
+
+            $scope.box.reloadApp($scope.login(), 900);
         }, true);
     };
     return {

@@ -1,13 +1,13 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Others"],
 		"module_name"			:	"app.sapNews",
 		"title"					:	"SAP News",
 		"icon_css"				:	"fa fa-newspaper-o",
 		"overview_directive"	:	"app.sapNews",
 		"needs_client"			:	false,
-		"beta"					:	true,
+		"beta"					:	false,
 		"default_hidden"		:	true,
 		"description"			:	"Displays the latest news from the corporate portal."
 	},

@@ -10,7 +10,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
             return result;
         },
         _intersectsWithPointer: function () {
-			var hitTest = $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + $window.scrollY});
+			var hitTest = $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + ($window.scrollY === undefined ? 0 : $window.scrollY)});
 			if(hitTest) {
 				$('.appDustBinIcon').removeClass("grey-60");
 				$('.appDustBinIcon').addClass("red-60");
@@ -24,7 +24,7 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
             return $.ui.sortable.prototype._intersectsWithPointer.apply(this, arguments);
         },
         _intersectsWith: function(containerCache) {
-            if (containerCache.sortable.element.hasClass("app-container") && $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + $window.scrollY})) {
+            if (containerCache.sortable.element.hasClass("app-container") && $('.appDustBin').hitTestPoint({x: this.position.left, y: this.position.top + ($window.scrollY === undefined ? 0 : $window.scrollY)})) {
                 return false;
             }
             return $.ui.sortable.prototype._intersectsWith.apply(this, arguments);
