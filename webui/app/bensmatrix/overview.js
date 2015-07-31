@@ -49,7 +49,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			var tlength;
 			if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
 			else if (enlength >= 5 && enlength <= 10) 	{ tlength = 20; }
-			else if (enlength >= 11 && enlength <= 15) 	{ tlength = 25; }
+			else if (enlength >= 11 && enlength <= 15) 	{ tlength = 26; }
 			else if (enlength >= 16 && enlength <= 20) 	{ tlength = 30; }
 			else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
 			else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
