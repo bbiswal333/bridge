@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.bensmatrix",
-		"title"					:	"UI Text Space Matrix",
+		"title"					:	"UI Text Space Matrix 1.1",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.bensmatrix",
 		"needs_client"			:	false,
