@@ -1,7 +1,7 @@
 angular.module('app.bensmatrix').service("app.bensmatrix.configService", function () {
 
 	this.values = {
-		boxSize : '1'
+		boxSize : '2'
 	};
 
 	this.initialize = function(configLoadedFromBackend) {
