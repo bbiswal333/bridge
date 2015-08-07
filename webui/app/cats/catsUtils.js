@@ -32,6 +32,14 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       }
     };
 
+    this.isCproTask = function(task) {
+      if (task.ZCPR_OBJGEXTID || task.ZCPR_EXTID) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     this.isSameTask = function(task1, task2) {
       if (!task1 || !task2) {
         return false;
