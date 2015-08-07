@@ -176,11 +176,11 @@ directive("app.cats.maintenanceView.projectList", [
 						});
 					} else {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 			}
 
@@ -197,7 +197,7 @@ directive("app.cats.maintenanceView.projectList", [
 					if(errorText) {
 						$scope.errorText = errorText;
 					} else {
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 					deferred.reject($scope.errorText);
 				});
@@ -249,12 +249,12 @@ directive("app.cats.maintenanceView.projectList", [
 						if(errorText) {
 							$scope.errorText = errorText;
 						} else {
-							$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+							$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 						}
 					});
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 				return deferred.promise;
 			}
@@ -359,7 +359,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 
 			}
@@ -392,7 +392,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.loaded = true;
 					}, function() {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					});
 				} else {
 					initProjectItems();
