@@ -431,6 +431,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return false;
     }
 
+    function removeFixedTasksFromBlockdata() {
+        var i = 0;
+        while (i < $scope.blockdata.length) {
+            if (catsUtils.isFixedTask($scope.blockdata[i].task)) {
+                // do not removeBlock() here, since it is not meant to be removed in the backend!
+                $scope.blockdata.splice(i,1);
+            }
+            i++;
+        }
+    }
+
     $scope.selectionCompleted = function() {
         try {
             if ($scope.selectedDates.length <= 1 &&
@@ -447,6 +458,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
+                removeFixedTasksFromBlockdata();
                 $scope.totalWorkingTime = 1;
             }
             $scope.blockdataRemembered = angular.copy($scope.blockdata);
@@ -498,7 +510,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function prepareCATSData (workdate, container){
+    function prepareCATSData (workdate, container, lengthOfSelectedDatesArray){
         var workdateBookings = [];
         var unchangedBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
@@ -510,6 +522,25 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return null;
+        }
+
+        var originalTotalWorkingTimeForDay = totalWorkingTimeForDay;
+        for(var j = 0; j < tasksInBackend.length; j++) {
+            if (catsUtils.isFixedTask(tasksInBackend[j])) {
+                unchangedBookings.push(tasksInBackend[j]);
+
+                if (lengthOfSelectedDatesArray > 1) {
+                    if (tasksInBackend[j].UNIT === "H" && targetHoursForDay) {
+                        targetHoursForDay = targetHoursForDay - tasksInBackend[j].QUANTITY;
+                    } else {
+                        // use originalTotalWorkingTimeForDay for calculations from Day to Hours
+                        targetHoursForDay = targetHoursForDay - catsUtils.cat2CompliantRounding(tasksInBackend[j].QUANTITY * originalTotalWorkingTimeForDay);
+                    }
+                    totalWorkingTimeForDay = totalWorkingTimeForDay - tasksInBackend[j].QUANTITY_DAY;
+                }
+
+                continue;
+            }
         }
 
         for(var i = 0; i < $scope.blockdata.length; i++) {
@@ -528,7 +559,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
 
             if (catsUtils.isFixedTask(booking) || (taskInBackend && catsUtils.isFixedTask(taskInBackend))) {
-                unchangedBookings.push(booking);
                 continue;
             }
 
@@ -703,7 +733,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
 
         try {
             $scope.selectedDates.forEach(function(dayString){
-                container = prepareCATSData(dayString, container);
+                container = prepareCATSData(dayString, container, $scope.selectedDates.length);
 
                 var day = monthlyDataService.days[dayString];
                 if (weeks.indexOf(day.year + '.' + day.week) === -1) {

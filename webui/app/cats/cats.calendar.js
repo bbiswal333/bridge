@@ -171,15 +171,19 @@ angular.module("app.cats")
 				}
 			}
 
-			function hasFixedTask (dayString){
+			function isMaintainable (dayString){
 				var day = monthlyDataService.days[dayString];
-				var containsFixedTask = false;
+				var targetTimeInPercentageOfDay = day.targetTimeInPercentageOfDay;
 				day.tasks.forEach(function(task){
 					if (catsUtils.isFixedTask(task)) {
-						containsFixedTask = true;
+						targetTimeInPercentageOfDay = targetTimeInPercentageOfDay - task.QUANTITY_DAY;
 					}
 				});
-				return containsFixedTask;
+				if (targetTimeInPercentageOfDay > 0) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 
 			function getDaysElements (element){
@@ -276,7 +280,7 @@ angular.module("app.cats")
 			}
 
 			$scope.selectSingleDay = function (dayString, toggle) {
-				if (dayString && !hasFixedTask(dayString)) {
+				if (dayString && isMaintainable(dayString)) {
 					if (toggle && $scope.isSelected(dayString)){
 						return unSelectDay(dayString);
 					}
@@ -295,22 +299,10 @@ angular.module("app.cats")
 				return promises;
 			}
 
-
-			function containsDayWithAFixedTask(daysStringsArray){
-   				var thereIsSuchDay = false;
-				daysStringsArray.forEach(function(dayString){
-					if(hasFixedTask(dayString)) {
-						thereIsSuchDay = true;
-					}
-				});
-				return thereIsSuchDay;
-			}
-
 			function clearSelectionFromDaysWithFixedTasks()  {
 				$scope.selectedDates.forEach(function(selectedDayString){
-					if (hasFixedTask(selectedDayString)) {
+					if (!isMaintainable(selectedDayString)) {
 						unSelectDay(selectedDayString);
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
 					}
 				});
 			}
@@ -329,17 +321,13 @@ angular.module("app.cats")
 				// clear incorrect selections like vacation or weekend days...
 				clearSelectionFromDaysWithFixedTasks();
 
-				if(containsDayWithAFixedTask(daysStringsArray)) {
-					bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
-				}
-
 				return promises;
 			}
 
 			function isSelectable(dayString){
 				if (monthlyDataService.days[dayString] &&
 					monthlyDataService.days[dayString].targetHours > 0 &&
-					!hasFixedTask(dayString)) {
+					isMaintainable(dayString)) {
 					return true;
 				}
 				return false;
@@ -518,14 +506,10 @@ angular.module("app.cats")
 				} else if (multi_click) {
 					promises.push($scope.selectSingleDay(dayString, true));
 
-					if (!hasFixedTask(dayString)) {
+					if (isMaintainable(dayString)) {
 						setRangeDays(dayString, null);
 						clearSelectionFromDaysWithFixedTasks();
 					}
-					else{
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
-					}
-
 				} else if (range_click) {
 					if (rangeSelectionEndDayString) {
 						promises.push(unSelectRange(collectRange(rangeSelectionEndDayString)));
