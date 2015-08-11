@@ -136,6 +136,7 @@ describe("Timesheet tools", function () {
 		taskA.ZCPR_EXTID = 'abc';
 		expect(catsUtils.isValid(taskA)).toEqual(false);
 	});
+
 	it("should identify hourly profiles", function () {
 		expect(catsUtils.isHourlyProfil("DEV2012")).toEqual(true);
 		expect(catsUtils.isHourlyProfil("SUP2007H")).toEqual(true);
@@ -143,6 +144,23 @@ describe("Timesheet tools", function () {
 		expect(catsUtils.isHourlyProfil("DEV2002C")).toEqual(false);
 		expect(catsUtils.isHourlyProfil("SUP2007D")).toEqual(false);
 	});
+
+	it("should identify cPro task", function () {
+		var cProTask = {};
+		cProTask.ZCPR_OBJGEXTID = 'abc';
+		expect(catsUtils.isCproTask(cProTask)).toEqual(true);
+		cProTask = {};
+		cProTask.ZCPR_EXTID = 'abc';
+		expect(catsUtils.isCproTask(cProTask)).toEqual(true);
+	});
+
+	it("should identify non-cPro task", function () {
+		var NONcProTask = {};
+		NONcProTask.TASKTYPE = 'MAIN';
+		NONcProTask.RAUFNR = '1289478921374';
+		expect(catsUtils.isCproTask(NONcProTask)).toEqual(false);
+	});
+
 });
 
 describe("Conversion function", function () {

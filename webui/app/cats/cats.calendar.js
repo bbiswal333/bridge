@@ -129,7 +129,7 @@ angular.module("app.cats")
 				if (errorText) {
 					$scope.state = errorText;
 				} else {
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.state = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				}
 			}
 

@@ -111,21 +111,23 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 				this.lastUsedDescriptions.splice(index,1);
 			}
 		}
-		if (task.id) {
+		if (task.id && !catsUtils.isCproTask(task)) {
 			this.lastUsedDescriptions.push(task);
 		}
 	};
 
 	this.updateDescription = function (task) {
-		this.lastUsedDescriptions.some(function(lastUsedDescription){
-			if (catsUtils.isSameTask(task, lastUsedDescription) &&
-				lastUsedDescription.DESCR !== task.id &&
-				lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
-				lastUsedDescription.DESCR !== task.RAUFNR) {
-				task.DESCR = lastUsedDescription.DESCR;
-				return true;
-			}
-		});
+		if (!catsUtils.isCproTask(task)) {
+			this.lastUsedDescriptions.some(function(lastUsedDescription){
+				if (catsUtils.isSameTask(task, lastUsedDescription) &&
+					lastUsedDescription.DESCR !== task.id &&
+					lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
+					lastUsedDescription.DESCR !== task.RAUFNR) {
+					task.DESCR = lastUsedDescription.DESCR;
+					return true;
+				}
+			});
+		}
 		this.favoriteItems.some(function(favoriteItem){
 			if (catsUtils.isSameTask(task, favoriteItem)) {
 				task.DESCR = favoriteItem.DESCR;

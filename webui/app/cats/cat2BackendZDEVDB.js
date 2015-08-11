@@ -30,7 +30,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
+				deferred.reject("Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.");
 			});
 
 			return deferred.promise;
@@ -517,7 +517,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					deferred.resolve(data);
 				}).error(function(data, status) {
 					$log.log("POST-Request to " + WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile + " failed. HTTP-Status: " + status);
-					deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
+					deferred.reject("Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.");
 				});
 			});
 			return deferred.promise;

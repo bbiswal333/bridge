@@ -712,6 +712,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata = angular.copy($scope.blockdataTemplate);
     };
 
+    function dayContainsFixedTask(dayString) {
+        var tasks = monthlyDataService.days[dayString].tasks;
+        for (var i = 0; i < tasks.length; i++) {
+            if(catsUtils.isFixedTask(tasks[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function makeDayWithNoFixedTasksTheLastSingleClickDay(selectedDates) {
+        if (dayContainsFixedTask(monthlyDataService.lastSingleClickDayString)) {
+            for (var i = 0; i < selectedDates.length; i++) {
+                if(!dayContainsFixedTask(selectedDates[i])) {
+                    monthlyDataService.lastSingleClickDayString = selectedDates[i];
+                    i = selectedDates.length; // end loop
+                }
+
+            }
+        }
+    }
+
     $scope.saveTimesheet = function(){
         var weeks = [];
         var container = {
@@ -722,6 +744,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.selectedDates = [];
         $scope.totalSelectedHours = 0;
 
+        // Remove duplicate days (legacy??)
         selectedDates.forEach(function(dayString){
             if($scope.selectedDates.indexOf(dayString) === -1) {
                 $scope.selectedDates.push(dayString);
@@ -730,6 +753,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 $log.log("The selectedDates array had double entries! Please check selection functionality.");
             }
         });
+
+        makeDayWithNoFixedTasksTheLastSingleClickDay($scope.selectedDates);
 
         try {
             $scope.selectedDates.forEach(function(dayString){
