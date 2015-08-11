@@ -6,7 +6,7 @@
     <div class="jobTable rightSideDiv" style="margin-top: 0px;margin-right: 0px; overflow-y: auto;">
     	<table>
             <tr ng-repeat="job in dataService.jobsToDisplay | filter:{ statusInfo: statusInfoToDisplay }">
-    			<td><a bs-tooltip data-title="{{job.statusInfo}}" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
+    			<td><a bs-tooltip data-title="{{job.statusInfo}}" data-placement="right" class="fa {{job.statusIcon}} {{job.statusColor}}"></a></td>
     			<td class="style" style="width: 240px;"><a class="changeCursor" target="_blank" href="{{job.lastbuildUrl}}">{{limitDisplayName(job.selectedJob, 30)}}</a></td>
     			<td style="padding-right: 0px;">{{job.timestamp}}</td>
                 <td><a title="View Dependency" class="fa fa-sitemap changeCursor" ng-controller="app.jenkins.controller" target="_blank" ng-click="detailJobView(job.url)"></a></td>
