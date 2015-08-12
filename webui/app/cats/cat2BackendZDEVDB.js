@@ -253,6 +253,23 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 							}
 						}
 						// ////////////////////////////////////////////////////////
+						// // test test test: uncomment to be colleague with Su-Th work week
+						// if (CATSCHKforDay.DATEFROM === "2015-08-07" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-14" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-21" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-28") {
+						// 	CATSCHKforDay.STDAZ = 0;
+						// 	CATSCHKforDay.STATUS = "N";
+						// }
+						// if (CATSCHKforDay.DATEFROM === "2015-08-02" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-09" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-16" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-23" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-30") {
+						// 	CATSCHKforDay.STDAZ = 8;
+						// 	CATSCHKforDay.STATUS = "R";
+						// }
+						// ////////////////////////////////////////////////////////
 						// // test test test: uncomment to be a part-time colleague
 						// CATSCHKforDay.CONVERT_H_T = 7.9;
 						// if (CATSCHKforDay.STDAZ) {

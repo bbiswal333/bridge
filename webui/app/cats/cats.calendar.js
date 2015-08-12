@@ -333,6 +333,16 @@ angular.module("app.cats")
 				return false;
 			}
 
+			function getCalArrayOfWeekByIndex(index) {
+				var arrayForWeek = angular.copy($scope.calArray[index]);
+				arrayForWeek.splice(6,1);
+				if (index > 0) {
+					var arrayForLastWeek = angular.copy($scope.calArray[index - 1]);
+					arrayForWeek.unshift(arrayForLastWeek[6]);
+				}
+				return arrayForWeek;
+			}
+
 			$scope.isSelected = function(dayString){
 				if (!$scope.selectedDates){
 					return false;
@@ -362,7 +372,7 @@ angular.module("app.cats")
 			};
 
 			$scope.weekIsSelected = function(index){
-				return $scope.rangeIsSelected($scope.calArray[index]);
+				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
 			};
 
 			$scope.monthIsSelected = function(){
@@ -420,7 +430,7 @@ angular.module("app.cats")
 
 			$scope.toggleWeek = function (index) {
 				var promises = [];
-				var week = $scope.calArray[index];
+				var week = getCalArrayOfWeekByIndex(index);
 				var range = [];
 				$scope.analytics.value = false;
 				week.forEach(function(day){
