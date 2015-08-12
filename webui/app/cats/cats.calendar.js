@@ -349,6 +349,15 @@ angular.module("app.cats")
 				return $scope.selectedDates.indexOf(dayString) !== -1;
 			};
 
+			$scope.rangeIsSelectable = function(calArray){
+				calArray.some(function(calDay){
+					if (calDay.inMonth && isSelectable(calDay.dayString)) {
+						return true;
+					}
+				});
+				return false;
+			};
+
 			$scope.rangeIsSelected = function(calArray){
 				var allSelected = true;
 				var rangeIsSelectable = false;
@@ -374,16 +383,28 @@ angular.module("app.cats")
 				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
 			};
 
-			$scope.monthIsSelected = function(){
+			$scope.weekIsSelectable = function(index){
+				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
+			};
+
+			function getCalArrayForMonth() {
 				var calArrayForMonth = [];
-					$scope.calArray.forEach(function(week){
-						week.forEach(function(calDay) {
-							if (calDay.inMonth) {
-								calArrayForMonth.push(calDay);
-							}
-						});
+				$scope.calArray.forEach(function(week){
+					week.forEach(function(calDay) {
+						if (calDay.inMonth) {
+							calArrayForMonth.push(calDay);
+						}
 					});
-				return $scope.rangeIsSelected(calArrayForMonth);
+				});
+				return calArrayForMonth;
+			}
+
+			$scope.monthIsSelected = function(){
+				return $scope.rangeIsSelected(getCalArrayForMonth());
+			};
+
+			$scope.monthIsSelectable = function(){
+				return $scope.rangeIsSelectable(getCalArrayForMonth());
 			};
 
 			function setRangeDays (startDate, endDate){
