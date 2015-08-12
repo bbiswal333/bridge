@@ -27,9 +27,10 @@
 			<div class="app-cats-week row" ng-repeat="week in calArray">
                 <div ng-if="maintainable" class="{{dayClass}} app-cats-button-container">
                     <div class="app-cats-button-center">
-                        <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')" style="margin:0;width:66px;height:34px;line-height:34px;" ng-if="calUtils.getWeekNumber(week[0].date).weekNo > 9" ng-click="toggleWeek($index); doAlert()"  >CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
-
-                        <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')"  style="margin:0;width:66px;height:34px;line-height:34px;"ng-if="calUtils.getWeekNumber(week[0].date).weekNo <= 9" ng-click="toggleWeek($index); doAlert()"  >CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
+                        <bridge.button state="'invisible-button'" style="margin:0;width:66px;height:34px;line-height:34px;color:#c3c3c3;" ng-if="!weekIsSelectable($index) && calUtils.getWeekNumber(week[0].date).weekNo > 9">CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
+                        <bridge.button state="'invisible-button'" style="margin:0;width:66px;height:34px;line-height:34px;color:#c3c3c3;" ng-if="!weekIsSelectable($index) && calUtils.getWeekNumber(week[0].date).weekNo <= 9">CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
+                        <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')" style="margin:0;width:66px;height:34px;line-height:34px;" ng-if="weekIsSelectable($index) && calUtils.getWeekNumber(week[0].date).weekNo > 9" ng-click="toggleWeek($index); doAlert()"  >CW {{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
+                        <bridge.button state="(weekIsSelected($index) === true ? 'active' : 'invisible-button')"  style="margin:0;width:66px;height:34px;line-height:34px;"ng-if="weekIsSelectable($index) && calUtils.getWeekNumber(week[0].date).weekNo <= 9" ng-click="toggleWeek($index); doAlert()"  >CW &nbsp&nbsp{{calUtils.getWeekNumber(week[0].date).weekNo}}</bridge.button>
                     </div>
                 </div>
                 <div ng-if="!maintainable" class="{{dayClass}}">

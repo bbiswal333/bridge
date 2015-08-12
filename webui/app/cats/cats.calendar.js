@@ -350,12 +350,13 @@ angular.module("app.cats")
 			};
 
 			$scope.rangeIsSelectable = function(calArray){
+				var rangeIsSelectable = false;
 				calArray.some(function(calDay){
 					if (calDay.inMonth && isSelectable(calDay.dayString)) {
-						return true;
+						rangeIsSelectable = true;
 					}
 				});
-				return false;
+				return rangeIsSelectable;
 			};
 
 			$scope.rangeIsSelected = function(calArray){
@@ -384,7 +385,7 @@ angular.module("app.cats")
 			};
 
 			$scope.weekIsSelectable = function(index){
-				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
+				return $scope.rangeIsSelectable(getCalArrayOfWeekByIndex(index));
 			};
 
 			function getCalArrayForMonth() {
