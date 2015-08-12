@@ -20,7 +20,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		var noWaterYetMessage =	"You didn't drink anything... what happened?";
 		$scope.messages = [
 			"Glad you started drinking, how do you feel now?",
-			"You can do it! Go for it",
+			"You can do it! Go for it.",
 			"Half way there! You go, buddy ;-)",
 			"Almost there! Just a few cups more to go.",
 			"Champion!",
@@ -120,7 +120,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			};
 		};
 		$scope.getMessage = function() {
-			return $scope.message;
+			return $scope.message + " You drank " + $scope.values.currentCups + " cups so far."; 
 		};
 	}];
 
