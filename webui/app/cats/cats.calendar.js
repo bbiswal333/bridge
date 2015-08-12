@@ -90,7 +90,7 @@ angular.module("app.cats")
 			$scope.loading = true;
 			$scope.hasError = false;
 			$scope.state = "";
-			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
+			$scope.weekdays = calUtils.getWeekdays();
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
 			$scope.analytics = {};
@@ -136,7 +136,6 @@ angular.module("app.cats")
 			function reload() {
 				$scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
-				$scope.SundayweekstartOnReload = $scope.sundayweekstart;
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
@@ -738,7 +737,6 @@ angular.module("app.cats")
 				dayClassInput: '@dayClass',
 				maintainable: '=',
 				analytics: '=',
-				sundayweekstart: '=',
 				loading: '='
 			}
 		};
