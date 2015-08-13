@@ -1,13 +1,13 @@
 ﻿<div style="display: table-cell; width: 60%; padding: 2px">
-	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
+	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
 	<br />
-	<!--<bridge.checkbox ng-if="profitCenter" checked-label="active" unchecked-label="inactive" is-checked="isChecked"></bridge.checkbox>-->
-	<a href="" ng-click="toggleActive()" ng-if="active == false && profitCenter"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> inactive</a>
-	<a href="" ng-click="toggleActive()" ng-if="active == true && profitCenter"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> active</a>
+	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == false && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
+	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == true && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
+	<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
 	<br />
 </div>
 <div style="display: table-cell; width: 50%; padding: 2px">
-	<div style="display: table-row" ng-if="profitCenter">
+	<div style="display: table-row" ng-show="profitCenter">
 		<div style="display: table-cell; width: 90px">
 			<b>IP Owner:</b>
 		</div>
@@ -15,7 +15,7 @@
 			SAP SE
 		</div>
 	</div>
-	<div style="display: table-row" ng-if="profitCenter">
+	<div style="display: table-row" ng-show="profitCenter">
 		<div style="display: table-cell">
 			<b>Charge Back Receiver:</b>
 		</div>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 </div>
-<div style="display: table-row" ng-if="profitCenter">
+<div style="display: table-row" ng-show="profitCenter && profitCenter.responsible">
 	<div style="display: table-cell">
 		<b>Profit Center Responsible:</b>
 	</div>
@@ -32,7 +32,7 @@
 		<bridge.employee-picture employee-user="profitCenter.responsible"></bridge.employee-picture> {{profitCenter.responsibleFullName}}
 	</div>
 </div>
-<div style="display: table-row" ng-if="profitCenter">
+<div style="display: table-row" ng-show="profitCenter && profitCenter.controller">
 	<div style="display: table-cell">
 		<b>Responsible Controller:</b>
 	</div>

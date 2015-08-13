@@ -9,6 +9,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
         this.data.aConfiguredCustomers = [];
         this.data.bIgnoreCustomerAction = true;
         this.data.sSelectedCustomer = this.DEFAULT_CUSTOMER_SELECTION;
+        this.data.columnVisibility = [true, false, true, true, true, true];
 
         this.initialize = function(oConfigFromBackend){
             this.isInitialized = true;
