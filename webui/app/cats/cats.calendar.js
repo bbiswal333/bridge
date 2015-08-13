@@ -336,8 +336,7 @@ angular.module("app.cats")
 				var arrayForWeek = angular.copy($scope.calArray[index]);
 				arrayForWeek.splice(6,1);
 				if (index > 0) {
-					var arrayForLastWeek = angular.copy($scope.calArray[index - 1]);
-					arrayForWeek.unshift(arrayForLastWeek[6]);
+					arrayForWeek.unshift($scope.calArray[index - 1][6]);
 				}
 				return arrayForWeek;
 			}
@@ -402,10 +401,6 @@ angular.module("app.cats")
 
 			$scope.monthIsSelected = function(){
 				return $scope.rangeIsSelected(getCalArrayForMonth());
-			};
-
-			$scope.monthIsSelectable = function(){
-				return $scope.rangeIsSelectable(getCalArrayForMonth());
 			};
 
 			function setRangeDays (startDate, endDate){
