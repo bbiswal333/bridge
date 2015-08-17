@@ -30,7 +30,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				deferred.resolve(data, status);
 			}).error(function(data, status) {
 				$log.log("GET-Request to " + url + " failed. HTTP-Status: " + status);
-				deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
+				deferred.reject("Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.");
 			});
 
 			return deferred.promise;
@@ -252,6 +252,23 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								that.CAT2ComplinaceDataCache.splice(index, 1);
 							}
 						}
+						// ////////////////////////////////////////////////////////
+						// // test test test: uncomment to be colleague with Su-Th work week
+						// if (CATSCHKforDay.DATEFROM === "2015-08-07" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-14" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-21" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-28") {
+						// 	CATSCHKforDay.STDAZ = 0;
+						// 	CATSCHKforDay.STATUS = "N";
+						// }
+						// if (CATSCHKforDay.DATEFROM === "2015-08-02" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-09" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-16" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-23" ||
+						// 	CATSCHKforDay.DATEFROM === "2015-08-30") {
+						// 	CATSCHKforDay.STDAZ = 8;
+						// 	CATSCHKforDay.STATUS = "R";
+						// }
 						// ////////////////////////////////////////////////////////
 						// // test test test: uncomment to be a part-time colleague
 						// CATSCHKforDay.CONVERT_H_T = 7.9;
@@ -517,7 +534,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					deferred.resolve(data);
 				}).error(function(data, status) {
 					$log.log("POST-Request to " + WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile + " failed. HTTP-Status: " + status);
-					deferred.reject("There was a problem with the connection to ISP (error or timeout). Please refresh the browser.");
+					deferred.reject("Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.");
 				});
 			});
 			return deferred.promise;

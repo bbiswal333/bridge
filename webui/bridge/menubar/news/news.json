@@ -1,5 +1,5 @@
 {
-	"news": [ 
+	"news": [
         {
             "id":       1,
             "header":   "New Design for Bridge",
@@ -90,14 +90,14 @@
             "id":       12,
             "header":   "DevXchange - Build your own apps",
             "preview":  "Are you located in Shanghai or Bangalore and would like to build your own apps in a one day hackathon?",
-            "date":     "2015-04-23", 
+            "date":     "2015-04-23",
             "content":  "With DevXchange we will offer employees in development areas interactive workshops and knowledge sharing in order to create better products for the cloud. The event will cover a broad variety of topics including Business Model Innovation, Design Thinking, Agile Software Engineering, Process Improvements and new tools like GitHub.<br /><br />As part of this, we will offer a Toolathon, which is a one day hackathon where you can get creative an build your own apps in bridge or create something completely new. <br /><br /><b>Click <a target=\"_blank\" href=\"https://jam4.sapjam.com/groups/about_page/NImyCEaAQWRZ43UnjBkUGe\">here</a> to find out more and register for the individual events.</b>"
         },
         {
             "id":       13,
             "header":   "Lost routes in beat the traffic app",
             "preview":  "It should now no longer happen that your configured routes disappear.",
-            "date":     "2015-06-03", 
+            "date":     "2015-06-03",
             "content":  "In the past many users had to deal with lost routes in their Beat the Traffic app.<br />This happened due to updates in the nokia map data and the underlying APIs and should not happen anymore. The routes will now be restored by geo coordinates. If a route has to be restored, you will be notified and it is recommended to check the route in the app config, as it is not always ensured that the route is reconstructed correctly. Instructions on how to change an existing route can be found in the app configuration screen."
         },
         {
@@ -113,8 +113,14 @@
             "preview":  "Click to see which apps are new.",
             "date":     "2015-07-16",
             "content":  "A big thank you to all the contributers to Bridge! Over the last couple of weeks, 5 new apps made it to Bridge which were not built by the Bridge Team.</br><ul><li>S/4 Dumps shows you dumps of the S/4 Hana Cloud, thanks to Dirk Baumgaertel</li><li>Dict.cc and Wikipedia give you a shortcut to your favorite translation engine and encyclopedia, thanks to Kai Roesner</li><li>Gunning Fog Index gives you an estimation about how easy it is to understand your text, thanks to Vadim Tomnikov</li><li>The UI Space Matrix will make it easier for developers to built UIs that are translatable, thanks to Benjamin Schork</li></ul>"
+        },
+        {
+            "id":       16,
+            "header":   "Quick links int the search result",
+            "preview":  "Quick links are now available in the bridge search.",
+            "date":     "2015-07-27",
+						"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
+            "content":  "Now you can search for quicklinks (a.k.a. /go in the portal) using the search bar on bridge. <br/> Currently searches only on the quick link itself, not the description."
         }
 	]
 }
-
-

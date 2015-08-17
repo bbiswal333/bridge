@@ -10,7 +10,7 @@
 		"beta"					:	true,
 		"default_hidden"		:	true,
 		"beta_users"			:	["D049677", "D034180", "D047633"],
-		"description"			:	"Controller App"
+		"description"			:	"Project Profit Center"
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],

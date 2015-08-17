@@ -231,3 +231,5 @@ coverage/**/*
 webui/app/colorize/overview.js
 
 webui/app/colorize/overview.html
+
+webui/app/IspMonitoring/*

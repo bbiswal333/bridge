@@ -11,7 +11,7 @@
 
 		<bridge.table table-data="messages" filter="filterTable">
 			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Category'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
 			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
 			<bridge.table-column column-id="'11'" header="'Customer'" column-size-class="'col-sm-2'" order-by="'CUST_NAME'" visible="parentScope.config.data.columnVisibility[10]">{{row.CUST_NAME}}</bridge.table-column>
 			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
@@ -19,9 +19,10 @@
 					 class="im-reporter-img"
 					 style="height: 32px;"
 					 ng-if="row.REPORTER_ID"/>
-				<a class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
-				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+				<a ng-if="row.REPORTER_ID" class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
+				<span ng-if="row.REPORTER_ID == ''">{{row.REPORTER_NAME}}</span>
+				<a ng-if="row.REPORTER_ID" href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a ng-if="row.REPORTER_ID" href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 			</bridge.table-column>
 			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
 				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
