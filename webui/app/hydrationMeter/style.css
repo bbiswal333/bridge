@@ -1,0 +1,5 @@
+/* Needed to make sure the dropdown doesn't reduce in size */
+.open {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+}
