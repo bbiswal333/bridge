@@ -26,32 +26,32 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			"Champion!",
 			"Don't drink too much, you might get a tummy ache!"
 		];
-		$scope.message = $scope.messages[0];
+		$scope.message = noWaterYetMessage;
 
 		$scope.addNotification = function() {
 			if ($scope.canNotify()) {
 				var msg = "Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?";
-				if( $scope.values.currentCups == 0 ) {
+				if( $scope.values.currentCups === 0 ) {
 					msg = "Aren't you feeling dehydrated? You haven't drank any water today yet. How about you go get yourself a cup?";
-				} 
+				}
 				notifier.showInfo(
 					"Psssst, It's been a while you didn't drink water!",
 					msg,
 					$scope.$parent.module_name, function() {}, 5000, null);
-			};
+			}
 
 		};
 
 		$scope.canNotify = function() {
-			if ($scope.values.notify == false) {
+			if ($scope.values.notify === false) {
 				return false;
 			} else if ( ( $scope.values.lastTimeDrank + 3600000 ) <= ( new Date() ).getTime()) {
 				// Notify only if it has been more than one hour without drinking or haven't drank at all
 				$scope.values.lastTimeDrank = ( new Date() ).getTime();
 				return true;
 			}
-		}
-		
+		};
+
 		$scope.getData = function() {
 			$scope.values = configService.values;
 			$scope.calculateRating();
@@ -81,9 +81,9 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 
 		$scope.getPercentage = function() {
 			var percentage = ($scope.values.currentCups * 100) / $scope.values.targetCups;
-			if ($scope.values.currentCups == 0) {
+			if ($scope.values.currentCups === 0) {
 				percentage = 0;
-			};
+			}
 			return percentage;
 		};
 
@@ -101,7 +101,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			} else {
 				$scope.rating.color = $scope.defaultColor;
 				$scope.rating.size = $scope.defaultSize;
-			};
+			}
 		};
 
 		$scope.getCupStyle = function() {
@@ -117,10 +117,10 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 				$scope.message = $scope.messages[$scope.messages.length - 1];
 			} else {
 				$scope.message = $scope.messages[position];
-			};
+			}
 		};
 		$scope.getMessage = function() {
-			return $scope.message + " You drank " + $scope.values.currentCups + " cups so far."; 
+			return $scope.message + " You drank " + $scope.values.currentCups + " cups so far.";
 		};
 	}];
 

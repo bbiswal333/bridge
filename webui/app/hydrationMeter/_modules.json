@@ -19,6 +19,6 @@
 		"description"			:	"This app counts the number of cups of water you drink per day and reminds you to drink more water if you have been more than one hour without water."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js"],
 	"css_files" : ["style.css"]
 }
