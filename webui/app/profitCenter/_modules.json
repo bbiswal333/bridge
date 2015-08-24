@@ -9,7 +9,7 @@
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
-		"beta_users"			:	["D049677", "D034180", "D047633"],
+		"beta_users"			:	["D049677", "D034180", "D047633", "D019465", "D049069", "D047654"],
 		"description"			:	"Project Profit Center"
 	},
 	"modules" : [],
