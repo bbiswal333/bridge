@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Fun"],
+		"module_name"			:	"app.hydrationMeter",
+		"title"					:	"Water Meter",
+		"icon_css"				:	"fa fa-medkit",
+		"overview_directive"	:	"app.hydrationMeter",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/hydrationMeter/",
+				"templateUrl"	:	"app/hydrationMeter/detail.html"
+			}
+		],
+		"description"			:	"This app counts the number of cups of water you drink per day and reminds you to drink more water if you have been more than one hour without water."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js"],
+	"css_files" : ["style.css"]
+}

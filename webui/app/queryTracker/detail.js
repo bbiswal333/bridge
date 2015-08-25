@@ -10,7 +10,5 @@ angular.module('app.querytracker').controller('app.querytracker.detailController
 			$scope.data = queryDataService.queryData;
 		}
 
-		$scope.title = "blub";
-
 		$(".box-title").text("Queries I need to answer");
 }]);
