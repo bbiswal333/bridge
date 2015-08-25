@@ -135,6 +135,10 @@
 .menubar-feedback-icon {
   font-size: 30px;
 }
+.menubar-feedback-LikesCell{
+  width: 400px;
+  text-align: center;
+}
 
 /* ========================= *\
 |* ----- APPLICATIONS  ----- *|
