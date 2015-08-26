@@ -10,6 +10,11 @@
     "backendTest": "mocha -t 8000 -R list ./server/**/*.spec.js",
     "lint": "eslint webui"
   },
+  "pre-commit": [
+    "backendTest",
+    "uiTest",
+    "lint" 
+  ],
   "devDependencies": {
     "karma-chrome-launcher": "~0.1.2",
     "karma-script-launcher": "~0.1.0",
