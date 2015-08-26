@@ -1,5 +1,6 @@
 ﻿<div style="display: table-cell; width: 60%; padding: 2px">
-	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
+	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
+	<span ng-show="profitCenter"><b>Name:</b> {{profitCenter.name}}</span><br /><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
 	<br />
 	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == false && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
 	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == true && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
