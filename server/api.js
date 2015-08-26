@@ -50,7 +50,7 @@ exports.register = function(app, user, proxy, npm, eTag)
 
 		if (method.toLowerCase() === "post" && postData !== undefined) {
 			options.headers = {
-				'Content-Type': 'application/json; charset=UTF-8',
+				'Content-Type': 'text/xml; charset=UTF-8',
 				'Content-Length': (postData !== undefined ? postData.length : 0)
 			};
 		}
