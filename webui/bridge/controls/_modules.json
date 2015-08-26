@@ -15,9 +15,7 @@
     "appDropTarget.js",
     "conditionalLink.js",
     "editableLabel.js",
-    "editableEmployee.js",
-    "bridgeTextarea.js"
-
+    "editableEmployee.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"
