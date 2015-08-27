@@ -8,7 +8,6 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 		function setProfitCenterData(response) {
 			if(response.data.DATA.PROFIT_CENTER) {
 				$scope.realProfitCenterNumber = response.data.DATA.PROFIT_CENTER;
-				$scope.profitCenterNumber = response.data.DATA.PROFIT_CENTER_DESC;
 				$scope.profitCenter = {
 					active: response.data.DATA.IS_PROJECT_PC === "X" ? true : false,
 					name: response.data.DATA.PROFIT_CENTER_DESC,
@@ -31,7 +30,7 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 
 		$scope.toggleActive = function() {
 			var newValue = !$scope.profitCenter.active;
-			$http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/SET_IS_PROJ_PROFIT_CENTER?ID=" + $scope.realProfitCenterNumber + "&is_project_pc=" + (newValue ? 'X' : '')).then(function(response) {
+			$http.get("https://ift.wdf.sap.corp/sap/bc/bridge/SET_IS_PROJ_PROFIT_CENTER?ID=" + $scope.realProfitCenterNumber + "&is_project_pc=" + (newValue ? 'X' : '')).then(function(response) {
 				if(response.data.error) {
 					bridgeInBrowserNotification.addAlert('danger',response.data.message);
 				} else {
@@ -51,7 +50,7 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 			while($scope.profitCenterNumber.length < 10) {
 				$scope.profitCenterNumber = 0 + $scope.profitCenterNumber;
 			}
-			$http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_INFO?ID=" + $scope.profitCenterNumber).then(function(response) {
+			$http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_INFO?ID=" + $scope.profitCenterNumber).then(function(response) {
 				setProfitCenterData(response);
 			});
 		};
