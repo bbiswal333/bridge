@@ -7,32 +7,27 @@ angular.module('bridge.service').service('trafficLightService',
 		return $window.client.available;
 	}
 
-	function red(){
+	function setColor(colorCode, colorName) {
 		if( isClientOn() ){
-			$log.log('Traffic Light: Red');
-			$http.get( $window.client.origin + '/api/trafficLight?color=r');
+			$log.log('Traffic Light: ' + colorName);
+			$http.get( $window.client.origin + '/api/trafficLight?color=' + colorCode );
 		}
+	}
+
+	function red(){
+		setColor('r', 'Red');
 	}
 
 	function yellow(){
-		if( isClientOn() ){
-			$log.log('Traffic Light: Yellow');
-			$http.get($window.client.origin + '/api/trafficLight?color=y');
-		}
+		setColor('y', 'Yellow');
 	}
 
 	function green(){
-		if( isClientOn() ){
-			$log.log('Traffic Light: Green');
-			$http.get($window.client.origin + '/api/trafficLight?color=g');
-		}
+		setColor('g', 'Green');
 	}
 
   function off(){
-    if( isClientOn() ){
-      $log.log('Traffic Light: Off');
-      $http.get($window.client.origin + '/api/trafficLight?color=o');
-    }
+    setColor('o', 'Off');
   }
 
   function updateTrafficLight() {
