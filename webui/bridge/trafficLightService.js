@@ -33,23 +33,37 @@ angular.module('bridge.service').service('trafficLightService',
 
   function updateTrafficLight() {
 
-    var colorFunction = green;
+		var color;
 
-    for(var key in modulesState)
-    {
-      if(modulesState[key] === 'R') {
-        colorFunction = red;
-        break;
-      }
-      else if(modulesState[key] === 'Y') {
-        colorFunction = yellow;
-      }
-      else if(modulesState[key] === 'O') {
-        colorFunction = off;
-      }
-    }
+		var colors = {
+			'R': {
+				priority: 1,
+				setter: red
+			},
+			'Y': {
+				priority: 2,
+				setter: yellow
+			},
+			'G': {
+				priority: 3,
+				setter: green
+			},
+			'O': {
+				priority: 4,
+				setter: off
+			}
+		};
 
-    colorFunction();
+		color = colors.O;
+
+		for(var key in modulesState)
+		{
+			if(colors[modulesState[key]].priority < color.priority) {
+				color = colors[modulesState[key]];
+			}
+		}
+
+		color.setter();
   }
 
   function setModuleState(appId, state) {
@@ -81,4 +95,6 @@ angular.module('bridge.service').service('trafficLightService',
     return new TrafficLightServiceForApp(appId);
   };
 
+	// reset the TrafficLight at startup
+	off();
 }]);
