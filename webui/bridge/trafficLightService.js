@@ -8,8 +8,9 @@ angular.module('bridge.service').service('trafficLightService',
 	}
 
 	function setColor(colorCode, colorName) {
+		$log.log('Traffic Light' + (isClientOn() ? ':' : ' (no client):')  + colorName);
+
 		if( isClientOn() ){
-			$log.log('Traffic Light: ' + colorName);
 			$http.get( $window.client.origin + '/api/trafficLight?color=' + colorCode );
 		}
 	}
