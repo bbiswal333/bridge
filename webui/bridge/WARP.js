@@ -21,4 +21,4 @@ if( document.location.hostname === "bridge-master.mo.sap.corp"){
 	g.async = true;
 	g.src = swa.baseUrl + 'js/privacy.js';
 	s.parentNode.insertBefore(g,s);
-})(); 
+})();
