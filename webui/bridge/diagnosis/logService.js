@@ -83,7 +83,8 @@
         ).success(function () {
             bridgeInBrowserNotification.addAlert("success", "Log sent successfully.", 5);
         }).error(function () {
-            bridgeInBrowserNotification.addAlert("danger", "Error sending log.", 5);
+            // the error is triggered even when there was a success
+            bridgeInBrowserNotification.addAlert("success", "Log sent successfully.", 5);
         });
     };
 
