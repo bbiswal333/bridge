@@ -20,7 +20,9 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * [download](http://nodejs.org/) and install `node.js`
 
 ## run bridge locally
-* run `node server/server.js` and open `https://localhost:8000` in a browser
+* run `npm install` -> required once after forking the repository
+* run `npm start`
+* open `https://localhost:8000` in a browser
 * for [internet explorer](http://thefunniestpictures.com/wp-content/uploads/2013/09/funny-browsers-Internet-Explorer-slow.jpg) add `https://localhost` to your trusted sites
 
 ## building apps
