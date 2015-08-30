@@ -1,5 +1,5 @@
 ﻿/*$scope.tile value 1 is for Player
-					2 is for Comp*/
+                    2 is for Comp*/
 angular.module('app.tictactoe', []);
 angular.module('app.tictactoe').directive('app.tictactoe', [function() {
 
@@ -9,55 +9,34 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
         $scope.countUser = 0;
         $scope.countComputer = 0;
         $scope.countDraw = 0;
+
+        //Initializes or resets all variables
         $scope.reset = function() {
             $scope.tile = [];
-            $scope.tile[0] = [];
-            $scope.tile[0][0] = {};
-            $scope.tile[0][1] = {};
-            $scope.tile[0][2] = {};
-
-            $scope.tile[0][0].id = 0;
-            $scope.tile[0][1].id = 0;
-            $scope.tile[0][2].id = 0;
-
-            $scope.tile[1] = [];
-            $scope.tile[1][0] = {};
-            $scope.tile[1][1] = {};
-            $scope.tile[1][2] = {};
-
-            $scope.tile[1][0].id = 0;
-            $scope.tile[1][1].id = 0;
-            $scope.tile[1][2].id = 0;
-
-            $scope.tile[2] = [];
-            $scope.tile[2][0] = {};
-            $scope.tile[2][1] = {};
-            $scope.tile[2][2] = {};
-
-            $scope.tile[2][0].id = 0;
-            $scope.tile[2][1].id = 0;
-            $scope.tile[2][2].id = 0;
-
-            $scope.tile[0][0].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[0][1].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[0][2].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[1][0].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[1][1].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[1][2].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[2][0].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[2][1].src = "../../app/tictactoe/images/white.png";
-            $scope.tile[2][2].src = "../../app/tictactoe/images/white.png";
-
+            for (var i = 0; i < 3; i++) {
+                $scope.tile[i] = [];
+                for (var j = 0; j < 3; j++) {
+                    $scope.tile[i][j] = {};
+                    $scope.tile[i][j].id = 0;
+                    $scope.tile[i][j].src = "../../app/tictactoe/images/white.png";
+                }
+            };
             $scope.progress = 0; //To track the progress of the game
             $scope.result = "";
             $scope.resultImg = "../../app/tictactoe/images/play.gif";
 
-
+            var matchCount = $scope.countUser + $scope.countComputer + $scope.countDraw;
+            if (matchCount % 2 !== 0) {
+                $scope.compTurn();
+            }
         }
 
-        $scope.reset();
 
         $scope.markIt = function(i, j) {
+            if ($scope.tile[i][j].id == 1) //checks if the box is already marked
+            {
+                return;
+            }
             if ($scope.progress < 9 && $scope.checkWinner() == 0) {
                 $scope.tile[i][j].src = "../../app/tictactoe/images/cross.png";
                 $scope.tile[i][j].id = 1; //Player marks the board 
@@ -74,18 +53,14 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
         };
 
         $scope.compTurn = function() {
-        	console.log("offendPlay call");
             if ($scope.offendPlay()) {
                 $scope.progress++;
                 return;
             }
-console.log("Defend call");
-            if ($scope.defendPlay()===true) {
+            if ($scope.defendPlay() === true) {
                 $scope.progress++;
                 return;
             }
-
-console.log("Random call");
             $scope.randomPlay();
 
         };
@@ -114,7 +89,7 @@ console.log("Random call");
 
 
         $scope.offendPlay = function() {
-        	console.log("offendPlay start");
+            console.log("offendPlay start");
             var count1, count2;
             count1 = 0;
             count2 = 0;
@@ -165,15 +140,13 @@ console.log("Random call");
                     }
             }
             return false;
-        }; /**/
+        };
 
 
         $scope.defendPlay = function() //defends player form forming line if there are already two points in it and return true if changed
             {
-
-
-            console.log("defendPlay start");
-                var P = 1; //id used for Player	
+                console.log("defendPlay start");
+                var P = 1; //id used for Player 
                 var count1, count2;
                 count1 = 0;
                 count2 = 0;
@@ -190,13 +163,12 @@ console.log("Random call");
 
                         if ($scope.tile[j][i].id == P) //checks column
                             if (++count2 == 2)
-                                for (var k = 0; k < 3; k++) {
-                                    if ($scope.tile[k][i].id == 0) {
-                                        $scope.markForComp(k, i);
-                                        return true;
-                                    }
+                            for (var k = 0; k < 3; k++) {
+                                if ($scope.tile[k][i].id == 0) {
+                                    $scope.markForComp(k, i);
+                                    return true;
                                 }
-
+                            }
                     }
                     count1 = 0;
                     count2 = 0;
@@ -214,21 +186,19 @@ console.log("Random call");
                                 }
                             }
 
-                    	console.log("checking $scope.tile[i][(2 - i)]:"+i+":"+(2-i)+" val:"+JSON.stringify($scope.tile[i][(2 - i)]));
-                    if ($scope.tile[i][(2 - i)].id == P)
-                    {
-                    	console.log("count2",count2);
-                        if (++count2 == 2)
-	                        {
-	                            for (var k = 0; k < 3; k++) {
-	                            	console.log("checking $scope.tile[k][(2 - k)]:"+k+":"+(2-k)+"val"+$scope.tile[i][(2 - i)]);
-	                                if ($scope.tile[k][(2 - k)].id == 0) {
-	                                    $scope.markForComp(k, (2 - k));
-	                                    return true;
-	                                }
-	                            }
-	                        }
+                    console.log("checking $scope.tile[i][(2 - i)]:" + i + ":" + (2 - i) + " val:" + JSON.stringify($scope.tile[i][(2 - i)]));
+                    if ($scope.tile[i][(2 - i)].id == P) {
+                        console.log("count2", count2);
+                        if (++count2 == 2) {
+                            for (var k = 0; k < 3; k++) {
+                                console.log("checking $scope.tile[k][(2 - k)]:" + k + ":" + (2 - k) + "val" + $scope.tile[i][(2 - i)]);
+                                if ($scope.tile[k][(2 - k)].id == 0) {
+                                    $scope.markForComp(k, (2 - k));
+                                    return true;
+                                }
+                            }
                         }
+                    }
                 }
                 return false;
             }
@@ -237,7 +207,6 @@ console.log("Random call");
             if ($scope.checkWinner() == 1) {
                 $scope.resultImg = "../../app/tictactoe/images/winner.png";
                 $scope.result = "You WIN!!:)";
-
                 $scope.countUser = $scope.countUser + 1;
             } else if ($scope.checkWinner() == 2) {
                 $scope.resultImg = "../../app/tictactoe/images/loser.png";
@@ -271,7 +240,9 @@ console.log("Random call");
             return 0;
         };
 
-        
+        $scope.reset();
+
+
     }];
 
     return {
