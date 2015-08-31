@@ -38,6 +38,7 @@ angular.module("app.incidentSavedSearch").service("app.incidentSavedSearch.ticke
                             that.tickets = [];
                         }
 
+                        that.cleanTicketLink();
                         that.calculateTotals();
                         defer.resolve();
                     })
@@ -60,6 +61,14 @@ angular.module("app.incidentSavedSearch").service("app.incidentSavedSearch.ticke
                 });
 
                 return defer.promise;
+            };
+
+            this.cleanTicketLink = function(){
+                that.tickets.forEach(function(oTicket){
+                    if (oTicket.URL_MESSAGE === "" || oTicket.URL_MESSAGE === undefined || oTicket.URL_MESSAGE === "https://support.wdf.sap.corp/sap/support/message/" ){
+                        oTicket.URL_MESSAGE = "https://support.wdf.sap.corp/sap/support/message/" + oTicket.OBJECT_GUID;
+                    }
+                });
             };
 
             this.calculateTotals = function () {

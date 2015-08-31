@@ -90,7 +90,7 @@ angular.module("app.cats")
 			$scope.loading = true;
 			$scope.hasError = false;
 			$scope.state = "";
-			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
+			$scope.weekdays = calUtils.getWeekdays();
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
 			$scope.analytics = {};
@@ -129,14 +129,13 @@ angular.module("app.cats")
 				if (errorText) {
 					$scope.state = errorText;
 				} else {
-					$scope.state = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.state = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				}
 			}
 
 			function reload() {
 				$scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
-				$scope.SundayweekstartOnReload = $scope.sundayweekstart;
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
@@ -171,15 +170,19 @@ angular.module("app.cats")
 				}
 			}
 
-			function hasFixedTask (dayString){
+			function isMaintainable (dayString){
 				var day = monthlyDataService.days[dayString];
-				var containsFixedTask = false;
+				var targetTimeInPercentageOfDay = day.targetTimeInPercentageOfDay;
 				day.tasks.forEach(function(task){
 					if (catsUtils.isFixedTask(task)) {
-						containsFixedTask = true;
+						targetTimeInPercentageOfDay = targetTimeInPercentageOfDay - task.QUANTITY_DAY;
 					}
 				});
-				return containsFixedTask;
+				if (targetTimeInPercentageOfDay > 0) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 
 			function getDaysElements (element){
@@ -276,7 +279,7 @@ angular.module("app.cats")
 			}
 
 			$scope.selectSingleDay = function (dayString, toggle) {
-				if (dayString && !hasFixedTask(dayString)) {
+				if (dayString && isMaintainable(dayString)) {
 					if (toggle && $scope.isSelected(dayString)){
 						return unSelectDay(dayString);
 					}
@@ -295,22 +298,10 @@ angular.module("app.cats")
 				return promises;
 			}
 
-
-			function containsDayWithAFixedTask(daysStringsArray){
-   				var thereIsSuchDay = false;
-				daysStringsArray.forEach(function(dayString){
-					if(hasFixedTask(dayString)) {
-						thereIsSuchDay = true;
-					}
-				});
-				return thereIsSuchDay;
-			}
-
 			function clearSelectionFromDaysWithFixedTasks()  {
 				$scope.selectedDates.forEach(function(selectedDayString){
-					if (hasFixedTask(selectedDayString)) {
+					if (!isMaintainable(selectedDayString)) {
 						unSelectDay(selectedDayString);
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
 					}
 				});
 			}
@@ -329,20 +320,25 @@ angular.module("app.cats")
 				// clear incorrect selections like vacation or weekend days...
 				clearSelectionFromDaysWithFixedTasks();
 
-				if(containsDayWithAFixedTask(daysStringsArray)) {
-					bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
-				}
-
 				return promises;
 			}
 
 			function isSelectable(dayString){
 				if (monthlyDataService.days[dayString] &&
 					monthlyDataService.days[dayString].targetHours > 0 &&
-					!hasFixedTask(dayString)) {
+					isMaintainable(dayString)) {
 					return true;
 				}
 				return false;
+			}
+
+			function getCalArrayOfWeekByIndex(index) {
+				var arrayForWeek = angular.copy($scope.calArray[index]);
+				arrayForWeek.splice(6,1);
+				if (index > 0) {
+					arrayForWeek.unshift($scope.calArray[index - 1][6]);
+				}
+				return arrayForWeek;
 			}
 
 			$scope.isSelected = function(dayString){
@@ -350,6 +346,16 @@ angular.module("app.cats")
 					return false;
 				}
 				return $scope.selectedDates.indexOf(dayString) !== -1;
+			};
+
+			$scope.rangeIsSelectable = function(calArray){
+				var rangeIsSelectable = false;
+				calArray.some(function(calDay){
+					if (calDay.inMonth && isSelectable(calDay.dayString)) {
+						rangeIsSelectable = true;
+					}
+				});
+				return rangeIsSelectable;
 			};
 
 			$scope.rangeIsSelected = function(calArray){
@@ -374,19 +380,27 @@ angular.module("app.cats")
 			};
 
 			$scope.weekIsSelected = function(index){
-				return $scope.rangeIsSelected($scope.calArray[index]);
+				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
 			};
 
-			$scope.monthIsSelected = function(){
+			$scope.weekIsSelectable = function(index){
+				return $scope.rangeIsSelectable(getCalArrayOfWeekByIndex(index));
+			};
+
+			function getCalArrayForMonth() {
 				var calArrayForMonth = [];
-					$scope.calArray.forEach(function(week){
-						week.forEach(function(calDay) {
-							if (calDay.inMonth) {
-								calArrayForMonth.push(calDay);
-							}
-						});
+				$scope.calArray.forEach(function(week){
+					week.forEach(function(calDay) {
+						if (calDay.inMonth) {
+							calArrayForMonth.push(calDay);
+						}
 					});
-				return $scope.rangeIsSelected(calArrayForMonth);
+				});
+				return calArrayForMonth;
+			}
+
+			$scope.monthIsSelected = function(){
+				return $scope.rangeIsSelected(getCalArrayForMonth());
 			};
 
 			function setRangeDays (startDate, endDate){
@@ -432,7 +446,7 @@ angular.module("app.cats")
 
 			$scope.toggleWeek = function (index) {
 				var promises = [];
-				var week = $scope.calArray[index];
+				var week = getCalArrayOfWeekByIndex(index);
 				var range = [];
 				$scope.analytics.value = false;
 				week.forEach(function(day){
@@ -518,14 +532,10 @@ angular.module("app.cats")
 				} else if (multi_click) {
 					promises.push($scope.selectSingleDay(dayString, true));
 
-					if (!hasFixedTask(dayString)) {
+					if (isMaintainable(dayString)) {
 						setRangeDays(dayString, null);
 						clearSelectionFromDaysWithFixedTasks();
 					}
-					else{
-						bridgeInBrowserNotification.addAlert('', 'Days with unchangeable tasks (e.g. vacation or absence) could not be selected.');
-					}
-
 				} else if (range_click) {
 					if (rangeSelectionEndDayString) {
 						promises.push(unSelectRange(collectRange(rangeSelectionEndDayString)));
@@ -744,7 +754,6 @@ angular.module("app.cats")
 				dayClassInput: '@dayClass',
 				maintainable: '=',
 				analytics: '=',
-				sundayweekstart: '=',
 				loading: '='
 			}
 		};

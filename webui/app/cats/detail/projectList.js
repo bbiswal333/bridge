@@ -111,80 +111,7 @@ directive("app.cats.maintenanceView.projectList", [
 				$scope.filter.val = "";
 			};
 
-			$scope.refreshDescriptions = function() {
-				// remove all old descriptions
-				configService.lastUsedDescriptions = [];
-
-				var week = calenderUtils.getWeekNumber(new Date());
-				catsBackend.requestTasksFromTemplate(week.year, week.weekNo)
-				.then(function(itemFromCatsTemplate) {
-					configService.recalculateTaskIDs(itemFromCatsTemplate);
-					itemFromCatsTemplate.forEach(function(item) {
-						configService.updateLastUsedDescriptions(item);
-					});
-					configService.catsItems.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					configService.favoriteItems.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					$scope.items.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					$scope.itemsFromBlocks.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-				});
-
-				catsBackend.requestTasksFromWorklist()
-				.then(function(taskFromWorklist) {
-					configService.recalculateTaskIDs(taskFromWorklist);
-					taskFromWorklist.forEach(function(item) {
-						configService.updateLastUsedDescriptions(item);
-					});
-					configService.catsItems.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					configService.favoriteItems.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					$scope.items.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-					$scope.itemsFromBlocks.forEach(function(item) {
-						configService.updateDescription(item);
-					});
-				});
-			};
-
 			function markItemIfSelected(item) {
-				// The items we get here can be of really bad data quality
-
-				//TEST
-				//if (item.TASKTYPE === "ADMI") {
-				//  return;
-				//}
-
-				// Service that reads the template on weekly basis
-				// Minimal item would be only TASKTYPE: "MAIN" with RAUFNR and other IDs empty
-				// There coult also be only TASKTYPE and RAUFNR filled
-				// Maximum there could be also ZCPR_EXTID AND ZCPR_OBJEXTID filled
-
-				// Service that reads the 4 month compliance
-				//  RAUFNR: ""
-				//  TASKTYPE: "ADMI"
-				//  ZCPR_OBJGEXTID: "ADMI"
-				//  ZCPR_OBJGUID: "ADMI"
-				//  projectDesc: "Administrative"
-				//  taskDesc: "ADMI"
-				// or
-				//  RAUFNR: "000505220105"
-				//  TASKTYPE: ""
-				//  UNIT: undefined
-				//  ZCPR_EXTID: "I2M_2013_RESEARCH_INNOV"
-				//  ZCPR_OBJGEXTID: "00000000000000617094"
-				//  projectDesc: "I2M_2013_RESEARCH_INNOV"
-				//  taskDesc: "I2M Research & Innovation"
 				var found = false;
 				var color = null;
 				$scope.blocks.some(function(block) { // is allocation bar block or a favorite item
@@ -249,11 +176,11 @@ directive("app.cats.maintenanceView.projectList", [
 						});
 					} else {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 			}
 
@@ -270,7 +197,7 @@ directive("app.cats.maintenanceView.projectList", [
 					if(errorText) {
 						$scope.errorText = errorText;
 					} else {
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 					deferred.reject($scope.errorText);
 				});
@@ -322,12 +249,12 @@ directive("app.cats.maintenanceView.projectList", [
 						if(errorText) {
 							$scope.errorText = errorText;
 						} else {
-							$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+							$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 						}
 					});
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 				return deferred.promise;
 			}
@@ -432,7 +359,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 
 			}
@@ -465,7 +392,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.loaded = true;
 					}, function() {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					});
 				} else {
 					initProjectItems();

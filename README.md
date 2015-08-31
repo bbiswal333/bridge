@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge) 
+[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
 
 [![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
@@ -20,7 +20,9 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * [download](http://nodejs.org/) and install `node.js`
 
 ## run bridge locally
-* run `node server/server.js` and open `https://localhost:8000` in a browser
+* run `npm install` -> required once after forking the repository
+* run `npm start`
+* open `https://localhost:8000` in a browser
 * for [internet explorer](http://thefunniestpictures.com/wp-content/uploads/2013/09/funny-browsers-Internet-Explorer-slow.jpg) add `https://localhost` to your trusted sites
 
 ## building apps
@@ -31,3 +33,4 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
 Further information can be found on our [wiki page](https://github.wdf.sap.corp/bridge/bridge/wiki).
+
