@@ -732,7 +732,7 @@ angular.module("app.cats")
 				if ($scope.reloadInProgress.value === true) {
 					$scope.reloadAnimation = 'cats-fade-anim';
 				} else {
-					$scope.reloadAnimation = '' ;
+					$scope.reloadAnimation = '';
 					if (monthlyDataService.lastSingleClickDayString &&
 						(!$scope.selectedDates || $scope.selectedDates.length <= 1)) {
 						$scope.jump(monthlyDataService.lastSingleClickDayString, {});
