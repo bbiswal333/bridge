@@ -3,6 +3,8 @@
  */
 angular.module('bridge.app').controller('bridge.LikesCtrl',['bridgeDataService' ,function (bridgeDataService) {
     var userInfo = bridgeDataService.getUserInfo().BNAME;
+    /*eslint-disable no-undef */
     likes.setUser(userInfo);
     likes.getLikes();
+    /*eslint-enable no-undef */
 }]);
