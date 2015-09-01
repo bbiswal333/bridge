@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Development"],
 		"module_name"			:	"app.correctionWorkbench",
-		"title"					:	"Java CWB",
+		"title"					:	"Non-ABAP CWB",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.correctionWorkbench",
 		"needs_client"			:	false,
@@ -15,7 +15,7 @@
 				"templateUrl"	:	"app/correctionWorkbench/detail.html"
 			}
 		],
-		"description"			:	"The Java Correction Workbench lets you monitor correction requests which are in process, currently tested, tested with status \"Ok\" and planned for testing. It is live data coming from the CSS system."
+		"description"			:	"The Non-ABAP Correction Workbench lets you monitor correction requests which are in process, currently tested, tested with status \"Ok\" and planned for testing. It is live data coming from the CSS system."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "workbenchData.js", "detail.js"],
