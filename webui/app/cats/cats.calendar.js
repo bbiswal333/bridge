@@ -90,7 +90,7 @@ angular.module("app.cats")
 			$scope.loading = true;
 			$scope.hasError = false;
 			$scope.state = "";
-			$scope.weekdays = calUtils.getWeekdays($scope.sundayweekstart);
+			$scope.weekdays = calUtils.getWeekdays();
 			$scope.dayClass = $scope.dayClassInput || 'app-cats-day';
 			$scope.calUtils = calUtils;
 			$scope.analytics = {};
@@ -136,7 +136,6 @@ angular.module("app.cats")
 			function reload() {
 				$scope.loading = true;
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
-				$scope.SundayweekstartOnReload = $scope.sundayweekstart;
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
@@ -333,11 +332,30 @@ angular.module("app.cats")
 				return false;
 			}
 
+			function getCalArrayOfWeekByIndex(index) {
+				var arrayForWeek = angular.copy($scope.calArray[index]);
+				arrayForWeek.splice(6,1);
+				if (index > 0) {
+					arrayForWeek.unshift($scope.calArray[index - 1][6]);
+				}
+				return arrayForWeek;
+			}
+
 			$scope.isSelected = function(dayString){
 				if (!$scope.selectedDates){
 					return false;
 				}
 				return $scope.selectedDates.indexOf(dayString) !== -1;
+			};
+
+			$scope.rangeIsSelectable = function(calArray){
+				var rangeIsSelectable = false;
+				calArray.some(function(calDay){
+					if (calDay.inMonth && isSelectable(calDay.dayString)) {
+						rangeIsSelectable = true;
+					}
+				});
+				return rangeIsSelectable;
 			};
 
 			$scope.rangeIsSelected = function(calArray){
@@ -362,19 +380,27 @@ angular.module("app.cats")
 			};
 
 			$scope.weekIsSelected = function(index){
-				return $scope.rangeIsSelected($scope.calArray[index]);
+				return $scope.rangeIsSelected(getCalArrayOfWeekByIndex(index));
 			};
 
-			$scope.monthIsSelected = function(){
+			$scope.weekIsSelectable = function(index){
+				return $scope.rangeIsSelectable(getCalArrayOfWeekByIndex(index));
+			};
+
+			function getCalArrayForMonth() {
 				var calArrayForMonth = [];
-					$scope.calArray.forEach(function(week){
-						week.forEach(function(calDay) {
-							if (calDay.inMonth) {
-								calArrayForMonth.push(calDay);
-							}
-						});
+				$scope.calArray.forEach(function(week){
+					week.forEach(function(calDay) {
+						if (calDay.inMonth) {
+							calArrayForMonth.push(calDay);
+						}
 					});
-				return $scope.rangeIsSelected(calArrayForMonth);
+				});
+				return calArrayForMonth;
+			}
+
+			$scope.monthIsSelected = function(){
+				return $scope.rangeIsSelected(getCalArrayForMonth());
 			};
 
 			function setRangeDays (startDate, endDate){
@@ -420,7 +446,7 @@ angular.module("app.cats")
 
 			$scope.toggleWeek = function (index) {
 				var promises = [];
-				var week = $scope.calArray[index];
+				var week = getCalArrayOfWeekByIndex(index);
 				var range = [];
 				$scope.analytics.value = false;
 				week.forEach(function(day){
@@ -728,7 +754,6 @@ angular.module("app.cats")
 				dayClassInput: '@dayClass',
 				maintainable: '=',
 				analytics: '=',
-				sundayweekstart: '=',
 				loading: '='
 			}
 		};

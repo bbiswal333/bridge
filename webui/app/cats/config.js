@@ -4,7 +4,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.favoriteItems = [];
 	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
-	this.sundayweekstart = false;
 	this.colorScheme = "colorful";
 
 	function getIndex (tasks, task) {
@@ -36,9 +35,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 			}
 			if (catsConfigService.catsProfile) {
 				this.catsProfile = undefined;
-			}
-			if (catsConfigService.sundayweekstart) {
-				this.sundayweekstart = catsConfigService.sundayweekstart;
 			}
 			if (catsConfigService.colorScheme) {
 				this.colorScheme = "colorful";

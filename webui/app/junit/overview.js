@@ -30,8 +30,11 @@ angular.module('app.junit').directive('app.junit',
 			if ( $scope.numFailedTestCases || $scope.numErrorTestCases) {
 				trafficLightService.forApp($scope.metadata.guid).red( );
 			}
-			else {
+			else if ( $scope.numSuccessTestCases ) {
 				trafficLightService.forApp($scope.metadata.guid).green( );
+			}
+			else {
+				trafficLightService.forApp($scope.metadata.guid).off( );
 			}
 		};
 
@@ -59,7 +62,7 @@ angular.module('app.junit').directive('app.junit',
   			});
       }
       else {
-        // No URL is configured, we have to set the traffic light to green
+        // No URL is configured, we have to set the traffic light to default
         this.updateTrafficLight( );
       }
 		};
