@@ -66,6 +66,20 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
 
         };
 
+        //check for the possibility of winning across rows/ columns or cross and mark the board
+        $scope.offendPlay = function() {
+            console.log("offendPlay start");
+            return markwithRespectToPlayer(2); // computer player id is :2
+        };
+
+        
+        //defends player form forming line if there are already two marks in it.
+        // return true if changed
+        $scope.defendPlay = function() {
+            console.log("defendPlay start");
+            return markwithRespectToPlayer(1); // user player  id  is :1
+        };
+
         //Computer marks the board
         $scope.markForComp = function(a, b) {
             $scope.tile[a][b].id = 2;
@@ -92,15 +106,13 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
         };
 
 
-        $scope.offendPlay = function() {
-            console.log("offendPlay start");
+        function markwithRespectToPlayer(playerId){
             var count1, count2;
             count1 = 0;
             count2 = 0;
-            var Q = 2; //id used for Comp
             for (var i = 0; i < 3; i++) {
                 for (var j = 0; j < 3; j++) {
-                    if ($scope.tile[i][j].id == Q) //checks row
+                    if ($scope.tile[i][j].id == playerId) //checks row
                         if (++count1 == 2)
                             for (var k = 0; k < 3; k++) {
                                 if ($scope.tile[i][k].id == 0) {
@@ -109,7 +121,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
                                 }
                             }
 
-                    if ($scope.tile[j][i].id == Q) //checks column
+                    if ($scope.tile[j][i].id == playerId) //checks column
                         if (++count2 == 2)
                             for (var k = 0; k < 3; k++) {
                                 if ($scope.tile[k][i].id == 0) {
@@ -124,7 +136,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
             }
             for (var i = 0; i < 3; i++) //checks cross
             {
-                if ($scope.tile[i][i].id == Q)
+                if ($scope.tile[i][i].id == playerId)
                     if (++count1 == 2)
                         for (var k = 0; k < 3; k++) {
                             if ($scope.tile[k][k].id == 0) {
@@ -133,7 +145,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
                             }
                         }
 
-                if ($scope.tile[i][(2 - i)].id == Q)
+                if ($scope.tile[i][(2 - i)].id == playerId)
 
                     if (++count2 == 2)
                     for (var k = 0; k < 3; k++) {
@@ -146,67 +158,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
             return false;
         };
 
-        //defends player form forming line if there are already two marks in it.
-        // return true if changed
-        $scope.defendPlay = function() {
-            console.log("defendPlay start");
-            var P = 1; //id used for Player 
-            var count1, count2;
-            count1 = 0;
-            count2 = 0;
-            for (var i = 0; i < 3; i++) {
-                for (var j = 0; j < 3; j++) {
-                    if ($scope.tile[i][j].id == P) //checks row
-                        if (++count1 == 2)
-                            for (var k = 0; k < 3; k++) {
-                                if ($scope.tile[i][k].id == 0) {
-                                    $scope.markForComp(i, k);
-                                    return true;
-                                }
-                            }
-
-                    if ($scope.tile[j][i].id == P) //checks column
-                        if (++count2 == 2)
-                        for (var k = 0; k < 3; k++) {
-                            if ($scope.tile[k][i].id == 0) {
-                                $scope.markForComp(k, i);
-                                return true;
-                            }
-                        }
-                }
-                count1 = 0;
-                count2 = 0;
-            }
-            console.log("cross check");
-            for (var i = 0; i < 3; i++) //checks cross
-            {
-
-                if ($scope.tile[i][i].id == P)
-                    if (++count1 == 2)
-                        for (var k = 0; k < 3; k++) {
-                            if ($scope.tile[k][k].id == 0) {
-                                $scope.markForComp(k, k);
-                                return true;
-                            }
-                        }
-
-                console.log("checking $scope.tile[i][(2 - i)]:" + i + ":" + (2 - i) + " val:" + JSON.stringify($scope.tile[i][(2 - i)]));
-                if ($scope.tile[i][(2 - i)].id == P) {
-                    console.log("count2", count2);
-                    if (++count2 == 2) {
-                        for (var k = 0; k < 3; k++) {
-                            console.log("checking $scope.tile[k][(2 - k)]:" + k + ":" + (2 - k) + "val" + $scope.tile[i][(2 - i)]);
-                            if ($scope.tile[k][(2 - k)].id == 0) {
-                                $scope.markForComp(k, (2 - k));
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
+    
         //displays winner by calling checkwinner() and checking progress
         $scope.displayWinner = function() {
             if ($scope.checkWinner() == 1) {
