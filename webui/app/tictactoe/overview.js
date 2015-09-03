@@ -29,7 +29,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
             if (matchCount % 2 !== 0) {
                 $scope.compTurn();
             }
-        }
+        };
 
         //Player marks on the board
         $scope.markIt = function(i, j) {
@@ -39,7 +39,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
             }
             if ($scope.progress < 9 && $scope.checkWinner() === 0) {
                 $scope.tile[i][j].src = "../../app/tictactoe/images/cross.png";
-                $scope.tile[i][j].id = 1;//Player marks the board 
+                $scope.tile[i][j].id = 1;//Player marks the board
                 $scope.progress++;
             }
             $scope.displayWinner();
@@ -137,7 +137,6 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
         $scope.offendPlay = function() {
             return markwithRespectToPlayer(2); // computer player id is :2
         };
-  
         //defends player form forming line if there are already two marks in it.
         // return true if changed
         $scope.defendPlay = function() {
