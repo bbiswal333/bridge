@@ -131,7 +131,7 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
              }
             }
             return false;
-        };
+        }
 
         //check for the possibility of winning across rows/ columns or cross and mark the board
         $scope.offendPlay = function() {
