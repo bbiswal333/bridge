@@ -33,18 +33,18 @@ angular.module('app.tictactoe').directive('app.tictactoe', [function() {
 
         //Player marks on the board
         $scope.markIt = function(i, j) {
-            if ($scope.tile[i][j].id == 1 || $scope.tile[i][j].id == 2) //checks if the box is already marked
+            if ($scope.tile[i][j].id === 1 || $scope.tile[i][j].id === 2) //checks if the box is already marked
             {
                 return;
             }
-            if ($scope.progress < 9 && $scope.checkWinner() == 0) {
+            if ($scope.progress < 9 && $scope.checkWinner() === 0) {
                 $scope.tile[i][j].src = "../../app/tictactoe/images/cross.png";
                 $scope.tile[i][j].id = 1;//Player marks the board 
                 $scope.progress++;
             }
             $scope.displayWinner();
 
-            if ($scope.progress < 9 && $scope.checkWinner() == 0) {
+            if ($scope.progress < 9 && $scope.checkWinner() === 0) {
                 $scope.compTurn();
                 $scope.displayWinner();
             }
