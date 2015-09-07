@@ -734,6 +734,10 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    $scope.isValidProfile = function(){
+        calUtils.isValidProfile(catsBackend.catsProfile);
+    };
+
     $scope.saveTimesheet = function(){
         var weeks = [];
         var container = {

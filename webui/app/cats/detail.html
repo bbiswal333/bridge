@@ -44,7 +44,7 @@
                             <bridge.button style="width:70px;position: absolute;left: 110px;" state="isPasteTemplateEnabled() === true ? ' ' : 'disabled'"  ng-click="pasteTemplate(); doAlert()">Paste</bridge.button>
 
                         </div>
-                        <bridge.button state="(!reloadInProgress.value && selectedDates.length >= 1) === true ? ' ' : 'disabled'"  ng-click="saveTimesheet(); doAlert()" class="save_close_btn">Apply changes</bridge.button>
+                        <bridge.button state="(!reloadInProgress.value && selectedDates.length >= 1 && isValidProfile()) === true ? ' ' : 'disabled'"  ng-click="saveTimesheet(); doAlert()" class="save_close_btn">Apply changes</bridge.button>
                     </div>
                 </div>
             </div>
