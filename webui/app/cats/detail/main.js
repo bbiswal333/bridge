@@ -735,7 +735,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     }
 
     $scope.isValidProfile = function(){
-        calUtils.isValidProfile(catsBackend.catsProfile);
+        catsUtils.isValidProfile(catsBackend.catsProfile);
     };
 
     $scope.saveTimesheet = function(){
