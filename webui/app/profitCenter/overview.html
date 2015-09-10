@@ -1,43 +1,55 @@
-﻿<div style="display: table-cell; width: 60%; padding: 2px">
-	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
-	<span ng-show="profitCenter"><b>Name:</b> {{profitCenter.name}}</span><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
-	<br />
-	<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" />
-		Project Profit Center
-		<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
-	</span>
+﻿<div style="display: table">
+	<div style="display: table-row; width: 60%; padding: 2px">
+		<div style="display: table-cell">
+			<div style="width: 140px">
+				<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
+			</div>
+		</div>
+		<div style="display: table-cell; vertical-align: middle" ng-show="profitCenter">{{profitCenter.name}}</div>
+	</div>
+	<div style="display: table-row">
+		<div style="display: table-cell">
+			<bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
+			<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" /><br />
+				Project Profit Center
+				<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
+			</span>
+		</div>
+		<div style="display: table-cell; width: 50%; padding: 2px">
+			<div style="display: table-row" ng-show="profitCenter">
+				<div style="display: table-cell; width: 90px">
+					<b>IP Owner:</b>
+				</div>
+				<div style="display: table-cell">
+					SAP SE
+				</div>
+			</div>
+			<div style="display: table-row" ng-show="profitCenter">
+				<div style="display: table-cell">
+					<b>Charge Back Receiver:</b>
+				</div>
+				<div style="display: table-cell">
+					SAP SE
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div style="display: table-cell; width: 50%; padding: 2px">
-	<div style="display: table-row" ng-show="profitCenter">
-		<div style="display: table-cell; width: 90px">
-			<b>IP Owner:</b>
+<div style="display: table">
+	<div style="display: table-row" ng-show="profitCenter && profitCenter.responsible">
+		<div style="display: table-cell">
+			<b>Profit Center Responsible:</b>
 		</div>
 		<div style="display: table-cell">
-			SAP SE
+			<bridge.employee-picture employee-user="profitCenter.responsible"></bridge.employee-picture> {{profitCenter.responsibleFullName}}
 		</div>
 	</div>
-	<div style="display: table-row" ng-show="profitCenter">
+	<div style="display: table-row" ng-show="profitCenter && profitCenter.controller">
 		<div style="display: table-cell">
-			<b>Charge Back Receiver:</b>
+			<b>Responsible Controller:</b>
 		</div>
 		<div style="display: table-cell">
-			SAP SE
+			<bridge.employee-picture employee-user="profitCenter.controller"></bridge.employee-picture> {{profitCenter.controllerFullName}}
 		</div>
-	</div>
-</div>
-<div style="display: table-row" ng-show="profitCenter && profitCenter.responsible">
-	<div style="display: table-cell">
-		<b>Profit Center Responsible:</b>
-	</div>
-	<div style="display: table-cell">
-		<bridge.employee-picture employee-user="profitCenter.responsible"></bridge.employee-picture> {{profitCenter.responsibleFullName}}
-	</div>
-</div>
-<div style="display: table-row" ng-show="profitCenter && profitCenter.controller">
-	<div style="display: table-cell">
-		<b>Responsible Controller:</b>
-	</div>
-	<div style="display: table-cell">
-		<bridge.employee-picture employee-user="profitCenter.controller"></bridge.employee-picture> {{profitCenter.controllerFullName}}
 	</div>
 </div>
