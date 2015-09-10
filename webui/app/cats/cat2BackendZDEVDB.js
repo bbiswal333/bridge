@@ -420,7 +420,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				var tasks = [];
 				angular.forEach(promisesData, function(data) {
 
-					if (that.catsProfile.indexOf("DEV2002") > -1) {
+					if (that.catsProfile.indexOf("DEV20") > -1 ||
+						that.catsProfile.indexOf("INFR") > -1) {
 						tasks.push({
 							RAUFNR: "",
 							TASKTYPE: "ADMI",
@@ -488,7 +489,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
-				if (catsProfile !== "DEV2002C") { // That is the only profile where the cPro worklist shall be read
+				if (catsProfile !== "DEV2002C" &&
+				    catsProfile !== "DEV2002H" &&
+				    catsProfile !== "DEV2012C") { // These are the only profiles where the cPro worklist shall be read
 					deferred.resolve();
 				} else {
 					if (!tasksFromWorklistPromise) {
@@ -507,7 +510,11 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
 								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
 								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-								task.UNIT = nodes[i].UNIT || "T"; // T is default unit for cPro
+								if (catsUtils.isHourlyProfil(catsProfile)) {
+									task.UNIT = nodes[i].UNIT || "H";
+								} else {
+									task.UNIT = nodes[i].UNIT || "T";
+								}
 								task.projectDesc = nodes[i].DISPTEXTW1;
 								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 								tasks.push(task);
