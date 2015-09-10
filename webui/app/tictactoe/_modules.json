@@ -1,0 +1,17 @@
+{
+	"app":
+	{
+		"categories"			:	["Fun"],
+		"module_name"			:	"app.tictactoe",
+		"title"					:	"Tic Tac Toe",
+		"icon_css"				:	"fa fa-th-large",
+		"overview_directive"	:	"app.tictactoe",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"Put 3 crosses in a row or column and beat the computer"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js"],
+	"css_files" : ["default.css"]
+}

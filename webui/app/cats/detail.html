@@ -14,7 +14,7 @@
                             <div style="text-align:right">
                                 <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">Get started!</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
                                 <b><a href="mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=CAT2 time recording">Report a bug</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
-                                <b><a href="https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview" target="_blank">Create leave request</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
+                                <b><a href="https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_ptarq_leavreq_appl?sap-language=EN&sap-wd-configId=ZHRESS_AC_PTARQ_LEAVREQ#" target="_blank">Create leave request</a></b>&nbsp&nbsp&nbsp|&nbsp&nbsp
                                 <b><a href="https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2" target="_blank">Frequently asked questions (FAQ)</a></b><br><br>
                             </div>
                             <app.cats.calendar
@@ -44,7 +44,7 @@
                             <bridge.button style="width:70px;position: absolute;left: 110px;" state="isPasteTemplateEnabled() === true ? ' ' : 'disabled'"  ng-click="pasteTemplate(); doAlert()">Paste</bridge.button>
 
                         </div>
-                        <bridge.button state="(!reloadInProgress.value && selectedDates.length >= 1) === true ? ' ' : 'disabled'"  ng-click="saveTimesheet(); doAlert()" class="save_close_btn">Apply changes</bridge.button>
+                        <bridge.button state="(!reloadInProgress.value && selectedDates.length >= 1 && isValidProfile()) === true ? ' ' : 'disabled'"  ng-click="saveTimesheet(); doAlert()" class="save_close_btn">Apply changes</bridge.button>
                     </div>
                 </div>
             </div>

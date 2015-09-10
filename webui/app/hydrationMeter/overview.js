@@ -30,7 +30,10 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 
 		$scope.addNotification = function() {
 			if ($scope.canNotify()) {
-				var msg = "Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?";
+				var msg = "How about you go get yourself a cup?";
+				if( $scope.values.currentCups < 3 && $scope.values.currentCups > 0) {
+					msg = "Aren't you feeling dehydrated? You only drank " + $scope.values.currentCups + " cups so far today. How about you go get yourself another one?";
+				}
 				if( $scope.values.currentCups === 0 ) {
 					msg = "Aren't you feeling dehydrated? You haven't drank any water today yet. How about you go get yourself a cup?";
 				}
@@ -45,8 +48,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		$scope.canNotify = function() {
 			if ($scope.values.notify === false) {
 				return false;
-			} else if ( ( $scope.values.lastTimeDrank + 3600000 ) <= ( new Date() ).getTime()) {
-				// Notify only if it has been more than one hour without drinking or haven't drank at all
+			} else if ( ( $scope.values.lastTimeDrank + (2 * 60 * 60 * 1000) ) <= ( new Date() ).getTime()) {
 				$scope.values.lastTimeDrank = ( new Date() ).getTime();
 				return true;
 			}

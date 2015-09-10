@@ -282,8 +282,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    $scope.isValidProfile = function(){
+        return catsUtils.isValidProfile(catsBackend.catsProfile);
+    };
+
     function displayCATSDataForDay(day) {
         try {
+            if(!$scope.isValidProfile()){
+                bridgeInBrowserNotification.addAlert('danger', "The CAT2 Profile " + catsBackend.catsProfile + " is not supported by Bridge.");
+            }
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
             $scope.hintText = "";
