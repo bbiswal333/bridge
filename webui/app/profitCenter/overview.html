@@ -1,11 +1,11 @@
 ﻿<div style="display: table-cell; width: 60%; padding: 2px">
 	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
-	<span ng-show="profitCenter"><b>Name:</b> {{profitCenter.name}}</span><br /><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
+	<span ng-show="profitCenter"><b>Name:</b> {{profitCenter.name}}</span><bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
 	<br />
-	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == false && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
-	<a href="" ng-click="profitCenter.locked || toggleActive()" ng-show="profitCenter.active == true && profitCenter" ng-disabled="profitCenter.locked" ng-style="profitCenter.locked ? {color: '#999999'} : {}"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> Project Profit Center</a>
-	<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
-	<br />
+	<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" />
+		Project Profit Center
+		<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
+	</span>
 </div>
 <div style="display: table-cell; width: 50%; padding: 2px">
 	<div style="display: table-row" ng-show="profitCenter">
