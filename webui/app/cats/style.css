@@ -230,7 +230,7 @@
     background: #F3F2F2;
 }
 
-.app-cats-stateY, .app-cats-stateY_TODAY, .app-cats-stateY_INTHEFUTURE_part_maint { 
+.app-cats-stateY, .app-cats-stateY_TODAY {
     background: linear-gradient(
         to right, 
         #A7D0BA 0%, 
@@ -239,7 +239,16 @@
         #DD6551 100% 
     );
 }
-.app-cats-stateY.hover:hover, .app-cats-stateY_TODAY.hover:hover, .app-cats-stateY_INTHEFUTURE_part_maint.hover:hover { 
+.app-cats-stateY_INTHEFUTURE_part_maint {
+    background: linear-gradient(
+        to right,
+        #A7D0BA 0%,
+        #A7D0BA 30%,
+        #F3F2F2 30%,
+        #F3F2F2 100%
+    );
+}
+.app-cats-stateY.hover:hover, .app-cats-stateY_TODAY.hover:hover {
     background: linear-gradient(
         to right, 
         #7AB997 0%, 
@@ -248,7 +257,16 @@
         #D53F26 100% 
     );
 }
-#calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_TODAY span , #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint span {
+.app-cats-stateY_INTHEFUTURE_part_maint.hover:hover {
+    background: linear-gradient(
+        to right,
+        #7AB997 0%,
+        #7AB997 30%,
+        #E1E1E1 30%,
+        #E1E1E1 100%
+    );
+}
+#calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_TODAY span {
     color: white;
     text-shadow:1px 1px black;
 }
