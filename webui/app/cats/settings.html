@@ -72,7 +72,9 @@
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.TASKTYPE"
 								placeholder="Task Type"
-								ng-show="configService.selectedTask.custom"></bridge.input>
+								ng-show="configService.selectedTask.custom"
+								input-typeahead="tasktype.TASKTYPE for tasktype in tasktypeSearch($viewValue,20)"
+								input-typeahead-editable="false"></bridge.input>
 						</div>
 					</div>
 

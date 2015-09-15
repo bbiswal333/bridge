@@ -1,9 +1,14 @@
-angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification",
-    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
+angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification", "app.cats.cat2BackendZDEVDB",
+    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification, catsBackend) {
 
 	$scope.configService = catsConfigService;
     catsConfigService.removeInvalidTasks(catsConfigService.favoriteItems);
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
+
+    $scope.tasktypesF4Help = [];
+    catsBackend.requestTasktypes().then(
+        function(data){ $scope.tasktypesF4Help = data; }
+    );
 
     function getIndexForId(list, id) {
         var index = -1;
@@ -160,6 +165,19 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
                 catsConfigService.favoriteItems.splice(index, 1);
             }
         }
+    };
+
+    $scope.tasktypeSearch = function(searchExpression, maxLength) {
+        var searchResult = [];
+        searchExpression = searchExpression.toLowerCase();
+        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < maxLength; i++) {
+            var searchEntry = $scope.tasktypesF4Help[i].TASKTYPE.toLowerCase();
+            if(searchEntry &&
+                searchEntry.indexOf(searchExpression) > -1) {
+                searchResult.push($scope.tasktypesF4Help[i]);
+            }
+        }
+        return searchResult;
     };
 
     $scope.clearFavoriteItems();
