@@ -1,12 +1,13 @@
 angular.module("app.cats.dataModule", ["lib.utils"])
 .service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils", "app.cats.catsUtils",
 	function($http, $q, $log, $window, calUtils, catsUtils) {
-		var MYCATSDATA_WEBSERVICE = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
-		var GETWORKLIST_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
-		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin="	+ $window.location.origin;
+		var MYCATSDATA_WEBSERVICE      = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
+		var GETWORKLIST_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
+		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
 		var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
-		var GETCATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
-		var WRITECATSDATA_WEBSERVICE = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
+		var GETCATSDATA_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
+		var WRITECATSDATA_WEBSERVICE   = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
+		var TASKTYPE_F4HELP_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETF4DATA?format=json&origin=" + $window.location.origin;
 
 		this.CAT2ComplinaceDataCache = [];
 		this.CAT2ComplinaceDataPromise = {};
@@ -19,6 +20,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.gracePeriodInMonth = 0;
 		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
+		var tasktypesPromise;
 		var that = this;
 
 		function _httpGetRequest(url) {
@@ -524,6 +526,21 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						deferred.resolve(tasks);
 					}, deferred.reject);
 				}
+			}, deferred.reject);
+			return deferred.promise;
+		};
+
+		this.requestTasktypes = function() {
+			var deferred = $q.defer();
+			this.determineCatsProfileFromBackend()
+			.then(function(catsProfile) {
+				if (!tasktypesPromise) {
+					tasktypesPromise = _httpGetRequest(TASKTYPE_F4HELP_WEBSERVICE + "&catsprofile=" + catsProfile);
+				}
+				tasktypesPromise
+				.then(function(data) {
+					deferred.resolve(data.ET_TASKTYPE);
+				}, deferred.reject);
 			}, deferred.reject);
 			return deferred.promise;
 		};
