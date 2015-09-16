@@ -521,6 +521,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         var workdateBookings = [];
         var unchangedBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
+        if (totalWorkingTimeForDay > 1) { // special case for french part time contract with 8.2 hours per day
+            totalWorkingTimeForDay = 1;
+        }
         var targetHoursForDay      = monthlyDataService.days[workdate].targetHours;
         var tasksInBackend         = monthlyDataService.days[workdate].tasks;
 
