@@ -1,13 +1,18 @@
 angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification", "app.cats.cat2BackendZDEVDB",
     function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification, catsBackend) {
 
-	$scope.configService = catsConfigService;
+    $scope.configService = catsConfigService;
     catsConfigService.removeInvalidTasks(catsConfigService.favoriteItems);
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
 
     $scope.tasktypesF4Help = [];
     catsBackend.requestTasktypes().then(
-        function(data){ $scope.tasktypesF4Help = data; }
+        function(data){ $scope.tasktypesF4Help = data.ET_TASKTYPE; }
+    );
+
+    $scope.subtypesF4Help = [];
+    catsBackend.requestTasktypes().then(
+        function(data){ $scope.subtypesF4Help = data.ET_SUBTYPES; }
     );
 
     function getIndexForId(list, id) {
@@ -16,8 +21,8 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         list.some(function(item) {
             index++;
             if (id === item.id) {
-            	foundIndex = index;
-              	return true;
+                foundIndex = index;
+                  return true;
             }
         });
         return foundIndex;
@@ -137,20 +142,20 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         $scope.selectedTask = catsConfigService.selectedTask;
     };
 
-	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
-		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
-			addSelectedItemToFavorites();
-		}
+    $scope.handleProjectChecked = function (desc_s, val_i, task, id) {
+        if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
+            addSelectedItemToFavorites();
+        }
         $scope.selectedTask = catsConfigService.selectedTask;
-		return true;
-	};
+        return true;
+    };
 
-	$scope.handleProjectUnchecked = function (task) {
-		var index = getIndexForId(catsConfigService.favoriteItems, task.id);
-    	if (index >= 0) {
-    		catsConfigService.favoriteItems.splice(index,1);
-			catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
-    	}
+    $scope.handleProjectUnchecked = function (task) {
+        var index = getIndexForId(catsConfigService.favoriteItems, task.id);
+        if (index >= 0) {
+            catsConfigService.favoriteItems.splice(index,1);
+            catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
+        }
         $scope.selectedTask = catsConfigService.selectedTask;
     };
 
@@ -175,6 +180,22 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             if(searchEntry &&
                 searchEntry.indexOf(searchExpression) > -1) {
                 searchResult.push($scope.tasktypesF4Help[i]);
+            }
+        }
+        return searchResult;
+    };
+
+    $scope.subtypeSearch = function(tasktype, searchExpression, maxLength) {
+        var searchResult = [];
+        searchExpression = searchExpression.toLowerCase();
+        tasktype = tasktype.toLowerCase();
+        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < maxLength; i++) {
+            var searchTasktype = $scope.subtypesF4Help[i].TASKTYPE.toLowerCase();
+            var searchEntry = $scope.subtypesF4Help[i].STYPE.toLowerCase();
+            if(searchEntry && tasktype && searchTasktype &&
+                searchTasktype === tasktype &&
+                searchEntry.indexOf(searchExpression) > -1) {
+                searchResult.push($scope.subtypesF4Help[i]);
             }
         }
         return searchResult;

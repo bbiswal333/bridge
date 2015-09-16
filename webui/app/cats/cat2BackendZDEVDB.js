@@ -539,7 +539,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}
 				tasktypesPromise
 				.then(function(data) {
-					deferred.resolve(data.ET_TASKTYPE);
+					deferred.resolve(data);
 				}, deferred.reject);
 			}, deferred.reject);
 			return deferred.promise;

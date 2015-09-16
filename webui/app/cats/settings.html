@@ -69,7 +69,7 @@
 						</span>
 						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
-							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined || tasktypesF4Help.length === 0"
 								model="configService.selectedTask.TASKTYPE"
 								placeholder="Task Type"
 								ng-show="configService.selectedTask.custom"
@@ -82,22 +82,20 @@
 						<span class="col-md-4 settings_input settings_input_label">Sub Type</span>
 						<div class="col-md-8">
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZZSUBTYPE || "Sub Type"}}</div>
-							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
+							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined || subtypesF4Help.length === 0"
 								model="configService.selectedTask.ZZSUBTYPE"
 								placeholder="Sub type"
-								ng-show="configService.selectedTask.custom"></bridge.input>
+								ng-show="configService.selectedTask.custom"
+								input-typeahead="tasktype.STYPE for tasktype in subtypeSearch(configService.selectedTask.TASKTYPE,$viewValue,20)"
+								input-typeahead-editable="false"></bridge.input>
 						</div>
 					</div>
 
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label"></span>
 						<div class="col-md-8">
-
-
 							<bridge.button style="width:100px" ng-show="!configService.selectedTask.custom || configService.selectedTask.id" class="settings_add_task_button" ng-click="createTask()">Add New</bridge.button>
-
 							<bridge.button style="width:100px" ng-show="configService.selectedTask.custom && saveIsAvailable()" class="settings_add_task_button" ng-click="saveNewTask()">Save</bridge.button>
-
 							<bridge.button style="width:100px" ng-show="configService.selectedTask !== null && configService.selectedTask !== undefined && !isUnchanged(configService.selectedTask)" ng-click="cancel()">Cancel</bridge.button>
 						</div>
 					</div>
