@@ -1,5 +1,5 @@
-﻿angular.module('app.profitCenter', ['frapontillo.bootstrap-switch']);
-angular.module('app.profitCenter').directive('app.profitCenter',[function () {
+﻿angular.module('app.profitCenter', ['frapontillo.bootstrap-switch', 'ui.tree']);
+angular.module('app.profitCenter').directive('app.profitCenter',['$location', function ($location) {
 
 	var directiveController = ['$scope', '$http', 'employeeService', 'bridgeInBrowserNotification', function ($scope, $http, employeeService, bridgeInBrowserNotification) {
 		$scope.appText = "Pretty simple app.";
@@ -33,6 +33,9 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 				$scope.justDownloaded = false;
 				return;
 			}
+			if(!$scope.profitCenter) {
+				return;
+			}
 			$http.get("https://ift.wdf.sap.corp/sap/bc/bridge/SET_IS_PROJ_PROFIT_CENTER?ID=" + $scope.realProfitCenterNumber + "&is_project_pc=" + ($scope.profitCenter.active ? 'X' : '')).then(function(response) {
 				if(response.data.error) {
 					bridgeInBrowserNotification.addAlert('danger',response.data.message);
@@ -44,7 +47,7 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 		});
 
 		$scope.$watch('profitCenterNumber', function() {
-			if(!$scope.profitCenterNumber) {
+			if(!$scope.profitCenterNumber || ($scope.profitCenter && $scope.profitCenterNumber !== parseInt($scope.profitCenter.PROFIT_CENTER))) {
 				$scope.profitCenter = null;
 			}
 		});
@@ -57,6 +60,10 @@ angular.module('app.profitCenter').directive('app.profitCenter',[function () {
 				$scope.justDownloaded = true;
 				setProfitCenterData(response);
 			});
+		};
+
+		$scope.goToDetails = function() {
+			$location.path("/detail/profitCenter");
 		};
 	}];
 

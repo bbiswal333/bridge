@@ -9,10 +9,17 @@
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
+		"routes"		:
+		[
+			{		
+				"route"			:	"/detail/profitCenter",
+				"templateUrl"	:	"app/profitCenter/detail.html"
+			}
+		],
 		"beta_users"			:	["D049677", "D034180", "D052319", "D047633", "D019465", "D049069", "D047654"],
 		"description"			:	"Project Profit Center"
 	},
 	"modules" : [],
-	"js_files" : ["overview.js"],
-	"css_files" : []
+	"js_files" : ["overview.js", "detail.js"],
+	"css_files" : ["profitCenter.css"]
 }
