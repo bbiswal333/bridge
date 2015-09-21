@@ -10,6 +10,12 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
                     children: [],
                     collapsed: true
                 };
+                nodesById[node.PATH].isProfitCenter = (node.IS_LEAF === 'X' ? true : false);
+                if(nodesById[node.PATH].isProfitCenter) {
+                    nodesById[node.PATH].leafClass = 'profitCenterLeafClass'
+                    nodesById[node.PATH].profitCenterId = node.PROFIT_CENTER_ID;
+                    nodesById[node.PATH].controller = node.CONTROLLER;
+                }
             });
         }
 
@@ -23,9 +29,29 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             });
         }
 
+        function openNodesUntilMoreThan1Option(nodes) {
+            nodes.map(function(node) {
+                if(nodesById[node.PATH].children.length === 1) {
+                    if(nodesById[node.PATH].children[0].isProfitCenter) {
+                        return;
+                    }
+                    nodesById[node.PATH].collapsed = false;
+                } else {
+                    nodesById[node.PATH].collapsed = false;
+                    nodesById[node.PATH].children.map(function(subNode) {
+                        subNode.collapsed = true;
+                    });
+                }
+            });
+            $scope.treeData[0].children.map(function(node) {
+                node.collapsed = true;
+            });
+        }
+
         function processHierarchy(nodes) {
             parseAllNodes(nodes);
             buildTree(nodes);
+            openNodesUntilMoreThan1Option(nodes);
         }
 
         $http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
