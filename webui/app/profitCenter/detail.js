@@ -12,7 +12,7 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
                 };
                 nodesById[node.PATH].isProfitCenter = (node.IS_LEAF === 'X' ? true : false);
                 if(nodesById[node.PATH].isProfitCenter) {
-                    nodesById[node.PATH].leafClass = 'profitCenterLeafClass'
+                    nodesById[node.PATH].leafClass = 'profitCenterLeafClass';
                     nodesById[node.PATH].profitCenterId = node.PROFIT_CENTER_ID;
                     nodesById[node.PATH].controller = node.CONTROLLER;
                 }
