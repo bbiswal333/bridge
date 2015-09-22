@@ -14,7 +14,7 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
                 if(nodesById[node.PATH].isProfitCenter) {
                     nodesById[node.PATH].leafClass = 'profitCenterLeafClass';
                     nodesById[node.PATH].profitCenterId = node.PROFIT_CENTER_ID;
-                    nodesById[node.PATH].controller = node.CONTROLLER;
+                    nodesById[node.PATH].controller = node.CONTROLLER_FIRST_NAME + node.CONTROLLER_LAST_NAME;
                 }
             });
         }
