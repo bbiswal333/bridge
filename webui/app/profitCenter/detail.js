@@ -54,7 +54,7 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             openNodesUntilMoreThan1Option(nodes);
         }
 
-        $http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
+        $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
             processHierarchy(response.data.DATA);
         });
 
