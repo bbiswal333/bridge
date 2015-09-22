@@ -5,6 +5,22 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 		$scope.appText = "Pretty simple app.";
 		$scope.box.boxSize = 2;
 
+		function getCBTitle(title) {
+			if(title.length > 30) {
+				return title.substring(0, 30) + "...";
+			} else {
+				return title;
+			}
+		}
+
+		function getIPOwnerTitle(title) {
+			if(title.length > 20) {
+				return title.substring(0, 20) + "...";
+			} else {
+				return title;
+			}
+		}
+
 		function setProfitCenterData(response) {
 			if(response.data.DATA.PROFIT_CENTER) {
 				$scope.realProfitCenterNumber = response.data.DATA.PROFIT_CENTER;
@@ -13,7 +29,9 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 					name: response.data.DATA.PROFIT_CENTER_DESC,
 					locked: response.data.DATA.LOCK_INDICATOR === "X" ? true : false,
 					responsible: response.data.DATA.PROF_CENTER_RESPONSIBLE,
-					controller: response.data.DATA.CONTROLLER
+					controller: response.data.DATA.CONTROLLER,
+					chargeBackReceiver: getCBTitle(response.data.DATA.CHARGE_BACK_RECEIVER_TITLE),
+					IPOwner: getIPOwnerTitle(response.data.DATA.IP_OWNER_TITLE)
 				};
 				if($scope.profitCenter.responsible) {
 					employeeService.getData($scope.profitCenter.responsible).then(function(data) {
