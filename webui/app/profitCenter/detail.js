@@ -29,7 +29,7 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             });
         }
 
-        function openNodesUntilMoreThan1Option(nodes) {
+        /*function openNodesUntilMoreThan1Option(nodes) {
             nodes.map(function(node) {
                 if(nodesById[node.PATH].children.length === 1) {
                     if(nodesById[node.PATH].children[0].isProfitCenter) {
@@ -46,12 +46,12 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             $scope.treeData[0].children.map(function(node) {
                 node.collapsed = true;
             });
-        }
+        }*/
 
         function processHierarchy(nodes) {
             parseAllNodes(nodes);
             buildTree(nodes);
-            openNodesUntilMoreThan1Option(nodes);
+            //openNodesUntilMoreThan1Option(nodes);
         }
 
         $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
