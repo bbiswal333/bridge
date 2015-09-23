@@ -19,8 +19,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         }
     );
 
-    $scope.ordersF4Help = [];
-
     function getIndexForId(list, id) {
         var index = -1;
         var foundIndex = index;
@@ -221,18 +219,25 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return searchResult;
     };
 
-    $scope.orderSearch = function(searchExpression, maxLength) {
-        var searchResult = [];
-        searchExpression = searchExpression.toLowerCase();
-
-        for (var i = 0; i < $scope.ordersF4Help.length && searchResult.length < maxLength; i++) {
-            var searchEntry = $scope.ordersF4Help[i].AUFNR.toLowerCase();
-            if(searchEntry &&
-                searchEntry.indexOf(searchExpression) > -1) {
-                searchResult.push($scope.ordersF4Help[i]);
+    $scope.orderSearch = function(searchExpression) {
+        return catsBackend.requestOrders(searchExpression).then(
+            function(data){
+                var searchResult = [];
+                searchExpression = searchExpression.toLowerCase();
+                for (var i = 0; i < data.REC_ORDER.length && searchResult.length < 20; i++) {
+                    var searchEntry = data.REC_ORDER[i].AUFNR.toLowerCase();
+                    if(searchEntry &&
+                        searchEntry.indexOf(searchExpression) > -1) {
+                        var searchResultItem = {};
+                        searchResultItem.name = data.REC_ORDER[i].AUFNR;
+                        searchResultItem.text = data.REC_ORDER[i].KTEXT;
+                        searchResult.push(searchResultItem);
+                    }
+                }
+                return searchResult;
             }
-        }
-        return searchResult;
+        );
+
     };
 
     // $scope.$watch("configService.selectedTask.TASKTYPE", function(newValue,oldValue){

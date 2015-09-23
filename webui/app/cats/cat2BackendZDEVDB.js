@@ -547,15 +547,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		};
 
 		this.requestOrders = function(searchExpression) {
-			var deferred = $q.defer();
-			if (!tasktypesPromise) {
-				tasktypesPromise = _httpGetRequest(ORDER_F4HELP_WEBSERVICE + searchExpression);
-			}
-			tasktypesPromise
-			.then(function(data) {
-				deferred.resolve(data);
-			}, deferred.reject);
-			return deferred.promise;
+			return _httpGetRequest(ORDER_F4HELP_WEBSERVICE + searchExpression);
 		};
 
 		this.writeCATSData = function(container) {

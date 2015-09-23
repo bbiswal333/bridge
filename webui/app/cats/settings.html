@@ -34,9 +34,11 @@
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.RAUFNR || "Order Number"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.RAUFNR"
-								placeholder="Order Number"
+								placeholder="Order Number (type at least 3 numbers for input help)"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="order.AUFNR for order in ordersF4Help"
+								input-typeahead="order.name as order for order in orderSearch($viewValue)"
+								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
+								input-typeahead-min-length="3"
 								input-typeahead-editable="false"></bridge.input>
 							</bridge.input>
 						</div>
