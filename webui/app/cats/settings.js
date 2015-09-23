@@ -240,10 +240,6 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
 
     };
 
-    // $scope.$watch("configService.selectedTask.TASKTYPE", function(newValue,oldValue){
-    //     console.log("Change: " + newValue + "!" + oldValue);
-    // });
-
     $scope.clearFavoriteItems();
     $scope.selectedTask = catsConfigService.selectedTask;
     $scope.$watch("selectedTask.DESCR", function() {
