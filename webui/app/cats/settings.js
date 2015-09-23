@@ -197,14 +197,17 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     $scope.subtypeSearch = function(tasktype, searchExpression, maxLength) {
         var searchResult = [];
         searchExpression = searchExpression.toLowerCase();
-        tasktype = tasktype.toLowerCase();
+        tasktype = tasktype.name.toLowerCase();
         for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < maxLength; i++) {
             var searchTasktype = $scope.subtypesF4Help[i].TASKTYPE.toLowerCase();
             var searchEntry = $scope.subtypesF4Help[i].STYPE.toLowerCase();
             if(searchEntry && tasktype && searchTasktype &&
                 searchTasktype === tasktype &&
                 searchEntry.indexOf(searchExpression) > -1) {
-                searchResult.push($scope.subtypesF4Help[i]);
+                var searchResultItem = {};
+                searchResultItem.name = $scope.subtypesF4Help[i].STYPE;
+                searchResultItem.text = $scope.subtypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
             }
         }
         return searchResult;
