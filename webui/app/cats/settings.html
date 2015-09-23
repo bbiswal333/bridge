@@ -75,7 +75,7 @@
 								model="configService.selectedTask.TASKTYPE"
 								placeholder="Task Type"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="tasktype as tasktype.name for tasktype in tasktypeSearch($viewValue,20)"
+								input-typeahead="tasktype.name as tasktype for tasktype in tasktypeSearch($viewValue,20)"
 								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
 								input-typeahead-editable="false"></bridge.input>
 						</div>
@@ -89,7 +89,7 @@
 								model="configService.selectedTask.ZZSUBTYPE"
 								placeholder="Sub type"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="tasktype as tasktype.name for tasktype in subtypeSearch(configService.selectedTask.TASKTYPE,$viewValue,20)"
+								input-typeahead="tasktype.name as tasktype for tasktype in subtypeSearch(configService.selectedTask.TASKTYPE,$viewValue,20)"
 								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
 								input-typeahead-editable="false"></bridge.input>
 						</div>
