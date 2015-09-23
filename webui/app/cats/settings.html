@@ -73,9 +73,9 @@
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.TASKTYPE || "Task Type"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined || tasktypesF4Help.length === 0"
 								model="configService.selectedTask.TASKTYPE"
-								placeholder="Task Type"
+								placeholder="Task Type  (type '*' for complete list)"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="tasktype.name as tasktype for tasktype in tasktypeSearch($viewValue,20)"
+								input-typeahead="tasktype.name as tasktype for tasktype in tasktypeSearch($viewValue)"
 								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
 								input-typeahead-editable="false"></bridge.input>
 						</div>
@@ -87,9 +87,9 @@
 							<div class="settings_input settings_input_text" ng-show="!configService.selectedTask.custom">{{configService.selectedTask.ZZSUBTYPE || "Sub Type"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined || subtypesF4Help.length === 0"
 								model="configService.selectedTask.ZZSUBTYPE"
-								placeholder="Sub type"
+								placeholder="Sub Type  (type '*' for complete list)"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="tasktype.name as tasktype for tasktype in subtypeSearch(configService.selectedTask.TASKTYPE,$viewValue,20)"
+								input-typeahead="tasktype.name as tasktype for tasktype in subtypeSearch(configService.selectedTask.TASKTYPE,$viewValue)"
 								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
 								input-typeahead-editable="false"></bridge.input>
 						</div>

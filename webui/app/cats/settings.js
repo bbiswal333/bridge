@@ -178,10 +178,14 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         }
     };
 
-    $scope.tasktypeSearch = function(searchExpression, maxLength) {
+    $scope.tasktypeSearch = function(searchExpression) {
         var searchResult = [];
-        searchExpression = searchExpression.toLowerCase();
-        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < maxLength; i++) {
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
+        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < 99; i++) {
             var searchEntry = $scope.tasktypesF4Help[i].TASKTYPE.toLowerCase();
             if(searchEntry &&
                 searchEntry.indexOf(searchExpression) > -1) {
@@ -194,11 +198,15 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         return searchResult;
     };
 
-    $scope.subtypeSearch = function(tasktype, searchExpression, maxLength) {
+    $scope.subtypeSearch = function(tasktype, searchExpression) {
         var searchResult = [];
-        searchExpression = searchExpression.toLowerCase();
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
         tasktype = tasktype.toLowerCase();
-        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < maxLength; i++) {
+        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < 99; i++) {
             var searchTasktype = $scope.subtypesF4Help[i].TASKTYPE.toLowerCase();
             var searchEntry = $scope.subtypesF4Help[i].STYPE.toLowerCase();
             if(searchEntry && tasktype && searchTasktype &&
