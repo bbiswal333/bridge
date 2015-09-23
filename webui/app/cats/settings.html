@@ -35,7 +35,9 @@
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.RAUFNR"
 								placeholder="Order Number"
-								ng-show="configService.selectedTask.custom">
+								ng-show="configService.selectedTask.custom"
+								input-typeahead="order.AUFNR for order in ordersF4Help"
+								input-typeahead-editable="false"></bridge.input>
 							</bridge.input>
 						</div>
 					</div>
@@ -73,7 +75,8 @@
 								model="configService.selectedTask.TASKTYPE"
 								placeholder="Task Type"
 								ng-show="configService.selectedTask.custom"
-								input-typeahead="tasktype.TASKTYPE for tasktype in tasktypeSearch($viewValue,20)"
+								input-typeahead="tasktype as tasktype.name for tasktype in tasktypeSearch($viewValue,20)"
+								input-typeahead-template-url="app/cats/typeahead.tmpl.html"
 								input-typeahead-editable="false"></bridge.input>
 						</div>
 					</div>

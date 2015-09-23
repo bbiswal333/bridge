@@ -7,13 +7,19 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
 
     $scope.tasktypesF4Help = [];
     catsBackend.requestTasktypes().then(
-        function(data){ $scope.tasktypesF4Help = data.ET_TASKTYPE; }
+        function(data){
+            $scope.tasktypesF4Help = data.ET_TASKTYPE;
+        }
     );
 
     $scope.subtypesF4Help = [];
     catsBackend.requestTasktypes().then(
-        function(data){ $scope.subtypesF4Help = data.ET_SUBTYPES; }
+        function(data){
+            $scope.subtypesF4Help = data.ET_SUBTYPES;
+        }
     );
+
+    $scope.ordersF4Help = [];
 
     function getIndexForId(list, id) {
         var index = -1;
@@ -179,7 +185,10 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
             var searchEntry = $scope.tasktypesF4Help[i].TASKTYPE.toLowerCase();
             if(searchEntry &&
                 searchEntry.indexOf(searchExpression) > -1) {
-                searchResult.push($scope.tasktypesF4Help[i]);
+                var searchResultItem = {};
+                searchResultItem.name = $scope.tasktypesF4Help[i].TASKTYPE;
+                searchResultItem.text = $scope.tasktypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
             }
         }
         return searchResult;
@@ -200,6 +209,24 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         }
         return searchResult;
     };
+
+    $scope.orderSearch = function(searchExpression, maxLength) {
+        var searchResult = [];
+        searchExpression = searchExpression.toLowerCase();
+
+        for (var i = 0; i < $scope.ordersF4Help.length && searchResult.length < maxLength; i++) {
+            var searchEntry = $scope.ordersF4Help[i].AUFNR.toLowerCase();
+            if(searchEntry &&
+                searchEntry.indexOf(searchExpression) > -1) {
+                searchResult.push($scope.ordersF4Help[i]);
+            }
+        }
+        return searchResult;
+    };
+
+    // $scope.$watch("configService.selectedTask.TASKTYPE", function(newValue,oldValue){
+    //     console.log("Change: " + newValue + "!" + oldValue);
+    // });
 
     $scope.clearFavoriteItems();
     $scope.selectedTask = catsConfigService.selectedTask;
