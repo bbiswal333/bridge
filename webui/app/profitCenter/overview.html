@@ -9,10 +9,9 @@
 	</div>
 	<div style="display: table-row">
 		<div style="display: table-cell">
-			<bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">find</bridge.button>
-			<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" /><br />
+			<bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">open</bridge.button>
+			<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" /><span class="fa fa-lock red-font" style="font-size: 22px; margin-left: 5px; vertical-align: middle" ng-show="profitCenter.locked"></span><br />
 				Project Profit Center
-				<span class="fa fa-lock" ng-show="profitCenter.locked"></span>
 			</span>
 		</div>
 		<div style="display: table-cell; width: 50%; padding: 2px">

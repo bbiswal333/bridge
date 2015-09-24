@@ -33,6 +33,9 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 					chargeBackReceiver: getCBTitle(response.data.DATA.CHARGE_BACK_RECEIVER_TITLE),
 					IPOwner: getIPOwnerTitle(response.data.DATA.IP_OWNER_TITLE)
 				};
+				if($scope.profitCenter.locked) {
+					bridgeInBrowserNotification.addAlert('warning',"Profit center locked.");
+				}
 				if($scope.profitCenter.responsible) {
 					employeeService.getData($scope.profitCenter.responsible).then(function(data) {
 						$scope.profitCenter.responsibleFullName = data.fullName;
@@ -43,6 +46,8 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 						$scope.profitCenter.controllerFullName = data.fullName;
 					});
 				}
+			} else {
+				bridgeInBrowserNotification.addAlert('danger',"Profit center not found.");
 			}
 		}
 
