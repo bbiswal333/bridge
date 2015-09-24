@@ -1,0 +1,25 @@
+{
+	"app":
+	{
+		"categories"			:	["Development"],
+		"module_name"			:	"app.transportNew",
+		"title"					:	"Transports",
+		"icon_css"				:	"fa fa-suitcase",
+		"overview_directive"	:	"app.transportNew",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"multiInstance"			:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/transportNew/:appId/",
+				"templateUrl"	:	"app/transportNew/detail.html"
+			}
+		],
+		"description"			:	"The new transports app lets you freely select your relevant transports."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detail.js", "data.js", "settings.js", "config.js"],
+	"css_files" : ["transport.css"]
+}
