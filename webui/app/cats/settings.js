@@ -7,12 +7,16 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
 
     $scope.tasktypesF4Help = [];
     catsBackend.requestTasktypes().then(
-        function(data){ $scope.tasktypesF4Help = data.ET_TASKTYPE; }
+        function(data){
+            $scope.tasktypesF4Help = data.ET_TASKTYPE;
+        }
     );
 
     $scope.subtypesF4Help = [];
     catsBackend.requestTasktypes().then(
-        function(data){ $scope.subtypesF4Help = data.ET_SUBTYPES; }
+        function(data){
+            $scope.subtypesF4Help = data.ET_SUBTYPES;
+        }
     );
 
     function getIndexForId(list, id) {
@@ -172,33 +176,68 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         }
     };
 
-    $scope.tasktypeSearch = function(searchExpression, maxLength) {
+    $scope.tasktypeSearch = function(searchExpression) {
         var searchResult = [];
-        searchExpression = searchExpression.toLowerCase();
-        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < maxLength; i++) {
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
+        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < 99; i++) {
             var searchEntry = $scope.tasktypesF4Help[i].TASKTYPE.toLowerCase();
             if(searchEntry &&
                 searchEntry.indexOf(searchExpression) > -1) {
-                searchResult.push($scope.tasktypesF4Help[i]);
+                var searchResultItem = {};
+                searchResultItem.name = $scope.tasktypesF4Help[i].TASKTYPE;
+                searchResultItem.text = $scope.tasktypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
             }
         }
         return searchResult;
     };
 
-    $scope.subtypeSearch = function(tasktype, searchExpression, maxLength) {
+    $scope.subtypeSearch = function(tasktype, searchExpression) {
         var searchResult = [];
-        searchExpression = searchExpression.toLowerCase();
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
         tasktype = tasktype.toLowerCase();
-        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < maxLength; i++) {
+        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < 99; i++) {
             var searchTasktype = $scope.subtypesF4Help[i].TASKTYPE.toLowerCase();
             var searchEntry = $scope.subtypesF4Help[i].STYPE.toLowerCase();
             if(searchEntry && tasktype && searchTasktype &&
                 searchTasktype === tasktype &&
                 searchEntry.indexOf(searchExpression) > -1) {
-                searchResult.push($scope.subtypesF4Help[i]);
+                var searchResultItem = {};
+                searchResultItem.name = $scope.subtypesF4Help[i].STYPE;
+                searchResultItem.text = $scope.subtypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
             }
         }
         return searchResult;
+    };
+
+    $scope.orderSearch = function(searchExpression) {
+        return catsBackend.requestOrders(searchExpression).then(
+            function(data){
+                var searchResult = [];
+                searchExpression = searchExpression.toLowerCase();
+                for (var i = 0; i < data.REC_ORDER.length && searchResult.length < 20; i++) {
+                    var searchEntry = data.REC_ORDER[i].AUFNR.toLowerCase();
+                    if(searchEntry &&
+                        searchEntry.indexOf(searchExpression) > -1) {
+                        var searchResultItem = {};
+                        searchResultItem.name = data.REC_ORDER[i].AUFNR;
+                        searchResultItem.text = data.REC_ORDER[i].KTEXT;
+                        searchResult.push(searchResultItem);
+                    }
+                }
+                return searchResult;
+            }
+        );
+
     };
 
     $scope.clearFavoriteItems();

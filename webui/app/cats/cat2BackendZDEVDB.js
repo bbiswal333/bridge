@@ -8,6 +8,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		var GETCATSDATA_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
 		var WRITECATSDATA_WEBSERVICE   = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
 		var TASKTYPE_F4HELP_WEBSERVICE = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETF4DATA?format=json&origin=" + $window.location.origin;
+		var ORDER_F4HELP_WEBSERVICE    = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCOSTOBJ?format=json&origin=" + $window.location.origin + "&options=OR";
 
 		this.CAT2ComplinaceDataCache = [];
 		this.CAT2ComplinaceDataPromise = {};
@@ -543,6 +544,10 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 				}, deferred.reject);
 			}, deferred.reject);
 			return deferred.promise;
+		};
+
+		this.requestOrders = function(searchExpression) {
+			return _httpGetRequest(ORDER_F4HELP_WEBSERVICE + searchExpression);
 		};
 
 		this.writeCATSData = function(container) {

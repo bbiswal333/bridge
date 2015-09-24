@@ -7,5 +7,3 @@ before_script:
 script:
   - npm test
   - npm run lint
-notifications:
-  slack: sap-tools:JuVwk2TC9gi5upWdnkfs7Eu7
