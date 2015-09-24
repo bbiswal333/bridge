@@ -2,8 +2,8 @@
 	<p>
 		<form name="ConfigItemForm">
 			<div class="row">
-				<div class="col-xs-12 col-md-6" style="margin-left:4px">
-					<br/><b>Here you can select or deselect your favorite tasks.</b><br/><br/>
+				<div class="col-xs-12 col-md-6" style="margin-left:4px;font-size: 1.5em;">
+					<br/><b><i class="fa fa-info"></i>&nbsp&nbspHere you can SELECT and DESELECT your favorite tasks from the work list.</b><br/><br/>
 				</div>
 			</div>
 			<div class="row">
@@ -19,12 +19,21 @@
 					</app.cats.maintenance-view.project-list>
 				</div>
 				<div class="col-xs-12 col-md-6" style="margin-top:45px">
+					<div class="row settings_input_row" ng-show="configService.selectedTask.ZCPR_EXTID">
+						<span class="col-md-4 settings_input settings_input_label"></span>
+						<div class="col-md-8">
+							<br/><b>Tasks from cPro Worklist must not be modified.</b><br/><br/>
+						</div>
+					</div>
+
 					<div class="row settings_input_row">
 						<span class="col-md-4 settings_input settings_input_label">Description</span>
 						<div class="col-md-8">
+							<div class="settings_input settings_input_text" ng-show="configService.selectedTask.ZCPR_EXTID">{{configService.selectedTask.DESCR || "Task Description"}}</div>
 							<bridge.input ng-disabled="configService.selectedTask === null || configService.selectedTask === undefined"
 								model="configService.selectedTask.DESCR"
-								placeholder="Task Description"></bridge.input>
+								placeholder="Task Description"
+								ng-show="!configService.selectedTask.ZCPR_EXTID"></bridge.input>
 						</div>
 					</div>
 
