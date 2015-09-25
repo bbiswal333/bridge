@@ -262,7 +262,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// 	CATSCHKforDay.DATEFROM === "2015-08-21" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-28") {
 						// 	CATSCHKforDay.STDAZ = 0;
-						// 	CATSCHKforDay.STATUS = "N";
+						// 	CATSCHKforDay.STATUS = "N"; // maintenance not required
 						// }
 						// if (CATSCHKforDay.DATEFROM === "2015-08-02" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-09" ||
@@ -270,7 +270,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// 	CATSCHKforDay.DATEFROM === "2015-08-23" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-30") {
 						// 	CATSCHKforDay.STDAZ = 8;
-						// 	CATSCHKforDay.STATUS = "R";
+						// 	CATSCHKforDay.STATUS = "R"; // not yet maintained
 						// }
 						// ////////////////////////////////////////////////////////
 						// // test test test: uncomment to be a part-time colleague

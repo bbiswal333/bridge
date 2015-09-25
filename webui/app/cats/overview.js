@@ -5,6 +5,7 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 		var controller = ['$scope', function ($scope) {
 
 			$scope.box.boxSize = "2";
+			catsConfigService.box = $scope.box;
 			$scope.configService = catsConfigService;
 			$scope.variableThatIsFalse = false;
 
@@ -20,7 +21,9 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 			};
 
 			$scope.box.returnConfig = function(){
-				return angular.copy($scope.configService);
+				var configToReturn = angular.copy($scope.configService);
+				delete configToReturn.box;
+				return configToReturn;
 			};
 		}];
 
