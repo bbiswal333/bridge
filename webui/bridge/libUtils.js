@@ -287,6 +287,26 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return _months;
     };
 
+    this.prevMonth = function(objectContainingYearAndMonth) {
+        if (objectContainingYearAndMonth.month === 0) {
+            objectContainingYearAndMonth.month = 11;
+            objectContainingYearAndMonth.year--;
+        }
+        else {
+            objectContainingYearAndMonth.month--;
+        }
+    };
+
+    this.nextMonth = function(objectContainingYearAndMonth) {
+        if (objectContainingYearAndMonth.month === 11) {
+            objectContainingYearAndMonth.month = 0;
+            objectContainingYearAndMonth.year++;
+        }
+        else {
+            objectContainingYearAndMonth.month++;
+        }
+    };
+
     this.getMonthName = function(i) {
         if (i >= 0 && i <= 11) {
             return _months[i];

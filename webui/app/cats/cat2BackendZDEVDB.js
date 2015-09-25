@@ -262,7 +262,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// 	CATSCHKforDay.DATEFROM === "2015-08-21" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-28") {
 						// 	CATSCHKforDay.STDAZ = 0;
-						// 	CATSCHKforDay.STATUS = "N";
+						// 	CATSCHKforDay.STATUS = "N"; // maintenance not required
 						// }
 						// if (CATSCHKforDay.DATEFROM === "2015-08-02" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-09" ||
@@ -270,7 +270,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 						// 	CATSCHKforDay.DATEFROM === "2015-08-23" ||
 						// 	CATSCHKforDay.DATEFROM === "2015-08-30") {
 						// 	CATSCHKforDay.STDAZ = 8;
-						// 	CATSCHKforDay.STATUS = "R";
+						// 	CATSCHKforDay.STATUS = "R"; // not yet maintained
 						// }
 						// ////////////////////////////////////////////////////////
 						// // test test test: uncomment to be a part-time colleague
@@ -339,6 +339,23 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			that.CAT2ComplinaceDataPromise = deferred.promise;
 			return deferred.promise;
 		};
+
+		// this.getMissingDays = function() {
+		// 	var deferred = $q.defer();
+
+		// 	var begDate = new Date(year,month,1,12);
+		// 	// begDate shall be Monday
+		// 	if (begDate.getDay() === 0) { // Sunday
+		// 		begDate.setDate(begDate.getDate() - 6);
+		// 	} else {
+		// 		begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
+		// 	}
+		// 	var endDate = new Date(year,month,calUtils.getLengthOfMonth(year, month),12);
+		// 	getCAT2ComplianceForRange(deferred, begDate, endDate);
+
+		// 	return deferred.promise;
+		// };
+
 
 		function processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile) {
 			week = calUtils.toNumberOfCharactersString(week, 2);
