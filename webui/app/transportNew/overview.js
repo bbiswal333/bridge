@@ -13,6 +13,14 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
             return angular.copy(transportConfig);
         };
 
+        function toDate(dateString) {
+        	if(dateString) {
+        		return new Date(dateString);
+        	} else {
+        		return new Date();
+        	}
+        }
+
         function setAppDataFromTransportData() {
         	$scope.numOpenTransports = transportData.openTransports.length;
 			$scope.numOpenTransportsLongerThanThreshold = 0;
@@ -51,14 +59,6 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 			}
 		}, true);
 
-        function toDate(dateString) {
-        	if(dateString) {
-        		return new Date(dateString);
-        	} else {
-        		return new Date();
-        	}
-        }
-
 		$scope.box.settingScreenData = {
             templatePath: "transportNew/settings.html",
             controller: angular.module('app.transportNew').appTransportSettings
@@ -71,3 +71,4 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 		controller: directiveController
 	};
 }]);
+

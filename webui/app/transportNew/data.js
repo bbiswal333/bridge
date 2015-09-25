@@ -19,7 +19,7 @@ angular.module("app.transportNew")
 					});
 					return deferred.promise;
 				};
-			}
+			};
 		})();
 
 		var instances = {};
@@ -30,5 +30,5 @@ angular.module("app.transportNew")
 			}
 
 			return instances[appId];
-		}
+		};
 }]);
