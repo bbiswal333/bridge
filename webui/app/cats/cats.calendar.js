@@ -577,27 +577,12 @@ angular.module("app.cats")
 				return true;
 			};
 
-			function prevMonth(structureContainingYearAndMonth) {
-				var data = {};
-				data.year = angular.copy(structureContainingYearAndMonth.year);
-				data.month = angular.copy(structureContainingYearAndMonth.month);
-				if (data.month === 0) {
-					data.month = 11;
-					data.year--;
-				}
-				else {
-					data.month--;
-				}
-				return data;
-			}
-
 			$scope.prevMonth = function () {
 				if (!$scope.canGoBackward()) {
 					return;
 				}
 				monthRelative--;
-				monthlyDataService.year = prevMonth(monthlyDataService).year;
-				monthlyDataService.month = prevMonth(monthlyDataService).month;
+				calUtils.prevMonth(monthlyDataService);
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 				unSelectAllDays();
@@ -615,27 +600,12 @@ angular.module("app.cats")
 				return true;
 			};
 
-			function nextMonth(structureContainingYearAndMonth) {
-				var data = {};
-				data.year = angular.copy(structureContainingYearAndMonth.year);
-				data.month = angular.copy(structureContainingYearAndMonth.month);
-				if (data.month === 11) {
-					data.month = 0;
-					data.year++;
-				}
-				else {
-					data.month++;
-				}
-				return data;
-			}
-
 			$scope.nextMonth = function () {
 				if (!$scope.canGoForward()) {
 					return;
 				}
 				monthRelative++;
-				monthlyDataService.year = nextMonth(monthlyDataService).year;
-				monthlyDataService.month = nextMonth(monthlyDataService).month;
+				calUtils.nextMonth(monthlyDataService);
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 				unSelectAllDays();

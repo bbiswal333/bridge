@@ -340,6 +340,23 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
+		// this.getMissingDays = function() {
+		// 	var deferred = $q.defer();
+
+		// 	var begDate = new Date(year,month,1,12);
+		// 	// begDate shall be Monday
+		// 	if (begDate.getDay() === 0) { // Sunday
+		// 		begDate.setDate(begDate.getDate() - 6);
+		// 	} else {
+		// 		begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
+		// 	}
+		// 	var endDate = new Date(year,month,calUtils.getLengthOfMonth(year, month),12);
+		// 	getCAT2ComplianceForRange(deferred, begDate, endDate);
+
+		// 	return deferred.promise;
+		// };
+
+
 		function processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile) {
 			week = calUtils.toNumberOfCharactersString(week, 2);
 			if (!data) {
