@@ -1,6 +1,14 @@
 angular.module("app.cats.dataModule", ["lib.utils"])
-.service("app.cats.cat2BackendZDEVDB", ["$http", "$q", "$log", "$window", "lib.utils.calUtils", "app.cats.catsUtils",
+.service("app.cats.cat2BackendZDEVDB",
+	["$http",
+	"$q",
+	"$log",
+	"$window",
+	"lib.utils.calUtils",
+	"app.cats.catsUtils",
+
 	function($http, $q, $log, $window, calUtils, catsUtils) {
+
 		var MYCATSDATA_WEBSERVICE      = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
 		var GETWORKLIST_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
 		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
@@ -340,21 +348,31 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		// this.getMissingDays = function() {
-		// 	var deferred = $q.defer();
+		this.getCAT2ComplianceData4TwoPreviousMonth = function() {
+			var deferred = $q.defer();
 
-		// 	var begDate = new Date(year,month,1,12);
-		// 	// begDate shall be Monday
-		// 	if (begDate.getDay() === 0) { // Sunday
-		// 		begDate.setDate(begDate.getDate() - 6);
-		// 	} else {
-		// 		begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
-		// 	}
-		// 	var endDate = new Date(year,month,calUtils.getLengthOfMonth(year, month),12);
-		// 	getCAT2ComplianceForRange(deferred, begDate, endDate);
+			var oneMonthAgo = {};
+			var twoMonthAgo = {};
+			oneMonthAgo.year = calUtils.today().getFullYear();
+			oneMonthAgo.month = calUtils.today().getMonth();
+			calUtils.previousMonth(oneMonthAgo);
+			twoMonthAgo.year = oneMonthAgo.year;
+			twoMonthAgo.month = oneMonthAgo.month;
+			calUtils.previousMonth(twoMonthAgo);
 
-		// 	return deferred.promise;
-		// };
+			var begDate = new Date(twoMonthAgo.year,twoMonthAgo.month,1,12);
+			// begDate shall be Monday
+			if (begDate.getDay() === 0) { // Sunday
+				begDate.setDate(begDate.getDate() - 6);
+			} else {
+				begDate.setDate(begDate.getDate() + 1 - begDate.getDay());
+			}
+
+			var endDate = new Date(oneMonthAgo.year,oneMonthAgo.month,calUtils.getLengthOfMonth(oneMonthAgo.year,oneMonthAgo.month),12);
+			getCAT2ComplianceForRange(deferred, begDate, endDate);
+
+			return deferred.promise;
+		};
 
 
 		function processCatsAllocationDataForWeek(year, week, deferred, data, status, catsProfile) {

@@ -8,11 +8,12 @@ angular.module("app.cats")
 		 "bridgeDataService",
 		 "app.cats.monthlyData",
 		 "bridgeInBrowserNotification",
+		 "app.cats.configService",
 		 "$q",
 		 "$log",
 		 "$window",
 		 "$timeout",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, $q, $log, $window, $timeout) {
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, configService, $q, $log, $window, $timeout) {
 		function processCatsData(cats_o) {
 			function parseDateToTime(date_s) {
 				if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -146,6 +147,22 @@ angular.module("app.cats")
 					function(data) {
 						if (monthlyDataService.reloadInProgress.error) {
 							setISPErrorText(data);
+						}
+					});
+				} else {
+					catsBackend.getCAT2ComplianceData4TwoPreviousMonth().then(function(daysWithComplianceData){
+						var counter = 0;
+						for (var i = 0; i < daysWithComplianceData.length; i++) {
+							// Check if day is at least in last month...
+							if (daysWithComplianceData[i].STATUS === "R" ||
+								daysWithComplianceData[i].STATUS === "Y") {
+								counter++;
+							}
+						}
+						if (counter) {
+							configService.box.errorText = "There unmaintained days within the last months";
+						} else {
+							configService.box.errorText = undefined;
 						}
 					});
 				}
@@ -582,7 +599,7 @@ angular.module("app.cats")
 					return;
 				}
 				monthRelative--;
-				calUtils.prevMonth(monthlyDataService);
+				calUtils.previousMonth(monthlyDataService);
 				$scope.year = monthlyDataService.year;
 				$scope.month = monthlyDataService.month;
 				unSelectAllDays();

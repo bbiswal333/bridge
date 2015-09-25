@@ -287,7 +287,7 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return _months;
     };
 
-    this.prevMonth = function(objectContainingYearAndMonth) {
+    this.previousMonth = function(objectContainingYearAndMonth) {
         if (objectContainingYearAndMonth.month === 0) {
             objectContainingYearAndMonth.month = 11;
             objectContainingYearAndMonth.year--;
