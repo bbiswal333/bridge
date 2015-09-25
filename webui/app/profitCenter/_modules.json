@@ -7,7 +7,7 @@
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.profitCenter",
 		"needs_client"			:	false,
-		"beta"					:	true,
+		"beta"					:	false,
 		"default_hidden"		:	true,
 		"routes"		:
 		[
@@ -16,8 +16,7 @@
 				"templateUrl"	:	"app/profitCenter/detail.html"
 			}
 		],
-		"beta_users"			:	["D049677", "D034180", "D052319", "D047633", "D019465", "D049069", "D047654"],
-		"description"			:	"Project Profit Center"
+		"description"			:	"Project Profit Center App for controllers."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "detail.js"],
