@@ -34,7 +34,7 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             buildTree(nodes);
         }
 
-        $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
+        $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
             processHierarchy(response.data.DATA);
         });
     }

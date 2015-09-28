@@ -6,7 +6,10 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 		$scope.box.boxSize = 2;
 
 		function getCBTitle(title) {
-			if(title.length > 30) {
+			if(title.indexOf("No Charge Back Receiver") === 0) {
+				return "No Charge Back";
+			}
+			else if(title.length > 30) {
 				return title.substring(0, 30) + "...";
 			} else {
 				return title;
@@ -59,7 +62,7 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 			if(!$scope.profitCenter) {
 				return;
 			}
-			$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/SET_IS_PROJ_PROFIT_CENTER?ID=" + $scope.realProfitCenterNumber + "&is_project_pc=" + ($scope.profitCenter.active ? 'X' : '')).then(function(response) {
+			$http.get("https://ift.wdf.sap.corp/sap/bc/bridge/SET_IS_PROJ_PROFIT_CENTER?ID=" + $scope.realProfitCenterNumber + "&is_project_pc=" + ($scope.profitCenter.active ? 'X' : '')).then(function(response) {
 				if(response.data.error) {
 					bridgeInBrowserNotification.addAlert('danger',response.data.message);
 				} else {
@@ -79,7 +82,7 @@ angular.module('app.profitCenter').directive('app.profitCenter',['$location', fu
 			while($scope.profitCenterNumber.length < 10) {
 				$scope.profitCenterNumber = 0 + $scope.profitCenterNumber;
 			}
-			$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_INFO?ID=" + $scope.profitCenterNumber).then(function(response) {
+			$http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_INFO?ID=" + $scope.profitCenterNumber).then(function(response) {
 				$scope.justDownloaded = true;
 				setProfitCenterData(response);
 			});
