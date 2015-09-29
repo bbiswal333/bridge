@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Productivity"],
+		"categories"			:	["Beta"],
 		"module_name"			:	"app.rooms",
 		"title"					:	"Room bookings",
 		"icon_css"				:	"fa fa-building",
