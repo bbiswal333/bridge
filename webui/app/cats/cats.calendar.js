@@ -158,7 +158,8 @@ angular.module("app.cats")
 						for (var i = 0; i < daysWithComplianceData.length; i++) {
 							var dateOfComplianceEntry = calUtils.parseDate(daysWithComplianceData[i].DATEFROM);
 							if ((daysWithComplianceData[i].STATUS === "R" ||
-								 daysWithComplianceData[i].STATUS === "Y") &&
+								(daysWithComplianceData[i].STATUS === "Y" &&
+								 daysWithComplianceData[i].QUANTITYH < daysWithComplianceData[i].STDAZ)) &&
 								 dateOfComplianceEntry < monthBorder) {
 								counter++;
 							}
