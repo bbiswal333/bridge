@@ -352,15 +352,17 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			var oneMonthAgo = {};
-			var twoMonthAgo = {};
+			var threeMonthAgo = {};
 			oneMonthAgo.year = calUtils.today().getFullYear();
 			oneMonthAgo.month = calUtils.today().getMonth();
 			calUtils.previousMonth(oneMonthAgo);
-			twoMonthAgo.year = oneMonthAgo.year;
-			twoMonthAgo.month = oneMonthAgo.month;
-			calUtils.previousMonth(twoMonthAgo);
 
-			var begDate = new Date(twoMonthAgo.year,twoMonthAgo.month,1,12);
+			threeMonthAgo.year = oneMonthAgo.year;
+			threeMonthAgo.month = oneMonthAgo.month;
+			calUtils.previousMonth(threeMonthAgo);
+			calUtils.previousMonth(threeMonthAgo);
+
+			var begDate = new Date(threeMonthAgo.year,threeMonthAgo.month,1,12);
 			// begDate shall be Monday
 			if (begDate.getDay() === 0) { // Sunday
 				begDate.setDate(begDate.getDate() - 6);

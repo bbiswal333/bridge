@@ -152,15 +152,19 @@ angular.module("app.cats")
 				} else {
 					catsBackend.getCAT2ComplianceData4TwoPreviousMonth().then(function(daysWithComplianceData){
 						var counter = 0;
+						var monthBorder = new Date(calUtils.today().getFullYear(),calUtils.today().getMonth(),1,12);
+						monthBorder.setDate(monthBorder.getDate() - 1);
+
 						for (var i = 0; i < daysWithComplianceData.length; i++) {
-							// Check if day is at least in last month...
-							if (daysWithComplianceData[i].STATUS === "R" ||
-								daysWithComplianceData[i].STATUS === "Y") {
+							var dateOfComplianceEntry = calUtils.parseDate(daysWithComplianceData[i].DATEFROM);
+							if ((daysWithComplianceData[i].STATUS === "R" ||
+								 daysWithComplianceData[i].STATUS === "Y") &&
+								 dateOfComplianceEntry < monthBorder) {
 								counter++;
 							}
 						}
 						if (counter) {
-							configService.box.errorText = "There unmaintained days within the last months";
+							configService.box.errorText = "Unmaintained day(s) in the last months";
 						} else {
 							configService.box.errorText = undefined;
 						}
