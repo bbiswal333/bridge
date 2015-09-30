@@ -1,0 +1,39 @@
+<div style="width: 100%">
+	<p>
+		<form name="ConfigItemForm">
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<bridge.button state="(currentConfigValues.configItem.boxSize === '1' || !currentConfigValues.configItem.boxSize) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.boxSize = '1'" 	style="margin-right:0;width:100px">
+						Small
+					</bridge.button>
+					<bridge.button state="(currentConfigValues.configItem.boxSize === '2' ) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.boxSize = '2'" style="margin-left:0;width:100px">
+						Large
+					</bridge.button>
+				</div>
+
+				<div class="col-xs-2 form_head" style="float:none;">Select System</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<bridge.button state="(currentConfigValues.configItem.system === 'PROD' || !currentConfigValues.configItem.system) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.system = 'PROD'" style="margin-right:0;width:100px">
+						Productive
+					</bridge.button>
+					<bridge.button state="(currentConfigValues.configItem.system === 'VERILAB' ) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.system = 'VERILAB'" style="margin-left:0;width:100px">
+						VeriLab
+					</bridge.button>
+				</div>
+
+				<div class="col-xs-2 form_head" style="float:none;">AKH Comps</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<bridge.input style="float:left;" model="currentConfigValues.configItem.components" placeholder="AKH components" autofocus></bridge.input>
+				</div>
+			</div>
+		</form>
+	</p>
+
+	<div class="row" >
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save &amp; Close</div>-->
+		<bridge.button class="save_close_btn" ng-click="save_click();doAlert()">
+			Save & Close
+		</bridge.button>
+	</div>
+</div>

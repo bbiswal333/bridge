@@ -3,12 +3,13 @@ angular.module('app.quickaccess').directive('app.quickaccess',[ "$window", funct
 
 	var directiveController = ['$scope', function ($scope) {
 		$scope.notetxt = "SAP Notes";
-		$scope.inctxt = "Internal Incidents";
+		$scope.inctxt = "Incidents";
 		$scope.openNote = function() {
 			$window.open("https://css.wdf.sap.corp/sap/support/notes/" + $scope.notenr, '_blank');
 		};
 		$scope.openIntInc = function() {
-			$window.open("https://support.wdf.sap.corp/sap/support/message/" + $scope.incnr, '_blank');
+			$scope.incnr.replace('/[^0-9]/', "");
+			$window.open("http://ims2crm1.wdf.sap.corp:1080/ngcss/index.php?ref=2&incident=" + $scope.incnr, '_blank');
 		};
 		$scope.noteFocus = function() {
 			$scope.notenr = "";

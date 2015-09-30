@@ -5,7 +5,7 @@ describe("IT Direct config", function(){
         module("app.itdirect");
 
         inject(["app.itdirect.config", function(_config){
-            config = _config;
+            config = _config.getConfigForAppId("Dummy");
         }]);
     });
 

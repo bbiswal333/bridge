@@ -30,6 +30,8 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                             ticketUtils.objectToArray(that, "tickets");
 
                             if (that.tickets.length > 0) {
+                                _.remove(that.tickets, {STATUS_KEY: "E0009"}); // Confirmed
+                                _.remove(that.tickets, {STATUS_KEY: "E0010"}); // Confirmed Automatically
                                 that.calculateTotals();
                                 that.fillCustomerName(that.tickets);
                             }

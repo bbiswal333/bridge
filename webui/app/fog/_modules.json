@@ -1,0 +1,37 @@
+{
+	"app": {
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.fog",
+		"title"					:	"Gunning Fog Index",
+		"icon_css"				:	"fa fa-graduation-cap",
+		"overview_directive"	:	"app.fog.overview",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"routes"				:   [{
+		  	"route"			    :	"/fog/detail/",
+		  	"templateUrl"       :	"app/fog/detail/template.html"
+		}],
+		"description"			:	"This is a tool that calculates the Gunning Fog Index. It is a weighted average of the number of words per sentence, and the number of long words per word. An interpretation is that the text can be understood by someone who left full-time education at a later age than the index."
+	},
+	"modules" : [],
+	"js_files" : [
+        "module.js",
+	    "config.js",
+        "caret.js",
+        "highlight.js",
+        "data.js",
+        "csv.js",
+        "metric.js",
+        "text.js",
+        "controller.js",
+	    "overview/overview.js",
+	    "detail/detail.js",
+	    "settings/settings.js"
+    ],
+	"css_files" : [
+        "overview/overview.css",
+        "detail/detail.css",
+        "settings/settings.css"
+    ]
+}

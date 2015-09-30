@@ -44,9 +44,17 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 		if (alertDuration) {
 			getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
 		} else if (alertType === "danger") { // actual errors shall be displayed much longer
-			getAlert(alertID).closingTimer = closeAlert(alertID, 15);
+			getAlert(alertID).closingTimer = closeAlert(alertID, 13);
 		} else {
-			getAlert(alertID).closingTimer = closeAlert(alertID, 8);
+			getAlert(alertID).closingTimer = closeAlert(alertID, 6);
 		}
 	};
+
+	this.removeAllAlerts = function () {
+		angular.forEach(scopeForDisplay.alerts, function(alert) {
+			$timeout.cancel(alert.closingTimer);
+		});
+		scopeForDisplay.alerts = [];
+	};
+
 }]);

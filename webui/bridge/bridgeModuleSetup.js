@@ -2,11 +2,6 @@
 angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProvider", "$locationProvider", "$httpProvider", "lib.utils.calUtilsProvider", "bridge.service.loaderProvider",
     function ($provide, $routeProvider, $compileProvider, $locationProvider, $httpProvider, calUtils, bridgeLoaderServiceProvider) {
 
-        //main overview page
-        $routeProvider.when("/", {
-            templateUrl: 'view/overview.html'
-        });
-
         //detail controller registered by module files
         function routeInfo($q, $route) {
             var defer = $q.defer();
@@ -59,6 +54,11 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
             });
             return $delegate;
         }]);
+
+        //main overview page
+        $routeProvider.when("/", {
+            templateUrl: 'view/overview.html'
+        });
 
         $routeProvider.when("/diagnosis", {
             templateUrl: 'bridge/diagnosis/corsTestPage.html',
@@ -119,6 +119,7 @@ angular.module('bridge.app').run(["$rootScope", "$q", "$injector", "$templateCac
             $rootScope.$broadcast('closeSettingsScreenRequested', args);
         });
         $rootScope.$on("$locationChangeStart", function (event, args) {
+            bridgeInBrowserNotification.removeAllAlerts();
             $rootScope.$broadcast('closeSettingsScreenRequested', args);
         });
 

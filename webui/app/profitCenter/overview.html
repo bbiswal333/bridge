@@ -1,42 +1,55 @@
-﻿<div style="display: table-cell; width: 60%; padding: 2px">
-	<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
-	<br />
-	<!--<bridge.checkbox ng-if="profitCenter" checked-label="active" unchecked-label="inactive" is-checked="isChecked"></bridge.checkbox>-->
-	<a href="" ng-click="toggleActive()" ng-if="active == false && profitCenter"><i class="fa fa-toggle-off" style="font-size: 25px; vertical-align: middle"></i> inactive</a>
-	<a href="" ng-click="toggleActive()" ng-if="active == true && profitCenter"><i class="fa fa-toggle-on" style="font-size: 25px; vertical-align: middle"></i> active</a>
-	<br />
+﻿<div style="display: table">
+	<div style="display: table-row; width: 60%; padding: 2px">
+		<div style="display: table-cell; width: 195px">
+			<div style="width: 140px">
+				<bridge.input placeholder="Project Profit Center" model="profitCenterNumber" ng-enter="fetchInfo()"></bridge.input>
+			</div>
+		</div>
+		<div style="display: table-cell; vertical-align: middle" ng-show="profitCenter">{{profitCenter.name}}</div>
+	</div>
+	<div style="display: table-row">
+		<div style="display: table-cell">
+			<bridge.button ng-click="fetchInfo()" ng-show="!profitCenter">Open</bridge.button>
+			<span ng-show="profitCenter"><input bs-switch ng-model="profitCenter.active" type="checkbox" switch-active="true" switch-on-text="On" switch-off-text="Off" switch-active="true" switch-readonly="{{profitCenter.locked}}" switch-size="mini" /><span class="fa fa-lock red-font" style="font-size: 22px; margin-left: 5px; vertical-align: middle" ng-show="profitCenter.locked"></span><br />
+				Project Profit Center
+			</span>
+		</div>
+		<div style="display: table-cell; width: 50%; padding: 2px">
+		<bridge.button ng-click="goToDetails()" ng-show="!profitCenter">Display Hierarchy</bridge.button>
+			<div style="display: table-row" ng-show="profitCenter">
+				<div style="display: table-cell; width: 90px">
+					<b>IP Owner:</b>
+				</div>
+				<div style="display: table-cell">
+					{{profitCenter.IPOwner}}
+				</div>
+			</div>
+			<div style="display: table-row" ng-show="profitCenter">
+				<div style="display: table-cell">
+					<b>Charge Back Receiver:</b>
+				</div>
+				<div style="display: table-cell">
+					{{profitCenter.chargeBackReceiver}}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div style="display: table-cell; width: 50%; padding: 2px">
-	<div style="display: table-row" ng-if="profitCenter">
-		<div style="display: table-cell; width: 90px">
-			<b>IP Owner:</b>
+<div style="display: table">
+	<div style="display: table-row" ng-show="profitCenter && profitCenter.responsible">
+		<div style="display: table-cell; width: 195px">
+			<b>Profit Center Responsible:</b>
 		</div>
 		<div style="display: table-cell">
-			SAP SE
+			<bridge.employee-picture employee-user="profitCenter.responsible"></bridge.employee-picture> {{profitCenter.responsibleFullName}}
 		</div>
 	</div>
-	<div style="display: table-row" ng-if="profitCenter">
+	<div style="display: table-row" ng-show="profitCenter && profitCenter.controller">
 		<div style="display: table-cell">
-			<b>Charge Back Receiver:</b>
+			<b>Responsible Controller:</b>
 		</div>
 		<div style="display: table-cell">
-			SAP SE
+			<bridge.employee-picture employee-user="profitCenter.controller"></bridge.employee-picture> {{profitCenter.controllerFullName}}
 		</div>
-	</div>
-</div>
-<div style="display: table-row" ng-if="profitCenter">
-	<div style="display: table-cell">
-		<b>Profit Center Responsible:</b>
-	</div>
-	<div style="display: table-cell">
-		<bridge.employee-picture employee-user="profitCenter.responsible"></bridge.employee-picture> {{profitCenter.responsibleFullName}}
-	</div>
-</div>
-<div style="display: table-row" ng-if="profitCenter">
-	<div style="display: table-cell">
-		<b>Responsible Controller:</b>
-	</div>
-	<div style="display: table-cell">
-		<bridge.employee-picture employee-user="profitCenter.controller"></bridge.employee-picture> {{profitCenter.controllerFullName}}
 	</div>
 </div>

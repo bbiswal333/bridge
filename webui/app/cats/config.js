@@ -4,7 +4,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	this.favoriteItems = [];
 	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
-	this.sundayweekstart = false;
 	this.colorScheme = "colorful";
 
 	function getIndex (tasks, task) {
@@ -25,6 +24,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
+				this.removeInvalidTasks(catsConfigService.favoriteItems);
 				this.favoriteItems = catsConfigService.favoriteItems;
 				this.favoriteItems.forEach(function(favoriteItem) {
 					that.enhanceTask(favoriteItem);
@@ -35,9 +35,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 			}
 			if (catsConfigService.catsProfile) {
 				this.catsProfile = undefined;
-			}
-			if (catsConfigService.sundayweekstart) {
-				this.sundayweekstart = catsConfigService.sundayweekstart;
 			}
 			if (catsConfigService.colorScheme) {
 				this.colorScheme = "colorful";
@@ -87,6 +84,17 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 		});
 	};
 
+	this.removeInvalidTasks = function (tasks) {
+		var wrongItem =
+			_.find(tasks, {
+				"TASKTYPE": "BRIDGE_HEADER"
+			});
+		var index = tasks.indexOf(wrongItem);
+		if (index >= 0) {
+			tasks.splice( index, 1 );
+		}
+	};
+
 	this.updateLastUsedDescriptions = function (task, onlyAddDoNotUpdate) {
 		if (task.DESCR === "") {
 			return;
@@ -99,26 +107,31 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 				this.lastUsedDescriptions.splice(index,1);
 			}
 		}
-		if (task.id) {
+		if (task.id && !catsUtils.isCproTask(task)) {
 			this.lastUsedDescriptions.push(task);
 		}
 	};
 
 	this.updateDescription = function (task) {
-		this.lastUsedDescriptions.some(function(lastUsedDescription){
-			if (catsUtils.isSameTask(task, lastUsedDescription) &&
-				lastUsedDescription.DESCR !== task.id &&
-				lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
-				lastUsedDescription.DESCR !== task.RAUFNR) {
-				task.DESCR = lastUsedDescription.DESCR;
-				return true;
-			}
-		});
-		this.favoriteItems.some(function(favoriteItem){
-			if (catsUtils.isSameTask(task, favoriteItem)) {
-				task.DESCR = favoriteItem.DESCR;
-				return true;
-			}
-		});
+		if (!catsUtils.isCproTask(task) &&
+			task.TASKTYPE !== "BRIDGE_HEADER") {
+
+			this.lastUsedDescriptions.some(function(lastUsedDescription){
+				if (catsUtils.isSameTask(task, lastUsedDescription) &&
+					lastUsedDescription.DESCR !== task.id &&
+					lastUsedDescription.DESCR !== task.ZCPR_OBJGEXTID &&
+					lastUsedDescription.DESCR !== task.RAUFNR) {
+					task.DESCR = lastUsedDescription.DESCR;
+					return true;
+				}
+			});
+
+			this.favoriteItems.some(function(favoriteItem){
+				if (catsUtils.isSameTask(task, favoriteItem)) {
+					task.DESCR = favoriteItem.DESCR;
+					return true;
+				}
+			});
+		}
 	};
 }]);

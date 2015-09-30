@@ -1,0 +1,59 @@
+<form name="settings">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h3>User Interface</h3>
+            <table class="fog-table">
+                <tr>
+                    <th class="fog-table__th">Metric</th>
+                    <th class="fog-table__th_center">Overview</th>
+                    <th class="fog-table__th_center">Detail</th>
+                </tr>
+                <tr ng-repeat="metric in ::config.metrics">
+                    <td class="fog-table__td" title="{{::metric.description}}">{{::metric.name}}</td>
+                    <td class="fog-table__td_center"><input type="checkbox" ng-model="metric.display.overview"/></td>
+                    <td class="fog-table__td_center"><input type="checkbox" ng-model="metric.display.detail"/></td>
+                </tr>
+            </table>
+            <h4 class="fog-h4">Highlight</h4>
+            <table class="fog-table">
+                <tr>
+                    <td>Complex Words</td>
+                    <td>
+                        <input type="text" class="form form-control" ng-model="config.highlight.complexWords"
+                               style="color:{{config.highlight.complexWords}}" list="colorsDataList"/>
+                        <datalist id="colorsDataList">
+                            <option value="red">
+                            <option value="orange">
+                            <option value="yellow">
+                            <option value="green">
+                            <option value="lightblue">
+                            <option value="blue">
+                            <option value="violet">
+                        </datalist>
+                    </td>
+                </tr>
+            </table>
+            <h4 class="fog-h4">Miscellaneous</h4>
+            <table class="fog-table">
+                <tr>
+                    <td class="fog-table__td_checkbox">
+                        <input type="checkbox" ng-model="config.welcome"/>
+                    </td>
+                    <td>Show Welcome Screen</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <h3>Algorithm Parameters</h3>
+            <h4 class="fog-h4">Common Suffixes</h4>
+            <input type="text" class="form form-control" ng-model="config.suffixes" app.fog.csv />
+            <h4 class="fog-h4">Exclude Words</h4>
+            <input type="text" class="form form-control" ng-model="config.exclude" app.fog.csv />
+        </div>
+    </div>
+    <div class="row">
+        <bridge.button ng-click="fog.save()" state="settings.$invalid?'disabled':''" class="pull-right">
+            Save & Close
+        </bridge.button>
+    </div>
+</form>

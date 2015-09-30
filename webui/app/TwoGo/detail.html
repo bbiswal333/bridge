@@ -1,0 +1,20 @@
+<div ng-controller="app.TwoGo.detailController" style="...">
+    <div class="panel panel-default twogo" style="...">
+        <h3>{{Heading}}</h3><br/>
+        <table width="100%">
+            <tr ng-repeat="x in array">
+                <td><h4>{{x[0]}} </h4></td>
+                <td><h4>{{x[1]}}</h4></td>
+                <td><h4>from {{x[2]}}</h4></td>
+                <td><h4>to {{x[3]}}</h4></td>
+                <td>
+                    <bridge.button state="x[6]" ng-click="setUrl(x[4])">As Driver</bridge.button>
+                </td>
+                <td>
+                    <bridge.button state="x[7]" ng-click="setUrl(x[5])">As Passenger</bridge.button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>

@@ -24,7 +24,7 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser (*.spec.js is redundant)
         files: [
             './webui/lib/jQuery-2_1_0/jquery.min.js',
-            './webui/lib/angular-1_3_8/angular.min.js',
+            './webui/lib/angular-1_3_16/angular.min.js',
             './webui/lib/sigma-1_0_3/sigma.min.js',
             'http://js.api.here.com/se/2.5.4/jsl.js',
             './webui/lib/**/*.js',
@@ -44,6 +44,7 @@ module.exports = function(config) {
             './webui/bridge/controls/bridgeTable/bridgeTable.js',
             './webui/bridge/ticketAppUtils/configUtils.js',
 
+            './webui/app/**/module.js',
             './webui/app/**/overview.js',
 
             './webui/**/!(browser_redirect).js',
@@ -55,7 +56,7 @@ module.exports = function(config) {
             "./webui/Test/**/*",
             "./server/**/*",
             "./client/**/*",
-            "./webui/lib/angular-1_3_8/angular.js",
+            "./webui/lib/angular-1_3_16/angular.js",
             "./webui/lib-bower/**/*",
             "https://js.api.here.com/**/*"
         ],

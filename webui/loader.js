@@ -18,7 +18,7 @@
                         }).success(function (oData) {
                             callback(oData.USERINFO.BNAME);
                         }).error(function(){
-
+                            callback("User");
                         });
                     }
 

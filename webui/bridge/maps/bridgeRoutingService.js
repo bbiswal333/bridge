@@ -18,15 +18,13 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 			url: GET_ROUTE_API + "?routeId=" + routeId + "&mode=fastest;car;traffic:enabled&routeattributes=wp,sm,sh,bb,lg,no,shape&legattributes=wp,mn,le,tt&maneuverattributes=tt,le,ti,li,pt,pl,rn,nr,no,ru&instructionformat=text" + appCodeParameter + appIdParameter + jsonAttributesParameter,
 			method: "GET",
 			withCredentials: false
-		}).success(successCallback).error(errorCallback);
+		}).success(successCallback).error(errorCallback !== undefined ? errorCallback : function(){});
 		return deferred;
 	}
 
 	function waypointArrayToGETParameter(waypoints) {
 		var convertedWaypoints = waypoints.map(function(waypoint) {
-			if(waypoint.linkId) {
-				return "link!!" + waypoint.linkId.replace(/\+/gi, "%2B");
-			} else if(waypoint.position) {
+			if(waypoint.position) {
 				return "geo!" + waypoint.position.latitude + "," + waypoint.position.longitude;
 			} else if(waypoint.latitude && waypoint.longitude) {
 				return "geo!" + waypoint.latitude + "," + waypoint.longitude;
@@ -90,6 +88,9 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 					if(data.response && data.response.route && data.response.route.length > 0) {
 						routeThis.routeId = data.response.route[0].routeId;
 						routeThis.loadFromRouteId(deferred);
+						deferred.promise.then(function() {
+							routeThis.calculatedWaypoints = waypoints;
+						});
 					}
 				}, function() {
 					bridgeInBrowserNotification.addAlert('danger','Unabled to fetch route information.');
@@ -147,6 +148,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 						}
 					} else {
 						rebuildRouteFromWaypoints(routeThis.calculatedWaypoints);
+						bridgeInBrowserNotification.addAlert('success','Your route "' + routeThis.name + '" had to be restored from coordinates. Please check the route in the app config.');
 					}
 				});
 			};
