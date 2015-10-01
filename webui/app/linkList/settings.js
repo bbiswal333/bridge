@@ -47,7 +47,6 @@ angular.module('app.linklist').appLinkListSettings =
 
         $scope.toggleAddForm(colNo);
         $scope.currentConfigValues.url = event.dataTransfer.getData('text');
-        // $scope.currentConfigValues.url = event.dataTransfer.getData('text/plain');
 
         var regex = /(.*:)\/\/([a-z\-.]+)(:[0-9]+)?(.*)/g;
 		var urlArray = regex.exec($scope.currentConfigValues.url);

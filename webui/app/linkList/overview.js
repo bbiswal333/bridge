@@ -18,8 +18,6 @@ angular.module('app.linklist').directive('droppable', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            // element[0].addEventListener('drop', scope.handleDrop, false);
-
             var dnD = {
                 handleDragLeave : function(){
                     element.removeClass("app-linklist-dragEnter");
@@ -38,7 +36,6 @@ angular.module('app.linklist').directive('droppable', function() {
 
             element.bind("dragover", dnD.handleDragEnter);
             element.bind("dragleave", dnD.handleDragLeave);
-            // element.bind("drop", dnD.handleDrop);
             element[0].addEventListener('drop', dnD.handleDrop, false);
 
         }

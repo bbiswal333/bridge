@@ -42,8 +42,6 @@
 <div class="row app-linkList-tbMargin" ng-show="addForm[selectedIndex] != '' && addForm[selectedIndex] != undefined">
 	<div class="col-xs-12 no-padd">
 		<div class="btn-group">
-			<!--<button ng-click="setAddForm(selectedIndex,'web')" ng-class="{btn_blue: addForm[selectedIndex] == 'web'}" type="button" class="btn btn-default">Web </button>
-			<button ng-click="setAddForm(selectedIndex,'gui')" ng-class="{btn_blue: addForm[selectedIndex] == 'gui'}" type="button" class="btn btn-default">SAP GUI</button>-->
 			<bridge.button state="(addForm[selectedIndex] == 'web') === true ? 'active' : 'invisible-button'" ng-click="setAddForm(selectedIndex,'web')" style="width:100px;margin-left:0;margin-right:0">
 				Web
 			</bridge.button>
@@ -59,20 +57,16 @@
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
 			<bridge.input model="currentConfigValues.name" placeholder="Name for the Link" maxlength="40"></bridge.input>
-			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.name" maxlength="40" placeholder="Name for the Link" autofocus />-->
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<!--<input type="text" class="form-control form" ng-model="currentConfigValues.url" placeholder="URL"/>-->
 		</div>
 		<bridge.input model="currentConfigValues.url" placeholder="URL"></bridge.input>
 	</div>
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<!--<span ng-if="!editLink" class="btn btn-default " ng-click="cancelAdd()">Cancel</span>
-			<span ng-if="editLink" class="btn btn-default " ng-click="cancelEdit()">Cancel</span>-->
 			<bridge.button ng-click="cancelAdd()" ng-if="!editLink">
 				Cancel
 			</bridge.button>
@@ -88,29 +82,23 @@
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
 			<bridge.input model="$parent.currentConfigValues.name" placeholder="Name for the SAP GUI Link" maxlength="40"></bridge.input>
-			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.name" maxlength="40" placeholder="Name for the SAP GUI Link" autofocus />-->
 		</div>
 		<div class="col-xs-6 no-padd">
 			<bridge.input model="$parent.currentConfigValues.sid" placeholder="SAP System ID"></bridge.input>
-			<!--<input type="text" class="form-control form" ng-model="$parent.currentConfigValues.sid" placeholder="SAP System ID" />-->
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-6 padd-right">
-			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.transaction" placeholder="Transaction" />-->
 			<bridge.input model="$parent.currentConfigValues.transaction" placeholder="Transaction"></bridge.input>
 		</div>
 		<div class="col-xs-6 no-padd">
-			<!--<input type="text" class="form-control  form" ng-model="$parent.currentConfigValues.parameters" placeholder="Parameters" />-->
 			<bridge.input model="$parent.currentConfigValues.parameters" placeholder="Parameters"></bridge.input>
 		</div>
 	</div>
 
 	<div class="row app-linkList-tbMargin">
 		<div class="col-xs-12 no-padd">
-			<!--<span ng-if="!editLink" class="btn btn-default " ng-click="cancelAdd()">Cancel</span>
-			<span ng-if="editLink" class="btn btn-default " ng-click="cancelEdit()">Cancel</span>-->
 			<bridge.button ng-click="cancelAdd()" ng-if="!editLink">
 				Cancel
 			</bridge.button>
@@ -123,7 +111,6 @@
 
 
 <div class="row">
-	<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>-->
 	<bridge.button class="save_close_btn" ng-click="closeForm()">
 		Save & Close
 	</bridge.button>
