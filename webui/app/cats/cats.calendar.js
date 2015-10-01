@@ -167,7 +167,7 @@ angular.module("app.cats")
 						if (counter === 1) {
 							configService.box.errorText = "There is 1 incomplete day in the previous 3 months.";
 						} else if (counter > 1) {
-							configService.box.errorText = "There are " + counter + " incomplete days in the previous 3 month.";
+							configService.box.errorText = "There are " + counter + " incomplete days in the previous 3 months.";
 						} else {
 							configService.box.errorText = undefined;
 						}
