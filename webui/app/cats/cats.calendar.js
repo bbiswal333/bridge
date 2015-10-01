@@ -164,8 +164,10 @@ angular.module("app.cats")
 								counter++;
 							}
 						}
-						if (counter) {
-							configService.box.errorText = "Unmaintained day(s) in the last months";
+						if (counter === 1) {
+							configService.box.errorText = "There is 1 incomplete day in the previous 3 months.";
+						} else if (counter > 1) {
+							configService.box.errorText = "There are " + counter + " incomplete days in the previous 3 month.";
 						} else {
 							configService.box.errorText = undefined;
 						}
