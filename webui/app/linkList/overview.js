@@ -51,6 +51,9 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             controller: angular.module('app.linklist').appLinkListSettings
         };
         var linklistConfig = appLinklistConfig.getInstanceForAppId($scope.metadata.guid);
+        if (linklistConfig.data.noNewWindow === undefined) {
+            linklistConfig.data.noNewWindow = false;
+        }
         $scope.config = linklistConfig;
 
         $scope.box.returnConfig = function () {
