@@ -36,7 +36,7 @@ angular.module("app.cats")
 					var statusStr = days[i].STATUS;
 					var time = parseDateToTime(dateStr);
 
-					// special handling for popular frensh part time contract days
+					// special handling for popular french part time contract days
 					if (days[i].STATUS === "Y" && days[i].QUANTITYH === 7.9 && days[i].STDAZ === 8.2 && days[i].CONVERT_H_T === 7.9) {
 						statusStr = "G";
 						days[i].STATUS = "G";
@@ -159,7 +159,8 @@ angular.module("app.cats")
 							var dateOfComplianceEntry = calUtils.parseDate(daysWithComplianceData[i].DATEFROM);
 							if ((daysWithComplianceData[i].STATUS === "R" ||
 								(daysWithComplianceData[i].STATUS === "Y" &&
-								 daysWithComplianceData[i].QUANTITYH < daysWithComplianceData[i].STDAZ)) &&
+								 daysWithComplianceData[i].QUANTITYH < daysWithComplianceData[i].STDAZ &&
+								 (daysWithComplianceData[i].QUANTITYH !== 7.9 || daysWithComplianceData[i].STDAZ !== 8.2))) &&
 								 dateOfComplianceEntry < monthBorder) {
 								counter++;
 							}
