@@ -1,4 +1,17 @@
 <div class="row">
+
+	<div class="row">
+		<div class="btn-group" style="margin-left:15px;margin-top:10px">
+			<bridge.button state="config.data.noNewWindow != true ? 'active' : 'invisible-button'" ng-click="config.data.noNewWindow = false" style="margin-right:0;width:200px;">
+				Open Links in new browser tab
+			</bridge.button>
+			<bridge.button state="config.data.noNewWindow === true ? 'active' : 'invisible-button'" ng-click="config.data.noNewWindow = true" style="margin-right:0;width:200px;">
+				Open Links in same browser tab
+			</bridge.button>
+		</div>
+	</div>
+	<br />
+
 <!-- LISTS -->
 	<div ng-repeat="linkList in config.data.listCollection track by $index" ng-mouseover="mouseOverList = true" ng-mouseout="mouseOverList = false">
 		<div class="col-md-4">

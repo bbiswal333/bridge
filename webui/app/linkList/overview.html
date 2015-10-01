@@ -9,7 +9,8 @@
 		                'padd-left2': $index + 1 == 3 && config.data.listCollection.length == 3 }">
 			<div class="app-linklist-categoryBar app-linklist-categoryBar-{{$index+1}}"></div>
 			<div class="app-linkList-link" ng-repeat="link in linklist">
-				<a ng-if="link.type == 'hyperlink'" href="{{link.url}}" target="_blank">{{link.name}}</a>
+				<a ng-if="link.type == 'hyperlink' && config.data.noNewWindow != true" href="{{link.url}}" target="_blank">{{link.name}}</a>
+				<a ng-if="link.type == 'hyperlink' && config.data.noNewWindow === true" href="{{link.url}}">{{link.name}}</a>
                 <a ng-if="link.type == 'saplink'" style="cursor: pointer;" ng-click="openBlob(link)">{{link.name}}</a>
 			</div>
 		</div>

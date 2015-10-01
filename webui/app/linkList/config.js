@@ -2,6 +2,7 @@ angular.module('app.linklist').service("app.linklist.configservice", function ()
 	var Config = function() {
 		this.data = {
 	        version: 1,
+	        noNewWindow: false,
 	        listCollection: []
 	    };
 

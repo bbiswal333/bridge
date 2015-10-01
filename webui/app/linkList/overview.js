@@ -56,6 +56,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
         $scope.box.returnConfig = function () {
 
             var configCopy = angular.copy(linklistConfig.data);
+            delete configCopy.boxSize;
 
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
@@ -89,7 +90,7 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
-            linklistConfig.data.boxSize = 1;
+            linklistConfig.data.noNewWindow = false;
         }
 
         function eventuallyRemoveDuplicates(listCollection) {
