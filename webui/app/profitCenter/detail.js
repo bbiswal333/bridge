@@ -1,5 +1,5 @@
-angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller', ['$scope', '$http',
-    function ($scope, $http) {
+angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller', ['$scope', '$http', '$timeout',
+    function ($scope, $http, $timeout) {
         var nodesById = {};
 
         function parseAllNodes(nodes) {
@@ -30,12 +30,18 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
         }
 
         function processHierarchy(nodes) {
-            parseAllNodes(nodes);
-            buildTree(nodes);
+            if(nodes && nodes.length > 0) {
+                parseAllNodes(nodes);
+                buildTree(nodes);
+            }
         }
 
-        $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
+        $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PROFIT_CENTER_HIERARCHY").then(function(response) {
             processHierarchy(response.data.DATA);
         });
+
+        $timeout(function() {
+            $scope.treeLoadFinished = true;
+        }, 5000);
     }
 ]);
