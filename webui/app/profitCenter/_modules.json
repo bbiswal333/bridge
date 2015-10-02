@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Others"],
 		"module_name"			:	"app.profitCenter",
 		"title"					:	"Profit Center",
 		"icon_css"				:	"fa fa-circle",
