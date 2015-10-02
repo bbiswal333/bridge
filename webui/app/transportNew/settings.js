@@ -4,11 +4,12 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 
 	$scope.component = "";
 	$scope.owner = "";
+	$scope.system
 
 	$scope.currentConfigValues = transportConfig;
 
 	$scope.searchComponent = function(query) {
-		return $http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
+		return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
 			return response.data.COMPONENTS;
 		});
 	};
@@ -21,6 +22,16 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 
 	$scope.removeComponent = function(item) {
 		$scope.currentConfigValues.components.splice($scope.currentConfigValues.components.indexOf(item), 1);
+	};
+
+	$scope.onSelectSystem = function(item) {
+		if($scope.currentConfigValues.systems.indexOf(item) < 0) {
+			$scope.currentConfigValues.systems.push(item);
+		}
+	};
+
+	$scope.removeSystem = function(item) {
+		$scope.currentConfigValues.systems.splice($scope.currentConfigValues.systems.indexOf(item), 1);
 	};
 
 	$scope.onSelectEmployee = function(owner) {

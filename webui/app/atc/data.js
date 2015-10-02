@@ -37,6 +37,7 @@
             this.loadOverviewData = function() {
                 if (atcConfig.getConfigForAppId(appId).configItems.length > 0) {
                     that.getResultForConfig(atcConfig.getConfigForAppId(appId));
+                    that.getDetailsForConfig(atcConfig.getConfigForAppId(appId));
                 }
             };
         };

@@ -1,15 +1,12 @@
 <div ng-controller="app.transportNew.detailController" style="box-sizing:border-box;">    
 	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
-
 		<br/>
-
 		<bridge.table table-data="transports">
 			<bridge.table-column column-id="'1'" header="'Request'" column-size-class="'col-sm-2'" order-by="'ID'">{{row.ID}}</bridge.table-column>
 			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'SOURCE_SYSTEM'">{{row.SOURCE_SYSTEM}}</bridge.table-column>
 			<bridge.table-column column-id="'3'" header="'First Occurence'" column-size-class="'col-sm-1'" order-by="'FIRST_OCCURENCE'">{{row.FIRST_OCCURENCE}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Owner'" column-size-class="'col-sm-3'" order-by="'OWNER'">{{row.OWNER}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Owner'" column-size-class="'col-sm-3'" order-by="'OWNER'"><bridge.employee id="row.OWNER"><bridge.employee></bridge.table-column>
 			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">{{row.DESCRIPTION}}</bridge.table-column>
 		</bridge.table>
-
 	</div>
 </div>

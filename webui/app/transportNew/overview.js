@@ -41,11 +41,7 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 		};
 
         if (transportConfig.isInitialized === false) {
-            if ($scope.appConfig !== undefined && $scope.appConfig !== {}) {
-                transportConfig.owners = angular.copy($scope.appConfig.owners ? $scope.appConfig.owners : []);
-                transportConfig.components = angular.copy($scope.appConfig.components ? $scope.appConfig.components : []);
-                transportConfig.openTransportThreshold = angular.copy($scope.appConfig.openTransportThreshold ? $scope.appConfig.openTransportThreshold : 7);
-            }
+        	transportConfig.initialize();
             $scope.handleTransports();
 			$scope.box.reloadApp($scope.handleTransports, 60 * 5);
         } else {

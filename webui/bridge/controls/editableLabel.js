@@ -2,8 +2,10 @@ angular.module('bridge.app').directive('bridge.editableLabel', [function() {
 
     return {
         restrict: 'E',
+        transclude: true,
         scope: {
-        	text: '='
+        	text: '=',
+            ownEditControl: '='
         },
         controller: ['$scope', function($scope) {
         	$scope.editMode = false;

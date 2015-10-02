@@ -5,7 +5,7 @@ angular.module("app.transportNew")
 			return function() {
 				this.loadData = function(config) {
 					var deferred = $q.defer();
-					var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + config.components.join(";") + '&owners=' + config.owners.map(function(owner) { return owner.selector; }).join(';') + '&origin=' + $window.location.origin;
+					var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + config.components.join(";") + '&systems=' + config.systems.join(";") + '&owners=' + config.owners.map(function(owner) { return owner.selector; }).join(';') + '&origin=' + $window.location.origin;
 					var that = this;
 					$http.get(url).success(function(data){
 						that.openTransports = [];

@@ -1,4 +1,8 @@
 ﻿
+<script type="text/ng-template" id="bridge/app/atc/Component.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query" style="text-align: left"></a>
+</script>
+
 <div style="width: 100%;min-height: 500px;height: auto !important;height: 600px;"> 
 <form name="newConfigItemForm" class="atc_input">
             <div class="atc-input-field">
@@ -22,7 +26,7 @@
             
             <div class="atc-input-field">
                 <span class="copy form_head">AKH Component</span>
-                <bridge.input style="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
+                <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..."></bridge.input>
 
             </div>
 
@@ -85,7 +89,11 @@
                     <td data-title="'Source System'"><bridge.editable-label text="configItem.srcSystem"></bridge.editable-label></td>
                     <td data-title="'Package'"><bridge.editable-label text="configItem.devClass"></bridge.editable-label></td>
                     <td data-title="'Object Responsible'"><bridge.editable-employee employee="configItem.tadirResponsible"></bridge.editable-employee></td>
-                    <td data-title="'AKH Component'"><bridge.editable-label text="configItem.component"></bridge.editable-label></td>
+                    <td data-title="'AKH Component'">
+                        <bridge.editable-label text="configItem.component" own-edit-control="true">
+                            <bridge.input style="float:left;" model="configItem.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..."></bridge.input>
+                        </bridge.editable-label>
+                    </td>
                     <td data-title="'Software Component'"><bridge.editable-label text="configItem.softwareComponent"></bridge.editable-label></td>
                     <td data-title="'Display Suppressed'">
                         <span>
