@@ -17,8 +17,8 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 	                this.openTransportThreshold = angular.copy(appConfig.openTransportThreshold ? appConfig.openTransportThreshold : 7);
 	            }
 	            this.isInitialized = true;
-			}
-		}
+			};
+		};
 	})();
 
 	this.getInstanceForAppId = function(appId) {

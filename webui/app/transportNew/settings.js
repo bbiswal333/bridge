@@ -4,7 +4,7 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 
 	$scope.component = "";
 	$scope.owner = "";
-	$scope.system
+	$scope.system = "";
 
 	$scope.currentConfigValues = transportConfig;
 

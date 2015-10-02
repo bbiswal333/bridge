@@ -5,7 +5,7 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
         scope: {
         	id: '='
         },
-        controller: ['$scope', 'employeeService', '$window', function($scope, employeeService, $window) {
+        controller: ['$scope', 'employeeService', function($scope, employeeService) {
         	$scope.$watch('id', function() {
         		employeeService.getData($scope.id).then(function(data) {
         			$scope.employee = data;
