@@ -25,14 +25,14 @@ angular.module('app.agilecloud').directive('app.agilecloud', function () {
 		// Open google search window
 		$scope.googleQuote = function() {
 			$window.open('https://google.com/#q=' + $scope.quote);
-		}
+		};
 		$scope.googleAuthor = function() {
 			if ($scope.author === 'Voice of ASE@SAP') {
 				$window.open('https://go.sap.corp/ase');
-å			} else {
+			} else {
 				$window.open('https://google.com/#q=' + $scope.author);
 			}
-		}		
+		};		
     }];
 
     return {
