@@ -1,7 +1,7 @@
 angular.module('app.agilecloud', []);
 angular.module('app.agilecloud').directive('app.agilecloud', function () {
 
-    var directiveController = ['$scope', '$q', 'app.agileCloud.dataService', function ($scope, $q, dataService)
+    var directiveController = ['$scope', 'app.agileCloud.dataService', function ($scope, dataService)
     {   // Update quotes randomly
 		$scope.updateQuote = function() {
 
