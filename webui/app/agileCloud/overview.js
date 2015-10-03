@@ -32,7 +32,7 @@ angular.module('app.agilecloud').directive('app.agilecloud', function () {
 			} else {
 				$window.open('https://google.com/#q=' + $scope.author);
 			}
-		};		
+		};
     }];
 
     return {
