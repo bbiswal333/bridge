@@ -7,5 +7,5 @@ angular.module('app.agilecloud').service('app.agileCloud.dataService', ['$http',
 			});
 		}
 		return promise;
-	}
+	};
 }]);

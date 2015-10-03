@@ -16,13 +16,12 @@ angular.module('app.agilecloud').directive('app.agilecloud', function () {
 				} else {
 					$scope.quote  = quoteauthor[0];
 					$scope.author = '';
-				}				
+				}		
 			});
 
 		};
 		$scope.updateQuote();
-		$scope.box.reloadApp($scope.updateQuote, 60 * 60); // 1 hour	
-
+		$scope.box.reloadApp($scope.updateQuote, 60 * 60);	// 1 hour
     }];
 
     return {
