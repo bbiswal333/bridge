@@ -20,6 +20,9 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 			var resp = {};
 			$http.get( url + '?id=' + user + '&origin=' + $window.location.origin).then(function (response) {
 				resp = response.data.DATA;
+				if(resp.length === 0) {
+					return;
+				}
 				resp.TELNR = resp.TELNR_DEF.replace(/ /g, '').replace(/-/g, '');
 				resp.TELNR_MOB = resp.TELNR_MOBILE.replace(/ /g, '').replace(/-/g, '');
 				resp.fullName =  resp.VORNA + ' ' + resp.NACHN;

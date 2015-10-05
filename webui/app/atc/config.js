@@ -53,6 +53,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	var Config = function() {
 	    this.configItems = [];
 	    this.isInitialized = false;
+	    this.detailsColumnVisibility = [true, true, true, true, false, true, false, false];
 	};
 
 	Config.prototype = Object.create(IConfig);
@@ -84,6 +85,11 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	Config.prototype.initialize = function (sAppId) {
 	    this.isInitialized = true;
 	    var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
+
+	    if(persistedConfig.detailsColumnVisibility) {
+	    	this.detailsColumnVisibility = persistedConfig.detailsColumnVisibility;
+	    }
+
 	    var currentConfigItem;
 
 	    if (persistedConfig.configItems) {
@@ -100,7 +106,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
-              currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent ? persistedConfig.configItems[configItem].softwareComponent : "";
+              	currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent ? persistedConfig.configItems[configItem].softwareComponent : "";
 	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
 	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
 

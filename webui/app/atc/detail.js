@@ -18,6 +18,8 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         atcConfig.initialize("app.atc-" + $routeParams.instanceNumber);
     }
 
+    $scope.config = atcConfig;
+
     if($scope.atcData.detailsData.length === 0) {
         $scope.atcData.getDetailsForConfig(atcConfig, $scope);
     }
