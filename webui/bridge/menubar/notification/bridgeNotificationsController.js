@@ -93,19 +93,6 @@ angular.module('bridge.app').
 		return $.timeago(timeInMS);
 	};
 
-	$scope.retrieve_xkdc_entry = function(){
-		$.ajax({
-				url: "/api/get?proxy=true&url=http://dynamic.xkcd.com:80/api-0/jsonp/comic?callback=?",
-				dataType: "json",
-				jsonpCallback: "xkcddata",
-				success: function() {
-						$("#xkcdcontent").append(
-								$("<p>Just read the latest <a target='_blank' href='http://xkcd.com'>xkcd</a></p>")
-						);
-				}
-		});
-	};
-
 	$scope.amountOfNewNotifications = function(){
 		return $filter('filter')(notifier.allNotifications(), {state:'new'}).length;
 	};
