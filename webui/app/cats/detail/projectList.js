@@ -166,7 +166,7 @@ directive("app.cats.maintenanceView.projectList", [
 						// Write header
 						if (items.length > 0) {
 							var header = {};
-							header.DESCR = "Tasks from CAT2 using profile " + catsProfile + "...";
+							header.DESCR = "CAT2 tasks (profile " + catsProfile + ")";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "1";
 							addNewProjectItem(header);
@@ -233,7 +233,7 @@ directive("app.cats.maintenanceView.projectList", [
 						// Write header
 						if (dataFromWorklist && doesOneAdditionalItemExist(dataFromWorklist)) {
 							var header = {};
-							header.DESCR = "Additional tasks from cPro work list...";
+							header.DESCR = "Additional cPro tasks";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "2";
 							addNewProjectItem(header);
@@ -321,7 +321,9 @@ directive("app.cats.maintenanceView.projectList", [
 					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
 						$scope.items = angular.copy(configService.favoriteItems);
 						var header1 = {};
-						header1.DESCR = "Favorite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
+						header1.DESCR = "Bridge favorite tasks (profile " + catsProfile + ")";
+						header1.infoLink = "https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2#what-is-the-bridge-favorite-task-list-and-where-can-i-find-it";
+						header1.infoLinkText = "You are using a task list that is configured in Bridge! Changes from ISP or cPro worklist will not appear automatically.";
 						header1.TASKTYPE = "BRIDGE_HEADER";
 						header1.RAUFNR = "3";
 						$scope.items.unshift(header1);
