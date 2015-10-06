@@ -37,7 +37,7 @@ angular.module('app.agilecloud').directive('app.agilecloud', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'app/AgileCloud/overview.html',
+        templateUrl: 'app/agileCloud/overview.html',
         controller: directiveController
     };
 });
