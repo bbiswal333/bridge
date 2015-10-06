@@ -11,7 +11,7 @@ angular.module("app.transportNew")
 						that.openTransports = [];
 						data.TRANSPORTS.map(function(transport) {
 							transport.FIRST_OCCURENCE = transport.FIRST_OCCURENCE.substring(0, 4) + "-" + transport.FIRST_OCCURENCE.substring(4, 6) + "-" + transport.FIRST_OCCURENCE.substring(6, 8);
-							if(!transport.PARENT_TRANSPORT) {
+							if(!transport.PARENT_TRANSPORT && (transport.TYPE === "K" || transport.TYPE === "W" || transport.TYPE === "C" || transport.TYPE === "O" || transport.TYPE === "E" || transport.TYPE === "T" || transport.TYPE === "M" || transport.TYPE === "L")) {
 								that.openTransports.push(transport);
 							}
 						});
