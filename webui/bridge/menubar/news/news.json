@@ -119,8 +119,16 @@
             "header":   "Quick links int the search result",
             "preview":  "Quick links are now available in the bridge search.",
             "date":     "2015-07-27",
-						"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
+			"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
             "content":  "Now you can search for quicklinks (a.k.a. /go in the portal) using the search bar on bridge. <br/> Currently searches only on the quick link itself, not the description."
+        },
+        {
+            "id":       17,
+            "header":   "Bridge Usability Survey",
+            "date":     "2015-10-06",
+            "snapURL":  "bridge/menubar/news/image/Clouds.png",
+            "preview":  "Please let us know your feedback!",
+            "content":  "We are constantly working on improving Bridge. This requires that we understand your experiences with it - something we hope you are willing to share via an online survey. Your anonymous answers will help us evaluate the tool's effectiveness and decide on improvements.<br><br>Please complete the survey before <b>October 16th, 2015</b> by using this <b><a href=\"https://surveys.sap.com/SE/?SID=SV_3EmN0DgQvqNOe8Z\" target=\"_blank\">link</a></b>. We understand that your time is very valuable, so we kept the survey very short: it should only take <b>about 5-10 minutes</b> to complete.<br><br>If you have any questions or are having any difficulties accessing the link, please contact <b>Marian Gunkel</b>.<br><br>Thank you for your input!"
         }
 	]
 }
