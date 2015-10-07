@@ -127,9 +127,9 @@ img {
 .select {
     -webkit-user-select: auto;
     -khtml-user-select: auto;
-    -moz-user-select: auto;
+    -moz-user-select: text;
     -ms-user-select: text;
-    user-select: auto;
+    user-select: text;
     cursor:auto;  
 }
 .prio {
