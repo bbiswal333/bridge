@@ -1,5 +1,5 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification", "bridgeUserData", "$log", "bridgeInstance",
-    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification, bridgeUserData, $log, bridgeInstance) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification", "bridgeUserData", "$log",
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification, bridgeUserData, $log) {
         this.projects = [];
         this.bridgeSettings = {};
         this.temporaryData = {};
