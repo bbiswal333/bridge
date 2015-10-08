@@ -423,12 +423,18 @@ img {
         left: 100px;
         right: 100px;
     }
+    .teamview-dialog .modal-dialog {
+        width: auto;
+        position: absolute;
+        left: 30%;
+        right: 30%;
+    }
     .settings-dialog .modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 }
-.settings-dialog .modal-content {
+.settings-dialog .modal-content, .teamview-dialog .modal-content {
     padding: 40px;
     position: relative;
     border: 0px;

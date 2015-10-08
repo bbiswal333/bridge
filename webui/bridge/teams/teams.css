@@ -1,0 +1,32 @@
+.projectTabBar {
+	max-width: 1304px;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+
+.projectTabControlsContainer {
+	display: flex;
+	flex-direction: row;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+.projectTabContainer {
+	flex: 9;
+	text-align: left;
+}
+
+.addViewButtonContainer {
+	width: 50px;
+}
+
+.projectTab {
+	padding: 6px;
+	background-color: ;
+	border: 1px solid #ffffff;
+	margin: 4px 8px;
+	display: inline-block;
+	color: #ffffff;
+}

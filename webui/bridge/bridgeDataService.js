@@ -14,7 +14,7 @@
             var defer = $q.defer();
 
             $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
+                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
                 method: "GET"
             }).success(function (data) {
                 that.userInfo = data.USERINFO;
@@ -41,8 +41,26 @@
             return apps;
         }
 
+        function getProjectDataFromBackend(project) {
+            bridgeConfig.getTeamConfig(project.owner, project.view).then(function(data) {
+                project.name = data.name;
+                project.apps = parseApps(data);
+            }, function(error) {
+                bridgeInBrowserNotification.addAlert("error", "View could not be loaded: " + project.name + ". Error: " + error.message, 600);
+            });
+        }
+
         function parseProject(project) {
-            that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
+            var projectObject = { name: project.name, type: (project.type ? project.type : 'TEAM') };
+            if(projectObject.type === "TEAM") {
+                projectObject.view = project.view;
+                projectObject.owner = project.owner;
+                projectObject.apps = [];
+                getProjectDataFromBackend(projectObject);
+            } else {
+                projectObject.apps = parseApps(project);
+            }
+            that.projects.push(projectObject);
         }
 
         function parseProjects(config) {

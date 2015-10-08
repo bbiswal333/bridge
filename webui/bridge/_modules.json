@@ -1,5 +1,6 @@
 {
 	"modules" : [
+                "bridge.teams",
                 "bridge.diagnosis",
                 "bridge.service",
                 "notifier",

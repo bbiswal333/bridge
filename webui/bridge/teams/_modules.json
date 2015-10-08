@@ -1,0 +1,11 @@
+{
+	"modules" : [
+		"bridge.service"
+	],
+	"js_files" : [
+    	"newView.js", "viewBar.js", "viewBarController.js"
+	],
+	"css_files" : [
+		"teams.css"
+	]
+}

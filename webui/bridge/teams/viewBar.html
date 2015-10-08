@@ -1,0 +1,12 @@
+<div class="projectTabBar">
+	<div class="projectTabControlsContainer">
+		<div class="projectTabContainer">
+			<div ng-repeat="project in projects" class="projectTab">
+				{{project.name}} <a ng-click="deleteView(project.view)" ng-if="project.type === 'TEAM'"><span class="fa fa-remove"></span></a>
+			</div>
+		</div>
+		<div class="addViewButtonContainer">
+			<a ng-click="openNewViewModal()"><span class="fa fa-plus" style="font-size: 25px; color: #ffffff"></span></a>
+		</div>
+	</div>
+</div><br />

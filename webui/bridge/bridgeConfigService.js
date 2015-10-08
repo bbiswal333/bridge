@@ -1,6 +1,6 @@
 ﻿angular.module('bridge.service').service('bridgeConfig',
-    ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance',
-    function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance) {
+    ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance', '$q',
+    function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance, $q) {
 
         var storageKey = "bridgeConfig";
         var that = this;
@@ -62,7 +62,11 @@
             var configPayload = {projects: []};
             var projects = dataService.getProjects();
             for (var i = 0; i < projects.length; i++) {
-                configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
+                if(projects[i].type === "TEAM") {
+                    configPayload.projects.push({ name: projects[i].name, type: projects[i].type, owner: projects[i].owner, view: projects[i].view });
+                } else {
+                    configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
+                }
             }
 
             configPayload.bridgeSettings = dataService.getBridgeSettings();
@@ -119,7 +123,7 @@
             var sConfigPayload = $window.localStorage.getItem(storageKey);
 
             $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
                 data: sConfigPayload,
                 headers: { 'Content-Type': 'text/plain' }
@@ -132,7 +136,7 @@
 
         this.loadFromBackend = function (deferred) {
                 $http({
-                    url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                     method: "GET"
                 }).success(function (data) {
                     $log.log("Config loaded successfully");
@@ -171,5 +175,19 @@
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };
+        };
+
+        this.getTeamConfig = function(owner, view) {
+            var deferred = $q.defer();
+            $http.get('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&owner=' + owner + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
+                if(data.error) {
+                    return deferred.reject(data);
+                }
+                deferred.resolve(data);
+            }).error(function(data) {
+                $log.log("Error loading team data!");
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
 }]);
