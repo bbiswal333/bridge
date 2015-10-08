@@ -1,5 +1,5 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification",
-    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification", "bridgeUserData", "$log", "bridgeInstance",
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification, bridgeUserData, $log, bridgeInstance) {
         this.projects = [];
         this.bridgeSettings = {};
         this.temporaryData = {};
@@ -10,20 +10,15 @@
         var initialized = false;
         var that = this;
 
-        function _fetchUserInfo() {
-            var defer = $q.defer();
+        var userInfo;
 
-            $http({
-                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
-                method: "GET"
-            }).success(function (data) {
-                that.userInfo = data.USERINFO;
-                defer.resolve();
-            }).error(function(){
-                defer.reject();
-            });
+        var selectedProject;
+        function _setSelectedProject(project) {
+            selectedProject = project;
+        }
 
-            return defer.promise;
+        function _getSelectedProject() {
+            return selectedProject;
         }
 
         function parseApps(project) {
@@ -138,7 +133,11 @@
             var deferred = $q.defer();
 
             var configPromise = bridgeConfig.loadFromBackend(deferred);
-            var userInfoPromise = _fetchUserInfo();
+            var userInfoPromise = bridgeUserData.getUserData();
+
+            userInfoPromise.then(function(data) {
+                userInfo = data;
+            });
 
             function assignConfig(oConfigFromBackend){
                 initializeAvailableApps();
@@ -207,7 +206,7 @@
         }
 
         function _getUserInfo() {
-            return that.userInfo;
+            return userInfo;
         }
 
         function _getBridgeSettings() {
@@ -257,6 +256,8 @@
             getClientMode: _getClientMode,
             setLogMode: _setLogMode,
             getLogMode: _getLogMode,
-            getAvailableApps: _getAvailableApps
+            getAvailableApps: _getAvailableApps,
+            setSelectedProject: _setSelectedProject,
+            getSelectedProject: _getSelectedProject
         };
 }]);

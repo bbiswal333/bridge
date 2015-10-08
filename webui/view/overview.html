@@ -1,4 +1,4 @@
 <bridge.view-bar></bridge.view-bar>
-<bridge.app-drop-target ng-model="projects[0].apps" class="app-container">
-  <bridge.box ng-repeat="app in projects[0].apps" class="sortable-item" content="{{app.metadata.overview_directive}}" id="{{app.metadata.guid}}" size="{{app.metadata.size}}"></bridge.box>
+<bridge.app-drop-target ng-model="selectedProject.apps" class="app-container">
+  <bridge.box ng-repeat="app in selectedProject.apps" class="sortable-item" content="{{app.metadata.overview_directive}}" id="{{app.metadata.guid}}" size="{{app.metadata.size}}"></bridge.box>
 </bridge.app-drop-target>

@@ -157,6 +157,8 @@ angular.module('bridge.app').controller('bridgeController',
             }
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.projects = bridgeDataService.getProjects();
+            $scope.selectedProject = $scope.projects[0];
+            bridgeDataService.setSelectedProject($scope.selectedProject);
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;
             }

@@ -38,4 +38,9 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     	}
     	return deferred.promise;
     };
+
+    $scope.setSelectedProject = function(project) {
+    	bridgeDataService.setSelectedProject(project);
+    	$scope.selectedProject = project;
+    };
 }]);

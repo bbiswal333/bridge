@@ -30,6 +30,7 @@
                 "bridgeSettingsModalService.js",
                 "bridgeConfigService.js",
                 "bridgeInstanceService.js",
+                "bridgeUserData.js",
                 "bridgeGuidService.js",
                 "bridgeAppCreator.js",
                 "notifier.js",

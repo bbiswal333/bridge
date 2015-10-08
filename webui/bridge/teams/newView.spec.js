@@ -9,20 +9,13 @@ describe("newViewController", function() {
 			$scope = $rootScope.$new();
 			$httpBackend = _httpBackend;
 			bridgeDataService = _bridgeDataService;
-			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}};
+			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}; };
 			bridgeDataService.toDefault();
 			controller = $controller("bridge.viewBar.newViewController", {$scope: $scope});
 
 			guidService.get = function() {
 				return "dummyGuid";
 			};
-
-			/*
-			$httpBackend.whenGET(/https:\/\/ifd\.wdf\.sap\.corp\/sap\/bc\/bridge\/GETUSERCONFIG/)
-                .respond('{"projects":[{"name":"OVERVIEW","type":"PERSONAL","apps":[{"metadata":{"module_name": "app.atc","content":"app.atc","id":4,"show":true,"boxTitle":"ATC Results","boxIconClass":" icon-wrench"},"appConfig":{"configItems":[]}},{"metadata":{"module_name": "app.employee-search", "content":"app.employee-search","id":5,"show":true,"boxTitle":"Employee Search","boxIconClass":"icon-user-o"},"appConfig":{}}]},{"type": "TEAM", "view": "TeamView1", "owner": "D049677"},{"type": "TEAM", "view": "NotExistingView", "name": "Not Existing View", "owner": "D049677"}], "bridgeSettings": {"someFlag": true}}');
-            $httpBackend.whenGET(/https:\/\/ifd\.wdf\.sap\.corp\/sap\/bc\/bridge\/GET_MY_DATA/)
-                .respond('{}');
-            $httpBackend.whenGET(/https:\/\/ifd\.wdf\.sap\.corp\/sap\/bc\/bridge\/GET_VIEW/).respond("200", {apps: []});*/
 		}]);
 	});
 

@@ -57,7 +57,7 @@ angular.module('bridge.app').
 	    };
 
 	    $scope.addAppInstance = function(metadata) {
-	    	bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
+	    	bridgeDataService.getSelectedProject().apps.push(appCreator.createInstance(metadata, {}));
 			bridgeConfig.store(bridgeDataService);
 	    };
 

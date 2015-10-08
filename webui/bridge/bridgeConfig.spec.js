@@ -10,12 +10,15 @@
 
         module("bridge.service");
 
-        inject(["$window", "$httpBackend", "bridgeConfig", "bridgeDataService", "bridgeInstance", function (_$window, _$httpBackend, _bridgeConfigService, _bridgeDataService, _bridgeInstance) {
+        inject(["$window", "$httpBackend", "bridgeConfig", "bridgeDataService", "bridgeInstance", "bridgeUserData", function (_$window, _$httpBackend, _bridgeConfigService, _bridgeDataService, _bridgeInstance, bridgeUserData) {
             bridgeConfigService = _bridgeConfigService;
             bridgeDataService = _bridgeDataService;
             $window = _$window;
             $httpBackend = _$httpBackend;
             bridgeInstance = _bridgeInstance;
+            bridgeUserData.getUserDataSynchronous = function() {
+                return {BNAME: "D049677"};
+            };
         }]);
 
         $window.localStorage.clear();
@@ -196,5 +199,21 @@
             expect(config).toBeDefined();
             expect(config.apps.length).toEqual(0);
         });
+    });
+
+    it("should save own views via separate calls", function() {
+        bridgeDataService.toDefault();
+        bridgeDataService.getProjects().push({type: "TEAM", view: "testGuid", owner: "D049677", name: "view name", apps: []});
+        $httpBackend.expectPOST('https://ifd.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=testGuid&viewName=view name&instance=server&origin=' + encodeURIComponent($window.location.origin),
+        function validate(data){
+            var oData = angular.fromJson(data);
+            if (oData.apps.length === 0 && oData.name !== undefined){
+                return true;
+            } else {
+                return false;
+            }
+        }).respond("200", {});
+        bridgeConfigService.store(bridgeDataService);
+        $httpBackend.flush();
     });
 });

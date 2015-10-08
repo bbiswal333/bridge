@@ -14,7 +14,7 @@ describe("viewBarController", function() {
 			bridgeDataService.toDefault();
 			bridgeDataService.getProjects().push({type: "TEAM", view: "viewId", viewName: "second view", apps: [], owner: "D049677"});
 			bridgeDataService.getProjects().push({type: "TEAM", view: "notMyViewId", viewName: "second view", apps: [], owner: "D051804"});
-			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}};
+			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}; };
 			controller = $controller("bridge.viewBar.Controller", {$scope: $scope});
 		}]);
 	});

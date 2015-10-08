@@ -1,6 +1,6 @@
 ﻿angular.module('bridge.service').service('bridgeConfig',
-    ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance', '$q',
-    function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance, $q) {
+    ['$http', '$window', '$log', 'bridge.service.loader', 'bridgeInstance', '$q', 'bridgeUserData',
+    function ($http, $window, $log, bridgeLoaderServiceProvider, bridgeInstance, $q, bridgeUserData) {
 
         var storageKey = "bridgeConfig";
         var that = this;
@@ -64,6 +64,9 @@
             for (var i = 0; i < projects.length; i++) {
                 if(projects[i].type === "TEAM") {
                     configPayload.projects.push({ name: projects[i].name, type: projects[i].type, owner: projects[i].owner, view: projects[i].view });
+                    if(projects[i].owner === bridgeUserData.getUserDataSynchronous().BNAME) {
+                        this.saveView(projects[i].view, projects[i]);
+                    }
                 } else {
                     configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
                 }
@@ -175,6 +178,23 @@
                 },
                 savedOn: new Date(1972, 0, 1)   // the default config is "old"
             };
+        };
+
+        this.saveView = function(guid, viewData) {
+            var deferred = $q.defer();
+            $http({
+                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=' + guid + '&viewName=' + viewData.name + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                method: "POST",
+                data: viewData,
+                headers: { 'Content-Type': 'application/json' }
+            }).success(function () {
+                $log.log("View created successfully in backend");
+                deferred.resolve();
+            }).error(function () {
+                $log.log("Error when creating view in backend");
+                deferred.reject();
+            });
+            return deferred.promise;
         };
 
         this.getTeamConfig = function(owner, view) {

@@ -10,6 +10,7 @@ describe("The bridgeDataService", function () {
         module("bridge.service");
 
         inject(["$window", "$q", "$httpBackend", "bridgeDataService", "bridgeInstance", "bridge.service.appCreator", "bridgeInBrowserNotification", function (_$window, q, httpBackend, _bridgeDataService, bridgeInstance, appCreator, _bridgeInBrowserNotification) {
+            _$window.localStorage.clear();
             bridgeDataService = _bridgeDataService;
             bridgeInBrowserNotification = _bridgeInBrowserNotification;
             spyOn(bridgeInBrowserNotification, "addAlert");
