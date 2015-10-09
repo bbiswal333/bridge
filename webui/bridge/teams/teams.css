@@ -30,7 +30,7 @@
 	color: #ffffff;
 	cursor: pointer;
 	vertical-align: top;
-	overflow-x: scroll;
+	overflow-x: hidden;
     white-space: nowrap;
 }
 
