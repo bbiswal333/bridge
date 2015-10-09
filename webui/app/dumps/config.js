@@ -1,12 +1,13 @@
 angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataService', function (bridgeDataService) {
 	var Config = function(oConfigItem) {
-		if(oConfigItem) {
+		if(oConfigItem.kpi != null) {
 			this.configItem = oConfigItem;
 		} else {
 			this.configItem = {
 				boxSize : '1',
 				system : 'PROD',
-				components : ''
+				components : '',
+				kpi: 'Dumps'
 			};
 		}
 
@@ -16,6 +17,10 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 
 		this.getSystemName = function() {
 			return ((this.configItem.system === "PROD") ? "Prod" : "Verilab" ).split("");
+		};
+		
+		this.getKpi = function() {
+			return ((this.configItem.kpi === "Dumps") ? "Dumps" : "SysAvail").split("");
 		};
 	};
 

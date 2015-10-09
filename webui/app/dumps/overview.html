@@ -1,11 +1,26 @@
 ﻿<div>
-	<div ng-class="{'dump-prio_container-1' : !box.boxSize || box.boxSize == 1, 'dump-prio_container-2' : box.boxSize == 2}" style="height:140px" >
+	<div style="float:left;width:3%;text-align:center;margin:6% 0px;">
+    	<p ng-repeat = "entry in kpi" class="basic-blue-font" style="margin-bottom:0px;">{{entry}}</p>
+    </div>
+	
+	<div ng-class="{'dump-prio_container-1' : !box.boxSize || box.boxSize == 1, 'dump-prio_container-2' : box.boxSize == 2}" style="height:140px" ng-show="kpi[0]=='D'">
 		<div  ng-repeat="dump in dumps" class="prio_col dump-prio_col prio_bg_{{$index+1}}" ng-dblclick="myDblClick($index)" ng-click="myClick($index)">
 			<div class="prio_box" style="color:white">
 				<p>{{dumps[$index].description}}</p>
 			</div>
 			<div class="dump-prio_content_box" style="color:white;">
 				<p style="margin-top:37px;">{{dumps[$index].count}}</p>
+			</div>
+   		</div>
+    </div>
+	
+	<div ng-class="{'dump-prio_container-1' : !box.boxSize || box.boxSize == 1, 'dump-prio_container-2' : box.boxSize == 2}" style="height:140px" ng-show="kpi[0]=='S'">
+		<div  ng-repeat="avl in availability" class="prio_col dump-prio_col prio_bg_{{$index+1}}" ng-dblclick="myDblClick($index)" ng-click="myClick($index)">
+			<div class="prio_box" style="color:white">
+				<p>{{availability[$index].description}}</p>
+			</div>
+			<div class="dump-prio_content_box" style="color:white;">
+				<p style="margin-top:37px;">{{availability[$index].count}}</p>
 			</div>
    		</div>
     </div>
@@ -23,7 +38,7 @@
 		</table>
     </div>
 
-    <div style="float:left;width:3%;text-align:center;">
+    <div style="float:left;width:3%;text-align:center;margin:6% 0px;">
     	<p ng-repeat = "entry in systemName" class="basic-blue-font" style="margin-bottom:0px;">{{entry}}</p>
     </div>
 </div>
