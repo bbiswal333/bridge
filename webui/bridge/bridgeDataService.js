@@ -58,6 +58,10 @@
             that.projects.push(projectObject);
         }
 
+        function _addProjectFromOwner(view, owner) {
+            parseProject({name: "", type: 'TEAM', view: view, owner: owner});
+        }
+
         function parseProjects(config) {
             if (config.bridgeSettings && config.bridgeSettings.apps) {
                 parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
@@ -258,6 +262,7 @@
             getLogMode: _getLogMode,
             getAvailableApps: _getAvailableApps,
             setSelectedProject: _setSelectedProject,
-            getSelectedProject: _getSelectedProject
+            getSelectedProject: _getSelectedProject,
+            addProjectFromOwner: _addProjectFromOwner
         };
 }]);

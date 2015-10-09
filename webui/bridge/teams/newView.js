@@ -13,4 +13,16 @@ angular.module("bridge.teams").controller("bridge.viewBar.newViewController", ["
 
             });
     };
+
+    $scope.searchViews = function(query) {
+        return $http.get("https://ifd.wdf.sap.corp/sap/bc/bridge/FIND_VIEW?query=" + query).then(function(response) {
+            return response.data.VIEWS.map(function(view) {
+                return view;
+            });
+        });
+    };
+
+    $scope.assignView = function() {
+        bridgeDataService.addProjectFromOwner($scope.existingView.VIEW_ID, $scope.existingView.USERID);
+    };
 }]);
