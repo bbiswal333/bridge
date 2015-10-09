@@ -107,11 +107,12 @@ describe("bridgeAppCreator", function() {
 		expect(typeof instance.metadata.instanceNumber).toBe("number");
 	});
 
-	it("should fail if the given id is already taken", function() {
+	it("should not fail if the given id is already taken", function() {
 		expect(function() {
 			appCreator.createInstance(metaData3, exampleConfig);
-			appCreator.createInstance(metaData3, exampleConfig);
-		}).toThrow(new Error("App id already in use: app.test-3"));
+			var app = appCreator.createInstance(metaData3, exampleConfig);
+			expect(app.metadata.guid).toEqual("app.test-4");
+		}).not.toThrow(new Error("App id already in use: app.test-3"));
 	});
 
 	it("should return all instances of a type", function() {

@@ -59,7 +59,18 @@
         }
 
         function _addProjectFromOwner(view, owner) {
-            parseProject({name: "", type: 'TEAM', view: view, owner: owner});
+            var alreadyAdded = false;
+            _getProjects().map(function(project) {
+                if(project.type === 'TEAM' && project.view === view && project.owner === owner) {
+                    alreadyAdded = true;
+                }
+            });
+
+            if(alreadyAdded === true) {
+                bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600)
+            } else {
+                parseProject({name: "", type: 'TEAM', view: view, owner: owner});
+            }
         }
 
         function parseProjects(config) {

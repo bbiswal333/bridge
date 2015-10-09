@@ -24,9 +24,34 @@
 
 .projectTab {
 	padding: 6px;
-	background-color: ;
 	border: 1px solid #ffffff;
 	margin: 4px 8px;
 	display: inline-block;
 	color: #ffffff;
+	cursor: pointer;
+	vertical-align: top;
+	overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.removeView {
+	color: #ffffff;
+}
+
+.removeView:hover {
+	color: #ff0000;
+}
+
+.addView {
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.projectTab:hover {
+	background-color: #e6e6e6;
+	color: #666666;
+}
+
+.projectTab input {
+	color: #000000;
 }

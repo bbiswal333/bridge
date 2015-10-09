@@ -2,11 +2,11 @@
 	<div class="projectTabControlsContainer">
 		<div class="projectTabContainer">
 			<div ng-repeat="project in projects" class="projectTab">
-				<span ng-click="setSelectedProject(project)">{{project.name}}</span> <a ng-click="deleteView(project.view)" ng-if="project.type === 'TEAM'"><span class="fa fa-remove"></span></a>
+				<span ng-click="setSelectedProject(project)"><bridge.editable-label text="project.name"></bridge.editable-label></span> <a ng-click="deleteView(project.view)" ng-if="project.type === 'TEAM'"><span class="fa fa-remove removeView"></span></a>
 			</div>
 		</div>
 		<div class="addViewButtonContainer">
-			<a ng-click="openNewViewModal()"><span class="fa fa-plus" style="font-size: 25px; color: #ffffff"></span></a>
+			<a ng-click="openNewViewModal()"><span class="fa fa-plus addView" style="font-size: 25px;"></span></a>
 		</div>
 	</div>
 </div><br />

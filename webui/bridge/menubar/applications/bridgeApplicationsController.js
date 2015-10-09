@@ -1,6 +1,6 @@
 angular.module('bridge.app').
-	controller('bridge.menubar.applicationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', 'bridge.service.appCreator',
-	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, appCreator){
+	controller('bridge.menubar.applicationsController',['$rootScope', '$scope', '$timeout', 'bridgeConfig','bridgeDataService', 'bridge.service.appCreator', 'bridgeInBrowserNotification',
+	function ($rootScope, $scope, $timeout, bridgeConfig, bridgeDataService, appCreator, bridgeInBrowserNotification){
 	    $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
 	    $scope.apps = bridgeDataService.getAvailableApps().map(function(app) { return {metadata: app}; });
 	    $scope.categories = [{name: "All Apps", apps: []}];
@@ -34,6 +34,10 @@ angular.module('bridge.app').
 
 	    $scope.toggleInstance = function(metadata) {
 	    	if(!metadata.multiInstance) {
+	    		if(bridgeDataService.getSelectedProject().type === 'TEAM') {
+					bridgeInBrowserNotification.addAlert('danger', 'This app is not a multi instance app and cannot be added to team views');
+		    		return;
+		    	}
 	    		var instances = appCreator.getInstancesByType(metadata.module_name);
 	    		if(instances && instances.length > 0) {
 	    			instances.map(function(instance) {
