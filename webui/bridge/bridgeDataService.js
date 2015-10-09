@@ -58,21 +58,6 @@
             that.projects.push(projectObject);
         }
 
-        function _addProjectFromOwner(view, owner) {
-            var alreadyAdded = false;
-            _getProjects().map(function(project) {
-                if(project.type === 'TEAM' && project.view === view && project.owner === owner) {
-                    alreadyAdded = true;
-                }
-            });
-
-            if(alreadyAdded === true) {
-                bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600)
-            } else {
-                parseProject({name: "", type: 'TEAM', view: view, owner: owner});
-            }
-        }
-
         function parseProjects(config) {
             if (config.bridgeSettings && config.bridgeSettings.apps) {
                 parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
@@ -217,6 +202,21 @@
                 return app.appConfig;
             } else {
                 return {};
+            }
+        }
+
+        function _addProjectFromOwner(view, owner) {
+            var alreadyAdded = false;
+            _getProjects().map(function(project) {
+                if(project.type === 'TEAM' && project.view === view && project.owner === owner) {
+                    alreadyAdded = true;
+                }
+            });
+
+            if(alreadyAdded === true) {
+                bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600);
+            } else {
+                parseProject({name: "", type: 'TEAM', view: view, owner: owner});
             }
         }
 
