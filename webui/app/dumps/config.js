@@ -18,7 +18,7 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 		this.getSystemName = function() {
 			return ((this.configItem.system === "PROD") ? "Prod" : "Verilab" ).split("");
 		};
-		
+
 		this.getKpi = function() {
 			return ((this.configItem.kpi === "Dumps") ? "Dumps" : "SysAvail").split("");
 		};
@@ -31,5 +31,4 @@ angular.module('app.dumps').service("app.dumps.configservice", ['bridgeDataServi
 		}
 		return instances[appId];
 	};
-
 }]);

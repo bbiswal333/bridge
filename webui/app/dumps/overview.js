@@ -18,9 +18,9 @@ angular.module('app.dumps').directive('app.dumps',[function () {
             $scope.dumpList          = oDumpData.currentDumpList;
             $scope.systemName        = $scope.configService.getSystemName();
 			$scope.kpi 				 = $scope.configService.getKpi().toString().replace(',','').replace(',','').replace(',','').replace(',','').replace(',','').replace(',','').replace(',','');
-			
+
         	$scope.box.settingsTitle = "Configure";
-			
+
         	$scope.box.settingScreenData = {
             	templatePath: "dumps/settings.html",
                 controller: angular.module('app.dumps').appDumpsSettings,
@@ -29,7 +29,7 @@ angular.module('app.dumps').directive('app.dumps',[function () {
                     userInfo: "="
                 }
             };
-			
+
 			$scope.box.headerIcons = [{
 				iconCss: "fa-refresh",
 				title: "Refresh data",
@@ -57,7 +57,7 @@ angular.module('app.dumps').directive('app.dumps',[function () {
             $scope.$watch("configService.configItem.system", function() {
                 $scope.systemName = $scope.configService.getSystemName();
             });
-			
+
 			$scope.$watch("configService.configItem.kpi", function() {
 				$scope.kpi = $scope.configService.getKpi();
 			});
@@ -71,13 +71,13 @@ angular.module('app.dumps').directive('app.dumps',[function () {
             };
 
             $scope.myClick = function(i) {
-				if ($scope.kpi[0] === 'D')
+				if ($scope.kpi[0] === 'D') {
 					oDumpData.updateDumpList(i);
-
+				}
             };
 
             $scope.myDblClick = function(i) {
-			
+				var sUrl = $scope.configService.getUrl();
 				if ($scope.kpi[0] === 'D') {
 					var iOffset = 0;
 					var dTo = new Date();
@@ -99,19 +99,16 @@ angular.module('app.dumps').directive('app.dumps',[function () {
 
 					dFrom.setUTCDate(dFrom.getUTCDate() - iOffset );
 
-					var sUrl = $scope.configService.getUrl();
-					sUrl += "/bc/mdrs/cdo?d_view=dl&period_type=dp&type=crp_dump&date_from=" + getDate(dFrom) + "&date_to=" + getDate(dTo);
 
+					sUrl += "/bc/mdrs/cdo?d_view=dl&period_type=dp&type=crp_dump&date_from=" + getDate(dFrom) + "&date_to=" + getDate(dTo);
 					if ($scope.configService.configItem.components) {
 						sUrl += "&app_comp=" + $scope.configService.configItem.components;
 					}
-
-					$window.open(sUrl, "_blank"); 
+					$window.open(sUrl, "_blank");
 				}
 				else {
-					var sUrl = $scope.configService.getUrl();
 					sUrl += "/bc/mdrs/cdo" + $scope.availability[0].link_to.split("&start_date")[0]; //split added until link problem is fixed
-					$window.open(sUrl, "_blank"); 
+					$window.open(sUrl, "_blank");
 				}
             };
 	}];
