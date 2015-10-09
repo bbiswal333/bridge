@@ -65,7 +65,7 @@
                 if(projects[i].type === "TEAM") {
                     configPayload.projects.push({ name: projects[i].name, type: projects[i].type, owner: projects[i].owner, view: projects[i].view });
                     if(projects[i].owner === bridgeUserData.getUserDataSynchronous().BNAME) {
-                        this.saveView(projects[i].view, projects[i]);
+                        this.saveView(projects[i].view, { name: projects[i].name, type: projects[i].type, owner: projects[i].owner, view: projects[i].view, apps: getAppsData(projects[i]) });
                     }
                 } else {
                     configPayload.projects.push({ name: projects[i].name, type: projects[i].type, apps: getAppsData(projects[i]) });
