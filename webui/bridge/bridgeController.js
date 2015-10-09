@@ -152,12 +152,13 @@ angular.module('bridge.app').controller('bridgeController',
             bridgeInBrowserNotification.setScope($scope);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
+            $scope.userData = bridgeDataService.getUserInfo();
             if($scope.bridgeSettings.selectedBackgroundColorIndex !== undefined) {
                 backgroundSetter.setBackgroundColor($scope.bridgeSettings.backgroundColors[$scope.bridgeSettings.selectedBackgroundColorIndex]);
             }
             $scope.temporaryData = bridgeDataService.getTemporaryData();
             $scope.projects = bridgeDataService.getProjects();
-            $scope.selectedProject = $scope.projects[0];
+            $rootScope.selectedProject = $scope.projects[0];
             bridgeDataService.setSelectedProject($scope.selectedProject);
             if ($location.$$host === 'bridge-master.mo.sap.corp') {
                 $scope.isTestInstance = true;

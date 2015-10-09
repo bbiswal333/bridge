@@ -67,4 +67,3 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 		controller: directiveController
 	};
 }]);
-

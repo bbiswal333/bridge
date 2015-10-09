@@ -1,5 +1,5 @@
-angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout",
-	function($scope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout) {
+angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$rootScope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout",
+	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout) {
     $scope.views = bridgeDataService.getProjects();
 
     $scope.openNewViewModal = function() {
@@ -41,6 +41,6 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
 
     $scope.setSelectedProject = function(project) {
     	bridgeDataService.setSelectedProject(project);
-    	$scope.selectedProject = project;
+    	$rootScope.selectedProject = project;
     };
 }]);
