@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Sample Apps"],
+		"categories"			:	["Productivity"],
 		"module_name"			:	"app.clock",
 		"title"					:	"Digital Clock",
 		"icon_css"				:	"fa fa-clock-o",
