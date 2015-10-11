@@ -6,12 +6,13 @@
 	height:30px;
 }
 .dump-prio_col{
-	width: 43%;
+	width: 45%;
 	height: 48%;
+	cursor: pointer;
 }
 .dump-prio_col:nth-child(2), .dump-prio_col:nth-child(4) {
 	margin-left: 5px;
-	width: 43%;
+	width: 45%;
 	float: left;
 	
 }
@@ -20,15 +21,17 @@
 }
 
 .dump-prio_container-1{
-	width: 97%;
+	width: 87%;
 	height: 94%;
 	float: left;
+	margin-left: 10px;
 }
 
 .dump-prio_container-2{
-	width: 47%;
+	width: 42%;
 	height: 94%;
 	float: left;
+	margin-left: 5px;
 }
 
 .dump-prio_content_box {
