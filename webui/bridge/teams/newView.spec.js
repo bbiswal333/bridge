@@ -12,6 +12,7 @@ describe("newViewController", function() {
 			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}; };
 			bridgeDataService.toDefault();
 			controller = $controller("bridge.viewBar.newViewController", {$scope: $scope});
+			spyOn(bridgeDataService, "addProjectFromOwner");
 
 			guidService.get = function() {
 				return "dummyGuid";
@@ -50,5 +51,17 @@ describe("newViewController", function() {
 		expect(bridgeDataService.getProjects().length).toEqual(2);
 		expect(bridgeDataService.getProjects()[1].apps.length).toEqual(0);
 		expect(bridgeDataService.getProjects()[1].owner).toEqual("D049677");
+	});
+
+	it("should assign an existing view", function() {
+		$scope.existingView = {VIEW_ID: "someID", USERID: "D049677"};
+		$scope.assignView();
+		expect(bridgeDataService.addProjectFromOwner).toHaveBeenCalledWith("someID", "D049677");
+	});
+
+	it("should not assign an a view if it was not picked, from the list of found views", function() {
+		$scope.existingView = "some name";
+		$scope.assignView();
+		expect(bridgeDataService.addProjectFromOwner).not.toHaveBeenCalled();
 	});
 });
