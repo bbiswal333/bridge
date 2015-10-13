@@ -39,13 +39,15 @@
         function getProjectDataFromBackend(project) {
             bridgeConfig.getTeamConfig(project.owner, project.view).then(function(data) {
                 if(data.error) {
-                    bridgeInBrowserNotification.addAlert("error", "View could not be loaded: " + project.name + ". Error: " + data.message, 600);
+                    bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + data.message, 600);
+                    that.projects.splice(that.projects.indexOf(project), 1);
                 } else {
                     project.name = data.name;
                     project.apps = parseApps(data);
                 }
             }, function(error) {
-                bridgeInBrowserNotification.addAlert("error", "View could not be loaded: " + project.name + ". Error: " + error.message, 600);
+                bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + error.message, 600);
+                that.projects.splice(that.projects.indexOf(project), 1);
             });
         }
 

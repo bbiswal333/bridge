@@ -56,20 +56,20 @@ describe("The bridgeDataService", function () {
     });
 
     it("should notify the user if a view could not be loaded", function() {
-        expect(bridgeInBrowserNotification.addAlert).toHaveBeenCalledWith("error", "View could not be loaded: Not Existing View. Error: Not found", 600);
+        expect(bridgeInBrowserNotification.addAlert).toHaveBeenCalledWith("danger", "View could not be loaded: Not Existing View. Error: Not found", 600);
     });
 
     it("should be possible to add a view from a different owner", function() {
-        expect(bridgeDataService.getProjects().length).toEqual(3);
+        expect(bridgeDataService.getProjects().length).toEqual(2);
         expect(bridgeDataService.addProjectFromOwner("TeamView2", "D049677"));
         $httpBackend.flush();
-        expect(bridgeDataService.getProjects().length).toEqual(4);
+        expect(bridgeDataService.getProjects().length).toEqual(3);
     });
 
     it("should not be possible to add the same view twice", function() {
-        expect(bridgeDataService.getProjects().length).toEqual(3);
+        expect(bridgeDataService.getProjects().length).toEqual(2);
         expect(bridgeDataService.addProjectFromOwner("TeamView1", "D049677"));
-        expect(bridgeDataService.getProjects().length).toEqual(3);
+        expect(bridgeDataService.getProjects().length).toEqual(2);
         expect(bridgeInBrowserNotification.addAlert).toHaveBeenCalledWith("danger", "This view was already added.", 600);
     });
 
