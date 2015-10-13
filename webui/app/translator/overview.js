@@ -14,6 +14,7 @@ angular
 										// Required information to get settings
 										// icon/ screen
 										$scope.box.settingsTitle = "Configure Translator App";
+										$scope.box.errorText = "The translations are not provided by SAP. Do not use this app for UI translations since the SAP terminology is not supported."
 										$scope.box.settingScreenData = {
 											templatePath : "translator/settings.html",
 											controller : angular
@@ -22,7 +23,7 @@ angular
 										};
 
 										$scope.isWarning = false;
-										$scope.translatedText = "Never translate sensitive data! \n For further information, please check https://go.sap.corp/l02";
+										$scope.translatedText = "Non-SAP - Never translate sensitive data! \n Please read https://go.sap.corp/l02";
 
 										$scope.languages = [ {
 											value : 'english',
@@ -39,6 +40,9 @@ angular
 										}, {
 											value : 'spanish',
 											label : 'es'
+										}, {
+											value : 'portuguese',
+											label : 'pt'
 										} ];
 
 										$scope.selectedLanguageFrom = $scope.languages[0];
@@ -78,7 +82,7 @@ angular
 															})
 													.fail(
 															function() {
-																//console.log("Translation failed.")
+																$scope.translatedText = "Error: Connection problems";
 															});
 
 										};

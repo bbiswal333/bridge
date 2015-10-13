@@ -64,3 +64,11 @@ table tr {
 	margin-top: -4px; 
 	height: 40px;
 }
+
+.app-translator .popover {
+	width:300px;
+}
+
+#translatorOutput {
+	width: 100%;	
+}
