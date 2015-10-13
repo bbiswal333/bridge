@@ -4,15 +4,24 @@ angular.module('app.transportNew').controller('app.transportNew.detailController
 
         var transportData = dataService.getInstanceFor($routeParams.appId);
         var transportConfig = configService.getInstanceForAppId($routeParams.appId);
+
+        function setTransports() {
+                if($routeParams.category === "open") {
+                        $scope.transports = transportData.openTransports;
+                } else {
+                        $scope.transports = transportData.transportsOpenForLongerThanThreshold;
+                }
+        }
+
         if(!transportConfig.isInitialized) {
         	transportConfig.initialize();
         }
 
         if(!transportData.openTransports) {
         	transportData.loadData(transportConfig).then(function() {
-        		$scope.transports = transportData.openTransports;
+        		setTransports();
         	});
         } else {
-        	$scope.transports = transportData.openTransports;
+        	setTransports();
         }
 }]);

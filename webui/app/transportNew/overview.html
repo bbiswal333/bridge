@@ -2,7 +2,7 @@
 	<div style="width:175px; height:140px">
 		<div class="prio_container">
 			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
-				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/" navigate-if="numOpenTransports!==0">
+				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/open" navigate-if="numOpenTransports!==0">
 					<div class="prio_box" style="color:white">
 						<p>Open</p>
 					</div>
@@ -13,7 +13,7 @@
 				</bridge.conditional-link>
 			</div>
 			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
-				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/" navigate-if="numOpenTransportsLongerThanThreshold!==0">
+				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/openLongerThanThreshold" navigate-if="numOpenTransportsLongerThanThreshold!==0">
 					<div class="prio_box" style="color:white">
 						<p>Open > {{transportConfig.openTransportThreshold}} days</p>
 					</div>
