@@ -14,7 +14,7 @@ angular
 										// Required information to get settings
 										// icon/ screen
 										$scope.box.settingsTitle = "Configure Translator App";
-										$scope.box.errorText = "The translations are not provided by SAP. Do not use this app for UI translations since the SAP terminology is not supported."
+										$scope.box.errorText = "The translations are not provided by SAP. Do not use this app for UI translations since the SAP terminology is not supported.";
 										$scope.box.settingScreenData = {
 											templatePath : "translator/settings.html",
 											controller : angular
