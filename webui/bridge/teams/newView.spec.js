@@ -54,7 +54,7 @@ describe("newViewController", function() {
 	});
 
 	it("should assign an existing view", function() {
-		$scope.existingView = {VIEW_ID: "someID", USERID: "D049677"};
+		$scope.existingView = {VIEW_ID: "someID", OWNER: "D049677"};
 		$scope.assignView();
 		expect(bridgeDataService.addProjectFromOwner).toHaveBeenCalledWith("someID", "D049677");
 	});

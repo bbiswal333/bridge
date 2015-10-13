@@ -24,7 +24,7 @@
 					input-typeahead-wait-ms="200"
 					input-typeahead-min-length="2"
 					input-typeahead-template-url="bridge/teams/views.html"
-					input-typeahead="view as view.VIEW_NAME + ' (owner: ' + view.USERID + ')' for view in searchViews($viewValue)"
+					input-typeahead="view as view.VIEW_NAME + ' (owner: ' + view.OWNER + ')' for view in searchViews($viewValue)"
 					placeholder="Name of the view.."></bridge.input>
 		</div>
 	</div>
