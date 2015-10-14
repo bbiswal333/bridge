@@ -2,6 +2,23 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
 	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout, $location, $route) {
     $scope.views = bridgeDataService.getProjects();
 
+    function setScrollInformation() {
+        $timeout(function() {
+            if($('.projectTabContainer').length > 0) {
+                $rootScope.projectTabContainerWidth = $('.projectTabContainer').width();
+                $rootScope.projectTabContainerScrollWidth = $('.projectTabContainer')[0].scrollWidth;
+            }
+        }, 500);
+    }
+
+    $scope.scrollLeft = function() {
+        $scope.projectTabContainerWidth = $('.projectTabContainer')[0].scrollLeft += -50;
+    };
+
+    $scope.scrollRight = function() {
+        $scope.projectTabContainerWidth = $('.projectTabContainer')[0].scrollLeft += 50;
+    };
+
     $scope.openNewViewModal = function() {
         $modal.open({
             templateUrl: 'bridge/teams/newView.html',
@@ -9,6 +26,10 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
             windowClass: 'teamview-dialog'
         });
     };
+
+    $scope.$watch('views.length', function() {
+        setScrollInformation();
+    });
 
     $scope.deleteView = function(viewId) {
     	var deferred = $q.defer();
@@ -19,6 +40,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     			$http.get('https://ifd.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=' + viewId + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function (data) {
                     $log.log("view deleted successfully");
                     bridgeDataService.getProjects().splice(bridgeDataService.getProjects().indexOf(view), 1);
+                    setScrollInformation();
                     deferred.resolve(data);
                 }).error(function (data) {
                     $log.log("Error deleting the view!");
@@ -27,6 +49,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     		} else if(view.view === viewId) {
     			found = true;
     			bridgeDataService.getProjects().splice(bridgeDataService.getProjects().indexOf(view), 1);
+                setScrollInformation();
     			deferred.resolve();
     		}
     	});
@@ -62,6 +85,14 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
         if(route && route.originalPath && route.originalPath === "/view/:owner/:id") {
             loadView(route.params.owner, route.params.id);
         }
+    });
+
+    if(!$rootScope.projectTabContainerWidth) {
+        setScrollInformation();
+    }
+
+    angular.element($window).bind('resize', function() {
+        setScrollInformation();
     });
 
     $scope.setSelectedProject = function(project) {

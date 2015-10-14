@@ -16,6 +16,8 @@
 .projectTabContainer {
 	flex: 9;
 	text-align: left;
+	overflow-x: scroll;
+	white-space: nowrap;
 }
 
 .addViewButtonContainer {
@@ -53,5 +55,20 @@
 }
 
 .projectTab input {
+	color: #000000;
+}
+
+.viewScroller {
+	font-size: 30px;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.viewScroller a {
+	color: #ffffff;
+}
+
+.viewScroller a:hover {
 	color: #000000;
 }

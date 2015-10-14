@@ -123,7 +123,9 @@
             </div>
             <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
         </div>
-        <div id="main-container" class="mainContainer centeredContent" ng-view>
+        <div id="main-container" class="mainContainer centeredContent">
+            <bridge.view-bar></bridge.view-bar>
+            <div ng-view></div>
         </div>
 
         <div style="position:absolute;top:40px;width:100%;z-index:99999">

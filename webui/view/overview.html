@@ -1,4 +1,3 @@
-<bridge.view-bar></bridge.view-bar>
 <bridge.app-drop-target is-readonly="selectedProject.owner !== userData.BNAME && selectedProject.type !== 'PERSONAL'" ng-model="selectedProject.apps" class="app-container">
   <bridge.box ng-repeat="app in selectedProject.apps" class="sortable-item" content="{{app.metadata.overview_directive}}" id="{{app.metadata.guid}}" size="{{app.metadata.size}}"></bridge.box>
 </bridge.app-drop-target>
