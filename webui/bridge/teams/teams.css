@@ -16,7 +16,7 @@
 .projectTabContainer {
 	flex: 9;
 	text-align: left;
-	overflow-x: scroll;
+	overflow-x: hidden;
 	white-space: nowrap;
 }
 
