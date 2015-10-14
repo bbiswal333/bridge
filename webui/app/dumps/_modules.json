@@ -3,16 +3,16 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.dumps",
-		"title"					:	"Dumps S4H Cloud",
+		"title"					:	"S4HANA Cloud",
 		"icon_css"				:	"fa fa-stethoscope",
 		"overview_directive"	:	"app.dumps",
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
-		"description"			:	"This is the simplest app you could take as a blueprint."
+		"description"			:	"App designed for S4HANA Developers. KPI selection under Settings, Dumps, System availability.."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js","dumpData.js","settings.js","config.js"],
+	"js_files" : ["overview.js","dumpData.js","avlData.js","settings.js","config.js"],
 	"css_files" : ["style.css"]
 }

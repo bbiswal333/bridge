@@ -3,6 +3,7 @@
 #translatorInput {
 	height: 20px;
 	width:100%;
+	padding: 0 12px;
 }
 
 .translateWarning {
@@ -62,4 +63,12 @@ table tr {
 .warningEnabled {
 	margin-top: -4px; 
 	height: 40px;
+}
+
+.app-translator .popover {
+	width:300px;
+}
+
+#translatorOutput {
+	width: 100%;	
 }

@@ -31,5 +31,10 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * to get started, just copy our "test app" and adjust it
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
+## contributing
+* contributions are welcome and encouraged
+* contributions are managed via pull requests
+* pull requests need to pass all the tests (unit tests, linting, ..)
+
 Further information can be found on our [wiki page](https://github.wdf.sap.corp/bridge/bridge/wiki).
 

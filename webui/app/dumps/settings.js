@@ -3,6 +3,16 @@ angular.module('app.dumps').appDumpsSettings =
 	function ($scope, dumpsConfigService) {
 	$scope.currentConfigValues = dumpsConfigService.getConfigForAppId($scope.boxScope.metadata.guid);
 
+	$scope.values = [{
+	  id: 1,
+	  label: 'aLabel'
+	  }, {
+	  id: 2,
+	  label: 'bLabel'
+	}];
+
+	$scope.selected = { name: 'aSubItem' };
+
     $scope.save_click = function () {
         $scope.$emit('closeSettingsScreen');
     };

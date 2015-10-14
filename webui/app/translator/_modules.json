@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Productivity"],
 		"module_name"			:	"app.translator",
-		"title"					:	"Translator",
+		"title"					:	"Translator Beta",
 		"icon_css"				:	"fa fa-exchange",
 		"overview_directive"	:	"app.translator",
 		"needs_client"			:	false,
@@ -16,7 +16,7 @@
 				"templateUrl"	:	"app/translator/detail.html"
 			}
 		],
-		"description"			:	"This is a translator application."
+		"description"			:	"This application is a little translation helper. The translations are not provided by SAP - do not use this app for sensitive data or UI translations."
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "config.js", "settings.js", "detail.js", "data.js"],

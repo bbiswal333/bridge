@@ -150,7 +150,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
 
     function getWeather(targetObject) {
 
-        var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + targetObject.latitude + '&lon=' + targetObject.longitude;
+        var weatherDataURL = 'http://api.openweathermap.org:80/data/2.5/weather?lat=' + targetObject.latitude + '&APPID=00c32d20b9d90e17f875159ebe674c31&lon=' + targetObject.longitude;
         weatherDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(weatherDataURL);
 
         $http.get(weatherDataURL).success(function (weatherDataJSON) {
@@ -174,7 +174,7 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
 
     function getForcast() {
 
-        var forecastDataURL = 'http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + data.latitude + '&lon=' + data.longitude + '&cnt=5&mode=json';
+        var forecastDataURL = 'http://api.openweathermap.org:80/data/2.5/forecast/daily?lat=' + data.latitude + '&APPID=00c32d20b9d90e17f875159ebe674c31&lon=' + data.longitude + '&cnt=5&mode=json';
         forecastDataURL = '/api/get?proxy=true&url=' + encodeURIComponent(forecastDataURL);
 
         $http.get(forecastDataURL).success(function (forecastData) {
