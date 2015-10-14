@@ -16,6 +16,10 @@ angular.module("app.transportNew")
 					var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + config.components.join(";") + '&systems=' + config.systems.join(";") + '&owners=' + config.owners.map(function(owner) { return owner.selector; }).join(';') + '&origin=' + $window.location.origin;
 					var that = this;
 					var thresholdDaysAgo = new Date(new Date().setDate(new Date().getDate() - config.openTransportThreshold));
+					thresholdDaysAgo.setHours(0);
+					thresholdDaysAgo.setMinutes(0);
+					thresholdDaysAgo.setSeconds(0);
+					thresholdDaysAgo.setMilliseconds(0);
 					$http.get(url).success(function(data){
 						that.openTransports = [];
 						that.transportsOpenForLongerThanThreshold = [];
