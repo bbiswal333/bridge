@@ -60,6 +60,10 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
             templateUrl: 'view/overview.html'
         });
 
+        $routeProvider.when("/view/:owner/:id", {
+            templateUrl: 'view/overview.html'
+        });
+
         $routeProvider.when("/diagnosis", {
             templateUrl: 'bridge/diagnosis/corsTestPage.html',
             controller: 'bridge.diagnosis.corsTestPageController'

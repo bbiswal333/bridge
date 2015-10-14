@@ -21,6 +21,24 @@
             return selectedProject;
         }
 
+        function _getProject(owner, id) {
+            var result;
+            that.projects.map(function(project) {
+                if(project.owner === owner && project.view === id) {
+                    result = project;
+                }
+            });
+            return result;
+        }
+
+        function _hasProject(owner, id) {
+            if(_getProject(owner, id) !== undefined) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function parseApps(project) {
             var apps = [];
 
@@ -37,31 +55,40 @@
         }
 
         function getProjectDataFromBackend(project) {
+            var deferred = $q.defer();
             bridgeConfig.getTeamConfig(project.owner, project.view).then(function(data) {
                 if(data.error) {
                     bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + data.message, 600);
                     that.projects.splice(that.projects.indexOf(project), 1);
+                    deferred.reject();
                 } else {
                     project.name = data.name;
                     project.apps = parseApps(data);
+                    deferred.resolve(project);
                 }
             }, function(error) {
                 bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + error.message, 600);
                 that.projects.splice(that.projects.indexOf(project), 1);
+                deferred.reject();
             });
+            return deferred.promise;
         }
 
         function parseProject(project) {
+            var deferred;
             var projectObject = { name: project.name, type: (project.type ? project.type : 'TEAM') };
             if(projectObject.type === "TEAM") {
                 projectObject.view = project.view;
                 projectObject.owner = project.owner;
                 projectObject.apps = [];
-                getProjectDataFromBackend(projectObject);
+                deferred = getProjectDataFromBackend(projectObject);
             } else {
                 projectObject.apps = parseApps(project);
             }
             that.projects.push(projectObject);
+            if(deferred) {
+                return deferred;
+            }
         }
 
         function parseProjects(config) {
@@ -222,7 +249,7 @@
             if(alreadyAdded === true) {
                 bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600);
             } else {
-                parseProject({name: "", type: 'TEAM', view: view, owner: owner});
+                return parseProject({name: "", type: 'TEAM', view: view, owner: owner});
             }
         }
 
@@ -280,6 +307,8 @@
             getAvailableApps: _getAvailableApps,
             setSelectedProject: _setSelectedProject,
             getSelectedProject: _getSelectedProject,
+            hasProject: _hasProject,
+            getProject: _getProject,
             addProjectFromOwner: _addProjectFromOwner
         };
 }]);

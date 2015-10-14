@@ -1,5 +1,5 @@
-angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$rootScope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout",
-	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout) {
+angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$rootScope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout", "$location", "$route",
+	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout, $location, $route) {
     $scope.views = bridgeDataService.getProjects();
 
     $scope.openNewViewModal = function() {
@@ -39,8 +39,38 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     	return deferred.promise;
     };
 
+    function loadView(owner, id) {
+        if(bridgeDataService.hasProject(owner, id)) {
+            bridgeDataService.setSelectedProject(bridgeDataService.getProject(owner, id));
+            $rootScope.selectedProject = bridgeDataService.getProject(owner, id);
+        } else {
+            var deferred = bridgeDataService.addProjectFromOwner(id, owner);
+            if(deferred) {
+                deferred.then(function(project) {
+                    bridgeDataService.setSelectedProject(project);
+                    $rootScope.selectedProject = project;
+                });
+            }
+        }
+    }
+
+    if($route && $route.current && $route.current.originalPath === "/view/:owner/:id") {
+        loadView($route.current.params.owner, $route.current.params.id);
+    }
+
+    $rootScope.$on('$routeChangeStart', function (event, route) {
+        if(route && route.originalPath && route.originalPath === "/view/:owner/:id") {
+            loadView(route.params.owner, route.params.id);
+        }
+    });
+
     $scope.setSelectedProject = function(project) {
-    	bridgeDataService.setSelectedProject(project);
-    	$rootScope.selectedProject = project;
+        if(!project.owner && !project.view) {
+            $location.path("/");
+            bridgeDataService.setSelectedProject(project);
+            $rootScope.selectedProject = project;
+        } else {
+            $location.path("/view/" + project.owner + "/" + project.view);
+        }
     };
 }]);
