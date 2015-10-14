@@ -5,7 +5,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     function setScrollInformation() {
         $timeout(function() {
             if($('.projectTabContainer').length > 0) {
-                $rootScope.projectTabContainerWidth = $('.projectTabContainer').width();
+                $rootScope.projectTabContainerWidth = $('.projectTabContainer').width() + $('.viewScroller').width();
                 $rootScope.projectTabContainerScrollWidth = $('.projectTabContainer')[0].scrollWidth;
             }
         }, 500);
