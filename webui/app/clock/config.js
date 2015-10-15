@@ -295,10 +295,10 @@ angular.module('app.clock').service("app.clock.configService", function() {
         idx = parseInt(theClock.index);
 
         switch (idx) {
-            case 0: clkdfl = this.defaults.clock_0;
-            case 1: clkdfl = this.defaults.clock_1;
-            case 2: clkdfl = this.defaults.clock_2;
-            case 3: clkdfl = this.defaults.clock_3;
+            case 0: clkdfl = this.defaults.clock_0; break;
+            case 1: clkdfl = this.defaults.clock_1; break;
+            case 2: clkdfl = this.defaults.clock_2; break;
+            case 3: clkdfl = this.defaults.clock_3; break;
         }
 
         theClock.location = clkdfl.location;
