@@ -339,21 +339,793 @@ angular.module('app.clock').appClockSettings =
 	        showActiveDST: '',
 	        datetextOrder: ''
 	    };
+	    // FUNCTION: "LoadTheClock" - load the configurations for the specified clock retrieved from the server
+	    function loadTheClock(theClock) {
+
+	        var idx;
+
+	        idx = parseInt(theClock.index);
+
+	        theClock.index = (configService.getClock(idx)).index;
+	        theClock.location = (configService.getClock(idx)).location;
+	        theClock.isDST = getFlag((configService.getClock(idx)).isDST);
+	        theClock.DSTPeriod = (configService.getClock(idx)).DSTPeriod;
+	        theClock.DSTbgnOFS = (configService.getClock(idx)).DSTbgnOFS;
+	        theClock.DSTbgnMIN = (configService.getClock(idx)).DSTbgnMIN;
+	        theClock.DSTbgnRNK = (configService.getClock(idx)).DSTbgnRNK;
+	        theClock.DSTbgnDAY = (configService.getClock(idx)).DSTbgnDAY;
+	        theClock.DSTbgnMTH = (configService.getClock(idx)).DSTbgnMTH;
+	        theClock.DSTbgnTCH = (configService.getClock(idx)).DSTbgnTCH;
+	        theClock.DSTbgnTCM = (configService.getClock(idx)).DSTbgnTCM;
+	        theClock.DSTbgnMRD = (configService.getClock(idx)).DSTbgnMRD;
+	        theClock.DSTendOFS = (configService.getClock(idx)).DSTendOFS;
+	        theClock.DSTendRNK = (configService.getClock(idx)).DSTendRNK;
+	        theClock.DSTendDAY = (configService.getClock(idx)).DSTendDAY;
+	        theClock.DSTendMTH = (configService.getClock(idx)).DSTendMTH;
+	        theClock.DSTendMIN = (configService.getClock(idx)).DSTendMIN;
+	        theClock.DSTendTCH = (configService.getClock(idx)).DSTendTCH;
+	        theClock.DSTendTCM = (configService.getClock(idx)).DSTendTCM;
+	        theClock.DSTendMRD = (configService.getClock(idx)).DSTendMRD;
+	        theClock.color = (configService.getClock(idx)).color;
+
+	    }
+
+	    // FUNCTION: "InitialTheClock" - display the configurations for each clock in the HTML page
+	    function initialTheClock(theClock) {
+
+	        initialUTCPrdItem(theClock);
+
+	        initialUTCOfsItem('UTCBgnOfsOpt', theClock.DSTbgnOFS, theClock.index);
+	        initialUTCMinItem('UTCBgnMinOpt', theClock.DSTbgnMIN, theClock.index);
+	        initialUTCRnkItem('UTCBgnRnkOpt', theClock.DSTbgnRNK, theClock.index);
+	        initialUTCDayItem('UTCBgnDayOpt', theClock.DSTbgnDAY, theClock.index);
+	        initialUTCMthItem('UTCBgnMthOpt', theClock.DSTbgnMTH, theClock.index);
+	        initialUTCTchItem('UTCBgnTchOpt', theClock.DSTbgnTCH, theClock.index);
+	        initialUTCTcmItem('UTCBgnTcmOpt', theClock.DSTbgnTCM, theClock.index);
+	        initialUTCMrdItem('UTCBgnMrdOpt', theClock.DSTbgnMRD, theClock.index);
+
+	        initialUTCOfsItem('UTCEndOfsOpt', theClock.DSTendOFS, theClock.index);
+	        initialUTCMinItem('UTCEndMinOpt', theClock.DSTendMIN, theClock.index);
+	        initialUTCRnkItem('UTCEndRnkOpt', theClock.DSTendRNK, theClock.index);
+	        initialUTCDayItem('UTCEndDayOpt', theClock.DSTendDAY, theClock.index);
+	        initialUTCMthItem('UTCEndMthOpt', theClock.DSTendMTH, theClock.index);
+	        initialUTCTchItem('UTCEndTchOpt', theClock.DSTendTCH, theClock.index);
+	        initialUTCTcmItem('UTCEndTcmOpt', theClock.DSTendTCM, theClock.index);
+	        initialUTCMrdItem('UTCEndMrdOpt', theClock.DSTendMRD, theClock.index);
+
+	        initialClockColor(theClock);
+
+	    }
+
+	    // FUNCTION: "initialUTCPrdItem" - initialize the selection of time zone "period" configurations in "begin/finish" list
+	    function initialUTCPrdItem(theClock) {
+
+	        if (theClock.DSTPeriod == 'B:E') {
+	            switch (theClock.index) {
+	                case '0':
+	                    $scope.UTCBgnPrdLst_0 = $scope.UTC_OffSet_PRD[0];
+	                    $scope.UTCEndPrdLst_0 = $scope.UTC_OffSet_PRD[1];
+	                    break;
+	                case '1':
+	                    $scope.UTCBgnPrdLst_1 = $scope.UTC_OffSet_PRD[0];
+	                    $scope.UTCEndPrdLst_1 = $scope.UTC_OffSet_PRD[1];
+	                    break;
+	                case '2':
+	                    $scope.UTCBgnPrdLst_2 = $scope.UTC_OffSet_PRD[0];
+	                    $scope.UTCEndPrdLst_2 = $scope.UTC_OffSet_PRD[1];
+	                    break;
+	                case '3':
+	                    $scope.UTCBgnPrdLst_3 = $scope.UTC_OffSet_PRD[0];
+	                    $scope.UTCEndPrdLst_3 = $scope.UTC_OffSet_PRD[1];
+	                    break;
+	            }
+	        } else {
+	            switch (theClock.index) {
+	                case '0':
+	                    $scope.UTCBgnPrdLst_0 = $scope.UTC_OffSet_PRD[1];
+	                    $scope.UTCEndPrdLst_0 = $scope.UTC_OffSet_PRD[0];
+	                    break;
+	                case '1':
+	                    $scope.UTCBgnPrdLst_1 = $scope.UTC_OffSet_PRD[1];
+	                    $scope.UTCEndPrdLst_1 = $scope.UTC_OffSet_PRD[0];
+	                    break;
+	                case '2':
+	                    $scope.UTCBgnPrdLst_2 = $scope.UTC_OffSet_PRD[1];
+	                    $scope.UTCEndPrdLst_2 = $scope.UTC_OffSet_PRD[0];
+	                    break;
+	                case '3':
+	                    $scope.UTCBgnPrdLst_3 = $scope.UTC_OffSet_PRD[1];
+	                    $scope.UTCEndPrdLst_3 = $scope.UTC_OffSet_PRD[0];
+	                    break;
+	            };
+
+	            // toggle "begin" configurations with "end" configurations because DST periods have
+	            // been entered "backwards" from how they need to be stored in the structure
+
+	            toggleClockConfig(theClock);
+	        };
+
+	    };
+
+	    // FUNCTION: "initialUTCOfsItem" - initialize the selection of time zone "UTC hour offset" configuration in "begin/finish" list
+	    function initialUTCOfsItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_OFS.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.UTC_OffSet_OFS[idx].value) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCEndOfsOpt_0': $scope.UTCEndOfsLst_0 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCBgnOfsOpt_1': $scope.UTCBgnOfsLst_1 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCEndOfsOpt_1': $scope.UTCEndOfsLst_1 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCBgnOfsOpt_2': $scope.UTCBgnOfsLst_2 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCEndOfsOpt_2': $scope.UTCEndOfsLst_2 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCBgnOfsOpt_3': $scope.UTCBgnOfsLst_3 = $scope.UTC_OffSet_OFS[idx]; break;
+	                    case 'UTCEndOfsOpt_3': $scope.UTCEndOfsLst_3 = $scope.UTC_OffSet_OFS[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCEndOfsOpt_0': $scope.UTCEndOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCBgnOfsOpt_1': $scope.UTCBgnOfsLst_1 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCEndOfsOpt_1': $scope.UTCEndOfsLst_1 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCBgnOfsOpt_2': $scope.UTCBgnOfsLst_2 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCEndOfsOpt_2': $scope.UTCEndOfsLst_2 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCBgnOfsOpt_3': $scope.UTCBgnOfsLst_3 = $scope.UTC_OffSet_OFS[14]; break;
+	                case 'UTCEndOfsOpt_3': $scope.UTCEndOfsLst_3 = $scope.UTC_OffSet_OFS[14]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCMinItem" - initialize the selection of time zone "UTC minute offset" configuration in "begin/finish" list
+	    function initialUTCMinItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_MNS.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.UTC_OffSet_MNS[idx].value) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndMinOpt_0': $scope.UTCEndMinLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnMinOpt_1': $scope.UTCBgnMinLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndMinOpt_1': $scope.UTCEndMinLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnMinOpt_2': $scope.UTCBgnMinLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndMinOpt_2': $scope.UTCEndMinLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnMinOpt_3': $scope.UTCBgnMinLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndMinOpt_3': $scope.UTCEndMinLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndMinOpt_0': $scope.UTCEndMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnMinOpt_1': $scope.UTCBgnMinLst_1 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndMinOpt_1': $scope.UTCEndMinLst_1 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnMinOpt_2': $scope.UTCBgnMinLst_2 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndMinOpt_2': $scope.UTCEndMinLst_2 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnMinOpt_3': $scope.UTCBgnMinLst_3 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndMinOpt_3': $scope.UTCEndMinLst_3 = $scope.UTC_OffSet_MNS[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCRnkItem" - initialize the selection of time zone "weekday ranking" configuration in "begin/finish" list
+	    function initialUTCRnkItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_RNK.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == (idx + 1)) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCEndRnkOpt_0': $scope.UTCEndRnkLst_0 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCBgnRnkOpt_1': $scope.UTCBgnRnkLst_1 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCEndRnkOpt_1': $scope.UTCEndRnkLst_1 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCBgnRnkOpt_2': $scope.UTCBgnRnkLst_2 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCEndRnkOpt_2': $scope.UTCEndRnkLst_2 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCBgnRnkOpt_3': $scope.UTCBgnRnkLst_3 = $scope.UTC_OffSet_RNK[idx]; break;
+	                    case 'UTCEndRnkOpt_3': $scope.UTCEndRnkLst_3 = $scope.UTC_OffSet_RNK[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCEndRnkOpt_0': $scope.UTCEndRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCBgnRnkOpt_1': $scope.UTCBgnRnkLst_1 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCEndRnkOpt_1': $scope.UTCEndRnkLst_1 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCBgnRnkOpt_2': $scope.UTCBgnRnkLst_2 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCEndRnkOpt_2': $scope.UTCEndRnkLst_2 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCBgnRnkOpt_3': $scope.UTCBgnRnkLst_3 = $scope.UTC_OffSet_RNK[0]; break;
+	                case 'UTCEndRnkOpt_3': $scope.UTCEndRnkLst_3 = $scope.UTC_OffSet_RNK[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCDayItem" - initialize the selection of time zone "weekday" configuration in "begin/finish" list
+	    function initialUTCDayItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_DAY.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == idx) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCEndDayOpt_0': $scope.UTCEndDayLst_0 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCBgnDayOpt_1': $scope.UTCBgnDayLst_1 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCEndDayOpt_1': $scope.UTCEndDayLst_1 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCBgnDayOpt_2': $scope.UTCBgnDayLst_2 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCEndDayOpt_2': $scope.UTCEndDayLst_2 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCBgnDayOpt_3': $scope.UTCBgnDayLst_3 = $scope.UTC_OffSet_DAY[idx]; break;
+	                    case 'UTCEndDayOpt_3': $scope.UTCEndDayLst_3 = $scope.UTC_OffSet_DAY[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCEndDayOpt_0': $scope.UTCEndDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCBgnDayOpt_1': $scope.UTCBgnDayLst_1 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCEndDayOpt_1': $scope.UTCEndDayLst_1 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCBgnDayOpt_2': $scope.UTCBgnDayLst_2 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCEndDayOpt_2': $scope.UTCEndDayLst_2 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCBgnDayOpt_3': $scope.UTCBgnDayLst_3 = $scope.UTC_OffSet_DAY[0]; break;
+	                case 'UTCEndDayOpt_3': $scope.UTCEndDayLst_3 = $scope.UTC_OffSet_DAY[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCMthItem" - initialize the selection of time zone "month" configuration in "begin/finish" list
+	    function initialUTCMthItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_MTH.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == idx) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCEndMthOpt_0': $scope.UTCEndMthLst_0 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCBgnMthOpt_1': $scope.UTCBgnMthLst_1 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCEndMthOpt_1': $scope.UTCEndMthLst_1 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCBgnMthOpt_2': $scope.UTCBgnMthLst_2 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCEndMthOpt_2': $scope.UTCEndMthLst_2 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCBgnMthOpt_3': $scope.UTCBgnMthLst_3 = $scope.UTC_OffSet_MTH[idx]; break;
+	                    case 'UTCEndMthOpt_3': $scope.UTCEndMthLst_3 = $scope.UTC_OffSet_MTH[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCEndMthOpt_0': $scope.UTCEndMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCBgnMthOpt_1': $scope.UTCBgnMthLst_1 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCEndMthOpt_1': $scope.UTCEndMthLst_1 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCBgnMthOpt_2': $scope.UTCBgnMthLst_2 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCEndMthOpt_2': $scope.UTCEndMthLst_2 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCBgnMthOpt_3': $scope.UTCBgnMthLst_3 = $scope.UTC_OffSet_MTH[0]; break;
+	                case 'UTCEndMthOpt_3': $scope.UTCEndMthLst_3 = $scope.UTC_OffSet_MTH[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCTchItem" - initialize the selection of time zone "time change hour" configuration in "begin/finish" list
+	    function initialUTCTchItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_HRS.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == (idx + 1)) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCEndTchOpt_0': $scope.UTCEndTchLst_0 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCBgnTchOpt_1': $scope.UTCBgnTchLst_1 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCEndTchOpt_1': $scope.UTCEndTchLst_1 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCBgnTchOpt_2': $scope.UTCBgnTchLst_2 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCEndTchOpt_2': $scope.UTCEndTchLst_2 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCBgnTchOpt_3': $scope.UTCBgnTchLst_3 = $scope.UTC_OffSet_HRS[idx]; break;
+	                    case 'UTCEndTchOpt_3': $scope.UTCEndTchLst_3 = $scope.UTC_OffSet_HRS[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCEndTchOpt_0': $scope.UTCEndTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCBgnTchOpt_1': $scope.UTCBgnTchLst_1 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCEndTchOpt_1': $scope.UTCEndTchLst_1 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCBgnTchOpt_2': $scope.UTCBgnTchLst_2 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCEndTchOpt_2': $scope.UTCEndTchLst_2 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCBgnTchOpt_3': $scope.UTCBgnTchLst_3 = $scope.UTC_OffSet_HRS[0]; break;
+	                case 'UTCEndTchOpt_3': $scope.UTCEndTchLst_3 = $scope.UTC_OffSet_HRS[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCTcmItem" - initialize the selection of time zone "time change minute" configuration in "begin/finish" list
+	    function initialUTCTcmItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_MNS.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == idx) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndTcmOpt_0': $scope.UTCEndTcmLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnTcmOpt_1': $scope.UTCBgnTcmLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndTcmOpt_1': $scope.UTCEndTcmLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnTcmOpt_2': $scope.UTCBgnTcmLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndTcmOpt_2': $scope.UTCEndTcmLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCBgnTcmOpt_3': $scope.UTCBgnTcmLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
+	                    case 'UTCEndTcmOpt_3': $scope.UTCEndTcmLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndTcmOpt_0': $scope.UTCEndTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnTcmOpt_1': $scope.UTCBgnTcmLst_1 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndTcmOpt_1': $scope.UTCEndTcmLst_1 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnTcmOpt_2': $scope.UTCBgnTcmLst_2 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndTcmOpt_2': $scope.UTCEndTcmLst_2 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCBgnTcmOpt_3': $scope.UTCBgnTcmLst_3 = $scope.UTC_OffSet_MNS[0]; break;
+	                case 'UTCEndTcmOpt_3': $scope.UTCEndTcmLst_3 = $scope.UTC_OffSet_MNS[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialUTCMrdItem" - initialize the selection of time zone "meridiem" configuration in "begin/finish" list
+	    function initialUTCMrdItem(theOption, theValue, theIndex) {
+
+	        var siz = $scope.UTC_OffSet_MRD.length;
+
+	        var optstr;
+
+	        optstr = theOption;
+	        optstr = optstr.concat('_');
+	        optstr = optstr.concat(theIndex);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.UTC_OffSet_MRD[idx].value) {
+	                // set the selected item in the list
+	                switch (optstr) {
+	                    case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCEndMrdOpt_0': $scope.UTCEndMrdLst_0 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCBgnMrdOpt_1': $scope.UTCBgnMrdLst_1 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCEndMrdOpt_1': $scope.UTCEndMrdLst_1 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCBgnMrdOpt_2': $scope.UTCBgnMrdLst_2 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCEndMrdOpt_2': $scope.UTCEndMrdLst_2 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCBgnMrdOpt_3': $scope.UTCBgnMrdLst_3 = $scope.UTC_OffSet_MRD[idx]; break;
+	                    case 'UTCEndMrdOpt_3': $scope.UTCEndMrdLst_3 = $scope.UTC_OffSet_MRD[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (optstr) {
+	                case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCEndMrdOpt_0': $scope.UTCEndMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCBgnMrdOpt_1': $scope.UTCBgnMrdLst_1 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCEndMrdOpt_1': $scope.UTCEndMrdLst_1 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCBgnMrdOpt_2': $scope.UTCBgnMrdLst_2 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCEndMrdOpt_2': $scope.UTCEndMrdLst_2 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCBgnMrdOpt_3': $scope.UTCBgnMrdLst_3 = $scope.UTC_OffSet_MRD[0]; break;
+	                case 'UTCEndMrdOpt_3': $scope.UTCEndMrdLst_3 = $scope.UTC_OffSet_MRD[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "initialClockColor" - initialize the selection of "color" configuration in list for each clock
+	    function initialClockColor(theClock) {
+
+	        var siz = $scope.CLOCK_COLOR.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theClock.color == $scope.CLOCK_COLOR[idx].code) {
+	                // set the selected item in the list
+	                switch (theClock.index) {
+	                    case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[idx]; break;
+	                    case '1': $scope.ClockColorLst_1 = $scope.CLOCK_COLOR[idx]; break;
+	                    case '2': $scope.ClockColorLst_2 = $scope.CLOCK_COLOR[idx]; break;
+	                    case '3': $scope.ClockColorLst_3 = $scope.CLOCK_COLOR[idx]; break;
+	                }
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            switch (theClock.index) {
+	                case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[0]; break;
+	                case '1': $scope.ClockColorLst_1 = $scope.CLOCK_COLOR[0]; break;
+	                case '2': $scope.ClockColorLst_2 = $scope.CLOCK_COLOR[0]; break;
+	                case '3': $scope.ClockColorLst_3 = $scope.CLOCK_COLOR[0]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "toggleClockConfig" - toggles configuration in preparation for loading/saving time zone period configurations within the correct elements in the HTML page/structure
+	    function toggleClockConfig(theClock) {
+
+	        var tmpOfs;
+	        var tmpMin;
+	        var tmpRnk;
+	        var tmpDay;
+	        var tmpMth;
+	        var tmpTch;
+	        var tmpTcm
+	        var tmpMrd;
+
+	        tmpOfs = theClock.DSTbgnOFS;
+	        tmpMin = theClock.DSTbgnMIN;
+	        tmpRnk = theClock.DSTbgnRNK;
+	        tmpDay = theClock.DSTbgnDAY;
+	        tmpMth = theClock.DSTbgnMTH;
+	        tmpTch = theClock.DSTbgnTCH;
+	        tmpTcm = theClock.DSTbgnTCM;
+	        tmpMrd = theClock.DSTbgnMRD;
+
+	        theClock.DSTbgnOFS = theClock.DSTendOFS;
+	        theClock.DSTbgnMIN = theClock.DSTendMIN;
+	        theClock.DSTbgnRNK = theClock.DSTendRNK;
+	        theClock.DSTbgnDAY = theClock.DSTendDAY;
+	        theClock.DSTbgnMTH = theClock.DSTendMTH;
+	        theClock.DSTbgnTCH = theClock.DSTendTCH;
+	        theClock.DSTbgnTCM = theClock.DSTendTCM;
+	        theClock.DSTbgnMRD = theClock.DSTendMRD;
+
+	        theClock.DSTendOFS = tmpOfs;
+	        theClock.DSTendMIN = tmpMin;
+	        theClock.DSTendRNK = tmpRnk;
+	        theClock.DSTendDAY = tmpDay;
+	        theClock.DSTendMTH = tmpMth;
+	        theClock.DSTendTCH = tmpTch;
+	        theClock.DSTendTCM = tmpTcm;
+	        theClock.DSTendMRD = tmpMrd;
+
+	    };
+
+	    // FUNCTION: "loadTheFormats" - load the formats used to display each element comprising a clock face
+	    function loadTheFormats() {
+
+	        $scope.boxSize = configService.getValue('boxSize');
+	        $scope.formats.clockFacePlace = getFlag(configService.getValue('clockFacePlace'));
+	        $scope.formats.multipleClocks = configService.getValue('multipleClocks');
+	        $scope.formats.clockFaceHours = configService.getValue('clockFaceHours');
+
+	        initialClockFaceDisplay($scope.formats.multipleClocks);
+	        initialClockFacePlace($scope.formats.clockFacePlace);
+	        initialClockFaceHours($scope.formats.clockFaceHours);
+
+	        $scope.formats.clockMeridiem = getFlag(configService.getValue('clockMeridiem'));
+
+	        $scope.formats.clockSeparator = configService.getValue('clockSeparator');
+	        $scope.formats.dateSeparator = configService.getValue('dateSeparator');
+	        $scope.formats.clockSeconds = getFlag(configService.getValue('clockSeconds'));
+	        $scope.formats.clockZeroToHour = getFlag(configService.getValue('clockZeroToHour'));
+
+	        $scope.formats.dateCentury = getFlag(configService.getValue('dateCentury'));
+
+	        $scope.formats.dateType = configService.getValue('dateType');
+	        initialDateType($scope.formats.dateType);
+	        $scope.formats.datetextOrder = configService.getValue('datetextOrder');
+	        initialDateTextOrder($scope.formats.datetextOrder)
+	        $scope.formats.dateText = configService.getValue('dateText');
+	        initialDateText($scope.formats.dateText);
+
+	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST')); ;
+
+	        $scope.formats.multipleClockOrder = configService.getValue('multipleClockOrder');
+	        initialMultipleClockOrder($scope.formats.multipleClockOrder);
+
+	    };
+
+	    // FUNCTION: "initialClockFaceDisplay" - initialize the selection of "clock face display" configuration in the list
+	    function initialClockFaceDisplay(theValue) {
+
+	        var siz = $scope.CLOCK_FACE_DISPLAY.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.CLOCK_FACE_DISPLAY[idx].code) {
+	                // set the selected item in the list
+	                $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[0];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialClockFacePlace" - initialize the selection of "clock face location" configuration in the list
+	    function initialClockFacePlace(theValue) {
+
+	        var siz = $scope.CLOCK_FACE_PLACE.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == idx) {
+	                // set the selected item in the list
+	                $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[0];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialClockFaceHours" - initialize the selection of "clock face hour" configuration in the list
+	    function initialClockFaceHours(theValue) {
+
+	        var siz = $scope.CLOCK_FACE_HOURS.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == idx) {
+	                // set the selected item in the list
+	                $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[0];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialDateType" - initialize the selection of "date type" configuration in the list
+	    function initialDateType(theValue) {
+
+	        var siz = $scope.DATE_TYPES.length;
+	        var val;
+
+	        val = parseInt(theValue);
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (val == (idx + 1)) {
+	                // set the selected item in the list
+	                $scope.dateTypeLst = $scope.DATE_TYPES[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.dateTypeLst = $scope.DATE_TYPES[1];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialDateTextOrder" - initialize the selection of "date/text order" configuration in the list
+	    function initialDateTextOrder(theValue) {
+
+	        var siz = $scope.DATE_TEXT_ORDER.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.DATE_TEXT_ORDER[idx].code) {
+	                // set the selected item in the list
+	                $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[0];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialDateText" - initialize the selection of "date text" configuration in the list
+	    function initialDateText(theValue) {
+
+	        var siz = $scope.DATE_TEXT.length;
+
+	        // iterate through all of the values in the array looking for a match
+	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
+	            // did we find the matching item in the list?
+	            if (theValue == $scope.DATE_TEXT[idx].code) {
+	                // set the selected item in the list
+	                $scope.dateTextLst = $scope.DATE_TEXT[idx];
+	                // now quit...
+	                idx = siz + 1;
+	            }
+	        }
+	        // set default selection if we did not find matching item...
+	        if (idx == siz) {
+	            $scope.dateTextLst = $scope.DATE_TEXT[0];
+	        }
+
+	    };
+
+	    // FUNCTION: "initialMultipleClockOrder" - initialize the selection of the clock order configuration in the list
+	    function initialMultipleClockOrder(theValue) {
+
+	        var siz = $scope.CLOCK_FACE_MULTIPLE.length;
+
+	        // iterate through each of the three clocks
+	        for (idx = 0; (idx <= 2); idx++) {
+	            clk = parseInt(theValue.substring(idx, (idx + 1)));
+	            // set selected item in the list
+	            switch (idx) {
+	                case 0: $scope.multipleClockOrderLst_0 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
+	                case 1: $scope.multipleClockOrderLst_1 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
+	                case 2: $scope.multipleClockOrderLst_2 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
+	            }
+	        }
+
+	    };
+
+	    // FUNCTION: "setFlag" - convert boolean flag to corresponding character: 'X' (true) / '' (false)
+	    function setFlag(theFlag) {
+
+	        var itmflg;
+
+	        if (theFlag == true) {
+	            itmflg = 'X';
+	        }
+	        else if (theFlag == false) {
+	            itmflg = '';
+	        }
+	        else {
+	            itmflg = theFlag;
+	        }
+
+	        return itmflg
+	    };
+
+	    // FUNCTION: "getFlag" - convert character 'X' (true) / '' (false) to corresponding boolean flag
+	    function getFlag(theFlag) {
+
+	        var itmflg;
+
+	        if (theFlag == 'X') {
+	            itmflg = true;
+	        }
+	        else if (theFlag == '') {
+	            itmflg = false;
+	        }
+	        else {
+	            itmflg = theFlag;
+	        }
+
+	        return itmflg
+	    };
 
 	    // load clock format into localized "objects"
-	    LoadTheFormats();
+	    loadTheFormats();
 
 	    // load clock time zones into localized "objects"
-	    LoadTheClock($scope.clock_0);
-	    LoadTheClock($scope.clock_1);
-	    LoadTheClock($scope.clock_2);
-	    LoadTheClock($scope.clock_3);
+	    loadTheClock($scope.clock_0);
+	    loadTheClock($scope.clock_1);
+	    loadTheClock($scope.clock_2);
+	    loadTheClock($scope.clock_3);
 
 	    // initialize clock configurations
-	    InitialTheClock($scope.clock_0);
-	    InitialTheClock($scope.clock_1);
-	    InitialTheClock($scope.clock_2);
-	    InitialTheClock($scope.clock_3);
+	    initialTheClock($scope.clock_0);
+	    initialTheClock($scope.clock_1);
+	    initialTheClock($scope.clock_2);
+	    initialTheClock($scope.clock_3);
 
 	    // FUNCTION: "reset_click" - reset clock configurations when button "clicked"
 	    $scope.reset_click = function() {
@@ -373,7 +1145,7 @@ angular.module('app.clock').appClockSettings =
 	        // thee configuration we will toggled it back again so as to save values properly in the
 	        // structure
 
-	        ToggleClockConfig($scope.clock_3);
+	        toggleClockConfig($scope.clock_3);
 
 	        // display default time zone settings each clock
 	        for (opt = 0; opt < $scope.UTC_Option_Fields.length; opt++) {
@@ -590,7 +1362,7 @@ angular.module('app.clock').appClockSettings =
 	        if (theClock.DSTPeriod == 'E:B') {
 	            // toggle "begin" configurations with "end" configurations because DST periods have
 	            // been entered "backwards" from how they need to be stored in the structure
-	            ToggleClockConfig(theClock);
+	            toggleClockConfig(theClock);
 	        }
 	    };
 
@@ -923,779 +1695,6 @@ angular.module('app.clock').appClockSettings =
 	            case 'ClockColorOpt_2': $scope.clock_2.color = $scope.CLOCK_COLOR[itmlst.selectedIndex].code; break;
 	            case 'ClockColorOpt_3': $scope.clock_3.color = $scope.CLOCK_COLOR[itmlst.selectedIndex].code; break;
 	        }
-	    };
-
-	    // FUNCTION: "LoadTheClock" - load the configurations for the specified clock retrieved from the server
-	    function LoadTheClock(theClock) {
-
-	        var idx;
-
-	        idx = parseInt(theClock.index);
-
-	        theClock.index = (configService.getClock(idx)).index;
-	        theClock.location = (configService.getClock(idx)).location;
-	        theClock.isDST = getFlag((configService.getClock(idx)).isDST);
-	        theClock.DSTPeriod = (configService.getClock(idx)).DSTPeriod;
-	        theClock.DSTbgnOFS = (configService.getClock(idx)).DSTbgnOFS;
-	        theClock.DSTbgnMIN = (configService.getClock(idx)).DSTbgnMIN;
-	        theClock.DSTbgnRNK = (configService.getClock(idx)).DSTbgnRNK;
-	        theClock.DSTbgnDAY = (configService.getClock(idx)).DSTbgnDAY;
-	        theClock.DSTbgnMTH = (configService.getClock(idx)).DSTbgnMTH;
-	        theClock.DSTbgnTCH = (configService.getClock(idx)).DSTbgnTCH;
-	        theClock.DSTbgnTCM = (configService.getClock(idx)).DSTbgnTCM;
-	        theClock.DSTbgnMRD = (configService.getClock(idx)).DSTbgnMRD;
-	        theClock.DSTendOFS = (configService.getClock(idx)).DSTendOFS;
-	        theClock.DSTendRNK = (configService.getClock(idx)).DSTendRNK;
-	        theClock.DSTendDAY = (configService.getClock(idx)).DSTendDAY;
-	        theClock.DSTendMTH = (configService.getClock(idx)).DSTendMTH;
-	        theClock.DSTendMIN = (configService.getClock(idx)).DSTendMIN;
-	        theClock.DSTendTCH = (configService.getClock(idx)).DSTendTCH;
-	        theClock.DSTendTCM = (configService.getClock(idx)).DSTendTCM;
-	        theClock.DSTendMRD = (configService.getClock(idx)).DSTendMRD;
-	        theClock.color = (configService.getClock(idx)).color;
-
-	    }
-
-	    // FUNCTION: "InitialTheClock" - display the configurations for each clock in the HTML page
-	    function InitialTheClock(theClock) {
-
-	        InitialUTCPrdItem(theClock);
-
-	        InitialUTCOfsItem('UTCBgnOfsOpt', theClock.DSTbgnOFS, theClock.index);
-	        InitialUTCMinItem('UTCBgnMinOpt', theClock.DSTbgnMIN, theClock.index);
-	        InitialUTCRnkItem('UTCBgnRnkOpt', theClock.DSTbgnRNK, theClock.index);
-	        InitialUTCDayItem('UTCBgnDayOpt', theClock.DSTbgnDAY, theClock.index);
-	        InitialUTCMthItem('UTCBgnMthOpt', theClock.DSTbgnMTH, theClock.index);
-	        InitialUTCTchItem('UTCBgnTchOpt', theClock.DSTbgnTCH, theClock.index);
-	        InitialUTCTcmItem('UTCBgnTcmOpt', theClock.DSTbgnTCM, theClock.index);
-	        InitialUTCMrdItem('UTCBgnMrdOpt', theClock.DSTbgnMRD, theClock.index);
-
-	        InitialUTCOfsItem('UTCEndOfsOpt', theClock.DSTendOFS, theClock.index);
-	        InitialUTCMinItem('UTCEndMinOpt', theClock.DSTendMIN, theClock.index);
-	        InitialUTCRnkItem('UTCEndRnkOpt', theClock.DSTendRNK, theClock.index);
-	        InitialUTCDayItem('UTCEndDayOpt', theClock.DSTendDAY, theClock.index);
-	        InitialUTCMthItem('UTCEndMthOpt', theClock.DSTendMTH, theClock.index);
-	        InitialUTCTchItem('UTCEndTchOpt', theClock.DSTendTCH, theClock.index);
-	        InitialUTCTcmItem('UTCEndTcmOpt', theClock.DSTendTCM, theClock.index);
-	        InitialUTCMrdItem('UTCEndMrdOpt', theClock.DSTendMRD, theClock.index);
-
-	        InitialClockColor(theClock);
-
-	    }
-
-	    // FUNCTION: "InitialUTCPrdItem" - initialize the selection of time zone "period" configurations in "begin/finish" list
-	    function InitialUTCPrdItem(theClock) {
-
-	        if (theClock.DSTPeriod == 'B:E') {
-	            switch (theClock.index) {
-	                case '0':
-	                    $scope.UTCBgnPrdLst_0 = $scope.UTC_OffSet_PRD[0];
-	                    $scope.UTCEndPrdLst_0 = $scope.UTC_OffSet_PRD[1];
-	                    break;
-	                case '1':
-	                    $scope.UTCBgnPrdLst_1 = $scope.UTC_OffSet_PRD[0];
-	                    $scope.UTCEndPrdLst_1 = $scope.UTC_OffSet_PRD[1];
-	                    break;
-	                case '2':
-	                    $scope.UTCBgnPrdLst_2 = $scope.UTC_OffSet_PRD[0];
-	                    $scope.UTCEndPrdLst_2 = $scope.UTC_OffSet_PRD[1];
-	                    break;
-	                case '3':
-	                    $scope.UTCBgnPrdLst_3 = $scope.UTC_OffSet_PRD[0];
-	                    $scope.UTCEndPrdLst_3 = $scope.UTC_OffSet_PRD[1];
-	                    break;
-	            }
-	        } else {
-	            switch (theClock.index) {
-	                case '0':
-	                    $scope.UTCBgnPrdLst_0 = $scope.UTC_OffSet_PRD[1];
-	                    $scope.UTCEndPrdLst_0 = $scope.UTC_OffSet_PRD[0];
-	                    break;
-	                case '1':
-	                    $scope.UTCBgnPrdLst_1 = $scope.UTC_OffSet_PRD[1];
-	                    $scope.UTCEndPrdLst_1 = $scope.UTC_OffSet_PRD[0];
-	                    break;
-	                case '2':
-	                    $scope.UTCBgnPrdLst_2 = $scope.UTC_OffSet_PRD[1];
-	                    $scope.UTCEndPrdLst_2 = $scope.UTC_OffSet_PRD[0];
-	                    break;
-	                case '3':
-	                    $scope.UTCBgnPrdLst_3 = $scope.UTC_OffSet_PRD[1];
-	                    $scope.UTCEndPrdLst_3 = $scope.UTC_OffSet_PRD[0];
-	                    break;
-	            };
-
-	            // toggle "begin" configurations with "end" configurations because DST periods have
-	            // been entered "backwards" from how they need to be stored in the structure
-
-	            ToggleClockConfig(theClock);
-	        };
-
-	    };
-
-	    // FUNCTION: "InitialUTCOfsItem" - initialize the selection of time zone "UTC hour offset" configuration in "begin/finish" list
-	    function InitialUTCOfsItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_OFS.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_OFS[idx].value) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCEndOfsOpt_0': $scope.UTCEndOfsLst_0 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCBgnOfsOpt_1': $scope.UTCBgnOfsLst_1 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCEndOfsOpt_1': $scope.UTCEndOfsLst_1 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCBgnOfsOpt_2': $scope.UTCBgnOfsLst_2 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCEndOfsOpt_2': $scope.UTCEndOfsLst_2 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCBgnOfsOpt_3': $scope.UTCBgnOfsLst_3 = $scope.UTC_OffSet_OFS[idx]; break;
-	                    case 'UTCEndOfsOpt_3': $scope.UTCEndOfsLst_3 = $scope.UTC_OffSet_OFS[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCEndOfsOpt_0': $scope.UTCEndOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCBgnOfsOpt_1': $scope.UTCBgnOfsLst_1 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCEndOfsOpt_1': $scope.UTCEndOfsLst_1 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCBgnOfsOpt_2': $scope.UTCBgnOfsLst_2 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCEndOfsOpt_2': $scope.UTCEndOfsLst_2 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCBgnOfsOpt_3': $scope.UTCBgnOfsLst_3 = $scope.UTC_OffSet_OFS[14]; break;
-	                case 'UTCEndOfsOpt_3': $scope.UTCEndOfsLst_3 = $scope.UTC_OffSet_OFS[14]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCMinItem" - initialize the selection of time zone "UTC minute offset" configuration in "begin/finish" list
-	    function InitialUTCMinItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_MNS.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_MNS[idx].value) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndMinOpt_0': $scope.UTCEndMinLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnMinOpt_1': $scope.UTCBgnMinLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndMinOpt_1': $scope.UTCEndMinLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnMinOpt_2': $scope.UTCBgnMinLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndMinOpt_2': $scope.UTCEndMinLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnMinOpt_3': $scope.UTCBgnMinLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndMinOpt_3': $scope.UTCEndMinLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndMinOpt_0': $scope.UTCEndMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnMinOpt_1': $scope.UTCBgnMinLst_1 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndMinOpt_1': $scope.UTCEndMinLst_1 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnMinOpt_2': $scope.UTCBgnMinLst_2 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndMinOpt_2': $scope.UTCEndMinLst_2 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnMinOpt_3': $scope.UTCBgnMinLst_3 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndMinOpt_3': $scope.UTCEndMinLst_3 = $scope.UTC_OffSet_MNS[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCRnkItem" - initialize the selection of time zone "weekday ranking" configuration in "begin/finish" list
-	    function InitialUTCRnkItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_RNK.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == (idx + 1)) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCEndRnkOpt_0': $scope.UTCEndRnkLst_0 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCBgnRnkOpt_1': $scope.UTCBgnRnkLst_1 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCEndRnkOpt_1': $scope.UTCEndRnkLst_1 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCBgnRnkOpt_2': $scope.UTCBgnRnkLst_2 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCEndRnkOpt_2': $scope.UTCEndRnkLst_2 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCBgnRnkOpt_3': $scope.UTCBgnRnkLst_3 = $scope.UTC_OffSet_RNK[idx]; break;
-	                    case 'UTCEndRnkOpt_3': $scope.UTCEndRnkLst_3 = $scope.UTC_OffSet_RNK[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCEndRnkOpt_0': $scope.UTCEndRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCBgnRnkOpt_1': $scope.UTCBgnRnkLst_1 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCEndRnkOpt_1': $scope.UTCEndRnkLst_1 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCBgnRnkOpt_2': $scope.UTCBgnRnkLst_2 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCEndRnkOpt_2': $scope.UTCEndRnkLst_2 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCBgnRnkOpt_3': $scope.UTCBgnRnkLst_3 = $scope.UTC_OffSet_RNK[0]; break;
-	                case 'UTCEndRnkOpt_3': $scope.UTCEndRnkLst_3 = $scope.UTC_OffSet_RNK[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCDayItem" - initialize the selection of time zone "weekday" configuration in "begin/finish" list
-	    function InitialUTCDayItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_DAY.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == idx) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCEndDayOpt_0': $scope.UTCEndDayLst_0 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCBgnDayOpt_1': $scope.UTCBgnDayLst_1 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCEndDayOpt_1': $scope.UTCEndDayLst_1 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCBgnDayOpt_2': $scope.UTCBgnDayLst_2 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCEndDayOpt_2': $scope.UTCEndDayLst_2 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCBgnDayOpt_3': $scope.UTCBgnDayLst_3 = $scope.UTC_OffSet_DAY[idx]; break;
-	                    case 'UTCEndDayOpt_3': $scope.UTCEndDayLst_3 = $scope.UTC_OffSet_DAY[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCEndDayOpt_0': $scope.UTCEndDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCBgnDayOpt_1': $scope.UTCBgnDayLst_1 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCEndDayOpt_1': $scope.UTCEndDayLst_1 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCBgnDayOpt_2': $scope.UTCBgnDayLst_2 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCEndDayOpt_2': $scope.UTCEndDayLst_2 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCBgnDayOpt_3': $scope.UTCBgnDayLst_3 = $scope.UTC_OffSet_DAY[0]; break;
-	                case 'UTCEndDayOpt_3': $scope.UTCEndDayLst_3 = $scope.UTC_OffSet_DAY[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCMthItem" - initialize the selection of time zone "month" configuration in "begin/finish" list
-	    function InitialUTCMthItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_MTH.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == idx) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCEndMthOpt_0': $scope.UTCEndMthLst_0 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCBgnMthOpt_1': $scope.UTCBgnMthLst_1 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCEndMthOpt_1': $scope.UTCEndMthLst_1 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCBgnMthOpt_2': $scope.UTCBgnMthLst_2 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCEndMthOpt_2': $scope.UTCEndMthLst_2 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCBgnMthOpt_3': $scope.UTCBgnMthLst_3 = $scope.UTC_OffSet_MTH[idx]; break;
-	                    case 'UTCEndMthOpt_3': $scope.UTCEndMthLst_3 = $scope.UTC_OffSet_MTH[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCEndMthOpt_0': $scope.UTCEndMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCBgnMthOpt_1': $scope.UTCBgnMthLst_1 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCEndMthOpt_1': $scope.UTCEndMthLst_1 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCBgnMthOpt_2': $scope.UTCBgnMthLst_2 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCEndMthOpt_2': $scope.UTCEndMthLst_2 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCBgnMthOpt_3': $scope.UTCBgnMthLst_3 = $scope.UTC_OffSet_MTH[0]; break;
-	                case 'UTCEndMthOpt_3': $scope.UTCEndMthLst_3 = $scope.UTC_OffSet_MTH[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCTchItem" - initialize the selection of time zone "time change hour" configuration in "begin/finish" list
-	    function InitialUTCTchItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_HRS.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == (idx + 1)) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCEndTchOpt_0': $scope.UTCEndTchLst_0 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCBgnTchOpt_1': $scope.UTCBgnTchLst_1 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCEndTchOpt_1': $scope.UTCEndTchLst_1 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCBgnTchOpt_2': $scope.UTCBgnTchLst_2 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCEndTchOpt_2': $scope.UTCEndTchLst_2 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCBgnTchOpt_3': $scope.UTCBgnTchLst_3 = $scope.UTC_OffSet_HRS[idx]; break;
-	                    case 'UTCEndTchOpt_3': $scope.UTCEndTchLst_3 = $scope.UTC_OffSet_HRS[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCEndTchOpt_0': $scope.UTCEndTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCBgnTchOpt_1': $scope.UTCBgnTchLst_1 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCEndTchOpt_1': $scope.UTCEndTchLst_1 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCBgnTchOpt_2': $scope.UTCBgnTchLst_2 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCEndTchOpt_2': $scope.UTCEndTchLst_2 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCBgnTchOpt_3': $scope.UTCBgnTchLst_3 = $scope.UTC_OffSet_HRS[0]; break;
-	                case 'UTCEndTchOpt_3': $scope.UTCEndTchLst_3 = $scope.UTC_OffSet_HRS[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCTcmItem" - initialize the selection of time zone "time change minute" configuration in "begin/finish" list
-	    function InitialUTCTcmItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_MNS.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == idx) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndTcmOpt_0': $scope.UTCEndTcmLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnTcmOpt_1': $scope.UTCBgnTcmLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndTcmOpt_1': $scope.UTCEndTcmLst_1 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnTcmOpt_2': $scope.UTCBgnTcmLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndTcmOpt_2': $scope.UTCEndTcmLst_2 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCBgnTcmOpt_3': $scope.UTCBgnTcmLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
-	                    case 'UTCEndTcmOpt_3': $scope.UTCEndTcmLst_3 = $scope.UTC_OffSet_MNS[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndTcmOpt_0': $scope.UTCEndTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnTcmOpt_1': $scope.UTCBgnTcmLst_1 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndTcmOpt_1': $scope.UTCEndTcmLst_1 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnTcmOpt_2': $scope.UTCBgnTcmLst_2 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndTcmOpt_2': $scope.UTCEndTcmLst_2 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCBgnTcmOpt_3': $scope.UTCBgnTcmLst_3 = $scope.UTC_OffSet_MNS[0]; break;
-	                case 'UTCEndTcmOpt_3': $scope.UTCEndTcmLst_3 = $scope.UTC_OffSet_MNS[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialUTCMrdItem" - initialize the selection of time zone "meridiem" configuration in "begin/finish" list
-	    function InitialUTCMrdItem(theOption, theValue, theIndex) {
-
-	        var siz = $scope.UTC_OffSet_MRD.length;
-
-	        var optstr;
-
-	        optstr = theOption;
-	        optstr = optstr.concat('_');
-	        optstr = optstr.concat(theIndex);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_MRD[idx].value) {
-	                // set the selected item in the list
-	                switch (optstr) {
-	                    case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCEndMrdOpt_0': $scope.UTCEndMrdLst_0 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCBgnMrdOpt_1': $scope.UTCBgnMrdLst_1 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCEndMrdOpt_1': $scope.UTCEndMrdLst_1 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCBgnMrdOpt_2': $scope.UTCBgnMrdLst_2 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCEndMrdOpt_2': $scope.UTCEndMrdLst_2 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCBgnMrdOpt_3': $scope.UTCBgnMrdLst_3 = $scope.UTC_OffSet_MRD[idx]; break;
-	                    case 'UTCEndMrdOpt_3': $scope.UTCEndMrdLst_3 = $scope.UTC_OffSet_MRD[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (optstr) {
-	                case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCEndMrdOpt_0': $scope.UTCEndMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCBgnMrdOpt_1': $scope.UTCBgnMrdLst_1 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCEndMrdOpt_1': $scope.UTCEndMrdLst_1 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCBgnMrdOpt_2': $scope.UTCBgnMrdLst_2 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCEndMrdOpt_2': $scope.UTCEndMrdLst_2 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCBgnMrdOpt_3': $scope.UTCBgnMrdLst_3 = $scope.UTC_OffSet_MRD[0]; break;
-	                case 'UTCEndMrdOpt_3': $scope.UTCEndMrdLst_3 = $scope.UTC_OffSet_MRD[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialClockColor" - initialize the selection of "color" configuration in list for each clock
-	    function InitialClockColor(theClock) {
-
-	        var siz = $scope.CLOCK_COLOR.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theClock.color == $scope.CLOCK_COLOR[idx].code) {
-	                // set the selected item in the list
-	                switch (theClock.index) {
-	                    case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[idx]; break;
-	                    case '1': $scope.ClockColorLst_1 = $scope.CLOCK_COLOR[idx]; break;
-	                    case '2': $scope.ClockColorLst_2 = $scope.CLOCK_COLOR[idx]; break;
-	                    case '3': $scope.ClockColorLst_3 = $scope.CLOCK_COLOR[idx]; break;
-	                }
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            switch (theClock.index) {
-	                case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[0]; break;
-	                case '1': $scope.ClockColorLst_1 = $scope.CLOCK_COLOR[0]; break;
-	                case '2': $scope.ClockColorLst_2 = $scope.CLOCK_COLOR[0]; break;
-	                case '3': $scope.ClockColorLst_3 = $scope.CLOCK_COLOR[0]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "ToggleClockConfig" - toggles configuration in preparation for loading/saving time zone period configurations within the correct elements in the HTML page/structure
-	    function ToggleClockConfig(theClock) {
-
-	        var tmpOfs;
-	        var tmpMin;
-	        var tmpRnk;
-	        var tmpDay;
-	        var tmpMth;
-	        var tmpTch;
-	        var tmpTcm
-	        var tmpMrd;
-
-	        tmpOfs = theClock.DSTbgnOFS;
-	        tmpMin = theClock.DSTbgnMIN;
-	        tmpRnk = theClock.DSTbgnRNK;
-	        tmpDay = theClock.DSTbgnDAY;
-	        tmpMth = theClock.DSTbgnMTH;
-	        tmpTch = theClock.DSTbgnTCH;
-	        tmpTcm = theClock.DSTbgnTCM;
-	        tmpMrd = theClock.DSTbgnMRD;
-
-	        theClock.DSTbgnOFS = theClock.DSTendOFS;
-	        theClock.DSTbgnMIN = theClock.DSTendMIN;
-	        theClock.DSTbgnRNK = theClock.DSTendRNK;
-	        theClock.DSTbgnDAY = theClock.DSTendDAY;
-	        theClock.DSTbgnMTH = theClock.DSTendMTH;
-	        theClock.DSTbgnTCH = theClock.DSTendTCH;
-	        theClock.DSTbgnTCM = theClock.DSTendTCM;
-	        theClock.DSTbgnMRD = theClock.DSTendMRD;
-
-	        theClock.DSTendOFS = tmpOfs;
-	        theClock.DSTendMIN = tmpMin;
-	        theClock.DSTendRNK = tmpRnk;
-	        theClock.DSTendDAY = tmpDay;
-	        theClock.DSTendMTH = tmpMth;
-	        theClock.DSTendTCH = tmpTch;
-	        theClock.DSTendTCM = tmpTcm;
-	        theClock.DSTendMRD = tmpMrd;
-
-	    };
-
-	    // FUNCTION: "LoadTheFormats" - load the formats used to display each element comprising a clock face
-	    function LoadTheFormats() {
-
-	        $scope.boxSize = configService.getValue('boxSize');
-	        $scope.formats.clockFacePlace = getFlag(configService.getValue('clockFacePlace'));
-	        $scope.formats.multipleClocks = configService.getValue('multipleClocks');
-	        $scope.formats.clockFaceHours = configService.getValue('clockFaceHours');
-
-	        InitialClockFaceDisplay($scope.formats.multipleClocks);
-	        InitialClockFacePlace($scope.formats.clockFacePlace);
-	        InitialClockFaceHours($scope.formats.clockFaceHours);
-
-	        $scope.formats.clockMeridiem = getFlag(configService.getValue('clockMeridiem'));
-
-	        $scope.formats.clockSeparator = configService.getValue('clockSeparator');
-	        $scope.formats.dateSeparator = configService.getValue('dateSeparator');
-	        $scope.formats.clockSeconds = getFlag(configService.getValue('clockSeconds'));
-	        $scope.formats.clockZeroToHour = getFlag(configService.getValue('clockZeroToHour'));
-
-	        $scope.formats.dateCentury = getFlag(configService.getValue('dateCentury'));
-
-	        $scope.formats.dateType = configService.getValue('dateType');
-	        InitialDateType($scope.formats.dateType);
-	        $scope.formats.datetextOrder = configService.getValue('datetextOrder');
-	        InitialDateTextOrder($scope.formats.datetextOrder)
-	        $scope.formats.dateText = configService.getValue('dateText');
-	        InitialDateText($scope.formats.dateText);
-
-	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST')); ;
-
-	        $scope.formats.multipleClockOrder = configService.getValue('multipleClockOrder');
-	        InitialMultipleClockOrder($scope.formats.multipleClockOrder);
-
-	    };
-
-	    // FUNCTION: "InitialClockFaceDisplay" - initialize the selection of "clock face display" configuration in the list
-	    function InitialClockFaceDisplay(theValue) {
-
-	        var siz = $scope.CLOCK_FACE_DISPLAY.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.CLOCK_FACE_DISPLAY[idx].code) {
-	                // set the selected item in the list
-	                $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[0];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialClockFacePlace" - initialize the selection of "clock face location" configuration in the list
-	    function InitialClockFacePlace(theValue) {
-
-	        var siz = $scope.CLOCK_FACE_PLACE.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == idx) {
-	                // set the selected item in the list
-	                $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[0];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialClockFaceHours" - initialize the selection of "clock face hour" configuration in the list
-	    function InitialClockFaceHours(theValue) {
-
-	        var siz = $scope.CLOCK_FACE_HOURS.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == idx) {
-	                // set the selected item in the list
-	                $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[0];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialDateType" - initialize the selection of "date type" configuration in the list
-	    function InitialDateType(theValue) {
-
-	        var siz = $scope.DATE_TYPES.length;
-	        var val;
-
-	        val = parseInt(theValue);
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (val == (idx + 1)) {
-	                // set the selected item in the list
-	                $scope.dateTypeLst = $scope.DATE_TYPES[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.dateTypeLst = $scope.DATE_TYPES[1];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialDateTextOrder" - initialize the selection of "date/text order" configuration in the list
-	    function InitialDateTextOrder(theValue) {
-
-	        var siz = $scope.DATE_TEXT_ORDER.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.DATE_TEXT_ORDER[idx].code) {
-	                // set the selected item in the list
-	                $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[0];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialDateText" - initialize the selection of "date text" configuration in the list
-	    function InitialDateText(theValue) {
-
-	        var siz = $scope.DATE_TEXT.length;
-
-	        // iterate through all of the values in the array looking for a match
-	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
-	            // did we find the matching item in the list?
-	            if (theValue == $scope.DATE_TEXT[idx].code) {
-	                // set the selected item in the list
-	                $scope.dateTextLst = $scope.DATE_TEXT[idx];
-	                // now quit...
-	                idx = siz + 1;
-	            }
-	        }
-	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
-	            $scope.dateTextLst = $scope.DATE_TEXT[0];
-	        }
-
-	    };
-
-	    // FUNCTION: "InitialMultipleClockOrder" - initialize the selection of the clock order configuration in the list
-	    function InitialMultipleClockOrder(theValue) {
-
-	        var siz = $scope.CLOCK_FACE_MULTIPLE.length;
-
-	        // iterate through each of the three clocks
-	        for (idx = 0; (idx <= 2); idx++) {
-	            clk = parseInt(theValue.substring(idx, (idx + 1)));
-	            // set selected item in the list
-	            switch (idx) {
-	                case 0: $scope.multipleClockOrderLst_0 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
-	                case 1: $scope.multipleClockOrderLst_1 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
-	                case 2: $scope.multipleClockOrderLst_2 = $scope.CLOCK_FACE_MULTIPLE[clk]; break;
-	            }
-	        }
-
-	    };
-
-	    // FUNCTION: "setFlag" - convert boolean flag to corresponding character: 'X' (true) / '' (false)
-	    function setFlag(theFlag) {
-
-	        var itmflg;
-
-	        if (theFlag == true) {
-	            itmflg = 'X';
-	        }
-	        else if (theFlag == false) {
-	            itmflg = '';
-	        }
-	        else {
-	            itmflg = theFlag;
-	        }
-
-	        return itmflg
-	    };
-
-	    // FUNCTION: "getFlag" - convert character 'X' (true) / '' (false) to corresponding boolean flag
-	    function getFlag(theFlag) {
-
-	        var itmflg;
-
-	        if (theFlag == 'X') {
-	            itmflg = true;
-	        }
-	        else if (theFlag == '') {
-	            itmflg = false;
-	        }
-	        else {
-	            itmflg = theFlag;
-	        }
-
-	        return itmflg
 	    };
 
 	} ];
