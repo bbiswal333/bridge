@@ -339,7 +339,8 @@ angular.module('app.clock').appClockSettings =
 	        showActiveDST: '',
 	        datetextOrder: ''
 	    };
-	    // FUNCTION: "LoadTheClock" - load the configurations for the specified clock retrieved from the server
+	    
+	    // FUNCTION: "loadTheClock" - load the configurations for the specified clock retrieved from the server
 	    function loadTheClock(theClock) {
 
 	        var idx;
