@@ -328,10 +328,10 @@ angular.module('app.clock').service("app.clock.configService", function() {
     this.getClock = function(theIndex) {
 
         switch (theIndex) {
-            case 0: return this.values.clock_0; break;
-            case 1: return this.values.clock_1; break;
-            case 2: return this.values.clock_2; break;
-            case 3: return this.values.clock_3; break;
+            case 0: return this.values.clock_0;
+            case 1: return this.values.clock_1;
+            case 2: return this.values.clock_2;
+            case 3: return this.values.clock_3;
         }
 
     };
@@ -355,21 +355,21 @@ angular.module('app.clock').service("app.clock.configService", function() {
     this.getValue = function(theOption) {
 
         switch (theOption) {
-            case 'boxSize': return this.values.boxSize; break;
-            case 'clockFacePlace': return this.values.formats.clockFacePlace; break;
-            case 'multipleClocks': return this.values.formats.multipleClocks; break;
-            case 'clockFaceHours': return this.values.formats.clockFaceHours; break;
-            case 'clockMeridiem': return this.values.formats.clockMeridiem; break;
-            case 'clockSeparator': return this.values.formats.clockSeparator; break;
-            case 'dateSeparator': return this.values.formats.dateSeparator; break;
-            case 'dateType': return this.values.formats.dateType; break;
-            case 'clockSeconds': return this.values.formats.clockSeconds; break;
-            case 'clockZeroToHour': return this.values.formats.clockZeroToHour; break;
-            case 'dateCentury': return this.values.formats.dateCentury; break;
-            case 'dateText': return this.values.formats.dateText; break;
-            case 'multipleClockOrder': return this.values.formats.multipleClockOrder; break;
-            case 'showActiveDST': return this.values.formats.showActiveDST; break;
-            case 'datetextOrder': return this.values.formats.datetextOrder; break;
+            case 'boxSize': return this.values.boxSize;
+            case 'clockFacePlace': return this.values.formats.clockFacePlace;
+            case 'multipleClocks': return this.values.formats.multipleClocks;
+            case 'clockFaceHours': return this.values.formats.clockFaceHours;
+            case 'clockMeridiem': return this.values.formats.clockMeridiem;
+            case 'clockSeparator': return this.values.formats.clockSeparator;
+            case 'dateSeparator': return this.values.formats.dateSeparator;
+            case 'dateType': return this.values.formats.dateType;
+            case 'clockSeconds': return this.values.formats.clockSeconds;
+            case 'clockZeroToHour': return this.values.formats.clockZeroToHour;
+            case 'dateCentury': return this.values.formats.dateCentury;
+            case 'dateText': return this.values.formats.dateText;
+            case 'multipleClockOrder': return this.values.formats.multipleClockOrder;
+            case 'showActiveDST': return this.values.formats.showActiveDST;
+            case 'datetextOrder': return this.values.formats.datetextOrder;
         }
 
     };
