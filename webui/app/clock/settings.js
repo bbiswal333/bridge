@@ -1196,6 +1196,8 @@ angular.module('app.clock').appClockSettings =
 	    // FUNCTION: "resetTheOption" - reselects default time zone clock configuration in each of the lists
 	    $scope.resetTheOption = function(clk, opt) {
 
+          /*jslint browser:true */
+
 	        var clk_0_bgn = [0, 1, 0, 2, 1, 0, 0, 18, 0];
 	        var clk_0_end = [1, 0, 0, 10, 1, 0, 0, 19, 0];
 	        var clk_1_bgn = [0, 4, 0, 2, 1, 0, 0, 12, 0];
@@ -1556,7 +1558,7 @@ angular.module('app.clock').appClockSettings =
 
 	        // toggle order of the period setting
 	        itmlst2 = document.getElementById(itmstr);
-	        itmlst2.selectedIndex = (itmlst1.selectedIndex == 0) ? 1 : 0;
+	        itmlst2.selectedIndex = (itmlst1.selectedIndex === 0) ? 1 : 0;
 	    };
 
 	    // FUNCTION: "ChgUTC_OFS" - set selected value of time zone UTC "hour offset" configuration according to list selection made by the user
