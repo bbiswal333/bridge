@@ -984,8 +984,8 @@ angular.module('app.clock').appClockSettings =
 	    // FUNCTION: "initialMultipleClockOrder" - initialize the selection of the clock order configuration in the list
 	    function initialMultipleClockOrder(theValue) {
 
-	        var siz = $scope.CLOCK_FACE_MULTIPLE.length;
 	        var idx;
+	        var clk;
 
 	        // iterate through each of the three clocks
 	        for (idx = 0; (idx <= 2); idx++) {
@@ -1005,10 +1005,10 @@ angular.module('app.clock').appClockSettings =
 
 	        var itmflg;
 
-	        if (theFlag == true) {
+	        if (theFlag === true) {
 	            itmflg = 'X';
 	        }
-	        else if (theFlag == false) {
+	        else if (theFlag === false) {
 	            itmflg = '';
 	        }
 	        else {
@@ -1016,25 +1016,25 @@ angular.module('app.clock').appClockSettings =
 	        }
 
 	        return itmflg
-	    };
+	    }
 
 	    // FUNCTION: "getFlag" - convert character 'X' (true) / '' (false) to corresponding boolean flag
 	    function getFlag(theFlag) {
 
 	        var itmflg;
 
-	        if (theFlag == 'X') {
+	        if (theFlag === 'X') {
 	            itmflg = true;
 	        }
-	        else if (theFlag == '') {
+	        else if (theFlag === '') {
 	            itmflg = false;
 	        }
 	        else {
 	            itmflg = theFlag;
 	        }
 
-	        return itmflg
-	    };
+	        return itmflg;
+	    }
 
 	    // FUNCTION: "loadTheFormats" - load the formats used to display each element comprising a clock face
 	    function loadTheFormats() {
@@ -1060,16 +1060,16 @@ angular.module('app.clock').appClockSettings =
 	        $scope.formats.dateType = configService.getValue('dateType');
 	        initialDateType($scope.formats.dateType);
 	        $scope.formats.datetextOrder = configService.getValue('datetextOrder');
-	        initialDateTextOrder($scope.formats.datetextOrder)
+	        initialDateTextOrder($scope.formats.datetextOrder);
 	        $scope.formats.dateText = configService.getValue('dateText');
 	        initialDateText($scope.formats.dateText);
 
-	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST')); ;
+	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST'));
 
 	        $scope.formats.multipleClockOrder = configService.getValue('multipleClockOrder');
 	        initialMultipleClockOrder($scope.formats.multipleClockOrder);
 
-	    };
+	    }
 
 	    // FUNCTION: "loadTheClock" - load the configurations for the specified clock retrieved from the server
 	    function loadTheClock(theClock) {
@@ -1147,6 +1147,8 @@ angular.module('app.clock').appClockSettings =
 	    // FUNCTION: "reset_click" - reset clock configurations when button "clicked"
 	    $scope.reset_click = function() {
 
+          var opt;
+          
 	        // reset default time zones
 	        configService.getDefaultClock($scope.clock_0);
 	        $scope.clock_0.isDST = getFlag($scope.clock_0.isDST);
