@@ -1,3 +1,5 @@
+/*jslint browser:true */
+
 angular.module('app.clock').appClockSettings =
 	['$scope', 'app.clock.configService', function($scope, configService) {
 
@@ -1195,8 +1197,6 @@ angular.module('app.clock').appClockSettings =
 
 	    // FUNCTION: "resetTheOption" - reselects default time zone clock configuration in each of the lists
 	    $scope.resetTheOption = function(clk, opt) {
-
-/*global document: false */
 
 	        var clk_0_bgn = [0, 1, 0, 2, 1, 0, 0, 18, 0];
 	        var clk_0_end = [1, 0, 0, 10, 1, 0, 0, 19, 0];
