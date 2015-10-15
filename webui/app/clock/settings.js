@@ -1103,8 +1103,6 @@ angular.module('app.clock').appClockSettings =
 	        theClock.DSTendMRD = (configService.getClock(idx)).DSTendMRD;
 	        theClock.color = (configService.getClock(idx)).color;
 
-	        theClock.location = theClock.DSTendMTH;
-
 	    }
 
 	    // FUNCTION: "InitialTheClock" - display the configurations for each clock in the HTML page
