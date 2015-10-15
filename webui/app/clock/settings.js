@@ -1,4 +1,4 @@
-/*jslint browser:true */
+/*global document*/
 
 angular.module('app.clock').appClockSettings =
 	['$scope', 'app.clock.configService', function($scope, configService) {
