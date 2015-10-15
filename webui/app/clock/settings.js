@@ -339,65 +339,7 @@ angular.module('app.clock').appClockSettings =
 	        showActiveDST: '',
 	        datetextOrder: ''
 	    };
-	    
-	    // FUNCTION: "loadTheClock" - load the configurations for the specified clock retrieved from the server
-	    function loadTheClock(theClock) {
-
-	        var idx;
-
-	        idx = parseInt(theClock.index);
-
-	        theClock.index = (configService.getClock(idx)).index;
-	        theClock.location = (configService.getClock(idx)).location;
-	        theClock.isDST = getFlag((configService.getClock(idx)).isDST);
-	        theClock.DSTPeriod = (configService.getClock(idx)).DSTPeriod;
-	        theClock.DSTbgnOFS = (configService.getClock(idx)).DSTbgnOFS;
-	        theClock.DSTbgnMIN = (configService.getClock(idx)).DSTbgnMIN;
-	        theClock.DSTbgnRNK = (configService.getClock(idx)).DSTbgnRNK;
-	        theClock.DSTbgnDAY = (configService.getClock(idx)).DSTbgnDAY;
-	        theClock.DSTbgnMTH = (configService.getClock(idx)).DSTbgnMTH;
-	        theClock.DSTbgnTCH = (configService.getClock(idx)).DSTbgnTCH;
-	        theClock.DSTbgnTCM = (configService.getClock(idx)).DSTbgnTCM;
-	        theClock.DSTbgnMRD = (configService.getClock(idx)).DSTbgnMRD;
-	        theClock.DSTendOFS = (configService.getClock(idx)).DSTendOFS;
-	        theClock.DSTendRNK = (configService.getClock(idx)).DSTendRNK;
-	        theClock.DSTendDAY = (configService.getClock(idx)).DSTendDAY;
-	        theClock.DSTendMTH = (configService.getClock(idx)).DSTendMTH;
-	        theClock.DSTendMIN = (configService.getClock(idx)).DSTendMIN;
-	        theClock.DSTendTCH = (configService.getClock(idx)).DSTendTCH;
-	        theClock.DSTendTCM = (configService.getClock(idx)).DSTendTCM;
-	        theClock.DSTendMRD = (configService.getClock(idx)).DSTendMRD;
-	        theClock.color = (configService.getClock(idx)).color;
-
-	    }
-
-	    // FUNCTION: "InitialTheClock" - display the configurations for each clock in the HTML page
-	    function initialTheClock(theClock) {
-
-	        initialUTCPrdItem(theClock);
-
-	        initialUTCOfsItem('UTCBgnOfsOpt', theClock.DSTbgnOFS, theClock.index);
-	        initialUTCMinItem('UTCBgnMinOpt', theClock.DSTbgnMIN, theClock.index);
-	        initialUTCRnkItem('UTCBgnRnkOpt', theClock.DSTbgnRNK, theClock.index);
-	        initialUTCDayItem('UTCBgnDayOpt', theClock.DSTbgnDAY, theClock.index);
-	        initialUTCMthItem('UTCBgnMthOpt', theClock.DSTbgnMTH, theClock.index);
-	        initialUTCTchItem('UTCBgnTchOpt', theClock.DSTbgnTCH, theClock.index);
-	        initialUTCTcmItem('UTCBgnTcmOpt', theClock.DSTbgnTCM, theClock.index);
-	        initialUTCMrdItem('UTCBgnMrdOpt', theClock.DSTbgnMRD, theClock.index);
-
-	        initialUTCOfsItem('UTCEndOfsOpt', theClock.DSTendOFS, theClock.index);
-	        initialUTCMinItem('UTCEndMinOpt', theClock.DSTendMIN, theClock.index);
-	        initialUTCRnkItem('UTCEndRnkOpt', theClock.DSTendRNK, theClock.index);
-	        initialUTCDayItem('UTCEndDayOpt', theClock.DSTendDAY, theClock.index);
-	        initialUTCMthItem('UTCEndMthOpt', theClock.DSTendMTH, theClock.index);
-	        initialUTCTchItem('UTCEndTchOpt', theClock.DSTendTCH, theClock.index);
-	        initialUTCTcmItem('UTCEndTcmOpt', theClock.DSTendTCM, theClock.index);
-	        initialUTCMrdItem('UTCEndMrdOpt', theClock.DSTendMRD, theClock.index);
-
-	        initialClockColor(theClock);
-
-	    }
-
+	
 	    // FUNCTION: "initialUTCPrdItem" - initialize the selection of time zone "period" configurations in "begin/finish" list
 	    function initialUTCPrdItem(theClock) {
 
@@ -1112,6 +1054,64 @@ angular.module('app.clock').appClockSettings =
 
 	        return itmflg
 	    };
+
+	    // FUNCTION: "loadTheClock" - load the configurations for the specified clock retrieved from the server
+	    function loadTheClock(theClock) {
+
+	        var idx;
+
+	        idx = parseInt(theClock.index);
+
+	        theClock.index = (configService.getClock(idx)).index;
+	        theClock.location = (configService.getClock(idx)).location;
+	        theClock.isDST = getFlag((configService.getClock(idx)).isDST);
+	        theClock.DSTPeriod = (configService.getClock(idx)).DSTPeriod;
+	        theClock.DSTbgnOFS = (configService.getClock(idx)).DSTbgnOFS;
+	        theClock.DSTbgnMIN = (configService.getClock(idx)).DSTbgnMIN;
+	        theClock.DSTbgnRNK = (configService.getClock(idx)).DSTbgnRNK;
+	        theClock.DSTbgnDAY = (configService.getClock(idx)).DSTbgnDAY;
+	        theClock.DSTbgnMTH = (configService.getClock(idx)).DSTbgnMTH;
+	        theClock.DSTbgnTCH = (configService.getClock(idx)).DSTbgnTCH;
+	        theClock.DSTbgnTCM = (configService.getClock(idx)).DSTbgnTCM;
+	        theClock.DSTbgnMRD = (configService.getClock(idx)).DSTbgnMRD;
+	        theClock.DSTendOFS = (configService.getClock(idx)).DSTendOFS;
+	        theClock.DSTendRNK = (configService.getClock(idx)).DSTendRNK;
+	        theClock.DSTendDAY = (configService.getClock(idx)).DSTendDAY;
+	        theClock.DSTendMTH = (configService.getClock(idx)).DSTendMTH;
+	        theClock.DSTendMIN = (configService.getClock(idx)).DSTendMIN;
+	        theClock.DSTendTCH = (configService.getClock(idx)).DSTendTCH;
+	        theClock.DSTendTCM = (configService.getClock(idx)).DSTendTCM;
+	        theClock.DSTendMRD = (configService.getClock(idx)).DSTendMRD;
+	        theClock.color = (configService.getClock(idx)).color;
+
+	    }
+
+	    // FUNCTION: "InitialTheClock" - display the configurations for each clock in the HTML page
+	    function initialTheClock(theClock) {
+
+	        initialUTCPrdItem(theClock);
+
+	        initialUTCOfsItem('UTCBgnOfsOpt', theClock.DSTbgnOFS, theClock.index);
+	        initialUTCMinItem('UTCBgnMinOpt', theClock.DSTbgnMIN, theClock.index);
+	        initialUTCRnkItem('UTCBgnRnkOpt', theClock.DSTbgnRNK, theClock.index);
+	        initialUTCDayItem('UTCBgnDayOpt', theClock.DSTbgnDAY, theClock.index);
+	        initialUTCMthItem('UTCBgnMthOpt', theClock.DSTbgnMTH, theClock.index);
+	        initialUTCTchItem('UTCBgnTchOpt', theClock.DSTbgnTCH, theClock.index);
+	        initialUTCTcmItem('UTCBgnTcmOpt', theClock.DSTbgnTCM, theClock.index);
+	        initialUTCMrdItem('UTCBgnMrdOpt', theClock.DSTbgnMRD, theClock.index);
+
+	        initialUTCOfsItem('UTCEndOfsOpt', theClock.DSTendOFS, theClock.index);
+	        initialUTCMinItem('UTCEndMinOpt', theClock.DSTendMIN, theClock.index);
+	        initialUTCRnkItem('UTCEndRnkOpt', theClock.DSTendRNK, theClock.index);
+	        initialUTCDayItem('UTCEndDayOpt', theClock.DSTendDAY, theClock.index);
+	        initialUTCMthItem('UTCEndMthOpt', theClock.DSTendMTH, theClock.index);
+	        initialUTCTchItem('UTCEndTchOpt', theClock.DSTendTCH, theClock.index);
+	        initialUTCTcmItem('UTCEndTcmOpt', theClock.DSTendTCM, theClock.index);
+	        initialUTCMrdItem('UTCEndMrdOpt', theClock.DSTendMRD, theClock.index);
+
+	        initialClockColor(theClock);
+
+	    }
 
 	    // load clock format into localized "objects"
 	    loadTheFormats();
