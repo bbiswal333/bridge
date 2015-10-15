@@ -266,22 +266,22 @@ angular.module('app.clock').service("app.clock.configService", function() {
     this.getDefaultValue = function(theOption) {
 
         switch (theOption) {
-            case 'boxSize': return this.defaults.boxSize; break;
-            case 'clockFacePlace': return this.defaults.formats.clockFacePlace; break;
-            case 'multipleClocks': return this.defaults.formats.multipleClocks; break;
-            case 'clockFaceHours': return this.defaults.formats.clockFaceHours; break;
-            case 'clockMeridiem': return this.defaults.formats.clockMeridiem; break;
-            case 'clockSeparator': return this.defaults.formats.clockSeparator; break;
-            case 'dateSeparator': return this.defaults.formats.dateSeparator; break;
-            case 'dateType': return this.defaults.formats.dateType; break;
-            case 'clockSeconds': return this.defaults.formats.clockSeconds; break;
-            case 'clockZeroToHour': return this.defaults.formats.clockZeroToHour; break;
-            case 'dateCentury': return this.defaults.formats.dateCentury; break;
-            case 'dateText': return this.defaults.formats.dateText; break;
-            case 'multipleClockOrder': return this.defaults.formats.multipleClockOrder; break;
-            case 'showActiveDST': return this.defaults.formats.showActiveDST; break;
-            case 'datetextOrder': return this.defaults.formats.datetextOrder; break;
-        };
+            case 'boxSize': return this.defaults.boxSize;
+            case 'clockFacePlace': return this.defaults.formats.clockFacePlace;
+            case 'multipleClocks': return this.defaults.formats.multipleClocks;
+            case 'clockFaceHours': return this.defaults.formats.clockFaceHours;
+            case 'clockMeridiem': return this.defaults.formats.clockMeridiem;
+            case 'clockSeparator': return this.defaults.formats.clockSeparator;
+            case 'dateSeparator': return this.defaults.formats.dateSeparator;
+            case 'dateType': return this.defaults.formats.dateType;
+            case 'clockSeconds': return this.defaults.formats.clockSeconds;
+            case 'clockZeroToHour': return this.defaults.formats.clockZeroToHour;
+            case 'dateCentury': return this.defaults.formats.dateCentury;
+            case 'dateText': return this.defaults.formats.dateText;
+            case 'multipleClockOrder': return this.defaults.formats.multipleClockOrder;
+            case 'showActiveDST': return this.defaults.formats.showActiveDST;
+            case 'datetextOrder': return this.defaults.formats.datetextOrder;
+        }
 
     };
 
@@ -295,11 +295,11 @@ angular.module('app.clock').service("app.clock.configService", function() {
         idx = parseInt(theClock.index);
 
         switch (idx) {
-            case 0: clkdfl = this.defaults.clock_0; break;
-            case 1: clkdfl = this.defaults.clock_1; break;
-            case 2: clkdfl = this.defaults.clock_2; break;
-            case 3: clkdfl = this.defaults.clock_3; break;
-        };
+            case 0: clkdfl = this.defaults.clock_0;
+            case 1: clkdfl = this.defaults.clock_1;
+            case 2: clkdfl = this.defaults.clock_2;
+            case 3: clkdfl = this.defaults.clock_3;
+        }
 
         theClock.location = clkdfl.location;
         theClock.isDST = clkdfl.isDST;
@@ -328,13 +328,13 @@ angular.module('app.clock').service("app.clock.configService", function() {
     this.getClock = function(theIndex) {
 
         switch (theIndex) {
-            case 0: return this.values.clock_0; break;
-            case 1: return this.values.clock_1; break;
-            case 2: return this.values.clock_2; break;
-            case 3: return this.values.clock_3; break;
+            case 0: return this.values.clock_0;
+            case 1: return this.values.clock_1;
+            case 2: return this.values.clock_2;
+            case 3: return this.values.clock_3;
         }
 
-    }
+    };
 
     // FUNCTION: "setClock" - sets settings in "current" configuration for specified clock "index"
     this.setClock = function(theClock) {
@@ -344,57 +344,57 @@ angular.module('app.clock').service("app.clock.configService", function() {
         idx = parseInt(theClock.index);
 
         switch (idx) {
-            case 0: this.values.clock_0 = theClock; break;
-            case 1: this.values.clock_1 = theClock; break;
-            case 2: this.values.clock_2 = theClock; break;
-            case 3: this.values.clock_3 = theClock; break;
+            case 0: this.values.clock_0 = theClock;
+            case 1: this.values.clock_1 = theClock;
+            case 2: this.values.clock_2 = theClock;
+            case 3: this.values.clock_3 = theClock;
         }
-    }
+    };
 
     // FUNCTION: "getValue" - gets settings from "current" configuration for specified attribute
     this.getValue = function(theOption) {
 
         switch (theOption) {
-            case 'boxSize': return this.values.boxSize; break;
-            case 'clockFacePlace': return this.values.formats.clockFacePlace; break;
-            case 'multipleClocks': return this.values.formats.multipleClocks; break;
-            case 'clockFaceHours': return this.values.formats.clockFaceHours; break;
-            case 'clockMeridiem': return this.values.formats.clockMeridiem; break;
-            case 'clockSeparator': return this.values.formats.clockSeparator; break;
-            case 'dateSeparator': return this.values.formats.dateSeparator; break;
-            case 'dateType': return this.values.formats.dateType; break;
-            case 'clockSeconds': return this.values.formats.clockSeconds; break;
-            case 'clockZeroToHour': return this.values.formats.clockZeroToHour; break;
-            case 'dateCentury': return this.values.formats.dateCentury; break;
-            case 'dateText': return this.values.formats.dateText; break;
-            case 'multipleClockOrder': return this.values.formats.multipleClockOrder; break;
-            case 'showActiveDST': return this.values.formats.showActiveDST; break;
-            case 'datetextOrder': return this.values.formats.datetextOrder; break;
+            case 'boxSize': return this.values.boxSize;
+            case 'clockFacePlace': return this.values.formats.clockFacePlace;
+            case 'multipleClocks': return this.values.formats.multipleClocks;
+            case 'clockFaceHours': return this.values.formats.clockFaceHours;
+            case 'clockMeridiem': return this.values.formats.clockMeridiem;
+            case 'clockSeparator': return this.values.formats.clockSeparator;
+            case 'dateSeparator': return this.values.formats.dateSeparator;
+            case 'dateType': return this.values.formats.dateType;
+            case 'clockSeconds': return this.values.formats.clockSeconds;
+            case 'clockZeroToHour': return this.values.formats.clockZeroToHour;
+            case 'dateCentury': return this.values.formats.dateCentury;
+            case 'dateText': return this.values.formats.dateText;
+            case 'multipleClockOrder': return this.values.formats.multipleClockOrder;
+            case 'showActiveDST': return this.values.formats.showActiveDST;
+            case 'datetextOrder': return this.values.formats.datetextOrder;
         }
 
-    }
+    };
 
     // FUNCTION: "setValue" - sets settings in "current" configuration for specified attribute
     this.setValue = function(theOption, theValue) {
 
         switch (theOption) {
-            case 'boxSize': this.values.boxSize = theValue; break;
-            case 'clockFacePlace': this.values.formats.clockFacePlace = theValue; break;
-            case 'multipleClocks': this.values.formats.multipleClocks = theValue; break;
-            case 'clockFaceHours': this.values.formats.clockFaceHours = theValue; break;
-            case 'clockMeridiem': this.values.formats.clockMeridiem = theValue; break;
-            case 'clockSeparator': this.values.formats.clockSeparator = theValue; break;
-            case 'dateSeparator': this.values.formats.dateSeparator = theValue; break;
-            case 'dateType': this.values.formats.dateType = theValue; break;
-            case 'clockSeconds': this.values.formats.clockSeconds = theValue; break;
-            case 'clockZeroToHour': this.values.formats.clockZeroToHour = theValue; break;
-            case 'dateCentury': this.values.formats.dateCentury = theValue; break;
-            case 'dateText': this.values.formats.dateText = theValue; break;
-            case 'multipleClockOrder': this.values.formats.multipleClockOrder = theValue; break;
-            case 'showActiveDST': this.values.formats.showActiveDST = theValue; break;
-            case 'datetextOrder': this.values.formats.datetextOrder = theValue; break;
+            case 'boxSize': this.values.boxSize = theValue;
+            case 'clockFacePlace': this.values.formats.clockFacePlace = theValue;
+            case 'multipleClocks': this.values.formats.multipleClocks = theValue;
+            case 'clockFaceHours': this.values.formats.clockFaceHours = theValue;
+            case 'clockMeridiem': this.values.formats.clockMeridiem = theValue;
+            case 'clockSeparator': this.values.formats.clockSeparator = theValue;
+            case 'dateSeparator': this.values.formats.dateSeparator = theValue;
+            case 'dateType': this.values.formats.dateType = theValue;
+            case 'clockSeconds': this.values.formats.clockSeconds = theValue;
+            case 'clockZeroToHour': this.values.formats.clockZeroToHour = theValue;
+            case 'dateCentury': this.values.formats.dateCentury = theValue;
+            case 'dateText': this.values.formats.dateText = theValue;
+            case 'multipleClockOrder': this.values.formats.multipleClockOrder = theValue;
+            case 'showActiveDST': this.values.formats.showActiveDST = theValue;
+            case 'datetextOrder': this.values.formats.datetextOrder = theValue;
         }
 
-    }
+    };
 
 });

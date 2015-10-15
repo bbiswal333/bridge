@@ -1,5 +1,5 @@
 /*global document*/
-/*eslint eqeqeq: [2, "smart"]*/
+/*eslint eqeqeq: 0*/
 
 angular.module('app.clock').appClockSettings =
 	['$scope', 'app.clock.configService', function($scope, configService) {
