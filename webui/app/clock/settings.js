@@ -339,11 +339,52 @@ angular.module('app.clock').appClockSettings =
 	        showActiveDST: '',
 	        datetextOrder: ''
 	    };
-	
+
+	    // FUNCTION: "toggleClockConfig" - toggles configuration in preparation for loading/saving time zone period configurations within the correct elements in the HTML page/structure
+	    function toggleClockConfig(theClock) {
+
+	        var tmpOfs;
+	        var tmpMin;
+	        var tmpRnk;
+	        var tmpDay;
+	        var tmpMth;
+	        var tmpTch;
+	        var tmpTcm
+	        var tmpMrd;
+
+	        tmpOfs = theClock.DSTbgnOFS;
+	        tmpMin = theClock.DSTbgnMIN;
+	        tmpRnk = theClock.DSTbgnRNK;
+	        tmpDay = theClock.DSTbgnDAY;
+	        tmpMth = theClock.DSTbgnMTH;
+	        tmpTch = theClock.DSTbgnTCH;
+	        tmpTcm = theClock.DSTbgnTCM;
+	        tmpMrd = theClock.DSTbgnMRD;
+
+	        theClock.DSTbgnOFS = theClock.DSTendOFS;
+	        theClock.DSTbgnMIN = theClock.DSTendMIN;
+	        theClock.DSTbgnRNK = theClock.DSTendRNK;
+	        theClock.DSTbgnDAY = theClock.DSTendDAY;
+	        theClock.DSTbgnMTH = theClock.DSTendMTH;
+	        theClock.DSTbgnTCH = theClock.DSTendTCH;
+	        theClock.DSTbgnTCM = theClock.DSTendTCM;
+	        theClock.DSTbgnMRD = theClock.DSTendMRD;
+
+	        theClock.DSTendOFS = tmpOfs;
+	        theClock.DSTendMIN = tmpMin;
+	        theClock.DSTendRNK = tmpRnk;
+	        theClock.DSTendDAY = tmpDay;
+	        theClock.DSTendMTH = tmpMth;
+	        theClock.DSTendTCH = tmpTch;
+	        theClock.DSTendTCM = tmpTcm;
+	        theClock.DSTendMRD = tmpMrd;
+
+	    };
+
 	    // FUNCTION: "initialUTCPrdItem" - initialize the selection of time zone "period" configurations in "begin/finish" list
 	    function initialUTCPrdItem(theClock) {
 
-	        if (theClock.DSTPeriod == 'B:E') {
+	        if (theClock.DSTPeriod === 'B:E') {
 	            switch (theClock.index) {
 	                case '0':
 	                    $scope.UTCBgnPrdLst_0 = $scope.UTC_OffSet_PRD[0];
@@ -380,7 +421,7 @@ angular.module('app.clock').appClockSettings =
 	                    $scope.UTCBgnPrdLst_3 = $scope.UTC_OffSet_PRD[1];
 	                    $scope.UTCEndPrdLst_3 = $scope.UTC_OffSet_PRD[0];
 	                    break;
-	            };
+	            }
 
 	            // toggle "begin" configurations with "end" configurations because DST periods have
 	            // been entered "backwards" from how they need to be stored in the structure
@@ -790,82 +831,6 @@ angular.module('app.clock').appClockSettings =
 
 	    };
 
-	    // FUNCTION: "toggleClockConfig" - toggles configuration in preparation for loading/saving time zone period configurations within the correct elements in the HTML page/structure
-	    function toggleClockConfig(theClock) {
-
-	        var tmpOfs;
-	        var tmpMin;
-	        var tmpRnk;
-	        var tmpDay;
-	        var tmpMth;
-	        var tmpTch;
-	        var tmpTcm
-	        var tmpMrd;
-
-	        tmpOfs = theClock.DSTbgnOFS;
-	        tmpMin = theClock.DSTbgnMIN;
-	        tmpRnk = theClock.DSTbgnRNK;
-	        tmpDay = theClock.DSTbgnDAY;
-	        tmpMth = theClock.DSTbgnMTH;
-	        tmpTch = theClock.DSTbgnTCH;
-	        tmpTcm = theClock.DSTbgnTCM;
-	        tmpMrd = theClock.DSTbgnMRD;
-
-	        theClock.DSTbgnOFS = theClock.DSTendOFS;
-	        theClock.DSTbgnMIN = theClock.DSTendMIN;
-	        theClock.DSTbgnRNK = theClock.DSTendRNK;
-	        theClock.DSTbgnDAY = theClock.DSTendDAY;
-	        theClock.DSTbgnMTH = theClock.DSTendMTH;
-	        theClock.DSTbgnTCH = theClock.DSTendTCH;
-	        theClock.DSTbgnTCM = theClock.DSTendTCM;
-	        theClock.DSTbgnMRD = theClock.DSTendMRD;
-
-	        theClock.DSTendOFS = tmpOfs;
-	        theClock.DSTendMIN = tmpMin;
-	        theClock.DSTendRNK = tmpRnk;
-	        theClock.DSTendDAY = tmpDay;
-	        theClock.DSTendMTH = tmpMth;
-	        theClock.DSTendTCH = tmpTch;
-	        theClock.DSTendTCM = tmpTcm;
-	        theClock.DSTendMRD = tmpMrd;
-
-	    };
-
-	    // FUNCTION: "loadTheFormats" - load the formats used to display each element comprising a clock face
-	    function loadTheFormats() {
-
-	        $scope.boxSize = configService.getValue('boxSize');
-	        $scope.formats.clockFacePlace = getFlag(configService.getValue('clockFacePlace'));
-	        $scope.formats.multipleClocks = configService.getValue('multipleClocks');
-	        $scope.formats.clockFaceHours = configService.getValue('clockFaceHours');
-
-	        initialClockFaceDisplay($scope.formats.multipleClocks);
-	        initialClockFacePlace($scope.formats.clockFacePlace);
-	        initialClockFaceHours($scope.formats.clockFaceHours);
-
-	        $scope.formats.clockMeridiem = getFlag(configService.getValue('clockMeridiem'));
-
-	        $scope.formats.clockSeparator = configService.getValue('clockSeparator');
-	        $scope.formats.dateSeparator = configService.getValue('dateSeparator');
-	        $scope.formats.clockSeconds = getFlag(configService.getValue('clockSeconds'));
-	        $scope.formats.clockZeroToHour = getFlag(configService.getValue('clockZeroToHour'));
-
-	        $scope.formats.dateCentury = getFlag(configService.getValue('dateCentury'));
-
-	        $scope.formats.dateType = configService.getValue('dateType');
-	        initialDateType($scope.formats.dateType);
-	        $scope.formats.datetextOrder = configService.getValue('datetextOrder');
-	        initialDateTextOrder($scope.formats.datetextOrder)
-	        $scope.formats.dateText = configService.getValue('dateText');
-	        initialDateText($scope.formats.dateText);
-
-	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST')); ;
-
-	        $scope.formats.multipleClockOrder = configService.getValue('multipleClockOrder');
-	        initialMultipleClockOrder($scope.formats.multipleClockOrder);
-
-	    };
-
 	    // FUNCTION: "initialClockFaceDisplay" - initialize the selection of "clock face display" configuration in the list
 	    function initialClockFaceDisplay(theValue) {
 
@@ -1053,6 +1018,41 @@ angular.module('app.clock').appClockSettings =
 	        }
 
 	        return itmflg
+	    };
+
+	    // FUNCTION: "loadTheFormats" - load the formats used to display each element comprising a clock face
+	    function loadTheFormats() {
+
+	        $scope.boxSize = configService.getValue('boxSize');
+	        $scope.formats.clockFacePlace = getFlag(configService.getValue('clockFacePlace'));
+	        $scope.formats.multipleClocks = configService.getValue('multipleClocks');
+	        $scope.formats.clockFaceHours = configService.getValue('clockFaceHours');
+
+	        initialClockFaceDisplay($scope.formats.multipleClocks);
+	        initialClockFacePlace($scope.formats.clockFacePlace);
+	        initialClockFaceHours($scope.formats.clockFaceHours);
+
+	        $scope.formats.clockMeridiem = getFlag(configService.getValue('clockMeridiem'));
+
+	        $scope.formats.clockSeparator = configService.getValue('clockSeparator');
+	        $scope.formats.dateSeparator = configService.getValue('dateSeparator');
+	        $scope.formats.clockSeconds = getFlag(configService.getValue('clockSeconds'));
+	        $scope.formats.clockZeroToHour = getFlag(configService.getValue('clockZeroToHour'));
+
+	        $scope.formats.dateCentury = getFlag(configService.getValue('dateCentury'));
+
+	        $scope.formats.dateType = configService.getValue('dateType');
+	        initialDateType($scope.formats.dateType);
+	        $scope.formats.datetextOrder = configService.getValue('datetextOrder');
+	        initialDateTextOrder($scope.formats.datetextOrder)
+	        $scope.formats.dateText = configService.getValue('dateText');
+	        initialDateText($scope.formats.dateText);
+
+	        $scope.formats.showActiveDST = getFlag(configService.getValue('showActiveDST')); ;
+
+	        $scope.formats.multipleClockOrder = configService.getValue('multipleClockOrder');
+	        initialMultipleClockOrder($scope.formats.multipleClockOrder);
+
 	    };
 
 	    // FUNCTION: "loadTheClock" - load the configurations for the specified clock retrieved from the server
