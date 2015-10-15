@@ -1015,7 +1015,7 @@ angular.module('app.clock').appClockSettings =
 	            itmflg = theFlag;
 	        }
 
-	        return itmflg
+	        return itmflg;
 	    }
 
 	    // FUNCTION: "getFlag" - convert character 'X' (true) / '' (false) to corresponding boolean flag
@@ -1148,7 +1148,7 @@ angular.module('app.clock').appClockSettings =
 	    $scope.reset_click = function() {
 
           var opt;
-          
+
 	        // reset default time zones
 	        configService.getDefaultClock($scope.clock_0);
 	        $scope.clock_0.isDST = getFlag($scope.clock_0.isDST);
@@ -1168,10 +1168,10 @@ angular.module('app.clock').appClockSettings =
 
 	        // display default time zone settings each clock
 	        for (opt = 0; opt < $scope.UTC_Option_Fields.length; opt++) {
-	            $scope.ResetTheOption(0, opt);
-	            $scope.ResetTheOption(1, opt);
-	            $scope.ResetTheOption(2, opt);
-	            $scope.ResetTheOption(3, opt);
+	            $scope.resetTheOption(0, opt);
+	            $scope.resetTheOption(1, opt);
+	            $scope.resetTheOption(2, opt);
+	            $scope.resetTheOption(3, opt);
 	        }
 
 	        // reset/display default clock formats
@@ -1189,12 +1189,12 @@ angular.module('app.clock').appClockSettings =
 	        $scope.resetDateTextOrder();
 	        $scope.resetDateText();
 	        $scope.formats.showActiveDST = getFlag(configService.getDefaultValue('showActiveDST'));
-	        $scope.ResetColorOption();
-	        $scope.ResetMultipleClockOrder();
+	        $scope.resetColorOption();
+	        $scope.resetMultipleClockOrder();
 	    };
 
-	    // FUNCTION: "ResetTheOption" - reselects default time zone clock configuration in each of the lists
-	    $scope.ResetTheOption = function(clk, opt) {
+	    // FUNCTION: "resetTheOption" - reselects default time zone clock configuration in each of the lists
+	    $scope.resetTheOption = function(clk, opt) {
 
 	        var clk_0_bgn = [0, 1, 0, 2, 1, 0, 0, 18, 0];
 	        var clk_0_end = [1, 0, 0, 10, 1, 0, 0, 19, 0];
@@ -1235,13 +1235,14 @@ angular.module('app.clock').appClockSettings =
 	        }
 	    };
 
-	    // FUNCTION: "ResetColorOption" - reselects default color of clock configuration in each of the lists
-	    $scope.ResetColorOption = function() {
+	    // FUNCTION: "resetColorOption" - reselects default color of clock configuration in each of the lists
+	    $scope.resetColorOption = function() {
 
 	        var clk_clr = [0, 0, 5, 2];
 
 	        var itmlst;
 	        var optstr;
+	        var opt;
 
 	        for (opt = 0; opt < $scope.CLOCK_COLOR.length; opt++) {
 	            optstr = 'ClockColorOpt_';
@@ -1267,7 +1268,7 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('clockFaceDisplayOpt');
 	        itmlst.selectedIndex = 0;
 
-	    }
+	    };
 
 	    // FUNCTION: "resetClockFacePlace" - resets default clock face location and selects configuration in list
 	    $scope.resetClockFacePlace = function() {
@@ -1280,7 +1281,7 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('clockFacePlaceOpt');
 	        itmlst.selectedIndex = 0;
 
-	    }
+	    };
 
 	    // FUNCTION: "resetClockFaceHours" - resets default clock face hours and selects configuration in list
 	    $scope.resetClockFaceHours = function() {
@@ -1293,7 +1294,7 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('clockFaceHoursOpt');
 	        itmlst.selectedIndex = 0;
 
-	    }
+	    };
 
 	    // FUNCTION: "resetDateType" - resets default date type and selects configuration in list
 	    $scope.resetDateType = function() {
@@ -1306,7 +1307,7 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('dateTypeOpt');
 	        itmlst.selectedIndex = 1;
 
-	    }
+	    };
 
 	    // FUNCTION: "resetDateTextOrder" - resets default order of date/text displayed in clock face and selects configuration in list
 	    $scope.resetDateTextOrder = function() {
@@ -1319,7 +1320,7 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('datetextOrderOpt');
 	        itmlst.selectedIndex = 0;
 
-	    }
+	    };
 
 	    // FUNCTION: "resetDateText" - resets default date text and selects configuration in list
 	    $scope.resetDateText = function() {
@@ -1332,15 +1333,16 @@ angular.module('app.clock').appClockSettings =
 	        itmlst = document.getElementById('dateTextOpt');
 	        itmlst.selectedIndex = 1;
 
-	    }
+	    };
 
-	    // FUNCTION: "ResetMultipleClockOrder" - reselects default order of clock configuration in each of the lists
-	    $scope.ResetMultipleClockOrder = function() {
+	    // FUNCTION: "resetMultipleClockOrder" - reselects default order of clock configuration in each of the lists
+	    $scope.resetMultipleClockOrder = function() {
 
 	        var clk_ord = [2, 3, 4];
 
 	        var itmlst;
 	        var optstr;
+	        var opt;
 
 	        for (opt = 0; opt < $scope.CLOCK_COLOR.length; opt++) {
 	            optstr = 'multipleClockOrderOpt_';
@@ -1360,7 +1362,7 @@ angular.module('app.clock').appClockSettings =
 	        theClock.isDST = setFlag(theClock.isDST);
 
 	        // if DST is not active, then clear DST "end"
-	        if (theClock.isDST == '') {
+	        if (theClock.isDST === '') {
 	            theClock.DSTPeriod = 'B:E';
 	            theClock.DSTbgnRNK = '1';
 	            theClock.DSTbgnDAY = '0';
@@ -1376,9 +1378,9 @@ angular.module('app.clock').appClockSettings =
 	            theClock.DSTendTCH = '12';
 	            theClock.DSTendTCM = '00';
 	            theClock.DSTendMRD = 'AM';
-	        };
+	        }
 
-	        if (theClock.DSTPeriod == 'E:B') {
+	        if (theClock.DSTPeriod === 'E:B') {
 	            // toggle "begin" configurations with "end" configurations because DST periods have
 	            // been entered "backwards" from how they need to be stored in the structure
 	            toggleClockConfig(theClock);
@@ -1433,7 +1435,7 @@ angular.module('app.clock').appClockSettings =
 	        configService.setValue('multipleClocks', $scope.formats.multipleClocks);
 
 	        // only set clock for large window if multiple clocks being displayed, otherwise default to small window
-	        $scope.boxSize = ($scope.formats.multipleClocks == '') ? '1' : '2';
+	        $scope.boxSize = ($scope.formats.multipleClocks === '') ? '1' : '2';
 	        configService.setValue('boxSize', $scope.boxSize);
 	    };
 
@@ -1535,19 +1537,19 @@ angular.module('app.clock').appClockSettings =
 	            case 'UTCBgnPrdOpt':
 	                itmstr = itmlst1.id.replace('Bgn', 'End');
 	                switch (itmstr.substring(13)) {
-	                    case '0': $scope.clock_0.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'B:E' : 'E:B'; break;
-	                    case '1': $scope.clock_1.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'B:E' : 'E:B'; break;
-	                    case '2': $scope.clock_2.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'B:E' : 'E:B'; break;
-	                    case '3': $scope.clock_3.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'B:E' : 'E:B'; break;
+	                    case '0': $scope.clock_0.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'B:E' : 'E:B'; break;
+	                    case '1': $scope.clock_1.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'B:E' : 'E:B'; break;
+	                    case '2': $scope.clock_2.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'B:E' : 'E:B'; break;
+	                    case '3': $scope.clock_3.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'B:E' : 'E:B'; break;
 	                }
 	                break;
 	            case 'UTCEndPrdOpt':
 	                itmstr = itmlst1.id.replace('End', 'Bgn');
 	                switch (itmstr.substring(13)) {
-	                    case '0': $scope.clock_0.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'E:B' : 'B:E'; break;
-	                    case '1': $scope.clock_1.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'E:B' : 'B:E'; break;
-	                    case '2': $scope.clock_2.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'E:B' : 'B:E'; break;
-	                    case '3': $scope.clock_3.DSTPeriod = (itmlst1.selectedIndex == 0) ? 'E:B' : 'B:E'; break;
+	                    case '0': $scope.clock_0.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'E:B' : 'B:E'; break;
+	                    case '1': $scope.clock_1.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'E:B' : 'B:E'; break;
+	                    case '2': $scope.clock_2.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'E:B' : 'B:E'; break;
+	                    case '3': $scope.clock_3.DSTPeriod = (itmlst1.selectedIndex === 0) ? 'E:B' : 'B:E'; break;
 	                }
 	                break;
 	        }
