@@ -349,7 +349,7 @@ angular.module('app.clock').appClockSettings =
 	        var tmpDay;
 	        var tmpMth;
 	        var tmpTch;
-	        var tmpTcm
+	        var tmpTcm;
 	        var tmpMrd;
 
 	        tmpOfs = theClock.DSTbgnOFS;
@@ -379,7 +379,7 @@ angular.module('app.clock').appClockSettings =
 	        theClock.DSTendTCM = tmpTcm;
 	        theClock.DSTendMRD = tmpMrd;
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCPrdItem" - initialize the selection of time zone "period" configurations in "begin/finish" list
 	    function initialUTCPrdItem(theClock) {
@@ -427,9 +427,9 @@ angular.module('app.clock').appClockSettings =
 	            // been entered "backwards" from how they need to be stored in the structure
 
 	            toggleClockConfig(theClock);
-	        };
+	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCOfsItem" - initialize the selection of time zone "UTC hour offset" configuration in "begin/finish" list
 	    function initialUTCOfsItem(theOption, theValue, theIndex) {
@@ -437,6 +437,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_OFS.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -445,7 +446,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_OFS[idx].value) {
+	            if (theValue === $scope.UTC_OffSet_OFS[idx].value) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[idx]; break;
@@ -462,7 +463,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnOfsOpt_0': $scope.UTCBgnOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
 	                case 'UTCEndOfsOpt_0': $scope.UTCEndOfsLst_0 = $scope.UTC_OffSet_OFS[14]; break;
@@ -475,7 +476,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCMinItem" - initialize the selection of time zone "UTC minute offset" configuration in "begin/finish" list
 	    function initialUTCMinItem(theOption, theValue, theIndex) {
@@ -483,6 +484,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_MNS.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -491,7 +493,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_MNS[idx].value) {
+	            if (theValue === $scope.UTC_OffSet_MNS[idx].value) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
@@ -508,7 +510,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnMinOpt_0': $scope.UTCBgnMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
 	                case 'UTCEndMinOpt_0': $scope.UTCEndMinLst_0 = $scope.UTC_OffSet_MNS[0]; break;
@@ -521,7 +523,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCRnkItem" - initialize the selection of time zone "weekday ranking" configuration in "begin/finish" list
 	    function initialUTCRnkItem(theOption, theValue, theIndex) {
@@ -529,6 +531,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_RNK.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -537,7 +540,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == (idx + 1)) {
+	            if (theValue === (idx + 1)) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[idx]; break;
@@ -554,7 +557,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnRnkOpt_0': $scope.UTCBgnRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
 	                case 'UTCEndRnkOpt_0': $scope.UTCEndRnkLst_0 = $scope.UTC_OffSet_RNK[0]; break;
@@ -567,7 +570,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCDayItem" - initialize the selection of time zone "weekday" configuration in "begin/finish" list
 	    function initialUTCDayItem(theOption, theValue, theIndex) {
@@ -575,6 +578,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_DAY.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -583,7 +587,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == idx) {
+	            if (theValue === idx) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[idx]; break;
@@ -600,7 +604,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnDayOpt_0': $scope.UTCBgnDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
 	                case 'UTCEndDayOpt_0': $scope.UTCEndDayLst_0 = $scope.UTC_OffSet_DAY[0]; break;
@@ -613,7 +617,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCMthItem" - initialize the selection of time zone "month" configuration in "begin/finish" list
 	    function initialUTCMthItem(theOption, theValue, theIndex) {
@@ -621,6 +625,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_MTH.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -629,7 +634,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == idx) {
+	            if (theValue === idx) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[idx]; break;
@@ -646,7 +651,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnMthOpt_0': $scope.UTCBgnMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
 	                case 'UTCEndMthOpt_0': $scope.UTCEndMthLst_0 = $scope.UTC_OffSet_MTH[0]; break;
@@ -659,7 +664,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCTchItem" - initialize the selection of time zone "time change hour" configuration in "begin/finish" list
 	    function initialUTCTchItem(theOption, theValue, theIndex) {
@@ -667,6 +672,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_HRS.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -675,7 +681,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == (idx + 1)) {
+	            if (theValue === (idx + 1)) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[idx]; break;
@@ -692,7 +698,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnTchOpt_0': $scope.UTCBgnTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
 	                case 'UTCEndTchOpt_0': $scope.UTCEndTchLst_0 = $scope.UTC_OffSet_HRS[0]; break;
@@ -705,7 +711,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCTcmItem" - initialize the selection of time zone "time change minute" configuration in "begin/finish" list
 	    function initialUTCTcmItem(theOption, theValue, theIndex) {
@@ -713,6 +719,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_MNS.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -721,7 +728,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == idx) {
+	            if (theValue === idx) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[idx]; break;
@@ -738,7 +745,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnTcmOpt_0': $scope.UTCBgnTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
 	                case 'UTCEndTcmOpt_0': $scope.UTCEndTcmLst_0 = $scope.UTC_OffSet_MNS[0]; break;
@@ -751,7 +758,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialUTCMrdItem" - initialize the selection of time zone "meridiem" configuration in "begin/finish" list
 	    function initialUTCMrdItem(theOption, theValue, theIndex) {
@@ -759,6 +766,7 @@ angular.module('app.clock').appClockSettings =
 	        var siz = $scope.UTC_OffSet_MRD.length;
 
 	        var optstr;
+	        var idx;
 
 	        optstr = theOption;
 	        optstr = optstr.concat('_');
@@ -767,7 +775,7 @@ angular.module('app.clock').appClockSettings =
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.UTC_OffSet_MRD[idx].value) {
+	            if (theValue === $scope.UTC_OffSet_MRD[idx].value) {
 	                // set the selected item in the list
 	                switch (optstr) {
 	                    case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[idx]; break;
@@ -784,7 +792,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (optstr) {
 	                case 'UTCBgnMrdOpt_0': $scope.UTCBgnMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
 	                case 'UTCEndMrdOpt_0': $scope.UTCEndMrdLst_0 = $scope.UTC_OffSet_MRD[0]; break;
@@ -797,17 +805,18 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialClockColor" - initialize the selection of "color" configuration in list for each clock
 	    function initialClockColor(theClock) {
 
 	        var siz = $scope.CLOCK_COLOR.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theClock.color == $scope.CLOCK_COLOR[idx].code) {
+	            if (theClock.color === $scope.CLOCK_COLOR[idx].code) {
 	                // set the selected item in the list
 	                switch (theClock.index) {
 	                    case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[idx]; break;
@@ -820,7 +829,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            switch (theClock.index) {
 	                case '0': $scope.ClockColorLst_0 = $scope.CLOCK_COLOR[0]; break;
 	                case '1': $scope.ClockColorLst_1 = $scope.CLOCK_COLOR[0]; break;
@@ -829,17 +838,18 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialClockFaceDisplay" - initialize the selection of "clock face display" configuration in the list
 	    function initialClockFaceDisplay(theValue) {
 
 	        var siz = $scope.CLOCK_FACE_DISPLAY.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.CLOCK_FACE_DISPLAY[idx].code) {
+	            if (theValue === $scope.CLOCK_FACE_DISPLAY[idx].code) {
 	                // set the selected item in the list
 	                $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[idx];
 	                // now quit...
@@ -847,21 +857,22 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.clockFaceDisplayLst = $scope.CLOCK_FACE_DISPLAY[0];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialClockFacePlace" - initialize the selection of "clock face location" configuration in the list
 	    function initialClockFacePlace(theValue) {
 
 	        var siz = $scope.CLOCK_FACE_PLACE.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == idx) {
+	            if (theValue === idx) {
 	                // set the selected item in the list
 	                $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[idx];
 	                // now quit...
@@ -869,21 +880,22 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.clockFacePlaceLst = $scope.CLOCK_FACE_PLACE[0];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialClockFaceHours" - initialize the selection of "clock face hour" configuration in the list
 	    function initialClockFaceHours(theValue) {
 
 	        var siz = $scope.CLOCK_FACE_HOURS.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == idx) {
+	            if (theValue === idx) {
 	                // set the selected item in the list
 	                $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[idx];
 	                // now quit...
@@ -891,24 +903,25 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.clockFaceHoursLst = $scope.CLOCK_FACE_HOURS[0];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialDateType" - initialize the selection of "date type" configuration in the list
 	    function initialDateType(theValue) {
 
 	        var siz = $scope.DATE_TYPES.length;
 	        var val;
+	        var idx;
 
 	        val = parseInt(theValue);
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (val == (idx + 1)) {
+	            if (val === (idx + 1)) {
 	                // set the selected item in the list
 	                $scope.dateTypeLst = $scope.DATE_TYPES[idx];
 	                // now quit...
@@ -916,21 +929,22 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.dateTypeLst = $scope.DATE_TYPES[1];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialDateTextOrder" - initialize the selection of "date/text order" configuration in the list
 	    function initialDateTextOrder(theValue) {
 
 	        var siz = $scope.DATE_TEXT_ORDER.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.DATE_TEXT_ORDER[idx].code) {
+	            if (theValue === $scope.DATE_TEXT_ORDER[idx].code) {
 	                // set the selected item in the list
 	                $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[idx];
 	                // now quit...
@@ -938,21 +952,22 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.datetextOrderLst = $scope.DATE_TEXT_ORDER[0];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialDateText" - initialize the selection of "date text" configuration in the list
 	    function initialDateText(theValue) {
 
 	        var siz = $scope.DATE_TEXT.length;
+	        var idx;
 
 	        // iterate through all of the values in the array looking for a match
 	        for (idx = 0; ((idx >= 0) && (idx < siz)); idx++) {
 	            // did we find the matching item in the list?
-	            if (theValue == $scope.DATE_TEXT[idx].code) {
+	            if (theValue === $scope.DATE_TEXT[idx].code) {
 	                // set the selected item in the list
 	                $scope.dateTextLst = $scope.DATE_TEXT[idx];
 	                // now quit...
@@ -960,16 +975,17 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 	        // set default selection if we did not find matching item...
-	        if (idx == siz) {
+	        if (idx === siz) {
 	            $scope.dateTextLst = $scope.DATE_TEXT[0];
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "initialMultipleClockOrder" - initialize the selection of the clock order configuration in the list
 	    function initialMultipleClockOrder(theValue) {
 
 	        var siz = $scope.CLOCK_FACE_MULTIPLE.length;
+	        var idx;
 
 	        // iterate through each of the three clocks
 	        for (idx = 0; (idx <= 2); idx++) {
@@ -982,7 +998,7 @@ angular.module('app.clock').appClockSettings =
 	            }
 	        }
 
-	    };
+	    }
 
 	    // FUNCTION: "setFlag" - convert boolean flag to corresponding character: 'X' (true) / '' (false)
 	    function setFlag(theFlag) {
