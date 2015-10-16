@@ -136,6 +136,17 @@ directive("app.cats.maintenanceView.projectList", [
 				item.color = color;
 			}
 
+			// This is required if the cPro task got renamed recently
+			function updateZCPR_EXTID(item) {
+				var newItem = configService.enhanceTask(item);
+				for (var i = 0; i < configService.catsItems.length; i++) {
+					if (catsUtils.isSameTask(newItem, configService.catsItems[i])) {
+						configService.catsItems[i].ZCPR_EXTID = newItem.ZCPR_EXTID;
+						configService.catsItems[i] = configService.enhanceTask(configService.catsItems[i]);
+					}
+				}
+			}
+
 			function addNewProjectItem(item) {
 				var newItem = configService.enhanceTask(item);
 
@@ -240,6 +251,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 							dataFromWorklist.forEach(function(entry) {
 								addNewProjectItem(entry);
+								updateZCPR_EXTID(entry);
 								configService.updateLastUsedDescriptions(entry, true);
 							});
 						}
