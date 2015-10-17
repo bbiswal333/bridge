@@ -109,6 +109,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var mt;
     var yr;
     var wd;
+    var wd;
+    var wk;
 
 
     // FUNCTION: "setTheClock" - determines and displays "clock" time
@@ -796,7 +798,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.getPeriodDateForDST = function(dstmt, dstrk, dstwd, dsthr, dstmn, dstdte) {
 
         // transform day of week from "Mon = 1 ... Sun = 0" to "Mon = 1 ... Sun = 7"
-        wkdlst = [7, 1, 2, 3, 4, 5, 6];
+        var wkdlst = [7, 1, 2, 3, 4, 5, 6];
+        var idx;
 
         // initial week counter to start from 1st week of month
         wk = 0;
@@ -863,7 +866,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         dstdte.setUTCFullYear((dstdte.getFullYear()), dstmt, dy);
 
         return dstdte;
-    }
+    };
 
     // FUNCTION: "showClockTime" - sets and displays each of the four clocks
     $scope.showClockTime = function() {
@@ -877,7 +880,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             $scope.setTheClock(0);
         }
 
-    }
+    };
 
     // FUNCTION: "setClockMouseHoverColor" - sets mouse over (hover) color of the clock
     $scope.setClockMouseHoverColor = function(theClock, theColor) {
