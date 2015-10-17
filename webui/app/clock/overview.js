@@ -101,6 +101,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
+    var idx;
     var ms;
     var sc;
     var mn;
@@ -108,7 +109,6 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var dy;
     var mt;
     var yr;
-    var wd;
     var wd;
     var wk;
 
@@ -366,7 +366,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
         // construct calendar date formatted per configuration...
         if (dtetyp == "1") {
-            // format date: DDD dd yyyy            
+            // format date: DDD dd yyyy
             tmstr = $scope.formatWeekDay(wd, true) + " " + $scope.formatTimeVal(dy) + " " + yr;
         }
         else if (dtetyp == "2") {
@@ -417,7 +417,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.setTwelveHourClock = function(tmval, clkmrd) {
 
         var clktm;
-        
+
         clktm = tmval;
 
         // if hour is greater than noon "12 pm", format hour into 12 hour clock
@@ -606,7 +606,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
             // the dates/times when time changes occur are represented in local time for specified time zone location (not our own local
             // time) so we need to convert date/time to UTC in order to compare against our local own time converted into UTC time to
-            // determine if DST is active or not for this time zone location.  IMPORTANT: Only when these "starting/ending" dates/times 
+            // determine if DST is active or not for this time zone location.  IMPORTANT: Only when these "starting/ending" dates/times
             // are reached, does the time change for the time zone.  Therefore since these periods do not reflect DST we need to continue
             // to use offsets before time change occurred to get correct UTC time at the exact second when time changes).
 
@@ -731,7 +731,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         adjdte.setUTCFullYear(yr, mt, dy);
 
         return adjdte;
-    }
+    };
 
     // FUNCTION: "getUTCDate" - converts calendar date to UTC date
     $scope.getUTCDate = function(utcdte) {
@@ -739,14 +739,14 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         // extract UTC date parts
         $scope.getDatePartUTC(utcdte);
 
-        // reset date/time to UTC date/time so that we don't need to 
+        // reset date/time to UTC date/time so that we don't need to
         // worry about daylight saving time in our date calculations
-        
+
         utcdte.setUTCHours(hr, mn, sc, ms);
         utcdte.setUTCFullYear(yr, mt, dy);
 
         return utcdte;
-    }
+    };
 
     // FUNCTION: "getDatePart" - extracts date parts
     $scope.getDatePart = function(caldte) {
@@ -769,13 +769,13 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         // extract year
         yr = caldte.getFullYear();
 
-    }
+    };
 
     // FUNCTION: "getDatePartUTC" - extracts UTC date parts
     $scope.getDatePartUTC = function(utcdte) {
 
         // extract UTC hours
-        hr = utcdte.getUTCHours(); 
+        hr = utcdte.getUTCHours();
         // extract UTC minutes
         mn = utcdte.getUTCMinutes();
         // extract UTC seconds
@@ -792,14 +792,13 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         // extract UTC year
         yr = utcdte.getUTCFullYear();
 
-    }
+    };
 
     // FUNCTION: "getPeriodDateForDST" - contructs date/time for DST (start/end) period using configurations taken from specified time zone location
     $scope.getPeriodDateForDST = function(dstmt, dstrk, dstwd, dsthr, dstmn, dstdte) {
 
         // transform day of week from "Mon = 1 ... Sun = 0" to "Mon = 1 ... Sun = 7"
         var wkdlst = [7, 1, 2, 3, 4, 5, 6];
-        var idx;
 
         // initial week counter to start from 1st week of month
         wk = 0;
@@ -887,25 +886,25 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
         if (theColor == "basic-blue-font") {
             theClock.blue = true;
-        };
+        }
         if (theColor == "grey-font") {
             theClock.grey = true;
-        };
+        }
         if (theColor == "red-font") {
             theClock.red = true;
-        };
+        }
         if (theColor == "yellow-font") {
             theClock.yellow = true;
-        };
+        }
         if (theColor == "orange-font") {
             theClock.orange = true;
-        };
+        }
         if (theColor == "green-font") {
             theClock.green = true;
-        };
+        }
         if (theColor == "purple-font") {
             theClock.purple = true;
-        };
+        }
 
     };
 
@@ -913,7 +912,6 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.getClockMouseHoverColor = function(theColor) {
 
         var clr;
-        var idx;
 
         // default to color "blue" until we know otherwise...
         clr = 'blue';
@@ -926,15 +924,15 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             if (clr == 'basic') {
                 clr = 'blue';
             }
-        };
+        }
 
         return clr;
     };
 
     // initialize settings from "backend" server only when webpage is "refreshed" because of interval setting triggering
     // display of clock every second.  We want to make the client do the work of calculating the time and formatting the
-    // clock for each iteration.  So that we don't bog down the server, the client will only request data from server 
-    // when the web page is refreshed.  (NOTE: $scope.appConfig is an internal variable that contains the configurations 
+    // clock for each iteration.  So that we don't bog down the server, the client will only request data from server
+    // when the web page is refreshed.  (NOTE: $scope.appConfig is an internal variable that contains the configurations
     // retrieved from the "backend".  If configuration does not exist at the server, default values for the configuration
     // are set by "initialize" function).
 
