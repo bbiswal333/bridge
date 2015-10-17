@@ -1,8 +1,11 @@
-﻿angular.module('app.clock', []);
+﻿/*global document*/
+/*eslint eqeqeq: 0*/
+
+angular.module('app.clock', []);
 
 angular.module('app.clock').directive('app.clock', ['app.clock.configService', function(configService) {
 
-    var directiveController = ['$scope', '$window', 'notifier', function($scope, $window, notifier) {
+    var directiveController = ['$scope', '$window', function($scope, $window) {
 
         // Required information to get settings icon/ screen
         $scope.box.settingsTitle = "Configure the Clock";
@@ -13,10 +16,10 @@ angular.module('app.clock').directive('app.clock', ['app.clock.configService', f
         };
 
 				// Bridge framework function to enable saving the config
-				$scope.box.returnConfig = function(){
-					return angular.copy(configService);
-				};
-		
+        $scope.box.returnConfig = function(){
+            return angular.copy(configService);
+        };
+
     } ];
 
     var linkFn = function($scope) {
@@ -24,7 +27,7 @@ angular.module('app.clock').directive('app.clock', ['app.clock.configService', f
         // initialize settings from "backend" server (NOTE: $scope.appConfig is an internal variable that
         // contains the configuration retrieved from the "backend".  If configuration does not exist at the server, default
         // values are set by "initialize" function).
-        
+
         configService.initialize($scope.appConfig);
     };
 
@@ -38,7 +41,7 @@ angular.module('app.clock').directive('app.clock', ['app.clock.configService', f
 
 angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', 'app.clock.configService', function($scope, $window, configService) {
 
-    // set flags denoting which color is active for each clock so that in the HTML we can "show" the element corresponding 
+    // set flags denoting which color is active for each clock so that in the HTML we can "show" the element corresponding
     // to the configured color (including color of mouse "hoving" over element)
 
     $scope.color = {
