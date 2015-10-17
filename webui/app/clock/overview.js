@@ -412,6 +412,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     // FUNCTION: "setTwelveHourClock" - formats "clock" time as a value of 12 hours
     $scope.setTwelveHourClock = function(tmval, clkmrd) {
 
+        var clktm;
+        
         clktm = tmval;
 
         // if hour is greater than noon "12 pm", format hour into 12 hour clock
@@ -429,6 +431,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     // FUNCTION: "formatTimeVal" - prefix time element with zero (ASCII 48)
     $scope.formatTimeVal = function(tmval) {
 
+        var tmfrm;
+        
         tmfrm = tmval;
 
         // append a zero character (ASCII 48) in front of time if less than 10
@@ -441,6 +445,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     // FUNCTION: "setTimePeriod" - postfix time period "AM/PM" to "clock" time
     $scope.setTimePeriod = function(tmval) {
 
+        var tmprd;
+        
         tmprd = "";
 
         // determine time period AM/PM, otherwise default empty string if not specified
@@ -454,6 +460,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     // FUNCTION: "setTimeSeparator" - separates time elements with "separating" character
     $scope.setTimeSeparator = function(tmval, tmsep) {
 
+        var tmchr;
+        
         tmchr = " ";
 
         // toggle clock time separator character every other second...
@@ -468,7 +476,8 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.formatWeekDay = function(dtval, dtabv) {
 
         var wkdlst = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
+        var dtstr;
+        
         dtstr = wkdlst[dtval];
 
         // abrievate name of weekday if necessary...
@@ -484,6 +493,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.formatMonth = function(dtval, dtabv) {
 
         var mthlst = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var dtstr;
 
         dtstr = mthlst[dtval];
 
@@ -510,6 +520,10 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         var dstwd;
         var dsthr;
         var dstmn;
+        var dstbgn;
+        var dstend;
+        var adjmn;
+        var adjhr;
 
         adjmn = 0;
 
@@ -634,7 +648,9 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.daysInMonth = function(dtmt, dtyr) {
 
         //        J   F   M   A   M   J   J   A   S   O   N   D
-        dimlst = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var dimlst = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var dimdy;
+        
         dimdy = dimlst[dtmt];
 
         // account for Feb 29th in a leap year...
