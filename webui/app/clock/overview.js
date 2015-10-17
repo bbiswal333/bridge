@@ -101,6 +101,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
+    var clk;
     var idx;
     var ms;
     var sc;
