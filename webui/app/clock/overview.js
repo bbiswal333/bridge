@@ -5,7 +5,7 @@ angular.module('app.clock', []);
 
 angular.module('app.clock').directive('app.clock', ['app.clock.configService', function(configService) {
 
-    var directiveController = ['$scope', '$window', function($scope, $window) {
+    var directiveController = ['$scope', function($scope) {
 
         // Required information to get settings icon/ screen
         $scope.box.settingsTitle = "Configure the Clock";
@@ -90,7 +90,6 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var multipleClocks;
     var clockFaceHours;
     var clockMeridiem;
-    var clockSepararor;
     var dateSeparator;
     var dateType;
     var clockSeconds;
@@ -101,6 +100,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
+    var tmzdte;
 
     // FUNCTION: "setTheClock" - determines and displays "clock" time
     $scope.setTheClock = function(clkidx) {
