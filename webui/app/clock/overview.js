@@ -100,7 +100,6 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
-    var tmzdte;
 
     // FUNCTION: "setTheClock" - determines and displays "clock" time
     $scope.setTheClock = function(clkidx) {
@@ -110,6 +109,16 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         var tmstr = "";
         var caltxt = "";
         var caldte = "";
+        var tmzdte;
+        var clkhrs;
+        var clksep;
+        var clkmrd;
+        var clkfrm;
+        var clksec;
+        var dtetyp;
+        var dtesep;
+        var dtetxt;
+        var dteyrc;
 
         isActiveDST = false;
 
@@ -139,7 +148,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
                 return;
             }
-        };
+        }
 
         tmzdte = new Date();
 
