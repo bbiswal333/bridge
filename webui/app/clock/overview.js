@@ -101,12 +101,14 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
+    var ms;
     var sc;
     var mn;
     var hr;
     var dy;
     var mt;
     var yr;
+    var wd;
 
 
     // FUNCTION: "setTheClock" - determines and displays "clock" time
@@ -312,7 +314,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             tmstr = clksep + $scope.formatTimeVal(sc);
         }
         else {
-            // clock time displayed without second so toggle between separator character and 
+            // clock time displayed without second so toggle between separator character and
             // blank space every second to give appearance time is progressing...
             clksep = $scope.setTimeSeparator(sc, clksep);
         }
@@ -432,7 +434,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.formatTimeVal = function(tmval) {
 
         var tmfrm;
-        
+
         tmfrm = tmval;
 
         // append a zero character (ASCII 48) in front of time if less than 10
@@ -446,7 +448,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.setTimePeriod = function(tmval) {
 
         var tmprd;
-        
+
         tmprd = "";
 
         // determine time period AM/PM, otherwise default empty string if not specified
@@ -461,7 +463,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     $scope.setTimeSeparator = function(tmval, tmsep) {
 
         var tmchr;
-        
+
         tmchr = " ";
 
         // toggle clock time separator character every other second...
@@ -477,14 +479,14 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
         var wkdlst = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         var dtstr;
-        
+
         dtstr = wkdlst[dtval];
 
         // abrievate name of weekday if necessary...
         if (dtabv == true) {
             dtstr = dtstr.substring(0, 3);
             dtstr = dtstr.charAt(0).toUpperCase() + dtstr.charAt(1).toUpperCase() + dtstr.charAt(2).toUpperCase();
-        };
+        }
 
         return dtstr;
     };
@@ -527,7 +529,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
         adjmn = 0;
 
-        // IMPORTANT: date ranges for "daylight saving" beginning and ending dates represented in local time for specified 
+        // IMPORTANT: date ranges for "daylight saving" beginning and ending dates represented in local time for specified
         // time zone, therefore need to convert them to UTC time for comparison purposes...
 
         // determine if "DST" is active for this location
@@ -560,10 +562,10 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             dsthr = ((clocktime[clkidx].DSTbgnMRD == 'PM') && (clocktime[clkidx].DSTbgnTCH < 12)) ? dsthr + 12 : dsthr;
             // set minute time change occurs
             dstmn = parseInt(clocktime[clkidx].DSTbgnTCM);
-                        
+
             // set time change for when DST in time zone "begins"
-            dstbgn = $scope.getPeriodDateForDST(dstmt, dstrk, dstwd, dsthr, dstmn, new Date());            
-        };
+            dstbgn = $scope.getPeriodDateForDST(dstmt, dstrk, dstwd, dsthr, dstmn, new Date());
+        }
 
         if (clocktime[clkidx].DSTendOFS.length > 0) {
             strbfr = clocktime[clkidx].DSTendOFS.substring(3);
@@ -594,14 +596,14 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             dstmn = parseInt(clocktime[clkidx].DSTendTCM);
             // set time change for when DST in time zone "ends"
             dstend = $scope.getPeriodDateForDST(dstmt, dstrk, dstwd, dsthr, dstmn, new Date());
-        };
+        }
 
         // all dates are now converted to UTC time so we can figure out whether we are in DST or not...
 
         if (isDST == true) {
 
             // the dates/times when time changes occur are represented in local time for specified time zone location (not our own local
-            // time) so we need to convert date/time to UTC in order to compare against our local own time converted into UTC time to 
+            // time) so we need to convert date/time to UTC in order to compare against our local own time converted into UTC time to
             // determine if DST is active or not for this time zone location.  IMPORTANT: Only when these "starting/ending" dates/times 
             // are reached, does the time change for the time zone.  Therefore since these periods do not reflect DST we need to continue
             // to use offsets before time change occurred to get correct UTC time at the exact second when time changes).
@@ -609,7 +611,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             dstbgn = $scope.adjustDate(-tmzhr[1], -tmzmn[1], dstbgn);
             dstend = $scope.adjustDate(-tmzhr[0], -tmzmn[0], dstend);
 
-            // determine what adjustments will need to be made when converting UTC time back into local time for time zone location (taking 
+            // determine what adjustments will need to be made when converting UTC time back into local time for time zone location (taking
             // into account DST being "active/not active" in locations' time zone
 
             if (dstbgn.getTime() < dstend.getTime()) {
@@ -642,15 +644,15 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
 
         // convert UTC into time zone location's local time
         return $scope.adjustDate(adjhr, adjmn, utcdte);
-    }
+    };
 
     // FUNCTION: "daysInMonth" - determines days in a given month
     $scope.daysInMonth = function(dtmt, dtyr) {
 
-        //        J   F   M   A   M   J   J   A   S   O   N   D
+        //            J   F   M   A   M   J   J   A   S   O   N   D
         var dimlst = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var dimdy;
-        
+
         dimdy = dimlst[dtmt];
 
         // account for Feb 29th in a leap year...
@@ -661,7 +663,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
         }
 
         return dimdy;
-    }
+    };
 
     // FUNCTION: "adjustDate" - adjusts date according to specified hour and minute
     $scope.adjustDate = function(adjhr, adjmn, adjdte) {
