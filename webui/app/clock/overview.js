@@ -86,6 +86,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     // an array of "clock" objects
     var clocktime = [];
 
+    var clockSeparator;
     var clockFacePlace;
     var multipleClocks;
     var clockFaceHours;
@@ -100,6 +101,13 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
     var showActiveDST;
     var isActiveDST;
     var datetextOrder;
+    var sc;
+    var mn;
+    var hr;
+    var dy;
+    var mt;
+    var yr;
+
 
     // FUNCTION: "setTheClock" - determines and displays "clock" time
     $scope.setTheClock = function(clkidx) {
@@ -299,7 +307,7 @@ angular.module('app.clock').controller('app.clock.time', ['$scope', '$window', '
             // force time to be displayed "without" time period
             clkmrd = "";
         }
-        // incorporate seconds into clock time?  
+        // incorporate seconds into clock time?
         if (clksec == "X") {
             tmstr = clksep + $scope.formatTimeVal(sc);
         }
