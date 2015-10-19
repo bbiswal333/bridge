@@ -136,7 +136,7 @@
             "date":     "2015-10-19",
             "snapURL":  "bridge/menubar/news/image/roombooking.png",
             "preview":  "We need your feedback on out latest development!",
-            "content":  "We are currently investigating shared views for bridge and need your feedback.<br /><br />You will be able to have one personal view which is only visible for yourself. <b>Each view that you create in addtion can be found and displayed by other colleagues.</b><br /><br />In order to test the new functionality, please go to our <a href='https://bridge-teams.mo.sap.corp'>team instance</a><br /><br />Please submit feedback to <a href='mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=Shared Views'>DL Bridge</a>"
+            "content":  "We are currently investigating shared views for bridge and need your feedback.<br /><br />You will be able to have one personal view which is only visible for yourself. <b>Each view that you create in addtion can be found and displayed by other colleagues.</b><br /><br />In order to test the new functionality, please go to our <a href='https://bridge-teams.mo.sap.corp'>team instance</a><br /><br />Please submit feedback to <a href='mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=Shared Views'>DL Bridge</a><br /><img src='bridge/menubar/news/image/sharedViews.gif' />"
         }
 	]
 }
