@@ -1,0 +1,39 @@
+
+/* detail.html*/
+
+hr  
+{
+    border: none;
+    height: 1px;
+    color: #c0c0c0;
+    background-color: #c0c0c0;
+}
+
+htmltext_blue:hover
+{
+    color: #418AC9;
+}
+htmltext_grey:hover
+{
+    color: #707070;
+}
+htmltext_red:hover
+{
+    color: #D53F26;
+}
+htmltext_yellow:hover
+{
+    color: #FCB517;
+}
+htmltext_orange:hover
+{
+    color: #E76F24;
+}
+htmltext_green:hover
+{
+    color: #4EA175;
+}
+htmltext_purple:hover
+{
+    color: #8561C5;
+}

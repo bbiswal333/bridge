@@ -1,0 +1,416 @@
+﻿
+<div ng-controller="app.clock.time">
+
+  <!-- adjust position for 1st line of calendar -->
+  <div class="row" ng-show={{isEmptyText_SNG}}>
+    <div class="col-xs-1" style="font-size: 8pt">
+      <tt>&nbsp;</tt>
+    </div>
+  </div>
+  <!-- adjust position for 1st line of calendar -->
+  
+  <div class="row" ng-hide={{isMultipleClock}}>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.blue}}>
+      <htmltext_blue class="{{clockcolor0}}" id="worldPlace0_blue" </htmltext_blue>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.grey}}>
+      <htmltext_grey class="{{clockcolor0}}" id="worldPlace0_grey" </htmltext_grey>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.red}}>
+      <htmltext_red class="{{clockcolor0}}" id="worldPlace0_red" </htmltext_red>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.yellow}}>
+      <htmltext_yellow class="{{clockcolor0}}" id="worldPlace0_yellow" </htmltext_yellow>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.orange}}>
+      <htmltext_orange class="{{clockcolor0}}" id="worldPlace0_orange" </htmltext_orange>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.green}}>
+      <htmltext_green class="{{clockcolor0}}" id="worldPlace0_green" </htmltext_green>
+    </div>
+    <div class="clock_0" style="font-size: 10pt; text-align:center; font-weight:bold" ng-show={{color.clock0.purple}}>
+      <htmltext_purple class="{{clockcolor0}}" id="worldPlace0_purple" </htmltext_purple>
+    </div>
+  </div>  
+
+  <div class="row" ng-hide={{isMultipleClock}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-hide={{isMultipleClock}}>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.blue}}>
+      <htmltext_blue class="{{clockcolor0}}" id="clockTime0_blue" </htmltext_blue>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.grey}}>
+      <htmltext_grey class="{{clockcolor0}}" id="clockTime0_grey" </htmltext_grey>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.red}}>
+      <htmltext_red class="{{clockcolor0}}" id="clockTime0_red" </htmltext_red>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.yellow}}>
+      <htmltext_yellow class="{{clockcolor0}}" id="clockTime0_yellow" </htmltext_yellow>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.orange}}>
+      <htmltext_orange class="{{clockcolor0}}" id="clockTime0_orange" </htmltext_orange>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.green}}>
+      <htmltext_green class="{{clockcolor0}}" id="clockTime0_green" </htmltext_green>
+    </div>
+    <div class="clock_0" style="font-size: 20pt; text-align:center" ng-show={{color.clock0.purple}}>
+      <htmltext_purple class="{{clockcolor0}}" id="clockTime0_purple" </htmltext_purple>
+    </div>
+  </div>  
+
+  <div class="row" ng-hide={{isMultipleClock}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-show={{isClockText_SNG}}>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.blue}}>
+      <htmltext_blue class="{{clockcolor0}}" id="calendarText0_blue" </htmltext_blue>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.grey}}>
+      <htmltext_grey class="{{clockcolor0}}" id="calendarText0_grey" </htmltext_grey>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.red}}>
+      <htmltext_red class="{{clockcolor0}}" id="calendarText0_red" </htmltext_red>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.yellow}}>
+      <htmltext_yellow class="{{clockcolor0}}" id="calendarText0_yellow" </htmltext_yellow>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.orange}}>
+      <htmltext_orange class="{{clockcolor0}}" id="calendarText0_orange" </htmltext_orange>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.green}}>
+      <htmltext_green class="{{clockcolor0}}" id="calendarText0_green" </htmltext_green>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.purple}}>
+      <htmltext_purple class="{{clockcolor0}}" id="calendarText0_purple" </htmltext_purple>
+    </div>
+  </div>  
+
+  <div class="row" ng-show={{isClockText_SNG}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-hide={{isMultipleClock}}>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.blue}}>
+      <htmltext_blue class="{{clockcolor0}}" id="calendarDate0_blue" </htmltext_blue>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.grey}}>
+      <htmltext_grey class="{{clockcolor0}}" id="calendarDate0_grey" </htmltext_grey>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.red}}>
+      <htmltext_red class="{{clockcolor0}}" id="calendarDate0_red" </htmltext_red>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.yellow}}>
+      <htmltext_yellow class="{{clockcolor0}}" id="calendarDate0_yellow" </htmltext_yellow>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.orange}}>
+      <htmltext_orange class="{{clockcolor0}}" id="calendarDate0_orange" </htmltext_orange>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.green}}>
+      <htmltext_green class="{{clockcolor0}}" id="calendarDate0_green" </htmltext_green>
+    </div>
+    <div class="clock_0" style="font-size: 15pt; text-align:center" ng-show={{color.clock0.purple}}>
+      <htmltext_purple class="{{clockcolor0}}" id="calendarDate0_purple" </htmltext_purple>
+    </div>
+  </div>  
+
+  <!-- adjust position for 1st line of calendar -->
+  <div class="row" ng-show={{isEmptyText_MLT}}>
+    <div class="col-xs-1" style="font-size: 13pt">
+      <tt>&nbsp;</tt>
+    </div>
+  </div>
+  <div class="row" ng-show={{isClockText_MLT}}>
+    <div class="col-xs-1" style="font-size: 5pt; padding-top: .5%">
+      <tt>&nbsp;</tt>
+    </div>
+  </div>
+  <!-- adjust position for 1st line of calendar -->
+
+  <div class="row" ng-show={{isMultipleClock}}>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.blue}}>
+       <htmltext_blue class="{{clockcolor1}}" id="worldPlace1_blue" </htmltext_blue>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.grey}}>
+      <htmltext_grey class="{{clockcolor1}}" id="worldPlace1_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.red}}>
+      <htmltext_red class="{{clockcolor1}}" id="worldPlace1_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.yellow}}>
+      <htmltext_yellow class="{{clockcolor1}}" id="worldPlace1_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.orange}}>
+      <htmltext_orange class="{{clockcolor1}}" id="worldPlace1_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.green}}>
+      <htmltext_green class="{{clockcolor1}}" id="worldPlace1_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock1.purple}}>
+      <htmltext_purple class="{{clockcolor1}}" id="worldPlace1_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.blue}}>
+       <htmltext_blue class="{{clockcolor2}}" id="worldPlace2_blue" </htmltext_blue>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.grey}}>
+      <htmltext_grey class="{{clockcolor2}}" id="worldPlace2_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.red}}>
+      <htmltext_red class="{{clockcolor2}}" id="worldPlace2_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.yellow}}>
+      <htmltext_yellow class="{{clockcolor2}}" id="worldPlace2_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.orange}}>
+      <htmltext_orange class="{{clockcolor2}}" id="worldPlace2_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.green}}>
+      <htmltext_green class="{{clockcolor2}}" id="worldPlace2_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock2.purple}}>
+      <htmltext_purple class="{{clockcolor2}}" id="worldPlace2_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.blue}}>
+       <htmltext_blue class="{{clockcolor3}}" id="worldPlace3_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.grey}}>
+      <htmltext_grey class="{{clockcolor3}}" id="worldPlace3_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.red}}>
+      <htmltext_red class="{{clockcolor3}}" id="worldPlace3_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.yellow}}>
+      <htmltext_yellow class="{{clockcolor3}}" id="worldPlace3_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.orange}}>
+      <htmltext_orange class="{{clockcolor3}}" id="worldPlace3_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.green}}>
+      <htmltext_green class="{{clockcolor3}}" id="worldPlace3_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 8pt; text-align:center; font-weight:bold" ng-show={{color.clock3.purple}}>
+      <htmltext_purple class="{{clockcolor3}}" id="worldPlace3_purple" </htmltext_purple>
+    </div>
+  </div>
+
+  <div class="row" ng-show={{isMultipleClock}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-show={{isMultipleClock}}>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.blue}}>
+       <htmltext_blue class="{{clockcolor1}}" id="clockTime1_blue" </htmltext_blue>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.grey}}>
+      <htmltext_grey class="{{clockcolor1}}" id="clockTime1_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.red}}>
+      <htmltext_red class="{{clockcolor1}}" id="clockTime1_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.yellow}}>
+      <htmltext_yellow class="{{clockcolor1}}" id="clockTime1_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.orange}}>
+      <htmltext_orange class="{{clockcolor1}}" id="clockTime1_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.green}}>
+      <htmltext_green class="{{clockcolor1}}" id="clockTime1_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock1.purple}}>
+      <htmltext_purple class="{{clockcolor1}}" id="clockTime1_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.blue}}>
+       <htmltext_blue class="{{clockcolor2}}" id="clockTime2_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.grey}}>
+      <htmltext_grey class="{{clockcolor2}}" id="clockTime2_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.red}}>
+      <htmltext_red class="{{clockcolor2}}" id="clockTime2_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.yellow}}>
+      <htmltext_yellow class="{{clockcolor2}}" id="clockTime2_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.orange}}>
+      <htmltext_orange class="{{clockcolor2}}" id="clockTime2_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.green}}>
+      <htmltext_green class="{{clockcolor2}}" id="clockTime2_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock2.purple}}>
+      <htmltext_purple class="{{clockcolor2}}" id="clockTime2_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.blue}}>
+       <htmltext_blue class="{{clockcolor3}}" id="clockTime3_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.grey}}>
+      <htmltext_grey class="{{clockcolor3}}" id="clockTime3_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.red}}>
+      <htmltext_red class="{{clockcolor3}}" id="clockTime3_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.yellow}}>
+      <htmltext_yellow class="{{clockcolor3}}" id="clockTime3_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.orange}}>
+      <htmltext_orange class="{{clockcolor3}}" id="clockTime3_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.green}}>
+      <htmltext_green class="{{clockcolor3}}" id="clockTime3_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 16pt; text-align:center" ng-show={{color.clock3.purple}}>
+      <htmltext_purple class="{{clockcolor3}}" id="clockTime3_purple" </htmltext_purple>
+    </div>
+  </div>
+
+  <div class="row" ng-show={{isMultipleClock}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-show={{isClockText_MLT}}>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.blue}}>
+       <htmltext_blue class="{{clockcolor1}}" id="calendarText1_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.grey}}>
+      <htmltext_grey class="{{clockcolor1}}" id="calendarText1_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.red}}>
+      <htmltext_red class="{{clockcolor1}}" id="calendarText1_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.yellow}}>
+      <htmltext_yellow class="{{clockcolor1}}" id="calendarText1_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.orange}}>
+      <htmltext_orange class="{{clockcolor1}}" id="calendarText1_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.green}}>
+      <htmltext_green class="{{clockcolor1}}" id="calendarText1_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.purple}}>
+      <htmltext_purple class="{{clockcolor1}}" id="calendarText1_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.blue}}>
+       <htmltext_blue class="{{clockcolor2}}" id="calendarText2_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.grey}}>
+      <htmltext_grey class="{{clockcolor2}}" id="calendarText2_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.red}}>
+      <htmltext_red class="{{clockcolor2}}" id="calendarText2_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.yellow}}>
+      <htmltext_yellow class="{{clockcolor2}}" id="calendarText2_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.orange}}>
+      <htmltext_orange class="{{clockcolor2}}" id="calendarText2_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.green}}>
+      <htmltext_green class="{{clockcolor2}}" id="calendarText2_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.purple}}>
+      <htmltext_purple class="{{clockcolor2}}" id="calendarText2_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.blue}}>
+       <htmltext_blue class="{{clockcolor3}}" id="calendarText3_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.grey}}>
+      <htmltext_grey class="{{clockcolor3}}" id="calendarText3_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.red}}>
+      <htmltext_red class="{{clockcolor3}}" id="calendarText3_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.yellow}}>
+      <htmltext_yellow class="{{clockcolor3}}" id="calendarText3_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.orange}}>
+      <htmltext_orange class="{{clockcolor3}}" id="calendarText3_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.green}}>
+      <htmltext_green class="{{clockcolor3}}" id="calendarText3_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.purple}}>
+      <htmltext_purple class="{{clockcolor3}}" id="calendarText3_purple" </htmltext_purple>
+    </div>
+  </div>
+
+  <div class="row" ng-show={{isClockText_MLT}}>
+    <p <br /> </p>
+  </div>
+
+  <div class="row" ng-show={{isMultipleClock}}>  
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.blue}}>
+       <htmltext_blue class="{{clockcolor1}}" id="calendarDate1_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.grey}}>
+      <htmltext_grey class="{{clockcolor1}}" id="calendarDate1_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.red}}>
+      <htmltext_red class="{{clockcolor1}}" id="calendarDate1_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.yellow}}>
+      <htmltext_yellow class="{{clockcolor1}}" id="calendarDate1_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.orange}}>
+      <htmltext_orange class="{{clockcolor1}}" id="calendarDate1_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.green}}>
+      <htmltext_green class="{{clockcolor1}}" id="calendarDate1_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock1.purple}}>
+      <htmltext_purple class="{{clockcolor1}}" id="calendarDate1_purple" </htmltext_purple>
+    </div>
+
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.blue}}>
+       <htmltext_blue class="{{clockcolor2}}" id="calendarDate2_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.grey}}>
+      <htmltext_grey class="{{clockcolor2}}" id="calendarDate2_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.red}}>
+      <htmltext_red class="{{clockcolor2}}" id="calendarDate2_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.yellow}}>
+      <htmltext_yellow class="{{clockcolor2}}" id="calendarDate2_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.orange}}>
+      <htmltext_orange class="{{clockcolor2}}" id="calendarDate2_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.green}}>
+      <htmltext_green class="{{clockcolor2}}" id="calendarDate2_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock2.purple}}>
+      <htmltext_purple class="{{clockcolor2}}" id="calendarDate2_purple" </htmltext_purple>
+    </div>
+    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.blue}}>
+       <htmltext_blue class="{{clockcolor3}}" id="calendarDate3_blue" </htmltext_blue>
+    </div>    
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.grey}}>
+      <htmltext_grey class="{{clockcolor3}}" id="calendarDate3_grey" </htmltext_grey>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.red}}>
+      <htmltext_red class="{{clockcolor3}}" id="calendarDate3_red" </htmltext_red>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.yellow}}>
+      <htmltext_yellow class="{{clockcolor3}}" id="calendarDate3_yellow" </htmltext_yellow>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.orange}}>
+      <htmltext_orange class="{{clockcolor3}}" id="calendarDate3_orange" </htmltext_orange>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.green}}>
+      <htmltext_green class="{{clockcolor3}}" id="calendarDate3_green" </htmltext_green>
+    </div>
+    <div class="col-xs-4" style="font-size: 11pt; text-align:center" ng-show={{color.clock3.purple}}>
+      <htmltext_purple class="{{clockcolor3}}" id="calendarDate3_purple" </htmltext_purple>
+    </div>
+  </div>
+</div>

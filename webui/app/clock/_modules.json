@@ -1,0 +1,17 @@
+{
+	"app":
+	{
+		"categories"			:	["Productivity"],
+		"module_name"			:	"app.clock",
+		"title"					:	"Digital Clock",
+		"icon_css"				:	"fa fa-clock-o",
+		"overview_directive"	:	"app.clock",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"A digital clock for displaying your computers system date and time adjusted for time zones throughout the world"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js"],
+	"css_files" : ["style.css"]
+}
