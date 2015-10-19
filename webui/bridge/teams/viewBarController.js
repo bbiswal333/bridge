@@ -47,14 +47,14 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     			found = true;
                 var modal = $modal.open({
                     templateUrl: "bridge/teams/confirmDeleteView.html",
-                    controller: function($scope) {
-                        $scope.confirmRemove = function(removeInBackend) {
-                            $scope.$close(removeInBackend);
+                    controller: ['$scope', function($modalScope) {
+                        $modalScope.confirmRemove = function(removeInBackend) {
+                            $modalScope.$close(removeInBackend);
                         };
-                        $scope.cancel = function() {
-                            $scope.$dismiss('cancel');
+                        $modalScope.cancel = function() {
+                            $modalScope.$dismiss('cancel');
                         };
-                    }
+                    }]
                 });
                 modal.result.then(function(deleteOnServer) {
                     if(deleteOnServer) {

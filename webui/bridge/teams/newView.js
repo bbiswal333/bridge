@@ -27,5 +27,6 @@ angular.module("bridge.teams").controller("bridge.viewBar.newViewController", ["
             return;
         }
         bridgeDataService.addProjectFromOwner(existingView.VIEW_ID, existingView.OWNER);
+        $modalInstance.close();
     };
 }]);
