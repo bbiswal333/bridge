@@ -6,7 +6,7 @@ angular.module('bridge.service').service('bridgeUserData', ['$q', '$http', '$win
             var defer = $q.defer();
 
             $http({
-                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
                 method: "GET"
             }).success(function (data) {
                 userInfo = data.USERINFO;

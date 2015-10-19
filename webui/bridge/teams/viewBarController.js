@@ -37,7 +37,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     	bridgeDataService.getProjects().map(function(view) {
     		if(view.owner === bridgeDataService.getUserInfo().BNAME && view.view === viewId) {
     			found = true;
-    			$http.get('https://ifd.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=' + viewId + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function (data) {
+    			$http.get('https://ifp.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=' + viewId + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function (data) {
                     $log.log("view deleted successfully");
                     bridgeDataService.getProjects().splice(bridgeDataService.getProjects().indexOf(view), 1);
                     setScrollInformation();

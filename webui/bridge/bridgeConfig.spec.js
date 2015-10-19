@@ -78,7 +78,7 @@
     });
 
     it("should read the config from the local storage and send it to the backend", function(){
-        $httpBackend.expectPOST('https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+        $httpBackend.expectPOST('https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
         function validate(data){
             var oData = angular.fromJson(data);
             if (oData.projects[0].apps[0].metadata.module_name === "app.atc"){
@@ -194,7 +194,7 @@
     });
 
     it("should load a team view from backend", function() {
-        $httpBackend.expectGET('http://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=viewId&owner=owner&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).respond("200", {apps: []});
+        $httpBackend.expectGET('http://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=viewId&owner=owner&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).respond("200", {apps: []});
         bridgeConfigService.getTeamConfig("owner", "viewId").then(function(config) {
             expect(config).toBeDefined();
             expect(config.apps.length).toEqual(0);
@@ -204,7 +204,7 @@
     it("should save own views via separate calls", function() {
         bridgeDataService.toDefault();
         bridgeDataService.getProjects().push({type: "TEAM", view: "testGuid", owner: "D049677", name: "view name", apps: []});
-        $httpBackend.expectPOST('https://ifd.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=testGuid&viewName=view name&instance=server&origin=' + encodeURIComponent($window.location.origin),
+        $httpBackend.expectPOST('https://ifp.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=testGuid&viewName=view name&instance=server&origin=' + encodeURIComponent($window.location.origin),
         function validate(data){
             var oData = angular.fromJson(data);
             if (oData.apps.length === 0 && oData.name !== undefined){

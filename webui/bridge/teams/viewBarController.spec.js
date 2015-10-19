@@ -24,7 +24,7 @@ describe("viewBarController", function() {
 	});
 
 	it("should delete views in the backend if it's the own view", function() {
-		$httpBackend.expectGET('https://ifd.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=viewId&instance=server&origin=' + encodeURIComponent($window.location.origin))
+		$httpBackend.expectGET('https://ifp.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=viewId&instance=server&origin=' + encodeURIComponent($window.location.origin))
 			.respond(200, {error: false, message: "Deleted"});
 		expect(bridgeDataService.getProjects().length).toEqual(3);
 		$scope.deleteView("viewId").then(function() {

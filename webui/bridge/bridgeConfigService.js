@@ -126,7 +126,7 @@
             var sConfigPayload = $window.localStorage.getItem(storageKey);
 
             $http({
-                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
                 data: sConfigPayload,
                 headers: { 'Content-Type': 'text/plain' }
@@ -139,7 +139,7 @@
 
         this.loadFromBackend = function (deferred) {
                 $http({
-                    url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                    url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                     method: "GET"
                 }).success(function (data) {
                     $log.log("Config loaded successfully");
@@ -183,7 +183,7 @@
         this.saveView = function(guid, viewData) {
             var deferred = $q.defer();
             $http({
-                url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=' + guid + '&viewName=' + viewData.name + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
+                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=' + guid + '&viewName=' + viewData.name + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
                 data: viewData,
                 headers: { 'Content-Type': 'application/json' }
@@ -199,7 +199,7 @@
 
         this.getTeamConfig = function(owner, view) {
             var deferred = $q.defer();
-            $http.get('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&owner=' + owner + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
+            $http.get('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&owner=' + owner + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
                 if(data.error) {
                     return deferred.reject(data);
                 }

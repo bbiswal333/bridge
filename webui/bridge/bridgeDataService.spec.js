@@ -19,15 +19,15 @@ describe("The bridgeDataService", function () {
             $window = _$window;
 
             $httpBackend = httpBackend;
-            $httpBackend.whenGET('https://ifd.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
+            $httpBackend.whenGET('https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
                 .respond('{"projects":[{"name":"OVERVIEW","type":"PERSONAL","apps":[{"metadata":{"module_name": "app.atc","content":"app.atc","id":4,"show":true,"boxTitle":"ATC Results","boxIconClass":" icon-wrench"},"appConfig":{"configItems":[]}},{"metadata":{"module_name": "app.employee-search", "content":"app.employee-search","id":5,"show":true,"boxTitle":"Employee Search","boxIconClass":"icon-user-o"},"appConfig":{}}]},{"type": "TEAM", "view": "TeamView1", "owner": "D049677"},{"type": "TEAM", "view": "NotExistingView", "name": "Not Existing View", "owner": "D049677"}], "bridgeSettings": {"someFlag": true}}');
-            $httpBackend.whenGET('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=TeamView1&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
+            $httpBackend.whenGET('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=TeamView1&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
                 .respond('{"name": "Team View 1","apps":[{"metadata":{"module_name": "app.atc","content":"app.atc","id":4,"guid": "app.atc-4","show":true,"boxTitle":"ATC Results","boxIconClass":" icon-wrench"},"appConfig":{"configItems":[]}}]}');
-            $httpBackend.whenGET('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=TeamView2&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
+            $httpBackend.whenGET('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=TeamView2&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
                 .respond('{"name": "Team View 2","apps":[{"metadata":{"module_name": "app.atc","content":"app.atc","id":4,"guid": "app.atc-4","show":true,"boxTitle":"ATC Results","boxIconClass":" icon-wrench"},"appConfig":{"configItems":[]}}]}');
-            $httpBackend.whenGET('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=NotExistingView&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
+            $httpBackend.whenGET('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=NotExistingView&owner=D049677&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin))
                 .respond('{"error": true,"message": "Not found"}');
-            $httpBackend.whenGET('https://ifd.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin)).respond("");
+            $httpBackend.whenGET('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin)).respond("");
 
             bridgeDataService.initialize($q.defer());
             $httpBackend.flush();

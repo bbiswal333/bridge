@@ -27,7 +27,7 @@ describe("newViewController", function() {
 	function expectPost() {
 		$scope.viewName = "new View";
 
-		$httpBackend.expectPOST('https://ifd.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=dummyGuid&viewName=new View&instance=server&origin=' + encodeURIComponent($window.location.origin),
+		$httpBackend.expectPOST('https://ifp.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=dummyGuid&viewName=new View&instance=server&origin=' + encodeURIComponent($window.location.origin),
         function validate(data){
             var oData = angular.fromJson(data);
             if (oData.apps.length === 0 && oData.name !== undefined){
