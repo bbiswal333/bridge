@@ -1,5 +1,5 @@
 describe("viewBarController", function() {
-	var controller, $scope, $httpBackend, $window, bridgeDataService, bridgeInBrowserNotification, $timeout;
+	var controller, $scope, $httpBackend, $window, bridgeDataService, bridgeInBrowserNotification, $timeout, confirmDeleteDialog, deleteOnServer, $modal;
 
 	beforeEach(function() {
 		module("bridge.teams");
@@ -15,7 +15,25 @@ describe("viewBarController", function() {
 			bridgeDataService.getProjects().push({type: "TEAM", view: "viewId", viewName: "second view", apps: [], owner: "D049677"});
 			bridgeDataService.getProjects().push({type: "TEAM", view: "notMyViewId", viewName: "second view", apps: [], owner: "D051804"});
 			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}; };
-			controller = $controller("bridge.viewBar.Controller", {$scope: $scope});
+			confirmDeleteDialog = true;
+			deleteOnServer = true;
+			$modal = {
+				open: function() {
+					return {
+						result: {
+							then: function(acceptCallback, rejectCallback) {
+								if(confirmDeleteDialog) {
+									acceptCallback(deleteOnServer);
+								} else if(rejectCallback) {
+									rejectCallback();
+								}
+							}
+						}
+					};
+				}
+			};
+			spyOn($modal, "open").and.callThrough();
+			controller = $controller("bridge.viewBar.Controller", {$scope: $scope, $modal: $modal});
 		}]);
 	});
 
@@ -23,7 +41,7 @@ describe("viewBarController", function() {
 		expect(controller).toBeDefined();
 	});
 
-	it("should delete views in the backend if it's the own view", function() {
+	it("should delete views in the backend if it's the own view and the popup was confirmed", function() {
 		$httpBackend.expectGET('https://ifp.wdf.sap.corp/sap/bc/bridge/DELETE_VIEW?view=viewId&instance=server&origin=' + encodeURIComponent($window.location.origin))
 			.respond(200, {error: false, message: "Deleted"});
 		expect(bridgeDataService.getProjects().length).toEqual(3);
@@ -31,6 +49,16 @@ describe("viewBarController", function() {
 			expect(bridgeDataService.getProjects().length).toEqual(2);
 		});
 		$httpBackend.flush();
+		expect($modal.open).toHaveBeenCalled();
+	});
+
+	it("should delete views locally if it's the own view and the popup was confirmed to delete only locally", function() {
+		deleteOnServer = false;
+		expect(bridgeDataService.getProjects().length).toEqual(3);
+		$scope.deleteView("viewId").then(function() {
+			expect(bridgeDataService.getProjects().length).toEqual(2);
+		});
+		expect($modal.open).toHaveBeenCalled();
 	});
 
 	it("should display a message if the view to be deleted was not found", function() {
