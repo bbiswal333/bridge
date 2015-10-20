@@ -964,3 +964,7 @@ h5{
         display: none;
     }
 }
+
+.cellText .button {
+    margin: 0;
+}

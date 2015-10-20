@@ -1,5 +1,5 @@
-angular.module('app.transportNew').controller('app.transportNew.detailController',['$scope', '$routeParams', 'app.transportNew.dataService', 'app.transportNew.configService',
-	function Controller($scope, $routeParams, dataService, configService) {
+angular.module('app.transportNew').controller('app.transportNew.detailController',['$scope', '$routeParams', 'app.transportNew.dataService', 'app.transportNew.configService', '$window',
+	function Controller($scope, $routeParams, dataService, configService, $window) {
 		$scope.$parent.titleExtension = " - Requests Details";
 
         var transportData = dataService.getInstanceFor($routeParams.appId);
@@ -24,4 +24,9 @@ angular.module('app.transportNew').controller('app.transportNew.detailController
         } else {
         	setTransports();
         }
+
+        $scope.goToTransport = function(transport) {
+                $window.open("https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid=" + transport.SOURCE_SYSTEM +
+                    "&client=" + transport.SOURCE_CLIENT + "&transaction=*SE01&parameters=TRDYSE01SN-TR_TRKORR=" + transport.ID);
+        };
 }]);
