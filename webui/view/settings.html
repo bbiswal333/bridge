@@ -4,6 +4,10 @@
     </div>
 </div>
 
+<alert type="'danger'" ng-if="userData.BNAME !== selectedProject.owner && selectedProject.type === 'TEAM'">
+    This is not your view. Changes to the settings will not be saved.
+</alert>
+
 <div style="position: relative">
     <span class="box-title">{{boxScope.title}}</span><br />
     <span>{{boxScope.box.settingsTitle}}</span>
