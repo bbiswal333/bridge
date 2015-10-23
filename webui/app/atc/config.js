@@ -53,7 +53,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	var Config = function() {
 	    this.configItems = [];
 	    this.isInitialized = false;
-	    this.detailsColumnVisibility = [true, true, true, true, false, true, false, false];
+	    this.detailsColumnVisibility = [true, true, true, true, false, true, false, false, false, false];
 	};
 
 	Config.prototype = Object.create(IConfig);
