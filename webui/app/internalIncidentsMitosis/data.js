@@ -2,13 +2,13 @@ angular.module("app.internalIncidentsMitosis")
 	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window",
 	function ($http, $q, $window) {
 		var AppData = (function() {
-			function toDate(dateString) {
+			/*function toDate(dateString) {
 	        	if(dateString) {
 	        		return new Date(dateString);
 	        	} else {
 	        		return new Date();
 	        	}
-	        }
+	        }*/
 
 	        function getFilterFromConfig(config) {
 	        	var filter = "";
