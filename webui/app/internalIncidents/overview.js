@@ -78,7 +78,7 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
             $scope.$watch('config', function (newVal, oldVal) {
                 if($scope.config !== undefined && newVal !== oldVal && oldVal && newVal.data.isInitialized === oldVal.data.isInitialized){
                     if($scope.config.data.advancedMode && ticketData.isInitialized.value === true) {
-                        ticketData.loadTicketData();
+                        $scope.loadingTicketsPromise = ticketData.loadTicketData();
                     } else {
                         ticketData.calculateTotals();
                         setNoMessagesFlag();

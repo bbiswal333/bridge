@@ -22,7 +22,7 @@ angular.module("app.internalIncidents")
 	        function getFilterFromConfig(config) {
 	        	var filter = "";
 	        	if(config.data.systems.length > 0 || config.data.programs.length > 0) {
-	        		filter += "(";
+	        		filter += "( (";
 	        		filter += config.data.systems.map(function(system) {
 	        			return "II_SYSTEM_ID eq '" + system + "'";
 	        		}).join(' or ');
@@ -42,7 +42,9 @@ angular.module("app.internalIncidents")
 	        		}).join(' or ');
 	        		filter += ")";
 					if(config.data.components.length > 0) {
-						filter += " and ";
+						filter += ") and ";
+					} else {
+						filter += ")";
 					}
 	        	}
 	        	if(config.data.components.length > 0) {
@@ -54,7 +56,7 @@ angular.module("app.internalIncidents")
 	        			}
 	        		}).join(' and ');
 	        	}
-	        	filter += "and II_STATUS_ID ne 'E0009' and II_STATUS_ID ne 'E0013' and II_STATUS_ID ne 'E0005'";
+	        	filter += " and II_STATUS_ID ne 'E0009' and II_STATUS_ID ne 'E0013' and II_STATUS_ID ne 'E0005'";
 				return filter;
 	        }
 
