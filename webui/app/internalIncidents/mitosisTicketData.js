@@ -78,6 +78,7 @@ angular.module("app.internalIncidents")
 					this.tickets = [];
 					var deferred = $q.defer();
 					if(config.data.components.length === 0 && config.data.systems.length === 0 && config.data.programs.length === 0) {
+						that.calculateTotals();
 						deferred.resolve();
 					} else {
 						var url = "https://mithdb.wdf.sap.corp/irep/reporting/bridge/internalIncidents/incidents.xsodata/Incidents?$format=json&$filter=" + getFilterFromConfig(config) + "&origin=" + $window.location.origin;
