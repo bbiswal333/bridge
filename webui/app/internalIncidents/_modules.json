@@ -20,6 +20,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],
+	"js_files" : ["overview.js", "config.js", "bcpTicketData.js", "mitosisTicketData.js", "detail.js", "settings.js"],
 	"css_files" : ["style.css"]
 }

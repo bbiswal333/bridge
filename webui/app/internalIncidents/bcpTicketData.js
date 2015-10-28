@@ -1,4 +1,4 @@
-angular.module("app.internalIncidents").service("app.internalIncidents.ticketData",
+angular.module("app.internalIncidents").service("app.internalIncidents.bcpTicketData",
     ["$rootScope","$http", "$q", "$window", "$location", "bridgeDataService", "app.internalIncidents.configservice", "notifier", "bridge.converter", "bridge.ticketAppUtils.ticketUtils",
     function($rootScope, $http, $q, $window, $location, bridgeDataService, configService, notifier, converter, ticketUtils){
         var Data = function(appId) {

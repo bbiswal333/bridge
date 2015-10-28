@@ -9,7 +9,7 @@ angular.module('bridge.app').directive("infinitescroll", ["$window", function ($
             //console.log(containerBottom, ' ', elementBottom);
 
             if (containerBottom >= elementBottom) {
-                scope.$apply(scope.increaseInfinityLimit());
+                scope.$apply(scope.increaseInfinityLimit);
             } /*else if (cont.scrollTop === 0) {
              //should we reset limit to the initial size?
              }*/

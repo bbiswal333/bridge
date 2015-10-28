@@ -1,12 +1,21 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService", "bridge.ticketAppUtils.detailUtils",
-    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService, detailUtils) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.bcpTicketData', 'app.internalIncidents.mitosisTicketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService", "bridge.ticketAppUtils.detailUtils",
+    function Controller($scope, $http, $window, bcpTicketDataService, mitosisTicketDataService, $routeParams, configService, converter, bridgeDataService, employeeService, detailUtils) {
         var config = configService.getConfigForAppId($routeParams.appId);
-        var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
+        var ticketData;
         $scope.filterText = '';
         $scope.messages = [];
-        $scope.prios = ticketData.prios;
         $scope.detailForNotifications = false;
+
+        if (config.isInitialized === false) {
+            config.initialize(bridgeDataService.getAppConfigById($routeParams.appId));
+        }
+
+        if(config.data.advancedMode === true) {
+            ticketData = mitosisTicketDataService.getInstanceForAppId($routeParams.appId);
+        } else {
+            ticketData = bcpTicketDataService.getInstanceForAppId($routeParams.appId);
+        }
 
         $scope.filterTable = function(oTicket){
             return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
@@ -16,21 +25,12 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             employeeService.showEmployeeModal(employeeDetails);
         };
 
-        function enhanceMessage(message){
-            if(message.REPORTER_ID !== "") {
-                employeeService.getData(message.REPORTER_ID).then(function(empData) {
-                    message.reporterData = empData;
-                });
-            }
-        }
-
         function enhanceAllMessages(){
             if ($scope.detailForNotifications === true){
                 $scope.messages = ticketData.ticketsFromNotifications;
             } else {
                 $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
             }
-            $scope.messages.forEach(enhanceMessage);
         }
 
         $scope.$watch('config', function(newVal, oldVal) {
@@ -40,6 +40,9 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
         },true);
 
         $scope.getFormattedDate = function(sAbapDate){
+            if(!sAbapDate) {
+                return "";
+            }
             var date = converter.getDateFromAbapTimeString(sAbapDate);
             return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
         };
@@ -50,9 +53,6 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             });
         }
 
-        if (config.isInitialized === false) {
-            config.initialize(bridgeDataService.getAppConfigById($routeParams.appId));
-        }
         $scope.config = config;
 
         if ($routeParams.calledFromNotifications === "true"){
@@ -65,13 +65,20 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
 
                 promise.then(function success() {
                     enhanceAllMessages();
+                    $scope.prios = ticketData.prios;
                 });
             } else {
                 enhanceAllMessages();
+                $scope.prios = ticketData.prios;
             }
+        }
 
+        $scope.$watch('prios', function() {
+            if(!$scope.prios) {
+                return;
+            }
             setPrioSelections(false);
             _.find($scope.prios, {"key": $routeParams.prio}).active = true;
-        }
+        });
 
 }]);

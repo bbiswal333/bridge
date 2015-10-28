@@ -27,7 +27,7 @@ describe("Internal Incidents details controller", function(){
             $provide.value("bridgeDataService", mockDataService);
         });
 
-        inject(["$rootScope", "$httpBackend", "$controller", "$window", "$http", "app.internalIncidents.ticketData", "app.internalIncidents.configservice",
+        inject(["$rootScope", "$httpBackend", "$controller", "$window", "$http", "app.internalIncidents.bcpTicketData", "app.internalIncidents.configservice",
             function(_$rootScope, _$httpBackend, _$controller, _$window, _$http, _ticketData, _config){
                 $controller = _$controller;
                 ticketData = _ticketData;
@@ -104,10 +104,7 @@ describe("Internal Incidents details controller", function(){
             }}
         });
 
-        $httpBackend.flush();
-
         expect($rootScope.messages.length).toBe(1);
-        expect($rootScope.messages[0].reporterData.TELNR).toBe("555123456");
     });
 
     it("should initialize the config object if that has not happened yet", function(){

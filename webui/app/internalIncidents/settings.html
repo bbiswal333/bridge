@@ -1,9 +1,84 @@
+<script type="text/ng-template" id="bridge/app/internalIncidents/Component.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+</script>
+
 <div ng-controller="app.internalIncidents.settingsController">
     <br/>
 
     <bridge.button state="config.data.ignoreAuthorAction === true ? 'active' : ' '" ng-click="config.data.ignoreAuthorAction = !config.data.ignoreAuthorAction" style="width:210px">
     	Ignore Tickets In Author Action
     </bridge.button>
+    <br />
+    <bridge.button state="config.data.advancedMode === true ? 'active' : ' '" ng-click="config.data.advancedMode = !config.data.advancedMode" style="width:210px">
+    	Advanced Incidents Selection
+    </bridge.button>
+
+    <div class="row" ng-show="config.data.advancedMode === true">
+				<b>Show all open transports for the following Programs and/or Systems:</b>
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Program</u></div>
+							<div class="col-lg-12">
+								<bridge.input model="program"
+											enter="onSelectProgram(program)"
+											input-typeahead-wait-ms="200"
+											input-typeahead-min-length="2"
+											input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
+											input-typeahead-on-select="onSelectProgram($item)"
+											input-typeahead="program as program.TP_PROGRAM_TXT for program in searchPrograms($viewValue)" placeholder="Program.."></bridge.input>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<span class="incidents-selected-component" ng-repeat="program in config.data.programs">{{program.TP_PROGRAM_TXT}} <a ng-click="removeProgram(program)"><span class="fa fa-remove"></span></a><br />
+									<span class="incidents-selected-component" ng-repeat="system in program.SYSTEMS">{{system}} <a ng-click="removeProgramSystem(program, system)"><span class="fa fa-remove"></span></a></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Systems</u></div>
+							<div class="col-lg-12">
+								<bridge.input model="system"
+											enter="onSelectSystem(system)"
+											input-typeahead-wait-ms="200"
+											input-typeahead-min-length="0"
+											input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
+											input-typeahead-on-select="onSelectSystem($item)"
+											input-typeahead="system as system.II_SYSTEM_ID for system in searchSystems($viewValue)" placeholder="System.."></bridge.input>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<span class="incidents-selected-component" ng-repeat="system in config.data.systems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br /><br />
+				<b>Select the components you want to restrict your results to:</b>
+				<div class="row" style="margin:15px 0 0 0;">
+					<div class="col-lg-12 form_head" style="float:none;"><u>Components</u></div>
+					<div class="col-lg-12">
+						<bridge.input model="component"
+									enter="onSelectComponent(component)"
+									input-typeahead-wait-ms="200"
+									input-typeahead-min-length="0"
+									input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
+									input-typeahead-on-select="onSelectComponent($item)"
+									input-typeahead="component as component.II_CATEGORY for component in searchComponents($viewValue)" placeholder="Component.."></bridge.input>
+					</div>
+				</div>
+				<div class="row" style="margin:15px 0 0 0;">
+					<div class="col-lg-12" style="float:none;">
+						<span class="incidents-selected-component" ng-repeat="component in config.data.components">{{component}} <a ng-click="removeComponent(component)"><span class="fa fa-remove"></span></a></span>
+					</div>
+				</div>
+
+				
+			</div>
 
     <div class="row">
         <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>

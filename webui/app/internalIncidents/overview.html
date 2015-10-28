@@ -1,36 +1,54 @@
 <div>
-	<div ng-if="dataInitialized.value" style="height:140px">
+	<div ng-if="config.data.advancedMode == false">
+		<div ng-if="dataInitialized.value" style="height:140px">
 
-		<div ng-if="showNoMessages == false" style="height: 100%">
-			<div class="ic-prio_container" >
-				<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
-					<bridge.conditional-link navigate-to="/detail/internalIncidents/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
-						<div class="prio_box" style="color:white">
-							<p>{{prios[$index].description}}</p>
-						</div>
-						<div class="prio_content_box" style="color:white">
-							<p ng-if="prios[$index].total<=99">{{prios[$index].total}}</p>
-							<p ng-if="prios[$index].total>=100">+99</p>
-						</div>
-					</bridge.conditional-link>
+			<div ng-if="showNoMessages == false" style="height: 100%">
+				<div class="ic-prio_container" cg-busy="{promise:loadingTicketsPromise,message:'Loading'}">
+					<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
+						<bridge.conditional-link navigate-to="/detail/internalIncidents/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
+							<div class="prio_box" style="color:white">
+								<p>{{prios[$index].description}}</p>
+							</div>
+							<div class="prio_content_box" style="color:white">
+								<p ng-if="prios[$index].total<=99">{{prios[$index].total}}</p>
+								<p ng-if="prios[$index].total>=100">+99</p>
+							</div>
+						</bridge.conditional-link>
+					</div>
+				</div>
+
+				<div class="ic-btn-container">
+					<bridge.button state="config.data.selection.sel_components === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Selected Components"><i class="fa fa-cube"></i></bridge.button>
+					<bridge.button state="config.data.selection.colleagues === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Colleagues"><i class="fa fa-users"></i></bridge.button>
+					<bridge.button state="config.data.selection.assigned_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
+					<bridge.button state="config.data.selection.created_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.created_me = !config.data.selection.created_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Created by Me"><i class="fa fa-user"></i></bridge.button>
 				</div>
 			</div>
 
-			<div class="ic-btn-container">
-				<bridge.button state="config.data.selection.sel_components === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Selected Components"><i class="fa fa-cube"></i></bridge.button>
-				<bridge.button state="config.data.selection.colleagues === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Colleagues"><i class="fa fa-users"></i></bridge.button>
-				<bridge.button state="config.data.selection.assigned_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
-				<bridge.button state="config.data.selection.created_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.created_me = !config.data.selection.created_me; doAlert()" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Created by Me"><i class="fa fa-user"></i></bridge.button>
+			<div ng-if="showNoMessages">
+				You have no internal incidents to display!
+			</div>
+
+		</div>
+		<div ng-if="dataInitialized.value == false && box.errorText != ''">
+			<a style="font-weight: bold;" href="https://support.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?saprole=ZCSSINTPROCE&sap-language=EN">Go to BCP</a>
+		</div>
+	</div>
+
+	<div style="width:175px; height:140px" ng-if="config.data.advancedMode == true">
+		<div class="prio_container" cg-busy="{promise:loadingTicketsPromise,message:'Loading'}">
+			<div  ng-repeat="prio in prios" class="prio_col ic-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
+				<bridge.conditional-link navigate-to="/detail/internalIncidents/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
+					<div class="prio_box" style="color:white">
+						<p>{{prios[$index].description}}</p>
+					</div>
+					<div class="prio_content_box" style="color:white">
+						<p ng-if="prios[$index].total<=9999">{{prios[$index].total}}</p>
+						<p ng-if="prios[$index].total>9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
 			</div>
 		</div>
-
-		<div ng-if="showNoMessages">
-			You have no internal incidents to display!
-		</div>
-
-	</div>
-	<div ng-if="dataInitialized.value == false && box.errorText != ''">
-		<a style="font-weight: bold;" href="https://support.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?saprole=ZCSSINTPROCE&sap-language=EN">Go to BCP</a>
 	</div>
 
 </div>
