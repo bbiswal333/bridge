@@ -33,6 +33,9 @@ angular.module('bridge.service').service('bridge.service.bridgeSettingsModalServ
                         } else {
                             return boxScope;
                         }
+                    },
+                    bridgeDataService: function() {
+                        return bridgeDataService;
                     }
                 }
             });
