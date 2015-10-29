@@ -26,7 +26,9 @@
 											input-typeahead-min-length="2"
 											input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
 											input-typeahead-on-select="onSelectProgram($item)"
-											input-typeahead="program as program.TP_PROGRAM_TXT for program in searchPrograms($viewValue)" placeholder="Program.."></bridge.input>
+											input-typeahead="program as program.TP_PROGRAM_TXT for program in searchPrograms($viewValue)" placeholder="Program.."
+											icon="fa fa-plus"
+											icon-click="onSelectProgram(program)"></bridge.input>
 							</div>
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
@@ -47,6 +49,8 @@
 											input-typeahead-min-length="0"
 											input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
 											input-typeahead-on-select="onSelectSystem($item)"
+											icon="fa fa-plus"
+											icon-click="onSelectSystem(system)"
 											input-typeahead="system as system.II_SYSTEM_ID for system in searchSystems($viewValue)" placeholder="System.."></bridge.input>
 							</div>
 						</div>
@@ -68,6 +72,8 @@
 									input-typeahead-min-length="0"
 									input-typeahead-template-url="bridge/app/internalIncidents/Component.html"
 									input-typeahead-on-select="onSelectComponent($item)"
+									icon="fa fa-plus"
+									icon-click="onSelectComponent(component)"
 									input-typeahead="component as component.II_CATEGORY for component in searchComponents($viewValue)" placeholder="Component.."></bridge.input>
 					</div>
 				</div>

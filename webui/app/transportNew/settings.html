@@ -24,7 +24,9 @@
 											input-typeahead-min-length="2"
 											input-typeahead-template-url="bridge/app/transportNew/Component.html"
 											input-typeahead-on-select="onSelectComponent($item)"
-											input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="Component.."></bridge.input>
+											input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="Component.."
+											icon="fa fa-plus"
+											icon-click="onSelectComponent(component)"></bridge.input>
 							</div>
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
@@ -53,7 +55,9 @@
 					<div class="col-lg-4 form_head" style="float:none;"><u>System</u></div>
 					<div class="col-lg-4">
 						<bridge.input model="system"
-									enter="onSelectSystem(system)" placeholder="System.."></bridge.input>
+									enter="onSelectSystem(system)" placeholder="System.."
+									icon="fa fa-plus"
+									icon-click="onSelectSystem(system)"></bridge.input>
 					</div>
 				</div>
 				<div class="row" style="margin:15px 0 0 0;">
