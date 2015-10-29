@@ -103,17 +103,17 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	        for (var configItem in persistedConfig.configItems) {
 	            currentConfigItem = this.newItem();
 
-	            currentConfigItem.components = persistedConfig.configItems[configItem].components ? persistedConfig.configItems[configItem].components : [persistedConfig.configItems[configItem].component];
-	            currentConfigItem.devClasses = persistedConfig.configItems[configItem].devClasses ? persistedConfig.configItems[configItem].devClasses : [persistedConfig.configItems[configItem].devClass];
+	            currentConfigItem.components = persistedConfig.configItems[configItem].components ? persistedConfig.configItems[configItem].components : (persistedConfig.configItems[configItem].component ? [persistedConfig.configItems[configItem].component] : []);
+	            currentConfigItem.devClasses = persistedConfig.configItems[configItem].devClasses ? persistedConfig.configItems[configItem].devClasses : (persistedConfig.configItems[configItem].devClass ? [persistedConfig.configItems[configItem].devClass] : []);
 	            currentConfigItem.displayPrio1 = persistedConfig.configItems[configItem].displayPrio1;
 	            currentConfigItem.displayPrio2 = persistedConfig.configItems[configItem].displayPrio2;
 	            currentConfigItem.displayPrio3 = persistedConfig.configItems[configItem].displayPrio3;
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
-              	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? persistedConfig.configItems[configItem].softwareComponents : [];
-	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? persistedConfig.configItems[configItem].srcSystems : [persistedConfig.configItems[configItem].srcSystem];
-	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : [persistedConfig.configItems[configItem].tadirResponsible];
+              	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? persistedConfig.configItems[configItem].softwareComponents : (persistedConfig.configItems[configItem].softwareComponent ? [persistedConfig.configItems[configItem].softwareComponent] : []);
+	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? persistedConfig.configItems[configItem].srcSystems : (persistedConfig.configItems[configItem].srcSystem ? [persistedConfig.configItems[configItem].srcSystem] : []);
+	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : (persistedConfig.configItems[configItem].tadirResponsible ? [persistedConfig.configItems[configItem].tadirResponsible] : []);
 
 	            this.addConfigItem(currentConfigItem);
 	        }
