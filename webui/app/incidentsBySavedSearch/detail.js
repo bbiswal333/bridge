@@ -22,6 +22,11 @@ angular.module('app.incidentSavedSearch').controller('app.incidentSavedSearch.de
                     message.reporterData = empData;
                 });
             }
+            if(message.PROCESSOR_ID !== "") {
+                employeeService.getData(message.PROCESSOR_ID).then(function(empData) {
+                    message.processorData = empData;
+                });
+            }
         }
 
         function enhanceAllMessages(){
