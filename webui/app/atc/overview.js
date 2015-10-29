@@ -21,7 +21,7 @@ angular.module('app.atc').directive('app.atc',
         $scope.config = $scope.config || appAtcConfig.getConfigForAppId($scope.metadata.guid);
 
         $scope.$watch('config', function (newVal, oldVal) {
-            if (newVal !== oldVal) { // this avoids the call of our change listener for the initial watch setup
+            if (newVal !== oldVal && oldVal !== undefined) { // this avoids the call of our change listener for the initial watch setup
                 appAtcData.getInstanceForAppId($scope.metadata.guid).loadOverviewData();
             }
         }, true);
@@ -35,7 +35,6 @@ angular.module('app.atc').directive('app.atc',
             if (appAtcConfig.getConfigForAppId($scope.metadata.guid).isInitialized === false) {
                 appAtcConfig.getConfigForAppId($scope.metadata.guid).initialize($scope.metadata.guid);
                 appAtcData.getInstanceForAppId($scope.metadata.guid).loadOverviewData();
-                appAtcData.getInstanceForAppId($scope.metadata.guid).getDetailsForConfig(appAtcConfig.getConfigForAppId($scope.metadata.guid));
             }
         }
     };
