@@ -25,7 +25,7 @@
             };
 
             this.getDetailsForConfig = function (config) {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
+                return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
                 .success(function (data) {
                     that.detailsData.length = 0;
                     data.DATA.map(function(item) {
@@ -37,7 +37,6 @@
             this.loadOverviewData = function() {
                 if (atcConfig.getConfigForAppId(appId).configItems.length > 0) {
                     that.getResultForConfig(atcConfig.getConfigForAppId(appId));
-                    that.getDetailsForConfig(atcConfig.getConfigForAppId(appId));
                 }
             };
         };
