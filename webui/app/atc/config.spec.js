@@ -6,10 +6,10 @@
      function createConfigItemForSystem(System) {
         var myConfigItem = atcConfigService.newItem();
 
-        myConfigItem.srcSystem = System;
-        myConfigItem.devClass = "S_DEVREPORTING";
-        myConfigItem.tadirResponsible = "D051804";
-        myConfigItem.component = "BA-BS";
+        myConfigItem.srcSystems = [System];
+        myConfigItem.devClasses = ["S_DEVREPORTING"];
+        myConfigItem.tadirResponsibles = ["D051804"];
+        myConfigItem.components = ["BA-BS"];
         myConfigItem.showSuppressed = true;
         myConfigItem.displayPrio1 = true;
         myConfigItem.displayPrio3 = true;
@@ -58,7 +58,7 @@
         expect(atcConfigService.isInitialized).toBe(true);
 
         expect(atcConfigService.configItems.length).toBe(1);
-        expect(atcConfigService.configItems[0].srcSystem).toBe("Z7Y");
+        expect(atcConfigService.configItems[0].srcSystems).toEqual(["Z7Y"]);
     });
 
     it("should initialize itself with the default config if no backend config is available", function () {

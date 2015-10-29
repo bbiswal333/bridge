@@ -44,14 +44,14 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 
 	ConfigItem.prototype = Object.create(IQueryString);
 	ConfigItem.prototype.getQueryString = function() {
-		var query = this.srcSystem + ';' + this.devClass + ';' + (this.tadirResponsible.SAPNA ? this.tadirResponsible.SAPNA : this.tadirResponsible) + ';' + this.component + ';';
+		var query = this.srcSystems.join(",") + ';' + this.devClasses.join(",") + ';' + this.tadirResponsibles.map(function(responsible) { return (responsible.SAPNA ? responsible.SAPNA : responsible); }).join(",") + ';' + this.components.join(",") + ';';
 		query += this.showSuppressed ? "X;" : ";";
 		query += this.displayPrio1 ? "X;" : ";";
 		query += this.displayPrio2 ? "X;" : ";";
 		query += this.displayPrio3 ? "X;" : ";";
 		query += this.displayPrio4 ? "X;" : ";";
 		query += this.onlyInProcess ? "X;" : ";";
-		query += this.softwareComponent;
+		query += this.softwareComponents.join(",");
 		return query;
 	};
 
@@ -103,17 +103,17 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	        for (var configItem in persistedConfig.configItems) {
 	            currentConfigItem = this.newItem();
 
-	            currentConfigItem.component = persistedConfig.configItems[configItem].component;
-	            currentConfigItem.devClass = persistedConfig.configItems[configItem].devClass;
+	            currentConfigItem.components = persistedConfig.configItems[configItem].components ? persistedConfig.configItems[configItem].components : [persistedConfig.configItems[configItem].component];
+	            currentConfigItem.devClasses = persistedConfig.configItems[configItem].devClasses ? persistedConfig.configItems[configItem].devClasses : [persistedConfig.configItems[configItem].devClass];
 	            currentConfigItem.displayPrio1 = persistedConfig.configItems[configItem].displayPrio1;
 	            currentConfigItem.displayPrio2 = persistedConfig.configItems[configItem].displayPrio2;
 	            currentConfigItem.displayPrio3 = persistedConfig.configItems[configItem].displayPrio3;
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
-              	currentConfigItem.softwareComponent = persistedConfig.configItems[configItem].softwareComponent ? persistedConfig.configItems[configItem].softwareComponent : "";
-	            currentConfigItem.srcSystem = persistedConfig.configItems[configItem].srcSystem;
-	            currentConfigItem.tadirResponsible = persistedConfig.configItems[configItem].tadirResponsible;
+              	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? persistedConfig.configItems[configItem].softwareComponents : [];
+	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? persistedConfig.configItems[configItem].srcSystems : [persistedConfig.configItems[configItem].srcSystem];
+	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : [persistedConfig.configItems[configItem].tadirResponsible];
 
 	            this.addConfigItem(currentConfigItem);
 	        }

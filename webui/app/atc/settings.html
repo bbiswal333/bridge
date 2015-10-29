@@ -32,19 +32,19 @@
             </div>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
-            Source Systems: <span class="atc-selected-component" ng-repeat="system in currentConfigValues.srcSystems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>
+            Source Systems: <span class="atc-selected-component" ng-repeat="system in currentConfigValues.srcSystems">{{system}} <a ng-click="removeSystem(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.devClasses.length > 0">
-            Packages: <span class="atc-selected-component" ng-repeat="package in currentConfigValues.devClasses">{{package}} <a ng-click="removePackage(system)"><span class="fa fa-remove"></span></a></span>
+            Packages: <span class="atc-selected-component" ng-repeat="package in currentConfigValues.devClasses">{{package}} <a ng-click="removePackage(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.tadirResponsibles.length > 0">
-            Object Responsibles: <span class="atc-selected-component" ng-repeat="responsible in currentConfigValues.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible)"><span class="fa fa-remove"></span></a></span>
+            Object Responsibles: <span class="atc-selected-component" ng-repeat="responsible in currentConfigValues.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
-            AKH Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeAKHComponent(component)"><span class="fa fa-remove"></span></a></span>
+            AKH Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeAKHComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
-            Software Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component)"><span class="fa fa-remove"></span></a></span>
+            Software Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
 
         <div class="row" style="margin: 10px">
@@ -64,7 +64,8 @@
             </div>
 
              <div style="float:right;position:relative;top:25px;">
-                <bridge.button ng-click="doAlert(); add_click()">Add New Selection</bridge.button>
+                <bridge.button ng-click="doAlert(); add_click()" ng-show="config.configItems.indexOf(currentConfigValues) === -1">Add New Selection</bridge.button>
+                <bridge.button ng-click="save_click()" ng-show="config.configItems.indexOf(currentConfigValues) !== -1">Save Selection</bridge.button>
 
             </div>
     </form>
@@ -85,13 +86,13 @@
             </thead>
             <tbody>
                 <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false" class="hover">
-                    <td data-title="'Source System'"><span class="atc-selected-component" ng-repeat="system in configItem.srcSystems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Package'"><span class="atc-selected-component" ng-repeat="package in configItem.devClasses">{{package}} <a ng-click="removePackage(system)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Object Responsible'"><span class="atc-selected-component" ng-repeat="responsible in configItem.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible)"><span class="fa fa-remove"></span></a></td>
+                    <td data-title="'Source System'"><span class="atc-selected-component" ng-repeat="system in configItem.srcSystems">{{system}} <a ng-click="removeSystem(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
+                    <td data-title="'Package'"><span class="atc-selected-component" ng-repeat="package in configItem.devClasses">{{package}} <a ng-click="removePackage(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
+                    <td data-title="'Object Responsible'"><span class="atc-selected-component" ng-repeat="responsible in configItem.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, configItem)"><span class="fa fa-remove"></span></a></td>
                     <td data-title="'AKH Component'">
-                        <span class="atc-selected-component" ng-repeat="component in configItem.components">{{component}} <a ng-click="removeAKHComponent(component)"><span class="fa fa-remove"></span>
+                        <span class="atc-selected-component" ng-repeat="component in configItem.components">{{component}} <a ng-click="removeAKHComponent(component, configItem)"><span class="fa fa-remove"></span>
                     </td>
-                    <td data-title="'Software Component'"><span class="atc-selected-component" ng-repeat="component in configItem.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component)"><span class="fa fa-remove"></span></td>
+                    <td data-title="'Software Component'"><span class="atc-selected-component" ng-repeat="component in configItem.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, configItem)"><span class="fa fa-remove"></span></td>
                     <td data-title="'Display Suppressed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.showSuppressed">
@@ -111,9 +112,10 @@
                         </span>
                     </td>
                     <td data-title="'Functions'">
-                        <span ng-click="rss_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-rss" title="Get RSS Feed link"></span>
-                        <span ng-click="copy_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-copy"></span>
-                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px;" class=" app-linklist-clickIcon fa fa-times"></span>
+                        <span ng-click="rss_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-rss" title="Get RSS Feed link"></span>
+                        <span ng-click="copy_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-copy"></span>
+                        <span ng-click="edit_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-edit"></span>
+                        <span ng-click="remove_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-times"></span>
                     </td>
                 </tr>
             </tbody>

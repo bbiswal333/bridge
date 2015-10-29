@@ -19,8 +19,8 @@
         }
     };
 
-    $scope.removeSystem = function(value) {
-        $scope.currentConfigValues.srcSystems.splice($scope.currentConfigValues.srcSystems.indexOf(value), 1);
+    $scope.removeSystem = function(value, configItem) {
+        configItem.srcSystems.splice(configItem.srcSystems.indexOf(value), 1);
     };
 
     $scope.onSelectPackage = function(value) {
@@ -30,8 +30,8 @@
         }
     };
 
-    $scope.removePackage = function(value) {
-        $scope.currentConfigValues.devClasses.splice($scope.currentConfigValues.devClasses.indexOf(value), 1);
+    $scope.removePackage = function(value, configItem) {
+        configItem.devClasses.splice(configItem.devClasses.indexOf(value), 1);
     };
 
     $scope.onSelectAKHComponent = function(value) {
@@ -41,8 +41,8 @@
         }
     };
 
-    $scope.removeAKHComponent = function(value) {
-        $scope.currentConfigValues.components.splice($scope.currentConfigValues.components.indexOf(value), 1);
+    $scope.removeAKHComponent = function(value, configItem) {
+        configItem.components.splice(configItem.components.indexOf(value), 1);
     };
 
     $scope.onSelectSoftwareComponent = function(value) {
@@ -52,8 +52,8 @@
         }
     };
 
-    $scope.removeSoftwareComponent = function(value) {
-        $scope.currentConfigValues.softwareComponents.splice($scope.currentConfigValues.softwareComponents.indexOf(value), 1);
+    $scope.removeSoftwareComponent = function(value, configItem) {
+        configItem.softwareComponents.splice(configItem.softwareComponents.indexOf(value), 1);
     };
 
     $scope.onSelectResponsible = function(value) {
@@ -66,8 +66,8 @@
         $scope.currentConfigValues.tadirResponsible = "";
     };
 
-    $scope.removeResponsible = function(value) {
-        $scope.currentConfigValues.tadirResponsibles.splice($scope.currentConfigValues.tadirResponsibles.indexOf(value), 1);
+    $scope.removeResponsible = function(value, configItem) {
+        configItem.tadirResponsibles.splice(configItem.tadirResponsibles.indexOf(value), 1);
     };
 
     $scope.$watch('config', function () {
@@ -84,12 +84,20 @@
         }
     };
 
+    $scope.save_click = function() {
+        $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
+    };
+
     $scope.rss_click = function (configItem) {
         $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + configItem.getQueryString() + '&format=rss');
     };
 
     $scope.copy_click = function (configItem) {
         jQuery.extend($scope.currentConfigValues,configItem);
+    };
+
+    $scope.edit_click = function(configItem) {
+        $scope.currentConfigValues = configItem;
     };
 
     $scope.remove_click = function (configItem) {
