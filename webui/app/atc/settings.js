@@ -1,5 +1,8 @@
 /*globals jQuery*/
 ﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', '$http', function ($filter, ngTableParams, appAtcConfig, $scope, $window, $http) {
+    $scope.srcSystem = "";
+    $scope.devClass = "";
+
     $scope.config = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid);
     $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
 
@@ -7,6 +10,64 @@
 
     $scope.closeForm = function () {
         $scope.$emit('closeSettingsScreen');
+    };
+
+    $scope.onSelectSystem = function(value) {
+        if($scope.currentConfigValues.srcSystems.indexOf(value) === -1) {
+            $scope.currentConfigValues.srcSystems.push(value);
+            $scope.currentConfigValues.srcSystem = "";
+        }
+    };
+
+    $scope.removeSystem = function(value) {
+        $scope.currentConfigValues.srcSystems.splice($scope.currentConfigValues.srcSystems.indexOf(value), 1);
+    };
+
+    $scope.onSelectPackage = function(value) {
+        if($scope.currentConfigValues.devClasses.indexOf(value) === -1) {
+            $scope.currentConfigValues.devClasses.push(value);
+            $scope.currentConfigValues.devClass = "";
+        }
+    };
+
+    $scope.removePackage = function(value) {
+        $scope.currentConfigValues.devClasses.splice($scope.currentConfigValues.devClasses.indexOf(value), 1);
+    };
+
+    $scope.onSelectAKHComponent = function(value) {
+        if($scope.currentConfigValues.components.indexOf(value) === -1) {
+            $scope.currentConfigValues.components.push(value);
+            $scope.currentConfigValues.component = "";
+        }
+    };
+
+    $scope.removeAKHComponent = function(value) {
+        $scope.currentConfigValues.components.splice($scope.currentConfigValues.components.indexOf(value), 1);
+    };
+
+    $scope.onSelectSoftwareComponent = function(value) {
+        if($scope.currentConfigValues.softwareComponents.indexOf(value) === -1) {
+            $scope.currentConfigValues.softwareComponents.push(value);
+            $scope.currentConfigValues.softwareComponent = "";
+        }
+    };
+
+    $scope.removeSoftwareComponent = function(value) {
+        $scope.currentConfigValues.softwareComponents.splice($scope.currentConfigValues.softwareComponents.indexOf(value), 1);
+    };
+
+    $scope.onSelectResponsible = function(value) {
+        for(var i = 0, length = $scope.currentConfigValues.tadirResponsibles.length; i < length; i++) {
+            if($scope.currentConfigValues.tadirResponsibles[i].BNAME === value.BNAME) {
+                return;
+            }
+        }
+        $scope.currentConfigValues.tadirResponsibles.push(value);
+        $scope.currentConfigValues.tadirResponsible = "";
+    };
+
+    $scope.removeResponsible = function(value) {
+        $scope.currentConfigValues.tadirResponsibles.splice($scope.currentConfigValues.tadirResponsibles.indexOf(value), 1);
     };
 
     $scope.$watch('config', function () {
@@ -41,6 +102,18 @@
     $scope.searchComponent = function(query) {
         return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
             return response.data.COMPONENTS;
+        });
+    };
+
+    $scope.searchSoftwareComponent = function(query) {
+        return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_SOFTWARE_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
+            return response.data.COMPONENTS;
+        });
+    };
+
+    $scope.searchPackage = function(query) {
+        return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_DEVCLASSES?query=" + query.toUpperCase() + "*").then(function(response) {
+            return response.data.PACKAGES;
         });
     };
 

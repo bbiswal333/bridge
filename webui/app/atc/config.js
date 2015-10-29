@@ -1,11 +1,16 @@
 angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
     var ConfigItem = function () {
         this.clear = function () {
-            this.srcSystem = "";
+        	this.srcSystem = "";
+            this.srcSystems = [];
             this.devClass = "";
+            this.devClasses = [];
             this.tadirResponsible = "";
+            this.tadirResponsibles = [];
             this.component = "";
+            this.components = [];
             this.softwareComponent = "";
+            this.softwareComponents = [];
             this.showSuppressed = false;
             this.displayPrio1 = true;
             this.displayPrio2 = true;
@@ -15,7 +20,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
         };
 
         this.isEmpty = function () {
-            if (this.srcSystem === "" && this.devClass === "" && this.tadirResponsible === "" && this.component === "" && this.softwareComponent === "") {
+            if (this.srcSystems.length === 0 && this.devClasses.length === 0 && this.tadirResponsibles.length === 0 && this.components.length === 0 && this.softwareComponents.length === 0) {
                 return true;
             }
             else {
