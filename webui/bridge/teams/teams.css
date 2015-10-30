@@ -17,6 +17,7 @@
 	flex: 9;
 	text-align: left;
 	overflow-x: hidden;
+	overflow-y: hidden;
 	white-space: nowrap;
 }
 
