@@ -48,13 +48,15 @@ angular.module("app.internalIncidents")
 					}
 	        	}
 	        	if(config.data.components.length > 0) {
+	        		filter += "(";
 	        		filter += config.data.components.map(function(component) {
-	        			if(component.indexOf('*')) {
+	        			if(component.indexOf('*') >= 0) {
 	        				return "startswith(II_CATEGORY, '" + component.replace(/\*/gi, '') + "')";
 	        			} else {
 	        				return "II_CATEGORY eq '" + component + "'";
 	        			}
-	        		}).join(' and ');
+	        		}).join(' or ');
+	        		filter += ")";
 	        	}
 	        	filter += " and II_STATUS_ID ne 'E0009' and II_STATUS_ID ne 'E0013' and II_STATUS_ID ne 'E0005'";
 				return filter;
