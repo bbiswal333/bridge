@@ -301,23 +301,13 @@
 }
 .app-cats-notInMonth {
     background: #e1e1e1;
-    /*opacity: 0;*/
     visibility: hidden;
 }
 .app-cats-today { 
-    /*background-image: url('/../../img/ecke_dunkel.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
     font-weight: 900;
     font-style: italic;
 }
 .app-cats-today-legend { 
-    /*background-image: url('/../../img/ecke_dunkel_legend.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
-
     font-weight: 900;
     font-style: italic;
 }
@@ -376,12 +366,17 @@
 }
 
 .selected_day{
-    /*background: ;*/
     border: 3px solid #707070;
     color: #707070!important;
- 
 }
 
+.selected_day_analytics span{
+    /* don't know how to correctly make a border here */
+}
+
+.selected_day_analytics{
+    /* don't know how to correctly make a border here */
+}
 
 .app-cats-icon {
     font-family: 'SAP-icons';
@@ -392,7 +387,6 @@
 .app-cats-week .app-cats-day {
     color: white;
     width: 11.8%;
-    /*width: 13.5%;*/
 }
 .allocation-bar-background-panel {
   margin-left: auto;
