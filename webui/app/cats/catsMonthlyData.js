@@ -106,8 +106,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			}
 
 			day.setDate(day.getDate() + 7);
-			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
-				  (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
+			while(((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
+				   (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) &&
+				   weeks.length < 6) {
 				week = calenderUtils.getWeekNumber(day);
 				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));

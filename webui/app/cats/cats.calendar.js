@@ -12,8 +12,7 @@ angular.module("app.cats")
 		 "$q",
 		 "$log",
 		 "$window",
-		 "$timeout",
-	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, configService, $q, $log, $window, $timeout) {
+	function (calUtils, catsBackend, catsUtils, $interval, $location, bridgeDataService, monthlyDataService, bridgeInBrowserNotification, configService, $q, $log, $window) {
 		function processCatsData(cats_o) {
 			function parseDateToTime(date_s) {
 				if (date_s.search(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) === -1) { //Checks for pattern: YYYY-MM-DD
@@ -473,7 +472,6 @@ angular.module("app.cats")
 				var promises = [];
 				var week = getCalArrayOfWeekByIndex(index);
 				var range = [];
-				$scope.analytics.value = false;
 				week.forEach(function(day){
 					if (day.inMonth) {
 						range.push(day.dayString);
@@ -499,7 +497,6 @@ angular.module("app.cats")
 			$scope.toggleMonth = function () {
 				var promise = null;
 				var promises = [];
-				$scope.analytics.value = false;
 				if (angular.isNumber($scope.year) && angular.isNumber($scope.month)) {
 					var firstOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month));
 					var lastOfMonthDayString = calUtils.stringifyDate(new Date($scope.year, $scope.month + 1, 0));
@@ -537,7 +534,6 @@ angular.module("app.cats")
 				var single_click = !range_click && !multi_click;
 				var promise = null;
 				var promises = [];
-				$scope.analytics.value = false;
 
 				if (single_click) {
 					monthlyDataService.lastSingleClickDayString = dayString;
@@ -668,25 +664,6 @@ angular.module("app.cats")
 				} else {
 					$scope.analytics.value = true;
 				}
-			};
-
-			$scope.switchOnSingleDayAnalytics = function (dayString) {
-				$scope.analytics.singleDay = dayString;
-				if($scope.analytics.closingTimer) {
-					$timeout.cancel($scope.analytics.closingTimer);
-				}
-				$scope.analytics.closingTimer = $timeout(function () { $scope.analytics.singleDay = ''; } , 2000);
-			};
-
-			$scope.switchOffSingleDayAnalytics = function () {
-				$scope.analytics.singleDay = '';
-			};
-
-			$scope.confirmSingleDayAnalytics = function () {
-				if($scope.analytics.closingTimer) {
-					$timeout.cancel($scope.analytics.closingTimer);
-				}
-				$scope.analytics.closingTimer = $timeout(function () { $scope.analytics.singleDay = ''; } , 2000);
 			};
 
 			$scope.state = "";

@@ -17,7 +17,12 @@ angular.module("app.dumps").service("app.dumps.avlData",
 
 			 	$http.get(sUrl + '/bc/mdrs/cdo?type=crp_bdb&entity=view_data&id=c9-v04&origin=' + $window.location.origin).success(function(oData) {
 			 		var oResult = oData.DATA;
-			 		that.availability[0].count = oResult.VIEWS[0].KPI_VALUE;
+					if (oResult.VIEWS[0].KPI_VALUE < 100)	{
+						that.availability[0].count = oResult.VIEWS[0].KPI_VALUE.toFixed(2);
+					}
+					else {
+						that.availability[0].count = oResult.VIEWS[0].KPI_VALUE;
+					}
 					that.availability[0].link_to = oResult.VIEWS[0].URL;
 			 	});
 			};
