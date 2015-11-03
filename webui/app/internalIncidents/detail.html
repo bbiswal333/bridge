@@ -22,15 +22,15 @@
 			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
 			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_ID'" visible="parentScope.config.data.columnVisibility[3]"><bridge.employee id="row.REPORTER_ID"></bridge.employee></bridge.table-column>
 			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_ID'" visible="parentScope.config.data.columnVisibility[9]"><bridge.employee id="row.PROCESSOR_ID"></bridge.employee></bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
-			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
 			<bridge.table-column column-id="'7'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]">
 				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
 			</bridge.table-column>
 			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]" custom-style="{'min-width': '120px'}">
 				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.OBJECT_ID}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
+			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
 		</bridge.table>
 
     </div>
