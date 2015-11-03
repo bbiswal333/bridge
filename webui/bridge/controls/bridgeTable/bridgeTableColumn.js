@@ -9,7 +9,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             columnId: '&',
             columnSizeClass: '&',
             orderBy:  '&?',
-            visible: '=?'
+            visible: '=?',
+            customStyle: '@'
         },
         link: function ($scope, element, attrs, tableController) {
             if ($scope.visible === undefined || $scope.visible === "true"){
