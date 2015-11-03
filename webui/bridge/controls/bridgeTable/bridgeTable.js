@@ -12,8 +12,8 @@ angular.module('bridge.controls').directive('bridge.table', function() {
         controller: ["$scope", function($scope){
             var infinityLimitStep = 50;
             $scope.infinityLimit = infinityLimitStep;
-            $scope.reverse = $scope.defaultSortBy() ? false : true;
-            $scope.predicate = $scope.defaultSortBy() || null;
+            $scope.reverse = $scope.defaultSortBy && $scope.defaultSortBy() ? false : true;
+            $scope.predicate = $scope.defaultSortBy && $scope.defaultSortBy() || null;
 
             $scope.zebraCell = function (index) {
                 return 'row' + index % 2;
