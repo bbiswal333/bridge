@@ -149,7 +149,8 @@ angular.module("app.internalIncidents")
 	            			CREATE_DATE: toDate(incident.II_CREATED_AT),
 	            			CHANGE_DATE: toDate(incident.II_CHANGED_AT),
 	            			DESCRIPTION: incident.II_DESCRIPTION,
-	            			MPT_EXPIRY: toDate(incident.II_MPT_EXPIRY_DATE)
+	            			MPT_EXPIRY: toDate(incident.II_MPT_EXPIRY_DATE),
+	            			URL_MESSAGE: 'https://support.wdf.sap.corp/sap/support/message/' + incident.OBJECT_ID
 	            		});
 	            	});
 	            	return results;

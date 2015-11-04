@@ -10,7 +10,7 @@
 
 		<bridge.table table-data="atcData.tableData" filter="filterText">
 			<bridge.table-column column-id="'1'" header="'Prio'" column-size-class="'col-sm-1'" order-by="'CHECK_MSG_PRIO'" visible="parentScope.config.detailsColumnVisibility[0]">{{row.CHECK_MSG_PRIO}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'CHECK_SYSTEM'" visible="parentScope.config.detailsColumnVisibility[1]">{{row.CHECK_SYSTEM}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'CHECK_SYSTEM'" visible="parentScope.config.detailsColumnVisibility[1]"><a href="https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid={{row.CHECK_SYSTEM}}&client={{row.CHECK_CLIENT}}&transaction=*CHECKMAN">{{row.CHECK_SYSTEM}}</a></bridge.table-column>
 			<bridge.table-column column-id="'3'" header="'Check'" column-size-class="'col-sm-2'" order-by="'CHECK_DESCRIPTION'" visible="parentScope.config.detailsColumnVisibility[2]">{{row.CHECK_DESCRIPTION}}</bridge.table-column>
 			<bridge.table-column column-id="'4'" header="'Check Message'" column-size-class="'col-sm-4'" order-by="'CHECK_MESSAGE'" visible="parentScope.config.detailsColumnVisibility[3]">{{row.CHECK_MESSAGE}}</bridge.table-column>
 			<bridge.table-column column-id="'5'" header="'Object Type'" column-size-class="'col-sm-1'" order-by="'OBJECT'" visible="parentScope.config.detailsColumnVisibility[4]">{{row.OBJECT}}</bridge.table-column>
