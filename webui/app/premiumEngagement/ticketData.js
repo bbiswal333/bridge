@@ -9,6 +9,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
             this.isInitialized = { value: false };
             this.appId = appId;
             this.lastTickets = null;
+            this.tickets = [];
             this.ticketsFromNotifications = [];
             this.selectedSourceSystem = ticketUtils.ticketSourceSystems[4];
             this.prios = [  { key: "1", description: "Very High", active: false, total: 0 },
@@ -36,6 +37,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.ticketDat
                                 that.fillCustomerName(that.tickets);
                             }
                         } else {
+                            that.tickets = [];
                             that.resetTotals();
                         }
                         defer.resolve();
