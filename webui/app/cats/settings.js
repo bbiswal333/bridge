@@ -134,6 +134,13 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     };
 
     $scope.handleEditTask = function(id) {
+        // make sure the headers are never edited
+        if(catsConfigService.selectedTask.TASKTYPE === 'BRIDGE_HEADER') {
+            $scope.selectedTask = null;
+            catsConfigService.selectedTask = null;
+            return;
+        }
+
         catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
 
         var index = getIndexForId(catsConfigService.favoriteItems, id);
