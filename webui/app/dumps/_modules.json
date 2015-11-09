@@ -8,6 +8,7 @@
 		"overview_directive"	:	"app.dumps",
 		"needs_client"			:	false,
 		"beta"					:	true,
+        "beta_users"            :   ["I311041", "D051824"],
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
 		"description"			:	"App designed for S4HANA Developers. KPI selection under Settings, Dumps, System availability.."
