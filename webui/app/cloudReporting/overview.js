@@ -12,7 +12,7 @@ angular.module('app.cloudReporting').directive('app.cloudReporting',[function ()
             $scope.boxIcon = '&#xe824';
             $scope.box.settingsTitle = "Select KPIs";
 
-            $scope.kpis = oCloudReportingData.kpis;
+            $scope.kpis = [];//oCloudReportingData.loadOverview();
             $scope.dataInitialized = oCloudReportingData.isInitialized;
             $scope.systemName = $scope.configService.getSystemName();
 
@@ -45,14 +45,13 @@ angular.module('app.cloudReporting').directive('app.cloudReporting',[function ()
                 $scope.systemName = $scope.configService.getSystemName();
             });
 
-            $scope.$watch("configService.configItem.kpis", function() {
-                oCloudReportingData.loadOverview();
+            $scope.$watchCollection("configService.configItem.kpis", function() {
+               $scope.kpis = oCloudReportingData.loadOverview();
             });
 
             $scope.myDblClick = function (i) {
                 oCloudReportingData.goToReport(i);
             };
-
 	}];
 
 	return {
