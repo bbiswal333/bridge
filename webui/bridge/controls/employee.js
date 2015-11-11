@@ -3,7 +3,9 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
     return {
         restrict: 'E',
         scope: {
-        	id: '='
+        	id: '=',
+            mailBody: '@',
+            mailSubject: '@'
         },
         controller: ['$scope', 'employeeService', function($scope, employeeService) {
     		employeeService.getData($scope.id).then(function(data) {

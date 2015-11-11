@@ -1,4 +1,4 @@
 <span ng-show="employee"><bridge.employee-picture employee-user="{{employee.ID}}"></bridge.employee-picture> {{employee.fullName}}</span>
-<a href="mailto:{{employee.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+<a href="mailto:{{employee.SMTP_MAIL}}?subject={{mailSubject}}&body={{mailBody}}"><p class="table-icon-small icon-mail"></p></a>
 <a href="tel:{{employee.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 <span ng-show="!employee">{{id}}</span>
