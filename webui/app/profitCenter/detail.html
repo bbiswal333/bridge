@@ -7,6 +7,7 @@
           'glyphicon-chevron-down': !collapsed
         }"></span></a>
     {{node.label}}
+    <span class="pull-right" ng-if="!node.isProfitCenter" style="padding: 7px"><a ng-click="toExcel(node)"><span class="fa fa-file-excel-o"></span> To Excel</a></span>
     <span class="pull-right" ng-if="node.isProfitCenter"><b>Profit Center ID: {{node.profitCenterId}} - Controller: {{node.controller}}</span>
   </div>
   <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
