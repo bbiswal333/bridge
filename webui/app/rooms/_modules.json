@@ -8,7 +8,7 @@
 		"overview_directive"	:	"app.rooms",
 		"needs_client"			:	false,
 		"default_hidden"		: 	true,
-		"beta"					:   true,
+		"beta"					:   false,
 		"description"			:	"The offers transparancy on your booked rooms and enables you to easily cancel a booking of you don't need the room anymore. Thus limited resources are freed and available to other colleagues."
 	},
 	"modules" : [],

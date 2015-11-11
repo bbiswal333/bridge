@@ -72,7 +72,7 @@ angular.module('bridge.app').controller('bridgeController',
         $http.get($window.client.origin + '/client').success(function (data)
         {
             //version which is needed by the application
-            var needs_version = "0.9.5";
+            var needs_version = "0.9.6";
             var has_version = "0.0.1";
             if(data.version !== undefined)
             {
@@ -150,6 +150,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
+            // bridgeInBrowserNotification.addAlert('success', 'Please take a moment to give us your feedback! We would greatly appreciate if you take 5 minutes to complete our <a target="_blank" href="https://surveys.sap.com/SE/?SID=SV_3EmN0DgQvqNOe8Z">usability survey</a>. The survey will be available until 16th October.', 60);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             if($scope.bridgeSettings.selectedBackgroundColorIndex !== undefined) {

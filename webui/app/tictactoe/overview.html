@@ -1,0 +1,30 @@
+﻿<!-- Game box -->
+<div id=gameBox style="float: left; margin-left: 30px; width: 115px">
+    <div ng-repeat="i in [0,1,2]">
+        <div ng-repeat="j in [0,1,2]">
+            <div width="50px" height="35px" style="float:left" ng-click="markIt(i,j)">
+                <img ng-src="{{tile[i][j].src}}" width="30px" height="30px"></img>
+            </div>
+            <div style="float:left" ng-if="j!==2">
+                <img ng-src="../../app/tictactoe/images/pencil{{i+1}}.jpg" width="10px" height="35px"></img>
+            </div>
+        </div>
+        <div style="font-size: 7px;" ng-if="i!==2">
+            <img src="../../app/tictactoe/images/pencil.jpg" width="115px" height="10px"></img>
+        </div>
+    </div>
+</div>
+<!-- Result section -->
+<div style="font-size: 20px; font-weight: bold;float:left ; margin-left: 20px;">{{result}}
+    <br/>
+    <img ng-src="{{resultImg}}" height="100px" width="100px" style="margin-left: 10px;">
+</div>
+<!-- Last section -->
+<div id="resetBTN">
+    <div> <img src="../../app/tictactoe/images/winner.png" height="25px" width="25px"> </img> <b>{{countUser}} </b></div>
+    <div> <img src="../../app/tictactoe/images/loser.png" height="25px" width="25px"> </img><b>{{countComputer}}</b> </div>
+    <div> <img src="../../app/tictactoe/images/draw.png" height="25px" width="25px"> </img> <b>{{countDraw}}</b></div>
+    <div ng-click="reset()" style="margin-top: 30px;">
+        <img src="../../app/tictactoe/images/restart.png" alt="Restart" width="36" height="36" />
+    </div>
+</div>

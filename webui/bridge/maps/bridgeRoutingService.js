@@ -18,7 +18,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 			url: GET_ROUTE_API + "?routeId=" + routeId + "&mode=fastest;car;traffic:enabled&routeattributes=wp,sm,sh,bb,lg,no,shape&legattributes=wp,mn,le,tt&maneuverattributes=tt,le,ti,li,pt,pl,rn,nr,no,ru&instructionformat=text" + appCodeParameter + appIdParameter + jsonAttributesParameter,
 			method: "GET",
 			withCredentials: false
-		}).success(successCallback).error(errorCallback);
+		}).success(successCallback).error(errorCallback !== undefined ? errorCallback : function(){});
 		return deferred;
 	}
 
@@ -69,16 +69,18 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 
 				routeThis.incidents.length = 0;
 
-				jsonData.leg[0].maneuver.map(function(maneuver) {
-					if(maneuver.note.length > 0) {
-						maneuver.note.map(function(note) {
-							if(note.type === "traffic") {
-								note.roadName = maneuver.roadName;
-								note.roadNumber = maneuver.roadNumber;
-								routeThis.incidents.push(note);
-							}
-						});
-					}
+				jsonData.leg.map(function(leg) {
+					leg.maneuver.map(function(maneuver) {
+						if(maneuver.note.length > 0) {
+							maneuver.note.map(function(note) {
+								if(note.type === "traffic") {
+									note.roadName = maneuver.roadName;
+									note.roadNumber = maneuver.roadNumber;
+									routeThis.incidents.push(note);
+								}
+							});
+						}
+					});
 				});
 			}
 
@@ -112,14 +114,15 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 				}
 
 				routeThis.calculatedWaypoints.length = 0;
-
-				for(var i = 0, length = jsonData.leg[0].maneuver.length; i < length; i++) {
-					var maneuver = jsonData.leg[0].maneuver[i];
-					if(i === 0) {
-						routeThis.calculatedWaypoints.push({position: mapUtils.jsonCoordToGeoCoord(maneuver.position)});
-					}
-					if(i < length - 1) {
-						routeThis.calculatedWaypoints.push(maneuver.toLink ? {linkId: maneuver.toLink, position: mapUtils.jsonCoordToGeoCoord(maneuver.position)} : {position: mapUtils.jsonCoordToGeoCoord(maneuver.position)});
+				for(var j = 0, legLength = jsonData.leg.length; j < legLength; j++) {
+					for(var i = 0, length = jsonData.leg[j].maneuver.length; i < length; i++) {
+						var maneuver = jsonData.leg[j].maneuver[i];
+						if(i === 0) {
+							routeThis.calculatedWaypoints.push({position: mapUtils.jsonCoordToGeoCoord(maneuver.position)});
+						}
+						if(i < length - 1) {
+							routeThis.calculatedWaypoints.push(maneuver.toLink ? {linkId: maneuver.toLink, position: mapUtils.jsonCoordToGeoCoord(maneuver.position)} : {position: mapUtils.jsonCoordToGeoCoord(maneuver.position)});
+						}
 					}
 				}
 			}
@@ -147,7 +150,7 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 							deferred.resolve();
 						}
 					} else {
-						rebuildRouteFromWaypoints(routeThis.calculatedWaypoints);
+						rebuildRouteFromWaypoints(routeThis.calculatedWaypoints ? routeThis.calculatedWaypoints : routeThis.waypoints);
 						bridgeInBrowserNotification.addAlert('success','Your route "' + routeThis.name + '" had to be restored from coordinates. Please check the route in the app config.');
 					}
 				});

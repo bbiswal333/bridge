@@ -1,0 +1,75 @@
+<script type="text/ng-template" id="bridge/app/transportNew/Component.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+</script>
+
+<div style="width: 100%">
+	<p>
+		<form name="ConfigItemForm">
+			<div class="row">
+				<div class="row" style="margin:15px 0 0 0;">
+					<div class="col-xs-12">
+						Transports which are open for more than <button ng-click="currentConfigValues.openTransportThreshold = 7" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.openTransportThreshold === 7];">7</button> or <button ng-click="currentConfigValues.openTransportThreshold = 14" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.openTransportThreshold === 14];">14</button> days shall highlighted.
+					</div>
+				</div>
+				<br /><br />
+				<b>Show all open transports for the following components and/or owners:</b>
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Component</u></div>
+							<div class="col-lg-12">
+								<bridge.input model="component"
+											enter="onSelectComponent(component)"
+											input-typeahead-wait-ms="200"
+											input-typeahead-min-length="2"
+											input-typeahead-template-url="bridge/app/transportNew/Component.html"
+											input-typeahead-on-select="onSelectComponent($item)"
+											input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="Component.."></bridge.input>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<span class="transport-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeComponent(component)"><span class="fa fa-remove"></span></a></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Owner</u></div>
+							<div class="col-lg-12 has-feedback">
+								<bridge.employee-input selected-employee="owner" on-select="onSelectEmployee"></bridge.employee-input>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<span class="transport-selected-component" ng-repeat="owner in currentConfigValues.owners">{{owner.label}} <a ng-click="removeOwner(owner)"><span class="fa fa-remove"></span></a></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br /><br />
+				<b>Select the system/s you want to search in for the components or owners:</b>
+				<div class="row" style="margin:15px 0 0 0;">
+					<div class="col-lg-4 form_head" style="float:none;"><u>System</u></div>
+					<div class="col-lg-4">
+						<bridge.input model="system"
+									enter="onSelectSystem(system)" placeholder="System.."></bridge.input>
+					</div>
+				</div>
+				<div class="row" style="margin:15px 0 0 0;">
+					<div class="col-lg-4" style="float:none;">
+						<span class="transport-selected-component" ng-repeat="system in currentConfigValues.systems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>
+					</div>
+				</div>
+
+				
+			</div>
+
+
+			<div class="row">
+			    <div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save & Close</div>
+			</div>
+
+		</form>
+</p>
+</div>

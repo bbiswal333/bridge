@@ -1,0 +1,44 @@
+﻿<div>
+	<div style="float:left;width:3%;text-align:center;margin:6% 0px;">
+    	<p ng-repeat = "entry in kpi" class="basic-blue-font" style="margin-bottom:0px;">{{entry}}</p>
+    </div>
+	
+	<div ng-class="{'dump-prio_container-1' : !box.boxSize || box.boxSize == 1, 'dump-prio_container-2' : box.boxSize == 2}" style="height:140px" ng-show="kpi[0]=='D'">
+		<div  ng-repeat="dump in dumps" class="prio_col dump-prio_col prio_bg_{{$index+1}}" ng-dblclick="myDblClick($index)" ng-click="myClick($index)">
+			<div class="prio_box" style="color:white">
+				<p>{{dumps[$index].description}}</p>
+			</div>
+			<div class="dump-prio_content_box" style="color:white;">
+				<p style="margin-top:37px;">{{dumps[$index].count}}</p>
+			</div>
+   		</div>
+    </div>
+	
+	<div ng-class="{'dump-prio_container-1' : !box.boxSize || box.boxSize == 1, 'dump-prio_container-2' : box.boxSize == 2}" style="height:140px" ng-show="kpi[0]=='S'">
+		<div  ng-repeat="avl in availability" class="prio_col dump-prio_col prio_bg_{{$index+1}}" ng-dblclick="myDblClick($index)" ng-click="myClick($index)">
+			<div class="prio_box" style="color:white">
+				<p>{{availability[$index].description}}</p>
+			</div>
+			<div class="dump-prio_content_box" style="color:white;">
+				<p style="margin-top:37px;">{{availability[$index].count}}</p>
+			</div>
+   		</div>
+    </div>
+
+	<div class="dump-list_container" style="height:140px;overflow-y:hidden;overflow-x:hidden;" ng-show="!!(box.boxSize == 2)">
+		<table>
+			<tr>
+				<th style="width:90%;">Category</th>
+				<th style="text-align:right;width:10%">#</th>
+			</tt>
+  			<tr ng-repeat="entry in dumpList">
+    			<td style="font-size:10px">{{ entry.RUNTIME_ERROR_ID }}</td>
+    			<td style="font-size:10px;text-align:right;">{{ entry.COUNT }}</td>
+  			</tr>
+		</table>
+    </div>
+
+    <div style="float:left;width:3%;text-align:center;margin:6% 0px;">
+    	<p ng-repeat = "entry in systemName" class="basic-blue-font" style="margin-bottom:0px;">{{entry}}</p>
+    </div>
+</div>

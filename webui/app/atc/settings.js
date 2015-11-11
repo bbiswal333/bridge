@@ -1,5 +1,5 @@
 /*globals jQuery*/
-﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', function ($filter, ngTableParams, appAtcConfig, $scope, $window) {
+﻿angular.module('app.atc').appAtcSettings = ['$filter', 'ngTableParams', 'app.atc.configservice', '$scope', '$window', '$http', function ($filter, ngTableParams, appAtcConfig, $scope, $window, $http) {
     $scope.config = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid);
     $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
 
@@ -36,6 +36,12 @@
         if (index > -1) {
             $scope.config.configItems.splice(index, 1);
         }
+    };
+
+    $scope.searchComponent = function(query) {
+        return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
+            return response.data.COMPONENTS;
+        });
     };
 
     $scope.rss_for_saved_selection_click = function () {

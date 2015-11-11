@@ -106,8 +106,9 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			}
 
 			day.setDate(day.getDate() + 7);
-			while((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
-				  (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) {
+			while(((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
+				   (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) &&
+				   weeks.length < 6) {
 				week = calenderUtils.getWeekNumber(day);
 				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
 				weeks.push(angular.copy(week));
@@ -207,7 +208,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							} else {
 								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
 							}
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 100) / 100;
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 
 							// That coding does not belong here...
 							var block = {};

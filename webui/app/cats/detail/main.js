@@ -282,8 +282,15 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
+    $scope.isValidProfile = function(){
+        return catsUtils.isValidProfile(catsBackend.catsProfile);
+    };
+
     function displayCATSDataForDay(day) {
         try {
+            if(!$scope.isValidProfile()){
+                bridgeInBrowserNotification.addAlert('danger', "The CAT2 Profile " + catsBackend.catsProfile + " is not supported by Bridge.");
+            }
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
             $scope.hintText = "";
@@ -324,19 +331,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             checkAndCorrectPartTimeInconsistancies(day);
             if(day.targetTimeInPercentageOfDay !== 0 &&
                day.targetTimeInPercentageOfDay !== 1 ) {
-                if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+                // Some rounding here prevents problems for rounding issues of many hourly tasks
+                if(Math.round(day.actualTimeInPercentageOfDay * 100 / 100) >
+                   Math.round(day.targetTimeInPercentageOfDay * 100 / 100)) {
                     $scope.hintText = "All overbooked entries will be ADJUSTED so that 100% are reflecting your personal target hours. Please apply changes.";
                 } else {
                     $scope.hintText = "All entries will be scaled so that 100% are reflecting your personal target hours.";
                 }
-            }
-
-            if(day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
-                var actualHours = Math.round(day.actualTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                var targetHours = Math.round(day.targetTimeInPercentageOfDay * 100 * day.hoursOfWorkingDay) / 100;
-                bridgeInBrowserNotification.addAlert('danger', "The date '" + day.dayString + "' is overbooked! Actual hours are '" +
-                    actualHours + "'' but target hours are only '" +
-                    targetHours + "'!");
             }
 
             $scope.blockdataRemembered = angular.copy($scope.blockdata);
@@ -437,6 +438,17 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         return false;
     }
 
+    function removeFixedTasksFromBlockdata() {
+        var i = 0;
+        while (i < $scope.blockdata.length) {
+            if (catsUtils.isFixedTask($scope.blockdata[i].task)) {
+                // do not removeBlock() here, since it is not meant to be removed in the backend!
+                $scope.blockdata.splice(i,1);
+            }
+            i++;
+        }
+    }
+
     $scope.selectionCompleted = function() {
         try {
             if ($scope.selectedDates.length <= 1 &&
@@ -453,6 +465,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             } else if($scope.selectedDates.length === 1) { // Single day
                 loadCATSDataForDay($scope.selectedDates[0]);
             } else { // Range selected
+                removeFixedTasksFromBlockdata();
                 $scope.totalWorkingTime = 1;
             }
             $scope.blockdataRemembered = angular.copy($scope.blockdata);
@@ -504,10 +517,13 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
     }
 
-    function prepareCATSData (workdate, container){
+    function prepareCATSData (workdate, container, lengthOfSelectedDatesArray){
         var workdateBookings = [];
         var unchangedBookings = [];
         var totalWorkingTimeForDay = monthlyDataService.days[workdate].targetTimeInPercentageOfDay;
+        if (totalWorkingTimeForDay > 1) { // special case for french part time contract with 8.2 hours per day
+            totalWorkingTimeForDay = 1;
+        }
         var targetHoursForDay      = monthlyDataService.days[workdate].targetHours;
         var tasksInBackend         = monthlyDataService.days[workdate].tasks;
 
@@ -516,6 +532,25 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             loadCATSDataForDay();
             $scope.$emit("refreshApp");
             return null;
+        }
+
+        var originalTotalWorkingTimeForDay = totalWorkingTimeForDay;
+        for(var j = 0; j < tasksInBackend.length; j++) {
+            if (catsUtils.isFixedTask(tasksInBackend[j])) {
+                unchangedBookings.push(tasksInBackend[j]);
+
+                if (lengthOfSelectedDatesArray > 1) {
+                    if (tasksInBackend[j].UNIT === "H" && targetHoursForDay) {
+                        targetHoursForDay = targetHoursForDay - tasksInBackend[j].QUANTITY;
+                    } else {
+                        // use originalTotalWorkingTimeForDay for calculations from Day to Hours
+                        targetHoursForDay = targetHoursForDay - catsUtils.cat2CompliantRounding(tasksInBackend[j].QUANTITY * originalTotalWorkingTimeForDay);
+                    }
+                    totalWorkingTimeForDay = totalWorkingTimeForDay - tasksInBackend[j].QUANTITY_DAY;
+                }
+
+                continue;
+            }
         }
 
         for(var i = 0; i < $scope.blockdata.length; i++) {
@@ -534,7 +569,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
 
             if (catsUtils.isFixedTask(booking) || (taskInBackend && catsUtils.isFixedTask(taskInBackend))) {
-                unchangedBookings.push(booking);
                 continue;
             }
 
@@ -554,7 +588,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             delete booking.QUANTITY;
 
             // correct some special case where ADMI and EDUC are obviously incorrect
-            // That can happen when switching CAT2 profiles or when using the CAT2 app favourites
+            // That can happen when switching CAT2 profiles or when using the CAT2 app favorites
             if (booking.TASKTYPE === "ADMI" || booking.TASKTYPE === "EDUC") {
                 if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === false && booking.UNIT === "H") {
                     booking.UNIT = "TA";
@@ -567,6 +601,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     booking.CATSHOURS = booking.CATSQUANTITY;
                 }
             }
+            // remember value in Blockdata itself
+            $scope.blockdata[i].CATSQUANTITY = booking.CATSQUANTITY;
 
             // Don't sent tasks which are already in the Backend with the exact same amount
             if (taskInBackend &&
@@ -598,17 +634,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
-        // adjust slight deviations in QUANTITY to reach 100%
-        var totalBookingQuantity = 0;
+        // determine the biggest booking (which is subject to change)
         var biggestBooking;
         workdateBookings.forEach(function(oBooking){
             if(!biggestBooking || biggestBooking.CATSQUANTITY <= oBooking.CATSQUANTITY) {
                 biggestBooking = oBooking;
             }
-            totalBookingQuantity += oBooking.CATSQUANTITY;
+        });
+
+        // determine the total of all blocks
+        var totalBookingQuantity = 0;
+        $scope.blockdata.forEach(function(block){
+            totalBookingQuantity += block.CATSQUANTITY;
         });
         totalBookingQuantity = catsUtils.cat2CompliantRounding(totalBookingQuantity);
 
+        // adjust block size so that minimal rounding issues get corrected
         if (catsUtils.isHourlyProfil(catsBackend.catsProfile) === true) {
             var bookingDifference = catsUtils.cat2CompliantRoundingForHours(totalBookingQuantity - targetHoursForDay);
             if((bookingDifference > 0 && bookingDifference < 0.03) ||
@@ -681,6 +722,28 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.blockdata = angular.copy($scope.blockdataTemplate);
     };
 
+    function dayContainsFixedTask(dayString) {
+        var tasks = monthlyDataService.days[dayString].tasks;
+        for (var i = 0; i < tasks.length; i++) {
+            if(catsUtils.isFixedTask(tasks[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function makeDayWithNoFixedTasksTheLastSingleClickDay(selectedDates) {
+        if (dayContainsFixedTask(monthlyDataService.lastSingleClickDayString)) {
+            for (var i = 0; i < selectedDates.length; i++) {
+                if(!dayContainsFixedTask(selectedDates[i])) {
+                    monthlyDataService.lastSingleClickDayString = selectedDates[i];
+                    i = selectedDates.length; // end loop
+                }
+
+            }
+        }
+    }
+
     $scope.saveTimesheet = function(){
         var weeks = [];
         var container = {
@@ -691,6 +754,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.selectedDates = [];
         $scope.totalSelectedHours = 0;
 
+        // Remove duplicate days (legacy??)
         selectedDates.forEach(function(dayString){
             if($scope.selectedDates.indexOf(dayString) === -1) {
                 $scope.selectedDates.push(dayString);
@@ -700,9 +764,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
         });
 
+        makeDayWithNoFixedTasksTheLastSingleClickDay($scope.selectedDates);
+
         try {
             $scope.selectedDates.forEach(function(dayString){
-                container = prepareCATSData(dayString, container);
+                container = prepareCATSData(dayString, container, $scope.selectedDates.length);
 
                 var day = monthlyDataService.days[dayString];
                 if (weeks.indexOf(day.year + '.' + day.week) === -1) {

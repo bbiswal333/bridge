@@ -1,12 +1,22 @@
 ﻿angular.module('app.querytracker', []);
-angular.module('app.querytracker').directive('app.querytracker',['$http','bridgeDataService', function ($http, bridgeDataService) {
+angular.module('app.querytracker').directive('app.querytracker',['app.querytracker.queryData', function (queryDataService) {
 
 	var directiveController = ['$scope', function ($scope) {
+		$scope.data = queryDataService.queryData;
 
-		var userInfo = bridgeDataService.getUserInfo();
-		$http.get('https://vantgvmwin049.dhcp.pgdev.sap.corp/api/queries/' + userInfo.BNAME).success(function(data){
-			$scope.data = data;
-		});
+		if (queryDataService.isInitialized.value === false) {
+			queryDataService.loadQueryData();
+		}
+
+		$scope.getAmountDueQueries = function(){
+			return queryDataService.getQueriesWithinDeadline().length;
+		};
+
+		function reloadTicketData(){
+			queryDataService.loadQueryData();
+		}
+
+		$scope.box.reloadApp(reloadTicketData, 60 * 10);
 	}];
 
 	return {

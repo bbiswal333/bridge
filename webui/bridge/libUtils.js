@@ -32,36 +32,6 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         long: "Sunday"
     }];
 
-    var _weekdaysStartOnSunday = [{
-        short: "Su",
-        medium: "Sun",
-        long: "Sunday"
-    }, {
-        short: "Mo",
-        medium: "Mon",
-        long: "Monday"
-    }, {
-        short: "Tu",
-        medium: "Tue",
-        long: "Tuesday"
-    }, {
-        short: "We",
-        medium: "Wed",
-        long: "Wednesday"
-    }, {
-        short: "Th",
-        medium: "Thu",
-        long: "Thursday"
-    }, {
-        short: "Fr",
-        medium: "Fri",
-        long: "Friday"
-    }, {
-        short: "Sa",
-        medium: "Sat",
-        long: "Saturday"
-    }];
-
     var _months = [{
         short: "Jan",
         long: "January"
@@ -290,12 +260,8 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
         return date_o.getFullYear() + "-" + this.useNDigits((date_o.getMonth() + 1), 2) + "-" + this.useNDigits(date_o.getDate(), 2);
     };
 
-    this.getWeekdays = function(startOnSunday_b) {
-        if (startOnSunday_b) {
-            return angular.copy(_weekdaysStartOnSunday);
-        } else {
-            return angular.copy(_weekdays);
-        }
+    this.getWeekdays = function() {
+        return angular.copy(_weekdays);
     };
 
     this.getWeekday = function (day, format) {
@@ -319,6 +285,26 @@ angular.module("lib.utils", []).provider("lib.utils.calUtils", function() {
 
     this.getMonths = function() {
         return _months;
+    };
+
+    this.previousMonth = function(objectContainingYearAndMonth) {
+        if (objectContainingYearAndMonth.month === 0) {
+            objectContainingYearAndMonth.month = 11;
+            objectContainingYearAndMonth.year--;
+        }
+        else {
+            objectContainingYearAndMonth.month--;
+        }
+    };
+
+    this.nextMonth = function(objectContainingYearAndMonth) {
+        if (objectContainingYearAndMonth.month === 11) {
+            objectContainingYearAndMonth.month = 0;
+            objectContainingYearAndMonth.year++;
+        }
+        else {
+            objectContainingYearAndMonth.month++;
+        }
     };
 
     this.getMonthName = function(i) {

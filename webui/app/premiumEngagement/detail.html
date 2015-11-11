@@ -9,10 +9,11 @@
         <br/>
 
         <bridge.table table-data="messages" filter="filterTable">
-            <bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'">{{row.PRIORITY_DESCR}}</bridge.table-column>
-            <bridge.table-column column-id="'2'" header="'Customer'" column-size-class="'col-sm-2'" order-by="'CUST_NAME'">{{row.CUST_NAME}}</bridge.table-column>
-            <bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUS_DESCR'">{{row.STATUS_DESCR}}</bridge.table-column>
-            <bridge.table-column column-id="'4'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'">
+            <bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
+            <bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
+            <bridge.table-column column-id="'3'" header="'Customer'" column-size-class="'col-sm-2'" order-by="'CUST_NAME'" visible="parentScope.config.data.columnVisibility[2]">{{row.CUST_NAME}}</bridge.table-column>
+            <bridge.table-column column-id="'4'" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[3]">{{row.STATUS_DESCR}}</bridge.table-column>
+            <bridge.table-column column-id="'5'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[4]">
                 <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
                      class="im-reporter-img"
                      style="height: 32px; vertical-align: initial; vertical-align: auto;"
@@ -21,7 +22,7 @@
                 <a href="tel:{{row.processor_enh.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
                 <a class="trunctedText clickable" ng-click="parentScope.userClick(row.processor_enh)">{{row.processor_enh.fullName}}</a>
             </bridge.table-column>
-            <bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'">
+            <bridge.table-column column-id="'6'" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[5]">
                 <a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
             </bridge.table-column>
         </bridge.table>

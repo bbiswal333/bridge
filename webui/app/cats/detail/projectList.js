@@ -11,6 +11,7 @@ directive("app.cats.maintenanceView.projectList", [
 	function(catsBackend, catsUtils, $timeout, colorUtils, calenderUtils, configService, $q, $window) {
 		var linkFn = function($scope) {
 			$scope.items = [];
+			$scope.itemsFromBlocks = [];
 			$scope.filter = {};
 			$scope.filter.val = "";
 			$scope.loaded = false;
@@ -111,36 +112,9 @@ directive("app.cats.maintenanceView.projectList", [
 			};
 
 			function markItemIfSelected(item) {
-				// The items we get here can be of really bad data quality
-
-				//TEST
-				//if (item.TASKTYPE === "ADMI") {
-				//  return;
-				//}
-
-				// Service that reads the template on weekly basis
-				// Minimal item would be only TASKTYPE: "MAIN" with RAUFNR and other IDs empty
-				// There coult also be only TASKTYPE and RAUFNR filled
-				// Maximum there could be also ZCPR_EXTID AND ZCPR_OBJEXTID filled
-
-				// Service that reads the 4 month compliance
-				//  RAUFNR: ""
-				//  TASKTYPE: "ADMI"
-				//  ZCPR_OBJGEXTID: "ADMI"
-				//  ZCPR_OBJGUID: "ADMI"
-				//  projectDesc: "Administrative"
-				//  taskDesc: "ADMI"
-				// or
-				//  RAUFNR: "000505220105"
-				//  TASKTYPE: ""
-				//  UNIT: undefined
-				//  ZCPR_EXTID: "I2M_2013_RESEARCH_INNOV"
-				//  ZCPR_OBJGEXTID: "00000000000000617094"
-				//  projectDesc: "I2M_2013_RESEARCH_INNOV"
-				//  taskDesc: "I2M Research & Innovation"
 				var found = false;
 				var color = null;
-				$scope.blocks.some(function(block) { // is allocation bar block or a favourite item
+				$scope.blocks.some(function(block) { // is allocation bar block or a favorite item
 					if (!block) {
 						return found;
 					}
@@ -160,6 +134,17 @@ directive("app.cats.maintenanceView.projectList", [
 				});
 				item.selected = found;
 				item.color = color;
+			}
+
+			// This is required if the cPro task got renamed recently
+			function updateZCPR_EXTID(item) {
+				var newItem = configService.enhanceTask(item);
+				for (var i = 0; i < configService.catsItems.length; i++) {
+					if (catsUtils.isSameTask(newItem, configService.catsItems[i])) {
+						configService.catsItems[i].ZCPR_EXTID = newItem.ZCPR_EXTID;
+						configService.catsItems[i] = configService.enhanceTask(configService.catsItems[i]);
+					}
+				}
 			}
 
 			function addNewProjectItem(item) {
@@ -192,7 +177,7 @@ directive("app.cats.maintenanceView.projectList", [
 						// Write header
 						if (items.length > 0) {
 							var header = {};
-							header.DESCR = "Tasks from CAT2 using profile " + catsProfile + "...";
+							header.DESCR = "CAT2 tasks (profile " + catsProfile + ")";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "1";
 							addNewProjectItem(header);
@@ -202,11 +187,11 @@ directive("app.cats.maintenanceView.projectList", [
 						});
 					} else {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 			}
 
@@ -223,7 +208,7 @@ directive("app.cats.maintenanceView.projectList", [
 					if(errorText) {
 						$scope.errorText = errorText;
 					} else {
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					}
 					deferred.reject($scope.errorText);
 				});
@@ -259,13 +244,14 @@ directive("app.cats.maintenanceView.projectList", [
 						// Write header
 						if (dataFromWorklist && doesOneAdditionalItemExist(dataFromWorklist)) {
 							var header = {};
-							header.DESCR = "Additional tasks from cPro work list...";
+							header.DESCR = "Additional cPro tasks";
 							header.TASKTYPE = "BRIDGE_HEADER";
 							header.RAUFNR = "2";
 							addNewProjectItem(header);
 
 							dataFromWorklist.forEach(function(entry) {
 								addNewProjectItem(entry);
+								updateZCPR_EXTID(entry);
 								configService.updateLastUsedDescriptions(entry, true);
 							});
 						}
@@ -275,12 +261,12 @@ directive("app.cats.maintenanceView.projectList", [
 						if(errorText) {
 							$scope.errorText = errorText;
 						} else {
-							$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+							$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 						}
 					});
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 				return deferred.promise;
 			}
@@ -304,6 +290,7 @@ directive("app.cats.maintenanceView.projectList", [
 					});
 					if (!allreadyExists) {
 						$scope.items.push(configService.enhanceTask(blockItem.task));
+						$scope.itemsFromBlocks.push(configService.enhanceTask(blockItem.task));
 					}
 				});
 			}
@@ -342,19 +329,40 @@ directive("app.cats.maintenanceView.projectList", [
 
 				catsBackend.determineCatsProfileFromBackend()
 				.then(function(catsProfile) {
-
+					// IF using favorite list
 					if (configService.favoriteItems.length > 0 && !$scope.forSettingsView) {
 						$scope.items = angular.copy(configService.favoriteItems);
 						var header1 = {};
-						header1.DESCR = "Favourite tasks for profile " + catsProfile + " (configured in CAT2 app settings)";
+						header1.DESCR = "Bridge favorite tasks (profile " + catsProfile + ")";
+						header1.infoLink = "https://github.wdf.sap.corp/bridge/bridge/wiki/FAQ-for-CAT2#what-is-the-bridge-favorite-task-list-and-where-can-i-find-it";
+						header1.infoLinkText = "You are using a task list that is configured in Bridge! Changes from ISP or cPro worklist will not appear automatically.";
 						header1.TASKTYPE = "BRIDGE_HEADER";
 						header1.RAUFNR = "3";
 						$scope.items.unshift(header1);
-						var header2 = {};
-						header2.DESCR = "Additional tasks for current day";
-						header2.TASKTYPE = "BRIDGE_HEADER";
-						header2.RAUFNR = "4";
-						$scope.items.push(header2);
+
+						if ($scope.itemsFromBlocks.length > 0) {
+
+							var header2 = {};
+							header2.DESCR = "Additional tasks";
+							header2.TASKTYPE = "BRIDGE_HEADER";
+							header2.RAUFNR = "4";
+							$scope.items.push(header2);
+
+							$scope.itemsFromBlocks.forEach(function(itemFromBlock) {
+								var allreadyExists = false;
+								$scope.items.some(function(item) {
+									if (catsUtils.isSameTask(itemFromBlock, item)) {
+										allreadyExists = true;
+										return exitLoop;
+									}
+								});
+								if (!allreadyExists) {
+									$scope.items.push(configService.enhanceTask(itemFromBlock));
+								}
+							});
+
+						}
+					// ELSE using CAT2 data
 					} else {
 						$scope.items = angular.copy(configService.catsItems);
 						addItemsFromFavoriteList(); // if favorite list contains items, that are not in the worklist or template anymore
@@ -365,7 +373,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 				}, function() {
 					$scope.hasError = true;
-					$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+					$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				});
 
 			}
@@ -398,7 +406,7 @@ directive("app.cats.maintenanceView.projectList", [
 						$scope.loaded = true;
 					}, function() {
 						$scope.hasError = true;
-						$scope.errorText = "There was a problem with the connection to ISP (error or timeout). Please refresh the browser.";
+						$scope.errorText = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 					});
 				} else {
 					initProjectItems();

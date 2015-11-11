@@ -18,8 +18,10 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         atcConfig.initialize("app.atc-" + $routeParams.instanceNumber);
     }
 
+    $scope.config = atcConfig;
+
     if($scope.atcData.detailsData.length === 0) {
-        $scope.atcData.getDetailsForConfig(atcConfig, $scope);
+        $scope.loadingPromise = $scope.atcData.getDetailsForConfig(atcConfig, $scope);
     }
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
 

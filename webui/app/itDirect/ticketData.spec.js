@@ -42,8 +42,8 @@ describe("IT Direct ticket data", function(){
             $rootScope = _$rootScope;
             $httpBackend = _$httpBackend;
             $q = _$q;
-            ticketData = _ticketData;
-            itdirectConfig = _itdirectConfig;
+            ticketData = _ticketData.getInstanceForAppId("Dummy");
+            itdirectConfig = _itdirectConfig.getConfigForAppId("Dummy");
         }]);
     });
 

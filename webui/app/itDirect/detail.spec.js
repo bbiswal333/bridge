@@ -2,12 +2,16 @@ describe("IT Direct details controller", function(){
     var controller = null;
     var $rootScope = null;
     var ticketDataMock = {
-        isInitialized: false,
-        tickets: {
-            assigned_me: [],
-            savedSearch: []
-        },
-        activatePrio: function(){
+        getInstanceForAppId: function() {
+            return {
+                isInitialized: false,
+                tickets: {
+                    assigned_me: [],
+                    savedSearch: []
+                },
+                activatePrio: function(){
+                }
+            };
         }
     };
 
@@ -20,7 +24,11 @@ describe("IT Direct details controller", function(){
                 "$routeParams": {},
                 "bridgeDataService": {},
                 "app.itdirect.ticketData": ticketDataMock,
-                "app.itdirect.config": { isInitialized: true }
+                "app.itdirect.config": {
+                    getConfigForAppId: function() {
+                        return {isInitialized: true};
+                    }
+                }
             });
 
             $rootScope = _$rootScope;

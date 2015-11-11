@@ -54,6 +54,7 @@
             if (dataService.isInitialized() === true) {
                 var payload = that.constructPayload(dataService);
                 $window.localStorage.setItem(storageKey, angular.toJson(payload));
+                $log.log("Config saved successfully in localStorage");
             }
         };
 
@@ -123,9 +124,9 @@
                 data: sConfigPayload,
                 headers: { 'Content-Type': 'text/plain' }
             }).success(function () {
-                $log.log("Config saved successfully");
+                $log.log("Config saved successfully in backend");
             }).error(function () {
-                $log.log("Error when saving config!");
+                $log.log("Error when saving config! in backend");
             });
         };
 

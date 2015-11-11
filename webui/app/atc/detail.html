@@ -1,5 +1,5 @@
 ﻿<div ng-controller="app.atc.detailcontroller" style="box-sizing:border-box;" >    
-    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;" cg-busy="{promise:loadingPromise,message:'Loading'}">
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
 		<!--<div class="btn-group" style="height:32px">
 			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">Prio {{status}}</span>
@@ -9,11 +9,16 @@
 		<br/>
 
 		<bridge.table table-data="atcData.tableData" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Prio'" column-size-class="'col-sm-1'" order-by="'CHECK_MSG_PRIO'">{{row.CHECK_MSG_PRIO}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'CHECK_SYSTEM'">{{row.CHECK_SYSTEM}}</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Check'" column-size-class="'col-sm-2'" order-by="'CHECK_DESCRIPTION'">{{row.CHECK_DESCRIPTION}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Check Message'" column-size-class="'col-sm-4'" order-by="'CHECK_MESSAGE'">{{row.CHECK_MESSAGE}}</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Object'" column-size-class="'col-sm-4'" order-by="'OBJ_NAME'">{{row.OBJ_NAME}}</bridge.table-column>
+			<bridge.table-column column-id="'1'" header="'Prio'" column-size-class="'col-sm-1'" order-by="'CHECK_MSG_PRIO'" visible="parentScope.config.detailsColumnVisibility[0]">{{row.CHECK_MSG_PRIO}}</bridge.table-column>
+			<bridge.table-column column-id="'2'" header="'System'" column-size-class="'col-sm-1'" order-by="'CHECK_SYSTEM'" visible="parentScope.config.detailsColumnVisibility[1]">{{row.CHECK_SYSTEM}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Check'" column-size-class="'col-sm-2'" order-by="'CHECK_DESCRIPTION'" visible="parentScope.config.detailsColumnVisibility[2]">{{row.CHECK_DESCRIPTION}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Check Message'" column-size-class="'col-sm-4'" order-by="'CHECK_MESSAGE'" visible="parentScope.config.detailsColumnVisibility[3]">{{row.CHECK_MESSAGE}}</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Object Type'" column-size-class="'col-sm-1'" order-by="'OBJECT'" visible="parentScope.config.detailsColumnVisibility[4]">{{row.OBJECT}}</bridge.table-column>
+			<bridge.table-column column-id="'6'" header="'Object'" column-size-class="'col-sm-3'" order-by="'OBJ_NAME'" visible="parentScope.config.detailsColumnVisibility[5]">{{row.OBJ_NAME}}</bridge.table-column>
+			<bridge.table-column column-id="'7'" header="'Package'" column-size-class="'col-sm-3'" order-by="'DEVCLASS'" visible="parentScope.config.detailsColumnVisibility[6]">{{row.DEVCLASS}}</bridge.table-column>
+			<bridge.table-column column-id="'8'" header="'Package Responsible'" column-size-class="'col-sm-3'" order-by="'RESP4DEVCLASS'" visible="parentScope.config.detailsColumnVisibility[7]"><bridge.employee id="row.RESP4DEVCLASS"><bridge.employee></bridge.table-column>
+			<bridge.table-column column-id="'9'" header="'Object Responsible'" column-size-class="'col-sm-3'" order-by="'RESP4OBJ_ACCOUNT'" visible="parentScope.config.detailsColumnVisibility[8]"><bridge.employee id="row.RESP4OBJ_ACCOUNT"><bridge.employee></bridge.table-column>
+			<bridge.table-column column-id="'10'" header="'Component'" column-size-class="'col-sm-2'" order-by="'COMP_SHORT'" visible="parentScope.config.detailsColumnVisibility[9]">{{row.COMP_SHORT}}</bridge.table-column>
 		</bridge.table>
     </div>
 </div>

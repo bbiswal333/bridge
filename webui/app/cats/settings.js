@@ -1,8 +1,23 @@
-angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification",
-    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification) {
+angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "app.cats.catsUtils", "bridgeInBrowserNotification", "app.cats.cat2BackendZDEVDB",
+    function ($scope, catsConfigService, catsUtils, bridgeInBrowserNotification, catsBackend) {
 
-	$scope.configService = catsConfigService;
+    $scope.configService = catsConfigService;
+    catsConfigService.removeInvalidTasks(catsConfigService.favoriteItems);
     var favoriteItemsToRollBack = angular.copy(catsConfigService.favoriteItems);
+
+    $scope.tasktypesF4Help = [];
+    catsBackend.requestTasktypes().then(
+        function(data){
+            $scope.tasktypesF4Help = data.ET_TASKTYPE;
+        }
+    );
+
+    $scope.subtypesF4Help = [];
+    catsBackend.requestTasktypes().then(
+        function(data){
+            $scope.subtypesF4Help = data.ET_SUBTYPES;
+        }
+    );
 
     function getIndexForId(list, id) {
         var index = -1;
@@ -10,8 +25,8 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         list.some(function(item) {
             index++;
             if (id === item.id) {
-            	foundIndex = index;
-              	return true;
+                foundIndex = index;
+                  return true;
             }
         });
         return foundIndex;
@@ -57,6 +72,7 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         favoriteItemsToRollBack.push(angular.copy(catsConfigService.selectedTask));
         $scope.selectedTask = catsConfigService.selectedTask;
         sortFavoriteItemsAccordingToCatsItems();
+        catsConfigService.removeInvalidTasks($scope.configService.favoriteItems);
     }
 
     $scope.isUnchanged = function(item){
@@ -118,6 +134,13 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
     };
 
     $scope.handleEditTask = function(id) {
+        // make sure the headers are never edited
+        if(catsConfigService.selectedTask.TASKTYPE === 'BRIDGE_HEADER') {
+            $scope.selectedTask = null;
+            catsConfigService.selectedTask = null;
+            return;
+        }
+
         catsConfigService.updateLastUsedDescriptions(catsConfigService.selectedTask);
 
         var index = getIndexForId(catsConfigService.favoriteItems, id);
@@ -130,20 +153,20 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
         $scope.selectedTask = catsConfigService.selectedTask;
     };
 
-	$scope.handleProjectChecked = function (desc_s, val_i, task, id) {
-		if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
-			addSelectedItemToFavorites();
-		}
+    $scope.handleProjectChecked = function (desc_s, val_i, task, id) {
+        if (getIndexForId(catsConfigService.favoriteItems, id) < 0) {
+            addSelectedItemToFavorites();
+        }
         $scope.selectedTask = catsConfigService.selectedTask;
-		return true;
-	};
+        return true;
+    };
 
-	$scope.handleProjectUnchecked = function (task) {
-		var index = getIndexForId(catsConfigService.favoriteItems, task.id);
-    	if (index >= 0) {
-    		catsConfigService.favoriteItems.splice(index,1);
-			catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
-    	}
+    $scope.handleProjectUnchecked = function (task) {
+        var index = getIndexForId(catsConfigService.favoriteItems, task.id);
+        if (index >= 0) {
+            catsConfigService.favoriteItems.splice(index,1);
+            catsConfigService.selectedTask = catsConfigService.favoriteItems[catsConfigService.favoriteItems.length - 1];
+        }
         $scope.selectedTask = catsConfigService.selectedTask;
     };
 
@@ -158,6 +181,70 @@ angular.module('app.cats').catsSettings = ['$scope', "app.cats.configService", "
                 catsConfigService.favoriteItems.splice(index, 1);
             }
         }
+    };
+
+    $scope.tasktypeSearch = function(searchExpression) {
+        var searchResult = [];
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
+        for (var i = 0; i < $scope.tasktypesF4Help.length && searchResult.length < 99; i++) {
+            var searchEntry = $scope.tasktypesF4Help[i].TASKTYPE.toLowerCase();
+            if(searchEntry &&
+                searchEntry.indexOf(searchExpression) > -1) {
+                var searchResultItem = {};
+                searchResultItem.name = $scope.tasktypesF4Help[i].TASKTYPE;
+                searchResultItem.text = $scope.tasktypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
+            }
+        }
+        return searchResult;
+    };
+
+    $scope.subtypeSearch = function(tasktype, searchExpression) {
+        var searchResult = [];
+        if (searchExpression === "*") {
+            searchExpression = "";
+        } else {
+            searchExpression = searchExpression.toLowerCase();
+        }
+        tasktype = tasktype.toLowerCase();
+        for (var i = 0; i < $scope.subtypesF4Help.length && searchResult.length < 99; i++) {
+            var searchTasktype = $scope.subtypesF4Help[i].TASKTYPE.toLowerCase();
+            var searchEntry = $scope.subtypesF4Help[i].STYPE.toLowerCase();
+            if(searchEntry && tasktype && searchTasktype &&
+                searchTasktype === tasktype &&
+                searchEntry.indexOf(searchExpression) > -1) {
+                var searchResultItem = {};
+                searchResultItem.name = $scope.subtypesF4Help[i].STYPE;
+                searchResultItem.text = $scope.subtypesF4Help[i].TEXT;
+                searchResult.push(searchResultItem);
+            }
+        }
+        return searchResult;
+    };
+
+    $scope.orderSearch = function(searchExpression) {
+        return catsBackend.requestOrders(searchExpression).then(
+            function(data){
+                var searchResult = [];
+                searchExpression = searchExpression.toLowerCase();
+                for (var i = 0; i < data.REC_ORDER.length && searchResult.length < 20; i++) {
+                    var searchEntry = data.REC_ORDER[i].AUFNR.toLowerCase();
+                    if(searchEntry &&
+                        searchEntry.indexOf(searchExpression) > -1) {
+                        var searchResultItem = {};
+                        searchResultItem.name = data.REC_ORDER[i].AUFNR;
+                        searchResultItem.text = data.REC_ORDER[i].KTEXT;
+                        searchResult.push(searchResultItem);
+                    }
+                }
+                return searchResult;
+            }
+        );
+
     };
 
     $scope.clearFavoriteItems();

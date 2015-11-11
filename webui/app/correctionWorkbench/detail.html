@@ -5,10 +5,10 @@
         <div class="btn-group" style="height:32px;max-width:100%;">
           <!--<span ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
       	</div>-->
-      	<bridge.button ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()"   ng-click="statusMap[category].active = !statusMap[category].active" state="categoryMap[category].active === true ? 'active' : ' '" style="margin-bottom:20px;">{{category}}</bridge.button>
-
+      		<bridge.button ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()"   ng-click="statusMap[category].active = !statusMap[category].active" state="categoryMap[category].active === true ? 'active' : ' '" style="margin-bottom:20px;">{{category}}</bridge.button>
+		</div>
 		<br/>
-
+		<br/>
 		<bridge.table table-data="tableData" filter="filterText">
 			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'priority.__text'">{{row.priority.__text}}</bridge.table-column>
 			<bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'component.__text'">{{row.component.__text}}</bridge.table-column>

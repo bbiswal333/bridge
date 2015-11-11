@@ -32,6 +32,14 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       }
     };
 
+    this.isCproTask = function(task) {
+      if (task.ZCPR_OBJGEXTID || task.ZCPR_EXTID) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     this.isSameTask = function(task1, task2) {
       if (!task1 || !task2) {
         return false;
@@ -81,11 +89,20 @@ angular.module("app.cats.utilsModule", ["lib.utils"]).service("app.cats.catsUtil
       return false;
     };
 
+    this.isValidProfile = function(catsProfile){
+      if (catsProfile === "SUP2007U") {
+          return false;
+      } else {
+          return true;
+      }
+    };
+
     this.isHourlyProfil = function(catsProfile){
             if (catsProfile === "SUP2007H" ||
                 catsProfile === "SUP2007B" ||
-                catsProfile === "DEV2012" ||
-                catsProfile === "INFR2015") {
+                catsProfile === "SUP2007U" ||
+                catsProfile === "DEV2012C" ||
+                catsProfile === "DEV2012") {
                 return true;
             } else {
                 return false;

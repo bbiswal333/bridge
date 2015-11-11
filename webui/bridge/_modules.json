@@ -11,13 +11,13 @@
                 "ui.bootstrap.typeahead",
                 "ui.bootstrap.tpls",
                 "ui.bootstrap.alert",
-                "ui.bootstrap.dropdownToggle",
                 "ui.bootstrap.tabs",
                 "ngTable",
                 "ngGrid",
                 "nvd3ChartDirectives",
                 "mgcrea.ngStrap.tooltip",
-                "mgcrea.ngStrap.popover"
+                "mgcrea.ngStrap.popover",
+                "cgBusy"
 	],
 	"js_files" : [
                 "bridgeModuleSetup.js",

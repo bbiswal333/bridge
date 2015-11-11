@@ -1,0 +1,28 @@
+﻿<div>
+	<div style="width:175px; height:140px">
+		<div class="prio_container">
+			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/" navigate-if="numOpenTransports!==0">
+					<div class="prio_box" style="color:white">
+						<p>Open</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numOpenTransports <= 9999">{{numOpenTransports}}</p>
+						<p ng-if="numOpenTransports > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>
+			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/transportNew/{{metadata.guid}}/" navigate-if="numOpenTransportsLongerThanThreshold!==0">
+					<div class="prio_box" style="color:white">
+						<p>Open > {{transportConfig.openTransportThreshold}} days</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numOpenTransportsLongerThanThreshold <= 9999">{{numOpenTransportsLongerThanThreshold}}</p>
+						<p ng-if="numOpenTransportsLongerThanThreshold > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>	
+		</div>
+	</div>
+</div>
