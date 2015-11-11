@@ -1,5 +1,5 @@
 <div>
-	<div ng-class="{'cloud-prio_container-1' : !box.boxSize || box.boxSize == 1, 'cloud-prio_container-2' : box.boxSize == 2}" style="height:140px"> <!-- modif clasa!!! -->
+	<div id="cloud-reporting-tiles" ng-class="{'cloud-prio_container-1' : !box.boxSize || box.boxSize == 1, 'cloud-prio_container-2' : box.boxSize == 2}" style="height:140px">
 		<div  ng-repeat="t in kpis" class="prio_col cloud-prio_col prio_bg_{{$index+1}}" ng-dblclick="myDblClick($index)" ng-click="myClick($index)">
 			<div class="prio_box" style="color:white">
 				<p title="{{t.title}}">{{t.title.substring(0,17)+"..."}}</p>

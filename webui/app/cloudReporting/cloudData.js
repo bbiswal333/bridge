@@ -16,8 +16,7 @@ angular.module("app.cloudReporting").service("app.cloudReporting.cloudData",
                 var oConfig = oConfigService.getConfigForAppId(appId);
                 var sURL = oConfig.getUrl();
                 var sKpis = oConfig.configItem.kpis;
-
-                $window.console.log(sKpis);
+                that.kpis = [];
 
                 if (sKpis.length >= 1) {
                     sKpis.forEach(function(thisKpi){
@@ -28,6 +27,7 @@ angular.module("app.cloudReporting").service("app.cloudReporting.cloudData",
                         });
                     });
                 }
+                return that.kpis;
             };
 
             this.refreshData = function() {
