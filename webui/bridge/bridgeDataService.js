@@ -289,6 +289,16 @@
             return that.availableApps;
         }
 
+        function _getInstancesByType(type) {
+            var apps = [];
+            _getSelectedProject().apps.map(function(app) {
+                if(app.metadata.module_name === type) {
+                    apps.push(app);
+                }
+            });
+            return apps;
+        }
+
         return {
             initialize: _initialize,
             isInitialized: _getInitialized,
@@ -309,6 +319,7 @@
             getSelectedProject: _getSelectedProject,
             hasProject: _hasProject,
             getProject: _getProject,
-            addProjectFromOwner: _addProjectFromOwner
+            addProjectFromOwner: _addProjectFromOwner,
+            getInstancesByType: _getInstancesByType
         };
 }]);

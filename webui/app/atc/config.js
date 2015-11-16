@@ -119,7 +119,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	        }
 	    } else {
 	        currentConfigItem = this.newItem();
-	        currentConfigItem.tadirResponsible = bridgeDataService.getUserInfo();
+	        currentConfigItem.tadirResponsibles = [bridgeDataService.getUserInfo()];
 	        this.addConfigItem(currentConfigItem);
 	    }
 	};
