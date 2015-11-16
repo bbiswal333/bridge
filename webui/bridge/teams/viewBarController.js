@@ -1,5 +1,5 @@
-angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$rootScope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout", "$location", "$route",
-	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout, $location, $route) {
+angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope", "$rootScope", "$modal", "bridgeDataService", "$http", "$q", "bridgeInstance", "$window", "$log", "bridgeInBrowserNotification", "$timeout", "$location", "$route", "bridgeConfig",
+	function($scope, $rootScope, $modal, bridgeDataService, $http, $q, bridgeInstance, $window, $log, bridgeInBrowserNotification, $timeout, $location, $route, bridgeConfigService) {
     $scope.views = bridgeDataService.getProjects();
 
     function setScrollInformation() {
@@ -78,6 +78,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     		$timeout(function() {
     			deferred.reject();
     			bridgeInBrowserNotification.addAlert("danger", "View not found", 600);
+                $location.path("/");
     		}, 100);
     	}
     	return deferred.promise;
@@ -124,5 +125,9 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
         } else {
             $location.path("/view/" + project.owner + "/" + project.view);
         }
+    };
+
+    $scope.handleTextChanged = function() {
+        bridgeConfigService.store(bridgeDataService);
     };
 }]);
