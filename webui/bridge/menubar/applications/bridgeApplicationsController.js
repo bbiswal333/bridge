@@ -47,10 +47,10 @@ angular.module('bridge.app').
 					bridgeInBrowserNotification.addAlert('danger', 'This app is not a multi instance app and cannot be added to team views');
 		    		return;
 		    	}
-	    		var instances = appCreator.getInstancesByType(metadata.module_name);
+	    		var instances = bridgeDataService.getInstancesByType(metadata.module_name);
 	    		if(instances && instances.length > 0) {
 	    			instances.map(function(instance) {
-	    				appCreator.removeInstanceById(instance.metadata.guid);
+	    				bridgeDataService.removeInstanceById(instance.metadata.guid);
 	    				bridgeDataService.getProjects()[0].apps.splice(bridgeDataService.getProjects()[0].apps.indexOf(instance), 1);
 	    			});
 	    		} else {
@@ -61,7 +61,7 @@ angular.module('bridge.app').
 	    };
 
 	    $scope.hasInstance = function(metadata) {
-	    	var instances = appCreator.getInstancesByType(metadata.module_name);
+	    	var instances = bridgeDataService.getInstancesByType(metadata.module_name);
 	    	if(!instances || instances.length === 0) {
 	    		return false;
 	    	} else {
@@ -75,7 +75,7 @@ angular.module('bridge.app').
 	    };
 
 	    $scope.removeAppInstance = function(metadata) {
-	    	var lastInstance = bridgeDataService.getInstancesByType(metadata.module_name)[appCreator.getInstancesByType(metadata.module_name).length - 1];
+	    	var lastInstance = bridgeDataService.getInstancesByType(metadata.module_name)[bridgeDataService.getInstancesByType(metadata.module_name).length - 1];
 	    	bridgeDataService.removeAppById(lastInstance.metadata.guid);
 			bridgeConfig.store(bridgeDataService);
 	    };
