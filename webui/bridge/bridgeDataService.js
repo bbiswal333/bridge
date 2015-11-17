@@ -6,6 +6,7 @@
         this.clientMode = false;
         this.logMode = false;
         this.availableApps = [];
+        var viewPromises = [];
 
         var initialized = false;
         var that = this;
@@ -92,12 +93,20 @@
         }
 
         function parseProjects(config) {
+            viewPromises = [];
+            var promise;
             if (config.bridgeSettings && config.bridgeSettings.apps) {
-                parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+                promise = parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+                if(promise) {
+                    viewPromises.push(promise);
+                }
             }
             else if (config.projects) {
                 for (var i = 0; i < config.projects.length; i++) {
-                    parseProject(config.projects[i]);
+                    promise = parseProject(config.projects[i]);
+                    if(promise) {
+                        viewPromises.push(promise);
+                    }
                 }
             }
         }
@@ -182,7 +191,9 @@
                 bridgeConfig.configSnapshot = angular.copy(config);
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
-                initialized = true;
+                $q.all(viewPromises).then(function() {
+                    initialized = true;
+                });
             }
 
             var allPromises = $q.all([configPromise, userInfoPromise]);

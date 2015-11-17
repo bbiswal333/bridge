@@ -31,7 +31,7 @@ angular.module('bridge.app').directive('bridge.editableLabel', [function() {
         		$scope.editMode = false;
         	};
 
-            $scope.$watch('editMode', function() {
+            $scope.$watch('editMode', function(oldValue, newValue) {
                 if($scope.onTextChanged && $scope.editMode === false) {
                     $scope.onTextChanged();
                 }
