@@ -51,11 +51,3 @@
 	pointer-events:all; 
 	z-index:99;
 }
-
-.incidents-selected-component {
-	padding: 6px;
-	background-color: ;
-	border: 1px solid #418AC9;
-	margin: 4px 8px;
-	display: inline-block;
-}

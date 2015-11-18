@@ -6,7 +6,7 @@
         <div class="btn-group" style="height:32px;max-width:100%;">
         	<bridge.button ng-repeat="prio in prios" state="prio.active === true ? 'active' : ' '" ng-click="prio.active = !prio.active; doAlert()" style="width:100px;margin-top:0">{{prio.description}}</bridge.button>
 
-        	<div style="position:absolute;right:0" ng-show="config.advancedMode === false">
+        	<div style="position:absolute;right:0">
 				<bridge.button state="config.data.selection.sel_components === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.sel_components = !config.data.selection.sel_components; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Selected Components"><i class="fa fa-cube"></i></bridge.button>
 				<bridge.button state="config.data.selection.colleagues === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.colleagues = !config.data.selection.colleagues; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Assigned to Colleagues"><i class="fa fa-users"></i></bridge.button>
 				<bridge.button state="config.data.selection.assigned_me === true ? 'active' : 'invisible-button'" ng-click="config.data.selection.assigned_me = !config.data.selection.assigned_me; doAlert()" style="width:35px;height:35px;line-height:35px;margin:0;margin-bottom:5px;" title="Assigned to Me"><i class="fa fa-1.5x fa-crosshairs"></i></bridge.button>
@@ -20,17 +20,33 @@
 			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
 			<bridge.table-column column-id="'2'" header="'Category'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
 			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]">{{row.STATUS_DESCR}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_ID'" visible="parentScope.config.data.columnVisibility[3]"><bridge.employee id="row.REPORTER_ID" mail-body="{{row.URL_MESSAGE}}" mail-subject="Internal Incident {{row.OBJECT_ID}}"></bridge.employee></bridge.table-column>
-			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_ID'" visible="parentScope.config.data.columnVisibility[9]"><bridge.employee id="row.PROCESSOR_ID" mail-body="{{row.URL_MESSAGE}}" mail-subject="Internal Incident {{row.OBJECT_ID}}></bridge.employee></bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
-			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px;"
+					 ng-if="row.REPORTER_ID"></img>
+				<a class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
+				<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'10'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
+				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
+					 class="im-reporter-img"
+					 style="height: 32px;"
+					 ng-if="row.PROCESSOR_ID"></img>
+				<a class="clickable" ng-click="parentScope.userClick(row.processorData)">{{row.PROCESSOR_NAME}}</a>
+				<a href="mailto:{{row.processorData.mail}}"><p class="table-icon-small icon-mail"></p></a>
+				<a href="tel:{{row.processorData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+			</bridge.table-column>
+			<bridge.table-column column-id="'5'" header="'Created'" column-size-class="'col-sm-1'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
+			<bridge.table-column column-id="'6'" header="'Changed'" column-size-class="'col-sm-1'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
 			<bridge.table-column column-id="'7'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]">
 				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]" custom-style="{'min-width': '120px'}">
+			<bridge.table-column column-id="'8'" header="'ObjectId'" column-size-class="'col-sm-1'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]">
 				<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.OBJECT_ID}}</a>
 			</bridge.table-column>
-			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]" custom-style="{'min-width': '10rem'}">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
+			<bridge.table-column column-id="'9'" header="'MPT'" column-size-class="'col-sm-1'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
 		</bridge.table>
 
     </div>

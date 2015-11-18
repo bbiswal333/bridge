@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Service & Support"],
 		"module_name"			:	"app.internalIncidents",
-		"title"					:	"Int. Incid.",
+		"title"					:	"Internal Incidents by Component",
 		"icon_css"				:	"icon-comment",
 		"overview_directive"	:	"app.internalIncidents",
 		"needs_client"			:	false,
@@ -20,6 +20,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "bcpTicketData.js", "mitosisTicketData.js", "detail.js", "settings.js"],
+	"js_files" : ["overview.js", "config.js", "ticketData.js", "detail.js", "settings.js"],
 	"css_files" : ["style.css"]
 }

@@ -1,7 +1,6 @@
 angular.module('app.internalIncidents').service("app.internalIncidents.configservice", ["bridge.ticketAppUtils.configUtils", function (configUtils){
     var Config = function() {
         this.data = {};
-        this.data.advancedMode = false;
         this.data.lastDataUpdate = null;
         this.data.selection = {};
         this.data.selection.sel_components = true;
@@ -10,9 +9,6 @@ angular.module('app.internalIncidents').service("app.internalIncidents.configser
         this.data.selection.created_me = false;
         this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false];
         this.data.ignoreAuthorAction = true;
-        this.data.programs = [];
-        this.data.components = [];
-        this.data.systems = [];
 
         this.isInitialized = false;
         this.initialize = function (oConfigFromBackend) {
