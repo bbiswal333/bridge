@@ -73,17 +73,21 @@ angular.module("app.internalIncidentsMitosis")
 
 			return function() {
 				this.loadData = function(config) {
-					this.prio1 = [];
-					this.prio2 = [];
-					this.prio3 = [];
-					this.prio4 = [];
 					var deferred = $q.defer();
 					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0) {
+						this.prio1 = [];
+						this.prio2 = [];
+						this.prio3 = [];
+						this.prio4 = [];
 						deferred.resolve();
 					} else {
 						var url = "https://mithdb.wdf.sap.corp/irep/reporting/bridge/internalIncidents/incidents.xsodata/Incidents?$format=json&$filter=" + getFilterFromConfig(config) + "&origin=" + $window.location.origin;
 						var that = this;
 						$http.get(url).success(function(data){
+							this.prio1 = [];
+							this.prio2 = [];
+							this.prio3 = [];
+							this.prio4 = [];
 							data.d.results.map(function(incident) {
 								switch(incident.II_PRIORITY_TEXT) {
 									case "1-Very High":
