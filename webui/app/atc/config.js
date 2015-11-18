@@ -17,6 +17,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
             this.displayPrio3 = false;
             this.displayPrio4 = false;
             this.onlyInProcess = false;
+            this.onlyProductionRelevant = false;
         };
 
         this.isEmpty = function () {
@@ -51,7 +52,8 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 		query += this.displayPrio3 ? "X;" : ";";
 		query += this.displayPrio4 ? "X;" : ";";
 		query += this.onlyInProcess ? "X;" : ";";
-		query += this.softwareComponents.join(",");
+		query += this.softwareComponents.join(",") + ";";
+		query += this.onlyProductionRelevant ? "*FA*" : "";
 		return query;
 	};
 
@@ -114,6 +116,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
               	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? persistedConfig.configItems[configItem].softwareComponents : (persistedConfig.configItems[configItem].softwareComponent ? [persistedConfig.configItems[configItem].softwareComponent] : []);
 	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? persistedConfig.configItems[configItem].srcSystems : (persistedConfig.configItems[configItem].srcSystem ? [persistedConfig.configItems[configItem].srcSystem] : []);
 	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : (persistedConfig.configItems[configItem].tadirResponsible ? [persistedConfig.configItems[configItem].tadirResponsible] : []);
+	            currentConfigItem.onlyProductionRelevant = persistedConfig.configItems[configItem].onlyProductionRelevant;
 
 	            this.addConfigItem(currentConfigItem);
 	        }

@@ -14,6 +14,7 @@
         myConfigItem.displayPrio1 = true;
         myConfigItem.displayPrio3 = true;
         myConfigItem.onlyInProcess = true;
+        myConfigItem.onlyProductionRelevant = true;
         return myConfigItem;
     }
 
@@ -23,7 +24,7 @@
                 hasConfigForATC: true,
                 getAppConfigById: function () {
                     if (this.hasConfigForATC) {
-                        return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true}]}');
+                        return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true, "onlyProductionRelevant": true}]}');
                     } else {
                         return {};
                     }
@@ -45,12 +46,12 @@
     it("shoud create the correct query string", function () {
         var myConfig = atcConfigService;
         myConfig.addConfigItem(createConfigItemForSystem("V7Z"));
-        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;");
+        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*");
 
         myConfig.addConfigItem(createConfigItemForSystem("CI3"));
         expect(myConfig.getConfigItems().length).toBe(2);
 
-        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;|CI3;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;");
+        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*|CI3;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*");
     });
 
     it("should initialize itself from the bridge config service", function () {
