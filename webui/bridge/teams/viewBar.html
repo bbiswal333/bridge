@@ -55,7 +55,7 @@
 			<a ng-click="scrollLeft()"><span class="fa fa-chevron-left"></span></a>
 		</div>
 		<div class="projectTabContainer">
-			<div ng-repeat="project in projects" class="projectTab">
+			<div ng-repeat="project in projects" class="projectTab" ng-class="{'selected': project === selectedProject}">
 				<span ng-click="setSelectedProject(project)"><bridge.editable-label text="project.name" readonly="project.owner !== userData.BNAME" on-text-changed="handleTextChanged()"></bridge.editable-label></span> <a ng-click="deleteView(project.view)" ng-if="project.type === 'TEAM'"><span class="fa fa-remove removeView"></span></a>
 			</div>
 		</div>
