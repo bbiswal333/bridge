@@ -6,7 +6,8 @@
 				<table style="width: 100%">
 					<tr class="box-heading-content">
 						<td style="text-align: left; width: 1px; font-size: 2.2rem; margin-right: 10px; position: relative; top: 1px;">
-							<a href="/#/"><i class="fa fa-arrow-left"></i></a>
+							<a href="/#/" ng-show="selectedProject.type === 'PERSONAL'"><i class="fa fa-arrow-left"></i></a>
+							<a href="/#/view/{{selectedProject.owner}}/{{selectedProject.view}}" ng-show="selectedProject.type === 'TEAM'"><i class="fa fa-arrow-left"></i></a>
 						</td>
 						<td style="text-align: center">
 							<h6 class="box-title">{{detailScreen.title}}</h6>

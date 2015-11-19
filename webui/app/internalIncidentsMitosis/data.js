@@ -21,12 +21,20 @@ angular.module("app.internalIncidentsMitosis")
 
 	        function getFilterFromConfig(config) {
 	        	var filter = "";
-	        	if(config.systems.length > 0 || config.programs.length > 0) {
+	        	if(config.systems.length > 0 || config.programs.length > 0 || config.processors.length > 0) {
 	        		filter += "( (";
 	        		filter += config.systems.map(function(system) {
 	        			return "II_SYSTEM_ID eq '" + system + "'";
 	        		}).join(' or ');
-	        		if(config.systems.length > 0 && config.programs.length > 0) {
+	        		if(config.processors.length > 0) {
+	        			if(config.systems.length > 0) {
+	        				filter += " or ";
+	        			}
+	        			filter += config.processors.map(function(processor) {
+	        				return "II_PROCESSOR_ID eq '" + processor.BNAME + "'";
+	        			}).join(' or ');
+	        		}
+	        		if((config.systems.length > 0 || config.processors.length > 0) && config.programs.length > 0) {
 	        			filter += ") or (";
 	        		}
 	        		filter += config.programs.map(function(program) {
@@ -76,7 +84,7 @@ angular.module("app.internalIncidentsMitosis")
 
 				this.loadData = function(config) {
 					var deferred = $q.defer();
-					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0) {
+					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0 && config.processors.length === 0) {
 						that.prio1 = [];
 						that.prio2 = [];
 						that.prio3 = [];
