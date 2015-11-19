@@ -12,7 +12,7 @@ angular.module("app.lunchWalldorf" ).service('app.lunchWalldorf.backendData', [ 
         "KAR": {
             portalLink:  "http://www.casinocatering.de/speiseplan/max-rubner-institut",
             portalLinkText: "Lunch menu online",
-            portalBackend: 'https://dextorcloud.mo.sap.corp:8000/bfe/bfe.json'
+            portalBackend: 'https://dextorcloud.mo.sap.corp:8000/bfe/bfe.json?origin='+location.origin
         },
         "DRE": {
             portalLink:  "https://lunchmenudresden-p1940757062trial.dispatcher.hanatrial.ondemand.com",
