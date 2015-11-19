@@ -78,6 +78,20 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 		}
 	};
 
+	$scope.onSelectEmployee = function(processor) {
+		for(var i = 0; i < $scope.currentConfigValues.processors.length; i++) {
+			if($scope.currentConfigValues.processors[i].BNAME === processor.BNAME) {
+				return;
+			}
+		}
+
+		$scope.currentConfigValues.processors.push(processor);
+	};
+
+	$scope.removeProcessor = function(processor) {
+		$scope.currentConfigValues.processors.splice($scope.currentConfigValues.processors.indexOf(processor), 1);
+	};
+
 	$scope.removeSystem = function(item) {
 		$scope.currentConfigValues.systems.splice($scope.currentConfigValues.systems.indexOf(item), 1);
 	};

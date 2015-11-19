@@ -7,6 +7,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 			this.components = [];
 			this.systems = [];
 			this.isInitialized = false;
+			this.processors = [];
 			this.detailsColumnVisibility = [false, true, true, true, true, true, false, false, true, true, false, false];
 
 			this.initialize = function() {
@@ -15,6 +16,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 	                this.programs = angular.copy(appConfig.programs ? appConfig.programs : []);
 	                this.components = angular.copy(appConfig.components ? appConfig.components : []);
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems : []);
+	                this.processors = angular.copy(appConfig.processors ? appConfig.processors : []);
 	    			this.detailsColumnVisibility = appConfig.detailsColumnVisibility ? appConfig.detailsColumnVisibility : [false, true, true, true, true, true, false, false, true, true, false, false];
 	            }
 	            this.isInitialized = true;
