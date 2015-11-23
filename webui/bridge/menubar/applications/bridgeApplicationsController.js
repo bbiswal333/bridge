@@ -50,8 +50,7 @@ angular.module('bridge.app').
 	    		var instances = bridgeDataService.getInstancesByType(metadata.module_name);
 	    		if(instances && instances.length > 0) {
 	    			instances.map(function(instance) {
-	    				bridgeDataService.removeInstanceById(instance.metadata.guid);
-	    				bridgeDataService.getProjects()[0].apps.splice(bridgeDataService.getProjects()[0].apps.indexOf(instance), 1);
+	    				bridgeDataService.removeAppById(instance.metadata.guid);
 	    			});
 	    		} else {
 	    			bridgeDataService.getProjects()[0].apps.push(appCreator.createInstance(metadata, {}));
