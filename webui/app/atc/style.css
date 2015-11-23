@@ -81,7 +81,6 @@
     background-color: rgba(255,255,255,0.5);
 }
 
-
 .atc_input{
     width: 100%;
     float:left;
@@ -108,6 +107,16 @@
     overflow: auto;
     margin-left: 0px;
 }
+.atcTable .columnSelectButton {
+    top: -25px;
+    right: calc(100% - 15px);
+}
+.atcTable bridge.table {
+    left: 0;
+}
+.atcTable .tableTitle {
+    padding-left: 10px;
+}
 
 .atcTable .col_sm_1 > div, .atcTable .col_sm_1 {
     width: 50px;
@@ -123,15 +132,4 @@
 }
 .atcTable .col_sm_responsible > div, .atcTable .col_sm_responsible {
     width: 210px; 
-}
-
-.atcTable .columnSelectButton {
-    top: -25px;
-    right: calc(100% - 15px);
-}
-.atcTable bridge.table {
-    left: 0;
-}
-.atcTable .tableTitle {
-    padding-left: 10px;
 }
