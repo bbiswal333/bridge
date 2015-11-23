@@ -103,3 +103,35 @@
     margin: 4px 8px;
     display: inline-block;
 }
+
+.atcTable .row {
+    overflow: auto;
+    margin-left: 0px;
+}
+
+.atcTable .col_sm_1 > div, .atcTable .col_sm_1 {
+    width: 50px;
+}
+.atcTable .col_sm_2 > div,  .atcTable .col_sm_2 {
+    width: 70px;
+}
+.atcTable .col_sm_middle > div, .atcTable .col_sm_middle {
+    width: 100px;
+ }
+.atcTable .col_sm_long > div, .atcTable .col_sm_long {
+    width: 260px; 
+}
+.atcTable .col_sm_responsible > div, .atcTable .col_sm_responsible {
+    width: 210px; 
+}
+
+.atcTable .columnSelectButton {
+    top: -25px;
+    right: calc(100% - 15px);
+}
+.atcTable bridge.table {
+    left: 0;
+}
+.atcTable .tableTitle {
+    padding-left: 10px;
+}
