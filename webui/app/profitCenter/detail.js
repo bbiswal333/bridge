@@ -20,13 +20,15 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
         }
 
         function buildTree(nodes) {
+            var rootNode;
             nodes.map(function(node) {
                 if (!node.PARENT_PATH) {
-                    $scope.treeData = [nodesById[node.PATH]];
+                    rootNode = [nodesById[node.PATH]];
                 } else {
                     nodesById[node.PARENT_PATH].children.push(nodesById[node.PATH]);
                 }
             });
+            $scope.treeData = rootNode;
         }
 
         function processHierarchy(nodes) {
@@ -59,13 +61,20 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
         $scope.toExcel = function(node) {
             projectProfitCenter = [];
             extractProfitCenters(node);
-            var csvContent = "data:text/csv;charset=utf-8,sep=;\n";
+            var csvContent = "sep=;\n";
             csvContent += "Profit Center Number;Profit Center Name;Controller\n";
             projectProfitCenter.map(function(item) {
                 csvContent += item.profitCenterId + ";" + item.label + ";" + item.controller + "\n";
             });
-            var encodedUri = encodeURI(csvContent);
-            $window.open(encodedUri);
+            if (window.navigator.msSaveOrOpenBlob) {
+                var blob = new Blob([decodeURIComponent(encodeURI(csvContent))], {
+                type: "text/csv;charset=utf-8;"
+                });
+                navigator.msSaveBlob(blob, 'Profit Centers.csv');
+            } else {
+                var encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
+                $window.open(encodedUri);
+            }
         };
     }
 ]);
