@@ -102,13 +102,13 @@ angular.module("app.internalIncidentsMitosis")
 									case "1-Very High":
 										that.prio1.push(transform(incident));
 										break;
-									case "3-High":
+									case "2-High":
 										that.prio2.push(transform(incident));
 										break;
-									case "5-Medium":
+									case "3-Medium":
 										that.prio3.push(transform(incident));
 										break;
-									case "9-Low":
+									case "4-Low":
 										that.prio4.push(transform(incident));
 										break;
 								}
