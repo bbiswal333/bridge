@@ -15,8 +15,8 @@ describe("Incidents By Saved Search SavedSearch-Data", function(){
     });
 
     it("should load the savedSearches from the backend and should not add the same search twice", function(){
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSNEXTPROC/).respond(mockData);
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSINTPROC/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSNEXTPROC/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_saved_search\?sap\-client=001&sap\-language=EN&business_role=ZCSSINTPROC/).respond(mockData);
         savedSearchData.loadData();
         $httpBackend.flush();
 

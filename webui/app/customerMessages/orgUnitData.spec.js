@@ -15,7 +15,7 @@ describe("CustomerIncidents OrgUnit Data", function(){
     });
 
     it("should load the orgUnits from the backend", function(){
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_org_units/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/my_org_units/).respond(mockData);
         orgUnitData.loadData();
         $httpBackend.flush();
 
