@@ -8,7 +8,7 @@ angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.ticketUti
     }, {
         urlPart: "bcvmain", name: "BCV"
     }, {
-        urlPart: "backup-support", name: "BCP"
+        urlPart: "support", name: "BCP"
     }];
 
     this.objectToArray = function(object, property) {

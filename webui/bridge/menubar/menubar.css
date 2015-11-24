@@ -181,9 +181,12 @@
   padding-left:15px;
 }
 .tab-content{
-  margin-top: 50px;
   text-align: left;
   text-align: center;
+}
+
+.menubar-appstore-related a {
+  margin-right: 25px;
 }
 /* ========================= *\
 |* -----     ICON      ----- *|
