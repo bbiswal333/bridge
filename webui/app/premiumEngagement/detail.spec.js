@@ -47,7 +47,7 @@ describe("The PremiumEngagement details controller", function(){
 
     it("should initialize the ticketData if it is not loaded yet", function(){
         spyOn(ticketData, "initialize").and.callThrough();
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)/).respond(mockTicketData);
 
         $controller("app.premiumEngagement.detailController", {
             "$scope": $rootScope,
@@ -85,7 +85,7 @@ describe("The PremiumEngagement details controller", function(){
     });
 
     it("should enhance the processor information for each ticket", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)/).respond(mockTicketData);
 
         $controller("app.premiumEngagement.detailController", {
             "$scope": $rootScope,

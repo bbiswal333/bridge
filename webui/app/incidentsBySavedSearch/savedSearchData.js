@@ -6,10 +6,10 @@ angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.saved
 
             this.loadData = function () {
 
-                var promiseDevelopment = $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSNEXTPROC&origin=' + $window.location.origin,
+                var promiseDevelopment = $http.get('https://support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSNEXTPROC&origin=' + $window.location.origin,
                     { withCredentials: true });
 
-                var promiseSupport = $http.get('https://backup-support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSINTPROCE&origin=' + $window.location.origin,
+                var promiseSupport = $http.get('https://support.wdf.sap.corp/sap/bc/devdb/my_saved_search?sap-client=001&sap-language=EN&business_role=ZCSSINTPROCE&origin=' + $window.location.origin,
                     { withCredentials: true });
 
                 var promiseAll = $q.all([promiseDevelopment, promiseSupport]);

@@ -1,3 +1,4 @@
+/*global Blob*/
 angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller', ['$scope', '$http', '$timeout', '$window',
     function ($scope, $http, $timeout, $window) {
         var nodesById = {};
@@ -66,11 +67,11 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
             projectProfitCenter.map(function(item) {
                 csvContent += item.profitCenterId + ";" + item.label + ";" + item.controller + "\n";
             });
-            if (window.navigator.msSaveOrOpenBlob) {
+            if ($window.navigator.msSaveOrOpenBlob) {
                 var blob = new Blob([decodeURIComponent(encodeURI(csvContent))], {
                 type: "text/csv;charset=utf-8;"
                 });
-                navigator.msSaveBlob(blob, 'Profit Centers.csv');
+                $window.navigator.msSaveBlob(blob, 'Profit Centers.csv');
             } else {
                 var encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
                 $window.open(encodedUri);
