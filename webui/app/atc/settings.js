@@ -7,6 +7,7 @@
     $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
 
     $scope.currentConfigValues.onlyInProcess = true;
+    $scope.bShowSelectionDetails = false;
 
     $scope.closeForm = function () {
         $scope.$emit('closeSettingsScreen');

@@ -5,8 +5,35 @@
 
 <div style="width: 100%;min-height: 500px;height: auto !important;height: 600px;"> 
 <form name="newConfigItemForm" class="atc_input">
+
+
+        <div style="width:100%;float:left;margin:5px 0 15px 0;">
+
+                <bridge.button style="margin-right:0px;" ng-click="bShowSelectionDetails = true;" >Create new Selection</bridge.button>
+
+        </div>
+
+<div ng-show="bShowSelectionDetails == true">
         <div class="row" style="margin: 10px">
-            <b>Create a new selection</b>
+            <div style="width:100%;float:left;margin:25px 0 10 0;" class="btn-group">
+                <bridge.checkbox style="margin-right: 15px;" checked-label="Display Suppressed" unchecked-label="Display Suppressed" is-checked="currentConfigValues.showSuppressed"></bridge.checkbox>
+
+                <bridge.checkbox style="margin-right: 15px;" checked-label="Ignore Completed" unchecked-label="Ignore Completed" is-checked="currentConfigValues.onlyInProcess"></bridge.checkbox>
+
+                <bridge.checkbox style="margin-right: 30px;" checked-label="Only Production Relevant" unchecked-label="Only Production Relevant" is-checked="currentConfigValues.onlyProductionRelevant"></bridge.checkbox>
+
+                <bridge.checkbox style="margin-right: 20px;" checked-label="Prio1" unchecked-label="Prio1" is-checked="currentConfigValues.displayPrio1"></bridge.checkbox>
+                <bridge.checkbox style="margin-right: 20px;" checked-label="Prio2" unchecked-label="Prio2" is-checked="currentConfigValues.displayPrio2"></bridge.checkbox>
+                <bridge.checkbox style="margin-right: 20px;" checked-label="Prio3" unchecked-label="Prio3" is-checked="currentConfigValues.displayPrio3"></bridge.checkbox>
+                <bridge.checkbox style="margin-right: 20px;" checked-label="Prio4" unchecked-label="Prio4" is-checked="currentConfigValues.displayPrio4"></bridge.checkbox>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="row" style="margin: 10px">
             <div style="margin: 10px">
                 <div class="atc-input-field">
                      <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." icon="fa fa-plus" icon-click="onSelectSystem(currentConfigValues.srcSystem)" autofocus enter="onSelectSystem(currentConfigValues.srcSystem)"></bridge.input>
@@ -47,32 +74,23 @@
             Software Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
         </div>
 
-        <div class="row" style="margin: 10px">
-            <div style="width:100%;float:left;margin:25px 0 0 0;" class="btn-group">
-                <bridge.button style="margin-left:0;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" state="currentConfigValues.showSuppressed === true ? 'active' : ' '">Display Suppressed</bridge.button>
 
-                <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
+         <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
+            <bridge.button ng-click="doAlert(); add_click()" ng-show="config.configItems.indexOf(currentConfigValues) === -1">Add New Selection</bridge.button>
+            <bridge.button ng-click="save_click()" ng-show="config.configItems.indexOf(currentConfigValues) !== -1">Save Selection</bridge.button>
 
-                <bridge.button style="margin-right:0px;width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : 'invisible-button'">Prio 1</bridge.button>
+        </div>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : 'invisible-button'">Prio 2</bridge.button>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : 'invisible-button'">Prio 3</bridge.button>
+        </div>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : 'invisible-button'">Prio 4</bridge.button>
 
-                <bridge.button style="margin-left:15px;margin-right:0;width: 200px" ng-click="currentConfigValues.onlyProductionRelevant = !currentConfigValues.onlyProductionRelevant" state="currentConfigValues.onlyProductionRelevant === true ? 'active' : 'invisible-button'">Only Production Relevant</bridge.button>
-
-            </div>
-
-             <div style="float:right;position:relative;top:25px;">
-                <bridge.button ng-click="doAlert(); add_click()" ng-show="config.configItems.indexOf(currentConfigValues) === -1">Add New Selection</bridge.button>
-                <bridge.button ng-click="save_click()" ng-show="config.configItems.indexOf(currentConfigValues) !== -1">Save Selection</bridge.button>
-
-            </div>
     </form>
     <div >
         <table ng-table="tableParams" class="table tableTransparentBorder" >
+        <div style="margin: 25px 0 0 0;">
+        <b>Added Selections:</b>
+        </div>
             <thead style="background-color: #ECECEC;">
                 <tr>
                     <th>Source System</th>
