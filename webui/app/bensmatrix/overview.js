@@ -11,7 +11,15 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		$scope.weight = "400";
 		$scope.style = "normal";
 		$scope.variant = "normal";
+		$scope.languages = [ {
+			value : 'English',
+			label : 'en-US'
+		}, {
+			value : 'German',
+			label : 'de-DE'
+		}];
 
+		$scope.selectedSourceLanguage = $scope.languages[0];
 		$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
@@ -45,20 +53,40 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 
 		$scope.updateLength = function (){
 			var sInput = $scope.input;
+			if (sInput === undefined || sInput.length < 1) {
+				return;
+			}
 			var enlength = sInput.length;
 			var tlength;
-			if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
-			else if (enlength === 5) 	{ tlength = 14; }
-			else if (enlength === 6) 	{ tlength = 16; }
-			else if (enlength === 7) 	{ tlength = 18; }
-			else if (enlength >= 8 && enlength <= 10) 	{ tlength = 20; }
-			else if (enlength === 11) 	{ tlength = 22; }
-			else if (enlength === 12) 	{ tlength = 24; }
-			else if (enlength >= 13 && enlength <= 15) 	{ tlength = 26; }
-			else if (enlength === 16) 	{ tlength = 28; }
-			else if (enlength >= 17 && enlength <= 20) 	{ tlength = 30; }
-			else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
-			else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
+			var selectedLanguage = $scope.selectedSourceLanguage.label;
+
+			if(selectedLanguage === "en-US"){
+				//Matrix for en-US
+				if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
+				else if (enlength === 5) 	{ tlength = 14; }
+				else if (enlength === 6) 	{ tlength = 16; }
+				else if (enlength === 7) 	{ tlength = 18; }
+				else if (enlength >= 8 && enlength <= 10) 	{ tlength = 20; }
+				else if (enlength === 11) 	{ tlength = 22; }
+				else if (enlength === 12) 	{ tlength = 24; }
+				else if (enlength >= 13 && enlength <= 15) 	{ tlength = 26; }
+				else if (enlength === 16) 	{ tlength = 28; }
+				else if (enlength >= 17 && enlength <= 20) 	{ tlength = 32; }
+				else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
+				else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
+			} else if (selectedLanguage === "de-DE") {
+				//Matrix for de-DE
+				if ( enlength >= 1 && enlength <= 4) 	{ tlength = 10; }
+				else if (enlength === 5) 	{ tlength = 16; }
+				else if (enlength === 6) 	{ tlength = 18; }
+				else if (enlength === 7) 	{ tlength = 20; }
+				else if (enlength >= 8 && enlength <= 10) 	{ tlength = 20; }
+				else if (enlength >= 11 && enlength <= 15) 	{ tlength = 26; }
+				else if (enlength === 16) 	{ tlength = 28; }
+				else if (enlength >= 17 && enlength <= 20) 	{ tlength = 30; }
+				else if (enlength >= 21 && enlength <= 80) 	{ tlength = Math.round( ( enlength + enlength / 100 * 50 )); }
+				else { tlength = Math.round( ( enlength + enlength / 100 * 30 ) ); }
+			}
 			var emlength = Math.round((tlength * 2) / 3);
 
 			$scope.emlength = emlength;
