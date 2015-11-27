@@ -1,4 +1,19 @@
 angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
+	function fillLeadingZero(str) {
+		if(str.toString().length === 1) {
+			return "0" + str;
+		} else {
+			return str;
+		}
+	}
+	function toABAPDate(date) {
+		if(date && date.getFullYear) {
+			return date.getFullYear().toString() + fillLeadingZero(date.getMonth() + 1) + fillLeadingZero(date.getDate()) + "000000";
+		} else {
+			return "";
+		}
+	}
+
     var ConfigItem = function () {
         this.clear = function () {
         	this.srcSystem = "";
@@ -17,6 +32,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
             this.displayPrio3 = false;
             this.displayPrio4 = false;
             this.onlyInProcess = false;
+            this.firstOccurence = undefined;
             this.onlyProductionRelevant = false;
         };
 
@@ -53,7 +69,8 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 		query += this.displayPrio4 ? "X;" : ";";
 		query += this.onlyInProcess ? "X;" : ";";
 		query += this.softwareComponents.join(",") + ";";
-		query += this.onlyProductionRelevant ? "*FA*" : "";
+		query += this.onlyProductionRelevant ? "*FA*;" : ";";
+		query += this.firstOccurence ? toABAPDate(this.firstOccurence) : "";
 		return query;
 	};
 
@@ -117,6 +134,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? persistedConfig.configItems[configItem].srcSystems : (persistedConfig.configItems[configItem].srcSystem ? [persistedConfig.configItems[configItem].srcSystem] : []);
 	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : (persistedConfig.configItems[configItem].tadirResponsible ? [persistedConfig.configItems[configItem].tadirResponsible] : []);
 	            currentConfigItem.onlyProductionRelevant = persistedConfig.configItems[configItem].onlyProductionRelevant;
+	            currentConfigItem.firstOccurence = persistedConfig.configItems[configItem].firstOccurence ? new Date(persistedConfig.configItems[configItem].firstOccurence) : undefined;
 
 	            this.addConfigItem(currentConfigItem);
 	        }

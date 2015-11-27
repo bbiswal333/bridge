@@ -26,9 +26,7 @@
                 <bridge.checkbox style="margin-right: 20px;" checked-label="Prio2" unchecked-label="Prio2" is-checked="currentConfigValues.displayPrio2"></bridge.checkbox>
                 <bridge.checkbox style="margin-right: 20px;" checked-label="Prio3" unchecked-label="Prio3" is-checked="currentConfigValues.displayPrio3"></bridge.checkbox>
                 <bridge.checkbox style="margin-right: 20px;" checked-label="Prio4" unchecked-label="Prio4" is-checked="currentConfigValues.displayPrio4"></bridge.checkbox>
-
             </div>
-
         </div>
 
 
@@ -56,6 +54,11 @@
                 <div class="atc-input-field">
                     <bridge.input model="currentConfigValues.softwareComponent" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchSoftwareComponent($viewValue)" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(currentConfigValues.softwareComponent)" autofocus enter="onSelectSoftwareComponent(currentConfigValues.softwareComponent)"></bridge.input>
                 </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 10px">
+            <div class="atc-input-field">
+                First Occurence: <input type="date" style="width: initial; display: inline-block" class="form-control" uib-datepicker-popup ng-model="currentConfigValues.firstOccurence" datepicker-options="dateOptions" />
             </div>
         </div>
         <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">

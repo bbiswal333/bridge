@@ -87,6 +87,7 @@
 
     $scope.save_click = function() {
         $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
+        $scope.bShowSelectionDetails = false;
     };
 
     $scope.rss_click = function (configItem) {
@@ -95,10 +96,12 @@
 
     $scope.copy_click = function (configItem) {
         jQuery.extend($scope.currentConfigValues,configItem);
+        $scope.bShowSelectionDetails = true;
     };
 
     $scope.edit_click = function(configItem) {
         $scope.currentConfigValues = configItem;
+        $scope.bShowSelectionDetails = true;
     };
 
     $scope.remove_click = function (configItem) {

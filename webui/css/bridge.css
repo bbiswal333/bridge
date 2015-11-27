@@ -48,6 +48,11 @@ img {
     pointer-events: none;
 }
 
+.form-control {
+    font-size: 12px;
+    border-radius: 0;
+}
+
 .zoomOut {
     -webkit-transform: scale(0.95);
     -moz-transform: scale(0.95);

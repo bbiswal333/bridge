@@ -6,6 +6,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 			this.owners = [];
 			this.components = [];
 			this.systems = [];
+			this.firstOccurence = undefined;
 			this.isInitialized = false;
 
 			this.initialize = function() {
@@ -14,6 +15,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 	                this.owners = angular.copy(appConfig.owners ? appConfig.owners : []);
 	                this.components = angular.copy(appConfig.components ? appConfig.components : []);
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems : []);
+	                this.firstOccurence = appConfig.firstOccurence ? new Date(appConfig.firstOccurence) : undefined;
 	                this.openTransportThreshold = angular.copy(appConfig.openTransportThreshold ? appConfig.openTransportThreshold : 7);
 	            }
 	            this.isInitialized = true;
