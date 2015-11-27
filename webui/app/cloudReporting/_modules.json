@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Beta"],
+		"module_name"			:	"app.cloudReporting",
+		"title"					:	"Cloud Reporting [RZA]",
+		"icon_css"				:	"fa fa-cloud",
+		"overview_directive"	:	"app.cloudReporting",
+		"needs_client"			:	false,
+		"beta"					:	true,
+		"default_hidden"		:	true,
+		"multiInstance"			:	true,
+		"description"			:	"Display up to 10 KPI figures from Cloud Reporting [RZA]"
+	},
+	"modules" : [],
+	"js_files" : ["overview.js","cloudData.js","settings.js","config.js"],
+	"css_files" : ["style_cloud.css"]
+}

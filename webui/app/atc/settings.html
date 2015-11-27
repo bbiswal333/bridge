@@ -1,4 +1,8 @@
 ﻿
+<script type="text/ng-template" id="bridge/app/atc/Component.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query" style="text-align: left"></a>
+</script>
+
 <div style="width: 100%;min-height: 500px;height: auto !important;height: 600px;"> 
 <form name="newConfigItemForm" class="atc_input">
             <div class="atc-input-field">
@@ -22,7 +26,7 @@
             
             <div class="atc-input-field">
                 <span class="copy form_head">AKH Component</span>
-                <bridge.input style="float:left;" model="currentConfigValues.component" placeholder="AKH Component..."></bridge.input>
+                <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..."></bridge.input>
 
             </div>
 
@@ -33,21 +37,10 @@
             </div>  			
 
             <div style="width:100%;float:left;margin:25px 0 0 0;" class="btn-group">
-                <!--<span ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.showSuppressed];">Display Suppressed</span>-->
-                <!--<span  ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" class="btn btn-default" ng-class="{true: 'btn btn_blue', false: 'btn'}[currentConfigValues.onlyInProcess];">Ignore Completed</span>-->
-
                 <bridge.button style="margin-left:0;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" state="currentConfigValues.showSuppressed === true ? 'active' : ' '">Display Suppressed</bridge.button>
 
                  <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
-            
 
-           
-                  
-                        <!--<span ng-click="doAlert(); currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio1];">Prio 1</span>
-                        <span ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio2];">Prio 2</span>
-                        <span ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio3];" >Prio 3</span>
-                        <span ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" ng-class="{true: 'btn btn_blue',false: 'btn '}[currentConfigValues.displayPrio4];" >Prio 4</span>-->
-                  
                         <bridge.button style="margin-right:0px;width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : 'invisible-button'">Prio 1</bridge.button>
 
                         <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : 'invisible-button'">Prio 2</bridge.button>
@@ -55,12 +48,10 @@
                         <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : 'invisible-button'">Prio 3</bridge.button>
 
                         <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : 'invisible-button'">Prio 4</bridge.button>
-                    
-                    
+
             </div>
 
              <div style="float:right;position:relative;top:25px;">
-               <!-- <button  type="button" class="btn btn-default btn_blue" title="Add" ng-click="add_click()" >Add New Selection</button>-->
                 <bridge.button ng-click="doAlert(); add_click()">Add New Selection</bridge.button>
 
             </div>
@@ -85,7 +76,11 @@
                     <td data-title="'Source System'"><bridge.editable-label text="configItem.srcSystem"></bridge.editable-label></td>
                     <td data-title="'Package'"><bridge.editable-label text="configItem.devClass"></bridge.editable-label></td>
                     <td data-title="'Object Responsible'"><bridge.editable-employee employee="configItem.tadirResponsible"></bridge.editable-employee></td>
-                    <td data-title="'AKH Component'"><bridge.editable-label text="configItem.component"></bridge.editable-label></td>
+                    <td data-title="'AKH Component'">
+                        <bridge.editable-label text="configItem.component" own-edit-control="true">
+                            <bridge.input style="float:left;" model="configItem.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..."></bridge.input>
+                        </bridge.editable-label>
+                    </td>
                     <td data-title="'Software Component'"><bridge.editable-label text="configItem.softwareComponent"></bridge.editable-label></td>
                     <td data-title="'Display Suppressed'">
                         <span>

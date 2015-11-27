@@ -11,8 +11,10 @@
     <link href="lib/bootstrap-3_1_1/css/bootstrap.css" rel="stylesheet" />
     <link href="lib/ng-table-0_3_1/ng-table.css" rel="stylesheet">
 
+
+
     <link href="css/background-image.css" rel="stylesheet" />
-    <link href="lib/angular-motion/angular-motion.css" rel="stylesheet" />  
+    <link href="lib/angular-motion/angular-motion.css" rel="stylesheet" />
 
     <link href="css/bridge.css" rel="stylesheet" />
     <link href="css/bridgeColors.css" rel="stylesheet" />
@@ -20,6 +22,10 @@
     <link href="css/bridgeCheckbox.css" rel="stylesheet" />
     <link href="css/bridgeInput.css" rel="stylesheet" />
     <link href="css/bridgeButtons.css" rel="stylesheet" />
+
+    
+    <!--<link rel="stylesheet" type="text/css" href="css/highcontrast.css">-->
+
 
     <link rel="stylesheet" type="text/css" href="lib/nvd3_1_1/nv.d3.css">
     <!-- icon -->
@@ -39,6 +45,7 @@
     <script src="lib/jQueryUI-1_10_3/jquery-ui.min.js"></script>
     <script src="lib/jquery.timeago.js"></script>
     <script src="lib/jquery-ui-touch-0_2_3/jquery-ui-touch-punch.min.js"></script>
+
     
     <script src="lib/angular-1_3_16/angular.min.js"></script>
     <script src="lib/angular-1_3_16/angular-route.min.js"></script>
@@ -58,8 +65,12 @@
 
     <script src="lib/jQueryHitTest.js"></script>
 
+    <!--Likes-Platform for Bridge in general-->
+    <script src="https://likes.mo.sap.corp/likes.js?appId=55dd6ce8214113f6b89bc516"></script>
+
     <!-- external packed libs -->
-    <script src="lib/ui-bootstrap-0_10_0/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="lib/ui-bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="lib/bootstrap-3_1_1/js/bootstrap.min.js"></script>
     <script src="lib/ng-table-0_3_1/ng-table.src.js"></script>
     <script src="lib/ng-grid-2_0_11/ng-grid.min.js"></script>
     <script src="lib/ng-grid-2_0_11/ngGridFlexibleHeightPlugin.js"></script>    
@@ -78,7 +89,17 @@
     <script src="lib/sigma-1_0_3/sigma.plugins.neighborhoods.js"></script>
     <script src="lib/sigma-1_0_3/sigma.canvas.edges.arrow.js"></script>
 
+    <script src="lib/bootstrap-switch/bootstrap-switch.min.js"></script>
+    <script src="lib/bootstrap-switch/angular-bootstrap-switch.min.js"></script>
+    <link href="lib/bootstrap-switch/bootstrap-switch.min.css" rel="stylesheet" />
+
+    <script src="lib/angular-busy/angular-busy.min.js"></script>
+    <link href="lib/angular-busy/angular-busy.min.css" rel="stylesheet" />
+
     <script src="https://js.api.here.com/se/2.5.4/jsl.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="lib/treeview/angular-ui-tree.min.js"></script>
+    <link href="lib/treeview/angular-ui-tree.min.css" rel="stylesheet" />
 
     <script src="loader.js"></script>
 
@@ -87,7 +108,7 @@
 
     <title>Bridge</title>
 </head>
-<body class="noselect" style="background-image: url('https://bridge.mo.sap.corp/img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
+<body style="background-image: url('https://bridge.mo.sap.corp/img/276245_l_srgb_s_gl_2.jpg'); background-repeat:no-repeat; background-attachment: fixed; overflow:auto">
     <div ng-if="configLoadingFinished" id="mainContainer" ng-cloak>
         <bridge.menubar></bridge.menubar>
         

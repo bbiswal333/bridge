@@ -1,7 +1,7 @@
 angular.module('app.translator').service("app.translator.configService", function () {
 
 	this.values = {
-		boxSize : '1'
+		boxSize : '2'
 	};
 
 	this.initialize = function(configLoadedFromBackend) {

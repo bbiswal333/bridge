@@ -1,6 +1,6 @@
 var swa = {
 	pubToken: '50e17cae-3311-4e74-96a1-4cef7e294256',
-	baseUrl: 'https://warp-ie.dmzmo.sap.corp/tracker/',
+	baseUrl: 'https://ie.warp.sap.com/tracker/',
 	visitorCookieDuration: 7889232,
 	dntLevel: 1,
 	bannerEnabled: false

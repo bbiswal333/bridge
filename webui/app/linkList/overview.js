@@ -18,8 +18,6 @@ angular.module('app.linklist').directive('droppable', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            // element[0].addEventListener('drop', scope.handleDrop, false);
-
             var dnD = {
                 handleDragLeave : function(){
                     element.removeClass("app-linklist-dragEnter");
@@ -38,7 +36,6 @@ angular.module('app.linklist').directive('droppable', function() {
 
             element.bind("dragover", dnD.handleDragEnter);
             element.bind("dragleave", dnD.handleDragLeave);
-            // element.bind("drop", dnD.handleDrop);
             element[0].addEventListener('drop', dnD.handleDrop, false);
 
         }
@@ -54,11 +51,15 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             controller: angular.module('app.linklist').appLinkListSettings
         };
         var linklistConfig = appLinklistConfig.getInstanceForAppId($scope.metadata.guid);
+        if (linklistConfig.data.noNewWindow === undefined) {
+            linklistConfig.data.noNewWindow = false;
+        }
         $scope.config = linklistConfig;
 
         $scope.box.returnConfig = function () {
 
             var configCopy = angular.copy(linklistConfig.data);
+            delete configCopy.boxSize;
 
             if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
                 for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
@@ -88,12 +89,11 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
             linklistConfig.data.listCollection[0].push({ "name": "Corporate Portal", "url": "https://portal.wdf.sap.corp/irj/portal", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "Most Popular Links", "url": "https://portal.wdf.sap.corp/go/most-popular-links", "type": "hyperlink"});
             linklistConfig.data.listCollection[0].push({ "name": "Online Payslip", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_payslip?sap-language=EN&sap-wd-configId=HRESS_AC_PAYSLIP", "type": "hyperlink" });
-            linklistConfig.data.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/gui/sap/its/zleaveoverview", "type": "hyperlink" });
-            //linklistConfig.data.listCollection[0].push({ "name": "Bridge Github Repo", "url": "https://github.wdf.sap.corp/bridge/bridge", "type": "hyperlink" });
+            linklistConfig.data.listCollection[0].push({ "name": "Leave Request", "url": "https://ipp.wdf.sap.corp/sap/bc/webdynpro/sap/hress_a_ptarq_leavreq_appl?sap-language=EN&sap-wd-configId=ZHRESS_AC_PTARQ_LEAVREQ#", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu NSQ", "url": "http://eurestdining.compass-usa.com/sapamerica/Pages/Home.aspx", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "Lunch Menu Berlin", "url": "https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/Administration%20for%20SAP/Catering/Menu%20%26%20Catering/Menu%20Gesch%c3%a4ftsstellen%20(TeaserBox)/Speiseplan%20Berlin", "type": "hyperlink" });
             linklistConfig.data.listCollection[0].push({ "name": "ISP System", "sid": "ISP", "transaction": "", "parameters": "", "type": "saplink" });
-            linklistConfig.data.boxSize = 1;
+            linklistConfig.data.noNewWindow = false;
         }
 
         function eventuallyRemoveDuplicates(listCollection) {

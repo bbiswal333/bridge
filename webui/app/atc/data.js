@@ -25,7 +25,7 @@
             };
 
             this.getDetailsForConfig = function (config) {
-                $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
+                return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
                 .success(function (data) {
                     that.detailsData.length = 0;
                     data.DATA.map(function(item) {

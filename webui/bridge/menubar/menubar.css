@@ -73,7 +73,7 @@
 .menubar-popover-content {
   overflow: auto;
   width: 400px;
-  max-height: 500px;
+  max-height: 600px;
 }
 .menubar-settings{
 
@@ -135,6 +135,20 @@
 .menubar-feedback-icon {
   font-size: 30px;
 }
+.menubar-feedback-LikesCell{
+  /*width: 400px;*/
+  text-align: center;
+}
+.likebtn{
+  border: solid 2px #8B5EB7;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  min-height: 22px;
+  margin:4%;
+}
 
 /* ========================= *\
 |* ----- APPLICATIONS  ----- *|
@@ -167,9 +181,12 @@
   padding-left:15px;
 }
 .tab-content{
-  margin-top: 50px;
   text-align: left;
   text-align: center;
+}
+
+.menubar-appstore-related a {
+  margin-right: 25px;
 }
 /* ========================= *\
 |* -----     ICON      ----- *|

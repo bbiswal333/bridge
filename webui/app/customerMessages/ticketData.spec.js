@@ -69,7 +69,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should increase the ticket counter according to the backend data", function () {
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[0].selected).toBe(0);
@@ -79,7 +79,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should reset the priorities in the data structure", function () {
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
         cmTicketData.loadTicketData();
         $httpBackend.flush();
         expect(cmTicketData.prios[2].selected).toBe(2);
@@ -95,7 +95,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should update correct count for selection", function(){
-    	$httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
+    	$httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockData);
     	cmTicketData.loadTicketData().then(function(){
             expect(configService.getInstanceForAppId("test-1").data.selection).toBeDefined();
 
@@ -138,7 +138,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     });
 
     it("should pass errors from the backend to the caller", function(){
-        $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/)
+        $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/)
             .respond(mockErrorData);
 
         cmTicketData.loadTicketData().then(function success(data){
@@ -152,7 +152,7 @@ describe("Ticket Data Service for Customer Messages", function () {
         var testGet;
 
         beforeEach(function () {
-            testGet = $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/);
+            testGet = $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/);
 
         });
         afterEach(function(){
@@ -244,7 +244,7 @@ describe("Ticket Data Service for Customer Messages", function () {
     describe("in handling of duplicted messages", function () {
 
         beforeEach(function () {
-            $httpBackend.whenGET(/https:\/\/(backup-support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockDataWithDuplicates);
+            $httpBackend.whenGET(/https:\/\/(support|bcdmain)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_incid/).respond(mockDataWithDuplicates);
         });
         afterEach(function(){
             $httpBackend.flush();

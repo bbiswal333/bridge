@@ -9,8 +9,11 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
+        var bStoreOnUnload = true;
         $window.onbeforeunload = function(){
-            bridgeConfig.store(bridgeDataService);
+            if (bStoreOnUnload) {
+                bridgeConfig.store(bridgeDataService);
+            }
         };
 
         $scope.logMode = bridgeDataService.getLogMode();
@@ -110,11 +113,19 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.showLoadingAnimation = true;
         }
 
-        $window.debug = {
+        $window.bridgeDebug = {
             resetConfig: function() {
+                bStoreOnUnload = false;
                 bridgeDataService.toDefault();
                 bridgeConfig.store(bridgeDataService);
                 bridgeConfig.persistInBackend();
+                $window.location.reload();
+            },
+            setConfig: function(oConfig){
+                bridgeDataService.setDataFromConfig(oConfig);
+                bridgeConfig.store(bridgeDataService);
+                bridgeConfig.persistInBackend();
+                $window.location.reload();
             }
         };
 
@@ -150,6 +161,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
+            // bridgeInBrowserNotification.addAlert('success', 'Please take a moment to give us your feedback! We would greatly appreciate if you take 5 minutes to complete our <a target="_blank" href="https://surveys.sap.com/SE/?SID=SV_3EmN0DgQvqNOe8Z">usability survey</a>. The survey will be available until 16th October.', 60);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
             if($scope.bridgeSettings.selectedBackgroundColorIndex !== undefined) {

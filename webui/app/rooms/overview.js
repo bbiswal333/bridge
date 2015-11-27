@@ -12,6 +12,7 @@ directive("app.rooms", [
 		var directiveController = ['$scope', function ($scope){
 
 			$scope.closeMsgBox = true;
+	        $scope.boxSize = "1";
 
 			$scope.box.settingsTitle = "Configure box size";
 			$scope.box.settingScreenData = {
@@ -116,21 +117,19 @@ directive("app.rooms", [
 			$scope.loading = true;
 			$scope.errMsg = null;
 
-			if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
-			    meetingsConfigService.configItem = $scope.appConfig.configItem;
-			}
+            if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                meetingsConfigService.configItem = $scope.appConfig.configItem;
+            } else {
+                $scope.appConfig.configItem = meetingsConfigService.configItem;
+            }
+
 			$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
 
-		    $scope.$watch("appConfig.configItem.boxSize", function () {
-				$scope.box.boxSize = $scope.appConfig.configItem.boxSize;
-		    }, true);
-
-
-			// function reload() {
-			// 	if (!$scope.isLoading()) {
-   //                  $scope.loadMyReservations();
-			// 	}
-			// }
+            $scope.$watch("appConfig.configItem.boxSize", function () {
+                if ($scope.appConfig !== undefined && $scope.appConfig !== {} && $scope.appConfig.configItem) {
+                    $scope.box.boxSize = $scope.appConfig.configItem.boxSize;
+                }
+            }, true);
 
 			var refreshInterval = null;
 
@@ -139,24 +138,6 @@ directive("app.rooms", [
 					$interval.cancel(refreshInterval);
 				}
 			});
-//
-// 		disable regular refresh on Room app
-//
-//			(function springGun() {
-//				var i = 1;
-//				//Full reload every 300 seconds, refresh of UI all 30 seconds
-//				refreshInterval = $interval(function () {
-//					if (i % 10 === 0) {
-//						reload();
-//						i = 1;
-//					}
-//					else {
-//						parseExchangeData(eventsRaw);
-//						i++;
-//					}
-//				}, 30000);
-//			})();
-
         };
 
 		return {

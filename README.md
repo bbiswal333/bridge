@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
-
-[![ReviewNinja](https://github.wdf.sap.corp/bridge/bridge/raw/master/badge/wereviewninja-32.png)](https://review-ninja.mo.sap.corp/bridge/bridge)
+[![ReviewNinja](https://review-ninja.mo.sap.corp/2417/badge)](https://review-ninja.mo.sap.corp/bridge/bridge)
 
 
 # Bridge
@@ -31,6 +30,11 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * apps must be inside an own module and shoul be named/ prefixed with `app.appname`
 * to get started, just copy our "test app" and adjust it
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
+
+## contributing
+* contributions are welcome and encouraged
+* contributions are managed via pull requests
+* pull requests need to pass all the tests (unit tests, linting, ..)
 
 Further information can be found on our [wiki page](https://github.wdf.sap.corp/bridge/bridge/wiki).
 

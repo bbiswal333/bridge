@@ -12,6 +12,15 @@
 				</div>
 				<tabset>
 				    <tab ng-if="appFilter === ''" ng-repeat="category in categories" heading="{{category.name}}" active="category.active" disabled="category.disabled">
+						<div style="height: 45px; margin-left: 15px; margin-right: 15px; margin-top: 5px; text-align: left; border-top: 1px solid #bbbbbb; border-bottom: 1px solid #bbbbbb;">
+							<div ng-if="category.name == 'Service & Support'" style="padding: 5px" class="menubar-appstore-related">
+								<span style="font-weight: bold">Related Links: </span><br/>
+								<a target="_blank" href="https://jam4.sapjam.com/groups/about_page/Eg8cd4ywvO1zuSJ6NUYgrS">Service & Support Academy Jam Site</a>
+								<a target="_blank" href="http://scn.sap.com/community/software-support-and-maintenance/blog/2015/09/18/quick-access-to-the-sap-enterprise-support-academy-all-in-the-palm-of-your-hand?url_id=text-featuredcontent-EnterpriseSupportAcademyQuickAccess">
+									SAP Enterprise Support Academy Mobile App
+								</a>
+							</div>
+						</div>
 				    	<bridge.application.box ng-repeat="app in category.apps"></bridge.application.box>
 				    </tab>
 				    <div ng-if="appFilter !== ''" style="padding-top: 38px">

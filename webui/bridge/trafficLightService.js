@@ -3,61 +3,55 @@ angular.module('bridge.service').service('trafficLightService',
 
   var modulesState = [];
 
+	var states = {
+		'r': {
+			priority: 1,
+			name: 'Red'
+		},
+		'y': {
+			priority: 2,
+			name: 'Yellow'
+		},
+		'g': {
+			priority: 3,
+			name: 'Green'
+		},
+		'o': {
+			priority: 4,
+			name: 'Off'
+		}
+	};
+
 	function isClientOn(){
 		return $window.client.available;
 	}
 
-	function red(){
+	function setState(state) {
+		$log.log('Traffic Light' + (isClientOn() ? ':' : ' (no client):')  + states[state].name);
+
 		if( isClientOn() ){
-			$log.log('Traffic Light: Red');
-			$http.get( $window.client.origin + '/api/trafficLight?color=r');
+			$http.get( $window.client.origin + '/api/trafficLight?color=' + state );
 		}
 	}
-
-	function yellow(){
-		if( isClientOn() ){
-			$log.log('Traffic Light: Yellow');
-			$http.get($window.client.origin + '/api/trafficLight?color=y');
-		}
-	}
-
-	function green(){
-		if( isClientOn() ){
-			$log.log('Traffic Light: Green');
-			$http.get($window.client.origin + '/api/trafficLight?color=g');
-		}
-	}
-
-  function off(){
-    if( isClientOn() ){
-      $log.log('Traffic Light: Off');
-      $http.get($window.client.origin + '/api/trafficLight?color=o');
-    }
-  }
 
   function updateTrafficLight() {
 
-    var colorFunction = green;
+		var state;
 
-    for(var key in modulesState)
-    {
-      if(modulesState[key] === 'R') {
-        colorFunction = red;
-        break;
-      }
-      else if(modulesState[key] === 'Y') {
-        colorFunction = yellow;
-      }
-      else if(modulesState[key] === 'O') {
-        colorFunction = off;
-      }
-    }
+		state = 'o';
 
-    colorFunction();
+		for(var key in modulesState)
+		{
+			if(states[modulesState[key]].priority < states[state].priority) {
+				state = modulesState[key];
+			}
+		}
+
+		setState(state);
   }
 
   function setModuleState(appId, state) {
-    $log.log('Traffic Light for App ' + appId + ': ' + state );
+    $log.log('Traffic Light for App ' + appId + ': ' + states[state].name );
     modulesState[appId] = state;
     updateTrafficLight( );
   }
@@ -65,19 +59,19 @@ angular.module('bridge.service').service('trafficLightService',
   var TrafficLightServiceForApp = function(appId) {
 
     this.red = function() {
-      setModuleState(appId, 'R');
+      setModuleState(appId, 'r');
     };
 
     this.green = function() {
-      setModuleState(appId, 'G');
+      setModuleState(appId, 'g');
     };
 
     this.yellow = function() {
-      setModuleState(appId, 'Y');
+      setModuleState(appId, 'y');
     };
 
     this.off = function() {
-      setModuleState(appId, 'O');
+      setModuleState(appId, 'o');
     };
   };
 
@@ -85,4 +79,6 @@ angular.module('bridge.service').service('trafficLightService',
     return new TrafficLightServiceForApp(appId);
   };
 
+	// reset the TrafficLight at startup
+	setState('o');
 }]);

@@ -1,6 +1,6 @@
 angular.module('app.linklist').appLinkListSettings =
-    ['app.linklist.configservice', '$scope', '$log', '$interval',
-        function (appLinklistConfig, $scope, $log, $interval) {
+    ['app.linklist.configservice', '$scope', '$log', '$timeout',
+        function (appLinklistConfig, $scope, $log, $timeout) {
 
     var linklistConfig = appLinklistConfig.getInstanceForAppId($scope.boxScope.metadata.guid);
 	$scope.config  = linklistConfig;
@@ -47,7 +47,6 @@ angular.module('app.linklist').appLinkListSettings =
 
         $scope.toggleAddForm(colNo);
         $scope.currentConfigValues.url = event.dataTransfer.getData('text');
-        // $scope.currentConfigValues.url = event.dataTransfer.getData('text/plain');
 
         var regex = /(.*:)\/\/([a-z\-.]+)(:[0-9]+)?(.*)/g;
 		var urlArray = regex.exec($scope.currentConfigValues.url);
@@ -172,12 +171,12 @@ angular.module('app.linklist').appLinkListSettings =
 		$scope.currentConfigValues = {};
 		$scope.addForm[col] = 'web';
 		$scope.newEntry(col);
-		$interval(function() {
+		$timeout(function() {
 			var container = $("#scrollList" + col)[0];
 			if(container) {
 				container.scrollTop = container.scrollHeight;
 			}
-		});
+		}, 500);
 	};
 
 	$scope.cancelAdd = function() {

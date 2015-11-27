@@ -119,8 +119,24 @@
             "header":   "Quick links int the search result",
             "preview":  "Quick links are now available in the bridge search.",
             "date":     "2015-07-27",
-						"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
+			"snapURL":  "bridge/menubar/news/image/quickLinkSearch.png",
             "content":  "Now you can search for quicklinks (a.k.a. /go in the portal) using the search bar on bridge. <br/> Currently searches only on the quick link itself, not the description."
+        },
+        {
+            "id":       17,
+            "header":   "Bridge Usability Survey",
+            "date":     "2015-10-06",
+            "snapURL":  "bridge/menubar/news/image/Clouds.png",
+            "preview":  "Please let us know your feedback!",
+            "content":  "We are constantly working on improving Bridge. Many apps have been added throughout the year, maybe it is a great opportunity for you to check them out! Your anonymous answers will help us to understand what you like about Bridge and where we should do further improvements.<br><br>Please complete the survey before <b>October 16th, 2015</b> by using this <b><a href=\"https://surveys.sap.com/SE/?SID=SV_3EmN0DgQvqNOe8Z\" target=\"_blank\">link</a></b>. We understand that your time is very valuable, so we kept the survey very short: it should only take <b>about 5-10 minutes</b> to complete.<br><br>If you have any questions or are having any difficulties accessing the link, please contact <b><a href=\"mailto:m.gunkel@sap.com\">Marian Gunkel</a></b>.<br><br>Thank you for your input!"
+        },
+        {
+            "id":       18,
+            "header":   "Pilots for Shared Views Needed",
+            "date":     "2015-10-19",
+            "snapURL":  "bridge/menubar/news/image/roombooking.png",
+            "preview":  "We need your feedback on out latest development!",
+            "content":  "We are currently investigating shared views for bridge and need your feedback.<br /><br />You will be able to have one personal view which is only visible for yourself. <b>Each view that you create in addtion can be found and displayed by other colleagues.</b><br /><br />In order to test the new functionality, please go to our <a href='https://bridge-teams.mo.sap.corp'>team instance</a><br /><br />Please submit feedback to <a href='mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=Shared Views'>DL Bridge</a><br /><img src='bridge/menubar/news/image/sharedViews.gif' />"
         }
 	]
 }

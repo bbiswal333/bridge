@@ -271,6 +271,15 @@ describe("Conversion function", function () {
 		day.targetTimeInPercentageOfDay = 1.038;
 		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
 	});
+	it("should calculate for OVERBOOKED SPECIAL DAY for part-time French employee", function () {
+		task.UNIT = "T";
+		task.QUANTITY = 1;
+		day.hoursOfWorkingDay = 7.9;
+		day.targetHours = 8.2;
+		day.actualTimeInPercentageOfDay = 1;
+		day.targetTimeInPercentageOfDay = 1.038;
+		expect(catsUtils.calculateDAY(task,day)).toEqual(1);
+	});
 	it("should calculate for OVERBOOKED SPECIAL hours for part-time French employee", function () {
 		task.UNIT = "H";
 		task.QUANTITY = 8.2;

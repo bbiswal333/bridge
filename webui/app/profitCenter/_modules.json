@@ -1,18 +1,24 @@
 {
 	"app":
 	{
-		"categories"			:	["Beta"],
+		"categories"			:	["Others"],
 		"module_name"			:	"app.profitCenter",
 		"title"					:	"Profit Center",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.profitCenter",
 		"needs_client"			:	false,
-		"beta"					:	true,
+		"beta"					:	false,
 		"default_hidden"		:	true,
-		"beta_users"			:	["D049677", "D034180", "D052319", "D047633", "D019465", "D049069", "D047654"],
-		"description"			:	"Project Profit Center"
+		"routes"		:
+		[
+			{		
+				"route"			:	"/detail/profitCenter",
+				"templateUrl"	:	"app/profitCenter/detail.html"
+			}
+		],
+		"description"			:	"Project Profit Center App for controllers."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js"],
-	"css_files" : []
+	"js_files" : ["overview.js", "detail.js"],
+	"css_files" : ["profitCenter.css"]
 }

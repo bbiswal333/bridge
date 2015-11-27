@@ -77,10 +77,11 @@
                      tabindex="1"
                      style="outline: 0">
 
-                    <div ng-if="(analytics.value) && analyticsDays[day.dayString].tasks.length > 0"
-                        ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
-                        ng-mouseover="confirmSingleDayAnalytics()"
-                        ng-mouseleave="switchOffSingleDayAnalytics()">
+                    <div style="position: relative;"
+                        ng-class="{
+                            'app-cats-today': day.today,
+                            'selected_day_analytics': isSelected(day.dayString)}"
+                        ng-if="(analytics.value) && analyticsDays[day.dayString].tasks.length > 0">
                         <app.cats.allocationbar
                             data-width="width"
                             data-height="54"
@@ -91,21 +92,27 @@
                             onblockremoved=""
                             handlervaluetodisplay="calcMinutes(perc);">
                         </app.cats.allocationbar>
+                        <span 
+                            ng-style="{'position': 'absolute', 'width': width, 'height': '34px', 'top': '0%', 'left': '0%', 'text-shadow': '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white'}"
+                            ng-class="{
+                                'bold': isSelected(day.dayString),
+                                'app-cats-day-text-small': !maintainable,
+                                'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
 
-                    <div ng-if="(!analytics.value) || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner" class="app-cats-state{{getStateClassSubstring(day)}} hover" ng-class="{
-                         'app-cats-day-inner-small': !maintainable,
-                         'app-cats-day-inner-big': maintainable,
-                         'app-cats-today': day.today,
-                         'selected_day': isSelected(day.dayString)}"
-                         ng-style="{'background-size': !maintainable && day.today && 'cover'}"
-                         ng-mouseenter="switchOnSingleDayAnalytics(day.dayString)"
-                         ng-mouseleave="switchOffSingleDayAnalytics()">
+                    <div ng-if="(!analytics.value) || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner"
+                        class="app-cats-state{{getStateClassSubstring(day)}} hover"
+                        ng-class="{
+                        'app-cats-day-inner-small': !maintainable,
+                        'app-cats-day-inner-big': maintainable,
+                        'app-cats-today': day.today,
+                        'selected_day': isSelected(day.dayString)}"
+                        ng-style="{'background-size': !maintainable && day.today && 'cover'}">
 
                         <span ng-class="{
-                              'bold': isSelected(day.dayString),
-                              'app-cats-day-text-small': !maintainable,
-                              'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
+                            'bold': isSelected(day.dayString),
+                            'app-cats-day-text-small': !maintainable,
+                            'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
 
                 </div>

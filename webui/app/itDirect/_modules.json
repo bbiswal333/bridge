@@ -5,6 +5,7 @@
 		"module_name"			:	"app.itdirect",
 		"title"					:	"IT Direct",
 		"icon_css"				:	"icon-comment",
+		"icon_link"				:	"https://itdirect.wdf.sap.corp",
 		"overview_directive"	:	"app.itdirect",
 		"needs_client"			:	false,
 		"default_hidden"		:   true,

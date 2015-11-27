@@ -230,7 +230,7 @@
     background: #F3F2F2;
 }
 
-.app-cats-stateY, .app-cats-stateY_TODAY, .app-cats-stateY_INTHEFUTURE_part_maint { 
+.app-cats-stateY, .app-cats-stateY_TODAY {
     background: linear-gradient(
         to right, 
         #A7D0BA 0%, 
@@ -239,7 +239,16 @@
         #DD6551 100% 
     );
 }
-.app-cats-stateY.hover:hover, .app-cats-stateY_TODAY.hover:hover, .app-cats-stateY_INTHEFUTURE_part_maint.hover:hover { 
+.app-cats-stateY_INTHEFUTURE_part_maint {
+    background: linear-gradient(
+        to right,
+        #A7D0BA 0%,
+        #A7D0BA 30%,
+        #F3F2F2 30%,
+        #F3F2F2 100%
+    );
+}
+.app-cats-stateY.hover:hover, .app-cats-stateY_TODAY.hover:hover {
     background: linear-gradient(
         to right, 
         #7AB997 0%, 
@@ -248,7 +257,16 @@
         #D53F26 100% 
     );
 }
-#calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_TODAY span , #calendarDay .app-cats-stateY_INTHEFUTURE_part_maint span {
+.app-cats-stateY_INTHEFUTURE_part_maint.hover:hover {
+    background: linear-gradient(
+        to right,
+        #7AB997 0%,
+        #7AB997 30%,
+        #E1E1E1 30%,
+        #E1E1E1 100%
+    );
+}
+#calendarDay .app-cats-stateY span, #calendarDay .app-cats-stateY_TODAY span {
     color: white;
     text-shadow:1px 1px black;
 }
@@ -283,23 +301,13 @@
 }
 .app-cats-notInMonth {
     background: #e1e1e1;
-    /*opacity: 0;*/
     visibility: hidden;
 }
 .app-cats-today { 
-    /*background-image: url('/../../img/ecke_dunkel.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
     font-weight: 900;
     font-style: italic;
 }
 .app-cats-today-legend { 
-    /*background-image: url('/../../img/ecke_dunkel_legend.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 100%;*/
-
     font-weight: 900;
     font-style: italic;
 }
@@ -358,12 +366,17 @@
 }
 
 .selected_day{
-    /*background: ;*/
     border: 3px solid #707070;
     color: #707070!important;
- 
 }
 
+.selected_day_analytics span{
+    /* don't know how to correctly make a border here */
+}
+
+.selected_day_analytics{
+    /* don't know how to correctly make a border here */
+}
 
 .app-cats-icon {
     font-family: 'SAP-icons';
@@ -374,7 +387,6 @@
 .app-cats-week .app-cats-day {
     color: white;
     width: 11.8%;
-    /*width: 13.5%;*/
 }
 .allocation-bar-background-panel {
   margin-left: auto;

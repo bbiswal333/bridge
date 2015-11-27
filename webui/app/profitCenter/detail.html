@@ -1,0 +1,44 @@
+<script type="text/ng-template" id="nodes_renderer.html">
+  <div ui-tree-handle class="tree-node tree-node-content {{node.leafClass}}">
+    <a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" data-nodrag ng-click="toggle(this)"><span
+        class="glyphicon"
+        ng-class="{
+          'glyphicon-chevron-right': collapsed,
+          'glyphicon-chevron-down': !collapsed
+        }"></span></a>
+    {{node.label}}
+    <span class="pull-right" ng-if="!node.isProfitCenter" style="padding: 7px"><a ng-click="toExcel(node)"><span class="fa fa-file-excel-o"></span> To Excel</a></span>
+    <span class="pull-right" ng-if="node.isProfitCenter"><b>Profit Center ID: {{node.profitCenterId}} - Controller: {{node.controller}}</span>
+  </div>
+  <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.children" ui-tree-node data-collapsed="{{node.collapsed}}" ng-include="'nodes_renderer.html'">
+    </li>
+  </ol>
+</script>
+
+<div ng-controller="app.profitCenter.detailcontroller" style="box-sizing:border-box;" >    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+		<div ui-tree id="tree-root" data-drag-enabled="false">
+			<ol ui-tree-nodes ng-model="treeData">
+				<li ng-repeat="node in treeData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+			</ol>
+		</div>
+    </div>
+
+    <div style="position: relative" ng-if="treeLoadFinished !== true">
+      <div class="cg-busy-default-spinner" style="width: 30px; height: 30px; left: 50%; right: 50%; top: -40px;">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+        <div class="bar4"></div>
+        <div class="bar5"></div>
+        <div class="bar6"></div>
+        <div class="bar7"></div>
+        <div class="bar8"></div>
+        <div class="bar9"></div>
+        <div class="bar10"></div>
+        <div class="bar11"></div>
+        <div class="bar12"></div>
+      </div>
+    </div>
+</div>

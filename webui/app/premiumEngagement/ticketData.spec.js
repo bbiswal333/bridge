@@ -29,13 +29,13 @@ describe("The Premium Engagement Ticket Data", function(){
     });
 
     it("should load the data according to the configured customers when initialized", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
         ticketData.initialize(dummyAppId);
         $httpBackend.flush();
     });
 
     it("should fill the tickets array with the backend data", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
         ticketData.initialize(dummyAppId);
         $httpBackend.flush();
 
@@ -43,7 +43,7 @@ describe("The Premium Engagement Ticket Data", function(){
     });
 
     it("should make the tickets property an array even if there is only one ticket", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketDataSingle);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketDataSingle);
         ticketData.initialize(dummyAppId);
         $httpBackend.flush();
 
@@ -51,7 +51,7 @@ describe("The Premium Engagement Ticket Data", function(){
     });
 
     it("should update the counters for the different priorities", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
         ticketData.initialize(dummyAppId);
         $httpBackend.flush();
 
@@ -67,7 +67,7 @@ describe("The Premium Engagement Ticket Data", function(){
         ticketData.prios[2].total = 1;
         ticketData.prios[3].total = 1;
 
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(faultyMockData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(faultyMockData);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -78,7 +78,7 @@ describe("The Premium Engagement Ticket Data", function(){
     });
 
     it("should fill the customer name", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -88,7 +88,7 @@ describe("The Premium Engagement Ticket Data", function(){
     it("should adjust the prio counts according to the selected customer", function(){
         config.data.sSelectedCustomer = "202418";
 
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -106,7 +106,7 @@ describe("The Premium Engagement Ticket Data", function(){
     it("should filter tickets in CustomerAction if configured", function(){
         config.data.bIgnoreCustomerAction = true;
 
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -117,7 +117,7 @@ describe("The Premium Engagement Ticket Data", function(){
     });
 
     it("should not modify the original tickets array when filtering", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -131,7 +131,7 @@ describe("The Premium Engagement Ticket Data", function(){
     it("should save the time of the data load and last loaded tickets", function(){
         var referenceDate = new Date();
 
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/).respond(mockTicketData2Customers);
         ticketData.loadTicketData();
         $httpBackend.flush();
 
@@ -142,7 +142,7 @@ describe("The Premium Engagement Ticket Data", function(){
     it("should notify me that a ticket changed", function(){
         spyOn(notifier, "showInfo");
 
-        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
+        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
         expectGet.respond(mockTicketDataSingle);
         ticketData.loadTicketData();
         $httpBackend.flush();
@@ -158,7 +158,7 @@ describe("The Premium Engagement Ticket Data", function(){
         spyOn(notifier, "showInfo");
         config.data.lastDataUpdate = new Date(1972, 1, 1);
 
-        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
+        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
         expectGet.respond(mockTicketDataSingle);
         ticketData.loadTicketData();
         $httpBackend.flush();
@@ -170,7 +170,7 @@ describe("The Premium Engagement Ticket Data", function(){
         spyOn(notifier, "showInfo");
         config.data.lastDataUpdate = new Date(1972, 1, 1);
 
-        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
+        var expectGet = $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/customer_i_tqm\?sap-client\=001(.*)&customer=32914/);
         expectGet.respond(mockTicketDataSingle);
         ticketData.loadTicketData(true);
         $httpBackend.flush();

@@ -113,7 +113,9 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	};
 
 	this.updateDescription = function (task) {
-		if (!catsUtils.isCproTask(task)) {
+		if (!catsUtils.isCproTask(task) &&
+			task.TASKTYPE !== "BRIDGE_HEADER") {
+
 			this.lastUsedDescriptions.some(function(lastUsedDescription){
 				if (catsUtils.isSameTask(task, lastUsedDescription) &&
 					lastUsedDescription.DESCR !== task.id &&
@@ -123,12 +125,13 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 					return true;
 				}
 			});
+
+			this.favoriteItems.some(function(favoriteItem){
+				if (catsUtils.isSameTask(task, favoriteItem)) {
+					task.DESCR = favoriteItem.DESCR;
+					return true;
+				}
+			});
 		}
-		this.favoriteItems.some(function(favoriteItem){
-			if (catsUtils.isSameTask(task, favoriteItem)) {
-				task.DESCR = favoriteItem.DESCR;
-				return true;
-			}
-		});
 	};
 }]);
