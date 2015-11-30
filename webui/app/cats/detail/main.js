@@ -786,12 +786,22 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
+                    /* eslint-disable no-undef */
+                    if (swa && swa.hasOwnProperty('trackCustomEvent')) {
+                        swa.trackCustomEvent('CAT2applyChanges', 'Success');
+                    }
+                    /* eslint-enable no-undef */
                 }, function(errorText){
                     bridgeInBrowserNotification.addAlert('danger', errorText);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
+                    /* eslint-disable no-undef */
+                    if (swa && swa.hasOwnProperty('trackCustomEvent')) {
+                        swa.trackCustomEvent('CAT2applyChanges', 'Failure');
+                    }
+                    /* eslint-enable no-undef */
                 });
             } else {
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
@@ -799,6 +809,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                     loadCATSDataForDay();
                 });
+                /* eslint-disable no-undef */
+                if (swa && swa.hasOwnProperty('trackCustomEvent')) {
+                    swa.trackCustomEvent('CAT2applyChanges', 'NoChange');
+                }
+                /* eslint-enable no-undef */
             }
         } catch(err) {
             $log.log("saveTimesheet(): " + err);
