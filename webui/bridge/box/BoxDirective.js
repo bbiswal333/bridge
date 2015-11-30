@@ -24,6 +24,12 @@ angular.module('bridge.box').directive('bridge.box',
         link: function ($scope, $element, $attrs) {
             $scope.boxIconBarVisible = false;
 
+            /* eslint-disable no-undef */
+            if (swa && swa.hasOwnProperty('trackCustomEvent')) {
+                swa.trackCustomEvent('BridgeBoxLoad', $attrs.content);
+            }
+            /* eslint-enable no-undef */
+
             $scope.box = {};
             if ($attrs.id) {
                 //get app metadata and app config
