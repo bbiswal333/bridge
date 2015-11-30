@@ -31,6 +31,7 @@
                 "bridgeInstanceService.js",
                 "bridgeGuidService.js",
                 "bridgeAppCreator.js",
+                "bridgeWebTracker.js",
                 "notifier.js",
                 "libUtils.js",
                 "sortableService.js",
