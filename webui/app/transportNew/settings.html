@@ -38,7 +38,8 @@
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
 							<div class="col-lg-12" style="float:none;">
-								<span class="transport-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeComponent(component)"><span class="fa fa-remove"></span></a></span>
+								<!--<span class="transport-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeComponent(component)"><span class="fa fa-remove"></span></a></span>-->
+								<bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeComponent(component)">{{component.value}}</bridge.tag>
 							</div>
 						</div>
 					</div>
@@ -51,7 +52,8 @@
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
 							<div class="col-lg-12" style="float:none;">
-								<span class="transport-selected-component" ng-repeat="owner in currentConfigValues.owners">{{owner.label}} <a ng-click="removeOwner(owner)"><span class="fa fa-remove"></span></a></span>
+								<!--<span class="transport-selected-component" ng-repeat="owner in currentConfigValues.owners">{{owner.label}} <a ng-click="removeOwner(owner)"><span class="fa fa-remove"></span></a></span>-->
+								<bridge.tag ng-repeat="owner in currentConfigValues.owners" exclude="owner.exclude" remove-click="removeOwner(owner)">{{owner.label}}</bridge.tag>
 							</div>
 						</div>
 					</div>
@@ -69,7 +71,8 @@
 				</div>
 				<div class="row" style="margin:15px 0 0 0;">
 					<div class="col-lg-4" style="float:none;">
-						<span class="transport-selected-component" ng-repeat="system in currentConfigValues.systems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>
+						<!--<span class="transport-selected-component" ng-repeat="system in currentConfigValues.systems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>-->
+						<bridge.tag ng-repeat="system in currentConfigValues.systems" exclude="system.exclude" remove-click="removeSystem(system)">{{system.value}}</bridge.tag>
 					</div>
 				</div>
 

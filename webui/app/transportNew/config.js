@@ -13,8 +13,8 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
 				if (appConfig !== undefined && appConfig !== {}) {
 	                this.owners = angular.copy(appConfig.owners ? appConfig.owners : []);
-	                this.components = angular.copy(appConfig.components ? appConfig.components : []);
-	                this.systems = angular.copy(appConfig.systems ? appConfig.systems : []);
+	                this.components = angular.copy(appConfig.components ? appConfig.components.map(function(component) { if(component.value) { return component; } else { return {exclude: false, value: component}; } } ) : []);
+	                this.systems = angular.copy(appConfig.systems ? appConfig.systems.map(function(system) { if(system.value) { return system; } else { return {exclude: false, value: system}; } } ) : []);
 	                this.firstOccurence = appConfig.firstOccurence ? new Date(appConfig.firstOccurence) : undefined;
 	                this.openTransportThreshold = angular.copy(appConfig.openTransportThreshold ? appConfig.openTransportThreshold : 7);
 	            }

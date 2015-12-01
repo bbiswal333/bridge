@@ -16,7 +16,8 @@
     "conditionalLink.js",
     "editableLabel.js",
     "editableEmployee.js",
-    "employee.js"
+    "employee.js",
+    "tag.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"

@@ -29,6 +29,26 @@ angular.module("app.transportNew")
 	        	}
 	        }
 
+	        function getSystemsString(systems) {
+				return systems.map(function(system) {
+					return (system.exclude ? "!" : "") + system.value;
+				}).join(";");
+	        }
+
+	        function getComponentsString(components) {
+	        	return components.map(function(component) {
+	        		return (component.exclude ? "!" : "") + component.value;
+	        	}).join(";");
+	        }
+
+	        function getOwnersString(owners) {
+	        	return owners.map(function(owner) {
+	        		return owner.selector.split(";").map(function(splittedOwner) {
+	        			return (owner.exclude ? "!" : "") + splittedOwner;
+	        		}).join(";");
+	        	}).join(';');
+	        }
+
 			return function() {
 				this.loadData = function(config) {
 					var deferred = $q.defer();
@@ -37,7 +57,7 @@ angular.module("app.transportNew")
 						this.transportsOpenForLongerThanThreshold = [];
 						deferred.resolve();
 					} else {
-						var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + config.components.join(";") + '&systems=' + config.systems.join(";") + '&owners=' + config.owners.map(function(owner) { return owner.selector; }).join(';') + '&first_occurence=' + toABAPDate(config.firstOccurence) + '&origin=' + $window.location.origin;
+						var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + getComponentsString(config.components) + '&systems=' + getSystemsString(config.systems) + '&owners=' + getOwnersString(config.owners) + '&first_occurence=' + toABAPDate(config.firstOccurence) + '&origin=' + $window.location.origin;
 						var that = this;
 						var thresholdDaysAgo = new Date(new Date().setDate(new Date().getDate() - config.openTransportThreshold));
 						thresholdDaysAgo.setHours(0);

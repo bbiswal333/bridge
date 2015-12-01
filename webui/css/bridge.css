@@ -973,3 +973,24 @@ h5{
 .cellText .button {
     margin: 0;
 }
+
+.bridge-tag {
+    padding: 6px;
+    background-color: ;
+    border: 1px solid #418AC9;
+    margin: 4px 8px;
+    display: inline-block;
+}
+
+.bridge-tag-sign {
+    font-size: 1.5rem;
+    color: #bbbbbb;
+    font-weight: bold;
+}
+
+.bridge-tag-sign.bridge-tag-include {
+    color: #418AC9;
+}
+.bridge-tag-sign.bridge-tag-exclude {
+    color: #FF0000;
+}
