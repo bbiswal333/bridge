@@ -1,4 +1,4 @@
-﻿angular.module('app.transportNew', []);
+﻿angular.module('app.transportNew', ['ui.bootstrap.datepicker']);
 angular.module('app.transportNew').directive('app.transportNew', ['app.transportNew.dataService', 'app.transportNew.configService', function (dataService, configService) {
 
 	var directiveController = ['$scope', function ($scope)
