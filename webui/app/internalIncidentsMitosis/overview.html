@@ -1,5 +1,6 @@
 ﻿<div>
-	<div style="width:175px; height:140px">
+	<span ng-show="limitExceeded === true" style="color: red; font-weight: bold">Limit of {{limit}} exceeded</span>
+	<div style="width:175px" ng-style="{height: limitExceeded ? '120px' : '140px'}">
 		<div class="prio_container">
 			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numPrio1==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
 				<bridge.conditional-link navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio1" navigate-if="numPrio1!==0">
