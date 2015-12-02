@@ -61,26 +61,30 @@
                 </div>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
-                Source Systems: <span class="atc-selected-component" ng-repeat="system in currentConfigValues.srcSystems">{{system}} <a ng-click="removeSystem(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
+                Source Systems:
+                <bridge.tag ng-repeat="system in currentConfigValues.srcSystems" exclude="system.exclude" remove-click="removeSystem(system, currentConfigValues)">{{system.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.devClasses.length > 0">
-                Packages: <span class="atc-selected-component" ng-repeat="package in currentConfigValues.devClasses">{{package}} <a ng-click="removePackage(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
+                Packages:
+                <bridge.tag ng-repeat="package in currentConfigValues.devClasses" exclude="package.exclude" remove-click="removePackage(system, currentConfigValues)">{{package.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.tadirResponsibles.length > 0">
-                Object Responsibles: <span class="atc-selected-component" ng-repeat="responsible in currentConfigValues.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
+                Object Responsibles:
+                <bridge.tag ng-repeat="responsible in currentConfigValues.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, currentConfigValues)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
-                AKH Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeAKHComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
+                AKH Components:
+                <bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeAKHComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
-                Software Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
+                <bridge.tag ng-repeat="component in currentConfigValues.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
             </div>
 
 
              <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
-                <bridge.button ng-click="doAlert(); add_click()" ng-show="config.configItems.indexOf(currentConfigValues) === -1">Add New Selection</bridge.button>
-                <bridge.button ng-click="save_click()" ng-show="config.configItems.indexOf(currentConfigValues) !== -1">Save Selection</bridge.button>
-
+                <bridge.button ng-click="doAlert(); add_click()" ng-show="!editMode">Add New Selection</bridge.button>
+                <bridge.button ng-click="cancel_click()" ng-show="editMode === true">Cancel</bridge.button>
+                <bridge.button ng-click="save_click()" ng-show="editMode === true">Save Selection</bridge.button>
             </div>
 
 
@@ -107,13 +111,21 @@
             </thead>
             <tbody>
                 <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false" class="hover">
-                    <td data-title="'Source System'"><span class="atc-selected-component" ng-repeat="system in configItem.srcSystems">{{system}} <a ng-click="removeSystem(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Package'"><span class="atc-selected-component" ng-repeat="package in configItem.devClasses">{{package}} <a ng-click="removePackage(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Object Responsible'"><span class="atc-selected-component" ng-repeat="responsible in configItem.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, configItem)"><span class="fa fa-remove"></span></a></td>
-                    <td data-title="'AKH Component'">
-                        <span class="atc-selected-component" ng-repeat="component in configItem.components">{{component}} <a ng-click="removeAKHComponent(component, configItem)"><span class="fa fa-remove"></span>
+                    <td data-title="'Source System'">
+                        <bridge.tag ng-repeat="system in configItem.srcSystems" exclude="system.exclude" remove-click="removeSystem(system, configItem)">{{system.value}}</bridge.tag>
                     </td>
-                    <td data-title="'Software Component'"><span class="atc-selected-component" ng-repeat="component in configItem.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, configItem)"><span class="fa fa-remove"></span></td>
+                    <td data-title="'Package'">
+                        <bridge.tag ng-repeat="package in configItem.devClasses" exclude="package.exclude" remove-click="removePackage(system, configItem)">{{package.value}}</bridge.tag>
+                    </td>
+                    <td data-title="'Object Responsible'">
+                        <bridge.tag ng-repeat="responsible in configItem.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, configItem)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
+                    </td>
+                    <td data-title="'AKH Component'">
+                        <bridge.tag ng-repeat="component in configItem.components" exclude="component.exclude" remove-click="removeAKHComponent(component, configItem)">{{component.value}}</bridge.tag>
+                    </td>
+                    <td data-title="'Software Component'">
+                    <bridge.tag ng-repeat="component in configItem.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, configItem)">{{component.value}}</bridge.tag>
+                    </td>
                     <td data-title="'Display Suppressed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.showSuppressed">
