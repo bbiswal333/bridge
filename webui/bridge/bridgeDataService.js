@@ -148,6 +148,16 @@
             initialized = true;
         }
 
+        function _setDataFromConfig(oConfigData) {
+            _removeAllApps();
+            that.projects.length = 0;
+
+            parseProjects(oConfigData);
+            parseSettings(oConfigData);
+
+            initialized = true;
+        }
+
         function initializeAvailableApps() {
             bridgeLoaderServiceProvider.apps.map(function(app) {
                 that.availableApps.push(app);
@@ -331,6 +341,7 @@
             hasProject: _hasProject,
             getProject: _getProject,
             addProjectFromOwner: _addProjectFromOwner,
-            getInstancesByType: _getInstancesByType
+            getInstancesByType: _getInstancesByType,
+            setDataFromConfig: _setDataFromConfig
         };
 }]);
