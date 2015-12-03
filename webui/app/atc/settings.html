@@ -46,7 +46,7 @@
                             
                     
                     <div class="atc-input-field">
-                        <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
+                        <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component.PS_POSID for component in searchComponent($viewValue)" placeholder="AKH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
 
                     </div>
 

@@ -124,8 +124,8 @@
     };
 
     $scope.searchComponent = function(query) {
-        return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
-            return response.data.COMPONENTS;
+        return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
+            return response.data.d.results;
         });
     };
 
