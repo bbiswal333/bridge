@@ -6,8 +6,8 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 	"$window",
 	"lib.utils.calUtils",
 	"app.cats.catsUtils",
-
-	function($http, $q, $log, $window, calUtils, catsUtils) {
+	"bridge.service.webTracker",
+	function($http, $q, $log, $window, calUtils, catsUtils, webTracker) {
 
 		var MYCATSDATA_WEBSERVICE      = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
 		var GETWORKLIST_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
@@ -591,6 +591,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			var deferred = $q.defer();
 
 			this.determineCatsProfileFromBackend().then(function(catsProfile) {
+	            webTracker.trackCustomEvent('CAT2applyChangesProfile', catsProfile);
 				$http.post(WRITECATSDATA_WEBSERVICE + "&OPTIONS=CATSHOURS&DATAFORMAT=CATSDB&catsprofile=" + catsProfile, container, {
 					'timeout': 60000,
 					'headers': {
