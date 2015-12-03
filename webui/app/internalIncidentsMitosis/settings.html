@@ -23,9 +23,14 @@
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
 							<div class="col-lg-12" style="float:none;">
+								<bridge.tag ng-repeat="program in currentConfigValues.programs" exclude="program.exclude" remove-click="removeProgram(program)">
+									{{program.TP_PROGRAM_TXT}} <br />
+									<bridge.tag ng-repeat="system in program.SYSTEMS" exclude="system.exclude" removable="false">{{system.value}}</bridge.tag>
+								</bridge.tag>
+								<!--
 								<span class="incidents-selected-component" ng-repeat="program in currentConfigValues.programs">{{program.TP_PROGRAM_TXT}} <a ng-click="removeProgram(program)"><span class="fa fa-remove"></span></a><br />
 									<span class="incidents-selected-component" ng-repeat="system in program.SYSTEMS">{{system}} <a ng-click="removeProgramSystem(program, system)"><span class="fa fa-remove"></span></a></span>
-								</span>
+								</span>-->
 							</div>
 						</div>
 					</div>

@@ -22,7 +22,11 @@ angular.module("app.internalIncidentsMitosis")
 	        function addSystems(program) {
 	        	var result = "";
 	        	if(program.SYSTEMS.length > 0) {
-	        		result += ";" + program.SYSTEMS.join(";");
+	        		for(var i = 0, length = program.SYSTEMS.length; i < length; i++) {
+	        			if(program.SYSTEMS[i].exclude) {
+	        				result += program.SYSTEMS[i].value + ";";
+	        			}
+	        		}
 	        	}
 	        	return result;
 	        }
@@ -31,7 +35,7 @@ angular.module("app.internalIncidentsMitosis")
 	        	var filter = "";
 	        	filter += "programFilter=";
 	        	filter += config.programs.map(function(program) {
-	        		return program.TP_PROGRAM + addSystems(program);
+	        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
 	        	}).join("|");
 	        	filter += "&systemFilter=";
 	        	filter += config.systems.join(";");

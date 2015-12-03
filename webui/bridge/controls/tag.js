@@ -4,9 +4,13 @@ angular.module('bridge.app').directive('bridge.tag', [function() {
         restrict: 'E',
         scope: {
         	exclude: '=',
-            removeClick: '&'
+            removeClick: '&',
+            removable: '@'
         },
         transclude: true,
-        templateUrl: 'bridge/controls/tag.html'
+        templateUrl: 'bridge/controls/tag.html',
+		compile: function(element, attrs){
+			if (!attrs.removable) { attrs.removable = true; }
+		}
     };
 }]);
