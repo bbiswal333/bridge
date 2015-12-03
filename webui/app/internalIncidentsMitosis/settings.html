@@ -27,10 +27,6 @@
 									{{program.TP_PROGRAM_TXT}} <br />
 									<bridge.tag ng-repeat="system in program.SYSTEMS" exclude="system.exclude" removable="false">{{system.value}}</bridge.tag>
 								</bridge.tag>
-								<!--
-								<span class="incidents-selected-component" ng-repeat="program in currentConfigValues.programs">{{program.TP_PROGRAM_TXT}} <a ng-click="removeProgram(program)"><span class="fa fa-remove"></span></a><br />
-									<span class="incidents-selected-component" ng-repeat="system in program.SYSTEMS">{{system}} <a ng-click="removeProgramSystem(program, system)"><span class="fa fa-remove"></span></a></span>
-								</span>-->
 							</div>
 						</div>
 					</div>
@@ -49,7 +45,7 @@
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
 							<div class="col-lg-12" style="float:none;">
-								<span class="incidents-selected-component" ng-repeat="system in currentConfigValues.systems">{{system}} <a ng-click="removeSystem(system)"><span class="fa fa-remove"></span></a></span>
+								<bridge.tag ng-repeat="system in currentConfigValues.systems" exclude="currentConfigValues.excludeSystems" remove-click="removeSystem(system)">{{system}}</bridge.tag>
 							</div>
 						</div>
 					</div>
@@ -62,7 +58,7 @@
 						</div>
 						<div class="row" style="margin:15px 0 0 0;">
 							<div class="col-lg-12" style="float:none;">
-								<span class="incidents-selected-component" ng-repeat="processor in currentConfigValues.processors">{{processor.VORNA}} {{processor.NACHN}} <a ng-click="removeProcessor(processor)"><span class="fa fa-remove"></span></a></span>
+								<bridge.tag ng-repeat="processor in currentConfigValues.processors" exclude="currentConfigValues.excludeProcessors" remove-click="removeProcessor(processor)">{{processor.VORNA}} {{processor.NACHN}}</bridge.tag>
 							</div>
 						</div>
 					</div>
@@ -83,7 +79,7 @@
 				</div>
 				<div class="row" style="margin:15px 0 0 0;">
 					<div class="col-lg-12" style="float:none;">
-						<span class="incidents-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeComponent(component)"><span class="fa fa-remove"></span></a></span>
+						<bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeComponent(component)">{{component.value}}</bridge.tag>
 					</div>
 				</div>
 

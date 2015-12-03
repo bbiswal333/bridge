@@ -20,13 +20,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 		}
 
 		if($scope.currentConfigValues.programs.indexOf(item) < 0) {
-			$scope.currentConfigValues.programs.push(item);
-			item.SYSTEMS = [];
-			$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_SYSTEMS_FOR_PROGRAM?PRG_ID=" + item.TP_PROGRAM).then(function(result) {
-				result.data.SYSTEMS.map(function(system) {
-					item.SYSTEMS.push(system.SYS_ID);
-				});
-			});
+			$scope.currentConfigValues.addProgram(item);
 		}
 	};
 
@@ -44,14 +38,23 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 		});
 	};
 
+	function componentAlreadyInConfig(component) {
+		for(var i = 0, length = $scope.currentConfigValues.components.length; i < length; i++) {
+			if($scope.currentConfigValues.components[i].value === component) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	$scope.onSelectComponent = function(item) {
 		if(typeof item === "string") {
-			if($scope.currentConfigValues.components.indexOf(item) < 0) {
-				$scope.currentConfigValues.components.push(item);
+			if(!componentAlreadyInConfig(item)) {
+				$scope.currentConfigValues.components.push({value: item});
 			}
 		} else {
-			if($scope.currentConfigValues.components.indexOf(item.II_CATEGORY) < 0) {
-				$scope.currentConfigValues.components.push(item.II_CATEGORY);
+			if(!componentAlreadyInConfig(item.II_CATEGORY)) {
+				$scope.currentConfigValues.components.push({value: item.II_CATEGORY});
 			}
 		}
 	};

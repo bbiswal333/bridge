@@ -1,4 +1,4 @@
-angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMitosis.configService", ['bridgeDataService', function (bridgeDataService) {
+angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMitosis.configService", ['bridgeDataService', '$http', function (bridgeDataService, $http) {
 	var instances = {};
 
 	var Config = (function() {
@@ -9,6 +9,24 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 			this.isInitialized = false;
 			this.processors = [];
 			this.detailsColumnVisibility = [false, true, true, true, true, true, false, false, true, true, false, false];
+
+			function checkProgramSystems(program) {
+				var programSystemsLengthAtStart = program.SYSTEMS.length;
+				$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_SYSTEMS_FOR_PROGRAM?PRG_ID=" + program.TP_PROGRAM).then(function(result) {
+					result.data.SYSTEMS.map(function(system) {
+						for(var i = 0, length = program.SYSTEMS.length; i < length; i++) {
+							if(program.SYSTEMS[i].value === system.SYS_ID) {
+								return;
+							}
+						}
+						if(programSystemsLengthAtStart === 0) {
+							program.SYSTEMS.push({value: system.SYS_ID});
+						} else {
+							program.SYSTEMS.push({value: system.SYS_ID, exclude: true});
+						}
+					});
+				});
+			}
 
 			this.initialize = function() {
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
@@ -27,12 +45,30 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 	                	}
 	                });
 
-	                this.components = angular.copy(appConfig.components ? appConfig.components : []);
+	                this.components = angular.copy(appConfig.components ? appConfig.components.map(function(component) {
+	                	if(component.value) {
+	                		return component;
+	                	} else {
+	                		return {value: component};
+	                	}
+	                }) : []);
+	                this.excludeSystems = appConfig.excludeSystems;
+	                this.excludeProcessors = appConfig.excludeProcessors;
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems : []);
 	                this.processors = angular.copy(appConfig.processors ? appConfig.processors : []);
 	    			this.detailsColumnVisibility = appConfig.detailsColumnVisibility ? appConfig.detailsColumnVisibility : [false, true, true, true, true, true, false, false, true, true, false, false];
+
+	    			this.programs.map(function(program) {
+	    				checkProgramSystems(program);
+	    			});
 	            }
 	            this.isInitialized = true;
+			};
+
+			this.addProgram = function(program) {
+				this.programs.push(program);
+				program.SYSTEMS = [];
+				checkProgramSystems(program);
 			};
 		};
 	})();

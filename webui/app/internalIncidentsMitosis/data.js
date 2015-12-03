@@ -38,13 +38,19 @@ angular.module("app.internalIncidentsMitosis")
 	        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
 	        	}).join("|");
 	        	filter += "&systemFilter=";
-	        	filter += config.systems.join(";");
+	        	filter += (config.excludeSystems ? "!" : "") + config.systems.join(";");
 
 	        	filter += "&processorFilter=";
-	        	filter += config.processors.map(function(processor) { return processor.BNAME; }).join(";");
+	        	filter += (config.excludeProcessors ? "!" : "") + config.processors.map(function(processor) { return processor.BNAME; }).join(";");
 
 	        	filter += "&componentFilter=";
-	        	filter += config.components.join(";");
+	        	filter += config.components.map(function(component) {
+	        		if(component.exclude) {
+	        			return "!" + component.value;
+	        		} else {
+	        			return component.value;
+	        		}
+	        	}).join(";");
 				return filter;
 	        }
 
