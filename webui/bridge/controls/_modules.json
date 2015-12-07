@@ -17,7 +17,8 @@
     "editableLabel.js",
     "editableEmployee.js",
     "employee.js",
-    "tag.js"
+    "tag.js",
+    "daysago.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"

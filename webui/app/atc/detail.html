@@ -21,6 +21,7 @@
 			<bridge.table-column column-id="'10'" header="'Component'" column-size-class="'col-sm-2'" order-by="'COMP_SHORT'" visible="parentScope.config.detailsColumnVisibility[9]">{{row.COMP_SHORT}}</bridge.table-column>
 			<bridge.table-column column-id="'11'" header="'Check Date'" column-size-class="'col-sm-1'" order-by="'CHECK_TSTMP'" visible="parentScope.config.detailsColumnVisibility[10]">{{parentScope.getFormattedDate(row.CHECK_TSTMP)}}</bridge.table-column>
 			<bridge.table-column column-id="'12'" header="'Check Run'" column-size-class="'col-sm-3'" order-by="'CHECK_TITLE'" visible="parentScope.config.detailsColumnVisibility[11]" custom-style="{'min-width': '10rem'}">{{row.CHECK_TITLE}}</bridge.table-column>
+			<bridge.table-column column-id="'13'" header="'Age'" column-size-class="'col-sm-1'" order-by="'FIRST_OCCURRENCE'" visible="parentScope.config.detailsColumnVisibility[12]" custom-style="{'min-width': '1rem'}"><bridge.daysago date="row.FIRST_OCCURRENCE"></bridge.daysago></bridge.table-column>
 		</bridge.table>
     </div>
 </div>
