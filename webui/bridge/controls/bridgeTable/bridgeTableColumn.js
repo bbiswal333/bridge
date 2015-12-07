@@ -12,6 +12,15 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             visible: '=?',
             customStyle: '@'
         },
+        controller: function($scope) {
+            $scope.applyClass = function() {
+                if($scope.newLayout) {
+                    return 'newLayout_' + $scope.columnSizeClass();
+                } else {
+                    return $scope.columnSizeClass();
+                }
+            };
+        },
         link: function ($scope, element, attrs, tableController) {
             if ($scope.visible === undefined || $scope.visible === "true"){
                 $scope.visible = true;
@@ -30,6 +39,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 orderBy: $scope.orderBy(),
                 visible: $scope.visible
             };
+
+            $scope.newLayout = tableController.usesNewLayout();
 
             $scope.columnData = tableController.registerColumn($scope.columnData);
         }

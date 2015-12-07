@@ -1,0 +1,38 @@
+<div style="width: 100%">
+	<p>
+		<form name="ConfigItemForm">
+			<div class="row">
+				
+				<div class="col-xs-6 form_head" style="float:none; margin-top: 10px;">Choose source system</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+						<bridge.button state="(currentConfigValues.configItem.system === 'PROD' || !currentConfigValues.configItem.system) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.system = 'PROD'" style="margin-right:0;width:100px">
+							Productive
+						</bridge.button>
+						<bridge.button state="(currentConfigValues.configItem.system === 'VERILAB' ) === true ? 'active' : 'invisible-button'" ng-click="currentConfigValues.configItem.system = 'VERILAB'" style="margin-left:0;width:100px">
+							VeriLab
+						</bridge.button>
+				</div>
+                	
+				<div class="col-xs-6 form_head" style="float:none; margin-top: 10px;">Select KPIs to Display (max. 10)</div>
+				<div id="search_text">
+                    <bridge.input model="" placeholder="Search KPI name" ng-enter="search_kpis()" autofocus style="margin-left:10px;"></bridge.input>
+                    <div>
+				        <select multiple id="foundoptions" ng-options="item.TITLE for item in items" ng-model="possible_kpis" ng-change="selectKPI(possible_kpis);" style="margin-left:10px;min-height:200px;max-height:350px;width:50%; float:left;" >
+                            <option value="item.ID"> -- Select up to 10 KPIs --</option>
+                        </select>
+                        <select multiple id="selections" ng-options="item.TITLE for item in selected_kpis" ng-model="final_kpis" ng-change="removeKPI(final_kpis);" style="margin-left:10px;min-height:200px;max-height:350px;width:40%; float:left;">
+                            <option value="item.ID"> -- Selected items --</option>
+                        </select>
+                    </div>                    
+				</div>
+			</div>
+		</form>
+	</p>
+
+	<div class="row" >
+		<!--<div class="btn btn-primary btn_blue save_close_btn" ng-click="save_click()">Save &amp; Close</div>-->
+		<bridge.button class="save_close_btn" ng-click="save_click();doAlert()">
+			Save & Close
+		</bridge.button>
+	</div>
+</div>

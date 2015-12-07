@@ -1,0 +1,50 @@
+﻿<div>
+	<div style="width:175px; height:140px">
+		<div class="prio_container">
+			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numPrio1==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio1" navigate-if="numPrio1!==0">
+					<div class="prio_box" style="color:white">
+						<p>Very High</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numPrio1 <= 9999">{{numPrio1}}</p>
+						<p ng-if="numPrio1 > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>
+			<div class="prio_col prio_bg_2" ng-class="{'grey-40':numPrio2==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio2" navigate-if="numPrio2!==0">
+					<div class="prio_box" style="color:white">
+						<p>High</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numPrio2 <= 9999">{{numPrio2}}</p>
+						<p ng-if="numPrio2 > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>
+			<div class="prio_col prio_bg_3" ng-class="{'grey-40':numPrio3==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio3" navigate-if="numPrio3!==0">
+					<div class="prio_box" style="color:white">
+						<p>Medium</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numPrio3 <= 9999">{{numPrio3}}</p>
+						<p ng-if="numPrio3 > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>
+			<div class="prio_col prio_bg_4" ng-class="{'grey-40':numPrio4==0}" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+				<bridge.conditional-link navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio4" navigate-if="numPrio4!==0">
+					<div class="prio_box" style="color:white">
+						<p>Low</p>
+					</div>
+					<div class="prio_content_box" style="color: white">
+						<p ng-if="numPrio4 <= 9999">{{numPrio4}}</p>
+						<p ng-if="numPrio4 > 9999">+10k</p>
+					</div>
+				</bridge.conditional-link>
+			</div>	
+		</div>
+	</div>
+</div>

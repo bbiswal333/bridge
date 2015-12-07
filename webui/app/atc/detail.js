@@ -60,4 +60,8 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         return Object.keys($scope.statusMap);
     };
 
+    $scope.getFormattedDate = function(dateString){
+        var str = dateString.toString();
+        return str.substring(6, 8) + "." + str.substring(4, 6) + "." + str.substring(0, 4);
+    };
 }]);

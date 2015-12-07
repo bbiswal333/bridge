@@ -51,15 +51,17 @@
             <div style="width:100%;float:left;margin:25px 0 0 0;" class="btn-group">
                 <bridge.button style="margin-left:0;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" state="currentConfigValues.showSuppressed === true ? 'active' : ' '">Display Suppressed</bridge.button>
 
-                 <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
+                <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
 
-                        <bridge.button style="margin-right:0px;width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : 'invisible-button'">Prio 1</bridge.button>
+                <bridge.button style="margin-right:0px;width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : 'invisible-button'">Prio 1</bridge.button>
 
-                        <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : 'invisible-button'">Prio 2</bridge.button>
+                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : 'invisible-button'">Prio 2</bridge.button>
 
-                        <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : 'invisible-button'">Prio 3</bridge.button>
+                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : 'invisible-button'">Prio 3</bridge.button>
 
-                        <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : 'invisible-button'">Prio 4</bridge.button>
+                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : 'invisible-button'">Prio 4</bridge.button>
+
+                <bridge.button style="margin-left:15px;margin-right:0;width: 200px" ng-click="currentConfigValues.onlyProductionRelevant = !currentConfigValues.onlyProductionRelevant" state="currentConfigValues.onlyProductionRelevant === true ? 'active' : 'invisible-button'">Only Production Relevant</bridge.button>
 
             </div>
 
@@ -80,6 +82,7 @@
                     <th>Software Component</th>
                     <th>Display Suppressed</th>
                     <th>Ignore Completed</th>
+                    <th>Only Production Relevant</th>
                     <th>Priorities</th>
                     <th>Functions</th>
                 </tr>
@@ -101,6 +104,11 @@
                     <td data-title="'Ignore Completed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.onlyInProcess">
+                        </span>
+                    </td>
+                    <td data-title="'Only Production Relevant'">
+                        <span>
+                            <input type="checkbox" ng-model="configItem.onlyProductionRelevant">
                         </span>
                     </td>
                     <td data-title="'Priorities'">

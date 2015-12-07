@@ -8,7 +8,7 @@
     	<table>
             <tr ng-repeat="content in contentToDisplay">
     			<td><i class="fa {{content.statusIcon}} {{content.STATUS | lowercase}}-font"></td>
-    			<td class="style" style="width: 100px;"><a class="changeCursor" target="_blank" href="https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/WS%20OnPremise%20Delivery/CID/BI%20%26%20AS/Services%20and%20Projects/IT%20BI/Solution_Catalog_NEW/index.htm#{{content.CONTENT}}">{{content.CONTENT}}</a></td>
+    			<td class="style" style="width: 100px;"><a class="changeCursor" target="_blank" href="https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/WS%20SAP%20IT/Processes%2c%20Services%20and%20Projects/IT%20BI/Solution_Catalog_NEW/index.htm#{{content.CONTENT}}">{{content.CONTENT}}</a></td>
                 <td style="padding-right: 0px;">{{formatDate(content.LAST_REFRESH)}}</td>
                 <td><a title="View details" class="fa fa-table changeCursor" ng-controller="app.mitosisHana.detailController" target="_blank" ng-click="detailStatusView(content.CONTENT)"></a></td>
     		</tr>

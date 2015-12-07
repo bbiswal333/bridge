@@ -7,13 +7,22 @@ angular.module('bridge.controls').directive('bridge.table', function() {
         scope: {
             tableData: "=",
             filter: "&",
-            defaultSortBy: "&?"
+            defaultSortBy: "&?",
+            newLayout: '@'
         },
         controller: ["$scope", function($scope){
             var infinityLimitStep = 50;
             $scope.infinityLimit = infinityLimitStep;
             $scope.reverse = $scope.defaultSortBy && $scope.defaultSortBy() ? false : true;
             $scope.predicate = $scope.defaultSortBy && $scope.defaultSortBy() || null;
+
+            $scope.applyTableClass = function(){
+                return $scope.newLayout === "true" ? "detailsTableNewLayout" : "";
+            }
+
+            this.usesNewLayout = function() {
+                return $scope.newLayout === "true" ? true : false;
+            };
 
             $scope.zebraCell = function (index) {
                 return 'row' + index % 2;
@@ -25,6 +34,14 @@ angular.module('bridge.controls').directive('bridge.table', function() {
                 if (selector !== undefined) {
                     $scope.predicate = selector;
                     $scope.reverse = !$scope.reverse;
+                }
+            };
+
+            $scope.applyColumnClass = function(column) {
+                if($scope.newLayout) {
+                    return 'newLayout_' + $scope.getColumnHeaderClasses(column);
+                } else {
+                    return $scope.getColumnHeaderClasses(column);
                 }
             };
 

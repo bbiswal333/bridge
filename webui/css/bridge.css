@@ -764,6 +764,10 @@ input[type="checkbox"]:checked:after {
     padding-top: 0;
     
 }
+.table{
+    display: table;
+}
+
 .table-cell{
     border:2px solid white;
     height:40px;
@@ -789,6 +793,9 @@ input[type="checkbox"]:checked:after {
     padding-left: 10px;
     line-height: 2.5;
     overflow: hidden;
+}
+.tableCell {
+    display: table-cell;
 }
 
 .wi {
@@ -966,8 +973,3 @@ h5{
         display: none;
     }
 }
-
-.cellText .button {
-    margin: 0;
-}
-

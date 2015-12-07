@@ -1,5 +1,5 @@
-angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller', ['$scope', '$http', '$timeout',
-    function ($scope, $http, $timeout) {
+angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller', ['$scope', '$http', '$timeout', '$window',
+    function ($scope, $http, $timeout, $window) {
         var nodesById = {};
 
         function parseAllNodes(nodes) {
@@ -43,5 +43,29 @@ angular.module('app.profitCenter').controller('app.profitCenter.detailcontroller
         $timeout(function() {
             $scope.treeLoadFinished = true;
         }, 5000);
+
+        var projectProfitCenter = [];
+        function extractProfitCenters(node) {
+            if(node.profitCenterId) {
+                projectProfitCenter.push(node);
+            }
+            if(node.children.length > 0) {
+                node.children.map(function(child) {
+                    extractProfitCenters(child);
+                });
+            }
+        }
+
+        $scope.toExcel = function(node) {
+            projectProfitCenter = [];
+            extractProfitCenters(node);
+            var csvContent = "data:text/csv;charset=utf-8,sep=;\n";
+            csvContent += "Profit Center Number;Profit Center Name;Controller\n";
+            projectProfitCenter.map(function(item) {
+                csvContent += item.profitCenterId + ";" + item.label + ";" + item.controller + "\n";
+            });
+            var encodedUri = encodeURI(csvContent);
+            $window.open(encodedUri);
+        };
     }
 ]);

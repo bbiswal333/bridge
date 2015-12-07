@@ -50,6 +50,11 @@
 	cursor: pointer;
 }
 
+.projectTab.selected {
+	background-color: #e6e6e6;
+	color: #666666;
+}
+
 .projectTab:hover {
 	background-color: #e6e6e6;
 	color: #666666;
