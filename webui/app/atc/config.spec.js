@@ -6,10 +6,10 @@
      function createConfigItemForSystem(System) {
         var myConfigItem = atcConfigService.newItem();
 
-        myConfigItem.srcSystems = [System];
-        myConfigItem.devClasses = ["S_DEVREPORTING"];
+        myConfigItem.srcSystems = [{value: System}];
+        myConfigItem.devClasses = [{value: "S_DEVREPORTING"}];
         myConfigItem.tadirResponsibles = ["D051804"];
-        myConfigItem.components = ["BA-BS"];
+        myConfigItem.components = [{value: "BA-BS"}];
         myConfigItem.showSuppressed = true;
         myConfigItem.displayPrio1 = true;
         myConfigItem.displayPrio3 = true;
@@ -46,12 +46,12 @@
     it("shoud create the correct query string", function () {
         var myConfig = atcConfigService;
         myConfig.addConfigItem(createConfigItemForSystem("V7Z"));
-        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*");
+        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*;");
 
         myConfig.addConfigItem(createConfigItemForSystem("CI3"));
         expect(myConfig.getConfigItems().length).toBe(2);
 
-        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*|CI3;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*");
+        expect(myConfig.getQueryString()).toBe("V7Z;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*;|CI3;S_DEVREPORTING;D051804;BA-BS;X;X;X;X;;X;;*FA*;");
     });
 
     it("should initialize itself from the bridge config service", function () {
@@ -59,7 +59,7 @@
         expect(atcConfigService.isInitialized).toBe(true);
 
         expect(atcConfigService.configItems.length).toBe(1);
-        expect(atcConfigService.configItems[0].srcSystems).toEqual(["Z7Y"]);
+        expect(atcConfigService.configItems[0].srcSystems).toEqual([{value: "Z7Y"}]);
     });
 
     it("should initialize itself with the default config if no backend config is available", function () {

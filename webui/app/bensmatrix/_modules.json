@@ -3,7 +3,7 @@
 	{
 		"categories"			:	["Beta"],
 		"module_name"			:	"app.bensmatrix",
-		"title"					:	"UI text space calculator 1.2",
+		"title"					:	"UI text space calculator 1.3",
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.bensmatrix",
 		"needs_client"			:	false,

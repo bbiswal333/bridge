@@ -9,8 +9,11 @@ angular.module('bridge.app').controller('bridgeController',
             }
         });
 
+        var bStoreOnUnload = true;
         $window.onbeforeunload = function(){
-            bridgeConfig.store(bridgeDataService);
+            if (bStoreOnUnload) {
+                bridgeConfig.store(bridgeDataService);
+            }
         };
 
         $scope.logMode = bridgeDataService.getLogMode();
@@ -110,11 +113,19 @@ angular.module('bridge.app').controller('bridgeController',
             $scope.showLoadingAnimation = true;
         }
 
-        $window.debug = {
+        $window.bridgeDebug = {
             resetConfig: function() {
+                bStoreOnUnload = false;
                 bridgeDataService.toDefault();
                 bridgeConfig.store(bridgeDataService);
                 bridgeConfig.persistInBackend();
+                $window.location.reload();
+            },
+            setConfig: function(oConfig){
+                bridgeDataService.setDataFromConfig(oConfig);
+                bridgeConfig.store(bridgeDataService);
+                bridgeConfig.persistInBackend();
+                $window.location.reload();
             }
         };
 

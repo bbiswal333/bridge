@@ -7,6 +7,7 @@
     $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
 
     $scope.currentConfigValues.onlyInProcess = true;
+    $scope.bShowSelectionDetails = false;
 
     $scope.closeForm = function () {
         $scope.$emit('closeSettingsScreen');
@@ -14,7 +15,7 @@
 
     $scope.onSelectSystem = function(value) {
         if($scope.currentConfigValues.srcSystems.indexOf(value) === -1) {
-            $scope.currentConfigValues.srcSystems.push(value);
+            $scope.currentConfigValues.srcSystems.push({value: value});
             $scope.currentConfigValues.srcSystem = "";
         }
     };
@@ -25,7 +26,7 @@
 
     $scope.onSelectPackage = function(value) {
         if($scope.currentConfigValues.devClasses.indexOf(value) === -1) {
-            $scope.currentConfigValues.devClasses.push(value);
+            $scope.currentConfigValues.devClasses.push({value: value});
             $scope.currentConfigValues.devClass = "";
         }
     };
@@ -36,7 +37,7 @@
 
     $scope.onSelectAKHComponent = function(value) {
         if($scope.currentConfigValues.components.indexOf(value) === -1) {
-            $scope.currentConfigValues.components.push(value);
+            $scope.currentConfigValues.components.push({value: value});
             $scope.currentConfigValues.component = "";
         }
     };
@@ -47,7 +48,7 @@
 
     $scope.onSelectSoftwareComponent = function(value) {
         if($scope.currentConfigValues.softwareComponents.indexOf(value) === -1) {
-            $scope.currentConfigValues.softwareComponents.push(value);
+            $scope.currentConfigValues.softwareComponents.push({value: value});
             $scope.currentConfigValues.softwareComponent = "";
         }
     };
@@ -84,8 +85,19 @@
         }
     };
 
-    $scope.save_click = function() {
+    function stopEditing() {
+        $scope.editMode = false;
         $scope.currentConfigValues = appAtcConfig.getConfigForAppId($scope.boxScope.metadata.guid).newItem();
+        $scope.bShowSelectionDetails = false;
+    }
+
+    $scope.save_click = function() {
+        $scope.config.configItems[$scope.config.configItems.indexOf($scope.editedConfigItem)] = $scope.currentConfigValues;
+        stopEditing();
+    };
+
+    $scope.cancel_click = function() {
+        stopEditing();
     };
 
     $scope.rss_click = function (configItem) {
@@ -94,10 +106,14 @@
 
     $scope.copy_click = function (configItem) {
         jQuery.extend($scope.currentConfigValues,configItem);
+        $scope.bShowSelectionDetails = true;
     };
 
     $scope.edit_click = function(configItem) {
-        $scope.currentConfigValues = configItem;
+        $scope.editMode = true;
+        $scope.editedConfigItem = configItem;
+        $scope.currentConfigValues = angular.copy(configItem);
+        $scope.bShowSelectionDetails = true;
     };
 
     $scope.remove_click = function (configItem) {
@@ -108,8 +124,8 @@
     };
 
     $scope.searchComponent = function(query) {
-        return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_COMPONENTS?query=" + query.toUpperCase() + "*").then(function(response) {
-            return response.data.COMPONENTS;
+        return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
+            return response.data.d.results;
         });
     };
 

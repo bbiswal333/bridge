@@ -9,7 +9,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	$scope.currentConfigValues = incidentConfig;
 
 	$scope.searchPrograms = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/bridge/internalIncidents/programs.xsodata/Programs?$format=json&$top=10&$filter=indexof(toupper(TP_PROGRAM_TXT), '" + query.toUpperCase() + "') ne -1").then(function(response) {
+		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/programs.xsodata/Programs?$format=json&$top=10&$filter=indexof(toupper(TP_PROGRAM_TXT), '" + query.toUpperCase() + "') ne -1").then(function(response) {
 			return response.data.d.results;
 		});
 	};
@@ -20,13 +20,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 		}
 
 		if($scope.currentConfigValues.programs.indexOf(item) < 0) {
-			$scope.currentConfigValues.programs.push(item);
-			item.SYSTEMS = [];
-			$http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_SYSTEMS_FOR_PROGRAM?PRG_ID=" + item.TP_PROGRAM).then(function(result) {
-				result.data.SYSTEMS.map(function(system) {
-					item.SYSTEMS.push(system.SYS_ID);
-				});
-			});
+			$scope.currentConfigValues.addProgram(item);
 		}
 	};
 
@@ -39,19 +33,28 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	};
 
 	$scope.searchComponents = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/bridge/internalIncidents/components.xsodata/Component?$format=json&$top=10&$filter=startswith(II_CATEGORY, '" + query.toUpperCase() + "')").then(function(response) {
+		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
 			return response.data.d.results;
 		});
 	};
 
+	function componentAlreadyInConfig(component) {
+		for(var i = 0, length = $scope.currentConfigValues.components.length; i < length; i++) {
+			if($scope.currentConfigValues.components[i].value === component) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	$scope.onSelectComponent = function(item) {
 		if(typeof item === "string") {
-			if($scope.currentConfigValues.components.indexOf(item) < 0) {
-				$scope.currentConfigValues.components.push(item);
+			if(!componentAlreadyInConfig(item)) {
+				$scope.currentConfigValues.components.push({value: item});
 			}
 		} else {
-			if($scope.currentConfigValues.components.indexOf(item.II_CATEGORY) < 0) {
-				$scope.currentConfigValues.components.push(item.II_CATEGORY);
+			if(!componentAlreadyInConfig(item.II_CATEGORY)) {
+				$scope.currentConfigValues.components.push({value: item.II_CATEGORY});
 			}
 		}
 	};
@@ -61,7 +64,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	};
 
 	$scope.searchSystems = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/bridge/internalIncidents/systems.xsodata/System?$format=json&$top=15&$filter=startswith(II_SYSTEM_ID, '" + query.toUpperCase() + "')").then(function(response) {
+		return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/systems.xsodata/System?$format=json&$top=15&$filter=startswith(II_SYSTEM_ID, '" + query.toUpperCase() + "')").then(function(response) {
 			return response.data.d.results;
 		});
 	};

@@ -14,7 +14,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
   "app.cats.monthlyData",
   "app.cats.configService",
   "bridgeDataService",
-  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService) {
+  "bridge.service.webTracker",
+  function ($scope, $q, $log, $routeParams, $location, calUtils, catsBackend, catsUtils, $http, $interval, $window, bridgeInBrowserNotification, monthlyDataService, configService, bridgeDataService, webTracker) {
 
     $scope.blockdata = [];
     $scope.blockdataRemembered = null;
@@ -786,12 +787,14 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
+                    webTracker.trackCustomEvent('CAT2applyChanges', 'Success');
                 }, function(errorText){
                     bridgeInBrowserNotification.addAlert('danger', errorText);
                     $scope.$emit("refreshApp"); // this must be done before loadDataForSelectedWeeks() for performance reasons
                     monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                         loadCATSDataForDay();
                     });
+                    webTracker.trackCustomEvent('CAT2applyChanges', 'Failure');
                 });
             } else {
                 bridgeInBrowserNotification.addAlert('info', "No changes recognized. No update required.");
@@ -799,6 +802,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 monthlyDataService.loadDataForSelectedWeeks(weeks).then(function(){
                     loadCATSDataForDay();
                 });
+                webTracker.trackCustomEvent('CAT2applyChanges', 'NoChange');
             }
         } catch(err) {
             $log.log("saveTimesheet(): " + err);

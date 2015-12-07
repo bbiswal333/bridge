@@ -15,9 +15,12 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 	};
 
 	$scope.onSelectComponent = function(item) {
-		if($scope.currentConfigValues.components.indexOf(item) < 0) {
-			$scope.currentConfigValues.components.push(item);
+		for(var i = 0, length = $scope.currentConfigValues.components.length; i < length; i++) {
+			if($scope.currentConfigValues.components[i].value === item) {
+				return;
+			}
 		}
+		$scope.currentConfigValues.components.push({exclude: false, value: item});
 	};
 
 	$scope.removeComponent = function(item) {
@@ -25,9 +28,12 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 	};
 
 	$scope.onSelectSystem = function(item) {
-		if($scope.currentConfigValues.systems.indexOf(item) < 0) {
-			$scope.currentConfigValues.systems.push(item);
+		for(var i = 0, length = $scope.currentConfigValues.systems.length; i < length; i++) {
+			if($scope.currentConfigValues.systems[i].value === item) {
+				return;
+			}
 		}
+		$scope.currentConfigValues.systems.push({exclude: false, value: item});
 	};
 
 	$scope.removeSystem = function(item) {

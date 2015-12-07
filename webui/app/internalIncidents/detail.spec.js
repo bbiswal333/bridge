@@ -43,7 +43,7 @@ describe("Internal Incidents details controller", function(){
     });
 
     it("should load the tickets if the ticketData is not initialized yet", function(){
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         $controller("app.internalIncidents.detailController", {

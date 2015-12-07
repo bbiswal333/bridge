@@ -14,6 +14,8 @@ angular.module('app.internalIncidentsMitosis').directive('app.internalIncidentsM
         };
 
         function setAppDataFromIncidentData() {
+        	$scope.limit = incidentData.limit;
+        	$scope.limitExceeded = incidentData.limitExceeded;
         	$scope.numPrio1 = incidentData.prio1.length;
 			$scope.numPrio2 = incidentData.prio2.length;
 			$scope.numPrio3 = incidentData.prio3.length;

@@ -52,7 +52,7 @@ describe("Incidents By Saved Search details controller", function(){
                 }
             });
 
-        $httpBackend.expectGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/saved_search\?sap-client\=001/)
+        $httpBackend.expectGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/saved_search\?sap-client\=001/)
             .respond(mockTicketData);
 
         $controller("app.incidentSavedSearch.detailController", {

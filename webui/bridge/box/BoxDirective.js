@@ -1,8 +1,8 @@
 ﻿angular.module('bridge.box', ['bridge.service', 'ngAnimate']);
 
 angular.module('bridge.box').directive('bridge.box',
-    ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload', 'bridgeUserData',
-    function ($compile, $log, $window, $interval, bridgeDataService, bridgeDownload, bridgeUserData) {
+    ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload', 'bridgeUserData', 'bridge.service.webTracker',
+    function ($compile, $log, $window, $interval, bridgeDataService, bridgeDownload, bridgeUserData, webTracker) {
 
     function directiveController($scope)
     {
@@ -23,6 +23,8 @@ angular.module('bridge.box').directive('bridge.box',
         scope: true,
         link: function ($scope, $element, $attrs) {
             $scope.boxIconBarVisible = false;
+
+            webTracker.trackCustomEvent('BridgeBoxLoad', $attrs.content);
 
             $scope.box = {};
             if ($attrs.id) {

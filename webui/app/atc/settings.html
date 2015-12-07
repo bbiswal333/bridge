@@ -3,76 +3,98 @@
   <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query" style="text-align: left"></a>
 </script>
 
-<div style="width: 100%;min-height: 500px;height: auto !important;height: 600px;"> 
-<form name="newConfigItemForm" class="atc_input">
-        <div class="row" style="margin: 10px">
-            <b>Create a new selection</b>
-            <div style="margin: 10px">
-                <div class="atc-input-field">
-                     <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." icon="fa fa-plus" icon-click="onSelectSystem(currentConfigValues.srcSystem)" autofocus enter="onSelectSystem(currentConfigValues.srcSystem)"></bridge.input>
-                </div>  
-               
-                <div class="atc-input-field">
-                     <bridge.input style="float:left;" model="currentConfigValues.devClass" placeholder="Package..." icon="fa fa-plus" icon-click="onSelectPackage(currentConfigValues.devClass)" autofocus enter="onSelectPackage(currentConfigValues.devClass)" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="package as package for package in searchPackage($viewValue)"></bridge.input>
-                </div>
+<div style="width: 100%;">
+    <div class="row">
 
-                <div class="atc-input-field">
-                    <bridge.employee-input selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Object Responsible...'" required="false" icon="fa fa-plus" on-select="onSelectResponsible"></bridge.employee-input>
-                  </div>
-                        
-                
-                <div class="atc-input-field">
-                    <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchComponent($viewValue)" placeholder="AKH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
+        <div style="width:100%;float:left;margin:5px 0 15px 0;">
 
-                </div>
+                <bridge.button style="margin-right:0px;" ng-click="bShowSelectionDetails = true;" >Create new Selection</bridge.button>
 
-                <div class="atc-input-field">
-                    <bridge.input model="currentConfigValues.softwareComponent" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchSoftwareComponent($viewValue)" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(currentConfigValues.softwareComponent)" autofocus enter="onSelectSoftwareComponent(currentConfigValues.softwareComponent)"></bridge.input>
+        </div>
+
+        <div ng-show="bShowSelectionDetails == true">
+            <div class="row" style="margin: 10px">
+                <div style="width:100%;float:left;margin:25px 0 10 0;" class="btn-group">
+                    <bridge.checkbox style="margin-right: 15px;" checked-label="Display Suppressed" unchecked-label="Display Suppressed" is-checked="currentConfigValues.showSuppressed"></bridge.checkbox>
+
+                    <bridge.checkbox style="margin-right: 15px;" checked-label="Ignore Completed" unchecked-label="Ignore Completed" is-checked="currentConfigValues.onlyInProcess"></bridge.checkbox>
+
+                    <bridge.checkbox style="margin-right: 30px;" checked-label="Only Production Relevant" unchecked-label="Only Production Relevant" is-checked="currentConfigValues.onlyProductionRelevant"></bridge.checkbox>
+
+                    <bridge.checkbox style="margin-right: 20px;" checked-label="Prio1" unchecked-label="Prio1" is-checked="currentConfigValues.displayPrio1"></bridge.checkbox>
+                    <bridge.checkbox style="margin-right: 20px;" checked-label="Prio2" unchecked-label="Prio2" is-checked="currentConfigValues.displayPrio2"></bridge.checkbox>
+                    <bridge.checkbox style="margin-right: 20px;" checked-label="Prio3" unchecked-label="Prio3" is-checked="currentConfigValues.displayPrio3"></bridge.checkbox>
+                    <bridge.checkbox style="margin-right: 20px;" checked-label="Prio4" unchecked-label="Prio4" is-checked="currentConfigValues.displayPrio4"></bridge.checkbox>
                 </div>
             </div>
-        </div>
-        <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
-            Source Systems: <span class="atc-selected-component" ng-repeat="system in currentConfigValues.srcSystems">{{system}} <a ng-click="removeSystem(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
-        </div>
-        <div class="row" style="margin: 10px" ng-show="currentConfigValues.devClasses.length > 0">
-            Packages: <span class="atc-selected-component" ng-repeat="package in currentConfigValues.devClasses">{{package}} <a ng-click="removePackage(system, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
-        </div>
-        <div class="row" style="margin: 10px" ng-show="currentConfigValues.tadirResponsibles.length > 0">
-            Object Responsibles: <span class="atc-selected-component" ng-repeat="responsible in currentConfigValues.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
-        </div>
-        <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
-            AKH Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.components">{{component}} <a ng-click="removeAKHComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
-        </div>
-        <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
-            Software Components: <span class="atc-selected-component" ng-repeat="component in currentConfigValues.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, currentConfigValues)"><span class="fa fa-remove"></span></a></span>
-        </div>
 
-        <div class="row" style="margin: 10px">
-            <div style="width:100%;float:left;margin:25px 0 0 0;" class="btn-group">
-                <bridge.button style="margin-left:0;" ng-click="currentConfigValues.showSuppressed = !currentConfigValues.showSuppressed" state="currentConfigValues.showSuppressed === true ? 'active' : ' '">Display Suppressed</bridge.button>
 
-                <bridge.button ng-click="currentConfigValues.onlyInProcess = !currentConfigValues.onlyInProcess" state="currentConfigValues.onlyInProcess === true ? 'active' : ' '">Ignore Completed</bridge.button>
 
-                <bridge.button style="margin-right:0px;width:70px;" ng-click="currentConfigValues.displayPrio1 = !currentConfigValues.displayPrio1" state="currentConfigValues.displayPrio1 === true ? 'active' : 'invisible-button'">Prio 1</bridge.button>
+            <div class="row" style="margin: 10px">
+                <div style="margin: 10px">
+                    <div class="atc-input-field">
+                         <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." icon="fa fa-plus" icon-click="onSelectSystem(currentConfigValues.srcSystem)" autofocus enter="onSelectSystem(currentConfigValues.srcSystem)"></bridge.input>
+                    </div>
+                   
+                    <div class="atc-input-field">
+                         <bridge.input style="float:left;" model="currentConfigValues.devClass" placeholder="Package..." icon="fa fa-plus" icon-click="onSelectPackage(currentConfigValues.devClass)" autofocus enter="onSelectPackage(currentConfigValues.devClass)" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="package as package for package in searchPackage($viewValue)"></bridge.input>
+                    </div>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio2 = !currentConfigValues.displayPrio2" state="currentConfigValues.displayPrio2 === true ? 'active' : 'invisible-button'">Prio 2</bridge.button>
+                    <div class="atc-input-field">
+                        <bridge.employee-input selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Object Responsible...'" required="false" icon="fa fa-plus" on-select="onSelectResponsible"></bridge.employee-input>
+                      </div>
+                            
+                    
+                    <div class="atc-input-field">
+                        <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component.PS_POSID for component in searchComponent($viewValue)" placeholder="AKH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio3 = !currentConfigValues.displayPrio3" state="currentConfigValues.displayPrio3 === true ? 'active' : 'invisible-button'">Prio 3</bridge.button>
+                    </div>
 
-                <bridge.button style="margin-left:0px;margin-right:0;width:70px;" ng-click="currentConfigValues.displayPrio4 = !currentConfigValues.displayPrio4" state="currentConfigValues.displayPrio4 === true ? 'active' : 'invisible-button'">Prio 4</bridge.button>
-
-                <bridge.button style="margin-left:15px;margin-right:0;width: 200px" ng-click="currentConfigValues.onlyProductionRelevant = !currentConfigValues.onlyProductionRelevant" state="currentConfigValues.onlyProductionRelevant === true ? 'active' : 'invisible-button'">Only Production Relevant</bridge.button>
-
+                    <div class="atc-input-field">
+                        <bridge.input model="currentConfigValues.softwareComponent" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchSoftwareComponent($viewValue)" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(currentConfigValues.softwareComponent)" autofocus enter="onSelectSoftwareComponent(currentConfigValues.softwareComponent)"></bridge.input>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px">
+                <div class="atc-input-field">
+                    First Occurence: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Show Weeks" close-text="Close" />
+                </div>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
+                Source Systems:
+                <bridge.tag ng-repeat="system in currentConfigValues.srcSystems" exclude="system.exclude" remove-click="removeSystem(system, currentConfigValues)">{{system.value}}</bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.devClasses.length > 0">
+                Packages:
+                <bridge.tag ng-repeat="package in currentConfigValues.devClasses" exclude="package.exclude" remove-click="removePackage(system, currentConfigValues)">{{package.value}}</bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.tadirResponsibles.length > 0">
+                Object Responsibles:
+                <bridge.tag ng-repeat="responsible in currentConfigValues.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, currentConfigValues)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
+                AKH Components:
+                <bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeAKHComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
+                <bridge.tag ng-repeat="component in currentConfigValues.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
             </div>
 
-             <div style="float:right;position:relative;top:25px;">
-                <bridge.button ng-click="doAlert(); add_click()" ng-show="config.configItems.indexOf(currentConfigValues) === -1">Add New Selection</bridge.button>
-                <bridge.button ng-click="save_click()" ng-show="config.configItems.indexOf(currentConfigValues) !== -1">Save Selection</bridge.button>
 
+             <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
+                <bridge.button ng-click="doAlert(); add_click()" ng-show="!editMode">Add New Selection</bridge.button>
+                <bridge.button ng-click="cancel_click()" ng-show="editMode === true">Cancel</bridge.button>
+                <bridge.button ng-click="save_click()" ng-show="editMode === true">Save Selection</bridge.button>
             </div>
-    </form>
-    <div >
+
+
+        </div>
+    </div>
+    <div class="row">
         <table ng-table="tableParams" class="table tableTransparentBorder" >
+        <div style="margin: 25px 0 0 0;">
+        <b>Added Selections:</b>
+        </div>
             <thead style="background-color: #ECECEC;">
                 <tr>
                     <th>Source System</th>
@@ -89,13 +111,21 @@
             </thead>
             <tbody>
                 <tr ng-repeat="configItem in $data" ng-class="$index % 2 == 0 ? 'evenRowBackground' : 'oddRowBackground'" ng-mouseover="isMouseOverRow = true" ng-mouseout="isMouseOverRow = false" class="hover">
-                    <td data-title="'Source System'"><span class="atc-selected-component" ng-repeat="system in configItem.srcSystems">{{system}} <a ng-click="removeSystem(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Package'"><span class="atc-selected-component" ng-repeat="package in configItem.devClasses">{{package}} <a ng-click="removePackage(system, configItem)"><span class="fa fa-remove"></span></a></span></td>
-                    <td data-title="'Object Responsible'"><span class="atc-selected-component" ng-repeat="responsible in configItem.tadirResponsibles">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) <a ng-click="removeResponsible(responsible, configItem)"><span class="fa fa-remove"></span></a></td>
-                    <td data-title="'AKH Component'">
-                        <span class="atc-selected-component" ng-repeat="component in configItem.components">{{component}} <a ng-click="removeAKHComponent(component, configItem)"><span class="fa fa-remove"></span>
+                    <td data-title="'Source System'">
+                        <bridge.tag ng-repeat="system in configItem.srcSystems" exclude="system.exclude" remove-click="removeSystem(system, configItem)">{{system.value}}</bridge.tag>
                     </td>
-                    <td data-title="'Software Component'"><span class="atc-selected-component" ng-repeat="component in configItem.softwareComponents">{{component}} <a ng-click="removeSoftwareComponent(component, configItem)"><span class="fa fa-remove"></span></td>
+                    <td data-title="'Package'">
+                        <bridge.tag ng-repeat="package in configItem.devClasses" exclude="package.exclude" remove-click="removePackage(system, configItem)">{{package.value}}</bridge.tag>
+                    </td>
+                    <td data-title="'Object Responsible'">
+                        <bridge.tag ng-repeat="responsible in configItem.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, configItem)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
+                    </td>
+                    <td data-title="'AKH Component'">
+                        <bridge.tag ng-repeat="component in configItem.components" exclude="component.exclude" remove-click="removeAKHComponent(component, configItem)">{{component.value}}</bridge.tag>
+                    </td>
+                    <td data-title="'Software Component'">
+                    <bridge.tag ng-repeat="component in configItem.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, configItem)">{{component.value}}</bridge.tag>
+                    </td>
                     <td data-title="'Display Suppressed'">
                         <span>
                             <input type="checkbox" ng-model="configItem.showSuppressed">
@@ -130,11 +160,13 @@
         </table>
     </div>
 
-    <div class="row atc_btn" style="float:right;">
+    <div class="row">
+        <div class="save_close_btn">
             <!--<div class="btn" ng-click="rss_for_saved_selection_click()" title="Get RSS Feed link for saved selection(s)"><span class="fa fa-rss" ></span> for all</div>
             <div class="btn btn-primary btn_blue save_close_btn" ng-click="closeForm()">Save & Close</div>-->
 
             <bridge.button title="Get RSS Feed link for saved selection(s)" ng-click="rss_for_saved_selection_click()" style="width:100px;" state="'invisible-button'"><span class="fa fa-rss" ></span> for all</bridge.button>
             <bridge.button  ng-click="doAlert(); closeForm()">Save & Close</bridge.button>
+        </div>
     </div>
 </div>

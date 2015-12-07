@@ -73,7 +73,7 @@ describe("Internal Incident ticket data", function(){
     });
 
     it("should load the data from the backend", function(){
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -85,7 +85,7 @@ describe("Internal Incident ticket data", function(){
     });
 
     it("should return the tickets relevant for my current selection", function(){
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -105,7 +105,7 @@ describe("Internal Incident ticket data", function(){
     });
 
     it("should update the ticket amounts according to my current category selection", function(){
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -129,7 +129,7 @@ describe("Internal Incident ticket data", function(){
     });
 
     it("should not count a ticket twice that was created by me and is assigned to me", function(){
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketDataCreatedByAndAssignedToMe);
 
         ticketData.loadTicketData();
@@ -145,7 +145,7 @@ describe("Internal Incident ticket data", function(){
     });
 
     it("should remember the last loading time", function(){
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         expect(config.data.lastDataUpdate).toBe(null);
@@ -159,7 +159,7 @@ describe("Internal Incident ticket data", function(){
     it("should remember the tickets that were loaded (for notifications)", function(){
         expect(ticketData.lastTickets).toBe(null);
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -170,7 +170,7 @@ describe("Internal Incident ticket data", function(){
 
     it("should notify me about a new ticket", function(){
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(function(){
                 return [200, mockTicketData, {}];
             });
@@ -189,7 +189,7 @@ describe("Internal Incident ticket data", function(){
 
     it("should notify me about a changed ticket", function(){
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(function(){
                 return [200, mockTicketData, {}];
             });
@@ -210,7 +210,7 @@ describe("Internal Incident ticket data", function(){
     it("should notify me about a ticket that changed while I was offline", function(){
         config.data.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -223,7 +223,7 @@ describe("Internal Incident ticket data", function(){
     it("should not throw a notification", function(){
         config.data.lastDataUpdate = new Date(2015, 0, 1, 1, 1, 1);
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
@@ -236,7 +236,7 @@ describe("Internal Incident ticket data", function(){
     it("should keep the ticketsFromNotifications even if there are newer data loads without notifications", function(){
         config.data.lastDataUpdate = new Date(2010, 0, 1, 1, 1, 1);
 
-        $httpBackend.whenGET(/https:\/\/(bcdmain|backup-support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
+        $httpBackend.whenGET(/https:\/\/(bcdmain|support)\.wdf\.sap\.corp\/sap\/bc\/devdb\/internal_incid\?sap-client\=001/)
             .respond(mockTicketData);
 
         ticketData.loadTicketData();
