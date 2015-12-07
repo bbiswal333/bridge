@@ -660,7 +660,6 @@ input[type="checkbox"]:checked:after {
     box-shadow: none;
     border-radius: 0;
     height:100%;
-    overflow: auto;
 }
 
 .dropdown-menu > li > a:hover{
