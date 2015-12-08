@@ -27,10 +27,7 @@
             this.getDetailsForConfig = function (config) {
                 return $http.get('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + config.getQueryString() + '&format=json&origin=' + $window.location.origin)
                 .success(function (data) {
-                    that.detailsData.length = 0;
-                    data.DATA.map(function(item) {
-                        that.detailsData.push(item);
-                    });
+                    that.detailsData = data.DATA;
                 });
             };
 
