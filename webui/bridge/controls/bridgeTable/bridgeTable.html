@@ -5,7 +5,7 @@
     </div>
 </div>
 <div style="overflow: auto">
-    <div style="position:relative; display:table" ng-class="applyTableClass()">
+    <div style="position:relative; display:table; min-width: 100%" ng-class="applyTableClass()">
         <div infinitescroll>
             <div class="row" >
                 <div ng-repeat="column in columns" class="box-title tableCell cellMargin tableTitle" ng-class="applyColumnClass(column)" ng-click="sort(column.orderBy)" ng-if="column.visible">
