@@ -30,11 +30,10 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
             }
         }
 
-        $scope.getFormattedDate = function(sAbapDate){
-            if(!sAbapDate) {
+        $scope.getFormattedDate = function(date){
+            if(!date) {
                 return "";
             }
-            var date = converter.getDateFromAbapTimeString(sAbapDate);
             return toFixedLength(date.getDate()) + "." + toFixedLength((date.getMonth() + 1)) + "." + date.getFullYear();
         };
 }]);

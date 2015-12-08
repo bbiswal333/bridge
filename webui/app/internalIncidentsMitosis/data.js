@@ -3,20 +3,11 @@ angular.module("app.internalIncidentsMitosis")
 	function ($http, $q, $window) {
 		var AppData = (function() {
 			function toDate(dateString) {
-				if(!dateString) {
-					return undefined;
+				if(dateString) {
+					return new Date(dateString);
+				} else {
+					return "";
 				}
-
-				var matches = dateString.match(/\/Date\(([0-9]*)\)\//);
-				if(!matches) {
-					return undefined;
-				}
-	        	var match = matches[1];
-	        	if(!match) {
-	        		return undefined;
-	        	}
-
-	        	return new Date(parseInt(match)).toISOString().replace(/[^0-9]/g, "");
 	        }
 
 	        function addSystems(program) {

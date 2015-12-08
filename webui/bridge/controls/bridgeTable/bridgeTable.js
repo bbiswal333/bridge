@@ -18,7 +18,7 @@ angular.module('bridge.controls').directive('bridge.table', function() {
 
             $scope.applyTableClass = function(){
                 return $scope.newLayout === "true" ? "detailsTableNewLayout" : "";
-            }
+            };
 
             this.usesNewLayout = function() {
                 return $scope.newLayout === "true" ? true : false;
