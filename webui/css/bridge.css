@@ -1,4 +1,4 @@
-﻿ @font-face {
+ @font-face {
     font-family:'SAP-icons';
     src: url('fonts/SAP-icons_140120.eot'), url('fonts/SAP-icons_140120.ttf');
     /* IE9+ */
@@ -399,6 +399,7 @@ img {
     padding-top:8px;
     padding-left: 10px;
 }
+.tableScroll{ width:200px; max-width:200px; overflow-x:scroll;}
 
 .download-icon {
     font-family:'SAP-icons';
@@ -422,6 +423,7 @@ img {
 }
 
 @media screen and (min-width: 768px) {
+
     .settings-dialog .modal-dialog {
         width: auto;
         position: absolute;
@@ -658,7 +660,6 @@ input[type="checkbox"]:checked:after {
     box-shadow: none;
     border-radius: 0;
     height:100%;
-    min-width: 850px;
 }
 
 .dropdown-menu > li > a:hover{
@@ -767,6 +768,10 @@ input[type="checkbox"]:checked:after {
     padding-top: 0;
     
 }
+.table{
+    display: table;
+}
+
 .table-cell{
     border:2px solid white;
     height:40px;
@@ -792,6 +797,9 @@ input[type="checkbox"]:checked:after {
     padding-left: 10px;
     line-height: 2.5;
     overflow: hidden;
+}
+.tableCell {
+    display: table-cell;
 }
 
 .wi {
