@@ -81,7 +81,6 @@
     background-color: rgba(255,255,255,0.5);
 }
 
-
 .atc_input{
     width: 100%;
     float:left;
@@ -102,4 +101,54 @@
     border: 1px solid #418AC9;
     margin: 4px 8px;
     display: inline-block;
+}
+
+.detailsTableNewLayout .row {
+    overflow: auto;
+    margin-left: 0px;
+}
+.detailsTableNewLayout bridge.table {
+    left: 0;
+}
+.detailsTableNewLayout .tableCell  {
+    display: table-cell;  
+}
+.detailsTableNewLayout .cellMargin{
+   padding-left: 5px;
+   padding-right: 5px;
+}
+.detailsTableNewLayout .tableTitle{
+   padding-left: 5px;
+   padding-right: 5px;
+}
+.detailsTableNewLayout .newLayout_col-sm-1 {
+    width: 60px;
+}
+.detailsTableNewLayout .newLayout_col-sm-2 {
+    width: 70px;
+}
+.detailsTableNewLayout .newLayout_col-sm-3 {
+    width: 100px;
+ }
+.detailsTableNewLayout .newLayout_col-sm-4 {
+    width: 210px; 
+}
+.detailsTableNewLayout .newLayout_col-sm-5 {
+    width: 260px; 
+}
+.detailsTableNewLayout .cell-parent {
+    display: table-row;
+}
+.detailsTableNewLayout .cell-parent > *{
+    display: table-cell;
+}
+.detailsTableNewLayout .cellText .button {
+    margin: 0;
+} 
+.detailsTableNewLayout .columnSelectButton {
+    float: right;
+    top: -15px;
+}
+.detailsTableNewLayout .glyphicon {
+    top:2px;
 }
