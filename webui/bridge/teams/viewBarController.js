@@ -66,12 +66,12 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
                             deferred.reject(data);
                         });
                     } else {
-                        removeView();
+                        removeView(view);
                     }
                 });
     		} else if(view.view === viewId) {
     			found = true;
-    			removeView();
+    			removeView(view);
     		}
     	});
     	if(found === false) {
