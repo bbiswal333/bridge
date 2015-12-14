@@ -29,7 +29,7 @@ angular.module("app.internalIncidentsMitosis")
 	        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
 	        	}).join("|");
 	        	filter += "&systemFilter=";
-	        	filter += (config.excludeSystems ? "!" : "") + config.systems.join(";");
+	        	filter += (config.excludeSystems ? "!" : "") + config.systems.join(";").toUpperCase();
 
 	        	filter += "&processorFilter=";
 	        	filter += (config.excludeProcessors ? "!" : "") + config.processors.map(function(processor) { return processor.BNAME; }).join(";");
@@ -37,9 +37,9 @@ angular.module("app.internalIncidentsMitosis")
 	        	filter += "&componentFilter=";
 	        	filter += config.components.map(function(component) {
 	        		if(component.exclude) {
-	        			return "!" + component.value;
+	        			return "!" + component.value.toUpperCase();
 	        		} else {
-	        			return component.value;
+	        			return component.value.toUpperCase();
 	        		}
 	        	}).join(";");
 				return filter;
