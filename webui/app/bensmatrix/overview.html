@@ -33,24 +33,36 @@
 	<div class="app-bensMatrix-internalDiv">
 		<span class="dummy" ng-style="getStyle()" id="dummySpan" hidden>bla</span>
 	</div>
-	<div class="app-bensMatrix-internalDiv">
+	<!-- div class="app-bensMatrix-internalDiv">
 		<input class="app-bensMatrix-textarea-input" ng-keyup="updateLength()" id="family" name="family"
 			 size="50" ng-model="family" />
-	</div>
+	</div-->
 	<div class="app-bensMatrix-internalDiv">
+	    <select class="app-bensMatrix-select-newl" ng-model="selectedFamily" ng-options="family as family.label for family in families" ng-change="updateLength()"></select>
+	</div>	
+	<!-- div class="app-bensMatrix-internalDiv">
 		<input class="app-bensMatrix-textarea-input" ng-keyup="updateLength()" id="size" name="size" 
 			size="50" ng-model="size" />
-	</div>
+	</div-->
 	<div class="app-bensMatrix-internalDiv">
+	    <select class="app-bensMatrix-select-newl" ng-model="selectedSize" ng-options="size as size.label for size in sizes" ng-change="updateLength()"></select>
+	</div>
+	<!-- div class="app-bensMatrix-internalDiv">
 		<input class="app-bensMatrix-textarea-input" ng-keyup="updateLength()" id="weight" name="weight" 
 			size="50" ng-model="weight" />
 	</div>
 	<div class="app-bensMatrix-internalDiv">
 		<input class="app-bensMatrix-textarea-input" ng-keyup="updateLength()" id="style" name="style"
 			 size="50" ng-model="style" />
-	</div>
+	</div-->
 	<div class="app-bensMatrix-internalDiv">
+	    <select class="app-bensMatrix-select-newl" ng-model="selectedStyle" ng-options="style as style.label for style in styles" ng-change="updateLength()"></select>
+	</div>
+	<!-- div class="app-bensMatrix-internalDiv">
 		<input class="app-bensMatrix-textarea-input" ng-keyup="updateLength()" id="variant" name="variant"
 			 size="50" ng-model="variant" />
-	</div>
+	</div-->
+	<!-- div class="app-bensMatrix-internalDiv">
+	    <select class="app-bensMatrix-select-newl" ng-model="selectedVariant" ng-options="variant as variant.label for variant in variants" ng-change="updateLength()"></select>
+	</div-->
 </div>
