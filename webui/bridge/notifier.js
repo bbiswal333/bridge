@@ -151,7 +151,11 @@ angular.module("notifier", []).factory("notifier", ["$log", "$window", function 
   };
 
     function storeAllNotificationsInLocale() {
-        $window.localStorage.setItem('notifcations', JSON.stringify(notifications));
+        var aNotificationsToStore = angular.copy(notifications);
+        if (aNotificationsToStore.length > 50){
+            aNotificationsToStore.length = 10;
+        }
+        $window.localStorage.setItem('notifcations', JSON.stringify(aNotificationsToStore));
     }
 
   function showMsg(title_s, body_s, icon_i, appIdentifier_s, onClick_fn, kindOf_s, duration_i, notificationData_o) {
