@@ -11,9 +11,15 @@ describe("Settings view of cats app", function () {
 		$scope = $rootScope.$new();
 	}));
 
-	beforeEach(inject(["app.cats.configService", "app.cats.catsUtils", "app.cats.cat2BackendZDEVDB", function (_config_, _catsUtils_, _catsBackend_) {
+	beforeEach(inject(["app.cats.configService", "app.cats.catsUtils", "$q", function (_config_, _catsUtils_, $q) {
 		config = _config_;
-		catsBackend = _catsBackend_;
+		catsBackend = {
+			requestTasktypes: function() {
+				var deferred = $q.defer();
+				deferred.resolve([]);
+				return deferred.promise;
+			}
+		};
 		config.favoriteItems = angular.copy(favoriteItemsMock);
 		config.catsItems = angular.copy(catsItemsMock);
 		bridgeInBrowserNotification = {

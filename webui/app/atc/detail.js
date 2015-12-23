@@ -20,10 +20,21 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
 
     $scope.config = atcConfig;
 
-    if($scope.atcData.detailsData.length === 0) {
-        $scope.loadingPromise = $scope.atcData.getDetailsForConfig(atcConfig, $scope);
-    }
+    $scope.loadingPromise = $scope.atcData.getDetailsForConfig(atcConfig, $scope);
+
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
+
+    function updateTableData() {
+        $scope.atcData.tableData = [];
+        if($scope.atcData && $scope.atcData.detailsData)
+        {
+            $scope.atcData.detailsData.forEach(function (atcEntry) {
+                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active) {
+                    $scope.atcData.tableData.push(atcEntry);
+                }
+            });
+        }
+    }
 
     $scope.$watch('atcData.detailsData', function ()
     {
@@ -39,20 +50,13 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
                     $scope.statusMap[i] = { "active": false };
                 }
             }
+            updateTableData();
         }
     }, true);
 
     $scope.$watch('statusMap', function()
     {
-        $scope.atcData.tableData = [];
-        if($scope.atcData && $scope.atcData.detailsData)
-        {
-            $scope.atcData.detailsData.forEach(function (atcEntry) {
-                if ($scope.statusMap[atcEntry.CHECK_MSG_PRIO].active) {
-                    $scope.atcData.tableData.push(atcEntry);
-                }
-            });
-        }
+        updateTableData();
     }, true);
 
     $scope.getStatusArray = function () {
