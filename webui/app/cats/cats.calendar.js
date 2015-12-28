@@ -141,6 +141,13 @@ angular.module("app.cats")
 					monthlyDataService.calArray = $scope.calArray;
 					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
 					.then(function(){
+						angular.forEach(monthlyDataService.days,function(day){
+							day.blockHeight = 54;
+							if (day.targetTimeInPercentageOfDay &&
+								day.actualTimeInPercentageOfDay > day.targetTimeInPercentageOfDay) {
+								day.blockHeight = 37;
+							}
+						});
 						$scope.analyticsDays = monthlyDataService.days;
 					},
 					function(data) {

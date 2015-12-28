@@ -88,11 +88,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
     }
 
-    $scope.calcMinutes = function (perc) {
-        $log.log(perc);
-        return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
-    };
-
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
             if (catsUtils.isSameTask(block, $scope.blockdata[i].task)) {
