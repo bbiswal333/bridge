@@ -192,7 +192,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
 
                 if (timeToMaintain() < 0) {
-                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please remove or adjust tasks and apply changes.');
+                    bridgeInBrowserNotification.addAlert('danger', 'The day is overbooked. Please remove/ adjust the task(s) and click "Apply changes".', 20);
                 }
 
                 return true;
