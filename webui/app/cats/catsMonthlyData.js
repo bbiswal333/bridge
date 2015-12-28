@@ -201,50 +201,52 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 							task.UNIT = ISPtask.UNIT;
 							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
 							task.DESCR = ISPtask.DESCR;
-							this.days[task.WORKDATE].tasks.push( task );
+							if (this.days[task.WORKDATE]) {
+								this.days[task.WORKDATE].tasks.push( task );
 
-							if (task.UNIT === 'H') {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-							} else {
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
-							}
-							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
+								if (task.UNIT === 'H') {
+									this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+								} else {
+									this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
+								}
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
 
-							// That coding does not belong here...
-							var block = {};
-							block.desc = task.DESCR;
-							block.fixed = true;
-							block.value = task.QUANTITY;
-							block.task = task;
-							if (!this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks) {
-								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
+								// That coding does not belong here...
+								var block = {};
+								block.desc = task.DESCR;
+								block.fixed = true;
+								block.value = task.QUANTITY;
+								block.task = task;
+								if (!this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks) {
+									this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
+								}
+								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
 							}
-							this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
 						}
 					}
 				}
-			angular.forEach(this.days,function(day) {
-				// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
-				var totalOfQuantityDay = 0;
-				var biggestTask = {};
-				biggestTask.QUANTITY_DAY = 0;
-				angular.forEach(day.tasks,function(oTask) {
+				angular.forEach(this.days,function(day) {
+					// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
+					var totalOfQuantityDay = 0;
+					var biggestTask = {};
+					biggestTask.QUANTITY_DAY = 0;
+					angular.forEach(day.tasks,function(oTask) {
 
-					// knowingly doing some data doublication here
-					oTask.QUANTITY_DAY = catsUtils.calculateDAY(oTask,day);
+						// knowingly doing some data doublication here
+						oTask.QUANTITY_DAY = catsUtils.calculateDAY(oTask,day);
 
-					totalOfQuantityDay = Math.round((totalOfQuantityDay + oTask.QUANTITY_DAY) * 1000) / 1000;
+						totalOfQuantityDay = Math.round((totalOfQuantityDay + oTask.QUANTITY_DAY) * 1000) / 1000;
 
-					// remember biggest task for rounding adjustments
-					if(oTask.QUANTITY_DAY >= biggestTask.QUANTITY_DAY) {
-						biggestTask = oTask;
+						// remember biggest task for rounding adjustments
+						if(oTask.QUANTITY_DAY >= biggestTask.QUANTITY_DAY) {
+							biggestTask = oTask;
+						}
+					});
+
+					if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
+						biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
 					}
 				});
-
-				if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
-					biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
-				}
-			});
 			}
 		} catch(err) {
 			$log.log("convertWeekData(): " + err);

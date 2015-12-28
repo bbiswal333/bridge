@@ -81,7 +81,7 @@
                         ng-class="{
                             'app-cats-today': day.today,
                             'selected_day_analytics': isSelected(day.dayString)}"
-                        ng-if="analytics.value && analyticsDays[day.dayString].targetHours">
+                        ng-if="analytics.value && day.targetHours">
                         <app.cats.allocationbar
                             data-width="width"
                             data-height="54"
@@ -100,7 +100,7 @@
                                 'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
 
-                    <div ng-if="!analytics.value || !analyticsDays[day.dayString].targetHours" id="inner"
+                    <div ng-if="!analytics.value || !day.targetHours" id="inner"
                         class="app-cats-state{{getStateClassSubstring(day)}} hover"
                         ng-class="{
                         'app-cats-day-inner-small': !maintainable,
