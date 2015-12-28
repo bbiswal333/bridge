@@ -47,6 +47,15 @@
 
 }
 
+.app-bensMatrix-select-newl {
+	border: 0px solid;
+	margin: 0px;
+	padding: 0px;
+	height: 20px;
+	width: 100%;
+
+}
+
 .app-bensMatrix-textarea-input {
 	border: 1px solid;
 	margin: 0px;

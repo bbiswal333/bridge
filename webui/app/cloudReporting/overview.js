@@ -43,6 +43,9 @@ angular.module('app.cloudReporting').directive('app.cloudReporting',[function ()
 
             $scope.$watch("configService.configItem.system", function() {
                 $scope.systemName = $scope.configService.getSystemName();
+                if ($scope.kpis.length > 0) {
+                    $scope.kpis = oCloudReportingData.loadOverview();
+                }
             });
 
             $scope.$watchCollection("configService.configItem.kpis", function() {
