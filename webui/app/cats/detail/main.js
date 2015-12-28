@@ -54,7 +54,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             for (var i = 0; i < $scope.blockdata.length; i++) {
                 sum = catsUtils.cat2CompliantRounding(sum + $scope.blockdata[i].value);
             }
-            return $scope.totalWorkingTime - sum;
+            return catsUtils.cat2CompliantRounding($scope.totalWorkingTime - sum);
         } catch(err) {
             $log.log("timeToMaintain(): " + err);
             return $scope.totalWorkingTime;
@@ -154,7 +154,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (existingBlock != null) {
                 if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                     adjustBarToAllowForOneMoreBlock();
-                    existingBlock.value = catsUtils.cat2CompliantRounding(timeToMaintain());
+                    existingBlock.value = timeToMaintain();
                     return true;
                 } else { // no need to add
                     return false;
@@ -186,8 +186,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     });
                 }
 
-                var timeLeftForMaintenance = timeToMaintain();
-                if (timeLeftForMaintenance < 0) {
+                if (timeToMaintain() < 0) {
                     bridgeInBrowserNotification.addAlert('danger', 'The day ' + monthlyDataService.days[block.WORKDATE].date + ' is overbooked. Please remove or adjust the task(s) and click "Apply changes".');
                 }
 
@@ -405,7 +404,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
                 bridgeInBrowserNotification.addAlert('info','Please select one or multiple days in the calendar first.');
             } else {
-                bridgeInBrowserNotification.addAlert('info','No maintenance possible for the selected day.');
+                bridgeInBrowserNotification.addAlert('warning','The task could not be added.');
             }
         }
         return blockCouldBeAdded;
