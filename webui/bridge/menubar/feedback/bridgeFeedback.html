@@ -29,8 +29,8 @@
         our project on GitHub</a>.
     </div>
 </div>
-<hr size="1"/>
-<div ng-controller="bridge.LikesCtrl">
+<hr size="1"/ ng-if="likesIsLoaded === true">
+<div ng-controller="bridge.LikesCtrl" ng-if="likesIsLoaded === true">
     <div class="menubar-feedback-iconCell">
         <span class="menubar-feedback-icon "
               style="color:inherit!important;cursor:default!important;margin-right:0;"></span>
