@@ -15,7 +15,7 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
             iconCss: "fa-bug",
             title: "Report Issue",
             callback: function(){
-                $window.open("https://itdirect.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbg==)/bc/bsp/sap/crm_ui_start/default.htm?sapsessioncmd=open&saprole=ZITSERVREQU&crm-object-type=AIC_OB_INCIDENT&crm-object-action=D&PROCESS_TYPE=ZINE&CAT_ID=IMFIT_TOOLS_DRT");
+                $window.open("https://itdirect.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbg==)/bc/bsp/sap/crm_ui_start/default.htm?sapsessioncmd=open&saprole=ZITSERVREQU&crm-object-type=AIC_OB_INCIDENT&crm-object-action=D&PROCESS_TYPE=ZINE&CAT_ID=IMFIT_TOOLS_DRT&DESCRIPTION=MIT%20Content%20Load%20Status");
             }
         }];
 
