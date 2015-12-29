@@ -173,6 +173,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					this.days[dayString].week = week;
 					this.days[dayString].calWeekIndex = calWeekIndex;
 					this.days[dayString].dayIndex = dayIndex;
+					this.days[dayString].blockHeight = 54;
+					if (this.days[dayString].targetTimeInPercentageOfDay &&
+						this.days[dayString].actualTimeInPercentageOfDay > this.days[dayString].targetTimeInPercentageOfDay) {
+						this.days[dayString].blockHeight = 37;
+					}
 				}
 			}
 		}
