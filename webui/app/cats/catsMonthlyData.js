@@ -5,9 +5,7 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	"lib.utils.calUtils",
 	"app.cats.cat2BackendZDEVDB",
 	"app.cats.catsUtils",
-	"$log",
-
-	function ($http, $q, calenderUtils, catsBackend, catsUtils, $log) {
+	function ($http, $q, calenderUtils, catsBackend, catsUtils) {
 
 	this.days = {};
 	this.promiseForMonth = {};
@@ -24,100 +22,88 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 	};
 
 	this.getMonthData = function(year, month){
-		try {
-			var self = this;
-			var promise = null;
-			var promises = [];
+		var self = this;
+		var promise = null;
+		var promises = [];
 
-			if (this.promiseForMonth[month]) {
-				return this.promiseForMonth[month];
-			}
-
-			self.reloadInProgress.value = true;
-
-			var weeks = this.getWeeksOfMonth(year, month);
-			for (var i = 0; i < weeks.length; i++) {
-				promise = catsBackend.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
-				promises.push(promise);
-				this.executeWhenDone(promise);
-			}
-
-			promise = $q.all(promises);
-			promise.then(function(){
-				delete self.promiseForMonth[month];
-				self.reloadInProgress.value = false;
-			}, function() {
-				self.reloadInProgress.value = false;
-				self.reloadInProgress.error = true;
-			});
-
-			this.promiseForMonth[month] = promise;
-			return promise;
-		} catch(err) {
-			$log.log("getMonthData(): " + err);
+		if (this.promiseForMonth[month]) {
+			return this.promiseForMonth[month];
 		}
+
+		self.reloadInProgress.value = true;
+
+		var weeks = this.getWeeksOfMonth(year, month);
+		for (var i = 0; i < weeks.length; i++) {
+			promise = catsBackend.getCatsAllocationDataForWeek(weeks[i].year, weeks[i].weekNo);
+			promises.push(promise);
+			this.executeWhenDone(promise);
+		}
+
+		promise = $q.all(promises);
+		promise.then(function(){
+			delete self.promiseForMonth[month];
+			self.reloadInProgress.value = false;
+		}, function() {
+			self.reloadInProgress.value = false;
+			self.reloadInProgress.error = true;
+		});
+
+		this.promiseForMonth[month] = promise;
+		return promise;
 	};
 
 	this.getDataForDate = function(date){
-		try {
-			var deferred = $q.defer();
-			var unstringifiedDate = calenderUtils.parseDate(date);
-			var month = unstringifiedDate.getMonth();
-			var year = unstringifiedDate.getFullYear();
+		var deferred = $q.defer();
+		var unstringifiedDate = calenderUtils.parseDate(date);
+		var month = unstringifiedDate.getMonth();
+		var year = unstringifiedDate.getFullYear();
 
-			if (!this.days[date] && this.promiseForMonth[month]) {
-				return this.promiseForMonth[month];
-			}
-			else if (!this.days[date]){
-				return this.getMonthData(year, month);
-			}
-			else if (this.days[date]) {
-				deferred.resolve();
-				return deferred.promise;
-			}
-		} catch(err) {
-			$log.log("getDataForDate(): " + err);
+		if (!this.days[date] && this.promiseForMonth[month]) {
+			return this.promiseForMonth[month];
+		}
+		else if (!this.days[date]){
+			return this.getMonthData(year, month);
+		}
+		else if (this.days[date]) {
+			deferred.resolve();
+			return deferred.promise;
 		}
 	};
 
 	this.getWeeksOfMonth = function(year, month){
-		try {
-			var day = new Date(year, month, 1);
-			var lastDayInMonth = 0;
-			if (month < 11) {
-				lastDayInMonth = new Date(year, month + 1, 1);
-			} else {
-				lastDayInMonth = new Date(year + 1,0, 1);
-			}
-			lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 );
-
-			var weeks = [];
-			var week  = calenderUtils.getWeekNumber(day);
-
-			if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
-				week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
-				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
-				weeks.push(angular.copy(week));
-				week = calenderUtils.getWeekNumber(day);
-				week.year = year;
-			} else {
-				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
-				weeks.push(angular.copy(week));
-			}
-
-			day.setDate(day.getDate() + 7);
-			while(((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
-				   (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) &&
-				   weeks.length < 6) {
-				week = calenderUtils.getWeekNumber(day);
-				week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
-				weeks.push(angular.copy(week));
-				day.setDate(day.getDate() + 7);
-			}
-			return weeks;
-		} catch(err) {
-			$log.log("getWeeksOfMonth(): " + err);
+		var day = new Date(year, month, 1);
+		var lastDayInMonth = 0;
+		if (month < 11) {
+			lastDayInMonth = new Date(year, month + 1, 1);
+		} else {
+			lastDayInMonth = new Date(year + 1,0, 1);
 		}
+		lastDayInMonth.setDate( lastDayInMonth.getDate() - 1 );
+
+		var weeks = [];
+		var week  = calenderUtils.getWeekNumber(day);
+
+		if(month === 0 && week.weekNo === 0) { // special case where first week of year is the 52 or 53 of the old year
+			week = calenderUtils.getWeekNumber(new Date(year - 1, 11, 31));
+			week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
+			weeks.push(angular.copy(week));
+			week = calenderUtils.getWeekNumber(day);
+			week.year = year;
+		} else {
+			week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
+			weeks.push(angular.copy(week));
+		}
+
+		day.setDate(day.getDate() + 7);
+		while(((calenderUtils.getWeekNumber(day).weekNo <= calenderUtils.getWeekNumber(lastDayInMonth).weekNo) ||
+			   (calenderUtils.getWeekNumber(day).year   <  calenderUtils.getWeekNumber(lastDayInMonth).year)) &&
+			   weeks.length < 6) {
+			week = calenderUtils.getWeekNumber(day);
+			week.weekNo = calenderUtils.toNumberOfCharactersString(week.weekNo, 2);
+			weeks.push(angular.copy(week));
+			day.setDate(day.getDate() + 7);
+		}
+		return weeks;
 	};
 
 	this.getTargeHoursForDay = function (dayString) {
@@ -174,115 +160,109 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 					this.days[dayString].calWeekIndex = calWeekIndex;
 					this.days[dayString].dayIndex = dayIndex;
 					this.days[dayString].blockHeight = 54;
-					if (this.days[dayString].targetTimeInPercentageOfDay &&
-						this.days[dayString].actualTimeInPercentageOfDay > this.days[dayString].targetTimeInPercentageOfDay) {
-						this.days[dayString].blockHeight = 37;
-					}
 				}
 			}
 		}
 	};
 
 	this.convertWeekData = function (backendData) {
-		try{
-			this.initializeDaysForWeek(backendData.TIMESHEETS.WEEK);
+		this.initializeDaysForWeek(backendData.TIMESHEETS.WEEK);
 
-			// adding tasks which are already posted in the backend to each day
-			if(backendData.TIMESHEETS.RECORDS) {
-				for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
-					for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
-						var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
-						if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
-							var task = {};
-							task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
-							task.TASKCOUNTER = ISPtask.DAYS[DayIterator].TASKCOUNTER;
-							task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
-							task.RAUFNR = ISPtask.RAUFNR;
-							task.TASKTYPE = ISPtask.TASKTYPE;
-							task.ZCPR_EXTID = ISPtask.ZCPR_EXTID;
-							task.ZCPR_OBJGEXTID = ISPtask.ZCPR_OBJGEXTID;
-							task.ZZSUBTYPE = (ISPtask.ZZSUBTYPE || "");
-							task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
-							task.UNIT = ISPtask.UNIT;
-							task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
-							task.DESCR = ISPtask.DESCR;
-							if (this.days[task.WORKDATE]) {
-								this.days[task.WORKDATE].tasks.push( task );
+		// adding tasks which are already posted in the backend to each day
+		if(backendData.TIMESHEETS.RECORDS) {
+			for (var ISPTaskIterator = 0; ISPTaskIterator < backendData.TIMESHEETS.RECORDS.length; ISPTaskIterator++) {
+				for (var DayIterator = 0; DayIterator < backendData.TIMESHEETS.RECORDS[ISPTaskIterator].DAYS.length; DayIterator++) {
+					var ISPtask = backendData.TIMESHEETS.RECORDS[ISPTaskIterator];
+					if(ISPtask.DAYS[DayIterator].QUANTITY > 0) {
+						var task = {};
+						task.COUNTER = ISPtask.DAYS[DayIterator].COUNTER;
+						task.TASKCOUNTER = ISPtask.DAYS[DayIterator].TASKCOUNTER;
+						task.WORKDATE = ISPtask.DAYS[DayIterator].WORKDATE;
+						task.RAUFNR = ISPtask.RAUFNR;
+						task.TASKTYPE = ISPtask.TASKTYPE;
+						task.ZCPR_EXTID = ISPtask.ZCPR_EXTID;
+						task.ZCPR_OBJGEXTID = ISPtask.ZCPR_OBJGEXTID;
+						task.ZZSUBTYPE = (ISPtask.ZZSUBTYPE || "");
+						task.STATUS = ISPtask.DAYS[DayIterator].STATUS;
+						task.UNIT = ISPtask.UNIT;
+						task.QUANTITY = parseFloat(ISPtask.DAYS[DayIterator].QUANTITY);
+						task.DESCR = ISPtask.DESCR;
+						if (this.days[task.WORKDATE]) {
+							this.days[task.WORKDATE].tasks.push( task );
 
-								if (task.UNIT === 'H') {
-									this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
-								} else {
-									this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
-								}
-								this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
-
-								// That coding does not belong here...
-								var block = {};
-								block.desc = task.DESCR;
-								block.fixed = true;
-								block.value = task.QUANTITY;
-								block.task = task;
-								if (!this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks) {
-									this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
-								}
-								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
+							if (task.UNIT === 'H') {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY / this.days[task.WORKDATE].hoursOfWorkingDay;
+							} else {
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay += task.QUANTITY;
 							}
+							this.days[task.WORKDATE].actualTimeInPercentageOfDay = Math.round(this.days[task.WORKDATE].actualTimeInPercentageOfDay * 1000) / 1000;
+							this.days[task.WORKDATE].blockHeight = 54;
+							if (this.days[task.WORKDATE].targetTimeInPercentageOfDay &&
+								this.days[task.WORKDATE].actualTimeInPercentageOfDay > this.days[task.WORKDATE].targetTimeInPercentageOfDay) {
+								this.days[task.WORKDATE].blockHeight = 37;
+							}
+
+							// That coding does not belong here...
+							var block = {};
+							block.desc = task.DESCR;
+							block.fixed = true;
+							block.value = task.QUANTITY;
+							block.task = task;
+							if (!this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks) {
+								this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks = [];
+							}
+							this.calArray[this.days[ISPtask.DAYS[DayIterator].WORKDATE].calWeekIndex][this.days[ISPtask.DAYS[DayIterator].WORKDATE].dayIndex].blocks.push( block );
 						}
 					}
 				}
-				angular.forEach(this.days,function(day) {
-					// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
-					var totalOfQuantityDay = 0;
-					var biggestTask = {};
-					biggestTask.QUANTITY_DAY = 0;
-					angular.forEach(day.tasks,function(oTask) {
+			}
+			angular.forEach(this.days,function(day) {
+				// QUANTITY_DAY must alsways be <= 1 for a day irrespective of part time and country specific working hours
+				var totalOfQuantityDay = 0;
+				var biggestTask = {};
+				biggestTask.QUANTITY_DAY = 0;
+				angular.forEach(day.tasks,function(oTask) {
 
-						// knowingly doing some data doublication here
-						oTask.QUANTITY_DAY = catsUtils.calculateDAY(oTask,day);
+					// knowingly doing some data doublication here
+					oTask.QUANTITY_DAY = catsUtils.calculateDAY(oTask,day);
 
-						totalOfQuantityDay = Math.round((totalOfQuantityDay + oTask.QUANTITY_DAY) * 1000) / 1000;
+					totalOfQuantityDay = Math.round((totalOfQuantityDay + oTask.QUANTITY_DAY) * 1000) / 1000;
 
-						// remember biggest task for rounding adjustments
-						if(oTask.QUANTITY_DAY >= biggestTask.QUANTITY_DAY) {
-							biggestTask = oTask;
-						}
-					});
-
-					if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
-						biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
+					// remember biggest task for rounding adjustments
+					if(oTask.QUANTITY_DAY >= biggestTask.QUANTITY_DAY) {
+						biggestTask = oTask;
 					}
 				});
-			}
-		} catch(err) {
-			$log.log("convertWeekData(): " + err);
+
+				if (totalOfQuantityDay >= 0.995 && totalOfQuantityDay <= 1.005) {
+					biggestTask.QUANTITY_DAY = Math.round((biggestTask.QUANTITY_DAY - totalOfQuantityDay + 1) * 1000) / 1000;
+				}
+			});
 		}
 	};
 
 	this.loadDataForSelectedWeeks = function(weeks){
 		var promises = [];
-		try {
-			var self = this;
-			self.reloadInProgress.value = true;
-			weeks.forEach(function(week){
-				var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
-				promises.push(promise);
-				promise.
-				then(function(data){
-					if(data) {
-						self.convertWeekData(data);
-					}
-					catsBackend.CAT2ComplinaceDataPromise
-					.then(function(){
-						self.reloadInProgress.value = false;
-					});
-				}, function() {
+
+		var self = this;
+		self.reloadInProgress.value = true;
+		weeks.forEach(function(week){
+			var promise = catsBackend.getCatsAllocationDataForWeek(week.substring(0,4),week.substring(5,7));
+			promises.push(promise);
+			promise.
+			then(function(data){
+				if(data) {
+					self.convertWeekData(data);
+				}
+				catsBackend.CAT2ComplinaceDataPromise
+				.then(function(){
 					self.reloadInProgress.value = false;
-					self.reloadInProgress.error = true;
 				});
+			}, function() {
+				self.reloadInProgress.value = false;
+				self.reloadInProgress.error = true;
 			});
-		} catch(err) {
-			$log.log("loadDataForSelectedWeeks(): " + err);
-		}
+		});
 		return $q.all(promises);
 	};
 }]);

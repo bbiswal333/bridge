@@ -26,42 +26,37 @@ angular.module("app.cats")
 				return new Date(year, month, day).getTime();
 			}
 
-			try {
-				var processed = {};
-				var days = cats_o;
+			var processed = {};
+			var days = cats_o;
 
-				for (var i = 0; i < days.length; i++) {
-					var dateStr = days[i].DATEFROM;
-					var statusStr = days[i].STATUS;
-					var time = parseDateToTime(dateStr);
+			for (var i = 0; i < days.length; i++) {
+				var dateStr = days[i].DATEFROM;
+				var statusStr = days[i].STATUS;
+				var time = parseDateToTime(dateStr);
 
-					// special handling for popular french part time contract days
-					if (days[i].STATUS === "Y" && days[i].QUANTITYH === 7.9 && days[i].STDAZ === 8.2 && days[i].CONVERT_H_T === 7.9) {
-						statusStr = "G";
-						days[i].STATUS = "G";
-					}
-					// special handling for overbooked days
-					if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
-						statusStr = "OVERBOOKED";
-						days[i].STATUS = "OVERBOOKED";
-					}
-					if (days[i].STATUS === "R" && (time > new Date().getTime())) {
-						statusStr = "R_INTHEFUTURE";
-						days[i].STATUS = "R_INTHEFUTURE";
-					}
-					if (days[i].STATUS === "Y" && (time > new Date().getTime())) {
-						statusStr = "Y_INTHEFUTURE_part_maint";
-						days[i].STATUS = "Y_INTHEFUTURE_part_maint";
-					}
-					if (time !== null) {
-						processed[time] = { state: statusStr };
-					}
+				// special handling for popular french part time contract days
+				if (days[i].STATUS === "Y" && days[i].QUANTITYH === 7.9 && days[i].STDAZ === 8.2 && days[i].CONVERT_H_T === 7.9) {
+					statusStr = "G";
+					days[i].STATUS = "G";
 				}
-				return processed;
-			} catch(err) {
-				$log.log("parseDateToTime(): " + err);
-				return null;
+				// special handling for overbooked days
+				if (days[i].STATUS === "Y" && days[i].QUANTITYH > Math.round(days[i].STDAZ * 8 / days[i].CONVERT_H_T * 1000) / 1000) {
+					statusStr = "OVERBOOKED";
+					days[i].STATUS = "OVERBOOKED";
+				}
+				if (days[i].STATUS === "R" && (time > new Date().getTime())) {
+					statusStr = "R_INTHEFUTURE";
+					days[i].STATUS = "R_INTHEFUTURE";
+				}
+				if (days[i].STATUS === "Y" && (time > new Date().getTime())) {
+					statusStr = "Y_INTHEFUTURE_part_maint";
+					days[i].STATUS = "Y_INTHEFUTURE_part_maint";
+				}
+				if (time !== null) {
+					processed[time] = { state: statusStr };
+				}
 			}
+			return processed;
 		}
 
 		function monthDiff(d1, d2) {
@@ -397,8 +392,7 @@ angular.module("app.cats")
 
 				if (rangeIsSelectable && allSelected) {
 					return true;
-				}
-				else{
+				} else {
 					return false;
 				}
 			};
@@ -437,9 +431,7 @@ angular.module("app.cats")
 				if (!rangeSelectionStartDayString) {
 					var firstOfSelectedMonth = dayString.substr(0,8) + "01";
 					setRangeDays(dayString, firstOfSelectedMonth);
-				}
-				else
-				{
+				} else {
 					rangeSelectionEndDayString = dayString;
 				}
 				var range = [];
@@ -480,8 +472,7 @@ angular.module("app.cats")
 
 				if ($scope.weekIsSelected(index)){
 					promises = unSelectRange(range);
-				}
-				else{
+				} else {
 					promises = selectRange(range);
 				}
 
