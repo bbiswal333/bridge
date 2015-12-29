@@ -10,7 +10,7 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.settin
                 $scope.config.data.aConfiguredCustomers.push({ sId: sCustomerId, sName: ""});
                 ticketData.loadTicketData(true);
             } else {
-                bridgeInBrowserNotification.addAlert('', 'Invalid Input: Check if the input is a number and you have not added it yet.');
+                bridgeInBrowserNotification.addAlert('error', 'Invalid Input: Check if the input is a number and you have not added it yet.');
             }
         };
         $scope.removeCustomer = function(sCustomerId){

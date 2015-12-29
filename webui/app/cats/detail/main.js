@@ -54,7 +54,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             for (var i = 0; i < $scope.blockdata.length; i++) {
                 sum = catsUtils.cat2CompliantRounding(sum + $scope.blockdata[i].value);
             }
-            return $scope.totalWorkingTime - sum;
+            return catsUtils.cat2CompliantRounding($scope.totalWorkingTime - sum);
         } catch(err) {
             $log.log("timeToMaintain(): " + err);
             return $scope.totalWorkingTime;
@@ -87,11 +87,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function substractFromTotalSelectedHours(dayString) {
         $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
     }
-
-    $scope.calcMinutes = function (perc) {
-        $log.log(perc);
-        return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
-    };
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -159,7 +154,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (existingBlock != null) {
                 if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                     adjustBarToAllowForOneMoreBlock();
-                    existingBlock.value = catsUtils.cat2CompliantRounding(timeToMaintain());
+                    existingBlock.value = timeToMaintain();
                     return true;
                 } else { // no need to add
                     return false;
@@ -192,7 +187,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
 
                 if (timeToMaintain() < 0) {
-                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please remove or adjust tasks and apply changes.');
+                    bridgeInBrowserNotification.addAlert('danger', 'The day ' + monthlyDataService.days[block.WORKDATE].date + ' is overbooked. Please remove or adjust the task(s) and click "Apply changes".');
                 }
 
                 return true;
@@ -407,9 +402,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
-                bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first.');
+                bridgeInBrowserNotification.addAlert('info','Please select one or multiple days in the calendar first.');
             } else {
-                bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day.');
+                bridgeInBrowserNotification.addAlert('warning','The task could not be added.');
             }
         }
         return blockCouldBeAdded;
@@ -454,7 +449,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             if ($scope.selectedDates.length <= 1 &&
                 blockdataHasChanged()) {
-                bridgeInBrowserNotification.addAlert('', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
+                bridgeInBrowserNotification.addAlert('info', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
             }
             angular.forEach($scope.selectedDates, function(dayString) {
                 checkGracePeriods(dayString);
@@ -511,7 +506,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
             if (!replyMessages.length) {
-                bridgeInBrowserNotification.addAlert('info', 'Data was saved successfully.');
+                bridgeInBrowserNotification.addAlert('success', 'Data was saved successfully.');
             }
         } catch(err) {
             $log.log("checkPostReply(): " + err);
