@@ -98,6 +98,8 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
         $httpProvider.defaults.withCredentials = true;
         $httpProvider.interceptors.push('bridge.app.httpInterceptor');
 
+        $httpProvider.useApplyAsync(true);
+
         //allow blob, tel, mailto links
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
 
