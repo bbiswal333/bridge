@@ -65,9 +65,9 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 		}
 		return aItems.map(function(item) {
 			if(item.exclude) {
-				return "!" + item.value;
+				return "!" + item.value.toUpperCase();
 			} else {
-				return item.value;
+				return item.value.toUpperCase();
 			}
 		}).join(",");
 	}

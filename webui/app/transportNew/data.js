@@ -31,13 +31,13 @@ angular.module("app.transportNew")
 
 	        function getSystemsString(systems) {
 				return systems.map(function(system) {
-					return (system.exclude ? "!" : "") + system.value;
+					return (system.exclude ? "!" : "") + system.value.toUpperCase();
 				}).join(";");
 	        }
 
 	        function getComponentsString(components) {
 	        	return components.map(function(component) {
-	        		return (component.exclude ? "!" : "") + component.value;
+	        		return (component.exclude ? "!" : "") + component.value.toUpperCase();
 	        	}).join(";");
 	        }
 

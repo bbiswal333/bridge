@@ -191,8 +191,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     });
                 }
 
-                if (timeToMaintain() < 0) {
-                    bridgeInBrowserNotification.addAlert('','The day is overbooked. Please remove or adjust tasks and apply changes.');
+                var timeLeftForMaintenance = timeToMaintain();
+                if (timeLeftForMaintenance < 0) {
+                    bridgeInBrowserNotification.addAlert('danger', 'The day ' + monthlyDataService.days[block.WORKDATE].date + ' is overbooked. Please remove or adjust the task(s) and click "Apply changes".');
                 }
 
                 return true;
@@ -407,9 +408,9 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         }
         if (blockCouldBeAdded === false) {
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
-                bridgeInBrowserNotification.addAlert('','Please select one or multiple days in the calendar first.');
+                bridgeInBrowserNotification.addAlert('info','Please select one or multiple days in the calendar first.');
             } else {
-                bridgeInBrowserNotification.addAlert('','No maintenance possible for the selected day.');
+                bridgeInBrowserNotification.addAlert('info','No maintenance possible for the selected day.');
             }
         }
         return blockCouldBeAdded;
@@ -454,7 +455,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
         try {
             if ($scope.selectedDates.length <= 1 &&
                 blockdataHasChanged()) {
-                bridgeInBrowserNotification.addAlert('', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
+                bridgeInBrowserNotification.addAlert('info', 'New to CAT2 activity recording with Bridge? Please see <a href="https://github.wdf.sap.corp/bridge/bridge/wiki/CAT2-get-started" target="_blank">GET STARTED PAGE</a> for further details.');
             }
             angular.forEach($scope.selectedDates, function(dayString) {
                 checkGracePeriods(dayString);
@@ -511,7 +512,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 }
             }
             if (!replyMessages.length) {
-                bridgeInBrowserNotification.addAlert('info', 'Data was saved successfully.');
+                bridgeInBrowserNotification.addAlert('success', 'Data was saved successfully.');
             }
         } catch(err) {
             $log.log("checkPostReply(): " + err);
