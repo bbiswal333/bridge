@@ -5,12 +5,15 @@ angular.module('bridge.app').directive('bridge.tag', [function() {
         scope: {
         	exclude: '=',
             removeClick: '&',
-            removable: '@'
+            removable: '@?'
         },
         transclude: true,
         templateUrl: 'bridge/controls/tag.html',
-		compile: function(element, attrs){
-			if (!attrs.removable) { attrs.removable = true; }
+        link: function (scope, element, attrs) {
+			if (attrs.removable === undefined) {
+                attrs.removable = true;
+                scope.removable = true;
+            }
 		}
     };
 }]);
