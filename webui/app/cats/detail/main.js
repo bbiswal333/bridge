@@ -493,7 +493,8 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
                     replyMessages.push(data.CHECKMESSAGES[i].TEXT);
                     if (replyMessages.length <= maxMessageCount) {
-                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Activity recording for company code') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('is currently locked') > -1) {
+                        if((data.CHECKMESSAGES[i].TEXT.indexOf('Activity recording for company code') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('is currently locked') > -1) ||
+                            (data.CHECKMESSAGES[i].TEXT.indexOf('Tätigkeitserfassung für Buchungskreis') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('ist zur zeit gesperrt') > -1)) {
                             bridgeInBrowserNotification.addAlert('danger', 'Data could not be saved! Please be informed that CAT2 is completely locked until Wednesday January 20th!');
                         } else {
                             bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
