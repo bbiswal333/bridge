@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
+[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=KH6hrCs1L1tPTHXVpuXy&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
 [![ReviewNinja](https://review-ninja.mo.sap.corp/2417/badge)](https://review-ninja.mo.sap.corp/bridge/bridge)
 
