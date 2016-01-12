@@ -25,7 +25,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.selectedDates = [];
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
-    $scope.hintText = "";
+    $scope.hintText = "Please be informed that CAT2 is completely locked until Wednesday January 20th!";
     $scope.analytics = false;
 
     var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
@@ -54,7 +54,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             for (var i = 0; i < $scope.blockdata.length; i++) {
                 sum = catsUtils.cat2CompliantRounding(sum + $scope.blockdata[i].value);
             }
-            return $scope.totalWorkingTime - sum;
+            return catsUtils.cat2CompliantRounding($scope.totalWorkingTime - sum);
         } catch(err) {
             $log.log("timeToMaintain(): " + err);
             return $scope.totalWorkingTime;
@@ -87,11 +87,6 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     function substractFromTotalSelectedHours(dayString) {
         $scope.totalSelectedHours = $scope.totalSelectedHours - monthlyDataService.days[dayString].targetHours;
     }
-
-    $scope.calcMinutes = function (perc) {
-        $log.log(perc);
-        return calUtils.getTimeInWords((8 * 60) * (perc / 100), true) + " (" + Math.round(perc) + " %)";
-    };
 
     function getBlock(block) {
         for (var i = 0; i < $scope.blockdata.length; i++) {
@@ -159,7 +154,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (existingBlock != null) {
                 if (!existingBlock.value) { // that is a "deleted" block which is required to be sent to backend
                     adjustBarToAllowForOneMoreBlock();
-                    existingBlock.value = catsUtils.cat2CompliantRounding(timeToMaintain());
+                    existingBlock.value = timeToMaintain();
                     return true;
                 } else { // no need to add
                     return false;
@@ -191,8 +186,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     });
                 }
 
-                var timeLeftForMaintenance = timeToMaintain();
-                if (timeLeftForMaintenance < 0) {
+                if (timeToMaintain() < 0) {
                     bridgeInBrowserNotification.addAlert('danger', 'The day ' + monthlyDataService.days[block.WORKDATE].date + ' is overbooked. Please remove or adjust the task(s) and click "Apply changes".');
                 }
 
@@ -295,7 +289,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
-            $scope.hintText = "";
+            $scope.hintText = "Please be informed that CAT2 is completely locked until Wednesday January 20th!";
 
             if(day.targetTimeInPercentageOfDay) {
                 $scope.totalWorkingTime = 1;
@@ -410,7 +404,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             if (!$scope.selectedDates || $scope.selectedDates.length === 0) {
                 bridgeInBrowserNotification.addAlert('info','Please select one or multiple days in the calendar first.');
             } else {
-                bridgeInBrowserNotification.addAlert('info','No maintenance possible for the selected day.');
+                bridgeInBrowserNotification.addAlert('warning','The task could not be added.');
             }
         }
         return blockCouldBeAdded;
@@ -499,7 +493,11 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                 if (!_.contains(replyMessages, data.CHECKMESSAGES[i].TEXT)) {
                     replyMessages.push(data.CHECKMESSAGES[i].TEXT);
                     if (replyMessages.length <= maxMessageCount) {
-                        bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
+                        if(data.CHECKMESSAGES[i].TEXT.indexOf('Activity recording for company code') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('is currently locked') > -1) {
+                            bridgeInBrowserNotification.addAlert('danger', 'Data could not be saved! Please be informed that CAT2 is completely locked until Wednesday January 20th!');
+                        } else {
+                            bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
+                        }
                     }
                 }
             }
