@@ -1,4 +1,4 @@
-﻿angular.module('app.atc', ['bridge.search', 'ui.bootstrap.datepicker']);
+﻿angular.module('app.atc', ['bridge.search', 'ui.bootstrap.datepicker', 'bridge.service']);
 
 angular.module('app.atc').directive('app.atc',
     ["app.atc.configservice", "app.atc.dataservice",

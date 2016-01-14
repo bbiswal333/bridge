@@ -57,6 +57,12 @@
             </div>
             <div class="row" style="margin: 10px">
                 <div class="atc-input-field">
+                    AKH Responsible:<br />
+                    <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px">
+                <div class="atc-input-field">
                     First Occurence: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Show Weeks" close-text="Close" />
                 </div>
             </div>
@@ -75,6 +81,10 @@
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
                 AKH Components:
                 <bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeAKHComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.akhResponsibles.length > 0">
+                AKH Responsibles:
+                <bridge.akh-responsible-tag ng-repeat="responsible in currentConfigValues.akhResponsibles" responsible="responsible" responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
                 <bridge.tag ng-repeat="component in currentConfigValues.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
@@ -99,9 +109,8 @@
                 <tr>
                     <th>Source System</th>
                     <th>Package</th>
-                    <th>Object Responsible</th>
-                    <th>AKH Component</th>
-                    <th>Software Component</th>
+                    <th>Responsible</th>
+                    <th>Component</th>
                     <th>Display Suppressed</th>
                     <th>Ignore Completed</th>
                     <th>Only Production Relevant</th>
@@ -117,14 +126,16 @@
                     <td data-title="'Package'">
                         <bridge.tag ng-repeat="package in configItem.devClasses" exclude="package.exclude" remove-click="removePackage(system, configItem)">{{package.value}}</bridge.tag>
                     </td>
-                    <td data-title="'Object Responsible'">
+                    <td data-title="'Object Responsible'" style="text-align: left">
                         <bridge.tag ng-repeat="responsible in configItem.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, configItem)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
                     </td>
-                    <td data-title="'AKH Component'">
+                    <td data-title="'Component'" style="text-align: left">
+                        <b ng-show="configItem.softwareComponents.length > 0">Software Component:<br /></b>
+                        <bridge.tag ng-repeat="component in configItem.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, configItem)">{{component.value}}</bridge.tag>
+                        <b ng-show="configItem.components.length > 0">AKH Component:<br /></b>
                         <bridge.tag ng-repeat="component in configItem.components" exclude="component.exclude" remove-click="removeAKHComponent(component, configItem)">{{component.value}}</bridge.tag>
-                    </td>
-                    <td data-title="'Software Component'">
-                    <bridge.tag ng-repeat="component in configItem.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, configItem)">{{component.value}}</bridge.tag>
+                        <b ng-show="configItem.akhResponsibles.length > 0">Compnents of AKH Responsibles:<br /></b>
+                        <bridge.akh-responsible-tag ng-repeat="responsible in configItem.akhResponsibles" responsible="responsible" responsibles="configItem.akhResponsibles"></bridge.akh-responsible-tag>
                     </td>
                     <td data-title="'Display Suppressed'">
                         <span>

@@ -4,6 +4,7 @@ angular.module('bridge.app').directive('bridge.tag', [function() {
         restrict: 'E',
         scope: {
         	exclude: '=',
+            excludable: '@?',
             removeClick: '&',
             removable: '@?'
         },
@@ -13,6 +14,10 @@ angular.module('bridge.app').directive('bridge.tag', [function() {
 			if (attrs.removable === undefined) {
                 attrs.removable = true;
                 scope.removable = true;
+            }
+            if (attrs.excludable === undefined) {
+                attrs.excludable = true;
+                scope.excludable = true;
             }
 		}
     };

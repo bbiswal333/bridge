@@ -1,4 +1,4 @@
-angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService', function (bridgeDataService) {
+angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataService', 'bridge.AKHResponsibleFactory', '$timeout', function ($q, bridgeDataService, AKHResponsibleFactory, $timeout) {
 	function fillLeadingZero(str) {
 		if(str.toString().length === 1) {
 			return "0" + str;
@@ -26,6 +26,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
             this.components = [];
             this.softwareComponent = "";
             this.softwareComponents = [];
+            this.akhResponsibles = [];
             this.showSuppressed = false;
             this.displayPrio1 = true;
             this.displayPrio2 = true;
@@ -74,17 +75,36 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 
 	ConfigItem.prototype = Object.create(IQueryString);
 	ConfigItem.prototype.getQueryString = function() {
-		var query = arrayToQuery(this.srcSystems) + ';' + arrayToQuery(this.devClasses) + ';' + this.tadirResponsibles.map(function(responsible) { return (responsible.exclude ? "!" : "") + (responsible.SAPNA ? responsible.SAPNA : responsible); }).join(",") + ';' + arrayToQuery(this.components) + ';';
-		query += this.showSuppressed ? "X;" : ";";
-		query += this.displayPrio1 ? "X;" : ";";
-		query += this.displayPrio2 ? "X;" : ";";
-		query += this.displayPrio3 ? "X;" : ";";
-		query += this.displayPrio4 ? "X;" : ";";
-		query += this.onlyInProcess ? "X;" : ";";
-		query += arrayToQuery(this.softwareComponents) + ";";
-		query += this.onlyProductionRelevant ? "*FA*;" : ";";
-		query += this.firstOccurence ? toABAPDate(this.firstOccurence) : "";
-		return query;
+		var that = this;
+		var deferred = $q.defer();
+
+		function resolveQuery(results) {
+			var components = that.components.concat.apply(that.components, results);
+			var query = arrayToQuery(that.srcSystems) + ';' + arrayToQuery(that.devClasses) + ';' + that.tadirResponsibles.map(function(responsible) { return (responsible.exclude ? "!" : "") + (responsible.SAPNA ? responsible.SAPNA : responsible); }).join(",") + ';' + arrayToQuery(components) + ';';
+			query += that.showSuppressed ? "X;" : ";";
+			query += that.displayPrio1 ? "X;" : ";";
+			query += that.displayPrio2 ? "X;" : ";";
+			query += that.displayPrio3 ? "X;" : ";";
+			query += that.displayPrio4 ? "X;" : ";";
+			query += that.onlyInProcess ? "X;" : ";";
+			query += arrayToQuery(that.softwareComponents) + ";";
+			query += that.onlyProductionRelevant ? "*FA*;" : ";";
+			query += that.firstOccurence ? toABAPDate(that.firstOccurence) : "";
+			deferred.resolve(query);
+		}
+
+		if(this.akhResponsibles.length > 0) {
+			$q.all(this.akhResponsibles.map(function(responsible) {
+				return responsible.getComponents();
+			})).then(function(results) {
+				resolveQuery(results);
+			});
+		} else {
+			$timeout(function() {
+				resolveQuery([]);
+			});
+		}
+		return deferred.promise;
 	};
 
 	var Config = function() {
@@ -105,16 +125,13 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 		return this.configItems;
 	};
 	Config.prototype.getQueryString = function() {
-		var queryString = "";
-		for(var i = 0; i < this.getConfigItems().length; i++) {
-		    if (i === this.getConfigItems().length - 1) {
-		        queryString += this.getConfigItems()[i].getQueryString();
-		    }
-		    else {
-		        queryString += this.getConfigItems()[i].getQueryString() + "|";
-		    }
-		}
-		return queryString;
+		var deferred = $q.defer();
+		$q.all(this.getConfigItems().map(function(configItem) {
+			return configItem.getQueryString();
+		})).then(function(results) {
+			deferred.resolve(results.join("|"));
+		});
+		return deferred.promise;
 	};
 	Config.prototype.clear = function () {
 	    this.configItems.length = 0;
@@ -156,6 +173,7 @@ angular.module('app.atc').service("app.atc.configservice", ['bridgeDataService',
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
+	            currentConfigItem.akhResponsibles = persistedConfig.configItems[configItem].akhResponsibles ? persistedConfig.configItems[configItem].akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : [];
               	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? parseConfigItems(persistedConfig.configItems[configItem].softwareComponents) : (persistedConfig.configItems[configItem].softwareComponent ? [{value: persistedConfig.configItems[configItem].softwareComponent}] : []);
 	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? parseConfigItems(persistedConfig.configItems[configItem].srcSystems) : (persistedConfig.configItems[configItem].srcSystem ? [{value: persistedConfig.configItems[configItem].srcSystem}] : []);
 	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : (persistedConfig.configItems[configItem].tadirResponsible ? [persistedConfig.configItems[configItem].tadirResponsible] : []);

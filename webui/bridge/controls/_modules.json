@@ -18,7 +18,10 @@
     "editableEmployee.js",
     "employee.js",
     "tag.js",
-    "daysago.js"
+    "daysago.js",
+    "akhResponsible/AKHResponsible.js",
+    "akhResponsible/AKHResponsibleSelector.js",
+    "akhResponsible/AKHResponsibleTag.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"

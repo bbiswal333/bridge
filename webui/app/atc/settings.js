@@ -37,7 +37,7 @@
 
     $scope.onSelectAKHComponent = function(value) {
         if($scope.currentConfigValues.components.indexOf(value) === -1) {
-            $scope.currentConfigValues.components.push({value: value});
+            $scope.currentConfigValues.components.push({value: value.PS_POSID});
             $scope.currentConfigValues.component = "";
         }
     };
@@ -101,7 +101,9 @@
     };
 
     $scope.rss_click = function (configItem) {
-        $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + configItem.getQueryString() + '&format=rss');
+        configItem.getQueryString().then(function(queryString) {
+            $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + queryString + '&format=rss');
+        });
     };
 
     $scope.copy_click = function (configItem) {
@@ -142,7 +144,9 @@
     };
 
     $scope.rss_for_saved_selection_click = function () {
-        $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + $scope.config.getQueryString() + '&format=rss');
+        $scope.config.getQueryString().then(function(queryString) {
+            $window.open('https://ifp.wdf.sap.corp:443/sap/bc/devdb/STAT_CHK_RESULT?query=' + queryString + '&format=rss');
+        });
     };
 
 /*eslint-disable */
