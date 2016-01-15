@@ -1,4 +1,4 @@
-angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMitosis.configService", ['bridgeDataService', '$http', function (bridgeDataService, $http) {
+angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMitosis.configService", ['bridgeDataService', '$http', 'bridge.AKHResponsibleFactory', function (bridgeDataService, $http, AKHResponsibleFactory) {
 	var instances = {};
 
 	var Config = (function() {
@@ -8,6 +8,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 			this.systems = [];
 			this.isInitialized = false;
 			this.processors = [];
+			this.akhResponsibles = [];
 			this.detailsColumnVisibility = [false, true, true, true, true, true, false, false, true, true, false, false];
 
 			function checkProgramSystems(program) {
@@ -56,6 +57,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 	                this.excludeProcessors = appConfig.excludeProcessors;
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems : []);
 	                this.processors = angular.copy(appConfig.processors ? appConfig.processors : []);
+	                this.akhResponsibles = angular.copy(appConfig.akhResponsibles ? appConfig.akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : []);
 	    			this.detailsColumnVisibility = appConfig.detailsColumnVisibility ? appConfig.detailsColumnVisibility : [false, true, true, true, true, true, false, false, true, true, false, false];
 
 	    			this.programs.map(function(program) {

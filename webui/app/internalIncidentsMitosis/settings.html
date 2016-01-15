@@ -66,24 +66,39 @@
 				<br /><br />
 				<b>Select the components you want to restrict your results to:</b>
 				<div class="row" style="margin:15px 0 0 0;">
-					<div class="col-lg-12 form_head" style="float:none;"><u>Components</u></div>
-					<div class="col-lg-12">
-						<bridge.input model="component"
-									enter="onSelectComponent(component)"
-									input-typeahead-wait-ms="200"
-									input-typeahead-min-length="0"
-									input-typeahead-template-url="bridge/app/internalIncidentsMitosis/Component.html"
-									input-typeahead-on-select="onSelectComponent($item)"
-									input-typeahead="component as component.PS_POSID for component in searchComponents($viewValue)" placeholder="Component.."></bridge.input>
+					<div class="col-lg-6">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Components</u></div>
+							<div class="col-lg-12">
+								<bridge.input model="component"
+											enter="onSelectComponent(component)"
+											input-typeahead-wait-ms="200"
+											input-typeahead-min-length="0"
+											input-typeahead-template-url="bridge/app/internalIncidentsMitosis/Component.html"
+											input-typeahead-on-select="onSelectComponent($item)"
+											input-typeahead="component as component.PS_POSID for component in searchComponents($viewValue)" placeholder="Component.."></bridge.input>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeComponent(component)">{{component.value}}</bridge.tag>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12 form_head" style="float:none;"><u>Components by AKH Responsible</u></div>
+							<div class="col-lg-12">
+								<bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
+							</div>
+						</div>
+						<div class="row" style="margin:15px 0 0 0;">
+							<div class="col-lg-12" style="float:none;">
+								<bridge.akh-responsible-tag ng-repeat="responsible in currentConfigValues.akhResponsibles" responsible="responsible" responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-tag>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="row" style="margin:15px 0 0 0;">
-					<div class="col-lg-12" style="float:none;">
-						<bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeComponent(component)">{{component.value}}</bridge.tag>
-					</div>
-				</div>
-
-				
 			</div>
 
 
