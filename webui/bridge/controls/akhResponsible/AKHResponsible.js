@@ -32,7 +32,6 @@ angular.module('bridge.service').service('bridge.AKHResponsibleFactory', ["$q", 
                 var deferred = $q.defer();
                 if(!aComponents) {
                     $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$filter=" + this.getProperty() + " eq '" + this.getUserId() + "'").then(function(response) {
-                        console.log("called this shit");
                         aComponents = response.data.d.results.map(function(component) {
                             return {value: component.PS_POSID};
                         });
