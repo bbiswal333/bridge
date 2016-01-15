@@ -81,7 +81,7 @@ angular.module('bridge.box').directive('bridge.box',
 
             $scope.enterEditMode = function() {
                 bridgeUserData.getUserData().then(function(userData) {
-                    if($scope.selectedProject.owner === userData.BNAME) {
+                    if(bridgeDataService.getSelectedProject().owner === userData.BNAME) {
                         $scope.editTitle = true;
                     }
                 });

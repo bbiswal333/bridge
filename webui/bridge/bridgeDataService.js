@@ -84,6 +84,7 @@
                 projectObject.apps = [];
                 deferred = getProjectDataFromBackend(projectObject);
             } else {
+                projectObject.owner = userInfo ? userInfo.BNAME : "";
                 projectObject.apps = parseApps(project);
             }
             that.projects.push(projectObject);
