@@ -1,6 +1,6 @@
 angular.module("app.transportNew")
-	.service("app.transportNew.dataService", ["$http", "$q", "$window",
-	function ($http, $q, $window) {
+	.service("app.transportNew.dataService", ["$http", "$q", "$window", "$timeout",
+	function ($http, $q, $window, $timeout) {
 		var AppData = (function() {
 			function toDate(dateString) {
 	        	if(dateString) {
@@ -51,20 +51,19 @@ angular.module("app.transportNew")
 
 			return function() {
 				this.loadData = function(config) {
+					var that = this;
 					var deferred = $q.defer();
-					if(config.components.length === 0 && config.systems.length === 0 && config.owners.length === 0) {
-						this.openTransports = [];
-						this.transportsOpenForLongerThanThreshold = [];
-						deferred.resolve();
-					} else {
-						var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?components=' + getComponentsString(config.components) + '&systems=' + getSystemsString(config.systems) + '&owners=' + getOwnersString(config.owners) + '&first_occurence=' + toABAPDate(config.firstOccurence) + '&origin=' + $window.location.origin;
-						var that = this;
+
+					function loadData(akhResponsibleComponents) {
+						var components = config.components.concat(akhResponsibleComponents);
+						var postData = getComponentsString(components) + '|' + getOwnersString(config.owners) + '|' + getSystemsString(config.systems);
+						var url = 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_TRANSPORTS?first_occurence=' + toABAPDate(config.firstOccurence) + '&origin=' + $window.location.origin;
 						var thresholdDaysAgo = new Date(new Date().setDate(new Date().getDate() - config.openTransportThreshold));
 						thresholdDaysAgo.setHours(0);
 						thresholdDaysAgo.setMinutes(0);
 						thresholdDaysAgo.setSeconds(0);
 						thresholdDaysAgo.setMilliseconds(0);
-						$http.get(url).success(function(data){
+						$http.post(url, postData).success(function(data){
 							that.openTransports = [];
 							that.transportsOpenForLongerThanThreshold = [];
 							data.TRANSPORTS.map(function(transport) {
@@ -79,6 +78,27 @@ angular.module("app.transportNew")
 							});
 							deferred.resolve();
 						});
+					}
+
+					if(config.components.length === 0 && config.systems.length === 0 && config.owners.length === 0) {
+						this.openTransports = [];
+						this.transportsOpenForLongerThanThreshold = [];
+						deferred.resolve();
+					} else {
+						if(config.akhResponsibles.length > 0) {
+							$q.all(config.akhResponsibles.map(function(responsible) {
+								return responsible.getComponents();
+							})).then(function(results) {
+								loadData([].concat.apply([], results).map(function(component) {
+									component.exclude = false;
+									return component;
+								}));
+							});
+						} else {
+							$timeout(function() {
+								loadData([]);
+							});
+						}
 					}
 					return deferred.promise;
 				};
