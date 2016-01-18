@@ -57,13 +57,13 @@
             </div>
             <div class="row" style="margin: 10px">
                 <div class="atc-input-field">
-                    ACH Responsible:<br />
-                    <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
+                    First Occurence: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Show Weeks" close-text="Close" />
                 </div>
             </div>
             <div class="row" style="margin: 10px">
                 <div class="atc-input-field">
-                    First Occurence: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Show Weeks" close-text="Close" />
+                    ACH Responsible:<br />
+                    <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
                 </div>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
