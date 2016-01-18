@@ -46,7 +46,7 @@
                             
                     
                     <div class="atc-input-field">
-                        <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component.PS_POSID for component in searchComponent($viewValue)" placeholder="AKH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
+                        <bridge.input style="float:left;" model="currentConfigValues.component" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component.PS_POSID for component in searchComponent($viewValue)" placeholder="ACH Component..." icon="fa fa-plus" icon-click="onSelectAKHComponent(currentConfigValues.component)" autofocus enter="onSelectAKHComponent(currentConfigValues.component)"></bridge.input>
 
                     </div>
 
@@ -57,7 +57,7 @@
             </div>
             <div class="row" style="margin: 10px">
                 <div class="atc-input-field">
-                    AKH Responsible:<br />
+                    ACH Responsible:<br />
                     <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
                 </div>
             </div>
@@ -79,11 +79,11 @@
                 <bridge.tag ng-repeat="responsible in currentConfigValues.tadirResponsibles" exclude="responsible.exclude" remove-click="removeResponsible(responsible, currentConfigValues)">{{responsible.VORNA}} {{responsible.NACHN}} ({{responsible.BNAME}}) </bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.components.length > 0">
-                AKH Components:
+                ACH Components:
                 <bridge.tag ng-repeat="component in currentConfigValues.components" exclude="component.exclude" remove-click="removeAKHComponent(component, currentConfigValues)">{{component.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.akhResponsibles.length > 0">
-                AKH Responsibles:
+                ACH Responsibles:
                 <bridge.akh-responsible-tag ng-repeat="responsible in currentConfigValues.akhResponsibles" responsible="responsible" responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.softwareComponents.length > 0">
@@ -132,9 +132,9 @@
                     <td data-title="'Component'" style="text-align: left">
                         <b ng-show="configItem.softwareComponents.length > 0">Software Component:<br /></b>
                         <bridge.tag ng-repeat="component in configItem.softwareComponents" exclude="component.exclude" remove-click="removeSoftwareComponent(component, configItem)">{{component.value}}</bridge.tag>
-                        <b ng-show="configItem.components.length > 0">AKH Component:<br /></b>
+                        <b ng-show="configItem.components.length > 0">ACH Component:<br /></b>
                         <bridge.tag ng-repeat="component in configItem.components" exclude="component.exclude" remove-click="removeAKHComponent(component, configItem)">{{component.value}}</bridge.tag>
-                        <b ng-show="configItem.akhResponsibles.length > 0">Compnents of AKH Responsibles:<br /></b>
+                        <b ng-show="configItem.akhResponsibles.length > 0">Components of ACH Responsibles:<br /></b>
                         <bridge.akh-responsible-tag ng-repeat="responsible in configItem.akhResponsibles" responsible="responsible" responsibles="configItem.akhResponsibles"></bridge.akh-responsible-tag>
                     </td>
                     <td data-title="'Display Suppressed'">
