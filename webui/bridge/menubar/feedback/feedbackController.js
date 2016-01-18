@@ -3,12 +3,14 @@
  */
 angular.module('bridge.app').controller('bridge.LikesCtrl',['bridgeDataService', '$scope',
 	function (bridgeDataService, $scope) {
-    var userInfo = bridgeDataService.getUserInfo().BNAME;
-    /*eslint-disable no-undef */
-    if (typeof likes !== 'undefined') {
-        $scope.likesIsLoaded = true;
-        likes.setUser(userInfo);
-        likes.getLikes();
-    }
-    /*eslint-enable no-undef */
-}]);
+		var userInfo = bridgeDataService.getUserInfo().BNAME;
+		/*eslint-disable no-undef */
+		if (typeof likes !== 'undefined') {
+			likes.setUser(userInfo);
+			likes.getLikes();
+		} else {
+			$scope.likesIsNotAvailable = true;
+		}
+		/*eslint-enable no-undef */
+	}
+]);
