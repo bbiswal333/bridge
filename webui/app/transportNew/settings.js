@@ -20,6 +20,10 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 				return;
 			}
 		}
+		if(item === "") {
+			return;
+		}
+
 		$scope.currentConfigValues.components.push({exclude: false, value: item});
 	};
 
@@ -33,6 +37,10 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 				return;
 			}
 		}
+		if(item === "") {
+			return;
+		}
+
 		$scope.currentConfigValues.systems.push({exclude: false, value: item});
 	};
 

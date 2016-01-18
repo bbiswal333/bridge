@@ -14,7 +14,13 @@
     };
 
     $scope.onSelectSystem = function(value) {
-        if($scope.currentConfigValues.srcSystems.indexOf(value) === -1) {
+        for(var i = 0, length = $scope.currentConfigValues.srcSystems.length; i < length; i++) {
+            if($scope.currentConfigValues.srcSystems[i].value === value) {
+                return;
+            }
+        }
+
+        if(value !== "") {
             $scope.currentConfigValues.srcSystems.push({value: value});
             $scope.currentConfigValues.srcSystem = "";
         }
@@ -25,7 +31,13 @@
     };
 
     $scope.onSelectPackage = function(value) {
-        if($scope.currentConfigValues.devClasses.indexOf(value) === -1) {
+        for(var i = 0, length = $scope.currentConfigValues.devClasses.length; i < length; i++) {
+            if($scope.currentConfigValues.devClasses[i].value === value) {
+                return;
+            }
+        }
+
+        if(value !== "") {
             $scope.currentConfigValues.devClasses.push({value: value});
             $scope.currentConfigValues.devClass = "";
         }
@@ -36,8 +48,14 @@
     };
 
     $scope.onSelectAKHComponent = function(value) {
-        if($scope.currentConfigValues.components.indexOf(value) === -1) {
-            $scope.currentConfigValues.components.push({value: value.PS_POSID});
+        for(var i = 0, length = $scope.currentConfigValues.components.length; i < length; i++) {
+            if($scope.currentConfigValues.components[i].value === value || (value.PS_POSID && $scope.currentConfigValues.components[i].value === value.PS_POSID)) {
+                return;
+            }
+        }
+
+        if(value !== "" || (value.PS_POSID && value.PS_POSID !== "")) {
+            $scope.currentConfigValues.components.push({value: value.PS_POSID ? value.PS_POSID : value});
             $scope.currentConfigValues.component = "";
         }
     };
@@ -47,7 +65,13 @@
     };
 
     $scope.onSelectSoftwareComponent = function(value) {
-        if($scope.currentConfigValues.softwareComponents.indexOf(value) === -1) {
+        for(var i = 0, length = $scope.currentConfigValues.softwareComponents.length; i < length; i++) {
+            if($scope.currentConfigValues.softwareComponents[i].value === value) {
+                return;
+            }
+        }
+
+        if(value !== "") {
             $scope.currentConfigValues.softwareComponents.push({value: value});
             $scope.currentConfigValues.softwareComponent = "";
         }
