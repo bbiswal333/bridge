@@ -38,7 +38,7 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
         };
 
         this.isEmpty = function () {
-            if (this.srcSystems.length === 0 && this.devClasses.length === 0 && this.tadirResponsibles.length === 0 && this.components.length === 0 && this.softwareComponents.length === 0) {
+            if (this.srcSystems.length === 0 && this.devClasses.length === 0 && this.tadirResponsibles.length === 0 && this.components.length === 0 && this.softwareComponents.length === 0 && this.akhResponsibles.length === 0) {
                 return true;
             }
             else {
