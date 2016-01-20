@@ -9,7 +9,7 @@ angular.module('bridge.controls').directive('bridge.akhResponsibleSelector', ["b
         controller: function($scope) {
         	$scope.Roles = [
         		{Name: "Development Component Owner", Key: "DEV_UID_DM"},
-        		{Name: "Develivery Manager", Key: "DEV_UID_DLVRY_M"},
+        		{Name: "Delivery Manager", Key: "DEV_UID_DLVRY_M"},
         		{Name: "Development Product Owner", Key: "DEV_UID_PRDOWNER"}
         	];
 
