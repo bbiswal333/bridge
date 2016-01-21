@@ -25,7 +25,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
     $scope.selectedDates = [];
     $scope.totalSelectedHours = 0;
     $scope.totalWorkingTime = 0;
-    $scope.hintText = "Please be informed that CAT2 is completely locked until Wednesday January 20th!";
+    $scope.hintText = "";
     $scope.analytics = false;
 
     var catsConfigService = bridgeDataService.getAppConfigById("app.cats-1");
@@ -289,7 +289,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
             }
             $scope.lastCatsAllocationDataForDay = day;
             $scope.blockdata = [];
-            $scope.hintText = "Please be informed that CAT2 is completely locked until Wednesday January 20th!";
+            $scope.hintText = "";
 
             if(day.targetTimeInPercentageOfDay) {
                 $scope.totalWorkingTime = 1;
@@ -495,7 +495,7 @@ angular.module("app.cats.maintenanceView", ["app.cats.allocationBar", "ngRoute",
                     if (replyMessages.length <= maxMessageCount) {
                         if((data.CHECKMESSAGES[i].TEXT.indexOf('Activity recording for company code') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('is currently locked') > -1) ||
                             (data.CHECKMESSAGES[i].TEXT.indexOf('Tätigkeitserfassung für Buchungskreis') > -1 && data.CHECKMESSAGES[i].TEXT.indexOf('ist zur zeit gesperrt') > -1)) {
-                            bridgeInBrowserNotification.addAlert('danger', 'Data could not be saved! Please be informed that CAT2 is completely locked until Wednesday January 20th!');
+                            bridgeInBrowserNotification.addAlert('danger', "Data could not be saved! Please be informed that CAT2 is still locked for your company code. The lock will be removed in the next couple of days.");
                         } else {
                             bridgeInBrowserNotification.addAlert('danger', data.CHECKMESSAGES[i].TEXT);
                         }
