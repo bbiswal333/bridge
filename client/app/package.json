@@ -1,6 +1,6 @@
 ﻿{
 	"name": "bridge-client",
-	"version": "0.9.6",
+	"version": "0.9.7",
 	"main": "index.html",
 	"bridge_tag": "local",
 	"window": {
