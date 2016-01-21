@@ -38,3 +38,6 @@ If the tag is not present, the client will fetch the latest tag from the bridge 
 }
 ```
 In order to release a new version of the client, the version of the app/package.json and app/package_build.json needs to be adjusted.
+
+Mac only:
+After the bridge.app have been created, the file /Contents/Resources/app.nw/img/bridge-icon.png needs to be resized to 32 pixels in order to look nice as icon in the icon bar. This can be done with the normal "Preview" application on Mac.
