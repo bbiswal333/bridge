@@ -63,7 +63,7 @@ angular.module("app.transportNew")
 						thresholdDaysAgo.setMinutes(0);
 						thresholdDaysAgo.setSeconds(0);
 						thresholdDaysAgo.setMilliseconds(0);
-						$http.post(url, postData).success(function(data){
+						$http({method: 'POST', url: url, data: postData, withCredentials: true}).success(function(data){
 							that.openTransports = [];
 							that.transportsOpenForLongerThanThreshold = [];
 							data.TRANSPORTS.map(function(transport) {

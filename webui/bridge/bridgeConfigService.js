@@ -128,6 +128,7 @@
             $http({
                 url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SETUSERCONFIG?instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
+                withCredentials: true,
                 data: sConfigPayload,
                 headers: { 'Content-Type': 'text/plain' }
             }).success(function () {
@@ -185,6 +186,7 @@
             $http({
                 url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/SET_VIEW?view=' + guid + '&viewName=' + viewData.name + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin),
                 method: "POST",
+                withCredentials: true,
                 data: viewData,
                 headers: { 'Content-Type': 'application/json' }
             }).success(function () {

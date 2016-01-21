@@ -84,7 +84,7 @@ angular.module("app.internalIncidentsMitosis")
 						deferred.resolve();
 					} else {
 						var url = "https://sithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
-						$http.post(url, getFilterFromConfig(config)).success(function(data){
+						$http({method: 'POST', url: url, withCredentials: true, data: getFilterFromConfig(config)}).success(function(data){
 							that.limit = data.limit;
 							that.limitExceeded = data.limitExceeded;
 							that.prio1 = [];

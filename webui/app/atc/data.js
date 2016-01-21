@@ -13,7 +13,7 @@
 
             this.getResultForConfig = function (config) {
                 config.getQueryString().then(function(queryString) {
-                    $http.post('https://ifp.wdf.sap.corp:443/sap/bc/bridge/STAT_CHK_RES_CN?&count_prios=X&format=json&origin=' + $window.location.origin, queryString)
+                    $http({method: 'POST', url: 'https://ifp.wdf.sap.corp:443/sap/bc/bridge/STAT_CHK_RES_CN?&count_prios=X&format=json&origin=' + $window.location.origin, withCredentials: true, data: queryString})
                     .success(function (data) {
 
                         that.data = {
@@ -29,7 +29,7 @@
             this.getDetailsForConfig = function (config) {
                 var deferred = $q.defer();
                 config.getQueryString().then(function(queryString) {
-                    return $http.post('https://ifp.wdf.sap.corp:443/sap/bc/bridge/STAT_CHK_RESULT?&format=json&origin=' + $window.location.origin, queryString)
+                    return $http({method: 'POST', url: 'https://ifp.wdf.sap.corp:443/sap/bc/bridge/STAT_CHK_RESULT?&format=json&origin=' + $window.location.origin, withCredentials: true, data: queryString})
                     .success(function (data) {
                         that.detailsData = data.DATA;
                         deferred.resolve(that.detailsData);
