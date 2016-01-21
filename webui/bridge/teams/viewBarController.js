@@ -118,7 +118,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     });
 
     $scope.setSelectedProject = function(project) {
-        if(!project.owner && !project.view) {
+        if((!project.owner && !project.view) || project.type === "PERSONAL") {
             $location.path("/");
             bridgeDataService.setSelectedProject(project);
             $rootScope.selectedProject = project;
