@@ -1,0 +1,2711 @@
+{
+  "d": {
+    "StatusBuffer": {
+      "results": [
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0001",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0016",
+          "STATUS_TO_TEXT": "Cancelled",
+          "LABEL_ID": "003",
+          "BUTTON_LABEL": "Cancel Ticket",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0001",
+          "STATUS_FROM_TEXT": "",
+          "STATUS_TO": "E0001",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "For Review",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "For Review",
+          "STATUS_TO": "E0008",
+          "STATUS_TO_TEXT": "For Review",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0008",
+          "STATUS_TO_TEXT": "For Review",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Solution proposed",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0010",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0010",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0010",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0013",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0013",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0015",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0015",
+          "STATUS_FROM_TEXT": "Assigned",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0015",
+          "STATUS_FROM_TEXT": "Assigned",
+          "STATUS_TO": "E0015",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0016",
+          "STATUS_FROM_TEXT": "Cancelled",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZINC",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "Service provided",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "Service provided",
+          "STATUS_TO": "E0008",
+          "STATUS_TO_TEXT": "For Review",
+          "LABEL_ID": "009",
+          "BUTTON_LABEL": "Reject provided Service",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "Service provided",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "Service provided",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0013",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0013",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0002",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0010",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0010",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0010",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "To be approved",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "To be approved",
+          "STATUS_TO": "E0005",
+          "STATUS_TO_TEXT": "Rejected",
+          "LABEL_ID": "008",
+          "BUTTON_LABEL": "Reject Request",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "To be approved",
+          "STATUS_TO": "E0002",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "007",
+          "BUTTON_LABEL": "Approve Request",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "To be approved",
+          "STATUS_TO": "E0002",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "016",
+          "BUTTON_LABEL": "Reject Approver Role",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "To be approved",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "To be approved",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "For Review",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "For Review",
+          "STATUS_TO": "E0008",
+          "STATUS_TO_TEXT": "For Review",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "Rejected",
+          "STATUS_TO": "E0020",
+          "STATUS_TO_TEXT": "Rejection confirmed",
+          "LABEL_ID": "010",
+          "BUTTON_LABEL": "Confim Rejection",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "Rejected",
+          "STATUS_TO": "E0008",
+          "STATUS_TO_TEXT": "For Review",
+          "LABEL_ID": "011",
+          "BUTTON_LABEL": "Disagree with Rejection",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "true",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "true",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+         {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "Rejected",
+          "STATUS_TO": "E0005",
+          "STATUS_TO_TEXT": "Rejected",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0002",
+          "STATUS_FROM_TEXT": "Assigned",
+          "STATUS_TO": "E0019",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0002",
+          "STATUS_FROM_TEXT": "Assigned",
+          "STATUS_TO": "E0002",
+          "STATUS_TO_TEXT": "Assigned",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0001",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0017",
+          "STATUS_TO_TEXT": "Cancelled",
+          "LABEL_ID": "003",
+          "BUTTON_LABEL": "Cancel Ticket",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0001",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0001",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "true",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0017",
+          "STATUS_FROM_TEXT": "Cancelled",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZITSERVREQU",
+          "PROCESS_TYPE": "ZSER",
+          "STATUS_FROM": "E0019",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed ",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },        
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0024",
+          "STATUS_FROM_TEXT": "Forwarded to IT",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0025",
+          "STATUS_FROM_TEXT": "Forwarded to IT",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0014",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "n/a",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0017",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "n/a",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZSSF-SRV-REQ",
+          "PROCESS_TYPE": "YHRR",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0026",
+          "STATUS_FROM_TEXT": "Forwarded to IT",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0028",
+          "STATUS_FROM_TEXT": "Forwarded to IT",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0014",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "n/a",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZFI-TE_ESS",
+          "PROCESS_TYPE": "YFIN",
+          "STATUS_FROM": "E0017",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "n/a",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Auton Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Solution proposed",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Author Action required",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0024",
+          "STATUS_FROM_TEXT": "Forwarded to IT",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0014",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "n/a",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGCO_ESS",
+          "PROCESS_TYPE": "ZGCR",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "In process",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "In process",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Service Provided",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0011",
+          "STATUS_FROM_TEXT": "Service Provided",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "Re-opened",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Author Action",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In Process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "Forwarded",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0024",
+          "STATUS_FROM_TEXT": "Transferred to ITDirect",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0026",
+          "STATUS_FROM_TEXT": "Forwarded Outside",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0025",
+          "STATUS_FROM_TEXT": "ITdirect ticket created",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "Waiting/On Hold",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0012",
+          "STATUS_FROM_TEXT": "Canceled",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0017",
+          "STATUS_FROM_TEXT": "Auto Confirmed",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "Agent Action",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Agent Action",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0018",
+          "STATUS_FROM_TEXT": "Re-opened",
+          "STATUS_TO": "E0018",
+          "STATUS_TO_TEXT": "Re-opened",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGFM_ESS",
+          "PROCESS_TYPE": "ZFMR",
+          "STATUS_FROM": "E0014",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0003",
+          "STATUS_FROM_TEXT": "New",
+          "STATUS_TO": "E0003",
+          "STATUS_TO_TEXT": "New",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+          },
+          {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0025",
+          "STATUS_FROM_TEXT": "Completed",
+          "STATUS_TO": "E0014",
+          "STATUS_TO_TEXT": "Confirmed",
+          "LABEL_ID": "001",
+          "BUTTON_LABEL": "Confirm",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0025",
+          "STATUS_FROM_TEXT": "Completed",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "006",
+          "BUTTON_LABEL": "Reject Solution",
+          "ACTIVE": "X",
+          "FILTER": "Solution proposed",
+          "KEY": "4",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+         {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0007",
+          "STATUS_FROM_TEXT": "Reporter Action",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "Action required",
+          "KEY": "2",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "true"
+          }
+        },
+        {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0004",
+          "STATUS_FROM_TEXT": "In Process",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+           "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0005",
+          "STATUS_FROM_TEXT": "Forwarded",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+           "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0027",
+          "STATUS_FROM_TEXT": "Issue Transferred",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+           "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0008",
+          "STATUS_FROM_TEXT": "3rd level action",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+           "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0014",
+          "STATUS_FROM_TEXT": "Confirmed",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+           "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0012",
+          "STATUS_FROM_TEXT": "Canceled",
+          "STATUS_TO": "",
+          "STATUS_TO_TEXT": "",
+          "LABEL_ID": "",
+          "BUTTON_LABEL": "",
+          "ACTIVE": "",
+          "FILTER": "Closed",
+          "KEY": "1",
+          "OnScreen": "false",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "false",
+            "Save": "false",
+            "Send": "false"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        },
+        {
+          "ROLE": "ZGS-SRV_REQ",
+          "PROCESS_TYPE": "ZSIM",
+          "STATUS_FROM": "E0009",
+          "STATUS_FROM_TEXT": "Answer Received",
+          "STATUS_TO": "E0009",
+          "STATUS_TO_TEXT": "Answer Received",
+          "LABEL_ID": "002",
+          "BUTTON_LABEL": "Edit",
+          "ACTIVE": "X",
+          "FILTER": "In Process",
+          "KEY": "3",
+          "OnScreen": "true",
+          "EditModeButton": {
+            "SendBackToIT": "false",
+            "Cancel": "true",
+            "Save": "false",
+            "Send": "true"
+          },
+          "MandatoryNotes": {
+            "SendBackToIT": "false",
+            "Save": "false",
+            "Send": "false"
+          }
+        }
+        
+      ]
+    }
+  }
+}

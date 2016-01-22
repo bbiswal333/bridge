@@ -1,0 +1,28 @@
+<div>
+    <div style="height:140px">
+        <div id="spinner" style="text-align:center;vertical-align: middle; line-height:80px;display:none" class="app-unifiedticketing-prio_container wrap">
+           <div class="l">L</div>
+  <div class="o">O</div>
+  <div class="a">A</div>
+  <div class="d">D</div>
+  <div class="i">I</div>
+  <div class="n">N</div>
+  <div class="g">G</div>
+        </div>
+
+        <div id="utContainer" class="app-unifiedticketing-prio_container">
+            <div ng-repeat="prio in prios" class="prio_col app-unifiedticketing-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':getTicketCountForPrio(prios[$index].description)==0}">
+                <bridge.conditional-link navigate-to="/detail/unifiedticketing/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="getTicketCountForPrio1(prios[$index].description)!==0">
+                    <div class="prio_box" style="color:white">
+                        <p>{{prios[$index].name}}</p>
+                    </div>
+                    <div class="prio_content_box" style="color:white">
+                        <p ng-if="getTicketCountForPrio1(prios[$index].key) <= 99">{{getTicketCountForPrio1(prios[$index].description)}}</p>
+                        <p ng-if="getTicketCountForPrio1(prios[$index].key) >= 100">+99</p>
+                    </div>
+                </bridge.conditional-link>
+            </div>
+        </div>
+
+    </div>
+</div>
