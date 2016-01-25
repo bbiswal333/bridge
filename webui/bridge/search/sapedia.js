@@ -14,7 +14,6 @@ angular.module('bridge.search').service('bridge.search.sapediaSearch', ['$http',
                 function(response) {
                 	var docs = response.data.response.docs;
                 	for (var i = 0; i < docs.length; i++) {
-                        docs[i].smwh_url = docs[i].smwh_url.replace('http://mo-6b4fdf7cb','https\://sapedia.wdf.sap.corp');
                 	    resultArray.push({title: docs[i].smwh_title_caption, link: docs[i].smwh_url});
                 	}
                 }
