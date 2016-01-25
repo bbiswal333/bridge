@@ -24,7 +24,13 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			"Half way there! You go, buddy ;-)",
 			"Almost there! Just a few cups more to go.",
 			"Champion!",
-			"Don't drink too much, you might get a tummy ache!"
+			"Don't drink too much, you might get a tummy ache!",
+			"You drank a lot of water!",
+			"Are you sure, you drank that much?",
+			"Must be a rather HOT day today?",
+			"You definitely like water!",
+			"Exception: The user drank to much water!",
+			"You drank more water than Chuck Norris can!"
 		];
 		$scope.message = noWaterYetMessage;
 
@@ -55,6 +61,9 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		};
 
 		$scope.getData = function() {
+			if (configService.values.date !== configService.getToday()) {
+				configService.resetData();
+			}
 			$scope.values = configService.values;
 			$scope.calculateRating();
 			$scope.updateMessage();
@@ -67,7 +76,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 		};
 
 		// Bridge framework function to take care of refresh
-		$scope.box.reloadApp($scope.getData,60);
+		$scope.box.reloadApp($scope.getData, 60 * 2);
 
 		//Drank another cup
 		$scope.drankCups = function(cups) {
