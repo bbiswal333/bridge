@@ -1,5 +1,5 @@
 describe("Config", function() {
-	var configFactory, hasConfig;
+	var configFactory, hasConfig, $timeout;
 	beforeEach(function() {
 		module("bridge.service");
 		module("app.programMilestones", function($provide) {
@@ -27,8 +27,9 @@ describe("Config", function() {
 
 		hasConfig = true;
 
-		inject(["app.programMilestones.configFactory", function(_configFactory) {
+		inject(["app.programMilestones.configFactory", "$timeout", function(_configFactory, _$timeout) {
 			configFactory = _configFactory;
+			$timeout = _$timeout;
 		}]);
 	});
 
@@ -51,6 +52,14 @@ describe("Config", function() {
 		var config = configFactory.getConfigForAppId("app-1");
 		expect(config.getPrograms().length).toEqual(0);
 		expect(config.getMilestoneTypes()).toEqual(["ALL"]);
+	});
+
+	it("should notify if it was initialized", function(done) {
+		var config = configFactory.getConfigForAppId("app-1");
+		config.isInitialized().then(function() {
+			done();
+		});
+		$timeout.flush();
 	});
 
 	it("should toggle milestone types", function() {

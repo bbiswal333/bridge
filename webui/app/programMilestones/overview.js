@@ -26,17 +26,11 @@ angular.module('app.programMilestones').directive('app.programMilestones',['app.
         $scope.programs = config.getPrograms();
         $scope.milestoneTypes = config.getMilestoneTypes();
 
-        $scope.$watch('programs', function() {
+        config.isInitialized().then(function() {
             data.refreshMilestones().then(function() {
                 $scope.milestones = data.getMilestones();
             });
-        }, true);
-
-        $scope.$watch('milestoneTypes', function() {
-            data.refreshMilestones().then(function() {
-                $scope.milestones = data.getMilestones();
-            });
-        }, true);
+        });
 
         $scope.getTimeAgo = function(dDate) {
             return $.timeago(dDate.getTime());

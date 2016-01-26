@@ -26,4 +26,11 @@ describe("Program", function() {
 		var program = programFactory.createInstance("GUID1", "Program 1", true);
 		expect(JSON.parse(JSON.stringify(program))).toEqual({GUID: "GUID1", Name: "Program 1", isSiriusProgram: true});
 	});
+
+	it("should be possible to set the name of a program", function() {
+		var program = programFactory.createInstance("GUID1", "Program 1", true);
+		expect(program.getName()).toEqual("Program 1");
+		program.setName("Program 2");
+		expect(program.getName()).toEqual("Program 2");
+	});
 });

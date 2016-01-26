@@ -4,6 +4,9 @@ angular.module('app.programMilestones').service("app.programMilestones.programFa
 			this.getName = function() {
 				return sName;
 			};
+			this.setName = function(_sName) {
+				sName = _sName;
+			};
 			this.getGUID = function() {
 				return sGUID;
 			};

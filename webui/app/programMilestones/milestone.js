@@ -24,7 +24,7 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 		};
 	})();
 
-	this.createInstance = function(sName, sDate, sTime, oProgram) {
-		return new Milestone(sName, sDate, sTime, oProgram);
+	this.createInstance = function(sName, sDate, sTime, oProgram, sDeliveryName) {
+		return new Milestone(sName, sDate, sTime, oProgram, sDeliveryName);
 	};
 }]);

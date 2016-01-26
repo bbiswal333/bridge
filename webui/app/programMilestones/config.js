@@ -1,8 +1,10 @@
-angular.module('app.programMilestones').service("app.programMilestones.configFactory", ["bridgeDataService", "app.programMilestones.programFactory", function(bridgeDataService, programFactory) {
+angular.module('app.programMilestones').service("app.programMilestones.configFactory", ["bridgeDataService", "app.programMilestones.programFactory", "$timeout", "$q", function(bridgeDataService, programFactory, $timeout, $q) {
 	var Config = (function() {
 		return function(sAppId) {
 			var programs = [];
 			var milestoneTypes = ["ALL"];
+			var initialized = false;
+			var initializedDeferrals = [];
 
 			(function initialize() {
 				var config = bridgeDataService.getAppConfigById(sAppId);
@@ -18,6 +20,11 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 							milestoneTypes.push(type);
 						});
 					}
+
+					initialized = true;
+					initializedDeferrals.map(function(deferred) {
+						deferred.resolve();
+					});
 				}
 			})();
 
@@ -67,6 +74,18 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 						return false;
 					}
 				}
+			};
+
+			this.isInitialized = function() {
+				var deferred = $q.defer();
+				if(initialized) {
+					$timeout(function() {
+						deferred.resolve();
+					});
+				} else {
+					initializedDeferrals.push(deferred);
+				}
+				return deferred.promise;
 			};
 		};
 	})();

@@ -13,6 +13,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.MILESTONE_DATE !== "0000-00-00") {
 									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program, rawMilestone.DELIVERY_NAME);
+									program.setName(rawMilestone.PROGRAM_NAME);
 									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.MILESTONE_TYPE)) {
 										milestones.push(milestone);
 									}
