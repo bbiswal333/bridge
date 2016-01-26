@@ -1,6 +1,6 @@
 angular.module('app.programMilestones').service("app.programMilestones.milestoneFactory", ["app.programMilestones.timeParser", function(timeParser) {
 	var Milestone = (function() {
-		return function(sName, sDate, sTime, oProgram) {
+		return function(sName, sDate, sTime, oProgram, sDeliveryName) {
 			this.getName = function() {
 				return sName;
 			};
@@ -16,6 +16,10 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 			};
 			this.getProgram = function() {
 				return oProgram;
+			};
+
+			this.getDeliveryName = function() {
+				return sDeliveryName;
 			};
 		};
 	})();

@@ -12,7 +12,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 						return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PRS_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.MILESTONE_DATE !== "0000-00-00") {
-									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program);
+									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program, rawMilestone.DELIVERY_NAME);
 									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.MILESTONE_TYPE)) {
 										milestones.push(milestone);
 									}
