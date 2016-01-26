@@ -1,0 +1,35 @@
+<script type="text/ng-template" id="bridge/app/programMilestones/Program.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+</script>
+
+<div style="width: 100%">
+
+<form name="ConfigItemForm">
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;"><u>Program</u></div>
+		<div class="col-lg-12">
+			<bridge.input model="program"
+						enter="onSelectProgram(program)"
+						input-typeahead-wait-ms="200"
+						input-typeahead-min-length="2"
+						input-typeahead-template-url="bridge/app/programMilestones/Program.html"
+						input-typeahead-on-select="onSelectProgram($item)"
+						input-typeahead="program as program.label for program in searchProgram($viewValue)" placeholder="Program.."
+						icon="fa fa-plus"
+						icon-click="onSelectProgram(program)"></bridge.input>
+		</div>
+	</div>
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12" style="float:none;">
+			<bridge.tag ng-repeat="program in programs" remove-click="removeProgram(program)">{{program.getName()}}</bridge.tag>
+		</div>
+	</div>
+	<div class="row"><br /></div>
+	<div class="row">
+		<bridge.button class="save_close_btn" ng-click="save_click();">Save & Close</bridge.button>
+	</div>	
+</form>
+
+
+
+</div>
