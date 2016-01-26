@@ -18,16 +18,24 @@ angular.module('app.programMilestones').directive('app.programMilestones',['app.
 
         $scope.box.returnConfig = function() {
             return {
-            	programs: config.getPrograms()
+            	programs: config.getPrograms(),
+                milestoneTypes: config.getMilestoneTypes()
             };
         };
 
         $scope.programs = config.getPrograms();
+        $scope.milestoneTypes = config.getMilestoneTypes();
 
         $scope.$watch('programs', function() {
-        	data.refreshMilestones().then(function() {
-        		$scope.milestones = data.getMilestones();
-        	});
+            data.refreshMilestones().then(function() {
+                $scope.milestones = data.getMilestones();
+            });
+        }, true);
+
+        $scope.$watch('milestoneTypes', function() {
+            data.refreshMilestones().then(function() {
+                $scope.milestones = data.getMilestones();
+            });
         }, true);
 
         $scope.getTimeAgo = function(dDate) {

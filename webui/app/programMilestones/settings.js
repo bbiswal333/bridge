@@ -5,6 +5,7 @@ angular.module('app.programMilestones').appProgramSettings = ['$scope', '$http',
 	$scope.program = "";
 
 	$scope.programs = config.getPrograms();
+	$scope.milestoneTypes = config.getMilestoneTypes();
 
 	$scope.searchProgram = function(query) {
 		return $http.get("https://ifp.wdf.sap.corp/zprs/json/program?maxHits=20&query=*" + query.toUpperCase() + "&sap-language=en&searchAsYouType=X&origin=" + $window.location.origin).then(function(response) {
@@ -38,5 +39,13 @@ angular.module('app.programMilestones').appProgramSettings = ['$scope', '$http',
 	$scope.save_click = function ()
 	{
 		$scope.$emit('closeSettingsScreen');
+    };
+
+    $scope.toggleMilestoneType = function(sType) {
+    	config.toggleMilestoneType(sType);
+    };
+
+    $scope.enableAllMilestoneTypes = function() {
+    	config.enableAllMilestoneTypes();
     };
 }];

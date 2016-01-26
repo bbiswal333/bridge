@@ -13,7 +13,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.MILESTONE_DATE !== "0000-00-00") {
 									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program);
-									if(milestone.isUpcoming()) {
+									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.MILESTONE_TYPE)) {
 										milestones.push(milestone);
 									}
 								}
@@ -24,7 +24,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.PHASE_START_DATE !== "0000-00-00") {
 									var milestone = milestoneFactory.createInstance(rawMilestone.PHASE_TXT, rawMilestone.PHASE_START_DATE, rawMilestone.PHASE_START_TIME, program);
-									if(milestone.isUpcoming()) {
+									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.PHASE_TYPE_ID)) {
 										milestones.push(milestone);
 									}
 								}

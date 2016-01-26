@@ -2,18 +2,71 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 	var Config = (function() {
 		return function(sAppId) {
 			var programs = [];
+			var milestoneTypes = ["ALL"];
 
 			(function initialize() {
 				var config = bridgeDataService.getAppConfigById(sAppId);
-				if(config && config.programs) {
-					config.programs.map(function(program) {
-						programs.push(programFactory.createInstance(program.GUID, program.Name, program.isSiriusProgram));
-					});
+				if(config) {
+					if(config.programs) {
+						config.programs.map(function(program) {
+							programs.push(programFactory.createInstance(program.GUID, program.Name, program.isSiriusProgram));
+						});
+					}
+					if(config.milestoneTypes) {
+						milestoneTypes.length = 0;
+						config.milestoneTypes.map(function(type) {
+							milestoneTypes.push(type);
+						});
+					}
 				}
 			})();
 
 			this.getPrograms = function() {
 				return programs;
+			};
+
+			this.getMilestoneTypes = function() {
+				return milestoneTypes;
+			};
+
+			this.enableAllMilestoneTypes = function() {
+				milestoneTypes.length = 0;
+				milestoneTypes.push("ALL");
+			};
+
+			this.allMilestoneTypesActive = function() {
+				if(milestoneTypes.length === 1 && milestoneTypes[0] === "ALL") {
+					return true;
+				} else {
+					return false;
+				}
+			};
+
+			this.toggleMilestoneType = function(sType) {
+				if(this.allMilestoneTypesActive()) {
+					milestoneTypes.length = 0;
+				}
+
+				if(milestoneTypes.indexOf(sType) === -1) {
+					milestoneTypes.push(sType);
+				} else {
+					milestoneTypes.splice(milestoneTypes.indexOf(sType), 1);
+					if(milestoneTypes.length === 0) {
+						this.enableAllMilestoneTypes();
+					}
+				}
+			};
+
+			this.isMilestoneTypeActive = function(sType) {
+				if(this.allMilestoneTypesActive()) {
+					return true;
+				} else {
+					if(milestoneTypes.indexOf(sType) >= 0) {
+						return true;
+					} else {
+						return false;
+					}
+				}
 			};
 		};
 	})();
