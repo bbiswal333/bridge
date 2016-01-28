@@ -16,9 +16,13 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 		lastTimeDrank : 0
 	};
 
-	this.initialize = function(configLoadedFromBackend) {
+	this.getToday = function() {
 		var today = new Date();
-		var todayString = "" + today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
+		return today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
+	};
+
+	this.initialize = function(configLoadedFromBackend) {
+		var todayString = this.getToday();
 		if (this.values.date === "") {
 			this.values.date = todayString;
 		}
@@ -38,10 +42,8 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 	};
 
 	this.resetData = function() {
-		var today = new Date();
-		var todayString = "" + today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
-		this.defaultValues.date = todayString;
-		this.defaultValues.lastTimeDrank = today.getTime();
+		this.defaultValues.date = this.getToday();
+		this.defaultValues.lastTimeDrank = (new Date()).getTime();
 		this.defaultValues.targetCups = this.values.targetCups;
 		this._clone(this.defaultValues);
 	};
