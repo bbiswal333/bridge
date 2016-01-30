@@ -2,8 +2,8 @@ angular.module('app.unifiedticketing', ['bridge.service', 'ngTable']);
 
 angular.module('app.unifiedticketing').directive('app.unifiedticketing', function ()
 {
-    var directiveController = ["$scope", "app.unifiedticketing.config", "app.unifiedticketing.ticketData", "bridgeDataService", "bridgeConfig", "$window",
-        function($scope, configService, ticketDataService, bridgeDataService, bridgeConfig, $window){
+    var directiveController = ["$scope", "app.unifiedticketing.config", "app.unifiedticketing.ticketData", "bridgeDataService", "bridgeConfig",
+        function($scope, configService, ticketDataService, bridgeDataService, bridgeConfig  ){
 
          $scope.box.boxSize = "2";
         var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
@@ -15,14 +15,12 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
         if (ticketData.isInitialized.value === false) {
             ticketData.initialize($scope.module_name);
         }
-        
         $scope.box.settingScreenData = {
             templatePath: "unifiedTicketing/settings.html",
             controller: function(){},
             id: $scope.boxId
         };
-       
-        $scope.box.returnConfig = function(){
+       $scope.box.returnConfig = function(){
             return config;
         };
 
@@ -50,21 +48,17 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
 
         $scope.getTicketCountForPrio1 = function(sPrio){
             var count = 0;
-      
-                 
-            function checkTicket(ticket){
-  
-           if(ticket.PROCESS_TYPE=="ZSER")
-                ticket.PROCESS_TYPE="ZINC";
-             if(ticket.PROCESS_TYPE=="ZINE")
-                 ticket.PROCESS_TYPE="ZINC";
-
-                if (ticket.PROCESS_TYPE === sPrio){
+      function checkTicket(ticket){
+           if(ticket.PROCESS_TYPE === "ZSER") {
+                ticket.PROCESS_TYPE = "ZINC";
+            }
+             if(ticket.PROCESS_TYPE === "ZINE") {
+                 ticket.PROCESS_TYPE = "ZINC";
+             }
+              if (ticket.PROCESS_TYPE === sPrio){
                     count++;
                 }
-
-
-            }
+             }
 
             if (config.bPartieOfRequestSelected === true) {
                 angular.forEach(ticketData.tickets.assigned_me, checkTicket);
@@ -74,8 +68,7 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             }
             return count;
         };
-       
-        $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
+       $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
     }];
 
     return {

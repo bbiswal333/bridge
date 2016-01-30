@@ -2,15 +2,12 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", fu
     var Config = function() {
         this.isInitialized = false;
         this.lastDataUpdate = null;
-
         this.bIncludeSavedSearch = false;
         this.sSavedSearchToInclude = "";
-
-  
         this.bPartieOfRequestSelected = true;
         this.bSavedSearchSelected = true;
 
-        this.syncDays ="";
+        this.syncDays = "";
         this.syncHistory = "";
         this.Status = "";
 
