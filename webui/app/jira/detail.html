@@ -10,13 +10,13 @@
 
 		<br/>
 
-		<bridge.table table-data="data.filteredJiraData" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-2'" order-by="'key'">
+		<bridge.table table-data="data.filteredJiraData" filter="filterText" new-layout="true">
+			<bridge.table-column column-id="'1'" header="'Key'" column-size-class="'col-sm-3'" order-by="'key'">
 				<a target="_blank" href="{{row.jira_url}}/browse/{{row.key}}">{{row.key}}</a>
 			</bridge.table-column>
 
 
-            <bridge.table-column column-id="'2'" header="'Log'" column-size-class="'col-sm-1'">
+            <bridge.table-column column-id="'2'" header="'Log'" column-size-class="'col-sm-2'">
 
                     <a  target="_blank" href="{{row.jira_url}}/secure/CreateWorklog!default.jspa?id={{row.id}}">
                         Log Hours
@@ -25,9 +25,9 @@
             </bridge.table-column>
 
 
-			<bridge.table-column column-id="'3'" header="'Summary'" column-size-class="'col-sm-3'" order-by="'summary'">{{row.summary}}</bridge.table-column>
+			<bridge.table-column column-id="'3'" header="'Summary'" column-size-class="'col-sm-5'" order-by="'summary'">{{row.summary}}</bridge.table-column>
 
-			<bridge.table-column column-id="'4'" header="'Description'" column-size-class="'col-sm-4'" order-by="'description'">{{row.description}}</bridge.table-column>
+			<bridge.table-column column-id="'4'" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">{{row.description}}</bridge.table-column>
 			<bridge.table-column column-id="'5'" header="'Status'" column-size-class="'col-sm-2'" order-by="'status'">{{row.status}}</bridge.table-column>
 		</bridge.table>
 
