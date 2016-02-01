@@ -1,5 +1,5 @@
-angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData", ["$rootScope", "$http", "$q", "$location", "bridgeDataService", "app.unifiedticketing.config", "notifier", "bridge.converter",
-    function($rootScope, $http, $q, $location, bridgeDataService, unifiedticketingConfigService, notifier, converter) {
+angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData", ["$rootScope", "$http", "$q", "$location", "bridgeDataService", "app.unifiedticketing.config", "notifier",
+    function($rootScope, $http, $q, $location, bridgeDataService, unifiedticketingConfigService) {
         var Data = function(appId) {
             var that = this;
             this.appId = appId;
@@ -8,10 +8,8 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             var counter = true;
             var statusBuffer = [];
             var globalData = {
-
-                statusesWithGroups: [],
-
-                statusGroups: {
+               statusesWithGroups: [],
+               statusGroups: {
                     1: {
                         order: 1,
                         text: "Closed"
@@ -33,26 +31,25 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                 frendlyStatuses: {
                     0: {
                         "NAME": "All",
-                        "KEY": "",
+                        "KEY": ""
                     },
                     2: {
                         "NAME": "Action required",
-                        "KEY": 2,
+                        "KEY": 2
                     },
                     4: {
                         "NAME": "Solution proposed",
-                        "KEY": 4,
+                        "KEY": 4
                     },
                     3: {
                         "NAME": "In Process",
-                        "KEY": 3,
+                        "KEY": 3
                     },
                     1: {
                         "NAME": "Closed",
-                        "KEY": 1,
+                        "KEY": 1
                     }
-                },
-
+                }
             };
 
             this.isInitialized = {
@@ -89,58 +86,57 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                     description: "ZGCR",
                     name: "GCOdirect",
                     active: false
-                },
-
+                }
 
             ];
-            processTypes = [{
-                    "id": "ZINE",
-                    "name": "ITdirect Ticket",
-                    "ico": "sap-icon://travel-expense",
-                    "create": "x",
-                    "edit": ""
+            var processTypes = [{
+                    id: "ZINE",
+                    name: "ITdirect Ticket",
+                    ico: "sap-icon://travel-expense",
+                    create: "x",
+                    edit: ""
                 }, {
-                    "id": "ZSER",
-                    "name": "IT Service",
-                    "ico": "sap-icon://request",
-                    "create": "",
-                    "edit": "x"
+                    id: "ZSER",
+                    name: "IT Service",
+                    ico: "sap-icon://request",
+                    create: "",
+                    edit: "x"
                 }, {
-                    "id": "ZINC",
-                    "name": "IT Incident",
-                    "ico": "sap-icon://sys-monitor",
-                    "create": "",
-                    "edit": "x"
+                    id: "ZINC",
+                    name: "IT Incident",
+                    ico: "sap-icon://sys-monitor",
+                    create: "",
+                    edit: "x"
                 }, {
-                    "id": "YHRR",
-                    "name": "HRdirect",
-                    "ico": "sap-icon://group",
-                    "create": "x",
-                    "edit": "x"
+                    id: "YHRR",
+                    name: "HRdirect",
+                    ico: "sap-icon://group",
+                    create: "x",
+                    edit: "x"
                 }, {
-                    "id": "ZGCR",
-                    "name": "GCOdirect",
-                    "ico": "sap-icon://customer-view",
-                    "create": "x",
-                    "edit": "x"
+                    id: "ZGCR",
+                    name: "GCOdirect",
+                    ico: "sap-icon://customer-view",
+                    create: "x",
+                    edit: "x"
                 }, {
-                    "id": "YFIN",
-                    "name": "TRAVELdirect",
-                    "ico": "sap-icon://travel-expense",
-                    "create": "x",
-                    "edit": "x"
+                    id: "YFIN",
+                    name: "TRAVELdirect",
+                    ico: "sap-icon://travel-expense",
+                    create: "x",
+                    edit: "x"
                 }, {
-                    "id": "ZFMR",
-                    "name": "FACILITYdirect",
-                    "ico": "sap-icon://wrench",
-                    "create": "x",
-                    "edit": "x"
+                    id: "ZFMR",
+                    name: "FACILITYdirect",
+                    ico: "sap-icon://wrench",
+                    create: "x",
+                    edit: "x"
                 }, {
-                    "id": "ZSIM",
-                    "name": "Security Incident",
-                    "ico": "sap-icon://locked",
-                    "create": "x",
-                    "edit": "x"
+                    id: "ZSIM",
+                    name: "Security Incident",
+                    ico: "sap-icon://locked",
+                    create: "x",
+                    edit: "x"
                 }
 
             ];
@@ -149,7 +145,6 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             this.tickets.assigned_me = [];
             this.tickets.savedSearch = [];
             this.lastTickets = null;
-
             this.ticketsFromNotifications = {};
             this.ticketsFromNotifications.assigned_me = [];
             this.ticketsFromNotifications.savedSearch = [];
@@ -157,116 +152,88 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             this.sAppIdentifier = "";
 
 
-            $http.get('app/unifiedTicketing/StatusBuffer.json').success(function(data) {
-             
-                that.prepareStatusBufferData(data.d);
-            });
-
             this.prepareStatusBufferData = function(oData) {
-
-                statusBuffer = [];
-
                 var statusList = oData.StatusBuffer.results;
-                var nodes = null;
-
-                for (var i = 0; i < statusList.length; i++) {
-
-                    var pType = statusList[i]['PROCESS_TYPE'];
+                statusList.forEach(function(entry) {
+               var pType = entry.PROCESS_TYPE;
                     if (that.checkIfProceessTypeSupported(pType)) {
-                        if (!statusBuffer[pType])
+                        if (!statusBuffer[pType]) {
                             statusBuffer[pType] = [];
-
-                        var newStatusData = {
-                            "PROCESS_TYPE": statusList[i]['PROCESS_TYPE'],
-                            "STATUS_FROM": statusList[i]['STATUS_FROM'],
-                            "STATUS_TO": statusList[i]['STATUS_TO'],
-                            "STATUS_FROM_TEXT": statusList[i]['STATUS_FROM_TEXT'],
-                            "STATUS_TO_TEXT": statusList[i]['STATUS_TO_TEXT'],
-                            "LABEL_ID": statusList[i]['LABEL_ID'],
-                            "BUTTON_LABEL": statusList[i]['BUTTON_LABEL'],
-                            "ACTIVE": statusList[i]['ACTIVE'],
-                            "FILTER": statusList[i]['FILTER'],
-                            "KEY": statusList[i]['KEY'],
-                            "OnScreen": statusList[i]['OnScreen'],
-                            "EditModeButton": statusList[i]['EditModeButton'],
-                            "MandatoryNotes": statusList[i]['MandatoryNotes']
+                        }
+                    var newStatusData = {
+                            "PROCESS_TYPE": entry.PROCESS_TYPE,
+                            "STATUS_FROM": entry.STATUS_FROM,
+                            "STATUS_TO": entry.STATUS_TO,
+                            "STATUS_FROM_TEXT": entry.STATUS_FROM_TEXT,
+                            "STATUS_TO_TEXT": entry.STATUS_TO_TEXT,
+                            "LABEL_ID": entry.LABEL_ID,
+                            "BUTTON_LABEL": entry.BUTTON_LABEL,
+                            "ACTIVE": entry.ACTIVE,
+                            "FILTER": entry.FILTER,
+                            "KEY": entry.KEY,
+                            "OnScreen": entry.OnScreen,
+                            "EditModeButton": entry.EditModeButton,
+                            "MandatoryNotes": entry.MandatoryNotes
                         };
                         statusBuffer[pType].push(newStatusData);
                         globalData.statusesWithGroups.push(newStatusData);
-                 
+                  }
+            });
+        };
+
+            $http.get('app/unifiedTicketing/StatusBuffer.json').success(function(data) {
+             that.prepareStatusBufferData(data.d);
+            });
+
+           this.checkIfProceessTypeSupported = function(type) {
+                var ID = "id";
+            for (var i = 0; i < processTypes.length; i++) {
+                    if (processTypes[i][ID] === type) {
+                        return true;
                     }
                 }
-            }
-
-            this.checkIfProceessTypeSupported = function(type) {
-
-                for (var i = 0; i < processTypes.length; i++) {
-                    if (processTypes[i]['id'] == type)
-                        return true;
-                }
-
                 return false;
-
-            }
-        
-
-
-
+            };
 
             this.loadTicketData = function() {
                 var promiseArray = [];
                 var deferAssignedToMe = $q.defer();
-
-
-
-
-                if (counter == true) {
+                var filteredTickets = [];
+                if (counter === true) {
                     unifiedticketingConfig.syncHistory = "";
                     unifiedticketingConfig.Status = null;
                     counter = false;
-
-                }
+                 }
 
                 $("#spinner").show();
                 $("#utContainer").hide();
-                var userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-                $http.get("https://pgtmain.wdf.sap.corp/sap/opu/odata/sap/ZUNIF_TICKET;mo/TicketCollection?$filter=CHANGED_AT_F eq '" + unifiedticketingConfig.syncHistory + "'and%20COMPLETED%20eq%20%27X%27")
-                    .success(function(data) {
+                $http.get("https://pgtmain.wdf.sap.corp/sap/opu/odata/sap/ZUNIF_TICKET;mo/TicketCollection?$filter=CHANGED_AT_F eq '" + unifiedticketingConfig.syncHistory + "'and%20COMPLETED%20eq%20%27X%27").success(function(data) {
                         $("#spinner").hide();
                         $("#utContainer").show();
                         that.tickets.assigned_me.length = 0;
-
-
-
-                        filteredTickets = [];
                         var statusFound = false;
-                        angular.forEach(data.d.results, function(backendTicket) {
+                        var FILTER = "FILTER";
+                       angular.forEach(data.d.results, function(backendTicket) {
                             if (unifiedticketingConfig.Status) {
                                 for (var i = 0; i < statusBuffer[backendTicket.PROCESS_TYPE].length; i++) {
-                                    if (statusBuffer[backendTicket.PROCESS_TYPE][i].STATUS_FROM == backendTicket.USER_STATUS) {
-                                        backendTicket['FILTER'] = statusBuffer[backendTicket.PROCESS_TYPE][i].FILTER;
+                                    if (statusBuffer[backendTicket.PROCESS_TYPE][i].STATUS_FROM === backendTicket.USER_STATUS) {
+                                        backendTicket[FILTER] = statusBuffer[backendTicket.PROCESS_TYPE][i].FILTER;
                                         filteredTickets.push(backendTicket);
                                         statusFound = true;
                                         break;
                                     }
                                 }
-                                if(statusFound == false){
-                                    backendTicket['FILTER'] = "Closed";
+                                if(statusFound === false){
+                                    backendTicket[FILTER] = "Closed";
                                     filteredTickets.push(backendTicket);
                                 }
                             } else {
-                                that.tickets.assigned_me.push(backendTicket)
+                                that.tickets.assigned_me.push(backendTicket);
                             }
-
-                          
-
-
-
-                        });
+                       });
                         if (filteredTickets) {
-                          
-                            for (var i = 0; i < filteredTickets.length; i++) {
-                                if (filteredTickets[i].FILTER == unifiedticketingConfig.Status) {
+                           for (var i = 0; i < filteredTickets.length; i++) {
+                                if (filteredTickets[i].FILTER === unifiedticketingConfig.Status) {
                                     that.tickets.assigned_me.push(filteredTickets[i]);
                                 }
                             }
@@ -278,28 +245,11 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                         deferAssignedToMe.reject();
                     });
                 promiseArray.push(deferAssignedToMe.promise);
-
-
-
                 var pAllRequestsFinished = $q.all(promiseArray);
-
                 return pAllRequestsFinished;
             };
 
-            function notifierClickCallback() {
-                // see http://stackoverflow.com/questions/12729122/prevent-error-digest-already-in-progress-when-calling-scope-apply
-                _.defer(function() {
-                    $rootScope.$apply(function() {
-
-                        $location.path("/detail/unifiedticketing/" + that.appId + "/null/true");
-                    });
-                });
-            }
-
-
-
-
-            this.activatePrio = function(sPrioKey) {
+             this.activatePrio = function(sPrioKey) {
 
                 angular.forEach(that.prios, function(prio) {
                     // reset all prios first

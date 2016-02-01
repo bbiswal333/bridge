@@ -9,14 +9,9 @@ angular.module('app.unifiedticketing').controller('app.unifiedticketing.detailCo
         $scope.config = config;
         $scope.tickets = [];
         $scope.detailForNotifications = ($routeParams.calledFromNotifications === 'true');
-       
-
         $scope.filterTable = function(oTicket){
             var bTicketPriorityMatches = false;
             angular.forEach($scope.prios, function(prio){
-                 console.log("oTicket");
-                console.log(oTicket);
-                console.log(prio.key);
                if (prio.active === true && oTicket.PROCESS_TYPE === prio.description){
                    bTicketPriorityMatches = true;
                }
@@ -64,8 +59,6 @@ angular.module('app.unifiedticketing').controller('app.unifiedticketing.detailCo
         $scope.userClick = function(employeeDetails){
             employeeService.showEmployeeModal(employeeDetails);
         };
-         
-        
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
             function addAndEnhanceTicket(ticket) {

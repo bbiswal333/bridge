@@ -68,7 +68,7 @@
   margin-left: -125px;
 }
 .wrap div {
-  display: inline;
+  display: inline-block;
   margin: -2px;
 }
 
