@@ -1,0 +1,11 @@
+<div class="prio_col prio_bg_{{prio}}" ng-class="{'grey-40': value == 0, 'hover': value !== 0, 'ic-prio_col': hasSettings == true}">
+	<bridge.conditional-link navigate-to="{{navigateTo}}" navigate-if="value!==0">
+		<div class="prio_box" style="color:white">
+			<p>{{label}}</p>
+		</div>
+		<div class="prio_content_box" style="color: white">
+			<p ng-if="value<=999">{{value}}</p>
+			<p ng-if="value>999" title="{{value}}">+999</p>
+		</div>
+	</bridge.conditional-link>
+</div>
