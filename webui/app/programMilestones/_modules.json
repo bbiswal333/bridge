@@ -9,6 +9,7 @@
 		"needs_client"			:	false,
 		"beta"					:	false,
 		"default_hidden"		:	true,
+		"multiInstance"			:	true,
 		"description"			:	"This app provides all upcoming milestones for a program / delivery."
 	},
 	"modules" : [],
