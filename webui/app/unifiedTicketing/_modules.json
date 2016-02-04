@@ -5,7 +5,7 @@
 		"module_name"			:	"app.unifiedticketing",
 		"title"					:	"Unified Ticketing",
 		"icon_css"				:	"icon-comment",
-		"icon_link"				:	"https://fiorilaunchpad-sapitcloudt.dispatcher.hana.ondemand.com/sap/hana/uis/clients/ushell-app/shells/fiori/FioriLaunchpad.html#Help-Create",
+		"icon_link"				:	"https://fiorilaunchpad-sapitcloud.dispatcher.hana.ondemand.com/sap/hana/uis/clients/ushell-app/shells/fiori/FioriLaunchpad.html#Help-Create",
 		"overview_directive"	:	"app.unifiedticketing",
 		"needs_client"			:	false,
 		"default_hidden"		:   true,
