@@ -207,7 +207,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
 
                 $("#spinner").show();
                 $("#utContainer").hide();
-                $http.get("https://pgtmain.wdf.sap.corp/sap/opu/odata/sap/ZUNIF_TICKET;mo/TicketCollection?$filter=CHANGED_AT_F eq '" + unifiedticketingConfig.syncHistory + "'and%20COMPLETED%20eq%20%27X%27").success(function(data) {
+                $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZUNIF_TICKET;mo/TicketCollection?$filter=CHANGED_AT_F eq '" + unifiedticketingConfig.syncHistory + "'and%20COMPLETED%20eq%20%27X%27").success(function(data) {
                         $("#spinner").hide();
                         $("#utContainer").show();
                         that.tickets.assigned_me.length = 0;
