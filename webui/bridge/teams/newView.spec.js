@@ -12,7 +12,7 @@ describe("newViewController", function() {
 			bridgeDataService.getUserInfo = function() { return {BNAME: "D049677"}; };
 			bridgeDataService.toDefault();
 			controller = $controller("bridge.viewBar.newViewController", {$scope: $scope, $modalInstance: {close: function() {}}});
-			spyOn(bridgeDataService, "addProjectFromOwner");
+			spyOn(bridgeDataService, "addProject");
 
 			guidService.get = function() {
 				return "dummyGuid";
@@ -53,11 +53,11 @@ describe("newViewController", function() {
 
 	it("should assign an existing view", function() {
 		$scope.assignView({VIEW_ID: "someID", OWNER: "D049677"});
-		expect(bridgeDataService.addProjectFromOwner).toHaveBeenCalledWith("someID", "D049677");
+		expect(bridgeDataService.addProject).toHaveBeenCalledWith("someID");
 	});
 
 	it("should not assign an a view if it was not picked, from the list of found views", function() {
 		$scope.assignView("some name");
-		expect(bridgeDataService.addProjectFromOwner).not.toHaveBeenCalled();
+		expect(bridgeDataService.addProject).not.toHaveBeenCalled();
 	});
 });

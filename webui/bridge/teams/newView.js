@@ -1,4 +1,8 @@
-angular.module("bridge.teams", ["bridge.service"]);
+angular.module("bridge.teams", ["bridge.service", "mgcrea.ngStrap.dropdown"]).config(function($dropdownProvider) {
+    angular.extend($dropdownProvider.defaults, {
+        html: true
+    });
+});
 
 angular.module("bridge.teams").controller("bridge.viewBar.newViewController", ["$scope", "$http", "bridge.service.guid", "bridgeInstance", "$window", "$log", "bridgeDataService", "bridgeConfig", "$modalInstance",
     function($scope, $http, guidService, bridgeInstance, $window, $log, bridgeDataService, bridgeConfig, $modalInstance) {
@@ -26,7 +30,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.newViewController", ["
         if(!existingView.VIEW_ID || !existingView.OWNER) {
             return;
         }
-        bridgeDataService.addProjectFromOwner(existingView.VIEW_ID, existingView.OWNER);
+        bridgeDataService.addProject(existingView.VIEW_ID);
         $modalInstance.close();
     };
 }]);

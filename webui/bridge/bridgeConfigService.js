@@ -199,9 +199,9 @@
             return deferred.promise;
         };
 
-        this.getTeamConfig = function(owner, view) {
+        this.getTeamConfig = function(view) {
             var deferred = $q.defer();
-            $http.get('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&owner=' + owner + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
+            $http.get('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
                 if(data.error) {
                     return deferred.reject(data);
                 }

@@ -3,7 +3,7 @@
 		"bridge.service"
 	],
 	"js_files" : [
-    	"newView.js", "viewBar.js", "viewBarController.js"
+    	"newView.js", "viewBar.js", "viewBarController.js", "shareView.js"
 	],
 	"css_files" : [
 		"teams.css"

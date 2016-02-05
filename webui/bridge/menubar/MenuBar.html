@@ -32,12 +32,6 @@
 			</div>
 			<div class="menubar-settings col-md-6 col-sm-6 col-xs-6 pull-right" style="text-align: right; padding-right: 0">
 
-				<div class="menuBar-settingsButton appstore-button" title="Applications" style="position:relative;width:40px;" ng-click="changeSelectedApps();" ng-show="userData.BNAME === selectedProject.owner || selectedProject.type === 'PERSONAL'">
-		        	<a class="navicon-button plus" ng-class="{'open': !appScreenOpen}">
-		        		<div class="navicon"></div>
-		        	</a>
-		        </div>
-
 				<div class="menuBar-settingsButton" title="Settings" data-placement="custom" data-toggle="popover" data-content-template="bridge/menubar/settings/bridgeSettings.html" data-animation="am-slide-top" data-template="menubar/popover.html" bs-popover>
 		        	<span class="fa fa-cogs"></span>
 		        </div>

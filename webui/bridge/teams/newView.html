@@ -1,0 +1,31 @@
+<div style="position: relative">
+    <span class="box-title">ADD VIEW</span>
+    <div style="height: 1px; width: 100%; background-color: #bbbbbb;margin-top:15px"></div>
+    
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;">Type in the name of the view:</div>
+		<div class="col-lg-12">
+			<bridge.input model="viewName" placeholder="Name of the view.."></bridge.input>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+	    <div class="btn btn-primary btn_blue save_close_btn" ng-click="createView(viewName)">Create</div>
+	</div>
+	<span style="font-size: 20px;" class="blue">OR</span>
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;">Search in existing views:</div>
+		<div class="col-lg-12">
+			<bridge.input model="existingView"
+					input-typeahead-wait-ms="200"
+					input-typeahead-min-length="2"
+					input-typeahead-template-url="bridge/teams/views.html"
+					input-typeahead="view as view.VIEW_NAME + ' (owner: ' + view.OWNER + ')' for view in searchViews($viewValue)"
+					placeholder="Name of the view.."></bridge.input>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+	    <div class="btn btn-primary btn_blue save_close_btn" ng-click="assignView(existingView)">Assign</div>
+	</div>
+</div>

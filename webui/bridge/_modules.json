@@ -18,6 +18,7 @@
                 "nvd3ChartDirectives",
                 "mgcrea.ngStrap.tooltip",
                 "mgcrea.ngStrap.popover",
+                "mgcrea.ngStrap.dropdown",
                 "cgBusy"
 	],
 	"js_files" : [

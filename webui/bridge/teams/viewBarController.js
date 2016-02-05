@@ -19,12 +19,28 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
         $scope.projectTabContainerWidth = $('.projectTabContainer')[0].scrollLeft += 50;
     };
 
+    $scope.changeSelectedApps = function() {
+        $modal.open({
+            templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
+            size: 'lg'
+        });
+    };
+
     $scope.openNewViewModal = function() {
         $modal.open({
             templateUrl: 'bridge/teams/newView.html',
             size: 'sm',
             windowClass: 'teamview-dialog',
             controller: "bridge.viewBar.newViewController"
+        });
+    };
+
+    $scope.openShareViewModal = function() {
+        $modal.open({
+            templateUrl: 'bridge/teams/shareView.html',
+            size: 'sm',
+            windowClass: 'teamview-dialog',
+            controller: "bridge.viewBar.shareViewController"
         });
     };
 
@@ -84,12 +100,12 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
     	return deferred.promise;
     };
 
-    function loadView(owner, id) {
-        if(bridgeDataService.hasProject(owner, id)) {
-            bridgeDataService.setSelectedProject(bridgeDataService.getProject(owner, id));
-            $rootScope.selectedProject = bridgeDataService.getProject(owner, id);
+    function loadView(id) {
+        if(bridgeDataService.hasProject(id)) {
+            bridgeDataService.setSelectedProject(bridgeDataService.getProject(id));
+            $rootScope.selectedProject = bridgeDataService.getProject(id);
         } else {
-            var deferred = bridgeDataService.addProjectFromOwner(id, owner);
+            var deferred = bridgeDataService.addProject(id);
             if(deferred) {
                 deferred.then(function(project) {
                     bridgeDataService.setSelectedProject(project);
@@ -99,13 +115,13 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
         }
     }
 
-    if($route && $route.current && $route.current.originalPath === "/view/:owner/:id") {
-        loadView($route.current.params.owner, $route.current.params.id);
+    if($route && $route.current && ( $route.current.originalPath === "/view/:owner/:id"  || $route.current.originalPath === "/view/:id")) {
+        loadView($route.current.params.id);
     }
 
     $rootScope.$on('$routeChangeStart', function (event, route) {
-        if(route && route.originalPath && route.originalPath === "/view/:owner/:id") {
-            loadView(route.params.owner, route.params.id);
+        if(route && route.originalPath && (route.originalPath === "/view/:owner/:id" || route.originalPath === "/view/:id")) {
+            loadView(route.params.id);
         }
     });
 
@@ -123,7 +139,7 @@ angular.module("bridge.teams").controller("bridge.viewBar.Controller", ["$scope"
             bridgeDataService.setSelectedProject(project);
             $rootScope.selectedProject = project;
         } else {
-            $location.path("/view/" + project.owner + "/" + project.view);
+            $location.path("/view/" + project.view);
         }
     };
 

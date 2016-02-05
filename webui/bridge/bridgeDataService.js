@@ -22,18 +22,18 @@
             return selectedProject;
         }
 
-        function _getProject(owner, id) {
+        function _getProject(id) {
             var result;
             that.projects.map(function(project) {
-                if(project.owner === owner && project.view === id) {
+                if(project.view === id) {
                     result = project;
                 }
             });
             return result;
         }
 
-        function _hasProject(owner, id) {
-            if(_getProject(owner, id) !== undefined) {
+        function _hasProject(id) {
+            if(_getProject(id) !== undefined) {
                 return true;
             } else {
                 return false;
@@ -57,7 +57,7 @@
 
         function getProjectDataFromBackend(project) {
             var deferred = $q.defer();
-            bridgeConfig.getTeamConfig(project.owner, project.view).then(function(data) {
+            bridgeConfig.getTeamConfig(project.view).then(function(data) {
                 if(data.error) {
                     bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + data.message, 600);
                     that.projects.splice(that.projects.indexOf(project), 1);
@@ -260,10 +260,10 @@
             }
         }
 
-        function _addProjectFromOwner(view, owner) {
+        function _addProject(view) {
             var alreadyAdded = false;
             _getProjects().map(function(project) {
-                if(project.type === 'TEAM' && project.view === view && project.owner === owner) {
+                if(project.type === 'TEAM' && project.view === view) {
                     alreadyAdded = true;
                 }
             });
@@ -271,7 +271,7 @@
             if(alreadyAdded === true) {
                 bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600);
             } else {
-                return parseProject({name: "", type: 'TEAM', view: view, owner: owner});
+                return parseProject({name: "", type: 'TEAM', view: view});
             }
         }
 
@@ -341,7 +341,7 @@
             getSelectedProject: _getSelectedProject,
             hasProject: _hasProject,
             getProject: _getProject,
-            addProjectFromOwner: _addProjectFromOwner,
+            addProject: _addProject,
             getInstancesByType: _getInstancesByType,
             setDataFromConfig: _setDataFromConfig
         };
