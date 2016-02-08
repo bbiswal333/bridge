@@ -201,7 +201,6 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                 var filteredTickets = [];
                 if (counter === true) {
                     unifiedticketingConfig.syncHistory = "";
-                    unifiedticketingConfig.Status = null;
                     counter = false;
                  }
 
@@ -214,7 +213,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                         var statusFound = false;
                         var FILTER = "FILTER";
                        angular.forEach(data.d.results, function(backendTicket) {
-                            if (unifiedticketingConfig.Status) {
+                            if (unifiedticketingConfig.data.Status) {
                                 for (var i = 0; i < statusBuffer[backendTicket.PROCESS_TYPE].length; i++) {
                                     if (statusBuffer[backendTicket.PROCESS_TYPE][i].STATUS_FROM === backendTicket.USER_STATUS) {
                                         backendTicket[FILTER] = statusBuffer[backendTicket.PROCESS_TYPE][i].FILTER;
@@ -233,7 +232,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                        });
                         if (filteredTickets) {
                            for (var i = 0; i < filteredTickets.length; i++) {
-                                if (filteredTickets[i].FILTER === unifiedticketingConfig.Status) {
+                                if (filteredTickets[i].FILTER === unifiedticketingConfig.data.Status) {
                                     that.tickets.assigned_me.push(filteredTickets[i]);
                                 }
                             }
