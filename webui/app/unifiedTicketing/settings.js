@@ -4,7 +4,7 @@ angular.module('app.unifiedticketing')
      $scope.savedSearches = [];
      $scope.getSyncHistory = function(syncDays) {
             var days = parseInt(syncDays);
-            $scope.config.syncDays = syncDays;
+            $scope.config.data.syncDays = syncDays;
             if(syncDays === 'null' || syncDays === ''){
                 $scope.config.syncHistory = '';
             } else{
@@ -24,7 +24,7 @@ angular.module('app.unifiedticketing')
     };
 
     $scope.getStatus = function(Status) {
-           $scope.config.Status = Status;
+           $scope.config.data.Status = Status;
           };
 
     $scope.save_click = function () {

@@ -1,5 +1,6 @@
 angular.module("app.unifiedticketing").service("app.unifiedticketing.config", function(){
     var Config = function() {
+        this.data = {};
         this.isInitialized = false;
         this.lastDataUpdate = null;
         this.bIncludeSavedSearch = false;
@@ -7,9 +8,9 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", fu
         this.bPartieOfRequestSelected = true;
         this.bSavedSearchSelected = true;
 
-        this.syncDays = "";
+        this.data.syncDays = "";
         this.syncHistory = "";
-        this.Status = "";
+        this.data.Status = "";
 
         this.initialize = function (oConfigFromBackend) {
             var property;

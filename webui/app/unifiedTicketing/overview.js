@@ -5,15 +5,15 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
     var directiveController = ["$scope", "app.unifiedticketing.config", "app.unifiedticketing.ticketData", "bridgeDataService", "bridgeConfig",
         function($scope, configService, ticketDataService, bridgeDataService, bridgeConfig  ){
 
-         $scope.box.boxSize = "2";
-        var ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
-        var config = configService.getConfigForAppId($scope.metadata.guid);
+        $scope.box.boxSize = "2";
+        $scope.ticketData = ticketDataService.getInstanceForAppId($scope.metadata.guid);
+        $scope.config = configService.getConfigForAppId($scope.metadata.guid);
 
-        if (config.isInitialized === false) {
-            config.initialize($scope.appConfig);
+        if ($scope.config.isInitialized === false) {
+            $scope.config.initialize($scope.appConfig);
         }
-        if (ticketData.isInitialized.value === false) {
-            ticketData.initialize($scope.module_name);
+        if ($scope.ticketData.isInitialized.value === false) {
+            $scope.ticketData.initialize($scope.module_name);
         }
         $scope.box.settingScreenData = {
             templatePath: "unifiedTicketing/settings.html",
@@ -21,17 +21,16 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             id: $scope.boxId
         };
        $scope.box.returnConfig = function(){
-            return config;
+            return angular.copy($scope.config);
         };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){
            if (args !== undefined && args.app === 'unifiedticketing'){
-               ticketData.loadTicketData();
+               $scope.ticketData.loadTicketData();
            }
         });
 
-        $scope.config = config;
-        $scope.prios = ticketData.prios;
+        $scope.prios = $scope.ticketData.prios;
 
         $scope.$watch('config', function (newVal, oldVal) {
             if($scope.config !== undefined && newVal !== oldVal){
@@ -60,15 +59,15 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
                 }
              }
 
-            if (config.bPartieOfRequestSelected === true) {
-                angular.forEach(ticketData.tickets.assigned_me, checkTicket);
+            if ($scope.config.bPartieOfRequestSelected === true) {
+                angular.forEach($scope.ticketData.tickets.assigned_me, checkTicket);
             }
-            if (config.bSavedSearchSelected === true) {
-                angular.forEach(ticketData.tickets.savedSearch, checkTicket);
+            if ($scope.config.bSavedSearchSelected === true) {
+                angular.forEach($scope.ticketData.tickets.savedSearch, checkTicket);
             }
             return count;
         };
-       $scope.box.reloadApp(ticketData.loadTicketData, 60 * 5);
+       $scope.box.reloadApp($scope.ticketData.loadTicketData, 60 * 5);
     }];
 
     return {

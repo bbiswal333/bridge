@@ -1,25 +1,20 @@
 <div ng-controller="app.unifiedticketing.settingsController">
     <br/>
-    <!--<button class="btn btn-default" ng-class="{'btn_blue': config.bIncludeSavedSearch}" ng-click="config.bIncludeSavedSearch = !config.bIncludeSavedSearch">Include Tickets from Saved Search</button>-->
     <div class="col-xs-12 copy form_head">Sync History</div>
-    <bridge.button state="(config.syncDays=== '7')=== true ? 'active' : ' '" ng-click="getSyncHistory('7')" style="width:110px;">1 week</bridge.button>
-    <bridge.button state="(config.syncDays=== '35')=== true ? 'active' : ' '"  ng-click="getSyncHistory('35')" style="width:110px;">5 week</bridge.button>
-    <bridge.button state="(config.syncDays=== '70')=== true ? 'active' : ' '" ng-click="getSyncHistory('70')" style="width:110px;">10 week</bridge.button>
-    <bridge.button state="(config.syncDays=== '140')=== true ? 'active' : ' '" ng-click="getSyncHistory('140')" style="width:110px;">20 week</bridge.button>
-     <bridge.button state="(config.syncDays== '')=== true ? 'active' : ' '" ng-click="getSyncHistory('')" style="width:110px;"> ALL </bridge.button>
-     </br>
+    <bridge.button state="(config.data.syncDays=== '7')=== true ? 'active' : ' '" ng-click="getSyncHistory('7')" style="width:110px;">1 week</bridge.button>
+    <bridge.button state="(config.data.syncDays=== '35')=== true ? 'active' : ' '"  ng-click="getSyncHistory('35')" style="width:110px;">5 week</bridge.button>
+    <bridge.button state="(config.data.syncDays=== '70')=== true ? 'active' : ' '" ng-click="getSyncHistory('70')" style="width:110px;">10 week</bridge.button>
+    <bridge.button state="(config.data.syncDays=== '140')=== true ? 'active' : ' '" ng-click="getSyncHistory('140')" style="width:110px;">20 week</bridge.button>
+    <bridge.button state="(config.data.syncDays== '')=== true ? 'active' : ' '" ng-click="getSyncHistory('')" style="width:110px;"> ALL </bridge.button>
+    </br>
     <div class="col-xs-12 copy form_head">Status</div>
-    <bridge.button state="(config.Status== 'Solution proposed')=== true ? 'active' : ' '" ng-click="getStatus('Solution proposed')" style="width:110px;">Solution Provided</bridge.button>
-    <bridge.button state="(config.Status== 'Action required')=== true ? 'active' : ' '" ng-click="getStatus('Action required')" style="width:110px;">Author Action</bridge.button>
-    <bridge.button state="(config.Status== 'In Process')=== true ? 'active' : ' '"  ng-click="getStatus('In Process')" style="width:110px;">In Process</bridge.button>
-    <bridge.button state="(config.Status== 'Closed')=== true ? 'active' : ' '" ng-click="getStatus('Closed')" style="width:110px;">Closed</bridge.button>
-     <bridge.button state="(config.Status== '')=== true ? 'active' : ' '" ng-click="getStatus('')" style="width:110px;"> ALL </bridge.button>
-
-
-
+    <bridge.button state="(config.data.Status== 'Solution proposed')=== true ? 'active' : ' '" ng-click="getStatus('Solution proposed')" style="width:110px;">Solution Provided</bridge.button>
+    <bridge.button state="(config.data.Status== 'Action required')=== true ? 'active' : ' '" ng-click="getStatus('Action required')" style="width:110px;">Author Action</bridge.button>
+    <bridge.button state="(config.data.Status== 'In Process')=== true ? 'active' : ' '"  ng-click="getStatus('In Process')" style="width:110px;">In Process</bridge.button>
+    <bridge.button state="(config.data.Status== 'Closed')=== true ? 'active' : ' '" ng-click="getStatus('Closed')" style="width:110px;">Closed</bridge.button>
+    <bridge.button state="(config.data.Status== '')=== true ? 'active' : ' '" ng-click="getStatus('')" style="width:110px;"> ALL </bridge.button>
  
     <div class="row">
-        <!--<button class="btn btn-default btn_blue save_close_btn" ng-click="save_click()">Save & Close</button>-->
         <bridge.button class="save_close_btn" ng-click="save_click()">Save & Close</bridge.button>
     </div>
 </div>
