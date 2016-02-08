@@ -735,11 +735,32 @@ input[type="checkbox"]:checked:after {
 }
 .prio_content_box{ 
     width:100%;
-    height:70%; 
+    height:70%;
+    position: relative; 
     float: right; 
     text-align: right;
     padding-right:5px; 
-    font-size:34px
+    font-size:25px
+}
+
+.prio_content_box.prio_content_box_exceeds {
+    font-size: 23px;
+}
+
+.prio_content_box.prio_content_box_exceeds_with_settings {
+    font-size: 19px;
+}
+
+.prio_content_number {
+    position: absolute;
+    bottom: 0px;
+    right: 3px;
+}
+
+.prio_content_number_plus {
+    position: absolute;
+    bottom: 0px;
+    left: 3px;
 }
 
 .pixel_art{
