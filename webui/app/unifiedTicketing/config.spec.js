@@ -1,20 +1,16 @@
-describe("IT Direct config", function(){
+describe("Unified ticketing config", function(){
     var config = null;
 
     beforeEach(function() {
         module("app.unifiedticketing");
 
         inject(["app.unifiedticketing.config", function(_config){
-            config = _config.getConfigForAppId("Dummy");
+            config = _config.getConfigForAppId("test-1");
         }]);
     });
 
     it("should initialize its config from the backend data", function(){
-        config.initialize({bIncludeSavedSearch: true, sSavedSearchToInclude: "IamAFakeSearchKey"});
-
-        expect(config.isInitialized).toBe(true);
-        expect(config.bIncludeSavedSearch).toBe(true);
-        expect(config.sSavedSearchToInclude).toBe("IamAFakeSearchKey");
-        //expect(config.lastDataUpdate).toBe(new Date(1408700044615));
+        expect(config.isInitialized).toBe(false);
+        expect(config.lastDataUpdate).toBeDefined();
     });
 });
