@@ -3,7 +3,7 @@ angular.module('app.unifiedticketing')
         $scope.config = configService.getConfigForAppId($scope.boxScope.metadata.guid);
         $scope.savedSearches = [];
         $scope.getSyncHistory = function(syncDays) {
-            configService.setSyncHistory(syncDays);
+            $scope.config.setSyncHistory(syncDays);
         };
 
         $scope.getStatus = function(Status) {
