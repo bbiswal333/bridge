@@ -9,16 +9,19 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", ['
         this.bSavedSearchSelected = true;
         this.syncHistory = '';
 
-        this.data = {}; // make it an object to establish data binding
         this.data.syncDays = '140';
         this.data.Status = '';
+        this.data.isLoading = false;
 
         this.initialize = function (sAppId) {
             this.isInitialized = true;
             var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
-            this.data = persistedConfig.data;
+            if(persistedConfig && persistedConfig.data) {
+                this.data = persistedConfig.data;
+            }
             this.lastDataUpdate = new Date(this.lastDataUpdate);
             this.setSyncHistory(this.data.syncDays);
+            this.data.isLoading = false;
         };
 
         this.setSyncHistory = function(syncDays) {

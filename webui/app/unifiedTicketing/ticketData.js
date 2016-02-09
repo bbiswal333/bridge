@@ -10,8 +10,8 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             var counter = true;
             var statusBuffer = [];
             var globalData = {
-               statusesWithGroups: [],
-               statusGroups: {
+                statusesWithGroups: [],
+                statusGroups: {
                     1: {
                         order: 1,
                         text: "Closed"
@@ -157,12 +157,12 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             this.prepareStatusBufferData = function(oData) {
                 var statusList = oData.StatusBuffer.results;
                 statusList.forEach(function(entry) {
-               var pType = entry.PROCESS_TYPE;
+                var pType = entry.PROCESS_TYPE;
                     if (that.checkIfProceessTypeSupported(pType)) {
                         if (!statusBuffer[pType]) {
                             statusBuffer[pType] = [];
                         }
-                    var newStatusData = {
+                        var newStatusData = {
                             "PROCESS_TYPE": entry.PROCESS_TYPE,
                             "STATUS_FROM": entry.STATUS_FROM,
                             "STATUS_TO": entry.STATUS_TO,
@@ -179,17 +179,17 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                         };
                         statusBuffer[pType].push(newStatusData);
                         globalData.statusesWithGroups.push(newStatusData);
-                  }
-            });
-        };
+                    }
+                });
+            };
 
             $http.get('app/unifiedTicketing/StatusBuffer.json').success(function(data) {
-             that.prepareStatusBufferData(data.d);
+                that.prepareStatusBufferData(data.d);
             });
 
            this.checkIfProceessTypeSupported = function(type) {
                 var ID = "id";
-            for (var i = 0; i < processTypes.length; i++) {
+                for (var i = 0; i < processTypes.length; i++) {
                     if (processTypes[i][ID] === type) {
                         return true;
                     }
@@ -203,17 +203,15 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                 var filteredTickets = [];
                 if (counter === true) {
                     counter = false;
-                 }
+                }
 
-                $("#spinner").show();
-                $("#utContainer").hide();
+                unifiedticketingConfig.data.isLoading = true;
                 $http.get("https://pgpmain.wdf.sap.corp/sap/opu/odata/sap/ZUNIF_TICKET;mo/TicketCollection?$filter=CHANGED_AT_F eq '" + unifiedticketingConfig.syncHistory + "'and%20COMPLETED%20eq%20%27X%27").success(function(data) {
-                        $("#spinner").hide();
-                        $("#utContainer").show();
+                        unifiedticketingConfig.data.isLoading = false;
                         that.tickets.assigned_me.length = 0;
                         var statusFound = false;
                         var FILTER = "FILTER";
-                       angular.forEach(data.d.results, function(backendTicket) {
+                        angular.forEach(data.d.results, function(backendTicket) {
                             if (unifiedticketingConfig.data.Status) {
                                 for (var i = 0; i < statusBuffer[backendTicket.PROCESS_TYPE].length; i++) {
                                     if (statusBuffer[backendTicket.PROCESS_TYPE][i].STATUS_FROM === backendTicket.USER_STATUS) {
@@ -230,7 +228,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                             } else {
                                 that.tickets.assigned_me.push(backendTicket);
                             }
-                       });
+                        });
                         if (filteredTickets) {
                            for (var i = 0; i < filteredTickets.length; i++) {
                                 if (filteredTickets[i].FILTER === unifiedticketingConfig.data.Status) {

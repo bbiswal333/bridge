@@ -11,7 +11,7 @@ angular.module('app.unifiedticketing')
         };
 
         $scope.save_click = function () {
-            $scope.$emit('closeSettingsScreen', {app: 'unifiedticketing'});
+            $scope.$emit('closeSettingsScreen', {app: 'unifiedticketing', instance: $scope.boxScope.metadata.guid});
         };
     }]
 );

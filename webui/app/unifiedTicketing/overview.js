@@ -20,12 +20,14 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             controller: function(){},
             id: $scope.boxId
         };
-       $scope.box.returnConfig = function(){
+        $scope.box.returnConfig = function(){
             return configService.getConfigForAppId($scope.metadata.guid);
         };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){
-           if (args !== undefined && args.app === 'unifiedticketing'){
+           if (args !== undefined &&
+               args.app === 'unifiedticketing' &&
+               args.instance === $scope.metadata.guid){
                $scope.ticketData.loadTicketData();
            }
         });
@@ -42,19 +44,19 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
         },true);
 
         $scope.getCatClass = function(){
-                $scope.catClass = Math.floor(Math.random() * 2);
-            };
+            $scope.catClass = Math.floor(Math.random() * 2);
+        };
 
         $scope.getTicketCountForPrio1 = function(sPrio){
             var count = 0;
-      function checkTicket(ticket){
-           if(ticket.PROCESS_TYPE === "ZSER") {
-                ticket.PROCESS_TYPE = "ZINC";
-            }
-             if(ticket.PROCESS_TYPE === "ZINE") {
-                 ticket.PROCESS_TYPE = "ZINC";
-             }
-              if (ticket.PROCESS_TYPE === sPrio){
+            function checkTicket(ticket){
+                if(ticket.PROCESS_TYPE === "ZSER") {
+                    ticket.PROCESS_TYPE = "ZINC";
+                }
+                if(ticket.PROCESS_TYPE === "ZINE") {
+                    ticket.PROCESS_TYPE = "ZINC";
+                }
+                if (ticket.PROCESS_TYPE === sPrio){
                     count++;
                 }
              }
@@ -67,7 +69,7 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             }
             return count;
         };
-       $scope.box.reloadApp($scope.ticketData.loadTicketData, 60 * 5);
+        $scope.box.reloadApp($scope.ticketData.loadTicketData, 60 * 5);
     }];
 
     return {
