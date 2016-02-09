@@ -10,7 +10,7 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
         $scope.config = configService.getConfigForAppId($scope.metadata.guid);
 
         if ($scope.config.isInitialized === false) {
-            $scope.config.initialize($scope.appConfig);
+            $scope.config.initialize($scope.metadata.guid);
         }
         if ($scope.ticketData.isInitialized.value === false) {
             $scope.ticketData.initialize($scope.module_name);
@@ -21,7 +21,7 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             id: $scope.boxId
         };
        $scope.box.returnConfig = function(){
-            return angular.copy($scope.config);
+            return configService.getConfigForAppId($scope.metadata.guid);
         };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){

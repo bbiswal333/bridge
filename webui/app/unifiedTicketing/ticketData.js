@@ -4,7 +4,9 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
             var that = this;
             this.appId = appId;
             var unifiedticketingConfig = unifiedticketingConfigService.getConfigForAppId(this.appId);
-            unifiedticketingConfig.syncHistory = ' ';
+            if (unifiedticketingConfig.isInitialized === false) {
+                unifiedticketingConfig.initialize(this.appId);
+            }
             var counter = true;
             var statusBuffer = [];
             var globalData = {
@@ -200,7 +202,6 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.ticketData"
                 var deferAssignedToMe = $q.defer();
                 var filteredTickets = [];
                 if (counter === true) {
-                    unifiedticketingConfig.syncHistory = "";
                     counter = false;
                  }
 
