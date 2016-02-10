@@ -53,8 +53,20 @@ function (catsUtils) {
     };
 
     this.getValueFromWidth = function(width, totalWidth, totalValue) {
-        // round to full percentage points
-        width = Math.round(width / totalWidth * 100) / 100 * totalWidth;
+        var checkNewWidthToAllowForFullHourRecording = Math.round(width / totalWidth * 1000) / 1000;
+
+        if (       checkNewWidthToAllowForFullHourRecording >= 0.12 && checkNewWidthToAllowForFullHourRecording <= 0.13) {
+            width = Math.round(0.125 * 200) / 200 * totalWidth;
+        } else if (checkNewWidthToAllowForFullHourRecording >= 0.37 && checkNewWidthToAllowForFullHourRecording <= 0.38) {
+            width = Math.round(0.375 * 200) / 200 * totalWidth;
+        } else if (checkNewWidthToAllowForFullHourRecording >= 0.62 && checkNewWidthToAllowForFullHourRecording <= 0.63) {
+            width = Math.round(0.625 * 200) / 200 * totalWidth;
+        } else if (checkNewWidthToAllowForFullHourRecording >= 0.87 && checkNewWidthToAllowForFullHourRecording <= 0.88) {
+            width = Math.round(0.875 * 200) / 200 * totalWidth;
+        } else {
+            // round to full percentage points
+            width = Math.round(width / totalWidth * 100) / 100 * totalWidth;
+        }
         return width / parseInt(totalWidth, 10) * parseInt(totalValue, 10);
     };
 
