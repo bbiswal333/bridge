@@ -449,6 +449,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		this.requestTasksFromTemplate = function(year, week, forceUpdate_b) {
 			var deferred = $q.defer();
+			week = calUtils.toNumberOfCharactersString(week, 2);
 
 			// this here is important for the app settings
 			if (forceUpdate_b || !this.CAT2AllocationDataForWeeks[year + "" + week]) {
