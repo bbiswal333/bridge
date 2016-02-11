@@ -11,7 +11,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 
 		var MYCATSDATA_WEBSERVICE      = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
 		var GETWORKLIST_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
-		//var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
+		var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
 		var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
 		var GETCATSDATA_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
 		var WRITECATSDATA_WEBSERVICE   = "https://isp.wdf.sap.corp:443/sap/bc/zdevdb/WRITECATSDATA?format=json&origin=" + $window.location.origin;
@@ -29,6 +29,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.gracePeriodInMonth = 0;
 		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
+		var tasksFromWorklistPromise2;
 		var tasktypesPromise;
 		var that = this;
 
@@ -519,13 +520,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		};
 
 		this.requestTasksFromWorklist = function() {
-			// _httpGetRequest(GETWORKLIST_IFP_WEBSERVICE + "&objtype=TTO").then(function(data, status) {
-			//   if (!data) {
-			//	 status = status;
-			//   } else {
-			//	 data = data;
-			//   }
-			// });
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
@@ -558,6 +552,56 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 								task.projectDesc = nodes[i].DISPTEXTW1;
 								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
 								tasks.push(task);
+							}
+						}
+
+						deferred.resolve(tasks);
+					}, deferred.reject);
+				}
+			}, deferred.reject);
+			return deferred.promise;
+		};
+
+		this.requestTasksFromWorklist2 = function() {
+			var deferred = $q.defer();
+			this.determineCatsProfileFromBackend()
+			.then(function(catsProfile) {
+				if (catsProfile !== "DEV2002C" &&
+				    catsProfile !== "DEV2002H" &&
+				    catsProfile !== "DEV2012C") { // These are the only profiles where the cPro worklist shall be read
+					deferred.resolve();
+				} else {
+					if (!tasksFromWorklistPromise2) {
+						tasksFromWorklistPromise2 = _httpGetRequest(GETWORKLIST_IFP_WEBSERVICE);
+					}
+					tasksFromWorklistPromise2
+					.then(function(data) {
+
+						var today = new Date();
+						var todayString = today.getFullYear() + "-" + calUtils.toNumberOfCharactersString(today.getMonth() + 1, 2) + "-" + calUtils.toNumberOfCharactersString(today.getDate(), 2);
+
+						var tasks = [];
+
+						if (data && data.DATA && data.DATA.length) {
+							for (var i = 0; i < data.DATA.length; i++) {
+								var worklistEntry = data.DATA[i];
+								if ((!worklistEntry.ASSIGNMENT_START || worklistEntry.ASSIGNMENT_START === "0000-00-00" || worklistEntry.ASSIGNMENT_START <= todayString) &&
+								    (!worklistEntry.ASSIGNMENT_END   || worklistEntry.ASSIGNMENT_END === "0000-00-00"   || worklistEntry.ASSIGNMENT_END >= todayString)) {
+
+									var task = {};
+									task.RAUFNR = (worklistEntry.RAUFNR || "");
+									task.TASKTYPE = (worklistEntry.TASKTYPE || "");
+									task.ZCPR_EXTID = (worklistEntry.ZCPR_EXTID || "");
+									task.ZCPR_OBJGEXTID = (worklistEntry.ZCPR_OBJGEXTID || "");
+									if (catsUtils.isHourlyProfil(catsProfile)) {
+										task.UNIT = worklistEntry.UNIT || "H";
+									} else {
+										task.UNIT = worklistEntry.UNIT || "T";
+									}
+									task.projectDesc = worklistEntry.DISPTEXTW1;
+									task.DESCR = worklistEntry.DISPTEXTW2;
+									tasks.push(task);
+								}
 							}
 						}
 
