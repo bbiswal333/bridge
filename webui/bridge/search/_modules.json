@@ -13,6 +13,7 @@
 		"sapterm.js",
 		"playbook.js",
 		"portal.js",
+		"pam.js",
 		"tetris.js",
 		"bridgeSearchSettingsController.js",
 		"locationSearch.js",
