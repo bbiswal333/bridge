@@ -232,7 +232,7 @@ directive("app.cats.maintenanceView.projectList", [
 
 			function getCatsData() {
 				var deferred = $q.defer();
-				catsBackend.requestTasksFromWorklist2();
+				// catsBackend.requestTasksFromWorklist2();
 				catsBackend.requestTasksFromWorklist()
 				.then(function(dataFromWorklist) {
 					$scope.hasError = false;
