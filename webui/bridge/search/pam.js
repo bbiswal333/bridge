@@ -2,7 +2,7 @@ angular.module('bridge.search').service('bridge.search.pamSearch', ['$http', '$w
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-calendar",
-            name: "SAP Product Availability Matrix",
+            name: "Product Availability Matrix",
             resultTemplate: "bridge/search/pamTemplate.html",
             defaultSelected : true
         };
