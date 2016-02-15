@@ -3,6 +3,7 @@ angular.module('bridge.search').service('bridge.search.pamSearch', ['$http', '$w
         return {
             icon: "fa fa-database",
             name: "SAP Product Availability Matrix",
+            resultTemplate: "bridge/search/pamTemplate.html",
             defaultSelected : true
         };
     };
