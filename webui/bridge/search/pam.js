@@ -2,14 +2,15 @@ angular.module('bridge.search').service('bridge.search.pamSearch', ['$http', '$w
     this.getSourceInfo = function() {
         return {
             icon: "fa fa-database",
-            name: "SAP Product Availability Matrix"
+            name: "SAP Product Availability Matrix",
+            defaultSelected : true
         };
     };
     this.findMatches = function(query, resultArray) {
-		return $http.get('https://i7d.wdf.sap.corp/sap/opu/odata/SAP/ZMS_PAM_BRIDGE_SEARCH_SRV/ProductVersions?$format=json&search=*' + query + '*&origin=' + $window.location.origin).then(
+		return $http.get('https://i7d.wdf.sap.corp/odataint/pam/bridge/BridgeSearchResults?$format=json&search=*' + query + '*&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {
-            		resultArray.push({title: result.DisplayName, /*description: result.OfficialName, */ originalResult: result});
+            		resultArray.push({title: result.Title, description: result.Description, originalResult: result});
             	});
             }
         );
