@@ -168,7 +168,7 @@
             return {
                 projects: [
                     {
-                        name: "OVERVIEW",
+                        name: "My View",
                         type: "PERSONAL",
                         apps: apps
                     }

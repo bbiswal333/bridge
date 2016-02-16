@@ -86,6 +86,10 @@
             } else {
                 projectObject.owner = userInfo ? userInfo.BNAME : "";
                 projectObject.apps = parseApps(project);
+
+                if (projectObject.name === "OVERVIEW"){
+                    projectObject.name = "My View";
+                }
             }
             that.projects.push(projectObject);
             if(deferred) {
@@ -97,7 +101,7 @@
             viewPromises = [];
             var promise;
             if (config.bridgeSettings && config.bridgeSettings.apps) {
-                promise = parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+                promise = parseProject({ name: "My View", type: "PERSONAL", apps: config.bridgeSettings.apps });
                 if(promise) {
                     viewPromises.push(promise);
                 }

@@ -79,4 +79,10 @@ describe("The bridgeDataService", function () {
         $httpBackend.flush();
         expect(bridgeInBrowserNotification.addAlert).not.toHaveBeenCalledWith("danger", "App id already in use: app.atc-4", 600);
     });
+
+    it("should have renamed the personal project from 'OVERVIEW' to 'My View'", function(){
+        var aProjects = bridgeDataService.getProjects();
+        var oPersonalProject = _.find(aProjects, { 'type': 'PERSONAL'});
+        expect(oPersonalProject.name).toBe('My View');
+    });
 });
