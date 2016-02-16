@@ -57,3 +57,9 @@
 .detailsTableNewLayout .glyphicon {
     top:2px;
 }
+
+.tableFlipped, .tableFlipped .tableContent {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+}

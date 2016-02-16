@@ -4,8 +4,8 @@
         <br />
     </div>
 </div>
-<div style="overflow: auto">
-    <div style="position:relative; display:table; min-width: 100%" ng-class="applyTableClass()">
+<div style="overflow: auto" class="tableFlipped">
+    <div style="position:relative; display:table; min-width: 100%" class="tableContent" ng-class="applyTableClass()">
         <div infinitescroll>
             <div class="row">
                 <bridge.table-column-header ng-repeat="column in columns | orderBy: 'columnOrder'" ng-if="column.visible"></bridge.table-column-header>
