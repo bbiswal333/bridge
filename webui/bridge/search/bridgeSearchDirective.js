@@ -24,7 +24,7 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                 removeSelection();
             }
             function hideResults() {
-                //$scope.displayResults = false;
+                $scope.displayResults = false;
                 removeSelection();
             }
 
