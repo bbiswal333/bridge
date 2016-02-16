@@ -41,12 +41,29 @@
 	line-height: 1.7em;
 }
 
+.search-span-type {
+	display: inline-block;    
+  background-color: #C3C3C3;
+  line-height: 1.4em;
+	width: 40px;
+	text-align: center !important;
+	margin-right: 4px;
+	border: #EBECEE;
+	border-width: 1px;
+}
+
 .search-span-ellipsis {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 	display: inline-block;
 	vertical-align: top
+}
+
+.search-div-show-more {
+	cursor: pointer;
+	font-weight: bold;
+	display: inline-block;
 }
 
 .search-line-selected {

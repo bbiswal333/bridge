@@ -24,7 +24,7 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                 removeSelection();
             }
             function hideResults() {
-                $scope.displayResults = false;
+                //$scope.displayResults = false;
                 removeSelection();
             }
 
@@ -142,6 +142,14 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                     hideResults();
                 }
             };
+            
+            $scope.fireShowMoreCallback = function() {
+                if ($scope.results[hierarchyIndex].resultInfo != undefined && $scope.results[hierarchyIndex].resultInfo.showMore) {                
+                    $scope.results[hierarchyIndex].resultInfo.showMore();
+                    hideResults();
+                }
+            };            
+            
         }
     };
 }]);

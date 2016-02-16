@@ -11,6 +11,12 @@
 					<bridge.search.search-result match="result" result-source="resultProvider.info" query="query">
 					</bridge.search.search-result>
 				</div>
+				<div ng-if="resultProvider.resultInfo.count > maxResults" ng-class="search-results-column">
+				  <div class="search-result-item">
+				    {{resultProvider.resultInfo.count}} results more available in 
+				    <div ng-mousedown="fireShowMoreCallback()" class="search-div-show-more">{{resultProvider.info.name}}</div>
+				  </div>
+				</div>
 			</td>
 		</tr>
 	</table>
