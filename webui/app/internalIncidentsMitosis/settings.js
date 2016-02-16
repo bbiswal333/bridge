@@ -53,8 +53,8 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 				$scope.currentConfigValues.components.push({value: item});
 			}
 		} else {
-			if(!componentAlreadyInConfig(item.II_CATEGORY)) {
-				$scope.currentConfigValues.components.push({value: item.II_CATEGORY});
+			if(!componentAlreadyInConfig(item.PS_POSID)) {
+				$scope.currentConfigValues.components.push({value: item.PS_POSID});
 			}
 		}
 	};
