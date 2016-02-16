@@ -22,9 +22,11 @@
 	    <br/><br/>
 
 		<bridge.table table-data="data.filtered_profile" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Check'" column-size-class="'col-sm-4'" order-by="'CHKID'">{{row.CHKID}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Message'" column-size-class="'col-sm-4'" order-by="'CHKMSGID'">{{row.CHKMSGID}}</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Central Priority'" column-size-class="'col-sm-4'" order-by="'CENTRAL_PRIO'">{{row.CENTRAL_PRIO}}</bridge.table-column>			
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Check'" column-size-class="'col-sm-4'" order-by="'CHKID'">{{row.CHKID}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Message'" column-size-class="'col-sm-4'" order-by="'CHKMSGID'">{{row.CHKMSGID}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Central Priority'" column-size-class="'col-sm-4'" order-by="'CENTRAL_PRIO'">{{row.CENTRAL_PRIO}}</bridge.table-column>
+			</bridge.table-column-sorter>
 		</bridge.table>
 
 	</div>

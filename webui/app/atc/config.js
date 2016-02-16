@@ -111,6 +111,7 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
 	    this.configItems = [];
 	    this.isInitialized = false;
 	    this.detailsColumnVisibility = [true, true, true, true, false, true, false, false, false, false, false, false, false];
+	    this.detailsColumnOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	};
 
 	Config.prototype = Object.create(IConfig);
@@ -155,6 +156,10 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
 
 	    if(persistedConfig.detailsColumnVisibility) {
 	    	this.detailsColumnVisibility = persistedConfig.detailsColumnVisibility;
+	    }
+
+	    if(persistedConfig.detailsColumnOrder) {
+	    	this.detailsColumnOrder = persistedConfig.detailsColumnOrder;
 	    }
 
 	    var currentConfigItem;

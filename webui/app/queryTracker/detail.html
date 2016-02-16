@@ -4,13 +4,15 @@
 	    <br/><br/>
 
 		<bridge.table table-data="data" filter="filterText" default-sort-by="'Deadline'">
-			<bridge.table-column column-id="'1'" header="'Deadline'" column-size-class="'col-sm-1'" order-by="'Deadline'" ng-class="{true: 'orange-font-100', false: ''}[row.deadline_marker];">{{row.Deadline}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Query Number'" column-size-class="'col-sm-1'" order-by="'ID'"><a target="_blank" href="https://querytracker.pgdev.sap.corp/QueryDetails.aspx?queryid={{row.ID}}&actionid=2">{{row.ID}}</a></bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Component/ Domain'" column-size-class="'col-sm-2'" order-by="'ComponentOrDomain'">{{row.ComponentOrDomain}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Prog. ID'" column-size-class="'col-sm-1'" order-by="'DevProgramID'">{{row.DevProgramID}}</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Obj. Type'" column-size-class="'col-sm-1'" order-by="'DevObjectType'">{{row.DevObjectType}}</bridge.table-column>
-			<bridge.table-column column-id="'6'" header="'Object Name'" column-size-class="'col-sm-2'" order-by="'DevObjectName'">{{row.DevObjectName}}</bridge.table-column>
-			<bridge.table-column column-id="'7'" header="'Issue'" column-size-class="'col-sm-3'" order-by="'Issue'">{{row.Issue}}</bridge.table-column>
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Deadline'" column-size-class="'col-sm-1'" order-by="'Deadline'" ng-class="{true: 'orange-font-100', false: ''}[row.deadline_marker];">{{row.Deadline}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Query Number'" column-size-class="'col-sm-1'" order-by="'ID'"><a target="_blank" href="https://querytracker.pgdev.sap.corp/QueryDetails.aspx?queryid={{row.ID}}&actionid=2">{{row.ID}}</a></bridge.table-column>
+				<bridge.table-column column-id="3" header="'Component/ Domain'" column-size-class="'col-sm-2'" order-by="'ComponentOrDomain'">{{row.ComponentOrDomain}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Prog. ID'" column-size-class="'col-sm-1'" order-by="'DevProgramID'">{{row.DevProgramID}}</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Obj. Type'" column-size-class="'col-sm-1'" order-by="'DevObjectType'">{{row.DevObjectType}}</bridge.table-column>
+				<bridge.table-column column-id="6" header="'Object Name'" column-size-class="'col-sm-2'" order-by="'DevObjectName'">{{row.DevObjectName}}</bridge.table-column>
+				<bridge.table-column column-id="7" header="'Issue'" column-size-class="'col-sm-3'" order-by="'Issue'">{{row.Issue}}</bridge.table-column>
+			</bridge.table-column-sorter>
 		</bridge.table>
 
 	</div>

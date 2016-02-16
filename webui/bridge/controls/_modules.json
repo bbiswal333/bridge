@@ -9,6 +9,8 @@
     "mobileSearchInput.js",
     "bridgeTable/bridgeTable.js",
     "bridgeTable/bridgeTableColumn.js",
+    "bridgeTable/bridgeTableColumnHeader.js",
+    "bridgeTable/bridgeTableColumnSorter.js",
     "customTransclude.js",
     "infinitescroll.js",
     "bridgeButton.js",
