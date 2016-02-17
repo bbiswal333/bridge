@@ -17,7 +17,7 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
             	if (metadata !== undefined) {
             		metadata.count = response.data.d.__count;
             		metadata.showMore = function()  {
-	            		$window.open("https://i7d.wdf.sap.corp/sap/internal/ppms/start?ui=SEARCH");
+	            		$window.open("https://i7d.wdf.sap.corp/sap/internal/ppms/start?ui=SEARCH&uidetail=" + query);
 	            	};
             	}                
             }
