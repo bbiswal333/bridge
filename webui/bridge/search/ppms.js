@@ -7,15 +7,16 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
             defaultSelected : true
         };
     };
-    this.findMatches = function(query, resultArray, resultInfo) {
-		return $http.get('https://i7d.wdf.sap.corp/odataint/borm/bridge/BridgeSearchResults?$format=json&search=*' + query + '*&$inlinecount=allpages&origin=' + $window.location.origin).then(
+    this.findMatches = function(query, resultArray, metadata) {
+		return $http.get('https://i7d.wdf.sap.corp/odataint/borm/bridge/BridgeSearchResults?$format=json&search=' + query + '&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {
-            		resultArray.push({ type: result.Type, title: result.Title, description: result.Description, originalResult: result});
+            		resultArray.push({ type: result.Type, typetooltip: result.TypeTooltip, 
+            						   title: result.Title, description: result.Description, originalResult: result});
             	});
-            	if (resultInfo !== undefined) {
-	             	resultInfo.count = response.data.d.__count;
-	            	resultInfo.showMore = function()  {
+            	if (metadata !== undefined) {
+            		metadata.count = response.data.d.__count;
+            		metadata.showMore = function()  {
 	            		$window.open("https://i7d.wdf.sap.corp/sap/internal/ppms/start?ui=SEARCH");
 	            	};
             	}                

@@ -7,15 +7,15 @@ angular.module('bridge.search').service('bridge.search.pamSearch', ['$http', '$w
             defaultSelected : true
         };
     };
-    this.findMatches = function(query, resultArray, resultInfo) {
+    this.findMatches = function(query, resultArray, metadata) {
 		return $http.get('https://i7d.wdf.sap.corp/odataint/pam/bridge/BridgeSearchResults?$format=json&search=*' + query + '*&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {
             		resultArray.push({title: result.Title, description: result.Description, originalResult: result});
             	});
-            	if (resultInfo !== undefined) {
-	             	resultInfo.count = response.data.d.__count;
-	            	resultInfo.showMore = function()  {
+            	if (metadata !== undefined) {
+            		metadata.count = response.data.d.__count;
+            		metadata.showMore = function()  {
 	            		$window.open("https://i7d.wdf.sap.corp/sap/support/pam?hash=s%3D" + query);
 	            	};
             	}
