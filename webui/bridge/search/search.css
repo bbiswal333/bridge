@@ -43,14 +43,47 @@
 
 .search-span-type {
 	display: inline-block;    
-  background-color: #C3C3C3;
   line-height: 1.4em;
 	width: 40px;
 	text-align: center !important;
 	margin-right: 4px;
-	border: #EBECEE;
-	border-width: 1px;
+  border-left-width: 4px !important;
+  border-left-style: solid;
 }
+
+.search-span-color-p {
+  border-left-color: #9B59B6;
+}
+
+.search-span-color-pv {
+  border-left-color: #2ECC71;
+}
+
+.search-span-color-sc {
+  border-left-color: #3498DB;
+}
+
+.search-span-color-scv {
+  border-left-color: #E67E22;
+}
+
+.search-span-color-pl {
+  border-left-color: #E74C3C;
+}
+
+.search-span-color-foss {
+  border-left-color: #F1C40F;
+}
+
+.search-span-color-ccav {
+  border-left-color: #34495E;
+}
+
+.search-span-color-se {
+  border-left-color: #7F8C8D;
+}
+
+
 
 .search-span-ellipsis {
 	text-overflow: ellipsis;

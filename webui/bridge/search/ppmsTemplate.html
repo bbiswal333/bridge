@@ -1,9 +1,10 @@
 <div class="search-result-item">
-  <span title="{{match.typetooltip}}" class="search-span-type">{{match.type}}</span>
-  
-	<span style="max-width: 350px;" class="search-span-ellipsis" ng-bind-html="match.title"></span>
-	
-	<span ng-if="match.description" style="vertical-align: top;">&#8212;</span>
-	
-	<span class="search-span-ellipsis">{{match.description}}</span>
+
+	  <span title="{{match.typetooltip}}" class="search-span-type search-span-color-{{match.type.toLowerCase()}}">{{match.type}}</span>
+	  
+		<span style="max-width: 350px;" class="search-span-ellipsis" ng-bind-html="match.title"></span>
+		
+		<span ng-if="match.description" style="vertical-align: top;">&#8212;</span>
+		
+		<span class="search-span-ellipsis">{{match.description}}</span>
 </div>
