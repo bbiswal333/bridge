@@ -10,7 +10,7 @@
     			<td><i class="fa {{content.statusIcon}} {{content.STATUS | lowercase}}-font"></td>
     			<td class="style" style="width: 100px;"><a class="changeCursor" target="_blank" href="https://portal.wdf.sap.corp/irj/go/km/docs/corporate_portal/WS%20SAP%20IT/Processes%2c%20Services%20and%20Projects/IT%20BI/Solution_Catalog_NEW/index.htm#{{content.CONTENT}}">{{content.CONTENT}}</a></td>
                 <td style="padding-right: 0px;">{{formatDate(content.LAST_REFRESH)}}</td>
-                <td><a title="View details" class="fa fa-table changeCursor" ng-controller="app.mitosisHana.detailController" target="_blank" ng-click="detailStatusView(content.CONTENT)"></a></td>
+                <td><a title="View details" class="fa fa-list-ul changeCursor" ng-controller="app.mitosisHana.detailController" target="_blank" ng-click="detailStatusView(content.CONTENT)"></a></td>
     		</tr>
     	</table>
     </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="statusTiles">
             <br>
-            <p><i class="fa fa-circle yellow-font-80"></i>   Issues</p>
+            <p><i class="fa fa-exclamation-circle yellow-font-80"></i>   Issues</p>
         </div>
     </div>
     <div class="statusTilesBox">
@@ -49,7 +49,7 @@
         </div>
         <div class="statusTiles">
             <br>
-            <p><i class="fa fa-times red-font-80"></i>   Failed</p>
+            <p><i class="fa fa-ambulance red-font-80"></i>   Failed</p>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 angular.module('app.mitosisHana', []);
 
-angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana.configService', 'app.mitosisHana.dataService', function (configService, dataService) {
+angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana.configService', 'app.mitosisHana.dataService', '$window' , function (configService, dataService, $window) {
 
 	var directiveController = ['$scope', function ($scope) {
 
@@ -11,6 +11,14 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
 				controller: angular.module('app.mitosisHana').appMitosisHanaSettings,
 				id: $scope.boxId
 		};
+		$scope.box.headerIcons = [{
+            iconCss: "fa-bug",
+            title: "Report Issue",
+            callback: function(){
+                $window.open("https://itdirect.wdf.sap.corp/sap(bD1lbiZjPTAwMSZkPW1pbg==)/bc/bsp/sap/crm_ui_start/default.htm?sapsessioncmd=open&saprole=ZITSERVREQU&crm-object-type=AIC_OB_INCIDENT&crm-object-action=D&PROCESS_TYPE=ZINE&CAT_ID=IMFIT_TOOLS_DRT&DESCRIPTION=MIT%20Content%20Load%20Status");
+            }
+        }];
+
 		$scope.dataService = dataService;
 
 		if (dataService.isInitialized.value === false) {

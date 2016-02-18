@@ -85,12 +85,11 @@
                         <app.cats.allocationbar
                             data-width="width"
                             data-height="54"
+                            data-block-height="analyticsDays[day.dayString].blockHeight"
                             data-blocks="analyticsDays[day.dayString].tasks"
                             data-total-value="1"
                             data-text=""
-                            data-selected-hours="day.targetHours"
-                            onblockremoved=""
-                            handlervaluetodisplay="calcMinutes(perc);">
+                            data-selected-hours="day.targetHours">
                         </app.cats.allocationbar>
                         <span 
                             ng-style="{'position': 'absolute', 'width': width, 'height': '34px', 'top': '0%', 'left': '0%', 'text-shadow': '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white'}"

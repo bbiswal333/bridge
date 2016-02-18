@@ -30,7 +30,7 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 		return closingTimer;
 	}
 
-	// alertType can be 'success', 'danger', undefined
+	// alertType can have values as defined on http://getbootstrap.com/components/#alerts
 	this.addAlert = function (alertType, alertMsg, alertDuration) {
 		if (!scopeForDisplay.alerts) {
 			scopeForDisplay.alerts = [ ];
@@ -41,13 +41,14 @@ angular.module('bridge.service').service('bridgeInBrowserNotification', ["$rootS
 		}
 		scopeForDisplay.alerts.push({ type: alertType, msg: alertMsg, id: alertID, close: closeAlert });
 
-		if (alertDuration) {
-			getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
-		} else if (alertType === "danger") { // actual errors shall be displayed much longer
-			getAlert(alertID).closingTimer = closeAlert(alertID, 13);
-		} else {
-			getAlert(alertID).closingTimer = closeAlert(alertID, 6);
+		if (!alertDuration) {
+			if (alertType === 'danger') {
+				alertDuration = 14;
+			} else {
+				alertDuration = 7;
+			}
 		}
+		getAlert(alertID).closingTimer = closeAlert(alertID, alertDuration);
 	};
 
 	this.removeAllAlerts = function () {

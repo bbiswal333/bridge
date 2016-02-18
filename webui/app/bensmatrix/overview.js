@@ -6,10 +6,10 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure";
 		$scope.box.sSize = 2;
-		$scope.family = "Arial,Helvetica,sans-serif";
-		$scope.size = "14pt";
+		//$scope.family = "Arial,Helvetica,sans-serif";
+		//$scope.size = "14pt";
 		$scope.weight = "400";
-		$scope.style = "normal";
+		//$scope.style = "normal";
 		$scope.variant = "normal";
 		$scope.languages = [ {
 			value : 'English',
@@ -18,8 +18,46 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			value : 'German',
 			label : 'de-DE'
 		}];
-
 		$scope.selectedSourceLanguage = $scope.languages[0];
+		$scope.families = [ {
+			value : 'Arial,Helvetica,sans-serif',
+			label : 'Arial,Helvetica,sans-serif'
+		}, {
+			value : 'Arial Narrow, HelveticaNeue-CondensedBold, Arial, sans-serif',
+			label : 'Arial Narrow, HelveticaNeue-CondensedBold, Arial, sans-serif'
+		}];
+		$scope.selectedFamily = $scope.families[0];
+		$scope.sizes = [ {
+			value : '12pt',
+			label : '12pt'
+		}, {
+			value : '14pt',
+			label : '14pt'
+		}, {
+			value : '16pt',
+			label : '16pt'
+		}, {
+			value : '18pt',
+			label : '18pt'
+		}, {
+			value : '20pt',
+			label : '20pt'
+		}, {
+			value : '24pt',
+			label : '24pt'
+		}, {
+			value : '28pt',
+			label : '28pt'
+		}];
+		$scope.selectedSize = $scope.sizes[1];
+		$scope.styles = [ {
+			value : 'normal',
+			label : 'normal'
+		}, {
+			value : 'italic',
+			label : 'italic'
+		}];
+		$scope.selectedStyle = $scope.styles[0];
 		$scope.box.settingScreenData = {
 			templatePath: "bensmatrix/settings.html",
 				controller: angular.module('app.bensmatrix').appbensmatrixSettings,
@@ -93,6 +131,8 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			$scope.slength = enlength;
 			$scope.tlength = tlength;
 
+			//refresh scope to get the updated style info
+			$scope.$apply();
 			//set text to dummy span to get the pixels
 			var elDummy = angular.element("#dummySpan");
 			elDummy.html(sInput);
@@ -104,10 +144,10 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 
 	$scope.getStyle = function(){
 		return {
-			"font-family" : $scope.family,
-			"font-size" : $scope.size,
+			"font-family" : $scope.selectedFamily.label,
+			"font-size" : $scope.selectedSize.label,
 			"font-weight" : $scope.weight,
-			"font-style" : $scope.style,
+			"font-style" : $scope.selectedStyle.label,
 			"font-variant" : $scope.variant
 		};
 

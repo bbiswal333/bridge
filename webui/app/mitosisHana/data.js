@@ -22,7 +22,7 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
 	};
 
 	this.getAvailableContents = function () {
-        var promise = $http.get('https://ld2025.wdf.sap.corp/irep/reporting/bridge/mitosisContentStatus.xsodata/Items?$format=json&$filter=SUB_CONTENT eq \'ALL\'&origin=' + $window.location.origin)
+        var promise = $http.get('https://mithdb.wdf.sap.corp/irep/reporting/bridge/mitosisContentStatus.xsodata/Items?$format=json&$filter=SUB_CONTENT eq \'ALL\'&origin=' + $window.location.origin)
     		.success(function (data) {
                 data = that.insertStatusIcon(data);
                 that.content = data.d.results;
@@ -34,7 +34,7 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
 
     this.getContentDetails = function (content) {
         that.contentDetails = [];
-        var promise = $http.get('https://ld2025.wdf.sap.corp/irep/reporting/bridge/mitosisContentStatus.xsodata/Items?$format=json&$filter=CONTENT eq \'' + content + '\'&$orderby=RANK desc&origin=' + $window.location.origin)
+        var promise = $http.get('https://mithdb.wdf.sap.corp/irep/reporting/bridge/mitosisContentStatus.xsodata/Items?$format=json&$filter=CONTENT eq \'' + content + '\'&$orderby=RANK desc&origin=' + $window.location.origin)
             .success(function (data) {
                 data = that.insertStatusIcon(data);
                 that.contentDetails = data.d.results;
@@ -52,7 +52,7 @@ angular.module('app.mitosisHana').service('app.mitosisHana.dataService',["$http"
                         data.d.results[i].statusIcon = 'fa-check';
                     }
                     else if(data.d.results[i].STATUS === 'YELLOW'){
-                        data.d.results[i].statusIcon = 'fa-circle-o';
+                        data.d.results[i].statusIcon = 'fa-exclamation-circle';
                     }
                 }
         return data;

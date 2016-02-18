@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=1aixT3Ky2oME39EyWSrm&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
+[![Build Status](https://travis-ci.mo.sap.corp/bridge/bridge.svg?token=KH6hrCs1L1tPTHXVpuXy&branch=master)](https://travis-ci.mo.sap.corp/bridge/bridge)
 [![Commits Behind](https://bridge-master.mo.sap.corp/badge/prodstatus.svg)](https://bridge.mo.sap.corp/#/status)
 [![ReviewNinja](https://review-ninja.mo.sap.corp/2417/badge)](https://review-ninja.mo.sap.corp/bridge/bridge)
 
@@ -37,4 +37,5 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * pull requests need to pass all the tests (unit tests, linting, ..)
 
 Further information can be found on our [wiki page](https://github.wdf.sap.corp/bridge/bridge/wiki).
+
 
