@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Others"],
+		"module_name"			:	"app.stickyNote",
+		"title"					:	"Sticky Note",
+		"icon_css"				:	"fa fa-pencil",
+		"overview_directive"	:	"app.stickyNote",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"multiInstance"			:	true,
+		"routes"				:
+		[
+			{
+				"route"			:	"/detail/stickyNote/"
+			}
+		],
+		"description"			:	"This is a more sophisticated app, which shows you how to develop single features of an own app."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"css_files" : []
+}
