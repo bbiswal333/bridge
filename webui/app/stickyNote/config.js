@@ -2,28 +2,6 @@ angular.module('app.stickyNote').service("app.stickyNote.configService",
 	['bridgeDataService', 'bridge.AKHResponsibleFactory', 
 	function (bridgeDataService, AKHResponsibleFactory) {
 
-/*	this.values = {
-		boxSize : '1',
-		color : '#000000',
-		comment : 'New Sticky Note'
-	};
-
-this.initialize = function(configLoadedFromBackend) {
-		if (configLoadedFromBackend !== undefined &&
-			configLoadedFromBackend !== {} &&
-			configLoadedFromBackend.values) {
-			// Standard case: Get config from backend
-			this.values = configLoadedFromBackend.values;
-		} else {
-			// Use default config on first load
-			configLoadedFromBackend.values = this.values;
-		}
-	};*/
-
-	
-	//-----
-
-
 	var instances = {};
 
 	var Config = (function() {
@@ -42,8 +20,6 @@ this.initialize = function(configLoadedFromBackend) {
 	                this.comment = angular.copy(appConfig.comment ? appConfig.comment : 'New Sticky Note');
 	            }
 	            this.isInitialized = true;
-	            console.log("t");
-				console.log(appConfig);
 			};
 		};
 	})();
