@@ -1,0 +1,5 @@
+.app-stickyNote-container {
+    margin-top: 10px;
+    height: 145px;
+    overflow: auto;
+}
