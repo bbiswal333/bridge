@@ -59,6 +59,8 @@ angular.module('app.transportNew').appTransportSettings = ['$scope', '$http', 'a
 			label: owner.VORNA + " " + owner.NACHN,
 			selector: owner.BNAME + ";" + owner.SAPNA
 		});
+
+		$scope.owner = {};
 	};
 
 	$scope.removeOwner = function(item) {
