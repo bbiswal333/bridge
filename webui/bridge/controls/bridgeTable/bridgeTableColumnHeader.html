@@ -1,0 +1,4 @@
+<div class="box-title tableCell cellMargin tableTitle" ng-class="applyColumnClass(column)" ng-click="sort(column.orderBy)">
+    {{column.header}}
+    <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === column.orderBy"></i>
+</div>

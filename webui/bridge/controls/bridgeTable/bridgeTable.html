@@ -4,14 +4,11 @@
         <br />
     </div>
 </div>
-<div style="overflow: auto">
-    <div style="position:relative; display:table; min-width: 100%" ng-class="applyTableClass()">
+<div style="overflow: auto" class="tableFlipped">
+    <div style="position:relative; display:table; min-width: 100%" class="tableContent" ng-class="applyTableClass()">
         <div infinitescroll>
-            <div class="row" >
-                <div ng-repeat="column in columns" class="box-title tableCell cellMargin tableTitle" ng-class="applyColumnClass(column)" ng-click="sort(column.orderBy)" ng-if="column.visible">
-                    {{column.header}}
-                    <i class="fa" ng-class="{'fa-sort-desc' : reverse,  'fa-sort-asc' : !reverse}" ng-if="predicate === column.orderBy"></i>
-                </div>
+            <div class="row">
+                <bridge.table-column-header ng-repeat="column in columns | orderBy: 'columnOrder'" ng-if="column.visible"></bridge.table-column-header>
             </div>
             <div class="row" ng-repeat="row in tableData | filter:filter() | orderBy:predicate:reverse | limitTo:infinityLimit track by $index" ng-class="zebraCell($index)">
                 <div custom-transclude="parent" class="cell-parent"></div>

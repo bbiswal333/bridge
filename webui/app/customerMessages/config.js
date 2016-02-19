@@ -13,6 +13,7 @@ angular.module('app.customerMessages').service("app.customerMessages.configservi
         this.data.selection.colleagues = false;
         this.data.lastDataUpdate = null;
         this.data.columnVisibility = [true, true, false, true, true, true];
+        this.data.columnOrder = [0, 1, 2, 3, 4, 5];
 
         this.appId = appId;
         this.isInitialized = false;

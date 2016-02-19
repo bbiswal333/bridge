@@ -17,21 +17,23 @@
 		<br/>
 
 		<bridge.table table-data="tableData" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIOSTXT'">{{row.PRIOSTXT}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'THEMKEXT'">{{row.THEMKEXT}}</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUSSTXT'">{{row.STATUSSTXT}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Processor'" column-size-class="'col-sm-3'" order-by="'username'">
-				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.SUSID}}?s=60x60"
-					 class="im-reporter-img"
-					 style="height: 32px;"
-					 ng-if="row.SUSID"></img>
-				<a target="_blank" href="{{row.url}}">{{row.username}}</a>
-				<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
-			</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'KTEXT'">
-				<a target="_blank" href="{{row.ticket_url}}">{{row.KTEXT}}</a>
-			</bridge.table-column>
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIOSTXT'">{{row.PRIOSTXT}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'THEMKEXT'">{{row.THEMKEXT}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUSSTXT'">{{row.STATUSSTXT}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Processor'" column-size-class="'col-sm-3'" order-by="'username'">
+					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.SUSID}}?s=60x60"
+						 class="im-reporter-img"
+						 style="height: 32px;"
+						 ng-if="row.SUSID"></img>
+					<a target="_blank" href="{{row.url}}">{{row.username}}</a>
+					<a href="mailto:{{row.mail}}"><p class="table-icon-small icon-mail"></p></a>
+					<a href="tel:{{row.tel}}"><p class="table-icon-small icon-phone"></p></a>
+				</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Description'" column-size-class="'col-sm-4'" order-by="'KTEXT'">
+					<a target="_blank" href="{{row.ticket_url}}">{{row.KTEXT}}</a>
+				</bridge.table-column>
+			</bridge.table-column-sorter>
 		</bridge.table>
 
     </div>

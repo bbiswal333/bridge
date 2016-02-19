@@ -61,6 +61,9 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     };
 
     $scope.getFormattedDate = function(dateString){
+        if(!dateString) {
+            return dateString;
+        }
         var str = dateString.toString();
         return str.substring(6, 8) + "." + str.substring(4, 6) + "." + str.substring(0, 4);
     };

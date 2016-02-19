@@ -9,6 +9,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 			this.firstOccurence = undefined;
 			this.isInitialized = false;
 			this.akhResponsibles = [];
+			this.columnOrder = [0, 1, 2, 3, 4, 5];
 
 			this.initialize = function() {
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
@@ -19,6 +20,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems.map(function(system) { if(system.value) { return system; } else { return {exclude: false, value: system}; } } ) : []);
 	                this.firstOccurence = appConfig.firstOccurence ? new Date(appConfig.firstOccurence) : undefined;
 	                this.openTransportThreshold = angular.copy(appConfig.openTransportThreshold ? appConfig.openTransportThreshold : 7);
+	                this.columnOrder = angular.copy(appConfig.columnOrder ? appConfig.columnOrder : [0, 1, 2, 3, 4, 5]);
 	            }
 	            this.isInitialized = true;
 			};

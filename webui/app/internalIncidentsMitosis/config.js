@@ -10,6 +10,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 			this.processors = [];
 			this.akhResponsibles = [];
 			this.detailsColumnVisibility = [false, true, true, true, true, true, false, false, true, true, false, false];
+			this.columnOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 			function checkProgramSystems(program) {
 				var programSystemsLengthAtStart = program.SYSTEMS.length;
@@ -59,6 +60,7 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 	                this.processors = angular.copy(appConfig.processors ? appConfig.processors : []);
 	                this.akhResponsibles = angular.copy(appConfig.akhResponsibles ? appConfig.akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : []);
 	    			this.detailsColumnVisibility = appConfig.detailsColumnVisibility ? appConfig.detailsColumnVisibility : [false, true, true, true, true, true, false, false, true, true, false, false];
+	    			this.columnOrder = appConfig.columnOrder ? appConfig.columnOrder : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 	    			this.programs.map(function(program) {
 	    				checkProgramSystems(program);

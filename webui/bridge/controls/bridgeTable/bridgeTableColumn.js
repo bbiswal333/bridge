@@ -10,7 +10,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             columnSizeClass: '&',
             orderBy:  '&?',
             visible: '=?',
-            customStyle: '@'
+            customStyle: '@',
+            columnOrder: '='
         },
         controller: function($scope) {
             $scope.applyClass = function() {
@@ -30,6 +31,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
 
             $scope.$watch("columnData", function(){
                 $scope.visible = $scope.columnData.visible;
+                $scope.columnOrder = parseInt($scope.columnData.columnOrder);
             }, true);
 
             $scope.columnData = {
@@ -37,7 +39,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 header: $scope.header(),
                 columnSizeClass: $scope.columnSizeClass(),
                 orderBy: $scope.orderBy(),
-                visible: $scope.visible
+                visible: $scope.visible,
+                columnOrder: $scope.columnOrder
             };
 
             $scope.newLayout = tableController.usesNewLayout();

@@ -10,21 +10,23 @@
 		<br/>
 		<br/>
 		<bridge.table table-data="tableData" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Priority'" column-size-class="'col-sm-1'" order-by="'priority.__text'">{{row.priority.__text}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'component.__text'">{{row.component.__text}}</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-2'" order-by="'status.__text'">{{row.status.__text}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'reporterEnhanced.username'">
-				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.reporter._alternateId}}?s=60x60"
-					 class="im-reporter-img"
-					 style="height: 32px"
-					 ng-if="row.reporterEnhanced.BNAME"></img>
-				<a class="clickable" ng-click="parentScope.userClick(row.reporterEnhanced)">{{row.reporterEnhanced.fullName}}</a>
-				<a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-			</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Description'" column-size-class="'col-sm-4'" order-by="'shortText.__text'">
-				<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
-			</bridge.table-column>
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Priority'" column-size-class="'col-sm-1'" order-by="'priority.__text'">{{row.priority.__text}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'component.__text'">{{row.component.__text}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-2'" order-by="'status.__text'">{{row.status.__text}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'reporterEnhanced.username'">
+					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.reporter._alternateId}}?s=60x60"
+						 class="im-reporter-img"
+						 style="height: 32px"
+						 ng-if="row.reporterEnhanced.BNAME"></img>
+					<a class="clickable" ng-click="parentScope.userClick(row.reporterEnhanced)">{{row.reporterEnhanced.fullName}}</a>
+					<a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+					<a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+				</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Description'" column-size-class="'col-sm-4'" order-by="'shortText.__text'">
+					<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
+				</bridge.table-column>
+			</bridge.table-column-sorter>
 		</bridge.table>
 
     </div>

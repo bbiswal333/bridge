@@ -1,5 +1,22 @@
-angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip"]);
-angular.module('bridge.controls').directive('bridge.table', function() {
+angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip", "bridge.service"]);
+angular.module('bridge.controls').directive('bridge.table', ["$compile", "$rootScope", "bridgeConfig", "bridgeDataService", function($compile, $rootScope, bridgeConfig, bridgeDataService) {
+    function alignSortValues(oMetadata) {
+        oMetadata.sort(function(a, b) {
+            if(a.columnOrder > b.columnOrder) {
+                return 1;
+            } else if(a.columnOrder < b.columnOrder) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        for(var i = 0, length = oMetadata.length; i < length; i++) {
+            oMetadata[i].columnOrder = i * 2;
+        }
+        return oMetadata;
+    }
+
     return {
         restrict: 'E',
         templateUrl: 'bridge/controls/bridgeTable/bridgeTable.html',
@@ -58,6 +75,13 @@ angular.module('bridge.controls').directive('bridge.table', function() {
 
             $scope.columns = [];
 
+            $scope.$watch("columns", function(newValue, oldValue) {
+                if(newValue !== oldValue) {
+                    $scope.columns = alignSortValues(newValue);
+                    bridgeConfig.store(bridgeDataService);
+                }
+            }, true);
+
             this.registerColumn = function(column){
                 var existingColumn = _.find($scope.columns, {"id": column.id});
                 if (existingColumn === undefined) {
@@ -69,4 +93,4 @@ angular.module('bridge.controls').directive('bridge.table', function() {
             };
         }]
     };
-});
+}]);

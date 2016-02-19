@@ -4,6 +4,7 @@ angular.module('app.transportNew').controller('app.transportNew.detailController
 
         var transportData = dataService.getInstanceFor($routeParams.appId);
         var transportConfig = configService.getInstanceForAppId($routeParams.appId);
+        $scope.config = transportConfig;
 
         function setTransports() {
                 if($routeParams.category === "open") {
