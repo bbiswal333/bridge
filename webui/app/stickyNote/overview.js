@@ -1,9 +1,9 @@
 ﻿angular.module('app.stickyNote', ['app.stickyNote.data']);
-angular.module('app.stickyNote').directive('app.stickyNote', 
-	['app.stickyNote.configService', 'app.stickyNote.dataService', 
-	function (configService, dataService) {
+angular.module('app.stickyNote').directive('app.stickyNote',
+	['app.stickyNote.configService', 'app.stickyNote.dataService',
+	function (configService) {
 
-	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
+	var directiveController = ['$scope', function ($scope ) {
 
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure your Sticky Note";
@@ -14,16 +14,15 @@ angular.module('app.stickyNote').directive('app.stickyNote',
 		};
 
 		var appConfig = configService.getInstanceForAppId($scope.metadata.guid);
-		$scope.appConfig = appConfig; 
+		$scope.appConfig = appConfig;
 
 		// Bridge framework function to enable saving the config
 		$scope.box.returnConfig = function(){
 			return angular.copy(appConfig);
 		};
-
 	}];
 
-	var linkFn = function ($scope, $window, notifier) {
+	var linkFn = function ($scope) {
 
 		var appConfig = configService.getInstanceForAppId($scope.metadata.guid);
 		appConfig.initialize($scope.appConfig);
@@ -39,7 +38,7 @@ angular.module('app.stickyNote').directive('app.stickyNote',
 
 		$scope.$watch("appConfig.comment", function () {
 			$scope.box.comment = $scope.appConfig.comment;
-		}, true); 
+		}, true);
 	};
 
 	return {

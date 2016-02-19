@@ -1,6 +1,5 @@
-angular.module('app.stickyNote').service("app.stickyNote.configService", 
-	['bridgeDataService', 'bridge.AKHResponsibleFactory', 
-	function (bridgeDataService, AKHResponsibleFactory) {
+angular.module('app.stickyNote').service("app.stickyNote.configService",
+	['bridgeDataService',function (bridgeDataService) {
 
 	var instances = {};
 
@@ -9,14 +8,13 @@ angular.module('app.stickyNote').service("app.stickyNote.configService",
 			this.boxSize = [];
 			this.color = [];
 			this.comment = [];
-			
 			this.initialize = function() {
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
 				if (appConfig !== undefined && appConfig !== {}) {
 	                this.boxSize = angular.copy(appConfig.boxSize ? appConfig.boxSize : '1');
 	                this.color = angular.copy(
 	                	(appConfig.color ?
-	                		(appConfig.color.length > 0 ? appConfig.color : "#000000") : appConfig.color="#000000" ));
+	                		(appConfig.color.length > 0 ? appConfig.color : "#000000") : appConfig.color = "#000000" ));
 	                this.comment = angular.copy(appConfig.comment ? appConfig.comment : 'New Sticky Note');
 	            }
 	            this.isInitialized = true;
@@ -30,5 +28,5 @@ angular.module('app.stickyNote').service("app.stickyNote.configService",
 		}
 
 		return instances[appId];
-	};	
+	};
 }]);
