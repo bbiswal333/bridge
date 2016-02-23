@@ -10,7 +10,7 @@ angular.module('app.incidentSavedSearch')
 
             if (angular.isArray($scope.savedSearches)) {
                 angular.forEach($scope.savedSearches, function (savedSearch) {
-                    if (savedSearch.GUID === config.data.selectedSearchGuid) {
+                    if (savedSearch.PARAMETER_ === config.data.selectedSearchGuid) {
                         savedSearch.isSelected = true;
                     }
                 });
@@ -26,7 +26,7 @@ angular.module('app.incidentSavedSearch')
                 });
 
                 clickedSavedSearch.isSelected = true;
-                $scope.config.data.selectedSearchGuid = clickedSavedSearch.GUID;
+                $scope.config.data.selectedSearchGuid = clickedSavedSearch.PARAMETER_;
                 ticketData.loadTicketData(true);
             };
         }
