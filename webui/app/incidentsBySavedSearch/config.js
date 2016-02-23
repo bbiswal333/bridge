@@ -18,7 +18,7 @@ angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.confi
             };
 
             this.getSelectedSavedSearch = function(){
-                return _.find(savedSearchData.savedSearches, { GUID: this.data.selectedSearchGuid });
+                return _.find(savedSearchData.savedSearches, { PARAMETER_: this.data.selectedSearchGuid });
             };
         };
 
