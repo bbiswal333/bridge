@@ -6,7 +6,7 @@ describe("Incidents By Saved Search config", function(){
             var mockSavedSearchData = {
                 getInstanceForAppId: function () {
                     return {
-                        savedSearches: [{GUID: "1234", DESCRIPTION: "TestDummy"}]
+                        savedSearches: [{PARAMETER_: "1234", DESCRIPTION: "TestDummy"}]
                     };
                 }
             };
