@@ -1,7 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
     ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo", "bridge.service.backgroundSetter",
     function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo, backgroundSetter) {
-
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -162,8 +161,6 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.$on('bridgeConfigLoadedReceived', function () {
             bridgeInBrowserNotification.setScope($scope);
-            bridgeInBrowserNotification.addAlert('danger','ACRF data is not up to date at the moment. Therefore, filters like Delivery Manager, Component Owner and more do not work.');
-
             // bridgeInBrowserNotification.addAlert('success', 'Please take a moment to give us your feedback! We would greatly appreciate if you take 5 minutes to complete our <a target="_blank" href="https://surveys.sap.com/SE/?SID=SV_3EmN0DgQvqNOe8Z">usability survey</a>. The survey will be available until 16th October.', 60);
             $scope.dustBinModel = [];
             $scope.bridgeSettings = bridgeDataService.getBridgeSettings();
