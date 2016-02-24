@@ -150,6 +150,10 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
 		});
 	}
 
+    function createAKHResponsible(responsible) {
+		return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId);
+	}
+
 	Config.prototype.initialize = function (sAppId) {
 	    this.isInitialized = true;
 	    var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
@@ -178,7 +182,7 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
 	            currentConfigItem.displayPrio4 = persistedConfig.configItems[configItem].displayPrio4;
 	            currentConfigItem.onlyInProcess = persistedConfig.configItems[configItem].onlyInProcess;
 	            currentConfigItem.showSuppressed = persistedConfig.configItems[configItem].showSuppressed;
-	            currentConfigItem.akhResponsibles = persistedConfig.configItems[configItem].akhResponsibles ? persistedConfig.configItems[configItem].akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : [];
+	            currentConfigItem.akhResponsibles = persistedConfig.configItems[configItem].akhResponsibles ? persistedConfig.configItems[configItem].akhResponsibles.map(createAKHResponsible) : [];
               	currentConfigItem.softwareComponents = persistedConfig.configItems[configItem].softwareComponents ? parseConfigItems(persistedConfig.configItems[configItem].softwareComponents) : (persistedConfig.configItems[configItem].softwareComponent ? [{value: persistedConfig.configItems[configItem].softwareComponent}] : []);
 	            currentConfigItem.srcSystems = persistedConfig.configItems[configItem].srcSystems ? parseConfigItems(persistedConfig.configItems[configItem].srcSystems) : (persistedConfig.configItems[configItem].srcSystem ? [{value: persistedConfig.configItems[configItem].srcSystem}] : []);
 	            currentConfigItem.tadirResponsibles = persistedConfig.configItems[configItem].tadirResponsibles ? persistedConfig.configItems[configItem].tadirResponsibles : (persistedConfig.configItems[configItem].tadirResponsible ? [persistedConfig.configItems[configItem].tadirResponsible] : []);
