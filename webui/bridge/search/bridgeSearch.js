@@ -43,9 +43,9 @@ angular.module("bridge.search").service("bridge.search", ['$q', 'bridgeDataServi
 		var bridgeSettings = bridgeDataService.getBridgeSettings();
 		promises = searchProviders.map(function(provider) {
 			if (bridgeSettings.searchProvider[provider.getSourceInfo().name].selected) {
-				var result = {info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn()};
+				var result = { info: provider.getSourceInfo(), results: [], callbackFn: provider.getCallbackFn(), metadata : { } };
 				resultArray.push(result);
-				var promise = provider.findMatches(query, result.results);
+				var promise = provider.findMatches(query, result.results, result.metadata);
 				if (promise) {
 					return promise;
 				}
