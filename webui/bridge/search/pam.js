@@ -8,7 +8,7 @@ angular.module('bridge.search').service('bridge.search.pamSearch', ['$http', '$w
         };
     };
     this.findMatches = function(query, resultArray, metadata) {
-    	
+
 		return $http.get('https://i7p.wdf.sap.corp/odataint/pam/bridge/BridgeSearchResults?$format=json&search=*' + query + '*&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {

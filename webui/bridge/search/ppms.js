@@ -8,13 +8,13 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
         };
     };
     this.findMatches = function(query, resultArray, metadata) {
-    	
+
     	var host = 'https://i7p.wdf.sap.corp';
-    	
+
 		return $http.get(host + '/odataint/borm/bridge/BridgeSearchResults?$format=json&search=' + query + '&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {
-            		resultArray.push({ type: result.Type, typetooltip: result.TypeTooltip, 
+            		resultArray.push({ type: result.Type, typetooltip: result.TypeTooltip,
             						   title: result.Title, description: result.Description, originalResult: result});
             	});
             	if (metadata !== undefined) {
@@ -22,7 +22,7 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
             		metadata.showMore = function()  {
 	            		$window.open(host + '/sap/internal/ppms/start?ui=SEARCH&uidetail=' + query);
 	            	};
-            	}                
+            	}
             }
         );
     };

@@ -142,14 +142,14 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                     hideResults();
                 }
             };
-            
+
             $scope.fireShowMoreCallback = function() {
-                if ($scope.results[hierarchyIndex].metadata != undefined && typeof $scope.results[hierarchyIndex].metadata.showMore === "function") {                
+                if ($scope.results[hierarchyIndex].metadata !== undefined && typeof $scope.results[hierarchyIndex].metadata.showMore === "function") {
                     $scope.results[hierarchyIndex].metadata.showMore();
                     hideResults();
                 }
-            };            
-            
+            };
+
         }
     };
 }]);
