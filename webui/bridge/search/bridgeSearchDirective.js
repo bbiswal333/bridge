@@ -136,6 +136,10 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                 $scope.selectedItem = $scope.results[hierarchyIndex].results[resultIndex];
             };
 
+            $scope.mouseDeselection = function() {
+            	removeSelection();
+            };
+
             $scope.fireSelectedCallback = function() {
                 if($scope.selectedItem && $scope.results[hierarchyIndex].callbackFn) {
                     $scope.results[hierarchyIndex].callbackFn($scope.selectedItem, $scope);
