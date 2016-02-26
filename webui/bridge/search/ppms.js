@@ -3,12 +3,15 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
         return {
             icon: "fa fa-cubes",
             name: "PPMS",
-            resultTemplate: "bridge/search/ppmsTemplate.html",
+            resultTemplate: "bridge/search/ppms.html",
             defaultSelected : true
         };
     };
     this.findMatches = function(query, resultArray, metadata) {
-		return $http.get('https://i7d.wdf.sap.corp/odataint/borm/bridge/BridgeSearchResults?$format=json&search=' + query + '&$inlinecount=allpages&origin=' + $window.location.origin).then(
+    	
+    	var host = 'https://i7p.wdf.sap.corp';
+    	
+		return $http.get(host + '/odataint/borm/bridge/BridgeSearchResults?$format=json&search=' + query + '&$inlinecount=allpages&origin=' + $window.location.origin).then(
             function(response) {
             	response.data.d.results.map(function(result) {
             		resultArray.push({ type: result.Type, typetooltip: result.TypeTooltip, 
@@ -17,7 +20,7 @@ angular.module('bridge.search').service('bridge.search.ppmsSearch', ['$http', '$
             	if (metadata !== undefined) {
             		metadata.count = response.data.d.__count;
             		metadata.showMore = function()  {
-	            		$window.open("https://i7d.wdf.sap.corp/sap/internal/ppms/start?ui=SEARCH&uidetail=" + query);
+	            		$window.open(host + '/sap/internal/ppms/start?ui=SEARCH&uidetail=' + query);
 	            	};
             	}                
             }
