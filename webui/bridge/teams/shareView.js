@@ -15,6 +15,6 @@ angular.module("bridge.teams").controller("bridge.viewBar.shareViewController", 
         };
 
         $scope.shareViaMail = function() {
-            $window.open("mailto:" + $scope.recipients.map(function(recipient) { return recipient.BNAME; }).join(";") + "?body=" + $scope.viewUrl);
+            $window.open("mailto:" + $scope.recipients.map(function(recipient) { return recipient.BNAME; }).join(";") + "?body=" + escape($scope.viewUrl));
         };
 }]);
