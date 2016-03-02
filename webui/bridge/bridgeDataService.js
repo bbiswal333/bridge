@@ -63,7 +63,10 @@
                     that.projects.splice(that.projects.indexOf(project), 1);
                     deferred.reject();
                 } else {
+                    project.view = data.view;
                     project.name = data.name;
+                    project.owner = data.owner;
+                    project.type = data.type;
                     project.apps = parseApps(data);
                     deferred.resolve(project);
                 }
