@@ -209,7 +209,7 @@
                 bridgeConfig.configSnapshot = angular.copy(config);
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
-                $q.all(viewPromises).then(function() {
+                $q.all(viewPromises).finally(function() {
                     initialized = true;
                 });
             }
