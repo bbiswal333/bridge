@@ -13,6 +13,7 @@
 		"playbook.js",
 		"portal.js",
 		"pam.js",
+		"ppms.js",
 		"tetris.js",
 		"bridgeSearchSettingsController.js",
 		"locationSearch.js",
@@ -35,6 +36,7 @@
 	  "bridge.search.calc",
 	  "bridge.search.saptermSearch", 
 	  "bridge.search.quicklinkSearch",
-	  "bridge.search.pamSearch"
+	  "bridge.search.pamSearch",
+	  "bridge.search.ppmsSearch"        
 	]
 }
