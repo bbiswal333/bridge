@@ -5,3 +5,12 @@
 	margin: 4px 8px;
 	display: inline-block;
 }
+
+div.icon_right_transport .fa-plus {
+	right: 7px !important;
+	left: auto !important;
+}
+
+div.icon_right_transport .bridge-input {
+	padding-left: 7px !important;
+}
