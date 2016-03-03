@@ -14,5 +14,5 @@
 	},
 	"modules" : [],
 	"js_files" : ["overview.js", "milestone.js", "settings.js", "config.js", "data.js", "timeParser.js", "program.js"],
-	"css_files" : ["style.css"]
+	"css_files" : []
 }
