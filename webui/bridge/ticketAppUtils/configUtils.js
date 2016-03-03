@@ -21,7 +21,8 @@ angular.module("bridge.ticketAppUtils").service("bridge.ticketAppUtils.configUti
             var myPopover = $popover(angular.element(eventClick.currentTarget), {
                 template: 'bridge/ticketAppUtils/enterIncidentTemplate.html',
                 trigger: 'manual',
-                placement: 'right'
+                placement: 'right',
+                autoClose: 'true'
             });
             myPopover.$promise.then(function () {
                 myPopover.show();
