@@ -6,32 +6,76 @@
 <div style="width: 100%;">
     <div class="row">
 
-        <div style="width:100%;float:left;margin:5px 0 15px 0;">
+        <div style="width:100%;float:left;margin:5px 0 15px 5px;">
 
                 <bridge.button style="margin-right:0px;" ng-click="bShowSelectionDetails = true;" >Create new Selection</bridge.button>
 
         </div>
 
+
+
         <div ng-show="bShowSelectionDetails == true">
+
+
+        
             <div class="row" style="margin: 10px">
-                <div style="width:100%;float:left;margin:25px 0 10 0;" class="btn-group">
-                    <bridge.checkbox style="margin-right: 15px;" checked-label="Display Suppressed" unchecked-label="Display Suppressed" is-checked="currentConfigValues.showSuppressed"></bridge.checkbox>
 
-                    <bridge.checkbox style="margin-right: 15px;" checked-label="Ignore Completed" unchecked-label="Ignore Completed" is-checked="currentConfigValues.onlyInProcess"></bridge.checkbox>
 
-                    <bridge.checkbox style="margin-right: 30px;" checked-label="Only Production Relevant" unchecked-label="Only Production Relevant" is-checked="currentConfigValues.onlyProductionRelevant"></bridge.checkbox>
+                <div class="rTable">
+                <div class="rTableRow">
+                <div class="rTableCell">
 
+                <div style="width:100%; float:left; margin:25px 0 10 0; line-height: 40px;" class="btn-group">
+                    1. Choose display option:
+                </div>
+
+
+                <div style="width:100%; float:left; margin:25px 0 10 0; padding-left: 40px;" class="btn-group">
+                    <bridge.checkbox style="margin-right:40px;" checked-label="Display Suppressed" unchecked-label="Display Suppressed" is-checked="currentConfigValues.showSuppressed"></bridge.checkbox>
+
+                    <bridge.checkbox style="margin-right:40px;" checked-label="Ignore Completed" unchecked-label="Ignore Completed" is-checked="currentConfigValues.onlyInProcess"></bridge.checkbox>
+
+                    <bridge.checkbox style="margin-right:40px;" checked-label="Only Production Relevant" unchecked-label="Only Production Relevant" is-checked="currentConfigValues.onlyProductionRelevant"></bridge.checkbox>
+                </div>
+                </div>
+
+
+                <div class="rTableCell atc_border"> 
+
+                <div style="width:100%; float:left; margin:25px 0 10 0; padding-left: 30px; line-height: 40px;" class="btn-group">
+                    2. Choose priorities:
+                </div>
+
+
+                <div style="width:100%;float:left;margin:25px 0 10 0; padding-left: 70px;" class="btn-group">
                     <bridge.checkbox style="margin-right: 20px;" checked-label="Prio1" unchecked-label="Prio1" is-checked="currentConfigValues.displayPrio1"></bridge.checkbox>
                     <bridge.checkbox style="margin-right: 20px;" checked-label="Prio2" unchecked-label="Prio2" is-checked="currentConfigValues.displayPrio2"></bridge.checkbox>
                     <bridge.checkbox style="margin-right: 20px;" checked-label="Prio3" unchecked-label="Prio3" is-checked="currentConfigValues.displayPrio3"></bridge.checkbox>
                     <bridge.checkbox style="margin-right: 20px;" checked-label="Prio4" unchecked-label="Prio4" is-checked="currentConfigValues.displayPrio4"></bridge.checkbox>
                 </div>
+                </div>
+
+                </div>
+                </div>
+
             </div>
 
 
 
+<hr noshade size="1">
+
+
+            <div class="rTable">
+            <div class="rTableRow">
+            <div class="rTableCell">
+
             <div class="row" style="margin: 10px">
-                <div style="margin: 10px">
+
+                <div style:"width:100%;float:left;margin:25px 0 10 0; line-height: 40px;">
+                3. Choose your search-parameter:
+                </div>
+
+                <div style="margin: 10px;">
                     <div class="atc-input-field">
                          <bridge.input style="float:left;" model="currentConfigValues.srcSystem" placeholder="Source System..." icon="fa fa-plus" icon-click="onSelectSystem(currentConfigValues.srcSystem)" autofocus enter="onSelectSystem(currentConfigValues.srcSystem)"></bridge.input>
                     </div>
@@ -42,7 +86,11 @@
 
                     <div class="atc-input-field">
                         <bridge.employee-input selected-employee="currentConfigValues.tadirResponsible" style="float: left;width:100%;" placeholder="'Object Responsible...'" required="false" icon="fa fa-plus" on-select="onSelectResponsible"></bridge.employee-input>
-                      </div>
+                    </div>
+
+                </div>
+
+                <div style="margin: 10px; float:left;">
                             
                     
                     <div class="atc-input-field">
@@ -54,24 +102,61 @@
                         <bridge.input model="currentConfigValues.softwareComponent" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/atc/Component.html" input-typeahead="component as component for component in searchSoftwareComponent($viewValue)" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(currentConfigValues.softwareComponent)" autofocus enter="onSelectSoftwareComponent(currentConfigValues.softwareComponent)"></bridge.input>
                     </div>
                 </div>
+
             </div>
-            <div class="row" style="margin: 10px">
-                <div class="atc-input-field">
-                    First Occurence: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Show Weeks" close-text="Close" />
+
+            </div>
+            </div>
+            </div>
+
+
+<hr noshade size="1">
+
+
+        <div class="row" style="margin: 10px">
+
+            <div class="rTable">
+            <div class="rTableRow">
+            <div class="rTableCell">
+
+            
+            
+                <div style="width:100%;float:left;margin:25px 0 10 0; line-height: 40px;">
+                4. Choose the first occurance:
                 </div>
-            </div>
-            <div class="row" style="margin: 10px">
-                <div class="atc-input-field">
-                    ACH Responsible:<br />
-                    <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
+
+
+                <div class="atc-input-field" style="padding-left: 40px;">
+                    <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.firstOccurence" current-text="Today" clear-text="Clear" toggle-weeks-text="Weeks" close-text="Close" placeholder="First Occurance" />
                 </div>
+
+
             </div>
+            <div class="rTableCell atc_border">
+
+            
+                <div style="width:100%; float:left; margin:25px 0 10 0; line-height: 40px; padding-left: 30px;">
+                5. Choose the ACH responsible:
+                </div>
+
+                <div class="atc-input-field" style="padding-left: 70px;">
+                <bridge.akh-responsible-selector responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-selector>
+                </div>
+
+            </div>
+            </div>
+            </div>
+
+
+        </div>
+
+
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.srcSystems.length > 0">
                 Source Systems:
                 <bridge.tag ng-repeat="system in currentConfigValues.srcSystems" exclude="system.exclude" remove-click="removeSystem(system, currentConfigValues)">{{system.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.devClasses.length > 0">
-                Packages:
+                Packages: 
                 <bridge.tag ng-repeat="package in currentConfigValues.devClasses" exclude="package.exclude" remove-click="removePackage(system, currentConfigValues)">{{package.value}}</bridge.tag>
             </div>
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.tadirResponsibles.length > 0">
@@ -139,17 +224,17 @@
                     </td>
                     <td data-title="'Display Suppressed'">
                         <span>
-                            <input type="checkbox" ng-model="configItem.showSuppressed">
+                            <bridge.checkbox is-checked="configItem.showSuppressed"></bridge.checkbox>
                         </span>
                     </td>
                     <td data-title="'Ignore Completed'">
                         <span>
-                            <input type="checkbox" ng-model="configItem.onlyInProcess">
+                            <bridge.checkbox is-checked="configItem.onlyInProcess"></bridge.checkbox>
                         </span>
                     </td>
                     <td data-title="'Only Production Relevant'">
                         <span>
-                            <input type="checkbox" ng-model="configItem.onlyProductionRelevant">
+                            <bridge.checkbox is-checked="configItem.onlyProductionRelevant"></bridge.checkbox>
                         </span>
                     </td>
                     <td data-title="'Priorities'">

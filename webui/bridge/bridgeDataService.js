@@ -63,7 +63,10 @@
                     that.projects.splice(that.projects.indexOf(project), 1);
                     deferred.reject();
                 } else {
+                    project.view = data.view;
                     project.name = data.name;
+                    project.owner = data.owner;
+                    project.type = data.type;
                     project.apps = parseApps(data);
                     deferred.resolve(project);
                 }
@@ -206,7 +209,7 @@
                 bridgeConfig.configSnapshot = angular.copy(config);
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
-                $q.all(viewPromises).then(function() {
+                $q.all(viewPromises).finally(function() {
                     initialized = true;
                 });
             }
