@@ -147,9 +147,10 @@ angular.module('bridge.search').directive('bridge.search', ['bridge.search', '$i
                 }
             };
 
-            $scope.fireShowMoreCallback = function() {
-                if ($scope.results[hierarchyIndex].metadata !== undefined && typeof $scope.results[hierarchyIndex].metadata.showMore === "function") {
-                    $scope.results[hierarchyIndex].metadata.showMore();
+            $scope.fireShowMoreCallback = function(iHierarchyIndex) {
+            	var metadata = $scope.results[iHierarchyIndex].metadata;
+                if (metadata !== undefined && typeof metadata.showMore === "function") {
+                    metadata.showMore();
                     hideResults();
                 }
             };
