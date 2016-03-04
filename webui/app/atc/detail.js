@@ -6,9 +6,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     $scope.$parent.titleExtension = " - ATC Details";
     $scope.filterText = '';
 
-    $scope.atcData = {};
-    $scope.atcData.detailsData = [];
-
     $scope.atcData = appAtcData.getInstanceForAppId("app.atc-" + $routeParams.instanceNumber);
     $scope.atcData.tableData = [];
 
@@ -20,7 +17,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
 
     $scope.config = atcConfig;
 
-    $scope.loadingPromise = $scope.atcData.getDetailsForConfig(atcConfig, $scope);
+    $scope.loadingPromise = $scope.atcData.getDetailsForConfig(atcConfig);
 
     $scope.atcData.loadOverviewData(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
 
@@ -63,4 +60,11 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
         return Object.keys($scope.statusMap);
     };
 
+    $scope.getFormattedDate = function(dateString){
+        if(!dateString) {
+            return dateString;
+        }
+        var str = dateString.toString();
+        return str.substring(6, 8) + "." + str.substring(4, 6) + "." + str.substring(0, 4);
+    };
 }]);

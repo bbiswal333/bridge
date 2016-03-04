@@ -60,6 +60,14 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
             templateUrl: 'view/overview.html'
         });
 
+        $routeProvider.when("/view/:owner/:id", {
+            templateUrl: 'view/overview.html'
+        });
+
+        $routeProvider.when("/view/:id", {
+            templateUrl: 'view/overview.html'
+        });
+
         $routeProvider.when("/diagnosis", {
             templateUrl: 'bridge/diagnosis/corsTestPage.html',
             controller: 'bridge.diagnosis.corsTestPageController'
@@ -93,6 +101,8 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
         // needed for all requests to abap backends where we use SSO - for all other calls set withCredentials to false
         $httpProvider.defaults.withCredentials = true;
         $httpProvider.interceptors.push('bridge.app.httpInterceptor');
+
+        $httpProvider.useApplyAsync(true);
 
         //allow blob, tel, mailto links
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);

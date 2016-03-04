@@ -44,9 +44,17 @@ angular.module('app.incidentSavedSearch').controller('app.incidentSavedSearch.de
             }
         },true);
 
+        function toFixedLength(value) {
+            if(value.toString().length === 1) {
+                return "0" + value.toString();
+            } else {
+                return value;
+            }
+        }
+
         $scope.getFormattedDate = function(sAbapDate){
             var date = converter.getDateFromAbapTimeString(sAbapDate);
-            return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+            return toFixedLength(date.getDate()) + "." + toFixedLength(date.getMonth() + 1) + "." + date.getFullYear();
         };
 
         function setPrioSelections(active){

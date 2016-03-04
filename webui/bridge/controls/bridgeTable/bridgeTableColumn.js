@@ -9,7 +9,18 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             columnId: '&',
             columnSizeClass: '&',
             orderBy:  '&?',
-            visible: '=?'
+            visible: '=?',
+            customStyle: '@',
+            columnOrder: '='
+        },
+        controller: function($scope) {
+            $scope.applyClass = function() {
+                if($scope.newLayout) {
+                    return 'newLayout_' + $scope.columnSizeClass();
+                } else {
+                    return $scope.columnSizeClass();
+                }
+            };
         },
         link: function ($scope, element, attrs, tableController) {
             if ($scope.visible === undefined || $scope.visible === "true"){
@@ -20,6 +31,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
 
             $scope.$watch("columnData", function(){
                 $scope.visible = $scope.columnData.visible;
+                $scope.columnOrder = parseInt($scope.columnData.columnOrder);
             }, true);
 
             $scope.columnData = {
@@ -27,8 +39,11 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 header: $scope.header(),
                 columnSizeClass: $scope.columnSizeClass(),
                 orderBy: $scope.orderBy(),
-                visible: $scope.visible
+                visible: $scope.visible,
+                columnOrder: $scope.columnOrder
             };
+
+            $scope.newLayout = tableController.usesNewLayout();
 
             $scope.columnData = tableController.registerColumn($scope.columnData);
         }

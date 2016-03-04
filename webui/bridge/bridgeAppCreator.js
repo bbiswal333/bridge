@@ -33,7 +33,7 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 				app.metadata.instanceNumber = parsedGuid.instanceNumber;
 			}
 			if(existingApp !== undefined) {
-				throw new Error("App id already in use: " + metaData.guid);
+				app.metadata.instanceNumber = findNextInstanceNumberForModule(metaData.module_name);
 			}
 		} else {
 			app.metadata.instanceNumber = findNextInstanceNumberForModule(metaData.module_name);

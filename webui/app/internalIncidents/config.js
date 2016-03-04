@@ -8,6 +8,7 @@ angular.module('app.internalIncidents').service("app.internalIncidents.configser
         this.data.selection.assigned_me = false;
         this.data.selection.created_me = false;
         this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false];
+        this.data.columnOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.data.ignoreAuthorAction = true;
 
         this.isInitialized = false;

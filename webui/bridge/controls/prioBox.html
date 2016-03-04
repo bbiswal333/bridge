@@ -1,0 +1,11 @@
+<div class="prio_col prio_bg_{{prio}}" ng-class="{'grey-40': value == 0, 'hover': value !== 0, 'ic-prio_col': hasSettings == true}">
+	<bridge.conditional-link navigate-to="{{navigateTo}}" navigate-if="value!==0">
+		<div class="prio_box" style="color:white">
+			<p>{{label}}</p>
+		</div>
+		<div class="prio_content_box" style="color: white" ng-class="{'prio_content_box_exceeds': value > 9999, 'prio_content_box_exceeds_with_settings': value > 9999 && hasSettings == true}">
+			<span ng-if="value<=9999" class="prio_content_number">{{value}}</span>
+			<span ng-if="value>9999" class="prio_content_number_plus" title="{{value}}">+</span><span ng-if="value>9999" class="prio_content_number" title="{{value}}">9999</span>
+		</div>
+	</bridge.conditional-link>
+</div>

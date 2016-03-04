@@ -1,0 +1,28 @@
+<div style="position: relative">
+    <span class="box-title">SHARE VIEW</span>
+    <div style="height: 1px; width: 100%; background-color: #bbbbbb;margin-top:15px"></div>
+    
+    Share this view {{selectedProject.name}} with others.
+
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12">
+			<bridge.input id="viewUrl" model="viewUrl"></bridge.input><br />
+			<button class="btn clipBoardButton" data-clipboard-target="#viewUrl">Copy to clipboard</button>
+		</div>
+	</div>
+	<br />
+	<span style="font-size: 20px;" class="blue">OR</span>
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;">Share via mail:</div>
+		<div class="col-lg-12">
+			<bridge.employee-input selected-employee="recipient" style="float: left;width:100%;" placeholder="'Employee...'" required="false" icon="fa fa-plus" on-select="onSelectRecipient"></bridge.employee-input>
+		</div>
+		<div class="col-lg-12">
+			<bridge.tag ng-repeat="recipient in recipients" remove-click="removeRecipient(recipient)">{{recipient.VORNA}} {{recipient.NACHN}} ({{recipient.BNAME}}) </bridge.tag>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+	    <div class="btn btn-primary btn_blue save_close_btn" ng-click="shareViaMail()">Share view</div>
+	</div>
+</div>

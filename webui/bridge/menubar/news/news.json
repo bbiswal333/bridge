@@ -137,6 +137,13 @@
             "snapURL":  "bridge/menubar/news/image/roombooking.png",
             "preview":  "We need your feedback on out latest development!",
             "content":  "We are currently investigating shared views for bridge and need your feedback.<br /><br />You will be able to have one personal view which is only visible for yourself. <b>Each view that you create in addtion can be found and displayed by other colleagues.</b><br /><br />In order to test the new functionality, please go to our <a href='https://bridge-teams.mo.sap.corp'>team instance</a><br /><br />Please submit feedback to <a href='mailto:DL_53304587DF15DB5AAC000CD9@exchange.sap.corp?subject=Shared Views'>DL Bridge</a><br /><img src='bridge/menubar/news/image/sharedViews.gif' />"
+        },
+        {
+            "id":       19,
+            "header":   "Internal Incidents Apps Separated",
+            "date":     "2015-11-18",
+            "preview":  "The Internal Incidents app was separated into two apps!",
+            "content":  "Whereas the usual internal incidents app displays your incidents by component selection (Internal Incidents by Component), the new one displays the incidents by program (Internal Incidents by Program).<br /><br />Please add and configure the new app accordingly. As we're still in the piloting phase, your configuration is not migrated to the new app."
         }
 	]
 }

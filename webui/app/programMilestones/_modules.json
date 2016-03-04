@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Others"],
+		"module_name"			:	"app.programMilestones",
+		"title"					:	"Program Milestones",
+		"icon_css"				:	"fa fa-circle",
+		"overview_directive"	:	"app.programMilestones",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"multiInstance"			:	true,
+		"description"			:	"This app provides all upcoming milestones for a program / delivery."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "milestone.js", "settings.js", "config.js", "data.js", "timeParser.js", "program.js"],
+	"css_files" : []
+}

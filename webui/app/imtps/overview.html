@@ -1,17 +1,10 @@
 <div>
 	<div style="width:175px; height:140px">
 		 <div class="prio_container">
-			<a href="#/detail/imtps/{{metadata.guid}}/" >
-			<div ng-repeat="prio in prioarray track by $index" class="prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prioarray[$index]==0}">
-				<div class="prio_box">
-					<p>Prio {{$index+1}}</p>
-				</div>
-				<div class="prio_content_box">
-					<p ng-if="prioarray[$index]<=999">{{prioarray[$index]}}</p>
-					<p ng-if="prioarray[$index]>=1000">+999</p>
-				</div>
-			</div>
-			</a>	
+		 	<bridge.prio-box ng-repeat="prio in prioarray track by $index"
+				prio="{{$index + 1}}" value="prioarray[$index]" label="Prio {{$index+1}}"
+				navigate-to="/detail/imtps/{{metadata.guid}}/">
+			</bridge.prio-box>
 		</div>
 	</div>
 </div>

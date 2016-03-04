@@ -1,0 +1,60 @@
+<div style="width: 100%">
+	<p>
+		<form name="form">
+
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Enter your comment</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<bridge.input id='comment_input' model="values.comment" placeholder='your sticky note' required></bridge.input>
+				</div>
+			</div>
+			<div class="row">&nbsp;</div>
+
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select font color</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+
+				<!--<script> 
+
+				var comment_colors =  {'#000000':'Black','#ff6347':'Red','#045ca2':'Blue'};
+				for (value in comment_colors){					
+					document.write("<bridge.button state=\"(values.color === '#000000' || !values.color) === true ? 'active':'invisible-button'\" ng-click=\"values.color = '#000000'\" style=\"width:100px;margin-left:0;margin-right:0;color:#000000\"> {comment_colors[value]} </bridge.button>");
+				}
+				</script>  -->
+
+					<bridge.button state="(values.color === '#000000' || !values.color) === true ? 'active':'invisible-button'" ng-click="values.color = '#000000'" style="width:100px;margin-left:0;margin-right:0;color:#000000">
+						Black
+					</bridge.button>
+					<bridge.button state="(values.color === '#ff6347' || !values.color) === true ? 'active':'invisible-button'" ng-click="values.color = '#ff6347'" style="width:100px;margin-left:0;margin-right:0;color:#ff6347">
+						Red
+					</bridge.button>
+					<bridge.button state="(values.color === '#045ca2' || !values.color) === true ? 'active':'invisible-button'" ng-click="values.color = '#045ca2'" style="width:100px;margin-left:0;margin-right:0;color:#045ca2">
+						Blue
+					</bridge.button>
+					<bridge.button state="(values.color === '#7abf57' || !values.color) === true ? 'active':'invisible-button'" ng-click="values.color = '#7abf57'" style="width:100px;margin-left:0;margin-right:0;color:#7abf57">
+						Green
+					</bridge.button>
+				</div>
+			</div>
+
+			<div class="row">&nbsp;</div>
+			<div class="row">
+				<div class="col-xs-2 form_head" style="float:none;">Select box size</div>
+				<div class="btn-group" style="margin-left:15px;margin-top:10px">
+					<bridge.button state="(values.boxSize === '1' || !values.boxSize) === true ? 'active':'invisible-button'" ng-click="values.boxSize = '1'" style="width:100px;margin-left:0;margin-right:0;">
+						Small
+					</bridge.button>
+					<bridge.button state="(values.boxSize === '2' || !values.boxSize) === true ? 'active':'invisible-button'" ng-click="values.boxSize = '2'" style="width:100px;margin-left:0;margin-right:0;">
+						Large
+					</bridge.button>
+				</div>
+			</div>
+
+		</form>
+	</p>
+	<div class="row" >
+		<bridge.button ng-click="save_click()" class="save_close_btn">
+			Save & Close
+		</bridge.button>
+	</div>
+</div>

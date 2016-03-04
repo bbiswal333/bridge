@@ -36,9 +36,29 @@ angular.module('bridge.app').directive("bridge.appDropTarget", ["bridge.service.
 		templateUrl: "bridge/controls/appDropTarget.html",
 		transclude: true,
 		replace: true,
+		scope: {
+			isReadonly: '='
+		},
+		controller: function($scope) {
+			$scope.$watch('isReadonly', function() {
+				if($scope.isReadonly === true) {
+					$scope.disableSortable();
+				} else {
+					$scope.enableSortable();
+				}
+			});
+		},
 		require: '?ngModel',
 		link: function(scope, element, attrs, ngModel) {
 			var savedNodes;
+
+			scope.disableSortable = function() {
+				$(element).fixedSortable("disable");
+			};
+
+			scope.enableSortable = function() {
+				$(element).fixedSortable("enable");
+			};
 
 			$(element).fixedSortable({
 				placeholder: "sortable-placeholder",

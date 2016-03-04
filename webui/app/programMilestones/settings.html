@@ -1,0 +1,76 @@
+<script type="text/ng-template" id="bridge/app/programMilestones/Program.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+</script>
+
+<div style="width: 100%">
+
+<!--
+phase types (PR) stored in table:
+zrm_c_phase_type
+
+milestone types (Sirius) stored in table:
+zprs_c_milestone
+
+RTC: 0714, 0928
+
+DC: 0108
+
+CC: 0210, 0932
+
+ECC: 0702, 0922
+-->
+
+
+<form name="ConfigItemForm">
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;"><u>Milestone types:</u></div>
+		<div class="col-lg-12">
+			<bridge.button state="milestoneTypes[0] === 'ALL' ? 'active' : ' '" ng-click="enableAllMilestoneTypes()" style="width:210px">
+		    	All Milestones
+			</bridge.button>
+
+			<bridge.button state="milestoneTypes.indexOf('0108') >= 0 ? 'active' : ' '" ng-click="toggleMilestoneType('0108')" style="width:210px">
+		    	Development Close
+			</bridge.button>
+
+			<bridge.button state="milestoneTypes.indexOf('0210') >= 0 && milestoneTypes.indexOf('0932') >= 0 ? 'active' : ' '" ng-click="toggleMilestoneType('0210'); toggleMilestoneType('0932');" style="width:210px">
+		    	Correction Close
+			</bridge.button>
+
+			<bridge.button state="milestoneTypes.indexOf('0702') >= 0 && milestoneTypes.indexOf('0922') >= 0 ? 'active' : ' '" ng-click="toggleMilestoneType('0702'); toggleMilestoneType('0922')" style="width:210px">
+		    	Emergency Correction Close
+			</bridge.button>
+
+			<bridge.button state="milestoneTypes.indexOf('0714') >= 0 && milestoneTypes.indexOf('0928') >= 0 ? 'active' : ' '" ng-click="toggleMilestoneType('0714'); toggleMilestoneType('0928')" style="width:210px">
+		    	Release to Customer
+			</bridge.button>
+		</div>
+	</div>
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12 form_head" style="float:none;"><u>Program</u></div>
+		<div class="col-lg-12">
+			<bridge.input model="program"
+						enter="onSelectProgram(program)"
+						input-typeahead-wait-ms="200"
+						input-typeahead-min-length="2"
+						input-typeahead-template-url="bridge/app/programMilestones/Program.html"
+						input-typeahead-on-select="onSelectProgram($item)"
+						input-typeahead="program as program.label for program in searchProgram($viewValue)" placeholder="Program.."
+						icon="fa fa-plus"
+						icon-click="onSelectProgram(program)"></bridge.input>
+		</div>
+	</div>
+	<div class="row" style="margin:15px 0 0 0;">
+		<div class="col-lg-12" style="float:none;">
+			<bridge.tag ng-repeat="program in programs" remove-click="removeProgram(program)">{{program.getName()}}</bridge.tag>
+		</div>
+	</div>
+	<div class="row"><br /></div>
+	<div class="row">
+		<bridge.button class="save_close_btn" ng-click="save_click();">Save & Close</bridge.button>
+	</div>	
+</form>
+
+
+
+</div>

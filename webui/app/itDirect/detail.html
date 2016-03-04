@@ -14,23 +14,24 @@
         <br/>
 
         <bridge.table table-data="tickets" filter="filterTable">
-            <bridge.table-column column-id="'1'" header="'Urgency'" column-size-class="'col-sm-1'" order-by="'URGENCY_DESC'">{{row.URGENCY_DESC}}</bridge.table-column>
-            <bridge.table-column column-id="'2'" header="'Component'" column-size-class="'col-sm-2'" order-by="'CAT_ID'">{{row.CAT_ID}}</bridge.table-column>
-            <bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'USER_STATUS_TEXT'">{{row.USER_STATUS_TEXT}}</bridge.table-column>
-            <bridge.table-column column-id="'4'" header="'Creation'" column-size-class="'col-sm-2'" order-by="'CREATED_AT'">{{parentScope.getFormattedDate(row.CREATED_AT)}}</bridge.table-column>
-            <bridge.table-column column-id="'5'" header="'Created By'" column-size-class="'col-sm-3'" order-by="'creator.fullName'">
-                <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.CREATED_BY}}?s=60x60"
-                     class="im-reporter-img"
-                     style="height: 32px;"
-                     ng-if="row.CREATED_BY"></img>
-                <a href="mailto:{{row.creator.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
-                <a href="tel:{{row.creator.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-                <a class="clickable" ng-click="parentScope.userClick(row.creator)">{{row.creator.fullName}}</a>
-            </bridge.table-column>
-            <bridge.table-column column-id="'6'" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">
-                <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
-            </bridge.table-column>
-
+            <bridge.table-column-sorter>
+                <bridge.table-column column-id="1" header="'Urgency'" column-size-class="'col-sm-1'" order-by="'URGENCY_DESC'">{{row.URGENCY_DESC}}</bridge.table-column>
+                <bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'CAT_ID'">{{row.CAT_ID}}</bridge.table-column>
+                <bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-1'" order-by="'USER_STATUS_TEXT'">{{row.USER_STATUS_TEXT}}</bridge.table-column>
+                <bridge.table-column column-id="4" header="'Creation'" column-size-class="'col-sm-2'" order-by="'CREATED_AT'">{{parentScope.getFormattedDate(row.CREATED_AT)}}</bridge.table-column>
+                <bridge.table-column column-id="5" header="'Created By'" column-size-class="'col-sm-3'" order-by="'creator.fullName'">
+                    <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.CREATED_BY}}?s=60x60"
+                         class="im-reporter-img"
+                         style="height: 32px;"
+                         ng-if="row.CREATED_BY"></img>
+                    <a href="mailto:{{row.creator.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+                    <a href="tel:{{row.creator.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+                    <a class="clickable" ng-click="parentScope.userClick(row.creator)">{{row.creator.fullName}}</a>
+                </bridge.table-column>
+                <bridge.table-column column-id="6" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">
+                    <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
+                </bridge.table-column>
+            </bridge.table-column-sorter>
         </bridge.table>
 
     </div>

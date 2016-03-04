@@ -1,0 +1,80 @@
+.projectTabBar {
+	max-width: 1304px;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+
+.projectTabControlsContainer {
+	display: flex;
+	flex-direction: row;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+.projectTabContainer {
+	flex: 9;
+	text-align: left;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+.addViewButtonContainer {
+	width: 50px;
+}
+
+.projectTab {
+	padding: 6px;
+	border: 1px solid #ffffff;
+	margin: 4px 8px;
+	display: inline-block;
+	color: #ffffff;
+	cursor: pointer;
+	vertical-align: top;
+	overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.removeView {
+	color: #ffffff;
+}
+
+.removeView:hover {
+	color: #ff0000;
+}
+
+.addView {
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.projectTab.selected {
+	background-color: #e6e6e6;
+	color: #666666;
+}
+
+.projectTab:hover {
+	background-color: #e6e6e6;
+	color: #666666;
+}
+
+.projectTab input {
+	color: #000000;
+}
+
+.viewScroller {
+	font-size: 30px;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.viewScroller a {
+	color: #ffffff;
+}
+
+.viewScroller a:hover {
+	color: #000000;
+}
