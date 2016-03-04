@@ -3,16 +3,19 @@ exports = module.exports = function(rules) {
     var parts = rule.split(' ');
 
     return {
-      regex: new RegExp(parts[0]),
-      replace: parts[1],
-      last: !!parts[2]
+      hostRegex: new RegExp(parts[0]),
+      pathRegex: new RegExp(parts[1]),
+      replace: parts[2],
+      last: !!parts[3]
     };
   });
 
   return function(req, res, next) {
     rules.some(function(rewrite) {
-      if(req.host.match(rewrite.regex)) {
-        req.url = rewrite.replace;
+      if(req.host.match(rewrite.hostRegex)) {
+        if(req.path.match(rewrite.pathRegex)) {
+          req.url = rewrite.replace;
+        }
       }
       return rewrite.last;
     });

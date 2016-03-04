@@ -189,7 +189,10 @@
                 withCredentials: true,
                 data: viewData,
                 headers: { 'Content-Type': 'application/json' }
-            }).success(function () {
+            }).success(function (data) {
+                if(data.error && data.message === "refresh") {
+                    $window.location.reload();
+                }
                 $log.log("View created successfully in backend");
                 deferred.resolve();
             }).error(function () {
@@ -203,6 +206,9 @@
             var deferred = $q.defer();
             $http.get('https://ifp.wdf.sap.corp/sap/bc/bridge/GET_VIEW?view=' + view + '&instance=' + bridgeInstance.getCurrentInstance() + '&origin=' + encodeURIComponent($window.location.origin)).success(function(data) {
                 if(data.error) {
+                    if(data.message === "refresh") {
+                        $window.location.reload();
+                    }
                     return deferred.reject(data);
                 }
                 deferred.resolve(data);

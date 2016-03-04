@@ -31,7 +31,8 @@ exports.run = function(npm, port) {
 		}
 
 		var rules = [
-			"-teams.mo.sap.corp /teamMigration/index.html"
+			"-teams.mo.sap.corp / /teamMigration/index.html"
+			,"localhost /migrationTest /teamMigration/index.html"
 		];
 		app.use(rewrite(rules));
 
