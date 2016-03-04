@@ -12,9 +12,12 @@ exports = module.exports = function(rules) {
 
   return function(req, res, next) {
     rules.some(function(rewrite) {
+      if(!req.originalUrl) {
+        req.originalUrl = req.url;
+      }
       if(req.host.match(rewrite.hostRegex)) {
         if(req.path.match(rewrite.pathRegex)) {
-          req.url = rewrite.replace;
+          req.url = req.originalUrl.replace(rewrite.pathRegex, rewrite.replace);
         }
       }
       return rewrite.last;
