@@ -14,7 +14,7 @@ exports = module.exports = function(rules) {
     rules.some(function(rewrite) {
       if(req.host.match(rewrite.hostRegex)) {
         if(req.path.match(rewrite.pathRegex)) {
-          req.url = req.url.replace(rewrite.pathRegex, rewrite.replace);
+          req.url = req.path.replace(rewrite.pathRegex, rewrite.replace);
         }
       }
       return rewrite.last;
