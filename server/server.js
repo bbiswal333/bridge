@@ -31,9 +31,11 @@ exports.run = function(npm, port) {
 		}
 
 		var rules = [
-			"-teams.mo.sap.corp /^\/$/ /teamMigration/index.html",
-			"-teams.mo.sap.corp /^\/index.html$/ /teamMigration/index.html",
-			,"localhost /migrationTest /teamMigration/index.html"
+			"-teams.mo.sap.corp ^\/$ /teamMigration/index.html",
+			"-teams.mo.sap.corp ^\/index.html$ /teamMigration/index.html",
+			"localhost /migrationTest /teamMigration/index.html"/*,
+			"localhost ^\/$ /teamMigration/index.html",
+			"localhost ^\/index.html$ /teamMigration/index.html"*/
 		];
 		app.use(rewrite(rules));
 
