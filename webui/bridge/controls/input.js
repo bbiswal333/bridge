@@ -108,7 +108,7 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
                 element.append(angular.element(html));
                 $('input', element).css("background-color", "rgba(0,0,0,0)");
 
-                if(attrs.iconClick) {     
+                if(attrs.iconClick) {
                     $('input', element).css("padding-left", "7px");
                     $('i', element).css("right", "7px");
                 } else {
