@@ -52,7 +52,7 @@
 	                url: "https://ifp.wdf.sap.corp/sap/bc/bridge/MIGRATE_CONFIG?new_timestamp=" + new Date().toISOString() + "&source_instance=" + window.location.hostname + "&target_instance=" + window.location.hostname.replace('-teams', '') + (bSkip ? "&skip_migration=X" : ""),
 	                type: "GET",
 	                success: function(data) {
-	                	window.localStorage.setItem("bridgeConfig", oldConfig);
+	                	//window.localStorage.setItem("bridgeConfig", oldConfig);
 	                	doRedirect();
 	                },
 	                error: function() {
