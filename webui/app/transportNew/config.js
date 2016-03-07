@@ -1,9 +1,14 @@
 angular.module('app.transportNew').service("app.transportNew.configService", ['bridgeDataService', 'bridge.AKHResponsibleFactory', function (bridgeDataService, AKHResponsibleFactory) {
 	var instances = {};
 
+	function getDefaultOwner() {
+		var userInfo = bridgeDataService.getUserInfo();
+		return {label: userInfo.VORNA + " " + userInfo.NACHN, selector: userInfo.BNAME + ";" + userInfo.SAPNA};
+	}
+
 	var Config = (function() {
 		return function(sAppId) {
-			this.owners = [];
+			this.owners = [getDefaultOwner()];
 			this.components = [];
 			this.systems = [];
 			this.firstOccurence = undefined;
@@ -14,7 +19,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 			this.initialize = function() {
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
 				if (appConfig !== undefined && appConfig !== {}) {
-	                this.owners = angular.copy(appConfig.owners ? appConfig.owners : []);
+	                this.owners = angular.copy(appConfig.owners ? appConfig.owners : [getDefaultOwner()]);
 	                this.akhResponsibles = angular.copy(appConfig.akhResponsibles ? appConfig.akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : []);
 	                this.components = angular.copy(appConfig.components ? appConfig.components.map(function(component) { if(component.value) { return component; } else { return {exclude: false, value: component}; } } ) : []);
 	                this.systems = angular.copy(appConfig.systems ? appConfig.systems.map(function(system) { if(system.value) { return system; } else { return {exclude: false, value: system}; } } ) : []);

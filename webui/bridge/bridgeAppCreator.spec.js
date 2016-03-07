@@ -15,6 +15,12 @@ describe("bridgeAppCreator", function() {
 		guid: "app.test-3",
 		title: "my overridden title"
 	};
+	var metaDataTransport = {
+		module_name: "app.transport",
+		guid: "app.transport-1",
+		title: "my overridden title"
+	};
+
 
 	beforeEach(function() {
 		module("bridge.service");
@@ -29,6 +35,10 @@ describe("bridgeAppCreator", function() {
 			{
 				module_name: "app.test2",
 				title: "Test App #2"
+			},
+			{
+				module_name: "app.transportNew",
+				title: "Transport App"
 			}];
 		}]);
 
@@ -122,5 +132,10 @@ describe("bridgeAppCreator", function() {
 		expect(instances.length).toEqual(2);
 		expect(instances[0]).toEqual(instance1);
 		expect(instances[1]).toEqual(instance2);
+	});
+
+	it("should migrate instances of transport app to the new app", function() {
+		var instance = appCreator.createInstance(metaDataTransport, {});
+		expect(instance.metadata.module_name).toEqual("app.transportNew");
 	});
 });
