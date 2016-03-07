@@ -1,6 +1,6 @@
 angular.module("app.internalIncidentsMitosis")
-	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window", "$timeout",
-	function ($http, $q, $window, $timeout) {
+	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window",
+	function ($http, $q, $window) {
 		var AppData = (function() {
 			function toDate(dateString) {
 				if(dateString) {
@@ -23,43 +23,26 @@ angular.module("app.internalIncidentsMitosis")
 	        }
 
 	        function getFilterFromConfig(config) {
-	        	var deferred = $q.defer();
+	        	var filter = "";
+	        	filter += "programFilter=";
+	        	filter += config.programs.map(function(program) {
+	        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
+	        	}).join("|");
+	        	filter += "&systemFilter=";
+	        	filter += (config.excludeSystems ? "!" : "") + config.systems.join(";").toUpperCase();
 
-	        	function buildFilterAndReturn(akhResponsiblesComponents) {
-	        		var filter = {programFilter: "", systemFilter: "", processorFilter: "", componentFilter: ""};
-		        	filter.programFilter += config.programs.map(function(program) {
-		        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
-		        	}).join("|");
-		        	filter.systemFilter += (config.excludeSystems ? "!" : "") + config.systems.join(";").toUpperCase();
+	        	filter += "&processorFilter=";
+	        	filter += (config.excludeProcessors ? "!" : "") + config.processors.map(function(processor) { return processor.BNAME; }).join(";");
 
-		        	filter.processorFilter += (config.excludeProcessors ? "!" : "") + config.processors.map(function(processor) { return processor.BNAME; }).join(";");
-
-		        	filter.componentFilter += config.components.concat(akhResponsiblesComponents).map(function(component) {
-		        		if(component.exclude) {
-		        			return "!" + component.value.toUpperCase();
-		        		} else {
-		        			return component.value.toUpperCase();
-		        		}
-		        	}).join(";");
-		        	deferred.resolve(filter);
-	        	}
-
-	        	if(config.akhResponsibles.length > 0) {
-	        		$q.all(config.akhResponsibles.map(function(responsible) {
-	        			return responsible.getComponents();
-	        		})).then(function(results) {
-	        			buildFilterAndReturn([].concat.apply([], results).map(function(component) {
-	        				component.exclude = false;
-	        				return component;
-	        			}));
-	        		});
-	        	} else {
-	        		$timeout(function() {
-	        			buildFilterAndReturn([]);
-	        		});
-	        	}
-
-				return deferred.promise;
+	        	filter += "&componentFilter=";
+	        	filter += config.components.map(function(component) {
+	        		if(component.exclude) {
+	        			return "!" + component.value.toUpperCase();
+	        		} else {
+	        			return component.value.toUpperCase();
+	        		}
+	        	}).join(";");
+				return filter;
 	        }
 
 	        function transform(incident) {
@@ -83,8 +66,8 @@ angular.module("app.internalIncidentsMitosis")
 						that.prio4 = [];
 						deferred.resolve();
 					} else {
-						var url = "https://sithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
-						$http({method: 'POST', url: url, withCredentials: true, data: getFilterFromConfig(config)}).success(function(data){
+						var url = "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?" + getFilterFromConfig(config) + "&origin=" + $window.location.origin;
+						$http.get(url).success(function(data){
 							that.limit = data.limit;
 							that.limitExceeded = data.limitExceeded;
 							that.prio1 = [];
