@@ -65,21 +65,23 @@
             }
 		</script>
 	</head>
-	<body class="basic-blue Center-Container">
-		<div class="Absolute-Center">
+	<body class="Center-Container">
+		<div style="max-width:800px; margin:0 auto;position:relative;top:50px;padding:0 20px;text-align:center">
 			<div>
-				<img src="img/bridge-logo.svg" width="100" style="margin-bottom: 10px" /><span style="color: #ffffff; font-size: 4.5rem; vertical-align: bottom"> Bridge-Teams is going live!</span>
+				<img src="img/bridge-logo-blue.svg" width="100"  style="margin:0 auto;display:block;"/>
+                <h1 style=" font-size: 4.5rem; margin-top:0px;"> Bridge-Teams is going live!</h1>
 			</div>
-			<div style="color: #ffffff; font-size: 1.8rem; font-style: italic">
+			<div style=" font-size: 1.8rem; font-style: italic; margin-top:20px;">
 				You have the chance to migrate your team config into the productive bridge environment or start from scratch.
 				In case you already have a productive bridge config, the productive version will be overwritten.
 			</div>
-			<div style="text-align: right">
-				<button type="button" class="btn btn-default" aria-label="Left Align" onclick="dontMigrate();">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"> <b><u>Don't</u></b> migrate config</span>
+			<div style="text-align: center;margin-top:30px;">
+				<button type="button" class="button inactive blue" aria-label="Left Align" onclick="dontMigrate();" style="padding:20px;">
+					<span style="line-height:0px;"> <b><u>Don't</u></b> migrate config</span>
 				</button>
-				<button type="button" class="btn btn-default" aria-label="Left Align" onclick="migrate()">
-					<span class="glyphicon glyphicon-ok" aria-hidden="true"> Migrate config</span>
+                
+				<button type="button" class="button inactive blue" aria-label="Left Align" onclick="migrate()" style="padding:20px;">
+					<span style="line-height:0px;" aria-hidden="true"> Migrate config</span>
 				</button>
 			</div>
 		</div>
