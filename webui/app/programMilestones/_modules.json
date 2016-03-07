@@ -7,7 +7,7 @@
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.programMilestones",
 		"needs_client"			:	false,
-		"beta"					:	false,
+		"beta"					:	true,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
 		"description"			:	"This app provides all upcoming milestones for a program / delivery."
