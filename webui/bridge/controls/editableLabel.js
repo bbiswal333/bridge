@@ -2,6 +2,7 @@ angular.module('bridge.app').directive('bridge.editableLabel', [function() {
 
     return {
         restrict: 'E',
+        replace: true,
         transclude: true,
         scope: {
         	text: '=',
