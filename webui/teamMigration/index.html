@@ -20,7 +20,7 @@
 		</style>
 		<script type="text/javascript">
 			function doRedirect() {
-				window.location = "https://bridge.mo.sap.corp";
+				window.location = window.location.origin.replace("-teams", "");
 			}
 
 			$.ajax({
