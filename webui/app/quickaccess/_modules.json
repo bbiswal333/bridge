@@ -9,7 +9,8 @@
 		"needs_client"			:	false,
 		"beta"					:	false,
 		"default_hidden"		:	true,
-		"description"			:	"Open SAP notes and internal incidents quickly"
+		"description"			:	"Open SAP notes and internal incidents quickly",
+		"multiInstance"			:	true
 	},
 	"modules" : [],
 	"js_files" : ["overview.js"],
