@@ -26,7 +26,7 @@
                     </span>
                 </span>
 
-                <span ng-if="box.errorText" bs-popover trigger="hover" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
+                <span ng-if="box.errorText" bs-popover trigger="hover" data-auto-close="true" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
             </div>
             <div ng-if="editTitle">
                 <bridge.input enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title" autofocus="true"></bridge.input>
