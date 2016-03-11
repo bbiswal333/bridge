@@ -1,5 +1,5 @@
 angular.module('bridge.service').service('bridge.service.guid', [function() {
-	var mask = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!$&_#*+;";
+	var mask = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	var guids = {};
 
 	function generateRandomString(length) {

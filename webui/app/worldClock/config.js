@@ -14,35 +14,49 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 		};
 	})();
 
-	this.locations = [];
+	var Config = (function() {
+		return function(appId) {
+			this.locations = [];
 
-	var initialized = false;
+			var initialized = false;
 
-	this.initialize = function(appId) {
-		if(initialized === true) {
-			return;
+			this.initialize = function() {
+				if(initialized === true) {
+					return;
+				}
+
+				var that = this;
+				if(bridgeDataService.getAppConfigById(appId) !== undefined && bridgeDataService.getAppConfigById(appId).locations !== undefined) {
+					bridgeDataService.getAppConfigById(appId).locations.map(function(location) {
+						that.addLocation(location);
+					});
+					initialized = true;
+				}
+			};
+
+			this.addLocation = function(data) {
+				if(data.zoneID) {
+					this.locations.push(new Location(data));
+				}
+			};
+
+			this.removeLocation = function(location) {
+				if(this.locations.indexOf(location) < 0) {
+					return;
+				}
+
+				this.locations.splice(this.locations.indexOf(location), 1);
+			};
+		};
+	})();
+
+	var instances = {};
+
+	this.getInstanceForAppId = function(appId) {
+		if(instances[appId] === undefined) {
+			instances[appId] = new Config(appId);
 		}
 
-		var that = this;
-		if(bridgeDataService.getAppConfigById(appId) !== undefined && bridgeDataService.getAppConfigById(appId).locations !== undefined) {
-			bridgeDataService.getAppConfigById(appId).locations.map(function(location) {
-				that.addLocation(location);
-			});
-			initialized = true;
-		}
-	};
-
-	this.addLocation = function(data) {
-		if(data.zoneID) {
-			this.locations.push(new Location(data));
-		}
-	};
-
-	this.removeLocation = function(location) {
-		if(this.locations.indexOf(location) < 0) {
-			return;
-		}
-
-		this.locations.splice(this.locations.indexOf(location), 1);
+		return instances[appId];
 	};
 }]);

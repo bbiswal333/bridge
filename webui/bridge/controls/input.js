@@ -101,9 +101,19 @@ angular.module('bridge.app').directive('bridge.input', ['$timeout', function($ti
             }
 
             if(attrs.icon) {
-                element.append(angular.element('<i class="fa ' + attrs.icon + '" style="position: absolute; top: 0px; left: 7px; font-size: 20px" />'));
+                var html = '<i class="fa ' + attrs.icon + '" style="position: absolute; top: 2px; right: 7px; font-size: 20px" />';
+                if(attrs.iconClick) {
+                    html = '<a ng-click="' + attrs.iconClick + '">' + html + '</a>';
+                }
+                element.append(angular.element(html));
                 $('input', element).css("background-color", "rgba(0,0,0,0)");
-                $('input', element).css("padding-left", "30px");
+
+                if(attrs.iconClick) {
+                    $('input', element).css("padding-left", "7px");
+                    $('i', element).css("right", "7px");
+                } else {
+                    $('input', element).css("padding-left", "30px");
+                }
             }
 
             return function($scope, elem, attributes) {

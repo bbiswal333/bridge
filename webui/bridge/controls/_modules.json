@@ -9,6 +9,8 @@
     "mobileSearchInput.js",
     "bridgeTable/bridgeTable.js",
     "bridgeTable/bridgeTableColumn.js",
+    "bridgeTable/bridgeTableColumnHeader.js",
+    "bridgeTable/bridgeTableColumnSorter.js",
     "customTransclude.js",
     "infinitescroll.js",
     "bridgeButton.js",
@@ -16,7 +18,13 @@
     "conditionalLink.js",
     "editableLabel.js",
     "editableEmployee.js",
-    "employee.js"
+    "employee.js",
+    "tag.js",
+    "daysago.js",
+    "akhResponsible/AKHResponsible.js",
+    "akhResponsible/AKHResponsibleSelector.js",
+    "akhResponsible/AKHResponsibleTag.js",
+    "prioBox.js"
   ],
   "css_files" : [
     "bridgeTable/bridgeTable.css"

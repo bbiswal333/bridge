@@ -1,17 +1,10 @@
 <div>
     <div style="height:140px">
         <div class="app-itdirect-prio_container">
-            <div ng-repeat="prio in prios" class="prio_col app-itdirect-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':getTicketCountForPrio(prios[$index].key)==0}">
-                <bridge.conditional-link navigate-to="/detail/itdirect/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="getTicketCountForPrio(prios[$index].key)!==0">
-                    <div class="prio_box" style="color:white">
-                        <p>{{prios[$index].description}}</p>
-                    </div>
-                    <div class="prio_content_box" style="color:white">
-                        <p ng-if="getTicketCountForPrio(prios[$index].key) <= 99">{{getTicketCountForPrio(prios[$index].key)}}</p>
-                        <p ng-if="getTicketCountForPrio(prios[$index].key) >= 100">+99</p>
-                    </div>
-                </bridge.conditional-link>
-            </div>
+            <bridge.prio-box ng-repeat="prio in prios" has-settings="true"
+                prio="{{$index + 1}}" value="getTicketCountForPrio(prios[$index].key)" label="{{prios[$index].description}}"
+                navigate-to="/detail/itdirect/{{metadata.guid}}/{{prios[$index].key}}/false">
+            </bridge.prio-box>
         </div>
         <div class="app-itdirect-btn-container">
             <!--<div class="btn btn-default app-itdirect-btn-box" ng-class="{true: 'btn btn_blue', false: 'btn'}[config.bPartieOfRequestSelected];" ng-click="config.bPartieOfRequestSelected = !config.bPartieOfRequestSelected"

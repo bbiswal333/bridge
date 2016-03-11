@@ -1,29 +1,43 @@
-﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification",
-    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification) {
+﻿angular.module('bridge.service').service('bridgeDataService', ['bridgeConfig', '$q', '$interval', 'bridge.service.loader', '$http', '$window', "bridge.service.appCreator", "bridgeInBrowserNotification", "bridgeUserData",
+    function (bridgeConfig, $q, $interval, bridgeLoaderServiceProvider, $http, $window, appCreator, bridgeInBrowserNotification, bridgeUserData) {
         this.projects = [];
         this.bridgeSettings = {};
         this.temporaryData = {};
         this.clientMode = false;
         this.logMode = false;
         this.availableApps = [];
+        var viewPromises = [];
 
         var initialized = false;
         var that = this;
 
-        function _fetchUserInfo() {
-            var defer = $q.defer();
+        var userInfo;
 
-            $http({
-                url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_MY_DATA?origin=' + encodeURIComponent($window.location.origin),
-                method: "GET"
-            }).success(function (data) {
-                that.userInfo = data.USERINFO;
-                defer.resolve();
-            }).error(function(){
-                defer.reject();
+        var selectedProject;
+        function _setSelectedProject(project) {
+            selectedProject = project;
+        }
+
+        function _getSelectedProject() {
+            return selectedProject;
+        }
+
+        function _getProject(id) {
+            var result;
+            that.projects.map(function(project) {
+                if(project.view === id) {
+                    result = project;
+                }
             });
+            return result;
+        }
 
-            return defer.promise;
+        function _hasProject(id) {
+            if(_getProject(id) !== undefined) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function parseApps(project) {
@@ -41,17 +55,66 @@
             return apps;
         }
 
+        function getProjectDataFromBackend(project) {
+            var deferred = $q.defer();
+            bridgeConfig.getTeamConfig(project.view).then(function(data) {
+                if(data.error) {
+                    bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + data.message, 600);
+                    that.projects.splice(that.projects.indexOf(project), 1);
+                    deferred.reject();
+                } else {
+                    project.view = data.view;
+                    project.name = data.name;
+                    project.owner = data.owner;
+                    project.type = data.type;
+                    project.apps = parseApps(data);
+                    deferred.resolve(project);
+                }
+            }, function(error) {
+                bridgeInBrowserNotification.addAlert("danger", "View could not be loaded: " + project.name + ". Error: " + error.message, 600);
+                that.projects.splice(that.projects.indexOf(project), 1);
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
+
         function parseProject(project) {
-            that.projects.push({ name: project.name, type: (project.type ? project.type : 'TEAM'), apps: parseApps(project) });
+            var deferred;
+            var projectObject = { name: project.name, type: (project.type ? project.type : 'TEAM') };
+            if(projectObject.type === "TEAM") {
+                projectObject.view = project.view;
+                projectObject.owner = project.owner;
+                projectObject.apps = [];
+                deferred = getProjectDataFromBackend(projectObject);
+            } else {
+                projectObject.owner = userInfo ? userInfo.BNAME : "";
+                projectObject.apps = parseApps(project);
+
+                if (projectObject.name === "OVERVIEW"){
+                    projectObject.name = "My View";
+                }
+            }
+            that.projects.push(projectObject);
+            if(deferred) {
+                return deferred;
+            }
         }
 
         function parseProjects(config) {
+            viewPromises = [];
+            var promise;
             if (config.bridgeSettings && config.bridgeSettings.apps) {
-                parseProject({ name: "OVERVIEW", type: "PERSONAL", apps: config.bridgeSettings.apps });
+                promise = parseProject({ name: "My View", type: "PERSONAL", apps: config.bridgeSettings.apps });
+                if(promise) {
+                    viewPromises.push(promise);
+                }
             }
             else if (config.projects) {
                 for (var i = 0; i < config.projects.length; i++) {
-                    parseProject(config.projects[i]);
+                    promise = parseProject(config.projects[i]);
+                    if(promise) {
+                        viewPromises.push(promise);
+                    }
                 }
             }
         }
@@ -130,7 +193,11 @@
             var deferred = $q.defer();
 
             var configPromise = bridgeConfig.loadFromBackend(deferred);
-            var userInfoPromise = _fetchUserInfo();
+            var userInfoPromise = bridgeUserData.getUserData();
+
+            userInfoPromise.then(function(data) {
+                userInfo = data;
+            });
 
             function assignConfig(oConfigFromBackend){
                 initializeAvailableApps();
@@ -142,7 +209,9 @@
                 bridgeConfig.configSnapshot = angular.copy(config);
                 $interval(bridgeConfig.persistIfThereAreChanges, 1000 * 30 );
 
-                initialized = true;
+                $q.all(viewPromises).finally(function() {
+                    initialized = true;
+                });
             }
 
             var allPromises = $q.all([configPromise, userInfoPromise]);
@@ -198,8 +267,23 @@
             }
         }
 
+        function _addProject(view) {
+            var alreadyAdded = false;
+            _getProjects().map(function(project) {
+                if(project.type === 'TEAM' && project.view === view) {
+                    alreadyAdded = true;
+                }
+            });
+
+            if(alreadyAdded === true) {
+                bridgeInBrowserNotification.addAlert("danger", "This view was already added.", 600);
+            } else {
+                return parseProject({name: "", type: 'TEAM', view: view});
+            }
+        }
+
         function _getUserInfo() {
-            return that.userInfo;
+            return userInfo;
         }
 
         function _getBridgeSettings() {
@@ -234,6 +318,16 @@
             return that.availableApps;
         }
 
+        function _getInstancesByType(type) {
+            var apps = [];
+            _getSelectedProject().apps.map(function(app) {
+                if(app.metadata.module_name === type) {
+                    apps.push(app);
+                }
+            });
+            return apps;
+        }
+
         return {
             initialize: _initialize,
             isInitialized: _getInitialized,
@@ -250,6 +344,12 @@
             setLogMode: _setLogMode,
             getLogMode: _getLogMode,
             getAvailableApps: _getAvailableApps,
+            setSelectedProject: _setSelectedProject,
+            getSelectedProject: _getSelectedProject,
+            hasProject: _hasProject,
+            getProject: _getProject,
+            addProject: _addProject,
+            getInstancesByType: _getInstancesByType,
             setDataFromConfig: _setDataFromConfig
         };
 }]);

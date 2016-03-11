@@ -46,12 +46,19 @@
     <script src="lib/jquery.timeago.js"></script>
     <script src="lib/jquery-ui-touch-0_2_3/jquery-ui-touch-punch.min.js"></script>
 
+    <script src="lib/clipboard.js"></script>
+
     
-    <script src="lib/angular-1_3_16/angular.min.js"></script>
-    <script src="lib/angular-1_3_16/angular-route.min.js"></script>
-    <script src="lib/angular-1_3_16/angular-resource.min.js"></script>
-    <script src="lib/angular-1_3_16/angular-animate.min.js"></script>
-    <script src="lib/angular-1_3_16/angular-sanitize.min.js"></script>
+    <!--<script src="lib/angular-1_3_16/angular.min.js"></script>-->
+    <!--<script src="lib/angular-1_3_16/angular-route.min.js"></script>-->
+    <!--<script src="lib/angular-1_3_16/angular-resource.min.js"></script>-->
+    <!--<script src="lib/angular-1_3_16/angular-animate.min.js"></script>-->
+    <!--<script src="lib/angular-1_3_16/angular-sanitize.min.js"></script>-->
+    <script src="lib/angular-1_4_8/angular.min.js"></script>
+    <script src="lib/angular-1_4_8/angular-route.min.js"></script>
+    <script src="lib/angular-1_4_8/angular-resource.min.js"></script>
+    <script src="lib/angular-1_4_8/angular-animate.min.js"></script>
+    <script src="lib/angular-1_4_8/angular-sanitize.min.js"></script>
 
     <script src="lib/socket.io.js"></script>
     <script src="lib/fuse/fuse.js"></script>
@@ -75,8 +82,8 @@
     <script src="lib/ng-grid-2_0_11/ng-grid.min.js"></script>
     <script src="lib/ng-grid-2_0_11/ngGridFlexibleHeightPlugin.js"></script>    
 
-    <script src="lib/angular-strap-2_1_0/angular-strap.js"></script>
-    <script src="lib/angular-strap-2_1_0/angular-strap.tpl.min.js"></script>
+    <script src="lib/angular-strap-2_3_7/angular-strap.js"></script>
+    <script src="lib/angular-strap-2_3_7/angular-strap.tpl.js"></script>
     <script src="lib/jQueryUISortable.js"></script>
     <script src="lib/stacktracejs-140806/stacktrace.js"></script>
     <script src="lib/lodash-2_4_1/lodash.compat.min.js"></script>
@@ -124,7 +131,9 @@
             </div>
             <div>Attention, you are running in Log-Mode! All your actions are recorded at the moment and can be sent to us for error analysis. Please close this browser page to leave the Log-Mode.</div>
         </div>
-        <div id="main-container" class="mainContainer centeredContent" ng-view>
+        <div id="main-container" class="mainContainer centeredContent">
+            <bridge.view-bar></bridge.view-bar>
+            <div ng-view></div>
         </div>
 
         <div style="position:absolute;top:40px;width:100%;z-index:99999">

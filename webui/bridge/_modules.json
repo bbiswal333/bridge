@@ -1,5 +1,6 @@
 {
 	"modules" : [
+                "bridge.teams",
                 "bridge.diagnosis",
                 "bridge.service",
                 "notifier",
@@ -17,6 +18,7 @@
                 "nvd3ChartDirectives",
                 "mgcrea.ngStrap.tooltip",
                 "mgcrea.ngStrap.popover",
+                "mgcrea.ngStrap.dropdown",
                 "cgBusy"
 	],
 	"js_files" : [
@@ -29,6 +31,7 @@
                 "bridgeSettingsModalService.js",
                 "bridgeConfigService.js",
                 "bridgeInstanceService.js",
+                "bridgeUserData.js",
                 "bridgeGuidService.js",
                 "bridgeAppCreator.js",
                 "bridgeWebTracker.js",

@@ -33,7 +33,7 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 				app.metadata.instanceNumber = parsedGuid.instanceNumber;
 			}
 			if(existingApp !== undefined) {
-				throw new Error("App id already in use: " + metaData.guid);
+				app.metadata.instanceNumber = findNextInstanceNumberForModule(metaData.module_name);
 			}
 		} else {
 			app.metadata.instanceNumber = findNextInstanceNumberForModule(metaData.module_name);
@@ -41,10 +41,20 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 		app.metadata.guid = metaData.module_name + "-" + app.metadata.instanceNumber;
 	}
 
+	function migrateMetadataAndConfigIfNecessary(metaData, config) {
+		switch(metaData.module_name) {
+			case "app.transport":
+				metaData.module_name = "app.transportNew";
+				break;
+		}
+	}
+
 	this.createInstance = function(metaData, config) {
 		if(!metaData || !metaData.module_name) {
 			throw new Error("Invalid input data");
 		}
+
+		migrateMetadataAndConfigIfNecessary(metaData, config);
 
 		var type = metaData.module_name;
 

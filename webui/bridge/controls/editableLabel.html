@@ -1,3 +1,5 @@
-<div ng-dblclick="toggleEditMode()" ng-if="editMode === false" style="display: inline-block; padding: 7px 13px">{{text}}</div>
-<bridge.input model="oPassToBridgeInput.text" ng-show="editMode === true" enter="deactivateEditMode()" blur="deactivateEditMode()" autofocus="true" ng-if="!ownEditControl"></bridge.input>
-<div ng-transclude ng-if="ownEditControl == true" ng-show="editMode === true"></div>
+<div style="display: inline-block">
+	<div ng-dblclick="toggleEditMode()" ng-if="editMode === false" style="display: inline-block; padding: 4px 4px">{{text}}</div>
+	<bridge.input model="oPassToBridgeInput.text" ng-show="editMode === true && !ownEditControl" enter="deactivateEditMode()" blur="deactivateEditMode()" autofocus="true"></bridge.input>
+	<div ng-transclude ng-show="ownEditControl == true && editMode === true"></div>
+</div>

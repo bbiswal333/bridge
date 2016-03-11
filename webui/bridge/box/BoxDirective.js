@@ -1,8 +1,8 @@
 ﻿angular.module('bridge.box', ['bridge.service', 'ngAnimate']);
 
 angular.module('bridge.box').directive('bridge.box',
-    ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload', 'bridge.service.webTracker',
-    function ($compile, $log, $window, $interval, bridgeDataService, bridgeDownload, webTracker) {
+    ['$compile', '$log', '$window', '$interval', 'bridgeDataService', 'bridge.service.bridgeDownload', 'bridgeUserData', 'bridge.service.webTracker',
+    function ($compile, $log, $window, $interval, bridgeDataService, bridgeDownload, bridgeUserData, webTracker) {
 
     function directiveController($scope)
     {
@@ -79,8 +79,12 @@ angular.module('bridge.box').directive('bridge.box',
             var box = $element.find("#innerbox");
             box = $compile(box)($scope);
 
-            $scope.doSomething = function() {
-                $scope.editTitle = true;
+            $scope.enterEditMode = function() {
+                bridgeUserData.getUserData().then(function(userData) {
+                    if(bridgeDataService.getSelectedProject().owner === userData.BNAME) {
+                        $scope.editTitle = true;
+                    }
+                });
             };
 
             $scope.quitEditTitleMode = function() {

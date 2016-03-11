@@ -6,30 +6,32 @@
 		<br/>
 
 		<bridge.table table-data="tempobject" filter="filterText">
-			<bridge.table-column column-id="'1'" header="'Test Plan'" column-size-class="'col-sm-3'" order-by="'PLAN_TITLE'">{{row.PLAN_TITLE}}</bridge.table-column>
-			<bridge.table-column column-id="'2'" header="'Prio'" column-size-class="'col-sm-1'" order-by="'MSG_PRIO_TEXT'">{{row.MSG_PRIO_TEXT}}</bridge.table-column>
-			<bridge.table-column column-id="'3'" header="'Status'" column-size-class="'col-sm-1'" order-by="'MSG_STATUS_TEXT'">{{row.MSG_STATUS_TEXT}}</bridge.table-column>
-			<bridge.table-column column-id="'4'" header="'Created By'" column-size-class="'col-sm-2'" order-by="'MSG_CREATED_BY_FULLNAME'">
-				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_CREATED_BY_UID}}?s=60x60"
-					 class="im-reporter-img"
-					 style="height: 32px"
-					 ng-if="row.MSG_CREATED_BY_UID"></img>
-				<a class="clickable" ng-click="parentScope.userClick(row.employee_created)">{{row.MSG_CREATED_BY_FULLNAME}}</a>
-				<a href="mailto:{{row.employee_created.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.employee_created.tel}}"><p class="table-icon-small icon-phone"></p></a>
-			</bridge.table-column>
-			<bridge.table-column column-id="'5'" header="'Processor'" column-size-class="'col-sm-2'" order-by="'MSG_PROCESSOR_NAME'">
-				<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_PROCESSOR_UID}}?s=60x60"
-					 class="im-reporter-img"
-					 style="height: 32px"
-					 ng-if="row.MSG_PROCESSOR_UID"></img>
-				<a class="clickable" ng-click="parentScope.userClick(row.employee_process)">{{row.MSG_PROCESSOR_NAME}}</a>
-				<a href="mailto:{{row.employee_process.mail}}"><p class="table-icon-small icon-mail"></p></a>
-				<a href="tel:{{row.employee_process.tel}}"><p class="table-icon-small icon-phone"></p></a>
-			</bridge.table-column>
-			<bridge.table-column column-id="'6'" header="'Description'" column-size-class="'col-sm-3'" order-by="'MSG_SHORT_TEXT'">
-				<a target="_blank" href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{row.MSG_CSINSTA}}&mnumm={{row.MSG_MNUMM}}&myear={{row.MSG_MYEAR}}&sap-language=en#">{{row.MSG_SHORT_TEXT}}</a>
-			</bridge.table-column>
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Test Plan'" column-size-class="'col-sm-3'" order-by="'PLAN_TITLE'">{{row.PLAN_TITLE}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Prio'" column-size-class="'col-sm-1'" order-by="'MSG_PRIO_TEXT'">{{row.MSG_PRIO_TEXT}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-1'" order-by="'MSG_STATUS_TEXT'">{{row.MSG_STATUS_TEXT}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Created By'" column-size-class="'col-sm-2'" order-by="'MSG_CREATED_BY_FULLNAME'">
+					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_CREATED_BY_UID}}?s=60x60"
+						 class="im-reporter-img"
+						 style="height: 32px"
+						 ng-if="row.MSG_CREATED_BY_UID"></img>
+					<a class="clickable" ng-click="parentScope.userClick(row.employee_created)">{{row.MSG_CREATED_BY_FULLNAME}}</a>
+					<a href="mailto:{{row.employee_created.mail}}"><p class="table-icon-small icon-mail"></p></a>
+					<a href="tel:{{row.employee_created.tel}}"><p class="table-icon-small icon-phone"></p></a>
+				</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Processor'" column-size-class="'col-sm-2'" order-by="'MSG_PROCESSOR_NAME'">
+					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.MSG_PROCESSOR_UID}}?s=60x60"
+						 class="im-reporter-img"
+						 style="height: 32px"
+						 ng-if="row.MSG_PROCESSOR_UID"></img>
+					<a class="clickable" ng-click="parentScope.userClick(row.employee_process)">{{row.MSG_PROCESSOR_NAME}}</a>
+					<a href="mailto:{{row.employee_process.mail}}"><p class="table-icon-small icon-mail"></p></a>
+					<a href="tel:{{row.employee_process.tel}}"><p class="table-icon-small icon-phone"></p></a>
+				</bridge.table-column>
+				<bridge.table-column column-id="6" header="'Description'" column-size-class="'col-sm-3'" order-by="'MSG_SHORT_TEXT'">
+					<a target="_blank" href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{row.MSG_CSINSTA}}&mnumm={{row.MSG_MNUMM}}&myear={{row.MSG_MYEAR}}&sap-language=en#">{{row.MSG_SHORT_TEXT}}</a>
+				</bridge.table-column>
+			</bridge.table-column-sorter>
 		</bridge.table>
 
     </div>

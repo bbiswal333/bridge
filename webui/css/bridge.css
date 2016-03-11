@@ -1,4 +1,4 @@
-﻿ @font-face {
+ @font-face {
     font-family:'SAP-icons';
     src: url('fonts/SAP-icons_140120.eot'), url('fonts/SAP-icons_140120.ttf');
     /* IE9+ */
@@ -46,6 +46,11 @@ body {
 }
 img {
     pointer-events: none;
+}
+
+.form-control {
+    font-size: 12px;
+    border-radius: 0;
 }
 
 .zoomOut {
@@ -394,6 +399,7 @@ img {
     padding-top:8px;
     padding-left: 10px;
 }
+.tableScroll{ width:200px; max-width:200px; overflow-x:scroll;}
 
 .download-icon {
     font-family:'SAP-icons';
@@ -417,18 +423,25 @@ img {
 }
 
 @media screen and (min-width: 768px) {
+
     .settings-dialog .modal-dialog {
         width: auto;
         position: absolute;
         left: 100px;
         right: 100px;
     }
+    .teamview-dialog .modal-dialog {
+        width: auto;
+        position: absolute;
+        left: 30%;
+        right: 30%;
+    }
     .settings-dialog .modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 }
-.settings-dialog .modal-content {
+.settings-dialog .modal-content, .teamview-dialog .modal-content {
     padding: 40px;
     position: relative;
     border: 0px;
@@ -647,7 +660,6 @@ input[type="checkbox"]:checked:after {
     box-shadow: none;
     border-radius: 0;
     height:100%;
-    min-width: 850px;
 }
 
 .dropdown-menu > li > a:hover{
@@ -723,11 +735,32 @@ input[type="checkbox"]:checked:after {
 }
 .prio_content_box{ 
     width:100%;
-    height:70%; 
+    height:70%;
+    position: relative; 
     float: right; 
     text-align: right;
     padding-right:5px; 
-    font-size:34px
+    font-size:25px
+}
+
+.prio_content_box.prio_content_box_exceeds {
+    font-size: 23px;
+}
+
+.prio_content_box.prio_content_box_exceeds_with_settings {
+    font-size: 19px;
+}
+
+.prio_content_number {
+    position: absolute;
+    bottom: 0px;
+    right: 3px;
+}
+
+.prio_content_number_plus {
+    position: absolute;
+    bottom: 0px;
+    left: 3px;
 }
 
 .pixel_art{
@@ -756,6 +789,10 @@ input[type="checkbox"]:checked:after {
     padding-top: 0;
     
 }
+.table{
+    display: table;
+}
+
 .table-cell{
     border:2px solid white;
     height:40px;
@@ -781,6 +818,9 @@ input[type="checkbox"]:checked:after {
     padding-left: 10px;
     line-height: 2.5;
     overflow: hidden;
+}
+.tableCell {
+    display: table-cell;
 }
 
 .wi {
@@ -957,4 +997,50 @@ h5{
     .menubar-applications-modal{
         display: none;
     }
+}
+
+.cellText .button {
+    margin: 0;
+}
+
+.bridge-tag {
+    padding: 6px;
+    background-color: ;
+    border: 1px solid #418AC9;
+    margin: 4px 8px;
+    display: inline-block;
+}
+
+.bridge-tag-sign {
+    font-size: 1.5rem;
+    color: #bbbbbb;
+    font-weight: bold;
+}
+
+.bridge-tag-sign.bridge-tag-include {
+    color: #418AC9;
+}
+.bridge-tag-sign.bridge-tag-exclude {
+    color: #FF0000;
+}
+
+.datepicker-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  box-shadow: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
 }

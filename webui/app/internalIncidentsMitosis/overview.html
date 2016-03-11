@@ -1,0 +1,23 @@
+﻿<div>
+	<span ng-show="limitExceeded === true" style="color: red; font-weight: bold">Limit of {{limit}} exceeded</span>
+	<div style="width:175px" ng-style="{height: limitExceeded ? '120px' : '140px'}">
+		<div class="prio_container" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+			<bridge.prio-box
+				prio="1" value="numPrio1" label="Very High"
+				navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio1">
+			</bridge.prio-box>
+			<bridge.prio-box
+				prio="2" value="numPrio2" label="High"
+				navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio2">
+			</bridge.prio-box>
+			<bridge.prio-box
+				prio="3" value="numPrio3" label="Medium"
+				navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio3">
+			</bridge.prio-box>
+			<bridge.prio-box
+				prio="4" value="numPrio4" label="Low"
+				navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio4">
+			</bridge.prio-box>
+		</div>
+	</div>
+</div>

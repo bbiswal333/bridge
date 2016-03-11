@@ -1,3 +1,3 @@
-<div ng-if="columnData.visible" class="cellText" ng-class="columnSizeClass()">
-    <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" custom-transclude add-text-tooltip="true"></div>
+<div ng-if="columnData.visible" ng-class="applyClass()" class="cellText cellMargin" ng-style='{{customStyle}}'>
+    <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis" custom-transclude add-text-tooltip="true"></div>
 </div>

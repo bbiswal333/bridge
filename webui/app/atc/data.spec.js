@@ -18,8 +18,8 @@
             atcDataService = _atcDataService.getInstanceForAppId("app.test");
         }]);
 
-        $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/devdb\/STAT_CHK_RESULT\?query=/).respond(atcDetailsData);
-        $httpBackend.whenGET(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/devdb\/STAT_CHK_RES_CN\?query=/).respond(atcCountData);
+        $httpBackend.whenPOST(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/bridge\/STAT_CHK_RESULT\?/).respond(atcDetailsData);
+        $httpBackend.whenPOST(/https:\/\/ifp\.wdf\.sap\.corp:443\/sap\/bc\/bridge\/STAT_CHK_RES_CN\?/).respond(atcCountData);
     });
 
     it("shoud get the correct atc details data", function () {

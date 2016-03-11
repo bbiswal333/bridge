@@ -8,6 +8,7 @@ angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.confi
             this.data.lastDataUpdate = null;
             this.data.selectedSearchGuid = null;
             this.data.columnVisibility = [true, true, true, true, true, true, true, false, false, false, false];
+            this.data.columnOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
             this.isInitialized = false;
             this.initialize = function (oConfigFromBackend) {
@@ -17,7 +18,7 @@ angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.confi
             };
 
             this.getSelectedSavedSearch = function(){
-                return _.find(savedSearchData.savedSearches, { GUID: this.data.selectedSearchGuid });
+                return _.find(savedSearchData.savedSearches, { PARAMETER_: this.data.selectedSearchGuid });
             };
         };
 
