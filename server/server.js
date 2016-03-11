@@ -6,6 +6,7 @@ var param 		= require('./params.js');
 var npm_load	= require('./npm_load.js');
 var api			= require('./api.js');
 var helper		= require('./helper.js');
+var rewrite		= require('./rewriter.js');
 
 exports.run = function(npm, port) {
 	var proxy       = param.get("proxy", true);
@@ -28,6 +29,14 @@ exports.run = function(npm, port) {
 			eTag = '"' + crypto.createHash('sha1').update(current_date + random).digest('hex') + '"';
 			console.log(eTag);
 		}
+
+		var rules = [
+			"-teams.mo.sap.corp ^\/$ /teamMigration/index.html",
+			"-teams.mo.sap.corp ^\/index.html$ /teamMigration/index.html",
+			"-teams.mo.sap.corp /migrationTest /teamMigration/index.html",
+			"localhost /migrationTest /teamMigration/index.html"
+		];
+		app.use(rewrite(rules));
 
 		app.use('/', express.static(path.join(__dirname, '../webui')));
 		app.get('/mobile', function(req, res) {

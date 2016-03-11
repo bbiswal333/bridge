@@ -1,5 +1,13 @@
 angular.module("app.junit.data", []).service("app.junit.dataService", ["$http", "$q", "app.junit.configService",
 	function ($http, $q, configService) {
+    function getTestCasesPropertySum(testSuites, property) {
+      var result = 0;
+      testSuites.map(function(testSuite) {
+        result += testSuite[property] ? parseInt(testSuite[property]) : 0;
+      });
+      return result;
+    }
+
     var Data = function(_appId) {
 
       var appId = _appId;
@@ -19,15 +27,10 @@ angular.module("app.junit.data", []).service("app.junit.dataService", ["$http", 
 
             result.testSuites = JSONdata.testsuites;
 
-            result.numFailedTestCases = result.testSuites._failures ? parseInt(result.testSuites._failures) : 0;
-            result.numErrorTestCases = result.testSuites._errors ? parseInt(result.testSuites._errors) : 0;
-
-            if(result.testSuites._tests) {
-              result.numSuccessTestCases = result.testSuites._tests - ( result.numFailedTestCases + result.numErrorTestCases );
-            }
-            else {
-              result.numSuccessTestCases = 0;
-            }
+            result.numFailedTestCases = result.testSuites._failures ? parseInt(result.testSuites._failures) : getTestCasesPropertySum(result.testSuites.testsuite, '_failures');
+            result.numErrorTestCases = result.testSuites._errors ? parseInt(result.testSuites._errors) : getTestCasesPropertySum(result.testSuites.testsuite, '_errors');
+            result.numTestCases = result.testSuites._tests ? parseInt(result.testSuites._tests) : getTestCasesPropertySum(result.testSuites.testsuite, '_tests');
+            result.numSuccessTestCases = result.numTestCases - ( result.numFailedTestCases + result.numErrorTestCases );
 
             deferred.resolve({
               url : config.url,

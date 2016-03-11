@@ -1,30 +1,15 @@
 ﻿<div>
 	<div style="width:175px; height:140px">
 		<div class="prio_container">
-			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}">
-        <div class="prio_box" style="color:white">
-          <p>Success</p>
-        </div>
-        <div class="prio_content_box" style="color:white">
-          <p>{{numSuccessTestCases}}</p>
-        </div>
-			</div>
-			<div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}">
-        <div class="prio_box" style="color:white">
-          <p>Failed</p>
-        </div>
-        <div class="prio_content_box" style="color:white">
-          <p>{{numFailedTestCases}}</p>
-        </div>
-			</div>	
-      <div class="prio_col prio_bg_1" ng-class="{'grey-40':numOpenTransports==0}">
-        <div class="prio_box" style="color:white">
-          <p>Errors</p>
-        </div>
-        <div class="prio_content_box" style="color:white">
-          <p>{{numErrorTestCases}}</p>
-        </div>
-			</div>	
+      <bridge.prio-box
+          prio="1" value="numSuccessTestCases" label="Success">
+      </bridge.prio-box>
+      <bridge.prio-box
+          prio="1" value="numFailedTestCases" label="Failed">
+      </bridge.prio-box>
+      <bridge.prio-box
+          prio="1" value="numErrorTestCases" label="Errors">
+      </bridge.prio-box>
 		</div>
 	</div>
 </div>

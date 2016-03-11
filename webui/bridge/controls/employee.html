@@ -1,2 +1,4 @@
 <span ng-if="employee"><bridge.employee-picture employee-user="{{employee.ID}}"></bridge.employee-picture> {{employee.fullName}}</span>
+<a href="mailto:{{employee.SMTP_MAIL}}?subject={{mailSubject}}&body={{mailBody}}"><i class="fa fa-envelope-o" style="font-size :14px"></i></a>
+<a href="tel:{{employee.TELNR}}"><i class="fa fa-phone" style="font-size :14px"></i></a>
 <span ng-if="!employee">{{id}}</span>

@@ -14,9 +14,11 @@ angular.module('bridge.service').service('employeeService', [ '$http', '$window'
 
 	this.getData = function(user){
 		var defer = $q.defer();
-		if( buffer[user] ){
+		if( buffer[user] ) {
 			defer.resolve(buffer[user]);
-		}else{
+		} else if ( user === "" || user === " "){
+			defer.resolve({});
+		} else{
 			var resp = {};
 			$http.get( url + '?id=' + user + '&origin=' + $window.location.origin).then(function (response) {
 				resp = response.data.DATA;

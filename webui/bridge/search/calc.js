@@ -15,7 +15,11 @@ angular.module('bridge.search').service('bridge.search.calc', [function () {
         var success = true;
         var erg;
 
-
+        // configure the default type of numbers as BigNumbers
+        math.config({
+          number: 'bignumber',  // Default type of number:  'number' (default), 'bignumber', or 'fraction'
+          precision: 20         // Number of significant digits for BigNumbers
+        });
 
         try {
             math.eval(query);

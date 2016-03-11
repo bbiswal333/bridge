@@ -81,14 +81,12 @@
     background-color: rgba(255,255,255,0.5);
 }
 
-
 .atc_input{
     width: 100%;
     float:left;
 }
 .atc-input-field{
     float:left;
-    width:calc(90%/3);
     margin:15px 10px 0 0;
     min-width: 250px;
 }
@@ -96,3 +94,45 @@
     position: relative;
     bottom: 30px;
 }
+
+.atc-selected-component {
+    padding: 6px;
+    background-color: ;
+    border: 1px solid #418AC9;
+    margin: 4px 8px;
+    display: inline-block;
+}
+
+.atc_border {
+    border-style: solid;
+    border-color: transparent transparent transparent #c0c0c0;
+    border-width: 1px;
+}
+
+
+
+
+.rTable { 
+    display: table; }
+
+.rTableRow { 
+    display: table-row; }
+
+.rTableHeading { 
+    display: table-header-group; }
+
+.rTableBody { 
+    display: table-row-group; }
+
+.rTableFoot { 
+    display: table-footer-group; }
+
+.rTableCell,
+.rTableHead { 
+    display: table-cell;
+    width: 50%;
+    vertical-align: top;
+}
+
+
+

@@ -8,7 +8,7 @@
                 <span ng-if="icon_link == undefined" class="box-icon" ng-class="icon_css"></span>
                 <a ng-href="{{icon_link}}" target="_blank" ng-if="icon_link != undefined"> <span class="box-icon" ng-class="icon_css"></span> </a>
 
-                <h6 class="box-title app-box-title" style="" ng-dblclick="doSomething()">{{metadata.title}}<i class="grey-font-60" ng-if="beta" style="bottom: 8px; margin-left: 2px; font-size: 10px">beta</i></h6>
+                <h6 class="box-title app-box-title" style="" ng-dblclick="enterEditMode()">{{metadata.title}}<i class="grey-font-60" ng-if="beta" style="bottom: 8px; margin-left: 2px; font-size: 10px">beta</i></h6>
                 <span ng-if="box.settingScreenData != undefined && box.headerIcons === undefined" class="settingsIcon" ng-click="showSettingsModal(metadata.guid)" style="min-width: 20px;">&#xe00c;</span>
 
                 <span ng-if="box.headerIcons !== undefined && (!box.boxSize || box.boxSize == 1)" class="boxIconBar" style="" ng-class="{'boxIconBarAnimation': boxIconBarVisible}">
@@ -26,7 +26,7 @@
                     </span>
                 </span>
 
-                <span ng-if="box.errorText" bs-popover trigger="hover" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
+                <span ng-if="box.errorText" bs-popover trigger="hover" data-auto-close="true" data-title="Warning" data-content="{{box.errorText}}" data-html="true" class="box-errorIcon clickable" style="min-width: 12px" >!</span>
             </div>
             <div ng-if="editTitle">
                 <bridge.input enter="quitEditTitleMode()" blur="quitEditTitleMode()" model="metadata.title" autofocus="true"></bridge.input>

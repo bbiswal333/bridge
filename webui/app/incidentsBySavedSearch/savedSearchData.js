@@ -26,7 +26,7 @@ angular.module('app.incidentSavedSearch').service('app.incidentSavedSearch.saved
                         }
 
                         angular.forEach(savedSearches, function (savedSearch) {
-                            if (_.find(that.savedSearches, { GUID: savedSearch.GUID }) === undefined) {
+                            if (_.find(that.savedSearches, { PARAMETER_: savedSearch.PARAMETER_ }) === undefined) {
                                 savedSearch.bIsFromDevProfile = bIsFromDevProfile;
                                 that.savedSearches.push(savedSearch);
                             }

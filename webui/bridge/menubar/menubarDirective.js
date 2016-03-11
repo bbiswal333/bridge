@@ -1,5 +1,5 @@
-angular.module("bridge.app").directive("bridge.menubar", ["$window", "$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location", "$rootScope",
-    function($window, $modal, weatherData, weatherConfig, newsService, notifier, $location, $rootScope) {
+angular.module("bridge.app").directive("bridge.menubar", ["$window", "$modal", "bridge.menubar.weather.weatherData", "bridge.menubar.weather.configservice", "bridge.service.bridgeNews", "notifier", "$location",
+    function($window, $modal, weatherData, weatherConfig, newsService, notifier, $location) {
 
         function isDateYoungerThanOneMonth(dateString) {
             var newsDate = new Date(dateString);
@@ -42,52 +42,7 @@ angular.module("bridge.app").directive("bridge.menubar", ["$window", "$modal", "
                     });
                 }
 
-                $rootScope.$on('$routeChangeSuccess', function () {
-                    if($location.path() === "/availableApps") {
-                        $scope.appScreenOpen = true;
-                    } else {
-                        $scope.appScreenOpen = false;
-                    }
-                });
-
-                $scope.changeSelectedApps = function() {
-                    function toPlusButton() {
-                        $(".navicon-button").addClass("open");
-                    }
-
-                    $(".navicon-button").removeClass("open");
-                    // console.log('remove open');
-
-                    var modal = $modal.open({
-                        templateUrl: 'bridge/menubar/applications/bridgeApplications.html',
-                        size: 'lg'
-                    });
-                    modal.result.then(toPlusButton,toPlusButton);
-
-                    /*if (!$scope.appScreenOpen) {
-                        $location.path("/availableApps");
-                    } else {
-                        $window.history.back();
-                    }*/
-                };
-
                 $scope.weatherData = weatherData.getData();
             }
         };
 }]);
-
-
-$('body').on('mousedown', function (e) {
-    $('[data-toggle="popover"]').each(function () {
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.menubar-popover').has(e.target).length === 0 && $('.menubar-popover').scope()) {
-            $('.menubar-popover').scope().$apply(function() { $('.menubar-popover').scope().$hide();  });
-            //$('.menubar-popover').scope().$hide();
-        }
-
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0 && $('.popover').scope()) {
-            $('.popover').scope().$apply(function() { $('.popover').scope().$hide(); });
-            //$('.popover').scope().$hide();
-            // console.log('hide');
-        }
-    });
-});

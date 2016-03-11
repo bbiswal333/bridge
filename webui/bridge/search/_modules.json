@@ -6,22 +6,37 @@
 		"bridgeSearchDirective.js",
 		"bridgeSearchResultDirective.js",
 		"employeeSearch.js",
-		"hanaAnswersSearch.js",
 		"googleProposals.js",
 		"stackoverflowSearch.js",
 		"sapedia.js",
 		"sapterm.js",
 		"playbook.js",
 		"portal.js",
+		"pam.js",
+		"ppms.js",
 		"tetris.js",
 		"bridgeSearchSettingsController.js",
 		"locationSearch.js",
         "bridgeBuildingSearchService.js",
-      "calc.js",
+        "calc.js",
 		"quicklink.js"
 	],
 	"css_files" : [
 	  "search.css"
 	],
-	"searchProviders" : ["bridge.search.employeeSearch", "bridge.search.hanaAnswersSearch", "bridge.search.googleProposals", "bridge.search.stackoverflowSearch","bridge.search.sapediaSearch","bridge.search.playbookSearch","bridge.search.portalSearch","bridge.search.tetris","bridge.search.locationSearch", "bridge.search.calc","bridge.search.saptermSearch", "bridge.search.quicklinkSearch"]
+	"searchProviders" : [
+	  "bridge.search.employeeSearch", 
+	  "bridge.search.googleProposals", 
+	  "bridge.search.stackoverflowSearch",
+	  "bridge.search.sapediaSearch",
+	  "bridge.search.playbookSearch",
+	  "bridge.search.portalSearch",
+	  "bridge.search.tetris",
+	  "bridge.search.locationSearch",
+	  "bridge.search.calc",
+	  "bridge.search.saptermSearch", 
+	  "bridge.search.quicklinkSearch",
+	  "bridge.search.pamSearch",
+	  "bridge.search.ppmsSearch"        
+	]
 }

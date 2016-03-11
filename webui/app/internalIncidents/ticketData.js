@@ -64,14 +64,16 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 }
                 if (bColleagues && that.tickets.hasOwnProperty("RESULTNODE1")) {
                     tickets = _.union(tickets, _.filter(that.tickets.RESULTNODE1["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function (ticket) {
-                        return ticket.PROCESSOR_ID !== "" && ticket.PROCESSOR_ID !== bridgeDataService.getUserInfo().BNAME;
+                        return ticket.PROCESSOR_ID !== "" && ticket.PROCESSOR_ID.toUpperCase() !== bridgeDataService.getUserInfo().BNAME.toUpperCase();
                     }));
                 }
                 if (bAssignedToMe && that.tickets.hasOwnProperty("RESULTNODE3")) {
                     tickets = _.union(tickets, that.tickets.RESULTNODE3["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
                 }
                 if (bCreatedByMe && that.tickets.hasOwnProperty("RESULTNODE2")) {
-                    tickets = _.union(tickets, that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"]);
+                    tickets = _.union(tickets, _.filter(that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){
+                        return ticket.REPORTER_ID !== "" && ticket.REPORTER_ID.toUpperCase() == bridgeDataService.getUserInfo().BNAME.toUpperCase();
+                    }));
                 }
 
                 if (bIgnoreAuthorAction) {

@@ -1,20 +1,13 @@
 <div>
     <div ng-if="dataInitialized && !noConfiguration" style="height:140px">
         <div class="cm-prio_container">
-            <div ng-repeat="prio in prios" class="prio_col cm-prio_col prio_bg_{{$index+1}}" ng-class="{'grey-40':prios[$index].total==0}">
-                <bridge.conditional-link navigate-to="/detail/premiumEngagement/{{metadata.guid}}/{{prios[$index].key}}/false" navigate-if="prios[$index].total!==0">
-                    <div class="prio_box" style="color:white">
-                        <p>{{prios[$index].description}}</p>
-                    </div>
-                    <div class="prio_content_box" style="color:white">
-                        <p ng-if="prios[$index].total<=99">{{prios[$index].total}}</p>
-                        <p ng-if="prios[$index].total>=100">+99</p>
-                    </div>
-                </bridge.conditional-link>
-            </div>
+            <bridge.prio-box ng-repeat="prio in prios" has-settings="true"
+                prio="{{$index + 1}}" value="prios[$index].total" label="{{prios[$index].description}}"
+                navigate-to="/detail/premiumEngagement/{{metadata.guid}}/{{prios[$index].key}}/false">
+            </bridge.prio-box>  
         </div>
         <div class="cm-btn-container" >
-            <div bs-popover trigger="click" data-title="Customers" data-template="app/premiumEngagement/customerSelection.html" data-html="true">
+            <div bs-popover trigger="click" data-title="Customers" data-template="app/premiumEngagement/customerSelection.html" data-html="true" data-auto-close="true">
                 <bridge.button ng-click="config.data.selection.sel_components = !config.data.selection.sel_components;" style="width:35px;height:30px;line-height:30px;margin:0;margin-bottom:5px;" title="Selected Customer">
                     <i class="fa fa-cube"></i>
                 </bridge.button>

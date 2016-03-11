@@ -1,0 +1,12 @@
+<span class="bridge-tag">
+	<a href="" ng-show="excludable == true" ng-click="exclude = !exclude">
+		<div style="display: inline-block">
+			<span class="bridge-tag-sign" ng-class="{'bridge-tag-include': !exclude}">&#61;</span>
+			<span class="bridge-tag-sign" ng-class="{'bridge-tag-exclude': exclude}">&#8800;</span>
+		</div>
+	</a>
+	<span ng-transclude /> 
+	<a ng-click="removeClick()" ng-show="removable === true">
+		<span class="fa fa-remove"></span>
+	</a>
+</span>

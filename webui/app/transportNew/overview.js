@@ -1,4 +1,4 @@
-﻿angular.module('app.transportNew', []);
+﻿angular.module('app.transportNew', ['ui.bootstrap.datepicker']);
 angular.module('app.transportNew').directive('app.transportNew', ['app.transportNew.dataService', 'app.transportNew.configService', function (dataService, configService) {
 
 	var directiveController = ['$scope', function ($scope)
@@ -13,25 +13,9 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
             return angular.copy(transportConfig);
         };
 
-        function toDate(dateString) {
-        	if(dateString) {
-        		return new Date(dateString);
-        	} else {
-        		return new Date();
-        	}
-        }
-
         function setAppDataFromTransportData() {
         	$scope.numOpenTransports = transportData.openTransports.length;
-			$scope.numOpenTransportsLongerThanThreshold = 0;
-			if(transportConfig.openTransportThreshold) {
-				var thresholdDaysAgo = new Date(new Date().setDate(new Date().getDate() - transportConfig.openTransportThreshold));
-				transportData.openTransports.map(function(transport) {
-					if( toDate(transport.FIRST_OCCURENCE) < thresholdDaysAgo) {
-						$scope.numOpenTransportsLongerThanThreshold++;
-					}
-				});
-			}
+			$scope.numOpenTransportsLongerThanThreshold = transportData.transportsOpenForLongerThanThreshold.length;
         }
 
         $scope.handleTransports = function() {
@@ -67,4 +51,3 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 		controller: directiveController
 	};
 }]);
-

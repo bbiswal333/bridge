@@ -21,6 +21,7 @@ angular.module('bridge.service').provider("bridge.service.loader", function () {
     this.apps = [{
         icon_css: "icon-wrench",
         module_name: "app.atc",
+        multiInstance: true,
         needs_client: false,
         overview_directive: "app.atc",
         routes:

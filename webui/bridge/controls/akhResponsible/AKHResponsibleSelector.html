@@ -1,0 +1,16 @@
+<div>
+	<div class="btn-group" style="display: inline-block; vertical-align: top; position: relative; z-index: 10">
+        <button type="button" class="btn btn-default dropdown-toggle" style="text-align:left;width:300px;" data-toggle="dropdown">
+            <i class="fa fa-caret-down" style="float:right;margin-top:0px;"></i>
+            {{selectedRole.Name}}
+        </button>
+        <ul class="dropdown-menu" style="width: 300px" role="menu">
+            <li ng-repeat="role in Roles" ng-click="setSelectedRole(role)">
+                <a>{{role.Name}}</a>
+            </li>
+        </ul>
+    </div>
+	<div style="display: inline-block; vertical-align: top; width: 300px">
+		<bridge.employee-input on-select="responsibleAdded"></bridge.employee-input>
+	</div>
+</div>

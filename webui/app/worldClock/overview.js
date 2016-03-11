@@ -27,11 +27,12 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 		$scope.box.boxSize = "2";
 		$scope.timeOffsetInMilliseconds = 0;
 
-		configService.initialize($scope.metadata.guid);
-		$scope.locations = configService.locations;
+		var config = configService.getInstanceForAppId($scope.metadata.guid);
+		config.initialize();
+		$scope.locations = config.locations;
 
 		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
+			return angular.copy(config);
 		};
 
 		$http.get('/api/worldClock/getTimeZones').then(function(response) {
@@ -43,10 +44,10 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 			$scope.selectedLocation = null;
 			$scope.editMode = false;
 			$scope.showAddButton = false;
-			configService.addLocation(location);
+			config.addLocation(location);
 		};
 
-		$scope.removeLocation = configService.removeLocation;
+		$scope.removeLocation = config.removeLocation;
 	}];
 
 	return {

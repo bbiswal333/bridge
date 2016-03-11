@@ -1,0 +1,43 @@
+<script type="text/ng-template" id="bridge/teams/views.html">
+  <a tabindex="-1" bind-html-unsafe="match.label | typeaheadHighlight:query"></a>
+</script>
+
+<script type="text/ng-template" id="bridge/teams/confirmDeleteView.html">
+	<div style="position: relative; padding: 20px">
+	    <span class="box-title">REMOVE VIEW</span>
+	    <div style="height: 1px; width: 100%; background-color: #bbbbbb;margin-top:15px"></div>
+	    
+		<div class="row" style="margin:15px 0 0 0;">
+		    <div class="btn btn-primary btn_blue" ng-click="confirmRemove(true)">Delete View for Everyone</div>
+		    <div class="btn btn-primary btn_blue" ng-click="confirmRemove(false)">Remove View Only for Me</div>
+		    <div class="btn btn-primary btn_blue" ng-click="cancel()">Cancel</div>
+		</div>
+	</div>
+</script>
+
+<div class="projectTabBar">
+	<div class="projectTabControlsContainer">
+		<div style="display: inline-block" ng-show="projectTabContainerWidth < projectTabContainerScrollWidth" class="viewScroller">
+			<a ng-click="scrollLeft()"><span class="fa fa-chevron-left"></span></a>
+		</div>
+		<div class="projectTabContainer">
+			<div ng-repeat="project in projects" class="projectTab" ng-class="{'selected': project === selectedProject}">
+				<span ng-click="setSelectedProject(project)" style="padding: 4px 8px"><bridge.editable-label text="project.name" readonly="project.owner !== userData.BNAME" on-text-changed="handleTextChanged()"></bridge.editable-label></span> <a ng-click="deleteView(project.view)" ng-if="project.type === 'TEAM'"><span class="fa fa-remove removeView"></span></a>
+			</div>
+		</div>
+		<div style="display: inline-block" ng-show="projectTabContainerWidth < projectTabContainerScrollWidth" class="viewScroller">
+			<a ng-click="scrollRight()"><span class="fa fa-chevron-right"></span></a>
+		</div>
+		<div class="addViewButtonContainer">
+			<!--<a ng-click="openNewViewModal()"><span class="fa fa-plus addView" style="font-size: 25px;"></span></a>-->
+			<span class="fa fa-bars addView" style="font-size: 25px;" data-animation="am-flip-x" bs-dropdown aria-haspopup="false" aria-expanded="false" data-placement="bottom-right">
+			</span>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#/" ng-click="openNewViewModal()"><span class="fa fa-eye" style="font-size: 16px; float: left; color: #428BCA"></span> Add View</a></li>
+				<li ng-show="selectedProject.type !== 'PERSONAL'"><a ng-click="openShareViewModal()"><span class="fa fa-share" style="font-size: 16px; float: left; color: #428BCA"></span> Share View</a></li>
+				<li ng-show="userData.BNAME === selectedProject.owner || selectedProject.type === 'PERSONAL'"><a href="#/" ng-click="changeSelectedApps();"><span class="fa fa-plus" style="font-size: 16px; float: left; color: #428BCA"></span> Add App</a></li>
+				<!--<li><a href="#/"><span class="fa fa-cog" style="font-size: 16px; float: left; color: #428BCA"></span> View Settings</a></li>-->
+			</ul>
+		</div>
+	</div>
+</div><br />

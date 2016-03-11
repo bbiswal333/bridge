@@ -1,0 +1,18 @@
+{
+	"app":
+	{
+		"categories"			:	["Others"],
+		"module_name"			:	"app.stickyNote",
+		"title"					:	"Sticky Note",
+		"icon_css"				:	"fa fa-pencil",
+		"overview_directive"	:	"app.stickyNote",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"multiInstance"			:	true,
+		"description"			:	"This is an app for entering your comment and post it like a sticky note."
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"css_files" : ["style.css"]
+}

@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<title>Bridge Migration</title>
+		<script src="lib/jQuery-2_1_0/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/bridge.css">
+		<link rel="stylesheet" type="text/css" href="css/bridgeColors.css">
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap-3_1_1/css/bootstrap.min.css">
+		<style>
+			.Center-Container {
+				position: relative;
+			}
+			.Absolute-Center {
+				width: 800px;
+				height: 50%;
+				overflow: auto;
+				margin: auto;
+				position: absolute;
+				top: 0; left: 0; bottom: 0; right: 0;
+			}
+		</style>
+		<script type="text/javascript">
+			var oldConfig;
+
+			function doRedirect() {
+				window.location = window.location.origin.replace("-teams", "");
+			}
+
+			$.ajax({
+                url: "https://ifp.wdf.sap.corp/sap/bc/bridge/IS_MIGRATED?source_instance=" + window.location.hostname,
+                type: "GET",
+                success: function(data) {
+                	if(data.message === "migrated" || data.message === "no_config") {
+                		doRedirect();
+                	}
+                },
+                error: function() {
+                }
+            });
+
+            $.ajax({
+                url: "https://ifp.wdf.sap.corp/sap/bc/bridge/GETUSERCONFIG?instance=" + window.location.hostname,
+                type: "GET",
+                success: function(data) {
+                	oldConfig = data;
+                },
+                error: function() {
+                }
+            });
+
+            function migrate(bSkip) {
+            	$.ajax({
+	                url: "https://ifp.wdf.sap.corp/sap/bc/bridge/MIGRATE_CONFIG?new_timestamp=" + new Date().toISOString() + "&source_instance=" + window.location.hostname + "&target_instance=" + window.location.hostname.replace('-teams', '') + (bSkip ? "&skip_migration=X" : ""),
+	                type: "GET",
+	                success: function(data) {
+	                	doRedirect();
+	                },
+	                error: function() {
+	                	
+	                }
+	            });
+            }
+
+            function dontMigrate() {
+            	migrate(true);
+            }
+		</script>
+	</head>
+	<body class="Center-Container">
+		<div style="max-width:800px; margin:0 auto;position:relative;top:50px;padding:0 20px;text-align:center">
+			<div>
+				<img src="img/bridge-logo-blue.svg" width="100"  style="margin:0 auto;display:block;"/>
+                <h1 style=" font-size: 4.5rem; margin-top:0px;"> Bridge-Teams is going live!</h1>
+			</div>
+			<div style=" font-size: 1.8rem; font-style: italic; margin-top:20px;">
+				You have the chance to migrate your team config into the productive bridge environment or start from scratch.
+				In case you already have a productive bridge config, the productive version will be overwritten.
+			</div>
+			<div style="text-align: center;margin-top:30px;">
+				<button type="button" class="button inactive blue" aria-label="Left Align" onclick="dontMigrate();" style="padding:20px;">
+					<span style="line-height:0px;"> <b><u>Don't</u></b> migrate config</span>
+				</button>
+                
+				<button type="button" class="button inactive blue" aria-label="Left Align" onclick="migrate()" style="padding:20px;">
+					<span style="line-height:0px;" aria-hidden="true"> Migrate config</span>
+				</button>
+			</div>
+		</div>
+	</body>
+</html>
