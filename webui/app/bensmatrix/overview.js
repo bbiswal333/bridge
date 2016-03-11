@@ -15,7 +15,6 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
             }
         }];
 		
-		
 		//$scope.family = "Arial,Helvetica,sans-serif";
 		//$scope.size = "14pt";
 		$scope.weight = "400";
