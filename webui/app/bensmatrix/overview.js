@@ -6,7 +6,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure";
 		$scope.box.sSize = 2;
-		
+
 		$scope.box.headerIcons = [{
             iconCss: "fa-question",
             title: "Need help? Watch a short video to get started!",
@@ -14,7 +14,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
                 $window.open("https://video.sap.com/media/t/0_91r9vac6");
             }
         }];
-		
+
 		//$scope.family = "Arial,Helvetica,sans-serif";
 		//$scope.size = "14pt";
 		$scope.weight = "400";
