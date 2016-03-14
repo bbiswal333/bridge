@@ -141,7 +141,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			$scope.tlength = tlength;
 
 			//refresh scope to get the updated style info
-			//$scope.$apply(); //causes an error and does not seem to be required
+			//$scope.$apply(); //causes an error; get and set style manually instead:
 			//set text to dummy span to get the pixels
 			var elDummy = angular.element("#dummySpan");
 			elDummy.css("font-family", $scope.selectedFamily.label);
