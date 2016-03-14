@@ -72,7 +72,7 @@ angular.module("app.internalIncidents").service("app.internalIncidents.ticketDat
                 }
                 if (bCreatedByMe && that.tickets.hasOwnProperty("RESULTNODE2")) {
                     tickets = _.union(tickets, _.filter(that.tickets.RESULTNODE2["_-SID_-CN_IF_DEVDB_INC_OUT_S"], function(ticket){
-                        return ticket.REPORTER_ID !== "" && ticket.REPORTER_ID.toUpperCase() == bridgeDataService.getUserInfo().BNAME.toUpperCase();
+                        return ticket.REPORTER_ID !== "" && ticket.REPORTER_ID.toUpperCase() === bridgeDataService.getUserInfo().BNAME.toUpperCase();
                     }));
                 }
 

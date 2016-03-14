@@ -41,7 +41,7 @@ angular.module("bridge.service").service("bridge.service.appCreator", ["bridge.s
 		app.metadata.guid = metaData.module_name + "-" + app.metadata.instanceNumber;
 	}
 
-	function migrateMetadataAndConfigIfNecessary(metaData, config) {
+	function migrateMetadataAndConfigIfNecessary(metaData) {
 		switch(metaData.module_name) {
 			case "app.transport":
 				metaData.module_name = "app.transportNew";
