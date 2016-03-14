@@ -25,7 +25,9 @@ angular.module('app.stickyNote').directive('app.stickyNote',
 	var linkFn = function ($scope) {
 
 		var appConfig = configService.getInstanceForAppId($scope.metadata.guid);
-		appConfig.initialize($scope.appConfig);
+		if (appConfig.isInitialized !== true) {
+			appConfig.initialize($scope.appConfig);
+		}
 
 		// watch on any changes in the settings screen
 		$scope.$watch("appConfig.boxSize", function () {
