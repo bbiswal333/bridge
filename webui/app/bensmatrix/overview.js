@@ -6,6 +6,15 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure";
 		$scope.box.sSize = 2;
+
+		$scope.box.headerIcons = [{
+            iconCss: "fa-question",
+            title: "Need help? Watch a short video to get started!",
+            callback: function(){
+                $window.open("https://video.sap.com/media/t/0_91r9vac6");
+            }
+        }];
+
 		//$scope.family = "Arial,Helvetica,sans-serif";
 		//$scope.size = "14pt";
 		$scope.weight = "400";
@@ -86,7 +95,7 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 				"As the title says: nothing to do here :-)",
 				$scope.$parent.module_name,
 				function() {},
-				7000, null); // duration: -1 -> no timout; undefined -> 5000 ms as default
+				7000, null); // duration: -1 -> no timeout; undefined -> 5000 ms as default
 		};
 
 		$scope.updateLength = function (){
@@ -132,9 +141,12 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			$scope.tlength = tlength;
 
 			//refresh scope to get the updated style info
-			$scope.$apply();
+			//$scope.$apply(); //causes an error; get and set style manually instead:
 			//set text to dummy span to get the pixels
 			var elDummy = angular.element("#dummySpan");
+			elDummy.css("font-family", $scope.selectedFamily.label);
+			elDummy.css("font-size", $scope.selectedSize.label);
+			elDummy.css("font-style", $scope.selectedStyle.label);
 			elDummy.html(sInput);
 			//var pxlength = elDummy.getBoundingClientRect().width;
 			$scope.pxlength = Math.round($(elDummy).width());
