@@ -188,7 +188,7 @@
                 method: "POST",
                 withCredentials: true,
                 data: viewData,
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'text/plain' }
             }).success(function (data) {
                 if(data.error && data.message === "refresh") {
                     $window.location.reload();
