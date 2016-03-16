@@ -7,7 +7,7 @@ angular.module('bridge.search').service('bridge.search.sapediaSearch', ['$http',
         };
     };
     this.findMatches = function(query, resultArray) {
-    	var q = "https://sapedia.wdf.sap.corp:8984/solr/select?input=" + query + "&q=smwh_title_exact_case_unsensitive%3A(";
+    	var q = "https://sapedia.wdf.sap.corp/solr/select?input=" + query + "&q=smwh_title_exact_case_unsensitive%3A(";
     	q += query + ")%5E4%20smwh_title%3A(%2B" + query + "*)%5E2%20OR%20smwh_title_s%3A(%2B" + query + "*)%5E2%20OR%20smwh_full_text%3A(%2B";
     	q += query + "*)&fl=smwh_url%2Cid%2Csmwh_title_caption&wt=json";
                     	return $http({method: "GET", url: q, withCredentials: false}).then(
