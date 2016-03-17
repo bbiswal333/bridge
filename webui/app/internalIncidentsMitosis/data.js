@@ -83,7 +83,7 @@ angular.module("app.internalIncidentsMitosis")
 						that.prio4 = [];
 						deferred.resolve();
 					} else {
-						var url = "https://sithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
+						var url = "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
 						$http({method: 'POST', url: url, withCredentials: true, data: getFilterFromConfig(config)}).success(function(data){
 							that.limit = data.limit;
 							that.limitExceeded = data.limitExceeded;
