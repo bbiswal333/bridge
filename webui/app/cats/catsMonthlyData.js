@@ -13,11 +13,6 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		value: false,
 		error: false };
 
-	this.clearCache = function() {
-		this.days = {};
-		this.promiseForMonth = {};
-	};
-
 	this.executeWhenDone = function(promise)
 	{
 		var that = this;
@@ -73,6 +68,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 			deferred.resolve();
 			return deferred.promise;
 		}
+	};
+
+	this.reloadData = function(year, month){
+		this.days = {};
+		this.promiseForMonth = {};
+		return this.getMonthData(year, month);
 	};
 
 	this.getWeeksOfMonth = function(year, month){
