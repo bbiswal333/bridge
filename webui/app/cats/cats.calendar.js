@@ -133,6 +133,7 @@ angular.module("app.cats")
 				$scope.calArray = calUtils.buildCalendarArray(monthlyDataService.year, monthlyDataService.month, $scope.sundayweekstart);
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
+					monthlyDataService.clearCache();
 					monthlyDataService.calArray = $scope.calArray;
 					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
 					.then(function(){

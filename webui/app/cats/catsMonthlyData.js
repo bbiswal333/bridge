@@ -13,6 +13,11 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		value: false,
 		error: false };
 
+	this.clearCache = function() {
+		this.days = {};
+		this.promiseForMonth = {};
+	};
+
 	this.executeWhenDone = function(promise)
 	{
 		var that = this;
