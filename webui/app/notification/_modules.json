@@ -1,0 +1,23 @@
+{
+	"app":
+	{
+		"categories"			:	["Sample Apps"],
+		"module_name"			:	"app.notification",
+		"title"					:	"News Manager",
+		"icon_css"				:	"fa fa-newspaper-o",
+		"overview_directive"	:	"app.notification",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"This is the simplest app you could take as a blueprint.",
+		"routes": [
+			{		
+				"route"			:	"/detail/notification/",
+				"templateUrl"	:	"app/notification/detail.html"
+			}
+		]
+	},
+	"modules" : [],
+	"js_files" : ["overview.js", "detailController.js"],
+	"css_files" : ["notifications.css"]
+}

@@ -1,0 +1,21 @@
+<div ng-controller="app.notification.notificationController" style="box-sizing:border-box">
+
+    <accordion close-others="oneAtATime" ng:repeat="i in data.NOTIFICATIONS">
+
+        <accordion-group is-open="status.open">
+            <accordion-heading>
+                <span class="underline-on-hover">{{i.HEADER}}</span>
+                <p class="pull-right glyphtext" style="color:gray;">{{i.TIMESTAMP}}</p>
+            </accordion-heading>
+            <div class="row">
+                <h3 class="col-xs-11">{{i.PREVIEW}}</h3>
+                <span class="col-xs-1" style="padding:10px;">
+                    <i class="fa fa-pencil-square-o fa-2x"></i>
+                </span>
+            </div>
+            <div class="row">
+                <p class="col-xs-12" ng-bind-html="i.CONTENT"></p>
+            </div>
+        </accordion-group>
+    </accordion>
+</div>
