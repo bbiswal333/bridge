@@ -61,7 +61,7 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 			enhancedTask.subDescription = task.ZCPR_EXTID;
 		}
 
-		if (task.RAUFNR) {
+		if (task.RAUFNR	&& !task.ZCPR_OBJGEXTID) { // not using internal order number for cPro tasks
 			var RAUFNRtoDisplay = task.RAUFNR;
 			RAUFNRtoDisplay = RAUFNRtoDisplay.replace(/^0+/, '');
 			enhancedTask.subDescription = enhancedTask.subDescription + " (" + RAUFNRtoDisplay + ")";
