@@ -520,7 +520,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		this.requestTasksFromWorklist = function() {
+		this.requestTasksFromWorklist2 = function() {
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
@@ -563,7 +563,7 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 			return deferred.promise;
 		};
 
-		this.requestTasksFromWorklist2 = function() {
+		this.requestTasksFromWorklist = function() {
 			var deferred = $q.defer();
 			this.determineCatsProfileFromBackend()
 			.then(function(catsProfile) {
