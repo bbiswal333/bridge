@@ -1,14 +1,14 @@
-ddescribe("Upport Notes config", function() {
+describe("Upport Notes config", function() {
 	var upportNotesConfigService, bridgeDataService, $timeout, $httpBackend;
 
 	beforeEach(function () {
         module("bridge.service");
         module("app.upportNotes", function($provide){
             var mockDataService = {
-                hasConfigForUpportNotes: true,
+                hasConfigForUpportNotes: false,
                 getAppConfigById: function () {
                     if (this.hasConfigForUpportNotes) {
-                        return JSON.parse('{"configItems":[{"srcSystem":"Z7Y","devClass":"","tadirResponsible":"","component":"","showSuppressed":false,"displayPrio1":true,"displayPrio2":true,"displayPrio3":true,"displayPrio4":true,"onlyInProcess":true, "onlyProductionRelevant": true}]}');
+                        return JSON.parse('{"configItems":[{"programs": [{"PRG_ID": "PROGRAM1"}, {"PRG_ID": "PROGRAM2"}], "softwareComponents": [{"Component": "Comp1"}, {"Component": "Comp2"}]}, {"programs": [], "softwareComponents": [{"Component": "Comp3", "exclude": true}]}]}');
                     } else {
                         return {};
                     }
@@ -103,6 +103,21 @@ ddescribe("Upport Notes config", function() {
 	});
 
 	describe("persistence", function() {
+		beforeEach(function() {
+			bridgeDataService.hasConfigForUpportNotes = true;
+		});
 
+		it("should load the config", function() {
+			upportNotesConfigService.initialize();
+			expect(upportNotesConfigService.getItems().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[0].getPrograms().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[0].getSoftwareComponents().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[1].getPrograms().length).toEqual(0);
+			expect(upportNotesConfigService.getItems()[1].getSoftwareComponents().length).toEqual(1);
+		});
+
+		it("should serialize the config to json", function() {
+			//TODO
+		});
 	});
 });

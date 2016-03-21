@@ -62,6 +62,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			this.fromJSON = function(oJSON) {
 				programs = oJSON.programs;
 				softwareComponents = oJSON.softwareComponents;
+				return this;
 			};
 		};
 	})();
@@ -69,7 +70,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 	EditableConfigItem.prototype = new ConfigItem();
 
 	var Config = (function() {
-		return function() {
+		return function(appId) {
 			var configItems = [];
 
 			this.getItems = function() {
@@ -89,6 +90,18 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 					configItems.splice(configItems.indexOf(item), 1);
 				}
 			};
+
+			this.initialize = function() {
+				var that = this;
+				var config = bridgeDataService.getAppConfigById(appId);
+				if(!config.configItems) {
+					return;
+				}
+
+				config.configItems.map(function(item) {
+					that.addItem(that.getNewItem().fromJSON(item));
+				});
+			};
 		};
 	})();
 
@@ -96,7 +109,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
-			instances[appId] = new Config();
+			instances[appId] = new Config(appId);
 		}
 		return instances[appId];
 	};
