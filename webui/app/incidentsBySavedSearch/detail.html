@@ -39,6 +39,9 @@
 				<bridge.table-column column-id="7" header="'Description'" column-size-class="'col-sm-5'" order-by="'DESCRIPTION'" column-order="parentScope.config.data.columnOrder[6]" visible="parentScope.config.data.columnVisibility[6]">
 					<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
 				</bridge.table-column>
+				<bridge.table-column column-id="12" header="'Cust. Message No'" column-size-class="'col-sm-3'" order-by="'MESSAGE_NO'" column-order="parentScope.config.data.columnOrder[11]" visible="parentScope.config.data.columnVisibility[11]" custom-style="{'min-width': '120px'}">
+					<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.MESSAGE_NO}}</a>
+				</bridge.table-column>
 				<bridge.table-column column-id="8" header="'ObjectId'" column-size-class="'col-sm-3'" order-by="'OBJECT_ID'" column-order="parentScope.config.data.columnOrder[7]" visible="parentScope.config.data.columnVisibility[7]" custom-style="{'min-width': '120px'}">
 					<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.OBJECT_ID}}</a>
 				</bridge.table-column>
