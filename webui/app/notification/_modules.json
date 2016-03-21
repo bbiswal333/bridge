@@ -18,6 +18,6 @@
 		]
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "detailController.js"],
+	"js_files" : ["overview.js", "detailController.js", "edit.js"],
 	"css_files" : ["notifications.css"]
 }

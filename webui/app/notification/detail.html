@@ -5,12 +5,12 @@
         <accordion-group is-open="status.open">
             <accordion-heading>
                 <span class="underline-on-hover">{{i.HEADER}}</span>
-                <p class="pull-right glyphtext" style="color:gray;">{{i.TIMESTAMP}}</p>
+                <p class="pull-right glyphtext" style="color:gray; cursor:pointer;">{{i.TIMESTAMP}}</p>
             </accordion-heading>
             <div class="row">
                 <h3 class="col-xs-11">{{i.PREVIEW}}</h3>
                 <span class="col-xs-1" style="padding:10px;">
-                    <i class="fa fa-pencil-square-o fa-2x"></i>
+                    <span class="fa fa-pencil-square-o fa-2x" title="Edit" ng-click="showEditPopUp()"></span>
                 </span>
             </div>
             <div class="row">
