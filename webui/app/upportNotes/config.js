@@ -18,8 +18,31 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				return programs;
 			};
 
-			this.addProgram = function(programGUID) {
-				var program = {PRG_ID: programGUID, exclude: false};
+			function getProgramByGUID(programGUID) {
+				for(var i = 0, length = programs.length; i < length; i++) {
+					if(programs[i].PRG_ID === programGUID) {
+						return programs[i];
+					}
+				}
+				return undefined;
+			}
+
+			function getSoftwareComponent(softwareComponent) {
+				for(var i = 0, length = softwareComponents.length; i < length; i++) {
+					if(softwareComponents[i].Component === softwareComponent) {
+						return softwareComponents[i];
+					}
+				}
+				return undefined;
+			}
+
+			this.addProgram = function(programGUID, displayText) {
+				var program = getProgramByGUID(programGUID);
+				if(program) {
+					return program;
+				}
+
+				program = {PRG_ID: programGUID, DisplayText: displayText, exclude: false};
 				programs.push(program);
 				return program;
 			};
@@ -35,7 +58,12 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			};
 
 			this.addSoftwareComponent = function(softwareComponent) {
-				var component = {Component: softwareComponent, exclude: false};
+				var component = getSoftwareComponent(softwareComponent);
+				if(component) {
+					return component;
+				}
+
+				component = {Component: softwareComponent, exclude: false};
 				softwareComponents.push(component);
 				return component;
 			};
@@ -71,6 +99,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 
 	var Config = (function() {
 		return function(appId) {
+			var initialized = false;
 			var configItems = [];
 
 			this.getItems = function() {
@@ -94,13 +123,18 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			this.initialize = function() {
 				var that = this;
 				var config = bridgeDataService.getAppConfigById(appId);
-				if(!config.configItems) {
+				if(!config.configItems || initialized === true) {
 					return;
 				}
 
 				config.configItems.map(function(item) {
 					that.addItem(that.getNewItem().fromJSON(item));
 				});
+				initialized = true;
+			};
+
+			this.toJSON = function() {
+				return JSON.parse(JSON.stringify({configItems: configItems}));
 			};
 		};
 	})();

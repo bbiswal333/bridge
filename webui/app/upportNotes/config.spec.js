@@ -1,4 +1,4 @@
-describe("Upport Notes config", function() {
+ddescribe("Upport Notes config", function() {
 	var upportNotesConfigService, bridgeDataService, $timeout, $httpBackend;
 
 	beforeEach(function () {
@@ -61,12 +61,18 @@ describe("Upport Notes config", function() {
 		describe("programs", function() {
 			it("should be addable", function() {
 				expect(configItem.getPrograms().length).toEqual(0);
-				configItem.addProgram("PROGRAM_GUID");
-				expect(configItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "exclude": false}]);
+				configItem.addProgram("PROGRAM_GUID", "Program Name");
+				expect(configItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "DisplayText": "Program Name", "exclude": false}]);
+			});
+
+			it("should be addable only once", function() {
+				configItem.addProgram("PROGRAM_GUID", "Program Name");
+				configItem.addProgram("PROGRAM_GUID", "Program Name");
+				expect(configItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "DisplayText": "Program Name", "exclude": false}]);
 			});
 
 			it("should be removeable", function() {
-				var program = configItem.addProgram("PROGRAM_GUID");
+				var program = configItem.addProgram("PROGRAM_GUID", "Program Name");
 				configItem.removeProgram(program);
 				expect(configItem.getPrograms().length).toEqual(0);
 			});
@@ -75,6 +81,12 @@ describe("Upport Notes config", function() {
 		describe("software components", function() {
 			it("should be addable", function() {
 				expect(configItem.getSoftwareComponents().length).toEqual(0);
+				configItem.addSoftwareComponent("COMP1");
+				expect(configItem.getSoftwareComponents()).toEqual([{"Component": "COMP1", "exclude": false}]);
+			});
+
+			it("should be addable only once", function() {
+				configItem.addSoftwareComponent("COMP1");
 				configItem.addSoftwareComponent("COMP1");
 				expect(configItem.getSoftwareComponents()).toEqual([{"Component": "COMP1", "exclude": false}]);
 			});
@@ -89,11 +101,11 @@ describe("Upport Notes config", function() {
 		describe("edit mode", function() {
 			it("should allow users to edit a config item and apply the changes", function() {
 				var tmpConfigItem = configItem.startEditing();
-				tmpConfigItem.addProgram("PROGRAM_GUID");
+				tmpConfigItem.addProgram("PROGRAM_GUID", "Program");
 				expect(configItem.getPrograms().length).toEqual(0);
-				expect(tmpConfigItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "exclude": false}]);
+				expect(tmpConfigItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "DisplayText": "Program", "exclude": false}]);
 				tmpConfigItem.applyChanges();
-				expect(configItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "exclude": false}]);
+				expect(configItem.getPrograms()).toEqual([{"PRG_ID": "PROGRAM_GUID", "DisplayText": "Program", "exclude": false}]);
 			});
 
 			it("confirmation should only be possible on derived config items", function() {
@@ -116,8 +128,22 @@ describe("Upport Notes config", function() {
 			expect(upportNotesConfigService.getItems()[1].getSoftwareComponents().length).toEqual(1);
 		});
 
+		it("should load the config only once", function() {
+			upportNotesConfigService.initialize();
+			upportNotesConfigService.getItems()[0].addProgram("PROGRAM3", "Text");
+			upportNotesConfigService.initialize();
+			expect(upportNotesConfigService.getItems().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[0].getPrograms().length).toEqual(3);
+		});
+
 		it("should serialize the config to json", function() {
-			//TODO
+			upportNotesConfigService.initialize();
+			var json = upportNotesConfigService.toJSON();
+			expect(json.configItems.length).toEqual(2);
+			expect(json.configItems[0].programs.length).toEqual(2);
+			expect(json.configItems[0].softwareComponents.length).toEqual(2);
+			expect(json.configItems[1].programs.length).toEqual(0);
+			expect(json.configItems[1].softwareComponents.length).toEqual(1);
 		});
 	});
 });
