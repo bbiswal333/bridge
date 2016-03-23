@@ -76,6 +76,11 @@ ddescribe("Upport Notes config", function() {
 				configItem.removeProgram(program);
 				expect(configItem.getPrograms().length).toEqual(0);
 			});
+
+			it("should not return the original array", function() {
+				configItem.addProgram("PROGRAM_GUID", "Program Name");
+				expect(configItem.getPrograms()).not.toBe(configItem.getPrograms());
+			});
 		});
 
 		describe("software components", function() {
@@ -95,6 +100,11 @@ ddescribe("Upport Notes config", function() {
 				var component = configItem.addSoftwareComponent("COMP1");
 				configItem.removeSoftwareComponent(component);
 				expect(configItem.getSoftwareComponents().length).toEqual(0);
+			});
+
+			it("should not return the original array", function() {
+				configItem.addSoftwareComponent("COMP1");
+				expect(configItem.getSoftwareComponents()).not.toBe(configItem.getSoftwareComponents());
 			});
 		});
 

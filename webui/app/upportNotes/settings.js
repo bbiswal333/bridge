@@ -1,4 +1,4 @@
-angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', 'app.upportNotes.configService', function ($scope, $http, configService) {
+angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', 'app.upportNotes.configService', '$q', function ($scope, $http, configService, $q) {
 	var notesConfig = configService.getConfigForAppId($scope.boxScope.metadata.guid);
 
 	$scope.notesConfig = notesConfig;

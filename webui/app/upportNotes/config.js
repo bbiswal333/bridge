@@ -15,7 +15,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			var softwareComponents = [];
 
 			this.getPrograms = function() {
-				return programs;
+				return programs.map(function(program) { return program; });
 			};
 
 			function getProgramByGUID(programGUID) {
@@ -54,7 +54,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			};
 
 			this.getSoftwareComponents = function() {
-				return softwareComponents;
+				return softwareComponents.map(function(softwareComponent) { return softwareComponent; });
 			};
 
 			this.addSoftwareComponent = function(softwareComponent) {
