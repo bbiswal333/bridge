@@ -20,7 +20,12 @@ angular.module("app.junit.data", []).service("app.junit.dataService", ["$http", 
         configService.getConfigForAppId(appId).getConfigItems().forEach(function(configItem) {
           var deferred = $q.defer();
 
-          $http.get(configItem.url).success(function(data, status, headers, config) {
+          var url = configItem.url;
+          if(url.indexOf("http://") === 0) {
+            url = "/api/get?url=" + encodeURIComponent(url);
+          }
+
+          $http.get(url).success(function(data, status, headers, config) {
 
             var JSONdata = new X2JS().xml_str2json(data);
             var result = {};
