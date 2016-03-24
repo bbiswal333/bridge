@@ -9,9 +9,16 @@
 		"needs_client"			:	false,
 		"beta"					:	false,
 		"default_hidden"		:	true,
+		"routes"		:
+		[
+			{		
+				"route"			:	"/detail/upportNotes/:instanceNumber/:prio",
+				"templateUrl"	:	"app/upportNotes/detail.html"
+			}
+		],
 		"description"			:	"This is the simplest app you could take as a blueprint."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js", "detail.js"],
 	"css_files" : []
 }

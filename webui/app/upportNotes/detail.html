@@ -1,0 +1,21 @@
+<div ng-controller="app.upportNotes.detailController" style="box-sizing:border-box" >    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;" cg-busy="{promise:loadingPromise,message:'Loading'}">
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+
+		<br/>
+
+		<bridge.table table-data="data.upportNotes" filter="filterText" new-layout="true">
+			<bridge.table-column-sorter>
+				<bridge.table-column column-id="1" header="'Prio'" column-size-class="'col-sm-1'" column-order="parentScope.config.detailsColumnOrder[0]" order-by="'CM_PRIORITY'" visible="parentScope.config.detailsColumnVisibility[0]">{{row.CM_PRIORITY}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Program'" column-size-class="'col-sm-4'" column-order="parentScope.config.detailsColumnOrder[1]" order-by="'INT_PRG_NAME'" visible="parentScope.config.detailsColumnVisibility[1]">{{row.INT_PRG_NAME}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Text'" column-size-class="'col-sm-5'" column-order="parentScope.config.detailsColumnOrder[2]" order-by="'CM_KTEXT'" visible="parentScope.config.detailsColumnVisibility[2]">{{row.CM_KTEXT}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Status'" column-size-class="'col-sm-2'" column-order="parentScope.config.detailsColumnOrder[3]" order-by="'CM_STATUS_TEXT'" visible="parentScope.config.detailsColumnVisibility[3]">{{row.CM_STATUS_TEXT}}</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Processor'" column-size-class="'col-sm-5'" column-order="parentScope.config.detailsColumnOrder[4]" order-by="'CM_PROCESSOR'" visible="parentScope.config.detailsColumnVisibility[4]"><bridge.employee id="row.CM_PROCESSOR"></bridge.employee></bridge.table-column>
+				<bridge.table-column column-id="6" header="'SW Component'" column-size-class="'col-sm-3'" column-order="parentScope.config.detailsColumnOrder[5]" order-by="'PPMS_CV_SW_COMP_T'" visible="parentScope.config.detailsColumnVisibility[5]">{{row.PPMS_CV_SW_COMP_T}}</bridge.table-column>
+				<bridge.table-column column-id="7" header="'ACRF Component'" column-size-class="'col-sm-3'" column-order="parentScope.config.detailsColumnOrder[6]" order-by="'CM_ACRF_COMP'" visible="parentScope.config.detailsColumnVisibility[6]">{{row.CM_ACRF_COMP}}</bridge.table-column>
+				<bridge.table-column column-id="8" header="'Object ID'" column-size-class="'col-sm-3'" column-order="parentScope.config.detailsColumnOrder[7]" order-by="'CM_MESSAGE_NUM'" visible="parentScope.config.detailsColumnVisibility[7]">{{row.CM_MESSAGE_NUM}}</bridge.table-column>
+				<bridge.table-column column-id="9" header="'Development DM'" column-size-class="'col-sm-5'" column-order="parentScope.config.detailsColumnOrder[8]" order-by="'CM_DEV_DLM_ID'" visible="parentScope.config.detailsColumnVisibility[8]"><bridge.employee id="row.CM_DEV_DLM_ID"></bridge.employee></bridge.table-column>
+			</bridge.table-column-sorter>
+		</bridge.table>
+    </div>
+</div>

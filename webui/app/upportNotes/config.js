@@ -101,10 +101,10 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 	var Config = (function() {
 		return function(appId) {
 			var initialized = false;
-			var configItems = [];
+			this.configItems = [];
 
 			this.getItems = function() {
-				return configItems;
+				return this.configItems;
 			};
 
 			this.getNewItem = function() {
@@ -112,12 +112,12 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			};
 
 			this.addItem = function(item) {
-				configItems.push(item);
+				this.configItems.push(item);
 			};
 
 			this.removeItem = function(item) {
-				if(configItems.indexOf(item) >= 0) {
-					configItems.splice(configItems.indexOf(item), 1);
+				if(this.configItems.indexOf(item) >= 0) {
+					this.configItems.splice(this.configItems.indexOf(item), 1);
 				}
 			};
 
@@ -135,7 +135,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			};
 
 			this.toJSON = function() {
-				return JSON.parse(JSON.stringify({configItems: configItems}));
+				return JSON.parse(JSON.stringify({configItems: this.configItems}));
 			};
 		};
 	})();

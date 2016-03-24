@@ -2,11 +2,9 @@
 angular.module('app.upportNotes').directive('app.upportNotes',['app.upportNotes.configService', 'app.upportNotes.dataService', function (configService, dataService) {
 
 	var directiveController = ['$scope', function ($scope) {
-		$scope.appText = "Pretty simple app.";
-
 		var appConfig = configService.getConfigForAppId($scope.metadata.guid);
 		appConfig.initialize();
-		$scope.config = appConfig.getItems();
+		$scope.config = appConfig;
 
 		var appData = dataService.getDataForAppId($scope.metadata.guid);
 
@@ -18,7 +16,11 @@ angular.module('app.upportNotes').directive('app.upportNotes',['app.upportNotes.
 
 		loadSummary();
 
-		$scope.$watch("config", function() {
+		$scope.$watch("config", function(newValue, oldValue) {
+			if(newValue.toJSON() === oldValue.toJSON()) {
+				return;
+			}
+
 			loadSummary();
 		}, true);
 

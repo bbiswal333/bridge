@@ -54,6 +54,7 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 			config.initialize();
 
 			this.summary = {};
+			this.details = [];
 
 			this.loadSummary = function() {
 				var deferred = $q.defer();
@@ -62,8 +63,27 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 					prio1: $http.get("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and " + getQueryString(config)),
 					prio2: $http.get("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and " + getQueryString(config))
 				}).then(function(result) {
-					that.summary.prio1 = result.prio1.data;
-					that.summary.prio2 = result.prio2.data;
+					that.summary.prio1 = parseInt(result.prio1.data);
+					that.summary.prio2 = parseInt(result.prio2.data);
+					deferred.resolve();
+				}, function() {
+					deferred.reject();
+				});
+
+				return deferred.promise;
+			};
+
+			this.loadDetails = function() {
+				var deferred = $q.defer();
+
+				this.details.length = 0;
+
+				$q.all({
+					prio1: $http.get("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and " + getQueryString(config)),
+					prio2: $http.get("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and " + getQueryString(config))
+				}).then(function(result) {
+					Array.prototype.push.apply(that.details, result.prio1.data.d.results);
+					Array.prototype.push.apply(that.details, result.prio2.data.d.results);
 					deferred.resolve();
 				}, function() {
 					deferred.reject();
