@@ -21,7 +21,7 @@ angular.module("app.junit.data", []).service("app.junit.dataService", ["$http", 
           var deferred = $q.defer();
 
           var url = configItem.url;
-          if(url.indexOf("http://") === 0) {
+          if(url.indexOf("http://") === 0 || configItem.proxyRequest === true) {
             url = "/api/get?url=" + encodeURIComponent(url);
           }
 
