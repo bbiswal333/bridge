@@ -11,26 +11,27 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 
 	var ConfigItem = (function() {
 		return function() {
-			var programs = [];
-			var softwareComponents = [];
+			var that = this;
+			this.programs = [];
+			this.softwareComponents = [];
 
 			this.getPrograms = function() {
-				return programs.map(function(program) { return program; });
+				return this.programs.map(function(program) { return program; });
 			};
 
 			function getProgramByGUID(programGUID) {
-				for(var i = 0, length = programs.length; i < length; i++) {
-					if(programs[i].PRG_ID === programGUID) {
-						return programs[i];
+				for(var i = 0, length = that.programs.length; i < length; i++) {
+					if(that.programs[i].PRG_ID === programGUID) {
+						return that.programs[i];
 					}
 				}
 				return undefined;
 			}
 
 			function getSoftwareComponent(softwareComponent) {
-				for(var i = 0, length = softwareComponents.length; i < length; i++) {
-					if(softwareComponents[i].Component === softwareComponent) {
-						return softwareComponents[i];
+				for(var i = 0, length = that.softwareComponents.length; i < length; i++) {
+					if(that.softwareComponents[i].Component === softwareComponent) {
+						return that.softwareComponents[i];
 					}
 				}
 				return undefined;
@@ -43,18 +44,18 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				}
 
 				program = {PRG_ID: programGUID, DisplayText: displayText, exclude: false};
-				programs.push(program);
+				this.programs.push(program);
 				return program;
 			};
 
 			this.removeProgram = function(program) {
-				if(programs.indexOf(program) >= 0) {
-					programs.splice(programs.indexOf(program), 1);
+				if(this.programs.indexOf(program) >= 0) {
+					this.programs.splice(this.programs.indexOf(program), 1);
 				}
 			};
 
 			this.getSoftwareComponents = function() {
-				return softwareComponents.map(function(softwareComponent) { return softwareComponent; });
+				return this.softwareComponents.map(function(softwareComponent) { return softwareComponent; });
 			};
 
 			this.addSoftwareComponent = function(softwareComponent) {
@@ -64,13 +65,13 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				}
 
 				component = {Component: softwareComponent, exclude: false};
-				softwareComponents.push(component);
+				this.softwareComponents.push(component);
 				return component;
 			};
 
 			this.removeSoftwareComponent = function(softwareComponent) {
-				if(softwareComponents.indexOf(softwareComponent) >= 0) {
-					softwareComponents.splice(softwareComponents.indexOf(softwareComponent), 1);
+				if(this.softwareComponents.indexOf(softwareComponent) >= 0) {
+					this.softwareComponents.splice(this.softwareComponents.indexOf(softwareComponent), 1);
 				}
 			};
 
@@ -81,15 +82,15 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			this.toJSON = function() {
 				return JSON.parse(
 					JSON.stringify({
-						programs: programs,
-						softwareComponents: softwareComponents
+						programs: this.programs,
+						softwareComponents: this.softwareComponents
 					})
 				);
 			};
 
 			this.fromJSON = function(oJSON) {
-				programs = oJSON.programs;
-				softwareComponents = oJSON.softwareComponents;
+				this.programs = oJSON.programs;
+				this.softwareComponents = oJSON.softwareComponents;
 				return this;
 			};
 		};

@@ -1,1 +1,16 @@
-﻿{{appText}}
+﻿<div>
+	<p ng-show="config.length == 0">No Source System defined…</p>
+	
+	<div ng-show="config.length > 0"  style="width:175px; height:140px" cg-busy="{promise:loadSummaryPromise,message:'Loading'}">
+		<div class="prio_container">
+			<bridge.prio-box
+				prio="1" value="summary.prio1" label="Prio 1"
+				navigate-to="/detail/upportNotes/{{metadata.instanceNumber}}/1">
+			</bridge.prio-box>
+			<bridge.prio-box
+				prio="1" value="summary.prio2" label="Prio 2"
+				navigate-to="/detail/upportNotes/{{metadata.instanceNumber}}/2">
+			</bridge.prio-box>	
+		</div>
+	</div>
+</div>

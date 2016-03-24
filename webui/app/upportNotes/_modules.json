@@ -12,6 +12,6 @@
 		"description"			:	"This is the simplest app you could take as a blueprint."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "config.js", "settings.js"],
+	"js_files" : ["overview.js", "config.js", "settings.js", "data.js"],
 	"css_files" : []
 }

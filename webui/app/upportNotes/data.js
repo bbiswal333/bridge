@@ -29,6 +29,8 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 
 		function getQueryString(oConfig) {
 			return oConfig.getItems().map(function(oConfigItem) {
+				var filters = [];
+
 				var programsIncluded = filterItems(oConfigItem.getPrograms(), false);
 				var programsExcluded = filterItems(oConfigItem.getPrograms(), true);
 				var programsFilter = programsIncluded.map(buildProgramFilterInclude).join(" or ");
@@ -39,7 +41,10 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 				var softwareComponentsFilter = softwareComponentsIncluded.map(buildSoftwareComponentFilterInclude).join(" or ");
 				softwareComponentsFilter += softwareComponentsExcluded.length > 0 ? " and " + softwareComponentsExcluded.map(buildSoftwareComponentFilterExclude).join(" and ") : "";
 
-				return "(" + programsFilter + ") and (" + softwareComponentsFilter + ")";
+				if(programsFilter) { filters.push(programsFilter); }
+				if(softwareComponentsFilter) { filters.push(softwareComponentsFilter); }
+
+				return filters.map(function(filter) { return "(" + filter + ")"; }).join(" and ");
 			}).join(" or ");
 		}
 
