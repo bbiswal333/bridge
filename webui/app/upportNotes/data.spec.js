@@ -1,4 +1,4 @@
-ddescribe("Upport Notes data", function() {
+describe("Upport Notes data", function() {
 	var upportNotesDataService, configService, $timeout, $httpBackend, detailsResponse;
 
 	beforeEach(function () {
@@ -37,8 +37,8 @@ ddescribe("Upport Notes data", function() {
     describe("retrieval", function() {
         describe("summary", function() {
             it("should call the backend service with single config item", function(done) {
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, "21");
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, "42");
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, "21");
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, "42");
                 var configItem = configService.getNewItem();
                 configItem.addProgram("ID1", "Program");
                 configItem.addProgram("ID2", "Program");
@@ -60,8 +60,8 @@ ddescribe("Upport Notes data", function() {
             });
 
             it("should call the backend service with single config item and excludes", function(done) {
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, "21");
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, "42");
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, "21");
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, "42");
                 var configItem = configService.getNewItem();
                 configItem.addProgram("ID1", "Program");
                 configItem.addProgram("ID2", "Program");
@@ -88,8 +88,8 @@ ddescribe("Upport Notes data", function() {
 
         describe("details", function() {
             it("should call the backend service with single config item", function(done) {
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, detailsResponse);
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, detailsResponse);
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, detailsResponse);
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID3') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP2')").respond(200, detailsResponse);
                 var configItem = configService.getNewItem();
                 configItem.addProgram("ID1", "Program");
                 configItem.addProgram("ID2", "Program");
@@ -110,8 +110,8 @@ ddescribe("Upport Notes data", function() {
             });
 
             it("should call the backend service with single config item and excludes", function(done) {
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, detailsResponse);
-                $httpBackend.whenGET("https://sithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, detailsResponse);
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, detailsResponse);
+                $httpBackend.whenGET("https://xithdb.wdf.sap.corp/irep/reporting/upportNotes/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and (PRG_ID eq 'ID1' or PRG_ID eq 'ID2' or PRG_ID eq 'ID4' and PRG_ID ne 'ID3' and PRG_ID ne 'ID5') and (PPMS_CV_SW_COMP_T eq 'COMP1' or PPMS_CV_SW_COMP_T eq 'COMP3' and PPMS_CV_SW_COMP_T ne 'COMP2')").respond(200, detailsResponse);
                 var configItem = configService.getNewItem();
                 configItem.addProgram("ID1", "Program");
                 configItem.addProgram("ID2", "Program");

@@ -7,7 +7,8 @@
 		"icon_css"				:	"fa fa-circle",
 		"overview_directive"	:	"app.upportNotes",
 		"needs_client"			:	false,
-		"beta"					:	false,
+		"beta"					:	true,
+		"beta_users"			:	["D049677", "D027608", "D037415", "D051804"],
 		"default_hidden"		:	true,
 		"routes"		:
 		[
