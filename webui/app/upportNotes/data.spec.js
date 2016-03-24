@@ -1,5 +1,5 @@
 describe("Upport Notes data", function() {
-	var upportNotesDataService, configService, $timeout, $httpBackend, detailsResponse;
+	var upportNotesDataService, configService, $httpBackend, detailsResponse;
 
 	beforeEach(function () {
         module("app.upportNotes", function($provide){
@@ -20,10 +20,9 @@ describe("Upport Notes data", function() {
             $provide.value("bridgeDataService", mockDataService);
         });
 
-        inject(["$httpBackend", "$timeout", "app.upportNotes.dataService", "app.upportNotes.configService", function (_$httpBackend, _$timeout, _upportNotesDataService, _configService) {
+        inject(["$httpBackend", "app.upportNotes.dataService", "app.upportNotes.configService", function (_$httpBackend, _upportNotesDataService, _configService) {
             upportNotesDataService = _upportNotesDataService.getDataForAppId("app.test");
             configService = _configService.getConfigForAppId("app.test");
-            $timeout = _$timeout;
             $httpBackend = _$httpBackend;
         }]);
 

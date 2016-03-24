@@ -1,5 +1,5 @@
 describe("Upport Notes config", function() {
-	var upportNotesConfigService, bridgeDataService, $timeout, $httpBackend;
+	var upportNotesConfigService, bridgeDataService;
 
 	beforeEach(function () {
         module("bridge.service");
@@ -21,11 +21,9 @@ describe("Upport Notes config", function() {
             $provide.value("bridgeDataService", mockDataService);
         });
 
-        inject(["$httpBackend", "$timeout", "app.upportNotes.configService", "bridgeDataService", function (_$httpBackend, _$timeout, _upportNotesConfigService, _bridgeDataService) {
+        inject(["app.upportNotes.configService", "bridgeDataService", function (_upportNotesConfigService, _bridgeDataService) {
             upportNotesConfigService = _upportNotesConfigService.getConfigForAppId("app.test");
             bridgeDataService = _bridgeDataService;
-            $timeout = _$timeout;
-            $httpBackend = _$httpBackend;
         }]);
 
         //$httpBackend.whenGET(/https:\/\/mithdb\.wdf\.sap\.corp/).respond({"d":{"results":[{"__metadata": {"type":"irep.reporting.internalIncidents.components.ComponentType","uri":"https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component('AC')"},"PS_POSID":"CA-CS","DEV_UID_DM":"D022544","DEV_UID_DLVRY_M":"D022544","DEV_UID_PRDOWNER":"I844258","SL3_DEV_HANDOVER":" "}]}});
