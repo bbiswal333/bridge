@@ -1,7 +1,6 @@
 angular.module('app.notification').controller('app.notification.notificationController', ['$scope', '$http', '$modal',
     function($scope, $http, $modal) {
 
-        var that = this;
         $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
             .success(function(data) {
                 (data.NOTIFICATIONS).forEach(function(element) {
@@ -12,13 +11,18 @@ angular.module('app.notification').controller('app.notification.notificationCont
             });
 
 
-        $scope.showEditPopUp = function name() {
-            // #/detail/notification/
+        $scope.showEditPopUp = function name(notification) {
+            $scope.notification = notification;
             $modal.open({
                 templateUrl: 'app/notification/edit.html',
                 windowClass: 'edit-dialog',
-                controller: angular.module('app.notification').edit
+                controller: angular.module('app.notification').edit,
+                resolve: {
+                    notification: function() {
+                        return notification;
+                    }
+                }
             });
-        }
+        };
     }
 ]);

@@ -13,8 +13,8 @@
 }
 
 .edit-dialog {
-    width: 415px;
-    height: 310px;
+    width: 715px;
+    height: 560px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
@@ -23,14 +23,14 @@
 }
 
 .edit-dialog .modal-dialog {
-    width: 415px;
-    height: 310px;
+    width: 715px;
+    height: 560px;
     margin: 0px;
 }
 
 .edit-dialog .modal-content {
-    width: 415px;
-    height: 310px;
+    width: 715px;
+    height: 560px;
     padding: 20px;
     position: relative;
     border: 0px;
@@ -39,4 +39,33 @@
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     background-clip: padding-box;
     outline: none;
+}
+
+.inputField {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 7px;
+}
+.inputField:hover {
+    outline: 1px;
+    border: 2px solid lightgray;
+}
+.inputField:focus {
+    outline: 1px;
+    border: 2px solid lightgray;
+}
+
+.inputTextArea {
+    width: 100%;
+    border: 1px solid lightgray;
+    margin-top: 7px;
+    text-align: left;
+}
+.inputTextArea:hover {
+    outline: 1px;
+    border: 2px solid lightgray;
+}
+.inputTextArea:focus {
+    outline: 1px;
+    border: 2px solid lightgray;
 }
