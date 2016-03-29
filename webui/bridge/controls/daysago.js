@@ -6,7 +6,6 @@ angular.module('bridge.app').directive('bridge.daysago', [function() {
         scope: {
         	date: '='
         },
-        transclude: true,
         templateUrl: 'bridge/controls/daysago.html',
 		controller: function($scope) {
             function parseDate(sDate) {
@@ -19,6 +18,10 @@ angular.module('bridge.app').directive('bridge.daysago', [function() {
             }
 
             $scope.getCriticalityClass = function(sDate) {
+                if(!sDate) {
+                    return undefined;
+                }
+
                 var diff = new Date() - parseDate(sDate);
                 if(diff > ONE_DAY * 14) {
                     return "red-font";
@@ -30,6 +33,10 @@ angular.module('bridge.app').directive('bridge.daysago', [function() {
             };
 
             $scope.getTimeAgo = function(sDate) {
+                if(!sDate) {
+                    return "";
+                }
+
                 return $.timeago(parseDate(sDate).getTime());
             };
         }

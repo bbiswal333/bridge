@@ -1,22 +1,5 @@
 angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip", "bridge.service"]);
-angular.module('bridge.controls').directive('bridge.table', ["$compile", "$rootScope", "bridgeConfig", "bridgeDataService", function($compile, $rootScope, bridgeConfig, bridgeDataService) {
-    function alignSortValues(oMetadata) {
-        oMetadata.sort(function(a, b) {
-            if(a.columnOrder > b.columnOrder) {
-                return 1;
-            } else if(a.columnOrder < b.columnOrder) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-
-        for(var i = 0, length = oMetadata.length; i < length; i++) {
-            oMetadata[i].columnOrder = i * 2;
-        }
-        return oMetadata;
-    }
-
+angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", "uiGridConstants", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService, uiGridConstants) {
     return {
         restrict: 'E',
         templateUrl: 'bridge/controls/bridgeTable/bridgeTable.html',
@@ -24,72 +7,39 @@ angular.module('bridge.controls').directive('bridge.table', ["$compile", "$rootS
         scope: {
             tableData: "=",
             filter: "&",
-            defaultSortBy: "&?",
-            newLayout: '@'
+            defaultSortBy: "&?"
         },
         controller: ["$scope", function($scope){
-            var infinityLimitStep = 50;
-            $scope.infinityLimit = infinityLimitStep;
-            $scope.reverse = $scope.defaultSortBy && $scope.defaultSortBy() ? false : true;
-            $scope.predicate = $scope.defaultSortBy && $scope.defaultSortBy() || null;
-
-            $scope.applyTableClass = function(){
-                return $scope.newLayout === "true" ? "detailsTableNewLayout" : "";
-            };
-
-            this.usesNewLayout = function() {
-                return $scope.newLayout === "true" ? true : false;
-            };
-
-            $scope.zebraCell = function (index) {
-                return 'row' + index % 2;
-            };
-            $scope.increaseInfinityLimit = function () {
-                $scope.infinityLimit += infinityLimitStep;
-            };
-            $scope.sort = function (selector) {
-                if (selector !== undefined) {
-                    $scope.predicate = selector;
-                    $scope.reverse = !$scope.reverse;
+            $scope.gridOptions = {
+                columnDefs: [],
+                data: 'tableData',
+                paginationPageSizes: [25, 50, 75, 100],
+                paginationPageSize: 50,
+                rowHeight: 44,
+                enableFiltering: true,
+                enableGridMenu: true,
+                onRegisterApi: function(gridApi) {
+                    $scope.gridApi = gridApi;
                 }
             };
 
-            $scope.applyColumnClass = function(column) {
-                if($scope.newLayout) {
-                    return 'newLayout_' + $scope.getColumnHeaderClasses(column);
-                } else {
-                    return $scope.getColumnHeaderClasses(column);
-                }
-            };
-
-            $scope.parentScope = $scope.$parent;
-
-            $scope.getColumnHeaderClasses = function(column){
-                var classesString = column.columnSizeClass;
-                if (column.orderBy !== undefined) {
-                    classesString += " clickable";
-                }
-
-                return classesString;
-            };
-
-            $scope.columns = [];
-
-            $scope.$watch("columns", function(newValue, oldValue) {
+            $scope.$watch("gridOptions", function(newValue, oldValue) {
                 if(newValue !== oldValue) {
-                    $scope.columns = alignSortValues(newValue);
                     bridgeConfig.store(bridgeDataService);
+                    $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
                 }
             }, true);
 
+            angular.element($window).bind('resize', function() {
+                $("#bridgeTable").css({height: $window.innerHeight - $("#bridgeTable").getRect().y - 120});
+            });
+
+            $timeout(function() {
+                $("#bridgeTable").css({height: $window.innerHeight - $("#bridgeTable").getRect().y - 120});
+            });
+
             this.registerColumn = function(column){
-                var existingColumn = _.find($scope.columns, {"id": column.id});
-                if (existingColumn === undefined) {
-                    $scope.columns.push(column);
-                    return column;
-                } else {
-                    return existingColumn;
-                }
+                $scope.gridOptions.columnDefs.push(column);
             };
         }]
     };

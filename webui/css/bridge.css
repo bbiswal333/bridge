@@ -1044,3 +1044,9 @@ h5{
   border: 1px solid transparent;
   border-radius: 4px;
 }
+
+.bridgeTableCell {
+    padding: 6px;
+    line-height: 32px;
+    font-size: 14px;
+}

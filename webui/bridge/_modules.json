@@ -19,7 +19,15 @@
                 "mgcrea.ngStrap.tooltip",
                 "mgcrea.ngStrap.popover",
                 "mgcrea.ngStrap.dropdown",
-                "cgBusy"
+                "cgBusy",
+                "ui.grid",
+                "ui.grid.pagination",
+                "ui.grid.cellNav",
+                "ui.grid.resizeColumns",
+                "ui.grid.pinning",
+                "ui.grid.selection",
+                "ui.grid.moveColumns",
+                "ui.grid.grouping"
 	],
 	"js_files" : [
                 "bridgeModuleSetup.js",

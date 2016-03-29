@@ -1,26 +1,24 @@
 angular.module('bridge.controls').directive('bridge.tableColumn', function() {
+    function columnSizeClassToWidth() {
+
+    }
+
     return {
         restrict: "E",
         templateUrl: 'bridge/controls/bridgeTable/bridgeTableColumn.html',
         require: "^bridge.table",
         transclude: true,
+        replace: true,
         scope: {
             header: '&',
             columnId: '&',
-            columnSizeClass: '&',
-            orderBy:  '&?',
+            columnWidth: '=',
+            orderBy:  '@',
             visible: '=?',
             customStyle: '@',
             columnOrder: '='
         },
         controller: function($scope) {
-            $scope.applyClass = function() {
-                if($scope.newLayout) {
-                    return 'newLayout_' + $scope.columnSizeClass();
-                } else {
-                    return $scope.columnSizeClass();
-                }
-            };
         },
         link: function ($scope, element, attrs, tableController) {
             if ($scope.visible === undefined || $scope.visible === "true"){
@@ -29,21 +27,17 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 $scope.visible = false;
             }
 
-            $scope.$watch("columnData", function(){
-                $scope.visible = $scope.columnData.visible;
-                $scope.columnOrder = parseInt($scope.columnData.columnOrder);
-            }, true);
-
             $scope.columnData = {
-                id: $scope.columnId(),
-                header: $scope.header(),
-                columnSizeClass: $scope.columnSizeClass(),
-                orderBy: $scope.orderBy(),
-                visible: $scope.visible,
-                columnOrder: $scope.columnOrder
+                /*id: $scope.columnId(),*/
+                name: $scope.header(),
+                width: $scope.columnWidth,
+                cellTemplate: element.html() ? "<div>" + element.html() + "</div>" : undefined,
+                cellClass: "bridgeTableCell",
+                field: $scope.orderBy,
+                /*orderBy: $scope.orderBy(),*/
+                visible: $scope.visible
+                /*columnOrder: $scope.columnOrder*/
             };
-
-            $scope.newLayout = tableController.usesNewLayout();
 
             $scope.columnData = tableController.registerColumn($scope.columnData);
         }
