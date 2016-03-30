@@ -55,6 +55,13 @@
     border: 2px solid lightgray;
 }
 
+form.ng-submitted input.ng-invalid {
+    border:2px solid #f00;
+}
+form.ng-submitted textarea.ng-invalid {
+    border:2px solid #f00;
+}
+
 .inputTextArea {
     width: 100%;
     border: 1px solid lightgray;
@@ -68,4 +75,14 @@
 .inputTextArea:focus {
     outline: 1px;
     border: 2px solid lightgray;
+}
+
+.viewMode {
+    background-color:#428BCF;
+    color:white;
+}
+
+.editMode {
+    background-color:rgba(240,240,240,1);
+    color:#707070;
 }

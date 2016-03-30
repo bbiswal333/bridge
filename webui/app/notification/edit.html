@@ -12,32 +12,40 @@
     <span style="font-size: 15px; font-weight: bold; color:#428bca">Edit News</span>
     <br />
     <div style="height: 1px; width: 100%; background-color: #bbbbbb;margin-top:7px;margin-bottom:7px"></div>
-    <span style="color:#666666;font-size:15px">
+
+    <form name="newNotification" novalidate>
+        <span style="color:#666666;font-size:15px">
         <span class="col-xs-2" style="padding-top:10px;">Header</span>
         <span class="col-xs-10">
-            <input class="inputField" ng-model="notification.HEADER"/>
+            <input class="inputField" ng-model="notification.HEADER" required/>
         </span>
-        
+
         <span class="col-xs-2" style="padding-top:10px;">Preview</span>
         <span class="col-xs-10">
-            <input class="inputField" ng-model="notification.PREVIEW"/>
+            <input class="inputField" ng-model="notification.PREVIEW" required/>
         </span>
-        
+
         <span class="col-xs-2" style="padding-top:10px;">Snap URL</span>
         <span class="col-xs-10">
             <input class="inputField" ng-model="notification.SNAPURL"/>
         </span>
-        
-        <div class="col-xs-2" style="padding-top:10px;">Content</div></br>
+
+        <div class="col-xs-2" style="padding-top:10px;">Content</div>
+        </br>
         <div class="col-xs-10">
-            <textarea class="inputTextArea" rows="15" ng-model="notification.CONTENT"/>
+            <textarea ng-show="editMode === true" class="inputTextArea" rows="15" ng-model="notification.CONTENT" required/>
+            <div ng-show="editMode === false">
+                <p ng-bind-html="notification.CONTENT"></p>
+            </div>
         </div>
-    </span>
+        </span>
 
+        <alert type="alert.type">{{alert.msg}}</alert>
 
-    <div style="bottom:0px;right:0px;position:absolute">
-        <button ng-click="view();" class="btn btn-primary">Preview content</button>
-        <button ng-click="save();" class="btn btn-primary">Save</button>
-        <button ng-click="close();" class="btn btn-warning">Close</button>
-    </div>
+        <div style="bottom:0px;right:0px;position:absolute">
+            <button ng-click="editMode = !editMode" class="btn btn-primary" ng-class="{true : 'editMode', false: 'viewMode'}[editMode]">Edit content</button>
+            <button ng-click="publish();" class="btn btn-primary" type="submit">Publish</button>
+            <button ng-click="close();" class="btn btn-warning">Cancel</button>
+        </div>
+    </form>
 </div>
