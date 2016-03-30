@@ -35,9 +35,11 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 cellTemplate: element.html() ? '<div><div ng-if="col.grouping.groupPriority >= 0 && row.groupHeader === true">' + ($scope.groupTemplate ? $scope.groupTemplate : '{{MODEL_COL_FIELD CUSTOM_FILTERS}}') + '</div><div ng-if="col.grouping.groupPriority === undefined && row.groupHeader !== true">' + element.html() + "</div></div>" : undefined,
                 cellClass: "bridgeTableCell",
                 field: $scope.orderBy,
-                customTreeAggregationFinalizerFn: function( aggregation ) {
+                customTreeAggregationFinalizerFn: function( aggregation, row ) {
                     if(aggregation.type === "count") {
-                        aggregation.rendered = aggregation.groupVal;
+                        row.groupCount = aggregation.value;
+                        row.groupVal = aggregation.groupVal;
+                        aggregation.rendered = aggregation.groupVal + " (" + aggregation.value + ")";
                     }
                 },
                 /*orderBy: $scope.orderBy(),*/

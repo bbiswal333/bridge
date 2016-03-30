@@ -26886,7 +26886,7 @@ module.filter('px', function() {
           aggregation.col.treeAggregationFinalizerFn( aggregation );
         }
         if ( typeof(aggregation.col.customTreeAggregationFinalizerFn) === 'function' ){
-          aggregation.col.customTreeAggregationFinalizerFn( aggregation );
+          aggregation.col.customTreeAggregationFinalizerFn( aggregation, row );
         }
         if ( typeof(aggregation.rendered) === 'undefined' ){
           aggregation.rendered = aggregation.label ? aggregation.label + aggregation.value : aggregation.value;
