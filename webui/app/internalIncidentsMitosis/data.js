@@ -85,7 +85,7 @@ angular.module("app.internalIncidentsMitosis")
 					} else {
 						getFilterFromConfig(config).then(function(filter) {
 							var url = "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
-							$http({method: 'POST', url: url, withCredentials: true, data: filter}).success(function(data){
+							$http({method: 'POST', url: url, withCredentials: true, data: filter, headers: { 'Content-Type': 'text/plain' }}).success(function(data){
 								that.limit = data.limit;
 								that.limitExceeded = data.limitExceeded;
 								that.prio1 = [];
