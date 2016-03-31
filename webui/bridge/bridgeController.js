@@ -187,7 +187,7 @@ angular.module('bridge.app').controller('bridgeController',
 
         $scope.showAprilPopup = function() {
             console.log("-----asd-asd-asdasdad");
-            if (new Date().getMonth() === 2 && new Date().getDate() === 31) {
+            if (new Date().getMonth() === 3 && new Date().getDate() === 1) {
                 $scope.modal = $modal.open({
                     templateUrl: 'bridge/advertising.html',
                     windowClass: 'april-dialog',
