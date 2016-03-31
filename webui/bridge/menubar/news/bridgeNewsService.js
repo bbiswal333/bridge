@@ -6,7 +6,16 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 
     this.modalInstance = null;
 
     this.initialize = function(){
-        var loadNewsPromise = $http.get('../bridge/menubar/news/news.json');
+        var loadNewsPromise = {}; // $http.get('../bridge/menubar/news/news.json');
+        $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
+        .success(function(data) {
+            // asdasdad
+            data.map(
+                function(item) {
+                    return {id: item.ID};
+                });
+        });
+
         loadNewsPromise.then(function(response) {
             that.news.data = response.data.news;
             that.isInitialized = true;
