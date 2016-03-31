@@ -70,7 +70,7 @@ img {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-        
+
 .tab-active {
     left: -1px;
     width: 36px;
@@ -89,10 +89,10 @@ img {
     padding-right: 8px;
     box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
     border-top:  1px solid rgba(231, 231, 231, 1);
-    
-    cursor: pointer;                
-    line-height: 1;    
-    background-color:rgba(255, 255, 255, 1);        
+
+    cursor: pointer;
+    line-height: 1;
+    background-color:rgba(255, 255, 255, 1);
     color:#0099CC;
     font-family: 'SAP-icons';
     font-weight: normal;
@@ -135,14 +135,14 @@ img {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
-    cursor:auto;  
+    cursor:auto;
 }
 .prio {
     width:100%;
     vertical-align: text-bottom;
     float: left;
     text-align: left;
-   
+
 }
 
 .prio span{
@@ -366,8 +366,8 @@ img {
     font-size: 1em;
 }
 .link, a{
-   color:#428bca; 
-   text-decoration: none!important; 
+   color:#428bca;
+   text-decoration: none!important;
 }
 .form_head{
     font-size: 1em;
@@ -404,8 +404,8 @@ img {
 .download-icon {
     font-family:'SAP-icons';
     font-size: 20px;
-    color: #428BCA;    
-    padding-left: 10px;    
+    color: #428BCA;
+    padding-left: 10px;
 }
 
 .download-icon:hover{
@@ -459,8 +459,8 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    margin-bottom: auto;  
-    overflow: hidden;  
+    margin-bottom: auto;
+    overflow: hidden;
 }
 
 .download-dialog .modal-dialog {
@@ -525,7 +525,7 @@ input[type="checkbox"]:checked:after {
     margin-bottom: 5px;
     display:inline-block;
     background: rgba(255,255,255,0.2);
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);    
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .disabled {
@@ -631,7 +631,7 @@ input[type="checkbox"]:checked:after {
 .settingsBtn:focus{
     outline-color: inherit;
     outline-width: 0;
-    outline: hidden; 
+    outline: hidden;
 }
 
 
@@ -685,7 +685,7 @@ input[type="checkbox"]:checked:after {
 }
 /* ##### PRIO TILES ##### */
 .prio_container{
-    width:100%; 
+    width:100%;
     height:90%;
 }
 .btn-container{
@@ -694,7 +694,7 @@ input[type="checkbox"]:checked:after {
     float: right;
 }
 .btn-box{
-    
+
     height: 25%;
     margin-right: 0;
     margin-bottom: 5px;
@@ -726,20 +726,20 @@ input[type="checkbox"]:checked:after {
 .prio_bg_4{
     background-color:#B3D0E9;
 }
-.prio_box{ 
-    width:100%; 
-    height:30%; 
+.prio_box{
+    width:100%;
+    height:30%;
     float:left;
     text-align: left;
     padding-left:5px;
 }
-.prio_content_box{ 
+.prio_content_box{
     width:100%;
     height:70%;
-    position: relative; 
-    float: right; 
+    position: relative;
+    float: right;
     text-align: right;
-    padding-right:5px; 
+    padding-right:5px;
     font-size:25px
 }
 
@@ -787,7 +787,7 @@ input[type="checkbox"]:checked:after {
 .small-icon{
     font-size: 1.2rem;
     padding-top: 0;
-    
+
 }
 .table{
     display: table;
@@ -1044,3 +1044,69 @@ h5{
   border: 1px solid transparent;
   border-radius: 4px;
 }
+.april-dialog {
+    width: 60%;
+    height: 90%;
+     margin-left: auto;
+   margin-right: auto;
+   margin-top: auto;
+   margin-bottom: auto;
+}
+.april-dialog .modal-dialog {
+    width: 95%;
+    height: 90%;
+    margin: 0px;
+}
+
+.april-dialog  .modal-content {
+   width: 95%;
+   height: 100%;
+   padding: 20px;
+   position: relative;
+   border: 0px;
+   border-radius: 0px;
+   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+   background-clip: padding-box;
+   outline: none;
+}
+
+.elastic-video {
+    position: relative;
+    padding-bottom: 56.25%;
+
+    height: 0;
+    overflow: hidden;
+    /*position: relative;
+    padding-bottom: 55%;
+    padding-top: 15px;
+    height: 0;
+    overflow: hidden;*/
+}
+.elastic-video iframe,
+.elastic-video object,
+.elastic-video embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/*
+.elastic-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}*/
+
+/*.april-dialog iframe{
+    position: absolute;
+    margin: auto;
+    margin-top: 45px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}*/

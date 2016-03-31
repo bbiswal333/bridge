@@ -1,0 +1,23 @@
+<div class="div-background-gradient">
+    <div class="div-background" style="background-image: url(./logo.png);">
+
+    </div>
+</div>
+
+<div ng-if="!os_supported" style="position: relative;width:100%;height:100%">
+    <span style="font-size: 15px; font-weight: bold; color:#428bca; text-align:center ">Welcome to Bridge!</span>
+    <br />
+    <div style="height: 1px; width: 100%; background-color: #bbbbbb ;margin-top:7px;margin-bottom:7px">
+        <div class="elastic-video">
+            <iframe width="100%" src="https://www.youtube.com/embed/TwMBqRvumuc?autoplay=1" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div style="height: 1px; width: 100%; background-color: #bbbbbb ; position: absolute; bottom: 50px;">
+            <p class="col-xs-9" style="font-weight:600; margin-top:10px">
+                Dear Bridge users, We are very sorry to inform you that our product is running out of budget. Please watch this video or
+                click "donate" to help us make Bridge even better! Thank you for your support!
+            </p>
+            <button class="btn btn_blue col-xs-2" style="float:right; margin-top:10px" ng-click="modal.close();">Donate 5$</button>
+        </div>
+
+    </div>
+</div>
