@@ -18,6 +18,8 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 rowHeight: 44,
                 enableFiltering: true,
                 enableGridMenu: true,
+                flatEntityAccess: true,
+                fastWatch: true,
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
                 }
