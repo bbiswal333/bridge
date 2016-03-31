@@ -1,5 +1,13 @@
 angular.module('bridge.app').directive('bridge.employee', [function() {
 
+    function toFlatData(oObject) {
+        var result = "";
+        for(var attr in oObject) {
+            result += oObject[attr] + " ";
+        }
+        return result;
+    }
+
     return {
         restrict: 'E',
         scope: {
@@ -21,6 +29,7 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
                     $scope.employee = data;
                     if($scope.attachTo) {
                         $scope.attachTo.employee = $scope.employee;
+                        $scope.attachTo.employeeFlat = toFlatData($scope.employee);
                     }
                 });
             }

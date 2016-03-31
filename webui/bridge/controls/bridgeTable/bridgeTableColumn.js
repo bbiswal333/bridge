@@ -34,6 +34,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 width: $scope.columnWidth,
                 cellTemplate: element.html() ? '<div><div ng-if="col.grouping.groupPriority >= 0 && col.grouping.groupPriority === row.treeLevel">' + ($scope.groupTemplate ? $scope.groupTemplate : '{{MODEL_COL_FIELD CUSTOM_FILTERS}}') + '</div><div ng-if="col.grouping.groupPriority === undefined && row.groupHeader !== true">' + element.html() + "</div></div>" : undefined,
                 cellClass: "bridgeTableCell",
+                groupingShowAggregationMenu: false,
                 field: $scope.orderBy,
                 customTreeAggregationFinalizerFn: function( aggregation, row ) {
                     row.groupHeaderField = $scope.orderBy;

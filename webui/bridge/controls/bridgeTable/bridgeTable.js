@@ -1,12 +1,12 @@
 angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip", "bridge.service"]);
-angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", "uiGridConstants", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService, uiGridConstants) {
+angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", "uiGridConstants", "$filter", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService, uiGridConstants, $filter) {
     return {
         restrict: 'E',
         templateUrl: 'bridge/controls/bridgeTable/bridgeTable.html',
         transclude: true,
         scope: {
             tableData: "=",
-            filter: "&",
+            filter: "=",
             defaultSortBy: "&?"
         },
         controller: ["$scope", function($scope){
@@ -16,7 +16,7 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 paginationPageSizes: [25, 50, 75, 100],
                 paginationPageSize: 50,
                 rowHeight: 44,
-                enableFiltering: true,
+                enableFiltering: false,
                 enableGridMenu: true,
                 flatEntityAccess: true,
                 fastWatch: true,
@@ -25,12 +25,32 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 }
             };
 
-            $scope.$watch("gridOptions", function(newValue, oldValue) {
+            $scope.$watch("gridOptions.columnDefs", function(newValue, oldValue) {
                 if(newValue !== oldValue) {
                     bridgeConfig.store(bridgeDataService);
-                    $scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
+                    //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
                 }
             }, true);
+
+            function fnMatcher(actual, expected) {
+                if(actual && actual.toString().toUpperCase().indexOf(expected.toUpperCase()) >= 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            $scope.$watch("filter", function() {
+                if($scope.filter !== "") {
+                    $scope.filteredTableData = $filter('filter')($scope.tableData, $scope.filter, fnMatcher);
+                    $scope.gridOptions.data = "filteredTableData";
+                } else {
+                    $scope.gridOptions.data = "tableData";
+                    $scope.filteredTableData.length = 0;
+                }
+
+                //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
+            });
 
             angular.element($window).bind('resize', function() {
                 $("#bridgeTable").css({height: $window.innerHeight - $("#bridgeTable").getRect().y - 120});
