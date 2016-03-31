@@ -2,6 +2,13 @@ angular.module("app.internalIncidentsMitosis")
 	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window", "$timeout",
 	function ($http, $q, $window, $timeout) {
 		var AppData = (function() {
+			function doDummyRequestInOrderToGetAroundIEBug() {
+				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
+					//Oh happy day...
+				});
+			}
+			doDummyRequestInOrderToGetAroundIEBug();
+
 			function toDate(dateString) {
 				if(dateString) {
 					return new Date(dateString);
