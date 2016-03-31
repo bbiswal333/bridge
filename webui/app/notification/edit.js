@@ -2,7 +2,7 @@
 angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notification', function($scope, $modalInstance, notification) {
 
     $scope.notification = notification;
-    
+    $scope.alertVisible = false;
     $scope.editMode = true;
 
     $scope.publish = function() {
@@ -26,12 +26,13 @@ angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notifica
     };
 
     $scope.close = function() {
-        $scope.alert = { type: 'danger', msg: 'Your changes will be lost.' };
-
-        // $modalInstance.close();
+        if (!$scope.alertVisible) {
+            $scope.alert = { type: 'danger', msg: 'Your changes will be lost.' };
+            $scope.alertVisible = true;
+        } else {
+            $scope.alertVisible = false;
+            $modalInstance.close();
+        }
     };
 
-    $scope.view = function() {
-        $modalInstance.close();
-    };
 }];

@@ -3,11 +3,6 @@
     </div>
 </div>
 
-<div ng-if="os_supported && !client_outdated" style="position: relative;width:100%;height:100%">
-    <div style="height: 1px; width: 100%; background-color: #bbbbbb;margin-top:7px;margin-bottom:7px"></div>
-
-</div>
-
 <div ng-if="!os_supported" style="position: relative;width:100%;height:100%">
     <span style="font-size: 15px; font-weight: bold; color:#428bca">Edit News</span>
     <br />
@@ -40,12 +35,13 @@
         </div>
         </span>
 
-        <alert type="alert.type">{{alert.msg}}</alert>
-
         <div style="bottom:0px;right:0px;position:absolute">
             <button ng-click="editMode = !editMode" class="btn btn-primary" ng-class="{true : 'editMode', false: 'viewMode'}[editMode]">Edit content</button>
             <button ng-click="publish();" class="btn btn-primary" type="submit">Publish</button>
             <button ng-click="close();" class="btn btn-warning">Cancel</button>
+        </div>
+        <div style="bottom:0px;left:0px;position:absolute">
+            <alert style="margin-bottom:0px;" type="alert.type" ng-show="alertVisible">{{alert.msg}}</alert>
         </div>
     </form>
 </div>
