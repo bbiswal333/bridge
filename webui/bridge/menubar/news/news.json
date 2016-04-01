@@ -159,6 +159,13 @@
             "snapURL":  "bridge/menubar/news/image/stackoverflow.jpg",
             "preview":  "Due to the huge amount of code snippets and entire solutions copied from StackOverflow by SAP employees, SAP Global Managing Board decided to buy the entire platform.",
             "content":  "Due to tight timelines and increasing pressure during the last years, a huge amount of SAP employees tend to copy entire code snippets and proposals from StackOverflow.<br />Thus the SAP Managing Board came to the conclusion to acquire StackOverflow at a total cost of 42 million US Dollars.<br />“An incredible amount of new possibilities for productivity increases result from this acquisition” SAP’s CTO stated today. “We are currently thinking about an integration into the SAP GUI. With the help of a ‘Copy from StackOverflow’-button on each screen, you have efficient solutions at your fingertips that you don’t even need to understand. Sweet!”.<br /><br />Doubts of some honest developers about the feasibility and lack of honesty of such features immediately vanished, as they were threatened to be replaced by a bash script.<br /><br />At the same time HR is proud to announce the introduction of 4 new HR roles:<ul><li>Junior Copy&Paster</li><li>Copy&Paster</li><li>Senior Copy&Paster</li><li>Plagiarism Architect</li></ul><br />Bridge is already one step ahead and introduced the new task “Copy&Paste from StackOverflow” to the CAT2 app, which you can utilize starting today.<br /><br />More details will be communicated with the announcement of the winners of the Hasso Plattners’ Plagiarist of the Year Award during the next week.<br /><img src='bridge/menubar/news/image/stackoverflow.jpg' />"
+        },
+        {
+            "id":       22,
+            "header":   "April Fools' Jokes",
+            "date":     "2016-04-02",
+            "preview":  "We're not running out of budget and SAP does not buy StackOverflow.",
+            "content":  "This article is just to inform you, that the notifications you received on Friday 1st of April were April Fools' jokes.<br /><br />We are neither running out of budget (the donation button did not do anything) nor is SAP buying StackOverflow.<br /><br />See you next year! ;-)"
         }
 	]
 }

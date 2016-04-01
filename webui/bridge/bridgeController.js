@@ -1,6 +1,6 @@
 angular.module('bridge.app').controller('bridgeController',
-    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo", "bridge.service.backgroundSetter", "$modal",
-    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo, backgroundSetter, $modal) {
+    ['$rootScope', '$scope', '$http', '$window', '$route', '$location', '$timeout', '$q', '$log', 'bridgeDataService', 'bridgeConfig', "notifier", 'bridgeInBrowserNotification', "bridge.service.bridgeDownload", "bridge.diagnosis.logService", "bridge.service.bridgeSettingsModalService", "bridge.appDragInfo", "bridge.service.backgroundSetter",
+    function ($rootScope, $scope, $http, $window, $route, $location, $timeout, $q, $log, bridgeDataService, bridgeConfig, notifier, bridgeInBrowserNotification, bridgeDownloadService, logService, bridgeSettingsModalService, dragInfo, backgroundSetter) {
         $scope.$watch(function() { return $location.path(); }, function(newValue, oldValue){
             if( newValue !== oldValue)
             {
@@ -183,22 +183,6 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.appDragInfo = dragInfo;
-
-
-        $scope.showAprilPopup = function() {
-            if (new Date().getMonth() === 3 && new Date().getDate() === 1) {
-                $scope.modal = $modal.open({
-                    templateUrl: 'bridge/april.html',
-                    windowClass: 'april-dialog',
-                    controller: 'AprilAd',
-                    backdrop: 'static'
-                });
-                $timeout(function() {
-                    $scope.modal.close();
-                }, 35000);
-            }
-        };
-        $scope.showAprilPopup();
     }
 ]);
 
@@ -213,8 +197,3 @@ angular.module('bridge.app').filter("decodeIcon", function ($window) {
         return str;
     };
 });
-
-angular.module('bridge.app').controller('AprilAd', ['$scope', '$modalInstance', function($scope, $modalInstance) {
-    $scope.greeting = 'Hola!';
-    $scope.modal = $modalInstance;
-}]);

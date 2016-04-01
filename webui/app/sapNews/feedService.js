@@ -15,11 +15,6 @@ angular.module('app.sapNews').service('app.sapNews.feedService', ['$q', '$http',
 
 			self.newsFeed = new X2JS().xml_str2json(data).rss;
 
-//April Fools Joke
-self.newsFeed.channel.item.unshift({"title":"SAP Buys StackOverflow","link":"https://bridge.mo.sap.corp/#/whatsNew","comments":["https://bridge.mo.sap.corp/#/whatsNew",{"__prefix":"slash","__text":"0"}],"pubDate":"Fri, 1 Apr 2016 13:07:31 +0000","creator":{"__prefix":"dc","__cdata":"Christian Jeschke"},"category":[{"__cdata":"Corporate"},{"__cdata":"Corporate Strategy"},{"__cdata":"leadership"},{"__cdata":"People&Culture"},{"__cdata":"SAP News"},{"__cdata":"Board"},{"__cdata":"feature"},{"__cdata":"healthcare"},{"__cdata":"SME"}],"guid":{"_isPermaLink":"false","__text":"https://bridge.mo.sap.corp/#/whatsNew"},"description":"Due to the huge amount of code snippets and entire solutions copied from StackOverflow by SAP employees, SAP Global Managing Board decided to buy the entire platform.","encoded":{"__prefix":"content","__cdata":"<p>Due to the huge amount of code snippets and entire solutions copied from StackOverflow by SAP employees, SAP Global Managing Board decided to buy the entire platform.</p>\n"},"commentRss":{"__prefix":"wfw","__text":"https://bridge.mo.sap.corp/#/whatsNew"}});
-//
-
-
 			deferred.resolve(self.newsFeed);
 		});
 		return deferred.promise;
