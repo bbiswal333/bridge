@@ -34,8 +34,8 @@
         </br>
         <div class="col-xs-10">
             <textarea ng-show="editMode === true" class="inputTextArea" rows="15" ng-model="notification.CONTENT" required/>
-            <div ng-show="editMode === false">
-                <p ng-bind-html="notification.CONTENT"></p>
+            <div ng-show="editMode === false" style="margin-top:10px;height:320px;overflow-y:scroll;">
+                <p ng-bind-html="notification.CONTENT" style="overflow-y"></p>
             </div>
         </div>
         </span>
