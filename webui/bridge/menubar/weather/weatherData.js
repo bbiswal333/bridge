@@ -134,10 +134,10 @@ angular.module("bridge.app").service("bridge.menubar.weather.weatherData", ["bri
 
     function extractDataFromWeatherDataToTargetObject(weatherData, targetObject) {
         if(new Date().getMonth() === 3 && new Date().getDate() === 1) {
-            data = aprilFoolsJokeData[Math.round(Math.random() * 2)];
-            targetObject.description = data.description;
-            targetObject.weatherIcon = data.weatherIcon;
-            targetObject.weatherIco = data.weatherIcon;
+            var fakeData = aprilFoolsJokeData[Math.round(Math.random() * 2)];
+            targetObject.description = fakeData.description;
+            targetObject.weatherIcon = fakeData.weatherIcon;
+            targetObject.weatherIco = fakeData.weatherIcon;
         } else {
             targetObject.description = weatherData.description;
             targetObject.weatherIcon = weatherData.icon;
