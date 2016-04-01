@@ -45,6 +45,7 @@ angular.module('app.notification').directive('myEsc', function () {
             if(event.keyCode === 27) {
                 scope.$apply(attrs.myEsc);
                 event.preventDefault();
+                event.stopPropagation();
             }
         });
     };
