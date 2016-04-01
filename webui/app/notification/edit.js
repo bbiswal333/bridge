@@ -1,6 +1,4 @@
-// angular.module('app.notification', ['ui.bootstrap.alert']);
 angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notification', '$http', function($scope, $modalInstance, notification, $http) {
-
     $scope.notification = notification;
     $scope.alertVisible = false;
     $scope.editMode = true;
@@ -27,6 +25,10 @@ angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notifica
     };
 
     $scope.close = function() {
+        if ($scope.alertVisible === undefined) {
+            $scope.alertVisible = false;
+        }
+
         if (!$scope.alertVisible) {
             $scope.alert = { type: 'danger', msg: 'Your changes will be lost.' };
             $scope.alertVisible = true;
@@ -37,3 +39,13 @@ angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notifica
     };
 
 }];
+angular.module('app.notification').directive('myEsc', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.keyCode === 27) {
+                scope.$apply(attrs.myEsc);
+                event.preventDefault();
+            }
+        });
+    };
+});
