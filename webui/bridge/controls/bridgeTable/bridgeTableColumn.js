@@ -1,6 +1,22 @@
-angular.module('bridge.controls').directive('bridge.tableColumn', function() {
-    function columnSizeClassToWidth() {
+angular.module('bridge.controls').directive('bridge.tableColumn', ['uiGridConstants', function(uiGridConstants) {
+    function stringComparison(a, b) {
+        if(a.toUpperCase() > b.toUpperCase()) {
+            return 1;
+        } else if(a.toUpperCase() < b.toUpperCase()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 
+    function comparison(a, b) {
+        if(a > b) {
+            return 1;
+        } else if(a < b) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     return {
@@ -17,7 +33,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             visible: '=?',
             customStyle: '@',
             columnOrder: '=',
-            groupTemplate: '@'
+            groupTemplate: '@',
+            field: '@'
         },
         controller: function($scope) {
         },
@@ -35,7 +52,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                 cellTemplate: element.html() ? '<div><div ng-if="col.grouping.groupPriority >= 0 && col.grouping.groupPriority === row.treeLevel">' + ($scope.groupTemplate ? $scope.groupTemplate : '{{MODEL_COL_FIELD CUSTOM_FILTERS}}') + '</div><div ng-if="col.grouping.groupPriority === undefined && row.groupHeader !== true">' + element.html() + "</div></div>" : undefined,
                 cellClass: "bridgeTableCell",
                 groupingShowAggregationMenu: false,
-                field: $scope.orderBy,
+                field: $scope.field,
                 customTreeAggregationFinalizerFn: function( aggregation, row ) {
                     row.groupHeaderField = $scope.orderBy;
                     if(aggregation.type === "count" && aggregation.groupVal) {
@@ -44,7 +61,17 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
                         aggregation.rendered = aggregation.groupVal + " (" + aggregation.value + ")";
                     }
                 },
-                /*orderBy: $scope.orderBy(),*/
+                sortingAlgorithm: $scope.orderBy ? function(a, b, rowA, rowB) {
+                    if(rowA && rowB) {
+                        a = rowA.entity[$scope.orderBy];
+                        b = rowB.entity[$scope.orderBy];
+                    }
+                    if(typeof a === "string" && typeof b === "string") {
+                        return stringComparison(a, b);
+                    } else {
+                        return comparison(a, b);
+                    }
+                } : undefined,
                 visible: $scope.visible
                 /*columnOrder: $scope.columnOrder*/
             };
@@ -52,4 +79,4 @@ angular.module('bridge.controls').directive('bridge.tableColumn', function() {
             $scope.columnData = tableController.registerColumn($scope.columnData);
         }
     };
-});
+}]);

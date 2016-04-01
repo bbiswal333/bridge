@@ -22,6 +22,7 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 fastWatch: true,
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
+                    $scope.gridApi.grid.registerRowsProcessor($scope.filterFn, 200);
                 }
             };
 
@@ -32,22 +33,24 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 }
             }, true);
 
-            function fnMatcher(actual, expected) {
-                if(actual && actual.toString().toUpperCase().indexOf(expected.toUpperCase()) >= 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            $scope.filterFn = function(renderableRows){
+                var matcher = new RegExp($scope.filter, "gi");
+                renderableRows.forEach(function(row) {
+                    var match = false;
+                    for(var attr in row.entity) {
+                        if (row.entity[attr].toString().match(matcher)){
+                            match = true;
+                        }
+                    }
+                    if (!match){
+                        row.visible = false;
+                    }
+                });
+                return renderableRows;
+            };
 
             $scope.$watch("filter", function() {
-                if($scope.filter !== "") {
-                    $scope.filteredTableData = $filter('filter')($scope.tableData, $scope.filter, fnMatcher);
-                    $scope.gridOptions.data = "filteredTableData";
-                } else {
-                    $scope.gridOptions.data = "tableData";
-                    $scope.filteredTableData.length = 0;
-                }
+                $scope.gridApi.grid.refresh();
 
                 //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
             });

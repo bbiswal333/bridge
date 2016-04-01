@@ -1,20 +1,15 @@
 angular.module('bridge.app').directive('bridge.employee', [function() {
-
-    function toFlatData(oObject) {
-        var result = "";
-        for(var attr in oObject) {
-            result += oObject[attr] + " ";
-        }
-        return result;
-    }
-
     return {
         restrict: 'E',
         scope: {
         	id: '=',
             mailBody: '@',
             mailSubject: '@',
-            attachTo: '='
+            attachTo: '=',
+            firstName: '=',
+            lastName: '=',
+            email: '=',
+            phone: '='
         },
         controller: ['$scope', 'employeeService', function($scope, employeeService) {
             function loadEmployeeData() {
@@ -29,16 +24,33 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
                     $scope.employee = data;
                     if($scope.attachTo) {
                         $scope.attachTo.employee = $scope.employee;
-                        $scope.attachTo.employeeFlat = toFlatData($scope.employee);
                     }
                 });
             }
 
-            loadEmployeeData();
+            function refreshEmployeeDataFromScope() {
+                $scope.employee = {
+                    VORNA: $scope.firstName,
+                    NACHN: $scope.lastName,
+                    fullName: $scope.firstName + " " + $scope.lastName,
+                    BNAME: $scope.id,
+                    ID: $scope.id,
+                    SMTP_MAIL: $scope.email,
+                    TELNR: $scope.phone
+                };
+            }
+
+            if(!$scope.firstName) {
+                loadEmployeeData();
+            } else {
+                refreshEmployeeDataFromScope();
+            }
 
             $scope.$watch("id", function(newValue, oldValue) {
-                if(newValue !== oldValue) {
+                if(newValue !== oldValue && !$scope.firstName) {
                     loadEmployeeData();
+                } else {
+                    refreshEmployeeDataFromScope();
                 }
             });
         }],
