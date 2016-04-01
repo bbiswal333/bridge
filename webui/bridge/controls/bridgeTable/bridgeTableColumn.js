@@ -46,7 +46,6 @@ angular.module('bridge.controls').directive('bridge.tableColumn', ['uiGridConsta
             }
 
             $scope.columnData = {
-                /*id: $scope.columnId(),*/
                 name: $scope.header(),
                 width: $scope.columnWidth,
                 cellTemplate: element.html() ? '<div><div ng-if="col.grouping.groupPriority >= 0 && col.grouping.groupPriority === row.treeLevel">' + ($scope.groupTemplate ? $scope.groupTemplate : '{{MODEL_COL_FIELD CUSTOM_FILTERS}}') + '</div><div ng-if="col.grouping.groupPriority === undefined && row.groupHeader !== true">' + element.html() + "</div></div>" : undefined,
@@ -72,8 +71,8 @@ angular.module('bridge.controls').directive('bridge.tableColumn', ['uiGridConsta
                         return comparison(a, b);
                     }
                 } : undefined,
-                visible: $scope.visible
-                /*columnOrder: $scope.columnOrder*/
+                visible: $scope.visible,
+                columnOrder: $scope.columnOrder
             };
 
             $scope.columnData = tableController.registerColumn($scope.columnData);

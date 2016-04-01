@@ -4,7 +4,7 @@
 
 		<br/>
 
-		<bridge.table table-data="atcData.tableData" filter="filterText" new-layout="true">
+		<bridge.table table-data="atcData.tableData" table-settings="config.tableSettings" filter="filterText" new-layout="true">
 			<bridge.table-column column-id="1" header="'Prio'" column-width="60" column-order="parentScope.config.detailsColumnOrder[0]" field="CHECK_MSG_PRIO" visible="parentScope.config.detailsColumnVisibility[0]"></bridge.table-column>
 			<bridge.table-column column-id="2" header="'System'" column-width="90" column-order="parentScope.config.detailsColumnOrder[1]" order-by="CHECK_SYSTEM" visible="parentScope.config.detailsColumnVisibility[1]"><a href="https://ifp.wdf.sap.corp/sap/bc/bsp/sap/ZBRIDGE_BSP/saplink.sap?sid={{row.entity.CHECK_SYSTEM}}&client={{row.entity.CHECK_CLIENT}}&transaction=*CHECKMAN">{{row.entity.CHECK_SYSTEM}}</a></bridge.table-column>
 			<bridge.table-column column-id="3" header="'Check'" column-width="210" column-order="parentScope.config.detailsColumnOrder[2]" field="CHECK_DESCRIPTION" visible="parentScope.config.detailsColumnVisibility[2]"></bridge.table-column>

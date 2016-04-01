@@ -27,7 +27,8 @@
                 "ui.grid.pinning",
                 "ui.grid.selection",
                 "ui.grid.moveColumns",
-                "ui.grid.grouping"
+                "ui.grid.grouping",
+                "ui.grid.saveState"
 	],
 	"js_files" : [
                 "bridgeModuleSetup.js",

@@ -7,7 +7,8 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
         scope: {
             tableData: "=",
             filter: "=",
-            defaultSortBy: "&?"
+            defaultSortBy: "&?",
+            tableSettings: "="
         },
         controller: ["$scope", function($scope){
             $scope.gridOptions = {
@@ -23,11 +24,35 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 onRegisterApi: function(gridApi) {
                     $scope.gridApi = gridApi;
                     $scope.gridApi.grid.registerRowsProcessor($scope.filterFn, 200);
-                }
+
+                    if($scope.tableSettings) {
+                        $scope.gridApi.saveState.restore($scope, $scope.tableSettings.state);
+                    }
+                },
+                saveOrder: true,
+                saveWidth: true,
+                saveVisible: true,
+                saveGrouping: false,
+                saveGroupingExpandedStates: false,
+                savePinning: true,
+                saveScroll: false,
+                saveSelection: false,
+                saveSort: true,
+                saveTreeView: false,
+                saveFocus: false,
+                saveFilter: false
             };
 
+            var initialWatchCalled = false;
             $scope.$watch("gridOptions.columnDefs", function(newValue, oldValue) {
+                if(!initialWatchCalled){
+                    initialWatchCalled = true;
+                    return;
+                }
+
                 if(newValue !== oldValue) {
+                    $scope.tableSettings.state = $scope.gridApi.saveState.save();
+
                     bridgeConfig.store(bridgeDataService);
                     //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
                 }
@@ -64,7 +89,20 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
             });
 
             this.registerColumn = function(column){
+                if(!column.columnOrder) {
+                    column.columnOrder = $scope.gridOptions.columnDefs.length + 1;
+                }
+
                 $scope.gridOptions.columnDefs.push(column);
+                $scope.gridOptions.columnDefs.sort(function(a, b) {
+                    if(a.columnOrder > b.columnOrder) {
+                        return 1;
+                    } else if(a.columnOrder < b.columnOrder) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
             };
         }]
     };
