@@ -6,18 +6,27 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 
     this.modalInstance = null;
 
     this.initialize = function(){
-        var loadNewsPromise = {}; // $http.get('../bridge/menubar/news/news.json');
-        $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
-        .success(function(data) {
-            // asdasdad
-            data.map(
-                function(item) {
-                    return {id: item.ID};
-                });
-        });
+        var loadNewsPromise = $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
+            .success(function(data) {
+                data.NOTIFICATIONS = data.NOTIFICATIONS.map(
+                    function(item) {
+                        // yyyy-mm-dd
+                        var time = "" + item.TIMESTAMP;
+                        var dateString = time.substring(0, 4) + '-' + time.substring(4, 6) + '-' + time.substring(6, 8);
+                        return {
+                            id: item.ID,
+                            header: item.HEADER,
+                            date: dateString,
+                            snapURL: item.SNAPURL,
+                            preview: item.PREVIEW,
+                            content: item.CONTENT,
+                            instance: item.INSTANCE
+                        };
+                    });
+            });
 
         loadNewsPromise.then(function(response) {
-            that.news.data = response.data.news;
+            that.news.data = response.data.NOTIFICATIONS;
             that.isInitialized = true;
         });
 

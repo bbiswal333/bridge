@@ -5,22 +5,22 @@ describe("The bridge news service", function () {
             readNews: []
         },
         newsDummyData = {
-            "news": [
+            "NOTIFICATIONS": [
                 {
-                    "id":		1,
-                    "header": 	"header0",
-                    "preview": 	"preview0",
-                    "snapURL": 	"bridge/sidebar/news/image/snap02.png",
-                    "content": 	"content00fghjfgnusfgdfunfgunsfgnubsusnznuzub",
+                    "ID":		1,
+                    "HEADER": 	"header0",
+                    "PREVIEW": 	"preview0",
+                    "SNAPURL": 	"bridge/sidebar/news/image/snap02.png",
+                    "CONTENT": 	"content00fghjfgnusfgdfunfgunsfgnubsusnznuzub",
                     "img1": 	"bridge/sidebar/news/image/snap02.png",
                     "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
                 },
                 {
-                    "id":       2,
-                    "header":   "header1",
-                    "preview":  "preview1",
-                    "snapURL":  "bridge/sidebar/news/image/snap02.png",
-                    "content":  "content01",
+                    "ID":       2,
+                    "HEADER":   "header1",
+                    "PREVIEW":  "preview1",
+                    "SNAPURL":  "bridge/sidebar/news/image/snap02.png",
+                    "CONTENT":  "content01",
                     "img1":     "bridge/sidebar/news/image/snap02.png",
                     "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
                 }
@@ -44,7 +44,7 @@ describe("The bridge news service", function () {
             $httpBackend = _$httpBackend;
         }]);
 
-        $httpBackend.whenGET("../bridge/menubar/news/news.json").respond(newsDummyData);
+        $httpBackend.whenGET("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS").respond(newsDummyData);
     });
 
     it("should fill the its news object when created", function(){
@@ -68,6 +68,7 @@ describe("The bridge news service", function () {
         newsService.initialize();
         $httpBackend.flush();
 
+        // TODO?? failing
         expect(newsService.existUnreadNews()).toBe(false);
     });
 
