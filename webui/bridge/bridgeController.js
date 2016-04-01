@@ -195,7 +195,7 @@ angular.module('bridge.app').controller('bridgeController',
                 });
                 $timeout(function() {
                     $scope.modal.close();
-                }, 660000);
+                }, 35000);
             }
         };
         $scope.showAprilPopup();
