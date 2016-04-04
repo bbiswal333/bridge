@@ -67,8 +67,6 @@ describe("The bridge news service", function () {
 
         newsService.initialize();
         $httpBackend.flush();
-
-        // TODO?? failing
         expect(newsService.existUnreadNews()).toBe(false);
     });
 
