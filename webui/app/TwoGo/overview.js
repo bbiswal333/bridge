@@ -11,15 +11,18 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
         var endDay = 0;
         var endDaySecond = 0;
 //Urls from the TwoGo server
-        var BASE_URL_LOGIN = "https://access.twogo.com/web/rpc/";
+        var BASE_URL_LOGIN = "https://access.twogo.com/web/rpc/";        
         var BASE_URL_BACKEND = "https://www.twogo.com/web/rpc/";
         var csrf_token = "";
         //initialisation of the Tables in the start screen
         $scope.tableSize = "40%";
         $scope.spinner = "fa fa-pulse fa-spinner  fa-4x";
         $scope.ridesTomorrowMorning = "";
+        $scope.ridesTomorrowMorningLink = "";
         $scope.ridesTomorrowEvening = "";
+        $scope.ridesTomorrowEveningLink = "";
         $scope.ridesToday = "";
+        $scope.ridesTodayLink = ""
         $scope.tomorrowh = "";
         $scope.today = "";
         $scope.tomorrow = "";
@@ -249,8 +252,25 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
                         $scope.spinner = "";
                         $scope.tableSize = "20%";
                         $scope.ridesToday = toHometoday.toString();
+                        if ( $scope.ridesToday == 0 ) {
+                             var date = new Date();
+                             $scope.dateToday = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);                                
+                             $scope.ridesTodayLink = "https://www.twogo.com/web/res/ride/create?start=WORK&dest=HOME&sum=My%20Ride&sthh=15&stmm=00&ethh=19&etmm=00&source=bridge&dt=" + $scope.dateToday
+                        } else {
+                             $scope.ridesTodayLink = "#/detail/TwoGo"   
+                        }                        
                         $scope.ridesTomorrowMorning = toWork.toString();
+                        if ( $scope.ridesTomorrowMorning == 0 ) {                               
+                             $scope.ridesTomorrowMorningLink = "https://www.twogo.com/web/res/ride/create?start=HOME&dest=WORK&sum=My%20Ride&sthh=7&stmm=00&ethh=10&etmm=00&source=bridge"
+                        } else {
+                             $scope.ridesTomorrowMorningLink = "#/detail/TwoGo"   
+                        }                                                
                         $scope.ridesTomorrowEvening = toHome.toString();
+                        if ( $scope.ridesTomorrowEvening == 0 ) {
+                             $scope.ridesTomorrowEveningLink = "https://www.twogo.com/web/res/ride/create?start=WORK&dest=HOME&sum=My%20Ride&sthh=15&stmm=00&ethh=19&etmm=00&source=bridge"
+                        } else {
+                             $scope.ridesTomorrowEveningLink = "#/detail/TwoGo"   
+                        }                                                       
                         $scope.tomorrowh = "To HOME";
                         $scope.today = "To HOME";
                         $scope.HeaderToday = "Today";
