@@ -10,7 +10,7 @@
             <!--variable for the number of rides-->
         </tr>
         <tr>
-            <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(1)">{{ridesToday}}</a></td>
+            <td><a href="{{ridesTodayLink}}" ng-click="setLinkClicked(1)">{{ridesToday}}</a></td>   
         </tr>
     </table>
     <i class="{{spinner}}"></i><!--ng-hide="visible">-->
@@ -26,8 +26,8 @@
             <td>{{tomorrowh}}</td>
         </tr>
         <tr>
-            <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(2)">{{ridesTomorrowMorning}} </a></td>
-            <td><a href="#/detail/TwoGo" ng-click="setLinkClicked(3)">{{ridesTomorrowEvening}}</a></td>
+            <td><a href="{{ridesTomorrowMorningLink}}" ng-click="setLinkClicked(2)">{{ridesTomorrowMorning}} </a></td>
+            <td><a href="{{ridesTomorrowEveningLink}}" ng-click="setLinkClicked(3)">{{ridesTomorrowEvening}}</a></td>
         </tr>
     </table>
 </div>
