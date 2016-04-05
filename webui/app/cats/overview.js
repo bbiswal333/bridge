@@ -1,4 +1,4 @@
-angular.module('app.cats', ["lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ngRoute"]);
+angular.module('app.cats', ["lib.utils", "app.cats.dataModule", "app.cats.utilsModule", "ngRoute", "bridge.service"]);
 
 angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 	function (catsConfigService) {
@@ -18,12 +18,6 @@ angular.module("app.cats").directive("app.cats", ["app.cats.configService",
 
 			$scope.getCatClass = function(){
 				$scope.catClass = Math.floor(Math.random() * 2);
-			};
-
-			$scope.box.returnConfig = function(){
-				var configToReturn = angular.copy($scope.configService);
-				delete configToReturn.box;
-				return configToReturn;
 			};
 		}];
 

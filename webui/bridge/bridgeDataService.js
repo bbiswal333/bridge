@@ -247,6 +247,18 @@
             throw new Error("App with ID " + id + " could not be found.");
         }
 
+        function _getAppsByType(type) {
+            var apps = [];
+            _getProjects().map(function(project) {
+                project.apps.map(function(app) {
+                    if(app.metadata.module_name === type) {
+                        apps.push(app);
+                    }
+                });
+            });
+            return apps;
+        }
+
         function _getAppById(id) {
             var appLocation = _getAppLocationById(id);
             return _getProjects()[appLocation.projectIndex].apps[appLocation.appIndex];
@@ -335,6 +347,7 @@
             getTemporaryData: _getTemporaryData,
             getUserInfo: _getUserInfo,
             getProjects: _getProjects,
+            getAppsByType: _getAppsByType,
             getAppById: _getAppById,
             removeAppById: _removeAppById,
             getAppConfigById: _getAppConfigById,

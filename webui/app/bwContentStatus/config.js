@@ -1,11 +1,12 @@
-angular.module('app.bwContentStatus').service("app.bwContentStatus.configService", function () {
+angular.module('app.bwContentStatus').service("app.bwContentStatus.configService", ["bridgeDataService", function (bridgeDataService) {
 
 	this.values = {
 		boxSize : '2',
 		contents: []
 	};
 
-	this.initialize = function(configLoadedFromBackend) {
+	this.initialize = function(sAppId) {
+		var configLoadedFromBackend = bridgeDataService.getAppConfigById(sAppId);
 		if (configLoadedFromBackend !== undefined &&
 			configLoadedFromBackend !== {} &&
 			configLoadedFromBackend.values) {
@@ -16,5 +17,9 @@ angular.module('app.bwContentStatus').service("app.bwContentStatus.configService
 			// Use default config on first load
 			configLoadedFromBackend.values = this.values;
 		}
+
+		bridgeDataService.getAppById(sAppId).returnConfig = function() {
+			return angular.copy(this);
+		};
 	};
-});
+}]);

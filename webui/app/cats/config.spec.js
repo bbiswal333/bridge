@@ -1,10 +1,21 @@
 describe("CAT2 config service", function () {
 	var catsConfig;
 
-	beforeEach(module("app.cats"));
-	beforeEach(inject(["app.cats.configService", function (_catsConfig_) {
-		catsConfig = _catsConfig_;
-	}]));
+	beforeEach(function() {
+		module("app.cats", function($provide){
+	        var mockDataService = {
+	            getAppsByType: function () {
+	                return [{}];
+	            }
+	        };
+
+	        $provide.value("bridgeDataService", mockDataService);
+	    });
+
+	    inject(["app.cats.configService", function (_catsConfig_) {
+			catsConfig = _catsConfig_;
+		}]);
+	});
 
 	it("should calculate a unique ID for each task", function () {
 		var tasks = [];

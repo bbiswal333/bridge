@@ -80,12 +80,6 @@ angular.module('app.bensmatrix').directive('app.bensmatrix', ['app.bensmatrix.co
 			$scope.many = dataService.getReloadCounter();
 		};
 
-		// Bridge framework function to enable saving the config
-		/*
-		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
-		};
-		*/
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData,60);
 

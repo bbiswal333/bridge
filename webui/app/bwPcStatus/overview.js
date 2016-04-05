@@ -1,7 +1,13 @@
 ﻿angular.module('app.bwPcStatus', ['app.bwPcStatus.data']);
-angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.configService', 'app.bwPcStatus.dataService', function (configService, dataService) {
+angular.module('app.bwPcStatus').directive('app.bwPcStatus', [function () {
 
-	var directiveController = ['$scope', function ($scope) {
+	var directiveController = ['$scope', 'app.bwPcStatus.configService', 'app.bwPcStatus.dataService', function ($scope, configService, dataService) {
+
+		$scope.box.boxSize = 2;
+
+		configService.initialize($scope.metadata.guid);
+
+		dataService.getContents();
 
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure your BW Process Chain Status App";
@@ -16,11 +22,6 @@ angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.co
 			dataService.getChainStatus().then(function() {
 				$scope.values =  dataService.data.statusObject;
 			});
-		};
-
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
 		};
 
 		$scope.displayDetails = function(status) {
@@ -44,23 +45,9 @@ angular.module('app.bwPcStatus').directive('app.bwPcStatus', ['app.bwPcStatus.co
 
 	}];
 
-	var linkFn = function ($scope) {
-
-		// get own instance of config service, $scope.appConfig contains the configuration from the backend
-		configService.initialize($scope.appConfig);
-
-		dataService.getContents();
-
-		// watch on any changes in the settings screen
-		$scope.$watch("appConfig.values.boxSize", function () {
-			$scope.box.boxSize = $scope.appConfig.values.boxSize;
-		}, true);
-	};
-
 	return {
 		restrict: 'E',
 		templateUrl: 'app/bwPcStatus/overview.html',
-		controller: directiveController,
-		link: linkFn
+		controller: directiveController
 	};
 }]);

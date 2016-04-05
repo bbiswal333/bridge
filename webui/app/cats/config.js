@@ -1,10 +1,11 @@
-angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtils", function(catsUtils){
+angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtils", "bridgeDataService", function(catsUtils, bridgeDataService){
 	this.loaded = false;
 	this.catsItems = [];
 	this.favoriteItems = [];
 	this.lastUsedDescriptions = [];
 	this.selectedTask = null;
 	this.colorScheme = "colorful";
+	var that = this;
 
 	function getIndex (tasks, task) {
 		var index = -1;
@@ -133,5 +134,11 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 				}
 			});
 		}
+	};
+
+	bridgeDataService.getAppsByType("app.cats")[0].returnConfig = function() {
+		var configToReturn = angular.copy(that);
+		delete configToReturn.box;
+		return configToReturn;
 	};
 }]);

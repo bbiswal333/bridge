@@ -1,7 +1,13 @@
 ﻿angular.module('app.bwContentStatus', ['app.bwContentStatus.data']);
-angular.module('app.bwContentStatus').directive('app.bwContentStatus', ['app.bwContentStatus.configService', 'app.bwContentStatus.dataService', function (configService, dataService) {
+angular.module('app.bwContentStatus').directive('app.bwContentStatus', [function () {
 
-	var directiveController = ['$scope', function ($scope) {
+	var directiveController = ['$scope', 'app.bwContentStatus.configService', 'app.bwContentStatus.dataService', function ($scope, configService, dataService) {
+
+		$scope.box.boxSize = 2;
+
+		configService.initialize($scope.metadata.guid);
+
+		dataService.getContents();
 
 		// Required information to get settings icon/ screen
 		$scope.box.settingsTitle = "Configure your BW Content Status App";
@@ -34,11 +40,6 @@ angular.module('app.bwContentStatus').directive('app.bwContentStatus', ['app.bwC
 			});
 		};
 
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
-		};
-
 		$scope.displayDetails = function(status) {
 			$scope.showDetails = true;
 			$scope.search.STATUS = status;
@@ -55,23 +56,9 @@ angular.module('app.bwContentStatus').directive('app.bwContentStatus', ['app.bwC
 
 	}];
 
-	var linkFn = function ($scope) {
-
-		// get own instance of config service, $scope.appConfig contains the configuration from the backend
-		configService.initialize($scope.appConfig);
-
-		dataService.getContents();
-
-		// watch on any changes in the settings screen
-		$scope.$watch("appConfig.values.boxSize", function () {
-			$scope.box.boxSize = $scope.appConfig.values.boxSize;
-		}, true);
-	};
-
 	return {
 		restrict: 'E',
 		templateUrl: 'app/bwContentStatus/overview.html',
-		controller: directiveController,
-		link: linkFn
+		controller: directiveController
 	};
 }]);

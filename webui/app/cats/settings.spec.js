@@ -6,7 +6,15 @@ describe("Settings view of cats app", function () {
 	var bridgeInBrowserNotification;
 	var catsBackend;
 
-	beforeEach(angular.mock.module('app.cats'));
+	beforeEach(angular.mock.module('app.cats', function($provide){
+        var mockDataService = {
+            getAppsByType: function () {
+                return [{}];
+            }
+        };
+
+        $provide.value("bridgeDataService", mockDataService);
+    }));
 	beforeEach(inject(function($rootScope) {
 		$scope = $rootScope.$new();
 	}));

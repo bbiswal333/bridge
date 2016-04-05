@@ -9,7 +9,16 @@
 
     beforeEach(function () {
 
-        module('bridge.service');
+        module('bridge.service', function($provide){
+            var mockDataService = {
+                getAppById: function() {
+                    return {};
+                }
+            };
+
+            $provide.value("bridgeDataService", mockDataService);
+        });
+
         module("app.atc");
 
         inject(["$httpBackend", "app.atc.configservice", "app.atc.dataservice", function (_$httpBackend, _atcConfigService, _atcDataService) {
