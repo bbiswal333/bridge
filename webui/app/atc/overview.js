@@ -11,10 +11,6 @@ angular.module('app.atc').directive('app.atc',
             controller: angular.module('app.atc').appAtcSettings
         };
 
-        $scope.box.returnConfig = function () {
-            return appAtcConfig.getConfigForAppId($scope.metadata.guid);
-        };
-
         $scope.box.reloadApp(appAtcData.loadOverviewData,60 * 5);
 
         $scope.atcData = $scope.atcData || appAtcData.getInstanceForAppId($scope.metadata.guid);

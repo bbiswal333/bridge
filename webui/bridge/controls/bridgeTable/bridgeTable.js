@@ -11,6 +11,27 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
             tableSettings: "="
         },
         controller: ["$scope", function($scope){
+            if($scope.tableSettings && $scope.tableSettings.state) {
+                var initialTableSettings = $scope.tableSettings.state;
+            }
+
+            var initialWatchCalled = false;
+
+            function setUpGridOptionsWatch() {
+                $scope.$watch("gridOptions.columnDefs", function(newValue, oldValue) {
+                    if(!initialWatchCalled){
+                        initialWatchCalled = true;
+                        return;
+                    }
+
+                    if(newValue !== oldValue) {
+                        $scope.tableSettings.state = $scope.gridApi.saveState.save();
+
+                        bridgeConfig.store(bridgeDataService);
+                    }
+                }, true);
+            }
+
             $scope.gridOptions = {
                 columnDefs: [],
                 data: 'tableData',
@@ -25,9 +46,13 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                     $scope.gridApi = gridApi;
                     $scope.gridApi.grid.registerRowsProcessor($scope.filterFn, 200);
 
-                    if($scope.tableSettings) {
-                        $scope.gridApi.saveState.restore($scope, $scope.tableSettings.state);
-                    }
+                    $timeout(function() {
+                        if(initialTableSettings) {
+                            $scope.tableSettings.state = initialTableSettings;
+                            $scope.gridApi.saveState.restore($scope, initialTableSettings);
+                            setUpGridOptionsWatch();
+                        }
+                    });
                 },
                 saveOrder: true,
                 saveWidth: true,
@@ -42,21 +67,6 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 saveFocus: false,
                 saveFilter: false
             };
-
-            var initialWatchCalled = false;
-            $scope.$watch("gridOptions.columnDefs", function(newValue, oldValue) {
-                if(!initialWatchCalled){
-                    initialWatchCalled = true;
-                    return;
-                }
-
-                if(newValue !== oldValue) {
-                    $scope.tableSettings.state = $scope.gridApi.saveState.save();
-
-                    bridgeConfig.store(bridgeDataService);
-                    //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
-                }
-            }, true);
 
             $scope.filterFn = function(renderableRows){
                 var matcher = new RegExp($scope.filter, "gi");

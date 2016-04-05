@@ -197,6 +197,9 @@ angular.module('app.atc').service("app.atc.configservice", ['$q', 'bridgeDataSer
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config();
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 		return instances[appId];
 	};
