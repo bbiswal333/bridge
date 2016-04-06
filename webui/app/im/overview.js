@@ -1,6 +1,6 @@
-angular.module('app.im', ['ngTable']);
+angular.module('app.im', ['ngTable', 'bridge.service']);
 
-angular.module('app.im').factory("app.im.configservice", function ()
+angular.module('app.im').factory("app.im.configservice", ["bridgeDataService", function (bridgeDataService)
 {
     //set the default configuration object
     var config = {};
@@ -12,8 +12,13 @@ angular.module('app.im').factory("app.im.configservice", function ()
     config.data.selection.colleagues = false;
     config.data.selection.assigned_me = false;
     config.data.selection.created_me = false;
+    config.initialize = function() {
+        bridgeDataService.getAppsByType("app.im")[0].returnConfig = function() {
+            return config;
+        };
+    };
     return config;
-});
+}]);
 
 angular.module('app.im').directive('app.im', ['app.im.configservice', function (configservice)
 {
@@ -32,16 +37,13 @@ angular.module('app.im').directive('app.im', ['app.im.configservice', function (
 
 angular.module('app.im').controller('app.im.directiveController', ['$scope', '$http', 'app.im.ticketData', 'app.im.configservice','bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, ticketData, configservice, bridgeDataService, bridgeConfig) {
+        configservice.initialize();
 
         $scope.box.boxSize = "1";
         $scope.box.settingScreenData = {
             templatePath: "im/settings.html",
             controller: angular.module('app.im').appImSettings,
             id: $scope.boxId
-        };
-
-        $scope.box.returnConfig = function() {
-            return configservice;
         };
 
         $scope.prios = ticketData.prios;

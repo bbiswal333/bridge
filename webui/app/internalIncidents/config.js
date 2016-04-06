@@ -1,4 +1,4 @@
-angular.module('app.internalIncidents').service("app.internalIncidents.configservice", ["bridge.ticketAppUtils.configUtils", function (configUtils){
+angular.module('app.internalIncidents').service("app.internalIncidents.configservice", ["bridge.ticketAppUtils.configUtils", "bridgeDataService", function (configUtils, bridgeDataService){
     var Config = function() {
         this.data = {};
         this.data.lastDataUpdate = null;
@@ -23,6 +23,9 @@ angular.module('app.internalIncidents').service("app.internalIncidents.configser
     this.getConfigForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config();
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId].data;
+            };
         }
         return instances[appId];
     };

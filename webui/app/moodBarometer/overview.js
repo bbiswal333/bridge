@@ -1,4 +1,4 @@
-﻿angular.module('app.moodBarometer', ['app.moodBarometer.data','ui.bootstrap.modal', 'ui.bootstrap.tpls']);
+﻿angular.module('app.moodBarometer', ['app.moodBarometer.data','ui.bootstrap.modal', 'ui.bootstrap.tpls', 'bridge.service']);
 angular.module('app.moodBarometer').directive('app.moodBarometer', ['app.moodBarometer.configService', 'app.moodBarometer.dataService', '$modal', function (configService, dataService, $modal) {
     var directiveController = ['$scope', '$http', '$window', 'notifier','$location', function ($scope, $http, $window, notifier,$location) {
         $scope.box.boxSize = 2;
@@ -86,11 +86,6 @@ angular.module('app.moodBarometer').directive('app.moodBarometer', ['app.moodBar
                 //console.log("Error when deleting mood!");
             });
 
-        };
-
-        // Bridge framework function to enable saving the config
-        $scope.box.returnConfig = function(){
-            return angular.copy(configService);
         };
 
         // Bridge framework function to take care of refresh

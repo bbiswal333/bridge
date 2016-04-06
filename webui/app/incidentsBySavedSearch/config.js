@@ -1,5 +1,5 @@
 angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.configservice",
-    ["bridge.ticketAppUtils.configUtils", "app.incidentSavedSearch.savedSearchData", function (configUtils, savedSearchDataService){
+    ["bridge.ticketAppUtils.configUtils", "app.incidentSavedSearch.savedSearchData", "bridgeDataService", function (configUtils, savedSearchDataService, bridgeDataService){
 
         var Config = function(appId) {
             var savedSearchData = savedSearchDataService.getInstanceForAppId(appId);
@@ -26,6 +26,9 @@ angular.module('app.incidentSavedSearch').service("app.incidentSavedSearch.confi
         this.getConfigForAppId = function(appId) {
             if(instances[appId] === undefined) {
                 instances[appId] = new Config(appId);
+                bridgeDataService.getAppById(appId).returnConfig = function() {
+                    return instances[appId].data;
+                };
             }
             return instances[appId];
         };

@@ -1,10 +1,21 @@
 describe("Internal Incidents config", function(){
     var config = null;
+    var bridgeDataService;
 
     beforeEach(function() {
-        module("app.internalIncidents");
+        module("bridge.service");
+        module("app.internalIncidents", function($provide) {
+            var app = {};
 
-        inject(["app.internalIncidents.configservice", function(_config){
+            $provide.value("bridgeDataService", {
+                getAppById: function() {
+                    return app;
+                }
+            });
+        });
+
+        inject(["app.internalIncidents.configservice", "bridgeDataService", function(_config, _bridgeDataService){
+            bridgeDataService = _bridgeDataService;
             config = _config.getConfigForAppId("test-1");
         }]);
     });
@@ -23,6 +34,7 @@ describe("Internal Incidents config", function(){
         expect(config.data.selection.sel_components).toBe(true);
         expect(config.data.selection.colleagues).toBe(false);
         expect(config.data.selection.created_me).toBe(false);
+        expect(typeof bridgeDataService.getAppById("test-1").returnConfig).toBe("function");
 
     });
 

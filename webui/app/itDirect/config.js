@@ -1,4 +1,4 @@
-angular.module("app.itdirect").service("app.itdirect.config", function(){
+angular.module("app.itdirect").service("app.itdirect.config", ["bridgeDataService", function(bridgeDataService){
     var Config = function() {
         this.isInitialized = false;
         this.lastDataUpdate = null;
@@ -26,8 +26,11 @@ angular.module("app.itdirect").service("app.itdirect.config", function(){
     this.getConfigForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config();
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId];
+            };
         }
         return instances[appId];
     };
 
-});
+}]);

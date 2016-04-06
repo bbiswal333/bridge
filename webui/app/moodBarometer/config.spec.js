@@ -1,9 +1,18 @@
 describe("Testing moodBarometer.app config service", function () {
-	var configService;
+	var configService, bridgeDataService;
 
-	beforeEach(module("app.moodBarometer"));
-	beforeEach(inject(["app.moodBarometer.configService", function (_configService_) {
-		 configService = _configService_;
+	module("bridge.service");
+	beforeEach(module("app.moodBarometer", function($provide) {
+		var apps = [{}];
+		$provide.value("bridgeDataService", {
+			getAppsByType: function() {
+				return apps;
+			}
+		});
+	}));
+	beforeEach(inject(["app.moodBarometer.configService", "bridgeDataService", function (_configService_, _bridgeDataService_) {
+		bridgeDataService = _bridgeDataService_;
+		configService = _configService_;
 	}]));
 
 	it("Should return the default config", function () {
@@ -23,5 +32,9 @@ describe("Testing moodBarometer.app config service", function () {
 		configService.initialize(configLoadedFromBackend);
 
 		expect(configService.values.boxSize).toBe(2);
+	});
+
+	it("should append returnConfig to app", function() {
+		expect(typeof bridgeDataService.getAppsByType("app.moodBarometer")[0].returnConfig).toBe("function");
 	});
 });

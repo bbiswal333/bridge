@@ -2,7 +2,13 @@ describe("The detail controller", function () {
 
 	var scope, dataService, controllerService;
 
-	beforeEach(angular.mock.module("app.moodBarometer"));
+	beforeEach(angular.mock.module("app.moodBarometer", function($provide) {
+		$provide.value("bridgeDataService", {
+			getAppsByType: function() {
+				return [{}];
+			}
+		});
+	}));
 	beforeEach(inject(["app.moodBarometer.dataService", function (_dataService_) {
 		 dataService = _dataService_;
 	}]));

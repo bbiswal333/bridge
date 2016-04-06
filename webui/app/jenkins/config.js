@@ -1,4 +1,4 @@
-angular.module('app.jenkins').service("app.jenkins.configservice", function () {
+angular.module('app.jenkins').service("app.jenkins.configservice", ["bridgeDataService", function (bridgeDataService) {
 	var Config = function() {
 		this.configItem = {
 			jenkinsUrl : '',
@@ -106,7 +106,10 @@ angular.module('app.jenkins').service("app.jenkins.configservice", function () {
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config();
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 		return instances[appId];
 	};
-});
+}]);

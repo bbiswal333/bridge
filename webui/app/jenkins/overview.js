@@ -23,10 +23,6 @@ angular.module("app.jenkins").directive("app.jenkins", ["app.jenkins.configservi
 			id: $scope.boxId
 		};
 
-		$scope.box.returnConfig = function() {
-			return angular.copy($scope.configService);
-		};
-
 		$scope.noJobSelected = function() {
 			if($scope.dataService.jobsToDisplay.length === 0) {
 				return true;

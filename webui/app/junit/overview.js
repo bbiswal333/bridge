@@ -67,11 +67,6 @@ angular.module('app.junit').directive('app.junit',
       }
 		};
 
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function () {
-      return configService.getConfigForAppId($scope.metadata.guid);
-    };
-
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData, 60 * 60);
 

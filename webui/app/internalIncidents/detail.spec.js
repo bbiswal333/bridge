@@ -13,6 +13,9 @@ describe("Internal Incidents details controller", function(){
             var mockDataService = {
                 getUserInfo: function(){
                     return { BNAME: "D051804" };
+                },
+                getAppById: function() {
+                	return {};
                 }
             };
 

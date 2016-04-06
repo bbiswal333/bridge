@@ -70,6 +70,9 @@ angular.module('app.junit').service("app.junit.configService", ['bridgeDataServi
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config();
+      bridgeDataService.getAppById(appId).returnConfig = function() {
+        return instances[appId];
+      };
 		}
 		return instances[appId];
 	};

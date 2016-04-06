@@ -1,4 +1,4 @@
-angular.module('app.mitosisHana').service("app.mitosisHana.configService", function () {
+angular.module('app.mitosisHana').service("app.mitosisHana.configService", ["bridgeDataService", function (bridgeDataService) {
 	this.values = {	content : {	}
 				};
 
@@ -13,4 +13,9 @@ angular.module('app.mitosisHana').service("app.mitosisHana.configService", funct
 			configLoadedFromBackend.values = this.values;
 		}
 	};
-});
+
+	var that = this;
+	bridgeDataService.getAppsByType("app.mitosisHana")[0].returnConfig = function() {
+		return that;
+	};
+}]);

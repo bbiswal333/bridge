@@ -14,9 +14,6 @@ angular.module('app.incidentSavedSearch').directive('app.incidentSavedSearch', f
                 controller: function(){},
                 id: $scope.boxId
             };
-            $scope.box.returnConfig = function() {
-                return config.data;
-            };
 
             $scope.prios = ticketData.prios;
             $scope.dataInitialized = ticketData.isInitialized;

@@ -56,30 +56,6 @@ angular.module('app.linklist').directive('app.linklist', ['app.linklist.configse
         }
         $scope.config = linklistConfig;
 
-        $scope.box.returnConfig = function () {
-
-            var configCopy = angular.copy(linklistConfig.data);
-            delete configCopy.boxSize;
-
-            if(configCopy.listCollection && configCopy.listCollection.length >= 1) {
-                for (var i = configCopy.listCollection.length - 1; i >= 0; i--) {
-                    var linkList = configCopy.listCollection[i];
-
-                    for (var j = linkList.length - 1; j >= 0; j--){
-                        delete linkList[j].$$hashKey;
-                        delete linkList[j].editable;
-                        delete linkList[j].old;
-                        delete linkList[j].sapGuiFile;
-                        if (!linkList[j].name){
-                            linkList.splice(j, 1);
-                        }
-                    }
-                }
-            }
-
-            return configCopy;
-        };
-
         function setDefaultConfig()
         {
             linklistConfig.data.listCollection.length = 0;

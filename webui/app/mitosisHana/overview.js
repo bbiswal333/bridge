@@ -1,4 +1,4 @@
-angular.module('app.mitosisHana', []);
+angular.module('app.mitosisHana', ["bridge.service"]);
 
 angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana.configService', 'app.mitosisHana.dataService', '$window' , function (configService, dataService, $window) {
 
@@ -24,11 +24,6 @@ angular.module('app.mitosisHana').directive('app.mitosisHana', ['app.mitosisHana
 		if (dataService.isInitialized.value === false) {
             dataService.initialize($scope.module_name);
         }
-
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
-		};
 
 		$scope.noContentSelected = function() {
 			if(!$scope.dataService || $scope.dataService.numberOfContents === 0 ||

@@ -27,9 +27,6 @@ angular.module('app.itdirect').directive('app.itdirect', function ()
                 $window.open("https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm");
             }
         }];
-        $scope.box.returnConfig = function(){
-            return config;
-        };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){
            if (args !== undefined && args.app === 'itdirect'){

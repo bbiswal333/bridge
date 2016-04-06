@@ -3,16 +3,27 @@ describe("The Jenkins config service", function() {
 
 	"use strict";
 
-	var configService;
+	var configService, bridgeDataService;
 
-	beforeEach(angular.mock.module("app.jenkins"));
+	beforeEach(angular.mock.module("app.jenkins", function($provide) {
+		var app = {};
+		$provide.value("bridgeDataService", {
+			getAppById: function() {
+				return app;
+			}
+		});
+	}));
 
-	beforeEach(inject(["app.jenkins.configservice", function(_configService_) {
+	beforeEach(inject(["app.jenkins.configservice", "bridgeDataService", function(_configService_, _bridgeDataService_) {
 
+		bridgeDataService = _bridgeDataService_;
 		configService = _configService_.getConfigForAppId("app.test");
 
-
 	}]));
+
+	it("can add the return config method to the bridgeDataService app instance", function() {
+		expect(typeof bridgeDataService.getAppById("app.test").returnConfig).toBe("function");
+	});
 
 	it("can add a job config item", function () {
 

@@ -1,4 +1,4 @@
-angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier"]).
+angular.module("app.meetings", ["app.meetings.ews", "lib.utils", "notifier", "bridge.service"]).
 directive("app.meetings", [
 	"$timeout",	"$http", "$window", "$log", "app.meetings.ews.ewsUtils", "lib.utils.calUtils", "app.meetings.configservice", "notifier",
 	function ($timeout, $http, $window, $log, ewsUtils, calUtils, meetingsConfigService, notifier) {
@@ -33,10 +33,6 @@ directive("app.meetings", [
 					$http.get($window.client.origin + '/api/client/copy?text=' + encodeURIComponent(participantCode + '#') + '&origin=' + $window.location.origin);
 				}
 			};
-
-			$scope.box.returnConfig = function(){
-	            return angular.copy(meetingsConfigService);
-	        };
 		}];
 
 		var linkFn = function ($scope) {

@@ -2,19 +2,14 @@ angular.module('app.imtps', ['ngTable']);
 
 angular.module('app.imtps').directive('app.imtps', ['app.imtps.configservice', function (appimtpsConfig) {
 
-	var controller = ['$scope', 'app.imtps.configservice', 'app.imtps.msgReaderData','bridgeDataService', 'bridgeConfig',
-	    function Controller($scope, configService, msgReaderData, bridgeDataService, bridgeConfig) {
+	var controller = ['$scope', 'app.imtps.msgReaderData','bridgeDataService', 'bridgeConfig',
+	    function Controller($scope, msgReaderData, bridgeDataService, bridgeConfig) {
 
 	        $scope.box.boxSize = "1";
 	        $scope.box.settingScreenData = {
 	            templatePath: "imtps/settings.html",
 	            controller: angular.module('app.imtps').appimtpsSettings,
 	            id: $scope.boxId
-	        };
-
-	        $scope.box.returnConfig = function()
-	        {
-	            return configService;
 	        };
 
             $scope.box.reloadApp(msgReaderData.loadTicketData, 60 * 5);

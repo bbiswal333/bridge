@@ -25,6 +25,9 @@ describe("Incident By Saved Search ticket data", function(){
                     BNAME: "D051804"
                 };
             };
+            this.getAppById = function() {
+                return {};
+            };
         });
         angular.module("mock.module").factory("notifier", function(){
             return {

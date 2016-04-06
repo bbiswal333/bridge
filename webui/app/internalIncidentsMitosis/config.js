@@ -80,6 +80,9 @@ angular.module('app.internalIncidentsMitosis').service("app.internalIncidentsMit
 	this.getInstanceForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config(appId);
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return angular.copy(instances[appId]);
+			};
 		}
 
 		return instances[appId];

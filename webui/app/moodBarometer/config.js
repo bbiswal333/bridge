@@ -1,4 +1,4 @@
-angular.module('app.moodBarometer').service("app.moodBarometer.configService", function () {
+angular.module('app.moodBarometer').service("app.moodBarometer.configService", ["bridgeDataService", function (bridgeDataService) {
 
 	this.values = {
         boxSize : 2
@@ -15,4 +15,9 @@ angular.module('app.moodBarometer').service("app.moodBarometer.configService", f
 			configLoadedFromBackend.values = this.values;
 		}
 	};
-});
+
+	var that = this;
+	bridgeDataService.getAppsByType("app.moodBarometer")[0].returnConfig = function() {
+		return that;
+	};
+}]);

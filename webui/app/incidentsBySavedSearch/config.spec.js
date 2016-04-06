@@ -1,7 +1,9 @@
 describe("Incidents By Saved Search config", function(){
     var config = null;
+    var bridgeDataService;
 
     beforeEach(function() {
+        module("bridge.service");
         module("app.incidentSavedSearch", function($provide) {
             var mockSavedSearchData = {
                 getInstanceForAppId: function () {
@@ -12,9 +14,17 @@ describe("Incidents By Saved Search config", function(){
             };
 
             $provide.value("app.incidentSavedSearch.savedSearchData", mockSavedSearchData);
+
+            var app = {};
+            $provide.value("bridgeDataService", {
+                getAppById: function() {
+                    return app;
+                }
+            });
         });
 
-        inject(["app.incidentSavedSearch.configservice", function(_config){
+        inject(["app.incidentSavedSearch.configservice", "bridgeDataService", function(_config, _bridgeDataService){
+            bridgeDataService = _bridgeDataService;
             config = _config.getConfigForAppId("test-1");
         }]);
     });
@@ -27,6 +37,7 @@ describe("Incidents By Saved Search config", function(){
 
         expect(config.isInitialized).toBe(true);
         expect(config.data.selectedSearchGuid).toBe("abcdefg");
+        expect(typeof bridgeDataService.getAppById("appId1").returnConfig).toBe("function");
     });
 
     it("should use the default column visibility if the amount of columns changed", function(){

@@ -44,10 +44,6 @@ angular.
         }
         $scope.date = date;
 
-        $scope.box.returnConfig = function(){
-            return angular.copy($scope.configService);
-        };
-
         $scope.chosenbackend = $scope.configService.chosenbackend;
 
         $scope.refreshBackend = function () {

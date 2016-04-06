@@ -11,9 +11,6 @@ angular.module('app.internalIncidents').directive('app.internalIncidents', funct
                 controller: function(){},
                 id: $scope.boxId
             };
-            $scope.box.returnConfig = function() {
-                return config.data;
-            };
 
             $scope.prios = ticketData.prios;
             $scope.dataInitialized = ticketData.isInitialized;

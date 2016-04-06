@@ -40,6 +40,9 @@ angular.module('app.jira').service("app.jira.configservice", ["bridgeDataService
     this.getConfigInstanceForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config();
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId].getConfig();
+            };
         }
         return instances[appId];
     };
@@ -92,10 +95,6 @@ angular.module('app.jira').directive('app.jira', ['app.jira.configservice', 'Jir
             return function(d, i) {
                 return $scope.colors[i];
             };
-        };
-
-        $scope.box.returnConfig = function(){
-            return config.getConfig();
         };
 
         $scope.$watch('config', function (newVal, oldVal) {

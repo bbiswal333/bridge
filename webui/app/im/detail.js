@@ -2,6 +2,8 @@ angular.module('app.im').controller('app.im.detailController',
     ['$scope', '$http', '$window', 'app.im.ticketData', '$routeParams', 'app.im.configservice', 'bridgeDataService', 'bridgeConfig',
     function Controller($scope, $http, $window, ticketData, $routeParams, configservice, bridgeDataService, bridgeConfig) {
 
+        configservice.initialize();
+
         $scope.$parent.titleExtension = " - IM Details";
         $scope.filterText = '';
         $scope.messages = [];

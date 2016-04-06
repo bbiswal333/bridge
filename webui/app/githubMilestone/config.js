@@ -1,4 +1,4 @@
-angular.module('app.githubMilestone').service("app.githubMilestone.configservice", function () {
+angular.module('app.githubMilestone').service("app.githubMilestone.configservice", ['bridgeDataService', function (bridgeDataService) {
 	var instances = {};
 
 	this.getConfigInstanceForAppId = function(appId) {
@@ -18,8 +18,12 @@ angular.module('app.githubMilestone').service("app.githubMilestone.configservice
 				api_url: "https://github.wdf.sap.corp/api/v3/",
 				fork: false
 			};
+
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 
 		return instances[appId];
 	};
-});
+}]);

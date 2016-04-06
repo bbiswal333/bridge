@@ -18,11 +18,6 @@ angular.module('app.githubMilestone').directive('app.githubMilestone',
                 id: $scope.boxId
             };
 
-
-        $scope.box.returnConfig = function () {
-            return config;
-        };
-
         function getTimeDimensions(due_on_str) {
 
             var currentDate = new Date();

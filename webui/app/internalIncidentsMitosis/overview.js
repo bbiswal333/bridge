@@ -9,10 +9,6 @@ angular.module('app.internalIncidentsMitosis').directive('app.internalIncidentsM
 
 		$scope.box.boxSize = "1";
 
-		$scope.box.returnConfig = function () {
-            return angular.copy(incidentConfig);
-        };
-
         function setAppDataFromIncidentData() {
         	$scope.limit = incidentData.limit;
         	$scope.limitExceeded = incidentData.limitExceeded;
