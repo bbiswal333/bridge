@@ -11,22 +11,11 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		};
 		$scope.formatTime = mapsUtils.formatTime;
 		$scope.formatDistance = mapsUtils.formatDistance;
-		$scope.routes = appGetHomeConfig.routes;
+		$scope.routes = appGetHomeConfig.getConfigForAppId($scope.metadata.guid).routes;
 
 		if(!window.nokia) {
 			$scope.nokiaLibrariesNotLoaded = true;
 		}
-
-		$scope.box.returnConfig = function () {
-			return appGetHomeConfig.routes.map(function(route) {
-				return {
-					routeId: route.routeId,
-					waypoints: route.calculatedWaypoints,
-					name: route.name,
-					isActive: route.isActive
-				};
-			});
-		};
 
 		$scope.openRouteDetails = function(route) {
             $modal.open({
@@ -98,9 +87,9 @@ angular.module('app.getHome').directive('app.getHome', [ 'app.getHome.configserv
 		controller: directiveController,
 		link: function($scope) {
 
-			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig) && appGetHomeConfig.routes.length === 0) {
+			if ($scope.appConfig !== undefined && !angular.equals({}, $scope.appConfig) && appGetHomeConfig.getConfigForAppId($scope.metadata.guid).routes.length === 0) {
 				$scope.appConfig.map(function(configItem) {
-					appGetHomeConfig.addRouteFromConfig(configItem);
+					appGetHomeConfig.getConfigForAppId($scope.metadata.guid).addRouteFromConfig(configItem);
 				});
 			}
 		}

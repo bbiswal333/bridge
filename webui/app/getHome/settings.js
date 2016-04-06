@@ -15,8 +15,8 @@ angular.module('app.getHome').appGetHomeSettings =
 		eventKey = "ctrlKey";
 	}
 
-
-	$scope.configuredRoutes  = appGetHomeConfig.routes;
+	var config = appGetHomeConfig.getConfigForAppId($scope.boxScope.metadata.guid);
+	$scope.configuredRoutes  = config.routes;
 
 	$scope.formatTime = routingUtils.formatTime;
 	$scope.formatDistance = routingUtils.formatDistance;
@@ -290,7 +290,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.addSelectedRouteToConfig = function() {
-		appGetHomeConfig.addRoute($scope.newRoute.routeName, $scope.selectedRoute);
+		config.addRoute($scope.newRoute.routeName, $scope.selectedRoute);
 		$scope.proposedRoutes.splice($scope.proposedRoutes.indexOf($scope.selectedRoute), 1);
 		$scope.selectedRoute = null;
 
@@ -300,7 +300,7 @@ angular.module('app.getHome').appGetHomeSettings =
 	};
 
 	$scope.removeRouteFromSettings = function(route) {
-		appGetHomeConfig.removeRoute(route);
+		config.removeRoute(route);
 	};
 
 	$scope.searchAddress = function(searchString) {
