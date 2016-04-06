@@ -41,10 +41,6 @@ angular.module('app.dumps').directive('app.dumps',[function () {
 
             $scope.noDataString = "Data could not be loaded from webservice.";
 
-     	    $scope.box.returnConfig = function(){
-           	    return angular.copy($scope.configService.configItem);
-            };
-
             $scope.$watch("configService.configItem.boxSize", function () {
         	   $scope.box.boxSize = $scope.configService.configItem.boxSize;
             });

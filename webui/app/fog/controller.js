@@ -25,9 +25,7 @@
                 controller: angular.noop,
                 id: $scope.boxId
             };
-            $scope.box.returnConfig = function() {
-                return angular.copy(config);
-            };
+            config.initialize($scope.metadata.guid);
         }
 
         // Get cached text or calculate initial value.

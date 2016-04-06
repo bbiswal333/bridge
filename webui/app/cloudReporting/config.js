@@ -28,6 +28,9 @@ angular.module('app.cloudReporting').service("app.cloudReporting.configservice",
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config(bridgeDataService.getAppConfigById(appId));
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return angular.copy(instances[appId].configItem);
+			};
 		}
 		return instances[appId];
 	};

@@ -3,7 +3,7 @@
 
 angular.module('app.clock', []);
 
-angular.module('app.clock').directive('app.clock', ['app.clock.configService', function(configService) {
+angular.module('app.clock').directive('app.clock', ['app.clock.configService', 'bridgeDataService', function(configService, bridgeDataService) {
 
     var directiveController = ['$scope', function($scope) {
 
@@ -16,7 +16,7 @@ angular.module('app.clock').directive('app.clock', ['app.clock.configService', f
         };
 
 				// Bridge framework function to enable saving the config
-        $scope.box.returnConfig = function(){
+        bridgeDataService.getAppById($scope.metadata.guid).returnConfig = function(){
             return angular.copy(configService);
         };
 

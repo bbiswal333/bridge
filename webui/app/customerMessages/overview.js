@@ -18,10 +18,6 @@ angular.module('app.customerMessages').directive('app.customerMessages', functio
 
             $scope.box.headerIcons = [configUtils.goToTicketButtonConfig ];
 
-            $scope.box.returnConfig = function(){
-                return config.data;
-            };
-
             $scope.prios = ticketData.prios;
             $scope.$parent.titleExtension = " - Customer Incidents";
             $scope.dataInitialized = ticketData.isInitialized;

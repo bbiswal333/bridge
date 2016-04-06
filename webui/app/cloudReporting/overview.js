@@ -33,10 +33,6 @@ angular.module('app.cloudReporting').directive('app.cloudReporting',[function ()
 				}
 			}];
 
-			$scope.box.returnConfig = function() {
-           	    return angular.copy($scope.configService.configItem);
-            };
-
             $scope.$watch("configService.configItem.boxSize", function() {
         	   $scope.box.boxSize = $scope.configService.configItem.boxSize;
             });

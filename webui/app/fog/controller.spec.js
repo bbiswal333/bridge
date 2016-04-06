@@ -9,6 +9,14 @@ describe('Gunning Fog Index - Controller', function () {
     };
 
     beforeEach(module('app.fog', function ($provide) {
+        var mockDataService = {
+            getAppById: function() {
+                return {};
+            }
+        };
+
+        $provide.value("bridgeDataService", mockDataService);
+        
         $provide.value('app.fog.data', dataMock);
     }));
 
@@ -25,7 +33,8 @@ describe('Gunning Fog Index - Controller', function () {
             dataMock.get.calls.reset();
             scope = {
                 box: {},
-                boxId: 'boxId'
+                boxId: 'boxId',
+                metadata: {guid: "appId1"}
             };
             controller = $controller('app.fog.controller', {$scope: scope});
         });
@@ -55,7 +64,6 @@ describe('Gunning Fog Index - Controller', function () {
                 expect(scope.box.settingScreenData.templatePath).toBeDefined();
                 expect(scope.box.settingScreenData.controller).toBeDefined();
                 expect(scope.box.settingScreenData.id).toBe('boxId');
-                expect(typeof scope.box.returnConfig).toBe('function');
             });
 
             it('should have save() method', function () {

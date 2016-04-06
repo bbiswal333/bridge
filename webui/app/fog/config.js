@@ -71,12 +71,19 @@
         welcome: true
     };
 
-    function ConfigService() {
+    function ConfigService(bridgeDataService) {
         // Apply default configuration
         angular.extend(this, config);
+        var that = this;
+
+        this.initialize = function(appId) {
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return that;
+            };
+        };
     }
 
-    angular.module('app.fog').service('app.fog.config', [
+    angular.module('app.fog').service('app.fog.config', ['bridgeDataService',
         ConfigService
     ]);
 

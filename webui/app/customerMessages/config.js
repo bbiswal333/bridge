@@ -30,6 +30,9 @@ angular.module('app.customerMessages').service("app.customerMessages.configservi
     this.getInstanceForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config(appId);
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId].data;
+            };
         }
         return instances[appId];
     };

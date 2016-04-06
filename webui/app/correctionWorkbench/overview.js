@@ -1,8 +1,8 @@
 ﻿angular.module('app.correctionWorkbench', ['notifier']);
 
 angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [function () {
-    var directiveController = ['$scope', 'notifier', 'app.correctionWorkbench.workbenchData',
-                                function ($scope, notifier, workbenchData)
+    var directiveController = ['$scope', 'notifier', 'app.correctionWorkbench.workbenchData', 'bridgeDataService',
+                                function ($scope, notifier, workbenchData, bridgeDataService)
     {
         $scope.box.boxSize = 1;
 
@@ -10,7 +10,7 @@ angular.module('app.correctionWorkbench').directive('app.correctionWorkbench', [
         $scope.showNoMessages = false;
         $scope.dataInitialized = workbenchData.isInitialized;
 
-        $scope.box.returnConfig = function(){
+        bridgeDataService.getAppById($scope.metadata.guid).returnConfig = function(){
             return {
                 lastDataUpdate: workbenchData.lastDataUpdate
             };
