@@ -1,4 +1,4 @@
-angular.module('app.hydrationMeter').service("app.hydrationMeter.configService", function () {
+angular.module('app.hydrationMeter').service("app.hydrationMeter.configService", ['bridgeDataService', function (bridgeDataService) {
 
 	this.values = {
 		targetCups : 10,
@@ -21,7 +21,12 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 		return today.getFullYear() + " " + today.getMonth() + " " + today.getDate();
 	};
 
-	this.initialize = function(configLoadedFromBackend) {
+	var that = this;
+	this.initialize = function(configLoadedFromBackend, appId) {
+		bridgeDataService.getAppById(appId).returnConfig = function() {
+			return that;
+		};
+
 		var todayString = this.getToday();
 		if (this.values.date === "") {
 			this.values.date = todayString;
@@ -52,4 +57,4 @@ angular.module('app.hydrationMeter').service("app.hydrationMeter.configService",
 		this.values.currentCups = oldValues.currentCups;
 		this.values.date = oldValues.date;
 	};
-});
+}]);

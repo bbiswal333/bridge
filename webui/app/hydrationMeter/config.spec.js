@@ -1,9 +1,19 @@
 describe("Testing test.app config service", function () {
-	var configService;
+	var configService, bridgeDataService;
 
-	beforeEach(module("app.hydrationMeter"));
-	beforeEach(inject(["app.hydrationMeter.configService", function (_configService_) {
+	beforeEach(module("app.hydrationMeter", function($provide){
+		var app = {};
+        var mockDataService = {
+            getAppById: function() {
+                return app;
+            }
+        };
+
+        $provide.value("bridgeDataService", mockDataService);
+    }));
+	beforeEach(inject(["app.hydrationMeter.configService", "bridgeDataService", function (_configService_, _bridgeDataService_) {
 		 configService = _configService_;
+		 bridgeDataService = _bridgeDataService_;
 	}]));
 
 	it("Should return the default config", function () {
@@ -20,8 +30,9 @@ describe("Testing test.app config service", function () {
 		var configLoadedFromBackend = {};
 		configLoadedFromBackend.values = {};
 		configLoadedFromBackend.values.currentCups = 2;
-		configService.initialize(configLoadedFromBackend);
+		configService.initialize(configLoadedFromBackend, "appId");
 
 		expect(configService.values.currentCups).toBe(2);
+		expect(typeof bridgeDataService.getAppById("appId").returnConfig).toBe("function");
 	});
 });

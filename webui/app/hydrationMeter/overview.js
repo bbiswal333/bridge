@@ -1,4 +1,4 @@
-﻿angular.module('app.hydrationMeter', []);
+﻿angular.module('app.hydrationMeter', ['bridge.service']);
 angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydrationMeter.configService', function (configService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
@@ -70,11 +70,6 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 			$scope.addNotification();
 		};
 
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function() {
-			return angular.copy(configService);
-		};
-
 		// Bridge framework function to take care of refresh
 		$scope.box.reloadApp($scope.getData, 60 * 2);
 
@@ -138,7 +133,7 @@ angular.module('app.hydrationMeter').directive('app.hydrationMeter', ['app.hydra
 	var linkFn = function ($scope) {
 
 		// get own instance of config service, $scope.appConfig contains the configuration from the backend
-		configService.initialize($scope.appConfig);
+		configService.initialize($scope.appConfig, $scope.metadata.guid);
 
 		// watch on any changes in the settings screen
 		$scope.$watch("appConfig.values.currentCups", function () {
