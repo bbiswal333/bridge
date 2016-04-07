@@ -1,4 +1,4 @@
-angular.module('app.TwoGo').service("app.TwoGo.configService", function () {
+angular.module('app.TwoGo').service("app.TwoGo.configService", ["bridgeDataService", function (bridgeDataService) {
 
     this.values = {
 
@@ -25,5 +25,8 @@ angular.module('app.TwoGo').service("app.TwoGo.configService", function () {
         }
     };
 
-
-});
+    var that = this;
+    bridgeDataService.getAppsByType("app.TwoGo")[0].returnConfig = function() {
+        return that;
+    };
+}]);

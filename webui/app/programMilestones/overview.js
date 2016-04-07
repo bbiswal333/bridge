@@ -16,13 +16,6 @@ angular.module('app.programMilestones').directive('app.programMilestones',['app.
             id: $scope.boxId
         };
 
-        $scope.box.returnConfig = function() {
-            return {
-            	programs: config.getPrograms(),
-                milestoneTypes: config.getMilestoneTypes()
-            };
-        };
-
         $scope.programs = config.getPrograms();
         $scope.milestoneTypes = config.getMilestoneTypes();
 

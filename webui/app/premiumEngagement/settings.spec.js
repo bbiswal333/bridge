@@ -5,7 +5,13 @@ describe("The premiumEngagement settings controller", function(){
         ticketData;
 
     beforeEach(function(){
-        module("app.premiumEngagement");
+        module("app.premiumEngagement", function($provide) {
+            $provide.value("bridgeDataService", {
+                getAppById: function() {
+                    return {};
+                }
+            });
+        });
 
         inject(function(_$controller_, _$rootScope_){
             $controller = _$controller_;

@@ -55,6 +55,9 @@ angular.module("app.worldClock").service("app.worldClock.config", ["bridgeDataSe
 	this.getInstanceForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config(appId);
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 
 		return instances[appId];

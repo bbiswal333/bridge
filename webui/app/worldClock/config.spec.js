@@ -4,15 +4,22 @@ describe("Worldclock config", function() {
 
 	var config;
 	var httpBackend;
+	var bridgeDataService;
 	beforeEach(function() {
 		module("lib.utils");
 		module("bridge.service");
 		module("app.worldClock");
-		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", "lib.utils.calUtils", function(_config, bridgeDataService, $httpBackend, calUtils) {
-			config = _config.getInstanceForAppId("app-worldclock");
+		inject(["app.worldClock.config", "bridgeDataService", "$httpBackend", "lib.utils.calUtils", function(_config, _bridgeDataService, $httpBackend, calUtils) {
+			bridgeDataService = _bridgeDataService;
 			bridgeDataService.getAppConfigById = function() {
 				return {locations: [testLocation]};
 			};
+			var app = {};
+			bridgeDataService.getAppById = function() {
+				return app;
+			};
+
+			config = _config.getInstanceForAppId("app-worldclock");
 			httpBackend = $httpBackend;
 			$httpBackend.when('GET').respond('{"offset": 36000}');
 
@@ -56,5 +63,9 @@ describe("Worldclock config", function() {
 		expect(config.locations[0].timeOffset).toEqual(0);
 		httpBackend.flush();
 		expect(config.locations[0].timeOffset).toEqual(32400000);
+	});
+
+	it("should append its config method to the app", function() {
+		expect(typeof bridgeDataService.getAppById("app-worldclock").returnConfig).toBe("function");
 	});
 });

@@ -30,10 +30,6 @@ angular.module('app.upportNotes').directive('app.upportNotes',['app.upportNotes.
             templatePath: "upportNotes/settings.html",
             controller: angular.module('app.upportNotes').appUpportNotesSettings
         };
-
-        $scope.box.returnConfig = function () {
-            return appConfig;
-        };
 	}];
 
 	return {

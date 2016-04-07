@@ -15,11 +15,6 @@ angular.module('app.stickyNote').directive('app.stickyNote',
 
 		var appConfig = configService.getInstanceForAppId($scope.metadata.guid);
 		$scope.appConfig = appConfig;
-
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
-			return angular.copy(appConfig);
-		};
 	}];
 
 	var linkFn = function ($scope) {

@@ -1,8 +1,9 @@
 describe("Config", function() {
-	var configFactory, hasConfig, $timeout;
+	var configFactory, hasConfig, $timeout, bridgeDataService;
 	beforeEach(function() {
 		module("bridge.service");
 		module("app.programMilestones", function($provide) {
+			var app = {};
 			$provide.value("bridgeDataService", {
 				getAppConfigById: function() {
 					if(hasConfig) {
@@ -21,15 +22,19 @@ describe("Config", function() {
 					} else {
 						return undefined;
 					}
+				},
+				getAppById: function() {
+					return app;
 				}
 			});
 		});
 
 		hasConfig = true;
 
-		inject(["app.programMilestones.configFactory", "$timeout", function(_configFactory, _$timeout) {
+		inject(["app.programMilestones.configFactory", "$timeout", "bridgeDataService", function(_configFactory, _$timeout, _bridgeDataService) {
 			configFactory = _configFactory;
 			$timeout = _$timeout;
+			bridgeDataService = _bridgeDataService;
 		}]);
 	});
 
@@ -45,6 +50,11 @@ describe("Config", function() {
 		var config = configFactory.getConfigForAppId("app-1");
 		expect(config.getPrograms().length).toEqual(2);
 		expect(config.getMilestoneTypes().length).toEqual(4);
+	});
+
+	it("should append return config to app instance", function() {
+		configFactory.getConfigForAppId("app-1");
+		expect(typeof bridgeDataService.getAppById("app-1").returnConfig).toBe("function");
 	});
 
 	it("should be initialized with empty config if none is existing", function() {

@@ -36,10 +36,6 @@ angular.module('app.TwoGo').directive('app.TwoGo', ['app.TwoGo.configService', '
             templatePath: "TwoGo/settings.html",
             controller: angular.module('app.TwoGo').appTwoGoSettings
         };
-        //function for getting the config after Page Reload
-        $scope.box.returnConfig = function () {
-            return angular.copy(configService);
-        };
         //Batchcall for getting the Work POI and the Rideproposals of the USer
         $scope.getRides = function () {
 //Setting the wanted Methods and the parameters

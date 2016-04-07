@@ -1,4 +1,4 @@
-angular.module('app.spotTheOdd').service("app.spotTheOdd.configService", function () {
+angular.module('app.spotTheOdd').service("app.spotTheOdd.configService", ["bridgeDataService", function (bridgeDataService) {
 
 	this.values = {
 		comp : '7'
@@ -15,4 +15,9 @@ angular.module('app.spotTheOdd').service("app.spotTheOdd.configService", functio
 			configLoadedFromBackend.values = this.values;
 		}
 	};
-});
+
+	var that = this;
+	bridgeDataService.getAppsByType("app.spotTheOdd")[0].returnConfig = function() {
+		return that;
+	};
+}]);

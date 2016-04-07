@@ -1,4 +1,4 @@
-angular.module("app.rooms", ["lib.utils", "notifier"]).
+angular.module("app.rooms", ["lib.utils", "notifier", "bridge.service"]).
 directive("app.rooms", [
 	"$timeout",
 	"$http",
@@ -22,10 +22,6 @@ directive("app.rooms", [
 			};
 
 	        $scope.configService = meetingsConfigService;
-
-			$scope.box.returnConfig = function(){
-	            return angular.copy($scope.configService);
-	        };
 
 			$scope.upComingBookings = function () {
 				return $scope.rooms;

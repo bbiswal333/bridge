@@ -4,6 +4,7 @@ describe("Upport Notes config", function() {
 	beforeEach(function () {
         module("bridge.service");
         module("app.upportNotes", function($provide){
+        	var app = {};
             var mockDataService = {
                 hasConfigForUpportNotes: false,
                 getAppConfigById: function () {
@@ -15,6 +16,9 @@ describe("Upport Notes config", function() {
                 },
                 getUserInfo: function () {
                     return {};
+                },
+                getAppById: function() {
+                	return app;
                 }
             };
 
@@ -125,6 +129,10 @@ describe("Upport Notes config", function() {
 	describe("persistence", function() {
 		beforeEach(function() {
 			bridgeDataService.hasConfigForUpportNotes = true;
+		});
+
+		it("should append returnConfig to app", function() {
+			expect(typeof bridgeDataService.getAppById("app.test").returnConfig).toBe("function");
 		});
 
 		it("should load the config", function() {

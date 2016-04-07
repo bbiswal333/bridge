@@ -1,5 +1,5 @@
 ﻿/*eslint-disable eqeqeq*/
-angular.module('app.securityTesting', ["app.securityTesting.data"]);
+angular.module('app.securityTesting', ["app.securityTesting.data", "bridge.service"]);
 angular.module('app.securityTesting')
     .directive('app.securityTesting', ['app.securityTesting.configservice','app.securityTesting.dataService', '$window', function (appSecurityTestingConfig,dataService, $window) {
 
@@ -15,10 +15,6 @@ angular.module('app.securityTesting')
                 id: $scope.boxId
             };
             $scope.box.boxSize = "2";
-
-            $scope.box.returnConfig = function () {
-                return config;
-            };
 
             $scope.handleSecurityTestingResults = function () {
                 $scope.config = config;

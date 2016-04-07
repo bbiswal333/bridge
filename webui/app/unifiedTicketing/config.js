@@ -50,6 +50,9 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", ['
     this.getConfigForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config();
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId];
+            };
         }
         return instances[appId];
     };

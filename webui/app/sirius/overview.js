@@ -35,9 +35,6 @@ app.directive("app.sirius", ["app.sirius.configservice", "app.sirius.taskFilterC
             controller: angular.module('app.sirius').appSiriusSettings,
             id: $scope.boxId
         };
-        $scope.box.returnConfig = function () {
-            return angular.copy($scope.configService);
-        };
         $scope.$on('reloadTasks', function () {
             $scope.getTasks();
         });

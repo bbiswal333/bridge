@@ -14,6 +14,9 @@ describe("Upport Notes data", function() {
                 },
                 getUserInfo: function () {
                     return {};
+                },
+                getAppById: function() {
+                    return {};
                 }
             };
 

@@ -26,7 +26,13 @@ describe("The PremiumEngagement details controller", function(){
     };
 
     beforeEach(function(){
-        module("app.premiumEngagement");
+        module("app.premiumEngagement", function($provide) {
+            $provide.value("bridgeDataService", {
+                getAppById: function() {
+                    return {};
+                }
+            });
+        });
 
         inject(function(_$controller_, _$rootScope_, _$httpBackend_, _$q_){
             $controller = _$controller_;

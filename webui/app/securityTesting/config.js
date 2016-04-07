@@ -1,4 +1,4 @@
-﻿angular.module('app.securityTesting').service("app.securityTesting.configservice", function () {
+﻿angular.module('app.securityTesting').service("app.securityTesting.configservice", ["bridgeDataService", function (bridgeDataService) {
 
     var instances = {};
 
@@ -9,9 +9,11 @@
                 filters : [],
                 auth: true
             };
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId];
+            };
         }
 
         return instances[appId];
     };
-
-});
+}]);

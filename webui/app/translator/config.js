@@ -1,4 +1,4 @@
-angular.module('app.translator').service("app.translator.configService", function () {
+angular.module('app.translator').service("app.translator.configService", ["bridgeDataService", function (bridgeDataService) {
 
 	this.values = {
 		boxSize : '2'
@@ -15,4 +15,9 @@ angular.module('app.translator').service("app.translator.configService", functio
 			configLoadedFromBackend.values = this.values;
 		}
 	};
-});
+
+	var that = this;
+	bridgeDataService.getAppsByType("app.translator")[0].returnConfig = function() {
+		return that;
+	};
+}]);

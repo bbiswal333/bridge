@@ -9,10 +9,6 @@ angular.module('app.transportNew').directive('app.transportNew', ['app.transport
 
 		$scope.box.boxSize = "1";
 
-		$scope.box.returnConfig = function () {
-            return angular.copy(transportConfig);
-        };
-
         function setAppDataFromTransportData() {
         	$scope.numOpenTransports = transportData.openTransports.length;
 			$scope.numOpenTransportsLongerThanThreshold = transportData.transportsOpenForLongerThanThreshold.length;

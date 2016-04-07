@@ -12,11 +12,6 @@ angular.module('app.spotTheOdd').directive('app.spotTheOdd', ['$http', 'app.spot
             id: $scope.boxId
         };
 
-        // Bridge framework function to enable saving the config
-        $scope.box.returnConfig = function() {
-            return angular.copy(configService);
-        };
-
         //Load the color pallette
         $http.get('app/spotTheOdd/pallette.json').success(function(response) {
             $scope._colors = response;

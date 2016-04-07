@@ -20,9 +20,6 @@ angular.module('app.unifiedticketing').directive('app.unifiedticketing', functio
             controller: function(){},
             id: $scope.boxId
         };
-        $scope.box.returnConfig = function(){
-            return configService.getConfigForAppId($scope.metadata.guid);
-        };
 
         $scope.$on('closeSettingsScreenRequested', function(event, args){
            if (args !== undefined &&

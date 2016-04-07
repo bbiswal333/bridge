@@ -1,4 +1,4 @@
-angular.module('app.test').service("app.test.configService", function () {
+angular.module('app.test').service("app.test.configService", ["bridgeDataService", function (bridgeDataService) {
 
 	this.values = {
 		boxSize : '1'
@@ -15,4 +15,9 @@ angular.module('app.test').service("app.test.configService", function () {
 			configLoadedFromBackend.values = this.values;
 		}
 	};
-});
+
+	var that = this;
+	bridgeDataService.getAppsByType("app.test")[0].returnConfig = function() {
+		return that;
+	};
+}]);

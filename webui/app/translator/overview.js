@@ -1,4 +1,4 @@
-﻿angular.module('app.translator', [ 'app.translator.data' ]);
+﻿angular.module('app.translator', [ 'app.translator.data', 'bridge.service' ]);
 angular
 		.module('app.translator')
 		.directive(
@@ -47,12 +47,6 @@ angular
 
 										$scope.selectedLanguageFrom = $scope.languages[0];
 										$scope.selectedLanguageTo = $scope.languages[1];
-
-										// Bridge framework function to enable
-										// saving the config
-										$scope.box.returnConfig = function() {
-											return angular.copy(configService);
-										};
 
 										// Translate
 										$scope.translateText = function() {

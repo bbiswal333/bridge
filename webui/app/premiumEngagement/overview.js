@@ -16,10 +16,6 @@ angular.module('app.premiumEngagement').directive('app.premiumEngagement', funct
                 id: $scope.boxId
             };
 
-            $scope.box.returnConfig = function(){
-                return config.data;
-            };
-
             $scope.box.headerIcons = [ configUtils.goToTicketButtonConfig ];
 
             $scope.prios = ticketData.prios;

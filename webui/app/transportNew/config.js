@@ -35,6 +35,9 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 	this.getInstanceForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config(appId);
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 
 		return instances[appId];

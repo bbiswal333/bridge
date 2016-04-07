@@ -1,4 +1,4 @@
-﻿angular.module('app.test', ['app.test.data']);
+﻿angular.module('app.test', ['app.test.data', 'bridge.service']);
 angular.module('app.test').directive('app.test', ['app.test.configService', 'app.test.dataService', function (configService, dataService) {
 
 	var directiveController = ['$scope', '$window', 'notifier', function ($scope, $window, notifier) {
@@ -16,11 +16,6 @@ angular.module('app.test').directive('app.test', ['app.test.configService', 'app
 		$scope.getData = function() {
 			dataService.reload();
 			$scope.many = dataService.getReloadCounter();
-		};
-
-		// Bridge framework function to enable saving the config
-		$scope.box.returnConfig = function(){
-			return angular.copy(configService);
 		};
 
 		// Bridge framework function to take care of refresh

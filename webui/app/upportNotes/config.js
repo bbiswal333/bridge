@@ -145,6 +145,9 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 	this.getConfigForAppId = function(appId) {
 		if(instances[appId] === undefined) {
 			instances[appId] = new Config(appId);
+			bridgeDataService.getAppById(appId).returnConfig = function() {
+				return instances[appId];
+			};
 		}
 		return instances[appId];
 	};

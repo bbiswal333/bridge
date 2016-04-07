@@ -95,7 +95,14 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 	this.getConfigForAppId = function(sAppId) {
 		if(!configObjects[sAppId]) {
 			configObjects[sAppId] = new Config(sAppId);
-		}
+
+			bridgeDataService.getAppById(sAppId).returnConfig = function() {
+				return {
+	            	programs: configObjects[sAppId].getPrograms(),
+	                milestoneTypes: configObjects[sAppId].getMilestoneTypes()
+	            };
+			};
+        }
 		return configObjects[sAppId];
 	};
 }]);

@@ -1,5 +1,5 @@
 angular.module("app.premiumEngagement").service("app.premiumEngagement.configService",
-    ["bridge.ticketAppUtils.configUtils", function(configUtils){
+    ["bridge.ticketAppUtils.configUtils", "bridgeDataService", function(configUtils, bridgeDataService){
     var Config = function() {
         this.DEFAULT_CUSTOMER_SELECTION = "Show All";
         this.isInitialized = false;
@@ -23,6 +23,9 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
     this.getInstanceForAppId = function(appId) {
         if(instances[appId] === undefined) {
             instances[appId] = new Config();
+            bridgeDataService.getAppById(appId).returnConfig = function() {
+                return instances[appId].data;
+            };
         }
         return instances[appId];
     };

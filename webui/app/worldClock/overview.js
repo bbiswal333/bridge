@@ -31,10 +31,6 @@ angular.module('app.worldClock').directive('app.worldClock',["app.worldClock.con
 		config.initialize();
 		$scope.locations = config.locations;
 
-		$scope.box.returnConfig = function(){
-			return angular.copy(config);
-		};
-
 		$http.get('/api/worldClock/getTimeZones').then(function(response) {
 			$scope.timeZones = response.data.timeZones;
 		});

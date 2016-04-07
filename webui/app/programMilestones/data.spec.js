@@ -13,6 +13,9 @@ describe("Data", function() {
 			$provide.value("bridgeDataService", {
 				getAppConfigById: function() {
 					return config;
+				},
+				getAppById: function() {
+					return {};
 				}
 			});
 		});

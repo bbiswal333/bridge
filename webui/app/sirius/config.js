@@ -1,4 +1,4 @@
-angular.module('app.sirius').service("app.sirius.configservice", function () {
+angular.module('app.sirius').service("app.sirius.configservice", ["bridgeDataService", function (bridgeDataService) {
 
 	this.configItem = {
 		boxSize : '2',
@@ -13,4 +13,8 @@ angular.module('app.sirius').service("app.sirius.configservice", function () {
         selectedUserInAssignedToDropDown:''
     };
 
-});
+    var that = this;
+    bridgeDataService.getAppsByType("app.sirius")[0].returnConfig = function() {
+        return that;
+    };
+}]);
