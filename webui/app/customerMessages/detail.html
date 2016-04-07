@@ -45,6 +45,9 @@
 				<bridge.table-column column-id="6" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'" column-order="parentScope.config.data.columnOrder[5]" visible="parentScope.config.data.columnVisibility[5]">
 					<a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
 				</bridge.table-column>
+				<bridge.table-column column-id="7" header="'ObjectID'" column-size-class="'col-sm-2'" order-by="'OBJECT_ID'" column-order="parentScope.config.data.columnOrder[6]" visible="parentScope.config.data.columnVisibility[6]">
+					<a target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.OBJECT_ID}}</a>
+				</bridge.table-column>
 			</bridge.table-column-sorter>
 		</bridge.table>
 
