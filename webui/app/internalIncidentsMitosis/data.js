@@ -3,7 +3,7 @@ angular.module("app.internalIncidentsMitosis")
 	function ($http, $q, $window, $timeout) {
 		var AppData = (function() {
 			function doDummyRequestInOrderToGetAroundIEBug() {
-				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
+				$http({method: 'GET', url: "https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
 					//Oh happy day...
 				});
 			}
@@ -91,7 +91,7 @@ angular.module("app.internalIncidentsMitosis")
 						deferred.resolve();
 					} else {
 						getFilterFromConfig(config).then(function(filter) {
-							var url = "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
+							var url = "https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin;
 							$http({method: 'POST', url: url, withCredentials: true, data: filter, headers: { 'Content-Type': 'text/plain' }}).success(function(data){
 								that.limit = data.limit;
 								that.limitExceeded = data.limitExceeded;
