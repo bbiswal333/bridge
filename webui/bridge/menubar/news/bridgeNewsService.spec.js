@@ -46,7 +46,7 @@ describe("The bridge news service", function () {
             $httpBackend = _$httpBackend;
         }]);
 
-        $httpBackend.whenGET("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS").respond(newsDummyData);
+        $httpBackend.whenGET("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS?instance=server").respond(newsDummyData);
     });
 
     it("should fill the its news object when created", function(){
