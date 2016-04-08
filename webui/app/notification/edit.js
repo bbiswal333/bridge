@@ -1,5 +1,6 @@
-angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notification', '$http', function($scope, $modalInstance, notification, $http) {
+angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notification', '$http', 'bridgeInstance', function($scope, $modalInstance, notification, $http, bridgeInstance) {
     $scope.notification = notification;
+    notification.INSTANCE = bridgeInstance.getCurrentInstance();
     $scope.alertVisible = false;
     $scope.editMode = true;
 

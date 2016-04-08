@@ -1,7 +1,7 @@
-angular.module('app.notification').controller('app.notification.notificationController', ['$scope', '$http', '$modal',
-    function($scope, $http, $modal) {
+angular.module('app.notification').controller('app.notification.notificationController', ['$scope', '$http', '$modal', 'bridgeInstance',
+    function($scope, $http, $modal, bridgeInstance) {
 
-        $http({ method: 'GET', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
+        $http({ method: 'GET', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS?instance=' + bridgeInstance.getCurrentInstance()})
             .success(function(data) {
                 (data.NOTIFICATIONS).forEach(function(element) {
                     var time = element.TIMESTAMP.toString();

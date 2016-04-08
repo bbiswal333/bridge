@@ -1,4 +1,4 @@
-angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 'bridgeDataService', function ($http, bridgeDataService) {
+angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 'bridgeDataService', 'bridgeInstance', function ($http, bridgeDataService, bridgeInstance) {
     var that = this;
     this.news = {};
     this.isInitialized = false;
@@ -6,7 +6,7 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 
     this.modalInstance = null;
 
     this.initialize = function(){
-        var loadNewsPromise = $http({ method: 'GET', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' });
+        var loadNewsPromise = $http({ method: 'GET', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS?instance=' + bridgeInstance.getCurrentInstance()});
 
         loadNewsPromise.then(function(response) {
             that.news.data = response.data.NOTIFICATIONS.map(
