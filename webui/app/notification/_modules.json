@@ -1,7 +1,7 @@
 {
 	"app":
 	{
-		"categories"			:	["Sample Apps"],
+		"categories"			:	["Administration"],
 		"module_name"			:	"app.notification",
 		"title"					:	"News Manager",
 		"icon_css"				:	"fa fa-newspaper-o",
@@ -10,7 +10,7 @@
 		"beta"					:	false,
 		"default_hidden"		:	true,
 		"description"			:	"Admin app for writing and editing news.",
-        "betaUsers"             :   ["D061830", "D049677"],
+        "betaUsers"             :   ["D061830", "D049677", "D051804", "D050049", "D049583"],
 		"routes": [
 			{		
 				"route"			:	"/detail/notification/",

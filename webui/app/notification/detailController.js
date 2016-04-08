@@ -4,7 +4,7 @@ angular.module('app.notification').controller('app.notification.notificationCont
         $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' })
             .success(function(data) {
                 (data.NOTIFICATIONS).forEach(function(element) {
-                    var time = "" + element.TIMESTAMP;
+                    var time = element.TIMESTAMP.toString();
                     element.TIMESTAMP = time.substring(4, 6) + '/' + time.substring(6, 8) + '/' + time.substring(0, 4);
                 }, this);
                 $scope.data = data;
