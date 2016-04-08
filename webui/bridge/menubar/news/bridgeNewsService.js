@@ -6,7 +6,7 @@ angular.module('bridge.service').service('bridge.service.bridgeNews', ['$http', 
     this.modalInstance = null;
 
     this.initialize = function(){
-        var loadNewsPromise = $http({ method: 'GET', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' });
+        var loadNewsPromise = $http({ method: 'GET', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS' });
 
         loadNewsPromise.then(function(response) {
             that.news.data = response.data.NOTIFICATIONS.map(

@@ -13,7 +13,8 @@ describe("The bridge news service", function () {
                     "SNAPURL": 	"bridge/sidebar/news/image/snap02.png",
                     "CONTENT": 	"content00fghjfgnusfgdfunfgunsfgnubsusnznuzub",
                     "img1": 	"bridge/sidebar/news/image/snap02.png",
-                    "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
+                    "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438",
+                    "TIMESTAMP":"20160303000000"
                 },
                 {
                     "ID":       2,
@@ -22,7 +23,8 @@ describe("The bridge news service", function () {
                     "SNAPURL":  "bridge/sidebar/news/image/snap02.png",
                     "CONTENT":  "content01",
                     "img1":     "bridge/sidebar/news/image/snap02.png",
-                    "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438"
+                    "gitURL": 	"https://github.wdf.sap.corp/bridge/bridge/issues/438",
+                    "TIMESTAMP":"20160303000000"
                 }
             ]
         };
@@ -44,7 +46,7 @@ describe("The bridge news service", function () {
             $httpBackend = _$httpBackend;
         }]);
 
-        $httpBackend.whenGET("https://ifd.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS").respond(newsDummyData);
+        $httpBackend.whenGET("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_NOTIFICATIONS").respond(newsDummyData);
     });
 
     it("should fill the its news object when created", function(){

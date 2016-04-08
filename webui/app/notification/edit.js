@@ -8,13 +8,13 @@ angular.module('app.notification').edit = ['$scope', '$modalInstance', 'notifica
             && notification.PREVIEW !== undefined && notification.PREVIEW !== ''
             && notification.CONTENT !== undefined && notification.CONTENT !== '') {
             if (notification.ID === undefined) {
-                $http({method: 'POST', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/INSERT_NOTIFICATION?header='
+                $http({method: 'POST', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/INSERT_NOTIFICATION?header='
                     + notification.HEADER + '&instance=' + notification.INSTANCE + '&preview=' + notification.PREVIEW, withCredentials: true, data: notification.CONTENT})
                     .success(function(data) {
                         // TODO if error?
                     });
             } else {
-                $http({method: 'POST', url: 'https://ifd.wdf.sap.corp/sap/bc/bridge/UPDATE_NOTIFICATION?header='
+                $http({method: 'POST', url: 'https://ifp.wdf.sap.corp/sap/bc/bridge/UPDATE_NOTIFICATION?header='
                     + notification.HEADER + '&instance=' + notification.INSTANCE + '&preview=' + notification.PREVIEW + '&id=' + notification.ID, withCredentials: true, data: notification.CONTENT})
                     .success(function(data) {
                         // TODO if error?
