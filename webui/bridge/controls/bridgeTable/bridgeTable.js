@@ -15,21 +15,11 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 var initialTableSettings = $scope.tableSettings.state;
             }
 
-            var initialWatchCalled = false;
-
-            function setUpGridOptionsWatch() {
-                $scope.$watch("gridOptions.columnDefs", function(newValue, oldValue) {
-                    if(!initialWatchCalled){
-                        initialWatchCalled = true;
-                        return;
-                    }
-
-                    if(newValue !== oldValue) {
-                        $scope.tableSettings.state = $scope.gridApi.saveState.save();
-
-                        bridgeConfig.store(bridgeDataService);
-                    }
-                }, true);
+            function persistGridOptions() {
+                $timeout(function() {
+                    $scope.tableSettings.state = $scope.gridApi.saveState.save();
+                    bridgeConfig.store(bridgeDataService);
+                });
             }
 
             $scope.gridOptions = {
@@ -50,14 +40,19 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                         if(initialTableSettings) {
                             $scope.tableSettings.state = initialTableSettings;
                             $scope.gridApi.saveState.restore($scope, initialTableSettings);
-                            setUpGridOptionsWatch();
                         }
+                        $timeout(function() {
+                            $scope.gridApi.grouping.on.groupingChanged($scope, persistGridOptions);
+                            $scope.gridApi.core.on.columnVisibilityChanged($scope, persistGridOptions);
+                            $scope.gridApi.colMovable.on.columnPositionChanged($scope, persistGridOptions);
+                            $scope.gridApi.pinning.on.columnPinned($scope, persistGridOptions);
+                        });
                     });
                 },
                 saveOrder: true,
                 saveWidth: true,
                 saveVisible: true,
-                saveGrouping: false,
+                saveGrouping: true,
                 saveGroupingExpandedStates: false,
                 savePinning: true,
                 saveScroll: false,
