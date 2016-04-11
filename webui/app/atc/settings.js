@@ -150,7 +150,7 @@
     };
 
     $scope.searchComponent = function(query) {
-        return $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
+        return $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
             return response.data.d.results;
         });
     };
