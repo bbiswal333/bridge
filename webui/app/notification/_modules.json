@@ -1,0 +1,24 @@
+{
+	"app":
+	{
+		"categories"			:	["Administration"],
+		"module_name"			:	"app.notification",
+		"title"					:	"News Manager",
+		"icon_css"				:	"fa fa-newspaper-o",
+		"overview_directive"	:	"app.notification",
+		"needs_client"			:	false,
+		"beta"					:	false,
+		"default_hidden"		:	true,
+		"description"			:	"Admin app for writing and editing news.",
+        "betaUsers"             :   ["D061830", "D049677", "D051804", "D050049", "D049583"],
+		"routes": [
+			{		
+				"route"			:	"/detail/notification/",
+				"templateUrl"	:	"app/notification/detail.html"
+			}
+		]
+	},
+	"modules" : ["ui.bootstrap.alert"],
+	"js_files" : ["overview.js", "detailController.js", "edit.js"],
+	"css_files" : ["notifications.css"]
+}

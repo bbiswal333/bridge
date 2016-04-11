@@ -9,6 +9,7 @@
 		"needs_client"			:	false,
 		"beta"					:	true,
 		"default_hidden"		:	true,
+		"multiInstance"          :  true,
 		"routes"				:
 		[
 			{

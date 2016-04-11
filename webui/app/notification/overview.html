@@ -1,0 +1,12 @@
+﻿<input class="inputField" ng-model="header" onfocus="if(this.value == 'Header') { this.value = ''; }"
+onblur="if(this.value == '') {this.value = 'Header';}" />
+<br />
+<input class="inputField" ng-model="preview" onfocus="if(this.value == 'Preview') { this.value = ''; }" 
+onblur="if(this.value == '') {this.value = 'Preview';}" />
+<br />
+<input class="inputField" ng-model="content" ng-click="showEditPopUp()" />
+<br />
+<div style="padding-top:10px;">
+    <button ng-click="showEditPopUp()">Add</button>
+    <a href="#/detail/notification/">Archive</a>
+</div>
