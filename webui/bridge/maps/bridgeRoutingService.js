@@ -6,8 +6,8 @@ angular.module('bridge.service').service("bridge.service.maps.routing", ['$q', '
 	var TWO_AND_A_HALF_MINUTES = 120000;
 	var ROUTE_COLORS = ["#418AC9", "#8561C5", "#707070"];
 
-	var appCodeParameter = "&app_code=OvJJVLXUQZGWHmYf1HZCFg";
-	var appIdParameter = "&app_id=TSCNwGZFblBU5DnJLAH8";
+	var appCodeParameter = "&app_code=_bE6YwTIcVgCHuaV6gcg5A";
+	var appIdParameter = "&app_id=prHAsweqEJuch5vE3raW";
 	var jsonAttributesParameter = "&jsonAttributes=1";
 
 	var that = this;

@@ -108,8 +108,8 @@ angular.module('bridge.app').config(["$provide", "$routeProvider", "$compileProv
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|blob|tel|mailto):/);
 
         if(!angular.isUndefined(window.nokia)) {
-            nokia.Settings.set("app_id", "TSCNwGZFblBU5DnJLAH8");
-            nokia.Settings.set("app_code", "OvJJVLXUQZGWHmYf1HZCFg");
+            nokia.Settings.set("app_id", "prHAsweqEJuch5vE3raW");
+            nokia.Settings.set("app_code", "_bE6YwTIcVgCHuaV6gcg5A");
             nokia.Settings.set("secure.baseUrl", "https://route{serviceMode}.nlp.nokia.com/routing/7.2/");
             nokia.Settings.set("secureConnection", "force");
         }
