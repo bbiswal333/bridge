@@ -30,7 +30,7 @@ function ($scope, $http, configFactory, dataFactory, programFactory, $window)
     }, true);
 
 	$scope.searchProgram = function(query) {
-		return $http.get("https://ift.wdf.sap.corp/zprs/json/program?maxHits=20&query=*" + query.toUpperCase() + "&sap-language=en&searchAsYouType=X&origin=" + $window.location.origin).then(function(response) {
+		return $http.get("https://ifp.wdf.sap.corp/zprs/json/program?maxHits=20&query=*" + query.toUpperCase() + "&sap-language=en&searchAsYouType=X&origin=" + $window.location.origin).then(function(response) {
 			return response.data.data.map(function(program) {
 				return {
 					label: program.DISPLAY_TEXT,
