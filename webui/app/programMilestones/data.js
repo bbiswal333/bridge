@@ -1,18 +1,24 @@
-angular.module('app.programMilestones').service("app.programMilestones.dataFactory", ["app.programMilestones.configFactory", "app.programMilestones.milestoneFactory", "$http", "$q", function(configFactory, milestoneFactory, $http, $q) {
+angular.module('app.programMilestones').service("app.programMilestones.dataFactory", ["app.programMilestones.configFactory", "app.programMilestones.milestoneFactory", "$http", "$q", 
+	function(configFactory, milestoneFactory, $http, $q) {
 	var Data = (function() {
 		return function(sAppId) {
 			var milestones = [];
 			var config = configFactory.getConfigForAppId(sAppId);
+
+			function milestoneTypeAllowed(type){
+				allowedTypes = ['0210','0932','0702','0922','0714','0928'];
+				return (allowedTypes.indexOf(type) > -1);
+			}
 
 			function loadMilestones() {
 				var deferred = $q.defer();
 				$q.all(config.getPrograms().map(function(program) {
 					milestones.length = 0;
 					if(program.isSiriusProgram()) {
-						return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PRS_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
+						return $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PRS_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
 							response.data.PHASES.map(function(rawMilestone) {
-								if(rawMilestone.MILESTONE_DATE !== "0000-00-00") {
-									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program, rawMilestone.DELIVERY_NAME);
+								if((rawMilestone.MILESTONE_DATE !== "0000-00-00") && milestoneTypeAllowed(rawMilestone.MILESTONE_TYPE)) {
+									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program, rawMilestone.DELIVERY_NAME, rawMilestone.MILESTONE_TYPE);
 									program.setName(rawMilestone.PROGRAM_NAME);
 									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.MILESTONE_TYPE)) {
 										milestones.push(milestone);
@@ -21,9 +27,9 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 							});
 						});
 					} else {
-						return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PR_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
+						return $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PR_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
 							response.data.PHASES.map(function(rawMilestone) {
-								if(rawMilestone.PHASE_START_DATE !== "0000-00-00") {
+								if((rawMilestone.PHASE_START_DATE !== "0000-00-00") && milestoneTypeAllowed(rawMilestone.MILESTONE_TYPE)) {
 									var milestone = milestoneFactory.createInstance(rawMilestone.PHASE_TXT, rawMilestone.PHASE_START_DATE, rawMilestone.PHASE_START_TIME, program);
 									if(milestone.isUpcoming() && config.isMilestoneTypeActive(rawMilestone.PHASE_TYPE_ID)) {
 										milestones.push(milestone);
@@ -31,14 +37,14 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 								}
 							});
 						});
-					}
+					} 
 				})).then(function() {
 					deferred.resolve();
 				});
 				return deferred.promise;
 			}
 
-			loadMilestones();
+			//loadMilestones();
 
 			function sortMilestones(a, b) {
 				if(a.getDate() > b.getDate()) {
@@ -66,7 +72,6 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 		if(!dataObjects[sAppId]) {
 			dataObjects[sAppId] = new Data(sAppId);
 		}
-
 		return dataObjects[sAppId];
 	};
 }]);

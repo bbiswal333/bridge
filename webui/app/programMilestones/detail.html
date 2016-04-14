@@ -1,0 +1,21 @@
+<div ng-controller="app.programMilestones.detailController" style="box-sizing:border-box;">    
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
+		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
+		<div class="btn-group" style="height:32px">
+			<bridge.button state="statusMap[status].active === true ? 'active' : 'invisible-button'" ng-click="statusMap[status].active = !statusMap[status].active; updateTableData()" ng-repeat="status in getStatusArray()" style="width:100px;margin-left:0;margin-right:0;">
+		  		{{status.toUpperCase()}}
+			</bridge.button> 
+		</div>
+		
+	    <br/><br/>
+
+		<bridge.table table-data="data.tableData" filter="filterTable" new-layout="true">
+				<bridge.table-column column-id="1" header="'Milestone Name'" column-size-class="'col-sm-4'" order-by="getName()" visible="columnVisibility" column-order="1">{{row.getName()}}</bridge.table-column>
+				<bridge.table-column column-id="2" header="'Program Name'" column-size-class="'col-sm-5'" order-by="getName()" visible="columnVisibility" column-order="2">{{row.getProgram().getName()}}</bridge.table-column>
+				<bridge.table-column column-id="3" header="'Devlivery Name'" column-size-class="'col-sm-4'" order-by="getName()" visible="columnVisibility" column-order="3">{{row.getDeliveryName()}}</bridge.table-column>
+				<bridge.table-column column-id="4" header="'Milestone Type'" column-size-class="'col-sm-3'" order-by="getName()" visible="columnVisibility" column-order="4">{{row.getMilestoneTypeAsStr()}}</bridge.table-column>
+				<bridge.table-column column-id="5" header="'Date'" column-size-class="'col-sm-3'" order-by="getName()" visible="columnVisibility" column-order="5">{{row.getDateFormatted()}}</bridge.table-column>
+		</bridge.table>
+
+	</div>
+</div>

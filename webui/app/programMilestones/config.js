@@ -5,7 +5,7 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			var milestoneTypes = ["ALL"];
 			var initialized = false;
 			var initializedDeferrals = [];
-
+			
 			(function initialize() {
 				var config = bridgeDataService.getAppConfigById(sAppId);
 				if(config) {
