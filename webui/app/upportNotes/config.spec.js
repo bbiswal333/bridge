@@ -1,4 +1,4 @@
-describe("Upport Notes config", function() {
+ddescribe("Upport Notes config", function() {
 	var upportNotesConfigService, bridgeDataService;
 
 	beforeEach(function () {
@@ -8,7 +8,7 @@ describe("Upport Notes config", function() {
                 hasConfigForUpportNotes: false,
                 getAppConfigById: function () {
                     if (this.hasConfigForUpportNotes) {
-                        return JSON.parse('{"configItems":[{"programs": [{"PRG_ID": "PROGRAM1"}, {"PRG_ID": "PROGRAM2"}], "softwareComponents": [{"Component": "Comp1"}, {"Component": "Comp2"}]}, {"programs": [], "softwareComponents": [{"Component": "Comp3", "exclude": true}]}]}');
+                        return JSON.parse('{"configItems":[{"programs": [{"PRG_ID": "PROGRAM1"}, {"PRG_ID": "PROGRAM2"}], "softwareComponents": [{"Component": "Comp1"}, {"Component": "Comp2"}], "applicationComponents": [], "creationDate": "2016-04-15T07:08:18.804Z"}, {"programs": [], "softwareComponents": [{"Component": "Comp3", "exclude": true}], "applicationComponents": [{"Component": "Comp3", "exclude": true}], "processors": [{"UserID": "D0123456", "exclude": false}]}]}');
                     } else {
                         return {};
                     }
@@ -106,6 +106,70 @@ describe("Upport Notes config", function() {
 			});
 		});
 
+		describe("application components", function() {
+			it("should be addable", function() {
+				expect(configItem.getApplicationComponents().length).toEqual(0);
+				configItem.addApplicationComponent("COMP1");
+				expect(configItem.getApplicationComponents()).toEqual([{"Component": "COMP1", "exclude": false}]);
+			});
+
+			it("should be addable only once", function() {
+				configItem.addApplicationComponent("COMP1");
+				configItem.addApplicationComponent("COMP1");
+				expect(configItem.getApplicationComponents()).toEqual([{"Component": "COMP1", "exclude": false}]);
+			});
+
+			it("should be removeable", function() {
+				var component = configItem.addApplicationComponent("COMP1");
+				configItem.removeApplicationComponent(component);
+				expect(configItem.getApplicationComponents().length).toEqual(0);
+			});
+
+			it("should not return the original array", function() {
+				configItem.addApplicationComponent("COMP1");
+				expect(configItem.getApplicationComponents()).not.toBe(configItem.getApplicationComponents());
+			});
+		});
+
+		describe("processor", function() {
+			it("should be addable", function() {
+				expect(configItem.getProcessors().length).toEqual(0);
+				configItem.addProcessor("D0123456");
+				expect(configItem.getProcessors()).toEqual([{"UserID": "D0123456", "exclude": false}]);
+			});
+
+			it("should be addable only once", function() {
+				configItem.addProcessor("D0123456");
+				configItem.addProcessor("D0123456");
+				expect(configItem.getProcessors()).toEqual([{"UserID": "D0123456", "exclude": false}]);
+			});
+
+			it("should be removeable", function() {
+				var processor = configItem.addProcessor("D0123456");
+				configItem.removeProcessor(processor);
+				expect(configItem.getProcessors().length).toEqual(0);
+			});
+
+			it("should not return the original array", function() {
+				configItem.addProcessor("D0123456");
+				expect(configItem.getProcessors()).not.toBe(configItem.getProcessors());
+			});
+		});
+
+		describe("creation date", function() {
+			it("should be settable", function() {
+				expect(configItem.getCreationDate()).not.toBeDefined();
+				configItem.setCreationDate(new Date());
+				expect(configItem.getCreationDate()).toBeDefined();
+			});
+
+			it("should be clearable", function() {
+				configItem.setCreationDate(new Date());
+				configItem.clearCreationDate();
+				expect(configItem.getCreationDate()).not.toBeDefined();
+			});
+		});
+
 		describe("edit mode", function() {
 			it("should allow users to edit a config item and apply the changes", function() {
 				var tmpConfigItem = configItem.startEditing();
@@ -131,9 +195,14 @@ describe("Upport Notes config", function() {
 			upportNotesConfigService.initialize();
 			expect(upportNotesConfigService.getItems().length).toEqual(2);
 			expect(upportNotesConfigService.getItems()[0].getPrograms().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[0].getApplicationComponents().length).toEqual(0);
 			expect(upportNotesConfigService.getItems()[0].getSoftwareComponents().length).toEqual(2);
+			expect(upportNotesConfigService.getItems()[0].getCreationDate()).toBeDefined();
 			expect(upportNotesConfigService.getItems()[1].getPrograms().length).toEqual(0);
 			expect(upportNotesConfigService.getItems()[1].getSoftwareComponents().length).toEqual(1);
+			expect(upportNotesConfigService.getItems()[1].getApplicationComponents().length).toEqual(1);
+			expect(upportNotesConfigService.getItems()[1].getProcessors().length).toEqual(1);
+			expect(upportNotesConfigService.getItems()[1].getCreationDate()).not.toBeDefined();
 		});
 
 		it("should load the config only once", function() {
@@ -150,8 +219,12 @@ describe("Upport Notes config", function() {
 			expect(json.configItems.length).toEqual(2);
 			expect(json.configItems[0].programs.length).toEqual(2);
 			expect(json.configItems[0].softwareComponents.length).toEqual(2);
+			expect(json.configItems[0].applicationComponents.length).toEqual(0);
+			expect(json.configItems[0].creationDate).toEqual("2016-04-15T07:08:18.804Z");
 			expect(json.configItems[1].programs.length).toEqual(0);
 			expect(json.configItems[1].softwareComponents.length).toEqual(1);
+			expect(json.configItems[1].applicationComponents.length).toEqual(1);
+			expect(json.configItems[1].processors.length).toEqual(1);
 		});
 	});
 });

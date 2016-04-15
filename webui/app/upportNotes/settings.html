@@ -36,12 +36,22 @@
 			                    </div>
 			                   
 			                    <div class="atc-input-field">
-			                         <bridge.input style="float:left;" model="softwareComponent" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(softwareComponent)" autofocus enter="onSelectSoftwareComponent(softwareComponent)" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/upportNotes/Component.html" input-typeahead="package as package for package in searchSoftwareComponent($viewValue)"></bridge.input>
-			                    </div>
+                                     <bridge.input style="float:left;" model="softwareComponent" placeholder="Software Component..." icon="fa fa-plus" icon-click="onSelectSoftwareComponent(softwareComponent)" autofocus enter="onSelectSoftwareComponent(softwareComponent)" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/upportNotes/Component.html" input-typeahead="package as package for package in searchSoftwareComponent($viewValue)"></bridge.input>
+                                </div>
+
+                                <div class="atc-input-field">
+                                     <bridge.input style="float:left;" model="applicationComponent" placeholder="Application Component..." icon="fa fa-plus" icon-click="onSelectApplicationComponent(applicationComponent)" autofocus enter="onSelectApplicationComponent(applicationComponent)" input-typeahead-wait-ms="200" input-typeahead-min-length="2" input-typeahead-template-url="bridge/app/upportNotes/Component.html" input-typeahead="package as package for package in searchApplicationComponent($viewValue)"></bridge.input>
+                                </div>
+
+                                <div class="atc-input-field">
+                                    <bridge.employee-input selected-employee="processor" style="float: left;width:100%;" placeholder="'Processor...'" required="false" icon="fa fa-plus" on-select="onSelectProcessor"></bridge.employee-input>
+                                </div>
+
+                                <div class="atc-input-field">
+                                    <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="creationDate" ng-change="currentConfigValues.setCreationDate(creationDate)" current-text="Today" clear-text="Clear" toggle-weeks-text="Weeks" close-text="Close" placeholder="Created After" />
+                                </div>
 			                </div>
-
 			            </div>
-
 		            </div>
 	            </div>
             </div>
@@ -58,8 +68,20 @@
                 Software Components: 
                 <bridge.tag ng-repeat="softwareComponent in currentConfigValues.getSoftwareComponents()" exclude="softwareComponent.exclude" remove-click="currentConfigValues.removeSoftwareComponent(softwareComponent)">{{softwareComponent.Component}}</bridge.tag>
             </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.getApplicationComponents().length > 0">
+                Application Components: 
+                <bridge.tag ng-repeat="applicationComponent in currentConfigValues.getApplicationComponents()" exclude="applicationComponent.exclude" remove-click="currentConfigValues.removeApplicationComponent(applicationComponent)">{{applicationComponent.Component}}</bridge.tag>
+            </div>
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.getProcessors().length > 0">
+                Processors:
+                <bridge.tag ng-repeat="processor in currentConfigValues.getProcessors()" exclude="processor.exclude" remove-click="removeProcessor(processor, currentConfigValues)" ng-init="loadEmployeeData(processor.UserID)">{{employees[processor.UserID].VORNA}} {{employees[processor.UserID].NACHN}} ({{employees[processor.UserID].BNAME}}) </bridge.tag>
+            </div>
 
-             <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.getProcessors().length > 0">
+                Created After: {{currentConfigValues.getCreationDate()}}
+            </div>
+
+            <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
                 <bridge.button ng-click="doAlert(); add_click()" ng-show="!editMode">Add New Selection</bridge.button>
                 <bridge.button ng-click="cancel_click()" ng-show="editMode === true">Cancel</bridge.button>
                 <bridge.button ng-click="save_click()" ng-show="editMode === true">Save Selection</bridge.button>
@@ -78,6 +100,9 @@
                 <tr>
                     <th>Program</th>
                     <th>Software Component</th>
+                    <th>Application Component</th>
+                    <th>Processor</th>
+                    <th>Created After</th>
                     <th>Functions</th>
                 </tr>
             </thead>
@@ -88,6 +113,15 @@
                     </td>
                     <td data-title="'Software Component'">
                         <bridge.tag ng-repeat="softwareComponent in configItem.getSoftwareComponents()" exclude="softwareComponent.exclude" remove-click="configItem.removeSoftwareComponent(softwareComponent)">{{softwareComponent.Component}}</bridge.tag>
+                    </td>
+                    <td data-title="'Application Component'">
+                        <bridge.tag ng-repeat="applicationComponent in configItem.getApplicationComponents()" exclude="applicationComponent.exclude" remove-click="configItem.removeApplicationComponent(applicationComponent)">{{applicationComponent.Component}}</bridge.tag>
+                    </td>
+                    <td data-title="'Processor'">
+                        <bridge.tag ng-repeat="processor in configItem.getProcessors()" exclude="processor.exclude" remove-click="removeProcessor(processor, configItem)" ng-init="loadEmployeeData(processor.UserID)">{{employees[processor.UserID].VORNA}} {{employees[processor.UserID].NACHN}} ({{employees[processor.UserID].BNAME}}) </bridge.tag>
+                    </td>
+                    <td data-title="'Created After'">
+                        {{configItem.getCreationDate()}}
                     </td>
                     <td data-title="'Functions'">
                         <span ng-click="edit_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-edit"></span>
