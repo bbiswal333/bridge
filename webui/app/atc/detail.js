@@ -4,7 +4,6 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
     var atcConfig = appAtcConfig.getConfigForAppId("app.atc-" + $routeParams.instanceNumber);
 
     $scope.$parent.titleExtension = " - ATC Details";
-    $scope.filterText = '';
 
     $scope.atcData = appAtcData.getInstanceForAppId("app.atc-" + $routeParams.instanceNumber);
     $scope.atcData.tableData = [];
