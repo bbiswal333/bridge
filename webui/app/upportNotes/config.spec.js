@@ -1,4 +1,4 @@
-ddescribe("Upport Notes config", function() {
+describe("Upport Notes config", function() {
 	var upportNotesConfigService, bridgeDataService;
 
 	beforeEach(function () {

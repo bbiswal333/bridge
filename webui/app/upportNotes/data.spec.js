@@ -1,4 +1,4 @@
-ddescribe("Upport Notes data", function() {
+describe("Upport Notes data", function() {
 	var upportNotesDataService, configService, $httpBackend, detailsResponse, $timeout;
 
 	beforeEach(function () {
