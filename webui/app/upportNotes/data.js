@@ -54,7 +54,7 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 		//CM_CREATION_DATE
 
 		function getQueryString(oConfig) {
-			return oConfig.getItems().map(function(oConfigItem) {
+			return "(" + oConfig.getItems().map(function(oConfigItem) {
 				var filters = [];
 
 				var programsIncluded = filterItems(oConfigItem.getPrograms(), false);
@@ -77,14 +77,42 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 				var processorsFilter = processorsIncluded.map(buildProcessorFilterInclude).join(" or ");
 				processorsFilter += processorsExcluded.length > 0 ? (processorsIncluded.length > 0 ? " and " : "") + processorsExcluded.map(buildProcessorFilterExclude).join(" and ") : "";
 
-				if(oConfigItem.getCreationDate()) { filters.push("CM_CREATION_DATE gt DateTime'" + oConfigItem.getCreationDate().toISOString() + "'"); }
+				if(oConfigItem.getCreationDate()) { filters.push("CM_CREATION_DATE gt datetime'" + oConfigItem.getCreationDate().toISOString() + "'"); }
 				if(programsFilter) { filters.push(programsFilter); }
 				if(softwareComponentsFilter) { filters.push(softwareComponentsFilter); }
 				if(applicationComponentsFilter) { filters.push(applicationComponentsFilter); }
 				if(processorsFilter) { filters.push(processorsFilter); }
 
 				return filters.map(function(filter) { return "(" + filter + ")"; }).join(" and ");
-			}).join(" or ");
+			}).join(" or ") + ")";
+		}
+
+		function createBatchRequest(iPrio, oConfig, bDetails) {
+			var requestBody = 	"--batch\r\n" +
+								"Content-Type: application/http\r\n" +
+								"Content-Transfer-Encoding: binary\r\n" +
+								"\r\n" +
+								"GET " + encodeURI("Items" + (bDetails ? "?$format=json&" : "/$count?") + "$filter=CM_PRIORITY eq '" + iPrio + "' and " + getQueryString(oConfig)) + " HTTP/1.1\r\n" +
+								"\r\n" +
+								"\r\n" +
+								"--batch--";
+			return $http.post("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/$batch", requestBody, {
+				headers: {
+					"Content-Type": "multipart/mixed; boundary=batch"
+				}
+			});
+		}
+
+		function parseSummary(sSummary) {
+			var regexp = /\r\n\r\n(\d+)\r\n--[a-zA-Z0-9]{33}--\r\n$/gi;
+			var results = regexp.exec(sSummary);
+			return parseInt(results[1]);
+		}
+
+		function parseDetails(sSummary) {
+			var regexp = /\r\n\r\n(.*)\r\n--[a-zA-Z0-9]{33}--\r\n$/gi;
+			var results = regexp.exec(sSummary);
+			return JSON.parse(results[1]);
 		}
 
 		return function(sAppId) {
@@ -97,14 +125,15 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 
 			this.loadSummary = function() {
 				var deferred = $q.defer();
+				var queryString = getQueryString(config);
 
-				if(getQueryString(config)) {
+				if(queryString && queryString !== "()") {
 					$q.all({
-						prio1: $http.get("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '1' and " + getQueryString(config)),
-						prio2: $http.get("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/Items/$count?$filter=CM_PRIORITY eq '2' and " + getQueryString(config))
+						prio1: createBatchRequest(1, config),
+						prio2: createBatchRequest(2, config)
 					}).then(function(result) {
-						that.summary.prio1 = parseInt(result.prio1.data);
-						that.summary.prio2 = parseInt(result.prio2.data);
+						that.summary.prio1 = parseSummary(result.prio1.data);
+						that.summary.prio2 = parseSummary(result.prio2.data);
 						deferred.resolve();
 					}, function() {
 						deferred.reject();
@@ -126,11 +155,11 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 				this.details.length = 0;
 
 				$q.all({
-					prio1: $http.get("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/Items?$filter=CM_PRIORITY eq '1' and " + getQueryString(config)),
-					prio2: $http.get("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/Items?$filter=CM_PRIORITY eq '2' and " + getQueryString(config))
+					prio1: createBatchRequest(1, config, true),
+					prio2: createBatchRequest(2, config, true)
 				}).then(function(result) {
-					Array.prototype.push.apply(that.details, result.prio1.data.d.results);
-					Array.prototype.push.apply(that.details, result.prio2.data.d.results);
+					Array.prototype.push.apply(that.details, parseDetails(result.prio1.data).d.results);
+					Array.prototype.push.apply(that.details, parseDetails(result.prio2.data).d.results);
 					deferred.resolve();
 				}, function() {
 					deferred.reject();

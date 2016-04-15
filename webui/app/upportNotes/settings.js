@@ -1,4 +1,4 @@
-angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', 'app.upportNotes.configService', 'employeeService', function ($scope, $http, configService, employeeService) {
+angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', 'app.upportNotes.configService', 'employeeService', 'lib.utils.calUtils', function ($scope, $http, configService, employeeService, calUtils) {
 	var notesConfig = configService.getConfigForAppId($scope.boxScope.metadata.guid);
 
 	$scope.notesConfig = notesConfig;
@@ -64,6 +64,10 @@ angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', '
 		$scope.bShowSelectionDetails = false;
 		$scope.currentConfigValues = undefined;
 	}
+
+	$scope.formatDate = function(oDate) {
+		return calUtils.stringifyDate(oDate);
+	};
 
 	$scope.save_click = function() {
 		$scope.currentConfigValues.applyChanges();

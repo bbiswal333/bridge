@@ -48,7 +48,7 @@
                                 </div>
 
                                 <div class="atc-input-field">
-                                    <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="creationDate" ng-change="currentConfigValues.setCreationDate(creationDate)" current-text="Today" clear-text="Clear" toggle-weeks-text="Weeks" close-text="Close" placeholder="Created After" />
+                                    Created after: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.creationDate" current-text="Today" clear-text="Clear" toggle-weeks-text="Weeks" close-text="Close" placeholder="Created After" />
                                 </div>
 			                </div>
 			            </div>
@@ -75,10 +75,6 @@
             <div class="row" style="margin: 10px" ng-show="currentConfigValues.getProcessors().length > 0">
                 Processors:
                 <bridge.tag ng-repeat="processor in currentConfigValues.getProcessors()" exclude="processor.exclude" remove-click="removeProcessor(processor, currentConfigValues)" ng-init="loadEmployeeData(processor.UserID)">{{employees[processor.UserID].VORNA}} {{employees[processor.UserID].NACHN}} ({{employees[processor.UserID].BNAME}}) </bridge.tag>
-            </div>
-
-            <div class="row" style="margin: 10px" ng-show="currentConfigValues.getProcessors().length > 0">
-                Created After: {{currentConfigValues.getCreationDate()}}
             </div>
 
             <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
@@ -121,7 +117,7 @@
                         <bridge.tag ng-repeat="processor in configItem.getProcessors()" exclude="processor.exclude" remove-click="removeProcessor(processor, configItem)" ng-init="loadEmployeeData(processor.UserID)">{{employees[processor.UserID].VORNA}} {{employees[processor.UserID].NACHN}} ({{employees[processor.UserID].BNAME}}) </bridge.tag>
                     </td>
                     <td data-title="'Created After'">
-                        {{configItem.getCreationDate()}}
+                        {{formatDate(configItem.getCreationDate())}}
                     </td>
                     <td data-title="'Functions'">
                         <span ng-click="edit_click(configItem)" style="margin-right:0;top:0px; font-size: 15px" class=" app-linklist-clickIcon fa fa-edit"></span>
