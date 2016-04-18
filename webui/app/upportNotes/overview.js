@@ -14,8 +14,6 @@ angular.module('app.upportNotes').directive('app.upportNotes',['app.upportNotes.
 			});
 		}
 
-		loadSummary();
-
 		$scope.$watch("config", function(newValue, oldValue) {
 			if(newValue.toJSON() === oldValue.toJSON()) {
 				return;
