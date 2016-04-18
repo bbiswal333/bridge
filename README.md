@@ -19,7 +19,11 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * [download](http://nodejs.org/) and install `node.js`
 
 ## run bridge locally
-* run `npm install` -> required once after forking the repository (open a command line, navigate to your bridge folder you created in the first step and enter npm install. If you get a connection or proxy error, switch temporarily to "SAP Internet" Wifi and back to SAP Corporate when done)
+* run `npm install` -> required once after forking the repository (open a command line, navigate to your bridge folder you created in the first step and enter npm install. If you get a connection or proxy error, switch temporarily to "SAP Internet" Wifi and back to SAP Corporate when done. Alternative, configure the proxy correctly via command line: 
+  * `set http_proxy=http://proxy:8080`
+  * `set https_proxy=http://proxy:8080` (on windows) or
+  * `export http_proxy=http://proxy:8080`
+  * `export https_proxy=http://proxy:8080` (on mac/linux)
 * run `npm start`
 * open `https://localhost:8000` in a browser
 * for [internet explorer](http://thefunniestpictures.com/wp-content/uploads/2013/09/funny-browsers-Internet-Explorer-slow.jpg) add `https://localhost` to your trusted sites
