@@ -9,7 +9,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 				$q.all(config.getPrograms().map(function(program) {
 					milestones.length = 0;
 					if(program.isSiriusProgram()) {
-						return $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PRS_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
+						return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PRS_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.MILESTONE_DATE !== "0000-00-00") {
 									var milestone = milestoneFactory.createInstance(rawMilestone.MILESTONE_NAME, rawMilestone.MILESTONE_DATE, rawMilestone.MILESTONE_TIME, program, rawMilestone.DELIVERY_NAME, rawMilestone.MILESTONE_TYPE);
@@ -21,7 +21,7 @@ angular.module('app.programMilestones').service("app.programMilestones.dataFacto
 							});
 						});
 					} else {
-						return $http.get("https://ift.wdf.sap.corp/sap/bc/bridge/GET_PR_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
+						return $http.get("https://ifp.wdf.sap.corp/sap/bc/bridge/GET_PR_PROGRAM_MILESTONES?programGUID=" + program.getGUID()).then(function(response) {
 							response.data.PHASES.map(function(rawMilestone) {
 								if(rawMilestone.PHASE_START_DATE !== "0000-00-00") {
 									var milestone = milestoneFactory.createInstance(rawMilestone.PHASE_TXT, rawMilestone.PHASE_START_DATE, rawMilestone.PHASE_START_TIME, program);
