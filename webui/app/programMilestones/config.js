@@ -5,7 +5,7 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			var milestoneTypes = ["ALL"];
 			var initialized = false;
 			var initializedDeferrals = [];
-			
+
 			(function initialize() {
 				var config = bridgeDataService.getAppConfigById(sAppId);
 				if(config) {
@@ -42,7 +42,7 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			};
 
 			this.allMilestoneTypesActive = function() {
-				if(milestoneTypes.length === 1 && milestoneTypes[0] === "ALL") {
+				if(milestoneTypes.length >= 1 && milestoneTypes.indexOf("ALL") > -1 ) {
 					return true;
 				} else {
 					return false;
@@ -62,6 +62,7 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 						this.enableAllMilestoneTypes();
 					}
 				}
+
 			};
 
 			this.isMilestoneTypeActive = function(sType) {

@@ -2,8 +2,8 @@
     <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
 		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
 		<div class="btn-group" style="height:32px">
-			<bridge.button state="statusMap[status].active === true ? 'active' : 'invisible-button'" ng-click="statusMap[status].active = !statusMap[status].active; updateTableData()" ng-repeat="status in getStatusArray()" style="width:100px;margin-left:0;margin-right:0;">
-		  		{{status.toUpperCase()}}
+			<bridge.button state="config.isMilestoneTypeActive(status) ? 'active' : 'invisible-button'" ng-click="config.toggleMilestoneType(status)" ng-repeat="status in availableMilestoneTypes" style="width:100px;margin-left:0;margin-right:0;">
+		  		{{status}}
 			</bridge.button> 
 		</div>
 		
