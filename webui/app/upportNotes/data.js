@@ -96,7 +96,7 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 								"\r\n" +
 								"\r\n" +
 								"--batch--";
-			return $http.post("https://sithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/$batch", requestBody, {
+			return $http.post("https://mithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/$batch", requestBody, {
 				headers: {
 					"Content-Type": "multipart/mixed; boundary=batch"
 				}

@@ -10,7 +10,7 @@ angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', '
 	};
 
 	$scope.searchPrograms = function(query) {
-		return $http.get("https://ifd.wdf.sap.corp/zprs/json/program?maxHits=20&query=*" + query + "&sap-language=en&searchAsYouType=X").then(function(response) {
+		return $http.get("https://ifp.wdf.sap.corp/zprs/json/program?maxHits=20&query=*" + query + "&sap-language=en&searchAsYouType=X").then(function(response) {
 			return response.data.data;
 		});
 	};
@@ -30,7 +30,7 @@ angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', '
     };
 
     $scope.searchApplicationComponent = function(query) {
-		return $http.get("https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
+		return $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
 			return response.data.d.results.map(function(component) { return component.PS_POSID; });
 		});
 	};
