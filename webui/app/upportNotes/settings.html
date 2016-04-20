@@ -50,6 +50,10 @@
                                 <div class="atc-input-field">
                                     Created after: <input style="width: initial; display: inline-block" class="form-control" datepicker-popup="dd-MMMM-yyyy" ng-model="currentConfigValues.creationDate" current-text="Today" clear-text="Clear" toggle-weeks-text="Weeks" close-text="Close" placeholder="Created After" />
                                 </div>
+
+                                <div class="atc-input-field">
+                                    <bridge.akh-responsible-selector on-select="akhResponsibleSelected"></bridge.akh-responsible-selector>
+                                </div>
 			                </div>
 			            </div>
 		            </div>
@@ -77,6 +81,11 @@
                 <bridge.tag ng-repeat="processor in currentConfigValues.getProcessors()" exclude="processor.exclude" remove-click="removeProcessor(processor, currentConfigValues)" ng-init="loadEmployeeData(processor.UserID)">{{employees[processor.UserID].VORNA}} {{employees[processor.UserID].NACHN}} ({{employees[processor.UserID].BNAME}}) </bridge.tag>
             </div>
 
+            <div class="row" style="margin: 10px" ng-show="currentConfigValues.akhResponsibles.length > 0">
+                ACH Responsibles:
+                <bridge.akh-responsible-tag ng-repeat="responsible in currentConfigValues.akhResponsibles" responsible="responsible" responsibles="currentConfigValues.akhResponsibles"></bridge.akh-responsible-tag>
+            </div>
+
             <div style="float:right;position:relative;top:25px; margin: 0 0 20px 0;">
                 <bridge.button ng-click="doAlert(); add_click()" ng-show="!editMode">Add New Selection</bridge.button>
                 <bridge.button ng-click="cancel_click()" ng-show="editMode === true">Cancel</bridge.button>
@@ -96,7 +105,7 @@
                 <tr>
                     <th>Program</th>
                     <th>Software Component</th>
-                    <th>Application Component</th>
+                    <th>Application Component / ACRF Responsibles</th>
                     <th>Processor</th>
                     <th>Created After</th>
                     <th>Functions</th>
@@ -111,6 +120,7 @@
                         <bridge.tag ng-repeat="softwareComponent in configItem.getSoftwareComponents()" exclude="softwareComponent.exclude" remove-click="configItem.removeSoftwareComponent(softwareComponent)">{{softwareComponent.Component}}</bridge.tag>
                     </td>
                     <td data-title="'Application Component'">
+                        <bridge.akh-responsible-tag ng-repeat="responsible in configItem.akhResponsibles" responsible="responsible" responsibles="configItem.akhResponsibles"></bridge.akh-responsible-tag>
                         <bridge.tag ng-repeat="applicationComponent in configItem.getApplicationComponents()" exclude="applicationComponent.exclude" remove-click="configItem.removeApplicationComponent(applicationComponent)">{{applicationComponent.Component}}</bridge.tag>
                     </td>
                     <td data-title="'Processor'">

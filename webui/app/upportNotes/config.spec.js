@@ -1,5 +1,5 @@
 describe("Upport Notes config", function() {
-	var upportNotesConfigService, bridgeDataService;
+	var upportNotesConfigService, bridgeDataService, AKHResponsibleFactory;
 
 	beforeEach(function () {
         module("bridge.service");
@@ -8,7 +8,7 @@ describe("Upport Notes config", function() {
                 hasConfigForUpportNotes: false,
                 getAppConfigById: function () {
                     if (this.hasConfigForUpportNotes) {
-                        return JSON.parse('{"configItems":[{"programs": [{"PRG_ID": "PROGRAM1"}, {"PRG_ID": "PROGRAM2"}], "softwareComponents": [{"Component": "Comp1"}, {"Component": "Comp2"}], "applicationComponents": [], "creationDate": "2016-04-15T07:08:18.804Z"}, {"programs": [], "softwareComponents": [{"Component": "Comp3", "exclude": true}], "applicationComponents": [{"Component": "Comp3", "exclude": true}], "processors": [{"UserID": "D0123456", "exclude": false}]}]}');
+                        return JSON.parse('{"configItems":[{"programs": [{"PRG_ID": "PROGRAM1"}, {"PRG_ID": "PROGRAM2"}], "softwareComponents": [{"Component": "Comp1"}, {"Component": "Comp2"}], "applicationComponents": [], "creationDate": "2016-04-15T07:08:18.804Z"}, {"programs": [], "softwareComponents": [{"Component": "Comp3", "exclude": true}], "applicationComponents": [{"Component": "Comp3", "exclude": true}], "processors": [{"UserID": "D0123456", "exclude": false}], "akhResponsibles": [{"property": "DEV_UID_DM", "userId": "D012345"}]}]}');
                     } else {
                         return {};
                     }
@@ -21,9 +21,10 @@ describe("Upport Notes config", function() {
             $provide.value("bridgeDataService", mockDataService);
         });
 
-        inject(["app.upportNotes.configService", "bridgeDataService", function (_upportNotesConfigService, _bridgeDataService) {
+        inject(["app.upportNotes.configService", "bridgeDataService", "bridge.AKHResponsibleFactory", function (_upportNotesConfigService, _bridgeDataService, _AKHResponsibleFactory) {
             upportNotesConfigService = _upportNotesConfigService.getConfigForAppId("app.test");
             bridgeDataService = _bridgeDataService;
+            AKHResponsibleFactory = _AKHResponsibleFactory;
         }]);
 
         //$httpBackend.whenGET(/https:\/\/mithdb\.wdf\.sap\.corp/).respond({"d":{"results":[{"__metadata": {"type":"irep.reporting.internalIncidents.components.ComponentType","uri":"https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component('AC')"},"PS_POSID":"CA-CS","DEV_UID_DM":"D022544","DEV_UID_DLVRY_M":"D022544","DEV_UID_PRDOWNER":"I844258","SL3_DEV_HANDOVER":" "}]}});
@@ -156,6 +157,31 @@ describe("Upport Notes config", function() {
 			});
 		});
 
+		describe("AKH responsible", function() {
+			it("should be addable", function() {
+				expect(configItem.getAKHResponsibles().length).toEqual(0);
+				configItem.addAKHResponsible(AKHResponsibleFactory.createInstance("DEV_UID_DM", "D012345"));
+				expect(JSON.parse(JSON.stringify(configItem.getAKHResponsibles()))).toEqual([{property : "DEV_UID_DM", userId : "D012345"}]);
+			});
+
+			it("should be addable only once", function() {
+				configItem.addAKHResponsible(AKHResponsibleFactory.createInstance("DEV_UID_DM", "D012345"));
+				configItem.addAKHResponsible(AKHResponsibleFactory.createInstance("DEV_UID_DM", "D012345"));
+				expect(JSON.parse(JSON.stringify(configItem.getAKHResponsibles()))).toEqual([{property : "DEV_UID_DM", userId : "D012345"}]);
+			});
+
+			it("should be removeable", function() {
+				var akhResponsible = configItem.addAKHResponsible(AKHResponsibleFactory.createInstance("DEV_UID_DM", "D012345"));
+				configItem.removeAKHResponsible(akhResponsible);
+				expect(configItem.getAKHResponsibles().length).toEqual(0);
+			});
+
+			it("should not return the original array", function() {
+				configItem.addAKHResponsible(AKHResponsibleFactory.createInstance("DEV_UID_DM", "D012345"));
+				expect(configItem.getAKHResponsibles()).not.toBe(configItem.getAKHResponsibles());
+			});
+		});
+
 		describe("creation date", function() {
 			it("should be settable", function() {
 				expect(configItem.getCreationDate()).not.toBeDefined();
@@ -203,6 +229,7 @@ describe("Upport Notes config", function() {
 			expect(upportNotesConfigService.getItems()[1].getApplicationComponents().length).toEqual(1);
 			expect(upportNotesConfigService.getItems()[1].getProcessors().length).toEqual(1);
 			expect(upportNotesConfigService.getItems()[1].getCreationDate()).not.toBeDefined();
+			expect(upportNotesConfigService.getItems()[1].getAKHResponsibles().length).toEqual(1);
 		});
 
 		it("should load the config only once", function() {
@@ -221,10 +248,12 @@ describe("Upport Notes config", function() {
 			expect(json.configItems[0].softwareComponents.length).toEqual(2);
 			expect(json.configItems[0].applicationComponents.length).toEqual(0);
 			expect(json.configItems[0].creationDate).toEqual("2016-04-15T07:08:18.804Z");
+			expect(json.configItems[0].akhResponsibles.length).toEqual(0);
 			expect(json.configItems[1].programs.length).toEqual(0);
 			expect(json.configItems[1].softwareComponents.length).toEqual(1);
 			expect(json.configItems[1].applicationComponents.length).toEqual(1);
 			expect(json.configItems[1].processors.length).toEqual(1);
+			expect(json.configItems[1].akhResponsibles.length).toEqual(1);
 		});
 	});
 });

@@ -53,54 +53,83 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 
 		//CM_CREATION_DATE
 
-		function getQueryString(oConfig) {
-			return "(" + oConfig.getItems().map(function(oConfigItem) {
-				var filters = [];
+		function getFiltersFrom(oConfigItem, additionAKHComponents) {
+			var filters = [];
 
-				var programsIncluded = filterItems(oConfigItem.getPrograms(), false);
-				var programsExcluded = filterItems(oConfigItem.getPrograms(), true);
-				var programsFilter = programsIncluded.map(buildProgramFilterInclude).join(" or ");
-				programsFilter += programsExcluded.length > 0 ? (programsIncluded.length > 0 ? " and " : "") + programsExcluded.map(buildProgramFilterExclude).join(" and ") : "";
+			var programsIncluded = filterItems(oConfigItem.getPrograms(), false);
+			var programsExcluded = filterItems(oConfigItem.getPrograms(), true);
+			var programsFilter = programsIncluded.map(buildProgramFilterInclude).join(" or ");
+			programsFilter += programsExcluded.length > 0 ? (programsIncluded.length > 0 ? " and " : "") + programsExcluded.map(buildProgramFilterExclude).join(" and ") : "";
 
-				var softwareComponentsIncluded = filterItems(oConfigItem.getSoftwareComponents(), false);
-				var softwareComponentsExcluded = filterItems(oConfigItem.getSoftwareComponents(), true);
-				var softwareComponentsFilter = softwareComponentsIncluded.map(buildSoftwareComponentFilterInclude).join(" or ");
-				softwareComponentsFilter += softwareComponentsExcluded.length > 0 ? (softwareComponentsIncluded.length > 0 ? " and " : "") + softwareComponentsExcluded.map(buildSoftwareComponentFilterExclude).join(" and ") : "";
+			var softwareComponentsIncluded = filterItems(oConfigItem.getSoftwareComponents(), false);
+			var softwareComponentsExcluded = filterItems(oConfigItem.getSoftwareComponents(), true);
+			var softwareComponentsFilter = softwareComponentsIncluded.map(buildSoftwareComponentFilterInclude).join(" or ");
+			softwareComponentsFilter += softwareComponentsExcluded.length > 0 ? (softwareComponentsIncluded.length > 0 ? " and " : "") + softwareComponentsExcluded.map(buildSoftwareComponentFilterExclude).join(" and ") : "";
 
-				var applicationComponentsIncluded = filterItems(oConfigItem.getApplicationComponents(), false);
-				var applicationComponentsExcluded = filterItems(oConfigItem.getApplicationComponents(), true);
-				var applicationComponentsFilter = applicationComponentsIncluded.map(buildApplicationComponentFilterInclude).join(" or ");
-				applicationComponentsFilter += applicationComponentsExcluded.length > 0 ? (applicationComponentsIncluded.length > 0 ? " and " : "") + applicationComponentsExcluded.map(buildApplicationComponentFilterExclude).join(" and ") : "";
+			var applicationComponentsIncluded = filterItems(oConfigItem.getApplicationComponents(), false).concat(additionAKHComponents ? additionAKHComponents.map(function(component) { return {Component: component.value}; }) : []);
+			var applicationComponentsExcluded = filterItems(oConfigItem.getApplicationComponents(), true);
+			var applicationComponentsFilter = applicationComponentsIncluded.map(buildApplicationComponentFilterInclude).join(" or ");
+			applicationComponentsFilter += applicationComponentsExcluded.length > 0 ? (applicationComponentsIncluded.length > 0 ? " and " : "") + applicationComponentsExcluded.map(buildApplicationComponentFilterExclude).join(" and ") : "";
 
-				var processorsIncluded = filterItems(oConfigItem.getProcessors(), false);
-				var processorsExcluded = filterItems(oConfigItem.getProcessors(), true);
-				var processorsFilter = processorsIncluded.map(buildProcessorFilterInclude).join(" or ");
-				processorsFilter += processorsExcluded.length > 0 ? (processorsIncluded.length > 0 ? " and " : "") + processorsExcluded.map(buildProcessorFilterExclude).join(" and ") : "";
+			var processorsIncluded = filterItems(oConfigItem.getProcessors(), false);
+			var processorsExcluded = filterItems(oConfigItem.getProcessors(), true);
+			var processorsFilter = processorsIncluded.map(buildProcessorFilterInclude).join(" or ");
+			processorsFilter += processorsExcluded.length > 0 ? (processorsIncluded.length > 0 ? " and " : "") + processorsExcluded.map(buildProcessorFilterExclude).join(" and ") : "";
 
-				if(oConfigItem.getCreationDate()) { filters.push("CM_CREATION_DATE gt datetime'" + oConfigItem.getCreationDate().toISOString() + "'"); }
-				if(programsFilter) { filters.push(programsFilter); }
-				if(softwareComponentsFilter) { filters.push(softwareComponentsFilter); }
-				if(applicationComponentsFilter) { filters.push(applicationComponentsFilter); }
-				if(processorsFilter) { filters.push(processorsFilter); }
+			if(oConfigItem.getCreationDate()) { filters.push("CM_CREATION_DATE gt datetime'" + oConfigItem.getCreationDate().toISOString() + "'"); }
+			if(programsFilter) { filters.push(programsFilter); }
+			if(softwareComponentsFilter) { filters.push(softwareComponentsFilter); }
+			if(applicationComponentsFilter) { filters.push(applicationComponentsFilter); }
+			if(processorsFilter) { filters.push(processorsFilter); }
 
-				return filters.map(function(filter) { return "(" + filter + ")"; }).join(" and ");
-			}).join(" or ") + ")";
+			return filters;
 		}
 
-		function createBatchRequest(iPrio, oConfig, bDetails) {
+		function getQueryString(oConfig) {
+			var deferred = $q.defer();
+
+			var configItemStrings = [];
+			var deferrals = [];
+			oConfig.getItems().map(function(oConfigItem) {
+				if(oConfigItem.getAKHResponsibles().length > 0) {
+					$q.all(oConfigItem.getAKHResponsibles().map(function(akhResponsible) { var deferral = akhResponsible.getComponents(); deferrals.push(deferral); return deferral; })).then( function(result) {
+						configItemStrings.push(getFiltersFrom(oConfigItem, Array.prototype.concat.apply([], result)).map(function(filter) { return "(" + filter + ")"; }).join(" and "));
+					});
+				} else {
+					configItemStrings.push(getFiltersFrom(oConfigItem).map(function(filter) { return "(" + filter + ")"; }).join(" and "));
+				}
+			});
+			if(deferrals.length > 0) {
+				$q.all(deferrals).then(function() {
+					deferred.resolve("(" + configItemStrings.join(" or ") + ")");
+				});
+			} else {
+				$timeout(function() {
+					deferred.resolve("(" + configItemStrings.join(" or ") + ")");
+				}, 0);
+			}
+
+			return deferred.promise;
+		}
+
+		function createBatchRequest(iPrio, queryString, bDetails) {
+			var deferred = $q.defer();
 			var requestBody = 	"--batch\r\n" +
 								"Content-Type: application/http\r\n" +
 								"Content-Transfer-Encoding: binary\r\n" +
 								"\r\n" +
-								"GET " + encodeURI("Items" + (bDetails ? "?$format=json&" : "/$count?") + "$filter=CM_PRIORITY eq '" + iPrio + "' and " + getQueryString(oConfig)) + " HTTP/1.1\r\n" +
+								"GET " + encodeURI("Items" + (bDetails ? "?$format=json&" : "/$count?") + "$filter=CM_PRIORITY eq '" + iPrio + "' and " + queryString) + " HTTP/1.1\r\n" +
 								"\r\n" +
 								"\r\n" +
 								"--batch--";
-			return $http.post("https://mithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/$batch", requestBody, {
+			$http.post("https://mithdb.wdf.sap.corp/oprr/cwbr/reporting/bridge/Notes.xsodata/$batch", requestBody, {
 				headers: {
 					"Content-Type": "multipart/mixed; boundary=batch"
 				}
+			}).then(function() {
+				deferred.resolve.apply({}, arguments);
 			});
+			return deferred.promise;
 		}
 
 		function parseSummary(sSummary) {
@@ -125,26 +154,26 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 
 			this.loadSummary = function() {
 				var deferred = $q.defer();
-				var queryString = getQueryString(config);
-
-				if(queryString && queryString !== "()") {
-					$q.all({
-						prio1: createBatchRequest(1, config),
-						prio2: createBatchRequest(2, config)
-					}).then(function(result) {
-						that.summary.prio1 = parseSummary(result.prio1.data);
-						that.summary.prio2 = parseSummary(result.prio2.data);
-						deferred.resolve();
-					}, function() {
-						deferred.reject();
-					});
-				} else {
-					$timeout(function() {
-						that.summary.prio1 = 0;
-						that.summary.prio2 = 0;
-						deferred.resolve();
-					});
-				}
+				getQueryString(config).then(function(queryString) {
+					if(queryString && queryString !== "()") {
+						$q.all({
+							prio1: createBatchRequest(1, queryString),
+							prio2: createBatchRequest(2, queryString)
+						}).then(function(result) {
+							that.summary.prio1 = parseSummary(result.prio1.data);
+							that.summary.prio2 = parseSummary(result.prio2.data);
+							deferred.resolve();
+						}, function() {
+							deferred.reject();
+						});
+					} else {
+						$timeout(function() {
+							that.summary.prio1 = 0;
+							that.summary.prio2 = 0;
+							deferred.resolve();
+						});
+					}
+				});
 
 				return deferred.promise;
 			};
@@ -153,16 +182,17 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 				var deferred = $q.defer();
 
 				this.details.length = 0;
-
-				$q.all({
-					prio1: createBatchRequest(1, config, true),
-					prio2: createBatchRequest(2, config, true)
-				}).then(function(result) {
-					Array.prototype.push.apply(that.details, parseDetails(result.prio1.data).d.results);
-					Array.prototype.push.apply(that.details, parseDetails(result.prio2.data).d.results);
-					deferred.resolve();
-				}, function() {
-					deferred.reject();
+				getQueryString(config).then(function(queryString) {
+					$q.all({
+						prio1: createBatchRequest(1, queryString, true),
+						prio2: createBatchRequest(2, queryString, true)
+					}).then(function(result) {
+						Array.prototype.push.apply(that.details, parseDetails(result.prio1.data).d.results);
+						Array.prototype.push.apply(that.details, parseDetails(result.prio2.data).d.results);
+						deferred.resolve();
+					}, function() {
+						deferred.reject();
+					});
 				});
 
 				return deferred.promise;

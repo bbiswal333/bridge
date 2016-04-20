@@ -1,4 +1,4 @@
-angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q', 'bridgeDataService', function ($q, bridgeDataService) {
+angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q', 'bridgeDataService', 'bridge.AKHResponsibleFactory', function ($q, bridgeDataService, AKHResponsibleFactory) {
 	var EditableConfigItem = (function() {
 		return function(configItem) {
 			this.fromJSON(configItem.toJSON());
@@ -16,6 +16,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 			this.softwareComponents = [];
 			this.applicationComponents = [];
 			this.processors = [];
+			this.akhResponsibles = [];
 
 			this.getPrograms = function() {
 				return this.programs.map(function(program) { return program; });
@@ -52,6 +53,15 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				for(var i = 0, length = that.processors.length; i < length; i++) {
 					if(that.processors[i].UserID === sProcessor) {
 						return that.processors[i];
+					}
+				}
+				return undefined;
+			}
+
+			function getAKHResponsible(oAKHResponsible) {
+				for(var i = 0, length = that.akhResponsibles.length; i < length; i++) {
+					if(that.akhResponsibles[i].getUserId() === oAKHResponsible.getUserId()) {
+						return that.akhResponsibles[i];
 					}
 				}
 				return undefined;
@@ -137,6 +147,25 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				}
 			};
 
+			this.getAKHResponsibles = function() {
+				return this.akhResponsibles.map(function(responsible) { return responsible; });
+			};
+
+			this.addAKHResponsible = function(responsible) {
+				var akhResponsible = getAKHResponsible(responsible);
+				if(akhResponsible) {
+					return akhResponsible;
+				}
+				this.akhResponsibles.push(responsible);
+				return responsible;
+			};
+
+			this.removeAKHResponsible = function(responsible) {
+				if(this.akhResponsibles.indexOf(responsible) >= 0) {
+					this.akhResponsibles.splice(this.akhResponsibles.indexOf(responsible), 1);
+				}
+			};
+
 			this.setCreationDate = function(dDate) {
 				this.creationDate = dDate;
 			};
@@ -160,6 +189,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 						softwareComponents: this.softwareComponents,
 						applicationComponents: this.applicationComponents,
 						processors: this.processors,
+						akhResponsibles: this.akhResponsibles,
 						creationDate: this.creationDate
 					})
 				);
@@ -170,6 +200,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				this.softwareComponents = oJSON.softwareComponents;
 				this.applicationComponents = oJSON.applicationComponents ? oJSON.applicationComponents : [];
 				this.processors = oJSON.processors ? oJSON.processors : [];
+				this.akhResponsibles = oJSON.akhResponsibles ? oJSON.akhResponsibles.map(function(responsible) { return AKHResponsibleFactory.createInstance(responsible.property, responsible.userId); }) : [];
 				this.creationDate = oJSON.creationDate ? new Date(oJSON.creationDate) : undefined;
 				return this;
 			};

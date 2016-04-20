@@ -59,6 +59,10 @@ angular.module('app.upportNotes').appUpportNotesSettings = ['$scope', '$http', '
 		});
 	};
 
+	$scope.akhResponsibleSelected = function(responsible) {
+		$scope.currentConfigValues.addAKHResponsible(responsible);
+	};
+
 	function stopEditMode() {
 		$scope.editMode = false;
 		$scope.bShowSelectionDetails = false;

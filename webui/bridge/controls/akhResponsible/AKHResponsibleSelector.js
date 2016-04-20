@@ -4,7 +4,8 @@ angular.module('bridge.controls').directive('bridge.akhResponsibleSelector', ["b
         templateUrl: 'bridge/controls/akhResponsible/AKHResponsibleSelector.html',
         replace: true,
         scope: {
-        	responsibles: '='
+        	responsibles: '=',
+            onSelect: '='
         },
         controller: function($scope) {
         	$scope.Roles = [
@@ -20,9 +21,13 @@ angular.module('bridge.controls').directive('bridge.akhResponsibleSelector', ["b
 		    };
 
 		    $scope.responsibleAdded = function(employee) {
-		    	if($scope.responsibles && $scope.responsibles.push) {
-		    		$scope.responsibles.push(AKHResponsibleFactory.createInstance($scope.selectedRole.Key, employee.BNAME));
-		    	}
+                if($scope.onSelect) {
+                    $scope.onSelect(AKHResponsibleFactory.createInstance($scope.selectedRole.Key, employee.BNAME));
+                } else {
+    		    	if($scope.responsibles && $scope.responsibles.push) {
+    		    		$scope.responsibles.push(AKHResponsibleFactory.createInstance($scope.selectedRole.Key, employee.BNAME));
+    		    	}
+                }
 		    };
         }
     };
