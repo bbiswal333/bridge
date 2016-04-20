@@ -7,10 +7,10 @@
 		<br/>
 		<br/>
 		<bridge.table table-data="tableData">
-				<bridge.table-column header="'Priority'" column-size-class="'col-sm-1'" field="priority.__text"></bridge.table-column>
-				<bridge.table-column header="'Component'" column-size-class="'col-sm-2'" field="component.__text"></bridge.table-column>
-				<bridge.table-column header="'Status'" column-size-class="'col-sm-2'" field="status.__text"></bridge.table-column>
-				<bridge.table-column header="'Reporter'" column-size-class="'col-sm-3'" order-by="reporterEnhanced.username">
+				<bridge.table-column header="'Priority'" field="priority.__text"></bridge.table-column>
+				<bridge.table-column header="'Component'" field="component.__text"></bridge.table-column>
+				<bridge.table-column header="'Status'" field="status.__text"></bridge.table-column>
+				<bridge.table-column header="'Reporter'" order-by="reporterEnhanced.username">
 					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.reporterEnhanced._alternateId}}?s=60x60"
 						 class="im-reporter-img"
 						 style="height: 32px"
@@ -19,7 +19,7 @@
 					<a href="mailto:{{row.entity.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
 					<a href="tel:{{row.entity.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 				</bridge.table-column>
-				<bridge.table-column header="'Description'" column-size-class="'col-sm-4'" order-by="shortText.__text">
+				<bridge.table-column header="'Description'" order-by="shortText.__text">
 					<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row.entity._id}}">{{row.entity.shortText.__text}}</a>
 				</bridge.table-column>
 		</bridge.table>
