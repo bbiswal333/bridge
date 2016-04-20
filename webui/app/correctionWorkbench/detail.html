@@ -1,32 +1,27 @@
 <div ng-controller="app.correctionWorkbench.detailController" style="box-sizing:border-box;">    
     <div style="padding:30px;box-sizing:border-box;">                
 
-    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
         <div class="btn-group" style="height:32px;max-width:100%;">
-          <!--<span ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[categoryMap[category].active];" class="btn btn-default" ng-click="categoryMap[category].active = !categoryMap[category].active" style="margin-bottom:20px;">{{category}}</span>
-      	</div>-->
       		<bridge.button ng-if="detailForNotifications === false" ng-repeat="category in getCategoryArray()"   ng-click="statusMap[category].active = !statusMap[category].active" state="categoryMap[category].active === true ? 'active' : ' '" style="margin-bottom:20px;">{{category}}</bridge.button>
 		</div>
 		<br/>
 		<br/>
-		<bridge.table table-data="tableData" filter="filterText">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Priority'" column-size-class="'col-sm-1'" order-by="'priority.__text'">{{row.priority.__text}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'component.__text'">{{row.component.__text}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-2'" order-by="'status.__text'">{{row.status.__text}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Reporter'" column-size-class="'col-sm-3'" order-by="'reporterEnhanced.username'">
-					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.reporter._alternateId}}?s=60x60"
+		<bridge.table table-data="tableData">
+				<bridge.table-column header="'Priority'" column-size-class="'col-sm-1'" field="priority.__text"></bridge.table-column>
+				<bridge.table-column header="'Component'" column-size-class="'col-sm-2'" field="component.__text"></bridge.table-column>
+				<bridge.table-column header="'Status'" column-size-class="'col-sm-2'" field="status.__text"></bridge.table-column>
+				<bridge.table-column header="'Reporter'" column-size-class="'col-sm-3'" order-by="reporterEnhanced.username">
+					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.entity.reporterEnhanced._alternateId}}?s=60x60"
 						 class="im-reporter-img"
 						 style="height: 32px"
-						 ng-if="row.reporterEnhanced.BNAME"></img>
-					<a class="clickable" ng-click="parentScope.userClick(row.reporterEnhanced)">{{row.reporterEnhanced.fullName}}</a>
-					<a href="mailto:{{row.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
-					<a href="tel:{{row.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
+						 ng-if="row.entity.reporterEnhanced.BNAME"></img>
+					<a class="clickable" ng-click="grid.appScope.$parent.userClick(row.entity.reporterEnhanced)">{{row.entity.reporterEnhanced.fullName}}</a>
+					<a href="mailto:{{row.entity.reporterEnhanced.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
+					<a href="tel:{{row.entity.reporterEnhanced.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
 				</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Description'" column-size-class="'col-sm-4'" order-by="'shortText.__text'">
-					<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row._id}}">{{row.shortText.__text}}</a>
+				<bridge.table-column header="'Description'" column-size-class="'col-sm-4'" order-by="shortText.__text">
+					<a target="_blank" href="https://css.wdf.sap.corp/sap/bc/bsp/spn/jcwb?crPointer={{row.entity._id}}">{{row.entity.shortText.__text}}</a>
 				</bridge.table-column>
-			</bridge.table-column-sorter>
 		</bridge.table>
 
     </div>
