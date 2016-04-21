@@ -46,6 +46,23 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
                 refreshEmployeeDataFromScope();
             }
 
+            $scope.getMailUrl = function(smtpMail, mailSubject, mailBody){
+                var bFirstArgument = true;
+                var mailString = "mailto:" + smtpMail;
+
+                if (mailSubject){
+                    mailString += "?subject=" + mailSubject;
+                    bFirstArgument = false;
+                }
+                if (mailBody){
+                    mailString += bFirstArgument ? "?" : "&";
+                    mailString += "body=" + mailBody;
+                    bFirstArgument = false;
+                }
+
+                return mailString;
+            };
+
             $scope.$watch("id", function(newValue, oldValue) {
                 if(newValue !== oldValue && !$scope.firstName) {
                     loadEmployeeData();
