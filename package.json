@@ -7,6 +7,7 @@
     "start": "node server/server.js",
     "test": "karma start karma.config.js -stealth --single-run",
     "uiTest": "karma start karma.config.js -stealth --single-run",
+    "testdebug": "karma start karma.config.js --single-run=false --debug",
     "backendTest": "mocha -t 8000 -R list ./server/**/*.spec.js",
     "lint": "eslint webui"
   },
