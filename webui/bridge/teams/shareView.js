@@ -1,7 +1,7 @@
 /*global Clipboard*/
 angular.module("bridge.teams").controller("bridge.viewBar.shareViewController", ["$scope", "$http", "bridge.service.guid", "bridgeInstance", "$window",
     function($scope, $http, guidService, bridgeInstance, $window) {
-        $scope.viewUrl = $window.location.origin + "#/view/" + $scope.selectedProject.view;
+        $scope.viewUrl = $window.location.origin + "/#/view/" + $scope.selectedProject.view;
         new Clipboard('.clipBoardButton'); // eslint-disable-line no-new
 
         $scope.recipients = [];
