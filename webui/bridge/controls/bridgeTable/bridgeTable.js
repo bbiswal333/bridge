@@ -1,4 +1,5 @@
-angular.module('bridge.controls', ["mgcrea.ngStrap.tooltip", "bridge.service"]);
+angular.module('bridge.controls', [ "mgcrea.ngStrap.tooltip", "bridge.service", "ui.grid", "ui.grid.pagination", "ui.grid.cellNav", "ui.grid.resizeColumns",
+                                    "ui.grid.pinning", "ui.grid.selection", "ui.grid.moveColumns", "ui.grid.grouping", "ui.grid.saveState"]);
 angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", "uiGridConstants", "$filter", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService, uiGridConstants, $filter) {
     return {
         restrict: 'E',
@@ -85,12 +86,20 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
             });
 
+            function resizeTable(){
+                var tableRect = $("#bridgeTable").getRect();
+
+                if (tableRect !== null) {
+                    $("#bridgeTable").css({height: $window.innerHeight - tableRect.y - 120});
+                }
+            }
+
             angular.element($window).bind('resize', function() {
-                $("#bridgeTable").css({height: $window.innerHeight - $("#bridgeTable").getRect().y - 120});
+                resizeTable();
             });
 
             $timeout(function() {
-                $("#bridgeTable").css({height: $window.innerHeight - $("#bridgeTable").getRect().y - 120});
+                resizeTable();
             });
 
             this.registerColumn = function(column){

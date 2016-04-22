@@ -5,6 +5,15 @@
 */
 
 angular.module('bridge.app', [
+    "ui.grid",
+    "ui.grid.pagination",
+    "ui.grid.cellNav",
+    "ui.grid.resizeColumns",
+    "ui.grid.pinning",
+    "ui.grid.selection",
+    "ui.grid.moveColumns",
+    "ui.grid.grouping",
+    "ui.grid.saveState",
     "ngRoute",
     "bridge.service",
     "lib.utils",

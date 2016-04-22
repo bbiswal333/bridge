@@ -1,13 +1,14 @@
 describe("The bridge table directive", function(){
-    var $rootScope, $compile;
+    var $rootScope, $compile, $timeout;
 
     beforeEach(function(){
         module('templates');
         module('bridge.controls');
 
-        inject(function(_$rootScope_, _$compile_){
+        inject(function(_$rootScope_, _$compile_, _$timeout_){
             $rootScope = _$rootScope_;
             $compile = _$compile_;
+            $timeout = _$timeout_;
         });
 
         $rootScope.testdata = [{
@@ -25,10 +26,8 @@ describe("The bridge table directive", function(){
     it("should display me a table with three rows and two columns", function(){
         var element = angular.element('' +
             '<bridge.table table-data="testdata" >' +
-                '<bridge.table-column-sorter>' +
-                    "<bridge.table-column column-id=\"1\" header=\"'Test'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute'\">{{row.testattribute}}</bridge.table-column>" +
-                    "<bridge.table-column column-id=\"2\" header=\"'Test'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute2'\">{{row.testattribute2}}</bridge.table-column>" +
-                '</bridge.table-column-sorter>' +
+                    "<bridge.table-column header=\"'Test'\" order-by=\"testattribute\" field=\"testattribute\"></bridge.table-column>" +
+                    "<bridge.table-column header=\"'Test 2'\" order-by=\"testattribute2\" field=\"testattribute2\"></bridge.table-column>" +
             '</bridge.table>');
 
         $compile(element)($rootScope);
@@ -38,37 +37,68 @@ describe("The bridge table directive", function(){
     });
 
     it("should not display one of the two columns", function(){
-        $rootScope.visibility = [true, false];
+        $rootScope.tableSettings = {
+            state: {
+                columns: [{
+                    name: 'Test',
+                    pinned: "",
+                    sort: {},
+                    visible: true,
+                    width: 240
+                }, {
+                    name: 'Test 2',
+                    pinned: "",
+                    sort: {},
+                    visible: false,
+                    width: 240
+                }]
+            }
+        };
 
         var element = angular.element('' +
-            '<bridge.table table-data="testdata" >' +
-                '<bridge.table-column-sorter>' +
-                    "<bridge.table-column column-id=\"1\" header=\"'Test'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute'\" visible='parentScope.visibility[0]'>{{row.testattribute}}</bridge.table-column>" +
-                    "<bridge.table-column column-id=\"2\" header=\"'Test'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute2'\" visible='parentScope.visibility[1]'>{{row.testattribute2}}</bridge.table-column>" +
-                '</bridge.table-column-sorter>' +
+            '<bridge.table table-data="testdata" table-settings="tableSettings" >' +
+                    "<bridge.table-column header=\"'Test'\" order-by=\"testattribute\" field=\"testattribute\"></bridge.table-column>" +
+                    "<bridge.table-column header=\"'Test 2'\" order-by=\"testattribute2\" field=\"testattribute2\"></bridge.table-column>" +
             '</bridge.table>');
 
         $compile(element)($rootScope);
         $rootScope.$digest();
+        $timeout.flush(); // needed to apply the tableSettings because their are encapsulated in a $timeout in the table directive
 
-        expect(element.find(".box-title.col-sm-1").length).toBe(1);
+        expect(element.find(".ui-grid-header-cell").length).toBe(2); // 1 for the actual column and 1 for the selector cell that is the first cell in each row
     });
 
     it("should sort the table columns", function(){
-        $rootScope.columnOrder = [2, 0];
+        $rootScope.tableSettings = {
+            state: {
+                columns: [{
+                    name: 'Test 2',
+                    pinned: "",
+                    sort: {},
+                    visible: true,
+                    width: 240
+
+                }, {
+                    name: 'Test 1',
+                    pinned: "",
+                    sort: {},
+                    visible: true,
+                    width: 240
+                }]
+            }
+        };
 
         var element = angular.element('' +
-            '<bridge.table table-data="testdata" >' +
-                '<bridge.table-column-sorter>' +
-                    "<bridge.table-column column-id=\"1\" header=\"'Test 1'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute'\" column-order='parentScope.columnOrder[0]'>{{row.testattribute}}</bridge.table-column>" +
-                    "<bridge.table-column column-id=\"2\" header=\"'Test 2'\" column-size-class=\"'col-sm-1'\" order-by=\"'testattribute2'\" column-order='parentScope.columnOrder[1]'>{{row.testattribute2}}</bridge.table-column>" +
-                '</bridge.table-column-sorter>' +
+            '<bridge.table table-data="testdata" table-settings="tableSettings" >' +
+                    "<bridge.table-column header=\"'Test 1'\" order-by=\"testattribute\" field=\"testattribute\"></bridge.table-column>" +
+                    "<bridge.table-column header=\"'Test 2'\" order-by=\"testattribute2\" field=\"testattribute2\"></bridge.table-column>" +
             '</bridge.table>');
 
         $compile(element)($rootScope);
         $rootScope.$digest();
+        $timeout.flush(); // needed to apply the tableSettings because their are encapsulated in a $timeout in the table directive
 
-        expect(element.find(".box-title.col-sm-1")[0].innerHTML).toMatch(/Test 2/gi);
-        expect(element.find(".box-title.col-sm-1")[1].innerHTML).toMatch(/Test 1/gi);
+        expect(element.find(".ui-grid-header-cell-label")[0].innerHTML).toMatch(/Test 2/gi);
+        expect(element.find(".ui-grid-header-cell-label")[1].innerHTML).toMatch(/Test 1/gi);
     });
 });
