@@ -50,31 +50,40 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			};
 
 			this.toggleMilestoneType = function(sType) {
+				var that = this;
 				if(this.allMilestoneTypesActive()) {
 					milestoneTypes.length = 0;
 				}
-
-				if(milestoneTypes.indexOf(sType) === -1) {
-					milestoneTypes.push(sType);
-				} else {
-					milestoneTypes.splice(milestoneTypes.indexOf(sType), 1);
-					if(milestoneTypes.length === 0) {
-						this.enableAllMilestoneTypes();
-					}
+				if( typeof sType === 'string' ) {
+					sType = [ sType ];
 				}
-
+				sType.forEach(function(entry){
+					if(milestoneTypes.indexOf(entry) === -1) {
+						milestoneTypes.push(entry);
+					} else {
+						milestoneTypes.splice(milestoneTypes.indexOf(entry), 1);
+						if(milestoneTypes.length === 0) {
+							that.enableAllMilestoneTypes();
+						}
+					}
+				});
 			};
 
 			this.isMilestoneTypeActive = function(sType) {
+				var milestoneTypeIsActive = false;
 				if(this.allMilestoneTypesActive()) {
-					return true;
+					milestoneTypeIsActive = true;
 				} else {
-					if(milestoneTypes.indexOf(sType) >= 0) {
-						return true;
-					} else {
-						return false;
+					if( typeof sType === 'string' ) {
+						sType = [ sType ];
+					}
+					for(var sValue in sType){
+						if(milestoneTypes.indexOf(sType[sValue]) >= 0){
+							milestoneTypeIsActive = true;
+						}
 					}
 				}
+				return milestoneTypeIsActive;
 			};
 
 			this.isInitialized = function() {

@@ -1,17 +1,37 @@
 ﻿<div class="programMilestones" style="overflow-y: auto; height: 145px; overflow-x: auto; width: 100%; white-space: nowrap;">
 	<div class="selected_programs">{{programs.length}} Programs selected</div>
-	<div>Next Milestones:</div>
-	<div ng-repeat="i in getTimes(2) track by $index">
-		<div ng-if=true>
-		<!--<div ng-repeat="milestone in milestones">--> 
-			<div class="milestone_meta">{{milestones[$index].getMilestoneTypeAsStr()}} -
-			{{formattedDate(milestones[$index].getDate())}}</div> 
-			<div class="milestone_content">{{milestones[$index].getDeliveryName()}}</div> <br>
-			<div class="milestone_content_second">({{milestones[$index].getProgram().getName()}})</div> <br>
-		<!--	<span ng-show="milestone.getProgram().isSiriusProgram()"> - {{milestones[$index].getDeliveryName()}}</span> -->
+
+	<div ng-if="programs.length == 0"> No programs are selected. Please configure the app in the settings.</div>
+
+	<div ng-if="programs.length >= 1">
+		<div>Next Milestones:</div>
+		<div ng-if="milestones.length >= 2">
+			<div ng-repeat="i in getTimes(2) track by $index">
+				<div class="milestone_meta">{{milestones[$index].getMilestoneTypeAsStr()}} -
+				{{milestones[$index].getDateFormatted()}}</div> 
+				<div class="milestone_content">{{milestones[$index].getDeliveryName()}}</div> <br>
+				<div class="milestone_content_second">({{milestones[$index].getProgram().getName()}})</div> <br>
+			</div>
 		</div>
-	</div>
-	<div class="all_milestones">
-		<a href="#detail/programMilestones/{{metadata.instanceNumber}}"> View all {{milestones.length}} upcomming Program Milestones</a>
+		<div ng-if="milestones.length == 1">
+			<div ng-repeat="i in getTimes(1) track by $index">
+				<div class="milestone_meta">{{milestones[$index].getMilestoneTypeAsStr()}} -
+				{{milestones[$index].getDateFormatted()}}</div> 
+				<div class="milestone_content">{{milestones[$index].getDeliveryName()}}</div> <br>
+				<div class="milestone_content_second">({{milestones[$index].getProgram().getName()}})</div> <br>
+			</div>
+			</br>
+		</div>
+
+		<div ng-if="milestones.length == 0">
+			<div class="milestone_meta">-</div>
+			</br></br>
+		</div>
+			
+		</div>
+	
+		<div class="all_milestones">
+			<a href="#detail/programMilestones/{{metadata.instanceNumber}}"> View all {{milestones.length}} upcomming Program Milestones</a>
+		</div>
 	</div>
 </div>

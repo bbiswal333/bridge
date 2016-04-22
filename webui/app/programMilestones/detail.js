@@ -6,13 +6,9 @@ angular.module('app.programMilestones').controller('app.programMilestones.detail
 
     $scope.$parent.titleExtension = " - Program Milestones Details";
     $scope.filterText = '';
-    $scope.filterTable = function(){
-        return $scope.data.tableData;
-    };
 
-    $scope.data = dataFactory.getDataForAppId("app.programMilestones-" + $routeParams.instanceNumber);
-    $scope.data.tableData = [];
-    $scope.availableMilestoneTypes = ['ALL', 'RTC', 'DC', 'ECC', 'CC'];
+    var dataService = dataFactory.getDataForAppId("app.programMilestones-" + $routeParams.instanceNumber);
+    $scope.tableData = [];
 
     if (programMilestonesConfig.isInitialized === false) {
         programMilestonesConfig.initialize("app.programMilestones-" + $routeParams.instanceNumber);
@@ -21,37 +17,23 @@ angular.module('app.programMilestones').controller('app.programMilestones.detail
     $scope.config = programMilestonesConfig;
     $scope.programs = $scope.config.getPrograms();
     $scope.milestoneTypes = $scope.config.getMilestoneTypes();
+    $scope.availableMilestoneTypes = [{label: 'ALL', value:['ALL']},
+                                        {label:'DC', value:['0108']},
+                                        {label:'CC', value:['0210','0932']},
+                                        {label:'ECC', value:['0702','0922']},
+                                        {label:'RTC', value:['0714','0928']}
+                                    ];
     $scope.config.isInitialized().then(function() {
-        $scope.data.refreshMilestones().then(function() {
-            $scope.data.detailsData = $scope.data.getMilestones();
+        dataService.refreshMilestones().then(function() {
+            $scope.tableData = dataService.getMilestones();
         });
     });
 
     $scope.columnVisibility = true;
 
-    if(!$scope.data.tableData) {
-        $scope.data.tableData = $scope.data.refreshMilestones(); // also reload overview data in case we are navigating to the details page first and then navigate back to the overview page
-    }
-
     function updateTableData () {
-        $scope.data.tableData = [];
-        if($scope.data && $scope.data.detailsData)
-        {
-            $scope.data.detailsData.forEach(function(entry){
-                 if ( $scope.config.isMilestoneTypeActive(entry.getMilestoneTypeAsStr())) {
-                    $scope.data.tableData.push(entry);
-                }
-            });
-        }
+        dataService.refreshMilestones();
     }
-
-    $scope.$watch('data.detailsData', function ()
-    {
-        if($scope.data.detailsData && $scope.data.detailsData.length > 0)
-        {
-            updateTableData();
-        }
-    }, true);
 
     $scope.$watch('milestoneTypes', function() {
         updateTableData();
