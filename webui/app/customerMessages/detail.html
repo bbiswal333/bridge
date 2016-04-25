@@ -1,7 +1,6 @@
-<div ng-controller="app.customerMessages.detailController" style="box-sizing:border-box;">    
-    <div style="padding:30px;box-sizing:border-box;">                
+<div ng-controller="app.customerMessages.detailController" style="box-sizing:border-box;">
+    <div style="padding:30px;box-sizing:border-box;">
 
-    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
         <div class="btn-group" style="height:32px;max-width:100%;">
 			<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[statusMap[status].active];" class="btn btn-default" ng-click="statusMap[status].active = !statusMap[status].active" style="margin-bottom:20px;">{{status}}</span>
 
@@ -27,25 +26,20 @@
 
 		<br/>
 
-		<bridge.table table-data="tableData" filter="filterText">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Priority'" column-size-class="'col-sm-1'" order-by="'PRIORITY_DESCR'" column-order="parentScope.config.data.columnOrder[0]" visible="parentScope.config.data.columnVisibility[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'CATEGORY'" column-order="parentScope.config.data.columnOrder[1]" visible="parentScope.config.data.columnVisibility[1]">{{row.CATEGORY}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'Customer'" column-size-class="'col-sm-2'" order-by="'CUST_NAME'" column-order="parentScope.config.data.columnOrder[2]" visible="parentScope.config.data.columnVisibility[2]">{{row.CUST_NAME.__cdata}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Status'" column-size-class="'col-sm-2'" order-by="'STATUS_DESCR'" column-order="parentScope.config.data.columnOrder[3]" visible="parentScope.config.data.columnVisibility[3]">{{row.STATUS_DESCR}}</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Processor'" column-size-class="'col-sm-3'" order-by="'PROCESSOR_NAME'" column-order="parentScope.config.data.columnOrder[4]" visible="parentScope.config.data.columnVisibility[4]">
-					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR}}?s=60x60"
-						 class="im-reporter-img"
-						 style="height: 32px; vertical-align: initial; vertical-align: auto;"
-						 ng-if="row.PROCESSOR"></img>
-					<a href="mailto:{{row.processor_enh.mail}}"><p class="table-icon-small icon-mail"></p></a>
-					<a href="tel:{{row.processor_enh.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-					<a class="trunctedText clickable" ng-click="parentScope.userClick(row.processor_enh)" visible="parentScope.config.data.columnVisibility[0]">{{row.processor_enh.fullName}}</a>
-				</bridge.table-column>
-				<bridge.table-column column-id="6" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'" column-order="parentScope.config.data.columnOrder[5]" visible="parentScope.config.data.columnVisibility[5]">
-					<a class="trunctedText" target="_blank" href="{{row.URL_MESSAGE.toString()}}">{{row.DESCRIPTION.toString()}}</a>
-				</bridge.table-column>
-			</bridge.table-column-sorter>
+		<bridge.table table-data="tableData" table-settings="config.data.tableSettings">
+			<bridge.table-column header="'Priority'" column-width="120" field="PRIORITY_DESCR"></bridge.table-column>
+			<bridge.table-column header="'Component'" column-width="180" field="CATEGORY" ></bridge.table-column>
+			<bridge.table-column header="'Customer'" column-width="180" field="CUST_NAME.__cdata" ></bridge.table-column>
+			<bridge.table-column header="'Status'" column-width="180" field="STATUS_DESCR" ></bridge.table-column>
+			<bridge.table-column header="'Processor'" column-width="240" order-by="processor_enh.fullName" field="processor_enh.BNAME"
+								 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee 	id="row.entity.processor_enh.BNAME" first-name="row.entity.processor_enh.VORNA" last-name="row.entity.processor_enh.NACHN" phone="row.entity.processor_enh.TELNR"
+									email="row.entity.processor_enh.SMTP_MAIL">
+				</bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Description'" column-width="300" field="DESCRIPTION" order-by="DESCRIPTION">
+				<a class="trunctedText" target="_blank" href="{{row.entity.URL_MESSAGE.toString()}}">{{row.entity.DESCRIPTION.toString()}}</a>
+			</bridge.table-column>
 		</bridge.table>
 
     </div>

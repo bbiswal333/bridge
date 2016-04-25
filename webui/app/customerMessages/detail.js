@@ -130,14 +130,15 @@ angular.module('app.customerMessages').controller('app.customerMessages.detailCo
         },true);
 
         function dataReady(){
-            if (config.isInitialized === false){
-                config.initialize();
-            }
-
-            $scope.config = config;
             enhanceAllMessages();
         }
 
+
+        if (config.isInitialized === false){
+            config.initialize();
+        }
+
+        $scope.config = config;
         if (ticketData.isInitialized.value === false) {
             var promise = ticketData.initialize();
 
