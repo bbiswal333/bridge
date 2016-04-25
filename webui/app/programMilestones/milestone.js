@@ -48,7 +48,7 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 						break;
 					case '0108': typeAsStr = "DC";
 						break;
-					default: typeAsStr = sMilestoneTypeText.substr(0, 8) + (sMilestoneTypeText.length > 8 ? "..." : "");
+					default: typeAsStr = sMilestoneTypeText.substr(0, 15) + (sMilestoneTypeText.length > 15 ? "..." : "");
 				}
 				return typeAsStr;
 			};

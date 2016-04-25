@@ -5,22 +5,14 @@
 
 	<div ng-if="programs.length >= 1">
 		<div>Next Milestones:</div>
-		<div ng-if="milestones.length >= 2">
-			<div ng-repeat="i in getTimes(2) track by $index">
-				<div class="milestone_meta">{{milestones[$index].getMilestoneTypeAsStr()}} -
-				{{milestones[$index].getDateFormatted()}}</div> 
-				<div class="milestone_content">{{milestones[$index].getDeliveryName()}}</div> <br>
-				<div class="milestone_content_second">({{milestones[$index].getProgram().getName()}})</div> <br>
+		<div ng-if="milestones.length >= 1">
+			<div ng-repeat="milestone in milestones | limitTo:2" style="display: table">
+				<div class="milestone_row">
+					<div class="milestone_meta">{{milestone.getMilestoneTypeAsStr()}} -
+					{{milestone.getDateFormatted()}}</div> 
+					<div class="milestone_content">{{milestone.getDeliveryName()}} ({{milestone.getProgram().getName()}})</div>
+				</div>
 			</div>
-		</div>
-		<div ng-if="milestones.length == 1">
-			<div ng-repeat="i in getTimes(1) track by $index">
-				<div class="milestone_meta">{{milestones[$index].getMilestoneTypeAsStr()}} -
-				{{milestones[$index].getDateFormatted()}}</div> 
-				<div class="milestone_content">{{milestones[$index].getDeliveryName()}}</div> <br>
-				<div class="milestone_content_second">({{milestones[$index].getProgram().getName()}})</div> <br>
-			</div>
-			</br>
 		</div>
 
 		<div ng-if="milestones.length == 0">
