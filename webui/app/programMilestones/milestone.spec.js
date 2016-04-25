@@ -25,4 +25,39 @@ describe("Milestone", function() {
 		milestone = milestoneFactory.createInstance("Milestone 1", "2515-12-20", "10:15:50"); // too lazy to mock time - I don't plan to live in 2515 anyway - harr harrrr
 		expect(milestone.isUpcoming()).toEqual(true);
 	});
+
+	it("should map milestone number 0714 to text RTC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0714");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("RTC");
+	});
+
+	it("should map milestone number 0928 to text RTC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0928");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("RTC");
+	});
+
+	it("should map milestone number 0702 to text ECC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0702");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("ECC");
+	});
+
+	it("should map milestone number 0922 to text ECC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0922");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("ECC");
+	});
+
+	it("should map milestone number 0210 to text CC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0210");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("CC");
+	});
+
+	it("should map milestone number 0932 to text CC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0932");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("CC");
+	});
+
+	it("should map milestone number 0108 to text DC", function() {
+		var milestone = milestoneFactory.createInstance("Milestone 1", "2015-12-20", "10:15:50", {}, "Delivery 1", "0108");
+		expect(milestone.getMilestoneTypeAsStr()).toEqual("DC");
+	});
 });
