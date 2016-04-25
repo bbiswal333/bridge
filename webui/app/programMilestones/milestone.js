@@ -1,6 +1,6 @@
 angular.module('app.programMilestones').service("app.programMilestones.milestoneFactory", ["app.programMilestones.timeParser", function(timeParser) {
 	var Milestone = (function() {
-		return function(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType){
+		return function(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType, sMilestoneTypeText){
 
 			this.getName = function() {
 				return sName;
@@ -48,14 +48,14 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 						break;
 					case '0108': typeAsStr = "DC";
 						break;
-					default: typeAsStr = sMilestoneType;
+					default: typeAsStr = sMilestoneTypeText.substr(0, 8) + (sMilestoneTypeText.length > 8 ? "..." : "");
 				}
 				return typeAsStr;
 			};
 		};
 	})();
 
-	this.createInstance = function(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType) {
-		return new Milestone(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType);
+	this.createInstance = function(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType, sMilestoneTypeText) {
+		return new Milestone(sName, sDate, sTime, oProgram, sDeliveryName, sMilestoneType, sMilestoneTypeText);
 	};
 }]);
