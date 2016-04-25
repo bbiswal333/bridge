@@ -1,6 +1,6 @@
 angular.module('bridge.controls', [ "mgcrea.ngStrap.tooltip", "bridge.service", "ui.grid", "ui.grid.pagination", "ui.grid.cellNav", "ui.grid.resizeColumns",
                                     "ui.grid.pinning", "ui.grid.selection", "ui.grid.moveColumns", "ui.grid.grouping", "ui.grid.saveState"]);
-angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", "uiGridConstants", "$filter", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService, uiGridConstants, $filter) {
+angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeout", "$compile", "$rootScope", "bridgeConfig", "bridgeDataService", function($window, $timeout, $compile, $rootScope, bridgeConfig, bridgeDataService) {
     return {
         restrict: 'E',
         templateUrl: 'bridge/controls/bridgeTable/bridgeTable.html',
@@ -82,8 +82,6 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
 
             $scope.$watch("filter", function() {
                 $scope.gridApi.grid.refresh();
-
-                //$scope.gridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
             });
 
             function resizeTable(){

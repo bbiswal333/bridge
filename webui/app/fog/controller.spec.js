@@ -16,7 +16,7 @@ describe('Gunning Fog Index - Controller', function () {
         };
 
         $provide.value("bridgeDataService", mockDataService);
-        
+
         $provide.value('app.fog.data', dataMock);
     }));
 

@@ -1,4 +1,4 @@
-angular.module('bridge.controls').directive('bridge.tableColumn', ['uiGridConstants', function(uiGridConstants) {
+angular.module('bridge.controls').directive('bridge.tableColumn', [function() {
     function stringComparison(a, b) {
         if(a.toUpperCase() > b.toUpperCase()) {
             return 1;
@@ -36,7 +36,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', ['uiGridConsta
             groupTemplate: '@',
             field: '@'
         },
-        controller: function($scope) {
+        controller: function() {
         },
         link: function ($scope, element, attrs, tableController) {
             if ($scope.visible === undefined || $scope.visible === "true"){

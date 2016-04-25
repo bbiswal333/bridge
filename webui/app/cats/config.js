@@ -21,7 +21,6 @@ angular.module("app.cats").service('app.cats.configService', ["app.cats.catsUtil
 	}
 
 	this.copyConfigIfLoaded = function (catsConfigService) {
-		var that = this;
 		if (!this.loaded) {
 			if (catsConfigService.favoriteItems) {
 				this.recalculateTaskIDs(catsConfigService.favoriteItems);
