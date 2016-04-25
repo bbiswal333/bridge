@@ -38,15 +38,79 @@ angular.module("app.internalIncidentsMitosis")
 				return deferred.promise;
 			}
 
-			function getQueryString(oConfig, akhResponsiblesComponents) {
-				var filter = "";
-				var programFilters = [];
-				filter += oConfig.programs.map(function(program) {
-					if(!program.exclude) {
-						programFilters.push("TP_PROGRAM eq '" + program.TP_PROGRAM + "'");
+			function getProgramSystemsFilter(oProgram) {
+				var excludedSystemsFilter = [];
+				if(oProgram.SYSTEMS && oProgram.SYSTEMS.length > 0) {
+					oProgram.SYSTEMS.map(function(oSystem) {
+						if(oSystem.exclude) {
+							excludedSystemsFilter.push("II_SYSTEM_ID ne '" + oSystem.value + "'");
+						}
+					});
+				}
+				if(excludedSystemsFilter.length > 0) {
+					return " and " + excludedSystemsFilter.join(" and ");
+				} else {
+					return "";
+				}
+			}
+
+			function getIncluded(aArray) {
+				var result = [];
+				aArray.map(function(item) {
+					if(!item.exclude) {
+						result.push(item);
 					}
 				});
-				return "(" + programFilters.join(" or ") + ")";
+				return result;
+			}
+
+			function getExcluded(aArray) {
+				var result = [];
+				aArray.map(function(item) {
+					if(item.exclude) {
+						result.push(item);
+					}
+				});
+				return result;
+			}
+
+			function getComponentsFilter(oConfig) {
+				var componentFilter = [];
+				var includedComponentFilters = [];
+				var excludedComponentFilters = [];
+				getIncluded(oConfig.components).map(function(component) {
+					if(component.value.indexOf("*") >= 0) {
+						includedComponentFilters.push("startswith(II_CATEGORY, '" + component.value.replace('*', '') + "')");
+					} else {
+						includedComponentFilters.push("II_CATEGORY eq '" + component.value + "'");
+					}
+				});
+				getExcluded(oConfig.components).map(function(component) {
+					if(component.value.indexOf("*") >= 0) {
+						excludedComponentFilters.push("not startswith(II_CATEGORY, '" + component.value.replace('*', '') + "')");
+					} else {
+						excludedComponentFilters.push("II_CATEGORY ne '" + component.value + "'");
+					}
+				});
+				if(includedComponentFilters.length > 0) {
+					componentFilter.push("(" + includedComponentFilters.join(" or ") + ")");
+				}
+				if(excludedComponentFilters.length > 0) {
+					componentFilter.push(excludedComponentFilters.join(" and "));
+				}
+				return componentFilter.join(" and ");
+			}
+
+			function getQueryString(oConfig, akhResponsiblesComponents) {
+				var programFilters = [];
+				var componentFilter = getComponentsFilter(oConfig);
+				oConfig.programs.map(function(program) {
+					if(!program.exclude) {
+						programFilters.push("(TP_PROGRAM eq '" + program.TP_PROGRAM + "'" + getProgramSystemsFilter(program) + ")");
+					}
+				});
+
+				return "(" + programFilters.join(" or ") + ")" + (componentFilter ? " and (" + componentFilter + ")" : "");
 			}
 
 			function loadSummary(oDataObject, oConfig, deferred) {
