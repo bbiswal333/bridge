@@ -11,8 +11,8 @@ angular.module('app.imtps').service('app.imtps.msgReaderData',
     var that = this;
 
     this.loadByTestCaseName = function() {
-
-        $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        //$http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&user=D021779&sap-language=en&origin=' + $window.location.origin
+        $http.get( gtpService + '?testplans=' + configservice.data.tcQuery + '&sap-language=en&origin=' + $window.location.origin
         ).success(function (data) {
             data = new X2JS().xml_str2json(data);
             that.backendTickets = data.abap.values.TC_MESSAGES;
@@ -27,8 +27,8 @@ angular.module('app.imtps').service('app.imtps.msgReaderData',
     };
 
     this.loadByTesterWorklist = function() {
-        //this.userid = bridgeDataService.getUserInfo().BNAME.toUpperCase();
-        $http.get( gtpService + '?sap-language=en&origin=' + $window.location.origin//&sap-user=' + that.userid + '&origin=' + location.origin
+        //$http.get( gtpService + '?sap-language=en&user=D021779&origin=' + $window.location.origin
+        $http.get( gtpService + '?sap-language=en&origin=' + $window.location.origin
         ).success(function (data) {
 
             data = new X2JS().xml_str2json(data);
