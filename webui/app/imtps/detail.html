@@ -4,20 +4,20 @@
 		<br/>
 
 		<bridge.table table-data="tempobject">
-				<bridge.table-column header="'Test Plan'" column-size-class="'col-sm-3'" field="PLAN_TITLE"></bridge.table-column>
-				<bridge.table-column header="'Prio'" column-size-class="'col-sm-1'" field="MSG_PRIO_TEXT"></bridge.table-column>
-				<bridge.table-column header="'Status'" column-size-class="'col-sm-1'" field="MSG_STATUS_TEXT"></bridge.table-column>
-				<bridge.table-column header="'CreatedBy'" column-size-class="'col-sm-2'" field="MSG_CREATED_BY_UID" order-by="MSG_CREATED_BY_FULLNAME"
+				<bridge.table-column header="'Test Plan'" field="PLAN_TITLE"></bridge.table-column>
+				<bridge.table-column header="'Prio'" field="MSG_PRIO_TEXT"></bridge.table-column>
+				<bridge.table-column header="'Status'" field="MSG_STATUS_TEXT"></bridge.table-column>
+				<bridge.table-column header="'CreatedBy'" field="MSG_CREATED_BY_UID" order-by="MSG_CREATED_BY_FULLNAME"
 									 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
 					<bridge.employee id="row.entity.MSG_CREATED_BY_UID" first-name="row.entity.employee_created.VORNA" last-name="row.entity.employee_created.NACHN" phone="row.entity.employee_created.tel" email="row.entity.employee_created.mail">
 					</bridge.employee>
 				</bridge.table-column>
-				<bridge.table-column header="'Processor'" column-size-class="'col-sm-2'" field="MSG_PROCESSOR_UID" order-by="MSG_PROCESSOR_NAME"
+				<bridge.table-column header="'Processor'" field="MSG_PROCESSOR_UID" order-by="MSG_PROCESSOR_NAME"
 									 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
 					<bridge.employee id="row.entity.MSG_PROCESSOR_UID" first-name="row.entity.employee_process.VORNA" last-name="row.entity.employee_process.NACHN" phone="row.entity.employee_process.tel" email="row.entity.employee_process.mail">
 					</bridge.employee>
 				</bridge.table-column>
-				<bridge.table-column header="'Description'" column-size-class="'col-sm-3'" order-by="MSG_SHORT_TEXT">
+				<bridge.table-column header="'Description'" order-by="MSG_SHORT_TEXT">
 					<a target="_blank" href="https://gtpmain.wdf.sap.corp:443/sap/bc/webdynpro/qce/msg_gui_edit?csinsta={{row.entity.MSG_CSINSTA}}&mnumm={{row.entity.MSG_MNUMM}}&myear={{row.entity.MSG_MYEAR}}&sap-language=en#">{{row.entity.MSG_SHORT_TEXT}}</a>
 				</bridge.table-column>
 		</bridge.table>
