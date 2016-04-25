@@ -3,121 +3,80 @@ angular.module("app.internalIncidentsMitosis")
 	function ($http, $q, $window, $timeout) {
 		var AppData = (function() {
 			function doDummyRequestInOrderToGetAroundIEBug() {
-				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
+				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata", withCredentials: true}).success(function(){
 					//Oh happy day...
 				});
 			}
 			doDummyRequestInOrderToGetAroundIEBug();
 
-			function toDate(dateString) {
-				if(dateString) {
-					return new Date(dateString);
-				} else {
-					return "";
-				}
-	        }
+			function getRequestBody(sQueryString, iPrio) {
+				return  "--batch\r\n" +
+						"Content-Type: application/http\r\n" +
+						"Content-Transfer-Encoding: binary\r\n" +
+						"\r\n" +
+						"GET " + encodeURI("IncidentByProgram?$format=json&$filter=II_PRIORITY_ID eq '" + iPrio + "' and " + sQueryString) + " HTTP/1.1\r\n" +
+						"\r\n" +
+						"\r\n" +
+						"--batch--";
+			}
 
-	        function addSystems(program) {
-	        	var result = "";
-	        	if(program.SYSTEMS.length > 0) {
-	        		for(var i = 0, length = program.SYSTEMS.length; i < length; i++) {
-	        			if(program.SYSTEMS[i].exclude) {
-	        				result += program.SYSTEMS[i].value + ";";
-	        			}
-	        		}
-	        	}
-	        	return result;
-	        }
+			function doRequests(oDataObject, sQueryString) {
+				var deferred = $q.defer();
+				//console.log(getRequestBody(sQueryString, 1));
+				$q.all([
+					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
+					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 2), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
+					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
+					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 4), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}})
+				]).then(function() {
+					oDataObject.summary.prio1 = 1;
+					oDataObject.summary.prio2 = 2;
+					oDataObject.summary.prio3 = 3;
+					oDataObject.summary.prio4 = 4;
+					deferred.resolve();
+				});
+				return deferred.promise;
+			}
 
-	        function getFilterFromConfig(config) {
-	        	var deferred = $q.defer();
+			function getQueryString(oConfig, akhResponsiblesComponents) {
+				var filter = "";
+				var programFilters = [];
+				filter += oConfig.programs.map(function(program) {
+					if(!program.exclude) {
+						programFilters.push("TP_PROGRAM eq '" + program.TP_PROGRAM + "'");
+					}
+				});
+				return "(" + programFilters.join(" or ") + ")";
+			}
 
-	        	function buildFilterAndReturn(akhResponsiblesComponents) {
-	        		var filter = {programFilter: "", systemFilter: "", processorFilter: "", componentFilter: ""};
-		        	filter.programFilter += config.programs.map(function(program) {
-		        		return (program.exclude ? "!" : "") + program.TP_PROGRAM + ";" + addSystems(program);
-		        	}).join("|");
-		        	filter.systemFilter += (config.excludeSystems ? "!" : "") + config.systems.join(";").toUpperCase();
-
-		        	filter.processorFilter += (config.excludeProcessors ? "!" : "") + config.processors.map(function(processor) { return processor.BNAME; }).join(";");
-
-		        	filter.componentFilter += config.components.concat(akhResponsiblesComponents).map(function(component) {
-		        		if(component.exclude) {
-		        			return "!" + component.value.toUpperCase();
-		        		} else {
-		        			return component.value.toUpperCase();
-		        		}
-		        	}).join(";");
-		        	deferred.resolve(filter);
-	        	}
-
-	        	if(config.akhResponsibles.length > 0) {
-	        		$q.all(config.akhResponsibles.map(function(responsible) {
+			function loadSummary(oDataObject, oConfig, deferred) {
+				if(oConfig.akhResponsibles.length > 0) {
+					$q.all(oConfig.akhResponsibles.map(function(responsible) {
 	        			return responsible.getComponents();
 	        		})).then(function(results) {
-	        			buildFilterAndReturn([].concat.apply([], results).map(function(component) {
-	        				component.exclude = false;
-	        				return component;
-	        			}));
+	        			doRequests(oDataObject, getQueryString(oConfig, results)).then(function() {
+	        				deferred.resolve();
+	        			});
 	        		});
-	        	} else {
-	        		$timeout(function() {
-	        			buildFilterAndReturn([]);
-	        		});
-	        	}
-
-				return deferred.promise;
-	        }
-
-	        function transform(incident) {
-	        	incident.PRIORITY_KEY = incident.II_PRIORITY_TEXT.substring(0, 1);
-	            incident.PRIORITY_DESCR = incident.II_PRIORITY_TEXT.substring(2);
-	        	incident.II_CREATED_AT = toDate(incident.II_CREATED_AT);
-	        	incident.II_CHANGED_AT = toDate(incident.II_CHANGED_AT);
-	        	incident.II_MPT_EXPIRY_DATE = toDate(incident.II_MPT_EXPIRY_DATE);
-	        	return incident;
-	        }
+				} else {
+					doRequests(oDataObject, getQueryString(oConfig)).then(function() {
+						deferred.resolve();
+					});
+				}
+			}
 
 			return function() {
-				var that = this;
-
-				this.loadData = function(config) {
+				this.summary = {prio1: 0, prio2: 0, prio3: 0, prio4: 0};
+				this.loadSummary = function(config) {
 					var deferred = $q.defer();
-					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0 && config.processors.length === 0) {
-						that.prio1 = [];
-						that.prio2 = [];
-						that.prio3 = [];
-						that.prio4 = [];
-						deferred.resolve();
+					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0 && config.processors.length === 0 && config.akhResponsibles.length === 0) {
+						this.summary.prio1 = 0;
+						this.summary.prio2 = 0;
+						this.summary.prio3 = 0;
+						this.summary.prio4 = 0;
+						$timeout(function() { deferred.resolve(); });
 					} else {
-						getFilterFromConfig(config).then(function(filter) {
-							var url = "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin;
-							$http({method: 'POST', url: url, withCredentials: true, data: filter, headers: { 'Content-Type': 'text/plain' }}).success(function(data){
-								that.limit = data.limit;
-								that.limitExceeded = data.limitExceeded;
-								that.prio1 = [];
-								that.prio2 = [];
-								that.prio3 = [];
-								that.prio4 = [];
-								data.incidents.map(function(incident) {
-									switch(incident.II_PRIORITY_TEXT) {
-										case "1-Very High":
-											that.prio1.push(transform(incident));
-											break;
-										case "2-High":
-											that.prio2.push(transform(incident));
-											break;
-										case "3-Medium":
-											that.prio3.push(transform(incident));
-											break;
-										case "4-Low":
-											that.prio4.push(transform(incident));
-											break;
-									}
-								});
-								deferred.resolve();
-							});
-						});
+						loadSummary(this, config, deferred);
 					}
 					return deferred.promise;
 				};
