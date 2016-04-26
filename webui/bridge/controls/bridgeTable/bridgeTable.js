@@ -7,7 +7,6 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
         transclude: true,
         scope: {
             tableData: "=",
-            filter: "=",
             defaultSortBy: "&?",
             tableSettings: "="
         },
