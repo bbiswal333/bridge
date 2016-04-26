@@ -9,30 +9,51 @@ angular.module("app.internalIncidentsMitosis")
 			}
 			doDummyRequestInOrderToGetAroundIEBug();
 
-			function getRequestBody(sQueryString, iPrio) {
+			function getRequestBody(sEntity, sQueryString, iPrio) {
 				return  "--batch\r\n" +
 						"Content-Type: application/http\r\n" +
 						"Content-Transfer-Encoding: binary\r\n" +
 						"\r\n" +
-						"GET " + encodeURI("IncidentByProgram?$format=json&$filter=II_PRIORITY_ID eq '" + iPrio + "' and " + sQueryString) + " HTTP/1.1\r\n" +
+						"GET " + encodeURI(sEntity + "?$format=json&$filter=II_PRIORITY_ID eq '" + iPrio + "' and " + sQueryString) + " HTTP/1.1\r\n" +
 						"\r\n" +
 						"\r\n" +
 						"--batch--";
 			}
 
-			function doRequests(oDataObject, sQueryString) {
+			function parseData(sSummary) {
+				var regexp = /\r\n\r\n(.*)\r\n--[a-zA-Z0-9]{33}--\r\n$/gi;
+				var results = regexp.exec(sSummary);
+				return JSON.parse(results[1]);
+			}
+
+			function doRequests(oDataObject, oQueryStrings) {
 				var deferred = $q.defer();
-				//console.log(getRequestBody(sQueryString, 1));
-				$q.all([
-					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
-					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 2), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
-					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}}),
-					$http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(sQueryString, 4), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}})
-				]).then(function() {
-					oDataObject.summary.prio1 = 1;
-					oDataObject.summary.prio2 = 2;
-					oDataObject.summary.prio3 = 3;
-					oDataObject.summary.prio4 = 4;
+				var requests = {};
+				if(oQueryStrings.programQuery) {
+					requests.programPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.programPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.programPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.programPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+				}
+				if(oQueryStrings.nonProgramQuery) {
+					requests.nonProgramPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.nonProgramPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.nonProgramPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					requests.nonProgramPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+				}
+				$q.all(requests).then(function(results) {
+					if(oQueryStrings.programQuery) {
+						oDataObject.summary.prio1 = parseData(results.programPrio1.data).d.results.length;
+						oDataObject.summary.prio2 = parseData(results.programPrio2.data).d.results.length;
+						oDataObject.summary.prio3 = parseData(results.programPrio3.data).d.results.length;
+						oDataObject.summary.prio4 = parseData(results.programPrio4.data).d.results.length;
+					}
+					if(oQueryStrings.nonProgramQuery) {
+						oDataObject.summary.prio1 = parseData(results.nonProgramPrio1.data).d.results.length;
+						oDataObject.summary.prio2 = parseData(results.nonProgramPrio2.data).d.results.length;
+						oDataObject.summary.prio3 = parseData(results.nonProgramPrio3.data).d.results.length;
+						oDataObject.summary.prio4 = parseData(results.nonProgramPrio4.data).d.results.length;
+					}
 					deferred.resolve();
 				});
 				return deferred.promise;
@@ -74,18 +95,22 @@ angular.module("app.internalIncidentsMitosis")
 				return result;
 			}
 
-			function getComponentsFilter(oConfig) {
+			function getComponentsFilter(oConfig, akhResponsiblesComponents) {
 				var componentFilter = [];
 				var includedComponentFilters = [];
 				var excludedComponentFilters = [];
-				getIncluded(oConfig.components).map(function(component) {
+				var totalComponents = oConfig.components;
+				if(akhResponsiblesComponents && akhResponsiblesComponents.length > 0) {
+					totalComponents = totalComponents.concat(akhResponsiblesComponents);
+				}
+				getIncluded(totalComponents).map(function(component) {
 					if(component.value.indexOf("*") >= 0) {
 						includedComponentFilters.push("startswith(II_CATEGORY, '" + component.value.replace('*', '') + "')");
 					} else {
 						includedComponentFilters.push("II_CATEGORY eq '" + component.value + "'");
 					}
 				});
-				getExcluded(oConfig.components).map(function(component) {
+				getExcluded(totalComponents).map(function(component) {
 					if(component.value.indexOf("*") >= 0) {
 						excludedComponentFilters.push("not startswith(II_CATEGORY, '" + component.value.replace('*', '') + "')");
 					} else {
@@ -101,16 +126,49 @@ angular.module("app.internalIncidentsMitosis")
 				return componentFilter.join(" and ");
 			}
 
-			function getQueryString(oConfig, akhResponsiblesComponents) {
+			function getProcessorsFilter(aFilters, aProcessors, bExcludeProcessors) {
+				if(aProcessors.length > 0) {
+					aFilters.push("(" + aProcessors.map(function(processor) {
+						return "II_PROCESSOR_ID " + (bExcludeProcessors ? "ne" : "eq") + " '" + processor.BNAME + "'";
+					}).join(bExcludeProcessors ? " and " : " or ") + ")");
+				}
+			}
+
+			function getSystemFilter(aFilters, aSystems, bExcludeSystems) {
+				if(aSystems.length > 0) {
+					aFilters.push("(" + aSystems.map(function(system) {
+						return "II_SYSTEM_ID " + (bExcludeSystems ? "ne" : "eq") + " '" + system + "'";
+					}).join(bExcludeSystems ? " and " : " or ") + ")");
+				}
+			}
+
+			function getQueryStrings(oConfig, akhResponsiblesComponents) {
+				var queryStrings = {};
 				var programFilters = [];
-				var componentFilter = getComponentsFilter(oConfig);
+				var componentFilter = getComponentsFilter(oConfig, akhResponsiblesComponents);
 				oConfig.programs.map(function(program) {
 					if(!program.exclude) {
 						programFilters.push("(TP_PROGRAM eq '" + program.TP_PROGRAM + "'" + getProgramSystemsFilter(program) + ")");
 					}
 				});
 
-				return "(" + programFilters.join(" or ") + ")" + (componentFilter ? " and (" + componentFilter + ")" : "");
+				if(programFilters.length > 0) {
+					queryStrings.programQuery = "(" + programFilters.join(" or ") + ")" + (componentFilter ? " and (" + componentFilter + ")" : "");
+				}
+				if(oConfig.processors.length > 0 || oConfig.systems.length > 0 || (oConfig.components.length > 0 && oConfig.programs.length === 0)) {
+					var orFilters = [];
+					var andFilters = [];
+					getProcessorsFilter(orFilters, oConfig.processors, oConfig.excludeProcessors);
+					getSystemFilter(orFilters, oConfig.systems, oConfig.excludeSystems);
+					if(orFilters.join(" or ")) {
+						andFilters.push("(" + orFilters.join(" or ") + ")");
+					}
+					if(componentFilter) {
+						andFilters.push("(" + componentFilter + ")");
+					}
+					queryStrings.nonProgramQuery = andFilters.join(" and ");
+				}
+				return queryStrings;
 			}
 
 			function loadSummary(oDataObject, oConfig, deferred) {
@@ -118,12 +176,12 @@ angular.module("app.internalIncidentsMitosis")
 					$q.all(oConfig.akhResponsibles.map(function(responsible) {
 	        			return responsible.getComponents();
 	        		})).then(function(results) {
-	        			doRequests(oDataObject, getQueryString(oConfig, results)).then(function() {
+	        			doRequests(oDataObject, getQueryStrings(oConfig, Array.prototype.concat.apply([], results))).then(function() {
 	        				deferred.resolve();
 	        			});
 	        		});
 				} else {
-					doRequests(oDataObject, getQueryString(oConfig)).then(function() {
+					doRequests(oDataObject, getQueryStrings(oConfig)).then(function() {
 						deferred.resolve();
 					});
 				}
