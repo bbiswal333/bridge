@@ -9,7 +9,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	$scope.currentConfigValues = incidentConfig;
 
 	$scope.searchPrograms = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/programs.xsodata/Programs?$format=json&$top=10&$filter=indexof(toupper(TP_PROGRAM_TXT), '" + query.toUpperCase() + "') ne -1").then(function(response) {
+		return $http.get("https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/programs.xsodata/Programs?$format=json&$top=10&$filter=indexof(toupper(TP_PROGRAM_TXT), '" + query.toUpperCase() + "') ne -1").then(function(response) {
 			return response.data.d.results;
 		});
 	};
@@ -33,7 +33,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	};
 
 	$scope.searchComponents = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
+		return $http.get("https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$top=10&$filter=startswith(PS_POSID, '" + query.toUpperCase() + "')").then(function(response) {
 			return response.data.d.results;
 		});
 	};
@@ -64,7 +64,7 @@ angular.module('app.internalIncidentsMitosis').appIncidentSettings = ['$scope', 
 	};
 
 	$scope.searchSystems = function(query) {
-		return $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/systems.xsodata/System?$format=json&$top=15&$filter=startswith(II_SYSTEM_ID, '" + query.toUpperCase() + "')").then(function(response) {
+		return $http.get("https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/systems.xsodata/System?$format=json&$top=15&$filter=startswith(II_SYSTEM_ID, '" + query.toUpperCase() + "')").then(function(response) {
 			return response.data.d.results;
 		});
 	};

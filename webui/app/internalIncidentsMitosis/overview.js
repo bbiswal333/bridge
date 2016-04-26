@@ -16,14 +16,14 @@ angular.module('app.internalIncidentsMitosis').directive('app.internalIncidentsM
         function setAppDataFromIncidentData() {
         	$scope.limit = incidentData.limit;
         	$scope.limitExceeded = incidentData.limitExceeded;
-        	$scope.numPrio1 = incidentData.prio1.length;
-			$scope.numPrio2 = incidentData.prio2.length;
-			$scope.numPrio3 = incidentData.prio3.length;
-			$scope.numPrio4 = incidentData.prio4.length;
+        	$scope.numPrio1 = incidentData.summary.prio1;
+			$scope.numPrio2 = incidentData.summary.prio2;
+			$scope.numPrio3 = incidentData.summary.prio3;
+			$scope.numPrio4 = incidentData.summary.prio4;
         }
 
         $scope.handleIncidents = function() {
-			$scope.loadingOpenIncidentsPromise = incidentData.loadData(incidentConfig).then(function() {
+			$scope.loadingOpenIncidentsPromise = incidentData.loadSummary(incidentConfig).then(function() {
 				setAppDataFromIncidentData();
 			});
 		};
