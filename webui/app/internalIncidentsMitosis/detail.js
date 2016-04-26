@@ -7,20 +7,16 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
         $scope.config = incidentConfig;
 
         function setIncidents() {
-            $scope.incidents = incidentData[$routeParams.priority];
+            $scope.incidents = incidentData.details[$routeParams.priority];
         }
 
         if(!incidentConfig.isInitialized) {
         	incidentConfig.initialize();
         }
 
-        if(!incidentData.prio1) {
-        	incidentData.loadData(incidentConfig).then(function() {
-        		setIncidents();
-        	});
-        } else {
+        incidentData.loadDetails(incidentConfig).then(function() {
         	setIncidents();
-        }
+        });
 
         function toFixedLength(value) {
             if(value.toString().length === 1) {

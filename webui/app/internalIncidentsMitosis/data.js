@@ -26,19 +26,19 @@ angular.module("app.internalIncidentsMitosis")
 				return JSON.parse(results[1]);
 			}
 
-			function createRequests(oQueryStrings) {
+			function createRequests(oQueryStrings, bSummary) {
 				var oRequests = {};
 				if(oQueryStrings.programQuery) {
-					oRequests.programPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.programPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.programPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.programPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("IncidentByProgram", oQueryStrings.programQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.programPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "IncidentByProgram" : "IncidentByProgramDetails", oQueryStrings.programQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.programPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "IncidentByProgram" : "IncidentByProgramDetails", oQueryStrings.programQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.programPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "IncidentByProgram" : "IncidentByProgramDetails", oQueryStrings.programQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.programPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "IncidentByProgram" : "IncidentByProgramDetails", oQueryStrings.programQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
 				}
 				if(oQueryStrings.nonProgramQuery) {
-					oRequests.nonProgramPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.nonProgramPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.nonProgramPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
-					oRequests.nonProgramPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody("Incident", oQueryStrings.nonProgramQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.nonProgramPrio1 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "Incident" : "IncidentDetails", oQueryStrings.nonProgramQuery, 1), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.nonProgramPrio2 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "Incident" : "IncidentDetails", oQueryStrings.nonProgramQuery, 3), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.nonProgramPrio3 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "Incident" : "IncidentDetails", oQueryStrings.nonProgramQuery, 5), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
+					oRequests.nonProgramPrio4 = $http.post("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", getRequestBody(bSummary ? "Incident" : "IncidentDetails", oQueryStrings.nonProgramQuery, 9), {headers: {"Content-Type": "multipart/mixed; boundary=batch"}});
 				}
 				return oRequests;
 			}
@@ -56,35 +56,41 @@ angular.module("app.internalIncidentsMitosis")
 				}
 			}
 
-			function doRequests(oDataObject, oQueryStrings) {
+			function addItemsOfAToB(aArrayA, aArrayB) {
+				aArrayA.map(function(item) {
+					aArrayB.push(item);
+				});
+			}
+
+			function doRequests(oDataObject, oQueryStrings, bSummary) {
 				var deferred = $q.defer();
-				$q.all(createRequests(oQueryStrings)).then(function(results) {
-					oDataObject.summary.dataPrio1 = [];
-					oDataObject.summary.dataPrio2 = [];
-					oDataObject.summary.dataPrio3 = [];
-					oDataObject.summary.dataPrio4 = [];
+				$q.all(createRequests(oQueryStrings, bSummary)).then(function(results) {
+					oDataObject.details.prio1.length = 0;
+					oDataObject.details.prio2.length = 0;
+					oDataObject.details.prio3.length = 0;
+					oDataObject.details.prio4.length = 0;
 					if(oQueryStrings.programQuery) {
-						oDataObject.summary.dataPrio1 = parseData(results.programPrio1.data).d.results;
-						oDataObject.summary.dataPrio2 = parseData(results.programPrio2.data).d.results;
-						oDataObject.summary.dataPrio3 = parseData(results.programPrio3.data).d.results;
-						oDataObject.summary.dataPrio4 = parseData(results.programPrio4.data).d.results;
+						addItemsOfAToB(parseData(results.programPrio1.data).d.results, oDataObject.details.prio1);
+						addItemsOfAToB(parseData(results.programPrio2.data).d.results, oDataObject.details.prio2);
+						addItemsOfAToB(parseData(results.programPrio3.data).d.results, oDataObject.details.prio3);
+						addItemsOfAToB(parseData(results.programPrio4.data).d.results, oDataObject.details.prio4);
 					}
 					if(oQueryStrings.nonProgramQuery) {
-						oDataObject.summary.dataPrio1 = oDataObject.summary.dataPrio1.concat(parseData(results.nonProgramPrio1.data).d.results);
-						oDataObject.summary.dataPrio2 = oDataObject.summary.dataPrio2.concat(parseData(results.nonProgramPrio2.data).d.results);
-						oDataObject.summary.dataPrio3 = oDataObject.summary.dataPrio3.concat(parseData(results.nonProgramPrio3.data).d.results);
-						oDataObject.summary.dataPrio4 = oDataObject.summary.dataPrio4.concat(parseData(results.nonProgramPrio4.data).d.results);
+						addItemsOfAToB(parseData(results.nonProgramPrio1.data).d.results, oDataObject.details.prio1);
+						addItemsOfAToB(parseData(results.nonProgramPrio2.data).d.results, oDataObject.details.prio2);
+						addItemsOfAToB(parseData(results.nonProgramPrio3.data).d.results, oDataObject.details.prio3);
+						addItemsOfAToB(parseData(results.nonProgramPrio4.data).d.results, oDataObject.details.prio4);
 					}
 
-					removeDuplicates(oDataObject.summary.dataPrio1);
-					removeDuplicates(oDataObject.summary.dataPrio2);
-					removeDuplicates(oDataObject.summary.dataPrio3);
-					removeDuplicates(oDataObject.summary.dataPrio4);
+					removeDuplicates(oDataObject.details.prio1);
+					removeDuplicates(oDataObject.details.prio2);
+					removeDuplicates(oDataObject.details.prio3);
+					removeDuplicates(oDataObject.details.prio4);
 
-					oDataObject.summary.prio1 = oDataObject.summary.dataPrio1.length;
-					oDataObject.summary.prio2 = oDataObject.summary.dataPrio2.length;
-					oDataObject.summary.prio3 = oDataObject.summary.dataPrio3.length;
-					oDataObject.summary.prio4 = oDataObject.summary.dataPrio4.length;
+					oDataObject.summary.prio1 = oDataObject.details.prio1.length;
+					oDataObject.summary.prio2 = oDataObject.details.prio2.length;
+					oDataObject.summary.prio3 = oDataObject.details.prio3.length;
+					oDataObject.summary.prio4 = oDataObject.details.prio4.length;
 
 					deferred.resolve();
 				});
@@ -203,17 +209,17 @@ angular.module("app.internalIncidentsMitosis")
 				return queryStrings;
 			}
 
-			function loadSummary(oDataObject, oConfig, deferred) {
+			function loadData(oDataObject, oConfig, bSummary, deferred) {
 				if(oConfig.akhResponsibles.length > 0) {
 					$q.all(oConfig.akhResponsibles.map(function(responsible) {
 	        			return responsible.getComponents();
 	        		})).then(function(results) {
-	        			doRequests(oDataObject, getQueryStrings(oConfig, Array.prototype.concat.apply([], results))).then(function() {
+	        			doRequests(oDataObject, getQueryStrings(oConfig, Array.prototype.concat.apply([], results)), bSummary).then(function() {
 	        				deferred.resolve();
 	        			});
 	        		});
 				} else {
-					doRequests(oDataObject, getQueryStrings(oConfig)).then(function() {
+					doRequests(oDataObject, getQueryStrings(oConfig), bSummary).then(function() {
 						deferred.resolve();
 					});
 				}
@@ -221,6 +227,7 @@ angular.module("app.internalIncidentsMitosis")
 
 			return function() {
 				this.summary = {prio1: 0, prio2: 0, prio3: 0, prio4: 0};
+				this.details = {prio1: [], prio2: [], prio3: [], prio4: []};
 				this.loadSummary = function(config) {
 					var deferred = $q.defer();
 					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0 && config.processors.length === 0 && config.akhResponsibles.length === 0) {
@@ -230,7 +237,21 @@ angular.module("app.internalIncidentsMitosis")
 						this.summary.prio4 = 0;
 						$timeout(function() { deferred.resolve(); });
 					} else {
-						loadSummary(this, config, deferred);
+						loadData(this, config, true, deferred);
+					}
+					return deferred.promise;
+				};
+
+				this.loadDetails = function(config) {
+					var deferred = $q.defer();
+					if(config.components.length === 0 && config.systems.length === 0 && config.programs.length === 0 && config.processors.length === 0 && config.akhResponsibles.length === 0) {
+						this.summary.prio1 = 0;
+						this.summary.prio2 = 0;
+						this.summary.prio3 = 0;
+						this.summary.prio4 = 0;
+						$timeout(function() { deferred.resolve(); });
+					} else {
+						loadData(this, config, false, deferred);
 					}
 					return deferred.promise;
 				};

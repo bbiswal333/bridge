@@ -388,5 +388,32 @@ describe("Incidents data", function() {
             });
             $httpBackend.flush();
         });
+
+        it("should fetch the details data", function(done) {
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentDetails?$format=json&$filter=II_PRIORITY_ID eq 1 and ((II_PROCESSOR_ID eq 'D012345' or II_PROCESSOR_ID eq 'D012346') or (II_SYSTEM_ID eq 'ABC' or II_SYSTEM_ID eq 'DEF')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(1));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentDetails?$format=json&$filter=II_PRIORITY_ID eq 3 and ((II_PROCESSOR_ID eq 'D012345' or II_PROCESSOR_ID eq 'D012346') or (II_SYSTEM_ID eq 'ABC' or II_SYSTEM_ID eq 'DEF')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(2));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentDetails?$format=json&$filter=II_PRIORITY_ID eq 5 and ((II_PROCESSOR_ID eq 'D012345' or II_PROCESSOR_ID eq 'D012346') or (II_SYSTEM_ID eq 'ABC' or II_SYSTEM_ID eq 'DEF')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(3));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentDetails?$format=json&$filter=II_PRIORITY_ID eq 9 and ((II_PROCESSOR_ID eq 'D012345' or II_PROCESSOR_ID eq 'D012346') or (II_SYSTEM_ID eq 'ABC' or II_SYSTEM_ID eq 'DEF')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(4, 3));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentByProgramDetails?$format=json&$filter=II_PRIORITY_ID eq 1 and ((TP_PROGRAM eq 'GUID1') or (TP_PROGRAM eq 'GUID2')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(1));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentByProgramDetails?$format=json&$filter=II_PRIORITY_ID eq 3 and ((TP_PROGRAM eq 'GUID1') or (TP_PROGRAM eq 'GUID2')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(2));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentByProgramDetails?$format=json&$filter=II_PRIORITY_ID eq 5 and ((TP_PROGRAM eq 'GUID1') or (TP_PROGRAM eq 'GUID2')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(3));
+            $httpBackend.whenPOST("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/InternalIncidents.xsodata/$batch", postRequestBeginning + encodeURI("IncidentByProgramDetails?$format=json&$filter=II_PRIORITY_ID eq 9 and ((TP_PROGRAM eq 'GUID1') or (TP_PROGRAM eq 'GUID2')) and ((II_CATEGORY eq 'COMP1' or II_CATEGORY eq 'AC' or II_CATEGORY eq 'AC-CO'))") + postRequestEnd).respond(200, getIncidentsForPrio(4));
+            configService.addProgram({TP_PROGRAM: "GUID1"});
+            configService.addProgram({TP_PROGRAM: "GUID2"});
+            configService.processors.push({BNAME: "D012345"});
+            configService.processors.push({BNAME: "D012346"});
+            configService.systems.push("ABC");
+            configService.systems.push("DEF");
+            configService.components.push({value: 'COMP1'});
+            configService.akhResponsibles.push(AKHResponsibleFactory.createInstance("PROP", "D012345"));
+            dataService.loadDetails(configService).then(function() {
+                expect(dataService.details.prio1.length).toEqual(1);
+                expect(dataService.details.prio2.length).toEqual(2);
+                expect(dataService.details.prio3.length).toEqual(3);
+                expect(dataService.details.prio4.length).toEqual(4);
+                done();
+            });
+            $httpBackend.flush();
+        });
     });
 });
