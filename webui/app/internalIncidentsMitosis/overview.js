@@ -23,7 +23,7 @@ angular.module('app.internalIncidentsMitosis').directive('app.internalIncidentsM
         }
 
         $scope.handleIncidents = function() {
-			$scope.loadingOpenIncidentsPromise = incidentData.loadSummary(incidentConfig).then(function() {
+			$scope.loadingIncidentsPromise = incidentData.loadSummary(incidentConfig).then(function() {
 				setAppDataFromIncidentData();
 			});
 		};

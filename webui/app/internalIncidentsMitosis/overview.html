@@ -1,7 +1,7 @@
 ﻿<div>
 	<span ng-show="limitExceeded === true" style="color: red; font-weight: bold">Limit of {{limit}} exceeded</span>
 	<div style="width:175px" ng-style="{height: limitExceeded ? '120px' : '140px'}">
-		<div class="prio_container" cg-busy="{promise:loadingOpenTransportsPromise,message:'Loading'}">
+		<div class="prio_container" cg-busy="{promise:loadingIncidentsPromise,message:'Loading'}">
 			<bridge.prio-box
 				prio="1" value="numPrio1" label="Very High"
 				navigate-to="/detail/internalIncidentsMitosis/{{metadata.guid}}/prio1">

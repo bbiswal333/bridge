@@ -1,5 +1,5 @@
 <div ng-controller="app.internalIncidentsMitosis.detailController" style="box-sizing:border-box;">    
-	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
+	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;" cg-busy="{promise:loadingIncidentsPromise,message:'Loading'}">
 		<br/>
 		<bridge.table table-data="incidents" new-layout="true">
 			<bridge.table-column-sorter>

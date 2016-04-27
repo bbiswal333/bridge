@@ -14,7 +14,7 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
         	incidentConfig.initialize();
         }
 
-        incidentData.loadDetails(incidentConfig).then(function() {
+        $scope.loadingIncidentsPromise = incidentData.loadDetails(incidentConfig).then(function() {
         	setIncidents();
         });
 
@@ -29,6 +29,12 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
         $scope.getFormattedDate = function(date){
             if(!date) {
                 return "";
+            }
+            var match = /Date\((\d+)\)/.exec(date);
+            if(match && match[1]) {
+                date = new Date(parseInt(match[1]));
+            } else{
+                return date;
             }
             return toFixedLength(date.getDate()) + "." + toFixedLength((date.getMonth() + 1)) + "." + date.getFullYear();
         };
