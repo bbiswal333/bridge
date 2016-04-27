@@ -183,7 +183,6 @@ angular.module('bridge.app').controller('bridgeController',
         });
 
         $scope.appDragInfo = dragInfo;
-
     }
 ]);
 

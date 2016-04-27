@@ -1,5 +1,5 @@
 ﻿/*global jQuery*/
-angular.module('app.programMilestones', []);
+angular.module('app.programMilestones', ['bridge.controls']);
 angular.module('app.programMilestones').directive('app.programMilestones',['app.programMilestones.configFactory', 'app.programMilestones.dataFactory', function (configFactory, dataFactory) {
 
 	var directiveController = ['$scope', function ($scope) {
@@ -27,6 +27,18 @@ angular.module('app.programMilestones').directive('app.programMilestones',['app.
 
         $scope.getTimeAgo = function(dDate) {
             return $.timeago(dDate.getTime());
+        };
+
+        $scope.getTimes = function(n){
+            return new Array(n);
+        };
+
+        $scope.formattedDate = function(date){
+            if (date) {
+             return "" + date.getDate() + "." + date.getMonth() + "." + date.getFullYear();
+            } else {
+                return '';
+            }
         };
 	}];
 

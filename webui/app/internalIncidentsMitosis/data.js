@@ -2,6 +2,13 @@ angular.module("app.internalIncidentsMitosis")
 	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window", "$timeout",
 	function ($http, $q, $window, $timeout) {
 		var AppData = (function() {
+			function doDummyRequestInOrderToGetAroundIEBug() {
+				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
+					//Oh happy day...
+				});
+			}
+			doDummyRequestInOrderToGetAroundIEBug();
+
 			function toDate(dateString) {
 				if(dateString) {
 					return new Date(dateString);
@@ -83,31 +90,33 @@ angular.module("app.internalIncidentsMitosis")
 						that.prio4 = [];
 						deferred.resolve();
 					} else {
-						var url = "https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/incidents.xsjs?origin=" + $window.location.origin;
-						$http({method: 'POST', url: url, withCredentials: true, data: getFilterFromConfig(config)}).success(function(data){
-							that.limit = data.limit;
-							that.limitExceeded = data.limitExceeded;
-							that.prio1 = [];
-							that.prio2 = [];
-							that.prio3 = [];
-							that.prio4 = [];
-							data.incidents.map(function(incident) {
-								switch(incident.II_PRIORITY_TEXT) {
-									case "1-Very High":
-										that.prio1.push(transform(incident));
-										break;
-									case "2-High":
-										that.prio2.push(transform(incident));
-										break;
-									case "3-Medium":
-										that.prio3.push(transform(incident));
-										break;
-									case "4-Low":
-										that.prio4.push(transform(incident));
-										break;
-								}
+						getFilterFromConfig(config).then(function(filter) {
+							var url = "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin;
+							$http({method: 'POST', url: url, withCredentials: true, data: filter, headers: { 'Content-Type': 'text/plain' }}).success(function(data){
+								that.limit = data.limit;
+								that.limitExceeded = data.limitExceeded;
+								that.prio1 = [];
+								that.prio2 = [];
+								that.prio3 = [];
+								that.prio4 = [];
+								data.incidents.map(function(incident) {
+									switch(incident.II_PRIORITY_TEXT) {
+										case "1-Very High":
+											that.prio1.push(transform(incident));
+											break;
+										case "2-High":
+											that.prio2.push(transform(incident));
+											break;
+										case "3-Medium":
+											that.prio3.push(transform(incident));
+											break;
+										case "4-Low":
+											that.prio4.push(transform(incident));
+											break;
+									}
+								});
+								deferred.resolve();
 							});
-							deferred.resolve();
 						});
 					}
 					return deferred.promise;

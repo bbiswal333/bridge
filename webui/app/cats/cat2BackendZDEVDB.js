@@ -10,7 +10,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 	function($http, $q, $log, $window, calUtils, catsUtils, webTracker) {
 
 		var MYCATSDATA_WEBSERVICE      = 'https://isp.wdf.sap.corp/sap/bc/zdevdb/MYCATSDATA?format=json&origin=' + $window.location.origin + "&options=SHORT";
-		var GETWORKLIST_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETWORKLIST?format=json&origin=" + $window.location.origin + "&begda=20101001&endda=20151001";
 		var GETWORKLIST_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_WORKLIST?format=json&origin=" + $window.location.origin;
 		var GETTASKTEXT_IFP_WEBSERVICE = "https://ifp.wdf.sap.corp/sap/bc/bridge/GET_CPRO_INFORMATION?format=json&origin=" + $window.location.origin;
 		var GETCATSDATA_WEBSERVICE     = "https://isp.wdf.sap.corp/sap/bc/zdevdb/GETCATSDATA?format=json&origin=" + $window.location.origin + "&week=";
@@ -29,7 +28,6 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 		this.gracePeriodInMonth = 0;
 		this.futureGracePeriodInDays = 0;
 		var tasksFromWorklistPromise;
-		var tasksFromWorklistPromise2;
 		var tasktypesPromise;
 		var that = this;
 
@@ -530,52 +528,9 @@ angular.module("app.cats.dataModule", ["lib.utils"])
 					deferred.resolve();
 				} else {
 					if (!tasksFromWorklistPromise) {
-						tasksFromWorklistPromise = _httpGetRequest(GETWORKLIST_WEBSERVICE + "&catsprofile=" + catsProfile);
+						tasksFromWorklistPromise = _httpGetRequest(GETWORKLIST_IFP_WEBSERVICE);
 					}
 					tasksFromWorklistPromise
-					.then(function(data) {
-						var tasks = [];
-
-						if (data && data.WORKLIST) {
-							var nodes = data.WORKLIST;
-							for (var i = 0; i < nodes.length; i++) {
-								var task = {};
-								task.RAUFNR = (nodes[i].RAUFNR || "");
-								task.TASKTYPE = (nodes[i].TASKTYPE || "");
-								task.ZCPR_EXTID = (nodes[i].ZCPR_EXTID || "");
-								task.ZCPR_OBJGEXTID = (nodes[i].ZCPR_OBJGEXTID || "");
-								task.ZZSUBTYPE = (nodes[i].ZZSUBTYPE || "");
-								if (catsUtils.isHourlyProfil(catsProfile)) {
-									task.UNIT = nodes[i].UNIT || "H";
-								} else {
-									task.UNIT = nodes[i].UNIT || "T";
-								}
-								task.projectDesc = nodes[i].DISPTEXTW1;
-								task.DESCR = nodes[i].DESCR || nodes[i].DISPTEXTW2;
-								tasks.push(task);
-							}
-						}
-
-						deferred.resolve(tasks);
-					}, deferred.reject);
-				}
-			}, deferred.reject);
-			return deferred.promise;
-		};
-
-		this.requestTasksFromWorklist2 = function() {
-			var deferred = $q.defer();
-			this.determineCatsProfileFromBackend()
-			.then(function(catsProfile) {
-				if (catsProfile !== "DEV2002C" &&
-				    catsProfile !== "DEV2002H" &&
-				    catsProfile !== "DEV2012C") { // These are the only profiles where the cPro worklist shall be read
-					deferred.resolve();
-				} else {
-					if (!tasksFromWorklistPromise2) {
-						tasksFromWorklistPromise2 = _httpGetRequest(GETWORKLIST_IFP_WEBSERVICE);
-					}
-					tasksFromWorklistPromise2
 					.then(function(data) {
 
 						var today = new Date();

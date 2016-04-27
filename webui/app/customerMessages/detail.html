@@ -40,6 +40,9 @@
 			<bridge.table-column header="'Description'" column-width="300" field="DESCRIPTION" order-by="DESCRIPTION">
 				<a class="trunctedText" target="_blank" href="{{row.entity.URL_MESSAGE.toString()}}">{{row.entity.DESCRIPTION.toString()}}</a>
 			</bridge.table-column>
+			<bridge.table-column header="'ObjectID'" column-width="150" order-by="OBJECT_ID">
+					<a target="_blank" href="{{row.entity.URL_MESSAGE.toString()}}">{{row.entity.OBJECT_ID}}</a>
+			</bridge.table-column>
 		</bridge.table>
 
     </div>

@@ -39,6 +39,7 @@ describe("Data", function() {
 
 	it("should do two backend calls for the respective programs", function() {
 		var data = dataFactory.getDataForAppId("app-1");
+		data.refreshMilestones();
 		$httpBackend.flush();
 		expect(data.getMilestones().length).toEqual(2);
 	});
@@ -46,6 +47,7 @@ describe("Data", function() {
 	it("should only take configured milestones", function() {
 		config.milestoneTypes = ["0714"];
 		var data = dataFactory.getDataForAppId("app-1");
+		data.refreshMilestones();
 		$httpBackend.flush();
 		expect(data.getMilestones().length).toEqual(1);
 	});

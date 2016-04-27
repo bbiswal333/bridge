@@ -57,6 +57,7 @@ angular.module('app.junit').service("app.junit.configService", ['bridgeDataServi
         currentConfigItem = this.newItem();
 
         currentConfigItem.url = persistedConfig.configItems[configItem].url;
+        currentConfigItem.proxyRequest = persistedConfig.configItems[configItem].proxyRequest;
 
         this.addConfigItem(currentConfigItem);
       }

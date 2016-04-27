@@ -70,6 +70,12 @@ angular.module("app.cats.monthlyDataModule", ["lib.utils"])
 		}
 	};
 
+	this.reloadData = function(year, month){
+		this.days = {};
+		this.promiseForMonth = {};
+		return this.getMonthData(year, month);
+	};
+
 	this.getWeeksOfMonth = function(year, month){
 		var day = new Date(year, month, 1);
 		var lastDayInMonth = 0;

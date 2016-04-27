@@ -1,0 +1,33 @@
+div.programMilestones {
+	display: block;
+	float:left;
+}
+
+.milestone_row {
+	display: table-row;
+}
+
+div.programMilestones .selected_programs {
+	color: #428bca;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+div.programMilestones .milestone_meta {
+	display: table-cell;
+	color: #999999;
+	vertical-align: top;
+	width: 120px;
+	white-space: normal;
+}
+
+div.programMilestones .milestone_content {
+	display: table-cell;
+	white-space: normal;
+}
+
+div.programMilestones .all_milestones {
+	color: #428bca;
+	margin-top: 7px;
+}
+

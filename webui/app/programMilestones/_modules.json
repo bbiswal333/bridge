@@ -10,9 +10,16 @@
 		"beta"					:	true,
 		"default_hidden"		:	true,
 		"multiInstance"			:	true,
+		"routes"		:
+		[
+			{
+				"route"			:	"/detail/programMilestones/:instanceNumber",
+				"templateUrl"	:	"app/programMilestones/detail.html"
+			}
+		],
 		"description"			:	"This app provides all upcoming milestones for a program / delivery."
 	},
 	"modules" : [],
-	"js_files" : ["overview.js", "milestone.js", "settings.js", "config.js", "data.js", "timeParser.js", "program.js"],
-	"css_files" : []
+	"js_files" : ["overview.js", "milestone.js", "settings.js", "config.js", "data.js", "detail.js", "timeParser.js", "program.js"],
+	"css_files" : ["style.css"]
 }

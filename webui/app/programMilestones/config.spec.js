@@ -76,17 +76,17 @@ describe("Config", function() {
 		hasConfig = false;
 		var config = configFactory.getConfigForAppId("app-1");
 		expect(config.getMilestoneTypes()).toEqual(["ALL"]);
-		config.toggleMilestoneType("RTC");
-		expect(config.getMilestoneTypes()).toEqual(["RTC"]);
-		config.toggleMilestoneType("DC");
-		expect(config.getMilestoneTypes()).toEqual(["RTC", "DC"]);
-		config.toggleMilestoneType("RTC");
-		expect(config.getMilestoneTypes()).toEqual(["DC"]);
-		config.toggleMilestoneType("DC");
+		config.toggleMilestoneType(['0714','0928']);
+		expect(config.getMilestoneTypes()).toEqual(['0714','0928']);
+		config.toggleMilestoneType(['0108']);
+		expect(config.getMilestoneTypes()).toEqual(['0714','0928','0108']);
+		config.toggleMilestoneType(['0714','0928']);
+		expect(config.getMilestoneTypes()).toEqual(['0108']);
+		config.toggleMilestoneType(['0108']);
 		expect(config.getMilestoneTypes()).toEqual(["ALL"]);
 	});
 
-	it("should activagte all milestoneTypes", function() {
+	it("should activate all milestoneTypes", function() {
 		var config = configFactory.getConfigForAppId("app-1");
 		expect(config.getMilestoneTypes().length).toEqual(4);
 		config.enableAllMilestoneTypes();

@@ -31,7 +31,7 @@ angular.module('bridge.service').service('bridge.AKHResponsibleFactory', ["$q", 
             this.getComponents = function() {
                 var deferred = $q.defer();
                 if(!aComponents) {
-                    $http.get("https://mithdb.wdf.sap.corp/irep/reporting/internalIncidents/components.xsodata/Component?$format=json&$filter=" + this.getProperty() + " eq '" + this.getUserId() + "'").then(function(response) {
+                    $http.get("https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/components.xsodata/Component?$format=json&$filter=" + this.getProperty() + " eq '" + this.getUserId() + "'").then(function(response) {
                         aComponents = response.data.d.results.map(function(component) {
                             return {value: component.PS_POSID};
                         });

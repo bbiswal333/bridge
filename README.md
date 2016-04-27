@@ -15,20 +15,25 @@ To get started with **Git & GitHub**, check out the [Bootcamp](https://github-bo
 * [Bridge Production](https://bridge.mo.sap.corp)
 
 ## development setup
-* fork this repository and clone your fork to get a local copy
+* fork this repository and clone your fork to get a local copy. (Forking means to create a copy on GitHub, and cloning means to download to your computer. Cloning can be done within the GitHub client or via [git](https://git-scm.com/downloads) on the command line.)
 * [download](http://nodejs.org/) and install `node.js`
 
 ## run bridge locally
-* run `npm install` -> required once after forking the repository
+* run `npm install` -> required once after forking the repository (open a command line, navigate to your bridge folder you created in the first step and enter npm install. If you get a connection or proxy error, switch temporarily to "SAP Internet" Wifi and back to SAP Corporate when done. Alternative, configure the proxy correctly via command line: 
+  * `set http_proxy=http://proxy:8080`
+  * `set https_proxy=http://proxy:8080` (on windows) or
+  * `export http_proxy=http://proxy:8080`
+  * `export https_proxy=http://proxy:8080` (on mac/linux)
 * run `npm start`
 * open `https://localhost:8000` in a browser
 * for [internet explorer](http://thefunniestpictures.com/wp-content/uploads/2013/09/funny-browsers-Internet-Explorer-slow.jpg) add `https://localhost` to your trusted sites
 
 ## building apps
-* apps are contained in `webui/app/appname`
+* apps are contained in `webui/app/appname` (one folder for each app).
 * metadata for the app is defined in `_modules.json` inside that folder
 * apps must be inside an own module and shoul be named/ prefixed with `app.appname`
-* to get started, just copy our "test app" and adjust it
+* to get started, just copy our "test app" and adjust it. (After copying, replace the word "test" in all the files of the new folder with the name of your app)
+* to edit your app, just do a change to one of the files with an editor of your choice (e.g. Visual Studio Code or Sublime), safe it, and refresh your browser window (F5) 
 * a recording on how to develop apps can be found [here](https://sap.emea.pgiconnect.com/p3ik7dpuqve/)
 
 ## contributing

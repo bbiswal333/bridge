@@ -4,12 +4,21 @@ angular.module('app.upportNotes').controller('app.upportNotes.detailController',
 		appConfig.initialize();
 		$scope.config = appConfig.getItems();
 
-		$scope.data = {};
+		$scope.prio = $routeParams.prio;
+
+		$scope.data = {upportNotes: []};
 
 		var appData = dataService.getDataForAppId("app.upportNotes-" + $routeParams.instanceNumber);
 
-		$scope.loadingPromise = $scope.loadingPromise = appData.loadDetails().then(function() {
-			$scope.data.upportNotes = appData.details;
+		$scope.$watch('prio', function() {
+			$scope.loadingPromise = appData.loadDetails().then(function() {
+				$scope.data.upportNotes.length = 0;
+				appData.details.map(function(item) {
+					if(item.CM_PRIORITY === $scope.prio) {
+						$scope.data.upportNotes.push(item);
+					}
+				});
+			});
 		});
     }
 ]);

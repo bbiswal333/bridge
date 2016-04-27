@@ -81,7 +81,7 @@
                         ng-class="{
                             'app-cats-today': day.today,
                             'selected_day_analytics': isSelected(day.dayString)}"
-                        ng-if="(analytics.value) && analyticsDays[day.dayString].tasks.length > 0">
+                        ng-if="analytics.value && analyticsDays[day.dayString].actualTimeInPercentageOfDay !== 0">
                         <app.cats.allocationbar
                             data-width="width"
                             data-height="54"
@@ -99,7 +99,7 @@
                                 'app-cats-day-text-big': maintainable }">{{day.dayNr}}</span>
                     </div>
 
-                    <div ng-if="(!analytics.value) || !analyticsDays[day.dayString].tasks || analyticsDays[day.dayString].tasks.length === 0" id="inner"
+                    <div ng-if="!analytics.value || analyticsDays[day.dayString].actualTimeInPercentageOfDay === 0" id="inner"
                         class="app-cats-state{{getStateClassSubstring(day)}} hover"
                         ng-class="{
                         'app-cats-day-inner-small': !maintainable,

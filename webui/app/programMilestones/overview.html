@@ -1,5 +1,29 @@
-﻿<div style="overflow-y: auto; height: 145px; overflow-x: auto; width: 100%; white-space: nowrap;">
-	<div ng-repeat="milestone in milestones">
-	{{milestone.getDate().toISOString().substring(0, 10)}} - {{milestone.getName()}} (<span>{{milestone.getProgram().getName()}}</span><span ng-show="milestone.getProgram().isSiriusProgram()"> - {{milestone.getDeliveryName()}}</span>)
+﻿<div class="programMilestones" style="overflow-y: auto; height: 145px; overflow-x: auto; width: 100%; white-space: nowrap;">
+	<div class="selected_programs">{{programs.length}} Programs selected</div>
+
+	<div ng-if="programs.length == 0"> No programs are selected. Please configure the app in the settings.</div>
+
+	<div ng-if="programs.length >= 1">
+		<div>Next Milestones:</div>
+		<div ng-if="milestones.length >= 1">
+			<div ng-repeat="milestone in milestones | limitTo:2" style="display: table">
+				<div class="milestone_row">
+					<div class="milestone_meta">{{milestone.getMilestoneTypeAsStr()}} -
+					{{milestone.getDateFormatted()}}</div> 
+					<div class="milestone_content">{{milestone.getDeliveryName()}} ({{milestone.getProgram().getName()}})</div>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="milestones.length == 0">
+			<div class="milestone_meta">-</div>
+			</br></br>
+		</div>
+			
+		</div>
+	
+		<div class="all_milestones">
+			<a href="#detail/programMilestones/{{metadata.instanceNumber}}"> View all {{milestones.length}} upcomming Program Milestones</a>
+		</div>
 	</div>
 </div>

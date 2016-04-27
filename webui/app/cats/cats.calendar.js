@@ -124,7 +124,7 @@ angular.module("app.cats")
 				if (errorText) {
 					$scope.state = errorText;
 				} else {
-					$scope.state = "Oops! Sorry, the CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
+					$scope.state = "Oops! The CAT2 backend system ISP seems to be unresponsive/ unavailable. Please try again later.";
 				}
 			}
 
@@ -134,7 +134,8 @@ angular.module("app.cats")
 				$scope.currentMonth = calUtils.getMonthName(monthlyDataService.month).long;
 				if ($scope.maintainable) {
 					monthlyDataService.calArray = $scope.calArray;
-					monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
+					// monthlyDataService.getDataForDate(calUtils.stringifyDate(new Date(monthlyDataService.year, monthlyDataService.month, 15)))
+					monthlyDataService.reloadData(monthlyDataService.year, monthlyDataService.month)
 					.then(function(){
 						$scope.analyticsDays = monthlyDataService.days;
 					},
@@ -179,12 +180,12 @@ angular.module("app.cats")
 						reload();
 					}
 					else {
-						$scope.state = "CATS-Data received from ISP but during processing an error occurred";
+						$scope.state = "CAT2 data could not be retrieved.";
 						$scope.hasError = true;
 					}
 				}
 				else {
-					$scope.state = "CATS-Data could no be retrieved from system ISP";
+					$scope.state = "CAT2 data could not be retrieved.";
 					$scope.hasError = true;
 				}
 			}
