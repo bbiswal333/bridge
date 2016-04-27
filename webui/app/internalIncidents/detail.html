@@ -1,7 +1,5 @@
 <div ng-controller="app.internalIncidents.detailController" style="box-sizing:border-box;">
-    <div style="padding:30px;box-sizing:border-box;">                
-
-    	<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+    <div style="padding:30px;box-sizing:border-box;">
 
         <div class="btn-group" style="height:32px;max-width:100%;">
         	<bridge.button ng-repeat="prio in prios" state="prio.active === true ? 'active' : ' '" ng-click="prio.active = !prio.active; doAlert()" style="width:100px;margin-top:0">{{prio.description}}</bridge.button>
@@ -16,39 +14,29 @@
 
 		<br/>
 
-		<bridge.table table-data="messages" filter="filterTable" new-layout="true">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Priority'" column-size-class="'col-sm-2'" order-by="'PRIORITY_DESCR'" visible="parentScope.config.data.columnVisibility[0]" column-order="parentScope.config.data.columnOrder[0]">{{row.PRIORITY_DESCR}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'Category'" column-size-class="'col-sm-3'" order-by="'CATEGORY'" visible="parentScope.config.data.columnVisibility[1]" column-order="parentScope.config.data.columnOrder[1]">{{row.CATEGORY}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-3'" order-by="'STATUS_DESCR'" visible="parentScope.config.data.columnVisibility[2]" column-order="parentScope.config.data.columnOrder[2]">{{row.STATUS_DESCR}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Reporter'" column-size-class="'col-sm-5'" order-by="'REPORTER_NAME'" visible="parentScope.config.data.columnVisibility[3]" column-order="parentScope.config.data.columnOrder[3]">
-					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.REPORTER_ID}}?s=60x60"
-						 class="im-reporter-img"
-						 style="height: 32px;"
-						 ng-if="row.REPORTER_ID"></img>
-					<a class="clickable" ng-click="parentScope.userClick(row.reporterData)">{{row.REPORTER_NAME}}</a>
-					<a href="mailto:{{row.reporterData.mail}}"><p class="table-icon-small icon-mail"></p></a>
-					<a href="tel:{{row.reporterData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-				</bridge.table-column>
-				<bridge.table-column column-id="10" header="'Processor'" column-size-class="'col-sm-5'" order-by="'PROCESSOR_NAME'" visible="parentScope.config.data.columnVisibility[9]">
-					<img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.PROCESSOR_ID}}?s=60x60"
-						 class="im-reporter-img"
-						 style="height: 32px;"
-						 ng-if="row.PROCESSOR_ID"></img>
-					<a class="clickable" ng-click="parentScope.userClick(row.processorData)">{{row.PROCESSOR_NAME}}</a>
-					<a href="mailto:{{row.processorData.mail}}"><p class="table-icon-small icon-mail"></p></a>
-					<a href="tel:{{row.processorData.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-				</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Created'" column-size-class="'col-sm-2'" order-by="'CREATE_DATE'" visible="parentScope.config.data.columnVisibility[4]" column-order="parentScope.config.data.columnOrder[4]">{{parentScope.getFormattedDate(row.CREATE_DATE)}}</bridge.table-column>
-				<bridge.table-column column-id="6" header="'Changed'" column-size-class="'col-sm-2'" order-by="'CHANGE_DATE'" visible="parentScope.config.data.columnVisibility[5]" column-order="parentScope.config.data.columnOrder[5]">{{parentScope.getFormattedDate(row.CHANGE_DATE)}}</bridge.table-column>
-				<bridge.table-column column-id="7" header="'Description'" column-size-class="'col-sm-5'" order-by="'DESCRIPTION'" visible="parentScope.config.data.columnVisibility[6]" column-order="parentScope.config.data.columnOrder[6]">
-					<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.DESCRIPTION}}</a>
-				</bridge.table-column>
-				<bridge.table-column column-id="8" header="'ObjectId'" column-size-class="'col-sm-2'" order-by="'OBJECT_ID'" visible="parentScope.config.data.columnVisibility[7]" column-order="parentScope.config.data.columnOrder[7]">
-					<a target="_blank" href="{{row.URL_MESSAGE}}">{{row.OBJECT_ID}}</a>
-				</bridge.table-column>
-				<bridge.table-column column-id="9" header="'MPT'" column-size-class="'col-sm-2'" order-by="'MPT_EXPIRY'" visible="parentScope.config.data.columnVisibility[8]" column-order="parentScope.config.data.columnOrder[8]">{{parentScope.getFormattedDate(row.MPT_EXPIRY)}}</bridge.table-column>
-			</bridge.table-column-sorter>
+		<bridge.table table-data="messages" table-settings="config.data.tableSettings">
+			<bridge.table-column header="'Priority'" column-width="120" field="PRIORITY_DESCR"></bridge.table-column>
+			<bridge.table-column header="'Category'" column-width="160" field="CATEGORY"></bridge.table-column>
+			<bridge.table-column header="'Status'" column-width="180" field="STATUS_DESCR"></bridge.table-column>
+			<bridge.table-column header="'Reporter'" column-width="210" field="REPORTER_ID" order-by="REPORTER_NAME"
+									group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.REPORTER_ID" first-name="row.entity.REPORTER_VORNA" last-name="row.entity.REPORTER_NACHN" phone="row.entity.reporterData.TELNR" email="row.entity.reporterData.mail">
+				</bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Processor'" column-width="210" field="PROCESSOR_ID" order-by="PROCESSOR_NAME"
+								group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.PROCESSOR_ID" first-name="row.entity.PROCESSOR_VORNA" last-name="row.entity.PROCESSOR_NACHN" phone="row.entity.processorData.TELNR" email="row.entity.processorData.mail">
+				</bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Created'" column-width="120" order-by="CREATE_DATE">{{grid.appScope.$parent.getFormattedDate(row.entity.CREATE_DATE)}}</bridge.table-column>
+			<bridge.table-column header="'Changed'" column-width="120" order-by="CHANGE_DATE">{{grid.appScope.$parent.getFormattedDate(row.entity.CHANGE_DATE)}}</bridge.table-column>
+			<bridge.table-column header="'Description'" column-width="250" order-by="DESCRIPTION">
+				<a target="_blank" href="{{row.entity.URL_MESSAGE}}">{{row.entity.DESCRIPTION}}</a>
+			</bridge.table-column>
+			<bridge.table-column header="'ObjectId'" column-width="120" order-by="OBJECT_ID">
+				<a target="_blank" href="{{row.entity.URL_MESSAGE}}">{{row.entity.OBJECT_ID}}</a>
+			</bridge.table-column>
+			<bridge.table-column header="'MPT'" column-width="120" order-by="MPT_EXPIRY">{{grid.appScope.$parent.getFormattedDate(row.entity.MPT_EXPIRY)}}</bridge.table-column>
 		</bridge.table>
 
     </div>

@@ -1,16 +1,15 @@
 angular.module('app.internalIncidents').controller('app.internalIncidents.detailController',
-    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService", "bridge.ticketAppUtils.detailUtils",
-    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService, detailUtils) {
+    ['$scope', '$http', '$window', 'app.internalIncidents.ticketData','$routeParams', 'app.internalIncidents.configservice', "bridge.converter", "bridgeDataService", "employeeService", "bridge.ticketAppUtils.detailUtils", "$filter",
+    function Controller($scope, $http, $window, ticketDataService, $routeParams, configService, converter, bridgeDataService, employeeService, detailUtils, $filter) {
         var config = configService.getConfigForAppId($routeParams.appId);
         var ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
-        $scope.filterText = '';
         $scope.messages = [];
         $scope.prios = ticketData.prios;
         $scope.detailForNotifications = false;
 
-        $scope.filterTable = function(oTicket){
+        function filterTable(oTicket){
             return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
-        };
+        }
 
         $scope.userClick = function(employeeDetails){
             employeeService.showEmployeeModal(employeeDetails);
@@ -30,11 +29,17 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
             } else {
                 $scope.messages = ticketData.getRelevantTickets(config.data.selection.sel_components, config.data.selection.colleagues, config.data.selection.assigned_me, config.data.selection.created_me, config.data.ignoreAuthorAction);
             }
+            $scope.messages = $filter("filter")($scope.messages, filterTable);
             $scope.messages.forEach(enhanceMessage);
         }
 
         $scope.$watch('config', function(newVal, oldVal) {
             if($scope.config !== undefined && newVal !== oldVal){
+                enhanceAllMessages();
+            }
+        },true);
+        $scope.$watch('prios', function(){
+            if($scope.prios !== undefined){
                 enhanceAllMessages();
             }
         },true);
