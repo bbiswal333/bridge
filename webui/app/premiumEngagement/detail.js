@@ -1,19 +1,15 @@
 angular.module("app.premiumEngagement").controller("app.premiumEngagement.detailController",
-    ["$scope", "$routeParams", "app.premiumEngagement.configService", "app.premiumEngagement.ticketData", "bridge.ticketAppUtils.detailUtils", "employeeService", "bridgeDataService",
-    function($scope, $routeParams, configService, ticketDataService, detailUtils, employeeService, bridgeDataService){
+    ["$scope", "$routeParams", "app.premiumEngagement.configService", "app.premiumEngagement.ticketData", "bridge.ticketAppUtils.detailUtils", "employeeService", "bridgeDataService", "$filter",
+    function($scope, $routeParams, configService, ticketDataService, detailUtils, employeeService, bridgeDataService, $filter){
 
         var config = configService.getInstanceForAppId($routeParams.appId),
             ticketData = ticketDataService.getInstanceForAppId($routeParams.appId);
 
-        $scope.filterText = "";
         $scope.prios = ticketData.prios;
 
-        $scope.filterTable = function(oTicket){
+        function filterTable(oTicket){
             return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
-        };
-        $scope.userClick = function(employeeDetails){
-            employeeService.showEmployeeModal(employeeDetails);
-        };
+        }
 
         function enhanceMessage(message){
             if(message.PROCESSOR_ID !== "") {
@@ -29,6 +25,7 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.detail
             } else {
                 $scope.messages = ticketData.getTicketsForCustomerSelection(config.data.sSelectedCustomer);
             }
+            $scope.messages = $filter("filter")($scope.messages, filterTable);
             $scope.messages.forEach(enhanceMessage);
         }
 
@@ -37,6 +34,17 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.detail
                 prio.active = active;
             });
         }
+
+        $scope.$watch('config', function(newVal, oldVal) {
+            if($scope.config !== undefined && newVal !== oldVal){
+                enhanceAllMessages();
+            }
+        },true);
+        $scope.$watch('prios', function(){
+            if($scope.prios !== undefined){
+                enhanceAllMessages();
+            }
+        },true);
 
         if (config.isInitialized === false) {
             config.initialize(bridgeDataService.getAppConfigById($routeParams.appId));
@@ -58,7 +66,11 @@ angular.module("app.premiumEngagement").controller("app.premiumEngagement.detail
                 enhanceAllMessages();
             }
 
-            setPrioSelections(false);
-            _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            if ($routeParams.prio === 'All'){
+                setPrioSelections(true);
+            }else {
+                setPrioSelections(false);
+                _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            }
         }
 }]);

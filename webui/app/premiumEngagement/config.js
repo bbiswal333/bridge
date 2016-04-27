@@ -9,8 +9,7 @@ angular.module("app.premiumEngagement").service("app.premiumEngagement.configSer
         this.data.aConfiguredCustomers = [];
         this.data.bIgnoreCustomerAction = true;
         this.data.sSelectedCustomer = this.DEFAULT_CUSTOMER_SELECTION;
-        this.data.columnVisibility = [true, false, true, true, true, true];
-        this.data.columnOrder = [0, 1, 2, 3, 4, 5];
+        this.data.tableSettings = {};
 
         this.initialize = function(oConfigFromBackend){
             this.isInitialized = true;

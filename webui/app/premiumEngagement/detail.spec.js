@@ -97,7 +97,7 @@ describe("The PremiumEngagement details controller", function(){
             "$scope": $rootScope,
             "$routeParams": {
                 appId: DUMMY_APPID,
-                prio: "1"
+                prio: "All"
             },
             "app.premiumEngagement.configService": configService,
             "app.premiumEngagement.ticketData": ticketDataService,
