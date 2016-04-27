@@ -9,6 +9,8 @@ angular.module("app.itdirect").service("app.itdirect.config", ["bridgeDataServic
         this.bPartieOfRequestSelected = true;
         this.bSavedSearchSelected = true;
 
+        this.tableSettings = {};
+
         this.initialize = function (oConfigFromBackend) {
             var property;
 

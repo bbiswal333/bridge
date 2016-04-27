@@ -1,7 +1,6 @@
 <div ng-controller="app.itdirect.detailController" style="box-sizing:border-box;">
     <div style="padding:30px;box-sizing:border-box;">
 
-        <bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
         <div class="btn-group" style="height:32px;max-width:100%;">
             <bridge.button ng-repeat="prio in prios" state="prio.active === true ? 'active' : ' '" ng-click="prio.active = !prio.active; doAlert()" style="width:100px;margin-top:0">{{prio.description}}</bridge.button>
 
@@ -13,25 +12,19 @@
 
         <br/>
 
-        <bridge.table table-data="tickets" filter="filterTable">
-            <bridge.table-column-sorter>
-                <bridge.table-column column-id="1" header="'Urgency'" column-size-class="'col-sm-1'" order-by="'URGENCY_DESC'">{{row.URGENCY_DESC}}</bridge.table-column>
-                <bridge.table-column column-id="2" header="'Component'" column-size-class="'col-sm-2'" order-by="'CAT_ID'">{{row.CAT_ID}}</bridge.table-column>
-                <bridge.table-column column-id="3" header="'Status'" column-size-class="'col-sm-1'" order-by="'USER_STATUS_TEXT'">{{row.USER_STATUS_TEXT}}</bridge.table-column>
-                <bridge.table-column column-id="4" header="'Creation'" column-size-class="'col-sm-2'" order-by="'CREATED_AT'">{{parentScope.getFormattedDate(row.CREATED_AT)}}</bridge.table-column>
-                <bridge.table-column column-id="5" header="'Created By'" column-size-class="'col-sm-3'" order-by="'creator.fullName'">
-                    <img ng-src="https://avatars.wdf.sap.corp/avatar/{{row.CREATED_BY}}?s=60x60"
-                         class="im-reporter-img"
-                         style="height: 32px;"
-                         ng-if="row.CREATED_BY"></img>
-                    <a href="mailto:{{row.creator.SMTP_MAIL}}"><p class="table-icon-small icon-mail"></p></a>
-                    <a href="tel:{{row.creator.TELNR}}"><p class="table-icon-small icon-phone"></p></a>
-                    <a class="clickable" ng-click="parentScope.userClick(row.creator)">{{row.creator.fullName}}</a>
-                </bridge.table-column>
-                <bridge.table-column column-id="6" header="'Description'" column-size-class="'col-sm-3'" order-by="'DESCRIPTION'">
-                    <a target="_blank" href="{{row.url}}">{{row.DESCRIPTION}}</a>
-                </bridge.table-column>
-            </bridge.table-column-sorter>
+        <bridge.table table-data="tickets" table-settings="config.tableSettings">
+            <bridge.table-column header="'Urgency'" column-width="120" field="URGENCY_DESC"></bridge.table-column>
+            <bridge.table-column header="'Component'" column-width="150" field="CAT_ID"></bridge.table-column>
+            <bridge.table-column header="'Status'" column-width="120" field="USER_STATUS_TEXT"></bridge.table-column>
+            <bridge.table-column header="'Creation'" column-width="180" order-by="CREATED_AT">{{grid.appScope.$parent.getFormattedDate(row.entity.CREATED_AT)}}</bridge.table-column>
+            <bridge.table-column header="'Created By'" column-width="210" field="CREATED_BY" order-by="creator.fullName"
+								 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.CREATED_BY" first-name="row.entity.creator.VORNA" last-name="row.entity.creator.NACHN" phone="row.entity.creator.TELNR" email="row.entity.creator.mail">
+				</bridge.employee>
+			</bridge.table-column>
+            <bridge.table-column header="'Description'" order-by="DESCRIPTION">
+                <a target="_blank" href="{{row.entity.url}}">{{row.entity.DESCRIPTION}}</a>
+            </bridge.table-column>
         </bridge.table>
 
     </div>

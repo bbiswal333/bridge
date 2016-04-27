@@ -10,7 +10,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
         $scope.tickets = [];
         $scope.detailForNotifications = ($routeParams.calledFromNotifications === 'true');
 
-        $scope.filterTable = function(oTicket){
+       function filterTicket(oTicket){
             var bTicketPriorityMatches = false;
             angular.forEach($scope.prios, function(prio){
                if (prio.active === true && oTicket.URGENCY.toString() === prio.key){
@@ -29,20 +29,8 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
                 bCategoryMatches = true;
             }
 
-            var bTicketContainsFilterString = false;
-            if ($scope.filterText === "" || $scope.filterText === undefined){
-                    bTicketContainsFilterString = true;
-            } else {
-                var property;
-                for (property in oTicket){
-                    if (oTicket[property].toString().toUpperCase().indexOf($scope.filterText.toUpperCase()) !== -1){
-                        bTicketContainsFilterString = true;
-                    }
-                }
-            }
-
-            return bTicketPriorityMatches && bCategoryMatches && bTicketContainsFilterString;
-        };
+            return bTicketPriorityMatches && bCategoryMatches;
+        }
 
         $scope.getFormattedDate = function(sAbapDate){
             return converter.getDateFromAbapTimeString(sAbapDate).toLocaleString();
@@ -63,6 +51,8 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
 
         function enhanceAllTickets(aTickets){
             var sTicketCategory = "";
+            $scope.tickets.length = 0;
+
             function addAndEnhanceTicket(ticket) {
                 ticket.url = 'https://itdirect.wdf.sap.corp/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=001&sap-sessioncmd=open&CRM-OBJECT-ACTION=B&CRM-OBJECT-TYPE=AIC_OB_INCIDENT&thtmlbSliderState=HIDDEN&CRM-OBJECT-VALUE=' + ticket.GUID.toString();
                 ticket.bridgeCategory = sTicketCategory;
@@ -73,7 +63,7 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
                     });
                 }
 
-                if (!that.containsTicket(ticket.GUID.toString())){
+                if (!that.containsTicket(ticket.GUID.toString()) && filterTicket(ticket)){
                     $scope.tickets.push(ticket);
                 }
             }
@@ -83,6 +73,12 @@ angular.module('app.itdirect').controller('app.itdirect.detailController', ["$sc
             sTicketCategory = "savedSearch";
             angular.forEach(aTickets.savedSearch, addAndEnhanceTicket);
         }
+
+        $scope.$watch('prios', function(){
+            if($scope.prios !== undefined && ticketData.isInitialized.value === true){
+                enhanceAllTickets(ticketData.tickets);
+            }
+        },true);
 
         if (config.isInitialized === false) {
             config.initialize(bridgeDataService.getAppConfigById($routeParams.appId));
