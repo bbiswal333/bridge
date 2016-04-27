@@ -8,7 +8,7 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
         $scope.detailForNotifications = false;
 
         function filterTable(oTicket){
-            return detailUtils.ticketMatches(oTicket, $scope.filterText, $scope.prios);
+            return detailUtils.ticketMatches(oTicket, "", $scope.prios);
         }
 
         $scope.userClick = function(employeeDetails){
@@ -83,8 +83,12 @@ angular.module('app.internalIncidents').controller('app.internalIncidents.detail
                 enhanceAllMessages();
             }
 
-            setPrioSelections(false);
-            _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            if ($routeParams.prio === 'All'){
+                setPrioSelections(true);
+            }else {
+                setPrioSelections(false);
+                _.find($scope.prios, {"key": $routeParams.prio}).active = true;
+            }
         }
 
 }]);
