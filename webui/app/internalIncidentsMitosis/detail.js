@@ -18,6 +18,8 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
             $scope.loadingIncidentsPromise = incidentData.loadDetails(incidentConfig).then(function() {
             	setIncidents();
             });
+        } else {
+            setIncidents();
         }
 
         function toFixedLength(value) {
