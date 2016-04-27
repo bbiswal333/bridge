@@ -215,11 +215,13 @@ angular.module("app.internalIncidentsMitosis")
 	        			return responsible.getComponents();
 	        		})).then(function(results) {
 	        			doRequests(oDataObject, getQueryStrings(oConfig, Array.prototype.concat.apply([], results)), bSummary).then(function() {
+	        				oDataObject.hasDetails = bSummary ? false : true;
 	        				deferred.resolve();
 	        			});
 	        		});
 				} else {
 					doRequests(oDataObject, getQueryStrings(oConfig), bSummary).then(function() {
+						oDataObject.hasDetails = bSummary ? false : true;
 						deferred.resolve();
 					});
 				}

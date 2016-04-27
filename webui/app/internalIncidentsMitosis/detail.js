@@ -14,9 +14,11 @@ angular.module('app.internalIncidentsMitosis').controller('app.internalIncidents
         	incidentConfig.initialize();
         }
 
-        $scope.loadingIncidentsPromise = incidentData.loadDetails(incidentConfig).then(function() {
-        	setIncidents();
-        });
+        if(!incidentData.hasDetails) {
+            $scope.loadingIncidentsPromise = incidentData.loadDetails(incidentConfig).then(function() {
+            	setIncidents();
+            });
+        }
 
         function toFixedLength(value) {
             if(value.toString().length === 1) {
