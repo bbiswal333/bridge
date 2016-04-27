@@ -41,7 +41,7 @@ webui/lib-bower
 *.sso
 user_certificate.json
 
-# Node 
+# Node
 modules
 node_modules
 
@@ -233,3 +233,8 @@ webui/app/colorize/overview.js
 webui/app/colorize/overview.html
 
 webui/app/IspMonitoring/*
+
+#==========================
+# Visual Studio Code
+#==========================
+jsconfig.json
