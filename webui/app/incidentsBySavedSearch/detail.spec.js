@@ -63,7 +63,7 @@ describe("Incidents By Saved Search details controller", function(){
             "$http": $http,
             "$window": $window,
             "app.internalIncidents.ticketData": ticketData,
-            "$routeParams": { appId: "test-1", prio: "1" },
+            "$routeParams": { appId: "test-1", prio: "All" },
             "app.internalIncidents.config": {},
             "bridge.converter": {},
             "bridgeDataService": { getAppConfigById: function() {
@@ -89,7 +89,8 @@ describe("Incidents By Saved Search details controller", function(){
 
         ticketData.getInstanceForAppId("test-1").ticketsFromNotifications.push({
             DESCRIPTION: "I am a dummy Ticket",
-            REPORTER_ID: "D051804"
+            REPORTER_ID: "D051804",
+            PRIORITY_KEY: "1"
         });
 
         $controller("app.incidentSavedSearch.detailController", {
