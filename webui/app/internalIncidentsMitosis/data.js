@@ -14,7 +14,7 @@ angular.module("app.internalIncidentsMitosis")
 						"Content-Type: application/http\r\n" +
 						"Content-Transfer-Encoding: binary\r\n" +
 						"\r\n" +
-						"GET " + encodeURI(sEntity + "?$format=json&$filter=II_PRIORITY_ID eq " + iPrio + " and " + sQueryString) + " HTTP/1.1\r\n" +
+						"GET " + encodeURI(sEntity + "?$format=json&$filter=II_PRIORITY_ID eq " + (sEntity === 'Incident' || sEntity === 'IncidentDetails' ? iPrio : "'" + iPrio + "'") + " and " + sQueryString) + " HTTP/1.1\r\n" +
 						"\r\n" +
 						"\r\n" +
 						"--batch--";
