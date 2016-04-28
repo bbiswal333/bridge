@@ -118,7 +118,7 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 								"Content-Type: application/http\r\n" +
 								"Content-Transfer-Encoding: binary\r\n" +
 								"\r\n" +
-								"GET " + encodeURI("Items" + (bDetails ? "?$format=json&" : "/$count?") + "$filter=CM_PRIORITY eq '" + iPrio + "' and " + queryString) + " HTTP/1.1\r\n" +
+								"GET " + encodeURI("UpportChecks" + (bDetails ? "?$format=json&" : "/$count?") + "$filter=CM_PRIORITY eq '" + iPrio + "' and " + queryString) + " HTTP/1.1\r\n" +
 								"\r\n" +
 								"\r\n" +
 								"--batch--";
@@ -138,10 +138,35 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 			return parseInt(results[1]);
 		}
 
+		function toTitleCase(str) {
+			return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+		}
+
+		function transformDetails(aDetails) {
+			return aDetails.d.results.map(function(item) {
+				if(item.CM_PROCESSOR_NAME) {
+					item.CM_PROCESSOR_FIRST_NAME = item.CM_PROCESSOR_NAME.substring(0, item.CM_PROCESSOR_NAME.indexOf(" "));
+					item.CM_PROCESSOR_LAST_NAME = item.CM_PROCESSOR_NAME.substring(item.CM_PROCESSOR_NAME.indexOf(" ") + 1);
+				} else {
+					item.CM_PROCESSOR_FIRST_NAME = "";
+					item.CM_PROCESSOR_LAST_NAME = "";
+				}
+				if(item.CM_DEV_DLM_NAME) {
+					item.CM_DEV_DLM_NAME = toTitleCase(item.CM_DEV_DLM_NAME);
+					item.CM_DEV_DLM_FIRST_NAME = item.CM_DEV_DLM_NAME.substring(0, item.CM_DEV_DLM_NAME.indexOf(" "));
+					item.CM_DEV_DLM_LAST_NAME = item.CM_DEV_DLM_NAME.substring(item.CM_DEV_DLM_NAME.indexOf(" ") + 1);
+				} else {
+					item.CM_DEV_DLM_FIRST_NAME = "";
+					item.CM_DEV_DLM_LAST_NAME = "";
+				}
+				return item;
+			});
+		}
+
 		function parseDetails(sSummary) {
 			var regexp = /\r\n\r\n(.*)\r\n--[a-zA-Z0-9]{33}--\r\n$/gi;
 			var results = regexp.exec(sSummary);
-			return JSON.parse(results[1]);
+			return transformDetails(JSON.parse(results[1]));
 		}
 
 		return function(sAppId) {
@@ -187,8 +212,8 @@ angular.module('app.upportNotes').service("app.upportNotes.dataService", ['$q', 
 						prio1: createBatchRequest(1, queryString, true),
 						prio2: createBatchRequest(2, queryString, true)
 					}).then(function(result) {
-						Array.prototype.push.apply(that.details, parseDetails(result.prio1.data).d.results);
-						Array.prototype.push.apply(that.details, parseDetails(result.prio2.data).d.results);
+						Array.prototype.push.apply(that.details, parseDetails(result.prio1.data));
+						Array.prototype.push.apply(that.details, parseDetails(result.prio2.data));
 						deferred.resolve();
 					}, function() {
 						deferred.reject();

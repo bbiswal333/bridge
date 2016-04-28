@@ -46,6 +46,7 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                             $scope.gridApi.core.on.columnVisibilityChanged($scope, persistGridOptions);
                             $scope.gridApi.colMovable.on.columnPositionChanged($scope, persistGridOptions);
                             $scope.gridApi.pinning.on.columnPinned($scope, persistGridOptions);
+                            $scope.gridApi.colResizable.on.columnSizeChanged($scope, persistGridOptions);
                         });
                     });
                 },
@@ -68,7 +69,7 @@ angular.module('bridge.controls').directive('bridge.table', ["$window", "$timeou
                 renderableRows.forEach(function(row) {
                     var match = false;
                     for(var attr in row.entity) {
-                        if (row.entity[attr].toString().match(matcher)){
+                        if (row.entity[attr] && row.entity[attr].toString().match(matcher)){
                             match = true;
                         }
                     }

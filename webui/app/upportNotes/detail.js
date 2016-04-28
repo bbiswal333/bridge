@@ -3,6 +3,7 @@ angular.module('app.upportNotes').controller('app.upportNotes.detailController',
     	var appConfig = configService.getConfigForAppId("app.upportNotes-" + $routeParams.instanceNumber);
 		appConfig.initialize();
 		$scope.config = appConfig.getItems();
+		$scope.tableSettings = appConfig.tableSettings;
 
 		$scope.prio = $routeParams.prio;
 

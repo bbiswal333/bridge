@@ -213,6 +213,7 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 		return function(appId) {
 			var initialized = false;
 			this.configItems = [];
+			this.tableSettings = {};
 
 			this.getItems = function() {
 				return this.configItems;
@@ -242,11 +243,12 @@ angular.module('app.upportNotes').service("app.upportNotes.configService", ['$q'
 				config.configItems.map(function(item) {
 					that.addItem(that.getNewItem().fromJSON(item));
 				});
+				this.tableSettings = config.tableSettings ? config.tableSettings : {};
 				initialized = true;
 			};
 
 			this.toJSON = function() {
-				return JSON.parse(JSON.stringify({configItems: this.configItems}));
+				return JSON.parse(JSON.stringify({configItems: this.configItems, tableSettings: this.tableSettings}));
 			};
 		};
 	})();
