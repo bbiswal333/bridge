@@ -1,23 +1,31 @@
-<div ng-controller="app.internalIncidentsMitosis.detailController" style="box-sizing:border-box;">    
+<div ng-controller="app.internalIncidentsMitosis.detailController" style="box-sizing:border-box;">
 	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
 		<br/>
-		<bridge.table table-data="incidents" new-layout="true">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Program'" column-size-class="'col-sm-4'" order-by="'TP_PROGRAM_TXT'" visible="parentScope.config.detailsColumnVisibility[0]" column-order="parentScope.config.columnOrder[0]">{{row.TP_PROGRAM_TXT}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'System'" column-size-class="'col-sm-1'" order-by="'II_SYSTEM_ID'" visible="parentScope.config.detailsColumnVisibility[1]" column-order="parentScope.config.columnOrder[1]">{{row.II_SYSTEM_ID}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'Component'" column-size-class="'col-sm-4'" order-by="'II_CATEGORY'" visible="parentScope.config.detailsColumnVisibility[2]" column-order="parentScope.config.columnOrder[2]">{{row.II_CATEGORY}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Status'" column-size-class="'col-sm-3'" order-by="'II_STATUS_TEXT'" visible="parentScope.config.detailsColumnVisibility[3]" column-order="parentScope.config.columnOrder[3]">{{row.II_STATUS_TEXT}}</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Priority'" column-size-class="'col-sm-3'" order-by="'II_PRIORITY_TEXT'" visible="parentScope.config.detailsColumnVisibility[4]" column-order="parentScope.config.columnOrder[4]">{{row.II_PRIORITY_TEXT}}</bridge.table-column>
-				<bridge.table-column column-id="6" header="'Processor'" column-size-class="'col-sm-4'" order-by="'II_PROCESSOR_ID'" visible="parentScope.config.detailsColumnVisibility[5]" column-order="parentScope.config.columnOrder[5]"><bridge.employee id="row.II_PROCESSOR_ID" mail-body="https://support.wdf.sap.corp/sap/support/message/{{row.OBJECT_ID}}" mail-subject="Internal Incident {{row.OBJECT_ID}}"></bridge.employee></bridge.table-column>
-				<bridge.table-column column-id="7" header="'Reporter'" column-size-class="'col-sm-4'" order-by="'II_REPORTER_ID'" visible="parentScope.config.detailsColumnVisibility[6]" column-order="parentScope.config.columnOrder[6]"><bridge.employee id="row.II_REPORTER_ID" mail-body="https://support.wdf.sap.corp/sap/support/message/{{row.OBJECT_ID}}" mail-subject="Internal Incident {{row.OBJECT_ID}}"></bridge.employee></bridge.table-column>
-				<bridge.table-column column-id="8" header="'Description'" column-size-class="'col-sm-5'" order-by="'II_DESCRIPTION'" visible="parentScope.config.detailsColumnVisibility[7]" column-order="parentScope.config.columnOrder[7]"><a href="https://support.wdf.sap.corp/sap/support/message/{{row.OBJECT_ID}}" target="_blank">{{row.II_DESCRIPTION}}</a></bridge.table-column>
-				<bridge.table-column column-id="9" header="'Created'" column-size-class="'col-sm-2'" order-by="'II_CREATED_AT'" visible="parentScope.config.detailsColumnVisibility[8]" column-order="parentScope.config.columnOrder[8]">{{parentScope.getFormattedDate(row.II_CREATED_AT)}}</bridge.table-column>
-				<bridge.table-column column-id="10" header="'Changed'" column-size-class="'col-sm-2'" order-by="'II_CHANGED_AT'" visible="parentScope.config.detailsColumnVisibility[9]" column-order="parentScope.config.columnOrder[9]">{{parentScope.getFormattedDate(row.II_CHANGED_AT)}}</bridge.table-column>
-				<bridge.table-column column-id="11" header="'Object ID'" column-size-class="'col-sm-3'" order-by="'OBJECT_ID'" visible="parentScope.config.detailsColumnVisibility[10]" column-order="parentScope.config.columnOrder[10]">
-					<a href="https://support.wdf.sap.corp/sap/support/message/{{row.OBJECT_ID}}" target="_blank">{{row.OBJECT_ID}}</a>
-				</bridge.table-column>
-				<bridge.table-column column-id="12" header="'MPT'" column-size-class="'col-sm-2'" order-by="'II_MPT_EXPIRY_DATE'" visible="parentScope.config.detailsColumnVisibility[11]" column-order="parentScope.config.columnOrder[11]">{{parentScope.getFormattedDate(row.II_MPT_EXPIRY_DATE)}}</bridge.table-column>
-			</bridge.table-column-sorter>
+		<bridge.table table-data="incidents" table-settings="config.tableSettings">
+			<bridge.table-column header="'Program'" column-width="180" field="TP_PROGRAM_TXT"></bridge.table-column>
+			<bridge.table-column header="'System'" column-width="120" field="II_SYSTEM_ID"></bridge.table-column>
+			<bridge.table-column header="'Component'" column-width="150" field="II_CATEGORY"></bridge.table-column>
+			<bridge.table-column header="'Status'" column-width="150" field="II_STATUS_TEXT"></bridge.table-column>
+			<bridge.table-column header="'Priority'" column-width="150" field="II_PRIORITY_TEXT"></bridge.table-column>
+			<bridge.table-column header="'Processor'" column-width="210" field="II_PROCESSOR_ID" order-by="processorData.NACHN"
+								 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.II_PROCESSOR_ID" first-name="row.entity.processorData.VORNA" last-name="row.entity.processorData.NACHN" phone="row.entity.processorData.TELNR" email="row.entity.processorData.mail">
+				</bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Reporter'" column-width="210" field="II_REPORTER_ID" order-by="reporterData.NACHN"
+								 group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.II_REPORTER_ID" first-name="row.entity.reporterData.VORNA" last-name="row.entity.reporterData.NACHN" phone="row.entity.reporterData.TELNR" email="row.entity.reporterData.mail">
+				</bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Description'" column-width="280" order-by="II_DESCRIPTION" >
+				<a href="https://support.wdf.sap.corp/sap/support/message/{{row.entity.OBJECT_ID}}" target="_blank">{{row.entity.II_DESCRIPTION}}</a>
+			</bridge.table-column>
+			<bridge.table-column header="'Created'" column-width="120" order-by="II_CREATED_AT" >{{grid.appScope.$parent.getFormattedDate(row.entity.II_CREATED_AT)}}</bridge.table-column>
+			<bridge.table-column header="'Changed'" column-width="120" order-by="II_CHANGED_AT" >{{grid.appScope.$parent.getFormattedDate(row.entity.II_CHANGED_AT)}}</bridge.table-column>
+			<bridge.table-column header="'Object ID'" column-width="160" order-by="OBJECT_ID" field="OBJECT_ID">
+				<a href="https://support.wdf.sap.corp/sap/support/message/{{row.entity.OBJECT_ID}}" target="_blank">{{row.entity.OBJECT_ID}}</a>
+			</bridge.table-column>
+			<bridge.table-column header="'MPT'" column-width="140" order-by="II_MPT_EXPIRY_DATE">{{grid.appScope.$parent.getFormattedDate(row.entity.II_MPT_EXPIRY_DATE)}}</bridge.table-column>
 		</bridge.table>
 	</div>
 </div>

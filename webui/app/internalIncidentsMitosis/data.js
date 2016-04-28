@@ -1,6 +1,6 @@
 angular.module("app.internalIncidentsMitosis")
-	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window", "$timeout",
-	function ($http, $q, $window, $timeout) {
+	.service("app.internalIncidentsMitosis.dataService", ["$http", "$q", "$window", "$timeout", "employeeService",
+	function ($http, $q, $window, $timeout, employeeService) {
 		var AppData = (function() {
 			function doDummyRequestInOrderToGetAroundIEBug() {
 				$http({method: 'GET', url: "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin, withCredentials: true}).success(function(){
@@ -75,6 +75,18 @@ angular.module("app.internalIncidentsMitosis")
 	        	incident.II_CREATED_AT = toDate(incident.II_CREATED_AT);
 	        	incident.II_CHANGED_AT = toDate(incident.II_CHANGED_AT);
 	        	incident.II_MPT_EXPIRY_DATE = toDate(incident.II_MPT_EXPIRY_DATE);
+
+				if(incident.II_PROCESSOR_ID !== "") {
+					employeeService.getData(incident.II_PROCESSOR_ID).then(function(empData) {
+						incident.processorData = empData;
+					});
+				}
+				if(incident.II_REPORTER_ID !== "") {
+					employeeService.getData(incident.II_REPORTER_ID).then(function(empData) {
+						incident.reporterData = empData;
+					});
+				}
+
 	        	return incident;
 	        }
 
@@ -91,6 +103,7 @@ angular.module("app.internalIncidentsMitosis")
 						deferred.resolve();
 					} else {
 						getFilterFromConfig(config).then(function(filter) {
+							//var url = "https://sithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin;
 							var url = "https://mithdb.wdf.sap.corp/oprr/intm/reporting/bridge/incidents.xsjs?origin=" + $window.location.origin;
 							$http({method: 'POST', url: url, withCredentials: true, data: filter, headers: { 'Content-Type': 'text/plain' }}).success(function(data){
 								that.limit = data.limit;
