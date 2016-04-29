@@ -9,12 +9,12 @@
 		
 	    <br/><br/>
 
-		<bridge.table table-data="tableData" new-layout="true">
-				<bridge.table-column column-id="1" header="'Milestone Name'" column-size-class="'col-sm-4'" order-by="'getName()'" visible="columnVisibility" column-order="1">{{row.getName()}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'Program Name'" column-size-class="'col-sm-5'" order-by="'getProgram().getName()'" visible="columnVisibility" column-order="2">{{row.getProgram().getName()}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'Devlivery Name'" column-size-class="'col-sm-4'" order-by="'getDeliveryName()'" visible="columnVisibility" column-order="3">{{row.getDeliveryName()}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Milestone Type'" column-size-class="'col-sm-3'" order-by="'getMilestoneTypeAsStr()'" visible="columnVisibility" column-order="4">{{row.getMilestoneTypeAsStr()}}</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Date'" column-size-class="'col-sm-2'" order-by="'getDate()'" visible="columnVisibility" column-order="5">{{row.getDateFormatted()}}</bridge.table-column>
+		<bridge.table table-data="tableData" table-settings="config.getTableSettings()">
+				<bridge.table-column header="'Milestone Name'" column-width="210" order-by="getName()" field="getName()"></bridge.table-column>
+				<bridge.table-column header="'Program Name'" column-width="300" order-by="getProgram().getName()" field="getProgram().getName()"></bridge.table-column>
+				<bridge.table-column header="'Devlivery Name'" column-width="300" order-by="getDeliveryName()" field="getDeliveryName()"></bridge.table-column>
+				<bridge.table-column header="'Milestone Type'" column-width="200" order-by="getMilestoneTypeAsStr()" field="getMilestoneTypeAsStr(true)"></bridge.table-column>
+				<bridge.table-column header="'Date'" column-width="90" order-by="getDate()" field="getDateFormatted()"></bridge.table-column>
 		</bridge.table>
 
 	</div>

@@ -5,6 +5,7 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			var milestoneTypes = ["ALL"];
 			var initialized = false;
 			var initializedDeferrals = [];
+			var tableSettings = {};
 
 			(function initialize() {
 				var config = bridgeDataService.getAppConfigById(sAppId);
@@ -20,6 +21,8 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 							milestoneTypes.push(type);
 						});
 					}
+
+					tableSettings = config.tableSettings ? config.tableSettings : {};
 
 					initialized = true;
 					initializedDeferrals.map(function(deferred) {
@@ -97,6 +100,10 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 				}
 				return deferred.promise;
 			};
+
+			this.getTableSettings = function() {
+				return tableSettings;
+			};
 		};
 	})();
 
@@ -109,7 +116,8 @@ angular.module('app.programMilestones').service("app.programMilestones.configFac
 			bridgeDataService.getAppById(sAppId).returnConfig = function() {
 				return {
 	            	programs: configObjects[sAppId].getPrograms(),
-	                milestoneTypes: configObjects[sAppId].getMilestoneTypes()
+	                milestoneTypes: configObjects[sAppId].getMilestoneTypes(),
+	                tableSettings: configObjects[sAppId].getTableSettings()
 	            };
 			};
         }

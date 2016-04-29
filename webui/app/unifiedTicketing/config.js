@@ -8,6 +8,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", ['
         this.bPartieOfRequestSelected = true;
         this.bSavedSearchSelected = true;
         this.syncHistory = '';
+        this.tableSettings = {};
 
         this.data.syncDays = '140';
         this.data.Status = '';
@@ -18,6 +19,7 @@ angular.module("app.unifiedticketing").service("app.unifiedticketing.config", ['
             var persistedConfig = bridgeDataService.getAppConfigById(sAppId);
             if(persistedConfig && persistedConfig.data) {
                 this.data = persistedConfig.data;
+                this.tableSettings = persistedConfig.tableSettings ? persistedConfig.tableSettings : {};
             }
             this.lastDataUpdate = new Date(this.lastDataUpdate);
             this.setSyncHistory(this.data.syncDays);
