@@ -1,15 +1,15 @@
 <div ng-controller="app.transportNew.detailController" style="box-sizing:border-box;">    
 	<div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
 		<br/>
-		<bridge.table table-data="transports" new-layout="true">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Request'" column-size-class="'col-sm-3'" order-by="'ID'" column-order="parentScope.config.columnOrder[0]">{{row.ID}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'System'" column-size-class="'col-sm-2'" order-by="'SOURCE_SYSTEM'" column-order="parentScope.config.columnOrder[1]">{{row.SOURCE_SYSTEM}}</bridge.table-column>
-				<bridge.table-column column-id="3" header="'First Occurence'" column-size-class="'col-sm-3'" order-by="'FIRST_OCCURENCE'" column-order="parentScope.config.columnOrder[2]">{{row.FIRST_OCCURENCE}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Owner'" column-size-class="'col-sm-5'" order-by="'OWNER'" column-order="parentScope.config.columnOrder[3]"><bridge.employee id="row.OWNER"></bridge.employee></bridge.table-column>
-				<bridge.table-column column-id="5" header="'Description'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'" column-order="parentScope.config.columnOrder[4]">{{row.DESCRIPTION}}</bridge.table-column>
-				<bridge.table-column column-id="6" header="'Display'" column-size-class="'col-sm-4'" order-by="'DESCRIPTION'" column-order="parentScope.config.columnOrder[5]"><bridge.button ng-click="parentScope.goToTransport(row)">Display</bridge.button></bridge.table-column>
-			</bridge.table-column-sorter>
+		<bridge.table table-data="transports" table-settings="config.tableSettings">
+			<bridge.table-column header="'Request'" column-width="150" field="ID"></bridge.table-column>
+			<bridge.table-column header="'System'" column-width="90" field="SOURCE_SYSTEM"></bridge.table-column>
+			<bridge.table-column header="'First Occurence'" column-width="150" field="FIRST_OCCURENCE"></bridge.table-column>
+			<bridge.table-column header="'Owner'" column-width="300" field="OWNER_BNAME" order-by="OWNER_SORT" group-template="<bridge.employee id='row.groupVal'></bridge.employee> (\{\{row.groupCount\}\})">
+				<bridge.employee id="row.entity.OWNER_BNAME" first-name="row.entity.OWNER_VORNA" last-name="row.entity.OWNER_NACHN" phone="row.entity.OWNER_TELNR" email="row.entity.OWNER_MAIL"></bridge.employee>
+			</bridge.table-column>
+			<bridge.table-column header="'Description'" column-width="210" field="DESCRIPTION"></bridge.table-column>
+			<bridge.table-column header="'Display'" column-width="210"><button ng-click="grid.appScope.$parent.goToTransport(row)">Display</button></bridge.table-column>
 		</bridge.table>
 	</div>
 </div>

@@ -15,6 +15,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 			this.isInitialized = false;
 			this.akhResponsibles = [];
 			this.columnOrder = [0, 1, 2, 3, 4, 5];
+			this.tableSettings = {};
 
 			this.initialize = function() {
 				var appConfig = bridgeDataService.getAppConfigById(sAppId);
@@ -26,6 +27,7 @@ angular.module('app.transportNew').service("app.transportNew.configService", ['b
 	                this.firstOccurence = appConfig.firstOccurence ? new Date(appConfig.firstOccurence) : undefined;
 	                this.openTransportThreshold = angular.copy(appConfig.openTransportThreshold ? appConfig.openTransportThreshold : 7);
 	                this.columnOrder = angular.copy(appConfig.columnOrder ? appConfig.columnOrder : [0, 1, 2, 3, 4, 5]);
+	                this.tableSettings = appConfig.tableSettings ? appConfig.tableSettings : {};
 	            }
 	            this.isInitialized = true;
 			};
