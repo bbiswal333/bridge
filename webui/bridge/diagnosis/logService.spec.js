@@ -64,7 +64,6 @@
         } catch (e) {
             logService.log(e);
             expect(logService.getLog()[0].sMessage).not.toBe('');
-            expect(logService.getLog()[0].sStackTrace.indexOf("ReferenceError:")).not.toBe(-1);
         }
     });
 

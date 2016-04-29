@@ -41,7 +41,7 @@ describe("Data", function() {
 		var data = dataFactory.getDataForAppId("app-1");
 		data.refreshMilestones();
 		$httpBackend.flush();
-		expect(data.getMilestones().length).toEqual(2);
+		expect(data.getMilestones().length).toEqual(3); //GET_PR_PROGRAM_MILESTONE delivers 1 (start date 0000-00-00 is filtered out), GET_PRS_PROGRAM_MILESTONE delivers 2
 	});
 
 	it("should only take configured milestones", function() {
@@ -49,6 +49,6 @@ describe("Data", function() {
 		var data = dataFactory.getDataForAppId("app-1");
 		data.refreshMilestones();
 		$httpBackend.flush();
-		expect(data.getMilestones().length).toEqual(1);
+		expect(data.getMilestones().length).toEqual(2); //GET_PR_PROGRAM_MILESTONE Delivers 1 "0714-Milestone", GET_PRS_PROGRAM_MILESTONE also Delivers 1 "0714-Milestone"
 	});
 });

@@ -7,11 +7,11 @@ module.exports = function(config) {
         console.log("Running in stealth mode");
         stealthMode = true;
     }
-    
+
     function isDebug(argument) {
         return argument === '--debug';
     }
-    
+
     var coveragePreprocessors = ['coverage'];
     if (process.argv.some(isDebug)) {
         coveragePreprocessors = [];
@@ -28,6 +28,10 @@ module.exports = function(config) {
 
         proxies: {
             '/web': 'http://proxy:8080'
+        },
+
+        client: {
+             captureConsole: true
         },
 
         // list of files / patterns to load in the browser (*.spec.js is redundant)
