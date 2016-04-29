@@ -1,18 +1,19 @@
-<div ng-controller="app.querytracker.detailController" style="box-sizing:border-box;">    
-    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>	
+<div ng-controller="app.querytracker.detailController" style="box-sizing:border-box;">
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
 	    <br/><br/>
 
-		<bridge.table table-data="data" filter="filterText" default-sort-by="'Deadline'">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Deadline'" column-size-class="'col-sm-1'" order-by="'Deadline'" ng-class="{true: 'orange-font-100', false: ''}[row.deadline_marker];">{{row.Deadline}}</bridge.table-column>
-				<bridge.table-column column-id="2" header="'Query Number'" column-size-class="'col-sm-1'" order-by="'ID'"><a target="_blank" href="https://querytracker.pgdev.sap.corp/QueryDetails.aspx?queryid={{row.ID}}&actionid=2">{{row.ID}}</a></bridge.table-column>
-				<bridge.table-column column-id="3" header="'Component/ Domain'" column-size-class="'col-sm-2'" order-by="'ComponentOrDomain'">{{row.ComponentOrDomain}}</bridge.table-column>
-				<bridge.table-column column-id="4" header="'Prog. ID'" column-size-class="'col-sm-1'" order-by="'DevProgramID'">{{row.DevProgramID}}</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Obj. Type'" column-size-class="'col-sm-1'" order-by="'DevObjectType'">{{row.DevObjectType}}</bridge.table-column>
-				<bridge.table-column column-id="6" header="'Object Name'" column-size-class="'col-sm-2'" order-by="'DevObjectName'">{{row.DevObjectName}}</bridge.table-column>
-				<bridge.table-column column-id="7" header="'Issue'" column-size-class="'col-sm-3'" order-by="'Issue'">{{row.Issue}}</bridge.table-column>
-			</bridge.table-column-sorter>
+		<bridge.table table-data="data">
+			<bridge.table-column header="'Deadline'" column-width="120" order-by="Deadline">
+				<span ng-class="{true: 'orange-font-100', false: ''}[row.entity.deadline_marker];">{{row.entity.Deadline}}</span>
+			</bridge.table-column>
+			<bridge.table-column header="'Query Number'" column-width="120" order-by="ID">
+				<a target="_blank" href="https://querytracker.pgdev.sap.corp/QueryDetails.aspx?queryid={{row.entity.ID}}&actionid=2">{{row.entity.ID}}</a>
+			</bridge.table-column>
+			<bridge.table-column header="'Component/Domain'" column-width="150" field="ComponentOrDomain"></bridge.table-column>
+			<bridge.table-column header="'Prog. ID'" column-width="120" field="DevProgramID"></bridge.table-column>
+			<bridge.table-column header="'Obj. Type'" column-width="120" field="DevObjectType"></bridge.table-column>
+			<bridge.table-column header="'Object Name'" column-width="180" field="DevObjectName"></bridge.table-column>
+			<bridge.table-column header="'Issue'" field="Issue"></bridge.table-column>
 		</bridge.table>
 
 	</div>

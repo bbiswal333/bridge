@@ -28,7 +28,7 @@ angular.module("app.querytracker").service("app.querytracker.queryData",
         this.loadQueryData = function(){
             var userInfo = bridgeDataService.getUserInfo();
             $http.get('https://qtservices.pgdev.sap.corp/api/queries/answerer/' + userInfo.BNAME).success(function(data){
-            //$http.get('https://qtservices.pgdev.sap.corp/api/queries/answerer/' + "D050570").success(function(data){
+            //$http.get('https://qtservices.pgdev.sap.corp/api/queries/answerer/' + "I311164").success(function(data){ // users for testing: I311164, D050570
                 if (angular.isArray(data)) {
                     setDeadlineMarker(data);
                     data.sort(function(a, b){
