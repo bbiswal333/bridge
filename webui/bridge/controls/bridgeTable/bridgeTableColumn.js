@@ -46,10 +46,7 @@ angular.module('bridge.controls').directive('bridge.tableColumn', [function() {
 
     return {
         restrict: "E",
-        templateUrl: 'bridge/controls/bridgeTable/bridgeTableColumn.html',
         require: "^bridge.table",
-        transclude: true,
-        replace: true,
         scope: {
             header: '&',
             columnId: '&',

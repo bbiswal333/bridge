@@ -46,7 +46,7 @@ input[type="password"] {
     border: 1px solid #c3c3c3;
     width: 100%;
 }
-input ~ span {
+input ~ span.inputSpanSlider {
     display: block;
     width: 0;
     height: 3px;
