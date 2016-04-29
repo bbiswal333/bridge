@@ -1,8 +1,6 @@
-﻿<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">    
-    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">                
-		<bridge.input model="filterText" placeholder="Filter.." style="width:280px;float:left;margin-right:25px;"></bridge.input>
+﻿<div ng-controller="app.jira.detailController" style="box-sizing:border-box;">
+    <div class="panel panel-default" style="padding:30px;box-sizing:border-box;">
 		<div class="btn-group" style="height:32px">
-		  <!--<span ng-repeat="status in getStatusArray()" ng-class="{true: 'btn btn_blue', false: 'btn'}[data.status[status].active];" class="btn btn-default" ng-click="data.status[status].active = !data.status[status].active" style="margin-bottom:20px;">{{status}}</span>-->
 		  <bridge.button state="data.status[status].active === true ? 'active' : 'invisible-button'" ng-click="data.status[status].active = !data.status[status].active" ng-repeat="status in getStatusArray()" style="width:100px;margin-left:0;margin-right:0;">
 		  	{{status}}
 		  </bridge.button>
@@ -10,27 +8,18 @@
 
 		<br/>
 
-		<bridge.table table-data="data.filteredJiraData" filter="filterText" new-layout="true">
-			<bridge.table-column-sorter>
-				<bridge.table-column column-id="1" header="'Key'" column-size-class="'col-sm-3'" order-by="'key'">
-					<a target="_blank" href="{{row.jira_url}}/browse/{{row.key}}">{{row.key}}</a>
+		<bridge.table table-data="data.filteredJiraData">
+				<bridge.table-column header="'Key'" column-width="150" order-by="key">
+					<a target="_blank" href="{{row.entity.jira_url}}/browse/{{row.entity.key}}">{{row.entity.key}}</a>
 				</bridge.table-column>
-
-
-	            <bridge.table-column column-id="2" header="'Log'" column-size-class="'col-sm-2'">
-
-	                    <a  target="_blank" href="{{row.jira_url}}/secure/CreateWorklog!default.jspa?id={{row.id}}">
+	            <bridge.table-column header="'Log'" column-width="100">
+	                    <a  target="_blank" href="{{row.entity.jira_url}}/secure/CreateWorklog!default.jspa?id={{row.entity.id}}">
 	                        Log Hours
 	                    </a>
-	           
 	            </bridge.table-column>
-
-
-				<bridge.table-column column-id="3" header="'Summary'" column-size-class="'col-sm-5'" order-by="'summary'">{{row.summary}}</bridge.table-column>
-
-				<bridge.table-column column-id="4" header="'Description'" column-size-class="'col-sm-5'" order-by="'description'">{{row.description}}</bridge.table-column>
-				<bridge.table-column column-id="5" header="'Status'" column-size-class="'col-sm-2'" order-by="'status'">{{row.status}}</bridge.table-column>
-			</bridge.table-column-sorter>
+				<bridge.table-column header="'Summary'" field="summary"></bridge.table-column>
+				<bridge.table-column header="'Description'" field="description"></bridge.table-column>
+				<bridge.table-column header="'Status'" column-width="120" field="status"></bridge.table-column>
 		</bridge.table>
 
 	</div>
