@@ -19,6 +19,31 @@ angular.module('bridge.controls').directive('bridge.tableColumn', [function() {
         }
     }
 
+    function getValue(oObject, sProp) {
+        if(sProp.indexOf("()") === sProp.length - 2) { //Will become an issue when we start to pass in parameters... need to handle when it becomes urgent
+            return oObject[sProp.replace("()", "")].call();
+        } else {
+            return oObject[sProp];
+        }
+    }
+
+    function getValueAlongPath(sPath, oObject) {
+        var aPath = sPath.split(".");
+        var currentValue = oObject;
+        for(var i = 0, length = aPath.length; i < length; i++) {
+            try {
+                if(i === length - 1) {
+                    currentValue = getValue(currentValue, aPath[i]);
+                } else {
+                    currentValue = getValue(currentValue, aPath[i]);
+                }
+            } catch(e) {
+                return undefined;
+            }
+        }
+        return currentValue;
+    }
+
     return {
         restrict: "E",
         templateUrl: 'bridge/controls/bridgeTable/bridgeTableColumn.html',
@@ -62,9 +87,14 @@ angular.module('bridge.controls').directive('bridge.tableColumn', [function() {
                     }
                 },
                 sortingAlgorithm: $scope.orderBy ? function(a, b, rowA, rowB) {
+                    var originalA = a, originalB = b;
                     if(rowA && rowB) {
-                        a = rowA.entity[$scope.orderBy];
-                        b = rowB.entity[$scope.orderBy];
+                        a = getValueAlongPath($scope.orderBy, rowA.entity);
+                        b = getValueAlongPath($scope.orderBy, rowB.entity);
+                    }
+                    if(!a && !b) {
+                        a = originalA;
+                        b = originalB;
                     }
                     if(typeof a === "string" && typeof b === "string") {
                         return stringComparison(a, b);

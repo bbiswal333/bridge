@@ -31,7 +31,7 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 				return sMilestoneType;
 			};
 
-			this.getMilestoneTypeAsStr = function() {
+			this.getMilestoneTypeAsStr = function(bFull) {
 				var typeAsStr = '';
 				switch (sMilestoneType){
 					case '0714':
@@ -48,7 +48,13 @@ angular.module('app.programMilestones').service("app.programMilestones.milestone
 						break;
 					case '0108': typeAsStr = "DC";
 						break;
-					default: typeAsStr = sMilestoneTypeText.substr(0, 15) + (sMilestoneTypeText.length > 15 ? "..." : "");
+					default:
+						if(bFull) {
+							typeAsStr = sMilestoneTypeText;
+						} else {
+							typeAsStr = sMilestoneTypeText.substr(0, 15) + (sMilestoneTypeText.length > 15 ? "..." : "");
+						}
+						break;
 				}
 				return typeAsStr;
 			};
