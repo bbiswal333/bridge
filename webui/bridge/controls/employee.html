@@ -1,4 +1,6 @@
-<span ng-if="employee"><bridge.employee-picture employee-user="{{employee.ID}}"></bridge.employee-picture> {{employee.fullName}}</span>
+<span ng-if="employee" ng-click="userClick(employee)" class="clickable">
+    <bridge.employee-picture employee-user="{{employee.ID}}"></bridge.employee-picture> {{employee.fullName}}
+</span>
 <a href="{{getMailUrl(employee.SMTP_MAIL, mailSubject, mailBody)}}" ng-if="employee.SMTP_MAIL"><i class="fa fa-envelope-o" style="font-size :14px"></i></a>
 <a href="tel:{{employee.TELNR}}" ng-if="employee.TELNR"><i class="fa fa-phone" style="font-size :14px"></i></a>
 <span ng-if="!employee">{{id}}</span>

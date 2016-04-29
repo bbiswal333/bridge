@@ -63,6 +63,10 @@ angular.module('bridge.app').directive('bridge.employee', [function() {
                 return mailString;
             };
 
+            $scope.userClick = function(employeeDetails){
+                employeeService.showEmployeeModal(employeeDetails);
+            };
+
             $scope.$watch("id", function(newValue, oldValue) {
                 if(newValue !== oldValue && !$scope.firstName) {
                     loadEmployeeData();
