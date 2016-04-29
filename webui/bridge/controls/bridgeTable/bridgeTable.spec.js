@@ -46,7 +46,7 @@ describe("The bridge table directive", function(){
                     visible: true,
                     width: 240
                 }, {
-                    name: 'Test 2',
+                    name: 'Test2',
                     pinned: "",
                     sort: {},
                     visible: false,
@@ -72,14 +72,14 @@ describe("The bridge table directive", function(){
         $rootScope.tableSettings = {
             state: {
                 columns: [{
-                    name: 'Test 2',
+                    name: 'Test2',
                     pinned: "",
                     sort: {},
                     visible: true,
                     width: 240
 
                 }, {
-                    name: 'Test 1',
+                    name: 'Test1',
                     pinned: "",
                     sort: {},
                     visible: true,
