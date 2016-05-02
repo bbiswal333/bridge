@@ -48,7 +48,7 @@ angular.module('app.atc').controller('app.atc.detailcontroller', ['$scope', '$ht
             }
             updateTableData();
         }
-    }, true);
+    });
 
     $scope.$watch('statusMap', function()
     {
